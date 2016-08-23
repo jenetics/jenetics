@@ -19,6 +19,7 @@
  */
 package org.jenetics.random;
 
+import static java.lang.Math.min;
 import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 
@@ -26,7 +27,9 @@ import java.util.Random;
 
 /**
  * Abstract {@code Random} class with additional <i>next</i> random number
- * methods.
+ * methods. It also contains static helper methods for creating sane random
+ * seed values ({@link #seed()}) and creating random values within a given
+ * range.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -363,8 +366,7 @@ public abstract class PRNG extends Random {
 	 *
 	 * @param seed the byte array seed to fill with random bytes.
 	 * @return the given byte array, for method chaining.
-	 * @throws NullPointerException if the {@code seed} array is
-	 *         {@code null}.
+	 * @throws NullPointerException if the {@code seed} array is {@code null}.
 	 */
 	public static byte[] seedBytes(final byte[] seed) {
 		for (int i = 0, len = seed.length; i < len;) {
@@ -376,6 +378,73 @@ public abstract class PRNG extends Random {
 		}
 
 		return seed;
+	}
+
+	/**
+	 * Fills the given {@code seedBytes} with the given {@code seed} value. If
+	 * the {@code length} is bigger than 8, the {@code seed} value is
+	 * <em>stretched</em> for filling the returned seed array. This method is
+	 * deterministic and doesn't increase the entropy of the input {@code seed}.
+	 *
+	 * <pre>{@code
+	 * long seedValue = seed;
+	 * for (int i = 0, len = seedBytes.length; i < len;) {
+	 *     int n = min(len - i, Long.SIZE/Byte.SIZE);
+	 *
+	 *     for (long x = seedValue; n-- > 0; x >>= Byte.SIZE) {
+	 *         seedBytes[i++] = (byte)x;
+	 *     }
+	 *
+	 *     seedValue ^= Long.rotateLeft(seedValue, 7);
+	 *     seedValue ^= seedValue << 17;
+	 *     seedValue ^= seedValue >>> 31;
+	 *     seedValue ^= seedValue << 8;
+	 * }
+	 * }</pre>
+	 *
+	 * @see #seedBytes(long, int)
+	 *
+	 * @param seed the seed value
+	 * @param seedBytes the resulting seeding byte array to fill
+	 * @return the given byte array, for method chaining.
+	 * @throws NullPointerException if the {@code seedBytes} array is
+	 *         {@code null}.
+	 */
+	public static byte[] seedBytes(final long seed, final byte[] seedBytes) {
+		long seedValue = seed;
+		for (int i = 0, len = seedBytes.length; i < len;) {
+			int n = min(len - i, Long.SIZE/Byte.SIZE);
+
+			for (long x = seedValue; n-- > 0; x >>= Byte.SIZE) {
+				seedBytes[i++] = (byte)x;
+			}
+
+			seedValue ^= Long.rotateLeft(seedValue, 7);
+			seedValue ^= seedValue << 17;
+			seedValue ^= seedValue >>> 31;
+			seedValue ^= seedValue << 8;
+		}
+
+		return seedBytes;
+	}
+
+	/**
+	 * Creates a new {@code byte} array with the given length and fills it with
+	 * the given {@code seed} value. If the {@code length} is bigger than 8, the
+	 * {@code seed} value is <em>stretched</em> for filling the returned seed
+	 * array. This method is deterministic and doesn't increase the entropy of
+	 * the input {@code seed}.
+	 *
+	 * @see #seedBytes(long, byte[])
+	 *
+	 * @param seed the seed value
+	 * @param length the length of the new seed byte array
+	 * @return a new seed byte array filled with the given seed value
+	 * @throws NegativeArraySizeException if the given {@code length} is smaller
+	 *         than zero
+	 */
+	public static byte[] seedBytes(final long seed, final int length) {
+		return seedBytes(seed, new byte[length]);
 	}
 
 	/**
