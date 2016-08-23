@@ -26,27 +26,44 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class LCG64ShiftRandomTest extends Random64TestBase {
+public class KISS32RandomTest extends Random32TestBase {
+
+	@Test
+	public void create() {
+		new KISS32Random();
+	}
+
+	@Test
+	public void createThreadSafe() {
+		new KISS32Random.ThreadSafe();
+	}
+
+	@Test
+	public void createThreadLocal() {
+		new KISS32Random.ThreadLocal().get();
+	}
 
 	@Override
 	@DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
-		final long seed = PRNG.seed();
+		final byte[] seed = KISS32Random.seedBytes();
+
 		return new Object[][] {
-			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
+			{new KISS32Random(seed), new KISS32Random(seed)},
+			{new KISS32Random.ThreadSafe(seed), new KISS32Random(seed)},
+			{new KISS32Random.ThreadSafe(seed), new KISS32Random.ThreadSafe(seed)}
 		};
 	}
 
 	@Override
 	@DataProvider(name = "PRNG")
 	protected Object[][] getPRNG() {
-		final long seed = PRNG.seed();
+		final byte[] seed = KISS32Random.seedBytes();
+
 		return new Object[][] {
-			{new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed)},
-			{new LCG64ShiftRandom.ThreadLocal().get()}
+			{new KISS32Random(seed)},
+			{new KISS32Random.ThreadSafe(seed)},
+			{new KISS32Random.ThreadLocal().get()}
 		};
 	}
-
 }

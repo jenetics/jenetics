@@ -62,17 +62,6 @@ public abstract class RandomTestBase {
 	}
 
 	@Test(dataProvider = "seededPRNGPair")
-	public void sameByteLongValueSequence(final Random rand1, final Random rand2) {
-		final byte[] bytes = new byte[8];
-		for (int i = 0; i < 1234; ++i) {
-			rand1.nextBytes(bytes);
-			reverse(bytes);
-
-			Assert.assertEquals(toLong(bytes), rand2.nextLong());
-		}
-	}
-
-	@Test(dataProvider = "seededPRNGPair")
 	public void sameByteSequence(final Random rand1, final Random rand2) {
 		final int size = 3413;
 		final byte[] bytes1 = new byte[size];
@@ -222,6 +211,14 @@ public abstract class RandomTestBase {
 		final byte temp = array[i];
 		array[i] = array[j];
 		array[j] = temp;
+	}
+
+	public static int toInt(final byte[] bytes) {
+		return
+			((bytes[0] & 255) << 24) +
+			((bytes[1] & 255) << 16) +
+			((bytes[2] & 255) << 8) +
+			(bytes[3] & 255);
 	}
 
 	public static long toLong(final byte[] data) {

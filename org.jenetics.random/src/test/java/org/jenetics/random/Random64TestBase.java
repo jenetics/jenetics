@@ -34,7 +34,7 @@ public abstract class Random64TestBase extends RandomTestBase {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
 			rand1.nextBytes(bytes);
-			Random64TestBase.reverse(bytes);
+			RandomTestBase.reverse(bytes);
 
 			Assert.assertEquals(Random64TestBase.toLong(bytes), rand2.nextLong());
 		}

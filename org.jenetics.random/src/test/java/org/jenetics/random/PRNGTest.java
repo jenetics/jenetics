@@ -19,6 +19,8 @@
  */
 package org.jenetics.random;
 
+import java.util.Arrays;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -98,6 +100,12 @@ public class PRNGTest {
 			Assert.assertTrue(value < max);
 			Assert.assertTrue(value >= min);
 		}
+	}
+
+	@Test
+	public void seedBytes() {
+		final byte[] bytes = PRNG.seedBytes(1123412431234L, 20);
+		System.out.println(Arrays.toString(bytes));
 	}
 
 }

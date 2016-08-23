@@ -19,34 +19,18 @@
  */
 package org.jenetics.random;
 
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-@Test
-public class LCG64ShiftRandomTest extends Random64TestBase {
+public class utilsTest {
 
-	@Override
-	@DataProvider(name = "seededPRNGPair")
-	protected Object[][] getSeededPRNGPair() {
-		final long seed = PRNG.seed();
-		return new Object[][] {
-			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
-		};
-	}
+	@Test
+	public void readInt() {
 
-	@Override
-	@DataProvider(name = "PRNG")
-	protected Object[][] getPRNG() {
-		final long seed = PRNG.seed();
-		return new Object[][] {
-			{new LCG64ShiftRandom(seed)},
-			{new LCG64ShiftRandom.ThreadSafe(seed)},
-			{new LCG64ShiftRandom.ThreadLocal().get()}
-		};
 	}
 
 }
