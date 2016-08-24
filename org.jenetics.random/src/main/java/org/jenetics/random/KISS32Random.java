@@ -35,7 +35,7 @@ import java.util.Random;
  * <p>
  * The following listing shows the actual PRNG implementation.
  * <pre>{@code
- * private int x, y, z, w = <init with seeds>
+ * private int x, y, z, w = <seed>
  * private int c = 0;
  *
  * int nextInt() {
@@ -96,7 +96,7 @@ public class KISS32Random extends Random32 {
 		public void setSeed(final byte[] seed) {
 			if (_sentry != null) {
 				throw new UnsupportedOperationException(
-					"The 'setSeed(long)' method is not supported " +
+					"The 'setSeed' method is not supported " +
 						"for thread local instances."
 				);
 			}
@@ -195,7 +195,8 @@ public class KISS32Random extends Random32 {
 		void setSeed(final byte[] seed) {
 			if (seed.length < SEED_BYTES) {
 				throw new IllegalArgumentException(format(
-					"Required 16 seed bytes, but got %d.", seed.length
+					"Required %d seed bytes, but got %d.",
+					SEED_BYTES, seed.length
 				));
 			}
 
@@ -324,7 +325,7 @@ public class KISS32Random extends Random32 {
 
 	@Override
 	public void setSeed(final long seed) {
-		setSeed(seedBytes(seed, SEED_BYTES));
+		setSeed(PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
 	@Override
