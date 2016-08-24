@@ -20,12 +20,12 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
-import static org.jenetics.random.internal.util.Equality.eq;
+import static org.jenetics.random.utils.readInt;
+import static org.jenetics.random.utils.readLong;
 
 import java.io.Serializable;
-
-import org.jenetics.random.internal.util.Equality;
-import org.jenetics.random.internal.util.Hash;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Implementation of an simple PRNG as proposed in
@@ -33,6 +33,35 @@ import org.jenetics.random.internal.util.Hash;
  * Good Practice in (Pseudo) Random Number Generation for Bioinformatics
  * Applications</a> (JKISS64, page 10) by <em><a href="mailto:d.jones@cs.ucl.ac.uk">
  * David Jones</a>, UCL Bioinformatics Group</em>.
+ *
+ * <p>
+ * The following listing shows the actual PRNG implementation.
+ * <pre>{@code
+ * private long x, y = <seed>
+ * private int z1, c1, z2, c2 = <seed>
+ *
+ * long nextLong() {
+ *     x = 0x14ADA13ED78492ADL*x + 123456789;
+ *
+ *     y ^= y << 21;
+ *     y ^= y >>> 17;
+ *     y ^= y << 30;
+ *
+ *     long t = 4294584393L*_z1 + _c1;
+ *     c1 = (int)(t >> 32);
+ *     z1 = (int)t;
+ *
+ *     t = 4246477509L*z2 + c2;
+ *     c2 = (int)(t >> 32);
+ *     z2 = (int)t;
+ *
+ *     return x + y + z1 + ((long)z2 << 32);
+ * }
+ * }</pre>
+ *
+ * <p>
+ * The period of this <i>PRNG</i> is &asymp; 2<sup>250</sup>
+ * &asymp; 1.8&sdot;10<sup>75</sup>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -55,7 +84,7 @@ public class KISS64Random extends Random64 {
 	{
 		@Override
 		protected KISS64Random initialValue() {
-			return new TLKISS64Random(math.seed());
+			return new TLKISS64Random(seedBytes());
 		}
 	}
 
@@ -64,15 +93,15 @@ public class KISS64Random extends Random64 {
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLKISS64Random(final long seed) {
+		private TLKISS64Random(final byte[] seed) {
 			super(seed);
 		}
 
 		@Override
-		public void setSeed(final long seed) {
+		public void setSeed(final byte[] seed) {
 			if (_sentry != null) {
 				throw new UnsupportedOperationException(
-					"The 'setSeed(long)' method is not supported " +
+					"The 'setSeed' method is not supported " +
 						"for thread local instances."
 				);
 			}
@@ -92,19 +121,46 @@ public class KISS64Random extends Random64 {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * Create a new PRNG instance with the given seed.
+		 * Create a new thread-safe instance of the {@code KISS64Random} engine.
 		 *
-		 * @param seed the seed of the PRNG.
+		 * <pre>{@code
+		 * final byte[] seed = KISS64Random.seedBytes();
+		 * final Random random = new KISS64Random.ThreadSafe(seed);
+		 * }</pre>
+		 *
+		 * @see #seedBytes()
+		 *
+		 * @param seed the random seed value. The seed must be (at least)
+		 *        {@link #SEED_BYTES} long.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
+		 */
+		public ThreadSafe(final byte[] seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new thread-safe instance of the {@code KISS64Random} engine.
+		 * The constructed PRNG is equivalent with
+		 * <pre>{@code
+		 * final long seed = ...;
+		 * final Random random = new KISS64Random.ThreadSafe();
+		 * random.setSeed(seed);
+		 * }</pre>
+		 * which is there for compatibility reasons with the Java {@link Random}
+		 * engine.
+		 *
+		 * @param seed the random seed value
 		 */
 		public ThreadSafe(final long seed) {
 			super(seed);
 		}
 
 		/**
-		 * Create a new PRNG instance with a safe seed.
+		 * Create a new thread-safe instance of the {@code KISS64Random} engine.
+		 * The PRNG is initialized with {@link #seedBytes()}.
 		 */
 		public ThreadSafe() {
-			this(math.seed());
 		}
 
 		@Override
@@ -113,8 +169,8 @@ public class KISS64Random extends Random64 {
 		}
 
 		@Override
-		public synchronized int nextInt() {
-			return super.nextInt();
+		public synchronized long nextLong() {
+			return super.nextLong();
 		}
 	}
 
@@ -131,37 +187,48 @@ public class KISS64Random extends Random64 {
 		int _z2 = 21987643;
 		int _c2 = 1732654;
 
-		State(final long seed) {
+		State(final byte[] seed) {
 			setSeed(seed);
 		}
 
-		void setSeed(final long seed) {
-			_x ^= seed;
-			_y ^= seed; //mix(seed);
-			if (_y == 0L) _y = 0xdeadbeef;
+		void setSeed(final byte[] seed) {
+			if (seed.length < SEED_BYTES) {
+				throw new IllegalArgumentException(format(
+					"Required %d seed bytes, but got %d.",
+					SEED_BYTES, seed.length
+				));
+			}
+
+			_x = readLong(seed, 0);
+			_y = readLong(seed, 1);
+			_z1 = readInt(seed, 4);
+			_c1 = readInt(seed, 5);
+			_z2 = readInt(seed, 6);
+			_c2 = readInt(seed, 7);
 		}
 
 		@Override
 		public int hashCode() {
-			return Hash.of(getClass())
-				.and(_x)
-				.and(_y)
-				.and(_z1)
-				.and(_c1)
-				.and(_z2)
-				.and(_c2).value();
+			int hash = 31;
+			hash += 37*_x + 17;
+			hash += 37*_y + 17;
+			hash += 37*_z1 + 17;
+			hash += 37*_c1 + 17;
+			hash += 37*_z2 + 17;
+			hash += 37*_c2 + 17;
+
+			return hash;
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(state ->
-				eq(_x, state._x) &&
-				eq(_y, state._y) &&
-				eq(_z1, state._z1) &&
-				eq(_c1, state._c1) &&
-				eq(_z2, state._z2) &&
-				eq(_z2, state._z2)
-			);
+			return obj instanceof State &&
+				_x == ((State)obj)._x &&
+				_y == ((State)obj)._y &&
+				_z1 == ((State)obj)._z1 &&
+				_c1 == ((State)obj)._c2 &&
+				_z2 == ((State)obj)._z2 &&
+				_c2 == ((State)obj)._c2;
 		}
 
 		@Override
@@ -173,14 +240,61 @@ public class KISS64Random extends Random64 {
 		}
 	}
 
+
+	/* *************************************************************************
+	 * Main class.
+	 * ************************************************************************/
+
+	/**
+	 * The number of seed bytes (32) this PRNG requires.
+	 */
+	public static final int SEED_BYTES = 32;
+
 	private final State _state;
 
-	public KISS64Random(final long seed) {
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS64Random}
+	 * engine.
+	 *
+	 * <pre>{@code
+	 * final byte[] seed = KISS64Random.seedBytes();
+	 * final Random random = new KISS64Random(seed);
+	 * }</pre>
+	 *
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} long.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public KISS64Random(final byte[] seed) {
 		_state = new State(seed);
 	}
 
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS64Random}
+	 * engine. The constructed PRNG is equivalent with
+	 * <pre>{@code
+	 * final long seed = ...;
+	 * final Random random = new KISS64Random();
+	 * random.setSeed(seed);
+	 * }</pre>
+	 * which is there for compatibility reasons with the Java {@link Random}
+	 * engine.
+	 *
+	 * @param seed the random seed value
+	 */
+	public KISS64Random(final long seed) {
+		this(PRNG.seedBytes(seed, SEED_BYTES));
+	}
+
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the {@code KISS64Random}
+	 * engine. The PRNG is initialized with {@link #seedBytes()}.
+	 */
 	public KISS64Random() {
-		this(math.seed());
+		this(seedBytes());
 	}
 
 	@Override
@@ -205,27 +319,53 @@ public class KISS64Random extends Random64 {
 		_state._z2 = (int)t;
 	}
 
-	@Override
-	public void setSeed(final long seed) {
+	/**
+	 * Initializes the PRNg with the given seed.
+	 *
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} big.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public void setSeed(final byte[] seed) {
 		if (_state != null) _state.setSeed(seed);
 	}
 
 	@Override
+	public void setSeed(final long seed) {
+		setSeed(PRNG.seedBytes(seed, SEED_BYTES));
+	}
+
+	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_state).value();
+		int hash = 37;
+		hash += 31*_state.hashCode() + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random ->
-			eq(_state, random._state)
-		);
+		return obj instanceof KISS64Random &&
+			Objects.equals(((KISS64Random)obj)._state, _state);
 	}
 
 	@Override
 	public String toString() {
 		return format("%s[%s]", getClass().getSimpleName(), _state);
+	}
+
+	/**
+	 * Create a new <em>seed</em> byte array suitable for this PRNG. The
+	 * returned seed array is {@link #SEED_BYTES} long.
+	 *
+	 * @see PRNG#seedBytes(int)
+	 *
+	 * @return a new <em>seed</em> byte array of length {@link #SEED_BYTES}
+	 */
+	public static byte[] seedBytes() {
+		return PRNG.seedBytes(SEED_BYTES);
 	}
 
 }
