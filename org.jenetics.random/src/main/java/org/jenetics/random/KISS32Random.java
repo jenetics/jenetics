@@ -241,7 +241,7 @@ public class KISS32Random extends Random32 {
 	/**
 	 * The number of seed bytes (16) this PRNG requires.
 	 */
-	public static int SEED_BYTES = 16;
+	public static final int SEED_BYTES = 16;
 
 	private final State _state;
 
@@ -261,7 +261,7 @@ public class KISS32Random extends Random32 {
 	 * @throws IllegalArgumentException if the given seed is shorter than
 	 *         {@link #SEED_BYTES}
 	 */
-	KISS32Random(final byte[] seed) {
+	public KISS32Random(final byte[] seed) {
 		_state = new State(seed);
 	}
 
@@ -278,7 +278,7 @@ public class KISS32Random extends Random32 {
 	 *
 	 * @param seed the random seed value
 	 */
-	KISS32Random(final long seed) {
+	public KISS32Random(final long seed) {
 		this(seedBytes(seed, SEED_BYTES));
 	}
 
@@ -286,7 +286,7 @@ public class KISS32Random extends Random32 {
 	 * Create a new <em>not</em> thread-safe instance of the {@code KISS32Random}
 	 * engine. The PRNG is initialized with {@link #seedBytes()}.
 	 */
-	KISS32Random() {
+	public KISS32Random() {
 		this(seedBytes());
 	}
 
@@ -343,30 +343,6 @@ public class KISS32Random extends Random32 {
 	@Override
 	public String toString() {
 		return format("%s[%s]", getClass().getSimpleName(), _state);
-	}
-
-	public static KISS32Random of() {
-		return null;
-	}
-
-	public static KISS32Random of(final long seed) {
-		return null;
-	}
-
-	public static KISS32Random of(final byte[] seed) {
-		return null;
-	}
-
-	public static KISS32Random ofThreadSafe() {
-		return null;
-	}
-
-	public static KISS32Random ofThreadSafe(final long seed) {
-		return null;
-	}
-
-	public static KISS32Random ofThreadSafe(final byte[] seed) {
-		return null;
 	}
 
 	/**
