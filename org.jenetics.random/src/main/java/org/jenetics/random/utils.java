@@ -53,6 +53,15 @@ final class utils {
 			((bytes[offset + 3] & 255));
 	}
 
+	public static byte[] toBytes(final int value) {
+		final byte[] bytes = new byte[4];
+		bytes[0] = (byte)(value >>> 24);
+		bytes[1] = (byte)(value >>> 16);
+		bytes[2] = (byte)(value >>>  8);
+		bytes[3] = (byte) value;
+		return bytes;
+	}
+
 	static long readLong(final byte[] bytes, final int index) {
 		final int offset = index*Long.BYTES;
 		if (offset + Long.BYTES > bytes.length) {
@@ -63,7 +72,7 @@ final class utils {
 		}
 
 		return
-			((long)bytes[offset + 0] << 56) +
+			((long)(bytes[offset + 0] & 255) << 56) +
 			((long)(bytes[offset + 1] & 255) << 48) +
 			((long)(bytes[offset + 2] & 255) << 40) +
 			((long)(bytes[offset + 3] & 255) << 32) +
@@ -73,12 +82,16 @@ final class utils {
 			(bytes[offset + 7] & 255);
 	}
 
-	public static byte[] toBytes(final int value) {
-		final byte[] bytes = new byte[4];
-		bytes[0] = (byte)(value >>> 24);
-		bytes[1] = (byte)(value >>> 16);
-		bytes[2] = (byte)(value >>>  8);
-		bytes[3] = (byte) value;
+	public static byte[] toBytes(final long value) {
+		final byte[] bytes = new byte[8];
+		bytes[0] = (byte)(value >>> 56);
+		bytes[1] = (byte)(value >>> 48);
+		bytes[2] = (byte)(value >>> 40);
+		bytes[3] = (byte)(value >>> 32);
+		bytes[4] = (byte)(value >>> 24);
+		bytes[5] = (byte)(value >>> 16);
+		bytes[6] = (byte)(value >>>  8);
+		bytes[7] = (byte) value;
 		return bytes;
 	}
 

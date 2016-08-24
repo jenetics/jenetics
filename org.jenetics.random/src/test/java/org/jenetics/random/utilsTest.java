@@ -46,4 +46,21 @@ public class utilsTest {
 		}
 	}
 
+	@Test
+	public void readLong() {
+		for (int i = 1; i < 100; ++i) {
+			final byte[] data = new byte[i*8];
+
+			final Random random = new Random(i);
+			for (int j = 0; j < i; ++j) {
+				System.arraycopy(utils.toBytes(random.nextLong()), 0, data, j*8, 8);
+			}
+
+			random.setSeed(i);
+			for (int j = 0; j < i; ++j) {
+				Assert.assertEquals(utils.readLong(data, j), random.nextLong());
+			}
+		}
+	}
+
 }
