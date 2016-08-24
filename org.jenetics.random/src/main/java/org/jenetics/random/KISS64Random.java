@@ -226,7 +226,7 @@ public class KISS64Random extends Random64 {
 				_x == ((State)obj)._x &&
 				_y == ((State)obj)._y &&
 				_z1 == ((State)obj)._z1 &&
-				_c1 == ((State)obj)._c2 &&
+				_c1 == ((State)obj)._c1 &&
 				_z2 == ((State)obj)._z2 &&
 				_c2 == ((State)obj)._c2;
 		}
