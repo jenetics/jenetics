@@ -91,6 +91,7 @@ task fixCodeBlock(type: FixJavadocCodeBlockTask) {
 }
 
 task alljavadoc(type: Javadoc) {
+	options.encoding = 'UTF-8'
 	def jeneticsProjects = subprojects.findAll { project ->
 		project.name.startsWith('org.jeneti') &&
 		project.name != 'org.jenetics.doc'
