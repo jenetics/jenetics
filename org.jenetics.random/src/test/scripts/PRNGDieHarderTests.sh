@@ -16,7 +16,8 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
 main() {
-	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS32Random -a
+	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS32Random -a
+	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS64Random -a
 }
 
 main $*
