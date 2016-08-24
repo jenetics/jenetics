@@ -47,10 +47,10 @@ final class utils {
 		}
 
 		return
-			(bytes[offset + 0] << 24) +
-			(bytes[offset + 1] << 16) +
-			(bytes[offset + 2] << 8) +
-			(bytes[offset + 3]);
+			((bytes[offset + 0] & 255) << 24) +
+			((bytes[offset + 1] & 255) << 16) +
+			((bytes[offset + 2] & 255) << 8) +
+			((bytes[offset + 3] & 255));
 	}
 
 	static long readLong(final byte[] bytes, final int index) {

@@ -19,18 +19,31 @@
  */
 package org.jenetics.random;
 
+import java.util.Random;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class utilsTest {
 
 	@Test
 	public void readInt() {
+		for (int i = 1; i < 100; ++i) {
+			final byte[] data = new byte[i*4];
 
+			final Random random = new Random(i);
+			for (int j = 0; j < i; ++j) {
+				System.arraycopy(utils.toBytes(random.nextInt()), 0, data, j*4, 4);
+			}
+
+			random.setSeed(i);
+			for (int j = 0; j < i; ++j) {
+				Assert.assertEquals(utils.readInt(data, j), random.nextInt());
+			}
+		}
 	}
 
 }
