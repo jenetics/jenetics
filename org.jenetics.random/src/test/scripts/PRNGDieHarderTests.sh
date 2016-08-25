@@ -18,7 +18,7 @@ JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 main() {
 	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS32Random -a
 	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS64Random -a
-	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.LCG64Random -a
+	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.LCG64ShiftRandom -a
 }
 
 main $*
