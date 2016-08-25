@@ -22,7 +22,6 @@ package org.jenetics.random;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.random.utils.readLong;
-import static org.jenetics.random.utils.toBytes;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -436,7 +435,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @throws NullPointerException if the given {@code param} is {@code null}.
 	 */
 	public LCG64ShiftRandom(final Param param, final long seed) {
-		this(param, toBytes(seed));
+		this(param, PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
 	/**
@@ -466,7 +465,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @param seed the seed of the PRNG
 	 */
 	public LCG64ShiftRandom(final long seed) {
-		this(Param.DEFAULT, toBytes(seed));
+		this(Param.DEFAULT, PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
 	/**

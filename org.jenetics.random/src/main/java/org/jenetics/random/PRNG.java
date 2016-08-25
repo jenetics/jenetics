@@ -22,6 +22,7 @@ package org.jenetics.random;
 import static java.lang.Math.min;
 import static java.lang.Math.nextDown;
 import static java.lang.String.format;
+import static org.jenetics.random.utils.toBytes;
 
 import java.util.Random;
 
@@ -413,11 +414,11 @@ public abstract class PRNG extends Random {
 	public static byte[] seedBytes(final long seed, final byte[] seedBytes) {
 		long seedValue = seed;
 		for (int i = 0, len = seedBytes.length; i < len;) {
-			int n = min(len - i, Long.SIZE/Byte.SIZE);
+			final int n = min(len - i, Long.SIZE/Byte.SIZE);
+			final byte[] bytes = toBytes(seedValue);
 
-			for (long x = seedValue; n-- > 0; x >>= Byte.SIZE) {
-				seedBytes[i++] = (byte)x;
-			}
+			System.arraycopy(bytes, 0, seedBytes, i, n);
+			i += n;
 
 			seedValue ^= Long.rotateLeft(seedValue, 7);
 			seedValue ^= seedValue << 17;
