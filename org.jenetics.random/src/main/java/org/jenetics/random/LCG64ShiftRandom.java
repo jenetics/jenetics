@@ -21,6 +21,8 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.random.utils.readLong;
+import static org.jenetics.random.utils.toBytes;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -199,15 +201,12 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		/**
 		 * Create a new PRNG instance with the given parameter and seed.
 		 *
-		 * @param seed the seed of the PRNG.
 		 * @param param the parameter of the PRNG.
-		 * @throws NullPointerException if the given {@code param} is null.
-		 *
-		 * @deprecated Use {@code LCG64ShiftRandom.ThreadSafe(Param, long)}
-		 *             instead.
+		 * @param seed the seed of the PRNG.
+		 * @throws NullPointerException if the given {@code param} or {@code seed}
+		 *         is {@code null}.
 		 */
-		@Deprecated
-		public ThreadSafe(final long seed, final Param param) {
+		public ThreadSafe(final Param param, final byte[] seed) {
 			super(param, seed);
 		}
 
@@ -216,31 +215,41 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 *
 		 * @param seed the seed of the PRNG.
 		 * @param param the parameter of the PRNG.
-		 * @throws NullPointerException if the given {@code param} is null.
+		 * @throws NullPointerException if the given {@code param} is
+		 *         {@code null}.
 		 */
 		public ThreadSafe(final Param param, final long seed) {
 			super(param, seed);
 		}
 
 		/**
-		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
-		 * the given seed.
-		 *
-		 * @param seed the seed of the PRNG
-		 */
-		public ThreadSafe(final long seed) {
-			this(Param.DEFAULT, seed);
-		}
-
-		/**
-		 * Create a new PRNG instance with the given parameter and a safe
-		 * default seed.
+		 * Create a new PRNG instance with the given parameter and a safe seed
 		 *
 		 * @param param the PRNG parameter.
 		 * @throws NullPointerException if the given {@code param} is null.
 		 */
 		public ThreadSafe(final Param param) {
-			this(param, PRNG.seed());
+			super(param);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @throws NullPointerException if the given {@code seed} is {@code null}.
+		 */
+		public ThreadSafe(final byte[] seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and the
+		 * given seed.
+		 *
+		 * @param seed the seed of the PRNG
+		 */
+		public ThreadSafe(final long seed) {
+			super(seed);
 		}
 
 		/**
@@ -248,7 +257,6 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
-			this(Param.DEFAULT, PRNG.seed());
 		}
 
 		@Override
@@ -363,12 +371,19 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 
 		long _r;
 
-		State(final long seed) {
+		State(final byte[] seed) {
 			setSeed(seed);
 		}
 
-		void setSeed(final long seed) {
-			_r = seed;
+		void setSeed(final byte[] seed) {
+			if (seed.length < SEED_BYTES) {
+				throw new IllegalArgumentException(format(
+					"Required %d seed bytes, but got %d.",
+					SEED_BYTES, seed.length
+				));
+			}
+
+			_r = readLong(seed, 0);
 		}
 
 		@Override
@@ -388,6 +403,15 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	}
 
 
+	/* *************************************************************************
+	 * Main class.
+	 * ************************************************************************/
+
+	/**
+	 * The number of seed bytes (8) this PRNG requires.
+	 */
+	public static final int SEED_BYTES = 8;
+
 	private Param _param;
 	private final State _state;
 
@@ -396,11 +420,23 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 *
 	 * @param param the parameter of the PRNG.
 	 * @param seed the seed of the PRNG.
-	 * @throws NullPointerException if the given {@code param} is null.
+	 * @throws NullPointerException if the given {@code param} or {@code seed}
+	 *         is {@code null}.
 	 */
-	public LCG64ShiftRandom(final Param param, final long seed) {
+	public LCG64ShiftRandom(final Param param, final byte[] seed) {
 		_param = requireNonNull(param, "PRNG param must not be null.");
 		_state = new State(seed);
+	}
+
+	/**
+	 * Create a new PRNG instance with the given parameter and seed.
+	 *
+	 * @param param the parameter of the PRNG.
+	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code param} is {@code null}.
+	 */
+	public LCG64ShiftRandom(final Param param, final long seed) {
+		this(param, toBytes(seed));
 	}
 
 	/**
@@ -410,7 +446,17 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @throws NullPointerException if the given {@code param} is null.
 	 */
 	public LCG64ShiftRandom(final Param param) {
-		this(param, PRNG.seed());
+		this(param, seedBytes());
+	}
+
+	/**
+	 * Create a new PRNG instance with the given parameter and seed.
+	 *
+	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code seed} is {@code null}.
+	 */
+	public LCG64ShiftRandom(final byte[] seed) {
+		this(Param.DEFAULT, seed);
 	}
 
 	/**
@@ -420,7 +466,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @param seed the seed of the PRNG
 	 */
 	public LCG64ShiftRandom(final long seed) {
-		this(Param.DEFAULT, seed);
+		this(Param.DEFAULT, toBytes(seed));
 	}
 
 	/**
@@ -446,9 +492,14 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		_state._r = _param.a*_state._r + _param.b;
 	}
 
+	public void setSeed(final byte[] seed) {
+		if (_state != null) _state.setSeed(seed);
+	}
+
+
 	@Override
 	public void setSeed(final long seed) {
-		if (_state != null) _state.setSeed(seed);
+		setSeed(PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
 	@Override
@@ -547,7 +598,17 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		return format("%s[%s, %s]", getClass().getSimpleName(), _param, _state);
 	}
 
-
+	/**
+	 * Create a new <em>seed</em> byte array suitable for this PRNG. The
+	 * returned seed array is {@link #SEED_BYTES} long.
+	 *
+	 * @see PRNG#seedBytes(int)
+	 *
+	 * @return a new <em>seed</em> byte array of length {@link #SEED_BYTES}
+	 */
+	public static byte[] seedBytes() {
+		return PRNG.seedBytes(SEED_BYTES);
+	}
 
 	/* *************************************************************************
 	 * Some static helper methods
