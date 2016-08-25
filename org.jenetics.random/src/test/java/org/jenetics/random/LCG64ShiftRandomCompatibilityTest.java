@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
+@Test
 public class LCG64ShiftRandomCompatibilityTest {
 
 	@Test(dataProvider = "data")
