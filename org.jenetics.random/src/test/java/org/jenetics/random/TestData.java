@@ -152,9 +152,9 @@ public class TestData implements Iterable<String[]> {
 
 			final URL url = TestData.class.getClassLoader().getResource(classPath);
 			final String absoluteClassPath = new File(url.toURI()).getAbsolutePath();
-			final String basePath = absoluteClassPath.substring(
-				0, absoluteClassPath.length() - classPath.length()
-			);
+			final String basePath = absoluteClassPath
+				.substring(0, absoluteClassPath.length() - classPath.length())
+				.replace("/build/classes/test", "/build/resources/test");
 
 			return ofNullable(new File(basePath, path).list())
 				.map(Arrays::stream)
