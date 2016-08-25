@@ -28,12 +28,28 @@ import org.testng.annotations.Test;
 @Test
 public class LCG64ShiftRandomTest extends Random64TestBase {
 
+	@Test
+	public void create() {
+		new LCG64ShiftRandom();
+	}
+
+	@Test
+	public void createThreadSafe() {
+		new LCG64ShiftRandom.ThreadSafe();
+	}
+
+	@Test
+	public void createThreadLocal() {
+		new LCG64ShiftRandom.ThreadLocal().get();
+	}
+
 	@Override
 	@DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
 		final long seed = PRNG.seed();
 		return new Object[][] {
 			{new LCG64ShiftRandom(seed), new LCG64ShiftRandom(seed)},
+			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom(seed)},
 			{new LCG64ShiftRandom.ThreadSafe(seed), new LCG64ShiftRandom.ThreadSafe(seed)}
 		};
 	}
