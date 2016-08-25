@@ -20,6 +20,7 @@
 package org.jenetics.random;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -67,21 +68,25 @@ public class RandomEnginePerf {
 			return random.nextDouble();
 		}
 
+		/*
+		@Benchmark
+		public double nextGaussian() {
+			return random.nextGaussian();
+		}
+		*/
 	}
 
-//	public static class LCG64ShiftRandomPerf extends Base {
-//		{random = new LCG64ShiftRandom();}
-//	}
-
-	/*
-	public static class KISSRandomPerf extends Base {
-		{random = new KISSRandom();}
+	public static class LCG64ShiftRandomPerf extends Base {
+		{random = new LCG64ShiftRandom();}
 	}
 
-	public static class XOR64ShiftRandomPerf extends Base {
-		{random = new XOR64ShiftRandom();}
+	public static class KISS32RandomPerf extends Base {
+		{random = new KISS32Random();}
 	}
-	*/
+
+	public static class KISS64RandomPerf extends Base {
+		{random = new KISS64Random();}
+	}
 
 	public static class SimpleRandom64Perf extends Base {{
 		random = new Random64() {
@@ -103,18 +108,15 @@ public class RandomEnginePerf {
 		};
 	}}
 
-	/*
 	public static class ThreadLocalRandomPerf extends Base {
 		{random = ThreadLocalRandom.current();}
 	}
-	*/
-
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + RandomEnginePerf.class.getSimpleName() + ".*")
-			.warmupIterations(5)
-			.measurementIterations(20)
+			.warmupIterations(10)
+			.measurementIterations(25)
 			.threads(1)
 			.forks(1)
 			.build();
@@ -124,3 +126,31 @@ public class RandomEnginePerf {
 
 
 }
+
+/*
+Benchmark                                           Mode  Cnt    Score   Error   Units
+RandomEnginePerf.KISS32RandomPerf.nextDouble       thrpt   25  108.091 ± 2.641  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextFloat        thrpt   25  147.615 ± 1.138  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextInt          thrpt   25  177.378 ± 1.310  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextLong         thrpt   25  121.050 ± 1.200  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextDouble       thrpt   25  120.396 ± 0.992  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextFloat        thrpt   25  119.311 ± 1.279  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextInt          thrpt   25  122.467 ± 1.302  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextLong         thrpt   25  125.671 ± 1.190  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble   thrpt   25  184.582 ± 2.896  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat    thrpt   25  175.405 ± 2.061  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextInt      thrpt   25  240.889 ± 3.444  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextLong     thrpt   25  249.070 ± 4.884  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextDouble     thrpt   25  230.891 ± 1.524  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextFloat      thrpt   25  342.979 ± 5.605  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextInt        thrpt   25  349.939 ± 6.643  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextLong       thrpt   25  308.032 ± 5.982  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextDouble     thrpt   25  274.501 ± 8.201  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextFloat      thrpt   25  287.653 ± 3.588  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextInt        thrpt   25  339.068 ± 2.026  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextLong       thrpt   25  350.953 ± 1.788  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextDouble  thrpt   25  213.438 ± 3.422  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextFloat   thrpt   25  211.616 ± 2.311  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextInt     thrpt   25  251.721 ± 3.953  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextLong    thrpt   25  261.436 ± 2.990  ops/us
+*/
