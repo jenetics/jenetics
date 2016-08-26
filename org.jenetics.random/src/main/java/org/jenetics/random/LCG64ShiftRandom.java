@@ -60,6 +60,23 @@ import java.util.Objects;
  * Bauke.</em>
  *
  * <p>
+ * The following listing shows the actual PRNG implementation.
+ * <pre>{@code
+ * final long a, b = <params>
+ * long r = <seed>
+ *
+ * long nextLong() {
+ *     r = q*r + b;
+ *
+ *     long t = r;
+ *     t ^= t >>> 17;
+ *     t ^= t << 31;
+ *     t ^= t >>> 8;
+ *     return t;
+ * }
+ * }</pre>
+ *
+ * <p>
  * <strong>Not that the base implementation of the {@code LCG64ShiftRandom}
  * class is not thread-safe.</strong> If multiple threads requests random
  * numbers from this class, it <i>must</i> be synchronized externally.

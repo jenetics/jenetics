@@ -63,6 +63,13 @@ import java.util.Random;
  * The period of this <i>PRNG</i> is &asymp; 2<sup>250</sup>
  * &asymp; 1.8&sdot;10<sup>75</sup>
  *
+ * <p>
+ * <strong>Not that the base implementation of the {@code KISS64Random}
+ * class is not thread-safe.</strong> If multiple threads requests random
+ * numbers from this class, it <i>must</i> be synchronized externally.
+ * Alternatively you can use the thread-safe implementations
+ * {@link KISS64Random.ThreadSafe} or {@link KISS64Random.ThreadLocal}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
