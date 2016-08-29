@@ -29,6 +29,8 @@ import org.jenetics.random.internal.util.Equality;
 import org.jenetics.random.internal.util.Hash;
 
 /**
+ * Multiple recursive random generator.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
