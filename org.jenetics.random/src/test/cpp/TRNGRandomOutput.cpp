@@ -18,6 +18,9 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
@@ -25,20 +28,32 @@
 #include <fstream>
 #include <vector>
 #include <trng/lcg64_shift.hpp>
+#include <trng/mrg2.hpp>
+#include <trng/mrg3.hpp>
+#include <trng/mrg4.hpp>
+#include <trng/mrg4.hpp>
+
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- */
-template<class Random>
-class TRNGRandomOutput {
+ * 
+ */ 
+template<
+	typename Random, 
+	typename SeedType,
+	typename SplitType,
+	typename JumpType,
+	typename Jump2Type,
+	typename ResultType
+>
+class TRNG {
 public:
 
-	TRNGRandomOutput(
-		unsigned long long seed,
-		unsigned int splitp,
-		unsigned int splits,
-		unsigned long long jump,
-		unsigned int jump2
+	TRNG(
+		SeedType seed,
+		SplitType splitp,
+		SplitType splits,
+		JumpType jump,
+		Jump2Type jump2
 	) {
 		_random.seed(seed);
 		_random.split(splitp, splits);
@@ -46,19 +61,19 @@ public:
 		_random.jump2(jump2);
 
 		std::stringstream name;
-		name << seed << "-";
-		name << splitp << "-" << splits << "-";
-		name << jump << "-";
-		name << jump2;
+		name << "random[" << seed << ",";
+		name << splitp << "," << splits << ",";
+		name << jump << ",";
+		name << jump2 << "].dat";
 		_fileName = name.str();
 	}
 
-	~TRNGRandomOutput() {
+	~TRNG() {
 	}
 
 	std::string next() {
 		std::stringstream out;
-		out << static_cast<long long>(_random());
+		out << static_cast<ResultType>(_random());
 		return out.str();
 	}
 
@@ -71,8 +86,19 @@ private:
 	std::string _fileName;
 };
 
-template<class Random>
-void write(const std::string& dir, TRNGRandomOutput<Random>& random, std::size_t numbers) {
+template<
+	typename Random, 
+	typename SeedType,
+	typename SplitType,
+	typename JumpType,
+	typename Jump2Type,
+	typename ResultType
+>
+void write(
+	const std::string& dir, 
+	TRNG<Random, SeedType, SplitType, JumpType, Jump2Type, ResultType>& random, 
+	std::size_t numbers
+) {
 	std::string file = dir + "/" + random.fileName();
 	std::fstream out(file.c_str(), std::fstream::out);
 
@@ -83,32 +109,76 @@ void write(const std::string& dir, TRNGRandomOutput<Random>& random, std::size_t
 	out.close();
 }
 
+void lcg64_shift(
+	unsigned long seed, 
+	unsigned long splitp, 
+	unsigned long splits,
+	unsigned long long jump,
+	unsigned int jump2
+) {
+	mkdir("./LCG64ShiftRandom", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	
+	TRNG<
+		trng::lcg64_shift, 
+		unsigned long, 
+		unsigned long, 
+		unsigned long long, 
+		unsigned int, 
+		long long
+	> random(seed, splitp, splits, jump, jump2);
+	write("./LCG64ShiftRandom", random, 150);
+}
+
+void mrg2(
+	unsigned long seed, 
+	unsigned long splitp, 
+	unsigned long splits,
+	unsigned long long jump,
+	unsigned int jump2
+) {
+	mkdir("./MRG2Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	
+	TRNG<
+		trng::mrg2, 
+		unsigned long, 
+		unsigned long, 
+		unsigned long long, 
+		unsigned int, 
+		long
+	> random(seed, splitp, splits, jump, jump2);
+	write("./MRG2Random", random, 150);
+}
+
+void mrg3(
+	unsigned long seed, 
+	unsigned long splitp, 
+	unsigned long splits,
+	unsigned long long jump,
+	unsigned int jump2
+) {
+	mkdir("./MRG3Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	
+	TRNG<
+		trng::mrg2, 
+		unsigned long, 
+		unsigned long, 
+		unsigned long long, 
+		unsigned int, 
+		int
+	> random(seed, splitp, splits, jump, jump2);
+	write("./MRG3Random", random, 150);
+}
 
 
 int main(void) {
-
-	int count = 0;
-
 	for (unsigned long long seed = 0; seed < 2; ++seed) {
-		for (unsigned int splitp = 5; splitp < 10; splitp += 3) {
-			for (unsigned int splits = 0; splits < splitp; splits += 2) {
+		for (unsigned long splitp = 5; splitp < 10; splitp += 3) {
+			for (unsigned long splits = 0; splits < splitp; splits += 2) {
 				for (unsigned long long jump = 0; jump < 2; ++jump) {
 					for (unsigned int jump2 = 0; jump2 < 64; jump2 += 23) {
-
-						std::cout <<
-							"{new Long(" << static_cast<long long>(seed*74236788222246L) << "L), " <<
-							"new Integer(" << static_cast<long long>(splitp) << "), " <<
-							"new Integer(" << static_cast<long long>(splits) << "), " <<
-							"new Long(" << static_cast<long long>(jump*948392782247324L) << "L), " <<
-							"new Integer(" << static_cast<long long>(jump2) << ")}," << std::endl;
-
-
-						TRNGRandomOutput<trng::lcg64_shift> random(
-							seed*74236788222246L,
-							splitp, splits,
-							jump*948392782247324L, jump2
-						);
-						write<trng::lcg64_shift>("output", random, 150);
+						lcg64_shift(seed*742367882L, splitp, splits, jump*948392782L, jump2);
+						mrg2(seed*742367882L, splitp, splits, jump*948392782L, jump2);
+						mrg3(seed*742367882L, splitp, splits, jump*948392782L, jump2);
 					}
 				}
 			}
@@ -117,3 +187,12 @@ int main(void) {
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
