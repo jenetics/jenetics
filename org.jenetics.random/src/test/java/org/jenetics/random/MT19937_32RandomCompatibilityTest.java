@@ -19,53 +19,46 @@
  */
 package org.jenetics.random;
 
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-//import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class MT19937_32RandomCompatibilityTest {
 
-	private final static String TEST_RESOURCE =
-		"/org/jenetix/random/MT19937_32Random/%d";
+	@Test(dataProvider = "data")
+	public void random(final TestData data) {
+		final String[] parameters = data.getParameters();
+		final long seed = Long.parseLong(parameters[0]);
 
-//	@Test(dataProvider = "seeds")
-//	public void constructorSeed(final long seed) {
-//		final Random random = new MT19937_32Random(seed);
-//
-//		final String resource = String.format(TEST_RESOURCE, seed);
-//		for (final String[] value : TestData.of(resource)) {
-//			final int expected = Integer.parseInt(value[0]);
-//			Assert.assertEquals(random.nextInt(), expected);
-//		}
-//	}
-//
-//	@Test(dataProvider = "seeds")
-//	public void setSeedSeed(final long seed) {
-//		final Random random = new MT19937_32Random(1234);
-//		random.setSeed(seed);
-//
-//		final String resource = String.format(TEST_RESOURCE, seed);
-//		for (final String[] value : TestData.of(resource)) {
-//			final int expected = Integer.parseInt(value[0]);
-//			Assert.assertEquals(random.nextInt(), expected);
-//		}
-//	}
-//
-//	@DataProvider(name = "seeds")
-//	public Object[][] seeds() {
-//		return LongStream.range(0, 100)
-//			.mapToObj(i -> new Long[]{i*32344})
-//			.collect(Collectors.toList())
-//			.toArray(new Object[0][]);
-//	}
+		final MT19937_32Random random = new MT19937_32Random(seed);
+
+		for (final String[] value : data) {
+			final int expected = Integer.parseInt(value[0]);
+			Assert.assertEquals(random.nextInt(), expected);
+		}
+	}
+
+	@Test(dataProvider = "data")
+	public void threadSafeRandom(final TestData data) {
+		final String[] parameters = data.getParameters();
+		final long seed = Long.parseLong(parameters[0]);
+
+		final MT19937_32Random random = new MT19937_32Random.ThreadSafe(seed);
+
+		for (final String[] value : data) {
+			final int expected = Integer.parseInt(value[0]);
+			Assert.assertEquals(random.nextInt(), expected);
+		}
+	}
+
+	@DataProvider(name = "data")
+	public Object[][] data() {
+		return TestData.list("/org/jenetics/random/MT19937_32Random")
+			.map(data -> new Object[]{data})
+			.toArray(Object[][]::new);
+	}
 
 }
