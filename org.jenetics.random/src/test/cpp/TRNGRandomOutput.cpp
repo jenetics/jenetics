@@ -32,6 +32,7 @@
 #include <trng/mrg3.hpp>
 #include <trng/mrg4.hpp>
 #include <trng/mrg4.hpp>
+#include <trng/mt19937.hpp>
 
 
 /**
@@ -40,31 +41,16 @@
 template<
 	typename Random, 
 	typename SeedType,
-	typename SplitType,
-	typename JumpType,
-	typename Jump2Type,
 	typename ResultType
 >
 class TRNG {
 public:
 
-	TRNG(
-		SeedType seed,
-		SplitType splitp,
-		SplitType splits,
-		JumpType jump,
-		Jump2Type jump2
-	) {
+	TRNG(SeedType seed) {
 		_random.seed(seed);
-		_random.split(splitp, splits);
-		_random.jump(jump);
-		_random.jump2(jump2);
 
 		std::stringstream name;
-		name << "random[" << seed << ",";
-		name << splitp << "," << splits << ",";
-		name << jump << ",";
-		name << jump2 << "].dat";
+		name << "random[" << seed << "].dat";
 		_fileName = name.str();
 	}
 
@@ -86,6 +72,79 @@ private:
 	std::string _fileName;
 };
 
+/**
+ * 
+ */ 
+template<
+	typename Random, 
+	typename SeedType,
+	typename SplitType,
+	typename JumpType,
+	typename Jump2Type,
+	typename ResultType
+>
+class TRNGParallel {
+public:
+
+	TRNGParallel(
+		SeedType seed,
+		SplitType splitp,
+		SplitType splits,
+		JumpType jump,
+		Jump2Type jump2
+	) {
+		_random.seed(seed);
+		_random.split(splitp, splits);
+		_random.jump(jump);
+		_random.jump2(jump2);
+
+		std::stringstream name;
+		name << "random[" << seed << ",";
+		name << splitp << "," << splits << ",";
+		name << jump << ",";
+		name << jump2 << "].dat";
+		_fileName = name.str();
+	}
+
+	~TRNGParallel() {
+	}
+
+	std::string next() {
+		std::stringstream out;
+		out << static_cast<ResultType>(_random());
+		return out.str();
+	}
+
+	std::string fileName() {
+		return _fileName;
+	}
+
+private:
+	Random _random;
+	std::string _fileName;
+};
+
+
+template<
+	typename Random, 
+	typename SeedType,
+	typename ResultType
+>
+void write(
+	const std::string& dir, 
+	TRNG<Random, SeedType, ResultType>& random, 
+	std::size_t numbers
+) {
+	std::string file = dir + "/" + random.fileName();
+	std::fstream out(file.c_str(), std::fstream::out);
+
+	for (std::size_t i = 0; i < numbers; ++i) {
+		out << random.next() << std::endl;
+	}
+
+	out.close();
+}
+
 template<
 	typename Random, 
 	typename SeedType,
@@ -96,7 +155,7 @@ template<
 >
 void write(
 	const std::string& dir, 
-	TRNG<Random, SeedType, SplitType, JumpType, Jump2Type, ResultType>& random, 
+	TRNGParallel<Random, SeedType, SplitType, JumpType, Jump2Type, ResultType>& random, 
 	std::size_t numbers
 ) {
 	std::string file = dir + "/" + random.fileName();
@@ -118,7 +177,7 @@ void lcg64_shift(
 ) {
 	mkdir("./LCG64ShiftRandom", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	
-	TRNG<
+	TRNGParallel<
 		trng::lcg64_shift, 
 		unsigned long, 
 		unsigned long, 
@@ -138,7 +197,7 @@ void mrg2(
 ) {
 	mkdir("./MRG2Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	
-	TRNG<
+	TRNGParallel<
 		trng::mrg2, 
 		unsigned long, 
 		unsigned long, 
@@ -158,7 +217,7 @@ void mrg3(
 ) {
 	mkdir("./MRG3Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	
-	TRNG<
+	TRNGParallel<
 		trng::mrg2, 
 		unsigned long, 
 		unsigned long, 
@@ -169,8 +228,18 @@ void mrg3(
 	write("./MRG3Random", random, 150);
 }
 
+void mt19937_32(unsigned long seed ) {
+	mkdir("./MT19937_32Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	
+	TRNG<trng::mt19937, unsigned long, int> 
+	random(seed);
+	
+	write("./MT19937_32Random", random, 150);
+}
+
 
 int main(void) {
+	/*
 	for (unsigned long long seed = 0; seed < 2; ++seed) {
 		for (unsigned long splitp = 5; splitp < 10; splitp += 3) {
 			for (unsigned long splits = 0; splits < splitp; splits += 2) {
@@ -183,6 +252,11 @@ int main(void) {
 				}
 			}
 		}
+	}
+	*/
+	
+	for (unsigned long long seed = 0; seed < 1000000000; seed += 12345678) {
+		mt19937_32(seed);
 	}
 
 	return 0;
