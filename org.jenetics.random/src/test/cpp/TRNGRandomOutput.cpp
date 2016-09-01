@@ -33,6 +33,7 @@
 #include <trng/mrg4.hpp>
 #include <trng/mrg4.hpp>
 #include <trng/mt19937.hpp>
+#include <trng/mt19937_64.hpp>
 
 
 /**
@@ -237,6 +238,15 @@ void mt19937_32(unsigned long seed ) {
 	write("./MT19937_32Random", random, 150);
 }
 
+void mt19937_64(unsigned long seed ) {
+	mkdir("./MT19937_64Random", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	
+	TRNG<trng::mt19937_64, unsigned long, long> 
+	random(seed);
+	
+	write("./MT19937_64Random", random, 150);
+}
+
 
 int main(void) {
 	/*
@@ -257,6 +267,7 @@ int main(void) {
 	
 	for (unsigned long long seed = 0; seed < 1000000000; seed += 12345678) {
 		mt19937_32(seed);
+		mt19937_64(seed);
 	}
 
 	return 0;
