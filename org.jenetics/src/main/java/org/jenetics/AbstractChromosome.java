@@ -57,7 +57,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	 * Array of genes which forms the chromosome. This array must
 	 * be initialized by the derived classes.
 	 */
-	protected transient ISeq<G> _genes = null;
+	protected final transient ISeq<G> _genes;
 
 	/**
 	 * Indicates whether this chromosome is valid or not. If the variable is

@@ -62,7 +62,7 @@ public class KnapsackFitnessThreshold {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Double, BitGene, Double> runner = Runner.of(
-			KNAPSACK,
+			threshold -> KNAPSACK,
 			limit::byFitnessThreshold,
 			TRIAL_METER,
 			args

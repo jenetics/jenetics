@@ -17,47 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-
-import org.apache.tools.ant.filters.ReplaceTokens
+package org.jenetics.tool.trial;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 2.0
+ * @version !__version__!
+ * @since !__version__!
  */
+public class Tuple2<A, B> {
 
-apply plugin: 'packaging'
+	public final A _1;
+	public final B _2;
 
-dependencies {
-	compile project(':org.jenetics')
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
-)
-
-packaging {
-	name = 'Jenetics examples'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from('src/main/scripts') {
-				include '**/*'
-			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
-		}
+	private Tuple2(final A p1, final B p2) {
+		_1 = p1;
+		_2 = p2;
 	}
+
+	@Override
+	public String toString() {
+		return _1 + ":" + _2;
+	}
+
+	public static <A, B> Tuple2<A, B> of(final A p1, final B p2) {
+		return new Tuple2<>(p1, p2);
+	}
+
+
+
 }
-
-

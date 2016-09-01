@@ -48,12 +48,12 @@ abstract class AbstractBoundedChromosome<
 	/**
 	 * The minimum value of this {@code BoundedChromosome}.
 	 */
-	A _min;
+	final A _min;
 
 	/**
 	 * The maximum value of this {@code BoundedChromosome}.
 	 */
-	A _max;
+	final A _max;
 
 	/**
 	 * Create a new chromosome from the given genes array.
