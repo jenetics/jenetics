@@ -31,12 +31,9 @@ import java.util.Random;
  * This is a 32-bit version of Mersenne Twister pseudorandom number generator.
  * <p>
  * <i>
- * References:<br>
- * M. Matsumoto and T. Nishimura,<br>
- * "Mersenne Twister: a 623-dimensionally equidistributed<br>
- * uniform pseudorandom number generator"<br>
- * ACM Transactions on Modeling and<br>
- * Computer Simulation 8. (Jan. 1998) 3--30.<br>
+ * References: M. Matsumoto and T. Nishimura, "Mersenne Twister: a
+ * 623-dimensionally equidistributed uniform pseudorandom number generator".
+ * ACM Transactions on Modeling and Computer Simulation 8. (Jan. 1998) 3--30.
  * </i>
  * <p>
  * <em>
@@ -59,6 +56,8 @@ public class MT19937_32Random extends Random32 {
 
 	private static final int UM = 0x80000000; // most significant bit
 	private static final int LM = 0x7FFFFFFF; // least significant 31 bits
+
+	private static final int[] MAG01 = {0, 0x9908b0df};
 
 	/**
 	 * This class represents a <i>thread local</i> implementation of the
@@ -278,22 +277,21 @@ public class MT19937_32Random extends Random32 {
 	@Override
 	public int nextInt() {
 		int x;
-		final int[] mag01 = {0, 0x9908b0df};
 
 		// Generate N words at one time.
 		if (_state.mti >= N) {
 			int i = 0;
 			for (i = 0; i < N - M; ++i) {
 				x = (_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
-				_state.mt[i] = _state.mt[i + M]^(x >>> 1)^mag01[x & 1];
+				_state.mt[i] = _state.mt[i + M]^(x >>> 1)^MAG01[x & 1];
 			}
 			for (; i < N - 1; ++i) {
 				x = (_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
-				_state.mt[i] = _state.mt[i + (M - N)]^(x >>> 1)^mag01[x & 1];
+				_state.mt[i] = _state.mt[i + (M - N)]^(x >>> 1)^MAG01[x & 1];
 			}
 
 			x = (_state.mt[N - 1] & UM)|(_state.mt[0] & LM);
-			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1)^mag01[x & 1];
+			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1)^MAG01[x & 1];
 			_state.mti = 0;
 		}
 
