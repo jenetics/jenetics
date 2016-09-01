@@ -298,10 +298,10 @@ public class MT19937_32Random extends Random32 {
 		}
 
 		x = _state.mt[_state.mti++];
-		x ^= (x >>> 11);
+		x ^= x >>> 11;
 		x ^= (x << 7) & 0x9d2c5680;
 		x ^= (x << 15) & 0xefc60000;
-		x ^= (x >>> 18);
+		x ^= x >>> 18;
 
 		return x;
 	}
