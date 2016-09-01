@@ -19,14 +19,30 @@
  */
 package org.jenetics.random;
 
-import static org.jenetics.random.internal.util.Equality.eq;
+import static java.lang.String.format;
+import static org.jenetics.random.utils.readLong;
 
 import java.io.Serializable;
-
-import org.jenetics.random.internal.util.Equality;
-import org.jenetics.random.internal.util.Hash;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
 
 /**
+ * This is a 64-bit version of Mersenne Twister pseudorandom number generator.
+ * <p>
+ * <i>
+ * References: M. Matsumoto and T. Nishimura, "Mersenne Twister: a
+ * 623-dimensionally equidistributed uniform pseudorandom number generator".
+ * ACM Transactions on Modeling and Computer Simulation 8. (Jan. 1998) 3--30.
+ * </i>
+ * <p>
+ * <em>
+ * This is an re-implementation of the
+ * <a href="https://github.com/rabauke/trng4/blob/master/src/mt19937_64.hpp">
+ * trng::mt19937_64</a> PRNG class of the
+ * <a href="http://numbercrunch.de/trng/">TRNG</a> library created by Heiko
+ * Bauke.</em>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
@@ -41,14 +57,143 @@ public class MT19937_64Random extends Random64 {
 	private static final long UM = 0xFFFFFFFF80000000L; // most significant bit
 	private static final long LM = 0x7FFFFFFFL;         // least significant 31 bits
 
+	private static final long[] MAG01 = {0L, 0xB5026F5AA96619E9L};
+
+
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code MT19937_32Random} PRNG.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	public static class ThreadLocal
+		extends java.lang.ThreadLocal<MT19937_64Random>
+	{
+		@Override
+		protected MT19937_64Random initialValue() {
+			return new TLMT19937_64Random(math.seed());
+		}
+	}
+
+	private static final class TLMT19937_64Random extends MT19937_64Random {
+		private static final long serialVersionUID = 1L;
+
+		private final Boolean _sentry = Boolean.TRUE;
+
+		private TLMT19937_64Random(final long seed) {
+			super(seed);
+		}
+
+		@Override
+		public void setSeed(final long seed) {
+			if (_sentry != null) {
+				throw new UnsupportedOperationException(
+					"The 'setSeed(long)' method is not supported " +
+						"for thread local instances."
+				);
+			}
+		}
+
+	}
+
+	/**
+	 * This is a <i>thread safe</i> variation of the this PRNG&mdash;by
+	 * synchronizing the random number generation.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	public static final class ThreadSafe extends MT19937_64Random {
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Create a new thread-safe instance of the {@code MT19937_64Random}
+		 * engine.
+		 *
+		 * <pre>{@code
+		 * final byte[] seed = MT19937_64Random.seedBytes();
+		 * final Random random = new MT19937_64Random.ThreadSafe(seed);
+		 * }</pre>
+		 *
+		 * @see #seedBytes()
+		 *
+		 * @param seed the random seed value. The seed must be (at least)
+		 *        {@link #SEED_BYTES} long.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
+		 */
+		public ThreadSafe(final byte[] seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new thread-safe instance of the {@code MT19937_64Random}
+		 * engine. The constructed PRNG is equivalent with
+		 * <pre>{@code
+		 * final long seed = ...;
+		 * final Random random = new MT19937_64Random.ThreadSafe();
+		 * random.setSeed(seed);
+		 * }</pre>
+		 * which is there for compatibility reasons with the Java {@link Random}
+		 * engine.
+		 *
+		 * @param seed the random seed value
+		 */
+		public ThreadSafe(final long seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new thread-safe instance of the {@code MT19937_64Random}
+		 * engine. The PRNG is initialized with {@link #seedBytes()}.
+		 */
+		public ThreadSafe() {
+		}
+
+		@Override
+		public synchronized void setSeed(final byte[] seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
+		public synchronized long nextLong() {
+			return super.nextLong();
+		}
+
+	}
+
+
+	/**
+	 * The internal state of this PRNG.
+	 */
 	private static final class State implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		int mti;
 		final long[] mt = new long[N];
 
+		State(final byte[] seed) {
+			setSeed(seed);
+		}
+
 		State(final long seed) {
 			setSeed(seed);
+		}
+
+		void setSeed(final byte[] seed) {
+			if (seed.length < SEED_BYTES) {
+				throw new IllegalArgumentException(format(
+					"Required %d seed bytes, but got %d.",
+					SEED_BYTES, seed.length
+				));
+			}
+
+			for (mti = 0; mti < N; ++mti) {
+				mt[mti] = readLong(seed, mti);
+			}
 		}
 
 		void setSeed(final long s) {
@@ -62,27 +207,65 @@ public class MT19937_64Random extends Random64 {
 
 		@Override
 		public int hashCode() {
-			return Hash.of(getClass())
-				.and(mti)
-				.and(mt).value();
+			int hash = 17;
+			hash += 37*mti + 31;
+			hash += 37*Arrays.hashCode(mt) + 31;
+			return hash;
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return Equality.of(this, obj).test(status ->
-				eq(mti, status.mti) &&
-				eq(mt, status.mt)
-			);
+			return obj instanceof State &&
+				mti == ((State)obj).mti &&
+				Arrays.equals(mt, ((State)obj).mt);
 		}
 
 	}
 
+
+	/* *************************************************************************
+	 * Main class.
+	 * ************************************************************************/
+
+	/**
+	 * The number of seed bytes (2,496) this PRNG requires.
+	 */
+	public static final int SEED_BYTES = N*Long.BYTES;
+
 	private final State _state;
 
 	/**
-	 * Create a new random engine with the given seed.
+	 * Create a new <em>not</em> thread-safe instance of the
+	 * {@code MT19937_32Random} engine.
 	 *
-	 * @param seed the seed of the random engine
+	 * <pre>{@code
+	 * final byte[] seed = MT19937_64Random.seedBytes();
+	 * final Random random = new MT19937_64Random(seed);
+	 * }</pre>
+	 *
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} long.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public MT19937_64Random(final byte[] seed) {
+		_state = new State(seed);
+	}
+
+	/**
+	 * Create a new <em>not</em> thread-safe instance of the
+	 * {@code MT19937_64Random} engine. The constructed PRNG is equivalent with
+	 * <pre>{@code
+	 * final long seed = ...;
+	 * final Random random = new MT19937_64Random();
+	 * random.setSeed(seed);
+	 * }</pre>
+	 * which is there for compatibility reasons with the Java {@link Random}
+	 * engine.
+	 *
+	 * @param seed the random seed value
 	 */
 	public MT19937_64Random(final long seed) {
 		_state = new State(seed);
@@ -92,27 +275,26 @@ public class MT19937_64Random extends Random64 {
 	 * Return a new random engine with a safe seed value.
 	 */
 	public MT19937_64Random() {
-		this(math.seed());
+		this(seedBytes());
 	}
 
 	@Override
 	public long nextLong() {
 		long x;
-		final long[] mag01 = {0L, 0xB5026F5AA96619E9L};
 
 		if (_state.mti >= N) { // generate N words at one time
 			int i;
 			for (i = 0; i < N - M; ++i) {
 				x =(_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
-				_state.mt[i] = _state.mt[i + M]^(x >>> 1)^mag01[(int)(x & 1L)];
+				_state.mt[i] = _state.mt[i + M]^(x >>> 1)^MAG01[(int)(x & 1L)];
 			}
 			for (; i < N - 1; ++i) {
 				x = (_state.mt[i] & UM) | (_state.mt[i + 1] & LM);
-				_state.mt[i]= _state.mt[i + (M - N)]^(x >>> 1)^mag01[(int)(x & 1)];
+				_state.mt[i]= _state.mt[i + (M - N)]^(x >>> 1)^MAG01[(int)(x & 1)];
 			}
 
 			x = (_state.mt[N - 1] & UM) | (_state.mt[0] & LM);
-			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1)^mag01[(int)(x & 1)];
+			_state.mt[N - 1] = _state.mt[M - 1]^(x >>> 1)^MAG01[(int)(x & 1)];
 			_state.mti = 0;
 		}
 
@@ -125,6 +307,20 @@ public class MT19937_64Random extends Random64 {
 		return x;
 	}
 
+	/**
+	 * Initializes the PRNg with the given seed.
+	 *
+	 * @see #seedBytes()
+	 *
+	 * @param seed the random seed value. The seed must be (at least)
+	 *        {@link #SEED_BYTES} big.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public void setSeed(final byte[] seed) {
+		if (_state != null) _state.setSeed(seed);
+	}
+
 	@Override
 	public void setSeed(final long seed) {
 		if (_state != null) _state.setSeed(seed);
@@ -132,12 +328,27 @@ public class MT19937_64Random extends Random64 {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_state).value();
+		int hash = 37;
+		hash += 31*_state.hashCode() + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random -> eq(_state, random._state));
+		return obj instanceof MT19937_64Random &&
+			Objects.equals(((MT19937_64Random)obj)._state, _state);
+	}
+
+	/**
+	 * Create a new <em>seed</em> byte array suitable for this PRNG. The
+	 * returned seed array is {@link #SEED_BYTES} long.
+	 *
+	 * @see PRNG#seedBytes(int)
+	 *
+	 * @return a new <em>seed</em> byte array of length {@link #SEED_BYTES}
+	 */
+	public static byte[] seedBytes() {
+		return PRNG.seedBytes(SEED_BYTES);
 	}
 
 }
