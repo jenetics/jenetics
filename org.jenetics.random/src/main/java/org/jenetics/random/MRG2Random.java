@@ -168,6 +168,15 @@ public class MRG2Random extends Random32 {
 		_state._r1 = t;
 	}
 
+/*
+  inline void mrg2::step() {
+    uint64_t t(static_cast<uint64_t>(P.a1)*static_cast<uint64_t>(S.r1)+
+	       static_cast<uint64_t>(P.a2)*static_cast<uint64_t>(S.r2));
+
+    S.r2=S.r1;  S.r1=int_math::modulo<modulus, 2>(t);
+  }
+*/
+
 	@Override
 	public void setSeed(final long seed) {
 		if (_state != null) _state.setSeed(seed);
