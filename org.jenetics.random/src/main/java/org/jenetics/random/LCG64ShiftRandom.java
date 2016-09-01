@@ -21,6 +21,7 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.random.IntMath.log2Floor;
 import static org.jenetics.random.utils.readLong;
 
 import java.io.Serializable;
@@ -663,18 +664,6 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		}
 
 		return y;
-	}
-
-	private static long log2Floor(final long s) {
-		long x = s;
-		long y = 0;
-
-		while (x != 0) {
-			x >>>= 1;
-			++y;
-		}
-
-		return y - 1;
 	}
 
 }
