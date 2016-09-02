@@ -81,16 +81,24 @@ public class RandomEnginePerf {
 		*/
 	}
 
-	public static class LCG64ShiftRandomPerf extends Base {
-		{random = new LCG64ShiftRandom();}
-	}
-
 	public static class KISS32RandomPerf extends Base {
 		{random = new KISS32Random();}
 	}
 
 	public static class KISS64RandomPerf extends Base {
 		{random = new KISS64Random();}
+	}
+
+	public static class LCG64ShiftRandomPerf extends Base {
+		{random = new LCG64ShiftRandom();}
+	}
+
+	public static class MT19937_32RandomPerf extends Base {
+		{random = new MT19937_32Random();}
+	}
+
+	public static class MT19937_64RandomPerf extends Base {
+		{random = new MT19937_64Random();}
 	}
 
 	public static class SimpleRandom64Perf extends Base {{
@@ -125,7 +133,7 @@ public class RandomEnginePerf {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + RandomEnginePerf.class.getSimpleName() + ".*")
 			.warmupIterations(10)
-			.measurementIterations(25)
+			.measurementIterations(30)
 			.threads(1)
 			.forks(1)
 			.build();
@@ -137,106 +145,52 @@ public class RandomEnginePerf {
 }
 
 /*
-Benchmark                                           Mode  Cnt    Score   Error   Units
-RandomEnginePerf.KISS32RandomPerf.nextDouble       thrpt   25  108.091 ± 2.641  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextFloat        thrpt   25  147.615 ± 1.138  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextInt          thrpt   25  177.378 ± 1.310  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextLong         thrpt   25  121.050 ± 1.200  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextDouble       thrpt   25  120.396 ± 0.992  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextFloat        thrpt   25  119.311 ± 1.279  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextInt          thrpt   25  122.467 ± 1.302  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextLong         thrpt   25  125.671 ± 1.190  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble   thrpt   25  184.582 ± 2.896  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat    thrpt   25  175.405 ± 2.061  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextInt      thrpt   25  240.889 ± 3.444  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextLong     thrpt   25  249.070 ± 4.884  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextDouble     thrpt   25  230.891 ± 1.524  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextFloat      thrpt   25  342.979 ± 5.605  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextInt        thrpt   25  349.939 ± 6.643  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextLong       thrpt   25  308.032 ± 5.982  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextDouble     thrpt   25  274.501 ± 8.201  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextFloat      thrpt   25  287.653 ± 3.588  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextInt        thrpt   25  339.068 ± 2.026  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextLong       thrpt   25  350.953 ± 1.788  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextDouble  thrpt   25  213.438 ± 3.422  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextFloat   thrpt   25  211.616 ± 2.311  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextInt     thrpt   25  251.721 ± 3.953  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextLong    thrpt   25  261.436 ± 2.990  ops/us
-*/
+# Run complete. Total time: 00:30:12
 
-/*
-# Run complete. Total time: 00:17:48
-
-Benchmark                                             Mode  Cnt    Score    Error   Units
-RandomEnginePerf.KISS32RandomPerf.nextDouble         thrpt   25   62.649 ±  0.609  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextFloat          thrpt   25   83.771 ±  1.236  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextInt            thrpt   25   98.252 ±  1.363  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextIntRange       thrpt   25   73.940 ±  1.823  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextLong           thrpt   25   63.252 ±  1.058  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextDouble         thrpt   25   69.694 ±  1.054  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextFloat          thrpt   25   69.985 ±  0.950  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextInt            thrpt   25   71.160 ±  0.934  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextIntRange       thrpt   25   64.741 ±  0.112  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextLong           thrpt   25   71.287 ±  1.087  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble     thrpt   25  103.442 ±  2.034  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat      thrpt   25   99.569 ±  2.255  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextInt        thrpt   25  123.018 ±  1.048  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextIntRange   thrpt   25   86.797 ±  1.104  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextLong       thrpt   25  128.519 ±  1.640  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextDouble       thrpt   25  138.632 ±  4.595  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextFloat        thrpt   25  195.515 ±  9.852  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextInt          thrpt   25  223.810 ±  4.986  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextIntRange     thrpt   25  141.575 ±  5.608  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextLong         thrpt   25  178.120 ±  4.621  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextDouble       thrpt   25  169.504 ±  1.592  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextFloat        thrpt   25  169.685 ±  2.354  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextInt          thrpt   25  207.302 ±  2.249  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextIntRange     thrpt   25  131.044 ±  1.668  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextLong         thrpt   25  224.148 ±  3.217  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextDouble    thrpt   25  122.182 ±  4.778  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextFloat     thrpt   25  128.571 ±  2.232  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextInt       thrpt   25  134.841 ± 13.211  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextIntRange  thrpt   25  103.187 ±  4.550  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextLong      thrpt   25  159.145 ±  2.036  ops/us
-*/
-
-/*
-# Run complete. Total time: 00:20:43
-
-Benchmark                                             Mode  Cnt    Score    Error   Units
-RandomEnginePerf.KISS32RandomPerf.nextDouble         thrpt   25   61.791 ±  1.090  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextFloat          thrpt   25   84.113 ±  0.768  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextInt            thrpt   25   98.324 ±  1.254  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextIntRange       thrpt   25   74.940 ±  1.740  ops/us
-RandomEnginePerf.KISS32RandomPerf.nextLong           thrpt   25   64.801 ±  1.327  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextDouble         thrpt   25   70.179 ±  0.962  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextFloat          thrpt   25   70.489 ±  0.871  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextInt            thrpt   25   71.264 ±  0.836  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextIntRange       thrpt   25   64.231 ±  0.278  ops/us
-RandomEnginePerf.KISS64RandomPerf.nextLong           thrpt   25   71.908 ±  0.961  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble     thrpt   25  106.935 ±  0.562  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat      thrpt   25  100.884 ±  4.835  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextInt        thrpt   25   84.537 ± 16.616  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextIntRange   thrpt   25   88.029 ±  0.749  ops/us
-RandomEnginePerf.LCG64ShiftRandomPerf.nextLong       thrpt   25  128.609 ±  0.975  ops/us
-RandomEnginePerf.RandomPerf.nextDouble               thrpt   25   31.999 ±  0.066  ops/us
-RandomEnginePerf.RandomPerf.nextFloat                thrpt   25   64.164 ±  0.141  ops/us
-RandomEnginePerf.RandomPerf.nextInt                  thrpt   25   64.190 ±  0.101  ops/us
-RandomEnginePerf.RandomPerf.nextIntRange             thrpt   25   63.736 ±  0.225  ops/us
-RandomEnginePerf.RandomPerf.nextLong                 thrpt   25   31.993 ±  0.063  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextDouble       thrpt   25  141.136 ±  2.134  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextFloat        thrpt   25  178.039 ±  1.723  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextInt          thrpt   25  229.018 ±  3.053  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextIntRange     thrpt   25  142.176 ±  6.704  ops/us
-RandomEnginePerf.SimpleRandom32Perf.nextLong         thrpt   25  178.649 ±  2.741  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextDouble       thrpt   25  169.775 ±  1.850  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextFloat        thrpt   25  169.776 ±  1.879  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextInt          thrpt   25  205.252 ±  2.181  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextIntRange     thrpt   25  132.792 ±  0.934  ops/us
-RandomEnginePerf.SimpleRandom64Perf.nextLong         thrpt   25  225.306 ±  2.258  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextDouble    thrpt   25  126.312 ±  1.381  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextFloat     thrpt   25  129.921 ±  1.407  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextInt       thrpt   25  166.202 ±  2.425  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextIntRange  thrpt   25  113.317 ±  0.713  ops/us
-RandomEnginePerf.ThreadLocalRandomPerf.nextLong      thrpt   25  161.369 ±  0.578  ops/us
+Benchmark                                             Mode  Cnt    Score   Error   Units
+RandomEnginePerf.KISS32RandomPerf.nextDouble         thrpt   30  116.714 ± 0.383  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextFloat          thrpt   30  158.301 ± 0.386  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextInt            thrpt   30  194.571 ± 2.499  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextIntRange       thrpt   30  146.216 ± 0.995  ops/us
+RandomEnginePerf.KISS32RandomPerf.nextLong           thrpt   30  135.141 ± 0.875  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextDouble         thrpt   30  132.698 ± 0.966  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextFloat          thrpt   30  134.564 ± 0.893  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextInt            thrpt   30  138.735 ± 0.663  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextIntRange       thrpt   30  118.423 ± 0.748  ops/us
+RandomEnginePerf.KISS64RandomPerf.nextLong           thrpt   30  142.344 ± 0.563  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble     thrpt   30  206.123 ± 0.552  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat      thrpt   30  199.399 ± 0.393  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextInt        thrpt   30  264.727 ± 2.683  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextIntRange   thrpt   30  169.448 ± 1.228  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextLong       thrpt   30  278.635 ± 1.256  ops/us
+RandomEnginePerf.MT19937_32RandomPerf.nextDouble     thrpt   30   88.522 ± 0.802  ops/us
+RandomEnginePerf.MT19937_32RandomPerf.nextFloat      thrpt   30  126.057 ± 0.869  ops/us
+RandomEnginePerf.MT19937_32RandomPerf.nextInt        thrpt   30  147.657 ± 1.032  ops/us
+RandomEnginePerf.MT19937_32RandomPerf.nextIntRange   thrpt   30  115.891 ± 0.582  ops/us
+RandomEnginePerf.MT19937_32RandomPerf.nextLong       thrpt   30   97.796 ± 0.310  ops/us
+RandomEnginePerf.MT19937_64RandomPerf.nextDouble     thrpt   30  127.831 ± 1.210  ops/us
+RandomEnginePerf.MT19937_64RandomPerf.nextFloat      thrpt   30  128.200 ± 0.581  ops/us
+RandomEnginePerf.MT19937_64RandomPerf.nextInt        thrpt   30  153.233 ± 0.781  ops/us
+RandomEnginePerf.MT19937_64RandomPerf.nextIntRange   thrpt   30  117.296 ± 1.122  ops/us
+RandomEnginePerf.MT19937_64RandomPerf.nextLong       thrpt   30  157.719 ± 1.001  ops/us
+RandomEnginePerf.RandomPerf.nextDouble               thrpt   30   48.438 ± 0.321  ops/us
+RandomEnginePerf.RandomPerf.nextFloat                thrpt   30   95.325 ± 0.509  ops/us
+RandomEnginePerf.RandomPerf.nextInt                  thrpt   30   97.217 ± 0.272  ops/us
+RandomEnginePerf.RandomPerf.nextIntRange             thrpt   30   96.856 ± 0.918  ops/us
+RandomEnginePerf.RandomPerf.nextLong                 thrpt   30   48.126 ± 0.364  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextDouble       thrpt   30  259.161 ± 0.693  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextFloat        thrpt   30  332.504 ± 1.370  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextInt          thrpt   30  389.586 ± 1.416  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextIntRange     thrpt   30  271.965 ± 7.329  ops/us
+RandomEnginePerf.SimpleRandom32Perf.nextLong         thrpt   30  335.994 ± 4.940  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextDouble       thrpt   30  309.965 ± 1.976  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextFloat        thrpt   30  312.811 ± 3.011  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextInt          thrpt   30  377.539 ± 1.524  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextIntRange     thrpt   30  256.810 ± 0.950  ops/us
+RandomEnginePerf.SimpleRandom64Perf.nextLong         thrpt   30  390.168 ± 1.929  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextDouble    thrpt   30  241.195 ± 0.650  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextFloat     thrpt   30  235.079 ± 0.722  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextInt       thrpt   30  295.362 ± 1.196  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextIntRange  thrpt   30  230.225 ± 0.574  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextLong      thrpt   30  283.781 ± 0.476  ops/us
 */
