@@ -20,29 +20,49 @@
 package org.jenetics.random;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class XOR32ShiftRandomTest extends RandomTestBase {
+public class XOR32ShiftRandomTest extends Random32TestBase {
 
-	@Override @DataProvider(name = "seededPRNGPair")
+	@Test
+	public void create() {
+		new XOR32ShiftRandom();
+	}
+
+	@Test
+	public void createThreadSafe() {
+		new XOR32ShiftRandom.ThreadSafe();
+	}
+
+	@Test
+	public void createThreadLocal() {
+		new XOR32ShiftRandom.ThreadLocal().get();
+	}
+
+	@Override
+	@DataProvider(name = "seededPRNGPair")
 	protected Object[][] getSeededPRNGPair() {
-		final long seed = math.seed();
-		return new Object[][]{
+		final byte[] seed = XOR32ShiftRandom.seedBytes();
+
+		return new Object[][] {
 			{new XOR32ShiftRandom(seed), new XOR32ShiftRandom(seed)},
+			{new XOR32ShiftRandom.ThreadSafe(seed), new XOR32ShiftRandom(seed)},
 			{new XOR32ShiftRandom.ThreadSafe(seed), new XOR32ShiftRandom.ThreadSafe(seed)}
 		};
 	}
 
-	@Override @DataProvider(name = "PRNG")
+	@Override
+	@DataProvider(name = "PRNG")
 	protected Object[][] getPRNG() {
-		final long seed = math.seed();
-		return new Object[][]{
+		final byte[] seed = XOR32ShiftRandom.seedBytes();
+
+		return new Object[][] {
 			{new XOR32ShiftRandom(seed)},
 			{new XOR32ShiftRandom.ThreadSafe(seed)},
 			{new XOR32ShiftRandom.ThreadLocal().get()}
 		};
 	}
-
 }
