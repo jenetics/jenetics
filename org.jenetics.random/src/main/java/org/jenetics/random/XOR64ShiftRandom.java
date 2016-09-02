@@ -19,35 +19,35 @@
  */
 package org.jenetics.random;
 
-import static org.jenetics.random.internal.util.Equality.eq;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static org.jenetics.random.utils.readInt;
 
-import org.jenetics.random.internal.util.Equality;
-import org.jenetics.random.internal.util.Hash;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
- * <p><em>
  * This generator was discovered and characterized by George Marsaglia
  * [<a href="http://www.jstatsoft.org/v08/i14/paper">Xorshift RNGs</a>]. In just
  * three XORs and three shifts (generally fast operations) it produces a full
  * period of 2<sup>64</sup> - 1 on 64 bits. (The missing value is zero, which
  * perpetuates itself and must be avoided.) High and low bits pass Diehard.
- * </em>
- *
  * <p>
- * <strong>Numerical Recipes 3rd Edition: The Art of Scientific Computing</strong>
- * <br>
- * <em>Chapter 7. Random Numbers, Section 7.1.2, Page 345</em>
- * <br>
- * <small>Cambridge University Press New York, NY, USA ©2007</small>
- * <br>
- * ISBN:0521880688 9780521880688
- * <br>
- * [<a href="http://www.nr.com/">http://www.nr.com/</a>].
+ * Implementation of the XOR shift PRNG. The following listing shows the actual
+ * PRNG implementation.
+ * <pre>{@code
+ * private final int a, b, c = <param>
+ * private long x = <seed>
  *
- * <p><b>
- * The <i>main</i> class of this PRNG is not thread safe. To create an thread
- * safe instances of this PRNG, use the {@link XOR64ShiftRandom.ThreadSafe} class.
- * </b></p>
+ * long nextLong() {
+ *     x ^= x << a;
+ *     x ^= x >> b;
+ *     return x ^= x << c;
+ * }
+ * }</pre>
+ *
+ * @see <a href="http://www.jstatsoft.org/v08/i14/paper">
+ *      Xorshift RNGs, George Marsaglia</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -57,88 +57,213 @@ public class XOR64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
-
 	/**
-	 * [code]
-	 * RandomRegistry.setRandom(new XORShiftRandom.ThreadLocal());
-	 * [/code]
-	 *
-	 * Calling the {@link XOR64ShiftRandom#setSeed(long)} method on the returned
-	 * instance will throw an {@link UnsupportedOperationException}.
+	 * Parameter class for the {@code XOR64ShiftRandom} generator.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 1.1
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	public static final class Param implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Contains a list of the parameters with the highest <i>dieharder</i>
+		 * scores.
+		 */
+		public static final Param[] PARAMS = {
+			new Param(21, 35, 4),
+			new Param(20, 41, 5),
+			new Param(17, 31, 8),
+			new Param(11, 29, 14),
+			new Param(14, 29, 11),
+			new Param(30, 35, 13),
+			new Param(21, 37, 4),
+			new Param(21, 43, 4),
+			new Param(23, 41, 18)
+		};
+
+		/**
+		 * The default parameter used by the PRNG. It's the parameter with the
+		 * best <i>dieharder</i> test result.
+		 */
+		public static final Param DEFAULT = PARAMS[0];
+
+		/**
+		 * The parameter <em>a</em>.
+		 */
+		public final int a;
+
+		/**
+		 * The parameter <em>b</em>.
+		 */
+		public final int b;
+
+		/**
+		 * The parameter <em>c</em>.
+		 */
+		public final int c;
+
+		/**
+		 * Parameter object for the parameters used by this PRNG.
+		 *
+		 * @param a first shift parameter
+		 * @param b second shift parameter
+		 * @param c third shift parameter
+		 */
+		public Param(final int a, final int b, final int c) {
+			this.a = a;
+			this.b = b;
+			this.c = c;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 17;
+			hash += 31*a + 37;
+			hash += 31*b + 37;
+			hash += 31*c + 37;
+
+			return hash;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return  obj instanceof Param &&
+				((Param)obj).a == a &&
+				((Param)obj).b == b &&
+				((Param)obj).c == c;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("Param[%d, %d, %d]", a, b, c);
+		}
+	}
+
+
+	/**
+	 * This class represents a <i>thread local</i> implementation of the
+	 * {@code XOR64ShiftRandom} PRNG.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__!
 	 */
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<XOR64ShiftRandom>
 	{
-
-		private final long _seed = math.seed();
-
 		@Override
 		protected XOR64ShiftRandom initialValue() {
-			return new TLXOR64ShiftRandom(math.seed(_seed));
+			return new TLXOR64ShiftRandom();
 		}
 	}
 
 	private static final class TLXOR64ShiftRandom extends XOR64ShiftRandom {
-
 		private static final long serialVersionUID = 1L;
+
+		private static volatile int _paramIndex = 0;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLXOR64ShiftRandom(final long seed) {
-			super(seed);
+		private TLXOR64ShiftRandom() {
+			super(nextParam(), XOR64ShiftRandom.seedBytes());
+		}
+
+		private static Param nextParam() {
+			return Param.PARAMS[(_paramIndex++)%Param.PARAMS.length];
 		}
 
 		@Override
-		public void setSeed(final long seed) {
+		public void setSeed(final byte[] seed) {
 			if (_sentry != null) {
 				throw new UnsupportedOperationException(
-					"The 'setSeed(long)' method is not supported " +
-					"for thread local instances."
+					"The 'setSeed' method is not supported " +
+						"for thread local instances."
 				);
 			}
 		}
-
 	}
 
 	/**
-	 * This class is a <i>thread safe</i> version of the {@code XORShiftRandom}
-	 * engine. Instances of <i>this</i> class and instances of the non-thread
-	 * safe variants, with the same seed, will generate the same sequence of
-	 * random numbers.
-	 * [code]
-	 * final XORShiftRandom a = new XORShiftRandom(123);
-	 * final XORShiftRandom b = XORShiftRandom.ThreadSafe(123);
-	 * for (int i = 0; i &lt; 1000;  ++i) {
-	 *     assert (a.nextLong() == b.nextLong());
-	 *     assert (a.nextDouble() == b.nextDouble());
-	 * }
-	 * [/code]
+	 * This is a <i>thread safe</i> variation of the this PRNG&mdash;by
+	 * synchronizing the random number generation.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 1.1
+	 * @since !__version__!
+	 * @version !__version__!
 	 */
-	public static final class ThreadSafe extends XOR64ShiftRandom {
+	public static class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * Create a new <i>thread safe</i> instance of the XOR-Shift PRNG, with
-		 * an seed of {@link System#nanoTime()}.
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param param the parameter of the PRNG.
+		 * @param seed the seed of the PRNG.
+		 * @throws NullPointerException if the given {@code param} or {@code seed}
+		 *         is {@code null}.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
+		 */
+		public ThreadSafe(final Param param, final byte[] seed) {
+			super(param, seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is
+		 *         {@code null}.
+		 */
+		public ThreadSafe(final Param param, final long seed) {
+			super(param, seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and a safe seed
+		 *
+		 * @param param the PRNG parameter.
+		 * @throws NullPointerException if the given {@code param} is null.
+		 */
+		public ThreadSafe(final Param param) {
+			super(param);
+		}
+
+		/**
+		 * Create a new PRNG instance with the given parameter and seed.
+		 *
+		 * @param seed the seed of the PRNG.
+		 * @throws NullPointerException if the given {@code seed} is {@code null}.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
+		 */
+		public ThreadSafe(final byte[] seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and the
+		 * given seed.
+		 *
+		 * @param seed the seed of the PRNG
+		 */
+		public ThreadSafe(final long seed) {
+			super(seed);
+		}
+
+		/**
+		 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and
+		 * a safe seed.
 		 */
 		public ThreadSafe() {
 		}
 
-		/**
-		 * Create a new <i>thread safe</i> instance of the XOR-Shift PRNG.
-		 *
-		 * @param seed the seed of the PRNG.
-		 */
-		public ThreadSafe(final long seed) {
-			super(seed);
+		@Override
+		public synchronized void setSeed(final byte[] seed) {
+			super.setSeed(seed);
 		}
 
 		@Override
@@ -153,69 +278,151 @@ public class XOR64ShiftRandom extends Random64 {
 
 	}
 
-	private long _x;
+
+	/* *************************************************************************
+	 * Main class.
+	 * ************************************************************************/
 
 	/**
-	 * Create a new <i>non-thread safe</i> instance of the XOR-Shift PRNG, with
-	 * an seed of {@link System#nanoTime()}.
+	 * The number of seed bytes (4) this PRNG requires.
 	 */
-	public XOR64ShiftRandom() {
-		this(math.seed());
+	public static final int SEED_BYTES = 8;
+
+	private final Param _param;
+
+	private long _x = 0;
+
+	/**
+	 * Create a new PRNG instance with the given parameter and seed.
+	 *
+	 * @param param the parameter of the PRNG.
+	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code param} or {@code seed}
+	 *         is {@code null}.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public XOR64ShiftRandom(final Param param, final byte[] seed) {
+		_param = requireNonNull(param, "PRNG param must not be null.");
+		setSeed(seed);
 	}
 
 	/**
-	 * Create a new <i>non-thread safe</i> instance of the XOR-Shift PRNG.
+	 * Create a new PRNG instance with the given parameter and seed.
+	 *
+	 * @param param the parameter of the PRNG.
+	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code param} is {@code null}.
+	 */
+	public XOR64ShiftRandom(final Param param, final long seed) {
+		this(param, PRNG.seedBytes(seed, SEED_BYTES));
+	}
+
+	/**
+	 * Create a new PRNG instance with the given parameter and a safe seed
+	 *
+	 * @param param the PRNG parameter.
+	 * @throws NullPointerException if the given {@code param} is null.
+	 */
+	public XOR64ShiftRandom(final Param param) {
+		this(param, seedBytes());
+	}
+
+	/**
+	 * Create a new PRNG instance with the given parameter and seed.
 	 *
 	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code seed} is {@code null}.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public XOR64ShiftRandom(final byte[] seed) {
+		this(Param.DEFAULT, seed);
+	}
+
+	/**
+	 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and the
+	 * given seed.
+	 *
+	 * @param seed the seed of the PRNG
 	 */
 	public XOR64ShiftRandom(final long seed) {
-		_x = init(seed);
+		this(Param.DEFAULT, PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
-	private static long init(final long seed) {
-		return seed == 0 ? 0xdeadbeef : seed;
+	/**
+	 * Create a new PRNG instance with {@link Param#DEFAULT} parameter and safe
+	 * seed.
+	 */
+	public XOR64ShiftRandom() {
+		this(Param.DEFAULT, PRNG.seed());
 	}
 
-	@Override
-	public long nextLong() {
-//		The list of the suggested shift values:
-//		21, 35, 4
-//		20, 41, 5
-//		17, 31, 8
-//		11, 29, 14
-//		14, 29, 11
-//		30, 35, 13
-//		21, 37, 4
-//		21, 43, 4
-//		23, 41, 18
+	/**
+	 * Set the seed value of the PRNG.
+	 *
+	 * @param seed the seed value.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public void setSeed(final byte[] seed) {
+		if (seed.length < SEED_BYTES) {
+			throw new IllegalArgumentException(format(
+				"Required %d seed bytes, but got %d.",
+				SEED_BYTES, seed.length
+			));
+		}
 
-		_x ^= (_x << 21);
-		_x ^= (_x >>> 35);
-		_x ^= (_x << 4);
-		return _x;
+		_x = toSafeSeed(readInt(seed, 0));
+	}
+
+	private static int toSafeSeed(final int seed) {
+		return seed == 0 ? 1179196819 : seed;
 	}
 
 	@Override
 	public void setSeed(final long seed) {
-		_x = init(seed);
+		_x = toSafeSeed((int)seed);
 	}
 
 	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_x).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(random ->
-			eq(_x, random._x)
-		);
+	public long nextLong() {
+		_x ^= _x << _param.a;
+		_x ^= _x >> _param.b;
+		return _x ^= _x << _param.c;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s[%d]", getClass().getName(), _x);
+		return String.format("XOR32ShiftRandom[%s, x=%d]", _param, _x);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 31;
+		hash += 17*_x + 37;
+		hash += 17*_param.hashCode() + 37;
+
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof XOR64ShiftRandom &&
+			((XOR64ShiftRandom)obj)._x == _x &&
+			Objects.equals(((XOR64ShiftRandom)obj)._param, _param);
+	}
+
+	/**
+	 * Create a new <em>seed</em> byte array suitable for this PRNG. The
+	 * returned seed array is {@link #SEED_BYTES} long.
+	 *
+	 * @see PRNG#seedBytes(int)
+	 *
+	 * @return a new <em>seed</em> byte array of length {@link #SEED_BYTES}
+	 */
+	public static byte[] seedBytes() {
+		return PRNG.seedBytes(SEED_BYTES);
 	}
 
 }
