@@ -72,7 +72,7 @@ public class MT19937_32Random extends Random32 {
 	{
 		@Override
 		protected MT19937_32Random initialValue() {
-			return new TLMT19937_32Random(math.seed());
+			return new TLMT19937_32Random(PRNG.seed());
 		}
 	}
 

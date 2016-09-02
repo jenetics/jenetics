@@ -73,7 +73,7 @@ public class MT19937_64Random extends Random64 {
 	{
 		@Override
 		protected MT19937_64Random initialValue() {
-			return new TLMT19937_64Random(math.seed());
+			return new TLMT19937_64Random(PRNG.seed());
 		}
 	}
 

@@ -39,7 +39,7 @@ public abstract class Random32 extends PRNG {
 	}
 
 	protected Random32() {
-		this(math.seed());
+		this(PRNG.seed());
 	}
 
 	/**
@@ -74,7 +74,7 @@ public abstract class Random32 extends PRNG {
 
 	@Override
 	public float nextFloat() {
-		return math.toFloat2(nextInt());
+		return PRNG.toFloat2(nextInt());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public abstract class Random32 extends PRNG {
 	 */
 	@Override
 	public double nextDouble() {
-		return math.toDouble2(nextInt(), nextInt());
+		return PRNG.toDouble2(nextInt(), nextInt());
 	}
 
 	/**

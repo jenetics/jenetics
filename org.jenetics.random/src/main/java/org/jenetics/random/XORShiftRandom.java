@@ -28,7 +28,7 @@ public class XORShiftRandom extends Random32 {
 
 	private static final long serialVersionUID = 1L;
 
-	private int _x = (int)math.seed();
+	private int _x = (int)PRNG.seed();
 
 	@Override
 	public int nextInt() {

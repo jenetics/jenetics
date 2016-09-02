@@ -554,7 +554,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		if (p > 1) {
 			jump(s + 1);
 			final long b = _param.b*f(p, _param.a);
-			final long a = math.pow(_param.a, p);
+			final long a = IntMath.pow(_param.a, p);
 			_param = Param.of(a, b);
 			backward();
 		}
@@ -575,7 +575,7 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 			));
 		}
 
-		_state._r = _state._r*math.pow(_param.a, 1L << s) +
+		_state._r = _state._r*IntMath.pow(_param.a, 1L << s) +
 					f(1L << s, _param.a)*_param.b;
 	}
 
