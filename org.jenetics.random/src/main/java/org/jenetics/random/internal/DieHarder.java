@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static org.jenetics.random.internal.util.Equality.eq;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,8 +40,6 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Random;
-
-import org.jenetics.random.internal.util.Hash;
 
 /**
  * Class for testing a given random engine using the
@@ -293,28 +290,6 @@ public final class DieHarder {
 			} catch (NumberFormatException e) {
 				return OptionalDouble.empty();
 			}
-		}
-
-		@Override
-		public int hashCode() {
-			return Hash.of(getClass())
-				.and(testName)
-				.and(ntup)
-				.and(tsamples)
-				.and(psamples)
-				.and(pvalue)
-				.and(assessment).value();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof Result &&
-				eq(testName, ((Result)obj).testName) &&
-				eq(ntup, ((Result)obj).ntup) &&
-				eq(tsamples, ((Result)obj).tsamples) &&
-				eq(psamples, ((Result)obj).psamples) &&
-				eq(pvalue, ((Result)obj).psamples) &&
-				eq(assessment, ((Result)obj).assessment);
 		}
 
 		@Override

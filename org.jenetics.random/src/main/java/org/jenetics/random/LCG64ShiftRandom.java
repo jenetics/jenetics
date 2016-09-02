@@ -29,29 +29,7 @@ import java.util.Objects;
 
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
- * transition. The base recursion
- * <p>
- * <img
- *     alt="r_{i+1} = (a\cdot r_i + b) \mod 2^{64}"
- *     src="doc-files/lcg-recursion.gif"
- * >
- * </p>
- * is followed by a non-linear transformation
- * <p>
- * <img
- *     alt="\begin{eqnarray*}
- *           t &=& r_i                \\
- *           t &=& t \oplus (t >> 17) \\
- *           t &=& t \oplus (t << 31) \\
- *           t &=& t \oplus (t >> 8)
- *         \end{eqnarray*}"
- *     src="doc-files/lcg-non-linear.gif"
- * >
- * </p>
- * which destroys the lattice structure introduced by the recursion. The period
- * of this PRNG is 2<sup>64</sup>, {@code iff} <i>b</i> is odd and <i>a</i>
- * {@code mod} 4 = 1.
- * <p>
+ * transition.
  *
  * <em>
  * This is an re-implementation of the
@@ -90,7 +68,7 @@ import java.util.Objects;
  * @since 1.1
  * @version !__version__!
  */
-public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
+public class LCG64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
@@ -538,7 +516,17 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		setSeed(PRNG.seedBytes(seed, SEED_BYTES));
 	}
 
-	@Override
+	/**
+	 * Changes the internal state of the PRNG in a way that future calls to
+	 * {@link #nextLong()} will generated the s<sup>th</sup> sub-stream of
+	 * p<sup>th</sup> sub-streams. <i>s</i> must be within the range of
+	 * {@code [0, p-1)}. This method is mainly used for <i>parallelization</i>
+	 * via <i>leap-frogging</i>.
+	 *
+	 * @param p the overall number of sub-streams
+	 * @param s the s<sup>th</sup> sub-stream
+	 * @throws IllegalArgumentException if {@code p < 1 || s >= p}.
+	 */
 	public void split(final int p, final int s) {
 		if (p < 1) {
 			throw new IllegalArgumentException(format(
@@ -560,7 +548,13 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		}
 	}
 
-	@Override
+	/**
+	 * Changes the internal state of the PRNG in such a way that the engine
+	 * <i>jumps</i> 2<sup>s</sup> steps ahead.
+	 *
+	 * @param s the 2<sup>s</sup> steps to jump ahead.
+	 * @throws IllegalArgumentException if {@code s < 0}.
+	 */
 	public void jump2(final int s) {
 		if (s < 0) {
 			throw new IllegalArgumentException(format(
@@ -579,7 +573,13 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 					f(1L << s, _param.a)*_param.b;
 	}
 
-	@Override
+	/**
+	 * Changes the internal state of the PRNG in such a way that the engine
+	 * <i>jumps</i> s steps ahead.
+	 *
+	 * @param step the steps to jump ahead.
+	 * @throws IllegalArgumentException if {@code s < 0}.
+	 */
 	public void jump(final long step) {
 		if (step < 0) {
 			throw new IllegalArgumentException(format(
