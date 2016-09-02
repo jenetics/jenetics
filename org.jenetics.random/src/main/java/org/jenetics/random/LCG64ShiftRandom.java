@@ -222,6 +222,8 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 * @param seed the seed of the PRNG.
 		 * @throws NullPointerException if the given {@code param} or {@code seed}
 		 *         is {@code null}.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
 		 */
 		public ThreadSafe(final Param param, final byte[] seed) {
 			super(param, seed);
@@ -254,6 +256,8 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 *
 		 * @param seed the seed of the PRNG.
 		 * @throws NullPointerException if the given {@code seed} is {@code null}.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
 		 */
 		public ThreadSafe(final byte[] seed) {
 			super(seed);
@@ -274,6 +278,11 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		 * a safe seed.
 		 */
 		public ThreadSafe() {
+		}
+
+		@Override
+		public synchronized void setSeed(final byte[] seed) {
+			super.setSeed(seed);
 		}
 
 		@Override
@@ -439,6 +448,8 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 * @param seed the seed of the PRNG.
 	 * @throws NullPointerException if the given {@code param} or {@code seed}
 	 *         is {@code null}.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
 	 */
 	public LCG64ShiftRandom(final Param param, final byte[] seed) {
 		_param = requireNonNull(param, "PRNG param must not be null.");
@@ -471,6 +482,8 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 	 *
 	 * @param seed the seed of the PRNG.
 	 * @throws NullPointerException if the given {@code seed} is {@code null}.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
 	 */
 	public LCG64ShiftRandom(final byte[] seed) {
 		this(Param.DEFAULT, seed);
@@ -509,10 +522,16 @@ public class LCG64ShiftRandom extends Random64 implements ParallelRandom {
 		_state._r = _param.a*_state._r + _param.b;
 	}
 
+	/**
+	 * Set the seed value of the PRNG.
+	 *
+	 * @param seed the seed value.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
 	public void setSeed(final byte[] seed) {
 		if (_state != null) _state.setSeed(seed);
 	}
-
 
 	@Override
 	public void setSeed(final long seed) {

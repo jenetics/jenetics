@@ -171,6 +171,11 @@ public class KISS64Random extends Random64 {
 		}
 
 		@Override
+		public synchronized void setSeed(final byte[] seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
 		public synchronized void setSeed(final long seed) {
 			super.setSeed(seed);
 		}

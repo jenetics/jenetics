@@ -159,6 +159,11 @@ public class MT19937_64Random extends Random64 {
 		}
 
 		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
 		public synchronized long nextLong() {
 			return super.nextLong();
 		}

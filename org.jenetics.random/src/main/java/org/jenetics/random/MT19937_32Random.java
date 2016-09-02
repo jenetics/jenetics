@@ -158,6 +158,11 @@ public class MT19937_32Random extends Random32 {
 		}
 
 		@Override
+		public synchronized void setSeed(final long seed) {
+			super.setSeed(seed);
+		}
+
+		@Override
 		public synchronized int nextInt() {
 			return super.nextInt();
 		}
