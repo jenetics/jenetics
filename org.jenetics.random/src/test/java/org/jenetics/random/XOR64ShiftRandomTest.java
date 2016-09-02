@@ -19,10 +19,50 @@
  */
 package org.jenetics.random;
 
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class XOR64ShiftRandomTest {
+public class XOR64ShiftRandomTest extends Random64TestBase {
+
+	@Test
+	public void create() {
+		new XOR64ShiftRandom();
+	}
+
+	@Test
+	public void createThreadSafe() {
+		new XOR64ShiftRandom.ThreadSafe();
+	}
+
+	@Test
+	public void createThreadLocal() {
+		new XOR64ShiftRandom.ThreadLocal().get();
+	}
+
+	@Override
+	@DataProvider(name = "seededPRNGPair")
+	protected Object[][] getSeededPRNGPair() {
+		final byte[] seed = XOR64ShiftRandom.seedBytes();
+
+		return new Object[][] {
+			{new XOR64ShiftRandom(seed), new XOR64ShiftRandom(seed)},
+			{new XOR64ShiftRandom.ThreadSafe(seed), new XOR64ShiftRandom(seed)},
+			{new XOR64ShiftRandom.ThreadSafe(seed), new XOR64ShiftRandom.ThreadSafe(seed)}
+		};
+	}
+
+	@Override
+	@DataProvider(name = "PRNG")
+	protected Object[][] getPRNG() {
+		final byte[] seed = XOR64ShiftRandom.seedBytes();
+
+		return new Object[][] {
+			{new XOR64ShiftRandom(seed)},
+			{new XOR64ShiftRandom.ThreadSafe(seed)},
+			{new XOR64ShiftRandom.ThreadLocal().get()}
+		};
+	}
 }
