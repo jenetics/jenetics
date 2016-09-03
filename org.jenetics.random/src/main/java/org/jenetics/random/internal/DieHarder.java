@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,38 +87,30 @@ public final class DieHarder {
 	}
 
 	public static void main(final String[] args) throws Exception {
+		final PrintStream out = System.out;
 		if (args.length < 1) {
-			println("Usage: \n" +
+			println(out, "Usage: \n" +
 				"   java org.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 
-		test(args[0], Arrays.asList(args).subList(1, args.length));
+		test(args[0], Arrays.asList(args).subList(1, args.length), out);
 	}
 
-	private static void test(final String randomName, final List<String> args)
+	private static List<Result> test(
+		final Random random,
+		final List<String> args,
+		final PrintStream out
+	)
 		throws IOException, InterruptedException
 	{
-		final Random random;
-		try {
-			random = (Random)Class.forName(randomName).newInstance();
-			printt(
-				"Testing: %s (%s)",
-				randomName,
-				new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
-			);
-		} catch (Exception e) {
-			println("Can't create random class '%s'.", randomName);
-			return;
-		}
-
 		final List<String> dieharderArgs = new ArrayList<>();
 		dieharderArgs.add("dieharder");
 		dieharderArgs.addAll(args);
 		dieharderArgs.add("-g");
 		dieharderArgs.add("200");
 
-		printv();
+		printv(out);
 
 		final long start = System.currentTimeMillis();
 		final ProcessBuilder builder = new ProcessBuilder(dieharderArgs);
@@ -160,56 +153,88 @@ public final class DieHarder {
 		formatter.setMinimumFractionDigits(3);
 		formatter.setMaximumFractionDigits(3);
 
-		println("#=============================================================================#");
-		println(
+		println(out, "#=============================================================================#");
+		println(out,
 			"# %-76s#",
 			format("Summary: PASSED=%d, WEAK=%d, FAILED=%d", passed, weak, failed)
 		);
-		println(
+		println(out,
 			"# %-76s#",
 			format("         %s MB of random data created with %s MB/sec",
 				formatter.format(megaBytes),
 				formatter.format(megaBytes/(millis/1000.0))
 			)
 		);
-		println("#=============================================================================#");
-		printt("Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, sec%60);
+		println(out, "#=============================================================================#");
+		printt(out, "Runtime: %d:%02d:%02d", sec/3600, (sec%3600)/60, sec%60);
 
+		return results;
 	}
 
-	private static void printt(final String title, final Object... args) {
-		println("#=============================================================================#");
-		println("# %-76s#", format(title, args));
-		println("#=============================================================================#");
+	private static List<Result> test(
+		final String randomName,
+		final List<String> args,
+		final PrintStream out
+	)
+		throws IOException, InterruptedException
+	{
+		final Random random;
+		try {
+			random = (Random)Class.forName(randomName).newInstance();
+			printt(out,
+				"Testing: %s (%s)",
+				randomName,
+				new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date())
+			);
+		} catch (Exception e) {
+			println(out, "Can't create random class '%s'.", randomName);
+			throw new RuntimeException("Invalid random name: " + randomName);
+		}
+
+		return test(random, args, out);
 	}
 
-	private static void printv() {
-		println("#=============================================================================#");
-		println(
+	private static void printt(
+		final PrintStream out,
+		final String title,
+		final Object... args
+	) {
+		println(out, "#=============================================================================#");
+		println(out, "# %-76s#", format(title, args));
+		println(out, "#=============================================================================#");
+	}
+
+	private static void printv(final PrintStream out) {
+		println(out, "#=============================================================================#");
+		println(out,
 			"# %-76s#",
 			format("%s %s (%s) ", p("os.name"), p("os.version"), p("os.arch"))
 		);
-		println(
+		println(out,
 			"# %-76s#",
 			format("java version \"%s\"", p("java.version"))
 		);
-		println(
+		println(out,
 			"# %-76s#",
 			format("%s (build %s)", p("java.runtime.name"), p("java.runtime.version"))
 		);
-		println(
+		println(out,
 			"# %-76s#",
 			format("%s (build %s)", p("java.vm.name"), p("java.vm.version"))
 		);
-		println("#=============================================================================#");
+		println(out, "#=============================================================================#");
 	}
 
 	private static String p(final String name) {
 		return System.getProperty(name);
 	}
 
-	private static void println(final String pattern, final Object... args) {
-		System.out.println(format(pattern, args));
+	private static void println(
+		final PrintStream out,
+		final String pattern,
+		final Object... args
+	) {
+		out.println(format(pattern, args));
 	}
 
 
@@ -221,7 +246,7 @@ public final class DieHarder {
 	 * @since 3.0
 	 * @version 3.0
 	 */
-	static final class Result {
+	public static final class Result {
 		final String testName;
 		final int ntup;
 		final int tsamples;
@@ -301,7 +326,7 @@ public final class DieHarder {
 		}
 	}
 
-	static enum Assessment {
+	public static enum Assessment {
 		PASSED,
 		FAILED,
 		WEAK;
