@@ -20,7 +20,9 @@ main() {
 	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.KISS64Random -a
 	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.LCG64ShiftRandom -a
 	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.MT19937_32Random -a
-	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.MT19937_64Random -a
+	#${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.MT19937_64Random -a
+	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.XOR32ShiftRandom -a
+	${JRUN} org.jenetics.random.internal.DieHarder org.jenetics.random.XOR64ShiftRandom -a
 }
 
 main $*
