@@ -97,7 +97,7 @@ public final class DieHarder {
 		test(args[0], Arrays.asList(args).subList(1, args.length), out);
 	}
 
-	private static List<Result> test(
+	public static List<Result> test(
 		final Random random,
 		final List<String> args,
 		final PrintStream out
@@ -247,12 +247,12 @@ public final class DieHarder {
 	 * @version 3.0
 	 */
 	public static final class Result {
-		final String testName;
-		final int ntup;
-		final int tsamples;
-		final int psamples;
-		final double pvalue;
-		final Assessment assessment;
+		public final String testName;
+		public final int ntup;
+		public final int tsamples;
+		public final int psamples;
+		public final double pvalue;
+		public final Assessment assessment;
 
 		private Result(
 			final String testName,
