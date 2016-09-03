@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.jenetics.random.internal.DieHarder;
@@ -454,7 +455,7 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 
-	private static Param[] TEST_PARAMS = new Param[] {
+	private static Param[] ALL_PARAMS = new Param[] {
 		new Param( 1, 3,10),
 		new Param( 1, 5,16),
 		new Param( 1, 5,19),
@@ -540,7 +541,11 @@ public class XOR32ShiftRandom extends Random32 {
 
 	// ./jrun org.jenetics.random.XOR32ShiftRandom 2>> XOR32ShiftRandom.results
 	public static void main(final String[] args) throws Exception {
-		Stream.of(TEST_PARAMS).parallel()
+		final int start = Stream.of(args).findFirst()
+			.map(Integer::new)
+			.orElse(0);
+
+		Arrays.asList(ALL_PARAMS).subList(start, ALL_PARAMS.length)
 			.forEach(XOR32ShiftRandom::test);
 	}
 
