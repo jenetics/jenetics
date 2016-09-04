@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static org.jenetics.random.utils.readInt;
+import static org.jenetics.random.utils.readLong;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import org.jenetics.random.XOR32ShiftRandom.Param;
 import org.jenetics.random.internal.DieHarder;
 import org.jenetics.random.internal.DieHarder.Assessment;
 import org.jenetics.random.internal.DieHarder.Result;
@@ -384,11 +383,11 @@ public class XOR64ShiftRandom extends Random64 {
 			));
 		}
 
-		_x = toSafeSeed(readInt(seed, 0));
+		_x = toSafeSeed(readLong(seed, 0));
 	}
 
-	private static int toSafeSeed(final int seed) {
-		return seed == 0 ? 1179196819 : seed;
+	private static long toSafeSeed(final long seed) {
+		return seed == 0 ? 1179196819L : seed;
 	}
 
 	@Override
@@ -436,7 +435,7 @@ public class XOR64ShiftRandom extends Random64 {
 		return PRNG.seedBytes(SEED_BYTES);
 	}
 
-	private static Param[] ALL_PARAMS = new Param[] {
+	private static final Param[] ALL_PARAMS = new Param[] {
 		new Param( 1, 1,54),
 		new Param( 1, 1,55),
 		new Param( 1, 3,45),
