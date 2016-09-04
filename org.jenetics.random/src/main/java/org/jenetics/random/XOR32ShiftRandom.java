@@ -20,6 +20,8 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -27,6 +29,7 @@ import static org.jenetics.random.utils.readInt;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -298,10 +301,62 @@ public class XOR32ShiftRandom extends Random32 {
 
 	}
 
+	@FunctionalInterface
+	public interface Shift {
+
+		int shift(int x, final Param param);
+
+		static final List<Shift> SHIFTS = unmodifiableList(asList(new Shift[] {
+			(x, param) -> {
+				x ^= x << param.a;
+				x ^= x >> param.b;
+				return x^(x << param.c);
+			},
+			(x, param) -> {
+				x ^= x << param.c;
+				x ^= x >> param.b;
+				return x^(x << param.a);
+			},
+			(x, param) -> {
+				x ^= x >> param.a;
+				x ^= x << param.b;
+				return x^(x >> param.c);
+			},
+			(x, param) -> {
+				x ^= x >> param.c;
+				x ^= x << param.b;
+				return x^(x >> param.a);
+			},
+			(x, param) -> {
+				x ^= x << param.a;
+				x ^= x << param.c;
+				return x^(x >> param.b);
+			},
+			(x, param) -> {
+				x ^= x << param.c;
+				x ^= x << param.a;
+				return x^(x >> param.b);
+			},
+			(x, param) -> {
+				x ^= x >> param.a;
+				x ^= x >> param.c;
+				return x^(x << param.b);
+			},
+			(x, param) -> {
+				x ^= x >> param.c;
+				x ^= x >> param.a;
+				return x^(x << param.b);
+			}
+		}));
+	}
+
 
 	/* *************************************************************************
 	 * Main class.
 	 * ************************************************************************/
+
+	// The largest prime smaller than 2^31.
+	private static final int SAFE_SEED = 2147483647;
 
 	/**
 	 * The number of seed bytes (4) this PRNG requires.
@@ -397,7 +452,7 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 	private static int toSafeSeed(final int seed) {
-		return seed == 0 ? 1179196819 : seed;
+		return seed == 0 ? SAFE_SEED : seed;
 	}
 
 	@Override
@@ -407,9 +462,11 @@ public class XOR32ShiftRandom extends Random32 {
 
 	@Override
 	public int nextInt() {
-		_x ^= _x << _param.a;
-		_x ^= _x >> _param.b;
-		return _x ^= _x << _param.c;
+		return _x ^= XORShift.nextInt1(_x, _param);
+
+		//_x ^= _x << _param.a;
+		//_x ^= _x >> _param.b;
+		//return _x ^= _x << _param.c;
 
 		// Additional shift variants.
 //		_x ^= _x << _param.c; _x ^= _x >> _param.b; return _x ^= _x << _param.a;
@@ -545,14 +602,14 @@ public class XOR32ShiftRandom extends Random32 {
 			.map(Integer::new)
 			.orElse(0);
 
-		Arrays.asList(ALL_PARAMS).subList(start, ALL_PARAMS.length)
+		asList(ALL_PARAMS).subList(start, ALL_PARAMS.length)
 			.forEach(XOR32ShiftRandom::test);
 	}
 
 	private static void test(final Param param) {
 		try {
 			final XOR32ShiftRandom random = new XOR32ShiftRandom(param);
-			final List<Result> results = DieHarder.test(random, Arrays.asList("-a"), System.out);
+			final List<Result> results = DieHarder.test(random, asList("-a"), System.out);
 
 			final Map<Assessment, Long> grouped = results.stream()
 				.collect(groupingBy(r -> r.assessment, counting()));

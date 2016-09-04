@@ -293,6 +293,9 @@ public class XOR64ShiftRandom extends Random64 {
 	 * Main class.
 	 * ************************************************************************/
 
+	// The largest prime smaller than 2^63.
+	private static final long SAFE_SEED = 9223372036854775783L;
+
 	/**
 	 * The number of seed bytes (4) this PRNG requires.
 	 */
