@@ -455,7 +455,7 @@ public class XOR32ShiftRandom extends Random32 {
 	}
 
 
-	private static Param[] ALL_PARAMS = new Param[] {
+	private final static Param[] ALL_PARAMS = new Param[] {
 		new Param( 1, 3,10),
 		new Param( 1, 5,16),
 		new Param( 1, 5,19),
