@@ -81,7 +81,6 @@ public class RandomEnginePerf {
 		*/
 	}
 
-	/*
 	public static class KISS32RandomPerf extends Base {
 		{random = new KISS32Random();}
 	}
@@ -100,6 +99,14 @@ public class RandomEnginePerf {
 
 	public static class MT19937_64RandomPerf extends Base {
 		{random = new MT19937_64Random();}
+	}
+
+	public static class XOR32ShiftRandomPerf extends Base {
+		{random = new XOR32ShiftRandom();}
+	}
+
+	public static class XOR64ShiftRandomPerf extends Base {
+		{random = new XOR64ShiftRandom();}
 	}
 
 	public static class SimpleRandom64Perf extends Base {{
@@ -128,11 +135,6 @@ public class RandomEnginePerf {
 
 	public static class ThreadLocalRandomPerf extends Base {
 		{random = ThreadLocalRandom.current();}
-	}
-	*/
-
-	public static class XOR32ShiftRandomPerf extends Base {
-		{random = new XOR32ShiftRandom();}
 	}
 
 	public static void main(String[] args) throws RunnerException {
