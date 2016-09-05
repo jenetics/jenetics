@@ -20,7 +20,7 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static org.jenetics.random.utils.listOf;
@@ -143,8 +143,14 @@ public class XOR32ShiftRandomParamTest {
 
 	private static void test(final Shift shift, final Param param) {
 		try {
-			final XOR32ShiftRandom random = new XOR32ShiftRandom(param);
-			final List<Result> results = DieHarder.test(random, asList("-a"), System.out);
+			final XOR32ShiftRandom random = new XOR32ShiftRandom(
+				shift,
+				param,
+				XOR32ShiftRandom.seedBytes()
+			);
+
+			final List<Result> results = DieHarder
+				.test(random, singletonList("-a"), System.out);
 
 			final Map<Assessment, Long> grouped = results.stream()
 				.collect(groupingBy(r -> r.assessment, counting()));
