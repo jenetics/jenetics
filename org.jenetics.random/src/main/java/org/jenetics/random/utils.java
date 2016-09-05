@@ -21,6 +21,11 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -29,12 +34,9 @@ import static java.lang.String.format;
 final class utils {
 	private utils() {}
 
-	static int lowInt(final long a) {
-		return (int)a;
-	}
-
-	static int highInt(final long a) {
-		return (int)(a >>> Integer.SIZE);
+	@SafeVarargs
+	public static <T> List<T> listOf(final T... elements) {
+		return Collections.unmodifiableList(Arrays.asList(elements));
 	}
 
 	static int readInt(final byte[] bytes, final int index) {
