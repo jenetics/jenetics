@@ -81,6 +81,7 @@ public class RandomEnginePerf {
 		*/
 	}
 
+	/*
 	public static class KISS32RandomPerf extends Base {
 		{random = new KISS32Random();}
 	}
@@ -127,6 +128,11 @@ public class RandomEnginePerf {
 
 	public static class ThreadLocalRandomPerf extends Base {
 		{random = ThreadLocalRandom.current();}
+	}
+	*/
+
+	public static class XOR32ShiftRandomPerf extends Base {
+		{random = new XOR32ShiftRandom();}
 	}
 
 	public static void main(String[] args) throws RunnerException {

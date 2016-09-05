@@ -309,47 +309,50 @@ public class XOR32ShiftRandom extends Random32 {
 		static final List<Shift> SHIFTS = unmodifiableList(asList(new Shift[] {
 			(x, param) -> {
 				x ^= x << param.a;
-				x ^= x >> param.b;
-				return x^(x << param.c);
+				x ^= x >>> param.b;
+				return x^x << param.c;
 			},
 			(x, param) -> {
 				x ^= x << param.c;
-				x ^= x >> param.b;
-				return x^(x << param.a);
+				x ^= x >>> param.b;
+				return x^x << param.a;
 			},
 			(x, param) -> {
-				x ^= x >> param.a;
+				x ^= x >>> param.a;
 				x ^= x << param.b;
-				return x^(x >> param.c);
+				return x^x >>> param.c;
 			},
 			(x, param) -> {
-				x ^= x >> param.c;
+				x ^= x >>> param.c;
 				x ^= x << param.b;
-				return x^(x >> param.a);
+				return x^x >>> param.a;
 			},
 			(x, param) -> {
 				x ^= x << param.a;
 				x ^= x << param.c;
-				return x^(x >> param.b);
+				return x^x >>> param.b;
 			},
 			(x, param) -> {
 				x ^= x << param.c;
 				x ^= x << param.a;
-				return x^(x >> param.b);
+				return x^x >>> param.b;
 			},
 			(x, param) -> {
-				x ^= x >> param.a;
-				x ^= x >> param.c;
-				return x^(x << param.b);
+				x ^= x >>> param.a;
+				x ^= x >>> param.c;
+				return x^x << param.b;
 			},
 			(x, param) -> {
-				x ^= x >> param.c;
-				x ^= x >> param.a;
-				return x^(x << param.b);
+				x ^= x >>> param.c;
+				x ^= x >>> param.a;
+				return x^x << param.b;
 			}
 		}));
 	}
 
+	public static abstract class Shift2 {
+		abstract int shift(int x, final Param param);
+	}
 
 	/* *************************************************************************
 	 * Main class.
@@ -460,12 +463,49 @@ public class XOR32ShiftRandom extends Random32 {
 		_x = toSafeSeed((int)seed);
 	}
 
+	//private final Shift _shift = Shift.SHIFTS.get(0);
+	private final Shift2 _shift = new Shift2() {
+		@Override
+		int shift(int x, Param param) {
+			x ^= x << param.a;
+			x ^= x >>> param.b;
+			return x^x << param.c;
+		}
+	};
+
 	@Override
 	public int nextInt() {
-		return _x ^= XORShift.nextInt1(_x, _param);
+		/*
+Benchmark                                            Mode  Cnt    Score   Error   Units
+RandomEnginePerf.XOR32ShiftRandomPerf.nextDouble    thrpt   30  114.778 ± 1.040  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextFloat     thrpt   30  165.410 ± 1.182  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextInt       thrpt   30  211.947 ± 1.651  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextIntRange  thrpt   30  150.598 ± 1.320  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextLong      thrpt   30  137.618 ± 1.960  ops/us
 
+		 */
+		return _x = _shift.shift(_x, _param);
+
+		/*
+RandomEnginePerf.XOR32ShiftRandomPerf.nextDouble    thrpt   30  113.543 ± 0.775  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextFloat     thrpt   30  154.030 ± 1.067  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextInt       thrpt   30  198.727 ± 1.905  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextIntRange  thrpt   30  148.581 ± 1.358  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextLong      thrpt   30  130.367 ± 1.306  ops/us
+
+		 */
+		//return _x = _shift.shift(_x, _param);
+
+		/*
+Benchmark                                            Mode  Cnt    Score   Error   Units
+RandomEnginePerf.XOR32ShiftRandomPerf.nextDouble    thrpt   30  118.518 ± 1.896  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextFloat     thrpt   30  165.902 ± 1.218  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextInt       thrpt   30  223.769 ± 2.165  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextIntRange  thrpt   30  153.287 ± 2.379  ops/us
+RandomEnginePerf.XOR32ShiftRandomPerf.nextLong      thrpt   30  134.020 ± 1.702  ops/us
+		 */
 		//_x ^= _x << _param.a;
-		//_x ^= _x >> _param.b;
+		//_x ^= _x >>> _param.b;
 		//return _x ^= _x << _param.c;
 
 		// Additional shift variants.
@@ -476,6 +516,10 @@ public class XOR32ShiftRandom extends Random32 {
 //		_x ^= _x << _param.c; _x ^= _x << _param.a; return _x ^= _x >> _param.b;
 //		_x ^= _x >> _param.a; _x ^= _x >> _param.c; return _x ^= _x << _param.b;
 //		_x ^= _x >> _param.c; _x ^= _x >> _param.a; return _x ^= _x << _param.b;
+	}
+
+	public int nextInt2() {
+		return _x = Shift.SHIFTS.get(0).shift(_x, _param);
 	}
 
 	@Override
