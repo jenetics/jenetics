@@ -21,9 +21,11 @@ package org.jenetics.random;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.random.utils.listOf;
 import static org.jenetics.random.utils.readInt;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -251,7 +253,7 @@ public class XOR32ShiftRandom extends Random32 {
 		 * Contains a list of the parameters with the highest <i>dieharder</i>
 		 * scores.
 		 */
-		public static final Param[] PARAMS = {
+		public static final List<Param> PARAMS = listOf(
 			new Param(12, 21, 5),  // p=104, w=5, f=5
 			new Param(5, 21, 12),  // p=104, w=4, f=6
 			new Param(5, 19, 13),  // p=103, w=4, f=7
@@ -270,14 +272,14 @@ public class XOR32ShiftRandom extends Random32 {
 			new Param(9, 21, 2),   // p=100, w=4, f=10
 			new Param(8, 23, 7),   // p=100, w=4, f=10
 			new Param(19, 9, 11),  // p=100, w=4, f=10
-			new Param(6, 21, 7),   // p=100, w=2, f=12
-		};
+			new Param(6, 21, 7)    // p=100, w=2, f=12
+		);
 
 		/**
 		 * The default parameter used by the PRNG. It's the parameter with the
 		 * best <i>dieharder</i> test result.
 		 */
-		public static final Param DEFAULT = PARAMS[0];
+		public static final Param DEFAULT = PARAMS.get(0);
 
 		/**
 		 * The parameter <em>a</em>.
@@ -360,11 +362,21 @@ public class XOR32ShiftRandom extends Random32 {
 		private final Boolean _sentry = Boolean.TRUE;
 
 		private TLXOR32ShiftRandom() {
-			super(nextParam(), XOR32ShiftRandom.seedBytes());
+			super(nextShift(), nextParam(), XOR32ShiftRandom.seedBytes());
+		}
+
+		private static Shift nextShift() {
+			nextParamIndex();
+			return Shift.values()[_paramIndex/Param.PARAMS.size()];
 		}
 
 		private static Param nextParam() {
-			return Param.PARAMS[(_paramIndex++)%Param.PARAMS.length];
+			return Param.PARAMS.get(_paramIndex%Param.PARAMS.size());
+		}
+
+		private static int nextParamIndex() {
+			return _paramIndex = _paramIndex++%
+				(Param.PARAMS.size()*Shift.values().length);
 		}
 
 		@Override
