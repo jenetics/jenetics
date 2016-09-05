@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
+import static org.jenetics.random.utils.listOf;
 import static org.jenetics.random.utils.readLong;
 
 import java.io.Serializable;
@@ -51,7 +52,7 @@ import org.jenetics.random.internal.DieHarder.Result;
  *
  * long nextLong() {
  *     x ^= x << a;
- *     x ^= x >> b;
+ *     x ^= x >>> b;
  *     return x ^= x << c;
  * }
  * }</pre>
@@ -67,6 +68,187 @@ public class XOR64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
+	/* *************************************************************************
+	 * Parameter classes.
+	 * ************************************************************************/
+
+	/**
+	 * Enumeration of the different <em>shift</em> strategies.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since !__version__!
+	 * @version !__version__!
+	 */
+	public static enum Shift {
+
+		/**
+		 * Shift strategy one.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x << param.a;
+		 *     x ^= x >>> param.b;
+		 *     return x^x << param.c;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_1 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x << param.a;
+				x ^= x >>> param.b;
+				return x^x << param.c;
+			}
+		},
+
+		/**
+		 * Shift strategy two.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x << param.c;
+		 *     x ^= x >>> param.b;
+		 *     return x^x << param.a;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_2 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x << param.c;
+				x ^= x >>> param.b;
+				return x^x << param.a;
+			}
+		},
+
+		/**
+		 * Shift strategy three.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x >>> param.a;
+		 *     x ^= x << param.b;
+		 *     return x^x >>> param.c;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_3 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x >>> param.a;
+				x ^= x << param.b;
+				return x^x >>> param.c;
+			}
+		},
+
+		/**
+		 * Shift strategy four.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x >>> param.c;
+		 *     x ^= x << param.b;
+		 *     return x^x >>> param.a;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_4 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x >>> param.c;
+				x ^= x << param.b;
+				return x^x >>> param.a;
+			}
+		},
+
+		/**
+		 * Shift strategy five.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x << param.a;
+		 *     x ^= x << param.c;
+		 *     return x^x >>> param.b;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_5 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x << param.a;
+				x ^= x << param.c;
+				return x^x >>> param.b;
+			}
+		},
+
+		/**
+		 * Shift strategy six.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x << param.c;
+		 *     x ^= x << param.a;
+		 *     return x^x >>> param.b;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_6 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x << param.c;
+				x ^= x << param.a;
+				return x^x >>> param.b;
+			}
+		},
+
+		/**
+		 * Shift strategy seven.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x >>> param.a;
+		 *     x ^= x >>> param.c;
+		 *     return x^x << param.b;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_7 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x >>> param.a;
+				x ^= x >>> param.c;
+				return x^x << param.b;
+			}
+		},
+
+		/**
+		 * Shift strategy eight.
+		 * <pre>{@code
+		 * int shift(long x, final Param param) {
+		 *     x ^= x >>> param.c;
+		 *     x ^= x >>> param.a;
+		 *     return x^x << param.b;
+		 * }
+		 * }</pre>
+		 */
+		SHIFT_8 {
+			@Override
+			public long shift(long x, final Param param) {
+				x ^= x >>> param.c;
+				x ^= x >>> param.a;
+				return x^x << param.b;
+			}
+		};
+
+		/**
+		 * The <em>default</em> shift strategy.
+		 */
+		public static final Shift DEFAULT = SHIFT_1;
+
+		/**
+		 * Performs the <em>xor</em> shift of {@code x} with the given
+		 * {@code param}.
+		 *
+		 * @param x the value where the <em>xor</em> shift is performed
+		 * @param param the shift parameters
+		 * @return the <em>xor</em> shifted value
+		 */
+		public abstract long shift(long x, final Param param);
+	}
+
 	/**
 	 * Parameter class for the {@code XOR64ShiftRandom} generator.
 	 *
@@ -81,7 +263,7 @@ public class XOR64ShiftRandom extends Random64 {
 		 * Contains a list of the parameters with the highest <i>dieharder</i>
 		 * scores.
 		 */
-		public static final Param[] PARAMS = {
+		public static final List<Param> PARAMS = listOf(
 			new Param(21, 35, 4),
 			new Param(20, 41, 5),
 			new Param(17, 31, 8),
@@ -91,13 +273,13 @@ public class XOR64ShiftRandom extends Random64 {
 			new Param(21, 37, 4),
 			new Param(21, 43, 4),
 			new Param(23, 41, 18)
-		};
+		);
 
 		/**
 		 * The default parameter used by the PRNG. It's the parameter with the
 		 * best <i>dieharder</i> test result.
 		 */
-		public static final Param DEFAULT = PARAMS[0];
+		public static final Param DEFAULT = PARAMS.get(0);
 
 		/**
 		 * The parameter <em>a</em>.
@@ -147,10 +329,14 @@ public class XOR64ShiftRandom extends Random64 {
 
 		@Override
 		public String toString() {
-			return String.format("Param[%d, %d, %d]", a, b, c);
+			return String.format("Param(%d, %d, %d)", a, b, c);
 		}
 	}
 
+
+	/* *************************************************************************
+	 * Thread safe classes.
+	 * ************************************************************************/
 
 	/**
 	 * This class represents a <i>thread local</i> implementation of the
@@ -177,11 +363,21 @@ public class XOR64ShiftRandom extends Random64 {
 		private final Boolean _sentry = Boolean.TRUE;
 
 		private TLXOR64ShiftRandom() {
-			super(nextParam(), XOR64ShiftRandom.seedBytes());
+			super(nextShift(), nextParam(), XOR32ShiftRandom.seedBytes());
+		}
+
+		private static Shift nextShift() {
+			nextParamIndex();
+			return Shift.values()[_paramIndex/Param.PARAMS.size()];
 		}
 
 		private static Param nextParam() {
-			return Param.PARAMS[(_paramIndex++)%Param.PARAMS.length];
+			return Param.PARAMS.get(_paramIndex%Param.PARAMS.size());
+		}
+
+		private static int nextParamIndex() {
+			return _paramIndex = _paramIndex++%
+				(Param.PARAMS.size()*Shift.values().length);
 		}
 
 		@Override
@@ -205,6 +401,26 @@ public class XOR64ShiftRandom extends Random64 {
 	 */
 	public static class ThreadSafe extends XOR64ShiftRandom {
 		private static final long serialVersionUID = 1L;
+
+		/**
+		 * Create a new PRNG instance with the given <em>shift</em>, parameter and
+		 * seed.
+		 *
+		 * @param shift the <em>shift</em> strategy of the PRNG
+		 * @param param the parameter of the PRNG.
+		 * @param seed the seed of the PRNG.
+		 * @throws NullPointerException if the given {@code shift}, {@code param} or
+		 *         {@code seed} is {@code null}.
+		 * @throws IllegalArgumentException if the given seed is shorter than
+		 *         {@link #SEED_BYTES}
+		 */
+		public ThreadSafe(
+			final Shift shift,
+			final Param param,
+			final byte[] seed
+		) {
+			super(shift, param, seed);
+		}
 
 		/**
 		 * Create a new PRNG instance with the given parameter and seed.
@@ -297,13 +513,36 @@ public class XOR64ShiftRandom extends Random64 {
 	private static final long SAFE_SEED = 9223372036854775783L;
 
 	/**
-	 * The number of seed bytes (4) this PRNG requires.
+	 * The number of seed bytes (8) this PRNG requires.
 	 */
 	public static final int SEED_BYTES = 8;
 
+	private final Shift _shift;
 	private final Param _param;
 
 	private long _x = 0;
+
+	/**
+	 * Create a new PRNG instance with the given <em>shift</em>, parameter and
+	 * seed.
+	 *
+	 * @param shift the <em>shift</em> strategy of the PRNG
+	 * @param param the parameter of the PRNG.
+	 * @param seed the seed of the PRNG.
+	 * @throws NullPointerException if the given {@code shift}, {@code param} or
+	 *         {@code seed} is {@code null}.
+	 * @throws IllegalArgumentException if the given seed is shorter than
+	 *         {@link #SEED_BYTES}
+	 */
+	public XOR64ShiftRandom(
+		final Shift shift,
+		final Param param,
+		final byte[] seed
+	) {
+		_shift = requireNonNull(shift, "Shift strategy must not be null.");
+		_param = requireNonNull(param, "PRNG param must not be null.");
+		setSeed(seed);
+	}
 
 	/**
 	 * Create a new PRNG instance with the given parameter and seed.
@@ -316,8 +555,7 @@ public class XOR64ShiftRandom extends Random64 {
 	 *         {@link #SEED_BYTES}
 	 */
 	public XOR64ShiftRandom(final Param param, final byte[] seed) {
-		_param = requireNonNull(param, "PRNG param must not be null.");
-		setSeed(seed);
+		this(Shift.DEFAULT, param, seed);
 	}
 
 	/**
@@ -400,9 +638,7 @@ public class XOR64ShiftRandom extends Random64 {
 
 	@Override
 	public long nextLong() {
-		_x ^= _x << _param.a;
-		_x ^= _x >> _param.b;
-		return _x ^= _x << _param.c;
+		return _x = _shift.shift(_x, _param);
 	}
 
 	@Override

@@ -56,6 +56,7 @@ import java.util.Objects;
  * @version !__version__!
  */
 public class XOR32ShiftRandom extends Random32 {
+
 	private static final long serialVersionUID = 1L;
 
 	/* *************************************************************************
@@ -329,7 +330,7 @@ public class XOR32ShiftRandom extends Random32 {
 
 		@Override
 		public String toString() {
-			return String.format("Param[%d, %d, %d]", a, b, c);
+			return String.format("Param(%d, %d, %d)", a, b, c);
 		}
 	}
 
