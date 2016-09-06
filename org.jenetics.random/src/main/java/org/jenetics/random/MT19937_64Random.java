@@ -73,16 +73,16 @@ public class MT19937_64Random extends Random64 {
 	{
 		@Override
 		protected MT19937_64Random initialValue() {
-			return new TLMT19937_64Random(PRNG.seed());
+			return new TLRandom(PRNG.seed());
 		}
 	}
 
-	private static final class TLMT19937_64Random extends MT19937_64Random {
+	private static final class TLRandom extends MT19937_64Random {
 		private static final long serialVersionUID = 1L;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLMT19937_64Random(final long seed) {
+		private TLRandom(final long seed) {
 			super(seed);
 		}
 

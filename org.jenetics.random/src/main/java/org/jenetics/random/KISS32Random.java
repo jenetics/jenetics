@@ -86,16 +86,16 @@ public class KISS32Random extends Random32 {
 	{
 		@Override
 		protected KISS32Random initialValue() {
-			return new TLKISS32Random();
+			return new TLRandom();
 		}
 	}
 
-	private static final class TLKISS32Random extends KISS32Random {
+	private static final class TLRandom extends KISS32Random {
 		private static final long serialVersionUID = 1L;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLKISS32Random() {
+		private TLRandom() {
 			super(KISS32Random.seedBytes());
 		}
 

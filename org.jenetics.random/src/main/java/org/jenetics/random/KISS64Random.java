@@ -91,16 +91,16 @@ public class KISS64Random extends Random64 {
 	{
 		@Override
 		protected KISS64Random initialValue() {
-			return new TLKISS64Random(seedBytes());
+			return new TLRandom(seedBytes());
 		}
 	}
 
-	private static final class TLKISS64Random extends KISS64Random {
+	private static final class TLRandom extends KISS64Random {
 		private static final long serialVersionUID = 1L;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLKISS64Random(final byte[] seed) {
+		private TLRandom(final byte[] seed) {
 			super(seed);
 		}
 

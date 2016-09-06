@@ -351,18 +351,18 @@ public class XOR32ShiftRandom extends Random32 {
 	{
 		@Override
 		protected XOR32ShiftRandom initialValue() {
-			return new TLXOR32ShiftRandom();
+			return new TLRandom();
 		}
 	}
 
-	private static final class TLXOR32ShiftRandom extends XOR32ShiftRandom {
+	private static final class TLRandom extends XOR32ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
 		private static volatile int _paramIndex = 0;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLXOR32ShiftRandom() {
+		private TLRandom() {
 			super(nextShift(), nextParam(), XOR32ShiftRandom.seedBytes());
 		}
 

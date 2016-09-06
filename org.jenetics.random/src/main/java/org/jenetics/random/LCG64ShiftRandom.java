@@ -72,6 +72,92 @@ public class LCG64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
 
+	/* *************************************************************************
+	 * Parameter classes.
+	 * ************************************************************************/
+
+	/**
+	 * Parameter class for the {@code LCG64ShiftRandom} generator, for the
+	 * parameters <i>a</i> and <i>b</i> of the LC recursion
+	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @since 1.1
+	 * @version 2.0
+	 */
+	public static final class Param implements Serializable {
+
+		private static final long serialVersionUID = 1L;
+
+		/**
+		 * The default PRNG parameters: a = 0xFBD19FBBC5C07FF5L; b = 1
+		 */
+		public static final Param DEFAULT = Param.of(0xFBD19FBBC5C07FF5L, 1L);
+
+		/**
+		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 1
+		 */
+		public static final Param LECUYER1 = Param.of(0x27BB2EE687B0B0FDL, 1L);
+
+		/**
+		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
+		 */
+		public static final Param LECUYER2 = Param.of(0x2C6FE96EE78B6955L, 1L);
+
+		/**
+		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 1
+		 */
+		public static final Param LECUYER3 = Param.of(0x369DEA0F31A53F85L, 1L);
+
+
+		/**
+		 * The parameter <i>a</i> of the LC recursion.
+		 */
+		public final long a;
+
+		/**
+		 * The parameter <i>b</i> of the LC recursion.
+		 */
+		public final long b;
+
+		/**
+		 * Create a new parameter object.
+		 *
+		 * @param a the parameter <i>a</i> of the LC recursion.
+		 * @param b the parameter <i>b</i> of the LC recursion.
+		 */
+		private Param(final long a, final long b) {
+			this.a = a;
+			this.b = b;
+		}
+
+		public static Param of(final long a, final long b) {
+			return new Param(a, b);
+		}
+
+		@Override
+		public int hashCode() {
+			return 31*(int)(a^(a >>> 32)) + 31*(int)(b^(b >>> 32));
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof Param &&
+				((Param)obj).a == a &&
+				((Param)obj).b == b;
+		}
+
+		@Override
+		public String toString() {
+			return format("%s[a=%d, b=%d]", getClass().getName(), a, b);
+		}
+	}
+
+
+	/* *************************************************************************
+	 * Thread safe classes.
+	 * ************************************************************************/
+
 	/**
 	 * This class represents a <i>thread local</i> implementation of the
 	 * {@code LCG64ShiftRandom} PRNG.
@@ -154,24 +240,24 @@ public class LCG64ShiftRandom extends Random64 {
 				_seed = PRNG.seed();
 			}
 
-			final LCG64ShiftRandom random = new TLLCG64ShiftRandom(_seed, _param);
+			final LCG64ShiftRandom random = new TLRandom(_seed, _param);
 			random.jump(_block++*STEP_BASE);
 			return random;
 		}
 
 	}
 
-	private static final class TLLCG64ShiftRandom extends LCG64ShiftRandom {
+	private static final class TLRandom extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLLCG64ShiftRandom(final long seed, final Param param) {
+		private TLRandom(final long seed, final Param param) {
 			super(param, seed);
 		}
 
 		@Override
-		public void setSeed(final long seed) {
+		public void setSeed(final byte[] seed) {
 			if (_sentry != null) {
 				throw new UnsupportedOperationException(
 					"The 'setSeed(long)' method is not supported " +
@@ -288,83 +374,6 @@ public class LCG64ShiftRandom extends Random64 {
 			super.jump(step);
 		}
 
-	}
-
-	/**
-	 * Parameter class for the {@code LCG64ShiftRandom} generator, for the
-	 * parameters <i>a</i> and <i>b</i> of the LC recursion
-	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 1.1
-	 * @version 2.0
-	 */
-	public static final class Param implements Serializable {
-
-		private static final long serialVersionUID = 1L;
-
-		/**
-		 * The default PRNG parameters: a = 0xFBD19FBBC5C07FF5L; b = 1
-		 */
-		public static final Param DEFAULT = Param.of(0xFBD19FBBC5C07FF5L, 1L);
-
-		/**
-		 * LEcuyer 1 parameters: a = 0x27BB2EE687B0B0FDL; b = 1
-		 */
-		public static final Param LECUYER1 = Param.of(0x27BB2EE687B0B0FDL, 1L);
-
-		/**
-		 * LEcuyer 2 parameters: a = 0x2C6FE96EE78B6955L; b = 1
-		 */
-		public static final Param LECUYER2 = Param.of(0x2C6FE96EE78B6955L, 1L);
-
-		/**
-		 * LEcuyer 3 parameters: a = 0x369DEA0F31A53F85L; b = 1
-		 */
-		public static final Param LECUYER3 = Param.of(0x369DEA0F31A53F85L, 1L);
-
-
-		/**
-		 * The parameter <i>a</i> of the LC recursion.
-		 */
-		public final long a;
-
-		/**
-		 * The parameter <i>b</i> of the LC recursion.
-		 */
-		public final long b;
-
-		/**
-		 * Create a new parameter object.
-		 *
-		 * @param a the parameter <i>a</i> of the LC recursion.
-		 * @param b the parameter <i>b</i> of the LC recursion.
-		 */
-		private Param(final long a, final long b) {
-			this.a = a;
-			this.b = b;
-		}
-
-		public static Param of(final long a, final long b) {
-			return new Param(a, b);
-		}
-
-		@Override
-		public int hashCode() {
-			return 31*(int)(a^(a >>> 32)) + 31*(int)(b^(b >>> 32));
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof Param &&
-				((Param)obj).a == a &&
-				((Param)obj).b == b;
-		}
-
-		@Override
-		public String toString() {
-			return format("%s[a=%d, b=%d]", getClass().getName(), a, b);
-		}
 	}
 
 	/**
