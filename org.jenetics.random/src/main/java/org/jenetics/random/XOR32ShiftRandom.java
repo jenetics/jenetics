@@ -20,6 +20,8 @@
 package org.jenetics.random;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.random.utils.listOf;
 import static org.jenetics.random.utils.readInt;
@@ -349,35 +351,122 @@ public class XOR32ShiftRandom extends Random32 {
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<XOR32ShiftRandom>
 	{
+		private final ParamSelector _selector;
+
+		/**
+		 * Create a new PRNG thread-local instance with the given <em>shift</em>
+		 * and parameter.
+		 *
+		 * @param shift the <em>shift</em> strategy of the PRNG
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code shift} or
+		 *        {@code param} is {@code null}.
+		 */
+		public ThreadLocal(final Shift shift, final Param param) {
+			_selector = new ParamSelector(
+				singletonList(shift),
+				singletonList(param)
+			);
+		}
+
+		/**
+		 * Create a new PRNG thread-local instance with the given <em>shift</em>
+		 * parameter.
+		 *
+		 * @param shift the <em>shift</em> strategy of the PRNG
+		 * @throws NullPointerException if the given {@code shift} is
+		 *         {@code null}.
+		 */
+		public ThreadLocal(final Shift shift) {
+			_selector = new ParamSelector(singletonList(shift), Param.PARAMS);
+		}
+
+		/**
+		 * Create a new PRNG thread-local instance with the given parameter.
+		 *
+		 * @param param the parameter of the PRNG.
+		 * @throws NullPointerException if the given {@code param} is
+		 *         {@code null}.
+		 */
+		public ThreadLocal(final Param param) {
+			_selector = new ParamSelector(
+				asList(Shift.values()),
+				singletonList(param)
+			);
+		}
+
+		/**
+		 * Create a new PRNG thread-local instance.
+		 */
+		public ThreadLocal() {
+			_selector = new ParamSelector(asList(Shift.values()), Param.PARAMS);
+		}
+
+		/**
+		 * Create a new PRNG using different parameter values for every thread.
+		 */
 		@Override
 		protected XOR32ShiftRandom initialValue() {
-			return new TLRandom();
+			final TLRandom random = new TLRandom(
+				_selector.shift(),
+				_selector.param(),
+				_selector.seed()
+			);
+			_selector.next();
+
+			return random;
+		}
+	}
+
+	/**
+	 * Helper class for periodical change or the PRNG parameters <em>shift</em>,
+	 * <em>param</em> and <em>seed</em>.
+	 */
+	static final class ParamSelector {
+		private final List<Shift> _shifts;
+		private final List<Param> _params;
+		private final int _paramCount;
+
+		private int _index = 0;
+		private byte[] _seed = XOR32ShiftRandom.seedBytes();
+
+		ParamSelector(final List<Shift> shifts, final List<Param> params) {
+			_shifts = requireNonNull(shifts);
+			_params = requireNonNull(params);
+			_paramCount = shifts.size()*params.size();
+		}
+
+		void next() {
+			if (++_index >= _paramCount) {
+				_index = 0;
+				_seed = XOR32ShiftRandom.seedBytes();
+			}
+		}
+
+		Shift shift() {
+			return _shifts.get(_index/_params.size());
+		}
+
+		Param param() {
+			return _params.get(_index%_params.size());
+		}
+
+		byte[] seed() {
+			return _seed;
 		}
 	}
 
 	private static final class TLRandom extends XOR32ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
-		private static volatile int _paramIndex = 0;
-
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLRandom() {
-			super(nextShift(), nextParam(), XOR32ShiftRandom.seedBytes());
-		}
-
-		private static Shift nextShift() {
-			nextParamIndex();
-			return Shift.values()[_paramIndex/Param.PARAMS.size()];
-		}
-
-		private static Param nextParam() {
-			return Param.PARAMS.get(_paramIndex%Param.PARAMS.size());
-		}
-
-		private static int nextParamIndex() {
-			return _paramIndex = _paramIndex++%
-				(Param.PARAMS.size()*Shift.values().length);
+		private TLRandom(
+			final Shift shift,
+			final Param param,
+			final byte[] seed
+		) {
+			super(shift, param, seed);
 		}
 
 		@Override

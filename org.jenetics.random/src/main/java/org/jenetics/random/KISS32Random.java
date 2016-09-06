@@ -84,6 +84,10 @@ public class KISS32Random extends Random32 {
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<KISS32Random>
 	{
+
+		/**
+		 * Create a new PRNG using different seed values for every thread.
+		 */
 		@Override
 		protected KISS32Random initialValue() {
 			return new TLRandom();

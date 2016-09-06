@@ -200,14 +200,6 @@ public class LCG64ShiftRandom extends Random64 {
 
 		/**
 		 * Create a new <i>thread local</i> instance of the
-		 * {@code LCG64ShiftRandom} PRNG with the {@code DEFAULT} parameters.
-		 */
-		public ThreadLocal() {
-			this(Param.DEFAULT);
-		}
-
-		/**
-		 * Create a new <i>thread local</i> instance of the
 		 * {@code LCG64ShiftRandom} PRNG with the given parameters.
 		 *
 		 * @param param the LC parameters.
@@ -215,6 +207,14 @@ public class LCG64ShiftRandom extends Random64 {
 		 */
 		public ThreadLocal(final Param param) {
 			_param = requireNonNull(param, "PRNG param must not be null.");
+		}
+
+		/**
+		 * Create a new <i>thread local</i> instance of the
+		 * {@code LCG64ShiftRandom} PRNG with the {@code DEFAULT} parameters.
+		 */
+		public ThreadLocal() {
+			this(Param.DEFAULT);
 		}
 
 		/**
@@ -240,7 +240,7 @@ public class LCG64ShiftRandom extends Random64 {
 				_seed = PRNG.seed();
 			}
 
-			final LCG64ShiftRandom random = new TLRandom(_seed, _param);
+			final LCG64ShiftRandom random = new TLRandom(_param, _seed);
 			random.jump(_block++*STEP_BASE);
 			return random;
 		}
@@ -252,7 +252,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 		private final Boolean _sentry = Boolean.TRUE;
 
-		private TLRandom(final long seed, final Param param) {
+		private TLRandom(final Param param, final long seed) {
 			super(param, seed);
 		}
 

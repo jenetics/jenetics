@@ -19,9 +19,20 @@
  */
 package org.jenetics.random;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import org.jenetics.random.XOR32ShiftRandom.Param;
+import org.jenetics.random.XOR32ShiftRandom.ParamSelector;
+import org.jenetics.random.XOR32ShiftRandom.Shift;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -66,4 +77,78 @@ public class XOR32ShiftRandomTest extends Random32TestBase {
 			{new XOR32ShiftRandom.ThreadLocal().get()}
 		};
 	}
+
+	@Test
+	public void paramSelectorShiftParam() {
+		final List<Shift> shifts = singletonList(Shift.DEFAULT);
+		final List<Param> params = singletonList(Param.DEFAULT);
+
+		final ParamSelector selector = new ParamSelector(shifts, params);
+		final byte[] seed = selector.seed();
+
+		Assert.assertSame(selector.shift(), shifts.get(0));
+		Assert.assertSame(selector.param(), params.get(0));
+
+		for (int i = 0; i < 100; ++i) {
+			selector.next();
+			Assert.assertFalse(Arrays.equals(seed, selector.seed()));
+			Assert.assertSame(selector.shift(), shifts.get(0));
+			Assert.assertSame(selector.param(), params.get(0));
+		}
+	}
+
+	@Test
+	public void paramSelectorShift() {
+		final List<Shift> shifts = singletonList(Shift.DEFAULT);
+		final List<Param> params = Param.PARAMS;
+
+		final ParamSelector selector = new ParamSelector(shifts, params);
+		final byte[] seed = selector.seed();
+
+		for (Param param : params) {
+			Assert.assertTrue(Arrays.equals(seed, selector.seed()));
+			Assert.assertSame(selector.shift(), shifts.get(0));
+			Assert.assertSame(selector.param(), param);
+
+			selector.next();
+		}
+
+		for (Param param : params) {
+			Assert.assertFalse(Arrays.equals(seed, selector.seed()));
+			Assert.assertSame(selector.shift(), shifts.get(0));
+			Assert.assertSame(selector.param(), param);
+
+			selector.next();
+		}
+	}
+
+	@Test
+	public void paramSelector() {
+		final List<Shift> shifts = asList(Shift.values());
+		final List<Param> params = Param.PARAMS;
+
+		final ParamSelector selector = new ParamSelector(shifts, params);
+		final byte[] seed = selector.seed();
+
+		for (Shift shift : shifts) {
+			for (Param param : params) {
+				Assert.assertTrue(Arrays.equals(seed, selector.seed()));
+				Assert.assertSame(selector.shift(), shift);
+				Assert.assertSame(selector.param(), param);
+
+				selector.next();
+			}
+		}
+
+		for (Shift shift : shifts) {
+			for (Param param : params) {
+				Assert.assertFalse(Arrays.equals(seed, selector.seed()));
+				Assert.assertSame(selector.shift(), shift);
+				Assert.assertSame(selector.param(), param);
+
+				selector.next();
+			}
+		}
+	}
+
 }

@@ -70,6 +70,10 @@ public class MT19937_32Random extends Random32 {
 	public static class ThreadLocal
 		extends java.lang.ThreadLocal<MT19937_32Random>
 	{
+
+		/**
+		 * Create a new PRNG using different seed values for every thread.
+		 */
 		@Override
 		protected MT19937_32Random initialValue() {
 			return new TLRandom(PRNG.seed());
