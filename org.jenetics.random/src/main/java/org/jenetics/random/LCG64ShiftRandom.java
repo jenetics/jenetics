@@ -655,6 +655,7 @@ public class LCG64ShiftRandom extends Random64 {
 		return PRNG.seedBytes(SEED_BYTES);
 	}
 
+
 	/* *************************************************************************
 	 * Some static helper methods
 	 ***************************************************************************/

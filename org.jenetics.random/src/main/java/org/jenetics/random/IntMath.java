@@ -24,7 +24,7 @@ package org.jenetics.random;
  * @version !__version__!
  * @since !__version__!
  */
-class IntMath {
+final class IntMath {
 	private IntMath() {}
 
 	/**
