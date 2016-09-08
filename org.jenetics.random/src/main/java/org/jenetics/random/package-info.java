@@ -17,4 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+
+/**
+ * This package (module) contains a set of Pseudo Random Number Generators
+ * (PRNG), suitable for simulation tasks.
+ *
+ */
 package org.jenetics.random;
