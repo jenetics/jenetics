@@ -303,9 +303,11 @@ public final class Engine<
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final TimedResult<Population<G, C>> result = population
-			.thenApply(TimedResult.of(this::evaluate, _clock))
-			.join();
+		final Population<G, C> pop = population.join();
+		final TimedResult<Population<G, C>> result = TimedResult
+			.of(() -> evaluate(pop), _clock)
+			.get();
+
 
 		final EvolutionDurations durations = EvolutionDurations.of(
 			offspring.join().duration,
