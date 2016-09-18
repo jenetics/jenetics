@@ -77,7 +77,7 @@ import org.jenetics.util.ISeq;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 3.6
  * @since 3.2
  */
 public interface Codec<T, G extends Gene<?, G>> {
