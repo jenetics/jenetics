@@ -110,6 +110,25 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 */
 	public Function<Genotype<G>, T> decoder();
 
+	/**
+	 * Converts the given {@link Genotype} to the target type {@link T}. This is
+	 * a shortcut for
+	 * <pre>{@code
+	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+	 *
+	 * final SomeObject arg = codec.decoder().apply(gt);
+	 * }</pre>
+	 *
+	 * @since 3.6
+	 *
+	 * @param gt the genotype to be converted
+	 * @return the converted genotype
+	 */
+	public default T decode(final Genotype<G> gt) {
+		return decoder().apply(gt);
+	}
+
 
 	/**
 	 * Create a new {@code Codec} object with the given {@code encoding} and
