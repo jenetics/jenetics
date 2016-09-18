@@ -175,11 +175,7 @@ public final class base {
 	 * {@code n}.
 	 * </p>
 	 *
-	 * <p>
-	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 * 	 version based on the  C++ version by John Burkardt.
-	 * </p>
+	 * <p>This is a Java re-implementation of the C++ version by John Burkardt.</p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
@@ -208,11 +204,7 @@ public final class base {
 	 * {@code n}.
 	 * </p>
 	 *
-	 * <p>
-	 * <em>Authors:</em>
-	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 *      version based on the  C++ version by John Burkardt.
-	 * </p>
+	 * <p>This is a Java re-implementation of the  C++ version by John Burkardt.</p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
