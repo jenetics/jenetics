@@ -6926,6 +6926,87 @@ Engine
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The generations of the 
+\family typewriter
+EvolutionStream
+\family sans
+ are evolved serially.
+ Calls of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family sans
+ methods (e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 
+\family typewriter
+limit
+\family sans
+, 
+\family typewriter
+peek
+\family sans
+, ...) are executed in the thread context of the created 
+\family typewriter
+Stream
+\family sans
+.
+ In a 
+\emph on
+typical
+\emph default
+ setup, no additional synchronization and/or locking is needed.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 In cases where you appreciate the usage of the 
 \family typewriter
 Evolution\SpecialChar \-
@@ -7566,6 +7647,307 @@ Evolution\SpecialChar \-
 Statistics
 \family default
  object will look like the example above.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ object is a simple for inspecting the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ after it is finished.
+ It doesn't give you a 
+\begin_inset Formula $live$
+\end_inset
+
+ view of the current evolution process, which can be necessary for long
+ running streams.
+ In such cases you have to maintain/update the statistics yourself.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class TSM {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The locations to visit.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final ISeq<Point> POINTS = ISeq.of(...);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The permutation codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Codec<ISeq<Point>, EnumGene<Point>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    CODEC = codecs.ofPermutation(POINTS);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function (in the problem domain).
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double dist(final ISeq<Point> p) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution engine.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(TSM::dist, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .optimize(Optimize.MINIMUM)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Best phenotype found so far.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static Phenotype<EnumGene<Point>, Double> best = null;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // You will be informed on new results.
+ This allows to 
+\end_layout
+
+\begin_layout Plain Layout
+
+    // react on new best phenotypes, e.g.
+ log it.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static void update(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final EvolutionResult<EnumGene<Point>, Double> result
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (best == null || 
+\end_layout
+
+\begin_layout Plain Layout
+
+            best.compareTo(result.getBestPhenotype()) < 0) 
+\end_layout
+
+\begin_layout Plain Layout
+
+        {
+\end_layout
+
+\begin_layout Plain Layout
+
+            best = result.getBestPhenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+            System.out.print(result.getGeneration() + ": ");
+\end_layout
+
+\begin_layout Plain Layout
+
+            System.out.println("Found best phenotype: " + best);
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Find the solution.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ISeq<Point> result = CODEC.decode(
+\end_layout
+
+\begin_layout Plain Layout
+
+            ENGINE.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .peek(TSM::update)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Live evolution statistics
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Live-evolution-statistics"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Live-evolution-statistics"
+
+\end_inset
+
+ shows how to implement a manual statistics gathering.
+ The update method is called whenever a new 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ is has been calculated.
+ If a new best 
+\family typewriter
+Pheno\SpecialChar \-
+type
+\family default
+ is available, it is stored and logged.
+ With the 
+\family typewriter
+TSM::update
+\family default
+ method, which is called on every finished generation, you have a 
+\emph on
+live
+\emph default
+ view on the evolution progress.
 \end_layout
 
 \begin_layout Section
@@ -11862,7 +12244,14 @@ org.\SpecialChar \-
 jenetics.\SpecialChar \-
 engine
 \family default
- package.
+ package (see listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStatistics-usage"
+
+\end_inset
+
+).
  If the data in the 
 \family typewriter
 Evolution\SpecialChar \-
@@ -22501,7 +22890,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22742,7 +23131,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
