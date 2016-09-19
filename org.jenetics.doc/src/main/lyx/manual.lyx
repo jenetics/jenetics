@@ -14818,6 +14818,11 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
+    public default T decode(final Genotype<G> gt) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
 }
 \begin_inset Caption Standard
 
@@ -16214,17 +16219,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final ISeq<Point> POINTS = ISeq.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Point(0, 0), new Point(1, 2), new Point(4, 5) // ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    );
+    static final ISeq<Point> POINTS = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
@@ -16330,7 +16325,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        final ISeq<Point> result = CODEC.decoder().apply(
+        final ISeq<Point> result = CODEC.decode(
 \end_layout
 
 \begin_layout Plain Layout
