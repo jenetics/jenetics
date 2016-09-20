@@ -96,3 +96,22 @@ public class RandomEnginePerf {
 	}
 
 }
+
+/*
+# Run complete. Total time: 00:05:03
+
+Benchmark                                           Mode  Cnt    Score   Error   Units
+RandomEnginePerf.LCG64ShiftRandomPerf.nextDouble   thrpt   20  178.266 ± 2.396  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextFloat    thrpt   20  175.915 ± 2.555  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextInt      thrpt   20  237.989 ± 3.336  ops/us
+RandomEnginePerf.LCG64ShiftRandomPerf.nextLong     thrpt   20  241.323 ± 2.839  ops/us
+RandomEnginePerf.RandomPerf.nextDouble             thrpt   20   42.905 ± 0.409  ops/us
+RandomEnginePerf.RandomPerf.nextFloat              thrpt   20   86.078 ± 0.496  ops/us
+RandomEnginePerf.RandomPerf.nextInt                thrpt   20   87.608 ± 0.884  ops/us
+RandomEnginePerf.RandomPerf.nextLong               thrpt   20   43.560 ± 0.287  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextDouble  thrpt   20  208.822 ± 2.666  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextFloat   thrpt   20  208.813 ± 3.790  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextInt     thrpt   20  255.523 ± 2.263  ops/us
+RandomEnginePerf.ThreadLocalRandomPerf.nextLong    thrpt   20  253.980 ± 3.081  ops/us
+
+*/
