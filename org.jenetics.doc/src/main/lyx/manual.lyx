@@ -9209,12 +9209,12 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.8.0_51-b16)---Java HotSpot(TM) 64-Bit Server VM (build
- 25.51-b03, mixed mode)---, using the JHM micro-benchmark library.
+Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
+ Runtime Environment (build 1.8.0_102-b14)---Java HotSpot(TM) 64-Bit Server
+ VM (build 25.102-b14, mixed mode)---, using the JHM micro-benchmark library.
  
 \end_layout
 
@@ -9318,7 +9318,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $69\cdot10^{6}$
+\begin_inset Formula $87\cdot10^{6}$
 \end_inset
 
 
@@ -9330,7 +9330,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $34\cdot10^{6}$
+\begin_inset Formula $43\cdot10^{6}$
 \end_inset
 
 
@@ -9342,7 +9342,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $69\cdot10^{6}$
+\begin_inset Formula $86\cdot10^{6}$
 \end_inset
 
 
@@ -9354,7 +9354,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $34\cdot10^{6}$
+\begin_inset Formula $42\cdot10^{6}$
 \end_inset
 
 
@@ -9379,7 +9379,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $191\cdot10^{6}$
+\begin_inset Formula $255\cdot10^{6}$
 \end_inset
 
 
@@ -9391,7 +9391,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $184\cdot10^{6}$
+\begin_inset Formula $253\cdot10^{6}$
 \end_inset
 
 
@@ -9403,7 +9403,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $137\cdot10^{6}$
+\begin_inset Formula $208\cdot10^{6}$
 \end_inset
 
 
@@ -9415,7 +9415,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $138\cdot10^{6}$
+\begin_inset Formula $208\cdot10^{6}$
 \end_inset
 
 
@@ -9440,7 +9440,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $153\cdot10^{6}$
+\begin_inset Formula $237\cdot10^{6}$
 \end_inset
 
 
@@ -9452,7 +9452,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $159\cdot10^{6}$
+\begin_inset Formula $241\cdot10^{6}$
 \end_inset
 
 
@@ -9464,7 +9464,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $118\cdot10^{6}$
+\begin_inset Formula $176\cdot10^{6}$
 \end_inset
 
 
@@ -9476,7 +9476,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $119\cdot10^{6}$
+\begin_inset Formula $178\cdot10^{6}$
 \end_inset
 
 
