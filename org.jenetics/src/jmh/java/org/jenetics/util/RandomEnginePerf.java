@@ -113,5 +113,4 @@ RandomEnginePerf.ThreadLocalRandomPerf.nextDouble  thrpt   20  208.822 ± 2.666 
 RandomEnginePerf.ThreadLocalRandomPerf.nextFloat   thrpt   20  208.813 ± 3.790  ops/us
 RandomEnginePerf.ThreadLocalRandomPerf.nextInt     thrpt   20  255.523 ± 2.263  ops/us
 RandomEnginePerf.ThreadLocalRandomPerf.nextLong    thrpt   20  253.980 ± 3.081  ops/us
-
 */
