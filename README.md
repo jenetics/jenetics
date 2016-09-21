@@ -187,7 +187,6 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 * [#134](https://github.com/jenetics/jenetics/issues/134): Update Gradle to 3.1.
 * [#138](https://github.com/jenetics/jenetics/issues/138): Update TestNG to 6.9.13.
-https://github.com/jenetics/jenetics/releases/tag/v3.5.1
 
 ### [3.5.1](https://github.com/jenetics/jenetics/releases/tag/v3.5.1)
 
