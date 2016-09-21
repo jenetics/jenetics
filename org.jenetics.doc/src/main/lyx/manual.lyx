@@ -23126,7 +23126,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23163,7 +23163,7 @@ Scope
 \series default
 :
 \emph on
- build.
+ build
 \end_layout
 
 \end_deeper
