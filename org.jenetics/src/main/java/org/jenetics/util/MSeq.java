@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -200,6 +201,134 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	public default MSeq<T> shuffle(final Random random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
+		}
+		return this;
+	}
+
+	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param end the end index where to stop sorting (exclusively)
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public MSeq<T> sort(
+		final int start,
+		final int end,
+		final Comparator<? super T> comparator
+	);
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param end the end index where to stop sorting (exclusively)
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final int start, final int end) {
+		return sort(start, end, null);
+	}
+
+	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(
+		final int start,
+		final Comparator<? super T> comparator
+	) {
+		return sort(start, length(), comparator);
+	}
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final int start) {
+		return sort(start, length(), null);
+	}
+
+	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final Comparator<? super T> comparator) {
+		return sort(0, length(), comparator);
+	}
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort() {
+		return sort(0, length(), null);
+	}
+
+	/**
+	 * Reverses the order of the elements this sequence (in place).
+	 *
+	 * @return this sequence with reverse order or the elements
+	 */
+	public default MSeq<T> reverse() {
+		for (int i = 0, j = length() - 1; i < j; ++i, --j) {
+			swap(i, j);
 		}
 		return this;
 	}

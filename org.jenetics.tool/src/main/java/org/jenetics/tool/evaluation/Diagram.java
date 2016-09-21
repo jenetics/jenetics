@@ -63,6 +63,8 @@ public class Diagram {
 		 */
 		EXECUTION_TIME("execution_time_termination"),
 
+		GENERATIO_POPULATION_SIZE("generation_population_size"),
+
 		/**
 		 * Template for fitness threshold termination diagrams.
 		 */
@@ -81,7 +83,9 @@ public class Diagram {
 		/**
 		 * Template for comparing different selectors.
 		 */
-		SELECTOR_COMPARISON("selector_comparison");
+		SELECTOR_COMPARISON("selector_comparison"),
+
+		POPULATION_SIZE("population_size");
 
 		private final String _name;
 		private final String _path;
@@ -175,7 +179,7 @@ public class Diagram {
 		final SampleSummary... summaries
 	) {
 		return concat(concat(
-				Stream.of(params.get(index).toString()),
+				Stream.of(params.get(index).toString().split(":")),
 				DoubleStream.of(summary.getPoints().get(index).toArray())
 					.mapToObj(Double::toString)),
 				Stream.of(summaries)

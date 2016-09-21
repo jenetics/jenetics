@@ -72,8 +72,4 @@ public class reflect {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
-		return (ISeq<A>)seq;
-	}
 }

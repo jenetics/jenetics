@@ -99,7 +99,7 @@ public final class require {
 	}
 
 	/**
-	 * Require the given {@code value} to be positive (&gt: 0).
+	 * Require the given {@code value} to be positive (&gt; 0).
 	 * @param value the value to check
 	 * @return the given value
 	 * @throws IllegalArgumentException if the given {@code value} is smaller than

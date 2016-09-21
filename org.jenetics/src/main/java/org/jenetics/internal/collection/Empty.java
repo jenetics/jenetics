@@ -19,9 +19,11 @@
  */
 package org.jenetics.internal.collection;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -54,6 +56,26 @@ public final class Empty {
 		@Override
 		public void set(final int index, final Object value) {
 			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+		}
+
+		@Override
+		public MSeq<Object> sort(
+			final int start,
+			final int end,
+			final Comparator<? super Object> comparator
+		) {
+			if (start > end) {
+				throw new ArrayIndexOutOfBoundsException(format(
+					"start[%d] > end[%d]", start, end
+				));
+			}
+			if (start < 0 || end > length()) {
+				throw new ArrayIndexOutOfBoundsException(format(
+					"Indexes (%d, %d) range: [%d..%d)", start, end, 0, length()
+				));
+			}
+
+			return this;
 		}
 
 		@Override

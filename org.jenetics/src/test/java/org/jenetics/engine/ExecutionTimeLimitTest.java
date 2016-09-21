@@ -36,7 +36,6 @@ import org.jenetics.Population;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2015-01-06 $</em>
  */
 public class ExecutionTimeLimitTest {
 

@@ -22,6 +22,8 @@ package org.jenetics.internal.collection;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,6 +46,26 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 	@Override
 	public Character get(final int index) {
 		return array[index];
+	}
+
+	@Override
+	public void sort(
+		final int from,
+		final int until,
+		final Comparator<? super Character> comparator
+	) {
+		if (comparator == null) {
+			Arrays.sort(array, from, until);
+		} else {
+			final Character[] chars = new Character[array.length];
+			for (int i = 0; i < array.length; ++i) {
+				chars[i] = array[i];
+			}
+			Arrays.sort(chars, from, until, comparator);
+			for (int i = 0; i < array.length; ++i) {
+				array[i] = chars[i];
+			}
+		}
 	}
 
 	@Override
