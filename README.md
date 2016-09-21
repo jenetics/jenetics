@@ -171,9 +171,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-_[All Release Notes](RELEASE_NOTES.md)_
-
-### 3.6.0
+### [3.6.0](https://github.com/jenetics/jenetics/releases/tag/v3.6.0)
 
 #### Improvements
 
@@ -189,12 +187,15 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 * [#134](https://github.com/jenetics/jenetics/issues/134): Update Gradle to 3.1.
 * [#138](https://github.com/jenetics/jenetics/issues/138): Update TestNG to 6.9.13.
+https://github.com/jenetics/jenetics/releases/tag/v3.5.1
 
-### 3.5.1
+### [3.5.1](https://github.com/jenetics/jenetics/releases/tag/v3.5.1)
 
 #### Bug fixes
 
 * [#111](https://github.com/jenetics/jenetics/issues/111): Dead lock for single-threaded executors.
+
+_[All Release Notes](RELEASE_NOTES.md)_
 
 ## Used software
 
