@@ -1,5 +1,22 @@
 ## Release notes
 
+### 3.6.0
+
+#### Improvements
+
+* [#114](https://github.com/jenetics/jenetics/issues/114): `Alterer` implementations are now able to handle `Chromosome`s of different length.
+* [#103](https://github.com/jenetics/jenetics/issues/103): Add `MSeq.sort` method.
+* [#135](https://github.com/jenetics/jenetics/issues/135): Add `Codec.decode(Genotype)` default method.
+
+#### Bug fixes
+
+* [#129](https://github.com/jenetics/jenetics/issues/129): Fix Javadoc encoding.
+
+#### Updates
+
+* [#134](https://github.com/jenetics/jenetics/issues/134): Update Gradle to 3.1.
+* [#138](https://github.com/jenetics/jenetics/issues/138): Update TestNG to 6.9.13.
+
 ### 3.5.1
 
 #### Bug fixes
