@@ -9209,7 +9209,7 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
@@ -23093,7 +23093,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 3.0
+: 3.1
 \end_layout
 
 \begin_layout Itemize
@@ -23126,11 +23126,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-3.0-bin.zip
+http://services.gradle.org/distributions/gradle-3.1-bin.zip
 \end_layout
 
 \end_inset
