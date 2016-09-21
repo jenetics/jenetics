@@ -13,8 +13,8 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
 
 ### Build time
-*  **JDK 8**: The `JAVA_HOME` variable must be set to your java installation directory.
-*  **Gradle 3.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `gradlew`, located in the base directory, for building the library.)
+*  **JDK 8**: The Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
+*  **Gradle 3.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 6.9.13**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
@@ -27,7 +27,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 
 ## Build Jenetics
 
-[![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
+![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
 
 For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.6.0/jenetics-3.6.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
