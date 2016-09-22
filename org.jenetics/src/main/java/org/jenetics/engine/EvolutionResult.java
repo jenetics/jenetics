@@ -387,6 +387,8 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
 	 * }</pre>
 	 *
+	 * @since 3.6
+	 *
 	 * @param decoder the decoder which converts the {@code Genotype} into the
 	 *        result of the problem space.
 	 * @param <T> the <em>native</em> problem result type
