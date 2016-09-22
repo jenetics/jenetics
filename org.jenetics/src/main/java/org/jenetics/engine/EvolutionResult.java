@@ -399,7 +399,7 @@ public final class EvolutionResult<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>, T>
 	Collector<EvolutionResult<G, C>, ?, T>
-	toBestResult(Function<Genotype<G>, T> decoder) {
+	toBestResult(final Function<Genotype<G>, T> decoder) {
 		requireNonNull(decoder);
 
 		return Collector.of(
