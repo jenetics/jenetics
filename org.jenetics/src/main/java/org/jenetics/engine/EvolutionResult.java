@@ -397,7 +397,7 @@ public final class EvolutionResult<
 	 * @return a collector which collects the best result of an evolution stream
 	 * @throws NullPointerException if the given {@code decoder} is {@code null}
 	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>, T>
 	Collector<EvolutionResult<G, C>, ?, T>
 	toBestResult(Function<Genotype<G>, T> decoder) {
 		requireNonNull(decoder);
@@ -434,7 +434,7 @@ public final class EvolutionResult<
 	 * @return a collector which collects the best result of an evolution stream
 	 * @throws NullPointerException if the given {@code codec} is {@code null}
 	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>, T>
 	Collector<EvolutionResult<G, C>, ?, T>
 	toBestResult(final Codec<T, G> codec) {
 		return toBestResult(codec.decoder());
