@@ -178,6 +178,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 * [#103](https://github.com/jenetics/jenetics/issues/103): Add `MSeq.sort` method.
 * [#114](https://github.com/jenetics/jenetics/issues/114): `Alterer` implementations are now able to handle `Chromosome`s of different length.
 * [#135](https://github.com/jenetics/jenetics/issues/135): Add `Codec.decode(Genotype)` default method.
+* [#140](https://github.com/jenetics/jenetics/issues/140): Additional `EvolutionResult.toBestResult` collectors.
 
 #### Bug fixes
 
