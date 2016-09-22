@@ -58,7 +58,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.6
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
