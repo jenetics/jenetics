@@ -395,10 +395,13 @@ public final class EvolutionResult<
 	 * @param <G> the gene type
 	 * @param <C> the fitness result type
 	 * @return a collector which collects the best result of an evolution stream
+	 * @throws NullPointerException if the given {@code decoder} is {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, T>
 	toBestResult(Function<Genotype<G>, T> decoder) {
+		requireNonNull(decoder);
+
 		return Collector.of(
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
@@ -407,6 +410,34 @@ public final class EvolutionResult<
 				 decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
 			)
 		);
+	}
+
+	/**
+	 * Return a collector which collects the best <em>result</em> (in the native
+	 * problem space).
+	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final ISeq<Point> route = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestResult(tsm.codec()));
+	 * }</pre>
+	 *
+	 * @since 3.6
+	 *
+	 * @param codec the problem decoder
+	 * @param <T> the <em>native</em> problem result type
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a collector which collects the best result of an evolution stream
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<EvolutionResult<G, C>, ?, T>
+	toBestResult(final Codec<T, G> codec) {
+		return toBestResult(codec.decoder());
 	}
 
 	/**
