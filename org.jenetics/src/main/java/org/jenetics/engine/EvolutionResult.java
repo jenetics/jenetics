@@ -24,6 +24,7 @@ import static org.jenetics.internal.util.Equality.eq;
 import static org.jenetics.internal.util.require.safe;
 
 import java.io.Serializable;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
@@ -333,6 +334,38 @@ public final class EvolutionResult<
 			MinMax::accept,
 			MinMax::combine,
 			mm -> safe(() -> mm.getMax().getBestPhenotype().getGenotype())
+		);
+	}
+
+	/**
+	 * Return a collector which collects the best <em>result</em> (in the native
+	 * problem space).
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final ISeq<Point> route = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
+	 * }</pre>
+	 *
+	 * @param decoder the decoder which converts the {@code Genotype} into the
+	 *        result of the problem space.
+	 * @param <T> the <em>native</em> problem result type
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a collector which collects the best result of an evolution stream
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<EvolutionResult<G, C>, ?, T>
+	toBestResult(Function<Genotype<G>, T> decoder) {
+		return Collector.of(
+			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::accept,
+			MinMax::combine,
+			mm -> safe(() ->
+				 decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
+			)
 		);
 	}
 
