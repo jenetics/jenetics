@@ -43,7 +43,7 @@ public class KnapsackExecutionTime {
 
 	private static final double GEN_BASE = pow(10, log10(100)/20.0);
 	private static final Params<Long> PARAMS = Params.of(
-		"Execution time",
+		"Generations",
 		IntStream.rangeClosed(1, 50)
 			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
 			.mapToObj(Long::new)
@@ -62,7 +62,7 @@ public class KnapsackExecutionTime {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Long, BitGene, Double> runner = Runner.of(
-			KNAPSACK,
+			duration -> KNAPSACK,
 			duration -> limit.byExecutionTime(Duration.ofMillis(duration)),
 			TRIAL_METER,
 			args

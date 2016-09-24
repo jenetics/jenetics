@@ -1,12 +1,30 @@
 ## Release notes
 
-### 3.5.1
+### [3.6.0](https://github.com/jenetics/jenetics/releases/tag/v3.6.0)
+
+#### Improvements
+
+* [#103](https://github.com/jenetics/jenetics/issues/103): Add `MSeq.sort` method.
+* [#114](https://github.com/jenetics/jenetics/issues/114): `Alterer` implementations are now able to handle `Chromosome`s of different length.
+* [#135](https://github.com/jenetics/jenetics/issues/135): Add `Codec.decode(Genotype)` default method.
+* [#140](https://github.com/jenetics/jenetics/issues/140): Additional `EvolutionResult.toBestResult` collectors.
+
+#### Bug fixes
+
+* [#129](https://github.com/jenetics/jenetics/issues/129): Fix Javadoc encoding.
+
+#### Updates
+
+* [#134](https://github.com/jenetics/jenetics/issues/134): Update Gradle to 3.1.
+* [#138](https://github.com/jenetics/jenetics/issues/138): Update TestNG to 6.9.13.
+
+### [3.5.1](https://github.com/jenetics/jenetics/releases/tag/v3.5.1)
 
 #### Bug fixes
 
 * [#111](https://github.com/jenetics/jenetics/issues/111): Dead lock for single-threaded executors.
 
-### 3.5.0
+### [3.5.0](https://github.com/jenetics/jenetics/releases/tag/v3.5.0)
 
 #### Improvement
 
@@ -21,7 +39,7 @@
 * [#94](https://github.com/jenetics/jenetics/issues/94): Inconsistent pre-condition check of `Engine.Builder.build` method.
 * [#99](https://github.com/jenetics/jenetics/issues/99): `EvolutionResult` was not completely immutable.
 
-### 3.4.0
+### [3.4.0](https://github.com/jenetics/jenetics/releases/tag/v3.4.0)
 
 #### Improvement
 
@@ -30,7 +48,7 @@
 * [#79](https://github.com/jenetics/jenetics/issues/79): Improve evolution performance measuring. Code resides now in (experimental) `org.jenetics.tool` module. 
 * [#85](https://github.com/jenetics/jenetics/issues/85): Add support for fixed-sized subsets in `PermutationChromosome` class. See also [codecs.ofSubSet(ISeq, int)](http://jenetics.io/javadoc/org.jenetics/3.4/org/jenetics/engine/codecs.html#ofSubSet-org.jenetics.util.ISeq-int-).
 
-### 3.3.0
+### [3.3.0](https://github.com/jenetics/jenetics/releases/tag/v3.3.0)
 
 #### Improvement
 
@@ -44,7 +62,7 @@
 * [#55](https://github.com/jenetics/jenetics/issues/55): Fixing example-run script for Mac.
 
 
-### 3.2.0
+### [3.2.0](https://github.com/jenetics/jenetics/releases/tag/v3.2.0)
 
 #### Improvements
 
@@ -61,7 +79,7 @@
 * [#39](https://github.com/jenetics/jenetics/issues/39): Numerical instabilities of `ProbabilitySelector`.
 * [#47](https://github.com/jenetics/jenetics/issues/47): `Engine` deadlock for long running fitness functions.
 
-### 3.1.0
+### [3.1.0](https://github.com/jenetics/jenetics/releases/tag/v3.1.0)
 
 #### Improvements
 
@@ -76,10 +94,10 @@
 * [#20](https://github.com/jenetics/jenetics/issues/20): Advance `Genotype` validity checks.
     
 
-### 3.0.1
+### [3.0.1](https://github.com/jenetics/jenetics/releases/tag/v3.0.1)
 
 * Fixes: [#2](https://github.com/jenetics/jenetics/issues/2), [#7](https://github.com/jenetics/jenetics/issues/7)
 
-### 3.0.0
+### [3.0.0](https://github.com/jenetics/jenetics/releases/tag/v3.0.0)
 
 * Rewrite of *engine* classes to make use of Java 8 Stream API.

@@ -346,7 +346,7 @@ public final class Phenotype<
 		final long generation,
 		final Function<? super Genotype<G>, C> function
 	) {
-		return of(
+		return Phenotype.<G, C>of(
 			genotype,
 			generation,
 			function,

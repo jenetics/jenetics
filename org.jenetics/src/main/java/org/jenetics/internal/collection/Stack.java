@@ -37,7 +37,7 @@ import java.util.function.Consumer;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0
  * @since 2.0
  */
 public final class Stack<T> {

@@ -19,6 +19,8 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
+
 import java.util.Random;
 
 import org.jenetics.util.MSeq;
@@ -27,7 +29,10 @@ import org.jenetics.util.RandomRegistry;
 /**
  * <p>
  * Performs a <a href="http://en.wikipedia.org/wiki/Crossover_%28genetic_algorithm%29">
- * Crossover</a> of two {@link Chromosome}.
+ * Crossover</a> of two {@link Chromosome}. This crossover implementation can
+ * handle genotypes with different length (different number of chromosomes). It
+ * is guaranteed that chromosomes with the the same (genotype) index are chosen
+ * for <em>crossover</em>.
  * </p>
  * <p>
  * The order ({@link #getOrder()}) of this Recombination implementation is two.
@@ -37,7 +42,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.6
  */
 public abstract class Crossover<
 	G extends Gene<?, G>,
@@ -63,6 +68,7 @@ public abstract class Crossover<
 		final int[] individuals,
 		final long generation
 	) {
+		assert individuals.length == 2 : "Required order of 2";
 		final Random random = RandomRegistry.getRandom();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
@@ -70,8 +76,8 @@ public abstract class Crossover<
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 
-		//Choosing the Chromosome for crossover.
-		final int chIndex = random.nextInt(gt1.length());
+		//Choosing the Chromosome index for crossover.
+		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
 		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
 		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
