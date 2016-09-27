@@ -744,7 +744,7 @@ public final class Engine<
 	 * @return a new engine builder
 	 */
 	public Builder<G, C> builder() {
-		return new Builder<>(_genotypeFactory, _fitnessFunction)
+		return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 			.alterers(_alterer)
 			.clock(_clock)
 			.executor(_executor.get())
@@ -1370,7 +1370,7 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<>(_genotypeFactory, _fitnessFunction)
+			return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)

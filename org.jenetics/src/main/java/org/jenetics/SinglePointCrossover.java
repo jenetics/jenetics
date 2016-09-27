@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 
 import java.util.Random;
@@ -51,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 3.6
  */
 public class SinglePointCrossover<
 	G extends Gene<?, G>,
@@ -81,10 +82,10 @@ public class SinglePointCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		assert that.length() == other.length();
-
 		final Random random = RandomRegistry.getRandom();
-		crossover(that, other, random.nextInt(that.length()));
+
+		final int index = random.nextInt(min(that.length(), other.length()));
+		crossover(that, other, index);
 		return 2;
 	}
 
@@ -100,7 +101,7 @@ public class SinglePointCrossover<
 				that.length(), index
 			);
 
-		that.swap(index, that.length(), other, index);
+		that.swap(index, min(that.length(), other.length()), other, index);
 	}
 
 	@Override

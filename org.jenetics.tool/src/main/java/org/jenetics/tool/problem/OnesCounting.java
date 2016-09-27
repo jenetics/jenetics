@@ -19,30 +19,64 @@
  */
 package org.jenetics.tool.problem;
 
+import java.util.function.Function;
+
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
 import org.jenetics.Genotype;
 import org.jenetics.engine.Codec;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
 import org.jenetics.util.ISeq;
 
 /**
+ * Full Ones-Counting example.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version 3.6
  * @since 3.5
  */
-public class OnesCounting {
+public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 
-	Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
-		Problem.of(
-			// Function<ISeq<BitGene>, Integer>
-			genes -> (int)genes.stream().filter(BitGene::getBit).count(),
-			Codec.of(
-				// Factory<Genotype<BitGene>>
-				Genotype.of(BitChromosome.of(20, 0.15)),
-				// Function<Genotype<BitGene>, <BitGene>>
-				gt -> gt.getChromosome().toSeq()
-			)
+	private final int _length;
+	private final double _onesProbability;
+
+	/**
+	 * Create a new Ones-Counting example with the given parameters.
+	 *
+	 * @param length the length of the ones-vector
+	 * @param onesProbability the probability of ones in the created vector
+	 */
+	public OnesCounting(final int length, final double onesProbability) {
+		_length = length;
+		_onesProbability = onesProbability;
+	}
+
+	@Override
+	public Function<ISeq<BitGene>, Integer> fitness() {
+		return genes -> (int)genes.stream().filter(BitGene::getBit).count();
+	}
+
+	@Override
+	public Codec<ISeq<BitGene>, BitGene> codec() {
+		return Codec.of(
+			Genotype.of(BitChromosome.of(_length, _onesProbability)),
+			gt -> gt.getChromosome().toSeq()
 		);
+	}
+
+	public static void main(final String[] args) {
+		final OnesCounting problem = new OnesCounting(15, 0.13);
+		final Engine<BitGene, Integer> engine = Engine.builder(problem).build();
+
+		final ISeq<BitGene> result = problem.codec().decoder().apply(
+			engine.stream()
+				.limit(10)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		System.out.println(result);
+	}
 
 }

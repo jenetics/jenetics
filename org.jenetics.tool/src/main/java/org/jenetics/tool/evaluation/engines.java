@@ -63,6 +63,7 @@ public final class engines {
 	 *
 	 * @see Knapsack#of(int, Random)
 	 *
+	 * @param populationSize the population size of the created engine
 	 * @param random the random engine used for creating the {@link Knapsack}
 	 *        problem instance
 	 * @return a new {@link Knapsack} solving evolution {@link Engine}

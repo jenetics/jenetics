@@ -246,12 +246,11 @@ public final class PermutationChromosome<T>
 		}
 
 		final int[] subset = array.shuffle(base.subset(alleles.size(), length));
-		return new PermutationChromosome<>(
-			IntStream.of(subset)
-				.mapToObj(i -> EnumGene.of(i, alleles))
-				.collect(ISeq.toISeq()),
-			true
-		);
+		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
+			.mapToObj(i -> EnumGene.<T>of(i, alleles))
+			.collect(ISeq.toISeq());
+
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	/**

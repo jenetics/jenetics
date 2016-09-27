@@ -40,7 +40,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.model.IndexedObject;
-import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -112,7 +111,7 @@ public final class EnumGene<A>
 			));
 		}
 
-		_validAlleles = reflect.cast(validAlleles);
+		_validAlleles = ISeq.upcast(validAlleles);
 		_alleleIndex = alleleIndex;
 	}
 

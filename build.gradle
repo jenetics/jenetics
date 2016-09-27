@@ -73,7 +73,7 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.11'
+	gradleVersion = '3.1'
 }
 
 task trimLineFeed(type: TrimLineFeedTask) {
@@ -91,6 +91,7 @@ task fixCodeBlock(type: FixJavadocCodeBlockTask) {
 }
 
 task alljavadoc(type: Javadoc) {
+	options.encoding = 'UTF-8'
 	def jeneticsProjects = subprojects.findAll { project ->
 		project.name.startsWith('org.jeneti') &&
 		project.name != 'org.jenetics.doc'
