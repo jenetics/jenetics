@@ -257,25 +257,14 @@ public class XOR32ShiftRandom extends Random32 {
 		 * scores.
 		 */
 		public static final List<Param> PARAMS = listOf(
-			new Param(12, 21, 5),  // p=104, w=5, f=5
-			new Param(5, 21, 12),  // p=104, w=4, f=6
-			new Param(5, 19, 13),  // p=103, w=4, f=7
-			new Param(10, 21, 9),  // p=103, w=2, f=9
-			new Param(5, 17, 13),  // p=102, w=5, f=7
-			new Param(3, 13, 7),   // p=102, w=3, f=9
-			new Param(9, 17, 6),   // p=102, w=3, f=9
-			new Param(17, 11, 13), // p=102, w=3, f=9
-			new Param(25, 9, 5),   // p=102, w=3, f=9
-			new Param(7, 13, 3),   // p=101, w=7, f=6
-			new Param(25, 13, 7),  // p=101, w=4, f=9
-			new Param(25, 9, 10),  // p=101, w=4, f=9
-			new Param(6, 17, 9),   // p=100, w=6, f=8
-			new Param(13, 17, 5),  // p=100, w=5, f=9
-			new Param(7, 21, 6),   // p=100, w=5, f=9
-			new Param(9, 21, 2),   // p=100, w=4, f=10
-			new Param(8, 23, 7),   // p=100, w=4, f=10
-			new Param(19, 9, 11),  // p=100, w=4, f=10
-			new Param(6, 21, 7)    // p=100, w=2, f=12
+			new Param(2, 21, 9),
+			new Param(3, 13, 7),
+			new Param(5, 13, 6),
+			new Param(5, 15, 17),
+			new Param(5, 17, 13),
+			new Param(5, 21, 12),
+			new Param(5, 9, 7),
+			new Param(6, 21, 7)
 		);
 
 		/**
