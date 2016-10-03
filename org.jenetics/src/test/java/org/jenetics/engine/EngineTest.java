@@ -19,11 +19,21 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
@@ -33,11 +43,44 @@ import org.testng.annotations.Test;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
+import org.jenetics.Optimize;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class EngineTest {
+
+	@Test
+	public void streamWithInitialGenotypes() throws IOException {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			x -> cos(0.5 + sin(x))*cos(x),
+			codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem)
+			.optimize(Optimize.MINIMUM)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IO.object.write(interimResult, out);
+
+		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		final EvolutionResult<DoubleGene, Double> loadedResult =
+			(EvolutionResult<DoubleGene, Double>)IO.object.read(EvolutionResult.class, in);
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream(loadedResult.getPopulation(), loadedResult.getTotalGenerations())
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
 
 	@Test(dataProvider = "generations")
 	public void generationCount(final Long generations) {
