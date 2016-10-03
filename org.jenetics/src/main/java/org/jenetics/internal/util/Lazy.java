@@ -41,10 +41,20 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	private final transient Supplier<T> _supplier;
 
 	private T _value;
-	private volatile boolean _evaluated = false;
+	private volatile boolean _evaluated;
+
+	private Lazy(
+		final T value,
+		final boolean evaluated,
+		final Supplier<T> supplier
+	) {
+		_value = value;
+		_evaluated = evaluated;
+		_supplier = supplier;
+	}
 
 	private Lazy(final Supplier<T> supplier) {
-		_supplier = requireNonNull(supplier);
+		this(null, false, requireNonNull(supplier));
 	}
 
 	@Override
@@ -101,6 +111,21 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 */
 	public static <T> Lazy<T> of(final Supplier<T> supplier) {
 		return new Lazy<>(supplier);
+	}
+
+	/**
+	 * Create a new {@code Lazy} object with the given {@code value}. This
+	 * method allows to create a <em>lazy</em> object with the given
+	 * {@code value}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param value the value this {@code Lazy} object is initialized with
+	 * @param <T> the value type
+	 * @return return a new lazy value with the given value
+	 */
+	public static <T> Lazy<T> ofValue(final T value) {
+		return new Lazy<T>(value, true, null);
 	}
 
 
