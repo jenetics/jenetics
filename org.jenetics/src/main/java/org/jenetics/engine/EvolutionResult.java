@@ -25,7 +25,6 @@ import static org.jenetics.internal.util.require.safe;
 
 import java.io.Serializable;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Hash;
@@ -101,16 +100,15 @@ public final class EvolutionResult<
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
 
-		_best = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::best);
-		_worst = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::worst);
-	}
+		_best = Lazy.of(() -> _population.stream()
+			.max(_optimize.ascending())
+			.orElse(null)
+		);
 
-	private Phenotype<G, C> best() {
-		return _population.stream().max(_optimize.ascending()).orElse(null);
-	}
-
-	private Phenotype<G, C> worst() {
-		return _population.stream().min(_optimize.ascending()).orElse(null);
+		_worst = Lazy.of(() -> _population.stream()
+			.min(_optimize.ascending())
+			.orElse(null)
+		);
 	}
 
 	/**
