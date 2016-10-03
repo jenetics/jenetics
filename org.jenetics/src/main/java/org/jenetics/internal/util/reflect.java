@@ -41,6 +41,8 @@ public class reflect {
 	 * {@code value}. The new value is set to the first found field in the
 	 * whole class hierarchy.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param target the object which owns the field
 	 * @param name the field name
 	 * @param value the new field value
