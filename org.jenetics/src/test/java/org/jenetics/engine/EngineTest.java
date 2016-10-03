@@ -26,14 +26,11 @@ import static java.lang.Math.sin;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
@@ -43,12 +40,9 @@ import org.testng.annotations.Test;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
 import org.jenetics.Optimize;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -74,6 +68,7 @@ public class EngineTest {
 		IO.object.write(interimResult, out);
 
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		@SuppressWarnings("unchecked")
 		final EvolutionResult<DoubleGene, Double> loadedResult =
 			(EvolutionResult<DoubleGene, Double>)IO.object.read(EvolutionResult.class, in);
 
