@@ -21,6 +21,9 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -30,12 +33,12 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.4
+ * @version !__version__!
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
-	private final Supplier<T> _supplier;
+	private final transient Supplier<T> _supplier;
 
 	private T _value;
 	private volatile boolean _evaluated = false;
@@ -98,6 +101,27 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 */
 	public static <T> Lazy<T> of(final Supplier<T> supplier) {
 		return new Lazy<>(supplier);
+	}
+
+
+	/**************************************************************************
+	 *  Java object serialization
+	 *************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+		out.writeObject(get());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		_value = (T)in.readObject();
+		_evaluated = true;
 	}
 
 }
