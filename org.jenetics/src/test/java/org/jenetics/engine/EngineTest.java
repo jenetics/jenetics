@@ -40,10 +40,14 @@ import org.testng.annotations.Test;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
 import org.jenetics.Optimize;
 import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -51,7 +55,32 @@ import org.jenetics.util.IO;
 public class EngineTest {
 
 	@Test
-	public void streamWithInitialGenotypes() throws IOException {
+	public void streamWithInitialGenotypes() {
+		final Problem<Integer, IntegerGene, Integer> problem = Problem.of(
+			a -> a,
+			Codec.of(
+				Genotype.of(IntegerChromosome.of(0, 1000)),
+				g -> g.getGene().getAllele()
+			)
+		);
+
+		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(0, 10).stream()
+			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(1000, 0, 1000)))
+			.map(Genotype::of)
+			.collect(ISeq.toISeq());
+
+		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
+			.build();
+
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream(genotypes)
+			.limit(0)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		System.out.println(result.getPopulation());
+	}
+
+	@Test
+	public void streamWithSerializedPopulation() throws IOException {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
@@ -74,7 +103,8 @@ public class EngineTest {
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		@SuppressWarnings("unchecked")
 		final EvolutionResult<DoubleGene, Double> loadedResult =
-			(EvolutionResult<DoubleGene, Double>)IO.object.read(EvolutionResult.class, in);
+			(EvolutionResult<DoubleGene, Double>)
+				IO.object.read(EvolutionResult.class, in);
 
 		final EvolutionResult<DoubleGene, Double> result =
 			engine.stream(
