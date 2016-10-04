@@ -64,8 +64,11 @@ public class EngineTest {
 			)
 		);
 
-		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(0, 10).stream()
-			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(1000, 0, 1000)))
+		final int genotypeCount = 10;
+		final int max = 1000;
+		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(1, genotypeCount)
+			.stream()
+			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(max, 0, max)))
 			.map(Genotype::of)
 			.collect(ISeq.toISeq());
 
@@ -73,10 +76,14 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<IntegerGene, Integer> result = engine.stream(genotypes)
-			.limit(0)
+			.limit(1)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getPopulation());
+		final long maxCount = result.getPopulation().stream()
+			.filter(pt -> pt.getFitness() == max)
+			.count();
+
+		Assert.assertTrue(maxCount >= genotypeCount);
 	}
 
 	@Test
