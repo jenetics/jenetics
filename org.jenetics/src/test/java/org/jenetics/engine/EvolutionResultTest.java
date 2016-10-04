@@ -82,6 +82,48 @@ public class EvolutionResultTest
 		};
 	}
 
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectEvolutionResult() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNull(result);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectPhenotype() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final Phenotype<DoubleGene, Double> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestPhenotype());
+
+		Assert.assertNull(result);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectGenotype() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final Genotype<DoubleGene> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestGenotype());
+
+		Assert.assertNull(result);
+	}
+
 	@Test
 	public void bestWorstPhenotype() {
 		final int length = 100;
