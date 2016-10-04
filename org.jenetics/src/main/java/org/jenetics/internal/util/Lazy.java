@@ -33,7 +33,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.7
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 	private static final long serialVersionUID = 2L;
@@ -118,7 +118,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 * method allows to create a <em>lazy</em> object with the given
 	 * {@code value}.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param value the value this {@code Lazy} object is initialized with
 	 * @param <T> the value type

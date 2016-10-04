@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 3.7
  */
 public class reflect {
 	private reflect() {require.noInstance();}
@@ -41,7 +41,7 @@ public class reflect {
 	 * {@code value}. The new value is set to the first found field in the
 	 * whole class hierarchy.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param target the object which owns the field
 	 * @param name the field name
