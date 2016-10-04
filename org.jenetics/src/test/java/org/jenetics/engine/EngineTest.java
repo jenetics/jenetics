@@ -41,6 +41,7 @@ import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
+import org.jenetics.RouletteWheelSelector;
 import org.jenetics.util.DoubleRange;
 import org.jenetics.util.IO;
 
@@ -51,17 +52,20 @@ public class EngineTest {
 
 	@Test
 	public void streamWithInitialGenotypes() throws IOException {
+		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
 			codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
 		);
 
+		// Define the GA engine.
 		final Engine<DoubleGene, Double> engine = Engine.builder(problem)
 			.optimize(Optimize.MINIMUM)
+			.offspringSelector(new RouletteWheelSelector<>())
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
-			.limit(10)
+			.limit(limit.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -72,7 +76,10 @@ public class EngineTest {
 		final EvolutionResult<DoubleGene, Double> loadedResult =
 			(EvolutionResult<DoubleGene, Double>)IO.object.read(EvolutionResult.class, in);
 
-		final EvolutionResult<DoubleGene, Double> result = engine.stream(loadedResult.getPopulation(), loadedResult.getTotalGenerations())
+		final EvolutionResult<DoubleGene, Double> result =
+			engine.stream(
+				loadedResult.getPopulation(),
+				loadedResult.getTotalGenerations())
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}
