@@ -64,7 +64,7 @@ public class Args {
 	 */
 	public Optional<Integer> intArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Integer::new));
+			.flatMap(s -> parse(s, Integer::valueOf));
 	}
 
 	/**
