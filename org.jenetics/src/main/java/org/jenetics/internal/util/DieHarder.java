@@ -103,7 +103,11 @@ public final class DieHarder {
 	{
 		final Random random;
 		try {
-			random = (Random)Class.forName(randomName).newInstance();
+			random = (Random)Class
+				.forName(randomName)
+				.getConstructor()
+				.newInstance();
+
 			printt(
 				"Testing: %s (%s)",
 				randomName,
