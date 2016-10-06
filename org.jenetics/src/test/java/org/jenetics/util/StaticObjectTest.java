@@ -30,10 +30,7 @@ import org.jenetics.internal.util.require;
 public class StaticObjectTest {
 
 	@Test
-	public void instantiation()
-		throws InstantiationException, IllegalAccessException
-	{
-
+	public void instantiation() throws Exception {
 		try {
 			new SomeStaticObject();
 			Assert.assertFalse(true);
@@ -47,7 +44,7 @@ public class StaticObjectTest {
 		}
 
 		try {
-			SomeStaticObject.class.newInstance();
+			SomeStaticObject.class.getConstructor().newInstance();
 			Assert.assertFalse(true);
 		} catch (AssertionError e) {
 			final String expected = String.format(
