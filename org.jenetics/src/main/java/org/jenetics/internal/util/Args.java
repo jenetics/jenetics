@@ -86,7 +86,7 @@ public class Args {
 	 */
 	public Optional<Double> doubleArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Double::new));
+			.flatMap(s -> parse(s, Double::valueOf));
 	}
 
 	private static <T> Optional<T> parse(
