@@ -66,7 +66,7 @@ public class ArrayMIteratorTest {
 
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
-			Assert.assertEquals(value, new Integer(111));
+			Assert.assertEquals(value, Integer.valueOf(111));
 		}
 
 		int count = 0;
@@ -80,7 +80,7 @@ public class ArrayMIteratorTest {
 		Assert.assertEquals(count, proxy.length());
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
-			Assert.assertEquals(value, new Integer(222));
+			Assert.assertEquals(value, Integer.valueOf(222));
 		}
 	}
 
@@ -93,7 +93,7 @@ public class ArrayMIteratorTest {
 
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
-			Assert.assertEquals(value, new Integer(111));
+			Assert.assertEquals(value, Integer.valueOf(111));
 		}
 
 		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
@@ -111,7 +111,7 @@ public class ArrayMIteratorTest {
 		Assert.assertEquals(count, proxy.length());
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer value = proxy.get(i);
-			Assert.assertEquals(value, new Integer(222));
+			Assert.assertEquals(value, Integer.valueOf(222));
 		}
 	}
 
