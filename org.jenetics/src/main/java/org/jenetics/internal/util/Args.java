@@ -75,7 +75,7 @@ public class Args {
 	 */
 	public Optional<Long> longArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Long::new));
+			.flatMap(s -> parse(s, Long::valueOf));
 	}
 
 	/**
