@@ -23,6 +23,7 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.7
+ * @version !__version__!
  */
 public class reflect {
 	private reflect() {require.noInstance();}
@@ -116,8 +117,12 @@ public class reflect {
 	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
-			return Optional.of((T)type.newInstance());
-		} catch (InstantiationException | IllegalAccessException e) {
+			return Optional.of((T)type.getConstructor().newInstance());
+		} catch (NoSuchMethodException |
+				InvocationTargetException |
+				InstantiationException |
+				IllegalAccessException e)
+		{
 			return Optional.empty();
 		}
 	}
