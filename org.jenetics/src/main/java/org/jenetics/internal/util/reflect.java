@@ -22,20 +22,71 @@ package org.jenetics.internal.util;
 import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Helper methods concerning Java reflection.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version !__version__!
  */
 public class reflect {
 	private reflect() {require.noInstance();}
+
+	/**
+	 * Reflectively sets the field with the given {@code name} to the new
+	 * {@code value}. The new value is set to the first found field in the
+	 * whole class hierarchy.
+	 *
+	 * @since 3.7
+	 *
+	 * @param target the object which owns the field
+	 * @param name the field name
+	 * @param value the new field value
+	 * @throws IllegalArgumentException if no field with the given {@code name}
+	 *         can be found or it's not allowed to set the field
+	 */
+	public static void setField(
+		final Object target,
+		final String name,
+		final Object value
+	) {
+		final Field field = findField(target.getClass(), name)
+			.orElseThrow(() -> new IllegalArgumentException(name + " not found."));
+
+		try {
+			field.setAccessible(true);
+			field.set(target, value);
+		} catch (IllegalAccessException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	private static Optional<Field> findField(
+		final Class<?> cls,
+		final String name
+	) {
+		return allFields(cls)
+			.filter(f -> f.getName().equals(name))
+			.findFirst();
+	}
+
+	private static Stream<Field> allFields(final Class<?> cls) {
+		return allClasses(cls).flatMap(c -> Stream.of(c.getDeclaredFields()));
+	}
+
+	private static Stream<Class<?>> allClasses(final Class<?> cls) {
+		return Stream.concat(
+			Stream.of(cls),
+			Optional.ofNullable(cls.getSuperclass())
+				.map(reflect::allClasses)
+				.orElse(Stream.empty())
+		);
+	}
 
 	/**
 	 * Return all declared classes of the given class, with arbitrary nested
@@ -66,8 +117,12 @@ public class reflect {
 	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
-			return Optional.of((T)type.newInstance());
-		} catch (InstantiationException | IllegalAccessException e) {
+			return Optional.of((T)type.getConstructor().newInstance());
+		} catch (NoSuchMethodException |
+				InvocationTargetException |
+				InstantiationException |
+				IllegalAccessException e)
+		{
 			return Optional.empty();
 		}
 	}

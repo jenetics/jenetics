@@ -19,9 +19,7 @@
  */
 package org.jenetics.internal.util;
 
-import java.io.Serializable;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import org.testng.annotations.Test;
 
@@ -39,9 +37,7 @@ public class LazyTest extends ObjectTester<Lazy<Double>> {
 	protected Factory<Lazy<Double>> factory() {
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
-			final Double value = random.nextDouble();
-
-			return Lazy.of((Supplier<Double> & Serializable)() -> value);
+			return Lazy.of(random::nextDouble);
 		};
 	}
 

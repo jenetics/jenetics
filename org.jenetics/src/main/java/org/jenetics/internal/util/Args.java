@@ -64,7 +64,7 @@ public class Args {
 	 */
 	public Optional<Integer> intArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Integer::new));
+			.flatMap(s -> parse(s, Integer::valueOf));
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Args {
 	 */
 	public Optional<Long> longArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Long::new));
+			.flatMap(s -> parse(s, Long::valueOf));
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class Args {
 	 */
 	public Optional<Double> doubleArg(final String name) {
 		return arg(name)
-			.flatMap(s -> parse(s, Double::new));
+			.flatMap(s -> parse(s, Double::valueOf));
 	}
 
 	private static <T> Optional<T> parse(
