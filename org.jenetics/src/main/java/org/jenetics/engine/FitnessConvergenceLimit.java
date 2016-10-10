@@ -98,4 +98,38 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 		}
 	}
 
+	final static class ModInt extends Number {
+		private final int _modulus;
+		private final int _value;
+
+		ModInt(final int modulus, final int value) {
+			_modulus = modulus;
+			_value = value;
+		}
+
+		ModInt add(final int value) {
+			return new ModInt(_modulus, (value + _value)%_modulus);
+		}
+
+		@Override
+		public int intValue() {
+			return _value;
+		}
+
+		@Override
+		public long longValue() {
+			return _value;
+		}
+
+		@Override
+		public float floatValue() {
+			return _value;
+		}
+
+		@Override
+		public double doubleValue() {
+			return _value;
+		}
+	}
+
 }
