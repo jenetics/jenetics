@@ -19,6 +19,8 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiPredicate;
@@ -63,14 +65,18 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			++_generation;
 		}
 
-		return _generation < _longBuffer.length() ||
+		return _generation < _longBuffer.capacity() ||
 			_limit.test(_shortBuffer.doubleMoments(), _longBuffer.doubleMoments());
 	}
 
-	private static final class Buffer implements DoubleConsumer {
+	/**
+	 *
+	 */
+	static final class Buffer implements DoubleConsumer {
 		private final double[] _buffer;
 
-		private int _next;
+		private int _pos;
+		private int _length;
 
 		Buffer(final int length) {
 			_buffer = new double[length];
@@ -78,14 +84,30 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 
 		@Override
 		public void accept(final double value) {
-			_buffer[_next++] = value;
-			if (_next == _buffer.length) {
-				_next = 0;
-			}
+			_buffer[_pos] = value;
+
+			_pos = (_pos + 1)%_buffer.length;
+			_length = max(_length + 1, _buffer.length);
+		}
+
+		public int capacity() {
+			return _buffer.length;
 		}
 
 		public int length() {
-			return _buffer.length;
+			return _length;
+		}
+
+		public DoubleMoments doubleMoments(final int windowSize) {
+			final int length = min(windowSize, _length);
+			final DoubleMomentStatistics statistics = new DoubleMomentStatistics();
+
+			for (int i = 0; i < length; ++i) {
+				final int index = (_pos - _length + i)%_buffer.length;
+				statistics.accept(_buffer[index]);
+			}
+
+			return DoubleMoments.of(statistics);
 		}
 
 		public DoubleMoments doubleMoments() {
@@ -95,40 +117,6 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			}
 
 			return DoubleMoments.of(statistics);
-		}
-	}
-
-	final static class ModInt extends Number {
-		private final int _modulus;
-		private final int _value;
-
-		ModInt(final int modulus, final int value) {
-			_modulus = modulus;
-			_value = value;
-		}
-
-		ModInt add(final int value) {
-			return new ModInt(_modulus, (value + _value)%_modulus);
-		}
-
-		@Override
-		public int intValue() {
-			return _value;
-		}
-
-		@Override
-		public long longValue() {
-			return _value;
-		}
-
-		@Override
-		public float floatValue() {
-			return _value;
-		}
-
-		@Override
-		public double doubleValue() {
-			return _value;
 		}
 	}
 
