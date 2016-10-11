@@ -58,7 +58,8 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	 * @throws IllegalArgumentException if {@code shortFilterSize < 1} or
 	 *         {@code longFilterSize < 2} or
 	 *         {@code shortFilterSize >= longFilterSize}
-	 * @throws NullPointerException if the {@code limit} predicate is {@code null}
+	 * @throws NullPointerException if the {@code limit} predicate is
+	 *         {@code null}
 	 */
 	FitnessConvergenceLimit(
 		final int shortFilterSize,

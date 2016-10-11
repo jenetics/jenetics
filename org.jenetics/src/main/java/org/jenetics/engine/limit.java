@@ -38,7 +38,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
 public final class limit {
 	private limit() {require.noInstance();}
@@ -189,13 +189,55 @@ public final class limit {
 		return new FitnessThresholdLimit<>(threshold);
 	}
 
-
+	/**
+	 * Return a predicate, which will truncate the evolution stream if the
+	 * fitness is converging. Two filters of different lengths are used to
+	 * smooth the best fitness across the generations. When the smoothed best
+	 * fitness from the long filter is less than a user-specified percentage
+	 * away from the smoothed best fitness from the short filter, the fitness is
+	 * deemed as converged and the evolution terminates.
+	 *
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
+	 *     .limit(byFitnessConvergence(5, 15, 0.01))
+	 *     .collect(toBestPhenotype());
+	 * }</pre>
+	 *
+	 * In the given example, the evolution stream stops, if the difference of the
+	 * mean values of the long and short filter is less than 1%. The short
+	 * filter calculates the mean of the best fitness values of the last 5
+	 * generations. The long filter uses the best fitness values of the last 15
+	 * generations.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param shortFilterSize the size of the short filter
+	 * @param longFilterSize the size of the long filter. The long filter size
+	 *        also determines the minimum number of generations of the evolution
+	 *        stream.
+	 * @param epsilon the maximal relative distance of the mean value between
+	 *        the short and the long filter. The {@code epsilon} must within the
+	 *        range of {@code [0..1]}.
+	 * @param <N> the fitness type
+	 * @return a new fitness convergence strategy
+	 * @throws IllegalArgumentException if {@code shortFilterSize < 1} ||
+	 *         {@code longFilterSize < 2} ||
+	 *         {@code shortFilterSize >= longFilterSize}
+	 * @throws IllegalArgumentException if {@code epsilon} is not in the range
+	 *         of {@code [0..1]}
+	 */
 	public static <N extends Number & Comparable<? super N>>
 	Predicate<EvolutionResult<?, N>> byFitnessConvergence(
 		final int shortFilterSize,
 		final int longFilterSize,
 		final double epsilon
 	) {
+		if (epsilon < 0.0 || epsilon > 1.0) {
+			throw new IllegalArgumentException(format(
+				"The given epsilon is not in the range [0, 1]: %f", epsilon
+			));
+		}
+
 		return new FitnessConvergenceLimit<N>(
 			shortFilterSize,
 			longFilterSize,
