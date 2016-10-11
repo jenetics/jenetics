@@ -20,6 +20,7 @@
 package org.jenetics.engine;
 
 import static java.lang.Math.min;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiPredicate;
@@ -71,7 +72,12 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	}
 
 	/**
+	 * Ring buffer for {@code double} values. If the buffer is full, old values
+	 * are overridden.
 	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	static final class Buffer implements DoubleConsumer {
 		private final double[] _buffer;
@@ -80,9 +86,20 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 		private int _length;
 		private long _samples;
 
+		/**
+		 * Create a new double ring-buffer.
+		 *
+		 * @param capacity the ring buffer capacity.
+		 * @throws IllegalArgumentException if {@code capacity < 1}
+		 */
+		Buffer(final int capacity) {
+			if (capacity < 1) {
+				throw new IllegalArgumentException(format(
+					"Buffer capacity must be greater than one: %d", capacity
+				));
+			}
 
-		Buffer(final int length) {
-			_buffer = new double[length];
+			_buffer = new double[capacity];
 		}
 
 		@Override
@@ -94,18 +111,49 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			++_samples;
 		}
 
+		/**
+		 * Return the capacity of the buffer.
+		 *
+		 * @return the capacity of the buffer
+		 */
 		public int capacity() {
 			return _buffer.length;
 		}
 
+		/**
+		 * Return the number of buffer elements.
+		 *
+		 * @return the number of buffer elements
+		 */
 		public int length() {
 			return _length;
 		}
 
+		/**
+		 * Return the overall number of elements the buffer has seen.
+		 *
+		 * @return the overall number of elements the buffer has seen
+		 */
 		public long samples() {
 			return _samples;
 		}
 
+		/**
+		 * Test if the buffer is full.
+		 *
+		 * @return {@code true} if the buffer is full, {@code false} otherwise
+		 */
+		public boolean isFull() {
+			return _length == _buffer.length;
+		}
+
+		/**
+		 * Return a stream of the last ({@code windowSize}) buffer values. The
+		 * size if the stream is {@code min(windowSize, length())}.
+		 *
+		 * @param windowSize the number of stream elements
+		 * @return a double value stream
+		 */
 		public DoubleStream stream(final int windowSize) {
 			final int length = min(windowSize, _length);
 
@@ -114,7 +162,24 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 				.mapToDouble(i -> _buffer[i]);
 		}
 
+		/**
+		 * Return the double stream of the buffer values.
+		 *
+		 * @return the double stream of the buffer values
+		 */
+		public DoubleStream stream() {
+			return stream(_length);
+		}
 
+		/**
+		 * Return the double moment statistics of the last {@code windowSize}
+		 * buffer values.
+		 *
+		 * @param windowSize the number of the last double values the statistics
+		 *        consists of
+		 * @return the double moment statistics of the last {@code windowSize}
+		 *         buffer values
+		 */
 		public DoubleMoments doubleMoments(final int windowSize) {
 			return DoubleMoments.of(
 				stream(windowSize).collect(
@@ -123,28 +188,17 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 					DoubleMomentStatistics::combine
 				)
 			);
-
-			/*
-			final int length = min(windowSize, _length);
-			final DoubleMomentStatistics statistics = new DoubleMomentStatistics();
-
-			for (int i = length; --i >= 0;) {
-				final int index = (_pos - 1 + _buffer.length - i)%_buffer.length;
-				statistics.accept(_buffer[index]);
-			}
-
-			return DoubleMoments.of(statistics);
-			*/
 		}
 
+		/**
+		 * Return the double moment statistics of the buffer values.
+		 *
+		 * @return the double moment statistics of the buffer values
+		 */
 		public DoubleMoments doubleMoments() {
-			final DoubleMomentStatistics statistics = new DoubleMomentStatistics();
-			for (int i = _buffer.length; --i >=0;) {
-				statistics.accept(_buffer[i]);
-			}
-
-			return DoubleMoments.of(statistics);
+			return doubleMoments(_length);
 		}
+
 	}
 
 }
