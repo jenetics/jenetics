@@ -48,8 +48,6 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	private final Buffer _buffer;
 	private final BiPredicate<DoubleMoments, DoubleMoments> _limit;
 
-	private long _generation;
-
 	/**
 	 * Create a new fitness-convergence limit strategy object.
 	 *
@@ -106,6 +104,7 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			_buffer.doubleMoments(_longFilterSize)
 		);
 	}
+
 
 	/**
 	 * Ring buffer for {@code double} values. If the buffer is full, old values

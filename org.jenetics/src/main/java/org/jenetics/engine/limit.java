@@ -19,6 +19,7 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.abs;
 import static java.lang.String.format;
 
 import java.time.Clock;
@@ -188,5 +189,18 @@ public final class limit {
 		return new FitnessThresholdLimit<>(threshold);
 	}
 
+
+	public static <N extends Number & Comparable<? super N>>
+	Predicate<EvolutionResult<?, N>> byFitnessConvergence(
+		final int shortFilterSize,
+		final int longFilterSize,
+		final double epsilon
+	) {
+		return new FitnessConvergenceLimit<N>(
+			shortFilterSize,
+			longFilterSize,
+			(s, l) -> abs(s.getMean() - l.getMean())/l.getMean() >= epsilon
+		);
+	}
 
 }
