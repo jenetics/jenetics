@@ -34,6 +34,25 @@ import org.jenetics.stat.DoubleMoments;
 public class FitnessConvergenceLimitTest {
 
 	@Test
+	public void bufferLength() {
+		final long seed = 0xdeadbeef;
+		final int capacity = 10;
+
+		final Random random = new Random(seed);
+		final Buffer buffer = new Buffer(capacity);
+
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			buffer.accept(random.nextDouble());
+			Assert.assertEquals(buffer.length(), i + 1);
+		}
+
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			buffer.accept(random.nextDouble());
+			Assert.assertEquals(buffer.length(), buffer.capacity());
+		}
+	}
+
+	@Test
 	public void stream() {
 		final long seed = 0xdeadbeef;
 		final int capacity = 10;
@@ -42,17 +61,20 @@ public class FitnessConvergenceLimitTest {
 		final Buffer buffer = new Buffer(capacity);
 
 		for (int i = 0; i < buffer.capacity(); ++i) {
-			final double value = random.nextDouble()*1000;
+			final double value = random.nextDouble();
 			buffer.accept(value);
-
-			buffer.intStream(1000).forEach(j -> System.out.print("" + j + ", "));
-			System.out.println();
 		}
 
+		random.setSeed(seed);
+		buffer.stream().forEach(d -> Assert.assertEquals(d, random.nextDouble()));
+
+		random.setSeed(seed);
+		for (int i = 0; i < 5; ++i) random.nextDouble();
+		buffer.stream(5).forEach(d -> Assert.assertEquals(d, random.nextDouble()));
 	}
 
 	@Test
-	public void buffer() {
+	public void bufferDoubleMoments() {
 		final long seed = 0xdeadbeef;
 		final int capacity = 10;
 
