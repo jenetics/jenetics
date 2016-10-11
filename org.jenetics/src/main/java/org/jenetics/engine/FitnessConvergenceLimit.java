@@ -41,8 +41,9 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	implements Predicate<EvolutionResult<?, N>>
 {
 
-	private final Buffer _shortBuffer;
-	private final Buffer _longBuffer;
+	private final int _shortFilterSize;
+	private final int _longFilterSize;
+	private final Buffer _buffer;
 	private final BiPredicate<DoubleMoments, DoubleMoments> _limit;
 
 	private long _generation;
@@ -52,8 +53,29 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 		final int longFilterSize,
 		final BiPredicate<DoubleMoments, DoubleMoments> limit
 	) {
-		_shortBuffer = new Buffer(shortFilterSize);
-		_longBuffer = new Buffer(longFilterSize);
+		if (shortFilterSize < 1) {
+			throw new IllegalArgumentException(format(
+				"The short filter size must be greater than one: %d",
+				shortFilterSize
+			));
+		}
+		if (longFilterSize < 2) {
+			throw new IllegalArgumentException(format(
+				"The long filter size must be greater than two: %d",
+				shortFilterSize
+			));
+		}
+		if (shortFilterSize >= longFilterSize) {
+			throw new IllegalArgumentException(format(
+				"The long filter size must be greater than the short " +
+				"filter size: %d <= %d",
+				longFilterSize, shortFilterSize
+			));
+		}
+
+		_shortFilterSize = shortFilterSize;
+		_longFilterSize = longFilterSize;
+		_buffer = new Buffer(longFilterSize);
 		_limit = requireNonNull(limit);
 	}
 
@@ -62,13 +84,13 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 		final Number fitness = result.getBestFitness();
 
 		if (fitness != null) {
-			_shortBuffer.accept(fitness.doubleValue());
-			_longBuffer.accept(fitness.doubleValue());
-			++_generation;
+			_buffer.accept(fitness.doubleValue());
 		}
 
-		return _generation < _longBuffer.capacity() ||
-			_limit.test(_shortBuffer.doubleMoments(), _longBuffer.doubleMoments());
+		return !_buffer.isFull() || _limit.test(
+			_buffer.doubleMoments(_shortFilterSize),
+			_buffer.doubleMoments(_longFilterSize)
+		);
 	}
 
 	/**
