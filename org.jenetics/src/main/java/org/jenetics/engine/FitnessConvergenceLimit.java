@@ -33,6 +33,8 @@ import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.DoubleMoments;
 
 /**
+ * Implementation of the fitness-convergence limit strategy object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -48,6 +50,18 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 
 	private long _generation;
 
+	/**
+	 * Create a new fitness-convergence limit strategy object.
+	 *
+	 * @param shortFilterSize the size of the short moments filter
+	 * @param longFilterSize the size of the long moments filter
+	 * @param limit the predicate which decides whether to stop or proceed the
+	 *        evolution stream
+	 * @throws IllegalArgumentException if {@code shortFilterSize < 1} or
+	 *         {@code longFilterSize < 2} or
+	 *         {@code shortFilterSize >= longFilterSize}
+	 * @throws NullPointerException if the {@code limit} predicate is {@code null}
+	 */
 	FitnessConvergenceLimit(
 		final int shortFilterSize,
 		final int longFilterSize,
