@@ -34,6 +34,24 @@ import org.jenetics.stat.DoubleMoments;
 public class FitnessConvergenceLimitTest {
 
 	@Test
+	public void stream() {
+		final long seed = 0xdeadbeef;
+		final int capacity = 10;
+
+		final Random random = new Random(seed);
+		final Buffer buffer = new Buffer(capacity);
+
+		for (int i = 0; i < buffer.capacity(); ++i) {
+			final double value = random.nextDouble()*1000;
+			buffer.accept(value);
+
+			buffer.intStream(1000).forEach(j -> System.out.print("" + j + ", "));
+			System.out.println();
+		}
+
+	}
+
+	@Test
 	public void buffer() {
 		final long seed = 0xdeadbeef;
 		final int capacity = 10;

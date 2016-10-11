@@ -19,13 +19,14 @@
  */
 package org.jenetics.engine;
 
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiPredicate;
 import java.util.function.DoubleConsumer;
 import java.util.function.Predicate;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import org.jenetics.stat.DoubleMomentStatistics;
 import org.jenetics.stat.DoubleMoments;
@@ -105,18 +106,35 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			return _samples;
 		}
 
+		public DoubleStream stream(final int windowSize) {
+			final int length = min(windowSize, _length);
+
+			return IntStream.range(0, length)
+				.map(i -> (_pos + _buffer.length - length + i)%_buffer.length)
+				.mapToDouble(i -> _buffer[i]);
+		}
+
+
 		public DoubleMoments doubleMoments(final int windowSize) {
+			return DoubleMoments.of(
+				stream(windowSize).collect(
+					DoubleMomentStatistics::new,
+					DoubleMomentStatistics::accept,
+					DoubleMomentStatistics::combine
+				)
+			);
+
+			/*
 			final int length = min(windowSize, _length);
 			final DoubleMomentStatistics statistics = new DoubleMomentStatistics();
 
-			for (int i = _length; --i >= 0;) {
+			for (int i = length; --i >= 0;) {
 				final int index = (_pos - 1 + _buffer.length - i)%_buffer.length;
-				//final int index = (_pos - length + i)%_buffer.length;
-				//System.out.print("" + index + ", ");
 				statistics.accept(_buffer[index]);
 			}
 
 			return DoubleMoments.of(statistics);
+			*/
 		}
 
 		public DoubleMoments doubleMoments() {
