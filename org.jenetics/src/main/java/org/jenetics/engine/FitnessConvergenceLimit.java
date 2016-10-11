@@ -77,6 +77,8 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 
 		private int _pos;
 		private int _length;
+		private long _samples;
+
 
 		Buffer(final int length) {
 			_buffer = new double[length];
@@ -87,7 +89,8 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			_buffer[_pos] = value;
 
 			_pos = (_pos + 1)%_buffer.length;
-			_length = max(_length + 1, _buffer.length);
+			_length = min(_length + 1, _buffer.length);
+			++_samples;
 		}
 
 		public int capacity() {
@@ -98,12 +101,18 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			return _length;
 		}
 
+		public long samples() {
+			return _samples;
+		}
+
 		public DoubleMoments doubleMoments(final int windowSize) {
 			final int length = min(windowSize, _length);
 			final DoubleMomentStatistics statistics = new DoubleMomentStatistics();
 
-			for (int i = 0; i < length; ++i) {
-				final int index = (_pos - _length + i)%_buffer.length;
+			for (int i = _length; --i >= 0;) {
+				final int index = (_pos - 1 + _buffer.length - i)%_buffer.length;
+				//final int index = (_pos - length + i)%_buffer.length;
+				//System.out.print("" + index + ", ");
 				statistics.accept(_buffer[index]);
 			}
 
