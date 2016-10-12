@@ -20,6 +20,7 @@
 package org.jenetics.engine;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.max;
 import static java.lang.String.format;
 
 import java.time.Clock;
@@ -28,6 +29,7 @@ import java.util.function.Predicate;
 
 import org.jenetics.internal.util.require;
 
+import org.jenetics.stat.DoubleMoments;
 import org.jenetics.util.NanoClock;
 
 /**
@@ -238,11 +240,17 @@ public final class limit {
 			));
 		}
 
-		return new FitnessConvergenceLimit<N>(
+		return new FitnessConvergenceLimit<>(
 			shortFilterSize,
 			longFilterSize,
-			(s, l) -> abs(s.getMean() - l.getMean())/l.getMean() >= epsilon
+			(s, l) -> eps(s, l) >= epsilon
 		);
+	}
+
+	// Calculate the relative mean difference between short and long filter.
+	private static double eps(final DoubleMoments s, final DoubleMoments l) {
+		final double div = max(abs(s.getMean()), abs(l.getMean()));
+		return abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
 	}
 
 }
