@@ -137,7 +137,7 @@ public class FitnessConvergenceLimitTest {
 			++g;
 		}
 
-		Assert.assertEquals(g, 72);
+		Assert.assertEquals(g, 69);
 	}
 
 	private static EvolutionResult<DoubleGene, Double> result(
