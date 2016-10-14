@@ -7,7 +7,7 @@
 ################################################################################
 # Output definition
 ################################################################################
-set terminal svg size 700, 400 enhanced fname "Times Roman" fsize 11
+set terminal svg size 700, 500 fname "Serif" fsize 16
 set output output
 
 set grid
@@ -19,8 +19,8 @@ set autoscale z
 #set xrange[10:9000]
 #set yrange[10:9000]
 
-set xlabel "Generation" font ",12"
-set ylabel "Population size" font ",12"
+set xlabel "Generation"
+set ylabel "Population size"
 set zlabel "Fitness" rotate left
 
 set bmargin

@@ -7,7 +7,7 @@
 ################################################################################
 # Output definition
 ################################################################################
-set terminal svg size 700, 400 enhanced fname "Times Roman" fsize 11
+set terminal svg size 700, 500 fname "Serif" fsize 16
 set output output
 
 set grid
@@ -15,7 +15,7 @@ set grid
 set logscale x
 set autoscale y
 set ylabel "Fitness"
-set xlabel "Generation" font ",12"
+set xlabel "Generation"
 set bmargin
 set origin 0.0, 0.0
 set tmargin 1
