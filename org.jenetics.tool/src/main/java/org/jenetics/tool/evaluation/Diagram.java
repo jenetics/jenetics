@@ -63,12 +63,17 @@ public class Diagram {
 		 */
 		EXECUTION_TIME("execution_time_termination"),
 
-		GENERATIO_POPULATION_SIZE("generation_population_size"),
+		GENERATION_POPULATION_SIZE("generation_population_size"),
 
 		/**
 		 * Template for fitness threshold termination diagrams.
 		 */
 		FITNESS_THRESHOLD("fitness_threshold_termination"),
+
+		/**
+		 * Template for fitness threshold termination diagrams.
+		 */
+		FITNESS_CONVERGENCE("fitness_convergence_termination"),
 
 		/**
 		 * Template for fixed generation termination diagrams.

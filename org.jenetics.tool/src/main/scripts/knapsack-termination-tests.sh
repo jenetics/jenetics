@@ -13,10 +13,11 @@ read_link() {
 }
 
 TESTS=(
-	"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
-	"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
-	"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
-	"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
+	#"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
+	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination.xml"
+	#"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
+	#"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
+	#"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
