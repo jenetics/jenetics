@@ -18360,7 +18360,7 @@ A termination method that stops the evolution when the best fitness in the
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -18427,15 +18427,11 @@ easily
  achieved.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status open
-
 \begin_layout Subsubsection
 Fitness convergence
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 A termination method that stops the evolution when the fitness is deemed
  as converged.
  Two filters of different lengths are used to smooth the best fitness across
@@ -18444,6 +18440,124 @@ A termination method that stops the evolution when the fitness is deemed
 ed percentage away from the smoothed best fitness from the short filter,
  the fitness is deemed as converged and the evolution terminates.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-convergence-diagram"
+
+\end_inset
+
+Fitness threshold termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-convergence-diagram-1"
+
+\end_inset
+
+Fitness threshold termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fitness-convergence-diagram-2"
+
+\end_inset
+
+Fitness threshold termination
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
 
 \begin_layout Subsubsection
 Population convergence
