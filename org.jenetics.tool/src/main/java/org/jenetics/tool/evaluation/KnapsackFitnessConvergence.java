@@ -41,18 +41,11 @@ import org.jenetics.util.ISeq;
  */
 public class KnapsackFitnessConvergence {
 
-	private static final int MAX = 10;
-	private static final double FACTOR = 1000000;
-
-	private static final double GEN_BASE = pow(10, log10(100)/30.0);
 	private static final Params<Double> PARAMS = Params.of(
 		"Convergence epsilon",
-		IntStream.rangeClosed(1, MAX)
+		IntStream.rangeClosed(1, 10)
 			.mapToObj(i -> Math.pow(10, -i))
 			.collect(ISeq.toISeq())
-			//.copy()
-			//.sort(Comparator.comparingDouble(Double::doubleValue).reversed())
-			//.toISeq()
 	);
 
 	private static final Supplier<TrialMeter<Double>>
@@ -66,19 +59,15 @@ public class KnapsackFitnessConvergence {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		System.out.println(PARAMS);
-
-
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
-			epsilon -> limit.byFitnessConvergence(50, 150, epsilon),
+			epsilon -> limit.byFitnessConvergence(100, 300, epsilon),
 			TRIAL_METER,
 			args
 		);
 
 		runner.start();
 		runner.join();
-
 	}
 
 }
