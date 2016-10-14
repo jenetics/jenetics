@@ -53,7 +53,7 @@ set origin 0.0, 0.0
 set bmargin
 set tmargin 0.5
 set format y "%5.1f"
-set ytics 0.5
+set ytics 1
 
 plot data using 1:(0.001*$11) with lines lt rgb "blue" notitle axes x1y1
 
