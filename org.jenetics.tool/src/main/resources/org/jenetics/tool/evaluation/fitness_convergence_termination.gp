@@ -19,6 +19,9 @@ set logscale x
 set key right bottom
 set style fill empty
 
+set label 1 "Short filter size: ${PARAM_0}" at graph 0.06,0.9 left
+set label 2 "Long filter size:  ${PARAM_1}" at graph 0.06,0.8 left
+
 set multiplot
 set size 1, 0.60
 set origin 0, 0.40
@@ -40,6 +43,8 @@ plot data using 1:7:9:10:8 with candlesticks lt rgb "red" notitle axes x1y1 whis
 ################################################################################
 
 unset title
+unset label 1
+unset label 2
 unset logscale y
 set logscale x
 
