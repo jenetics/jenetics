@@ -19,14 +19,12 @@
  */
 package org.jenetics.tool.evaluation;
 
-import static java.lang.Math.log10;
-import static java.lang.Math.max;
-import static java.lang.Math.pow;
 import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
-import java.util.Comparator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+
+import org.jenetics.internal.util.Args;
 
 import org.jenetics.BitGene;
 import org.jenetics.engine.limit;
@@ -59,9 +57,13 @@ public class KnapsackFitnessConvergence {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
+		final Args arguments = Args.of(args);
+		final ISeq<Integer> sizes = arguments.intArgs("params");
+		System.out.println(sizes);
+
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
-			epsilon -> limit.byFitnessConvergence(100, 300, epsilon),
+			epsilon -> limit.byFitnessConvergence(sizes.get(0), sizes.get(1), epsilon),
 			TRIAL_METER,
 			args
 		);

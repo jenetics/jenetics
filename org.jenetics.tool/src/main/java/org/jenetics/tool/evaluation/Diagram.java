@@ -240,7 +240,7 @@ public class Diagram {
 
 	private static Map<String, String> params(final Path path) {
 		final List<String> parts = Stream
-			.of(path.getFileName().toString().split("-"))
+			.of(path.getFileName().toString().split("@"))
 			.map(s -> s.split("\\.")[0])
 			.skip(2)
 			.collect(Collectors.toList());

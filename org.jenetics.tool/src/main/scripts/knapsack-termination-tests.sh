@@ -13,11 +13,13 @@ read_link() {
 }
 
 TESTS=(
-	#"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
-	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination.xml:50,150"
-	"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
-	#"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
-	#"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
+	#"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination"
+	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination:10@30"
+	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination:50@150"
+	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination:150@450"
+	#"KnapsackFixedGeneration:Knapsack-fixed_generation_termination"
+	#"KnapsackSteadyFitness:Knapsack-steady_fitness_termination"
+	#"KnapsackExecutionTime:Knapsack-execution_time_termination"
 )
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -31,9 +33,10 @@ do
 
 	if [[ "${#parts[@]}" == 3 ]]; then
 		PARAMS="--params ${parts[2]}"
-		RESULT="${RESULT_BASE_PATH}/${parts[1]}"
+		RESULT="${RESULT_BASE_PATH}/${parts[1]}-${parts[2]}.xml"
 	else
 		PARAMS=""
+		RESULT="${RESULT_BASE_PATH}/${parts[1]}.xml"
 	fi
 
 	${JRUN} ${CLASS} ${PARAMS} --result-file ${RESULT} --sample-count 1000
