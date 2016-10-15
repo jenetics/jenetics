@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -239,10 +240,9 @@ public class Diagram {
 	}
 
 	private static Map<String, String> params(final Path path) {
-		final List<String> parts = Stream
-			.of(path.getFileName().toString().split("@"))
-			.map(s -> s.split("\\.")[0])
-			.skip(2)
+		System.out.println(path.getFileName());
+		final List<String> parts = param(path.getFileName().toString())
+			.flatMap(p -> Stream.of(p.split("@")))
 			.collect(Collectors.toList());
 
 		final Map<String, String> params = new HashMap<>();
@@ -252,6 +252,13 @@ public class Diagram {
 		}
 
 		return params;
+	}
+
+	private static Stream<String> param(final String name) {
+		final String[] parts = name.split("-");
+		return parts.length == 3
+			? Stream.of(parts[2].split("\\.")[0])
+			: Stream.empty();
 	}
 
 	private static Path output(final Path path) {

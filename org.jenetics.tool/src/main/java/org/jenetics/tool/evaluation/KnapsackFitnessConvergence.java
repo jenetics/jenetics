@@ -59,7 +59,6 @@ public class KnapsackFitnessConvergence {
 	public static void main(final String[] args) throws InterruptedException {
 		final Args arguments = Args.of(args);
 		final ISeq<Integer> sizes = arguments.intArgs("params");
-		System.out.println(sizes);
 
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
