@@ -19,8 +19,8 @@ set logscale x
 set key right bottom
 set style fill empty
 
-set label 1 "{|S_f| = ${PARAM_0}}" at graph 0.06,0.9 left
-set label 2 "{|L_f| = ${PARAM_1}}" at graph 0.06,0.8 left
+set label 1 "{N_S = ${PARAM_0}}" at graph 0.06,0.9 left
+set label 2 "{N_L = ${PARAM_1}}" at graph 0.06,0.8 left
 
 set multiplot
 set size 1, 0.60

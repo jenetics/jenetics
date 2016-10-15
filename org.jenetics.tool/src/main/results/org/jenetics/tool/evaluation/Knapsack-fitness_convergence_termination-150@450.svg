@@ -294,10 +294,10 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M112.0,22.5 L112.0,297.6 L677.5,297.6 L677.5,22.5 L112.0,22.5 Z  '/>	<g transform="translate(145.9,56.0)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="start">
-		<text><tspan font-family="Serif" >|S</tspan><tspan font-family="Serif"  font-size="12.8" dy="4.80px">f</tspan><tspan font-family="Serif"  font-size="16.0" dy="-4.80px">| = 150</tspan></text>
+		<text><tspan font-family="Serif" >N</tspan><tspan font-family="Serif"  font-size="12.8" dy="4.80px">S</tspan><tspan font-family="Serif"  font-size="16.0" dy="-4.80px"> = 150</tspan></text>
 	</g>
 	<g transform="translate(145.9,83.5)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="start">
-		<text><tspan font-family="Serif" >|L</tspan><tspan font-family="Serif"  font-size="12.8" dy="4.80px">f</tspan><tspan font-family="Serif"  font-size="16.0" dy="-4.80px">| = 450</tspan></text>
+		<text><tspan font-family="Serif" >N</tspan><tspan font-family="Serif"  font-size="12.8" dy="4.80px">L</tspan><tspan font-family="Serif"  font-size="16.0" dy="-4.80px"> = 450</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
