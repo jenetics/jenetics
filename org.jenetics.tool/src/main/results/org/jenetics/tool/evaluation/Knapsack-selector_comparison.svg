@@ -61,7 +61,7 @@
 <g fill="none" color="black" stroke="black" stroke-width="0.50" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="gray" stroke="currentColor" stroke-width="0.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='gray' stroke-dasharray='2,4' class="gridline"  d='M108.0,373.3 L318.3,373.3 M655.1,373.3 L666.3,373.3  '/></g>
+	<path stroke='gray' stroke-dasharray='2,4' class="gridline"  d='M108.0,373.3 L340.7,373.3 M655.1,373.3 L666.3,373.3  '/></g>
 <g fill="none" color="gray" stroke="gray" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -193,7 +193,7 @@
 <g fill="none" color="black" stroke="black" stroke-width="0.50" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="gray" stroke="currentColor" stroke-width="0.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='gray' stroke-dasharray='2,4' class="gridline"  d='M331.3,423.2 L331.3,411.2 M331.3,363.2 L331.3,24.1  '/></g>
+	<path stroke='gray' stroke-dasharray='2,4' class="gridline"  d='M331.3,423.2 L331.3,24.1  '/></g>
 <g fill="none" color="gray" stroke="gray" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -274,10 +274,10 @@
 		L543.5,334.7 L554.6,332.1 L565.8,330.3 L577.0,327.6 L588.1,325.9 L599.3,324.0 L610.5,321.9 L621.6,320.5
 		L632.8,318.3 L644.0,316.6 L655.1,315.0 L666.3,313.8  '/></g>
 	</g>
-	<g id="gnuplot_plot_2" ><title>"Evolutionary"-Selector</title>
+	<g id="gnuplot_plot_2" ><title>Evolutionary-Selector</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(575.9,405.2)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="end">
-		<text><tspan font-family="Serif" >"Evolutionary"-Selector</tspan></text>
+		<text><tspan font-family="Serif"  font-style="italic" >Evolutionary-</tspan><tspan font-family="Serif" >Selector</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">

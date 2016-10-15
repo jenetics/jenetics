@@ -25,4 +25,4 @@ set format y " %2.1f"
 set key bottom
 
 plot data using 1:(0.001*$2) with lines lt rgb "blue" title "MonteCarloSelector" axes x1y1, \
-     data using 1:(0.001*$11) with lines lt rgb "red" title "\"Evolutionary\"-Selector" axes x1y1
+     data using 1:(0.001*$11) with lines lt rgb "red" title "{/:Italic Evolutionary-{/:Normal Selector}}" axes x1y1
