@@ -26,7 +26,7 @@ set size 1, 0.60
 set origin 0, 0.40
 set bmargin 0.1
 set format x ""
-set ylabel "Total generation"
+set ylabel "{/:Bold Total generation}"
 set xrange[7000:11000]
 
 set lmargin 10
@@ -44,8 +44,8 @@ unset title
 unset logscale y
 
 set autoscale y
-set ylabel "Fitness"
-set xlabel "Fitness threshold"
+set ylabel "{/:Bold Fitness}"
+set xlabel "{/:Bold Fitness threshold}"
 set bmargin
 set size 1.0, 0.40
 set origin 0.0, 0.0

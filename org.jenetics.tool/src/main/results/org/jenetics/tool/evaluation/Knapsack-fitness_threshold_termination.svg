@@ -277,7 +277,7 @@
 	<path stroke='black'  d='M112.0,22.5 L112.0,297.6 L677.5,297.6 L677.5,22.5 L112.0,22.5 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(27.6,160.1) rotate(270)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Serif" >Total generation</tspan></text>
+		<text><tspan font-family="Serif"  font-weight="bold" >Total generation</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
@@ -519,12 +519,12 @@
 	<path stroke='black'  d='M112.0,312.0 L112.0,423.2 L677.5,423.2 L677.5,312.0 L112.0,312.0 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(27.6,367.6) rotate(270)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Serif" >Fitness</tspan></text>
+		<text><tspan font-family="Serif"  font-weight="bold" >Fitness</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(394.7,489.2)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Serif" >Fitness threshold</tspan></text>
+		<text><tspan font-family="Serif"  font-weight="bold" >Fitness threshold</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">

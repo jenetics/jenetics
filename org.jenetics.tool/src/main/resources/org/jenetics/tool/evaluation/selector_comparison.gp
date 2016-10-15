@@ -14,8 +14,8 @@ set grid
 
 set logscale x
 set autoscale y
-set ylabel "Fitness"
-set xlabel "Generation"
+set ylabel "{/:Bold Fitness}"
+set xlabel "{/:Bold Generation}"
 set bmargin
 set origin 0.0, 0.0
 set tmargin 1

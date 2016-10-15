@@ -19,9 +19,9 @@ set autoscale z
 #set xrange[10:9000]
 #set yrange[10:9000]
 
-set xlabel "Generation"
-set ylabel "Population size"
-set zlabel "Fitness" rotate left
+set xlabel "{/:Bold Generation}"
+set ylabel "{/:Bold Population size}"
+set zlabel "{/:Bold Fitness}" rotate left
 
 set bmargin
 set origin 0.0, 0.0

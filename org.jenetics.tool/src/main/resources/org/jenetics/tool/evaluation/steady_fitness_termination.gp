@@ -27,7 +27,7 @@ set size 1, 0.60
 set origin 0, 0.40
 set bmargin 0.1
 set format x ""
-set ylabel "Total generation"
+set ylabel "{/:Bold Total generation}"
 
 set lmargin 10
 set rmargin 2
@@ -43,8 +43,8 @@ plot data using 1:7:9:10:8 with candlesticks lt rgb "red" notitle axes x1y1 whis
 unset title
 unset logscale y
 set autoscale y
-set ylabel "Fitness"
-set xlabel "Steady generation"
+set ylabel "{/:Bold Fitness}"
+set xlabel "{/:Bold Steady generation}"
 set bmargin
 set format x "10^{%L}"
 set size 1.0, 0.40

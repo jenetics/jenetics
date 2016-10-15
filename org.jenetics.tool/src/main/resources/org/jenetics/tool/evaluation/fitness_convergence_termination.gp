@@ -28,7 +28,7 @@ set origin 0, 0.40
 set bmargin 0.1
 set format x ""
 set format y "%5.0f"
-set ylabel "Total generation"
+set ylabel "{/:Bold Total generation}"
 set xrange [10E-2:10E-11] reverse
 
 set lmargin 10
@@ -49,8 +49,8 @@ unset logscale y
 set logscale x
 
 set autoscale y
-set ylabel "Fitness"
-set xlabel "Epsilon"
+set ylabel "{/:Bold Fitness}"
+set xlabel "{/:Bold Epsilon}"
 set size 1.0, 0.40
 set origin 0.0, 0.0
 set bmargin
