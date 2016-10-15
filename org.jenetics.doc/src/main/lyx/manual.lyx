@@ -18354,13 +18354,45 @@ A termination method that stops the evolution when the best fitness in the
  This termination method also stops the evolution when the best fitness
  in the current population becomes greater than the user-specified fitness
  threshold when the objective is to maximize the fitness.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.byFitnessThreshold(10.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(5000);
+\end_layout
+
+\end_inset
+
+When limiting the evolution stream by a fitness threshold, you have to have
+ a knowledge about the expected maximal fitness.
+ If there is no such knowledge, it is advisable to add an additional fixed
+ sized generation limit as safety net.
+ 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -18432,25 +18464,118 @@ Fitness convergence
 \end_layout
 
 \begin_layout Standard
-A termination method that stops the evolution when the fitness is deemed
+In this termination strategy, the evolution stops when the fitness is deemed
  as converged.
- Two filters of different lengths are used to smooth the best fitness across
+ Two moving average
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Moving_average
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ filters of different lengths are used to smooth the best fitness across
  the generations.
- When the smoothed best fitness from the long filter is less than a user-specifi
-ed percentage away from the smoothed best fitness from the short filter,
- the fitness is deemed as converged and the evolution terminates.
+ When the best average fitness from the long filter is less than a specified
+ percentage away from the best average fitness from the short filter, the
+ fitness is deemed as converged and the evolution stream terminates.
+ The smoothed fitness value is calculated as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{F}(N)=\frac{1}{N}\sum_{i=0}^{N-1}F_{[G-i]}\label{eq:fitness-convergence-mean}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the length of the filter, 
+\begin_inset Formula $F_{[i]}$
+\end_inset
+
+ the fitness value at generation 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $G$
+\end_inset
+
+ the current generation.
+ If the condition 
+\begin_inset Formula 
+\begin{equation}
+\frac{\left|\sigma_{F}(N_{S})-\sigma_{F}(N_{L})\right|}{\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right)}\leqq\epsilon\label{eq:fitness-convergence-term}
+\end{equation}
+
+\end_inset
+
+is fulfilled, the evolution stream is truncated.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(limit.byFitnessConvergence(10, 30, 10E-4);
+\end_layout
+
+\end_inset
+
+For using the fitness convergence strategy you have to specify three parameter.
+ The length of the short filter, 
+\begin_inset Formula $N_{S}$
+\end_inset
+
+, the length of the long filter, 
+\begin_inset Formula $N_{L}$
+\end_inset
+
+ and the relative difference between the smoothed fitness values, 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
+	filename ../resources/diagram/Knapsack-fitness_convergence_termination-10@30.svg
 	lyxscale 80
 	width 100text%
 
@@ -18462,49 +18587,19 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Fitness-convergence-diagram"
+name "fig:Fitness-convergence-diagram-10-30"
 
 \end_inset
 
-Fitness threshold termination
-\end_layout
+Fitness convergence termination: 
+\begin_inset Formula $N_{S}=10$
+\end_inset
 
+, 
+\begin_inset Formula $N_{L}=30$
 \end_inset
 
 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
-	lyxscale 80
-	width 100text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Fitness-convergence-diagram-1"
-
-\end_inset
-
-Fitness threshold termination
 \end_layout
 
 \end_inset
@@ -18518,15 +18613,32 @@ Fitness threshold termination
 \end_layout
 
 \begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fitness-convergence-diagram-10-30"
+
+\end_inset
+
+ shows the termination behavior of the fitness convergence termination strategy.
+ It can be seen that the minimum number of evolved generations is the length
+ of the long filter, 
+\begin_inset Formula $N_{L}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50-150.svg
+	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50@150.svg
 	lyxscale 80
 	width 100text%
 
@@ -18538,11 +18650,19 @@ status collapsed
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Fitness-convergence-diagram-2"
+name "fig:Fitness-convergence-diagram-50-150"
 
 \end_inset
 
-Fitness threshold termination
+Fitness convergence termination: 
+\begin_inset Formula $N_{S}=50$
+\end_inset
+
+, 
+\begin_inset Formula $N_{L}=150$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -18553,11 +18673,32 @@ Fitness threshold termination
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Fitness-convergence-diagram-50-150"
+
+\end_inset
+
+ shows the generations needed for terminating the evolution for higher values
+ of the 
+\begin_inset Formula $N_{S}$
+\end_inset
+
+ and 
+\begin_inset Formula $N_{L}$
+\end_inset
+
+ parameters.
+ 
 \end_layout
 
 \begin_layout Standard
 \begin_inset Note Comment
-status open
+status collapsed
 
 \begin_layout Subsubsection
 Population convergence
