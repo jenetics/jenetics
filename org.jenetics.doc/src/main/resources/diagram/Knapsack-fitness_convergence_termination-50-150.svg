@@ -268,10 +268,10 @@
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<path stroke='black'  d='M112.0,22.5 L112.0,297.6 L677.5,297.6 L677.5,22.5 L112.0,22.5 Z  '/>	<g transform="translate(145.9,56.0)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="start">
-		<text><tspan font-family="Serif" >Short filter size: 50</tspan></text>
+		<text><tspan font-family="Serif"  font-style="italic" >Short filter size: </tspan><tspan font-family="Serif" >50</tspan></text>
 	</g>
 	<g transform="translate(145.9,83.5)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="start">
-		<text xml:space="preserve"><tspan font-family="Serif"  xml:space="preserve">Long filter size:  150</tspan></text>
+		<text xml:space="preserve"><tspan font-family="Serif"  font-style="italic"  xml:space="preserve">Long filter size:  </tspan><tspan font-family="Serif"  xml:space="preserve">150</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">

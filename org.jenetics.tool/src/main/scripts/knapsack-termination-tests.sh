@@ -14,8 +14,8 @@ read_link() {
 
 TESTS=(
 	#"KnapsackFitnessThreshold:Knapsack-fitness_threshold_termination.xml"
-	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination.xml"
-	#"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
+	"KnapsackFitnessConvergence:Knapsack-fitness_convergence_termination.xml:50,150"
+	"KnapsackFixedGeneration:Knapsack-fixed_generation_termination.xml"
 	#"KnapsackSteadyFitness:Knapsack-steady_fitness_termination.xml"
 	#"KnapsackExecutionTime:Knapsack-execution_time_termination.xml"
 )
@@ -26,8 +26,15 @@ JRUN=`read_link "${SCRIPT_DIR}/../../../../jrun"`
 
 for test in ${TESTS[@]}
 do
-    CLASS="org.jenetics.tool.evaluation.${test%%:*}"
-    RESULT="${RESULT_BASE_PATH}/${test#*:}"
+	IFS=':' read -r -a parts <<< "$test"
+	CLASS="org.jenetics.tool.evaluation.${parts[0]}"
 
-    ${JRUN} ${CLASS} --result-file ${RESULT} --sample-count 1000
+	if [[ "${#parts[@]}" == 3 ]]; then
+		PARAMS="--params ${parts[2]}"
+		RESULT="${RESULT_BASE_PATH}/${parts[1]}"
+	else
+		PARAMS=""
+	fi
+
+	${JRUN} ${CLASS} ${PARAMS} --result-file ${RESULT} --sample-count 1000
 done
