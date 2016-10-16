@@ -46,25 +46,25 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	private final int _shortFilterSize;
 	private final int _longFilterSize;
 	private final Buffer _buffer;
-	private final BiPredicate<DoubleMoments, DoubleMoments> _limit;
+	private final BiPredicate<DoubleMoments, DoubleMoments> _proceed;
 
 	/**
 	 * Create a new fitness-convergence limit strategy object.
 	 *
 	 * @param shortFilterSize the size of the short moments filter
 	 * @param longFilterSize the size of the long moments filter
-	 * @param limit the predicate which decides whether to stop or proceed the
+	 * @param proceed the predicate which decides whether to stop or proceed the
 	 *        evolution stream
 	 * @throws IllegalArgumentException if {@code shortFilterSize < 1} or
 	 *         {@code longFilterSize < 2} or
 	 *         {@code shortFilterSize >= longFilterSize}
-	 * @throws NullPointerException if the {@code limit} predicate is
+	 * @throws NullPointerException if the {@code proceed} predicate is
 	 *         {@code null}
 	 */
 	FitnessConvergenceLimit(
 		final int shortFilterSize,
 		final int longFilterSize,
-		final BiPredicate<DoubleMoments, DoubleMoments> limit
+		final BiPredicate<DoubleMoments, DoubleMoments> proceed
 	) {
 		if (shortFilterSize < 1) {
 			throw new IllegalArgumentException(format(
@@ -89,7 +89,7 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 		_shortFilterSize = shortFilterSize;
 		_longFilterSize = longFilterSize;
 		_buffer = new Buffer(longFilterSize);
-		_limit = requireNonNull(limit);
+		_proceed = requireNonNull(proceed);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 			_buffer.accept(fitness.doubleValue());
 		}
 
-		return !_buffer.isFull() || _limit.test(
+		return !_buffer.isFull() || _proceed.test(
 			_buffer.doubleMoments(_shortFilterSize),
 			_buffer.doubleMoments(_longFilterSize)
 		);
