@@ -41,7 +41,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.7
  */
 public final class limit {
 	private limit() {require.noInstance();}
@@ -210,7 +210,7 @@ public final class limit {
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param shortFilterSize the size of the short filter
 	 * @param longFilterSize the size of the long filter. The long filter size
@@ -258,7 +258,7 @@ public final class limit {
 	 * generations. The long filter uses the best fitness values of the last 15
 	 * generations.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param shortFilterSize the size of the short filter
 	 * @param longFilterSize the size of the long filter. The long filter size

@@ -36,8 +36,8 @@ import org.jenetics.stat.DoubleMoments;
  * Implementation of the fitness-convergence limit strategy object.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.7
+ * @since 3.7
  */
 final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	implements Predicate<EvolutionResult<?, N>>
@@ -112,8 +112,8 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	 * are overridden.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 3.7
+	 * @since 3.7
 	 */
 	static final class Buffer implements DoubleConsumer {
 		private final double[] _buffer;
