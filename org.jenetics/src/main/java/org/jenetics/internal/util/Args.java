@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.util.ISeq;
 
@@ -65,6 +66,17 @@ public class Args {
 	public Optional<Integer> intArg(final String name) {
 		return arg(name)
 			.flatMap(s -> parse(s, Integer::valueOf));
+	}
+
+	public ISeq<Integer> intArgs(final String name) {
+		return  arg(name)
+			.map(Stream::of)
+			.orElseGet(Stream::empty)
+			.flatMap(a -> Stream.of(a.split("@")))
+			.flatMap(s -> parse(s, Integer::valueOf)
+				.map(Stream::of)
+				.orElseGet(Stream::empty))
+			.collect(ISeq.toISeq());
 	}
 
 	/**

@@ -15,19 +15,21 @@ set output output
 ################################################################################
 
 set grid
-set logscale y
-set yrange[1:]
-set format y "   10^{%L}"
+set logscale x
 set key right bottom
 set style fill empty
+
+set label 1 "{N_S = ${PARAM_0}}" at graph 0.06,0.9 left
+set label 2 "{N_L = ${PARAM_1}}" at graph 0.06,0.8 left
 
 set multiplot
 set size 1, 0.60
 set origin 0, 0.40
 set bmargin 0.1
 set format x ""
+set format y "%5.0f"
 set ylabel "{/:Bold Total generation}"
-set xrange[7000:11000]
+set xrange [10E-2:10E-11] reverse
 
 set lmargin 10
 set rmargin 2
@@ -41,21 +43,23 @@ plot data using 1:7:9:10:8 with candlesticks lt rgb "red" notitle axes x1y1 whis
 ################################################################################
 
 unset title
+unset label 1
+unset label 2
 unset logscale y
+set logscale x
 
 set autoscale y
 set ylabel "{/:Bold Fitness}"
-set xlabel "{/:Bold Fitness threshold}"
-set bmargin
+set xlabel "{/:Bold Epsilon}"
 set size 1.0, 0.40
 set origin 0.0, 0.0
 set bmargin
 set tmargin 0.5
-set format y " %2.1f"
-set format x "%2.1f"
-set xrange[7:11]
-set ytics 1
+set format y "% 5.1f"
+set format x "10^{%L}"
+set xrange [10E-2:10E-11] reverse
+set ytics 0.2
 
-plot data using (0.001*$1):(0.001*$11) with lines lt rgb "blue" notitle axes x1y1
+plot data using 1:(0.001*$11) with lines lt rgb "blue" notitle axes x1y1
 
 unset multiplot
