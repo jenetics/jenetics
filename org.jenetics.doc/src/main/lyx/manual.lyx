@@ -16493,7 +16493,7 @@ width "90col%"
 special "none"
 height "1in"
 height_special "totalheight"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -17636,11 +17636,62 @@ Termination is the criterion by which the evolution stream decides whether
  to continue or truncate the stream.
  This section gives a deeper insight into the different ways of terminating
  or truncating the evolution stream, respectively.
+ The 
+\family typewriter
+EvolutionStream
+\family default
+ of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library offers an additional method for limiting the evolution.
+ With the 
+\family typewriter
+limit(Predicate<EvolutionResult<G,C>>)
+\family default
+ method it is possible to use more advanced termination strategies.
+ If the predicate, given to the 
+\family typewriter
+limit
+\family default
+ function, returns false, the evolution stream is truncated.
+ All termination strategies described in the following sub-sections are
+ part of the library and can be created by factory methods of the 
+\family typewriter
+org\SpecialChar \-
+.jenetics\SpecialChar \-
+.engine\SpecialChar \-
+.limit
+\family default
+ class.
+ The termination strategies where tested by solving the Knapsack problem
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The actual implementation used for the termination tests can be found in
+ the Github repository: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/org.jenetics.tool/src/main/java/or
+g/jenetics/tool/problem/Knapsack.java
 \end_layout
 
-\begin_layout Standard
-The termination strategies in the following sub-sections were tested by
- solving the Knapsack problem (see section 
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sub:0/1-Knapsack-example"
@@ -17657,8 +17708,239 @@ reference "sub:0/1-Knapsack-example"
 \end_inset
 
  elements.
- To make the tests comparable, all runs uses the very same set of knapsack
- items.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+The predicate given to the 
+\family typewriter
+EvolutionStream.limit
+\family default
+ function must return 
+\emph on
+false
+\emph default
+ for truncating the evolution stream.
+ If it returns 
+\emph on
+true
+\emph default
+, the evolution is continued.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features rotate="0" tabularvalignment="middle" tabularwidth="90text%">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top" width="60text%">
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Population size:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+150
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Survivors selector:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+TournamentSelector<>(5)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Offspring selector:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+RouletteWheelSelector<>()
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alterers:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+Mutator<>(0.03)
+\family default
+ and 
+\family typewriter
+SinglePointCrossover<>(0.125)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fitness scaler:
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Identity function
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Knapsack-evolution-parameters"
+
+\end_inset
+
+Knapsack evolution parameters
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Knapsack-evolution-parameters"
+
+\end_inset
+
+ shows the evolution parameters used for the termination tests.
+ To make the tests comparable, all test runs uses the same evolution parameters
+ and the very same set of knapsack items.
+ Each termination test was repeated 1000 times, which gives us enough data
+ to draw the given candlestick diagrams.
 \end_layout
 
 \begin_layout Subsubsection
@@ -17740,14 +18022,14 @@ This kind of termination method should always be applied---usually additional
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18115,7 +18397,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18278,7 +18560,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18406,7 +18688,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18468,12 +18750,178 @@ easily
 
 \begin_layout Subsubsection
 Fitness convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Fitness convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Fitness convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 In this termination strategy, the evolution stops when the fitness is deemed
  as converged.
- Two moving average
+ Two filters of different lengths are used to smooth the best fitness across
+ the generations.
+ When the best smoothed fitness of the long filter is less than a specified
+ percentage away from the best smoothed fitness from the short filter, the
+ fitness is deemed as converged.
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ offers a generic version fitness-convergence predicate and a version where
+ the smoothed fitness is the moving average of the used filters.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static <N extends Number & Comparable<? super N>>
+\end_layout
+
+\begin_layout Plain Layout
+
+Predicate<EvolutionResult<?, N>> byFitnessConvergence(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int shortFilterSize,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int longFilterSize,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final BiPredicate<DoubleMoments, DoubleMoments> proceed
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:General-fitness-convergence"
+
+\end_inset
+
+General fitness convergence
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:General-fitness-convergence"
+
+\end_inset
+
+ shows the factory method which creates the 
+\emph on
+generic
+\emph default
+ fitness convergence predicate.
+ This method allows to define the evolution termination according to the
+ statistical moments of the short- and long fitness filter.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static <N extends Number & Comparable<? super N>>
+\end_layout
+
+\begin_layout Plain Layout
+
+Predicate<EvolutionResult<?, N>> byFitnessConvergence(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int shortFilterSize,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final int longFilterSize,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double epsilon
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Mean-fitness-convergence"
+
+\end_inset
+
+Mean fitness convergence
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The second factory method (shown in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Mean-fitness-convergence"
+
+\end_inset
+
+) creates a fitness convergence predicate, which uses the moving average
 \begin_inset Foot
 status collapsed
 
@@ -18493,11 +18941,7 @@ https://en.wikipedia.org/wiki/Moving_average
 
 \end_inset
 
- filters of different lengths are used to smooth the best fitness across
- the generations.
- When the best average fitness from the long filter is less than a specified
- percentage away from the best average fitness from the short filter, the
- fitness is deemed as converged and the evolution stream terminates.
+ for the two filters.
  The smoothed fitness value is calculated as follows:
 \end_layout
 
@@ -18529,12 +18973,28 @@ where
  If the condition 
 \begin_inset Formula 
 \begin{equation}
-\frac{\left|\sigma_{F}(N_{S})-\sigma_{F}(N_{L})\right|}{\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right)}\leqq\epsilon\label{eq:fitness-convergence-term}
+\frac{\left|\sigma_{F}(N_{S})-\sigma_{F}(N_{L})\right|}{\delta}<\epsilon\label{eq:fitness-convergence-term}
 \end{equation}
 
 \end_inset
 
 is fulfilled, the evolution stream is truncated.
+ Where 
+\begin_inset Formula $\delta$
+\end_inset
+
+ is defined as follows:
+\begin_inset Formula 
+\begin{equation}
+\delta=\left\{ \begin{array}{ccc}
+\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \sigma_{F}(N_{x})\neq0\\
+1 & \mathrm{else}
+\end{array}\right..\label{eq:fitness-convergence-div}
+\end{equation}
+
+\end_inset
+
+
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -18584,7 +19044,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_convergence_termination-10@30.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18647,7 +19107,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50@150.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
@@ -18790,7 +19250,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-selector_comparison.svg
 	lyxscale 80
-	width 100text%
+	width 90text%
 
 \end_inset
 
