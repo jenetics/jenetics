@@ -25,6 +25,7 @@ import static java.lang.String.format;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import org.jenetics.internal.util.require;
@@ -194,6 +195,52 @@ public final class limit {
 	/**
 	 * Return a predicate, which will truncate the evolution stream if the
 	 * fitness is converging. Two filters of different lengths are used to
+	 * smooth the best fitness across the generations.
+	 *
+	 * <pre>{@code
+	 * final Phenotype<DoubleGene, Double> result = engine.stream()
+	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
+	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
+	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
+	 *          return esp >= 10E-5
+	 *     }))
+	 *     .collect(toBestPhenotype());
+	 * }</pre>
+	 *
+	 * In the example above, the moving average of the short- and long filter
+	 * is used for determining the fitness convergence.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param shortFilterSize the size of the short filter
+	 * @param longFilterSize the size of the long filter. The long filter size
+	 *        also determines the minimum number of generations of the evolution
+	 *        stream.
+	 * @param proceed the predicate which determines when the evolution stream
+	 *        is truncated. The first parameter of the predicate contains the
+	 *        double statistics of the short filter and the second parameter
+	 *        contains the statistics of the long filter
+	 * @param <N> the fitness type
+	 * @return a new fitness convergence strategy
+	 * @throws NullPointerException if the {@code proceed} predicate is
+	 *         {@code null}
+	 */
+	public static <N extends Number & Comparable<? super N>>
+	Predicate<EvolutionResult<?, N>> byFitnessConvergence(
+		final int shortFilterSize,
+		final int longFilterSize,
+		final BiPredicate<DoubleMoments, DoubleMoments> proceed
+	) {
+		return new FitnessConvergenceLimit<>(
+			shortFilterSize,
+			longFilterSize,
+			proceed
+		);
+	}
+
+	/**
+	 * Return a predicate, which will truncate the evolution stream if the
+	 * fitness is converging. Two filters of different lengths are used to
 	 * smooth the best fitness across the generations. When the smoothed best
 	 * fitness from the long filter is less than a user-specified percentage
 	 * away from the smoothed best fitness from the short filter, the fitness is
@@ -201,7 +248,7 @@ public final class limit {
 	 *
 	 * <pre>{@code
 	 * final Phenotype<DoubleGene, Double> result = engine.stream()
-	 *     .limit(byFitnessConvergence(5, 15, 0.01))
+	 *     .limit(byFitnessConvergence(5, 15, 10E-4))
 	 *     .collect(toBestPhenotype());
 	 * }</pre>
 	 *
