@@ -1540,6 +1540,94 @@ reference "lis:Genetic-algorithm"
 \end_inset
 
 .
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/EvolutionStream.eps
+	width 55text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evolution-workflow"
+
+\end_inset
+
+Evolution workflow
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution workflow
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The described evolution workflow is also illustrated in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Evolution-workflow"
+
+\end_inset
+
+, where 
+\begin_inset Formula $E_{S(i)}$
+\end_inset
+
+ denotes the 
+\family typewriter
+Evolution\SpecialChar \-
+Start
+\family default
+ object at generation 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $E_{R(i)}$
+\end_inset
+
+ the 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ at the 
+\begin_inset Formula $i^{th}$
+\end_inset
+
+ generation.
  Once the evolution engine is created, it can be used by multiple evolution
  streams, which can be safely used in different execution threads.
  This is possible, because the evolution 
@@ -1693,7 +1781,7 @@ name "fig:Package-structure"
 
 Package structure
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Package structure
