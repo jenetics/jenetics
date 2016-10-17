@@ -18031,6 +18031,31 @@ reference "tab:Knapsack-evolution-parameters"
  to draw the given candlestick diagrams.
 \end_layout
 
+\begin_layout Standard
+Some of the implemented termination strategy needs to maintain an internal
+ state.
+ This strategies can't be re-used in different evolution streams.
+ To be on the safe side, it is recommended to always create an 
+\family typewriter
+Predicate
+\family default
+ instance for each stream.
+ Calling 
+\family typewriter
+Stream\SpecialChar \-
+.limit\SpecialChar \-
+(limit\SpecialChar \-
+.by
+\emph on
+\SpecialChar \-
+Termination\SpecialChar \-
+Strategy
+\emph default
+)
+\family default
+ will always work as expected.
+\end_layout
+
 \begin_layout Subsubsection
 Fixed generation
 \begin_inset Index idx
@@ -18117,7 +18142,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fixed_generation_termination.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -18485,7 +18510,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-steady_fitness_termination.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -18648,7 +18673,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-execution_time_termination.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -18776,7 +18801,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -19132,7 +19157,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_convergence_termination-10@30.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -19195,7 +19220,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_convergence_termination-50@150.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -19338,7 +19363,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-selector_comparison.svg
 	lyxscale 80
-	width 90text%
+	width 100text%
 
 \end_inset
 
