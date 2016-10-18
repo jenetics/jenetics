@@ -17747,8 +17747,18 @@ limit(Predicate<EvolutionResult<G,C>>)
 limit
 \family default
  function, returns false, the evolution stream is truncated.
- All termination strategies described in the following sub-sections are
- part of the library and can be created by factory methods of the 
+ 
+\family typewriter
+Evolution\SpecialChar \-
+Stream\SpecialChar \-
+.limit(r -> true)
+\family default
+ will create an infinite evolution stream.
+\end_layout
+
+\begin_layout Standard
+All termination strategies described in the following sub-sections are part
+ of the library and can be created by factory methods of the 
 \family typewriter
 org\SpecialChar \-
 .jenetics\SpecialChar \-
@@ -17796,7 +17806,6 @@ reference "sub:0/1-Knapsack-example"
 \end_inset
 
  elements.
- 
 \end_layout
 
 \begin_layout Standard
