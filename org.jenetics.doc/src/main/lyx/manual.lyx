@@ -12754,6 +12754,21 @@ Chromosome
  fitness, not validity.
  An encoding that includes invalid individuals enlarges the search space
  and makes the search more costly.
+ For a deeper analysis of (good) encodings can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Rothlauf2006"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Palmer1995"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
