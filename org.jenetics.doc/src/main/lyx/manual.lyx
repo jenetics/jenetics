@@ -1547,7 +1547,7 @@ reference "lis:Genetic-algorithm"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -1803,7 +1803,7 @@ Package structure
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Package-structure"
@@ -18179,7 +18179,7 @@ Fixed generation termination
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fixed-generation-diagram"
@@ -18547,7 +18547,7 @@ Steady fitness termination
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Steady-fitness-diagram"
@@ -18710,7 +18710,7 @@ Execution time termination
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Execution-time-diagram"
@@ -18838,7 +18838,7 @@ Fitness threshold termination
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-threshold-diagram"
@@ -19202,7 +19202,7 @@ Fitness convergence termination:
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-convergence-diagram-10-30"
@@ -19265,7 +19265,7 @@ Fitness convergence termination:
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-convergence-diagram-50-150"
@@ -19400,7 +19400,7 @@ Selector-performance (Knapsack)
 \end_layout
 
 \begin_layout Standard
-Diagram 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Selector-performance-Knapsack"
@@ -22522,7 +22522,7 @@ Examples!Evolving images
 \end_layout
 
 \begin_layout Standard
-Image 
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Evolving-images"
