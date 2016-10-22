@@ -32,7 +32,8 @@ import org.jenetics.util.Verifiable;
  * <p>
  * <span class="simpleTagLabel">API Note: </span>
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
- * and guarantee an efficient random access ({@code O(1)}) to the genes.
+ * and guarantee an efficient random access ({@code O(1)}) to the genes. A
+ * {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  *
