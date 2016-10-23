@@ -431,8 +431,7 @@ public final class Engine<
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator() {
 		return new EvolutionIterator<>(
-			this::evolve,
-			this::evolutionStart
+			this::evolutionStart, this::evolve
 		);
 	}
 
@@ -474,8 +473,7 @@ public final class Engine<
 		requireNonNull(genotypes);
 
 		return new EvolutionIterator<>(
-			this::evolve,
-			() -> evolutionStart(genotypes, 1)
+			() -> evolutionStart(genotypes, 1), this::evolve
 		);
 	}
 
@@ -577,8 +575,7 @@ public final class Engine<
 		require.positive(generation);
 
 		return new EvolutionIterator<>(
-			this::evolve,
-			() -> evolutionStart(population, generation)
+			() -> evolutionStart(population, generation), this::evolve
 		);
 	}
 
