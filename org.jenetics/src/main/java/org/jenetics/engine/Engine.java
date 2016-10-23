@@ -573,6 +573,37 @@ public final class Engine<
 	}
 
 	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @param population the initial individuals used for the evolution iterator.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the iterator starts from; must be greater
+	 *        than zero.
+	 * @return a new <b>infinite</b> evolution iterator
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is smaller
+	 *        then one
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final Population<G, C> population,
+		final long generation
+	) {
+		requireNonNull(population);
+		require.positive(generation);
+
+		return new EvolutionIterator<>(
+			() -> evolutionStart(population, generation), this::evolve
+		);
+	}
+
+	/**
 	 * Create a new <b>infinite</b> evolution stream with the given initial
 	 * population. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -601,37 +632,6 @@ public final class Engine<
 		return EvolutionStream.of(
 			() -> evolutionStart(population, generation),
 			this::evolve
-		);
-	}
-
-	/**
-	 * Create a new <b>infinite</b> evolution iterator with the given initial
-	 * population. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @param population the initial individuals used for the evolution iterator.
-	 *        Missing individuals are created and individuals not needed are
-	 *        skipped.
-	 * @param generation the generation the iterator starts from; must be greater
-	 *        than zero.
-	 * @return a new <b>infinite</b> evolution iterator
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is smaller
-	 *        then one
-	 */
-	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population,
-		final long generation
-	) {
-		requireNonNull(population);
-		require.positive(generation);
-
-		return new EvolutionIterator<>(
-			() -> evolutionStart(population, generation), this::evolve
 		);
 	}
 
