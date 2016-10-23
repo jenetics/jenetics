@@ -46,7 +46,7 @@ public class KnapsackFitnessThreshold {
 		"Fitness threshold",
 		IntStream.rangeClosed(0, POINTS)
 			.mapToDouble(i -> MIN_FITNESS + (MAX_FITNESS - MIN_FITNESS)/POINTS*i)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.collect(ISeq.toISeq())
 	);
 

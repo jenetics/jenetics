@@ -19,6 +19,13 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,11 +40,86 @@ import org.testng.annotations.Test;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
+import org.jenetics.Optimize;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.util.DoubleRange;
+import org.jenetics.util.IO;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class EngineTest {
+
+	@Test
+	public void streamWithInitialGenotypes() {
+		final Problem<Integer, IntegerGene, Integer> problem = Problem.of(
+			a -> a,
+			Codec.of(
+				Genotype.of(IntegerChromosome.of(0, 1000)),
+				g -> g.getGene().getAllele()
+			)
+		);
+
+		final int genotypeCount = 10;
+		final int max = 1000;
+		final ISeq<Genotype<IntegerGene>> genotypes = IntRange.of(1, genotypeCount)
+			.stream()
+			.mapToObj(i -> IntegerChromosome.of(IntegerGene.of(max, 0, max)))
+			.map(Genotype::of)
+			.collect(ISeq.toISeq());
+
+		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
+			.build();
+
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream(genotypes)
+			.limit(1)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		final long maxCount = result.getPopulation().stream()
+			.filter(pt -> pt.getFitness() == max)
+			.count();
+
+		Assert.assertTrue(maxCount >= genotypeCount);
+	}
+
+	@Test
+	public void streamWithSerializedPopulation() throws IOException {
+		// Problem definition.
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			x -> cos(0.5 + sin(x))*cos(x),
+			codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+		);
+
+		// Define the GA engine.
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem)
+			.optimize(Optimize.MINIMUM)
+			.offspringSelector(new RouletteWheelSelector<>())
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
+			.limit(limit.bySteadyFitness(10))
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IO.object.write(interimResult, out);
+
+		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		@SuppressWarnings("unchecked")
+		final EvolutionResult<DoubleGene, Double> loadedResult =
+			(EvolutionResult<DoubleGene, Double>)
+				IO.object.read(EvolutionResult.class, in);
+
+		final EvolutionResult<DoubleGene, Double> result =
+			engine.stream(
+				loadedResult.getPopulation(),
+				loadedResult.getTotalGenerations())
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
 
 	@Test(dataProvider = "generations")
 	public void generationCount(final Long generations) {
