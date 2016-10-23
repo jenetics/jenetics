@@ -1,10 +1,10 @@
-# Jenetics (_3.6.0_)
+# Jenetics (_3.7.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.6/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.6.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.7/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.7.0.pdf)).
 
 
 ## Requirements
@@ -21,15 +21,15 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.6.0/jenetics-3.6.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.7.0/jenetics-3.7.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.6.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `org.bitbucket.fwilhelm:org.jenetics:3.7.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
 
 ## Build Jenetics
 
 ![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.6.0/jenetics-3.6.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.7.0/jenetics-3.7.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -92,7 +92,9 @@ import org.jenetics.util.Factory;
 public class HelloWorld {
     // 2.) Definition of the fitness function.
     private static Integer eval(Genotype<BitGene> gt) {
-        return ((BitChromosome)gt.getChromosome()).bitCount();
+        return gt.getChromosome()
+            .as(BitChromosome.class)
+            .bitCount();
     }
 
     public static void main(String[] args) {
@@ -170,6 +172,8 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### [3.7.0](https://github.com/jenetics/jenetics/releases/tag/v3.7.0)
 
 ### [3.6.0](https://github.com/jenetics/jenetics/releases/tag/v3.6.0)
 
