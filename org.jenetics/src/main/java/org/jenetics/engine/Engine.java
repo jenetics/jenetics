@@ -484,6 +484,8 @@ public final class Engine<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
@@ -523,6 +525,8 @@ public final class Engine<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param genotypes the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
@@ -551,6 +555,8 @@ public final class Engine<
 	 * Create a new <b>infinite</b> evolution stream with the given initial
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
@@ -582,6 +588,8 @@ public final class Engine<
 	 * be the result of an other engine and this method allows to start the
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param population the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
@@ -709,6 +717,10 @@ public final class Engine<
 			() -> evolutionStart(population, generation),
 			this::evolve
 		);
+	}
+
+	public EvolutionStream<G, C> stream(final EvolutionResult<G, C> result) {
+		return stream(result.getPopulation(), result.getTotalGenerations());
 	}
 
 
@@ -845,7 +857,7 @@ public final class Engine<
 	/**
 	 * Create a new evolution {@code Engine.Builder} initialized with the values
 	 * of the current evolution {@code Engine}. With this method, the evolution
-	 * engine can serve as a template for an new one.
+	 * engine can serve as a template for a new one.
 	 *
 	 * @return a new engine builder
 	 */
