@@ -111,13 +111,10 @@ public class EngineTest {
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		@SuppressWarnings("unchecked")
 		final EvolutionResult<DoubleGene, Double> loadedResult =
-			(EvolutionResult<DoubleGene, Double>)
-				IO.object.read(EvolutionResult.class, in);
+			(EvolutionResult<DoubleGene, Double>)IO.object.read(in);
 
-		final EvolutionResult<DoubleGene, Double> result =
-			engine.stream(
-				loadedResult.getPopulation(),
-				loadedResult.getTotalGenerations())
+		final EvolutionResult<DoubleGene, Double> result = engine
+			.stream(loadedResult)
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}
