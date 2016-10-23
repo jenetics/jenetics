@@ -431,7 +431,8 @@ public final class Engine<
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator() {
 		return new EvolutionIterator<>(
-			this::evolutionStart, this::evolve
+			this::evolutionStart,
+			this::evolve
 		);
 	}
 
@@ -473,7 +474,8 @@ public final class Engine<
 		requireNonNull(genotypes);
 
 		return new EvolutionIterator<>(
-			() -> evolutionStart(genotypes, 1), this::evolve
+			() -> evolutionStart(genotypes, 1),
+			this::evolve
 		);
 	}
 
@@ -540,7 +542,8 @@ public final class Engine<
 		require.positive(generation);
 
 		return new EvolutionIterator<>(
-			() -> evolutionStart(genotypes, generation), this::evolve
+			() -> evolutionStart(genotypes, generation),
+			this::evolve
 		);
 	}
 
@@ -583,6 +586,78 @@ public final class Engine<
 	 * @param population the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
+	 * @return a new <b>infinite</b> evolution iterator
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final Population<G, C> population
+	) {
+		requireNonNull(population);
+
+		return new EvolutionIterator<>(
+			() -> evolutionStart(population, 1),
+			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @param population the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @return a new evolution stream.
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 */
+	public EvolutionStream<G, C> stream(
+		final Population<G, C> population
+	) {
+		requireNonNull(population);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(population, 1),
+			this::evolve
+		);
+	}
+
+	private EvolutionStart<G, C> evolutionStart(
+		final Population<G, C> population,
+		final long generation
+	) {
+		final Stream<Phenotype<G, C>> stream = Stream.concat(
+			population.stream()
+				.map(p -> p.newInstance(
+					p.getGeneration(),
+					_fitnessFunction,
+					_fitnessScaler)),
+			Stream.generate(() -> newPhenotype(generation))
+		);
+
+		final Population<G, C> pop = stream
+			.limit(getPopulationSize())
+			.collect(toPopulation());
+
+		return EvolutionStart.of(pop, generation);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @param population the initial individuals used for the evolution iterator.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
 	 * @param generation the generation the iterator starts from; must be greater
 	 *        than zero.
 	 * @return a new <b>infinite</b> evolution iterator
@@ -599,7 +674,8 @@ public final class Engine<
 		require.positive(generation);
 
 		return new EvolutionIterator<>(
-			() -> evolutionStart(population, generation), this::evolve
+			() -> evolutionStart(population, generation),
+			this::evolve
 		);
 	}
 
@@ -634,27 +710,6 @@ public final class Engine<
 			this::evolve
 		);
 	}
-
-	private EvolutionStart<G, C> evolutionStart(
-		final Population<G, C> population,
-		final long generation
-	) {
-		final Stream<Phenotype<G, C>> stream = Stream.concat(
-			population.stream()
-				.map(p -> p.newInstance(
-					p.getGeneration(),
-					_fitnessFunction,
-					_fitnessScaler)),
-			Stream.generate(() -> newPhenotype(generation))
-		);
-
-		final Population<G, C> pop = stream
-			.limit(getPopulationSize())
-			.collect(toPopulation());
-
-		return EvolutionStart.of(pop, generation);
-	}
-
 
 
 	/* *************************************************************************
