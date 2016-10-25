@@ -23,8 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collector;
 
@@ -315,9 +313,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> Optional.ofNullable(mm.getMax())
-				.map(m -> m.withTotalGenerations(mm.getCount()))
-				.orElse(null)
+			mm -> mm.getMax() != null
+				? mm.getMax().withTotalGenerations(mm.getCount())
+				: null
 		);
 	}
 
@@ -349,9 +347,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> Optional.ofNullable(mm.getMax())
-				.map(EvolutionResult::getBestPhenotype)
-				.orElse(null)
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype()
+				: null
 		);
 	}
 
@@ -383,11 +381,11 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> Optional.ofNullable(mm.getMax())
-				.map(EvolutionResult::getBestPhenotype)
-				.filter(Objects::nonNull)
-				.map(Phenotype::getGenotype)
-				.orElse(null)
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? mm.getMax().getBestPhenotype().getGenotype()
+					: null
+				: null
 		);
 	}
 
@@ -426,13 +424,11 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> Optional.ofNullable(mm.getMax())
-				.map(EvolutionResult::getBestPhenotype)
-				.filter(Objects::nonNull)
-				.map(Phenotype::getGenotype)
-				.filter(Objects::nonNull)
-				.map(decoder)
-				.orElse(null)
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
+					: null
+				: null
 		);
 	}
 
