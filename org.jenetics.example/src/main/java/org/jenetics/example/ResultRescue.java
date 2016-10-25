@@ -24,6 +24,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.jenetics.DoubleGene;
 import org.jenetics.Optimize;
@@ -58,13 +60,16 @@ public final class ResultRescue {
 			.limit(limit.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		IO.object.write(rescue, "");
+		final Path path = Paths.get("result.bin");
+		IO.object.write(rescue, path);
 
 		@SuppressWarnings("unchecked")
 		final EvolutionResult<DoubleGene, Double> result = ENGINE
-			.stream((EvolutionResult<DoubleGene, Double>)IO.object.read(""))
-			.limit(10)
+			.stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
+			.limit(limit.bySteadyFitness(20))
 			.collect(EvolutionResult.toBestEvolutionResult());
+
+		System.out.println(result);
 	}
 
 }
