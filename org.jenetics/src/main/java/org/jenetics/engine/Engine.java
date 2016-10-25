@@ -422,6 +422,11 @@ public final class Engine<
 		return population;
 	}
 
+
+	/* *************************************************************************
+	 * Evolution Stream/Iterator creation.
+	 **************************************************************************/
+
 	/**
 	 * Create a new <b>infinite</b> evolution iterator with a newly created
 	 * population. This is an alternative way for evolution. It lets the user
