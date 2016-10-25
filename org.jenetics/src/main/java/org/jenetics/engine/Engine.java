@@ -63,7 +63,7 @@ import org.jenetics.util.NanoClock;
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
  *        final double x = gt.getGene().doubleValue();
- *        return cos(0.5 + sin(x)) * cos(x);
+ *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *
  *    public static void main(String[] args) {
@@ -719,6 +719,75 @@ public final class Engine<
 		);
 	}
 
+	/**
+	 * Create a new <b>infinite</b> evolution iterator starting with a
+	 * previously evolved {@link EvolutionResult}. The iterator is initialized
+	 * with the population of the given {@code result} and its total generation
+	 * {@link EvolutionResult#getTotalGenerations()}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param result the previously evolved {@code EvolutionResult}
+	 * @return a new evolution stream, which continues a previous one
+	 * @throws NullPointerException if the given evolution {@code result} is
+	 *         {@code null}
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final EvolutionResult<G, C> result
+	) {
+		return iterator(result.getPopulation(), result.getTotalGenerations());
+	}
+
+	/**
+	 * Create a new {@code EvolutionStream} starting with a previously evolved
+	 * {@link EvolutionResult}. The stream is initialized with the population
+	 * of the given {@code result} and its total generation
+	 * {@link EvolutionResult#getTotalGenerations()}.
+	 *
+	 * <pre>{@code
+	 * private static final Problem<Double, DoubleGene, Double>
+	 * PROBLEM = Problem.of(
+	 *     x -> cos(0.5 + sin(x))*cos(x),
+	 *     codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+	 * );
+	 *
+	 * private static final Engine<DoubleGene, Double>
+	 * ENGINE = Engine.builder(PROBLEM)
+	 *     .optimize(Optimize.MINIMUM)
+	 *     .offspringSelector(new RouletteWheelSelector<>())
+	 *     .build();
+	 *
+	 * public static void main(final String[] args) throws IOException {
+	 *     // Result of the first evolution run.
+	 *     final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
+	 *         .limit(limit.bySteadyFitness(10))
+	 *         .collect(EvolutionResult.toBestEvolutionResult());
+	 *
+	 *     // Save the result of the first run into a file.
+	 *     final Path path = Paths.get("result.bin");
+	 *     IO.object.write(rescue, path);
+	 *
+	 *     // Load the previous result and continue evolution.
+	 *     \@SuppressWarnings("unchecked")
+	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
+	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
+	 *         .limit(limit.bySteadyFitness(20))
+	 *         .collect(EvolutionResult.toBestEvolutionResult());
+	 *
+	 *     System.out.println(result.getBestPhenotype());
+	 * }
+	 * }</pre>
+	 *
+	 * The example above shows how to save an {@link EvolutionResult} from a
+	 * first run, save it to disk and continue the evolution.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param result the previously evolved {@code EvolutionResult}
+	 * @return a new evolution stream, which continues a previous one
+	 * @throws NullPointerException if the given evolution {@code result} is
+	 *         {@code null}
+	 */
 	public EvolutionStream<G, C> stream(final EvolutionResult<G, C> result) {
 		return stream(result.getPopulation(), result.getTotalGenerations());
 	}
