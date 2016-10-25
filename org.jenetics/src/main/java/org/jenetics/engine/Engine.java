@@ -489,7 +489,7 @@ public final class Engine<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
@@ -530,7 +530,7 @@ public final class Engine<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param genotypes the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
@@ -561,7 +561,7 @@ public final class Engine<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param genotypes the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
@@ -594,7 +594,7 @@ public final class Engine<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param population the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
@@ -730,7 +730,7 @@ public final class Engine<
 	 * with the population of the given {@code result} and its total generation
 	 * {@link EvolutionResult#getTotalGenerations()}.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param result the previously evolved {@code EvolutionResult}
 	 * @return a new evolution stream, which continues a previous one
@@ -786,7 +786,7 @@ public final class Engine<
 	 * The example above shows how to save an {@link EvolutionResult} from a
 	 * first run, save it to disk and continue the evolution.
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param result the previously evolved {@code EvolutionResult}
 	 * @return a new evolution stream, which continues a previous one
