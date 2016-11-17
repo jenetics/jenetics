@@ -19,7 +19,7 @@
  */
 package org.jenetics.stat;
 
-import java.util.DoubleSummaryStatistics;
+import java.util.IntSummaryStatistics;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -33,19 +33,19 @@ import org.jenetics.util.RandomRegistry;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class DoubleSummaryTest extends ObjectTester<DoubleSummary> {
+public class IntSummaryTest extends ObjectTester<IntSummary> {
 
 	@Override
-	protected Factory<DoubleSummary> factory() {
+	protected Factory<IntSummary> factory() {
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
 
-			final DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
+			final IntSummaryStatistics statistics = new IntSummaryStatistics();
 			IntStream.range(0, 100)
-				.mapToDouble(i -> random.nextDouble())
+				.map(i -> random.nextInt(1_000_000))
 				.forEach(statistics);
 
-			return DoubleSummary.of(statistics);
+			return IntSummary.of(statistics);
 		};
 	}
 
