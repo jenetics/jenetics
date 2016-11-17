@@ -19,10 +19,34 @@
  */
 package org.jenetics.stat;
 
+import java.util.LongSummaryStatistics;
+import java.util.Random;
+import java.util.stream.IntStream;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class LongSummaryTest {
+@Test
+public class LongSummaryTest extends ObjectTester<LongSummary> {
+
+	@Override
+	protected Factory<LongSummary> factory() {
+		return () -> {
+			final Random random = RandomRegistry.getRandom();
+
+			final LongSummaryStatistics statistics = new LongSummaryStatistics();
+			IntStream.range(0, 100)
+				.map(i -> random.nextInt(1_000_000))
+				.forEach(statistics);
+
+			return LongSummary.of(statistics);
+		};
+	}
+
 }
