@@ -157,7 +157,7 @@ public class LongMomentStatistics
 	/**
 	 * Compares the state of two {@code LongMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable objects. If two object have the same state, it
+	 * implement for this mutable object. If two object have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final LongMomentStatistics lms1 = ...;
@@ -169,6 +169,8 @@ public class LongMomentStatistics
 	 *     lms2.accept(value);
 	 *
 	 *     assert lms1.sameState(lms2);
+	 *     assert lms2.sameState(lms1);
+	 *     assert lms1.sameState(lms1);
 	 * }
 	 * }</pre>
 	 *

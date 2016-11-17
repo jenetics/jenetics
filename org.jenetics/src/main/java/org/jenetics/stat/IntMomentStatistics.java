@@ -146,7 +146,7 @@ public class IntMomentStatistics
 	/**
 	 * Compares the state of two {@code IntMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable objects. If two object have the same state, it
+	 * implement for this mutable object. If two object have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final IntMomentStatistics ims1 = ...;
@@ -158,6 +158,8 @@ public class IntMomentStatistics
 	 *     ims2.accept(value);
 	 *
 	 *     assert ims1.sameState(ims2);
+	 *     assert ims2.sameState(ims1);
+	 *     assert ims1.sameState(ims1);
 	 * }
 	 * }</pre>
 	 *

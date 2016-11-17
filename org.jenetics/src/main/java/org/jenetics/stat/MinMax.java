@@ -126,7 +126,7 @@ public final class MinMax<C> implements Consumer<C> {
 	/**
 	 * Compares the state of two {@code LongMomentStatistics} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable objects. If two object have the same state, it
+	 * implement for this mutable object. If two object have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final MinMax mm1 = ...;
@@ -138,6 +138,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *     mm2.accept(value);
 	 *
 	 *     assert mm1.sameState(mm2);
+	 *     assert mm2.sameState(mm1);
+	 *     assert mm1.sameState(mm1);
 	 * }
 	 * }</pre>
 	 *

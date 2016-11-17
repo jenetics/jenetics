@@ -376,7 +376,7 @@ public class Quantile implements DoubleConsumer {
 	/**
 	 * Compares the state of two {@code Quantile} objects. This is
 	 * a replacement for the {@link #equals(Object)} which is not advisable to
-	 * implement for this mutable objects. If two object have the same state, it
+	 * implement for this mutable object. If two object have the same state, it
 	 * has still the same state when updated with the same value.
 	 * <pre>{@code
 	 * final Quantile q1 = ...;
@@ -388,6 +388,8 @@ public class Quantile implements DoubleConsumer {
 	 *     q2.accept(value);
 	 *
 	 *     assert q1.sameState(q2);
+	 *     assert q2.sameState(q1);
+	 *     assert q1.sameState(q1);
 	 * }
 	 * }</pre>
 	 *
