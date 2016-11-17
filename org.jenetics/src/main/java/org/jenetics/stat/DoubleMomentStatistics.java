@@ -68,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -164,6 +164,8 @@ public class DoubleMomentStatistics
 	 *     assert ds1.sameState(ds2);
 	 * }
 	 * }</pre>
+	 *
+	 * @since !__version__!
 	 *
 	 * @param other the other object for the test
 	 * @return {@code true} the {@code this} and the {@code other} objects have

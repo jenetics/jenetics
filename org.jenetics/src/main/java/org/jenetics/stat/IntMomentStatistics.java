@@ -65,7 +65,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -160,6 +160,8 @@ public class IntMomentStatistics
 	 *     assert ims1.sameState(ims2);
 	 * }
 	 * }</pre>
+	 *
+	 * @since !__version__!
 	 *
 	 * @param other the other object for the test
 	 * @return {@code true} the {@code this} and the {@code other} objects have
