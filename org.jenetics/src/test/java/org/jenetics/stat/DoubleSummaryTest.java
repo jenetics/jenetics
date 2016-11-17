@@ -19,10 +19,32 @@
  */
 package org.jenetics.stat;
 
+import java.util.DoubleSummaryStatistics;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class DoubleSummaryTest {
+public class DoubleSummaryTest extends ObjectTester<DoubleSummary> {
+
+	@Override
+	protected Factory<DoubleSummary> factory() {
+		return () -> {
+			final Random random = RandomRegistry.getRandom();
+
+			final DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
+			IntStream.range(0, 100)
+				.mapToDouble(i -> random.nextDouble())
+				.forEach(statistics);
+
+			return DoubleSummary.of(statistics);
+		};
+	}
+
 }
