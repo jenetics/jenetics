@@ -191,6 +191,12 @@ public final class DoubleAdder
 		return Double.compare(doubleValue(), other.doubleValue());
 	}
 
+	public boolean sameState(final DoubleAdder other) {
+		return Double.compare(_sum, other._sum) == 0 &&
+			Double.compare(_simpleSum, other._simpleSum) == 0 &&
+			Double.compare(_compensation, other._compensation) == 0;
+	}
+
 	@Override
 	public int hashCode() {
 		return Hash.of(DoubleAdder.class).and(doubleValue()).value();
