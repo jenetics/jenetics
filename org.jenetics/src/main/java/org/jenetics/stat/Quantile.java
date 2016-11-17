@@ -29,8 +29,6 @@ import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Hash;
-
 /**
  * Implementation of the quantile estimation algorithm published by
  * <p>
@@ -71,7 +69,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.1
+ * @version !__version__!
  */
 public class Quantile implements DoubleConsumer {
 
@@ -375,26 +373,36 @@ public class Quantile implements DoubleConsumer {
 		return result;
 	}
 
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).
-			and(super.hashCode()).
-			and(_quantile).
-			and(_dn).
-			and(_n).
-			and(_nn).
-			and(_q).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof Quantile &&
-			eq(_quantile, ((Quantile)obj)._quantile) &&
-			eq(_dn, ((Quantile)obj)._dn) &&
-			eq(_n, ((Quantile)obj)._n) &&
-			eq(_nn, ((Quantile)obj)._nn) &&
-			eq(_q, ((Quantile)obj)._q) &&
-			super.equals(obj);
+	/**
+	 * Compares the state of two {@code Quantile} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable objects. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final Quantile q1 = ...;
+	 * final Quantile q2 = ...;
+	 *
+	 * if (q1.sameState(q2)) {
+	 *     final double value = random.nextDouble();
+	 *     q1.accept(value);
+	 *     q2.accept(value);
+	 *
+	 *     assert q1.sameState(q2);
+	 * }
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final Quantile other) {
+		return eq(_quantile, other._quantile) &&
+			eq(_dn, other._dn) &&
+			eq(_n, other._n) &&
+			eq(_nn, other._nn) &&
+			eq(_q, other._q);
 	}
 
 	@Override
