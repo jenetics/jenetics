@@ -191,6 +191,14 @@ public final class DoubleAdder
 		return Double.compare(doubleValue(), other.doubleValue());
 	}
 
+	/**
+	 * Check if {@code this} and the {@code other} {@code DoubleAdder} maintain
+	 * the same internal state.
+	 *
+	 * @param other the other object
+	 * @return {@code true} if {@code this} and the {@code other} adder have
+	 *         the same state, {@code false otherwise}
+	 */
 	public boolean sameState(final DoubleAdder other) {
 		return Double.compare(_sum, other._sum) == 0 &&
 			Double.compare(_simpleSum, other._simpleSum) == 0 &&
