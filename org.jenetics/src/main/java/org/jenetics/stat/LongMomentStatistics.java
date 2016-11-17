@@ -154,6 +154,35 @@ public class LongMomentStatistics
 		return _sum;
 	}
 
+	/**
+	 * Compares the state of two {@code LongMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable objects. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final LongMomentStatistics lms1 = ...;
+	 * final LongMomentStatistics lms2 = ...;
+	 *
+	 * if (lms1.sameState(lms2)) {
+	 *     final long value = random.nextInt(1_000_000);
+	 *     lms1.accept(value);
+	 *     lms2.accept(value);
+	 *
+	 *     assert lms1.sameState(lms2);
+	 * }
+	 * }</pre>
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final LongMomentStatistics other) {
+		return _min == other._min &&
+			_max == other._max &&
+			_sum == other._sum &&
+			super.sameState(other);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
