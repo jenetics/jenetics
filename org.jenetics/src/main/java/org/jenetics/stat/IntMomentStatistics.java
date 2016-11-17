@@ -65,7 +65,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -141,6 +141,39 @@ public class IntMomentStatistics
 	 */
 	public long getSum() {
 		return _sum;
+	}
+
+	/**
+	 * Compares the state of two {@code IntMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final IntMomentStatistics ims1 = ...;
+	 * final IntMomentStatistics ims2 = ...;
+	 *
+	 * if (ims1.sameState(ims2)) {
+	 *     final int value = random.nextInt(1_000_000);
+	 *     ims1.accept(value);
+	 *     ims2.accept(value);
+	 *
+	 *     assert ims1.sameState(ims2);
+	 *     assert ims2.sameState(ims1);
+	 *     assert ims1.sameState(ims1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final IntMomentStatistics other) {
+		return _min == other._min &&
+			_max == other._max &&
+			_sum == other._sum &&
+			super.sameState(other);
 	}
 
 	@Override
