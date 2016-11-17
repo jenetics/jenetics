@@ -66,7 +66,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.7
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -174,7 +174,7 @@ public class LongMomentStatistics
 	 * }
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 3.7
 	 *
 	 * @param other the other object for the test
 	 * @return {@code true} the {@code this} and the {@code other} objects have
