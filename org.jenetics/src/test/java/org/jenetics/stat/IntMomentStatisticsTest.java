@@ -148,6 +148,9 @@ public class IntMomentStatisticsTest {
 			ims2.accept(value);
 
 			Assert.assertTrue(ims1.sameState(ims2));
+			Assert.assertTrue(ims2.sameState(ims1));
+			Assert.assertTrue(ims1.sameState(ims1));
+			Assert.assertTrue(ims2.sameState(ims2));
 		}
 	}
 

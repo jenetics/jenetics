@@ -130,6 +130,9 @@ public class QuantileTest {
 			q2.accept(value);
 
 			Assert.assertTrue(q1.sameState(q2));
+			Assert.assertTrue(q2.sameState(q1));
+			Assert.assertTrue(q1.sameState(q1));
+			Assert.assertTrue(q2.sameState(q2));
 		}
 	}
 

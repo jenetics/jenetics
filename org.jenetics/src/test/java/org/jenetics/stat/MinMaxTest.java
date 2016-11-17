@@ -188,6 +188,9 @@ public class MinMaxTest {
 			mm2.accept(value);
 
 			Assert.assertTrue(mm1.sameState(mm2));
+			Assert.assertTrue(mm2.sameState(mm1));
+			Assert.assertTrue(mm1.sameState(mm1));
+			Assert.assertTrue(mm2.sameState(mm2));
 		}
 	}
 

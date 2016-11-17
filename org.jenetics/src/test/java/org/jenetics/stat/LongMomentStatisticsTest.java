@@ -148,6 +148,9 @@ public class LongMomentStatisticsTest {
 			ms2.accept(value);
 
 			Assert.assertTrue(ms1.sameState(ms2));
+			Assert.assertTrue(ms2.sameState(ms1));
+			Assert.assertTrue(ms1.sameState(ms1));
+			Assert.assertTrue(ms2.sameState(ms2));
 		}
 	}
 

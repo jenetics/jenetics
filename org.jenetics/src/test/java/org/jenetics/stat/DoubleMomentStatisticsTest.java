@@ -151,6 +151,9 @@ public class DoubleMomentStatisticsTest {
 			dms2.accept(value);
 
 			Assert.assertTrue(dms1.sameState(dms2));
+			Assert.assertTrue(dms2.sameState(dms1));
+			Assert.assertTrue(dms1.sameState(dms1));
+			Assert.assertTrue(dms2.sameState(dms2));
 		}
 	}
 
