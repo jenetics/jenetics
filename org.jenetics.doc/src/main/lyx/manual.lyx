@@ -880,7 +880,7 @@ Hello World
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "extendedchars=true,language=Java,numbers=left,stepnumber=1,tabsize=4"
+lstparams "language=Java"
 inline false
 status open
 
@@ -4732,7 +4732,7 @@ Recombination
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "language=Java,numbers=left,showstringspaces=false,tabsize=4,extendedchars=true,mathescape=true"
+lstparams "language=Java"
 inline false
 status open
 
@@ -4879,7 +4879,7 @@ name "lis:Chromosome-selection-recombination"
 
 \end_inset
 
-Chromosome selection for recombination
+
 \begin_inset Index idx
 status collapsed
 
@@ -4889,7 +4889,7 @@ Chromosome!recombination
 
 \end_inset
 
-
+Chromosome selection for recombination
 \end_layout
 
 \end_inset
@@ -9186,7 +9186,7 @@ key "Tina2011"
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "extendedchars=true,language=Java,mathescape=true,numbers=left,showstringspaces=false,tabsize=4"
+lstparams "extendedchars=true,language=Java"
 inline false
 status open
 
@@ -20514,7 +20514,7 @@ source
 
 \begin_layout Standard
 \begin_inset listings
-lstparams "language=Java,tabsize=4"
+lstparams "language=Java"
 inline false
 status open
 
