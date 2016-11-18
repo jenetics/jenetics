@@ -47,7 +47,7 @@ ext {
 	copyrightYear = "2007-${year}".toString()
 	identifier = "${rootProject.name}-${version}".toString()
 	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
-	manualIdentifier = "${version}---${manualDate}".toString()
+	manualIdentifier = "${version}—${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 }
 
