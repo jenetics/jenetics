@@ -19,10 +19,30 @@
  */
 package org.jenetics;
 
+import org.jenetics.util.MSeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class UniformCrossover {
+public class UniformCrossover<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	extends Crossover<G, C>
+{
+	public UniformCrossover(final double probability) {
+		super(probability);
+	}
+
+	public UniformCrossover() {
+		this(DEFAULT_ALTER_PROBABILITY);
+	}
+
+	@Override
+	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
+		return 0;
+	}
+
 }
