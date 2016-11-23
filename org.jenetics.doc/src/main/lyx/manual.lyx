@@ -1568,7 +1568,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/EvolutionStream.eps
-	width 55text%
+	width 60text%
 
 \end_inset
 
@@ -1722,22 +1722,26 @@ reference "fig:Evolution-engine-model"
 
 \end_inset
 
- illustrates the main 
+ shows the 
+\emph on
+static
+\emph default
+ view of the main 
 \emph on
 evolution
 \emph default
- engine classes, together with its dependencies.
+ classes, together with its dependencies.
  Since the 
 \family typewriter
 Engine
 \family default
- class itself is immutable, and can't be changed after creation, it is build/con
-figured via a builder.
- After the 
+ class itself is immutable, and can't be changed after creation, it is instantia
+ted (configured) via a builder.
+ The 
 \family typewriter
 Engine
 \family default
- has been created, it can be used to create an arbitrary number of 
+ can be used to create an arbitrary number of 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -1767,6 +1771,10 @@ Evolution\SpecialChar softhyphen
 Stream
 \family default
  if some termination criteria is fulfilled.
+\end_layout
+
+\begin_layout Standard
+The separation of Engine and EvolutionStream allows an abstraction ...
 \end_layout
 
 \begin_layout Standard
@@ -1818,14 +1826,14 @@ Package structure
 \end_layout
 
 \begin_layout Standard
-Figure 
+In figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Package-structure"
 
 \end_inset
 
- shows the package structure of the library which consists of the following
+ the package structure of the library is shown and it consists of the following
  packages:
 \end_layout
 
