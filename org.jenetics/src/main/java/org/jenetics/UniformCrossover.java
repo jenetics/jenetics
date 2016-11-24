@@ -19,7 +19,11 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
+import static org.jenetics.internal.math.random.indexes;
+
 import org.jenetics.util.MSeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -32,6 +36,7 @@ public class UniformCrossover<
 >
 	extends Crossover<G, C>
 {
+
 	public UniformCrossover(final double probability) {
 		super(probability);
 	}
@@ -42,7 +47,20 @@ public class UniformCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		return 0;
+		final int length = min(that.length(), other.length());
+		return (int)indexes(RandomRegistry.getRandom(), length, _probability)
+			.peek(i -> swap(i, that, other))
+			.count();
+	}
+
+	private static <T> void swap(
+		final int index,
+		final MSeq<T> that,
+		final MSeq<T> other
+	) {
+		final T temp = that.get(index);
+		that.set(index, other.get(index));
+		other.set(index, temp);
 	}
 
 }
