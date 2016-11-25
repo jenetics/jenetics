@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.lang.Math.min;
 import static org.jenetics.internal.math.random.indexes;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -37,18 +39,62 @@ public class UniformCrossover<
 	extends Crossover<G, C>
 {
 
-	public UniformCrossover(final double probability) {
-		super(probability);
+	private final double _swapProbability;
+
+	/**
+	 * Create a new universal crossover instance.
+	 *
+	 * @param crossoverProbability the recombination probability as defined in
+	 *        {@link Crossover#Crossover(double)}. This is the probability that
+	 *        a given individual is selected for crossover.
+	 * @param swapProbability the probability for swapping genes a given gene of
+	 *         a chromosome
+	 * @throws IllegalArgumentException if the probabilities are not in the
+	 *         valid range of {@code [0, 1]}
+	 */
+	public UniformCrossover(
+		final double crossoverProbability,
+		final double swapProbability
+	) {
+		super(crossoverProbability);
+		_swapProbability = require.probability(swapProbability);
 	}
 
+	/**
+	 * Create a new universal crossover instance. The {@code swapProbability} is
+	 * set to {@link Alterer#DEFAULT_ALTER_PROBABILITY}.
+	 *
+	 * @param crossoverProbability the recombination probability as defined in
+	 *        {@link Crossover#Crossover(double)}. This is the probability that
+	 *        a given individual is selected for crossover.
+	 * @throws IllegalArgumentException if the probabilities are not in the
+	 *         valid range of {@code [0, 1]}
+	 */
+	public UniformCrossover(final double crossoverProbability) {
+		this(crossoverProbability, DEFAULT_ALTER_PROBABILITY);
+	}
+
+	/**
+	 * Create a new universal crossover instance. The probabilities are set to
+	 * {@link Alterer#DEFAULT_ALTER_PROBABILITY}.
+	 */
 	public UniformCrossover() {
-		this(DEFAULT_ALTER_PROBABILITY);
+		this(DEFAULT_ALTER_PROBABILITY, DEFAULT_ALTER_PROBABILITY);
+	}
+
+	/**
+	 * Return the probability for swapping genes of a chromosome.
+	 *
+	 * @return the probability for swapping genes of a chromosome
+	 */
+	public double getSwapProbability() {
+		return _swapProbability;
 	}
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
-		return (int)indexes(RandomRegistry.getRandom(), length, _probability)
+		return (int)indexes(RandomRegistry.getRandom(), length, _swapProbability)
 			.peek(i -> swap(i, that, other))
 			.count();
 	}
