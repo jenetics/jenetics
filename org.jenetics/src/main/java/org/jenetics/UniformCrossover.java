@@ -34,9 +34,7 @@ import org.jenetics.util.RandomRegistry;
  * +---+---+---+---+---+---+---+
  * | 1 | 2 | 3 | 4 | 6 | 7 | 8 |
  * +-+-+---+-+-+-+-+---+-+-+---+
- *   ∧       ∧   ∧       ∧
- *   |       |   |       |  swapping
- *   ∨       ∨   ∨       ∨
+ *   |       |   |       |        swapping
  * +-+-+---+-+-+-+-+---+-+-+---+
  * | a | b | c | d | e | f | g |
  * +---+---+---+---+---+---+---+
@@ -45,6 +43,9 @@ import org.jenetics.util.RandomRegistry;
  * <i>swap-probability</i> ({@link #getSwapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
  * the <i>crossover-probability</i> ({@link #getProbability()}).
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover">
+ *     Wikipedia: Uniform crossover</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -65,7 +66,7 @@ public class UniformCrossover<
 	 * @param crossoverProbability the recombination probability as defined in
 	 *        {@link Crossover#Crossover(double)}. This is the probability that
 	 *        a given individual is selected for crossover.
-	 * @param swapProbability the probability for swapping genes a given gene of
+	 * @param swapProbability the probability for swapping a given gene of
 	 *         a chromosome
 	 * @throws IllegalArgumentException if the probabilities are not in the
 	 *         valid range of {@code [0, 1]}
