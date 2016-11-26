@@ -28,6 +28,24 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
+ * The uniform crossover uses swaps single genes between two chromosomes, instead
+ * of whole ranges as in single- and multi-point crossover.
+ * <pre>
+ * +---+---+---+---+---+---+---+
+ * | 1 | 2 | 3 | 4 | 6 | 7 | 8 |
+ * +-+-+---+-+-+-+-+---+-+-+---+
+ *   ∧       ∧   ∧       ∧
+ *   |       |   |       |  swapping
+ *   ∨       ∨   ∨       ∨
+ * +-+-+---+-+-+-+-+---+-+-+---+
+ * | a | b | c | d | e | f | g |
+ * +---+---+---+---+---+---+---+
+ * </pre>
+ * The probability that two genes are swapped is controlled by the
+ * <i>swap-probability</i> ({@link #getSwapProbability()}), whereas the
+ * probability that a given individual is selected for crossover is defined by
+ * the <i>crossover-probability</i> ({@link #getProbability()}).
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
