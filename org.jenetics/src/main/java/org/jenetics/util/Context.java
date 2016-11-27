@@ -40,7 +40,9 @@ final class Context<T> {
 
 	void set(final T value) {
 		final Entry<T> e = _threadLocalEntry.get();
-		if (e != null) e.value = value; else _entry.set(new Entry<>(value));
+
+		if (e != null) e.value = value;
+		else _entry.set(new Entry<>(value));
 	}
 
 	T get() {
