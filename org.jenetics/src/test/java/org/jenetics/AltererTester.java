@@ -26,8 +26,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.2
- * @since 3.2
  */
 public abstract class AltererTester {
 
