@@ -5280,7 +5280,7 @@ reference "fig:3-point-crossover"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -5557,6 +5557,107 @@ reference "fig:Partially-matched-crossover"
 c
 \emph default
 ) shows the repaired chromosome.
+\end_layout
+
+\begin_layout Paragraph
+Uniform crossover
+\end_layout
+
+\begin_layout Standard
+In uniform crossover, the genes at index 
+\begin_inset Formula $i$
+\end_inset
+
+ of two chromosomes are swapped with the swap-probability 
+\begin_inset Formula $p_{S}$
+\end_inset
+
+.
+ Empirical studies shows that uniform crossover is a more exploitative approach
+ than the traditional exploitative approach that maintains longer schemata.
+ This leads to a better search of the design space with maintaining the
+ exchange of good information.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "chawdhry1998soft"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/UniformCrossover.eps
+	width 33text%
+	BoundingBox 0bp 0bp 227bp 156bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Uniform-crossover"
+
+\end_inset
+
+Uniform crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Uniform crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Uniform crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Uniform-crossover"
+
+\end_inset
+
+ shows an example of a uniform crossover with four crossover points.
+ 
 \end_layout
 
 \begin_layout Subsection
