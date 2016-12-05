@@ -5568,7 +5568,7 @@ In uniform crossover, the genes at index
 \begin_inset Formula $i$
 \end_inset
 
- of two chromosomes are swapped with the swap-probability 
+ of two chromosomes are swapped with the swap-probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -5657,7 +5657,57 @@ reference "fig:Uniform-crossover"
 \end_inset
 
  shows an example of a uniform crossover with four crossover points.
- 
+ A gene is swapped, if a uniformly created random number, 
+\begin_inset Formula $r\in\left[0,1\right]$
+\end_inset
+
+, is smaller than the swap-probability, 
+\begin_inset Formula $p_{S}$
+\end_inset
+
+.
+ The following code snippet shows how these swap indexes are calculated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Random random = RandomRegistry.getRandom();
+\end_layout
+
+\begin_layout Plain Layout
+
+final int length = 8;
+\end_layout
+
+\begin_layout Plain Layout
+
+final double ps = 0.5;
+\end_layout
+
+\begin_layout Plain Layout
+
+final int[] indexes = IntRange.range(0, length)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .filter(i -> random.nextDouble() < ps)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .toArray();
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
