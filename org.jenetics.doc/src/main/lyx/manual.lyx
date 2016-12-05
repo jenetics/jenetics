@@ -1546,8 +1546,8 @@ Evolution Engine
 \emph on
 evolution
 \emph default
- steps for one generation; the steps are described in the body of the while-loop
- of listing 
+ steps for each generation; the steps are described in the body of the while-loo
+p of listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Genetic-algorithm"
@@ -1643,8 +1643,16 @@ Result
 \end_inset
 
  generation.
- Once the evolution engine is created, it can be used by multiple evolution
- streams, which can be safely used in different execution threads.
+ Once the evolution 
+\family typewriter
+Engine
+\family default
+ is created, it can be used by multiple 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streams
+\family default
+, which can be safely used in different execution threads.
  This is possible, because the evolution 
 \family typewriter
 Engine
@@ -1674,6 +1682,57 @@ non
 -deterministic.
  Calling it twice with the same start population will lead to different
  result populations.
+\end_layout
+
+\begin_layout Standard
+The evolution process terminates, if the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is truncated and the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ truncation is controlled by the 
+\family typewriter
+limit
+\family default
+ predicate.
+ As long as the predicate returns true, the evolution is continued.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Termination"
+
+\end_inset
+
+ for a detailed description of the available termination strategies.
+\end_layout
+
+\end_inset
+
+ At last, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ is collected from the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ by one of the available 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ collectors.
 \end_layout
 
 \begin_layout Standard
