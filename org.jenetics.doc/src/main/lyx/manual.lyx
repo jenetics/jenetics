@@ -1830,10 +1830,16 @@ Evolution\SpecialChar softhyphen
 Stream
 \family default
  if some termination criteria is fulfilled.
-\end_layout
-
-\begin_layout Standard
-The separation of Engine and EvolutionStream allows an abstraction ...
+ The separation of 
+\family typewriter
+Engine
+\family default
+ and 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is the separation of the evolution definition and evolution execution.
 \end_layout
 
 \begin_layout Standard
