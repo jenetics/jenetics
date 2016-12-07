@@ -1182,7 +1182,7 @@ Genotype
 \end_inset
 
  chromosomes.
- For detailed description of the genotype's structure have a look at section
+ For a detailed description of the genotype's structure have a look at section
  
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -4946,6 +4946,7 @@ void recombine(final Population<G, C> pop) {
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+Chromosome selection for recombination
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Chromosome-selection-recombination"
@@ -4962,7 +4963,7 @@ Chromosome!recombination
 
 \end_inset
 
-Chromosome selection for recombination
+
 \end_layout
 
 \end_inset
@@ -10450,12 +10451,6 @@ public class DataClass {
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:DataClassJAXB-serialization"
-
-\end_inset
-
 
 \family typewriter
 \emph on
@@ -10463,6 +10458,13 @@ DataClass
 \family default
 \emph default
  JAXB serialization
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:DataClassJAXB-serialization"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
