@@ -2701,6 +2701,11 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
+    public Stream<G> stream();
+\end_layout
+
+\begin_layout Plain Layout
+
     public int length();
 \end_layout
 
@@ -2833,6 +2838,14 @@ s must be parameterized with the same
 Gene
 \family default
  type, but it is allowed to have different lengths and constraints.
+ The allowed minimal- and maximal values of a 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Chromosome
+\family default
+ is an example of a constraint.
+ Within the same chromosome, all numeric gene alleles must lay within the
+ defined minimal- and maximal values.
 \end_layout
 
 \begin_layout Standard
@@ -10106,7 +10119,17 @@ Stream
 \family typewriter
  org.jenetics.util
 \family default
- package, supports native Java serialization and JAXB XML serialization.
+ package, supports native Java serialization and JAXB
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+JAXB
+\end_layout
+
+\end_inset
+
+ XML serialization.
 \end_layout
 
 \begin_layout Standard
@@ -10809,7 +10832,7 @@ begin{multicols}{2}
 \emph on
 minimum
 \emph default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -10817,7 +10840,7 @@ minimum
 \emph on
 maximum
 \emph default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -10825,7 +10848,7 @@ maximum
 \emph on
 sum
 \emph default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -10833,7 +10856,7 @@ sum
 \emph on
 mean
 \emph default
-, 
+,
 \end_layout
 
 \begin_layout Itemize
@@ -10849,7 +10872,7 @@ variance
 \emph on
 skewness
 \emph default
- and 
+ and
 \end_layout
 
 \begin_layout Itemize
@@ -13564,7 +13587,7 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return ((DoubleChromosome)gt.getChromosome()).toArray();
+    return gt.getChromosome().as(DoubleChromosome.class).toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -13712,7 +13735,7 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.toSeq().stream()
+    return gt.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -13953,17 +13976,12 @@ static double[][] toVectors(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.toSeq().stream()
+    return gt.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-        .map(DoubleChromosome.class::cast)
-\end_layout
-
-\begin_layout Plain Layout
-
-        .map(DoubleChromosome::toArray)
+        .map(dc -> dc.as(DoubleChromosome.class).toArray())
 \end_layout
 
 \begin_layout Plain Layout
@@ -14014,7 +14032,7 @@ static double[] toVector(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return ((DoubleChromosome)gt.getChromosome()).toArray();
+    return gt.getChromosome().as(DoubleChromosome.class).toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14760,12 +14778,7 @@ final int n = 6;
 
 \begin_layout Plain Layout
 
-final Genotype<BitGene> gt = Genotype
-\end_layout
-
-\begin_layout Plain Layout
-
-    .of(BitChromosome.of(n), n);
+final Genotype<BitGene> gt = Genotype.of(BitChromosome.of(n), n);
 \end_layout
 
 \end_inset
@@ -15806,7 +15819,17 @@ static Codec<int[], IntegerGene> ofVector(
 
 \begin_layout Plain Layout
 
-        gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
+        gt -> gt.getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .as(IntegerChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray()
 \end_layout
 
 \begin_layout Plain Layout
@@ -16513,7 +16536,7 @@ static <T> Codec<T[], EnumGene<T>> ofPermutation(T...
 
 \begin_layout Plain Layout
 
-        gt -> gt.getChromosome().toSeq().stream()
+        gt -> gt.getChromosome().stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -19426,7 +19449,7 @@ is fulfilled, the evolution stream is truncated.
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
 \max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \sigma_{F}(N_{x})\neq0\\
-1 & \mathrm{else}
+1 & \mathrm{otherwise}
 \end{array}\right..\label{eq:fitness-convergence-div}
 \end{equation}
 
@@ -19930,6 +19953,16 @@ dieharder
 Die\SpecialChar softhyphen
 Harder
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Dieharder
+\end_layout
+
+\end_inset
+
  class, which is part of the 
 \family typewriter
 org.\SpecialChar softhyphen
@@ -20217,7 +20250,7 @@ Seeding
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!seeding
@@ -23344,6 +23377,16 @@ name "fig:Evolving-Mona-Lisa"
 Evolving 
 \emph on
 Mona Lisa
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Mona Lisa
+\end_layout
+
+\end_inset
+
+
 \emph default
  images
 \end_layout
