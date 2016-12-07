@@ -68,9 +68,9 @@ for creating the project files for Eclipse or IntelliJ, respectively. Whereas th
 The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by adding an explicit cast to the method reference:
 
 ```java
- Engine
-     .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
-     .build();
+Engine
+    .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
+    .build();
 ```
 
  Or you are using [IntelliJ](https://www.jetbrains.com/idea/download/) instead.
