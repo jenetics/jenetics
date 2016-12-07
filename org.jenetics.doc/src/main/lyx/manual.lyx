@@ -5732,7 +5732,8 @@ reference "fig:Uniform-crossover"
 \end_inset
 
 .
- The following code snippet shows how these swap indexes are calculated.
+ The following code snippet shows how these swap indexes are calculated,
+ in a functional way.
 \end_layout
 
 \begin_layout Standard
@@ -15070,17 +15071,12 @@ status open
 
 \begin_layout Plain Layout
 
-final double[][] array = gt.toSeq().stream()
+final double[][] array = gt.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-    .map(DoubleChromosome.class::cast)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .map(DoubleChromosome::toArray)
+    .map(dc -> dc.as(DoubleChromosome.class).toArray())
 \end_layout
 
 \begin_layout Plain Layout
