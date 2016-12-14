@@ -19,6 +19,7 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,8 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Information about the GPX file, author, and copyright restrictions goes in
@@ -55,7 +55,7 @@ public final class Metadata implements Serializable {
 	private final String _description;
 	private final Person _author;
 	private final Copyright _copyright;
-	private final ISeq<Link> _links;
+	private final List<Link> _links;
 	private final ZonedDateTime _time;
 	private final String _keywords;
 	private final Bounds _bounds;
@@ -82,7 +82,7 @@ public final class Metadata implements Serializable {
 		final String description,
 		final Person author,
 		final Copyright copyright,
-		final ISeq<Link> links,
+		final List<Link> links,
 		final ZonedDateTime time,
 		final String keywords,
 		final Bounds bounds
@@ -91,7 +91,7 @@ public final class Metadata implements Serializable {
 		_description = description;
 		_author = author;
 		_copyright = copyright;
-		_links = requireNonNull(links);
+		_links = unmodifiableList(requireNonNull(links));
 		_time = time;
 		_keywords = keywords;
 		_bounds = bounds;
@@ -134,11 +134,12 @@ public final class Metadata implements Serializable {
 	}
 
 	/**
-	 * Return the URLs associated with the location described in the file.
+	 * Return the URLs associated with the location described in the file. The
+	 * returned list immutable.
 	 *
 	 * @return the URLs associated with the location described in the file
 	 */
-	public ISeq<Link> getLinks() {
+	public List<Link> getLinks() {
 		return _links;
 	}
 
@@ -200,7 +201,7 @@ public final class Metadata implements Serializable {
 		final String description,
 		final Person author,
 		final Copyright copyright,
-		final ISeq<Link> links,
+		final List<Link> links,
 		final ZonedDateTime time,
 		final String keywords,
 		final Bounds bounds
@@ -268,9 +269,9 @@ public final class Metadata implements Serializable {
 				model.copyright = metadata.getCopyright()
 					.map(Copyright.Model.ADAPTER::marshal)
 					.orElse(null);
-				model.link = metadata.getLinks()
+				model.link = metadata.getLinks().stream()
 					.map(Link.Model.ADAPTER::marshal)
-					.asList();
+					.collect(Collectors.toList());
 				model.time = metadata.getTime()
 					.map(DTF::format)
 					.orElse(null);
@@ -295,7 +296,7 @@ public final class Metadata implements Serializable {
 						.orElse(null),
 					model.link.stream()
 						.map(Link.Model.ADAPTER::unmarshal)
-						.collect(ISeq.toISeq()),
+						.collect(Collectors.toList()),
 					Optional.ofNullable(model.time)
 						.map(t -> ZonedDateTime.parse(t, DTF))
 						.orElse(null),

@@ -20,6 +20,7 @@
 package org.jenetics.example.tsp.gpx;
 
 import static java.lang.String.format;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -27,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -36,8 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Represents a GPX track - an ordered list of points describing a path.
@@ -55,10 +55,10 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	private final String _comment;
 	private final String _description;
 	private final String _source;
-	private final ISeq<Link> _links;
+	private final List<Link> _links;
 	private final UInt _number;
 	private final String _type;
-	private final ISeq<TrackSegment> _segments;
+	private final List<TrackSegment> _segments;
 
 	/**
 	 * Create a new {@code Track} with the given parameters.
@@ -83,19 +83,19 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 		final String comment,
 		final String description,
 		final String source,
-		final ISeq<Link> links,
+		final List<Link> links,
 		final UInt number,
 		final String type,
-		final ISeq<TrackSegment> segments
+		final List<TrackSegment> segments
 	) {
 		_name = name;
 		_comment = comment;
 		_description = description;
 		_source = source;
-		_links = requireNonNull(links);
+		_links = unmodifiableList(requireNonNull(links));
 		_number = number;
 		_type = type;
-		_segments = requireNonNull(segments);
+		_segments = unmodifiableList(requireNonNull(segments));
 	}
 
 	/**
@@ -140,7 +140,7 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	 *
 	 * @return the links to external information about the track
 	 */
-	public ISeq<Link> getLinks() {
+	public List<Link> getLinks() {
 		return _links;
 	}
 
@@ -167,7 +167,7 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 	 *
 	 * @return the sequence of route points
 	 */
-	public ISeq<TrackSegment> getSegments() {
+	public List<TrackSegment> getSegments() {
 		return _segments;
 	}
 
@@ -244,10 +244,10 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 		final String comment,
 		final String description,
 		final String source,
-		final ISeq<Link> links,
+		final List<Link> links,
 		final UInt number,
 		final String type,
-		final ISeq<TrackSegment> segments
+		final List<TrackSegment> segments
 	) {
 		return new Track(
 			name,
@@ -304,16 +304,16 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 				model.cmt = track._comment;
 				model.desc = track._description;
 				model.src = track._source;
-				model.link = track._links
+				model.link = track._links.stream()
 					.map(Link.Model.ADAPTER::marshal)
-					.asList();
+					.collect(Collectors.toList());
 				model.number = Optional.ofNullable(track._number)
 					.map(UInt::intValue)
 					.orElse(null);
 				model.type = track._type;
-				model.segments = track._segments
+				model.segments = track._segments.stream()
 					.map(TrackSegment.Model.ADAPTER::marshal)
-					.asList();
+					.collect(Collectors.toList());
 
 				return model;
 			}
@@ -327,14 +327,14 @@ public final class Track implements Iterable<TrackSegment>, Serializable {
 					model.src,
 					model.link.stream()
 						.map(Link.Model.ADAPTER::unmarshal)
-						.collect(ISeq.toISeq()),
+						.collect(Collectors.toList()),
 					Optional.ofNullable(model.number)
 						.map(UInt::of)
 						.orElse(null),
 					model.type,
 					model.segments.stream()
 						.map(TrackSegment.Model.ADAPTER::unmarshal)
-						.collect(ISeq.toISeq())
+						.collect(Collectors.toList())
 				);
 			}
 		}

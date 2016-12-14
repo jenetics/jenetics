@@ -21,13 +21,13 @@ package org.jenetics.example.tsp.gpx;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.JAXBContextCache;
 
 import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -49,7 +49,7 @@ public class MetadataTest {
 				Link.of("http://jenetics.io")
 			),
 			Copyright.of("Me", 1982, "http://jenetics.io"),
-			ISeq.of(
+			Arrays.asList(
 				Link.of("http://jenetics.io/1", "foo", "bar"),
 				Link.of("http://jenetics.io/2", "foo", "bar"),
 				Link.of("http://jenetics.io/3", "foo", "bar")

@@ -20,6 +20,8 @@
 package org.jenetics.example.tsp.gpx;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -34,8 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.util.ISeq;
 
 /**
  * A Track Segment holds a list of Track Points which are logically connected in
@@ -52,7 +52,7 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final ISeq<WayPoint> _points;
+	private final List<WayPoint> _points;
 
 	/**
 	 * Create a new track-segment with the given points.
@@ -61,8 +61,8 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	 * @throws NullPointerException if the given {@code points} sequence is
 	 *        {@code null}
 	 */
-	private TrackSegment(final ISeq<WayPoint> points) {
-		_points = requireNonNull(points);
+	private TrackSegment(final List<WayPoint> points) {
+		_points = unmodifiableList(requireNonNull(points));
 	}
 
 	/**
@@ -70,7 +70,7 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	 *
 	 * @return the track-points of this segment
 	 */
-	public ISeq<WayPoint> getPoints() {
+	public List<WayPoint> getPoints() {
 		return _points;
 	}
 
@@ -128,7 +128,7 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 	 * @throws NullPointerException if the given {@code points} sequence is
 	 *        {@code null}
 	 */
-	public static TrackSegment of(final ISeq<WayPoint> points) {
+	public static TrackSegment of(final List<WayPoint> points) {
 		return new TrackSegment(points);
 	}
 
@@ -151,7 +151,7 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 			@Override
 			public Model marshal(final TrackSegment segment) {
 				final Model model = new Model();
-				model.points = segment._points.asList();
+				model.points = segment.getPoints();
 				return model;
 			}
 
@@ -159,8 +159,8 @@ public final class TrackSegment implements Iterable<WayPoint>, Serializable {
 			public TrackSegment unmarshal(final Model model) {
 				return new TrackSegment(
 					model.points != null
-						? ISeq.of(model.points)
-						: ISeq.empty()
+						? model.points
+						: emptyList()
 				);
 			}
 		}

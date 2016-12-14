@@ -24,7 +24,9 @@ import static java.lang.String.format;
 import java.io.Serializable;
 
 /**
- * Represents a length with base unit of meters.
+ * Extent of something along its greatest dimension or the extent of space
+ * between two objects or places. The metric system unit for this quantity is
+ * "m" (metre).
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!

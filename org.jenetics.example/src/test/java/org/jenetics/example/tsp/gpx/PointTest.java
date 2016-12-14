@@ -21,11 +21,11 @@ package org.jenetics.example.tsp.gpx;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
 import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -46,7 +46,7 @@ public class PointTest {
 			.elevation(234.4)
 			.speed(32.4)
 			.time(ZonedDateTime.now())
-			.links(ISeq.of(Link.of("http://jenetics.io", "foo", "bar"), Link.of("http://foo.com")))
+			.links(Arrays.asList(Link.of("http://jenetics.io", "foo", "bar"), Link.of("http://foo.com")))
 			.build(43.32, 13.23);
 
 		IO.jaxb.write(point, System.out);

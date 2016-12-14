@@ -28,8 +28,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 
-import org.jenetics.internal.util.require;
-
 /**
  * Some {@code Point} helper function.
  *
@@ -38,7 +36,7 @@ import org.jenetics.internal.util.require;
  * @since !__version__!
  */
 final class Points {
-	private Points() {require.noInstance();}
+	private Points() {}
 
 	// Major semi-axes of the ellipsoid.
 	private static final double A = 6378137;

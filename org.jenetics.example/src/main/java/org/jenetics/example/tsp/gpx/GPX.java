@@ -19,6 +19,8 @@
  */
 package org.jenetics.example.tsp.gpx;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -43,8 +45,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.util.ISeq;
-
 /**
  * GPX documents contain a metadata header, followed by way-points, routes, and
  * tracks. You can add your own elements to the extensions section of the GPX
@@ -63,9 +63,9 @@ public final class GPX implements Serializable {
 
 	private final String _creator;
 	private final Metadata _metadata;
-	private final ISeq<WayPoint> _wayPoints;;
-	private final ISeq<Route> _routes;
-	private final ISeq<Track> _tracks;
+	private final List<WayPoint> _wayPoints;;
+	private final List<Route> _routes;
+	private final List<Track> _tracks;
 
 	/**
 	 * Create a new {@code GPX} object with the given data.
@@ -83,15 +83,15 @@ public final class GPX implements Serializable {
 	private GPX(
 		final String creator,
 		final Metadata metadata,
-		final ISeq<WayPoint> wayPoints,
-		final ISeq<Route> routes,
-		final ISeq<Track> tracks
+		final List<WayPoint> wayPoints,
+		final List<Route> routes,
+		final List<Track> tracks
 	) {
 		_creator = requireNonNull(creator);
 		_metadata = metadata;
-		_wayPoints = requireNonNull(wayPoints);
-		_routes = requireNonNull(routes);
-		_tracks = requireNonNull(tracks);
+		_wayPoints = unmodifiableList(requireNonNull(wayPoints));
+		_routes = unmodifiableList(requireNonNull(routes));
+		_tracks = unmodifiableList(requireNonNull(tracks));
 	}
 
 	/**
@@ -128,7 +128,7 @@ public final class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} way-points.
 	 */
-	public ISeq<WayPoint> getWayPoints() {
+	public List<WayPoint> getWayPoints() {
 		return _wayPoints;
 	}
 
@@ -137,7 +137,7 @@ public final class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} routes.
 	 */
-	public ISeq<Route> getRoutes() {
+	public List<Route> getRoutes() {
 		return _routes;
 	}
 
@@ -146,7 +146,7 @@ public final class GPX implements Serializable {
 	 *
 	 * @return an unmodifiable list of the {@code GPX} tracks.
 	 */
-	public ISeq<Track> getTracks() {
+	public List<Track> getTracks() {
 		return _tracks;
 	}
 
@@ -194,9 +194,9 @@ public final class GPX implements Serializable {
 	public static GPX of(
 		final String creator,
 		final Metadata metadata,
-		final ISeq<WayPoint> wayPoints,
-		final ISeq<Route> routes,
-		final ISeq<Track> tracks
+		final List<WayPoint> wayPoints,
+		final List<Route> routes,
+		final List<Track> tracks
 	) {
 		return new GPX(
 			creator,
@@ -243,9 +243,9 @@ public final class GPX implements Serializable {
 				model.version = gpx.getVersion();
 				model.creator = gpx._creator;
 				model.metadata = gpx._metadata;
-				model.wayPoints = gpx._wayPoints.asList();
-				model.routes = gpx._routes.asList();
-				model.tracks = gpx._tracks.asList();
+				model.wayPoints = gpx._wayPoints;
+				model.routes = gpx._routes;
+				model.tracks = gpx._tracks;
 
 				return model;
 			}
@@ -256,14 +256,14 @@ public final class GPX implements Serializable {
 					model.creator,
 					model.metadata,
 					model.wayPoints != null
-						? ISeq.of(model.wayPoints)
-						: ISeq.empty(),
+						? model.wayPoints
+						: emptyList(),
 					model.routes != null
-						? ISeq.of(model.routes)
-						: ISeq.empty(),
+						? model.routes
+						: emptyList(),
 					model.tracks != null
-						? ISeq.of(model.tracks)
-						: ISeq.empty()
+						? model.tracks
+						: emptyList()
 				);
 			}
 		}

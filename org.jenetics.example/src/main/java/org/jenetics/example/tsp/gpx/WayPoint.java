@@ -20,15 +20,19 @@
 package org.jenetics.example.tsp.gpx;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,8 +42,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.util.ISeq;
 
 /**
  * A {@code WayPoint} represents a way-point, point of interest, or named
@@ -66,7 +68,7 @@ public final class WayPoint implements Point, Serializable {
 	private final String _comment;
 	private final String _description;
 	private final String _source;
-	private final ISeq<Link> _links;
+	private final List<Link> _links;
 	private final String _symbol;
 	private final String _type;
 	private final Fix _fix;
@@ -128,7 +130,7 @@ public final class WayPoint implements Point, Serializable {
 		final String comment,
 		final String description,
 		final String source,
-		final ISeq<Link> links,
+		final List<Link> links,
 		final String symbol,
 		final String type,
 		final Fix fix,
@@ -151,7 +153,7 @@ public final class WayPoint implements Point, Serializable {
 		_comment = comment;
 		_description = description;
 		_source = source;
-		_links = requireNonNull(links);
+		_links = unmodifiableList(requireNonNull(links));
 		_symbol = symbol;
 		_type = type;
 		_fix = fix;
@@ -258,7 +260,7 @@ public final class WayPoint implements Point, Serializable {
 	 *
 	 * @return the links to additional information about the way-point
 	 */
-	public ISeq<Link> getLinks() {
+	public List<Link> getLinks() {
 		return _links;
 	}
 
@@ -420,7 +422,7 @@ public final class WayPoint implements Point, Serializable {
 		private String _comment;
 		private String _description;
 		private String _source;
-		private ISeq<Link> _links;
+		private List<Link> _links;
 		private String _symbol;
 		private String _type;
 		private Fix _fix;
@@ -558,7 +560,7 @@ public final class WayPoint implements Point, Serializable {
 		 * @param links the links to additional information about the way-point
 		 * @return {@code this} {@code Builder} for method chaining
 		 */
-		public Builder links(final ISeq<Link> links) {
+		public Builder links(final List<Link> links) {
 			_links = links;
 			return this;
 		}
@@ -721,7 +723,7 @@ public final class WayPoint implements Point, Serializable {
 				_comment,
 				_description,
 				_source,
-				_links != null ? _links : ISeq.empty(),
+				_links != null ? new ArrayList<>(_links) : emptyList(),
 				_symbol,
 				_type,
 				_fix,
@@ -971,9 +973,9 @@ public final class WayPoint implements Point, Serializable {
 				model.name = point.getName().orElse(null);
 				model.cmt = point.getComment().orElse(null);
 				model.src = point.getSource().orElse(null);
-				model.link = point.getLinks()
+				model.link = point.getLinks().stream()
 					.map(Link.Model.ADAPTER::marshal)
-					.asList();
+					.collect(Collectors.toList());
 				model.sym = point.getSymbol().orElse(null);
 				model.type = point.getType().orElse(null);
 				model.fix = point.getFix()
@@ -1021,7 +1023,7 @@ public final class WayPoint implements Point, Serializable {
 					model.src,
 					model.link.stream()
 						.map(Link.Model.ADAPTER::unmarshal)
-						.collect(ISeq.toISeq()),
+						.collect(Collectors.toList()),
 					model.sym,
 					model.type,
 					Optional.ofNullable(model.fix)

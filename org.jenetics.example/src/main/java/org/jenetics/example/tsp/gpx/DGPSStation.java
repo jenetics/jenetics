@@ -48,7 +48,9 @@ public final class DGPSStation extends Number implements Serializable {
 	 */
 	private DGPSStation(final int value) {
 		if (value < 0 || value > 1023) {
-			throw new IllegalArgumentException(format("%f is out of range [0, 1023]."));
+			throw new IllegalArgumentException(format(
+				"%d is out of range [0, 1023].", value
+			));
 		}
 
 		_value = value;
