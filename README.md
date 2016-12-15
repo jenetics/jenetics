@@ -23,7 +23,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 ## Download
 * **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.7.0/jenetics-3.7.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `io.jenetics:jenetics:3.7.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22org.jenetics%22)
+*  **Maven**: `io.jenetics:jenetics:3.7.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 
 ## Build Jenetics
 
