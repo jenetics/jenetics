@@ -746,8 +746,8 @@ If you are using Gradle, you can use the following dependency string:
 \begin_inset Quotes ald
 \end_inset
 
-org.bitbucket.fwilhelm:\SpecialChar softhyphen
-org.jenetics:\SpecialChar softhyphen
+io.jenetics:\SpecialChar softhyphen
+jenetics:\SpecialChar softhyphen
 @__version__@
 \family default
 
@@ -24167,11 +24167,11 @@ snippet for Maven
 \end_layout
 
 \begin_layout LyX-Code
-    <groupId>org.bitbucket.fwilhelm</groupId>
+    <groupId>io.jenetics</groupId>
 \end_layout
 
 \begin_layout LyX-Code
-    <artifactId>org.jenetics</artifactId>
+    <artifactId>jenetics</artifactId>
 \end_layout
 
 \begin_layout LyX-Code
@@ -24187,7 +24187,7 @@ Gradle
 \end_layout
 
 \begin_layout LyX-Code
-'org.bitbucket.fwilhelm:org.jenetics:@__version__@'
+'io.jenetics:jenetics:@__version__@'
 \end_layout
 
 \begin_layout Section
