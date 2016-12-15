@@ -52,7 +52,7 @@ ext {
 }
 
 allprojects {
-	group = 'org.bitbucket.fwilhelm'
+	group = 'io.jenetics'
 	version = jenetics.version
 
 	repositories {
