@@ -19,19 +19,6 @@
  */
 package org.jenetics.example.tsp;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import javax.xml.bind.Marshaller;
-
-import org.testng.annotations.Test;
-
-import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.Link;
-import org.jenetics.example.tsp.gpx.WayPoint;
-import org.jenetics.util.IO;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
