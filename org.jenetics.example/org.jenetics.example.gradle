@@ -31,6 +31,7 @@ apply plugin: 'packaging'
 dependencies {
 	compile project(':org.jenetics')
 	compile 'com.google.code.gson:gson:2.5'
+	compile 'jpx:jpx:1.0.0-SNAPSHOT'
 
 	testCompile Include.TestNG
 }

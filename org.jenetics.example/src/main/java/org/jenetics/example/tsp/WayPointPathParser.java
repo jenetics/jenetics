@@ -22,29 +22,17 @@ package org.jenetics.example.tsp;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 
-import org.jenetics.example.tsp.gpx.GPX;
-import org.jenetics.example.tsp.gpx.TrackSegment;
 import org.jenetics.util.ISeq;
 
 /**

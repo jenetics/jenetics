@@ -22,6 +22,8 @@ package org.jenetics.example.tsp;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import jpx.GPX;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,8 +37,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import org.jenetics.example.tsp.gpx.GPX;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
