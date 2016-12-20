@@ -32,8 +32,8 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.6
+ * @since 3.6
  */
 public class TSM {
 	// The locations to visit.
@@ -60,11 +60,9 @@ public class TSM {
 
 	// Find the solution.
 	public static void main(final String[] args) {
-		final ISeq<Point> result = CODEC.decoder().apply(
-			ENGINE.stream()
-				.limit(10)
-				.collect(EvolutionResult.toBestGenotype())
-		);
+		final ISeq<Point> result = ENGINE.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestResult(CODEC));
 
 		System.out.println(result);
 	}

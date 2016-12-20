@@ -1499,6 +1499,16 @@ Jenetics
 \emph on
 Evolution Stream
 \emph default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!Stream
+\end_layout
+
+\end_inset
+
 , implemented via the Java 8 Stream API.
  Therefore it is no longer necessary (and advised) to perform the evolution
  steps in an 
@@ -4270,7 +4280,7 @@ Alterer
 \family default
 \series default
 \shape default
- are
+ are:
 \end_layout
 
 \begin_layout Enumerate
@@ -4663,7 +4673,12 @@ void recombine(final Population<G, C> pop) {
 
 \begin_layout Plain Layout
 
-    final int chIndex = random.nextInt(gt1.length());
+    final int chIndex = 
+\end_layout
+
+\begin_layout Plain Layout
+
+        random.nextInt(min(gt1.length(), gt2.length()));
 \end_layout
 
 \begin_layout Plain Layout
@@ -6004,7 +6019,12 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-> 
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Function<EvolutionStart<G,C>, EvolutionResult<G,C>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -6906,6 +6926,87 @@ Engine
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The generations of the 
+\family typewriter
+EvolutionStream
+\family sans
+ are evolved serially.
+ Calls of the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family sans
+ methods (e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 
+\family typewriter
+limit
+\family sans
+, 
+\family typewriter
+peek
+\family sans
+, ...) are executed in the thread context of the created 
+\family typewriter
+Stream
+\family sans
+.
+ In a 
+\emph on
+typical
+\emph default
+ setup, no additional synchronization and/or locking is needed.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 In cases where you appreciate the usage of the 
 \family typewriter
 Evolution\SpecialChar \-
@@ -7546,6 +7647,307 @@ Evolution\SpecialChar \-
 Statistics
 \family default
  object will look like the example above.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evolution\SpecialChar \-
+Statistics
+\family default
+ object is a simple for inspecting the 
+\family typewriter
+Evolution\SpecialChar \-
+Stream
+\family default
+ after it is finished.
+ It doesn't give you a 
+\begin_inset Formula $live$
+\end_inset
+
+ view of the current evolution process, which can be necessary for long
+ running streams.
+ In such cases you have to maintain/update the statistics yourself.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class TSM {
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The locations to visit.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final ISeq<Point> POINTS = ISeq.of(...);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The permutation codec.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Codec<ISeq<Point>, EnumGene<Point>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    CODEC = codecs.ofPermutation(POINTS);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The fitness function (in the problem domain).
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double dist(final ISeq<Point> p) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // The evolution engine.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(TSM::dist, CODEC)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .optimize(Optimize.MINIMUM)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Best phenotype found so far.
+\end_layout
+
+\begin_layout Plain Layout
+
+    static Phenotype<EnumGene<Point>, Double> best = null;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // You will be informed on new results.
+ This allows to 
+\end_layout
+
+\begin_layout Plain Layout
+
+    // react on new best phenotypes, e.g.
+ log it.
+\end_layout
+
+\begin_layout Plain Layout
+
+    private static void update(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final EvolutionResult<EnumGene<Point>, Double> result
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (best == null || 
+\end_layout
+
+\begin_layout Plain Layout
+
+            best.compareTo(result.getBestPhenotype()) < 0) 
+\end_layout
+
+\begin_layout Plain Layout
+
+        {
+\end_layout
+
+\begin_layout Plain Layout
+
+            best = result.getBestPhenotype();
+\end_layout
+
+\begin_layout Plain Layout
+
+            System.out.print(result.getGeneration() + ": ");
+\end_layout
+
+\begin_layout Plain Layout
+
+            System.out.println("Found best phenotype: " + best);
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Find the solution.
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final ISeq<Point> result = CODEC.decode(
+\end_layout
+
+\begin_layout Plain Layout
+
+            ENGINE.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .peek(TSM::update)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(10)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+        System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Live evolution statistics
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Live-evolution-statistics"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Live-evolution-statistics"
+
+\end_inset
+
+ shows how to implement a manual statistics gathering.
+ The update method is called whenever a new 
+\family typewriter
+Evolution\SpecialChar \-
+Result
+\family default
+ is has been calculated.
+ If a new best 
+\family typewriter
+Pheno\SpecialChar \-
+type
+\family default
+ is available, it is stored and logged.
+ With the 
+\family typewriter
+TSM::update
+\family default
+ method, which is called on every finished generation, you have a 
+\emph on
+live
+\emph default
+ view on the evolution progress.
 \end_layout
 
 \begin_layout Section
@@ -8537,7 +8939,7 @@ Leapfrogging
 \family typewriter
 LCG64ShiftRandom
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!LCG64ShiftRandom
@@ -8547,7 +8949,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!
@@ -8559,7 +8961,7 @@ LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 LCG64ShiftRandom
@@ -8807,12 +9209,12 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i5-3427U CPU @ 1.80GHz with Java(TM) SE Runtime
- Environment (build 1.8.0_51-b16)---Java HotSpot(TM) 64-Bit Server VM (build
- 25.51-b03, mixed mode)---, using the JHM micro-benchmark library.
+Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
+ Runtime Environment (build 1.8.0_102-b14)---Java HotSpot(TM) 64-Bit Server
+ VM (build 25.102-b14, mixed mode)---, using the JHM micro-benchmark library.
  
 \end_layout
 
@@ -8916,7 +9318,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $69\cdot10^{6}$
+\begin_inset Formula $87\cdot10^{6}$
 \end_inset
 
 
@@ -8928,7 +9330,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $34\cdot10^{6}$
+\begin_inset Formula $43\cdot10^{6}$
 \end_inset
 
 
@@ -8940,7 +9342,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $69\cdot10^{6}$
+\begin_inset Formula $86\cdot10^{6}$
 \end_inset
 
 
@@ -8952,7 +9354,7 @@ Random
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $34\cdot10^{6}$
+\begin_inset Formula $42\cdot10^{6}$
 \end_inset
 
 
@@ -8977,7 +9379,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $191\cdot10^{6}$
+\begin_inset Formula $255\cdot10^{6}$
 \end_inset
 
 
@@ -8989,7 +9391,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $184\cdot10^{6}$
+\begin_inset Formula $253\cdot10^{6}$
 \end_inset
 
 
@@ -9001,7 +9403,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $137\cdot10^{6}$
+\begin_inset Formula $208\cdot10^{6}$
 \end_inset
 
 
@@ -9013,7 +9415,7 @@ ThreadLocalRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $138\cdot10^{6}$
+\begin_inset Formula $208\cdot10^{6}$
 \end_inset
 
 
@@ -9038,7 +9440,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $153\cdot10^{6}$
+\begin_inset Formula $237\cdot10^{6}$
 \end_inset
 
 
@@ -9050,7 +9452,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $159\cdot10^{6}$
+\begin_inset Formula $241\cdot10^{6}$
 \end_inset
 
 
@@ -9062,7 +9464,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $118\cdot10^{6}$
+\begin_inset Formula $176\cdot10^{6}$
 \end_inset
 
 
@@ -9074,7 +9476,7 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $119\cdot10^{6}$
+\begin_inset Formula $178\cdot10^{6}$
 \end_inset
 
 
@@ -10498,7 +10900,6 @@ Gene
  normal
 \emph default
  genes there is no more work to do for using the Java serialization mechanism.
- 
 \end_layout
 
 \begin_layout Standard
@@ -10872,6 +11273,8 @@ s when creating new, combined
 Chromosome
 \family default
 s.
+ It is allowed, that the newly created chromosome has a different length
+ than the original one.
  The other methods should be self-explanatory.
  The chromosome has the same serialization mechanism as the gene.
  For the minimal case it can extends the
@@ -11080,7 +11483,7 @@ AnyChromosome
 \family default
  example
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 AnyChromosome
@@ -11231,12 +11634,7 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
->
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11337,6 +11735,280 @@ Selector
 \end_inset
 
 .
+ Another way for re-using existing 
+\family typewriter
+Selector
+\family default
+ implementation is by composition.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class ElitistSelector<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Selector<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final TruncationSelector<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    _elite = new TruncationSelector<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    private final TournamentSelector<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    _rest = new TournamentSelector<>(3);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElitistSelector() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Population<G, C> select(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> population,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final int count,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Optimize opt
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return population.isEmpty() || count <= 0
+\end_layout
+
+\begin_layout Plain Layout
+
+            ? new Population<>(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+            : append(
+\end_layout
+
+\begin_layout Plain Layout
+
+                _elite.select(population, 1, opt),
+\end_layout
+
+\begin_layout Plain Layout
+
+                _rest.select(population, max(0, count - 1), opt));
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    private Population<G, C> append(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> p1,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Population<G, C> p2
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        p1.addAll(p2);
+\end_layout
+
+\begin_layout Plain Layout
+
+        return p1;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Elite-selector"
+
+\end_inset
+
+Elitist selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!Elitist
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Elitism
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Elite-selector"
+
+\end_inset
+
+ shows how an 
+\emph on
+elitist
+\emph default
+ selector could be implemented by using the existing 
+\family typewriter
+Trun\SpecialChar \-
+cation
+\family default
+- and 
+\family typewriter
+Tour\SpecialChar \-
+nament\SpecialChar \-
+Selector
+\family default
+.
+ With 
+\emph on
+elitist
+\emph default
+ selection, the quality of the best solution in each generation monotonically
+ increases over time.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Baluja95removingthe"
+
+\end_inset
+
+ Although this is not necessary, since the evolution 
+\family typewriter
+Engine
+\family default
+/
+\family typewriter
+Stream
+\family default
+ doesn't throw away the best solution found during the evolution process.
 \end_layout
 
 \begin_layout Subsection
@@ -11402,12 +12074,7 @@ public interface Alterer<
 
 \begin_layout Plain Layout
 
->
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+> {
 \end_layout
 
 \begin_layout Plain Layout
@@ -11482,6 +12149,65 @@ The first parameter of the
  genes that has been altered.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+To maximize the range of application of an 
+\family typewriter
+Alterer
+\family default
+, it is recommended that they can handle 
+\family typewriter
+Genotype
+\family default
+s and 
+\family typewriter
+Chromosome
+\family default
+s with variable length.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Statistics
 \begin_inset Index idx
@@ -11518,7 +12244,14 @@ org.\SpecialChar \-
 jenetics.\SpecialChar \-
 engine
 \family default
- package.
+ package (see listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStatistics-usage"
+
+\end_inset
+
+).
  If the data in the 
 \family typewriter
 Evolution\SpecialChar \-
@@ -14085,6 +14818,11 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
+    public default T decode(final Genotype<G> gt) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
 }
 \begin_inset Caption Standard
 
@@ -15481,17 +16219,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final ISeq<Point> POINTS = ISeq.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Point(0, 0), new Point(1, 2), new Point(4, 5) // ...
-\end_layout
-
-\begin_layout Plain Layout
-
-    );
+    static final ISeq<Point> POINTS = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
@@ -15505,12 +16233,12 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
+    static final Codec<ISeq<Point>, EnumGene<Point>>
 \end_layout
 
 \begin_layout Plain Layout
 
-        codecs.ofPermutation(POINTS);
+    CODEC = codecs.ofPermutation(POINTS);
 \end_layout
 
 \begin_layout Plain Layout
@@ -15597,7 +16325,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        final ISeq<Point> result = CODEC.decoder().apply(
+        final ISeq<Point> result = CODEC.decode(
 \end_layout
 
 \begin_layout Plain Layout
@@ -17701,7 +18429,7 @@ easily
 
 \begin_layout Standard
 \begin_inset Note Comment
-status collapsed
+status open
 
 \begin_layout Subsubsection
 Fitness convergence
@@ -17749,7 +18477,7 @@ A termination method that stops the evolution when a user-specified percentage
 \begin_layout Subsection
 Evolution performance
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution!performance
@@ -19198,7 +19926,7 @@ Incubation
 \begin_layout Standard
 This section describes the classes in the 
 \emph on
-not-yet
+not yet
 \emph default
  released modules.
  Incubating features and experimental genetic operators will be implemented
@@ -19705,7 +20433,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-				r.getTotalGenerations() + ": " + 
+				r.getTotalGenerations() + ": " +
 \end_layout
 
 \begin_layout Plain Layout
@@ -22064,7 +22792,7 @@ Version
 \series default
 :
 \emph on
- 6.9.11
+ 6.9.13
 \end_layout
 
 \begin_layout Itemize
@@ -22157,7 +22885,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22365,7 +23093,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 2.11
+: 3.1
 \end_layout
 
 \begin_layout Itemize
@@ -22402,7 +23130,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-2.11-bin.zip
+http://services.gradle.org/distributions/gradle-3.1-bin.zip
 \end_layout
 
 \end_inset
@@ -22435,7 +23163,7 @@ Scope
 \series default
 :
 \emph on
- build.
+ build
 \end_layout
 
 \end_deeper
