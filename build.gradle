@@ -47,12 +47,12 @@ ext {
 	copyrightYear = "2007-${year}".toString()
 	identifier = "${rootProject.name}-${version}".toString()
 	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
-	manualIdentifier = "${version}---${manualDate}".toString()
+	manualIdentifier = "${version}—${manualDate}".toString()
 	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 }
 
 allprojects {
-	group = 'org.bitbucket.fwilhelm'
+	group = 'io.jenetics'
 	version = jenetics.version
 
 	repositories {
@@ -93,8 +93,8 @@ task fixCodeBlock(type: FixJavadocCodeBlockTask) {
 task alljavadoc(type: Javadoc) {
 	options.encoding = 'UTF-8'
 	def jeneticsProjects = subprojects.findAll { project ->
-		project.name.startsWith('org.jeneti') &&
-		project.name != 'org.jenetics.doc'
+		project.name.startsWith('jeneti') &&
+		project.name != 'jenetics.doc'
 	}
 	configure(jeneticsProjects) {
 		apply plugin: 'java'

@@ -19,6 +19,8 @@
  */
 package org.jenetics.util;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -30,10 +32,7 @@ import org.jenetics.internal.util.require;
 public class StaticObjectTest {
 
 	@Test
-	public void instantiation()
-		throws InstantiationException, IllegalAccessException
-	{
-
+	public void constructorInstantiation() throws Exception {
 		try {
 			new SomeStaticObject();
 			Assert.assertFalse(true);
@@ -45,17 +44,20 @@ public class StaticObjectTest {
 
 			Assert.assertEquals(e.getMessage(), expected);
 		}
+	}
 
+	@Test
+	public void reflectiveInstantiation() throws Exception {
 		try {
-			SomeStaticObject.class.newInstance();
+			SomeStaticObject.class.getDeclaredConstructor().newInstance();
 			Assert.assertFalse(true);
-		} catch (AssertionError e) {
+		} catch (InvocationTargetException e) {
 			final String expected = String.format(
 				"Instantiation of '%s' is not allowed.",
 				"org.jenetics.util.SomeStaticObject"
 			);
 
-			Assert.assertEquals(e.getMessage(), expected);
+			Assert.assertEquals(e.getTargetException().getMessage(), expected);
 		}
 	}
 
