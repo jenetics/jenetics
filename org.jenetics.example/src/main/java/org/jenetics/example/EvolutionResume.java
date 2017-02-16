@@ -19,8 +19,9 @@
  */
 package org.jenetics.example;
 
+import static java.nio.file.Files.exists;
+
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
@@ -28,10 +29,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.jenetics.BitGene;
-import org.jenetics.Mutator;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.Problem;
@@ -46,7 +43,6 @@ import org.jenetics.util.RandomRegistry;
  * @since 3.8
  */
 public class EvolutionResume {
-
 	// The problem definition.
 	private final Problem<ISeq<Item>, BitGene, Double> knapsack =
 		Knapsack.of(250, RandomRegistry.getRandom());
@@ -54,11 +50,6 @@ public class EvolutionResume {
 	// The evolution engine.
 	private final Engine<BitGene, Double> engine = Engine.builder(knapsack)
 		.populationSize(100)
-		.survivorsSelector(new TournamentSelector<>(5))
-		.offspringSelector(new RouletteWheelSelector<>())
-		.alterers(
-			new Mutator<>(0.03),
-			new SinglePointCrossover<>(0.125))
 		.build();
 
 	// Run the evolution.
@@ -70,11 +61,6 @@ public class EvolutionResume {
 
 		return (last != null ? engine.stream(last) : engine.stream())
 			.limit(r -> proceed.get())
-			.peek(r -> {
-				if (r.getGeneration()%5000 == 0) {
-					System.out.println("    generation " + r.getGeneration());
-				}
-			})
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
@@ -90,16 +76,15 @@ public class EvolutionResume {
 		final Path resultPath = Paths.get(args[0]);
 
 		@SuppressWarnings("unchecked")
-		final EvolutionResult<BitGene, Double> result = Files.exists(resultPath)
+		final EvolutionResult<BitGene, Double> result = exists(resultPath)
 			? (EvolutionResult<BitGene, Double>)IO.object.read(resultPath)
 			: null;
 
 		final AtomicBoolean proceed = new AtomicBoolean(true);
-		final EvolutionResume evolution = new EvolutionResume();
+		final EvolutionResume resume = new EvolutionResume();
 
 		final CompletableFuture<EvolutionResult<BitGene, Double>> future =
-			CompletableFuture.supplyAsync(() -> evolution.run(result, proceed));
-
+			CompletableFuture.supplyAsync(() -> resume.run(result, proceed));
 		System.out.println("Evolution started.");
 
 		// Read console command: type 'exit' for stopping evolution.
@@ -113,5 +98,6 @@ public class EvolutionResume {
 
 		System.out.println("Best fitness: " + future.get().getBestFitness());
 	}
-
 }
+
+
