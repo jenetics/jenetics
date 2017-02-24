@@ -21,6 +21,7 @@ package org.jenetics.engine;
 
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.util.Random;
 import java.util.function.Function;

@@ -299,8 +299,8 @@ public final class Engine<
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final Population<G, C> pop = population.join();
-		final TimedResult<Population<G, C>> result = TimedResult
+		final ISeq<Phenotype<G, C>> pop = population.join();
+		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
 			.of(() -> evaluate(pop), _clock)
 			.get();
 
@@ -601,7 +601,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population
+		final ISeq<Phenotype<G, C>> population
 	) {
 		requireNonNull(population);
 
@@ -627,7 +627,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public EvolutionStream<G, C> stream(
-		final Population<G, C> population
+		final ISeq<Phenotype<G, C>> population
 	) {
 		requireNonNull(population);
 
@@ -677,7 +677,7 @@ public final class Engine<
 	 *        then one
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);
@@ -709,7 +709,7 @@ public final class Engine<
 	 *         smaller then one
 	 */
 	public EvolutionStream<G, C> stream(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);

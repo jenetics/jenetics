@@ -36,11 +36,11 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 public class DynamicGenotype {
@@ -76,7 +76,7 @@ public class DynamicGenotype {
 
 		@Override
 		public int alter(
-			final Population<G, C> population,
+			final MSeq<Phenotype<G, C>> population,
 			final long generation
 		) {
 			final double p = pow(_probability, 1.0/3.0);
