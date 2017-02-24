@@ -29,9 +29,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'packaging'
 
 dependencies {
-	compile project(':org.jenetics')
+	compile project(':jenetics')
 	compile 'com.google.code.gson:gson:2.5'
-	compile 'jpx:jpx:1.0.0-SNAPSHOT'
+	compile 'jpx:jpx:1.1.0'
 
 	testCompile Include.TestNG
 }

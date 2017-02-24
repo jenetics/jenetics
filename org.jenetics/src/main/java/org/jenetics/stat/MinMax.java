@@ -19,9 +19,11 @@
  */
 package org.jenetics.stat;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 
@@ -50,7 +52,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.7
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -119,6 +121,42 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public long getCount() {
 		return _count;
+	}
+
+	/**
+	 * Compares the state of two {@code LongMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final MinMax mm1 = ...;
+	 * final MinMax mm2 = ...;
+	 *
+	 * if (mm1.sameState(mm2)) {
+	 *     final long value = random.nextInt(1_000_000);
+	 *     mm1.accept(value);
+	 *     mm2.accept(value);
+	 *
+	 *     assert mm1.sameState(mm2);
+	 *     assert mm2.sameState(mm1);
+	 *     assert mm1.sameState(mm1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final MinMax<C> other) {
+		return Objects.equals(_min, other._min) &&
+			Objects.equals(_max, other._max);
+	}
+
+	@Override
+	public String toString() {
+		return format("MinMax[count=%d, min=%s, max:%s]", _count, _max, _max);
 	}
 
 	/* *************************************************************************

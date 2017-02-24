@@ -32,7 +32,7 @@ apply plugin: 'packaging'
 
 description = 'Jenetix - Java Genetic Algorithm Library Extension'
 
-compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
+compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
 repositories {
 	mavenCentral()
@@ -40,13 +40,13 @@ repositories {
 }
 
 dependencies {
-	compile project(':org.jenetics')
+	compile project(':jenetics')
 
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
-	testCompile project(':org.jenetics').sourceSets.test.output
+	testCompile project(':jenetics').sourceSets.test.output
 
-	jmh project(':org.jenetics')
+	jmh project(':jenetics')
 	jmh Include.JMH.Core
 	jmh Include.JMH.Processor
 	jmh files('build/classes/main')
