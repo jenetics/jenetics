@@ -101,6 +101,7 @@ public abstract class Recombinator<
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
 
+			// Selection of the individuals for recombination.
 			final IntFunction<int[]> individuals = i -> {
 				final int[] ind = subset(population.size(), order, random);
 				ind[0] = i;

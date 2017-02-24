@@ -78,14 +78,14 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	public void testCharacterGeneCharacter() {
 		CharacterGene gene = CharacterGene.of('4');
 
-		assertEquals(new Character('4'), gene.getAllele());
+		assertEquals(Character.valueOf('4'), gene.getAllele());
 	}
 
 	@Test
 	public void testGetCharacter() {
 		CharacterGene gene = CharacterGene.of('6');
 
-		assertEquals(new Character('6'), gene.getAllele());
+		assertEquals(Character.valueOf('6'), gene.getAllele());
 	}
 
 	@Test

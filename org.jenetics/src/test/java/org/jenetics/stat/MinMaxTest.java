@@ -115,7 +115,7 @@ public class MinMaxTest {
 
 		final MinMax<Double> minMax = MinMax.of();
 		Arrays.stream(numbers)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.min(numbers));
@@ -129,7 +129,7 @@ public class MinMaxTest {
 
 		final MinMax<Double> minMax = MinMax.of((a, b) -> b.compareTo(a));
 		Arrays.stream(numbers)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
@@ -142,7 +142,7 @@ public class MinMaxTest {
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.collect(MinMax.toMinMax());
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.min(numbers));
@@ -155,7 +155,7 @@ public class MinMaxTest {
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
 
 		Assert.assertEquals(minMax.getMin(), StatUtils.max(numbers));
@@ -174,6 +174,24 @@ public class MinMaxTest {
 		Assert.assertEquals(minMax.getMax(), Integer.valueOf(99));
 		Assert.assertEquals(minMax.getMin(), Integer.valueOf(0));
 		Assert.assertEquals(100, minMax.getCount());
+	}
+
+	@Test
+	public void sameState() {
+		final MinMax<Long> mm1 = MinMax.of();
+		final MinMax<Long> mm2 = MinMax.of();
+
+		final Random random = new Random();
+		for (int i = 0; i < 100; ++i) {
+			final long value = random.nextInt(1_000_000);
+			mm1.accept(value);
+			mm2.accept(value);
+
+			Assert.assertTrue(mm1.sameState(mm2));
+			Assert.assertTrue(mm2.sameState(mm1));
+			Assert.assertTrue(mm1.sameState(mm1));
+			Assert.assertTrue(mm2.sameState(mm2));
+		}
 	}
 
 }

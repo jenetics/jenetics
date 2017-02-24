@@ -22,8 +22,8 @@
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 VERSION="@__version__@"
-CLS_PATH="${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar"
-CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar":.
+CLS_PATH="${SCRIPT_DIR}/../lib/jenetics-${VERSION}.jar"
+CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/jenetics.example-${VERSION}.jar":.
 
 java -cp $CLS_PATH org.jenetics.example.Knapsack
 java -cp $CLS_PATH org.jenetics.example.OnesCounting

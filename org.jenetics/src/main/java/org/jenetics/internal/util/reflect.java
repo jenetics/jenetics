@@ -23,10 +23,9 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Helper methods concerning Java reflection.
@@ -42,6 +41,8 @@ public class reflect {
 	 * Reflectively sets the field with the given {@code name} to the new
 	 * {@code value}. The new value is set to the first found field in the
 	 * whole class hierarchy.
+	 *
+	 * @since 3.7
 	 *
 	 * @param target the object which owns the field
 	 * @param name the field name
@@ -116,14 +117,14 @@ public class reflect {
 	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> newInstance(final Class<?> type) {
 		try {
-			return Optional.of((T)type.newInstance());
-		} catch (InstantiationException | IllegalAccessException e) {
+			return Optional.of((T)type.getConstructor().newInstance());
+		} catch (NoSuchMethodException |
+				InvocationTargetException |
+				InstantiationException |
+				IllegalAccessException e)
+		{
 			return Optional.empty();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <A, B extends A> ISeq<A> cast(final ISeq<B> seq) {
-		return (ISeq<A>)seq;
-	}
 }

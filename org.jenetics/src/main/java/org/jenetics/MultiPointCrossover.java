@@ -53,7 +53,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.0
+ * @version 3.6
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
@@ -125,7 +125,7 @@ public class MultiPointCrossover<
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		assert that.length() == other.length();
 
-		final int n = that.length();
+		final int n = min(that.length(), other.length());
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
@@ -149,7 +149,7 @@ public class MultiPointCrossover<
 		}
 		if (indexes.length%2 == 1) {
 			final int index = indexes[indexes.length - 1];
-			that.swap(index, that.length(), other, index);
+			that.swap(index, min(that.length(), other.length()), other, index);
 		}
 	}
 

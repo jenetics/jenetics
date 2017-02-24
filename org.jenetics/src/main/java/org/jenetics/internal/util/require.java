@@ -21,8 +21,6 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import java.util.function.Supplier;
-
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
@@ -99,7 +97,7 @@ public final class require {
 	}
 
 	/**
-	 * Require the given {@code value} to be positive (&gt: 0).
+	 * Require the given {@code value} to be positive (&gt; 0).
 	 * @param value the value to check
 	 * @return the given value
 	 * @throws IllegalArgumentException if the given {@code value} is smaller than
@@ -137,14 +135,6 @@ public final class require {
 			));
 		}
 		return p;
-	}
-
-	public static <T> T safe(final Supplier<T> access) {
-		try {
-			return access.get();
-		} catch (NullPointerException ignore) {
-			return null;
-		}
 	}
 
 }
