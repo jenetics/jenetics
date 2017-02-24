@@ -28,6 +28,9 @@ import org.jenetics.engine.Codec;
 import org.jenetics.engine.Problem;
 import org.jenetics.util.ISeq;
 
+import io.jenetics.jpx.Point;
+import io.jenetics.jpx.Route;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!

@@ -25,6 +25,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import io.jenetics.jpx.Route;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !_version_!
@@ -49,7 +51,7 @@ public class MapPanel extends javax.swing.JPanel {
 	protected void paintComponent(final Graphics g) {
 		super.paintComponent(g);
 		if (_route != null) {
-			_route.draw((Graphics2D) g, getWidth(), getHeight());
+			//_route.draw((Graphics2D) g, getWidth(), getHeight());
 		} else {
 			g.setColor(Color.white);
 			g.clearRect(0, 0, getWidth(), getHeight());

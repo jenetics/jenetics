@@ -21,12 +21,11 @@ package org.jenetics.example.tsp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+
+import io.jenetics.jpx.Point;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,6 +43,7 @@ public class TSP extends javax.swing.JFrame {
 	}
 
 	private void init() {
+		/*
 		final Scanner scanner = new Scanner(getClass().getResourceAsStream(
 			"/org/jenetics/example/tsp/AustrianDistrictsCities.csv"
 		));
@@ -62,6 +62,7 @@ public class TSP extends javax.swing.JFrame {
 		System.out.println(points);
 		_mapPanel.setRoute(Route.of(points));
 		_mapPanel.repaint();
+		*/
 /*
 		final Random random = RandomRegistry.getRandom();
 		final ISeq<Point> points = IntStream.range(0, 5).mapToObj(i -> {
