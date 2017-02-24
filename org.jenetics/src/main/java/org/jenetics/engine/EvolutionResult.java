@@ -21,10 +21,9 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.internal.util.require.safe;
 
 import java.io.Serializable;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Hash;
@@ -38,9 +37,20 @@ import org.jenetics.stat.MinMax;
 import org.jenetics.util.ISeq;
 
 /**
- * Represents a state of the GA after an evolution step.
+ * Represents a state of the GA after an evolution step. It also represents the
+ * final state of an evolution process and can be created with an appropriate
+ * collector:
+ * <pre>{@code
+ * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+ * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
+ *     .optimize(Optimize.MINIMUM).build()
+ *     .stream()
+ *     .limit(100)
+ *     .collect(EvolutionResult.toBestEvolutionResult());
+ * }</pre>
  *
  * @see EvolutionStart
+ * @see Engine
  *
  * @param <G> the gene type
  * @param <C> the fitness type
@@ -89,16 +99,15 @@ public final class EvolutionResult<
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
 
-		_best = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::best);
-		_worst = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::worst);
-	}
+		_best = Lazy.of(() -> _population.stream()
+			.max(_optimize.ascending())
+			.orElse(null)
+		);
 
-	private Phenotype<G, C> best() {
-		return _population.stream().max(_optimize.ascending()).orElse(null);
-	}
-
-	private Phenotype<G, C> worst() {
-		return _population.stream().min(_optimize.ascending()).orElse(null);
+		_worst = Lazy.of(() -> _population.stream()
+			.min(_optimize.ascending())
+			.orElse(null)
+		);
 	}
 
 	/**
@@ -281,6 +290,18 @@ public final class EvolutionResult<
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
 	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final EvolutionResult<EnumGene<Point>, Double> result = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestEvolutionResult());
+	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a collector which collects the best result of an evolution stream
@@ -292,13 +313,27 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax().withTotalGenerations(mm.getCount())
+			mm -> mm.getMax() != null
+				? mm.getMax().withTotalGenerations(mm.getCount())
+				: null
 		);
 	}
 
 	/**
 	 * Return a collector which collects the best phenotype of an evolution
 	 * stream.
+	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final Phenotype<EnumGene<Point>, Double> result = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestPhenotype());
+	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -312,13 +347,27 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> safe(() -> mm.getMax().getBestPhenotype())
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype()
+				: null
 		);
 	}
 
 	/**
 	 * Return a collector which collects the best genotype of an evolution
 	 * stream.
+	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final Genotype<EnumGene<Point>> result = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestGenotype());
+	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -332,8 +381,86 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> safe(() -> mm.getMax().getBestPhenotype().getGenotype())
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? mm.getMax().getBestPhenotype().getGenotype()
+					: null
+				: null
 		);
+	}
+
+	/**
+	 * Return a collector which collects the best <em>result</em> (in the native
+	 * problem space).
+	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final ISeq<Point> route = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
+	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
+	 * @since 3.6
+	 *
+	 * @param decoder the decoder which converts the {@code Genotype} into the
+	 *        result of the problem space.
+	 * @param <T> the <em>native</em> problem result type
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a collector which collects the best result of an evolution stream
+	 * @throws NullPointerException if the given {@code decoder} is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>, T>
+	Collector<EvolutionResult<G, C>, ?, T>
+	toBestResult(final Function<Genotype<G>, T> decoder) {
+		requireNonNull(decoder);
+
+		return Collector.of(
+			MinMax::<EvolutionResult<G, C>>of,
+			MinMax::accept,
+			MinMax::combine,
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
+					: null
+				: null
+		);
+	}
+
+	/**
+	 * Return a collector which collects the best <em>result</em> (in the native
+	 * problem space).
+	 *
+	 * <pre>{@code
+	 * final Problem<ISeq<Point>, EnumGene<Point>, Double> tsm = ...;
+	 * final ISeq<Point> route = Engine.builder(tsm)
+	 *     .optimize(Optimize.MINIMUM).build()
+	 *     .stream()
+	 *     .limit(100)
+	 *     .collect(EvolutionResult.toBestResult(tsm.codec()));
+	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
+	 * @since 3.6
+	 *
+	 * @param codec the problem decoder
+	 * @param <T> the <em>native</em> problem result type
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a collector which collects the best result of an evolution stream
+	 * @throws NullPointerException if the given {@code codec} is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>, T>
+	Collector<EvolutionResult<G, C>, ?, T>
+	toBestResult(final Codec<T, G> codec) {
+		return toBestResult(codec.decoder());
 	}
 
 	/**

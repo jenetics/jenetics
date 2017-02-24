@@ -219,7 +219,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		final Iterator<Character> it = set.iterator();
 		for (int i = 0; i < values.length(); ++i) {
 			Assert.assertTrue(it.hasNext());
-			Assert.assertEquals(it.next(), new Character(values.charAt(i)));
+			Assert.assertEquals(it.next(), Character.valueOf(values.charAt(i)));
 		}
 		Assert.assertFalse(it.hasNext());
 	}

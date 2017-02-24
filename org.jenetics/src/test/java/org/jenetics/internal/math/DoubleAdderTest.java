@@ -20,6 +20,7 @@
 package org.jenetics.internal.math;
 
 import static java.util.stream.Collectors.summarizingDouble;
+import static org.jenetics.util.RandomRegistry.with;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,27 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.Factory;
+import org.jenetics.util.ObjectTester;
+import org.jenetics.util.RandomRegistry;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class DoubleAdderTest {
+public class DoubleAdderTest extends ObjectTester<DoubleAdder> {
+
+	@Override
+	protected Factory<DoubleAdder> factory() {
+		return () -> {
+			final Random random = RandomRegistry.getRandom();
+			final DoubleAdder adder = new DoubleAdder();
+			for (int i = 0; i < 20; ++i) {
+				adder.add(random.nextDouble());
+			}
+
+			return adder;
+		};
+	}
 
 	@Test
 	public void add() {
@@ -51,6 +69,23 @@ public class DoubleAdderTest {
 			.getSum();
 
 		Assert.assertEquals(adder.doubleValue(), expectedSum);
+	}
+
+	@Test
+	public void sameState() {
+		final DoubleAdder da1 = with(new Random(589), r -> factory().newInstance());
+		final DoubleAdder da2 = with(new Random(589), r -> factory().newInstance());
+
+		Assert.assertTrue(da1.sameState(da2));
+
+		final Random random = new Random();
+		for (int i = 0; i < 100; ++i) {
+			final double value = random.nextDouble();
+			da1.add(value);
+			da2.add(value);
+
+			Assert.assertTrue(da1.sameState(da2));
+		}
 	}
 
 }

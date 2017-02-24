@@ -46,7 +46,7 @@ public class KnapsackFitnessThreshold {
 		"Fitness threshold",
 		IntStream.rangeClosed(0, POINTS)
 			.mapToDouble(i -> MIN_FITNESS + (MAX_FITNESS - MIN_FITNESS)/POINTS*i)
-			.mapToObj(Double::new)
+			.mapToObj(Double::valueOf)
 			.collect(ISeq.toISeq())
 	);
 
@@ -62,7 +62,7 @@ public class KnapsackFitnessThreshold {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Double, BitGene, Double> runner = Runner.of(
-			KNAPSACK,
+			threshold -> KNAPSACK,
 			limit::byFitnessThreshold,
 			TRIAL_METER,
 			args

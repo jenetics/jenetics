@@ -31,6 +31,10 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -48,7 +52,7 @@ import org.jenetics.tool.trial.TrialMeter;
  * Helper class for creating Gnuplot diagrams from result files.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 3.7
  * @since 3.4
  */
 public class Diagram {
@@ -63,10 +67,17 @@ public class Diagram {
 		 */
 		EXECUTION_TIME("execution_time_termination"),
 
+		GENERATION_POPULATION_SIZE("generation_population_size"),
+
 		/**
 		 * Template for fitness threshold termination diagrams.
 		 */
 		FITNESS_THRESHOLD("fitness_threshold_termination"),
+
+		/**
+		 * Template for fitness threshold termination diagrams.
+		 */
+		FITNESS_CONVERGENCE("fitness_convergence_termination"),
 
 		/**
 		 * Template for fixed generation termination diagrams.
@@ -81,7 +92,9 @@ public class Diagram {
 		/**
 		 * Template for comparing different selectors.
 		 */
-		SELECTOR_COMPARISON("selector_comparison");
+		SELECTOR_COMPARISON("selector_comparison"),
+
+		POPULATION_SIZE("population_size");
 
 		private final String _name;
 		private final String _path;
@@ -113,6 +126,7 @@ public class Diagram {
 	/**
 	 * Create a performance diagram.
 	 *
+	 * @param input the input data
 	 * @param template the Gnuplot template to use
 	 * @param params the diagram parameters (x-axis)
 	 * @param output the output file
@@ -124,6 +138,7 @@ public class Diagram {
 	 *         and {@code fitness} doesn't have the same parameter count
 	 */
 	public static void create(
+		final Path input,
 		final Template template,
 		final Params<?> params,
 		final Path output,
@@ -155,6 +170,7 @@ public class Diagram {
 				IO.write(data, dataPath);
 
 				final Gnuplot gnuplot = new Gnuplot(templatePath);
+				gnuplot.setEnv(params(input));
 				gnuplot.create(dataPath, output);
 			} finally {
 				deleteIfExists(dataPath);
@@ -175,7 +191,7 @@ public class Diagram {
 		final SampleSummary... summaries
 	) {
 		return concat(concat(
-				Stream.of(params.get(index).toString()),
+				Stream.of(params.get(index).toString().split(":")),
 				DoubleStream.of(summary.getPoints().get(index).toArray())
 					.mapToObj(Double::toString)),
 				Stream.of(summaries)
@@ -204,6 +220,7 @@ public class Diagram {
 			.toArray(SampleSummary[]::new);
 
 		create(
+			input,
 			template(input),
 			params,
 			output(input),
@@ -220,6 +237,28 @@ public class Diagram {
 		return Arrays.stream(Template.values())
 			.filter(t -> t.getName().equals(name))
 			.findFirst().get();
+	}
+
+	private static Map<String, String> params(final Path path) {
+		System.out.println(path.getFileName());
+		final List<String> parts = param(path.getFileName().toString())
+			.flatMap(p -> Stream.of(p.split("@")))
+			.collect(Collectors.toList());
+
+		final Map<String, String> params = new HashMap<>();
+		for (int i = 0; i < parts.size(); ++i) {
+			final String key = format("PARAM_%s", i);
+			params.put(key, parts.get(i));
+		}
+
+		return params;
+	}
+
+	private static Stream<String> param(final String name) {
+		final String[] parts = name.split("-");
+		return parts.length == 3
+			? Stream.of(parts[2].split("\\.")[0])
+			: Stream.empty();
 	}
 
 	private static Path output(final Path path) {

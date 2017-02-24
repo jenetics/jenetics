@@ -391,7 +391,11 @@ public final class codecs {
 	 * @throws NullPointerException if one of the parameters is {@code null}
 	 * @throws IllegalArgumentException if the length of the vector is smaller
 	 *         than one.
+	 *
+	 * @deprecated Use {@link #ofVector(Supplier, Predicate, Predicate, int)}
+	 *             instead
 	 */
+	@Deprecated
 	public static <A> Codec<A[], AnyGene<A>> ofVector(
 		final Supplier<? extends A> supplier,
 		final IntFunction<A[]> generator,
@@ -419,6 +423,63 @@ public final class codecs {
 	 * allele {@code validator} and {@code Chromosome} length. The
 	 * {@code supplier} is responsible for creating new random alleles, and the
 	 * {@code validator} can verify it.
+	 * <p>
+	 * The following example shows a codec which creates and verifies
+	 * {@code BigInteger} object arrays.
+	 * <pre>{@code
+	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = codecs.of(
+	 *     // Create new random 'BigInteger' object.
+	 *     () -> {
+	 *         final byte[] data = new byte[100];
+	 *         RandomRegistry.getRandom().nextBytes(data);
+	 *         return new BigInteger(data);
+	 *     },
+	 *     // Verify that bit 7 is set. (For illustration purpose.)
+	 *     bi -> bi.testBit(7),
+	 *     // The 'Chromosome' length.
+	 *     123
+	 * );
+	 * }</pre>
+	 *
+	 * @see AnyChromosome#of(Supplier, Predicate, Predicate, int)
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param alleleValidator the validator used for validating the created gene.
+	 *        This predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param alleleSeqValidator the validator used for validating the created
+	 *        chromosome. This predicate is used in the
+	 *        {@link AnyChromosome#isValid()} method.
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<ISeq<A>, AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> alleleValidator,
+		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final int length
+	) {
+		requireNonNull(supplier);
+		requireNonNull(alleleSeqValidator);
+		requireNonNull(alleleSeqValidator);
+		require.positive(length);
+
+		return Codec.of(
+			Genotype.of(AnyChromosome
+				.of(supplier, alleleValidator, alleleSeqValidator, length)),
+			gt -> gt.getChromosome().toSeq().map(Gene::getAllele)
+		);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * allele {@code validator} and {@code Chromosome} length. The
+	 * {@code supplier} is responsible for creating new random alleles, and the
+	 * {@code validator} can verify it.
 	 *
 	 * @param <A> the allele type
 	 * @param supplier the allele-supplier which is used for creating new,
@@ -432,7 +493,10 @@ public final class codecs {
 	 * @throws NullPointerException if one of the parameters is {@code null}
 	 * @throws IllegalArgumentException if the length of the vector is smaller
 	 *         than one.
+	 *
+	 * @deprecated Use {@link #ofVector(Supplier, Predicate, int)} instead
 	 */
+	@Deprecated
 	public static <A> Codec<A[], AnyGene<A>> ofVector(
 		final Supplier<? extends A> supplier,
 		final IntFunction<A[]> generator,
@@ -440,6 +504,31 @@ public final class codecs {
 		final int length
 	) {
 		return ofVector(supplier, generator, validator, Equality.TRUE, length);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * allele {@code validator} and {@code Chromosome} length. The
+	 * {@code supplier} is responsible for creating new random alleles, and the
+	 * {@code validator} can verify it.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<ISeq<A>, AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator,
+		final int length
+	) {
+		return ofVector(supplier, validator, Equality.TRUE, length);
 	}
 
 	/**
@@ -457,13 +546,37 @@ public final class codecs {
 	 * @throws NullPointerException if one of the parameters is {@code null}
 	 * @throws IllegalArgumentException if the length of the vector is smaller
 	 *         than one.
+	 *
+	 * @deprecated Use {@link #ofVector(Supplier, int)} instead
 	 */
+	@Deprecated
 	public static <A> Codec<A[], AnyGene<A>> ofVector(
 		final Supplier<? extends A> supplier,
 		final IntFunction<A[]> generator,
 		final int length
 	) {
 		return ofVector(supplier, generator, Equality.TRUE, length);
+	}
+
+	/**
+	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * {@code Chromosome} length. The {@code supplier} is responsible for
+	 * creating new random alleles.
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param length the vector length
+	 * @return a new {@code Codec} with the given parameters
+	 * @throws NullPointerException if one of the parameters is {@code null}
+	 * @throws IllegalArgumentException if the length of the vector is smaller
+	 *         than one.
+	 */
+	public static <A> Codec<ISeq<A>, AnyGene<A>> ofVector(
+		final Supplier<? extends A> supplier,
+		final int length
+	) {
+		return ofVector(supplier, Equality.TRUE, length);
 	}
 
 	/**
@@ -494,7 +607,10 @@ public final class codecs {
 	 * @return a new permutation {@code Codec}
 	 * @throws IllegalArgumentException if the given allele array is empty
 	 * @throws NullPointerException if one of the alleles is {@code null}
+	 *
+	 * @deprecated Use {@link #ofPermutation(ISeq)} instead
 	 */
+	@Deprecated
 	@SafeVarargs
 	public static <T> Codec<T[], EnumGene<T>> ofPermutation(final T... alleles) {
 		if (alleles.length == 0) {
@@ -514,6 +630,29 @@ public final class codecs {
 	@SuppressWarnings("unchecked")
 	private static <T> T[] newArray(final Class<?> type, final int length) {
 		return (T[])newInstance(type, length);
+	}
+
+	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
+	public static <T> Codec<ISeq<T>, EnumGene<T>>
+	ofPermutation(final ISeq<T> alleles) {
+		if (alleles.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Empty allele array is not allowed."
+			);
+		}
+
+		return Codec.of(
+			Genotype.of(PermutationChromosome.of(alleles)),
+			gt -> gt.getChromosome().toSeq().map(EnumGene::getAllele)
+		);
 	}
 
 	/**

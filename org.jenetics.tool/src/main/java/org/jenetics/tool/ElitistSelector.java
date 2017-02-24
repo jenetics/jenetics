@@ -23,35 +23,43 @@ import static java.lang.Math.max;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
+import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.4
  * @since 3.4
  */
-public class CombinedSelector<
+public class ElitistSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements Selector<G, C>
 {
-	private final TruncationSelector<G, C> _s1 = new TruncationSelector<>();
-	private final TournamentSelector<G, C> _s2 = new TournamentSelector<>(3);
+	private final TruncationSelector<G, C> _elitist = new TruncationSelector<>();
+	private final TournamentSelector<G, C> _rest = new TournamentSelector<>(3);
 
 	@Override
-	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+	public Population<G, C> select(
+		final Population<G, C> population,
 		final int count,
 		final Optimize opt
 	) {
 		return population.isEmpty() || count <= 0
-			? ISeq.empty()
-			: _s1.select(population, 1, opt)
-				.append(_s2.select(population, max(0, count - 1), opt));
+			? new Population<>(0)
+			: append(
+				_elitist.select(population, 1, opt),
+				_rest.select(population, max(0, count - 1), opt));
+	}
+
+	private Population<G, C> append(
+		final Population<G, C> p1,
+		final Population<G, C> p2
+	) {
+		p1.addAll(p2);
+		return p1;
 	}
 }

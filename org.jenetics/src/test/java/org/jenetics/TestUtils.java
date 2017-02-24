@@ -31,7 +31,6 @@ import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
 class TestUtils {
 	private TestUtils() {require.noInstance();}

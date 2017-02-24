@@ -77,7 +77,7 @@ import org.jenetics.util.ISeq;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 3.6
  * @since 3.2
  */
 public interface Codec<T, G extends Gene<?, G>> {
@@ -109,6 +109,25 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return genotype decoder
 	 */
 	public Function<Genotype<G>, T> decoder();
+
+	/**
+	 * Converts the given {@link Genotype} to the target type {@link T}. This is
+	 * a shortcut for
+	 * <pre>{@code
+	 * final Codec<SomeObject, DoubleGene> codec = ...
+	 * final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+	 *
+	 * final SomeObject arg = codec.decoder().apply(gt);
+	 * }</pre>
+	 *
+	 * @since 3.6
+	 *
+	 * @param gt the genotype to be converted
+	 * @return the converted genotype
+	 */
+	public default T decode(final Genotype<G> gt) {
+		return decoder().apply(gt);
+	}
 
 
 	/**

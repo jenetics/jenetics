@@ -23,6 +23,9 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.function.Function;
 
@@ -36,7 +39,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
+import org.jenetics.internal.util.Lazy;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.Verifiable;
 
@@ -59,7 +64,7 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.1
+ * @version 3.7
  */
 @XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
@@ -72,19 +77,16 @@ public final class Phenotype<
 		Serializable,
 		Runnable
 {
-	private static final long serialVersionUID = 4L;
+	private static final long serialVersionUID = 5L;
+
+	private final transient Function<? super Genotype<G>, ? extends C> _function;
+	private final transient Function<? super C, ? extends C> _scaler;
 
 	private final Genotype<G> _genotype;
-
-	private final Function<? super Genotype<G>, ? extends C> _function;
-	private final Function<? super C, ? extends C> _scaler;
-
 	private final long _generation;
 
-	// Storing the fitness value for lazy evaluation.
-	private transient volatile boolean _evaluated = false;
-	private C _rawFitness = null;
-	private C _fitness = null;
+	private final Lazy<C> _rawFitness;
+	private final Lazy<C> _fitness;
 
 	/**
 	 * Create a new phenotype from the given arguments.
@@ -112,6 +114,9 @@ public final class Phenotype<
 			));
 		}
 		_generation = generation;
+
+		_rawFitness = Lazy.of(() -> _function.apply(_genotype));
+		_fitness = Lazy.of(() -> _scaler.apply(_rawFitness.get()));
 	}
 
 	/**
@@ -132,18 +137,8 @@ public final class Phenotype<
 	 * @return this phenotype, for method chaining.
 	 */
 	public Phenotype<G, C> evaluate() {
-		if (!_evaluated) {
-			eval();
-		}
+		getFitness();
 		return this;
-	}
-
-	private synchronized void eval() {
-		if (!_evaluated) {
-			if (_rawFitness == null) _rawFitness = _function.apply(_genotype);
-			if (_fitness == null) _fitness = _scaler.apply(_rawFitness);
-			_evaluated = true;
-		}
 	}
 
 	/**
@@ -182,8 +177,7 @@ public final class Phenotype<
 	 * @return The fitness value of this {@code Phenotype}.
 	 */
 	public C getFitness() {
-		evaluate();
-		return _fitness;
+		return _fitness.get();
 	}
 
 	/**
@@ -192,8 +186,7 @@ public final class Phenotype<
 	 * @return The raw fitness (before scaling) of the phenotype.
 	 */
 	public C getRawFitness() {
-		evaluate();
-		return _rawFitness;
+		return _rawFitness.get();
 	}
 
 	/**
@@ -346,7 +339,7 @@ public final class Phenotype<
 		final long generation,
 		final Function<? super Genotype<G>, C> function
 	) {
-		return of(
+		return Phenotype.<G, C>of(
 			genotype,
 			generation,
 			function,
@@ -383,6 +376,35 @@ public final class Phenotype<
 			function,
 			scaler
 		);
+	}
+
+
+	/**************************************************************************
+	 *  Java object serialization
+	 *************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+		out.writeLong(getGeneration());
+		out.writeObject(getGenotype());
+		out.writeObject(getFitness());
+		out.writeObject(getRawFitness());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		reflect.setField(this, "_generation", in.readLong());
+		reflect.setField(this, "_genotype", in.readObject());
+		reflect.setField(this, "_fitness", Lazy.ofValue(in.readObject()));
+		reflect.setField(this, "_rawFitness", Lazy.ofValue(in.readObject()));
+
+		reflect.setField(this, "_function", Function.identity());
+		reflect.setField(this, "_scaler", Function.identity());
 	}
 
 	/* *************************************************************************
@@ -428,8 +450,9 @@ public final class Phenotype<
 					Function.identity(),
 					Function.identity()
 				);
-				pt._fitness = (Comparable)m.fitness;
-				pt._rawFitness = (Comparable)m.rawFitness;
+
+				reflect.setField(pt, "_fitness", Lazy.ofValue(m.fitness));
+				reflect.setField(pt, "_rawFitness", Lazy.ofValue(m.rawFitness));
 				return pt;
 			}
 		}

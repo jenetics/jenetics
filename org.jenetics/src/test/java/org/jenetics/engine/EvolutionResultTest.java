@@ -21,7 +21,6 @@ package org.jenetics.engine;
 
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
-import java.io.Serializable;
 import java.time.Duration;
 import java.util.Random;
 import java.util.function.Function;
@@ -81,6 +80,48 @@ public class EvolutionResultTest
 				random.nextInt(100)
 			);
 		};
+	}
+
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectEvolutionResult() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNull(result);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectPhenotype() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final Phenotype<DoubleGene, Double> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestPhenotype());
+
+		Assert.assertNull(result);
+	}
+
+	// https://github.com/jenetics/jenetics/issues/146
+	@Test
+	public void emptyStreamCollectGenotype() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final Genotype<DoubleGene> result = engine.stream()
+			.limit(0)
+			.collect(EvolutionResult.toBestGenotype());
+
+		Assert.assertNull(result);
 	}
 
 	@Test

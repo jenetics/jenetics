@@ -49,23 +49,35 @@ public final class engines {
 	public static Engine<BitGene, Double>
 		KNAPSACK = knapsack(new LCG64ShiftRandom(10101));
 
+	public static Engine<BitGene, Double> KNAPSACK(final int populationSize) {
+		return knapsack(populationSize, new LCG64ShiftRandom(10101));
+	}
+
+	public static Engine<BitGene, Double> knapsack(final Random random) {
+		return knapsack(150, random);
+	}
+
 	/**
 	 * Create a new {@link Engine} for solving the {@link Knapsack} problem. The
 	 * engine is used for testing purpose.
 	 *
 	 * @see Knapsack#of(int, Random)
 	 *
+	 * @param populationSize the population size of the created engine
 	 * @param random the random engine used for creating the {@link Knapsack}
 	 *        problem instance
 	 * @return a new {@link Knapsack} solving evolution {@link Engine}
 	 */
-	public static Engine<BitGene, Double> knapsack(final Random random) {
+	public static Engine<BitGene, Double> knapsack(
+		final int populationSize,
+		final Random random
+	) {
 		// Search space fo 2^250 ~ 10^75.
 		final Knapsack knapsack = Knapsack.of(250, random);
 
 		// Configure and build the evolution engine.
 		return Engine.builder(knapsack)
-			.populationSize(150)
+			.populationSize(populationSize)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
