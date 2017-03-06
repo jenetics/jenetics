@@ -19,6 +19,7 @@
  */
 package org.jenetics.example;
 
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.jenetics.Chromosome;
@@ -33,7 +34,6 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStatistics;
 import org.jenetics.engine.limit;
 import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 public class Sorting {
@@ -50,7 +50,7 @@ public class Sorting {
 	}
 
 	public static void main(final String[] args) {
-		RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+		RandomRegistry.setRandom(new Random());
 		final Engine<EnumGene<Integer>, Integer> engine = Engine
 			.builder(
 				Sorting::length,
