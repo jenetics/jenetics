@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <permutation-chromosome length="15">
     <valid-alleles>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">逄</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">웰</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">覆</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">嚱</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">勻</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">鼸</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">萰</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">萉</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">墧</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">蠬</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䧉</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">鳘</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">吃</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䶈</allele>
-        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">㲴</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ꗁ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">뫡</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">퀦</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䊽</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䇪</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">偖</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">늯</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">睼</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">翨</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">㨳</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">鐘</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ﺝ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">譎</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ᣂ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">鄅</allele>
     </valid-alleles>
-    <order>4 7 2 13 6 3 10 12 11 1 8 9 5 14 0</order>
+    <order>6 11 2 3 13 9 1 10 12 14 0 8 4 7 5</order>
 </permutation-chromosome>

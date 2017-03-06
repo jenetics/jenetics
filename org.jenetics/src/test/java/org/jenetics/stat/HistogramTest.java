@@ -26,7 +26,8 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.LCG64ShiftRandom;
+import org.jenetics.internal.math.random;
+
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -150,10 +151,10 @@ public class HistogramTest {
 		final double max = 1_000.0;
 		final int nclasses = 71;
 
-		final LCG64ShiftRandom random = new LCG64ShiftRandom();
+		final Random r = new Random();
 		final double[] values = new double[100_000];
 		for (int i = 0; i < values.length; ++i) {
-			values[i] = random.nextDouble(min, max);
+			values[i] = random.nextDouble(r, min, max);
 		}
 
 		final Histogram<Double> serial = Histogram.ofDouble(min, max, nclasses);

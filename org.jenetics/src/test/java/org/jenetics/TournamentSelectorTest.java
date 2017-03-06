@@ -24,6 +24,7 @@ import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.DataProvider;
@@ -33,7 +34,6 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
 /**
@@ -58,7 +58,7 @@ public class TournamentSelectorTest
 			final int loops = 1;
 			final int npopulation = POPULATION_COUNT;
 
-			using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+			using(new Random(), r -> {
 				final Histogram<Double> distribution = SelectorTester.distribution(
 					new TournamentSelector<>(tournamentSize),
 					opt,
@@ -111,7 +111,7 @@ public class TournamentSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		using(new LCG64ShiftRandom.ThreadLocal(), r -> {
+		using(new Random(), r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 5_000_000;
 			final int loops = 100_000;

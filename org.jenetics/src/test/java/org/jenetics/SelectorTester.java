@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -41,7 +42,6 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
 
 /**
@@ -108,7 +108,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), 1, ff);
 
-		using(new LCG64ShiftRandom(543455), r -> {
+		using(new Random(543455), r -> {
 			final Population<DoubleGene, Double> population = IntStream.range(0, size)
 				.mapToObj(i -> ptf.newInstance())
 				.collect(Population.toPopulation());

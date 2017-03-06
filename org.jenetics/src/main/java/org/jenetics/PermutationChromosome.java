@@ -371,7 +371,7 @@ public final class PermutationChromosome<T>
 			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
 	/* *************************************************************************
