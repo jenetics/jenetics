@@ -113,7 +113,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void isValid() {
 		final ISeq<Integer> alleles = IntStream.range(0, 100)
-			.mapToObj(Integer::new)
+			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))
@@ -128,7 +128,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void isNotValid() {
 		final ISeq<Integer> alleles = IntStream.range(0, 100)
-			.mapToObj(Integer::new)
+			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq());
 
 		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))

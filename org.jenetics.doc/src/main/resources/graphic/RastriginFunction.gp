@@ -1,9 +1,9 @@
 #!/usr/bin/gnuplot -p
 
-#set terminal svg size 600,500 enhanced fname "Times Roman" fsize 8
+#set terminal svg size 600,500 fname "Serif" fsize 16
 #set output "RastriginFunction.svg"
 
-set terminal png transparent xffffff size 1200,1000 font "Times Roman" 14
+set terminal png transparent size 1200,1000 font "Serif" 16
 set output "RastriginFunction.png"
 
 set grid

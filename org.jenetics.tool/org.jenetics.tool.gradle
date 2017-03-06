@@ -34,8 +34,8 @@ repositories {
 }
 
 dependencies {
-	compile project(':org.jenetics')
-	compile project(':org.jenetics.random')
+	compile project(':jenetics')
+	compile project(':jenetics.random')
 
 	testCompile Include.TestNG
 }

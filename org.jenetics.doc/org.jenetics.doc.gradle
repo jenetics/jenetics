@@ -33,7 +33,7 @@ repositories {
 }
 
 dependencies {
-	compile project(':org.jenetics')
+	compile project(':jenetics')
 
 	testCompile Include.TestNG
 }

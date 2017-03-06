@@ -21,11 +21,9 @@ package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.internal.util.require.safe;
 
 import java.io.Serializable;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import org.jenetics.internal.util.Hash;
@@ -101,16 +99,15 @@ public final class EvolutionResult<
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
 
-		_best = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::best);
-		_worst = Lazy.of((Supplier<Phenotype<G, C>> & Serializable)this::worst);
-	}
+		_best = Lazy.of(() -> _population.stream()
+			.max(_optimize.ascending())
+			.orElse(null)
+		);
 
-	private Phenotype<G, C> best() {
-		return _population.stream().max(_optimize.ascending()).orElse(null);
-	}
-
-	private Phenotype<G, C> worst() {
-		return _population.stream().min(_optimize.ascending()).orElse(null);
+		_worst = Lazy.of(() -> _population.stream()
+			.min(_optimize.ascending())
+			.orElse(null)
+		);
 	}
 
 	/**
@@ -302,6 +299,9 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestEvolutionResult());
 	 * }</pre>
 	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a collector which collects the best result of an evolution stream
@@ -313,7 +313,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax().withTotalGenerations(mm.getCount())
+			mm -> mm.getMax() != null
+				? mm.getMax().withTotalGenerations(mm.getCount())
+				: null
 		);
 	}
 
@@ -330,6 +332,9 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestPhenotype());
 	 * }</pre>
 	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a collector which collects the best phenotype of an evolution
@@ -342,7 +347,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> safe(() -> mm.getMax().getBestPhenotype())
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype()
+				: null
 		);
 	}
 
@@ -359,6 +366,9 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a collector which collects the best genotype of an evolution
@@ -371,7 +381,11 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> safe(() -> mm.getMax().getBestPhenotype().getGenotype())
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? mm.getMax().getBestPhenotype().getGenotype()
+					: null
+				: null
 		);
 	}
 
@@ -387,6 +401,9 @@ public final class EvolutionResult<
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec().decoder()));
 	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
 	 *
 	 * @since 3.6
 	 *
@@ -407,9 +424,11 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> safe(() ->
-				 decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
-			)
+			mm -> mm.getMax() != null
+				? mm.getMax().getBestPhenotype() != null
+					? decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
+					: null
+				: null
 		);
 	}
 
@@ -425,6 +444,9 @@ public final class EvolutionResult<
 	 *     .limit(100)
 	 *     .collect(EvolutionResult.toBestResult(tsm.codec()));
 	 * }</pre>
+	 *
+	 * If the collected {@link EvolutionStream} is empty, the collector returns
+	 * <b>{@code null}</b>.
 	 *
 	 * @since 3.6
 	 *

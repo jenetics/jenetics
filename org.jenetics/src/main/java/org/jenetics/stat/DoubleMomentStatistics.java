@@ -68,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.7
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -145,6 +145,39 @@ public class DoubleMomentStatistics
 	 */
 	public double getSum() {
 		return _sum.doubleValue();
+	}
+
+	/**
+	 * Compares the state of two {@code DoubleMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final DoubleMomentStatistics ds1 = ...;
+	 * final DoubleMomentStatistics ds2 = ...;
+	 *
+	 * if (ds1.sameState(ds2)) {
+	 *     final double value = random.nextDouble();
+	 *     ds1.accept(value);
+	 *     ds2.accept(value);
+	 *
+	 *     assert ds1.sameState(ds2);
+	 *     assert ds2.sameState(ds1);
+	 *     assert ds1.sameState(ds1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final DoubleMomentStatistics other) {
+		return Double.compare(_min, other._min) == 0 &&
+			Double.compare(_max, other._max) == 0 &&
+			_sum.sameState(other._sum) &&
+			super.sameState(other);
 	}
 
 	@Override

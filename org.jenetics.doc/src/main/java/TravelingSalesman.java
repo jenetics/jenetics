@@ -43,7 +43,7 @@ public class TravelingSalesman {
 	private static
 	Double dist(final Genotype<EnumGene<Integer>> gt) {
 		// Convert the genotype to the traveling path.
-		final int[] path = gt.getChromosome().toSeq().stream()
+		final int[] path = gt.getChromosome().stream()
 			.mapToInt(EnumGene<Integer>::getAllele)
 			.toArray();
 
