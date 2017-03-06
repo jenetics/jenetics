@@ -35,6 +35,7 @@ repositories {
 
 dependencies {
 	compile project(':jenetics')
+	compile Include.PRNGine
 
 	testCompile Include.TestNG
 }
