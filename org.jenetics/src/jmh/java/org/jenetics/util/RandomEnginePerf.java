@@ -71,7 +71,7 @@ public class RandomEnginePerf {
 	}
 
 	public static class LCG64ShiftRandomPerf extends Base {{
-		random = new LCG64ShiftRandom();
+		random = new Random();
 	}}
 
 	public static class RandomPerf extends Base {{

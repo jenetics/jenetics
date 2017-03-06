@@ -532,6 +532,14 @@ public final class bit {
 		return (bitLength & 7) == 0 ? (bitLength >>> 3) : (bitLength >>> 3) + 1;
 	}
 
+	public static int toInt(final byte[] data) {
+		return
+			((data[0] & 255) << 24) +
+			((data[1] & 255) << 16) +
+			((data[2] & 255) << 8) +
+			(data[3] & 255);
+	}
+
 	public static long toLong(final byte[] data) {
 		return
 			((long)data[0] << 56) +
