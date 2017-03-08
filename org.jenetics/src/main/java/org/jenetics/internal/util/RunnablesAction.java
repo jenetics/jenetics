@@ -21,14 +21,13 @@ package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.RandomAccess;
 import java.util.concurrent.RecursiveAction;
+
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
+ * @version !__version__!
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
@@ -36,13 +35,13 @@ final class RunnablesAction extends RecursiveAction {
 
 	private static final int DEFAULT_THRESHOLD = 7;
 
-	private final List<? extends Runnable> _runnables;
+	private final Seq<? extends Runnable> _runnables;
 	private final int _high;
 	private final int _low;
 	private final Integer _threshold;
 
 	private RunnablesAction(
-		final List<? extends Runnable> runnables,
+		final Seq<? extends Runnable> runnables,
 		final int low,
 		final int high,
 		final Integer threshold
@@ -53,15 +52,8 @@ final class RunnablesAction extends RecursiveAction {
 		_threshold = threshold;
 	}
 
-	public RunnablesAction(final List<? extends Runnable> runnables) {
-		this(
-			runnables instanceof RandomAccess ?
-				runnables :
-				new ArrayList<>(runnables),
-			0,
-			runnables.size(),
-			null
-		);
+	public RunnablesAction(final Seq<? extends Runnable> runnables) {
+		this(runnables, 0, runnables.size(), null);
 	}
 
 	@Override

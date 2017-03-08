@@ -26,6 +26,7 @@ import static org.jenetics.internal.math.random.indexes;
 import java.util.Random;
 import java.util.function.IntFunction;
 
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -50,7 +51,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -66,7 +67,7 @@ public abstract class Recombinator<
 	 *
 	 * @param probability The recombination probability.
 	 * @param order the number of individuals involved in the
-	 *        {@link #recombine(Population, int[], long)} step
+	 *        {@link #recombine(MSeq, int[], long)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.
@@ -83,7 +84,7 @@ public abstract class Recombinator<
 
 	/**
 	 * Return the number of individuals involved in the
-	 * {@link #recombine(Population, int[], long)} step.
+	 * {@link #recombine(MSeq, int[], long)} step.
 	 *
 	 * @return the number of individuals involved in the recombination step.
 	 */
@@ -93,7 +94,7 @@ public abstract class Recombinator<
 
 	@Override
 	public final int alter(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		int count = 0;
@@ -129,7 +130,7 @@ public abstract class Recombinator<
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract int recombine(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
 		final long generation
 	);

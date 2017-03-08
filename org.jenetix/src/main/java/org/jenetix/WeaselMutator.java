@@ -9,7 +9,6 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.util.MSeq;
 
 /**
@@ -58,7 +57,7 @@ public class WeaselMutator<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final long generation) {
+	public int alter(final MSeq<Phenotype<G, C>> population, final long generation) {
 		final IntRef alterations = new IntRef(0);
 
 		for (int i = 0; i < population.size(); ++i) {

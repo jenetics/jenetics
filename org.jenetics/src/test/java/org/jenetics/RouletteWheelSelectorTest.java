@@ -34,6 +34,7 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
@@ -63,9 +64,10 @@ public class RouletteWheelSelectorTest
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
 				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
 
-			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
-				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
+			final ISeq<Phenotype<IntegerGene, Integer>> population =
+				IntStream.range(0, 1000)
+					.mapToObj(i -> ptf.newInstance())
+					.collect(ISeq.toISeq());
 
 			final RouletteWheelSelector<IntegerGene, Integer> selector =
 				new RouletteWheelSelector<>();
@@ -84,9 +86,10 @@ public class RouletteWheelSelectorTest
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
 				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
 
-			final Population<IntegerGene, Integer> population = IntStream.range(0, 1000)
-				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
+			final ISeq<Phenotype<IntegerGene, Integer>> population =
+				IntStream.range(0, 1000)
+					.mapToObj(i -> ptf.newInstance())
+					.collect(ISeq.toISeq());
 
 			final RouletteWheelSelector<IntegerGene, Integer> selector =
 				new RouletteWheelSelector<>();

@@ -23,14 +23,15 @@ import static java.lang.Math.max;
 
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
-import org.jenetics.Population;
+import org.jenetics.Phenotype;
 import org.jenetics.Selector;
 import org.jenetics.TournamentSelector;
 import org.jenetics.TruncationSelector;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
 public class ElitistSelector<
@@ -43,23 +44,15 @@ public class ElitistSelector<
 	private final TournamentSelector<G, C> _rest = new TournamentSelector<>(3);
 
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
 		return population.isEmpty() || count <= 0
-			? new Population<>(0)
-			: append(
-				_elitist.select(population, 1, opt),
-				_rest.select(population, max(0, count - 1), opt));
+			? ISeq.empty()
+			: _elitist.select(population, 1, opt)
+				.append(_rest.select(population, max(0, count - 1), opt));
 	}
 
-	private Population<G, C> append(
-		final Population<G, C> p1,
-		final Population<G, C> p2
-	) {
-		p1.addAll(p2);
-		return p1;
-	}
 }

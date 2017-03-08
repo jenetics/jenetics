@@ -23,7 +23,7 @@ import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -38,11 +38,11 @@ public final class SpecialEngine {
 	// Create new evolution start object.
 	private static EvolutionStart<DoubleGene, Double>
 	start(final int populationSize, final long generation) {
-		final Population<DoubleGene, Double> population =
+		final ISeq<Phenotype<DoubleGene, Double>> population =
 			Genotype.of(DoubleChromosome.of(0, 1)).instances()
 				.map(gt -> Phenotype.of(gt, generation, SpecialEngine::fitness))
 				.limit(populationSize)
-				.collect(Population.toPopulation());
+				.collect(ISeq.toISeq());
 
 		return EvolutionStart.of(population, generation);
 	}

@@ -66,7 +66,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 public class Mutator<
 	G extends Gene<?, G>,
@@ -100,7 +100,7 @@ public class Mutator<
 	 */
 	@Override
 	public int alter(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		assert population != null : "Not null is guaranteed from base class.";

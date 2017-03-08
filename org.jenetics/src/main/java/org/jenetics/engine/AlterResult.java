@@ -22,7 +22,8 @@ package org.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import org.jenetics.Gene;
-import org.jenetics.Population;
+import org.jenetics.Phenotype;
+import org.jenetics.util.MSeq;
 
 /**
  * Represents the result of the alter step.
@@ -32,18 +33,18 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 final class AlterResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
 
-	final Population<G, C> population;
+	final MSeq<Phenotype<G, C>> population;
 	final int alterCount;
 
 	AlterResult(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int alterCount
 	) {
 		this.population = requireNonNull(population);

@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * The Alterer is responsible for the changing/recombining the Population.
@@ -44,7 +45,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 @FunctionalInterface
 public interface Alterer<
@@ -67,7 +68,7 @@ public interface Alterer<
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public int alter(final Population<G, C> population, final long generation);
+	public int alter(final MSeq<Phenotype<G, C>> population, final long generation);
 
 	/**
 	 * Returns a composed alterer that first applies the {@code before} alterer

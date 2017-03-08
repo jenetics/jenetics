@@ -24,6 +24,8 @@ import static org.jenetics.TestUtils.newDoubleGenePopulation;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
@@ -37,14 +39,13 @@ public abstract class AltererTester {
 		final int nchromosomes,
 		final int npopulation
 	) {
-		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
-			ngenes, nchromosomes, npopulation
-		);
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		final Alterer<DoubleGene, Double> alterer = newAlterer(1);
 
 		// Must perform the alteration without exception.
-		alterer.alter(population, 1);
+		alterer.alter(population.copy(), 1);
 	}
 
 	@DataProvider(name = "parameters")

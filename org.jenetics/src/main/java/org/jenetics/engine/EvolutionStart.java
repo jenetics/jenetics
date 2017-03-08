@@ -27,7 +27,8 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
-import org.jenetics.Population;
+import org.jenetics.Phenotype;
+import org.jenetics.util.ISeq;
 
 /**
  * Represents a state of the GA at the start of an evolution step.
@@ -39,7 +40,7 @@ import org.jenetics.Population;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 3.1
+ * @version !__version__!
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -47,11 +48,11 @@ public final class EvolutionStart<
 >
 {
 
-	private final Population<G, C> _population;
+	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
 
 	private EvolutionStart(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		_population = requireNonNull(population);
@@ -63,7 +64,7 @@ public final class EvolutionStart<
 	 *
 	 * @return the start population
 	 */
-	public Population<G, C> getPopulation() {
+	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
 
@@ -114,7 +115,7 @@ public final class EvolutionStart<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> of(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		return new EvolutionStart<>(population, generation);

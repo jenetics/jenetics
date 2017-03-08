@@ -22,7 +22,6 @@ package org.jenetics.engine;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.Population.toPopulation;
 import static org.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
@@ -46,13 +45,15 @@ import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.util.Copyable;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.NanoClock;
+import org.jenetics.util.Seq;
 
 /**
  * Genetic algorithm <em>engine</em> which is the main class. The following
@@ -113,7 +114,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -226,7 +227,7 @@ public final class Engine<
 	 *         smaller then one
 	 */
 	public EvolutionResult<G, C> evolve(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		return evolve(EvolutionStart.of(population, generation));
@@ -240,7 +241,7 @@ public final class Engine<
 	 * <em>This method is thread-safe.</em>
 	 *
 	 * @since 3.1
-	 * @see #evolve(org.jenetics.Population, long)
+	 * @see #evolve(ISeq, long)
 	 *
 	 * @param start the evolution start object
 	 * @return the evolution result
@@ -250,38 +251,36 @@ public final class Engine<
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final Timer timer = Timer.of().start();
 
-		final Population<G, C> startPopulation = start.getPopulation();
-
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		evaluate(startPopulation);
+		evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
-		final CompletableFuture<TimedResult<Population<G, C>>> offspring =
+		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
-				selectOffspring(startPopulation),
+				selectOffspring(start.getPopulation()),
 				_clock
 			);
 
 		// Select the survivor population.
-		final CompletableFuture<TimedResult<Population<G, C>>> survivors =
+		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(startPopulation),
+				selectSurvivors(start.getPopulation()),
 				_clock
 			);
 
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.result, start.getGeneration()),
+				alter(p.result.copy(), start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.result, start.getGeneration()),
+				filter(pop.result.copy(), start.getGeneration()),
 				_clock
 			);
 
@@ -293,18 +292,15 @@ public final class Engine<
 			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<Population<G, C>> population =
-			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-					final Population<G, C> pop = s.result.population;
-					pop.addAll(o.result.population);
-					return pop;
-				},
+		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
+			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) ->
+				ISeq.of(s.result.population.append(o.result.population)),
 				_executor.get()
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final Population<G, C> pop = population.join();
-		final TimedResult<Population<G, C>> result = TimedResult
+		final ISeq<Phenotype<G, C>> pop = population.join();
+		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
 			.of(() -> evaluate(pop), _clock)
 			.get();
 
@@ -350,22 +346,22 @@ public final class Engine<
 	}
 
 	// Selects the survivors population. A new population object is returned.
-	private Population<G, C> selectSurvivors(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> selectSurvivors(final ISeq<Phenotype<G, C>> population) {
 		return _survivorsCount > 0
 			?_survivorsSelector.select(population, _survivorsCount, _optimize)
-			: Population.empty();
+			: ISeq.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
-	private Population<G, C> selectOffspring(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> selectOffspring(final ISeq<Phenotype<G, C>> population) {
 		return _offspringCount > 0
 			? _offspringSelector.select(population, _offspringCount, _optimize)
-			: Population.empty();
+			: ISeq.empty();
 	}
 
 	// Filters out invalid and to old individuals. Filtering is done in place.
 	private FilterResult<G, C> filter(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		int killCount = 0;
@@ -405,17 +401,17 @@ public final class Engine<
 
 	// Alters the given population. The altering is done in place.
 	private AlterResult<G, C> alter(
-		final Population<G,C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		return new AlterResult<>(
+		return new AlterResult<G, C>(
 			population,
 			_alterer.alter(population, generation)
 		);
 	}
 
 	// Evaluates the fitness function of the give population concurrently.
-	private Population<G, C> evaluate(final Population<G, C> population) {
+	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {
 			c.execute(population);
 		}
@@ -455,8 +451,9 @@ public final class Engine<
 		final int generation = 1;
 		final int size = _offspringCount + _survivorsCount;
 
-		final Population<G, C> population = new Population<G, C>(size)
-			.fill(() -> newPhenotype(generation), size);
+		final ISeq<Phenotype<G, C>> population = MSeq.<Phenotype<G, C>>ofLength(size)
+			.fill(() -> newPhenotype(generation))
+			.toISeq();
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -518,9 +515,9 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		final Population<G, C> population = stream
+		final ISeq<Phenotype<G, C>> population = stream
 			.limit(getPopulationSize())
-			.collect(toPopulation());
+			.collect(ISeq.toISeq());
 
 		return EvolutionStart.of(population, generation);
 	}
@@ -604,7 +601,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population
+		final ISeq<Phenotype<G, C>> population
 	) {
 		requireNonNull(population);
 
@@ -630,7 +627,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public EvolutionStream<G, C> stream(
-		final Population<G, C> population
+		final ISeq<Phenotype<G, C>> population
 	) {
 		requireNonNull(population);
 
@@ -641,7 +638,7 @@ public final class Engine<
 	}
 
 	private EvolutionStart<G, C> evolutionStart(
-		final Population<G, C> population,
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		final Stream<Phenotype<G, C>> stream = Stream.concat(
@@ -653,9 +650,9 @@ public final class Engine<
 			Stream.generate(() -> newPhenotype(generation))
 		);
 
-		final Population<G, C> pop = stream
+		final ISeq<Phenotype<G, C>> pop = stream
 			.limit(getPopulationSize())
-			.collect(toPopulation());
+			.collect(ISeq.toISeq());
 
 		return EvolutionStart.of(pop, generation);
 	}
@@ -680,7 +677,7 @@ public final class Engine<
 	 *        then one
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);
@@ -712,7 +709,7 @@ public final class Engine<
 	 *         smaller then one
 	 */
 	public EvolutionStream<G, C> stream(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		requireNonNull(population);

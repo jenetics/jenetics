@@ -27,7 +27,7 @@ import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,7 +50,7 @@ public final class RepairingAlterer<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final long generation) {
+	public int alter(final MSeq<Phenotype<G, C>> population, final long generation) {
 		final int altered = _adoptee.alter(population, generation);
 		for (int i = 0, n = population.size(); i < n; ++i) {
 			if (!population.get(i).isValid()) {
