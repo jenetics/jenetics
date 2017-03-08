@@ -23,11 +23,13 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
+import org.jenetics.AlterResult;
 import org.jenetics.Alterer;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Phenotype;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,14 +52,19 @@ public final class RepairingAlterer<
 	}
 
 	@Override
-	public int alter(final MSeq<Phenotype<G, C>> population, final long generation) {
-		final int altered = _adoptee.alter(population, generation);
-		for (int i = 0, n = population.size(); i < n; ++i) {
-			if (!population.get(i).isValid()) {
-				population.set(i, repair(population.get(i)));
+	public AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
+		final long generation
+	) {
+		final AlterResult<G, C> result = _adoptee.alter(population, generation);
+
+		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+		for (int i = 0, n = pop.size(); i < n; ++i) {
+			if (!pop.get(i).isValid()) {
+				pop.set(i, repair(pop.get(i)));
 			}
 		}
-		return altered;
+		return AlterResult.of(pop.toISeq(), result.getAlterations());
 	}
 
 	private Phenotype<G, C> repair(final Phenotype<G, C> pt) {

@@ -145,7 +145,9 @@ public class SinglePointCrossoverTest extends AltererTester {
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover.alter(population.copy(), 1);
+			final long alterations = crossover
+				.alter(population, 1)
+				.getAlterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

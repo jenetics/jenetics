@@ -53,7 +53,7 @@ public class SwapMutatorTest extends MutatorTester {
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
-		final int alterations = mutator.alter(p2, 1);
+		final int alterations = mutator.alter(p2, 1).getAlterations();
 		//final int diff = diff(p1, p2);
 
 		if (ngenes == 1) {
