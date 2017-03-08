@@ -19,10 +19,6 @@
  */
 package org.jenetics.engine;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-import java.awt.geom.AffineTransform;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -355,48 +351,48 @@ public class codecsTest {
 	}
 
 
-	@Test
-	public void ofAffineTransform() {
-		final DoubleRange sxr = DoubleRange.of(0, 100);
-		final DoubleRange syr = DoubleRange.of(0, 200);
-		final DoubleRange txr = DoubleRange.of(0, 50);
-		final DoubleRange tyr = DoubleRange.of(0, 100);
-		final DoubleRange thr = DoubleRange.of(0, 2*Math.PI);
-		final DoubleRange kxr = DoubleRange.of(0, 10);
-		final DoubleRange kyr = DoubleRange.of(0, 15);
-
-		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
-			sxr, syr, txr, tyr, thr, kxr, kyr
-		);
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		final double sx = gt.get(0, 0).doubleValue();
-		final double sy = gt.get(1, 0).doubleValue();
-		final double tx = gt.get(2, 0).doubleValue();
-		final double ty = gt.get(3, 0).doubleValue();
-		final double th = gt.get(4, 0).doubleValue();
-		final double kx = gt.get(5, 0).doubleValue();
-		final double ky = gt.get(6, 0).doubleValue();
-
-		final double cos_th = cos(th);
-		final double sin_th = sin(th);
-		final double a11 = cos_th*sx + kx*sy*sin_th;
-		final double a12 = cos_th*kx*sy - sx*sin_th;
-		final double a21 = cos_th*ky*sx + sy*sin_th;
-		final double a22 = cos_th*sy - ky*sx*sin_th;
-
-		final AffineTransform eat = new AffineTransform(a11, a21, a12, a22, tx, ty);
-		final AffineTransform at = codec.decoder().apply(gt);
-
-		final double[] expectedMatrix = new double[6];
-		final double[] matrix = new double[6];
-		eat.getMatrix(expectedMatrix);
-		at.getMatrix(matrix);
-
-		for (int i = 0; i < matrix.length; ++i) {
-			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
-		}
-	}
+//	@Test
+//	public void ofAffineTransform() {
+//		final DoubleRange sxr = DoubleRange.of(0, 100);
+//		final DoubleRange syr = DoubleRange.of(0, 200);
+//		final DoubleRange txr = DoubleRange.of(0, 50);
+//		final DoubleRange tyr = DoubleRange.of(0, 100);
+//		final DoubleRange thr = DoubleRange.of(0, 2*Math.PI);
+//		final DoubleRange kxr = DoubleRange.of(0, 10);
+//		final DoubleRange kyr = DoubleRange.of(0, 15);
+//
+//		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
+//			sxr, syr, txr, tyr, thr, kxr, kyr
+//		);
+//
+//		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+//		final double sx = gt.get(0, 0).doubleValue();
+//		final double sy = gt.get(1, 0).doubleValue();
+//		final double tx = gt.get(2, 0).doubleValue();
+//		final double ty = gt.get(3, 0).doubleValue();
+//		final double th = gt.get(4, 0).doubleValue();
+//		final double kx = gt.get(5, 0).doubleValue();
+//		final double ky = gt.get(6, 0).doubleValue();
+//
+//		final double cos_th = cos(th);
+//		final double sin_th = sin(th);
+//		final double a11 = cos_th*sx + kx*sy*sin_th;
+//		final double a12 = cos_th*kx*sy - sx*sin_th;
+//		final double a21 = cos_th*ky*sx + sy*sin_th;
+//		final double a22 = cos_th*sy - ky*sx*sin_th;
+//
+//		final AffineTransform eat = new AffineTransform(a11, a21, a12, a22, tx, ty);
+//		final AffineTransform at = codec.decoder().apply(gt);
+//
+//		final double[] expectedMatrix = new double[6];
+//		final double[] matrix = new double[6];
+//		eat.getMatrix(expectedMatrix);
+//		at.getMatrix(matrix);
+//
+//		for (int i = 0; i < matrix.length; ++i) {
+//			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
+//		}
+//	}
 
 	@Test
 	public void ofAnyScalar() {
