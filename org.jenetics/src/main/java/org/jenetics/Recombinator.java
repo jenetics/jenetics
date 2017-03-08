@@ -26,8 +26,10 @@ import static org.jenetics.internal.math.random.indexes;
 import java.util.Random;
 import java.util.function.IntFunction;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * <p>
@@ -93,11 +95,11 @@ public abstract class Recombinator<
 	}
 
 	@Override
-	public final int alter(
-		final MSeq<Phenotype<G, C>> population,
+	public final AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		int count = 0;
+		AlterResult<G, C> result = AlterResult.of(ISeq.of(population));
 		if (population.size() >= 2) {
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
@@ -109,17 +111,21 @@ public abstract class Recombinator<
 				return ind;
 			};
 
-			count = indexes(random, population.size(), _probability)
+			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+			final int count = indexes(random, population.size(), _probability)
 				.mapToObj(individuals)
-				.mapToInt(i -> recombine(population, i, generation))
+				.mapToInt(i -> recombine(pop, i, generation))
 				.sum();
+
+			result = AlterResult.of(pop.toISeq(), count);
 		}
 
-		return count;
+		return result;
 	}
 
 	/**
-	 * Recombination template method.
+	 * Recombination template method. This method is called 0 to n times. It is
+	 * guaranteed that this method is only called by one thread.
 	 *
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which

@@ -29,6 +29,7 @@ import org.jenetics.internal.util.IntRef;
 
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * This class is for mutating a chromosomes of an given population. There are
@@ -99,26 +100,27 @@ public class Mutator<
 	 * Concrete implementation of the alter method.
 	 */
 	@Override
-	public int alter(
-		final MSeq<Phenotype<G, C>> population,
+	public AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
 		final double p = pow(_probability, 1.0/3.0);
 		final IntRef alterations = new IntRef(0);
+		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 
-		indexes(RandomRegistry.getRandom(), population.size(), p).forEach(i -> {
-			final Phenotype<G, C> pt = population.get(i);
+		indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
+			final Phenotype<G, C> pt = pop.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
 			final Genotype<G> mgt = mutate(gt, p, alterations);
 
 			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
-			population.set(i, mpt);
+			pop.set(i, mpt);
 		});
 
-		return alterations.value;
+		return AlterResult.of(pop.toISeq(), alterations.value);
 	}
 
 	private Genotype<G> mutate(

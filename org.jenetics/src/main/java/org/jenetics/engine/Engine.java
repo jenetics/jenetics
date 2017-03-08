@@ -38,6 +38,7 @@ import java.util.stream.StreamSupport;
 import org.jenetics.internal.util.Concurrency;
 import org.jenetics.internal.util.require;
 
+import org.jenetics.AlterResult;
 import org.jenetics.Alterer;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
@@ -273,21 +274,21 @@ public final class Engine<
 		// Altering the offspring population.
 		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
-				alter(p.result.copy(), start.getGeneration()),
+				_alterer.alter(p.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
-				filter(pop.result.copy(), start.getGeneration()),
+				filter(pop.result, start.getGeneration()),
 				_clock
 			);
 
 		// Filter and replace invalid and to old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.result.population, start.getGeneration()),
+				filter(pop.result.getPopulation(), start.getGeneration()),
 				_clock
 			);
 
@@ -330,7 +331,7 @@ public final class Engine<
 			durations,
 			killCount,
 			invalidCount,
-			alteredOffspring.join().result.alterCount
+			alteredOffspring.join().result.getAlterations()
 		);
 	}
 
@@ -361,25 +362,26 @@ public final class Engine<
 
 	// Filters out invalid and to old individuals. Filtering is done in place.
 	private FilterResult<G, C> filter(
-		final MSeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		int killCount = 0;
 		int invalidCount = 0;
 
-		for (int i = 0, n = population.size(); i < n; ++i) {
-			final Phenotype<G, C> individual = population.get(i);
+		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+		for (int i = 0, n = pop.size(); i < n; ++i) {
+			final Phenotype<G, C> individual = pop.get(i);
 
 			if (!_validator.test(individual)) {
-				population.set(i, newPhenotype(generation));
+				pop.set(i, newPhenotype(generation));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
-				population.set(i, newPhenotype(generation));
+				pop.set(i, newPhenotype(generation));
 				++killCount;
 			}
 		}
 
-		return new FilterResult<>(population, killCount, invalidCount);
+		return new FilterResult<>(pop.toISeq(), killCount, invalidCount);
 	}
 
 	// Create a new and valid phenotype
@@ -400,6 +402,7 @@ public final class Engine<
 	}
 
 	// Alters the given population. The altering is done in place.
+	/*
 	private AlterResult<G, C> alter(
 		final MSeq<Phenotype<G, C>> population,
 		final long generation
@@ -409,6 +412,7 @@ public final class Engine<
 			_alterer.alter(population, generation)
 		);
 	}
+	*/
 
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {

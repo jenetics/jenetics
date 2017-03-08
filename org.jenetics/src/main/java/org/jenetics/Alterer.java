@@ -20,7 +20,7 @@
 package org.jenetics;
 
 import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * The Alterer is responsible for the changing/recombining the Population.
@@ -64,11 +64,15 @@ public interface Alterer<
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
-	 * @return the number of genes that has been altered.
+	 * @return the alter-result object, which contains the altered population
+	 *         and the alteration count
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public int alter(final MSeq<Phenotype<G, C>> population, final long generation);
+	public AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
+		final long generation
+	);
 
 	/**
 	 * Returns a composed alterer that first applies the {@code before} alterer
@@ -105,7 +109,7 @@ public interface Alterer<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> 0
+			? (p, g) -> AlterResult.of(ISeq.of(p))
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

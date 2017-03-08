@@ -73,10 +73,16 @@ final class CompositeAlterer<
 	}
 
 	@Override
-	public int alter(final MSeq<Phenotype<G, C>> population, final long generation) {
-		return _alterers.stream()
-			.mapToInt(a -> a.alter(population, generation))
-			.sum();
+	public AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
+		final long generation
+	) {
+		return _alterers.stream().reduce(
+			AlterResult.of(ISeq.of(population)),
+			(r, a) -> a.alter(r.getPopulation(), generation),
+			(a, b) -> AlterResult
+				.of(b.getPopulation(), a.getAlterations() + b.getAlterations())
+		);
 	}
 
 	/**
