@@ -125,4 +125,24 @@ public class SeqTest {
 		Assert.assertSame(strings, Seq.empty());
 	}
 
+	@Test
+	public void asISeq() {
+		final Seq<String> iseq = ISeq.of("1");
+		Assert.assertSame(iseq.asISeq(), iseq);
+
+		final Seq<String> mseq = MSeq.of("1");
+		Assert.assertNotSame(mseq.asISeq(), mseq);
+		Assert.assertEquals(mseq.asISeq(), mseq);
+	}
+
+	@Test
+	public void asMSeq() {
+		final Seq<String> mseq = MSeq.of("1");
+		Assert.assertSame(mseq.asMSeq(), mseq);
+
+		final Seq<String> iseq = ISeq.of("1");
+		Assert.assertNotSame(iseq.asMSeq(), iseq);
+		Assert.assertEquals(iseq.asMSeq(), iseq);
+	}
+
 }
