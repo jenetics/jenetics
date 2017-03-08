@@ -640,9 +640,8 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Return this sequence as {@code MSeq} instance. If {@code this} is already
-	 * an instance of {@code MSeq}, {@code this} is returned, otherwise a new
-	 * {@code MSeq} is returned.
+	 * Return this sequence as {@code MSeq} instance. If {@code this} is not a
+	 * {@code MSeq} a new seq is created.
 	 *
 	 * @return a {@code MSeq} with this values
 	 */
@@ -651,9 +650,8 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
-	 * Return this sequence as {@code ISeq} instance. If {@code this} is already
-	 * an instance of {@code ISeq}, {@code this} is returned, otherwise a new
-	 * {@link ISeq} is returned.
+	 * Return this sequence as {@code ISeq} instance. If {@code this} is not a
+	 * {@code ISeq} a new seq is created.
 	 *
 	 * @return a {@code ISeq} with this values
 	 */
