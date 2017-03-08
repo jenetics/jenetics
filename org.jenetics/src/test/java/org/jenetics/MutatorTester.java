@@ -46,13 +46,11 @@ public abstract class MutatorTester extends AltererTester {
 		final ISeq<Phenotype<DoubleGene, Double>> p1 =
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
-		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
-		Assert.assertEquals(p2, p1);
-
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
+		final AlterResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
-		int mutations = mutator.alter(p2, 1).getAlterations();
-		int difference = diff(p1, p2);
+		int mutations = result.getAlterations();
+		int difference = diff(p1, result.getPopulation());
 
 		Assert.assertEquals(
 			mutations, difference,

@@ -50,12 +50,13 @@ public class CompositeAltererTest {
 		final ISeq<Phenotype<DoubleGene, Double>> p1 =
 			population(ngenes, nchromosomes, npopulation);
 
-		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
-		Assert.assertEquals(p2, p1);
-
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
+		final AlterResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
-		Assert.assertEquals(mutator.alter(p2, 1), diff(p1, p2));
+		Assert.assertEquals(
+			result.getAlterations(),
+			diff(p1, result.getPopulation())
+		);
 	}
 
 	public static ISeq<Phenotype<DoubleGene, Double>> population(

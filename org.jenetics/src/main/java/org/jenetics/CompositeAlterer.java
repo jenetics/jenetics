@@ -77,12 +77,22 @@ final class CompositeAlterer<
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
+		AlterResult<G, C> result = AlterResult.of(ISeq.of(population));
+		for (Alterer<G, C> alterer : _alterers) {
+			final AlterResult<G, C> res = alterer.alter(result.getPopulation(), generation);
+			result = AlterResult.of(res.getPopulation(), res.getAlterations() + result.getAlterations());
+		}
+
+		return result;
+
+		/*
 		return _alterers.stream().reduce(
 			AlterResult.of(ISeq.of(population)),
 			(r, a) -> a.alter(r.getPopulation(), generation),
 			(a, b) -> AlterResult
-				.of(b.getPopulation(), a.getAlterations() + b.getAlterations())
+				.of(a.getPopulation(), a.getAlterations() + b.getAlterations())
 		);
+		*/
 	}
 
 	/**
