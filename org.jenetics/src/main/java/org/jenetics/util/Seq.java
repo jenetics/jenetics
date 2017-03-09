@@ -643,6 +643,8 @@ public interface Seq<T> extends Iterable<T> {
 	 * Return this sequence as {@code MSeq} instance. If {@code this} is not a
 	 * {@code MSeq} a new seq is created.
 	 *
+	 * @since 3.8
+	 *
 	 * @return a {@code MSeq} with this values
 	 */
 	public default MSeq<T> asMSeq() {
@@ -652,6 +654,8 @@ public interface Seq<T> extends Iterable<T> {
 	/**
 	 * Return this sequence as {@code ISeq} instance. If {@code this} is not a
 	 * {@code ISeq} a new seq is created.
+	 *
+	 * @since 3.8
 	 *
 	 * @return a {@code ISeq} with this values
 	 */
