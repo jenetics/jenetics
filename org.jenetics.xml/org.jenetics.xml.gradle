@@ -18,26 +18,43 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since !__version__!
  * @version !__version__!
  */
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-include 'org.jenetix'
+apply plugin: 'packaging'
 
-rootProject.name = 'jenetics'
+repositories {
+	mavenCentral()
+	jcenter()
+}
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each { project ->
-	project.buildFileName = project.name + '.gradle'
-	project.name = project.name.substring(4)
+dependencies {
+	compile project(':jenetics')
+
+	testCompile Include.TestNG
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.xml'
+)
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
+packaging {
+	name = 'Jenetics XML marshalling'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.io'
+	jarjar = false
+	javadoc = true
 }
 
 
