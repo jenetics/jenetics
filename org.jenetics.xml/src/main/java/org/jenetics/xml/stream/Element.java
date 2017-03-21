@@ -22,11 +22,13 @@ package org.jenetics.xml.stream;
 import javax.xml.stream.XMLStreamException;
 
 /**
+ * Lazy XML element writer function.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface ElementWriter {
+public interface Element {
 	public void write() throws XMLStreamException;
 }

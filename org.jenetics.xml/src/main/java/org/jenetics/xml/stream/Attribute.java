@@ -31,7 +31,7 @@ import java.util.Objects;
  * @version !__version__!
  * @since !__version__!
  */
-public class Attr {
+public class Attribute {
 
 	private final String _name;
 	private final String _value;
@@ -43,7 +43,7 @@ public class Attr {
 	 * @param value the attribute value
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	private Attr(final String name, final Object value) {
+	private Attribute(final String name, final Object value) {
 		_name = requireNonNull(name);
 		_value = requireNonNull(value).toString();
 	}
@@ -66,9 +66,9 @@ public class Attr {
 
 	@Override
 	public boolean equals(final Object object) {
-		return object instanceof Attr &&
-			((Attr)object)._name.equals(_name) &&
-			((Attr)object)._value.equals(_value);
+		return object instanceof Attribute &&
+			((Attribute)object)._name.equals(_name) &&
+			((Attribute)object)._value.equals(_value);
 	}
 
 	@Override
@@ -84,8 +84,8 @@ public class Attr {
 	 * @return a new XML attribute with the given {@code name} and {@code value}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static Attr of(final String name, final Objects value) {
-		return new Attr(name, value);
+	public static Attribute of(final String name, final Object value) {
+		return new Attribute(name, value);
 	}
 
 }

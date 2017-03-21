@@ -19,14 +19,12 @@
  */
 package org.jenetics.xml.stream;
 
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 import javax.xml.stream.XMLStreamException;
@@ -40,69 +38,6 @@ import javax.xml.stream.XMLStreamWriter;
  * @since 1.0
  */
 final class XMLWriter {
-
-	/**
-	 * Represents an XML attribute.
-	 */
-	static final class Attr {
-		final String name;
-		final String value;
-
-		private Attr(final String name, final Object value) {
-			this.name = requireNonNull(name);
-			this.value = requireNonNull(value).toString();
-		}
-
-		@Override
-		public int hashCode() {
-			int hash = 37;
-			hash += 17*Objects.hashCode(name) + 31;
-			hash += 17*Objects.hashCode(value) + 31;
-			return hash;
-		}
-
-		@Override
-		public boolean equals(final Object object) {
-			return object instanceof Attr &&
-				((Attr)object).name.equals(name) &&
-				((Attr)object).value.equals(value);
-		}
-
-		@Override
-		public String toString() {
-			return format("%s=%s", name, value);
-		}
-	}
-
-	static final class NS {
-		final String name;
-
-		private NS(final String name) {
-			this.name = requireNonNull(name);
-		}
-	}
-
-	/**
-	 * The element writer.
-	 */
-	@FunctionalInterface
-	interface ElementWriter {
-		void write() throws XMLStreamException;
-	}
-
-	/**
-	 * Functional interface for writing a given data object to a given XML
-	 * writer. The implementations have to handle {@code null} data elements
-	 * accordingly.
-	 *
-	 * @param <T> the data type
-	 */
-	@FunctionalInterface
-	interface DataWriter<T> {
-		void write(final T data, final XMLStreamWriter writer)
-			throws XMLStreamException;
-	}
-
 
 	private final XMLStreamWriter _writer;
 
@@ -123,13 +58,14 @@ final class XMLWriter {
 	 * @param value the attribute value
 	 * @return a new attribute with the given name and value
 	 */
-	Attr attr(final String name, final Object value) {
-		return new Attr(name, value);
+	Attribute attr(final String name, final Object value) {
+		return Attribute.of(name, value);
 	}
 
-	NS ns(final String name) {
-		return new NS(name);
+	Namespace ns(final String name) {
+		return new Namespace(name);
 	}
+
 
 	/* *************************************************************************
 	 *  ElementWriter creation methods.
@@ -142,7 +78,7 @@ final class XMLWriter {
 	 * @param text the element content.
 	 * @return a new element writer
 	 */
-	ElementWriter elem(final String name, final Object text) {
+	Element elem(final String name, final Object text) {
 		requireNonNull(name);
 
 		return () -> {
@@ -166,7 +102,7 @@ final class XMLWriter {
 	 * @throws NullPointerException if the {@code name} or {@code converter} is
 	 *         {@code null}
 	 */
-	<T> ElementWriter elem(
+	<T> Element elem(
 		final String name,
 		final T object,
 		final Function<T, Object> converter
@@ -194,7 +130,7 @@ final class XMLWriter {
 	 * @return a new element writer
 	 * @throws NullPointerException if the {@code writer} is {@code null}
 	 */
-	<T> ElementWriter elem(final T data, final DataWriter<T> writer) {
+	<T> Element elem(final T data, final DataWriter<T> writer) {
 		requireNonNull(writer);
 
 		return () -> {
@@ -213,7 +149,7 @@ final class XMLWriter {
 	 * @return a new element writer
 	 * @throws NullPointerException if the {@code writer} is {@code null}
 	 */
-	<T> ElementWriter elems(final Iterable<T> data, final DataWriter<T> writer) {
+	<T> Element elems(final Iterable<T> data, final DataWriter<T> writer) {
 		requireNonNull(writer);
 
 		return () -> {
@@ -239,7 +175,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(final String name, final ElementWriter... children)
+	void write(final String name, final Element... children)
 		throws XMLStreamException
 	{
 		write(name, emptyList(), asList(children));
@@ -254,7 +190,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(final String name, final Attr attr, final ElementWriter... children)
+	void write(final String name, final Attribute attr, final Element... children)
 		throws XMLStreamException
 	{
 		write(name, singletonList(attr), asList(children));
@@ -272,9 +208,9 @@ final class XMLWriter {
 	 */
 	void write(
 		final String name,
-		final Attr attr1,
-		final Attr attr2,
-		final ElementWriter... children
+		final Attribute attr1,
+		final Attribute attr2,
+		final Element... children
 	)
 		throws XMLStreamException
 	{
@@ -283,10 +219,10 @@ final class XMLWriter {
 
 	void write(
 		final String name,
-		final NS ns,
-		final Attr attr1,
-		final Attr attr2,
-		final ElementWriter... children
+		final Namespace ns,
+		final Attribute attr1,
+		final Attribute attr2,
+		final Element... children
 	)
 		throws XMLStreamException
 	{
@@ -306,10 +242,10 @@ final class XMLWriter {
 	 */
 	void write(
 		final String name,
-		final Attr attr1,
-		final Attr attr2,
-		final Attr attr3,
-		final ElementWriter... children
+		final Attribute attr1,
+		final Attribute attr2,
+		final Attribute attr3,
+		final Element... children
 	)
 		throws XMLStreamException
 	{
@@ -330,11 +266,11 @@ final class XMLWriter {
 	 */
 	void write(
 		final String name,
-		final Attr attr1,
-		final Attr attr2,
-		final Attr attr3,
-		final Attr attr4,
-		final ElementWriter... children
+		final Attribute attr1,
+		final Attribute attr2,
+		final Attribute attr3,
+		final Attribute attr4,
+		final Element... children
 	)
 		throws XMLStreamException
 	{
@@ -352,8 +288,8 @@ final class XMLWriter {
 	 */
 	private void write(
 		final String name,
-		final List<Attr> attrs,
-		final List<ElementWriter> children
+		final List<Attribute> attrs,
+		final List<Element> children
 	)
 		throws XMLStreamException
 	{
@@ -371,9 +307,9 @@ final class XMLWriter {
 	 */
 	private void write(
 		final String name,
-		final NS ns,
-		final List<Attr> attrs,
-		final List<ElementWriter> children
+		final Namespace ns,
+		final List<Attribute> attrs,
+		final List<Element> children
 	)
 		throws XMLStreamException
 	{
@@ -382,14 +318,14 @@ final class XMLWriter {
 		requireNonNull(children);
 
 		_writer.writeStartElement(name);
-		for (Attr attr : attrs) {
-			_writer.writeAttribute(attr.name, attr.value);
+		for (Attribute attr : attrs) {
+			_writer.writeAttribute(attr.getName(), attr.getValue());
 		}
 		if (ns != null) {
 			_writer.writeDefaultNamespace(ns.name);
 		}
 
-		for (ElementWriter child : children) {
+		for (Element child : children) {
 			child.write();
 		}
 		_writer.writeEndElement();
