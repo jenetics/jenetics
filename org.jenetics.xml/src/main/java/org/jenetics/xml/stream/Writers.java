@@ -21,62 +21,52 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 /**
- * Functional interface for writing a given data object to a given XML
- * writer. The implementations have to handle {@code null} data elements
- * accordingly.
- *
- * @param <T> the data type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface DataWriter<T> {
+public final class Writers {
 
-	public void write(final T data, final XMLStreamWriter writer)
-		throws XMLStreamException;
-
-	public default <P> DataWriter<T> elem(final String name, final Function<T, P> property) {
-		return (data, writer) -> {
-			writer.writeStartElement(name);
-			write(null, null);
-			writer.writeEndElement();
-		};
+	private Writers() {
 	}
 
-	public static <T> DataWriter<T> of(final String name) {
-		return (data, writer) -> {
-			writer.writeStartElement(name);
-			writer.writeEndElement();
-		};
-	}
-
-	public static <T> DataWriter<T> elem(final String name) {
+	public static <T, P> Writer<T> elem(final String name, final Function<T, P> property) {
 		requireNonNull(name);
 
 		return (data, writer) -> {
 			if (data != null) {
 				writer.writeStartElement(name);
-				writer.writeCharacters(data.toString());
+				writer.writeCharacters(property.apply(data).toString());
 				writer.writeEndElement();
 			}
 		};
 	}
 
-	public static <A, B> DataWriter<A> elem(
-		final String name,
-		final DataWriter<B> child,
-		final Function<A, B> accessor
-	) {
+	public static <T, P> Writer<T> elems(final String name, final Function<T, ? extends Iterable<P>> properties) {
+		requireNonNull(name);
 
+		return (value, writer) -> {
+			if (value != null) {
+				final Iterable<P> data = properties.apply(value);
+				for (P v : data) {
+					writer.writeStartElement(name);
+					writer.writeCharacters(v.toString());
+					writer.writeEndElement();
+				}
+			}
+		};
+	}
 
-		return null;
+	@SafeVarargs
+	public static <T> Writer<T> elem(final String name, final Writer<T>... children) {
+		return (data, writer) -> {
+			writer.writeStartElement(name);
+			for (Writer<T> child : children) {
+				child.write(data, writer);
+			}
+			writer.writeEndElement();
+		};
 	}
 
 }
-

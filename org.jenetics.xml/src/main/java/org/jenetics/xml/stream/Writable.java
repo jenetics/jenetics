@@ -17,10 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package org.jenetics.xml.stream;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -28,8 +27,6 @@ import java.io.InputStream;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Reader<T> {
-
-	public T read(final InputStream in) throws IOException;
-
+public interface Writable {
+	public void write() throws XMLStreamException;
 }

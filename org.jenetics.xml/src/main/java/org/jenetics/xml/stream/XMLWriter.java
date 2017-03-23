@@ -37,7 +37,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @version 1.0
  * @since 1.0
  */
-final class XMLWriter {
+public final class XMLWriter {
 
 	private final XMLStreamWriter _writer;
 
@@ -47,7 +47,7 @@ final class XMLWriter {
 	 * @param writer the underlying XML stream writer
 	 * @throws NullPointerException if the given writer is {@code null}
 	 */
-	XMLWriter(final XMLStreamWriter writer) {
+	public XMLWriter(final XMLStreamWriter writer) {
 		_writer = requireNonNull(writer);
 	}
 
@@ -58,12 +58,12 @@ final class XMLWriter {
 	 * @param value the attribute value
 	 * @return a new attribute with the given name and value
 	 */
-	Attribute attr(final String name, final Object value) {
+	public Attribute attr(final String name, final Object value) {
 		return Attribute.of(name, value);
 	}
 
-	Namespace ns(final String name) {
-		return new Namespace(name);
+	public Namespace ns(final String name) {
+		return Namespace.of(name);
 	}
 
 
@@ -78,7 +78,7 @@ final class XMLWriter {
 	 * @param text the element content.
 	 * @return a new element writer
 	 */
-	Element elem(final String name, final Object text) {
+	public Element elem(final String name, final Object text) {
 		requireNonNull(name);
 
 		return () -> {
@@ -102,7 +102,7 @@ final class XMLWriter {
 	 * @throws NullPointerException if the {@code name} or {@code converter} is
 	 *         {@code null}
 	 */
-	<T> Element elem(
+	public <T> Element elem(
 		final String name,
 		final T object,
 		final Function<T, Object> converter
@@ -130,7 +130,7 @@ final class XMLWriter {
 	 * @return a new element writer
 	 * @throws NullPointerException if the {@code writer} is {@code null}
 	 */
-	<T> Element elem(final T data, final DataWriter<T> writer) {
+	public <T> Element elem(final T data, final DataWriter<T> writer) {
 		requireNonNull(writer);
 
 		return () -> {
@@ -149,7 +149,7 @@ final class XMLWriter {
 	 * @return a new element writer
 	 * @throws NullPointerException if the {@code writer} is {@code null}
 	 */
-	<T> Element elems(final Iterable<T> data, final DataWriter<T> writer) {
+	public <T> Element elems(final Iterable<T> data, final DataWriter<T> writer) {
 		requireNonNull(writer);
 
 		return () -> {
@@ -175,7 +175,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(final String name, final Element... children)
+	public void write(final String name, final Element... children)
 		throws XMLStreamException
 	{
 		write(name, emptyList(), asList(children));
@@ -190,7 +190,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(final String name, final Attribute attr, final Element... children)
+	public void write(final String name, final Attribute attr, final Element... children)
 		throws XMLStreamException
 	{
 		write(name, singletonList(attr), asList(children));
@@ -206,7 +206,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(
+	public void write(
 		final String name,
 		final Attribute attr1,
 		final Attribute attr2,
@@ -217,7 +217,7 @@ final class XMLWriter {
 		write(name, asList(attr1, attr2), asList(children));
 	}
 
-	void write(
+	public void write(
 		final String name,
 		final Namespace ns,
 		final Attribute attr1,
@@ -240,7 +240,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(
+	public void write(
 		final String name,
 		final Attribute attr1,
 		final Attribute attr2,
@@ -264,7 +264,7 @@ final class XMLWriter {
 	 * @throws XMLStreamException if an error occurs while writing
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	void write(
+	public void write(
 		final String name,
 		final Attribute attr1,
 		final Attribute attr2,
@@ -322,7 +322,7 @@ final class XMLWriter {
 			_writer.writeAttribute(attr.getName(), attr.getValue());
 		}
 		if (ns != null) {
-			_writer.writeDefaultNamespace(ns.name);
+			_writer.writeDefaultNamespace(ns.getName());
 		}
 
 		for (Element child : children) {

@@ -19,48 +19,17 @@
  */
 package org.jenetics.xml.stream;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-
-import java.util.Objects;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * Represents a XML namespace.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Namespace {
+@FunctionalInterface
+public interface Reader<T> {
 
-	private final String _name;
-
-	private Namespace(final String name) {
-		_name = requireNonNull(name);
-	}
-
-	public String getName() {
-		return _name;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(_name);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof Namespace &&
-			((Namespace)obj)._name.equals(_name);
-	}
-
-	@Override
-	public String toString() {
-		return format("NS[%s]", _name);
-	}
-
-	public static Namespace of(final String name) {
-		return new Namespace(name);
-	}
+	public T read(final InputStream in) throws IOException;
 
 }

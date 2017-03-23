@@ -19,17 +19,34 @@
  */
 package org.jenetics.xml;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import static org.jenetics.xml.stream.Writer.attr;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.elems;
+
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Writer<T> {
+public class DoubleChromosomeWriter {
 
-	public void write(final T value, final OutputStream out) throws IOException;
+	public static final Writer<DoubleChromosome> WRITER =
+		elem("double-chromosome",
+			attr("min", DoubleChromosome::getMin),
+			attr("max", DoubleChromosome::getMax),
+			attr("length", DoubleChromosome::length),
+			elems("allele", ch -> ch.toSeq().map(DoubleGene::getAllele))
+		);
 
+
+	public static void main(final String[] args) throws Exception {
+		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
+
+		WRITER.write(ch, System.out);
+		System.out.flush();
+	}
 }
