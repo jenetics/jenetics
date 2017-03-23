@@ -28,9 +28,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import org.jenetics.BoundedChromosome;
+import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.xml.stream.Function;
+import org.jenetics.Gene;
+import org.jenetics.Genotype;
+import org.jenetics.NumericChromosome;
+import org.jenetics.NumericGene;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.Writer;
 
@@ -41,37 +46,74 @@ import org.jenetics.xml.stream.Writer;
  */
 public class DoubleChromosomeWriter {
 
-	public static final Writer<DoubleChromosome> WRITER =
+	public static final Writer<Chromosome<DoubleGene>> WRITER = null;
+
+		/*
 		elem("double-chromosome",
 			attr("min", DoubleChromosome::getMin),
 			attr("max", DoubleChromosome::getMax),
 			attr("length", DoubleChromosome::length),
 			elems("allele", ch -> ch.toSeq().map(DoubleGene::getAllele))
 		);
+		*/
 
-
-	private static final Function<Object[], DoubleChromosome> CREATOR = values -> {
-		final double min = Double.parseDouble((String)values[0]);
-		final double max = Double.parseDouble((String)values[1]);
-		final int length = Integer.parseInt((String)values[2]);
-		final List<String> objects = (List<String>)values[3];
-
-		final DoubleGene[] genes = objects.stream()
-			.map(Double::parseDouble)
-			.map(a -> DoubleGene.of(a, min, max))
-			.toArray(DoubleGene[]::new);
-
-		return DoubleChromosome.of(genes);
-	};
+	public static
+	<N extends Number & Comparable<? super N>, G extends NumericGene<N, G>>
+	Writer<NumericChromosome<N, G>> writer(final String name) {
+		return elem(name,
+			attr("min", NumericChromosome::getMin),
+			attr("max", NumericChromosome::getMax),
+			attr("length", NumericChromosome::length),
+			elems("allele", ch -> ch.toSeq().map(Gene<N, G>::getAllele))
+		);
+	}
 
 	public static final Reader<DoubleChromosome> READER =
-		Reader.of(CREATOR, "double-chromosome",
+		Reader.of(
+			values -> {
+				final double min = Double.parseDouble((String)values[0]);
+				final double max = Double.parseDouble((String)values[1]);
+
+				return DoubleChromosome.of(
+					((List<String>)values[3]).stream()
+						.map(Double::parseDouble)
+						.map(a -> DoubleGene.of(a, min, max))
+						.toArray(DoubleGene[]::new)
+				);
+			},
+			"double-chromosome",
 			attrs("min", "max", "length"),
 			Reader.ofList(Reader.of("allele"))
 		);
 
+
+	public static final Writer<Genotype<DoubleGene>> GT_WRITER =
+		gt(WRITER);
+
+		/*
+		elem("genotype",
+			attr("length", Genotype::length),
+			attr("ngenes", Genotype::getNumberOfGenes),
+			elems(writer("double-chromosome"), gt -> gt.toSeq().map(ch -> ch.as(DoubleChromosome.class)))
+		);
+		*/
+
+	public static <G extends Gene<?, G>> Writer<Genotype<G>>
+	gt(final Writer<? super Chromosome<G>> writer) {
+		return elem("genotype",
+			attr("length", Genotype::length),
+			attr("ngenes", Genotype::getNumberOfGenes),
+			elems(writer, Genotype::toSeq)
+		);
+	}
+
 	public static void main(final String[] args) throws Exception {
 		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
+
+		final Genotype<DoubleGene> gt = Genotype.of(ch, 5);
+
+		GT_WRITER.write(gt, System.out);
+		System.out.flush();
 
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 

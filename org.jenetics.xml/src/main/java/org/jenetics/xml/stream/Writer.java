@@ -99,11 +99,20 @@ public interface Writer<T> {
 		};
 	}
 
+	public static <T, P> Writer<T> elems(final Writer<P> children, final Function<T, ? extends Iterable<? extends P>> properties) {
+		return (value, writer) -> {
+			final Iterable<? extends P> data = properties.apply(value);
+			for (P v : data) {
+				children.write(v, writer);
+			}
+		};
+	}
+
 	@SafeVarargs
-	public static <T> Writer<T> elem(final String name, final Writer<T>... children) {
+	public static <T> Writer<T> elem(final String name, final Writer<? super T>... children) {
 		return (data, writer) -> {
 			writer.writeStartElement(name);
-			for (Writer<T> child : children) {
+			for (Writer<? super T> child : children) {
 				child.write(data, writer);
 			}
 			writer.writeEndElement();
