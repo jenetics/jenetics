@@ -45,7 +45,7 @@ public class KnapsackSteadyFitness {
 		"Generations",
 		IntStream.rangeClosed(1, 50)
 			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.mapToObj(Integer::new)
+			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq())
 	);
 

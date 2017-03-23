@@ -60,11 +60,9 @@ public class TSM {
 
 	// Find the solution.
 	public static void main(final String[] args) {
-		final ISeq<Point> result = CODEC.decoder().apply(
-			ENGINE.stream()
-				.limit(10)
-				.collect(EvolutionResult.toBestGenotype())
-		);
+		final ISeq<Point> result = ENGINE.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestResult(CODEC));
 
 		System.out.println(result);
 	}

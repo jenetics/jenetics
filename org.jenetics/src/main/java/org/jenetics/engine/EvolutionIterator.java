@@ -45,8 +45,8 @@ final class EvolutionIterator<
 	private EvolutionStart<G, C> _start;
 
 	EvolutionIterator(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial
+		final Supplier<EvolutionStart<G, C>> initial,
+		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
 		_evolution = requireNonNull(evolution);
 		_initial = requireNonNull(initial);
