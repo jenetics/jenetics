@@ -19,12 +19,19 @@
  */
 package org.jenetics.xml;
 
+import static org.jenetics.xml.stream.Reader.attrs;
 import static org.jenetics.xml.stream.Writer.attr;
 import static org.jenetics.xml.stream.Writer.elem;
 import static org.jenetics.xml.stream.Writer.elems;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.xml.stream.Function;
+import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.Writer;
 
 /**
@@ -43,10 +50,37 @@ public class DoubleChromosomeWriter {
 		);
 
 
+	private static final Function<Object[], DoubleChromosome> CREATOR = values -> {
+		final double min = Double.parseDouble((String)values[0]);
+		final double max = Double.parseDouble((String)values[1]);
+		final int length = Integer.parseInt((String)values[2]);
+		final List<String> objects = (List<String>)values[3];
+
+		final DoubleGene[] genes = objects.stream()
+			.map(Double::parseDouble)
+			.map(a -> DoubleGene.of(a, min, max))
+			.toArray(DoubleGene[]::new);
+
+		return DoubleChromosome.of(genes);
+	};
+
+	public static final Reader<DoubleChromosome> READER =
+		Reader.of(CREATOR, "double-chromosome",
+			attrs("min", "max", "length"),
+			Reader.ofList(Reader.of("allele"))
+		);
+
 	public static void main(final String[] args) throws Exception {
 		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
 
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
 		WRITER.write(ch, System.out);
 		System.out.flush();
+		WRITER.write(ch, out);
+
+		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		final DoubleChromosome dch = READER.read(in);
+		System.out.println(dch);
 	}
 }

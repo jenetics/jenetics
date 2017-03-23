@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package org.jenetics.xml;
+package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
