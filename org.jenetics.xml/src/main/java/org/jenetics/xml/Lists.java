@@ -34,7 +34,7 @@ import java.util.Objects;
  * @version 1.0
  * @since 1.0
  */
-final class Lists {
+public final class Lists {
 
 	private static final Class<?> IMMUTABLE = Collections
 		.unmodifiableList(new LinkedList<Object>())
@@ -47,7 +47,7 @@ final class Lists {
 	private Lists() {
 	}
 
-	static <T> List<T> immutable(final List<T> list) {
+	public static <T> List<T> immutable(final List<T> list) {
 		List<T> result = list;
 		if (result == null) {
 			result = Collections.emptyList();
