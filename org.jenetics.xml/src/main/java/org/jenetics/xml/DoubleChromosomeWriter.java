@@ -20,9 +20,9 @@
 package org.jenetics.xml;
 
 import static org.jenetics.xml.stream.Reader.attrs;
-import static org.jenetics.xml.stream.Writer.attr;
-import static org.jenetics.xml.stream.Writer.elem;
-import static org.jenetics.xml.stream.Writer.elems;
+import static org.jenetics.xml.stream.Writers.attr;
+import static org.jenetics.xml.stream.Writers.elem;
+import static org.jenetics.xml.stream.Writers.elems;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,6 +38,7 @@ import org.jenetics.NumericChromosome;
 import org.jenetics.NumericGene;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.Writers;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -112,9 +113,10 @@ public class DoubleChromosomeWriter {
 
 		final Genotype<DoubleGene> gt = Genotype.of(ch, 5);
 
-		GT_WRITER.write(gt, System.out);
+		Writers.write(gt, GT_WRITER, System.out);
 		System.out.flush();
 
+		/*
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		WRITER.write(ch, System.out);
@@ -124,5 +126,6 @@ public class DoubleChromosomeWriter {
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		final DoubleChromosome dch = READER.read(in);
 		System.out.println(dch);
+		*/
 	}
 }

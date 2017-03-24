@@ -21,9 +21,6 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.OutputStream;
-
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -32,18 +29,21 @@ import javax.xml.stream.XMLStreamWriter;
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface Writer<T> {
+final class AutoCloseableAdapter implements AutoCloseable {
 
-	/**
-	 * Write the data of type {@code T} to the given XML stream writer.
-	 *
-	 * @param value the value to write
-	 * @param writer the XML data sink
-	 * @throws XMLStreamException if writing the data fails
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public void write(final T value, final XMLStreamWriter writer)
-		throws XMLStreamException;
+	private final XMLStreamWriter _writer;
+
+	AutoCloseableAdapter(final XMLStreamWriter writer) {
+		_writer = requireNonNull(writer);
+	}
+
+	XMLStreamWriter writer() {
+		return _writer;
+	}
+
+	@Override
+	public void close() throws XMLStreamException {
+		_writer.close();
+	}
 
 }
