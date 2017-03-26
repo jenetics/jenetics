@@ -19,16 +19,13 @@
  */
 package org.jenetics.xml;
 
-import static org.jenetics.xml.stream.Reader.attrs;
+import static org.jenetics.xml.stream.AbstractReader.attrs;
 import static org.jenetics.xml.stream.Writers.attr;
 import static org.jenetics.xml.stream.Writers.elem;
 import static org.jenetics.xml.stream.Writers.elems;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import org.jenetics.BoundedChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -36,7 +33,7 @@ import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.NumericChromosome;
 import org.jenetics.NumericGene;
-import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.AbstractReader;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.Writers;
 
@@ -69,8 +66,8 @@ public class DoubleChromosomeWriter {
 		);
 	}
 
-	public static final Reader<DoubleChromosome> READER =
-		Reader.of(
+	public static final AbstractReader<DoubleChromosome> READER =
+		AbstractReader.of(
 			values -> {
 				final double min = Double.parseDouble((String)values[0]);
 				final double max = Double.parseDouble((String)values[1]);
@@ -84,7 +81,7 @@ public class DoubleChromosomeWriter {
 			},
 			"double-chromosome",
 			attrs("min", "max", "length"),
-			Reader.ofList(Reader.of("allele"))
+			AbstractReader.ofList(AbstractReader.of("allele"))
 		);
 
 

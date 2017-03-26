@@ -20,7 +20,7 @@
 package org.jenetics.xml;
 
 import org.jenetics.DoubleChromosome;
-import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.AbstractReader;
 import org.jenetics.xml.stream.Writer;
 
 /**
@@ -30,13 +30,13 @@ import org.jenetics.xml.stream.Writer;
  */
 public abstract class IO<T> {
 
-	public abstract Reader<T> reader();
+	public abstract AbstractReader<T> reader();
 
 	public abstract Writer<T> writer();
 
 	public static final IO<DoubleChromosome> DOUBLE_CHROMOSOME = new IO<DoubleChromosome>() {
 		@Override
-		public Reader<DoubleChromosome> reader() {
+		public AbstractReader<DoubleChromosome> reader() {
 			return null;
 		}
 

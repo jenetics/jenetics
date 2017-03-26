@@ -43,12 +43,12 @@ import javax.xml.stream.XMLStreamReader;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class Reader<T> {
+public abstract class AbstractReader<T> {
 
 	private final String _name;
 	private final List<String> _attrs;
 
-	Reader(final String name, final List<String> attrs) {
+	AbstractReader(final String name, final List<String> attrs) {
 		_name = requireNonNull(name);
 		_attrs = immutable(attrs);
 	}
@@ -115,11 +115,11 @@ public abstract class Reader<T> {
 	 * @param <T> the object type
 	 * @return the reader for the given element
 	 */
-	public static <T> Reader<T> of(
+	public static <T> AbstractReader<T> of(
 		final Function<Object[], T> creator,
 		final String name,
 		final List<String> attrs,
-		final Reader<?>... children
+		final AbstractReader<?>... children
 	) {
 		return new ReaderImpl<T>(name, attrs, asList(children), creator);
 	}
@@ -141,10 +141,10 @@ public abstract class Reader<T> {
 	 * @param <T> the object type
 	 * @return the reader for the given element
 	 */
-	public static <T> Reader<T> of(
+	public static <T> AbstractReader<T> of(
 		final Function<Object[], T> creator,
 		final String name,
-		final Reader<?>... children
+		final AbstractReader<?>... children
 	) {
 		return of(creator, name, emptyList(), children);
 	}
@@ -155,7 +155,7 @@ public abstract class Reader<T> {
 	 * @param name the element
 	 * @return the reader for the given element
 	 */
-	public static Reader<String> of(final String name) {
+	public static AbstractReader<String> of(final String name) {
 		return new TextReader(name, emptyList());
 	}
 
@@ -166,7 +166,7 @@ public abstract class Reader<T> {
 	 * @param <T> the object type
 	 * @return the reader for the given elements
 	 */
-	public static <T> Reader<List<T>> ofList(final Reader<T> reader) {
+	public static <T> AbstractReader<List<T>> ofList(final AbstractReader<T> reader) {
 		return new ListReader<T>(reader);
 	}
 
@@ -177,23 +177,23 @@ public abstract class Reader<T> {
  *
  * @param <T> the object type
  */
-final class ReaderImpl<T> extends Reader<T> {
+final class ReaderImpl<T> extends AbstractReader<T> {
 
-	private final List<Reader<?>> _children;
-	private final Map<String, Reader<?>> _childMap = new HashMap<>();
+	private final List<AbstractReader<?>> _children;
+	private final Map<String, AbstractReader<?>> _childMap = new HashMap<>();
 	private final Function<Object[], T> _creator;
 
 	ReaderImpl(
 		final String name,
 		final List<String> attrs,
-		final List<Reader<?>> children,
+		final List<AbstractReader<?>> children,
 		final Function<Object[], T> creator
 	) {
 		super(name, attrs);
 		_creator = requireNonNull(creator);
 
 		_children = requireNonNull(children);
-		for (Reader<?> child : children) {
+		for (AbstractReader<?> child : children) {
 			_childMap.put(child.name(), child);
 		}
 	}
@@ -211,7 +211,7 @@ final class ReaderImpl<T> extends Reader<T> {
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 				case XMLStreamReader.START_ELEMENT:
-					final Reader<?> child = _childMap.get(reader.getLocalName());
+					final AbstractReader<?> child = _childMap.get(reader.getLocalName());
 					try {
 						// Special handling for XML list readers.
 						if (child instanceof ListReader<?>) {
@@ -264,7 +264,7 @@ final class ReaderImpl<T> extends Reader<T> {
 /**
  * Special reader implementation for reading text content of leaf nodes.
  */
-final class TextReader extends Reader<String> {
+final class TextReader extends AbstractReader<String> {
 
 	TextReader(final String name, final List<String> attrs) {
 		super(name, attrs);
@@ -300,16 +300,16 @@ final class TextReader extends Reader<String> {
  *
  * @param <T> the object type.
  */
-final class ListReader<T> extends Reader<List<T>> {
+final class ListReader<T> extends AbstractReader<List<T>> {
 
-	private final Reader<T> _adoptee;
+	private final AbstractReader<T> _adoptee;
 
-	ListReader(final Reader<T> adoptee) {
+	ListReader(final AbstractReader<T> adoptee) {
 		super(adoptee.name(), emptyList());
 		_adoptee = requireNonNull(adoptee);
 	}
 
-	Reader<T> adoptee() {
+	AbstractReader<T> adoptee() {
 		return _adoptee;
 	}
 
