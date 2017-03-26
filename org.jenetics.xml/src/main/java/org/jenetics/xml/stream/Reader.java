@@ -20,27 +20,17 @@
 package org.jenetics.xml.stream;
 
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 /**
- * Represents a function that accepts one argument and produces a result.
- *
- * @param <T> the input type
- * @param <R> the result type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface Function<T, R> {
+public interface Reader<T> {
 
-	/**
-	 * Applies this function to the given argument.
-	 *
-	 * @param value the function argument
-	 * @return the function result
-	 * @throws XMLStreamException if an error occurs
-	 */
-	public R apply(final T value) throws XMLStreamException;
+	public abstract T read(final XMLStreamReader reader)
+		throws XMLStreamException;
 
 }

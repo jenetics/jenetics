@@ -21,7 +21,9 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.File;
 import java.io.OutputStream;
+import java.util.function.Function;
 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -155,6 +157,14 @@ public final class Writers {
 		write(value, writer, out, null);
 	}
 
+
+	public static void main(final String[] args) throws Exception {
+		final Writer<File> writer = Writer.elem("full-path",
+			Writer.attr("foo", "bar")
+		);
+		writer.write(new File("./"), newXMLStreamWriter(System.out));
+		System.out.flush();
+	}
 
 
 }
