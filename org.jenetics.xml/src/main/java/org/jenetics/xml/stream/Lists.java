@@ -34,7 +34,7 @@ import java.util.Objects;
  * @version 1.0
  * @since 1.0
  */
-public final class Lists {
+final class Lists {
 
 	private static final Class<?> IMMUTABLE = Collections
 		.unmodifiableList(new LinkedList<Object>())
