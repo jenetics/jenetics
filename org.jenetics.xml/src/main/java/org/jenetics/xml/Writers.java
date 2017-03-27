@@ -32,6 +32,8 @@ import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.LongChromosome;
 import org.jenetics.xml.stream.Writer;
 
 /**
@@ -41,11 +43,19 @@ import org.jenetics.xml.stream.Writer;
  */
 public final class Writers {
 
+	public static final Writer<IntegerChromosome>
+	INTEGER_CHROMOSOME = boundedChromosome("integer-chromosome");
+
+	public static final Writer<LongChromosome>
+	LONG_CHROMOSOME = boundedChromosome("long-chromosome");
+
+	public static final Writer<DoubleChromosome>
+	DOUBLE_CHROMOSOME = boundedChromosome("double-chromosome");
 
 	private Writers() {
 	}
 
-	public static <
+	private static <
 		A extends Comparable<? super A>,
 		G extends BoundedGene<A, G>,
 		C extends BoundedChromosome<A, G>
@@ -64,11 +74,11 @@ public final class Writers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	Writer<Genotype<G>> genotype(final Writer<C> writer, final Function<Chromosome<G>, C> f) {
+	Writer<Genotype<G>> genotype(final Writer<C> writer) {
 		return Writer.elem("genotype",
 			attr("length", Genotype<G>::length),
 			attr("ngenes", Genotype<G>::getNumberOfGenes),
-			elems(gt -> gt.toSeq().map(f), writer)
+			elems(gt -> gt.toSeq().map(ch -> (C)ch), writer)
 		);
 	}
 
@@ -76,7 +86,6 @@ public final class Writers {
 		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
 		final Genotype<DoubleGene> gt = Genotype.of(ch, 5);
 
-		final Writer<DoubleChromosome> dcw = boundedChromosome("double-chromosome");
-		final Writer<Genotype<DoubleGene>> writer = genotype(dcw, DoubleChromosome.class::cast);
+		final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME);
 	}
 }
