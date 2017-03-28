@@ -20,16 +20,23 @@
 package org.jenetics.xml;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.IntegerGene;
+import org.jenetics.LongChromosome;
+import org.jenetics.LongGene;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
@@ -41,15 +48,64 @@ import org.jenetics.xml.stream.XML;
  */
 public final class Readers {
 
-	public static final Reader<DoubleChromosome> DOUBLE_CHROMOSOME =
-		Reader.of(
+	@FunctionalInterface
+	private static interface GeneCreator<A, G> {
+		G create(final A value, final A min, final A max);
+	}
+
+	@FunctionalInterface
+	private static interface ChromosomeCreator<G, C> {
+		C create(final G[] genes);
+	}
+
+	public static final Reader<IntegerChromosome> INTEGER_CHROMOSOME = chromosome(
+		"integer-chromosome",
+		Integer::parseInt,
+		IntegerGene::of,
+		IntegerGene[]::new,
+		IntegerChromosome::of
+	);
+
+	public static final Reader<LongChromosome> LONG_CHROMOSOME = chromosome(
+		"long-chromosome",
+		Long::parseLong,
+		LongGene::of,
+		LongGene[]::new,
+		LongChromosome::of
+	);
+
+	public static final Reader<DoubleChromosome> DOUBLE_CHROMOSOME = chromosome(
+		"double-chromosome",
+		Double::parseDouble,
+		DoubleGene::of,
+		DoubleGene[]::new,
+		DoubleChromosome::of
+	);
+
+	private Readers() {
+	}
+
+	private static <A, G, C> Reader<C> chromosome(
+		final String name,
+		final Function<String, A> allele,
+		final GeneCreator<A, G> gene,
+		final IntFunction<G[]> genes,
+		final ChromosomeCreator<G, C> chromosome
+	) {
+		requireNonNull(name);
+		requireNonNull(allele);
+		requireNonNull(gene);
+		requireNonNull(genes);
+		requireNonNull(chromosome);
+
+		return Reader.of(
 			p -> {
-				final double min = Double.parseDouble((String)p[0]);
-				final double max = Double.parseDouble((String)p[1]);
+				final A min = allele.apply((String)p[0]);
+				final A max = allele.apply((String)p[1]);
 				final int length = Integer.parseInt((String)p[2]);
 
 				@SuppressWarnings("unchecked")
-				final List<String> alleles = (List<String>)p[3];
+				final List<A> alleles = (List<A>)p[3];
 				if (alleles.size() != length) {
 					throw new IllegalArgumentException(format(
 						"Expected %d alleles, but got %d,",
@@ -57,19 +113,18 @@ public final class Readers {
 					));
 				}
 
-				return DoubleChromosome.of(
+				return chromosome.create(
 					alleles.stream()
-						.map(s -> DoubleGene.of(Double.parseDouble(s), min, max))
-						.toArray(DoubleGene[]::new)
+						.map(value -> gene.create(value, min, max))
+						.toArray(genes)
 				);
 			},
-			"double-chromosome",
+			name,
 			Reader.attrs("min", "max", "length"),
-			Reader.ofList(Reader.of("allele"))
+			Reader.ofList(Reader.of("allele").map(allele))
 		);
-
-	private Readers() {
 	}
+
 
 	public static void main(final String[] args) throws Exception {
 		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
