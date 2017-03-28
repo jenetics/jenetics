@@ -21,8 +21,10 @@ package org.jenetics.xml.stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -34,22 +36,9 @@ import javax.xml.stream.XMLStreamReader;
  * @version !__version__!
  * @since !__version__!
  */
+@FunctionalInterface
 public interface Reader<T> {
 
-
-	/**
-	 * Return the name of the element processed by this reader.
-	 *
-	 * @return the element name the reader is processing
-	 */
-	public String name();
-
-	/**
-	 * Return the list of element attributes to read.
-	 *
-	 * @return the list of element attributes to read
-	 */
-	public List<String> attrs();
 
 	/**
 	 * Read the given type from the underlying XML stream {@code reader}.
@@ -58,9 +47,47 @@ public interface Reader<T> {
 	 * @return the read type, maybe {@code null}
 	 * @throws XMLStreamException if an error occurs while reading the value
 	 */
-	public abstract T read(final XMLStreamReader reader)
+	public T read(final XMLStreamReader reader)
 		throws XMLStreamException;
 
+
+	public default <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
+		requireNonNull(mapper);
+		return new Reader<B>() {
+			@Override
+			public B read(final XMLStreamReader reader) throws XMLStreamException {
+				return mapper.apply(Reader.this.read(reader));
+			}
+
+			@Override
+			public String name() {
+				return Reader.this.name();
+			}
+
+			@Override
+			public List<String> attrs() {
+				return Reader.this.attrs();
+			}
+		};
+	}
+
+	/**
+	 * Return the name of the element processed by this reader.
+	 *
+	 * @return the element name the reader is processing
+	 */
+	public default String name() {
+		return "element";
+	}
+
+	/**
+	 * Return the list of element attributes to read.
+	 *
+	 * @return the list of element attributes to read
+	 */
+	public default List<String> attrs() {
+		return Collections.emptyList();
+	}
 
 	public static List<String> attrs(final String... attrs) {
 		return Arrays.asList(attrs);
