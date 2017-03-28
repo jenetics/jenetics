@@ -50,9 +50,16 @@ public interface Reader<T> {
 	public T read(final XMLStreamReader reader)
 		throws XMLStreamException;
 
-
+	/**
+	 * Create a new reader with the new type {@code B}.
+	 *
+	 * @param mapper the mapper function
+	 * @param <B> the target type of the new reader
+	 * @return a new reader
+	 */
 	public default <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
+
 		return new Reader<B>() {
 			@Override
 			public B read(final XMLStreamReader reader) throws XMLStreamException {
