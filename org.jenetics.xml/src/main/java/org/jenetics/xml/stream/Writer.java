@@ -21,10 +21,9 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.OutputStream;
+import java.util.Collection;
 import java.util.function.Function;
 
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
@@ -243,6 +242,38 @@ public interface Writer<T> {
 	}
 
 	/**
+	 * Create a new {@code Writer}, which writes a collection of values of a
+	 * given type.
+	 *
+	 * @param name the root element name
+	 * @param writer the child element writer
+	 * @param <T> the element type
+	 * @return a new writer instance
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> Writer<Collection<T>> elems(
+		final String name,
+		final Writer<? super T> writer
+	) {
+		requireNonNull(name);
+		requireNonNull(writer);
+
+		return (data, w) -> {
+			if (data != null) {
+				w.writeStartElement(name);
+				w.writeAttribute("length", String.valueOf(data.size()));
+
+				for (T value : data) {
+					if (value != null) {
+						writer.write(value, w);
+					}
+				}
+				w.writeEndElement();
+			}
+		};
+	}
+
+	/**
 	 * Creates a new {@code Writer}, which writes the given {@code children} as
 	 * sub-elements, defined by the given {@code childWriter}.
 	 *
@@ -269,6 +300,14 @@ public interface Writer<T> {
 					}
 				}
 			}
+		};
+	}
+
+	public static <T> Writer<T> doc(final Writer<T> writer) {
+		return (data, w) -> {
+			w.writeStartDocument("UTF-8", "1.0");
+			writer.write(data, w);
+			w.writeEndDocument();
 		};
 	}
 

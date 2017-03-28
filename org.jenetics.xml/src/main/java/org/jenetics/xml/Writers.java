@@ -23,10 +23,15 @@ import static org.jenetics.xml.stream.Writer.attr;
 import static org.jenetics.xml.stream.Writer.elem;
 import static org.jenetics.xml.stream.Writer.elems;
 
-import java.util.function.Function;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.jenetics.BitChromosome;
 import org.jenetics.BoundedChromosome;
 import org.jenetics.BoundedGene;
+import org.jenetics.CharacterChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
@@ -35,6 +40,7 @@ import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.LongChromosome;
 import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.XML;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,6 +48,10 @@ import org.jenetics.xml.stream.Writer;
  * @since !__version__!
  */
 public final class Writers {
+
+	public static final Writer<BitChromosome> BIT_CHROMOSOME = null;
+
+	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME = null;
 
 	public static final Writer<IntegerChromosome>
 	INTEGER_CHROMOSOME = boundedChromosome("integer-chromosome");
@@ -75,17 +85,42 @@ public final class Writers {
 		C extends Chromosome<G>
 	>
 	Writer<Genotype<G>> genotype(final Writer<C> writer) {
-		return Writer.elem("genotype",
+		return elem("genotype",
 			attr("length", Genotype<G>::length),
 			attr("ngenes", Genotype<G>::getNumberOfGenes),
-			elems(gt -> gt.toSeq().map(ch -> (C)ch), writer)
+			elems(gt -> gt.toSeq().map(Writers::cast), writer)
 		);
+	}
+
+	public static <
+		A ,
+		G extends Gene<A, G>,
+		C extends Chromosome<G>
+	>
+	Writer<Collection<Genotype<G>>> genotypes(final Writer<C> writer) {
+		return elems("genotypes", genotype(writer));
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <A, B> B cast(final A value) {
+		return (B)value;
 	}
 
 	public static void main(final String[] args) throws Exception {
 		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
 		final Genotype<DoubleGene> gt = Genotype.of(ch, 5);
 
-		final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME);
+		//final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME);
+		//writer.write(gt, XML.writer(System.out, "    "));
+		//System.out.flush();
+
+		final List<Genotype<DoubleGene>> types = Stream
+			.generate(gt::newInstance)
+			.limit(10)
+			.collect(Collectors.toList());
+
+		final Writer<Collection<Genotype<DoubleGene>>> writers = genotypes(DOUBLE_CHROMOSOME);
+		writers.write(types, XML.writer(System.out, "    "));
+		System.out.flush();
 	}
 }

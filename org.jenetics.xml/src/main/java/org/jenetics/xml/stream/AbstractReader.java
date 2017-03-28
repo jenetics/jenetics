@@ -20,20 +20,16 @@
 package org.jenetics.xml.stream;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.xml.stream.Lists.immutable;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
@@ -44,7 +40,7 @@ import javax.xml.stream.XMLStreamReader;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class AbstractReader<T> {
+abstract class AbstractReader<T> implements Reader<T> {
 
 	private final String _name;
 	private final List<String> _attrs;
@@ -59,6 +55,7 @@ public abstract class AbstractReader<T> {
 	 *
 	 * @return the element name the reader is processing
 	 */
+	@Override
 	public String name() {
 		return _name;
 	}
@@ -68,107 +65,14 @@ public abstract class AbstractReader<T> {
 	 *
 	 * @return the list of element attributes to read
 	 */
-	List<String> attrs() {
+	@Override
+	public List<String> attrs() {
 		return _attrs;
 	}
 
 	@Override
 	public String toString() {
-		return format("XMLReader[%s]", name());
-	}
-
-
-	/**
-	 * Read the given type from the underlying XML stream {@code reader}.
-	 *
-	 * @param reader the underlying XML stream {@code reader}
-	 * @return the read type, maybe {@code null}
-	 * @throws XMLStreamException if an error occurs while reading the value
-	 */
-	public abstract T read(final XMLStreamReader reader, final boolean lenient)
-		throws XMLStreamException;
-
-
-	public T read(final InputStream input)
-		throws XMLStreamException
-	{
-		final XMLInputFactory factory = XMLInputFactory.newFactory();
-			final XMLStreamReader reader = factory.createXMLStreamReader(input);
-			if (reader.hasNext()) {
-				reader.next();
-				return read(reader, false);
-			} else {
-				throw new XMLStreamException("No root element found.");
-			}
-	}
-
-	public static List<String> attrs(final String... attrs) {
-		return Arrays.asList(attrs);
-	}
-
-	/**
-	 * Create a new {@code XMLReader} with the given elements.
-	 *
-	 * @param creator creates the final object from the read arguments
-	 * @param name the element name
-	 * @param attrs the element attributes
-	 * @param children the child element readers
-	 * @param <T> the object type
-	 * @return the reader for the given element
-	 */
-	public static <T> AbstractReader<T> of(
-		final Function<Object[], T> creator,
-		final String name,
-		final List<String> attrs,
-		final AbstractReader<?>... children
-	) {
-		return new ReaderImpl<T>(name, attrs, asList(children), creator);
-	}
-
-	/**
-	 * Create a new {@code XMLReader} with the given elements.
-	 * <pre>{@code
-	 * XMLReader.of(
-	 *     a -> Link.of((String)a[0], (String)a[1], (String)a[2]),
-	 *     "link", attr("href"),
-	 *     XMLReader.of("text"),
-	 *     XMLReader.of("type")
-	 * )
-	 * }</pre>
-	 *
-	 * @param creator creates the final object from the read arguments
-	 * @param name the element name
-	 * @param children the child element readers
-	 * @param <T> the object type
-	 * @return the reader for the given element
-	 */
-	public static <T> AbstractReader<T> of(
-		final Function<Object[], T> creator,
-		final String name,
-		final AbstractReader<?>... children
-	) {
-		return of(creator, name, emptyList(), children);
-	}
-
-	/**
-	 * Create a reader for a leaf element with the given {@code name}.
-	 *
-	 * @param name the element
-	 * @return the reader for the given element
-	 */
-	public static AbstractReader<String> of(final String name) {
-		return new TextReader(name, emptyList());
-	}
-
-	/**
-	 * Return a reader which reads a list of elements.
-	 *
-	 * @param reader the basic element reader
-	 * @param <T> the object type
-	 * @return the reader for the given elements
-	 */
-	public static <T> AbstractReader<List<T>> ofList(final AbstractReader<T> reader) {
-		return new ListReader<T>(reader);
+		return format("Reader[%s]", name());
 	}
 
 }
@@ -180,27 +84,27 @@ public abstract class AbstractReader<T> {
  */
 final class ReaderImpl<T> extends AbstractReader<T> {
 
-	private final List<AbstractReader<?>> _children;
-	private final Map<String, AbstractReader<?>> _childMap = new HashMap<>();
+	private final List<Reader<?>> _children;
+	private final Map<String, Reader<?>> _childMap = new HashMap<>();
 	private final Function<Object[], T> _creator;
 
 	ReaderImpl(
 		final String name,
 		final List<String> attrs,
-		final List<AbstractReader<?>> children,
+		final List<Reader<?>> children,
 		final Function<Object[], T> creator
 	) {
 		super(name, attrs);
 		_creator = requireNonNull(creator);
 
 		_children = requireNonNull(children);
-		for (AbstractReader<?> child : children) {
+		for (Reader<?> child : children) {
 			_childMap.put(child.name(), child);
 		}
 	}
 
 	@Override
-	public T read(final XMLStreamReader reader, final boolean lenient)
+	public T read(final XMLStreamReader reader)
 		throws XMLStreamException
 	{
 		final Map<String, Object> param = new HashMap<>();
@@ -212,30 +116,23 @@ final class ReaderImpl<T> extends AbstractReader<T> {
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 				case XMLStreamReader.START_ELEMENT:
-					final AbstractReader<?> child = _childMap.get(reader.getLocalName());
-					try {
-						// Special handling for XML list readers.
-						if (child instanceof ListReader<?>) {
-							@SuppressWarnings("unchecked")
-							final List<Object> result = (List<Object>)param
-								.computeIfAbsent(
-									child.name(), key -> new ArrayList<>());
+					final Reader<?> child = _childMap.get(reader.getLocalName());
+					// Special handling for XML list readers.
+					if (child instanceof ListReader<?>) {
+						@SuppressWarnings("unchecked")
+						final List<Object> result = (List<Object>)param
+							.computeIfAbsent(
+								child.name(), key -> new ArrayList<>());
 
-							result.add(
-								((ListReader<?>)child)
-									.adoptee()
-									.read(reader, lenient)
-							);
+						result.add(
+							((ListReader<?>)child)
+								.adoptee()
+								.read(reader)
+						);
 
-						} else if (child != null) {
-							param.put(child.name(), child.read(reader, lenient));
-						}
-					} catch (XMLStreamException e) {
-						if (!lenient) {
-							throw e;
-						}
+					} else if (child != null) {
+						param.put(child.name(), child.read(reader));
 					}
-
 					break;
 				case XMLStreamReader.END_ELEMENT:
 					if (name().equals(reader.getLocalName())) {
@@ -272,7 +169,7 @@ final class TextReader extends AbstractReader<String> {
 	}
 
 	@Override
-	public String read(final XMLStreamReader reader, final boolean lenient)
+	public String read(final XMLStreamReader reader)
 		throws XMLStreamException
 	{
 		final StringBuilder result = new StringBuilder();
@@ -303,19 +200,19 @@ final class TextReader extends AbstractReader<String> {
  */
 final class ListReader<T> extends AbstractReader<List<T>> {
 
-	private final AbstractReader<T> _adoptee;
+	private final Reader<T> _adoptee;
 
-	ListReader(final AbstractReader<T> adoptee) {
+	ListReader(final Reader<T> adoptee) {
 		super(adoptee.name(), emptyList());
 		_adoptee = requireNonNull(adoptee);
 	}
 
-	AbstractReader<T> adoptee() {
+	Reader<T> adoptee() {
 		return _adoptee;
 	}
 
 	@Override
-	public List<T> read(final XMLStreamReader reader, final boolean lenient)
+	public List<T> read(final XMLStreamReader reader)
 		throws XMLStreamException
 	{
 		throw new UnsupportedOperationException();

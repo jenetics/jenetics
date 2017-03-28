@@ -19,10 +19,15 @@
  */
 package org.jenetics.xml.stream;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
@@ -33,6 +38,16 @@ import javax.xml.stream.XMLStreamWriter;
 public final class XML {
 
 	private XML() {
+	}
+
+
+	public static XMLStreamReader reader(final InputStream input)
+		throws XMLStreamException
+	{
+		requireNonNull(input);
+
+		final XMLInputFactory factory = XMLInputFactory.newFactory();
+		return factory.createXMLStreamReader(input);
 	}
 
 	/**
@@ -54,6 +69,8 @@ public final class XML {
 	)
 		throws XMLStreamException
 	{
+		requireNonNull(out);
+
 		final XMLOutputFactory factory = XMLOutputFactory.newFactory();
 		return indent != null
 			? new IndentingXMLWriter(factory.createXMLStreamWriter(out), indent)
