@@ -19,10 +19,69 @@
  */
 package org.jenetics.xml;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.jenetics.IntegerChromosome;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.XML;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class IO {
+public final class IO<T> {
+
+	public static final IO<IntegerChromosome> INTEGER_CHROMOSOME = of(
+		Readers.INTEGER_CHROMOSOME,
+		Writers.INTEGER_CHROMOSOME
+	);
+
+	private final Reader<T> _reader;
+	private final Writer<T> _writer;
+
+	private IO(final Reader<T> reader, final Writer<T> writer) {
+		_reader = requireNonNull(reader);
+		_writer = requireNonNull(writer);
+	}
+
+	public Reader<T> reader() {
+		return _reader;
+	}
+
+	public Writer<T> writer() {
+		return _writer;
+	}
+
+	public void write(final T value, final OutputStream out, final String indent)
+		throws XMLStreamException
+	{
+		try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			Writer.doc(_writer).write(value, writer);
+		}
+	}
+
+	public T read(final InputStream in) throws XMLStreamException {
+		try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+			if (reader.hasNext()) {
+				reader.next();
+				return _reader.read(reader);
+			} else {
+				throw new XMLStreamException("Couldn't read root element.");
+			}
+		}
+	}
+
+	public static <T> IO<T> of(final Reader<T> reader, final Writer<T> writer) {
+		return new IO<>(reader, writer);
+	}
+
 }
