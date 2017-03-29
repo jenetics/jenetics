@@ -27,8 +27,6 @@ import java.io.OutputStream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -41,13 +39,13 @@ public final class XML {
 	}
 
 
-	public static XMLStreamReader reader(final InputStream input)
+	public static AutoCloseableXMLStreamReader reader(final InputStream input)
 		throws XMLStreamException
 	{
 		requireNonNull(input);
 
 		final XMLInputFactory factory = XMLInputFactory.newFactory();
-		return factory.createXMLStreamReader(input);
+		return new XMLReaderProxy(factory.createXMLStreamReader(input));
 	}
 
 	/**
@@ -63,7 +61,7 @@ public final class XML {
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
 	 */
-	public static AutoClosableXMLStreamWriter writer(
+	public static AutoCloseableXMLStreamWriter writer(
 		final OutputStream out,
 		final String indent
 	)
@@ -89,7 +87,7 @@ public final class XML {
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
 	 */
-	public static AutoClosableXMLStreamWriter writer(final OutputStream out)
+	public static AutoCloseableXMLStreamWriter writer(final OutputStream out)
 		throws XMLStreamException
 	{
 		return writer(out, null);

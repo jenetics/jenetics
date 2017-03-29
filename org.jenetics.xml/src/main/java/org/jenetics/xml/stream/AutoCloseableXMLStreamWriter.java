@@ -26,7 +26,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @version !__version__!
  * @since !__version__!
  */
-public interface AutoClosableXMLStreamWriter
+public interface AutoCloseableXMLStreamWriter
 	extends XMLStreamWriter, AutoCloseable
 {
 }

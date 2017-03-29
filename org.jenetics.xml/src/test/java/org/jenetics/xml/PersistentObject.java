@@ -27,16 +27,13 @@ import static org.jenetics.internal.math.random.nextShort;
 import static org.jenetics.internal.math.random.nextString;
 import static org.jenetics.util.RandomRegistry.using;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -53,11 +50,10 @@ import org.jenetics.IntegerGene;
 import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
 import org.jenetics.PermutationChromosome;
-import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.xml.stream.AutoClosableXMLStreamWriter;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
@@ -100,7 +96,7 @@ public class PersistentObject<T> {
 		final File file = new File(baseDir, format("%s.xml", _name));
 		try (FileOutputStream fout = new FileOutputStream(file);
 			 BufferedOutputStream bout = new BufferedOutputStream(fout);
-			 AutoClosableXMLStreamWriter writer = XML.writer(bout, "    "))
+			 AutoCloseableXMLStreamWriter writer = XML.writer(bout, "    "))
 		{
 			Writer.doc(_writer).write(_value, writer);
 		}
