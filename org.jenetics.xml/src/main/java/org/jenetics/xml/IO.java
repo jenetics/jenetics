@@ -26,7 +26,9 @@ import java.io.OutputStream;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.jenetics.DoubleChromosome;
 import org.jenetics.IntegerChromosome;
+import org.jenetics.LongChromosome;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
@@ -43,6 +45,16 @@ public final class IO<T> {
 	public static final IO<IntegerChromosome> INTEGER_CHROMOSOME = of(
 		Readers.INTEGER_CHROMOSOME,
 		Writers.INTEGER_CHROMOSOME
+	);
+
+	public static final IO<LongChromosome> LONG_CHROMOSOME = of(
+		Readers.LONG_CHROMOSOME,
+		Writers.LONG_CHROMOSOME
+	);
+
+	public static final IO<DoubleChromosome> DOUBLE_CHROMOSOME = of(
+		Readers.DOUBLE_CHROMOSOME,
+		Writers.DOUBLE_CHROMOSOME
 	);
 
 	private final Reader<T> _reader;

@@ -65,6 +65,18 @@ public final class Writers {
 	private Writers() {
 	}
 
+	public static Writer<IntegerChromosome> integerChromosome() {
+		return INTEGER_CHROMOSOME;
+	}
+
+	public static Writer<LongChromosome> longChromosome() {
+		return LONG_CHROMOSOME;
+	}
+
+	public static Writer<DoubleChromosome> doubleChromosome() {
+		return DOUBLE_CHROMOSOME;
+	}
+
 	private static <
 		A extends Comparable<? super A>,
 		G extends BoundedGene<A, G>,
