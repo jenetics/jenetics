@@ -30,7 +30,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @version !__version__!
  * @since !__version__!
  */
-abstract class XMLWriterProxy implements XMLStreamWriter {
+class XMLWriterProxy implements AutoClosableXMLStreamWriter {
 	private final XMLStreamWriter _adoptee;
 
 	XMLWriterProxy(final XMLStreamWriter writer) {

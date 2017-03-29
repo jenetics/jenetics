@@ -63,7 +63,7 @@ public final class XML {
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
 	 */
-	public static XMLStreamWriter writer(
+	public static AutoClosableXMLStreamWriter writer(
 		final OutputStream out,
 		final String indent
 	)
@@ -74,7 +74,7 @@ public final class XML {
 		final XMLOutputFactory factory = XMLOutputFactory.newFactory();
 		return indent != null
 			? new IndentingXMLWriter(factory.createXMLStreamWriter(out), indent)
-			: factory.createXMLStreamWriter(out);
+			: new XMLWriterProxy(factory.createXMLStreamWriter(out));
 	}
 
 	/**
@@ -89,7 +89,7 @@ public final class XML {
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
 	 */
-	public static XMLStreamWriter writer(final OutputStream out)
+	public static AutoClosableXMLStreamWriter writer(final OutputStream out)
 		throws XMLStreamException
 	{
 		return writer(out, null);
