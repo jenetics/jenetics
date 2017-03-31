@@ -332,7 +332,8 @@ public final class Writers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	Writer<Collection<Genotype<G>>> genotypesWriter(final Writer<? super C> writer) {
+	Writer<Collection<Genotype<G>>>
+	genotypesWriter(final Writer<? super C> writer) {
 		return elems("genotypes", genotypeWriter(writer));
 	}
 

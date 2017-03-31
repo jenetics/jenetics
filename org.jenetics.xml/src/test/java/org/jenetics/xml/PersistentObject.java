@@ -32,6 +32,7 @@ import static org.jenetics.xml.Writers.DOUBLE_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.INTEGER_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.LONG_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.genotypeWriter;
+import static org.jenetics.xml.Writers.genotypesWriter;
 import static org.jenetics.xml.Writers.permutationChromosomeWriter;
 import static org.jenetics.xml.stream.Writer.text;
 
@@ -40,8 +41,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -58,6 +62,8 @@ import org.jenetics.IntegerGene;
 import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
 import org.jenetics.PermutationChromosome;
+import org.jenetics.Phenotype;
+import org.jenetics.Population;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
@@ -163,6 +169,17 @@ public class PersistentObject<T> {
 		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), genotypeWriter(permutationChromosomeWriter()));
 		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), genotypeWriter(permutationChromosomeWriter()));
 		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), genotypeWriter(permutationChromosomeWriter()));
+
+		/* *********************************************************************
+		 * Populations
+		 **********************************************************************/
+
+		put("Population[BitGene]", nextPopulationBitGene(), genotypesWriter(BIT_CHROMOSOME_WRITER));
+		put("Population[CharacterGene]", nextPopulationCharacterGene(), genotypesWriter(CHARACTER_CHROMOSOME_WRITER));
+		put("Population[IntegerGene]", nextPopulationIntegerGene(), genotypesWriter(INTEGER_CHROMOSOME_WRITER));
+		put("Population[LongGene]", nextPopulationLongGene(), genotypesWriter(LONG_CHROMOSOME_WRITER));
+		put("Population[DoubleGene]", nextPopulationDoubleGene(), genotypesWriter(DOUBLE_CHROMOSOME_WRITER));
+		put("Population[EnumGene[Integer]]", nextPopulationEnumGene(), genotypesWriter(permutationChromosomeWriter()));
 	}
 
 
@@ -335,6 +352,45 @@ public class PersistentObject<T> {
 		return Genotype.of(ISeq.of(PersistentObject::nextStringPermutationChromosome, 5));
 	}
 
+	/* *************************************************************************
+	 * Populations
+	 **************************************************************************/
+
+	public static Collection<Genotype<BitGene>> nextPopulationBitGene() {
+		return Stream.generate(PersistentObject::nextGenotypeBitGene)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<Genotype<CharacterGene>> nextPopulationCharacterGene() {
+		return Stream.generate(PersistentObject::nextGenotypeCharacterGene)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<Genotype<IntegerGene>> nextPopulationIntegerGene() {
+		return Stream.generate(PersistentObject::nextGenotypeIntegerGene)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<Genotype<LongGene>> nextPopulationLongGene() {
+		return Stream.generate(PersistentObject::nextGenotypeLongGene)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<Genotype<DoubleGene>> nextPopulationDoubleGene() {
+		return Stream.generate(PersistentObject::nextGenotypeDoubleGene)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<Genotype<EnumGene<Integer>>> nextPopulationEnumGene() {
+		return Stream.generate(PersistentObject::nextGenotypeEnumGeneInteger)
+			.limit(7)
+			.collect(Collectors.toList());
+	}
 
 
 	private static Random random() {
