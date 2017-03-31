@@ -22,6 +22,7 @@ package org.jenetics.xml;
 import static org.jenetics.xml.stream.Writer.attr;
 import static org.jenetics.xml.stream.Writer.elem;
 import static org.jenetics.xml.stream.Writer.elems;
+import static org.jenetics.xml.stream.Writer.text;
 
 import java.util.Collection;
 import java.util.List;
@@ -35,10 +36,12 @@ import org.jenetics.CharacterChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.LongChromosome;
+import org.jenetics.PermutationChromosome;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
@@ -135,6 +138,31 @@ public final class Writers {
 		);
 	}
 
+
+	public static <A> Writer<PermutationChromosome<A>>
+	permutationChromosome(final Writer<A> writer) {
+		return elem("permutation-chromosome",
+			attr("length", PermutationChromosome::length),
+			elem("valid-alleles",
+				elems(
+					"allele",
+					PermutationChromosome::getValidAlleles,
+					writer
+				)
+			),
+			elem(
+				"order",
+				ch -> ch.stream()
+					.map(g -> Integer.toString(g.getAlleleIndex()))
+					.collect(Collectors.joining(" ")))
+		);
+	}
+
+	public static <A> Writer<PermutationChromosome<A>> permutationChromosome() {
+		return permutationChromosome(text());
+	}
+
+
 	/**
 	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
 	 * chromosomes is defined by the given {@link Writer}. The following writer
@@ -168,7 +196,7 @@ public final class Writers {
 	 *         {@code null}
 	 */
 	public static <
-		A ,
+		A,
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
@@ -176,7 +204,7 @@ public final class Writers {
 		return elem("genotype",
 			attr("length", Genotype<G>::length),
 			attr("ngenes", Genotype<G>::getNumberOfGenes),
-			elems(gt -> gt.toSeq().map(Writers::cast), writer)
+			elems(gt -> cast(gt.toSeq()), writer)
 		);
 	}
 
@@ -215,7 +243,7 @@ public final class Writers {
 	 *         {@code null}
 	 */
 	public static <
-		A ,
+		A,
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>

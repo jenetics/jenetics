@@ -32,6 +32,8 @@ import static org.jenetics.xml.Writers.DOUBLE_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.INTEGER_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.LONG_CHROMOSOME_WRITER;
 import static org.jenetics.xml.Writers.genotype;
+import static org.jenetics.xml.Writers.permutationChromosome;
+import static org.jenetics.xml.stream.Writer.text;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -123,6 +125,7 @@ public class PersistentObject<T> {
 	}
 
 	private static void init() {
+
 		/* *********************************************************************
 		 * Chromosomes
 		 **********************************************************************/
@@ -133,6 +136,14 @@ public class PersistentObject<T> {
 		put("LongChromosome", nextLongChromosome(), LONG_CHROMOSOME_WRITER);
 		put("DoubleChromosome", nextDoubleChromosome(), DOUBLE_CHROMOSOME_WRITER);
 
+		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Short]", nextShortPermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Long]", nextLongPermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(), permutationChromosome());
+		put("PermutationChromosome[String]", nextStringPermutationChromosome(), permutationChromosome());
 
 		/* *********************************************************************
 		 * Genotypes

@@ -22,6 +22,7 @@ package org.jenetics.xml.stream;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.function.Function;
 
 import javax.xml.stream.XMLStreamException;
@@ -229,6 +230,21 @@ public interface Writer<T> {
 		};
 	}
 
+	public static <T> Writer<T> text(final Function<T, String> mapper) {
+		return (data, writer) -> {
+			if (data != null) {
+				final String value = mapper.apply(data);
+				if (value != null) {
+					writer.writeCharacters(value);
+				}
+			}
+		};
+	}
+
+	public static <T> Writer<T> text() {
+		return text(Objects::toString);
+	}
+
 	/**
 	 * Create a new {@code Writer}, which writes elements of the given
 	 * {@code name} for each of the given properties.
@@ -266,6 +282,27 @@ public interface Writer<T> {
 							writer.writeCharacters(v.toString());
 							writer.writeEndElement();
 						}
+					}
+				}
+			}
+		};
+	}
+
+	public static <T, P> Writer<T> elems(
+		final String name,
+		final Function<T, ? extends Iterable<? extends P>> properties,
+		final Writer<P> writer
+	) {
+		return (value, w) -> {
+			if (value != null) {
+				final Iterable<? extends P> it = properties.apply(value);
+				if (it != null) {
+					for (P v : it) {
+						w.writeStartElement(name);
+						if (v != null) {
+							writer.write(v, w);
+						}
+						w.writeEndElement();
 					}
 				}
 			}
