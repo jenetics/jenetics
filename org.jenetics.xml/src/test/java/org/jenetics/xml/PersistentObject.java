@@ -404,7 +404,6 @@ public class PersistentObject<T> {
 
 	public static void main(final String[] args) throws Exception {
 		write();
-		//IO.jaxb.write(nextPhenotypeEnumGeneIntegerDouble(), System.out);
 	}
 
 	private static void write() throws IOException, XMLStreamException {
