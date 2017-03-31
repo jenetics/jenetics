@@ -356,37 +356,37 @@ public class PersistentObject<T> {
 	 * Populations
 	 **************************************************************************/
 
-	public static Collection<Genotype<BitGene>> nextPopulationBitGene() {
+	public static List<Genotype<BitGene>> nextPopulationBitGene() {
 		return Stream.generate(PersistentObject::nextGenotypeBitGene)
 			.limit(7)
 			.collect(Collectors.toList());
 	}
 
-	public static Collection<Genotype<CharacterGene>> nextPopulationCharacterGene() {
+	public static List<Genotype<CharacterGene>> nextPopulationCharacterGene() {
 		return Stream.generate(PersistentObject::nextGenotypeCharacterGene)
 			.limit(7)
 			.collect(Collectors.toList());
 	}
 
-	public static Collection<Genotype<IntegerGene>> nextPopulationIntegerGene() {
+	public static List<Genotype<IntegerGene>> nextPopulationIntegerGene() {
 		return Stream.generate(PersistentObject::nextGenotypeIntegerGene)
 			.limit(7)
 			.collect(Collectors.toList());
 	}
 
-	public static Collection<Genotype<LongGene>> nextPopulationLongGene() {
+	public static List<Genotype<LongGene>> nextPopulationLongGene() {
 		return Stream.generate(PersistentObject::nextGenotypeLongGene)
 			.limit(7)
 			.collect(Collectors.toList());
 	}
 
-	public static Collection<Genotype<DoubleGene>> nextPopulationDoubleGene() {
+	public static List<Genotype<DoubleGene>> nextPopulationDoubleGene() {
 		return Stream.generate(PersistentObject::nextGenotypeDoubleGene)
 			.limit(7)
 			.collect(Collectors.toList());
 	}
 
-	public static Collection<Genotype<EnumGene<Integer>>> nextPopulationEnumGene() {
+	public static List<Genotype<EnumGene<Integer>>> nextPopulationEnumGene() {
 		return Stream.generate(PersistentObject::nextGenotypeEnumGeneInteger)
 			.limit(7)
 			.collect(Collectors.toList());
