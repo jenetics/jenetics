@@ -65,14 +65,12 @@ public final class Writers {
 
 	/**
 	 * Writer for character-chromosomes.
-	 * <pre>
-	 * {@code
+	 * <pre> {@code
 	 * <character-chromosome length="4">
 	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
 	 *     <alleles>ASDF</alleles>
 	 * </character-chromosome>
-	 * }
-	 * </pre>
+	 * }</pre>
 	 */
 	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME_WRITER =
 		elem("character-chromosome",
@@ -83,45 +81,39 @@ public final class Writers {
 
 	/**
 	 * Writer for int-chromosomes.
-	 * <pre>
-	 * {@code
+	 * <pre> {@code
 	 * <int-chromosome length="3" min="-2147483648" max="2147483647">
 	 *     <allele>-1878762439</allele>
 	 *     <allele>-957346595</allele>
 	 *     <allele>-88668137</allele>
 	 * </int-chromosome>
-	 * }
-	 * </pre>
+	 * }</pre>
 	 */
 	public static final Writer<IntegerChromosome>
 		INTEGER_CHROMOSOME_WRITER = boundedChromosome("int-chromosome");
 
 	/**
 	 * Writer for long-chromosomes.
-	 * <pre>
-	 * {@code
+	 * <pre> {@code
 	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
 	 *     <allele>-1345217698116542402</allele>
 	 *     <allele>-7144755673073475303</allele>
 	 *     <allele>6053786736809578435</allele>
 	 * </long-chromosome>
-	 * }
-	 * </pre>
+	 * }</pre>
 	 */
 	public static final Writer<LongChromosome>
 		LONG_CHROMOSOME_WRITER = boundedChromosome("long-chromosome");
 
 	/**
 	 * Writer for double-chromosomes.
-	 * <pre>
-	 * {@code
+	 * <pre> {@code
 	 * <double-chromosome length="3" min="0.0" max="1.0">
 	 *     <allele>0.27251556008507416</allele>
 	 *     <allele>0.003140816229067145</allele>
 	 *     <allele>0.43947528327497376</allele>
 	 * </double-chromosome>
-	 * }
-	 * </pre>
+	 * }</pre>
 	 */
 	public static final Writer<DoubleChromosome>
 		DOUBLE_CHROMOSOME_WRITER = boundedChromosome("double-chromosome");
@@ -145,7 +137,27 @@ public final class Writers {
 
 	/**
 	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
-	 * chromosomes is defined by the given {@link Writer}.
+	 * chromosomes is defined by the given {@link Writer}. The following writer
+	 * allows to write double-gene chromosomes:
+	 * <pre>{@code
+	 * final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME_WRITER);
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <genotype length="2" ngenes="5">
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *     </double-chromosome>
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.18390258154466066</allele>
+	 *         <allele>0.4026521545744768</allele>
+	 *         <allele>0.36137605952663554</allele>
+	 *     </double-chromosome>
+	 * </genotype>
+	 * }</pre>
 	 *
 	 * @param writer the chromosome writer
 	 * @param <A> the allele type
@@ -168,6 +180,40 @@ public final class Writers {
 		);
 	}
 
+	/**
+	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
+	 * chromosomes is defined by the given {@link Writer}. The following writer
+	 * allows to write double-gene chromosomes:
+	 * <pre>{@code
+	 * final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME_WRITER);
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <genotypes>
+	 *     <genotype length="2" ngenes="5">
+	 *         <double-chromosome min="0.0" max="1.0" length="3">
+	 *             <allele>0.27251556008507416</allele>
+	 *             <allele>0.003140816229067145</allele>
+	 *             <allele>0.43947528327497376</allele>
+	 *         </double-chromosome>
+	 *         <double-chromosome min="0.0" max="1.0" length="3">
+	 *             <allele>0.18390258154466066</allele>
+	 *             <allele>0.4026521545744768</allele>
+	 *             <allele>0.36137605952663554</allele>
+	 *         </double-chromosome>
+	 *     </genotype>
+	 * </genotypes>
+	 * }</pre>
+	 *
+	 * @param writer the chromosome writer
+	 * @param <A> the allele type
+	 * @param <G> the gene type
+	 * @param <C> the chromosome type
+	 * @return a new genotype writer
+	 * @throws NullPointerException if the given chromosome {@code writer} is
+	 *         {@code null}
+	 */
 	public static <
 		A ,
 		G extends Gene<A, G>,
