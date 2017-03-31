@@ -123,9 +123,9 @@ public class PersistentObject<T> {
 
 		//put("BitChromosome", nextBitChromosome());
 		//put("CharacterChromosome", nextCharacterChromosome());
-		put("IntegerChromosome", nextIntegerChromosome(), Writers.INTEGER_CHROMOSOME);
-		put("LongChromosome", nextLongChromosome(), Writers.LONG_CHROMOSOME);
-		put("DoubleChromosome", nextDoubleChromosome(), Writers.DOUBLE_CHROMOSOME);
+		put("IntegerChromosome", nextIntegerChromosome(), Writers.INTEGER_CHROMOSOME_WRITER);
+		put("LongChromosome", nextLongChromosome(), Writers.LONG_CHROMOSOME_WRITER);
+		put("DoubleChromosome", nextDoubleChromosome(), Writers.DOUBLE_CHROMOSOME_WRITER);
 	}
 
 

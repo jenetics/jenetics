@@ -49,32 +49,84 @@ import org.jenetics.xml.stream.XML;
  */
 public final class Writers {
 
-	public static final Writer<BitChromosome> BIT_CHROMOSOME = null;
+	/**
+	 * Writer for bit-chromosomes.
+	 * <p>
+	 * {@code
+	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+	 * }
+	 */
+	public static final Writer<BitChromosome> BIT_CHROMOSOME_WRITER =
+		elem("bit-chromosome",
+			attr("length", BitChromosome::length),
+			attr("ones-probability", BitChromosome::getOneProbability),
+			elem(BitChromosome::toCanonicalString)
+		);
 
-	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME = null;
+	/**
+	 * Writer for character-chromosomes.
+	 * <pre>
+	 * {@code
+	 * <character-chromosome length="4">
+	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
+	 *     <alleles>ASDF</alleles>
+	 * </character-chromosome>
+	 * }
+	 * </pre>
+	 */
+	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME =
+		elem("character-chromosome",
+			attr("length", CharacterChromosome::length),
+			elem("valid-alleles", ch -> ch.getGene().getValidCharacters()),
+			elem("alleles", CharacterChromosome::toString)
+		);
 
+	/**
+	 * Writer for int-chromosomes.
+	 * <pre>
+	 * {@code
+	 * <int-chromosome length="3" min="-2147483648" max="2147483647">
+	 *     <allele>-1878762439</allele>
+	 *     <allele>-957346595</allele>
+	 *     <allele>-88668137</allele>
+	 * </int-chromosome>
+	 * }
+	 * </pre>
+	 */
 	public static final Writer<IntegerChromosome>
-	INTEGER_CHROMOSOME = boundedChromosome("integer-chromosome");
+		INTEGER_CHROMOSOME_WRITER = boundedChromosome("int-chromosome");
 
+	/**
+	 * Writer for long-chromosomes.
+	 * <pre>
+	 * {@code
+	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
+	 *     <allele>-1345217698116542402</allele>
+	 *     <allele>-7144755673073475303</allele>
+	 *     <allele>6053786736809578435</allele>
+	 * </long-chromosome>
+	 * }
+	 * </pre>
+	 */
 	public static final Writer<LongChromosome>
-	LONG_CHROMOSOME = boundedChromosome("long-chromosome");
+		LONG_CHROMOSOME_WRITER = boundedChromosome("long-chromosome");
 
+	/**
+	 * Writer for double-chromosomes.
+	 * <pre>
+	 * {@code
+	 * <double-chromosome length="3" min="0.0" max="1.0">
+	 *     <allele>0.27251556008507416</allele>
+	 *     <allele>0.003140816229067145</allele>
+	 *     <allele>0.43947528327497376</allele>
+	 * </double-chromosome>
+	 * }
+	 * </pre>
+	 */
 	public static final Writer<DoubleChromosome>
-	DOUBLE_CHROMOSOME = boundedChromosome("double-chromosome");
+		DOUBLE_CHROMOSOME_WRITER = boundedChromosome("double-chromosome");
 
 	private Writers() {
-	}
-
-	public static Writer<IntegerChromosome> integerChromosome() {
-		return INTEGER_CHROMOSOME;
-	}
-
-	public static Writer<LongChromosome> longChromosome() {
-		return LONG_CHROMOSOME;
-	}
-
-	public static Writer<DoubleChromosome> doubleChromosome() {
-		return DOUBLE_CHROMOSOME;
 	}
 
 	private static <
@@ -131,7 +183,7 @@ public final class Writers {
 			.limit(10)
 			.collect(Collectors.toList());
 
-		final Writer<Collection<Genotype<DoubleGene>>> writers = genotypes(DOUBLE_CHROMOSOME);
+		final Writer<Collection<Genotype<DoubleGene>>> writers = genotypes(DOUBLE_CHROMOSOME_WRITER);
 		writers.write(types, XML.writer(System.out, "    "));
 		System.out.flush();
 	}

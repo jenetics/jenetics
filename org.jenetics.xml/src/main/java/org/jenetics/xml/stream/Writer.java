@@ -199,6 +199,37 @@ public interface Writer<T> {
 	}
 
 	/**
+	 * Create a new {@code Writer}, which writes given property to the current
+	 * outer element.
+	 *
+	 * <pre>{@code
+	 * elem("bit-chromosome",
+	 *     attr("length", BitChromosome::length),
+	 *     attr("one-probability", BitChromosome::getOneProbability),
+	 *     elem(BitChromosome::toCanonicalString)
+	 * );
+	 * }</pre>
+	 *
+	 * @param property the elements to write
+	 * @param <T> the writer base type
+	 * @param <P> the element type.
+	 * @return a new writer instance
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, P> Writer<T> elem(final Function<T, P> property) {
+		requireNonNull(property);
+
+		return (data, writer) -> {
+			if (data != null) {
+				final P prop = property.apply(data);
+				if (prop != null) {
+					writer.writeCharacters(prop.toString());
+				}
+			}
+		};
+	}
+
+	/**
 	 * Create a new {@code Writer}, which writes elements of the given
 	 * {@code name} for each of the given properties.
 	 *
