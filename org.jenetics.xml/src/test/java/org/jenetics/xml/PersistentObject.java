@@ -26,6 +26,12 @@ import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
 import static org.jenetics.internal.math.random.nextString;
 import static org.jenetics.util.RandomRegistry.using;
+import static org.jenetics.xml.Writers.BIT_CHROMOSOME_WRITER;
+import static org.jenetics.xml.Writers.CHARACTER_CHROMOSOME_WRITER;
+import static org.jenetics.xml.Writers.DOUBLE_CHROMOSOME_WRITER;
+import static org.jenetics.xml.Writers.INTEGER_CHROMOSOME_WRITER;
+import static org.jenetics.xml.Writers.LONG_CHROMOSOME_WRITER;
+import static org.jenetics.xml.Writers.genotype;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -121,11 +127,33 @@ public class PersistentObject<T> {
 		 * Chromosomes
 		 **********************************************************************/
 
-		//put("BitChromosome", nextBitChromosome());
-		//put("CharacterChromosome", nextCharacterChromosome());
-		put("IntegerChromosome", nextIntegerChromosome(), Writers.INTEGER_CHROMOSOME_WRITER);
-		put("LongChromosome", nextLongChromosome(), Writers.LONG_CHROMOSOME_WRITER);
-		put("DoubleChromosome", nextDoubleChromosome(), Writers.DOUBLE_CHROMOSOME_WRITER);
+		put("BitChromosome", nextBitChromosome(), BIT_CHROMOSOME_WRITER);
+		put("CharacterChromosome", nextCharacterChromosome(), CHARACTER_CHROMOSOME_WRITER);
+		put("IntegerChromosome", nextIntegerChromosome(), INTEGER_CHROMOSOME_WRITER);
+		put("LongChromosome", nextLongChromosome(), LONG_CHROMOSOME_WRITER);
+		put("DoubleChromosome", nextDoubleChromosome(), DOUBLE_CHROMOSOME_WRITER);
+
+
+		/* *********************************************************************
+		 * Genotypes
+		 **********************************************************************/
+
+		put("Genotype[BitGene]", nextGenotypeBitGene(), genotype(BIT_CHROMOSOME_WRITER));
+		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), genotype(CHARACTER_CHROMOSOME_WRITER));
+		put("Genotype[IntegerGene]", nextGenotypeIntegerGene(), genotype(INTEGER_CHROMOSOME_WRITER));
+		put("Genotype[LongGene]", nextGenotypeLongGene(), genotype(LONG_CHROMOSOME_WRITER));
+		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), genotype(DOUBLE_CHROMOSOME_WRITER));
+
+		/*
+		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), ios);
+		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), ios);
+		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), ios);
+		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), ios);
+		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), ios);
+		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), ios);
+		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), ios);
+		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), ios);
+		*/
 	}
 
 

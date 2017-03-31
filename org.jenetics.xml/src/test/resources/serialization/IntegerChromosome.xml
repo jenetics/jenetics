@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<integer-chromosome min="-2147483648" max="2147483647" length="20">
+<int-chromosome min="-2147483648" max="2147483647" length="20">
     <allele>-1878762439</allele>
     <allele>-957346595</allele>
     <allele>-88668137</allele>
@@ -20,4 +20,4 @@
     <allele>1018444979</allele>
     <allele>-1830946575</allele>
     <allele>322908769</allele>
-</integer-chromosome>
+</int-chromosome>

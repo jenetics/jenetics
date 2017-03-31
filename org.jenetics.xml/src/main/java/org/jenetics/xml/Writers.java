@@ -74,7 +74,7 @@ public final class Writers {
 	 * }
 	 * </pre>
 	 */
-	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME =
+	public static final Writer<CharacterChromosome> CHARACTER_CHROMOSOME_WRITER =
 		elem("character-chromosome",
 			attr("length", CharacterChromosome::length),
 			elem("valid-alleles", ch -> ch.getGene().getValidCharacters()),
