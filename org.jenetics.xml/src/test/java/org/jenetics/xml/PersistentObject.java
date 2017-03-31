@@ -155,22 +155,15 @@ public class PersistentObject<T> {
 		put("Genotype[LongGene]", nextGenotypeLongGene(), genotypeWriter(LONG_CHROMOSOME_WRITER));
 		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), genotypeWriter(DOUBLE_CHROMOSOME_WRITER));
 
-		/*
-		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), ios);
-		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), ios);
-		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), ios);
-		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), ios);
-		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), ios);
-		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), ios);
-		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), ios);
-		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), ios);
-		*/
+		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), genotypeWriter(permutationChromosomeWriter()));
 	}
-
-
-
-
-
 
 
 	/* *************************************************************************
