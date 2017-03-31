@@ -25,9 +25,7 @@ import static org.jenetics.xml.stream.Writer.elems;
 import static org.jenetics.xml.stream.Writer.text;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BoundedChromosome;
@@ -35,22 +33,33 @@ import org.jenetics.BoundedGene;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.EnumGene;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.LongChromosome;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
 
 /**
+ * This class contains static fields and methods, which create chromosome- and
+ * genotype writers for different gene types. Some writer creation examples:
+ *
+ * <pre>{@code
+ * final Writer<Genotype<LongGene>> lgw = genotypeWriter(LONG_CHROMOSOME_WRITER);
+ * final Writer<Genotype<DoubleGene>> dgw = genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
+ *
+ * final Writer<PermutationChromosome<Integer>> ipc = permutationChromosomeWriter();
+ * final Writer<Genotype<EnumGene<Double>>> pgw = genotypeWriter(permutationChromosomeWriter());
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public final class Writers {
+
+	private Writers() {
+	}
 
 	/**
 	 * Writer for bit-chromosomes.
@@ -121,8 +130,8 @@ public final class Writers {
 	public static final Writer<DoubleChromosome>
 		DOUBLE_CHROMOSOME_WRITER = boundedChromosome("double-chromosome");
 
-	private Writers() {
-	}
+
+
 
 	private static <
 		A extends Comparable<? super A>,
@@ -138,9 +147,48 @@ public final class Writers {
 		);
 	}
 
-
+	/**
+	 * Create a writer for permutation-chromosomes. How to write the valid
+	 * alleles is defined by the given {@link Writer}. The following writer
+	 * allows to write permutation-chromosomes with double allele types, where
+	 * the double values are written with a fixed precision:
+	 * <pre>{@code
+	 * final Writer<PermutationChromosome<Double> writer =
+	 *     permutationChromosomeWriter(Writer.text(d -> String.format("%1.4f", d)));
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <permutation-chromosome length="15">
+	 *     <valid-alleles>
+	 *         <allele>0.2725</allele>
+	 *         <allele>0.0031</allele>
+	 *         <allele>0.4395</allele>
+	 *         <allele>0.1065</allele>
+	 *         <allele>0.1970</allele>
+	 *         <allele>0.7450</allele>
+	 *         <allele>0.5594</allele>
+	 *         <allele>0.0282</allele>
+	 *         <allele>0.5741</allele>
+	 *         <allele>0.4534</allele>
+	 *         <allele>0.8111</allele>
+	 *         <allele>0.5710</allele>
+	 *         <allele>0.3017</allele>
+	 *         <allele>0.5455</allele>
+	 *         <allele>0.2107</allele>
+	 *     </valid-alleles>
+	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 * </permutation-chromosome>
+	 * }</pre>
+	 *
+	 * @param writer the allele writer
+	 * @param <A> the allele type
+	 * @return a new permutation chromosome writer
+	 * @throws NullPointerException if the given allele {@code writer} is
+	 *         {@code null}
+	 */
 	public static <A> Writer<PermutationChromosome<A>>
-	permutationChromosome(final Writer<A> writer) {
+	permutationChromosomeWriter(final Writer<? super A> writer) {
 		return elem("permutation-chromosome",
 			attr("length", PermutationChromosome::length),
 			elem("valid-alleles",
@@ -158,17 +206,53 @@ public final class Writers {
 		);
 	}
 
-	public static <A> Writer<PermutationChromosome<A>> permutationChromosome() {
-		return permutationChromosome(text());
+	/**
+	 * Create a writer for permutation-chromosomes. The valid alleles are
+	 * serialized by calling the {@link Object#toString()} method. Calling this
+	 * method is equivalent with:
+	 * <pre>{@code
+	 * final Writer<PermutationChromosome<Double> writer =
+	 *     permutationChromosomeWriter(Writer.text(Objects::toString));
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <permutation-chromosome length="15">
+	 *     <valid-alleles>
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *         <allele>0.10654807463069327</allele>
+	 *         <allele>0.19696530915810317</allele>
+	 *         <allele>0.7450003838065538</allele>
+	 *         <allele>0.5594416969271359</allele>
+	 *         <allele>0.02823782430152355</allele>
+	 *         <allele>0.5741102315010789</allele>
+	 *         <allele>0.4533651041367144</allele>
+	 *         <allele>0.811148141800367</allele>
+	 *         <allele>0.5710456351848858</allele>
+	 *         <allele>0.30166768355230955</allele>
+	 *         <allele>0.5455492865240272</allele>
+	 *         <allele>0.21068427527733102</allele>
+	 *     </valid-alleles>
+	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 * </permutation-chromosome>
+	 * }</pre>
+	 *
+	 * @param <A> the allele type
+	 * @return a new permutation chromosome writer
+	 */
+	public static <A> Writer<PermutationChromosome<A>> permutationChromosomeWriter() {
+		return permutationChromosomeWriter(text());
 	}
 
-
 	/**
-	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
-	 * chromosomes is defined by the given {@link Writer}. The following writer
-	 * allows to write double-gene chromosomes:
+	 * Create a writer for genotypes of arbitrary chromosomes. How to write the
+	 * genotypes chromosomes is defined by the given {@link Writer}. The
+	 * following writer allows to write double-gene chromosomes:
 	 * <pre>{@code
-	 * final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME_WRITER);
+	 * final Writer<Genotype<DoubleGene>> writer =
+	 *     genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
 	 * }</pre>
 	 *
 	 * Example output:
@@ -200,7 +284,7 @@ public final class Writers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	Writer<Genotype<G>> genotype(final Writer<C> writer) {
+	Writer<Genotype<G>> genotypeWriter(final Writer<? super C> writer) {
 		return elem("genotype",
 			attr("length", Genotype<G>::length),
 			attr("ngenes", Genotype<G>::getNumberOfGenes),
@@ -209,11 +293,12 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
-	 * chromosomes is defined by the given {@link Writer}. The following writer
-	 * allows to write double-gene chromosomes:
+	 * Create a writer for genotypes of arbitrary chromosomes. How to write the
+	 * genotypes chromosomes is defined by the given {@link Writer}. The
+	 * following writer allows to write double-gene chromosomes:
 	 * <pre>{@code
-	 * final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME_WRITER);
+	 * final Writer<Genotype<DoubleGene>> writer =
+	 *     genotypesWriter(DOUBLE_CHROMOSOME_WRITER);
 	 * }</pre>
 	 *
 	 * Example output:
@@ -247,8 +332,8 @@ public final class Writers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	Writer<Collection<Genotype<G>>> genotypes(final Writer<C> writer) {
-		return elems("genotypes", genotype(writer));
+	Writer<Collection<Genotype<G>>> genotypesWriter(final Writer<? super C> writer) {
+		return elems("genotypes", genotypeWriter(writer));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -256,21 +341,4 @@ public final class Writers {
 		return (B)value;
 	}
 
-	public static void main(final String[] args) throws Exception {
-		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
-		final Genotype<DoubleGene> gt = Genotype.of(ch, 5);
-
-		//final Writer<Genotype<DoubleGene>> writer = genotype(DOUBLE_CHROMOSOME);
-		//writer.write(gt, XML.writer(System.out, "    "));
-		//System.out.flush();
-
-		final List<Genotype<DoubleGene>> types = Stream
-			.generate(gt::newInstance)
-			.limit(10)
-			.collect(Collectors.toList());
-
-		final Writer<Collection<Genotype<DoubleGene>>> writers = genotypes(DOUBLE_CHROMOSOME_WRITER);
-		writers.write(types, XML.writer(System.out, "    "));
-		System.out.flush();
-	}
 }
