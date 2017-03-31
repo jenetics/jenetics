@@ -143,6 +143,18 @@ public final class Writers {
 		);
 	}
 
+	/**
+	 * Writer for genotypes of arbitrary chromosomes. How to write the genotypes
+	 * chromosomes is defined by the given {@link Writer}.
+	 *
+	 * @param writer the chromosome writer
+	 * @param <A> the allele type
+	 * @param <G> the gene type
+	 * @param <C> the chromosome type
+	 * @return a new genotype writer
+	 * @throws NullPointerException if the given chromosome {@code writer} is
+	 *         {@code null}
+	 */
 	public static <
 		A ,
 		G extends Gene<A, G>,
