@@ -32,3 +32,8 @@ include 'org.jenetics.tool'
 include 'org.jenetix'
 
 rootProject.name = 'jenetics'
+
+// Rename the project names by removing the trailing 'org.'.
+rootProject.children.each { project ->
+	project.name = project.name.substring(4)
+}
