@@ -51,7 +51,7 @@ public final class LineRecombinator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 	>
-	extends Recombinator<G, C>
+	extends Crossover<G, C>
 {
 
 	private final double _p;
@@ -70,7 +70,7 @@ public final class LineRecombinator<
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */
 	public LineRecombinator(final double probability, final double p) {
-		super(probability, 2);
+		super(probability);
 		_p = require.nonNegative(p, "p");
 	}
 
@@ -99,52 +99,16 @@ public final class LineRecombinator<
 	}
 
 	@Override
-	protected int recombine(
-		final Population<G, C> population,
-		final int[] individuals,
-		final long generation
-	) {
-		assert individuals.length == 2;
+	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
 		final Random random = RandomRegistry.getRandom();
 
-		final Phenotype<G, C> pt1 = population.get(individuals[0]);
-		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
-
-		//Choosing the Chromosome index for crossover.
-		final int cindex = random.nextInt(min(gt1.length(), gt2.length()));
-
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
-
-		final MSeq<G> v = c1.get(cindex).toSeq().copy();
-		final MSeq<G> w = c2.get(cindex).toSeq().copy();
-
-		recombine(v, w, random);
-
-		c1.set(cindex, c1.get(cindex).newInstance(v.toISeq()));
-		c2.set(cindex, c2.get(cindex).newInstance(w.toISeq()));
-
-		population.set(
-			individuals[0],
-			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
-		);
-		population.set(
-			individuals[1],
-			pt2.newInstance(gt2.newInstance(c2.toISeq()), generation)
-		);
-
-		return 2;
-	}
-
-	void recombine(final MSeq<G> v, final MSeq<G> w, final Random random) {
 		final double min = v.get(0).getMin().doubleValue();
 		final double max = v.get(0).getMax().doubleValue();
 
 		final double a = nextDouble(random, -_p, 1 + _p);
 		final double b = nextDouble(random, -_p, 1 + _p);
 
+		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
 			final double vi = v.get(i).doubleValue();
 			final double wi = w.get(i).doubleValue();
@@ -155,8 +119,11 @@ public final class LineRecombinator<
 			if (t >= min && s >= min && t < max && s < max) {
 				v.set(i, v.get(i).newInstance(t));
 				w.set(i, w.get(i).newInstance(s));
+				changed = true;
 			}
 		}
+
+		return changed ? 2 : 0;
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class LineRecombinatorTest {
 
 		final LineRecombinator<DoubleGene, Double> recombinator =
 			new LineRecombinator<>();
-		recombinator.recombine(v, w, RandomRegistry.getRandom());
+		recombinator.crossover(v, w);
 
 		Assert.assertTrue(v.forAll(DoubleGene::isValid));
 		Assert.assertTrue(w.forAll(DoubleGene::isValid));
