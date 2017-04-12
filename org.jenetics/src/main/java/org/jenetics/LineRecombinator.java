@@ -37,7 +37,7 @@ import org.jenetics.util.RandomRegistry;
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the
- * hypercube between the two points. If <em>p</em> > 0 then the children may be
+ * hypercube between the two points. If <em>p</em> &gt; 0 then the children may be
  * located anywhere on the line, even somewhat outside of the hypercube.
  *
  * @see <a href="https://cs.gmu.edu/~sean/book/metaheuristics/"><em>
@@ -63,7 +63,7 @@ public final class LineRecombinator<
 	 * @param probability the recombination probability.
 	 * @param p defines the possible location of the recombined chromosomes. If
 	 *        <em>p</em> = 0 then the children will be located along the line
-	 *        within the hypercube between the two points. If <em>p</em> > 0
+	 *        within the hypercube between the two points. If <em>p</em> &gt; 0
 	 *        then the children may be located anywhere on the line, even
 	 *        somewhat outside of the hypercube.
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
