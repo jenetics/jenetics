@@ -26,11 +26,8 @@ import java.util.Random;
 
 import org.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.util.Mean;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
 
 /**
  * This alterer takes two chromosome (treating it as vectors) and creates a
@@ -43,7 +40,7 @@ import org.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class LinearRecombinator<
+public final class LineRecombinator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 	>
@@ -58,7 +55,7 @@ public final class LinearRecombinator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}.
 	 */
-	public LinearRecombinator(final double probability) {
+	public LineRecombinator(final double probability) {
 		super(probability, 2);
 	}
 
@@ -115,7 +112,7 @@ public final class LinearRecombinator<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LinearRecombinator && super.equals(obj);
+		return obj instanceof LineRecombinator && super.equals(obj);
 	}
 
 	@Override
