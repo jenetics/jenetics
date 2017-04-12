@@ -44,8 +44,8 @@ import org.jenetics.util.RandomRegistry;
  *       Essentials of Metaheuristic, page 42</em></a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.8
+ * @since 3.8
  */
 public final class LineRecombinator<
 	G extends NumericGene<?, G>,
