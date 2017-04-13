@@ -52,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  * @version 3.8
  * @since 3.8
  */
-public final class LineCrossover<
+public class LineCrossover<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
