@@ -19806,6 +19806,96 @@ Selector
 s is much better than a random search.
 \end_layout
 
+\begin_layout Subsection
+Evolution strategies
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ evolution strategie
+\end_layout
+
+\begin_layout Standard
+Among the simplest ES algorithms is the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ algorithm.
+ We begin with a population of (typically) 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ number of individuals, generated randomly.
+ We then iterate as follows.
+ First we assess the fitness of all the individuals.
+ Then we delete from the population all but the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest ones (this is all there’s to Truncation Selection).
+ Each of the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest individuals gets to produce 
+\begin_inset Formula $\frac{\lambda}{\mu}$
+\end_inset
+
+ childre through an ordinary Mutation.
+ All told we’ve created 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ new children.
+ Our Join operation is simple: the children just replace the parents, who
+ are discarded.
+ The iteration continues anew.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ evolution strategie
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ differs from 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ in only one respect: the Join operation.
+ Recall that in 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ the parents are simply replaced with the children in the next generation.
+ But in 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+, the next generation consists of the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents plus the 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ new children.
+ That is, the parents compete with the kids next time around.
+ Thus the next and all successive generations are 
+\begin_inset Formula $\mu+\lambda$
+\end_inset
+
+ in size.
+\end_layout
+
 \begin_layout Section
 Internals
 \begin_inset Index idx
