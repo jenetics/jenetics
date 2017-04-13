@@ -63,7 +63,7 @@ public final class require {
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
 			throw new IllegalArgumentException(format(
-				"%s must not negative: %f.", message, value
+				"%s must not be negative: %f.", message, value
 			));
 		}
 		return value;
