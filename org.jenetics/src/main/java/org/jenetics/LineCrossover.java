@@ -37,11 +37,16 @@ import org.jenetics.util.RandomRegistry;
  * on a variable <em>p</em> which determines how far out along the line (defined
  * by the two multidimensional points/vectors) the children are allowed to be.
  * If <em>p</em> = 0 then the children will be located along the line within the
- * hypercube between the two points. If <em>p</em> &gt; 0 then the children may be
- * located anywhere on the line, even somewhat outside of the hypercube.
+ * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
+ * be located anywhere on the line, even somewhat outside of the hypercube.
+ * <p>
+ * Points outside of the allowed numeric range are rejected and the original
+ * value are used instead. The strategy on how out-of-range points are handled,
+ * is the difference to the very similar {@link IntermediateCrossover}.
  *
  * @see <a href="https://cs.gmu.edu/~sean/book/metaheuristics/"><em>
  *       Essentials of Metaheuristic, page 42</em></a>
+ * @see IntermediateCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.8
@@ -57,7 +62,7 @@ public final class LineCrossover<
 	private final double _p;
 
 	/**
-	 * Creates a new linear-recombinator with the given recombination
+	 * Creates a new linear-crossover with the given recombination
 	 * probability and the line-scaling factor <em>p</em>.
 	 *
 	 * @param probability the recombination probability.
@@ -75,7 +80,7 @@ public final class LineCrossover<
 	}
 
 	/**
-	 * Creates a new linear-recombinator with the given recombination
+	 * Creates a new linear-crossover with the given recombination
 	 * probability. The parameter <em>p</em> is set to zero, which restricts the
 	 * recombined chromosomes within the hypercube of the selected chromosomes
 	 * (vectors).
@@ -89,7 +94,7 @@ public final class LineCrossover<
 	}
 
 	/**
-	 * Creates a new linear-recombinator with default recombination
+	 * Creates a new linear-crossover with default recombination
 	 * probability ({@link #DEFAULT_ALTER_PROBABILITY}) and a <em>p</em> value
 	 * of zero, which restricts the recombined chromosomes within the hypercube
 	 * of the selected chromosomes (vectors).
