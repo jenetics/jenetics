@@ -47,7 +47,7 @@ import org.jenetics.util.RandomRegistry;
  * @version 3.8
  * @since 3.8
  */
-public final class LineRecombinator<
+public final class LineCrossover<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 	>
@@ -69,7 +69,7 @@ public final class LineRecombinator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */
-	public LineRecombinator(final double probability, final double p) {
+	public LineCrossover(final double probability, final double p) {
 		super(probability);
 		_p = require.nonNegative(p, "p");
 	}
@@ -84,7 +84,7 @@ public final class LineRecombinator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}
 	 */
-	public LineRecombinator(final double probability) {
+	public LineCrossover(final double probability) {
 		this(probability, 0);
 	}
 
@@ -94,7 +94,7 @@ public final class LineRecombinator<
 	 * of zero, which restricts the recombined chromosomes within the hypercube
 	 * of the selected chromosomes (vectors).
 	 */
-	public LineRecombinator() {
+	public LineCrossover() {
 		this(DEFAULT_ALTER_PROBABILITY, 0);
 	}
 
@@ -133,7 +133,7 @@ public final class LineRecombinator<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LineRecombinator && super.equals(obj);
+		return obj instanceof LineCrossover && super.equals(obj);
 	}
 
 	@Override

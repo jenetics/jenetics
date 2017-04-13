@@ -34,7 +34,7 @@ import org.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-public class LineRecombinatorTest {
+public class LineCrossoverTest {
 
 	@Test
 	public void recombine() {
@@ -43,8 +43,8 @@ public class LineRecombinatorTest {
 		final MSeq<DoubleGene> v = MSeq.of(factory::newInstance, 10);
 		final MSeq<DoubleGene> w = MSeq.of(factory::newInstance, 10);
 
-		final LineRecombinator<DoubleGene, Double> recombinator =
-			new LineRecombinator<>();
+		final LineCrossover<DoubleGene, Double> recombinator =
+			new LineCrossover<>();
 		recombinator.crossover(v, w);
 
 		Assert.assertTrue(v.forAll(DoubleGene::isValid));
@@ -58,8 +58,8 @@ public class LineRecombinatorTest {
 				newDoubleGenePopulation(5, 1, 2);
 			final Population<DoubleGene, Double> copy = pop.copy();
 
-			final LineRecombinator<DoubleGene, Double> recombinator =
-				new LineRecombinator<>(1);
+			final LineCrossover<DoubleGene, Double> recombinator =
+				new LineCrossover<>(1);
 
 			recombinator.alter(pop, 10);
 
