@@ -50,13 +50,13 @@ import org.jenetics.util.RandomRegistry;
  * @see LineCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.8
+ * @since 3.8
  */
 public class IntermediateCrossover<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
-	>
+>
 	extends Crossover<G, C>
 {
 
