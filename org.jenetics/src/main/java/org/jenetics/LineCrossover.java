@@ -55,7 +55,7 @@ import org.jenetics.util.RandomRegistry;
 public final class LineCrossover<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
-	>
+>
 	extends Crossover<G, C>
 {
 
