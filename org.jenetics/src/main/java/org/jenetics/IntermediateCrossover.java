@@ -40,19 +40,20 @@ import org.jenetics.util.RandomRegistry;
  * hypercube between the two points. If <em>p</em> &gt; 0 then the children may
  * be located anywhere on the line, even somewhat outside of the hypercube.
  * <p>
- * Points outside of the allowed numeric range are rejected and the original
- * value are used instead. The strategy on how out-of-range points are handled,
- * is the difference to the very similar {@link IntermediateCrossover}.
+ * Points outside of the allowed numeric range are rejected and a new points are
+ * generated, until they lie in the valid range. The strategy on how
+ * out-of-range points are handled, is the difference to the very similar
+ * {@link LineCrossover}.
  *
  * @see <a href="https://cs.gmu.edu/~sean/book/metaheuristics/"><em>
  *       Essentials of Metaheuristic, page 42</em></a>
- * @see IntermediateCrossover
+ * @see LineCrossover
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.8
- * @since 3.8
+ * @version !__version__!
+ * @since !__version__!
  */
-public final class LineCrossover<
+public class IntermediateCrossover<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 	>
@@ -62,8 +63,13 @@ public final class LineCrossover<
 	private final double _p;
 
 	/**
-	 * Creates a new linear-crossover with the given recombination
+	 * Creates a new intermediate-crossover with the given recombination
 	 * probability and the line-scaling factor <em>p</em>.
+	 * <p>
+	 * <b>When the value for <em>p</em> is greater then 0, the crossover point
+	 * generation must be repeated until the points lie within the allowed
+	 * range. Values greater then 10 are usually not recommended, since this
+	 * leads to unnecessary crossover point generation.</b>
 	 *
 	 * @param probability the recombination probability.
 	 * @param p defines the possible location of the recombined chromosomes. If
@@ -74,13 +80,13 @@ public final class LineCrossover<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or if {@code p} is smaller then zero
 	 */
-	public LineCrossover(final double probability, final double p) {
+	public IntermediateCrossover(final double probability, final double p) {
 		super(probability);
 		_p = require.nonNegative(p, "p");
 	}
 
 	/**
-	 * Creates a new linear-crossover with the given recombination
+	 * Creates a new intermediate-crossover with the given recombination
 	 * probability. The parameter <em>p</em> is set to zero, which restricts the
 	 * recombined chromosomes within the hypercube of the selected chromosomes
 	 * (vectors).
@@ -89,17 +95,17 @@ public final class LineCrossover<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]}
 	 */
-	public LineCrossover(final double probability) {
+	public IntermediateCrossover(final double probability) {
 		this(probability, 0);
 	}
 
 	/**
-	 * Creates a new linear-crossover with default recombination
+	 * Creates a new intermediate-crossover with default recombination
 	 * probability ({@link #DEFAULT_ALTER_PROBABILITY}) and a <em>p</em> value
 	 * of zero, which restricts the recombined chromosomes within the hypercube
 	 * of the selected chromosomes (vectors).
 	 */
-	public LineCrossover() {
+	public IntermediateCrossover() {
 		this(DEFAULT_ALTER_PROBABILITY, 0);
 	}
 
@@ -110,25 +116,25 @@ public final class LineCrossover<
 		final double min = v.get(0).getMin().doubleValue();
 		final double max = v.get(0).getMax().doubleValue();
 
-		final double a = nextDouble(random, -_p, 1 + _p);
-		final double b = nextDouble(random, -_p, 1 + _p);
-
 		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
 			final double vi = v.get(i).doubleValue();
 			final double wi = w.get(i).doubleValue();
 
-			final double t = a*vi + (1 - a)*wi;
-			final double s = b*wi + (1 - b)*vi;
+			double t, s;
+			do {
+				final double a = nextDouble(random, -_p, 1 + _p);
+				final double b = nextDouble(random, -_p, 1 + _p);
 
-			if (t >= min && s >= min && t < max && s < max) {
-				v.set(i, v.get(i).newInstance(t));
-				w.set(i, w.get(i).newInstance(s));
-				changed = true;
-			}
+				t = a*vi + (1 - a)*wi;
+				s = b*wi + (1 - b)*vi;
+			} while (t < min || s < min | t >= max || s >= max);
+
+			v.set(i, v.get(i).newInstance(t));
+			w.set(i, w.get(i).newInstance(s));
 		}
 
-		return changed ? 2 : 0;
+		return 2;
 	}
 
 	@Override
@@ -138,7 +144,7 @@ public final class LineCrossover<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LineCrossover && super.equals(obj);
+		return obj instanceof IntermediateCrossover && super.equals(obj);
 	}
 
 	@Override
