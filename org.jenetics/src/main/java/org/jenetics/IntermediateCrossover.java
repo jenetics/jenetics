@@ -128,7 +128,7 @@ public class IntermediateCrossover<
 
 				t = a*vi + (1 - a)*wi;
 				s = b*wi + (1 - b)*vi;
-			} while (t < min || s < min | t >= max || s >= max);
+			} while (t < min || s < min || t >= max || s >= max);
 
 			v.set(i, v.get(i).newInstance(t));
 			w.set(i, w.get(i).newInstance(s));
