@@ -1289,8 +1289,6 @@ public final class Engine<
 		 * {@code survivorsFraction(1 - offspringFraction)} and will override
 		 * any previously set survivors-fraction.
 		 *
-		 * @since !__version__!
-		 *
 		 * @see #survivorsFraction(double)
 		 *
 		 * @param fraction the offspring fraction
@@ -1326,6 +1324,8 @@ public final class Engine<
 		/**
 		 * The number of offspring individuals.
 		 *
+		 * @since !__version__!
+		 *
 		 * @param size the number of offspring individuals.
 		 * @return {@code this} builder, for command chaining
 		 * @throws java.lang.IllegalArgumentException if the size is not
@@ -1344,6 +1344,8 @@ public final class Engine<
 
 		/**
 		 * The number of survivors.
+		 *
+		 * @since !__version__!
 		 *
 		 * @param size the number of survivors.
 		 * @return {@code this} builder, for command chaining
