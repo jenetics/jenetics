@@ -54,7 +54,7 @@ public final class TruncationSelector<
 	 * individual has rank {@code n}. This means, if you want to select
 	 * {@code count} individuals, the worst selected individual has rank
 	 * {@code n}. If {@code count > n}, the selected population will contain
-	 * <em>duplicate</em> individualss.
+	 * <em>duplicate</em> individuals.
 	 *
 	 * @since !__version__!
 	 *
