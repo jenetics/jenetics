@@ -85,7 +85,8 @@ public final class TruncationSelector<
 	 * method.) If the selection size is greater the the population size, the
 	 * whole population is duplicated until the desired sample size is reached.
 	 *
-	 * @throws NullPointerException if the {@code population} is {@code null}.
+	 * @throws NullPointerException if the {@code population} or {@code opt} is
+	 *         {@code null}.
 	 */
 	@Override
 	public Population<G, C> select(
