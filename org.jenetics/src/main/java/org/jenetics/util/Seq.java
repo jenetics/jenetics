@@ -640,6 +640,30 @@ public interface Seq<T> extends Iterable<T> {
 	}
 
 	/**
+	 * Return this sequence as {@code MSeq} instance. If {@code this} is not a
+	 * {@code MSeq} a new seq is created.
+	 *
+	 * @since 3.8
+	 *
+	 * @return a {@code MSeq} with this values
+	 */
+	public default MSeq<T> asMSeq() {
+		return this instanceof MSeq<?> ? (MSeq<T>)this : MSeq.of(this);
+	}
+
+	/**
+	 * Return this sequence as {@code ISeq} instance. If {@code this} is not a
+	 * {@code ISeq} a new seq is created.
+	 *
+	 * @since 3.8
+	 *
+	 * @return a {@code ISeq} with this values
+	 */
+	public default ISeq<T> asISeq() {
+		return this instanceof ISeq<?> ? (ISeq<T>)this : ISeq.of(this);
+	}
+
+	/**
 	 * Returns the hash code value for this sequence. The hash code is defined
 	 * as followed:
 	 *
