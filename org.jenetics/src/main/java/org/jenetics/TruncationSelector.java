@@ -50,11 +50,11 @@ public final class TruncationSelector<
 	private final int _n;
 
 	/**
-	 * Create a new {@code TruncationSelector} object with the worst selected
+	 * Create a new {@code TruncationSelector} object, where the worst selected
 	 * individual has rank {@code n}. This means, if you want to select
 	 * {@code count} individuals, the worst selected individual has rank
 	 * {@code n}. If {@code count > n}, the selected population will contain
-	 * <em>duplicate</em> entries.
+	 * <em>duplicate</em> individualss.
 	 *
 	 * @since !__version__!
 	 *
