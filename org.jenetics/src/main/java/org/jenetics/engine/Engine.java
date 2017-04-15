@@ -1307,7 +1307,7 @@ public final class Engine<
 		 * {@code offspringFraction(1 - survivorsFraction)} and will override
 		 * any previously set offspring-fraction.
 		 *
-		 * @since !__version__!
+		 * @since 3.8
 		 *
 		 * @see #offspringFraction(double)
 		 *
@@ -1324,7 +1324,7 @@ public final class Engine<
 		/**
 		 * The number of offspring individuals.
 		 *
-		 * @since !__version__!
+		 * @since 3.8
 		 *
 		 * @param size the number of offspring individuals.
 		 * @return {@code this} builder, for command chaining
@@ -1345,7 +1345,7 @@ public final class Engine<
 		/**
 		 * The number of survivors.
 		 *
-		 * @since !__version__!
+		 * @since 3.8
 		 *
 		 * @param size the number of survivors.
 		 * @return {@code this} builder, for command chaining
