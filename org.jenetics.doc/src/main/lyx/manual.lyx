@@ -19914,7 +19914,11 @@ Engine
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
--ES.
+
+\emph on
+-ES
+\emph default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -19981,7 +19985,11 @@ To summarize it:
 \end_inset
 
 .
- ES practitioners usually refer to their algorithm by the choice of 
+ 
+\emph on
+ES
+\emph default
+ practitioners usually refer to their algorithm by the choice of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20090,7 +20098,11 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
--ES.
+
+\emph on
+-ES
+\emph default
+.
  The population size is set to 
 \begin_inset Formula $\lambda$
 \end_inset
