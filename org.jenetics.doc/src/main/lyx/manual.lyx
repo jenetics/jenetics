@@ -20050,7 +20050,7 @@ final Engine<DoubleGene, Double> engine =
 
 \begin_layout Plain Layout
 
-        .alterers(new Mutator<>())
+        .alterers(new Mutator<>(p))
 \end_layout
 
 \begin_layout Plain Layout
@@ -20132,6 +20132,85 @@ Selector
 .
  This parameterization prevents the selector from selecting individuals
  with a rank lower than 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+There are mainly three knobs for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+ where we can adjust exploration versus exploitation:
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Population size 
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\series default
+: This parameter controls the sample size for each population.
+ For the extreme case, as 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ approaches 
+\begin_inset Formula $\infty$
+\end_inset
+
+, the algorithm would perform a simple random search.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Survivors size of 
+\begin_inset Formula $\mu$
+\end_inset
+
+
+\series default
+: This parameter controls how selective the 
+\emph on
+ES
+\emph default
+ is.
+ Relatively low 
+\begin_inset Formula $\mu$
+\end_inset
+
+ values pushes the algorithm towards exploitative search, because only the
+ best individuals survive.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Mutation probability 
+\begin_inset Formula $p$
+\end_inset
+
+
+\series default
+: A high mutation probability pushes the algorithm toward a fairly random
+ search, regardless of the selectivity of 
 \begin_inset Formula $\mu$
 \end_inset
 
