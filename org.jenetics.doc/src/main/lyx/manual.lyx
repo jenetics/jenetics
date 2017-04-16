@@ -20184,7 +20184,7 @@ Population size
 \begin_layout Itemize
 
 \series bold
-Offspring size of 
+Survivors size of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20202,7 +20202,7 @@ ES
  values pushes the algorithm towards exploitative search, because only the
  best individuals are used for reproduction.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 As you can see in listing 
@@ -20212,7 +20212,7 @@ reference "lis:mu-lambda-Engine-configuration"
 
 \end_inset
 
-, the offspring size (reproduction pool size) for the 
+, the survivors size (reproduction pool size) for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -20230,6 +20230,19 @@ Truncation\SpecialChar softhyphen
 Selector
 \family default
  parameter.
+ This is necessary, since for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+, the selected best 
+\begin_inset Formula $\mu$
+\end_inset
+
+ individuals are not part of the population of the next generation.
 \end_layout
 
 \end_inset
@@ -20262,38 +20275,77 @@ Mutation probability
 \end_layout
 
 \begin_layout Standard
+In the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
- differs from 
-\begin_inset Formula $\left(\mu,\lambda\right)$
-\end_inset
 
- in only one respect: the Join operation.
- Recall that in 
-\begin_inset Formula $\left(\mu,\lambda\right)$
-\end_inset
-
- the parents are simply replaced with the children in the next generation.
- But in 
-\begin_inset Formula $\left(\mu+\lambda\right)$
-\end_inset
-
-, the next generation consists of the 
+\emph on
+-ES
+\emph default
+, the next generation consists of the selected best 
 \begin_inset Formula $\mu$
 \end_inset
 
- parents plus the 
+ parents and the 
 \begin_inset Formula $\lambda$
 \end_inset
 
  new children.
- That is, the parents compete with the kids next time around.
+ This is also the main difference to 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+, where the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are not part of the next generation.
  Thus the next and all successive generations are 
 \begin_inset Formula $\mu+\lambda$
 \end_inset
 
  in size.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ works with a constant population size and it is not possible to implement
+ an increasing population size.
+ Besides this restriction, the 
+\family typewriter
+Engine
+\family default
+ configuration for the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+ is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -20363,6 +20415,22 @@ name "lis:mu-plus-lambda-Engine-configuration"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Generally speaking, 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ may be more exploitative than 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ because high-fitness parents persist to compete with the children.
+ This has risks: a sufficiently fit parent may defeat other population members
+ over and over again, eventually causing the entire population to prematurely
+ converge to immediate descendants of that parent, at which point the whole
+ population has been trapped in the local optimum surrounding the parent.
 \end_layout
 
 \begin_layout Section
@@ -21872,7 +21940,7 @@ Methinks it is like a weasel
 , and we shall make it relatively easy by giving him a typewriter with a
  restricted keyboard, one with just the 26 (uppercase) letters, and a space
  bar.
- How long will he take to write this one little sentence? 
+ How long will he take to write this one little sentence?
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
@@ -21987,7 +22055,6 @@ progeny
  species is the final goal of evolution.
  In real life, the criterion for selection is always short-term, either
  simple survival or, more generally, reproductive success.
- 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
