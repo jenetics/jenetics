@@ -19867,7 +19867,11 @@ key "FEDR:FEDR19750860506"
 
  It is a global optimization algorithm and is an instance of an Evolutionary
  Algorithm from the field of Evolutionary Computation.
- ES uses truncation selection
+ 
+\emph on
+ES
+\emph default
+ uses truncation selection
 \begin_inset Foot
 status collapsed
 
@@ -19910,7 +19914,7 @@ Engine
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
- and 
+- and 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
