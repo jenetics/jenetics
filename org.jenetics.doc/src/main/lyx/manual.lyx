@@ -20111,11 +20111,8 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\lambda$
 \end_inset
 
- and the survivors size to 
-\begin_inset Formula $0$
-\end_inset
-
-, since the best parents are not part of the final population.
+ and the survivors size to zero, since the best parents are not part of
+ the final population.
  Step three is configured by setting the offspring selector to the 
 \family typewriter
 Truncation\SpecialChar softhyphen
@@ -20187,7 +20184,7 @@ Population size
 \begin_layout Itemize
 
 \series bold
-Survivors size of 
+Offspring size of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20203,7 +20200,41 @@ ES
 \end_inset
 
  values pushes the algorithm towards exploitative search, because only the
- best individuals survive.
+ best individuals are used for reproduction.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+As you can see in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+, the offspring size (reproduction pool size) for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES 
+\emph default
+must be set 
+\emph on
+indirectly
+\emph default
+ via the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ parameter.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
@@ -20263,6 +20294,75 @@ Mutation probability
 \end_inset
 
  in size.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(mu)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(p))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
