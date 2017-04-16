@@ -19867,17 +19867,54 @@ key "FEDR:FEDR19750860506"
 
  It is a global optimization algorithm and is an instance of an Evolutionary
  Algorithm from the field of Evolutionary Computation.
- ES uses truncation selection (
+ ES uses truncation selection
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "par:Truncation-selector"
 
 \end_inset
 
-) for selecting the individuals and usually mutation for changing the next
- generation.
- This section describes how to configure the evolution Engine for the different
- types of Evolution Strategies.
+.
+\end_layout
+
+\end_inset
+
+ for selecting the individuals and usually mutation
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Mutator"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for changing the next generation.
+ This section describes how to configure the evolution 
+\family typewriter
+Engine
+\family default
+ for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES.
 \end_layout
 
 \begin_layout Subsubsection
@@ -19888,23 +19925,20 @@ reference "par:Truncation-selector"
 \end_layout
 
 \begin_layout Standard
-Among the simplest ES algorithms is the 
+The 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
- algorithm.
- We begin with a population of (typically) 
+ algorithm starts by generating 
 \begin_inset Formula $\lambda$
 \end_inset
 
- number of individuals, generated randomly.
- We then iterate as follows.
- First we assess the fitness of all the individuals.
- Then we delete from the population all but the 
+ individuals randomly.
+ After evaluating the fintess of all the individuals, all but the 
 \begin_inset Formula $\mu$
 \end_inset
 
- fittest ones (this is all there’s to Truncation Selection).
+ fittest ones are deleted.
  Each of the 
 \begin_inset Formula $\mu$
 \end_inset
@@ -19913,15 +19947,183 @@ Among the simplest ES algorithms is the
 \begin_inset Formula $\frac{\lambda}{\mu}$
 \end_inset
 
- children through an ordinary Mutation.
- All told we’ve created 
+ children through an ordinary mutation.
+ The newly created children just replaces the discarded parents.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To summarize it: 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the number of parents which survive, and 
 \begin_inset Formula $\lambda$
 \end_inset
 
- new children.
- Our Join operation is simple: the children just replace the parents, who
- are discarded.
- The iteration continues anew.
+ is the number of offsprings, created by the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents.
+ The value of 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ should be a multiple of 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ ES practitioners usually refer to their algorithm by the choice of 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ If we set 
+\begin_inset Formula $\mu=5$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda=5$
+\end_inset
+
+, then we have a 
+\emph on
+
+\begin_inset Formula $\left(5,20\right)$
+\end_inset
+
+-ES
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(mu)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+ shows how to configure the evolution Engine for 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES.
+ The population size is set to 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and the survivors size to 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This corresponds to first two steps of the ES.
+ Step three is configured by setting the survivors- and offspring selectors
+ to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ Additionally, the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ is parameterized with 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This parameterization prevents the selector from selecting individuals
+ with a rank lower than 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
