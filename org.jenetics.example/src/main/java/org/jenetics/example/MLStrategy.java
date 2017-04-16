@@ -19,7 +19,9 @@ import org.jenetics.util.DoubleRange;
  * 3) λ is the number of kids that the μ parents make in total. Since only the
  *    offspring are altered, we also use the TruncationSelector for the offspring.
  *
- * @author Franz Wilhelmstötter <franz.wilhelmstoetter@emarsys.com>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 public class MLStrategy {
 
