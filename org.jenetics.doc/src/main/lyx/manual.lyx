@@ -3815,6 +3815,13 @@ Selector
 
 \begin_layout Paragraph
 Tournament selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Tournament-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3868,6 +3875,13 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 
 \begin_layout Paragraph
 Truncation selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Truncation-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3912,6 +3926,13 @@ ulation
 
 \begin_layout Paragraph
 Monte Carlo selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Monte-Carlo-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4615,6 +4636,13 @@ reference "eq:Number of genes"
 
 \begin_layout Paragraph
 Mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4710,6 +4738,13 @@ P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 
 \begin_layout Paragraph
 Gaussian mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Gaussian-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4749,6 +4784,13 @@ where
 
 \begin_layout Paragraph
 Swap mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Swap-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -19810,11 +19852,39 @@ s is much better than a random search.
 Evolution strategies
 \end_layout
 
+\begin_layout Standard
+Evolution Strategies, 
+\emph on
+ES
+\emph default
+, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
+ University of Berlin in the mid 1960s.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "FEDR:FEDR19750860506"
+
+\end_inset
+
+ It is a global optimization algorithm and is an instance of an Evolutionary
+ Algorithm from the field of Evolutionary Computation.
+ ES uses truncation selection (
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Truncation-selector"
+
+\end_inset
+
+) for selecting the individuals and usually mutation for changing the next
+ generation.
+ This section describes how to configure the evolution Engine for the different
+ types of Evolution Strategies.
+\end_layout
+
 \begin_layout Subsubsection
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
- evolution strategie
+ evolution strategy
 \end_layout
 
 \begin_layout Standard
@@ -19858,7 +19928,7 @@ Among the simplest ES algorithms is the
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
- evolution strategie
+ evolution strategy
 \end_layout
 
 \begin_layout Standard
