@@ -29,7 +29,7 @@ import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
 
 /**
- * The (μ + λ) evolution strategy is among the simplest ES algorithms.
+ * The (μ + λ) evolution strategy.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
