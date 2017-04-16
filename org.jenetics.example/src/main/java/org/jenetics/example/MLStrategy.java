@@ -5,6 +5,7 @@ import org.jenetics.Mutator;
 import org.jenetics.TruncationSelector;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
 
@@ -37,10 +38,18 @@ public class MLStrategy {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(MLStrategy::fitness, codec)
 			.populationSize(λ)
-			.survivorsSize(μ)
-			.selector(new TruncationSelector<>(μ))
+			.survivorsSize(0)
+			.offspringSelector(new TruncationSelector<>(μ))
 			.alterers(new Mutator<>(p))
 			.build();
+
+		System.out.println(
+			codec.decode(
+				engine.stream()
+					.limit(100)
+					.collect(EvolutionResult.toBestGenotype())
+			)
+		);
 	}
 
 }

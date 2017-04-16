@@ -20044,12 +20044,12 @@ final Engine<DoubleGene, Double> engine =
 
 \begin_layout Plain Layout
 
-        .survivorsSize(mu)
+        .survivorsSize(0)
 \end_layout
 
 \begin_layout Plain Layout
 
-        .selector(new TruncationSelector<>(mu))
+        .offspringSelector(new TruncationSelector<>(mu))
 \end_layout
 
 \begin_layout Plain Layout
@@ -20112,13 +20112,11 @@ reference "lis:mu-lambda-Engine-configuration"
 \end_inset
 
  and the survivors size to 
-\begin_inset Formula $\mu$
+\begin_inset Formula $0$
 \end_inset
 
-.
- This corresponds to first two steps of the ES.
- Step three is configured by setting the survivors- and offspring selectors
- to the 
+, since the best parents are not part of the final population.
+ Step three is configured by setting the offspring selector to the 
 \family typewriter
 Truncation\SpecialChar softhyphen
 Selector
@@ -20134,12 +20132,16 @@ Selector
 \end_inset
 
 .
- This parameterization prevents the selector from selecting individuals
- with a rank lower than 
+ This lets the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ only select the 
 \begin_inset Formula $\mu$
 \end_inset
 
-.
+ best individuals, which corresponds to step two of the ES.
 \end_layout
 
 \begin_layout Standard
