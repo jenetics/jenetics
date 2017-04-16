@@ -29,6 +29,7 @@ public class MLStrategy {
 	public static void main(final String[] args) {
 		final int μ = 5;
 		final int λ = 20;
+		final double p = 0.2;
 
 		final Codec<Double, DoubleGene> codec = codecs
 			.ofScalar(DoubleRange.of(0, 1));
@@ -38,7 +39,7 @@ public class MLStrategy {
 			.populationSize(λ)
 			.survivorsSize(μ)
 			.selector(new TruncationSelector<>(μ))
-			.alterers(new Mutator<>())
+			.alterers(new Mutator<>(p))
 			.build();
 	}
 
