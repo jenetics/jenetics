@@ -20324,8 +20324,8 @@ Jenetics
 \family default
 \series default
 \shape default
- works with a constant population size and it is not possible to implement
- an increasing population size.
+ works with a constant population size and it is therefore not possible
+ to implement an increasing population size.
  Besides this restriction, the 
 \family typewriter
 Engine
@@ -20418,19 +20418,59 @@ name "lis:mu-plus-lambda-Engine-configuration"
 \end_layout
 
 \begin_layout Standard
-Generally speaking, 
+Since the selected 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are part of the next generation, the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ property must be set to 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This also requires to set the survivors selector to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ With the 
+\family typewriter
+selector\SpecialChar softhyphen
+(Selector)
+\family default
+ method, both selectors, the selector for the survivors and for the offspring,
+ can be set.
+\end_layout
+
+\begin_layout Standard
+Because the best parents are also part of the next generation, the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
- may be more exploitative than 
+
+\emph on
+-ES 
+\emph default
+may be more exploitative than the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
- because high-fitness parents persist to compete with the children.
- This has risks: a sufficiently fit parent may defeat other population members
- over and over again, eventually causing the entire population to prematurely
- converge to immediate descendants of that parent, at which point the whole
- population has been trapped in the local optimum surrounding the parent.
+
+\emph on
+-ES
+\emph default
+.
+
+\emph on
+ 
+\emph default
+This has the risk, that very fit parents can defeat other individuals over
+ and over again, which leads to a prematurely convergence to a local optimum.
 \end_layout
 
 \begin_layout Section
