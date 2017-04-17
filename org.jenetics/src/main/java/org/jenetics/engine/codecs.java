@@ -22,7 +22,6 @@ package org.jenetics.engine;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
-import java.awt.geom.AffineTransform;
 import java.util.Objects;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -747,77 +746,77 @@ public final class codecs {
 
 	// https://trac.osgeo.org/postgis/wiki/DevWikiAffineParameters
 
-	/**
-	 * Creates a codec for a 2-dimensional affine transformation. The composed
-	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
-	 *
-	 * @param sx the scale factor range in x direction
-	 * @param sy the scale factor range in y direction
-	 * @param tx the translation range in x direction
-	 * @param ty the translation range in y direction
-	 * @param th the rotation range (in radians)
-	 * @param kx the shear range in x direction
-	 * @param ky the shear range in x direction
-	 * @return the affine transformation codec
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
-		final DoubleRange sx, final DoubleRange sy,
-		final DoubleRange tx, final DoubleRange ty,
-		final DoubleRange th,
-		final DoubleRange kx, final DoubleRange ky
-	) {
-		return Codec.of(
-			Genotype.of(
-				// Scale
-				DoubleChromosome.of(sx), DoubleChromosome.of(sy),
-				// Translation
-				DoubleChromosome.of(tx), DoubleChromosome.of(ty),
-				// Rotation
-				DoubleChromosome.of(th),
-				// Shear
-				DoubleChromosome.of(kx), DoubleChromosome.of(ky)
-			),
-			gt -> {
-				final AffineTransform at = new AffineTransform();
-
-				at.translate(
-					gt.getChromosome(2).getGene().doubleValue(),
-					gt.getChromosome(3).getGene().doubleValue()
-				);
-				at.shear(
-					gt.getChromosome(5).getGene().doubleValue(),
-					gt.getChromosome(6).getGene().doubleValue()
-				);
-				at.scale(
-					gt.getChromosome(0).getGene().doubleValue(),
-					gt.getChromosome(1).getGene().doubleValue()
-				);
-				at.rotate(gt.getChromosome(4).getGene().doubleValue());
-
-				return at;
-			}
-		);
-	}
-
-	/**
-	 * Creates a codec for a 2-dimensional affine transformation. The composed
-	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
-	 *
-	 * @param s the scale factor range in x and y direction
-	 * @param t the translation range in x and y direction
-	 * @param th the rotation angle range
-	 * @param k the shear range in x and y direction
-	 * @return the affine transformation codec
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
-		final DoubleRange s,
-		final DoubleRange t,
-		final DoubleRange th,
-		final DoubleRange k
-	) {
-		return ofAffineTransform(s, s, t, t, th, k, k);
-	}
+//	/**
+//	 * Creates a codec for a 2-dimensional affine transformation. The composed
+//	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
+//	 *
+//	 * @param sx the scale factor range in x direction
+//	 * @param sy the scale factor range in y direction
+//	 * @param tx the translation range in x direction
+//	 * @param ty the translation range in y direction
+//	 * @param th the rotation range (in radians)
+//	 * @param kx the shear range in x direction
+//	 * @param ky the shear range in x direction
+//	 * @return the affine transformation codec
+//	 * @throws NullPointerException if one of the arguments is {@code null}
+//	 */
+//	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
+//		final DoubleRange sx, final DoubleRange sy,
+//		final DoubleRange tx, final DoubleRange ty,
+//		final DoubleRange th,
+//		final DoubleRange kx, final DoubleRange ky
+//	) {
+//		return Codec.of(
+//			Genotype.of(
+//				// Scale
+//				DoubleChromosome.of(sx), DoubleChromosome.of(sy),
+//				// Translation
+//				DoubleChromosome.of(tx), DoubleChromosome.of(ty),
+//				// Rotation
+//				DoubleChromosome.of(th),
+//				// Shear
+//				DoubleChromosome.of(kx), DoubleChromosome.of(ky)
+//			),
+//			gt -> {
+//				final AffineTransform at = new AffineTransform();
+//
+//				at.translate(
+//					gt.getChromosome(2).getGene().doubleValue(),
+//					gt.getChromosome(3).getGene().doubleValue()
+//				);
+//				at.shear(
+//					gt.getChromosome(5).getGene().doubleValue(),
+//					gt.getChromosome(6).getGene().doubleValue()
+//				);
+//				at.scale(
+//					gt.getChromosome(0).getGene().doubleValue(),
+//					gt.getChromosome(1).getGene().doubleValue()
+//				);
+//				at.rotate(gt.getChromosome(4).getGene().doubleValue());
+//
+//				return at;
+//			}
+//		);
+//	}
+//
+//	/**
+//	 * Creates a codec for a 2-dimensional affine transformation. The composed
+//	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>
+//	 *
+//	 * @param s the scale factor range in x and y direction
+//	 * @param t the translation range in x and y direction
+//	 * @param th the rotation angle range
+//	 * @param k the shear range in x and y direction
+//	 * @return the affine transformation codec
+//	 * @throws NullPointerException if one of the arguments is {@code null}
+//	 */
+//	static Codec<AffineTransform, DoubleGene> ofAffineTransform(
+//		final DoubleRange s,
+//		final DoubleRange t,
+//		final DoubleRange th,
+//		final DoubleRange k
+//	) {
+//		return ofAffineTransform(s, s, t, t, th, k, k);
+//	}
 
 }

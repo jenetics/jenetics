@@ -48,8 +48,8 @@ import org.jenetics.util.RandomRegistry;
  *     Wikipedia: Uniform crossover</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.7
+ * @since 3.7
  */
 public class UniformCrossover<
 	G extends Gene<?, G>,
