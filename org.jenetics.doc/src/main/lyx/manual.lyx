@@ -3815,6 +3815,13 @@ Selector
 
 \begin_layout Paragraph
 Tournament selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Tournament-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3868,6 +3875,13 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 
 \begin_layout Paragraph
 Truncation selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Truncation-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3912,6 +3926,13 @@ ulation
 
 \begin_layout Paragraph
 Monte Carlo selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Monte-Carlo-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4615,6 +4636,13 @@ reference "eq:Number of genes"
 
 \begin_layout Paragraph
 Mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4710,6 +4738,13 @@ P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 
 \begin_layout Paragraph
 Gaussian mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Gaussian-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4749,6 +4784,13 @@ where
 
 \begin_layout Paragraph
 Swap mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Swap-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -19806,6 +19848,631 @@ Selector
 s is much better than a random search.
 \end_layout
 
+\begin_layout Subsection
+Evolution strategies
+\end_layout
+
+\begin_layout Standard
+Evolution Strategies, 
+\emph on
+ES
+\emph default
+, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
+ University of Berlin in the mid 1960s.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "FEDR:FEDR19750860506"
+
+\end_inset
+
+ It is a global optimization algorithm and is an instance of an Evolutionary
+ Algorithm from the field of Evolutionary Computation.
+ 
+\emph on
+ES
+\emph default
+ uses truncation selection
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Truncation-selector"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for selecting the individuals and usually mutation
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Mutator"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for changing the next generation.
+ This section describes how to configure the evolution 
+\family typewriter
+Engine
+\family default
+ for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+- and 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ evolution strategy
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ algorithm starts by generating 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ individuals randomly.
+ After evaluating the fintess of all the individuals, all but the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest ones are deleted.
+ Each of the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest individuals gets to produce 
+\begin_inset Formula $\frac{\lambda}{\mu}$
+\end_inset
+
+ children through an ordinary mutation.
+ The newly created children just replaces the discarded parents.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To summarize it: 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the number of parents which survive, and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the number of offsprings, created by the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents.
+ The value of 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ should be a multiple of 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ 
+\emph on
+ES
+\emph default
+ practitioners usually refer to their algorithm by the choice of 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ If we set 
+\begin_inset Formula $\mu=5$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda=5$
+\end_inset
+
+, then we have a 
+\emph on
+
+\begin_inset Formula $\left(5,20\right)$
+\end_inset
+
+-ES
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .offspringSelector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(p))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+ shows how to configure the evolution Engine for 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+.
+ The population size is set to 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and the survivors size to zero, since the best parents are not part of
+ the final population.
+ Step three is configured by setting the offspring selector to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ Additionally, the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ is parameterized with 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This lets the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ only select the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ best individuals, which corresponds to step two of the ES.
+\end_layout
+
+\begin_layout Standard
+There are mainly three knobs for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+ where we can adjust exploration versus exploitation:
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Population size 
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\series default
+: This parameter controls the sample size for each population.
+ For the extreme case, as 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ approaches 
+\begin_inset Formula $\infty$
+\end_inset
+
+, the algorithm would perform a simple random search.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Survivors size of 
+\begin_inset Formula $\mu$
+\end_inset
+
+
+\series default
+: This parameter controls how selective the 
+\emph on
+ES
+\emph default
+ is.
+ Relatively low 
+\begin_inset Formula $\mu$
+\end_inset
+
+ values pushes the algorithm towards exploitative search, because only the
+ best individuals are used for reproduction.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+As you can see in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+, the survivors size (reproduction pool size) for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES 
+\emph default
+must be set 
+\emph on
+indirectly
+\emph default
+ via the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ parameter.
+ This is necessary, since for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+, the selected best 
+\begin_inset Formula $\mu$
+\end_inset
+
+ individuals are not part of the population of the next generation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Mutation probability 
+\begin_inset Formula $p$
+\end_inset
+
+
+\series default
+: A high mutation probability pushes the algorithm toward a fairly random
+ search, regardless of the selectivity of 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ evolution strategy
+\end_layout
+
+\begin_layout Standard
+In the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+, the next generation consists of the selected best 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents and the 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ new children.
+ This is also the main difference to 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+, where the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are not part of the next generation.
+ Thus the next and all successive generations are 
+\begin_inset Formula $\mu+\lambda$
+\end_inset
+
+ in size.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ works with a constant population size and it is therefore not possible
+ to implement an increasing population size.
+ Besides this restriction, the 
+\family typewriter
+Engine
+\family default
+ configuration for the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+ is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(mu)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(p))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the selected 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are part of the next generation, the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ property must be set to 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This also requires to set the survivors selector to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ With the 
+\family typewriter
+selector\SpecialChar softhyphen
+(Selector)
+\family default
+ method, both selectors, the selector for the survivors and for the offspring,
+ can be set.
+\end_layout
+
+\begin_layout Standard
+Because the best parents are also part of the next generation, the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES 
+\emph default
+may be more exploitative than the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+.
+
+\emph on
+ 
+\emph default
+This has the risk, that very fit parents can defeat other individuals over
+ and over again, which leads to a prematurely convergence to a local optimum.
+\end_layout
+
 \begin_layout Section
 Internals
 \begin_inset Index idx
@@ -21313,7 +21980,7 @@ Methinks it is like a weasel
 , and we shall make it relatively easy by giving him a typewriter with a
  restricted keyboard, one with just the 26 (uppercase) letters, and a space
  bar.
- How long will he take to write this one little sentence? 
+ How long will he take to write this one little sentence?
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
@@ -21428,7 +22095,6 @@ progeny
  species is the final goal of evolution.
  In real life, the criterion for selection is always short-term, either
  simple survival or, more generally, reproductive success.
- 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
