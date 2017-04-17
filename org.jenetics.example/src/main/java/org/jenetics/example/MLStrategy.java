@@ -29,14 +29,7 @@ import org.jenetics.engine.codecs;
 import org.jenetics.util.DoubleRange;
 
 /**
- * The (μ, λ) evolution strategy is among the simplest ES algorithms.
- *
- * 1) We begin with a population of (typically) λ number of individuals,
- *    generated randomly.
- * 2) μ is the number of parents which survive. This is realized by setting the
- *    survivors selector to the TruncationSelector.
- * 3) λ is the number of kids that the μ parents make in total. Since only the
- *    offspring are altered, we also use the TruncationSelector for the offspring.
+ * The (μ, λ) evolution strategy.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
