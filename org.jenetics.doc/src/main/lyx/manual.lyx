@@ -4127,6 +4127,13 @@ Roulette-wheel selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Roulette-wheel-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4181,6 +4188,13 @@ status collapsed
 \begin_layout Plain Layout
 Linear-rank selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Linear-rank-selector"
 
 \end_inset
 
@@ -4255,6 +4269,13 @@ Exponential-rank selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Exponential-rank-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4308,6 +4329,13 @@ status collapsed
 \begin_layout Plain Layout
 Boltzmann selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Boltzmann-selector"
 
 \end_inset
 
@@ -4368,6 +4396,13 @@ status collapsed
 \begin_layout Plain Layout
 Stochastic-universal selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Stochastic-universal-selector"
 
 \end_inset
 
@@ -4468,6 +4503,13 @@ status collapsed
 \begin_layout Plain Layout
 Alterer
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Alterer"
 
 \end_inset
 
@@ -5682,6 +5724,16 @@ c
 
 \begin_layout Paragraph
 Uniform crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Uniform crossover
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5711,7 +5763,7 @@ key "chawdhry1998soft"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -5830,6 +5882,154 @@ final int[] indexes = IntRange.range(0, length)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph
+Line crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Line crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Line-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So far we’ve been doing crossovers that are just swaps: but if the vectors
+ are of floating-point values, our recombination could be something fuzzier,
+ like averaging the two values rather than swapping them.
+ Imagine if our two vectors were points in space.
+ We draw a line between the two points and choose two new points between
+ them.
+ We could extend this line somewhat beyond the points as well, as shown
+ in the dashed line in Figure 12, and pick along the line.
+ This algorithm, known as Line Recombination, here presented in the form
+ given by Heinz Muhlenbein and Dirk ̈ Schlierkamp-Voosen, depends on a variable
+ p which determines how far out along the line we’ll allow children to be.
+ If p = 0 then the children will be located along the line within the hypercube
+ (that is, between the two points).
+ If p > 0 then the children may be located anywhere on the line, even somewhat
+ outside of the hypercube.
+\end_layout
+
+\begin_layout Standard
+The line crossover takes two chromosomes and treats it as a vector.
+ Each vector can be seen as a point in the n-dimensiona hyperspace.
+ We can draw a line through the two points (chromosome) and change the chromosom
+e in a way that it lies on the line in the hyper cube.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
+	width 45text%
+	BoundingBox 0bp 0bp 424bp 299bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Line-crossover-hypercube"
+
+\end_inset
+
+Line crossover hypercube
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Line-crossover-hypercube"
+
+\end_inset
+
+ shows how the two chromosomes form the two three-dimensional vectors (black
+ circles).
+ The dashed line connects the two vectors.
+\end_layout
+
+\begin_layout Standard
+So far we’ve been doing crossovers that are just swaps: but if the vectors
+ are of floating-point values, our recombination could be something fuzzier,
+ like averaging the two values rather than swapping them.
+ Imagine if our two vectors were points in space.
+ We draw a line between the two points and choose two new points between
+ them.
+ We could extend this line somewhat beyond the points as well, as shown
+ in the dashed line in Figure 12, and pick along the line.
+ This algorithm, known as Line Recombination, here presented in the form
+ given by Heinz Muhlenbein and Dirk ̈ Schlierkamp-Voosen, depends on a variable
+ p which determines how far out along the line we’ll allow children to be.
+ If p = 0 then the children will be located along the line within the hypercube
+ (that is, between the two points).
+ If p > 0 then the children may be located anywhere on the line, even somewhat
+ outside of the hypercube.
+\end_layout
+
+\begin_layout Paragraph
+Intermediate crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Intermediate crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Intermediate-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We could extend this further by picking random a and b values for each position
+ in the vector.
+ This would result in children that are located within the hypercube or
+ (if p > 0) slightly outside of it.
+ Muhlenbein and Schlierkamp-Voosen call this ̈ Intermediate Recombination.
 \end_layout
 
 \begin_layout Subsection
@@ -19850,6 +20050,26 @@ s is much better than a random search.
 
 \begin_layout Subsection
 Evolution strategies
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -19930,6 +20150,20 @@ Engine
 \end_inset
 
  evolution strategy
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20272,6 +20506,20 @@ Mutation probability
 \end_inset
 
  evolution strategy
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
