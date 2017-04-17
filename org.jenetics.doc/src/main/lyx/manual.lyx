@@ -5941,7 +5941,6 @@ status open
 \begin_inset Graphics
 	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
 	width 45text%
-	BoundingBox 0bp 0bp 424bp 299bp
 	clip
 
 \end_inset
@@ -19035,7 +19034,10 @@ reference "lis:Steady-fitness-limit"
  shows the implementation of the 
 \family typewriter
 limit\SpecialChar softhyphen
-.bySteadyFitness(int)
+.byStea\SpecialChar softhyphen
+dy\SpecialChar softhyphen
+Fit\SpecialChar softhyphen
+ness(int)
 \family default
  in the 
 \family typewriter
