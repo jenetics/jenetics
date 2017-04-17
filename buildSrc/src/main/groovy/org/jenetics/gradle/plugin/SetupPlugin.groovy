@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version !__version__!
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -131,7 +131,7 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
-		project.task('testReport', dependsOn: 'test') << {
+		project.task('testReport', dependsOn: 'test').doLast {
 			project.jacocoTestReport.execute()
 		}
 	}
