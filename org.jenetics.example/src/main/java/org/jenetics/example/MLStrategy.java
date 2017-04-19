@@ -32,8 +32,8 @@ import org.jenetics.util.DoubleRange;
  * The (μ, λ) evolution strategy.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.8
+ * @since 3.8
  */
 public class MLStrategy {
 

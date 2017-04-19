@@ -38,7 +38,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.8
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -56,7 +56,7 @@ public final class TruncationSelector<
 	 * {@code n}. If {@code count > n}, the selected population will contain
 	 * <em>duplicate</em> individuals.
 	 *
-	 * @since !__version__!
+	 * @since 3.8
 	 *
 	 * @param n the worst rank of the selected individuals
 	 * @throws IllegalArgumentException if {@code n < 1}
