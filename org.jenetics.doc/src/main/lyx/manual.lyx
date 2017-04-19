@@ -5924,7 +5924,7 @@ key "Muhlenbein:1993:PMB:1326623.1326626"
 
 \end_inset
 
-  takes two 
+ takes two 
 \emph on
 numeric
 \emph default
@@ -7145,6 +7145,30 @@ offspringFraction
 \begin_inset Formula $0.6$
 \end_inset
 
+.
+ Additionally to this property, it is also possible to set the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
+, 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ or 
+\family typewriter
+offspringS\SpecialChar softhyphen
+ize
+\family default
+.
+ All this additional properties effectively set the 
+\family typewriter
+offspring\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
 .
 \end_layout
 
@@ -20157,11 +20181,11 @@ ES
 \end_layout
 
 \begin_layout Standard
-Evolution Strategies, 
+
 \emph on
-ES
+Evolution Strategies
 \emph default
-, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
+, ES, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
  University of Berlin in the mid 1960s.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -20169,8 +20193,15 @@ key "FEDR:FEDR19750860506"
 
 \end_inset
 
- It is a global optimization algorithm and is an instance of an Evolutionary
- Algorithm from the field of Evolutionary Computation.
+ It is a global optimization algorithm and is an instance of an
+\emph on
+ Evolutionary Algorithm
+\emph default
+ from the field of 
+\emph on
+Evolutionary Computation
+\emph default
+.
  
 \emph on
 ES
@@ -20222,11 +20253,7 @@ Engine
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
 \end_layout
 
 \begin_layout Subsubsection
@@ -20307,11 +20334,7 @@ To summarize it:
 \end_inset
 
 .
- 
-\emph on
-ES
-\emph default
- practitioners usually refer to their algorithm by the choice of 
+ ES practitioners usually refer to their algorithm by the choice of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20420,11 +20443,7 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
  The population size is set to 
 \begin_inset Formula $\lambda$
 \end_inset
@@ -20460,15 +20479,11 @@ Selector
 \end_layout
 
 \begin_layout Standard
-There are mainly three knobs for the 
+There are mainly three levers for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
- where we can adjust exploration versus exploitation:
+-ES where we can adjust exploration versus exploitation:
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
@@ -20508,11 +20523,7 @@ Survivors size of
 
 
 \series default
-: This parameter controls how selective the 
-\emph on
-ES
-\emph default
- is.
+: This parameter controls how selective the ES is.
  Relatively low 
 \begin_inset Formula $\mu$
 \end_inset
@@ -20534,9 +20545,9 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
+-ES
 \emph on
--ES 
+ 
 \emph default
 must be set 
 \emph on
@@ -20552,11 +20563,7 @@ Selector
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-, the selected best 
+-ES, the selected best 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20591,7 +20598,7 @@ Mutation probability
 
  evolution strategy
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution strategy!
@@ -20666,11 +20673,7 @@ Engine
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
- is shown in listing 
+-ES is shown in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:mu-plus-lambda-Engine-configuration"
@@ -20784,19 +20787,15 @@ Because the best parents are also part of the next generation, the
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
+-ES
 \emph on
--ES 
+ 
 \emph default
 may be more exploitative than the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
 
 \emph on
  
