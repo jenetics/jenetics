@@ -4127,6 +4127,13 @@ Roulette-wheel selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Roulette-wheel-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4181,6 +4188,13 @@ status collapsed
 \begin_layout Plain Layout
 Linear-rank selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Linear-rank-selector"
 
 \end_inset
 
@@ -4255,6 +4269,13 @@ Exponential-rank selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Exponential-rank-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4308,6 +4329,13 @@ status collapsed
 \begin_layout Plain Layout
 Boltzmann selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Boltzmann-selector"
 
 \end_inset
 
@@ -4368,6 +4396,13 @@ status collapsed
 \begin_layout Plain Layout
 Stochastic-universal selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Stochastic-universal-selector"
 
 \end_inset
 
@@ -4468,6 +4503,13 @@ status collapsed
 \begin_layout Plain Layout
 Alterer
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Alterer"
 
 \end_inset
 
@@ -5682,6 +5724,16 @@ c
 
 \begin_layout Paragraph
 Uniform crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Uniform crossover
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5711,7 +5763,7 @@ key "chawdhry1998soft"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -5830,6 +5882,235 @@ final int[] indexes = IntRange.range(0, length)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph
+Line crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Line crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Line-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The line crossover
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The line crossover, also known as line recombination, was originally described
+ by Heinz Mühlenbein and Dirk Schlierkamp-Voosen.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhlenbein:1993:PMB:1326623.1326626"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ takes two 
+\emph on
+numeric
+\emph default
+ chromosomes and treats it as a real number vector.
+ Each of this vectors can also be seen as a point in 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+.
+ If we draw a line through this two points (chromosome), we have the possible
+ values of the new chromosomes, which all lie on this line.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
+	width 40text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Line-crossover-hypercube"
+
+\end_inset
+
+Line crossover hypercube
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Line-crossover-hypercube"
+
+\end_inset
+
+ shows how the two chromosomes form the two three-dimensional vectors (black
+ circles).
+ The dashed line, connecting the two points, form the possible solutions
+ created by the line crossover.
+ An additional variable, 
+\begin_inset Formula $p$
+\end_inset
+
+, determines how far out along the line the created children will be.
+ If 
+\begin_inset Formula $p=0$
+\end_inset
+
+ then the children will be located along the line within the hypercube.
+ If 
+\begin_inset Formula $p>0$
+\end_inset
+
+, the children may be located on an arbitrary place on the line, even outside
+ of the hypercube.This is useful if you want to explore 
+\emph on
+unknown
+\emph default
+ regions, and you need a way to generate chromosomes further out than the
+ parents are.
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+internal
+\emph default
+ random parameters, which define the location of the new crossover point,
+ are generated once for the whole vector (chromosome).
+ If the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ generates numeric genes which lie outside the allowed minimum and maximum
+ value, it simply uses the original gene and rejects the generated, invalid
+ one.
+\end_layout
+
+\begin_layout Paragraph
+Intermediate crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Intermediate crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Intermediate-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The intermediate crossover is quite similar to the line crossover.
+ It differs in the way on how the 
+\emph on
+internal
+\emph default
+ random parameters are generated and the handling of the invalid–out of
+ range–genes.
+ The 
+\emph on
+internal
+\emph default
+ random parameters of the 
+\family typewriter
+Intermediate\SpecialChar softhyphen
+Crossover
+\family default
+ class are generated for 
+\emph on
+each
+\emph default
+ gene of the chromosome, instead once for all genes.
+ If the newly generated gene is not within the allowed range, a new one
+ is created.
+ This is repeated, until a valid gene is built.
+\end_layout
+
+\begin_layout Standard
+The crossover parameter, 
+\begin_inset Formula $p$
+\end_inset
+
+, has the same properties as for the line crossover.
+ If the chosen value for 
+\begin_inset Formula $p$
+\end_inset
+
+ is greater than 
+\begin_inset Formula $0$
+\end_inset
+
+, it is likely that some genes must be created more than once, because they
+ are not in the valid range.
+ The probability for gene re-creation rises sharply with the value of 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ Setting 
+\begin_inset Formula $p$
+\end_inset
+
+ to a value greater than one, doesn't make sense in most of the cases.
+ A value greater than 
+\begin_inset Formula $10$
+\end_inset
+
+ should be avoided.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -6864,6 +7145,30 @@ offspringFraction
 \begin_inset Formula $0.6$
 \end_inset
 
+.
+ Additionally to this property, it is also possible to set the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
+, 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ or 
+\family typewriter
+offspringS\SpecialChar softhyphen
+ize
+\family default
+.
+ All this additional properties effectively set the 
+\family typewriter
+offspring\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
 .
 \end_layout
 
@@ -18835,7 +19140,10 @@ reference "lis:Steady-fitness-limit"
  shows the implementation of the 
 \family typewriter
 limit\SpecialChar softhyphen
-.bySteadyFitness(int)
+.byStea\SpecialChar softhyphen
+dy\SpecialChar softhyphen
+Fit\SpecialChar softhyphen
+ness(int)
 \family default
  in the 
 \family typewriter
@@ -19850,14 +20158,34 @@ s is much better than a random search.
 
 \begin_layout Subsection
 Evolution strategies
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Evolution Strategies, 
+
 \emph on
-ES
+Evolution Strategies
 \emph default
-, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
+, ES, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
  University of Berlin in the mid 1960s.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -19865,8 +20193,15 @@ key "FEDR:FEDR19750860506"
 
 \end_inset
 
- It is a global optimization algorithm and is an instance of an Evolutionary
- Algorithm from the field of Evolutionary Computation.
+ It is a global optimization algorithm and is an instance of an
+\emph on
+ Evolutionary Algorithm
+\emph default
+ from the field of 
+\emph on
+Evolutionary Computation
+\emph default
+.
  
 \emph on
 ES
@@ -19918,11 +20253,7 @@ Engine
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
 \end_layout
 
 \begin_layout Subsubsection
@@ -19930,6 +20261,20 @@ Engine
 \end_inset
 
  evolution strategy
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -19942,7 +20287,7 @@ The
 \end_inset
 
  individuals randomly.
- After evaluating the fintess of all the individuals, all but the 
+ After evaluating the fitness of all the individuals, all but the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -19975,7 +20320,7 @@ To summarize it:
 \begin_inset Formula $\lambda$
 \end_inset
 
- is the number of offsprings, created by the 
+ is the number of offspring, created by the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -19989,11 +20334,7 @@ To summarize it:
 \end_inset
 
 .
- 
-\emph on
-ES
-\emph default
- practitioners usually refer to their algorithm by the choice of 
+ ES practitioners usually refer to their algorithm by the choice of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20102,11 +20443,7 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
  The population size is set to 
 \begin_inset Formula $\lambda$
 \end_inset
@@ -20142,15 +20479,11 @@ Selector
 \end_layout
 
 \begin_layout Standard
-There are mainly three knobs for the 
+There are mainly three levers for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
- where we can adjust exploration versus exploitation:
+-ES where we can adjust exploration versus exploitation:
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
@@ -20190,11 +20523,7 @@ Survivors size of
 
 
 \series default
-: This parameter controls how selective the 
-\emph on
-ES
-\emph default
- is.
+: This parameter controls how selective the ES is.
  Relatively low 
 \begin_inset Formula $\mu$
 \end_inset
@@ -20216,9 +20545,9 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
+-ES
 \emph on
--ES 
+ 
 \emph default
 must be set 
 \emph on
@@ -20234,11 +20563,7 @@ Selector
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-, the selected best 
+-ES, the selected best 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20272,6 +20597,20 @@ Mutation probability
 \end_inset
 
  evolution strategy
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20334,11 +20673,7 @@ Engine
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
- is shown in listing 
+-ES is shown in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:mu-plus-lambda-Engine-configuration"
@@ -20452,19 +20787,15 @@ Because the best parents are also part of the next generation, the
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
-
+-ES
 \emph on
--ES 
+ 
 \emph default
 may be more exploitative than the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-
-\emph on
--ES
-\emph default
-.
+-ES.
 
 \emph on
  
@@ -22022,7 +22353,6 @@ Weasel
 
 \begin_layout Enumerate
 Start with a random string of 28 characters.
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -22031,7 +22361,6 @@ Make
 \end_inset
 
  copies of the string (reproduce).
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -22049,7 +22378,6 @@ METHINKS IT IS LIKE A WEASEL
 
 , and give each a score (the number of letters in the string that are correct
  and in the correct position).
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -24665,7 +24993,7 @@ Version
 \series default
 :
 \emph on
- 6.9.13
+ 6.10
 \end_layout
 
 \begin_layout Itemize
@@ -24677,7 +25005,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -24980,7 +25308,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 3.1
+: 3.5
 \end_layout
 
 \begin_layout Itemize
@@ -24992,7 +25320,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -25013,11 +25341,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-3.1-bin.zip
+http://services.gradle.org/distributions/gradle-3.5-bin.zip
 \end_layout
 
 \end_inset
