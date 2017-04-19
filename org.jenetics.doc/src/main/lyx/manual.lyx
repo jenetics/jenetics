@@ -5906,13 +5906,31 @@ name "par:Line-crossover"
 \end_layout
 
 \begin_layout Standard
-The line crossover takes two 
+The line crossover
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The line crossover, also known as line recombination, was originally described
+ by Heinz Mühlenbein and Dirk Schlierkamp-Voosen.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhlenbein:1993:PMB:1326623.1326626"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+  takes two 
 \emph on
 numeric
 \emph default
  chromosomes and treats it as a real number vector.
  Each of this vectors can also be seen as a point in 
-\begin_inset Formula $\mathbb{R^{n}}$
+\begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
 
 .
@@ -5988,25 +6006,12 @@ reference "fig:Line-crossover-hypercube"
 \end_inset
 
 , the children may be located on an arbitrary place on the line, even outside
- of the hypercube.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The line crossover, also known as line recombination, was originally described
- by Heinz Mühlenbein and Dirk Schlierkamp-Voosen.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Muhlenbein:1993:PMB:1326623.1326626"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+ of the hypercube.This is useful if you want to explore 
+\emph on
+unknown
+\emph default
+ regions, and you need a way to generate chromosomes further out than the
+ parents are.
 \end_layout
 
 \begin_layout Standard
@@ -6014,7 +6019,7 @@ The
 \emph on
 internal
 \emph default
-, random parameters, which define the location of the new crossover point,
+ random parameters, which define the location of the new crossover point,
  are generated once for the whole vector (chromosome).
  If the 
 \family typewriter
@@ -6048,11 +6053,64 @@ name "par:Intermediate-crossover"
 \end_layout
 
 \begin_layout Standard
-We could extend this further by picking random a and b values for each position
- in the vector.
- This would result in children that are located within the hypercube or
- (if p > 0) slightly outside of it.
- Muhlenbein and Schlierkamp-Voosen call this ̈ Intermediate Recombination.
+The intermediate crossover is quite similar to the line crossover.
+ It differs in the way on how the 
+\emph on
+internal
+\emph default
+ random parameters are generated and the handling of the invalid–out of
+ range–genes.
+ The 
+\emph on
+internal
+\emph default
+ random parameters of the 
+\family typewriter
+Intermediate\SpecialChar softhyphen
+Crossover
+\family default
+ class are generated for 
+\emph on
+each
+\emph default
+ gene of the chromosome, instead once for all genes.
+ If the newly generated gene is not within the allowed range, a new one
+ is created.
+ This is repeated, until a valid gene is built.
+\end_layout
+
+\begin_layout Standard
+The crossover parameter, 
+\begin_inset Formula $p$
+\end_inset
+
+, has the same properties as for the line crossover.
+ If the chosen value for 
+\begin_inset Formula $p$
+\end_inset
+
+ is greater than 
+\begin_inset Formula $0$
+\end_inset
+
+, it is likely that some genes must be created more than once, because they
+ are not in the valid range.
+ The probability for gene re-creation rises sharply with the value of 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ Setting 
+\begin_inset Formula $p$
+\end_inset
+
+ to a value greater than one, doesn't make sense in most of the cases.
+ A value greater than 
+\begin_inset Formula $10$
+\end_inset
+
+ should be avoided.
+ 
 \end_layout
 
 \begin_layout Subsection
