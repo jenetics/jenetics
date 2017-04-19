@@ -20178,7 +20178,7 @@ The
 \end_inset
 
  individuals randomly.
- After evaluating the fintess of all the individuals, all but the 
+ After evaluating the fitness of all the individuals, all but the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -20211,7 +20211,7 @@ To summarize it:
 \begin_inset Formula $\lambda$
 \end_inset
 
- is the number of offsprings, created by the 
+ is the number of offspring, created by the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -22272,7 +22272,6 @@ Weasel
 
 \begin_layout Enumerate
 Start with a random string of 28 characters.
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -22281,7 +22280,6 @@ Make
 \end_inset
 
  copies of the string (reproduce).
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -22299,7 +22297,6 @@ METHINKS IT IS LIKE A WEASEL
 
 , and give each a score (the number of letters in the string that are correct
  and in the correct position).
- 
 \end_layout
 
 \begin_layout Enumerate
