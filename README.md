@@ -1,4 +1,4 @@
-# Jenetics (_3.7.0_)
+# Jenetics (_3.8.0_)
 
 **Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
@@ -17,19 +17,19 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 3.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.9.13**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 6.10**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.7.0/jenetics-3.7.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.8.0/jenetics-3.8.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `io.jenetics:jenetics:3.7.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
+*  **Maven**: `io.jenetics:jenetics:3.8.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 
 ## Build Jenetics
 
 ![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.7.0/jenetics-3.7.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.8.0/jenetics-3.8.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -174,29 +174,23 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-### [3.7.0](https://github.com/jenetics/jenetics/releases/tag/v3.7.0)
+### [3.8.0](https://github.com/jenetics/jenetics/releases/tag/v3.8.0)
 
 #### Improvements
 
-* [#127](https://github.com/jenetics/jenetics/issues/127): Change the maven group and artifact ID from `org.bitbucket:org.jenetics` to `io.jenetics:jenetics`.
-* [#142](https://github.com/jenetics/jenetics/issues/142): Jenetics now compiles without warnings with Java 9 EA.
-* [#145](https://github.com/jenetics/jenetics/issues/145): Add additional `Engine.stream(...)` and `Engine.iterator(...)` methods:
-    * [stream(Iterable<Genotype<G>> genotypes)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-java.lang.Iterable-)
-    * [stream(Iterable<Genotype<G>> genotypes, long generation)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-java.lang.Iterable-long-)
-    * [stream(EvolutionResult<G, C> result)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#stream-org.jenetics.engine.EvolutionResult-)
-    * [iterator(Iterable<Genotype<G>> genotypes, long generation)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-java.lang.Iterable-)
-    * [iterator(Population<G, C> population)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-org.jenetics.Population-)
-    * [iterator(EvolutionResult<G, C> result)](http://jenetics.io/javadoc/org.jenetics/3.7/org/jenetics/engine/Engine.html#iterator-org.jenetics.engine.EvolutionResult-)
-* [#150](https://github.com/jenetics/jenetics/issues/150): Implement _fitness convergence_ termination strategy.    
-* [#152](https://github.com/jenetics/jenetics/issues/152): Remove `hashCode` and replace `equals` method with `sameState(T)` for mutable objects.
-* [#156](https://github.com/jenetics/jenetics/issues/156): Implementation of an [UniformCrossover](https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover).
-* [#162](https://github.com/jenetics/jenetics/issues/162): Update and improve _User's Manual_.
-
-#### Bug fixes
-
-* [#143](https://github.com/jenetics/jenetics/issues/143): Fix serialization of `EvolutionResult` class.
-* [#146](https://github.com/jenetics/jenetics/issues/146): NPE in `EvolutionResult.toBestEvolutionResult()` when collecting empty `EvolutionStream`s.
-* [#159](https://github.com/jenetics/jenetics/issues/159): The _User's Manual_ build fails for [Lyx](http://www.lyx.org/) version 2.2.2. 
+* [#157](https://github.com/jenetics/jenetics/issues/157): Add `LineCrossover` class.
+* [#158](https://github.com/jenetics/jenetics/issues/158): Add `IntermediateCrossover` class.
+* [#168](https://github.com/jenetics/jenetics/issues/168): Remove dependency to `java.desktop` module.
+* [#169](https://github.com/jenetics/jenetics/issues/169): Describe how to configure (μ, λ) and (μ + λ) Evolution Strategies in manual.
+* [#177](https://github.com/jenetics/jenetics/issues/177): Additional 'Seq' conversion functions:
+    * [Seq.asISeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asISeq--)
+    * [Seq.asMSeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asMSeq--)    
+* [#182](https://github.com/jenetics/jenetics/issues/182): Rename build script to default names. All build scripts are now named `build.gradle`.
+* [#188](https://github.com/jenetics/jenetics/issues/188): Additional `Engine.Builder` methods
+    * [Engine.Builder.survivorsSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsSize-int-)
+    * [Engine.Builder.offspringSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#offspringSize-int-)   
+    * [Engine.Builder.survivorsFraction(double)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsFraction-double-)      
+* [#189](https://github.com/jenetics/jenetics/issues/189): `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

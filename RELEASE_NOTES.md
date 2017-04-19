@@ -1,5 +1,23 @@
 ## Release notes
 
+### [3.8.0](https://github.com/jenetics/jenetics/releases/tag/v3.8.0)
+
+#### Improvements
+
+* [#157](https://github.com/jenetics/jenetics/issues/157): Add `LineCrossover` class.
+* [#158](https://github.com/jenetics/jenetics/issues/158): Add `IntermediateCrossover` class.
+* [#168](https://github.com/jenetics/jenetics/issues/168): Remove dependency to `java.desktop` module.
+* [#169](https://github.com/jenetics/jenetics/issues/169): Describe how to configure (μ, λ) and (μ + λ) Evolution Strategies in manual.
+* [#177](https://github.com/jenetics/jenetics/issues/177): Additional 'Seq' conversion functions:
+    * [Seq.asISeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asISeq--)
+    * [Seq.asMSeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asMSeq--)    
+* [#182](https://github.com/jenetics/jenetics/issues/182): Rename build script to default names. All build scripts are now named `build.gradle`.
+* [#188](https://github.com/jenetics/jenetics/issues/188): Additional `Engine.Builder` methods
+    * [Engine.Builder.survivorsSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsSize-int-)
+    * [Engine.Builder.offspringSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#offspringSize-int-)   
+    * [Engine.Builder.survivorsFraction(double)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsFraction-double-)      
+* [#189](https://github.com/jenetics/jenetics/issues/189): `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
+
 ### [3.7.0](https://github.com/jenetics/jenetics/releases/tag/v3.7.0)
 
 #### Improvements
