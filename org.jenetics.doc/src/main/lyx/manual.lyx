@@ -5906,28 +5906,18 @@ name "par:Line-crossover"
 \end_layout
 
 \begin_layout Standard
-So far we’ve been doing crossovers that are just swaps: but if the vectors
- are of floating-point values, our recombination could be something fuzzier,
- like averaging the two values rather than swapping them.
- Imagine if our two vectors were points in space.
- We draw a line between the two points and choose two new points between
- them.
- We could extend this line somewhat beyond the points as well, as shown
- in the dashed line in Figure 12, and pick along the line.
- This algorithm, known as Line Recombination, here presented in the form
- given by Heinz Muhlenbein and Dirk ̈ Schlierkamp-Voosen, depends on a variable
- p which determines how far out along the line we’ll allow children to be.
- If p = 0 then the children will be located along the line within the hypercube
- (that is, between the two points).
- If p > 0 then the children may be located anywhere on the line, even somewhat
- outside of the hypercube.
-\end_layout
+The line crossover takes two 
+\emph on
+numeric
+\emph default
+ chromosomes and treats it as a real number vector.
+ Each of this vectors can also be seen as a point in 
+\begin_inset Formula $\mathbb{R^{n}}$
+\end_inset
 
-\begin_layout Standard
-The line crossover takes two chromosomes and treats it as a vector.
- Each vector can be seen as a point in the n-dimensiona hyperspace.
- We can draw a line through the two points (chromosome) and change the chromosom
-e in a way that it lies on the line in the hyper cube.
+.
+ If we draw a line through this two points (chromosome), we have the possible
+ values of the new chromosomes, which all lie on this line.
 \end_layout
 
 \begin_layout Standard
@@ -5940,7 +5930,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
-	width 45text%
+	width 40text%
 	clip
 
 \end_inset
@@ -5981,25 +5971,59 @@ reference "fig:Line-crossover-hypercube"
 
  shows how the two chromosomes form the two three-dimensional vectors (black
  circles).
- The dashed line connects the two vectors.
+ The dashed line, connecting the two points, form the possible solutions
+ created by the line crossover.
+ An additional variable, 
+\begin_inset Formula $p$
+\end_inset
+
+, determines how far out along the line the created children will be.
+ If 
+\begin_inset Formula $p=0$
+\end_inset
+
+ then the children will be located along the line within the hypercube.
+ If 
+\begin_inset Formula $p>0$
+\end_inset
+
+, the children may be located on an arbitrary place on the line, even outside
+ of the hypercube.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The line crossover, also known as line recombination, was originally described
+ by Heinz Mühlenbein and Dirk Schlierkamp-Voosen.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhlenbein:1993:PMB:1326623.1326626"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-So far we’ve been doing crossovers that are just swaps: but if the vectors
- are of floating-point values, our recombination could be something fuzzier,
- like averaging the two values rather than swapping them.
- Imagine if our two vectors were points in space.
- We draw a line between the two points and choose two new points between
- them.
- We could extend this line somewhat beyond the points as well, as shown
- in the dashed line in Figure 12, and pick along the line.
- This algorithm, known as Line Recombination, here presented in the form
- given by Heinz Muhlenbein and Dirk ̈ Schlierkamp-Voosen, depends on a variable
- p which determines how far out along the line we’ll allow children to be.
- If p = 0 then the children will be located along the line within the hypercube
- (that is, between the two points).
- If p > 0 then the children may be located anywhere on the line, even somewhat
- outside of the hypercube.
+The 
+\emph on
+internal
+\emph default
+, random parameters, which define the location of the new crossover point,
+ are generated once for the whole vector (chromosome).
+ If the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ generates numeric genes which lie outside the allowed minimum and maximum
+ value, it simply uses the original gene and rejects the generated, invalid
+ one.
 \end_layout
 
 \begin_layout Paragraph
