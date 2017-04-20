@@ -7290,6 +7290,24 @@ Result
 \begin_layout Description
 
 \family typewriter
+selector
+\family default
+ This method allows to set the 
+\family typewriter
+offspringSelector
+\family default
+ and 
+\family typewriter
+survivors\SpecialChar softhyphen
+Selec\SpecialChar softhyphen
+tor
+\family default
+ in one step with the same selector.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 survivorsSelector
 \family default
  This property defines the 
@@ -7304,8 +7322,8 @@ Population
  The default values is set to 
 \family typewriter
 Tournament\SpecialChar softhyphen
-Select\SpecialChar softhyphen
-or<>(3)
+Selec\SpecialChar softhyphen
+tor<>(3)
 \family default
 .
 \end_layout
@@ -20193,7 +20211,8 @@ key "FEDR:FEDR19750860506"
 
 \end_inset
 
- It is a global optimization algorithm and is an instance of an
+ It is a global optimization algorithm in continuous search spaces and is
+ an instance of an
 \emph on
  Evolutionary Algorithm
 \emph default
@@ -20202,11 +20221,7 @@ key "FEDR:FEDR19750860506"
 Evolutionary Computation
 \emph default
 .
- 
-\emph on
-ES
-\emph default
- uses truncation selection
+ ES uses truncation selection
 \begin_inset Foot
 status collapsed
 
@@ -20245,7 +20260,7 @@ reference "par:Mutator"
 \family typewriter
 Engine
 \family default
- for the 
+ of the library for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -20357,9 +20372,9 @@ To summarize it:
 \begin_inset Formula $\left(5,20\right)$
 \end_inset
 
--ES
+
 \emph default
-.
+-ES.
 \end_layout
 
 \begin_layout Standard
@@ -21303,7 +21318,7 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return System.nanoTime(); 
+    return System.nanoTime();
 \end_layout
 
 \begin_layout Plain Layout
