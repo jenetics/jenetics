@@ -68,7 +68,8 @@ final class RunnablesAction extends RecursiveAction {
 	protected void compute() {
 		final int threshold = _threshold != null ? _threshold : threshold();
 
-		if (_high - _low < threshold) {
+		if ((_high - _low) <= 1 || getSurplusQueuedTaskCount() > 3) {
+		//if (_high - _low < threshold) {
 			for (int i = _low; i < _high; ++i) {
 				_runnables.get(i).run();
 			}
