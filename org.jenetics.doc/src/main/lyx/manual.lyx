@@ -8912,6 +8912,168 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
  for concurrency.
 \end_layout
 
+\begin_layout Paragraph
+Concurrency tweaks
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses different strategies for minimizing the concurrency overhead, depending
+ on the configured 
+\family typewriter
+Exe\SpecialChar softhyphen
+cutor
+\family default
+.
+ For the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family default
+, the fitness evaluation of the population is done by recursively dividing
+ it into sub-populations using the abstract 
+\family typewriter
+Recursive\SpecialChar softhyphen
+Action
+\family default
+ class.
+ If a minimal sub-population size is reached, the fitness values for this
+ sub-population are directly evaluated.
+ The default value of this threshold is five and can be controlled via the
+ 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+ system property.
+ Besides the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+, the size of the evaluated sub-population is dynamically determined by
+ the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+.get\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count()
+\family default
+ method.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Excerpt from the Javadoc: 
+\emph on
+Returns an estimate of how many more locally queued tasks are held by the
+ current worker thread than there are other worker threads that might steal
+ them.
+ This value may be useful for heuristic decisions about whether to fork
+ other tasks.
+ In many usages of 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Tasks
+\family default
+, at steady state, each worker should aim to maintain a small constant surplus
+ (for example, 3) of tasks, and to process computations locally if this
+ threshold is exceeded.
+\end_layout
+
+\end_inset
+
+ If this value is greater than three, the fitness values of the current
+ sub-population are also evaluated immediately.
+ The default value can be overridden by the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+ system property.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.splitThreshold=1 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+You may want to tweak this parameters, if you realize a low CPU utilization
+ during the fitness value evaluation.
+ Long running fitness function could lead to CPU under-utilization while
+ evaluating the last sub-population.
+ In this case, only one core is busy, while the other cores are idle, because
+ they are already finished the fitness evaluation.
+ Since the workload has been already distributed, no 
+\emph on
+work-stealing
+\emph default
+ is possible.
+ Reducing the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+ can help to have a more equal workload distribution between the available
+ CPUs.
+ Reducing the 
+\family typewriter
+max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+ property will create a more uniform workload for fitness function with
+ heavily varying computation cost for different genotype values.
+\end_layout
+
 \begin_layout Subsection
 Randomness
 \begin_inset Index idx
