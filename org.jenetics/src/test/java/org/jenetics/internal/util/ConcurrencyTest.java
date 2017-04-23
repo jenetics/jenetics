@@ -27,14 +27,12 @@ import java.util.concurrent.CancellationException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class ConcurrencyTest {
 
-	//@Test
+	//@org.testng.annotations.Test
 	public void cpuTime() {
 		final Random random = new Random(123);
 
