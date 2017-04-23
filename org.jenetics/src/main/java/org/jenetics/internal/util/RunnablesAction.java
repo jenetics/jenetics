@@ -82,7 +82,7 @@ final class RunnablesAction extends RecursiveAction {
 			doPrivileged(
 				(PrivilegedAction<Integer>)() -> Integer.getInteger(
 					"io.jenetics.concurrency.splitThreshold",
-					1
+					5
 				)),
 			1
 		);
