@@ -146,8 +146,8 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			final int[] parts = partition(
 				runnables.size(),
 				max(
-					CORES + 1,
-					(int)ceil(runnables.size()/(double)MaxBatchSize.VALUE)
+					(CORES + 1)*2,
+					(int)ceil(runnables.size()/(double) Env.maxBatchSize)
 				)
 			);
 
@@ -174,8 +174,8 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 			}
 		}
 
-		private static final class MaxBatchSize {
-			private static final int VALUE = max(
+		private static final class Env {
+			private static final int maxBatchSize = max(
 				doPrivileged(
 					(PrivilegedAction<Integer>)() -> Integer.getInteger(
 						"io.jenetics.concurrency.maxBatchSize",

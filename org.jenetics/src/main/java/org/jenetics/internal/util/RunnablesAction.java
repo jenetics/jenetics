@@ -62,8 +62,8 @@ final class RunnablesAction extends RecursiveAction {
 
 	@Override
 	protected void compute() {
-		if ((_high - _low) <= SplitThreshold.VALUE ||
-			getSurplusQueuedTaskCount() > 3)
+		if ((_high - _low) <= Env.splitThreshold ||
+			getSurplusQueuedTaskCount() > Env.maxSurplusQueuedTaskCount)
 		{
 			for (int i = _low; i < _high; ++i) {
 				_runnables.get(i).run();
@@ -77,12 +77,21 @@ final class RunnablesAction extends RecursiveAction {
 		}
 	}
 
-	private static final class SplitThreshold {
-		private static final int VALUE = max(
+	private static final class Env {
+		private static final int splitThreshold = max(
 			doPrivileged(
 				(PrivilegedAction<Integer>)() -> Integer.getInteger(
 					"io.jenetics.concurrency.splitThreshold",
 					1
+				)),
+			1
+		);
+
+		private static final int maxSurplusQueuedTaskCount = max(
+			doPrivileged(
+				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+					"io.jenetics.concurrency.maxSurplusQueuedTaskCount",
+					3
 				)),
 			1
 		);
