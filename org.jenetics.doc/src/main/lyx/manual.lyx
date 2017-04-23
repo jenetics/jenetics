@@ -8934,10 +8934,12 @@ cutor
 .
  For the 
 \family typewriter
+\series bold
 Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool
 \family default
+\series default
 , the fitness evaluation of the population is done by recursively dividing
  it into sub-populations using the abstract 
 \family typewriter
@@ -9072,6 +9074,72 @@ Count
 \family default
  property will create a more uniform workload for fitness function with
  heavily varying computation cost for different genotype values.
+\end_layout
+
+\begin_layout Standard
+If the Engine is using an 
+\family typewriter
+\series bold
+Executor\SpecialChar softhyphen
+Service
+\family default
+\series default
+, a different optimization strategy is used for reducing the concurrency
+ overhead.
+ The original population is divided into a fixed number
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The number of sub-populations actually depends on the number of available
+ CPU cores.
+\end_layout
+
+\end_inset
+
+ of sub-populations, and the fitness values of each sub-population are evaluated
+ by one thread.
+ For long running fitness functions, it is better to have smaller sub-population
+s for a better CPU utilization.
+ With the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Batch\SpecialChar softhyphen
+Size
+\family default
+ system property, it is possible to reduce the sub-population size.
+ The default value is set to 
+\family typewriter
+Inte\SpecialChar softhyphen
+ger\SpecialChar softhyphen
+.MAX_\SpecialChar softhyphen
+VALUE
+\family default
+.
+ This means, that only the number of CPU cores influences the 
+\emph on
+batch
+\emph default
+ size.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.maxBatchSize=3 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
 \end_layout
 
 \begin_layout Subsection
