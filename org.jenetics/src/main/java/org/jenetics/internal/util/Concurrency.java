@@ -19,8 +19,12 @@
  */
 package org.jenetics.internal.util;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.max;
+import static java.security.AccessController.doPrivileged;
 import static java.util.Objects.requireNonNull;
 
+import java.security.PrivilegedAction;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +39,7 @@ import org.jenetics.internal.collection.Stack;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
+ * @version !__version__!
  * @since 2.0
  */
 public abstract class Concurrency implements Executor, AutoCloseable {
@@ -139,7 +143,14 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final List<? extends Runnable> runnables) {
-			final int[] parts = partition(runnables.size(), CORES + 1);
+			final int[] parts = partition(
+				runnables.size(),
+				max(
+					CORES + 1,
+					(int)ceil(runnables.size()/(double)MaxBatchSize.VALUE)
+				)
+			);
+
 			for (int i = 0; i < parts.length - 1; ++i) {
 				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
 			}
@@ -161,6 +172,17 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 				throw (CancellationException)new CancellationException(msg)
 					.initCause(e);
 			}
+		}
+
+		private static final class MaxBatchSize {
+			private static final int VALUE = max(
+				doPrivileged(
+					(PrivilegedAction<Integer>)() -> Integer.getInteger(
+						"io.jenetics.concurrency.maxBatchSize",
+						Integer.MAX_VALUE
+					)),
+				1
+			);
 		}
 	}
 
