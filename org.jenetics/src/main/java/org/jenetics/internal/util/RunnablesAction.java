@@ -20,7 +20,9 @@
 package org.jenetics.internal.util;
 
 import static java.lang.Math.max;
+import static java.security.AccessController.doPrivileged;
 
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.RandomAccess;
@@ -28,61 +30,71 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
+ * @version !__version__!
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
-	private static final int DEFAULT_THRESHOLD = 7;
-
 	private final List<? extends Runnable> _runnables;
 	private final int _high;
 	private final int _low;
-	private final Integer _threshold;
 
 	private RunnablesAction(
 		final List<? extends Runnable> runnables,
 		final int low,
-		final int high,
-		final Integer threshold
+		final int high
 	) {
 		_runnables = runnables;
 		_low = low;
 		_high = high;
-		_threshold = threshold;
 	}
 
-	public RunnablesAction(final List<? extends Runnable> runnables) {
+	RunnablesAction(final List<? extends Runnable> runnables) {
 		this(
-			runnables instanceof RandomAccess ?
-				runnables :
-				new ArrayList<>(runnables),
+			runnables instanceof RandomAccess
+				? runnables
+				: new ArrayList<>(runnables),
 			0,
-			runnables.size(),
-			null
+			runnables.size()
 		);
 	}
 
 	@Override
 	protected void compute() {
-		final int threshold = _threshold != null ? _threshold : threshold();
-
-		if (_high - _low < threshold) {
+		if ((_high - _low) <= Env.splitThreshold ||
+			getSurplusQueuedTaskCount() > Env.maxSurplusQueuedTaskCount)
+		{
 			for (int i = _low; i < _high; ++i) {
 				_runnables.get(i).run();
 			}
 		} else {
 			final int mid = (_low + _high) >>> 1;
 			invokeAll(
-				new RunnablesAction(_runnables, _low, mid, threshold),
-				new RunnablesAction(_runnables, mid, _high, threshold)
+				new RunnablesAction(_runnables, _low, mid),
+				new RunnablesAction(_runnables, mid, _high)
 			);
 		}
 	}
 
-	private int threshold() {
-		return max(_runnables.size()/(Concurrency.CORES*2), DEFAULT_THRESHOLD);
+	private static final class Env {
+		private static final int splitThreshold = max(
+			doPrivileged(
+				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+					"io.jenetics.concurrency.splitThreshold",
+					5
+				)),
+			1
+		);
+
+		private static final int maxSurplusQueuedTaskCount = max(
+			doPrivileged(
+				(PrivilegedAction<Integer>)() -> Integer.getInteger(
+					"io.jenetics.concurrency.maxSurplusQueuedTaskCount",
+					3
+				)),
+			1
+		);
 	}
 
 }

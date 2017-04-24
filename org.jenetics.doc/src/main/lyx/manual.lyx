@@ -5947,7 +5947,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
+	filename ../resources/graphic/LineCrossoverHyperCube.eps
 	width 40text%
 	clip
 
@@ -8740,7 +8740,24 @@ The
  shared by all phenotypes of a population.
  The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
- The used 
+\end_layout
+
+\begin_layout Subsubsection
+Basic configuration
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!configuration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The used 
 \family typewriter
 Executor
 \family default
@@ -8910,6 +8927,517 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
 
 \family default
  for concurrency.
+ 
+\end_layout
+
+\begin_layout Standard
+Sometimes it might be useful to run the evaluation 
+\family typewriter
+Engine
+\family default
+ single-threaded, or even execute all operations in the main thread.
+ This can be easily achieved by setting the appropriate 
+\family typewriter
+Executor
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in the main thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor((Executor)Runnable::run)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to do the 
+\family typewriter
+Engine
+\family default
+ operations in the main thread.
+ Whereas the snippet below executes the 
+\family typewriter
+Engine
+\family default
+ operations in a single thread, other than the main thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in a single thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor(Executors.newSingleThreadExecutor())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Such a configuration can be useful for performing reproducible (performance)
+ tests, without the uncertainty of a concurrent execution environment.
+\end_layout
+
+\begin_layout Subsubsection
+Concurrency tweaks
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!tweaks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses different strategies for minimizing the concurrency overhead, depending
+ on the configured 
+\family typewriter
+Exe\SpecialChar softhyphen
+cutor
+\family default
+.
+ For the 
+\family typewriter
+\series bold
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family default
+\series default
+, the fitness evaluation of the population is done by recursively dividing
+ it into sub-populations using the abstract 
+\family typewriter
+Recursive\SpecialChar softhyphen
+Action
+\family default
+ class.
+ If a minimal sub-population size is reached, the fitness values for this
+ sub-population are directly evaluated.
+ The default value of this threshold is five and can be controlled via the
+ 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!splitThreshold
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!splitThreshold
+\end_layout
+
+\end_inset
+
+ system property.
+ Besides the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+, the size of the evaluated sub-population is dynamically determined by
+ the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+.get\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count()
+\family default
+ method.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Excerpt from the Javadoc: 
+\emph on
+Returns an estimate of how many more locally queued tasks are held by the
+ current worker thread than there are other worker threads that might steal
+ them.
+ This value may be useful for heuristic decisions about whether to fork
+ other tasks.
+ In many usages of 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Tasks
+\family default
+, at steady state, each worker should aim to maintain a small constant surplus
+ (for example, 3) of tasks, and to process computations locally if this
+ threshold is exceeded.
+\end_layout
+
+\end_inset
+
+ If this value is greater than three, the fitness values of the current
+ sub-population are also evaluated immediately.
+ The default value can be overridden by the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
+ system property.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.splitThreshold=1 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+You may want to tweak this parameters, if you realize a low CPU utilization
+ during the fitness value evaluation.
+ Long running fitness function could lead to CPU under-utilization while
+ evaluating the last sub-population.
+ In this case, only one core is busy, while the other cores are idle, because
+ they already finished the fitness evaluation.
+ Since the workload has been already distributed, no 
+\emph on
+work-stealing
+\emph default
+ is possible.
+ Reducing the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+ can help to have a more equal workload distribution between the available
+ CPUs.
+ Reducing the 
+\family typewriter
+max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+ property will create a more uniform workload for fitness function with
+ heavily varying computation cost for different genotype values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The fitness function shouldn't acquire locks for achieving thread safety.
+ It is also recommended to avoid calls to blocking methods.
+ If such calls are unavoidable, consider using the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool\SpecialChar softhyphen
+.managed\SpecialChar softhyphen
+Block
+\family sans
+ method.
+ Especially if you are using a 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family sans
+ executor, which is the default.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the Engine is using an 
+\family typewriter
+\series bold
+Executor\SpecialChar softhyphen
+Service
+\family default
+\series default
+, a different optimization strategy is used for reducing the concurrency
+ overhead.
+ The original population is divided into a fixed number
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The number of sub-populations actually depends on the number of available
+ CPU cores, which are determined with 
+\family typewriter
+Run\SpecialChar softhyphen
+time\SpecialChar softhyphen
+.avail\SpecialChar softhyphen
+able\SpecialChar softhyphen
+Pro\SpecialChar softhyphen
+cessors()
+\family default
+.
+\end_layout
+
+\end_inset
+
+ of sub-populations, and the fitness values of each sub-population are evaluated
+ by one thread.
+ For long running fitness functions, it is better to have smaller sub-population
+s for a better CPU utilization.
+ With the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Batch\SpecialChar softhyphen
+Size
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxBatchSize
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxBatchSize
+\end_layout
+
+\end_inset
+
+ system property, it is possible to reduce the sub-population size.
+ The default value is set to 
+\family typewriter
+Inte\SpecialChar softhyphen
+ger\SpecialChar softhyphen
+.MAX_\SpecialChar softhyphen
+VALUE
+\family default
+.
+ This means, that only the number of CPU cores influences the 
+\emph on
+batch
+\emph default
+ size.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.maxBatchSize=3 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+Another source of under-utilized CPUs are lock contentions.
+ It is therefore strongly recommended to avoid locking and blocking calls
+ in your fitness function at all.
+ If blocking calls are unavoidable, consider using the 
+\emph on
+managed block
+\emph default
+ functionality of the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A good introduction on how to use managed blocks, and the motivation behind
+ it, is given in this talk: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.youtube.com/watch?v=rUDGQQ83ZtI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -23310,7 +23838,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	filename ../resources/graphic/RastriginFunction.png
 	lyxscale 50
 	width 100text%
 	clip
