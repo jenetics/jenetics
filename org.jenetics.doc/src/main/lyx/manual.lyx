@@ -9210,7 +9210,7 @@ You may want to tweak this parameters, if you realize a low CPU utilization
  Long running fitness function could lead to CPU under-utilization while
  evaluating the last sub-population.
  In this case, only one core is busy, while the other cores are idle, because
- they are already finished the fitness evaluation.
+ they already finished the fitness evaluation.
  Since the workload has been already distributed, no 
 \emph on
 work-stealing
@@ -9271,7 +9271,7 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The fitness function shouldn't acquire locks for achieving thread-safety.
+The fitness function shouldn't acquire locks for achieving thread safety.
  It is also recommended to avoid calls to blocking methods.
  If such calls are unavoidable, consider using the 
 \family typewriter
@@ -9407,18 +9407,21 @@ $ java -Dio.jenetics.concurrency.maxBatchSize=3
 Another source of under-utilized CPUs are lock contentions.
  It is therefore strongly recommended to avoid locking and blocking calls
  in your fitness function at all.
- If blocking calls are unavoidable, consider using the managed-block functionali
-ty of the 
+ If blocking calls are unavoidable, consider using the 
+\emph on
+managed block
+\emph default
+ functionality of the 
 \family typewriter
 Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-A good introduction on how to use managed blocks, and whats the motivation
- behind it, is given in this talk: 
+A good introduction on how to use managed blocks, and the motivation behind
+ it, is given in this talk: 
 \begin_inset Flex URL
 status open
 
