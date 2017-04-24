@@ -2897,6 +2897,10 @@ Genotype
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -3063,6 +3067,183 @@ Gene
 Gene
 \family default
  type.
+\end_layout
+
+\begin_layout Standard
+The Genotype is a two-dimensional structure of genes and can also be treated
+ as a gene matrix.
+ Creating such a gene matrix is quite straight forward.
+ When creating a gene vector, there are two possibilities: creating a row-major
+ or a column-major genotype vector.
+ Each of the two possibilities have specific properties, advantages and
+ drawbacks.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/RowMajorGenotype.eps
+	width 65text%
+	BoundingBox 0bp 0bp 279bp 93bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Row-major-genotype-vector"
+
+\end_inset
+
+Row-major genotype vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Row-major-genotype-vector"
+
+\end_inset
+
+ shows a genotype vector in row-major layout.
+ The main property of this vector representation is, that each gene of the
+ vector has the same constraint.
+ In the case of a numeric genotype, the genes has the same minimum and maximum
+ vector.
+ The code snippet below shows the creation of a row-major genotype vector.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0,  8)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The second version for creating a gene vector is a column-major layout.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ColumnMajorGenotype.eps
+	width 23text%
+	BoundingBox 0bp 0bp 105bp 163bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Column-major-genotype-vector"
+
+\end_inset
+
+Column-major genotype vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+asdf
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(1.0,  2.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0, 10.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.1,  0.9)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
