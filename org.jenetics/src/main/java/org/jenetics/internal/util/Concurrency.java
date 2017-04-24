@@ -147,7 +147,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 				runnables.size(),
 				max(
 					(CORES + 1)*2,
-					(int)ceil(runnables.size()/(double) Env.maxBatchSize)
+					(int)ceil(runnables.size()/(double)Env.maxBatchSize)
 				)
 			);
 
