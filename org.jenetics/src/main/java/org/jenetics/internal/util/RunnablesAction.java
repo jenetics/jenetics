@@ -30,7 +30,7 @@ import java.util.concurrent.RecursiveAction;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 3.8
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
