@@ -14,6 +14,7 @@ Jenetics-3.8.0
         * Engine.Builder.offspringSize(int)
         * Engine.Builder.survivorsFraction(double)
     * https://github.com/jenetics/jenetics/issues/189: `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
+    * https://github.com/jenetics/jenetics/issues/197: Improve CPU utilization for long running fitness functions. The original concurrent fitness function evaluation where assumed to be quite *fast*.
 
 Jenetics-3.7.0
 
