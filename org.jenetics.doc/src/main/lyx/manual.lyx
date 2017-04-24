@@ -5947,7 +5947,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/LineCrossoverHyperCube.eps
+	filename ../resources/graphic/LineCrossoverHyperCube.eps
 	width 40text%
 	clip
 
@@ -8740,7 +8740,24 @@ The
  shared by all phenotypes of a population.
  The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
- The used 
+\end_layout
+
+\begin_layout Subsubsection
+Basic configuration
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!configuration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The used 
 \family typewriter
 Executor
 \family default
@@ -8910,10 +8927,114 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
 
 \family default
  for concurrency.
+ 
 \end_layout
 
-\begin_layout Paragraph
+\begin_layout Standard
+Sometimes it might be useful to run the evaluation 
+\family typewriter
+Engine
+\family default
+ single-threaded, or even execute all operations in the main thread.
+ This can be easily achieved by setting the appropriate 
+\family typewriter
+Executor
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in the main thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor((Executor)Runnable::run)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to do the 
+\family typewriter
+Engine
+\family default
+ operations in the main thread.
+ Whereas the snippet below executes the 
+\family typewriter
+Engine
+\family default
+ operations in a single thread, other than the main thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in a single thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor(Executors.newSingleThreadExecutor())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Such a configuration can be useful for performing reproducible (performance)
+ tests, without the uncertainty of a concurrent execution environment.
+\end_layout
+
+\begin_layout Subsubsection
 Concurrency tweaks
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!tweaks
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8959,6 +9080,26 @@ io\SpecialChar softhyphen
 Thre\SpecialChar softhyphen
 shold
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!splitThreshold
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!splitThreshold
+\end_layout
+
+\end_inset
+
  system property.
  Besides the 
 \family typewriter
@@ -9018,6 +9159,26 @@ Queued\SpecialChar softhyphen
 Task\SpecialChar softhyphen
 Count
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
  system property.
 \end_layout
 
@@ -9077,6 +9238,77 @@ Count
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The fitness function shouldn't acquire locks for achieving thread-safety.
+ It is also recommended to avoid calls to blocking methods.
+ If such calls are unavoidable, consider using the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool\SpecialChar softhyphen
+.managed\SpecialChar softhyphen
+Block
+\family sans
+ method.
+ Especially if you are using a 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family sans
+ executor, which is the default.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 If the Engine is using an 
 \family typewriter
 \series bold
@@ -9092,7 +9324,16 @@ status collapsed
 
 \begin_layout Plain Layout
 The number of sub-populations actually depends on the number of available
- CPU cores.
+ CPU cores, which are determined with 
+\family typewriter
+Run\SpecialChar softhyphen
+time\SpecialChar softhyphen
+.avail\SpecialChar softhyphen
+able\SpecialChar softhyphen
+Pro\SpecialChar softhyphen
+cessors()
+\family default
+.
 \end_layout
 
 \end_inset
@@ -9110,6 +9351,26 @@ io\SpecialChar softhyphen
 Batch\SpecialChar softhyphen
 Size
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxBatchSize
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxBatchSize
+\end_layout
+
+\end_inset
+
  system property, it is possible to reduce the sub-population size.
  The default value is set to 
 \family typewriter
@@ -9140,6 +9401,40 @@ $ java -Dio.jenetics.concurrency.maxBatchSize=3
 
 \begin_layout LyX-Code
     com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+Another source of under-utilized CPUs are lock contentions.
+ It is therefore strongly recommended to avoid locking and blocking calls
+ in your fitness function at all.
+ If blocking calls are unavoidable, consider using the managed-block functionali
+ty of the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A good introduction on how to use managed blocks, and whats the motivation
+ behind it, is given in this talk: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.youtube.com/watch?v=rUDGQQ83ZtI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -23540,7 +23835,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	filename ../resources/graphic/RastriginFunction.png
 	lyxscale 50
 	width 100text%
 	clip
