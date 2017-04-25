@@ -4,7 +4,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.7/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.7.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.8/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.8.0.pdf)).
 
 
 ## Requirements
@@ -17,7 +17,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 *  **Gradle 3.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.10**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 6.11**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
