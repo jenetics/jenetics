@@ -3560,6 +3560,23 @@ s are:
 \family typewriter
 MeanAlterer
 \family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Mean-alterer"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
 ,
 \end_layout
 
@@ -3568,6 +3585,23 @@ MeanAlterer
 \family typewriter
 LineCrossover
 \family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Line-crossover"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
  and
 \end_layout
 
@@ -3575,6 +3609,36 @@ LineCrossover
 
 \family typewriter
 IntermediateCrossover
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Intermediate-crossover"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+See also 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Vector-codec"
+
+\end_inset
+
+ for an advanced description on how to use the predefined vector codecs.
 \end_layout
 
 \begin_layout Paragraph
@@ -3596,9 +3660,34 @@ Genotype!scalar
 \end_layout
 
 \begin_layout Standard
-A very special case of a Genotype is the Gene scalar.
- This genotype only consists of one Chromosome of length one.
- Such a Genotype only makes sense when used with numerical genes.
+A very special case of a 
+\family typewriter
+Genotype
+\family default
+ contains only one 
+\family typewriter
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ with length one.
+ The layout of such a 
+\family typewriter
+Genotype
+\family default
+ scalar is shown in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Genotype-scalar"
+
+\end_inset
+
+.
+ Such 
+\family typewriter
+Genotype
+\family default
+s are mostly used for encoding real function problems.
 \end_layout
 
 \begin_layout Standard
@@ -3641,6 +3730,82 @@ Genotype
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+How to create a 
+\family typewriter
+Genotype
+\family default
+ for a real function optimization problem, is shown in the code snippet
+ below.
+ The recommended 
+\family typewriter
+Alterer
+\family default
+s are the same as for column-major 
+\family typewriter
+Genotype
+\family default
+ vectors: 
+\family typewriter
+Mean\SpecialChar softhyphen
+Alterer
+\family default
+, 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ and 
+\family typewriter
+Inter\SpecialChar softhyphen
+me\SpecialChar softhyphen
+di\SpecialChar softhyphen
+ate\SpecialChar softhyphen
+Cross\SpecialChar softhyphen
+over
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+See also 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Scalar-codec"
+
+\end_inset
+
+ for an advanced description on how to use the predefined scalar codecs.
 \end_layout
 
 \begin_layout Subsubsection
@@ -6460,6 +6625,37 @@ final int[] indexes = IntRange.range(0, length)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph
+Mean alterer
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Mean-alterer"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean alterer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Mean alterer works on genes which implement the 
+\family typewriter
+Mean
+\family default
+ interface.
+ All numeric genes implement this interface by calculating the arithmetic
+ mean of two genes.
 \end_layout
 
 \begin_layout Paragraph
