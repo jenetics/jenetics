@@ -3237,6 +3237,20 @@ s must have the same minimum and maximum values.
 Genotype
 \family default
  vector is the preferred choice.
+ Beside the easier 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ creation, the available 
+\family typewriter
+Re\SpecialChar softhyphen
+com\SpecialChar softhyphen
+bi\SpecialChar softhyphen
+na\SpecialChar softhyphen
+tor
+\family default
+ alterers are more efficient in exploring the search domain.
 \end_layout
 
 \begin_layout Standard
@@ -3273,12 +3287,16 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-If the problem space allows to create row-major 
+If the problem space allows equal 
+\family typewriter
+Gene
+\family sans
+ constraint, the row-major 
 \family typewriter
 Genotype
 \family sans
- vectors, this type should be chosen.
- They are easier to create an the available 
+ vector encoding should be chosen.
+ It is easier to create and the available 
 \family typewriter
 Recombinator
 \family sans
@@ -3350,10 +3368,29 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The column-major Gene vector layout must be chosen if a greater flexibility
- is needed when it comes to reduce the search space of the problem, or when
- equal Gene constraints would create invalid individuals.
- The layout of this Gene vector is shown in 
+\begin_inset VSpace bigskip
+\end_inset
+
+The column-major 
+\family typewriter
+Genotype
+\family default
+ vector layout must be chosen when the problem space requires components
+ (
+\family typewriter
+Gene
+\family default
+s) with different constraints.
+ This is almost the 
+\emph on
+only
+\emph default
+ reason for choosing the column-major layout.
+ The layout of this 
+\family typewriter
+Genotype
+\family default
+ vector is shown in 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Column-major-genotype-vector"
@@ -3361,7 +3398,7 @@ reference "fig:Column-major-genotype-vector"
 \end_inset
 
 .
- For a Genotype vector of length 
+ For a vector of length 
 \begin_inset Formula $n$
 \end_inset
 
@@ -3369,11 +3406,15 @@ reference "fig:Column-major-genotype-vector"
 \begin_inset Formula $n$
 \end_inset
 
- Chromosomes of length 
-\begin_inset Formula $1$
-\end_inset
-
-are needed.
+ 
+\family typewriter
+Chromosome
+\family default
+s of length 
+\emph on
+one
+\emph default
+ are needed.
 \end_layout
 
 \begin_layout Standard
@@ -3401,7 +3442,11 @@ name "fig:Column-major-genotype-vector"
 
 \end_inset
 
-Column-major Genotype vector
+Column-major 
+\family typewriter
+Genotype
+\family default
+ vector
 \end_layout
 
 \end_inset
@@ -3415,12 +3460,26 @@ Column-major Genotype vector
 \end_layout
 
 \begin_layout Standard
-The code snippet below shows how to create a Genotype vector in column-major
- layout.
- Its a little more effort to create such a vector, since you have to specify
- the different Gene constraint of each chromosome separatetly.
- The created DoubleChromosome have automatically length of one, if the length
- parameter has been omitted.
+The code snippet below shows how to create a 
+\family typewriter
+Genotype
+\family default
+ vector in column-major layout.
+ It's a little more effort to create such a vector, since every 
+\family typewriter
+Gene
+\family default
+ has to be wrapped into a separate 
+\family typewriter
+Chromosome
+\family default
+.
+ The 
+\family typewriter
+Double\SpecialChar softhyphen
+Chromosome
+\family default
+ in the given example has length of one, when the length parameter is omitted.
 \end_layout
 
 \begin_layout Standard
@@ -3465,13 +3524,57 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The greater flexibility of a column-major Genotype vector is payed with
- a lower exploration capability when it comes to the Recombinator classes.
- The Crossover alterers will have the same effect as the SwapMutator, when
- used for row-major Genotype vectors.
- Only the MeanAlterer for numerical gene does its job.
- For numeric genes you should also have a look at the LineCrossover and
- IntermediateCrossover.
+The greater flexibility of a column-major 
+\family typewriter
+Genotype
+\family default
+ vector has to be payed with a lower exploration capability of the 
+\family typewriter
+Recombinator
+\family default
+ alterers.
+ Using 
+\family typewriter
+Crossover
+\family default
+ alterers will have the same effect as the 
+\family typewriter
+Swap\SpecialChar softhyphen
+Mutator
+\family default
+, when used with row-major 
+\family typewriter
+Genotype
+\family default
+ vectors.
+ Recommended alterers for vectors of 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Gene
+\family default
+s are:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MeanAlterer
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LineCrossover
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+IntermediateCrossover
 \end_layout
 
 \begin_layout Paragraph
@@ -3481,7 +3584,7 @@ Genotype
 \family default
  scalar
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genotype!scalar
@@ -25981,7 +26084,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -26296,7 +26399,7 @@ Homepage
 \emph on
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -26317,7 +26420,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
