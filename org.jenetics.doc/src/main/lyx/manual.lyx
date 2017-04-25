@@ -3070,15 +3070,68 @@ Gene
 \end_layout
 
 \begin_layout Paragraph
-Genotype vectors
+
+\family typewriter
+Genotype
+\family default
+ vector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!vector
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The Genotype is essentially a two-dimensional composition of Genes.
- This makes it trivial to create Genotypes which can be treated as a Gene
+The 
+\family typewriter
+Genotype
+\family default
+ is essentially a two-dimensional composition of 
+\family typewriter
+Gene
+\family default
+s.
+ This makes it trivial to create 
+\family typewriter
+Genotype
+\family default
+s which can be treated as a 
+\family typewriter
+Gene
+\family default
  matrices.
- If its needed to create a vector of Genes, there are two possibilities
- to do so: (1) creating a row-major or (2) creating a column-major Genotype
+ If its needed to create a vector of 
+\family typewriter
+Gene
+\family default
+s, there are two possibilities to do so: 
+\end_layout
+
+\begin_layout Enumerate
+creating a 
+\emph on
+row-major
+\emph default
+ or
+\end_layout
+
+\begin_layout Enumerate
+creating a 
+\emph on
+column-major
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Genotype
+\family default
  vector.
  Each of the two possibilities have specific advantages and disadvantages.
 \end_layout
@@ -3108,7 +3161,11 @@ name "fig:Row-major-genotype-vector"
 
 \end_inset
 
-Row-major Genotype vector
+Row-major 
+\family typewriter
+Genotype
+\family default
+ vector
 \end_layout
 
 \end_inset
@@ -3129,21 +3186,57 @@ reference "fig:Row-major-genotype-vector"
 
 \end_inset
 
- shows a Genotype vector in row-major layout.
- For a Genotype vector of length 
+ shows a 
+\family typewriter
+Genotype
+\family default
+ vector in row-major layout.
+ A 
+\family typewriter
+Genotype
+\family default
+ vector of length 
 \begin_inset Formula $n$
 \end_inset
 
-, one Chromosome of length 
+ needs one 
+\family typewriter
+Chromosome
+\family default
+ of length 
 \begin_inset Formula $n$
 \end_inset
 
- is needed.
- Each Gene of such a vector obeys the same constraints.
- For Genotype vectors containing NumericGenes, all Genes must have the same
- minimum and maximum values.
+.
+ Each 
+\family typewriter
+Gene
+\family default
+ of such a vector obeys the same constraints.
+ E.
+\begin_inset space ~
+\end_inset
+
+g., for 
+\family typewriter
+Genotype
+\family default
+ vectors containing 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Gene
+\family default
+s, all 
+\family typewriter
+Gene
+\family default
+s must have the same minimum and maximum values.
  If the problem space doesn't need to have different minimum and maximum
- values, the row-major Genotype vector is the preferred choice.
+ values, the row-major 
+\family typewriter
+Genotype
+\family default
+ vector is the preferred choice.
 \end_layout
 
 \begin_layout Standard
@@ -3163,7 +3256,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -3180,10 +3273,16 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-If the problem space allows to create row-major Genotype vectors, this type
- should be choosen.
- They are easier to create an the available Recombinator classes are more
- efficient in exploring the search domain.
+If the problem space allows to create row-major 
+\family typewriter
+Genotype
+\family sans
+ vectors, this type should be chosen.
+ They are easier to create an the available 
+\family typewriter
+Recombinator
+\family sans
+ classes are more efficient in exploring the search domain.
 \end_layout
 
 \begin_layout Plain Layout
@@ -3204,9 +3303,24 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The following code snippet shows the creation of a row-major Genotype vector.
- All Alterers derived from the Recombinator do a fairly good job in exploring
- the problem space for this Genotype vector.
+The following code snippet shows the creation of a row-major 
+\family typewriter
+Genotype
+\family default
+ vector.
+ All 
+\family typewriter
+Alterer
+\family default
+s derived from the 
+\family typewriter
+Recombinator
+\family default
+ do a fairly good job in exploring the problem space for row-major 
+\family typewriter
+Genotype
+\family default
+ vector.
 \end_layout
 
 \begin_layout Standard
@@ -3236,7 +3350,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The column-major Gene vector layout must be choosen if a greater flexibility
+The column-major Gene vector layout must be chosen if a greater flexibility
  is needed when it comes to reduce the search space of the problem, or when
  equal Gene constraints would create invalid individuals.
  The layout of this Gene vector is shown in 
@@ -3361,7 +3475,21 @@ The greater flexibility of a column-major Genotype vector is payed with
 \end_layout
 
 \begin_layout Paragraph
-Genotype scalars
+
+\family typewriter
+Genotype
+\family default
+ scalar
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Genotype!scalar
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
