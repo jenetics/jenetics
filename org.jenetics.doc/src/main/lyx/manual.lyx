@@ -3601,6 +3601,48 @@ A very special case of a Genotype is the Gene scalar.
  Such a Genotype only makes sense when used with numerical genes.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ScalarGenotype.eps
+	width 23text%
+	BoundingBox 0bp 0bp 107bp 93bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genotype-scalar"
+
+\end_inset
+
+
+\family typewriter
+Genotype
+\family default
+ scalar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsubsection
 Phenotype
 \begin_inset CommandInset label
