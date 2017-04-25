@@ -2843,7 +2843,7 @@ Gene
 Numeric\SpecialChar softhyphen
 Chromosome
 \family default
- is an example of a constraint.
+ is an example of such a constraint.
  Within the same chromosome, all numeric gene alleles must lay within the
  defined minimal- and maximal values.
 \end_layout
@@ -3069,14 +3069,18 @@ Gene
  type.
 \end_layout
 
+\begin_layout Paragraph
+Genotype vectors
+\end_layout
+
 \begin_layout Standard
-The Genotype is a two-dimensional structure of genes and can also be treated
- as a gene matrix.
- Creating such a gene matrix is quite straight forward.
- When creating a gene vector, there are two possibilities: creating a row-major
- or a column-major genotype vector.
- Each of the two possibilities have specific properties, advantages and
- drawbacks.
+The Genotype is essentially a two-dimensional composition of Genes.
+ This makes it trivial to create Genotypes which can be treated as a Gene
+ matrices.
+ If its needed to create a vector of Genes, there are two possibilities
+ to do so: (1) creating a row-major or (2) creating a column-major Genotype
+ vector.
+ Each of the two possibilities have specific advantages and disadvantages.
 \end_layout
 
 \begin_layout Standard
@@ -3104,7 +3108,7 @@ name "fig:Row-major-genotype-vector"
 
 \end_inset
 
-Row-major genotype vector
+Row-major Genotype vector
 \end_layout
 
 \end_inset
@@ -3125,12 +3129,84 @@ reference "fig:Row-major-genotype-vector"
 
 \end_inset
 
- shows a genotype vector in row-major layout.
- The main property of this vector representation is, that each gene of the
- vector has the same constraint.
- In the case of a numeric genotype, the genes has the same minimum and maximum
- vector.
- The code snippet below shows the creation of a row-major genotype vector.
+ shows a Genotype vector in row-major layout.
+ For a Genotype vector of length 
+\begin_inset Formula $n$
+\end_inset
+
+, one Chromosome of length 
+\begin_inset Formula $n$
+\end_inset
+
+ is needed.
+ Each Gene of such a vector obeys the same constraints.
+ For Genotype vectors containing NumericGenes, all Genes must have the same
+ minimum and maximum values.
+ If the problem space doesn't need to have different minimum and maximum
+ values, the row-major Genotype vector is the preferred choice.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+If the problem space allows to create row-major Genotype vectors, this type
+ should be choosen.
+ They are easier to create an the available Recombinator classes are more
+ efficient in exploring the search domain.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code snippet shows the creation of a row-major Genotype vector.
+ All Alterers derived from the Recombinator do a fairly good job in exploring
+ the problem space for this Genotype vector.
 \end_layout
 
 \begin_layout Standard
@@ -3160,7 +3236,30 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-The second version for creating a gene vector is a column-major layout.
+The column-major Gene vector layout must be choosen if a greater flexibility
+ is needed when it comes to reduce the search space of the problem, or when
+ equal Gene constraints would create invalid individuals.
+ The layout of this Gene vector is shown in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Column-major-genotype-vector"
+
+\end_inset
+
+.
+ For a Genotype vector of length 
+\begin_inset Formula $n$
+\end_inset
+
+, 
+\begin_inset Formula $n$
+\end_inset
+
+ Chromosomes of length 
+\begin_inset Formula $1$
+\end_inset
+
+are needed.
 \end_layout
 
 \begin_layout Standard
@@ -3188,7 +3287,7 @@ name "fig:Column-major-genotype-vector"
 
 \end_inset
 
-Column-major genotype vector
+Column-major Genotype vector
 \end_layout
 
 \end_inset
@@ -3202,7 +3301,12 @@ Column-major genotype vector
 \end_layout
 
 \begin_layout Standard
-asdf
+The code snippet below shows how to create a Genotype vector in column-major
+ layout.
+ Its a little more effort to create such a vector, since you have to specify
+ the different Gene constraint of each chromosome separatetly.
+ The created DoubleChromosome have automatically length of one, if the length
+ parameter has been omitted.
 \end_layout
 
 \begin_layout Standard
@@ -3244,6 +3348,26 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The greater flexibility of a column-major Genotype vector is payed with
+ a lower exploration capability when it comes to the Recombinator classes.
+ The Crossover alterers will have the same effect as the SwapMutator, when
+ used for row-major Genotype vectors.
+ Only the MeanAlterer for numerical gene does its job.
+ For numeric genes you should also have a look at the LineCrossover and
+ IntermediateCrossover.
+\end_layout
+
+\begin_layout Paragraph
+Genotype scalars
+\end_layout
+
+\begin_layout Standard
+A very special case of a Genotype is the Gene scalar.
+ This genotype only consists of one Chromosome of length one.
+ Such a Genotype only makes sense when used with numerical genes.
 \end_layout
 
 \begin_layout Subsubsection
@@ -3763,7 +3887,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
