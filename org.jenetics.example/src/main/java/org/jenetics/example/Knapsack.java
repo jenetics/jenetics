@@ -21,6 +21,8 @@ package org.jenetics.example;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static org.jenetics.engine.limit.bySteadyFitness;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -32,7 +34,14 @@ import java.util.stream.Stream;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.BitGene;
+import org.jenetics.Mutator;
+import org.jenetics.Phenotype;
+import org.jenetics.RouletteWheelSelector;
+import org.jenetics.SinglePointCrossover;
+import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Codec;
+import org.jenetics.engine.Engine;
+import org.jenetics.engine.EvolutionStatistics;
 import org.jenetics.engine.Problem;
 import org.jenetics.engine.codecs;
 import org.jenetics.example.Knapsack.Item;
@@ -193,6 +202,41 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 				.collect(ISeq.toISeq()),
 			itemCount*100.0/3.0
 		);
+	}
+
+	public static void main(final String[] args) {
+		final Knapsack knapsack = Knapsack.of(15, new Random(123));
+
+		// Configure and build the evolution engine.
+		final Engine<BitGene, Double> engine = Engine.builder(knapsack)
+			.populationSize(500)
+			.survivorsSelector(new TournamentSelector<>(5))
+			.offspringSelector(new RouletteWheelSelector<>())
+			.alterers(
+				new Mutator<>(0.115),
+				new SinglePointCrossover<>(0.16))
+			.build();
+
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Double, ?>
+			statistics = EvolutionStatistics.ofNumber();
+
+		final Phenotype<BitGene, Double> best = engine.stream()
+			// Truncate the evolution stream after 7 "steady"
+			// generations.
+			.limit(bySteadyFitness(7))
+			// The evolution will stop after maximal 100
+			// generations.
+			.limit(100)
+			// Update the evaluation statistics after
+			// each generation
+			.peek(statistics)
+			// Collect (reduce) the evolution stream to
+			// its best phenotype.
+			.collect(toBestPhenotype());
+
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 
 }
