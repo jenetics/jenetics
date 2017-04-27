@@ -1046,7 +1046,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0
+	 * @version 3.8
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -1073,6 +1073,7 @@ public final class Engine<
 		private int _populationSize = 50;
 		private long _maximalPhenotypeAge = 70;
 
+		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
