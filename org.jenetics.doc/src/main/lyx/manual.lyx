@@ -2843,7 +2843,7 @@ Gene
 Numeric\SpecialChar softhyphen
 Chromosome
 \family default
- is an example of a constraint.
+ is an example of such a constraint.
  Within the same chromosome, all numeric gene alleles must lay within the
  defined minimal- and maximal values.
 \end_layout
@@ -2897,6 +2897,10 @@ Genotype
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -3063,6 +3067,745 @@ Gene
 Gene
 \family default
  type.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Genotype
+\family default
+ vector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Genotype
+\family default
+ is essentially a two-dimensional composition of 
+\family typewriter
+Gene
+\family default
+s.
+ This makes it trivial to create 
+\family typewriter
+Genotype
+\family default
+s which can be treated as a 
+\family typewriter
+Gene
+\family default
+ matrices.
+ If its needed to create a vector of 
+\family typewriter
+Gene
+\family default
+s, there are two possibilities to do so: 
+\end_layout
+
+\begin_layout Enumerate
+creating a 
+\emph on
+row-major
+\emph default
+ or
+\end_layout
+
+\begin_layout Enumerate
+creating a 
+\emph on
+column-major
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Genotype
+\family default
+ vector.
+ Each of the two possibilities have specific advantages and disadvantages.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/RowMajorGenotype.eps
+	width 65text%
+	BoundingBox 0bp 0bp 279bp 93bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Row-major-genotype-vector"
+
+\end_inset
+
+Row-major 
+\family typewriter
+Genotype
+\family default
+ vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Row-major-genotype-vector"
+
+\end_inset
+
+ shows a 
+\family typewriter
+Genotype
+\family default
+ vector in row-major layout.
+ A 
+\family typewriter
+Genotype
+\family default
+ vector of length 
+\begin_inset Formula $n$
+\end_inset
+
+ needs one 
+\family typewriter
+Chromosome
+\family default
+ of length 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ Each 
+\family typewriter
+Gene
+\family default
+ of such a vector obeys the same constraints.
+ E.
+\begin_inset space ~
+\end_inset
+
+g., for 
+\family typewriter
+Genotype
+\family default
+ vectors containing 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Gene
+\family default
+s, all 
+\family typewriter
+Gene
+\family default
+s must have the same minimum and maximum values.
+ If the problem space doesn't need to have different minimum and maximum
+ values, the row-major 
+\family typewriter
+Genotype
+\family default
+ vector is the preferred choice.
+ Beside the easier 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ creation, the available 
+\family typewriter
+Re\SpecialChar softhyphen
+com\SpecialChar softhyphen
+bi\SpecialChar softhyphen
+na\SpecialChar softhyphen
+tor
+\family default
+ alterers are more efficient in exploring the search domain.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+If the problem space allows equal 
+\family typewriter
+Gene
+\family sans
+ constraint, the row-major 
+\family typewriter
+Genotype
+\family sans
+ vector encoding should be chosen.
+ It is easier to create and the available 
+\family typewriter
+Recombinator
+\family sans
+ classes are more efficient in exploring the search domain.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code snippet shows the creation of a row-major 
+\family typewriter
+Genotype
+\family default
+ vector.
+ All 
+\family typewriter
+Alterer
+\family default
+s derived from the 
+\family typewriter
+Recombinator
+\family default
+ do a fairly good job in exploring the problem space for row-major 
+\family typewriter
+Genotype
+\family default
+ vector.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0,  8)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+The column-major 
+\family typewriter
+Genotype
+\family default
+ vector layout must be chosen when the problem space requires components
+ (
+\family typewriter
+Gene
+\family default
+s) with different constraints.
+ This is almost the 
+\emph on
+only
+\emph default
+ reason for choosing the column-major layout.
+ The layout of this 
+\family typewriter
+Genotype
+\family default
+ vector is shown in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Column-major-genotype-vector"
+
+\end_inset
+
+.
+ For a vector of length 
+\begin_inset Formula $n$
+\end_inset
+
+, 
+\begin_inset Formula $n$
+\end_inset
+
+ 
+\family typewriter
+Chromosome
+\family default
+s of length 
+\emph on
+one
+\emph default
+ are needed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ColumnMajorGenotype.eps
+	width 23text%
+	BoundingBox 0bp 0bp 105bp 163bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Column-major-genotype-vector"
+
+\end_inset
+
+Column-major 
+\family typewriter
+Genotype
+\family default
+ vector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet below shows how to create a 
+\family typewriter
+Genotype
+\family default
+ vector in column-major layout.
+ It's a little more effort to create such a vector, since every 
+\family typewriter
+Gene
+\family default
+ has to be wrapped into a separate 
+\family typewriter
+Chromosome
+\family default
+.
+ The 
+\family typewriter
+Double\SpecialChar softhyphen
+Chromosome
+\family default
+ in the given example has length of one, when the length parameter is omitted.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(1.0,  2.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0, 10.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.1,  0.9)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The greater flexibility of a column-major 
+\family typewriter
+Genotype
+\family default
+ vector has to be payed with a lower exploration capability of the 
+\family typewriter
+Recombinator
+\family default
+ alterers.
+ Using 
+\family typewriter
+Crossover
+\family default
+ alterers will have the same effect as the 
+\family typewriter
+Swap\SpecialChar softhyphen
+Mutator
+\family default
+, when used with row-major 
+\family typewriter
+Genotype
+\family default
+ vectors.
+ Recommended alterers for vectors of 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Gene
+\family default
+s are:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MeanAlterer
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Mean-alterer"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LineCrossover
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Line-crossover"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+IntermediateCrossover
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Intermediate-crossover"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+See also 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Vector-codec"
+
+\end_inset
+
+ for an advanced description on how to use the predefined vector codecs.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+Genotype
+\family default
+ scalar
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genotype!scalar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A very special case of a 
+\family typewriter
+Genotype
+\family default
+ contains only one 
+\family typewriter
+Chro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
+some
+\family default
+ with length one.
+ The layout of such a 
+\family typewriter
+Genotype
+\family default
+ scalar is shown in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Genotype-scalar"
+
+\end_inset
+
+.
+ Such 
+\family typewriter
+Genotype
+\family default
+s are mostly used for encoding real function problems.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ScalarGenotype.eps
+	width 23text%
+	BoundingBox 0bp 0bp 107bp 93bp
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genotype-scalar"
+
+\end_inset
+
+
+\family typewriter
+Genotype
+\family default
+ scalar
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+How to create a 
+\family typewriter
+Genotype
+\family default
+ for a real function optimization problem, is shown in the code snippet
+ below.
+ The recommended 
+\family typewriter
+Alterer
+\family default
+s are the same as for column-major 
+\family typewriter
+Genotype
+\family default
+ vectors: 
+\family typewriter
+Mean\SpecialChar softhyphen
+Alterer
+\family default
+, 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ and 
+\family typewriter
+Inter\SpecialChar softhyphen
+me\SpecialChar softhyphen
+di\SpecialChar softhyphen
+ate\SpecialChar softhyphen
+Cross\SpecialChar softhyphen
+over
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0,  1.0)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+See also 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Scalar-codec"
+
+\end_inset
+
+ for an advanced description on how to use the predefined scalar codecs.
 \end_layout
 
 \begin_layout Subsubsection
@@ -3582,7 +4325,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -3815,6 +4558,13 @@ Selector
 
 \begin_layout Paragraph
 Tournament selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Tournament-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3868,6 +4618,13 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 
 \begin_layout Paragraph
 Truncation selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Truncation-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -3912,6 +4669,13 @@ ulation
 
 \begin_layout Paragraph
 Monte Carlo selector
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Monte-Carlo-selector"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4106,6 +4870,13 @@ Roulette-wheel selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Roulette-wheel-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4160,6 +4931,13 @@ status collapsed
 \begin_layout Plain Layout
 Linear-rank selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Linear-rank-selector"
 
 \end_inset
 
@@ -4234,6 +5012,13 @@ Exponential-rank selector
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Exponential-rank-selector"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4287,6 +5072,13 @@ status collapsed
 \begin_layout Plain Layout
 Boltzmann selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Boltzmann-selector"
 
 \end_inset
 
@@ -4347,6 +5139,13 @@ status collapsed
 \begin_layout Plain Layout
 Stochastic-universal selector
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Stochastic-universal-selector"
 
 \end_inset
 
@@ -4447,6 +5246,13 @@ status collapsed
 \begin_layout Plain Layout
 Alterer
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Alterer"
 
 \end_inset
 
@@ -4615,6 +5421,13 @@ reference "eq:Number of genes"
 
 \begin_layout Paragraph
 Mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4710,6 +5523,13 @@ P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 
 \begin_layout Paragraph
 Gaussian mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Gaussian-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -4749,6 +5569,13 @@ where
 
 \begin_layout Paragraph
 Swap mutator
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Swap-mutator"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -5640,6 +6467,16 @@ c
 
 \begin_layout Paragraph
 Uniform crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Uniform crossover
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5669,7 +6506,7 @@ key "chawdhry1998soft"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -5788,6 +6625,266 @@ final int[] indexes = IntRange.range(0, length)
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph
+Mean alterer
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Mean-alterer"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean alterer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Mean alterer works on genes which implement the 
+\family typewriter
+Mean
+\family default
+ interface.
+ All numeric genes implement this interface by calculating the arithmetic
+ mean of two genes.
+\end_layout
+
+\begin_layout Paragraph
+Line crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Line crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Line-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The line crossover
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The line crossover, also known as line recombination, was originally described
+ by Heinz Mühlenbein and Dirk Schlierkamp-Voosen.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Muhlenbein:1993:PMB:1326623.1326626"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ takes two 
+\emph on
+numeric
+\emph default
+ chromosomes and treats it as a real number vector.
+ Each of this vectors can also be seen as a point in 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+.
+ If we draw a line through this two points (chromosome), we have the possible
+ values of the new chromosomes, which all lie on this line.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/LineCrossoverHyperCube.eps
+	width 40text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Line-crossover-hypercube"
+
+\end_inset
+
+Line crossover hypercube
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Line-crossover-hypercube"
+
+\end_inset
+
+ shows how the two chromosomes form the two three-dimensional vectors (black
+ circles).
+ The dashed line, connecting the two points, form the possible solutions
+ created by the line crossover.
+ An additional variable, 
+\begin_inset Formula $p$
+\end_inset
+
+, determines how far out along the line the created children will be.
+ If 
+\begin_inset Formula $p=0$
+\end_inset
+
+ then the children will be located along the line within the hypercube.
+ If 
+\begin_inset Formula $p>0$
+\end_inset
+
+, the children may be located on an arbitrary place on the line, even outside
+ of the hypercube.This is useful if you want to explore 
+\emph on
+unknown
+\emph default
+ regions, and you need a way to generate chromosomes further out than the
+ parents are.
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+internal
+\emph default
+ random parameters, which define the location of the new crossover point,
+ are generated once for the whole vector (chromosome).
+ If the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ generates numeric genes which lie outside the allowed minimum and maximum
+ value, it simply uses the original gene and rejects the generated, invalid
+ one.
+\end_layout
+
+\begin_layout Paragraph
+Intermediate crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Intermediate crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Intermediate-crossover"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The intermediate crossover is quite similar to the line crossover.
+ It differs in the way on how the 
+\emph on
+internal
+\emph default
+ random parameters are generated and the handling of the invalid–out of
+ range–genes.
+ The 
+\emph on
+internal
+\emph default
+ random parameters of the 
+\family typewriter
+Intermediate\SpecialChar softhyphen
+Crossover
+\family default
+ class are generated for 
+\emph on
+each
+\emph default
+ gene of the chromosome, instead once for all genes.
+ If the newly generated gene is not within the allowed range, a new one
+ is created.
+ This is repeated, until a valid gene is built.
+\end_layout
+
+\begin_layout Standard
+The crossover parameter, 
+\begin_inset Formula $p$
+\end_inset
+
+, has the same properties as for the line crossover.
+ If the chosen value for 
+\begin_inset Formula $p$
+\end_inset
+
+ is greater than 
+\begin_inset Formula $0$
+\end_inset
+
+, it is likely that some genes must be created more than once, because they
+ are not in the valid range.
+ The probability for gene re-creation rises sharply with the value of 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ Setting 
+\begin_inset Formula $p$
+\end_inset
+
+ to a value greater than one, doesn't make sense in most of the cases.
+ A value greater than 
+\begin_inset Formula $10$
+\end_inset
+
+ should be avoided.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -6823,6 +7920,30 @@ offspringFraction
 \end_inset
 
 .
+ Additionally to this property, it is also possible to set the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
+, 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ or 
+\family typewriter
+offspringS\SpecialChar softhyphen
+ize
+\family default
+.
+ All this additional properties effectively set the 
+\family typewriter
+offspring\SpecialChar softhyphen
+Frac\SpecialChar softhyphen
+tion
+\family default
+.
 \end_layout
 
 \begin_layout Description
@@ -6943,6 +8064,24 @@ Result
 \begin_layout Description
 
 \family typewriter
+selector
+\family default
+ This method allows to set the 
+\family typewriter
+offspringSelector
+\family default
+ and 
+\family typewriter
+survivors\SpecialChar softhyphen
+Selec\SpecialChar softhyphen
+tor
+\family default
+ in one step with the same selector.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 survivorsSelector
 \family default
  This property defines the 
@@ -6957,8 +8096,8 @@ Population
  The default values is set to 
 \family typewriter
 Tournament\SpecialChar softhyphen
-Select\SpecialChar softhyphen
-or<>(3)
+Selec\SpecialChar softhyphen
+tor<>(3)
 \family default
 .
 \end_layout
@@ -8375,7 +9514,24 @@ The
  shared by all phenotypes of a population.
  The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
- The used 
+\end_layout
+
+\begin_layout Subsubsection
+Basic configuration
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!configuration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The used 
 \family typewriter
 Executor
 \family default
@@ -8545,6 +9701,517 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
 
 \family default
  for concurrency.
+ 
+\end_layout
+
+\begin_layout Standard
+Sometimes it might be useful to run the evaluation 
+\family typewriter
+Engine
+\family default
+ single-threaded, or even execute all operations in the main thread.
+ This can be easily achieved by setting the appropriate 
+\family typewriter
+Executor
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in the main thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor((Executor)Runnable::run)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to do the 
+\family typewriter
+Engine
+\family default
+ operations in the main thread.
+ Whereas the snippet below executes the 
+\family typewriter
+Engine
+\family default
+ operations in a single thread, other than the main thread.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = Engine.builder(...)
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Doing the Engine operations in a single thread
+\end_layout
+
+\begin_layout Plain Layout
+
+    .executor(Executors.newSingleThreadExecutor())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Such a configuration can be useful for performing reproducible (performance)
+ tests, without the uncertainty of a concurrent execution environment.
+\end_layout
+
+\begin_layout Subsubsection
+Concurrency tweaks
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!tweaks
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses different strategies for minimizing the concurrency overhead, depending
+ on the configured 
+\family typewriter
+Exe\SpecialChar softhyphen
+cutor
+\family default
+.
+ For the 
+\family typewriter
+\series bold
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family default
+\series default
+, the fitness evaluation of the population is done by recursively dividing
+ it into sub-populations using the abstract 
+\family typewriter
+Recursive\SpecialChar softhyphen
+Action
+\family default
+ class.
+ If a minimal sub-population size is reached, the fitness values for this
+ sub-population are directly evaluated.
+ The default value of this threshold is five and can be controlled via the
+ 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!splitThreshold
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!splitThreshold
+\end_layout
+
+\end_inset
+
+ system property.
+ Besides the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+, the size of the evaluated sub-population is dynamically determined by
+ the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+.get\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count()
+\family default
+ method.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Excerpt from the Javadoc: 
+\emph on
+Returns an estimate of how many more locally queued tasks are held by the
+ current worker thread than there are other worker threads that might steal
+ them.
+ This value may be useful for heuristic decisions about whether to fork
+ other tasks.
+ In many usages of 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Tasks
+\family default
+, at steady state, each worker should aim to maintain a small constant surplus
+ (for example, 3) of tasks, and to process computations locally if this
+ threshold is exceeded.
+\end_layout
+
+\end_inset
+
+ If this value is greater than three, the fitness values of the current
+ sub-population are also evaluated immediately.
+ The default value can be overridden by the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxSurplusQueuedTaskCount
+\end_layout
+
+\end_inset
+
+ system property.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.splitThreshold=1 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+You may want to tweak this parameters, if you realize a low CPU utilization
+ during the fitness value evaluation.
+ Long running fitness function could lead to CPU under-utilization while
+ evaluating the last sub-population.
+ In this case, only one core is busy, while the other cores are idle, because
+ they already finished the fitness evaluation.
+ Since the workload has been already distributed, no 
+\emph on
+work-stealing
+\emph default
+ is possible.
+ Reducing the 
+\family typewriter
+split\SpecialChar softhyphen
+Thre\SpecialChar softhyphen
+shold
+\family default
+ can help to have a more equal workload distribution between the available
+ CPUs.
+ Reducing the 
+\family typewriter
+max\SpecialChar softhyphen
+Sur\SpecialChar softhyphen
+plus\SpecialChar softhyphen
+Queued\SpecialChar softhyphen
+Task\SpecialChar softhyphen
+Count
+\family default
+ property will create a more uniform workload for fitness function with
+ heavily varying computation cost for different genotype values.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The fitness function shouldn't acquire locks for achieving thread safety.
+ It is also recommended to avoid calls to blocking methods.
+ If such calls are unavoidable, consider using the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool\SpecialChar softhyphen
+.managed\SpecialChar softhyphen
+Block
+\family sans
+ method.
+ Especially if you are using a 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool
+\family sans
+ executor, which is the default.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the Engine is using an 
+\family typewriter
+\series bold
+Executor\SpecialChar softhyphen
+Service
+\family default
+\series default
+, a different optimization strategy is used for reducing the concurrency
+ overhead.
+ The original population is divided into a fixed number
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The number of sub-populations actually depends on the number of available
+ CPU cores, which are determined with 
+\family typewriter
+Run\SpecialChar softhyphen
+time\SpecialChar softhyphen
+.avail\SpecialChar softhyphen
+able\SpecialChar softhyphen
+Pro\SpecialChar softhyphen
+cessors()
+\family default
+.
+\end_layout
+
+\end_inset
+
+ of sub-populations, and the fitness values of each sub-population are evaluated
+ by one thread.
+ For long running fitness functions, it is better to have smaller sub-population
+s for a better CPU utilization.
+ With the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.max\SpecialChar softhyphen
+Batch\SpecialChar softhyphen
+Size
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Java property!maxBatchSize
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Concurrency!maxBatchSize
+\end_layout
+
+\end_inset
+
+ system property, it is possible to reduce the sub-population size.
+ The default value is set to 
+\family typewriter
+Inte\SpecialChar softhyphen
+ger\SpecialChar softhyphen
+.MAX_\SpecialChar softhyphen
+VALUE
+\family default
+.
+ This means, that only the number of CPU cores influences the 
+\emph on
+batch
+\emph default
+ size.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -Dio.jenetics.concurrency.maxBatchSize=3 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    -cp jenetics-@__version__@.jar:app.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+    com.foo.bar.MyJeneticsApp
+\end_layout
+
+\begin_layout Standard
+Another source of under-utilized CPUs are lock contentions.
+ It is therefore strongly recommended to avoid locking and blocking calls
+ in your fitness function at all.
+ If blocking calls are unavoidable, consider using the 
+\emph on
+managed block
+\emph default
+ functionality of the 
+\family typewriter
+Fork\SpecialChar softhyphen
+Join\SpecialChar softhyphen
+Pool.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+A good introduction on how to use managed blocks, and the motivation behind
+ it, is given in this talk: 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.youtube.com/watch?v=rUDGQQ83ZtI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -18793,7 +20460,10 @@ reference "lis:Steady-fitness-limit"
  shows the implementation of the 
 \family typewriter
 limit\SpecialChar softhyphen
-.bySteadyFitness(int)
+.byStea\SpecialChar softhyphen
+dy\SpecialChar softhyphen
+Fit\SpecialChar softhyphen
+ness(int)
 \family default
  in the 
 \family typewriter
@@ -19806,6 +21476,651 @@ Selector
 s is much better than a random search.
 \end_layout
 
+\begin_layout Subsection
+Evolution strategies
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+ES
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Evolution Strategies
+\emph default
+, ES, were developed by Ingo Rechenberg and Hans-Paul Schwefel at the Technical
+ University of Berlin in the mid 1960s.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "FEDR:FEDR19750860506"
+
+\end_inset
+
+ It is a global optimization algorithm in continuous search spaces and is
+ an instance of an
+\emph on
+ Evolutionary Algorithm
+\emph default
+ from the field of 
+\emph on
+Evolutionary Computation
+\emph default
+.
+ ES uses truncation selection
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Truncation-selector"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for selecting the individuals and usually mutation
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:Mutator"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ for changing the next generation.
+ This section describes how to configure the evolution 
+\family typewriter
+Engine
+\family default
+ of the library for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+- and 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ evolution strategy
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ algorithm starts by generating 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ individuals randomly.
+ After evaluating the fitness of all the individuals, all but the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest ones are deleted.
+ Each of the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ fittest individuals gets to produce 
+\begin_inset Formula $\frac{\lambda}{\mu}$
+\end_inset
+
+ children through an ordinary mutation.
+ The newly created children just replaces the discarded parents.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To summarize it: 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the number of parents which survive, and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ is the number of offspring, created by the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents.
+ The value of 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ should be a multiple of 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ ES practitioners usually refer to their algorithm by the choice of 
+\begin_inset Formula $\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+ If we set 
+\begin_inset Formula $\mu=5$
+\end_inset
+
+ and 
+\begin_inset Formula $\lambda=5$
+\end_inset
+
+, then we have a 
+\emph on
+
+\begin_inset Formula $\left(5,20\right)$
+\end_inset
+
+
+\emph default
+-ES.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .offspringSelector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(p))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+ shows how to configure the evolution Engine for 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES.
+ The population size is set to 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and the survivors size to zero, since the best parents are not part of
+ the final population.
+ Step three is configured by setting the offspring selector to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ Additionally, the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ is parameterized with 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This lets the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ only select the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ best individuals, which corresponds to step two of the ES.
+\end_layout
+
+\begin_layout Standard
+There are mainly three levers for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES where we can adjust exploration versus exploitation:
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Population size 
+\begin_inset Formula $\lambda$
+\end_inset
+
+
+\series default
+: This parameter controls the sample size for each population.
+ For the extreme case, as 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ approaches 
+\begin_inset Formula $\infty$
+\end_inset
+
+, the algorithm would perform a simple random search.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Survivors size of 
+\begin_inset Formula $\mu$
+\end_inset
+
+
+\series default
+: This parameter controls how selective the ES is.
+ Relatively low 
+\begin_inset Formula $\mu$
+\end_inset
+
+ values pushes the algorithm towards exploitative search, because only the
+ best individuals are used for reproduction.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+As you can see in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-lambda-Engine-configuration"
+
+\end_inset
+
+, the survivors size (reproduction pool size) for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES
+\emph on
+ 
+\emph default
+must be set 
+\emph on
+indirectly
+\emph default
+ via the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+ parameter.
+ This is necessary, since for the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES, the selected best 
+\begin_inset Formula $\mu$
+\end_inset
+
+ individuals are not part of the population of the next generation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Mutation probability 
+\begin_inset Formula $p$
+\end_inset
+
+
+\series default
+: A high mutation probability pushes the algorithm toward a fairly random
+ search, regardless of the selectivity of 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ evolution strategy
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution strategy!
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+
+\emph on
+-ES
+\emph default
+, the next generation consists of the selected best 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents and the 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ new children.
+ This is also the main difference to 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+, where the 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are not part of the next generation.
+ Thus the next and all successive generations are 
+\begin_inset Formula $\mu+\lambda$
+\end_inset
+
+ in size.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Luke2013Metaheuristics"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ works with a constant population size and it is therefore not possible
+ to implement an increasing population size.
+ Besides this restriction, the 
+\family typewriter
+Engine
+\family default
+ configuration for the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitness, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .populationSize(lambda)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSize(mu)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new TruncationSelector<>(mu))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(p))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+ 
+\family typewriter
+Engine
+\family default
+ configuration
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:mu-plus-lambda-Engine-configuration"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the selected 
+\begin_inset Formula $\mu$
+\end_inset
+
+ parents are part of the next generation, the 
+\family typewriter
+survivors\SpecialChar softhyphen
+Size
+\family default
+ property must be set to 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ This also requires to set the survivors selector to the 
+\family typewriter
+Truncation\SpecialChar softhyphen
+Selector
+\family default
+.
+ With the 
+\family typewriter
+selector\SpecialChar softhyphen
+(Selector)
+\family default
+ method, both selectors, the selector for the survivors and for the offspring,
+ can be set.
+\end_layout
+
+\begin_layout Standard
+Because the best parents are also part of the next generation, the 
+\begin_inset Formula $\left(\mu+\lambda\right)$
+\end_inset
+
+-ES
+\emph on
+ 
+\emph default
+may be more exploitative than the 
+\begin_inset Formula $\left(\mu,\lambda\right)$
+\end_inset
+
+-ES.
+
+\emph on
+ 
+\emph default
+This has the risk, that very fit parents can defeat other individuals over
+ and over again, which leads to a prematurely convergence to a local optimum.
+\end_layout
+
 \begin_layout Section
 Internals
 \begin_inset Index idx
@@ -20305,7 +22620,7 @@ public static long seed() {
 
 \begin_layout Plain Layout
 
-    return System.nanoTime(); 
+    return System.nanoTime();
 \end_layout
 
 \begin_layout Plain Layout
@@ -21313,7 +23628,7 @@ Methinks it is like a weasel
 , and we shall make it relatively easy by giving him a typewriter with a
  restricted keyboard, one with just the 26 (uppercase) letters, and a space
  bar.
- How long will he take to write this one little sentence? 
+ How long will he take to write this one little sentence?
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
@@ -21355,7 +23670,6 @@ Weasel
 
 \begin_layout Enumerate
 Start with a random string of 28 characters.
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -21364,7 +23678,6 @@ Make
 \end_inset
 
  copies of the string (reproduce).
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -21382,7 +23695,6 @@ METHINKS IT IS LIKE A WEASEL
 
 , and give each a score (the number of letters in the string that are correct
  and in the correct position).
- 
 \end_layout
 
 \begin_layout Enumerate
@@ -21428,7 +23740,6 @@ progeny
  species is the final goal of evolution.
  In real life, the criterion for selection is always short-term, either
  simple survival or, more generally, reproductive success.
- 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
@@ -22301,7 +24612,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/org.jenetics.doc/src/main/resources/graphic/RastriginFunction.png
+	filename ../resources/graphic/RastriginFunction.png
 	lyxscale 50
 	width 100text%
 	clip
@@ -23999,7 +26310,7 @@ Version
 \series default
 :
 \emph on
- 6.9.13
+ 6.11
 \end_layout
 
 \begin_layout Itemize
@@ -24314,7 +26625,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 3.1
+: 3.5
 \end_layout
 
 \begin_layout Itemize
@@ -24351,7 +26662,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-3.1-bin.zip
+http://services.gradle.org/distributions/gradle-3.5-bin.zip
 \end_layout
 
 \end_inset

@@ -19,6 +19,7 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -37,7 +38,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 3.8
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -46,10 +47,35 @@ public final class TruncationSelector<
 	implements Selector<G, C>
 {
 
+	private final int _n;
+
+	/**
+	 * Create a new {@code TruncationSelector} object, where the worst selected
+	 * individual has rank {@code n}. This means, if you want to select
+	 * {@code count} individuals, the worst selected individual has rank
+	 * {@code n}. If {@code count > n}, the selected population will contain
+	 * <em>duplicate</em> individuals.
+	 *
+	 * @since 3.8
+	 *
+	 * @param n the worst rank of the selected individuals
+	 * @throws IllegalArgumentException if {@code n < 1}
+	 */
+	public TruncationSelector(final int n) {
+		if (n < 1) {
+			throw new IllegalArgumentException(format(
+				"n must be greater or equal 1, but was %d.", n
+			));
+		}
+
+		_n = n;
+	}
+
 	/**
 	 * Create a new TruncationSelector object.
 	 */
 	public TruncationSelector() {
+		this(Integer.MAX_VALUE);
 	}
 
 	/**
@@ -59,7 +85,8 @@ public final class TruncationSelector<
 	 * method.) If the selection size is greater the the population size, the
 	 * whole population is duplicated until the desired sample size is reached.
 	 *
-	 * @throws NullPointerException if the {@code population} is {@code null}.
+	 * @throws NullPointerException if the {@code population} or {@code opt} is
+	 *         {@code null}.
 	 */
 	@Override
 	public Population<G, C> select(
@@ -83,7 +110,7 @@ public final class TruncationSelector<
 
 			int size = count;
 			do {
-				final int length = Math.min(copy.size(), size);
+				final int length = min(min(copy.size(), size), _n);
 				selection.addAll(copy.subList(0, length));
 				size -= length;
 			} while (size > 0);

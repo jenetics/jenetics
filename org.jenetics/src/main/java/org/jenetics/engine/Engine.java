@@ -1046,7 +1046,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0
+	 * @version 3.8
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -1073,6 +1073,7 @@ public final class Engine<
 		private int _populationSize = 50;
 		private long _maximalPhenotypeAge = 70;
 
+		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
@@ -1285,6 +1286,11 @@ public final class Engine<
 
 		/**
 		 * The offspring fraction. <i>Default values is set to {@code 0.6}.</i>
+		 * This method call is equivalent to
+		 * {@code survivorsFraction(1 - offspringFraction)} and will override
+		 * any previously set survivors-fraction.
+		 *
+		 * @see #survivorsFraction(double)
 		 *
 		 * @param fraction the offspring fraction
 		 * @return {@code this} builder, for command chaining
@@ -1294,6 +1300,68 @@ public final class Engine<
 		public Builder<G, C> offspringFraction(final double fraction) {
 			_offspringFraction = probability(fraction);
 			return this;
+		}
+
+		/**
+		 * The survivors fraction. <i>Default values is set to {@code 0.4}.</i>
+		 * This method call is equivalent to
+		 * {@code offspringFraction(1 - survivorsFraction)} and will override
+		 * any previously set offspring-fraction.
+		 *
+		 * @since 3.8
+		 *
+		 * @see #offspringFraction(double)
+		 *
+		 * @param fraction the survivors fraction
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the fraction is not
+		 *         within the range [0, 1].
+		 */
+		public Builder<G, C> survivorsFraction(final double fraction) {
+			_offspringFraction = 1.0 - probability(fraction);
+			return this;
+		}
+
+		/**
+		 * The number of offspring individuals.
+		 *
+		 * @since 3.8
+		 *
+		 * @param size the number of offspring individuals.
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the size is not
+		 *         within the range [0, population-size].
+		 */
+		public Builder<G, C> offspringSize(final int size) {
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Offspring size must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return offspringFraction((double)size/(double)_populationSize);
+		}
+
+		/**
+		 * The number of survivors.
+		 *
+		 * @since 3.8
+		 *
+		 * @param size the number of survivors.
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the size is not
+		 *         within the range [0, population-size].
+		 */
+		public Builder<G, C> survivorsSize(final int size) {
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Survivors must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return survivorsFraction((double)size/(double)_populationSize);
 		}
 
 		/**
@@ -1307,7 +1375,8 @@ public final class Engine<
 		public Builder<G, C> populationSize(final int size) {
 			if (size < 1) {
 				throw new IllegalArgumentException(format(
-					"Population size must be greater than zero, but was %s.", size
+					"Population size must be greater than zero, but was %s.",
+					size
 				));
 			}
 			_populationSize = size;
