@@ -24,8 +24,8 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
- * @since 3.0
+ * @version 3.0
+ * @since 2.0
  */
 final class Context<T> {
 
