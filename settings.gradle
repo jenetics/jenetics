@@ -34,10 +34,7 @@ include 'org.jenetix'
 
 rootProject.name = 'jenetics'
 
-// Rename the build scripts of the projects to ${project.name}.gradle
+// Rename the project names by removing the trailing 'org.'.
 rootProject.children.each { project ->
-	project.buildFileName = project.name + '.gradle'
 	project.name = project.name.substring(4)
 }
-
-
