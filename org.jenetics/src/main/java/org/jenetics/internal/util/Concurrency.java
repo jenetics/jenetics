@@ -25,6 +25,7 @@ import static java.security.AccessController.doPrivileged;
 import static java.util.Objects.requireNonNull;
 
 import java.security.PrivilegedAction;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -34,8 +35,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-
-import org.jenetics.internal.collection.Stack;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -95,7 +94,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * This Concurrency uses a ForkJoinPool.
 	 */
 	private static final class ForkJoinPoolConcurrency extends Concurrency {
-		private final Stack<ForkJoinTask<?>> _tasks = new Stack<>();
+		private final List<ForkJoinTask<?>> _tasks = new ArrayList<>();
 		private final ForkJoinPool _pool;
 
 		ForkJoinPoolConcurrency(final ForkJoinPool pool) {
@@ -104,12 +103,12 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Runnable runnable) {
-			_tasks.push(_pool.submit(runnable));
+			_tasks.add(_pool.submit(runnable));
 		}
 
 		@Override
 		public void execute(final List<? extends Runnable> runnables) {
-			_tasks.push(_pool.submit(new RunnablesAction(runnables)));
+			_tasks.add(_pool.submit(new RunnablesAction(runnables)));
 		}
 
 		@Override
@@ -119,9 +118,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void close() {
-			for (ForkJoinTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
-				t.join();
-			}
+			_tasks.forEach(ForkJoinTask::join);
 		}
 	}
 
@@ -129,7 +126,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * This Concurrency uses an ExecutorService.
 	 */
 	private static final class ExecutorServiceConcurrency extends Concurrency {
-		private final Stack<Future<?>> _futures = new Stack<>();
+		private final List<Future<?>> _futures = new ArrayList<>();
 		private final ExecutorService _service;
 
 		ExecutorServiceConcurrency(final ExecutorService service) {
@@ -138,7 +135,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Runnable command) {
-			_futures.push(_service.submit(command));
+			_futures.add(_service.submit(command));
 		}
 
 		@Override
@@ -164,7 +161,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void close() {
 			try {
-				for (Future<?> f = _futures.pop(); f != null; f = _futures.pop()) {
+				for (Future<?> f : _futures) {
 					f.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
@@ -180,7 +177,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 	 * This Concurrency uses an Executor.
 	 */
 	private static final class ExecutorConcurrency extends Concurrency {
-		private final Stack<FutureTask<?>> _tasks = new Stack<>();
+		private final List<FutureTask<?>> _tasks = new ArrayList<>();
 		private final Executor _executor;
 
 		ExecutorConcurrency(final Executor executor) {
@@ -190,7 +187,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void execute(final Runnable command) {
 			final FutureTask<?> task = new FutureTask<>(command, null);
-			_tasks.push(task);
+			_tasks.add(task);
 			_executor.execute(task);
 		}
 
@@ -212,7 +209,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void close() {
 			try {
-				for (FutureTask<?> t = _tasks.pop(); t != null; t = _tasks.pop()) {
+				for (FutureTask<?> t : _tasks) {
 					t.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
