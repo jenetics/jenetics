@@ -19,6 +19,7 @@
  */
 package org.jenetics.xml;
 
+import static java.util.Objects.requireNonNull;
 import static org.jenetics.xml.stream.Writer.attr;
 import static org.jenetics.xml.stream.Writer.elem;
 import static org.jenetics.xml.stream.Writer.elems;
@@ -33,6 +34,7 @@ import javax.xml.stream.XMLStreamException;
 import org.jenetics.BoundedGene;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
@@ -57,6 +59,7 @@ public final class Writers {
 	private Writers() {
 	}
 
+
 	/**
 	 * Writer methods for {@link org.jenetics.BitChromosome} classes.
 	 * <p>
@@ -67,6 +70,12 @@ public final class Writers {
 	public static final class BitChromosome {
 		private BitChromosome() {}
 
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.BitChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome writer
+		 */
 		public static Writer<org.jenetics.BitChromosome> writer() {
 			return elem("bit-chromosome",
 				attr("length", org.jenetics.BitChromosome::length),
@@ -75,28 +84,36 @@ public final class Writers {
 			);
 		}
 
-		public static void write(
-			final org.jenetics.BitChromosome chromosome,
-			final OutputStream out,
-			final String indent
-		)
-			throws XMLStreamException
-		{
-			writer().write(chromosome, XML.writer(out, indent));
-		}
-
+		/**
+		 * Write the given {@link org.jenetics.BitChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the bit-chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if one of the given arguments is
+		 *         {@code null}
+		 */
 		public static void write(
 			final org.jenetics.BitChromosome chromosome,
 			final OutputStream out
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out));
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
+				writer().write(chromosome, writer);
+			}
 		}
 	}
 
+
 	/**
-	 * Writer methods for {@link org.jenetics.CharacterChromosome} classes.
+	 * Writer methods for {@link org.jenetics.CharacterChromosome} objects.
+	 *
 	 * <pre> {@code
 	 * <character-chromosome length="4">
 	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
@@ -107,6 +124,12 @@ public final class Writers {
 	public static final class CharacterChromosome {
 		private CharacterChromosome() {}
 
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.CharacterChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome writer
+		 */
 		public static Writer<org.jenetics.CharacterChromosome> writer() {
 			return elem("character-chromosome",
 				attr("length", org.jenetics.CharacterChromosome::length),
@@ -115,6 +138,18 @@ public final class Writers {
 			);
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.CharacterChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.CharacterChromosome chromosome,
 			final OutputStream out,
@@ -122,22 +157,39 @@ public final class Writers {
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out, indent));
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				writer().write(chromosome, writer);
+			}
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.CharacterChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.CharacterChromosome chromosome,
 			final OutputStream out
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out));
+			write(chromosome, out, null);
 		}
 
 	}
 
 	/**
-	 * Writer for int-chromosomes.
+	 * Writer methods for {@link org.jenetics.IntegerChromosome} objects.
+	 *
 	 * <pre> {@code
 	 * <int-chromosome length="3" min="-2147483648" max="2147483647">
 	 *     <allele>-1878762439</allele>
@@ -149,10 +201,28 @@ public final class Writers {
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
 
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.IntegerChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome writer
+		 */
 		public static Writer<org.jenetics.IntegerChromosome> writer() {
 			return BoundedChromosome.writer("int-chromosome");
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.IntegerChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.IntegerChromosome chromosome,
 			final OutputStream out,
@@ -160,21 +230,38 @@ public final class Writers {
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out, indent));
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				writer().write(chromosome, writer);
+			}
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.IntegerChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.IntegerChromosome chromosome,
 			final OutputStream out
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out));
+			write(chromosome, out, null);
 		}
 	}
 
 	/**
-	 * Writer for long-chromosomes.
+	 * Writer methods for {@link org.jenetics.LongChromosome} objects.
+	 *
 	 * <pre> {@code
 	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
 	 *     <allele>-1345217698116542402</allele>
@@ -186,10 +273,28 @@ public final class Writers {
 	public static final class LongChromosome {
 		private LongChromosome() {}
 
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.LongChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome writer
+		 */
 		public static Writer<org.jenetics.LongChromosome> writer() {
 			return BoundedChromosome.writer("long-chromosome");
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.LongChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.LongChromosome chromosome,
 			final OutputStream out,
@@ -197,21 +302,38 @@ public final class Writers {
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out, indent));
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				writer().write(chromosome, writer);
+			}
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.LongChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.LongChromosome chromosome,
 			final OutputStream out
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out));
+			write(chromosome, out, null);
 		}
 	}
 
 	/**
-	 * Writer for double-chromosomes.
+	 * Writer methods for {@link org.jenetics.DoubleChromosome} objects.
+	 *
 	 * <pre> {@code
 	 * <double-chromosome length="3" min="0.0" max="1.0">
 	 *     <allele>0.27251556008507416</allele>
@@ -223,10 +345,28 @@ public final class Writers {
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
 
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.DoubleChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome writer
+		 */
 		public static Writer<org.jenetics.DoubleChromosome> writer() {
 			return BoundedChromosome.writer("double-chromosome");
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.DoubleChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.DoubleChromosome chromosome,
 			final OutputStream out,
@@ -234,21 +374,37 @@ public final class Writers {
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out, indent));
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				writer().write(chromosome, writer);
+			}
 		}
 
+		/**
+		 * Write the given {@link org.jenetics.DoubleChromosome} to the given
+		 * output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
 		public static void write(
 			final org.jenetics.DoubleChromosome chromosome,
 			final OutputStream out
 		)
 			throws XMLStreamException
 		{
-			writer().write(chromosome, XML.writer(out));
+			write(chromosome, out, null);
 		}
 	}
 
 
-	public static final class BoundedChromosome {
+	static final class BoundedChromosome {
 		private BoundedChromosome() {}
 
 		public static <
@@ -266,42 +422,43 @@ public final class Writers {
 		}
 	}
 
+	/**
+	 * Writer methods for {@link org.jenetics.PermutationChromosome} objects.
+	 * <pre>{@code
+	 * final Writer<PermutationChromosome<Double> writer =
+	 *     permutationChromosomeWriter(Writer.text(d -> String.format("%1.4f", d)));
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <permutation-chromosome length="15">
+	 *     <valid-alleles>
+	 *         <allele>0.2725</allele>
+	 *         <allele>0.0031</allele>
+	 *         <allele>0.4395</allele>
+	 *         <allele>0.1065</allele>
+	 *         <allele>0.1970</allele>
+	 *         <allele>0.7450</allele>
+	 *         <allele>0.5594</allele>
+	 *         <allele>0.0282</allele>
+	 *         <allele>0.5741</allele>
+	 *         <allele>0.4534</allele>
+	 *         <allele>0.8111</allele>
+	 *         <allele>0.5710</allele>
+	 *         <allele>0.3017</allele>
+	 *         <allele>0.5455</allele>
+	 *         <allele>0.2107</allele>
+	 *     </valid-alleles>
+	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 * </permutation-chromosome>
+	 * }</pre>
+	 */
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
 
 		/**
 		 * Create a writer for permutation-chromosomes. How to write the valid
-		 * alleles is defined by the given {@link Writer}. The following writer
-		 * allows to write permutation-chromosomes with double allele types, where
-		 * the double values are written with a fixed precision:
-		 * <pre>{@code
-		 * final Writer<PermutationChromosome<Double> writer =
-		 *     permutationChromosomeWriter(Writer.text(d -> String.format("%1.4f", d)));
-		 * }</pre>
-		 *
-		 * Example output:
-		 * <pre> {@code
-		 * <permutation-chromosome length="15">
-		 *     <valid-alleles>
-		 *         <allele>0.2725</allele>
-		 *         <allele>0.0031</allele>
-		 *         <allele>0.4395</allele>
-		 *         <allele>0.1065</allele>
-		 *         <allele>0.1970</allele>
-		 *         <allele>0.7450</allele>
-		 *         <allele>0.5594</allele>
-		 *         <allele>0.0282</allele>
-		 *         <allele>0.5741</allele>
-		 *         <allele>0.4534</allele>
-		 *         <allele>0.8111</allele>
-		 *         <allele>0.5710</allele>
-		 *         <allele>0.3017</allele>
-		 *         <allele>0.5455</allele>
-		 *         <allele>0.2107</allele>
-		 *     </valid-alleles>
-		 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
-		 * </permutation-chromosome>
-		 * }</pre>
+		 * alleles is defined by the given {@link Writer}.
 		 *
 		 * @param writer the allele writer
 		 * @param <A> the allele type
@@ -330,11 +487,11 @@ public final class Writers {
 
 		/**
 		 * Create a writer for permutation-chromosomes. The valid alleles are
-		 * serialized by calling the {@link Object#toString()} method. Calling this
-		 * method is equivalent with:
+		 * serialized by calling the {@link Object#toString()} method. Calling
+		 * this method is equivalent with:
 		 * <pre>{@code
 		 * final Writer<PermutationChromosome<Double> writer =
-		 *     permutationChromosomeWriter(Writer.text(Objects::toString));
+		 *     PermutationChromosome.write(Writer.text(Objects::toString));
 		 * }</pre>
 		 *
 		 * Example output:
@@ -367,36 +524,138 @@ public final class Writers {
 		public static <A> Writer<org.jenetics.PermutationChromosome<A>> writer() {
 			return writer(text());
 		}
+
+		/**
+		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * given output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
+		public static <A> void write(
+			final org.jenetics.PermutationChromosome<A> chromosome,
+			final OutputStream out,
+			final String indent
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(chromosome);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				PermutationChromosome.<A>writer().write(chromosome, writer);
+			}
+		}
+
+		/**
+		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * given output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param alleleWriter the allele writer of the permutation chromosome
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
+		public static <A> void write(
+			final org.jenetics.PermutationChromosome<A> chromosome,
+			final Writer<? super A> alleleWriter,
+			final OutputStream out,
+			final String indent
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(chromosome);
+			requireNonNull(alleleWriter);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				PermutationChromosome.<A>writer(alleleWriter)
+					.write(chromosome, writer);
+			}
+		}
+
+		/**
+		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * given output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
+		public static <A> void write(
+			final org.jenetics.PermutationChromosome<A> chromosome,
+			final OutputStream out
+		)
+			throws XMLStreamException
+		{
+			write(chromosome, out, null);
+		}
+
+		/**
+		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * given output stream.
+		 *
+		 * @param chromosome the chromosome to write
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
+		public static <A> void write(
+			final org.jenetics.PermutationChromosome<A> chromosome,
+			final Writer<? super A> alleleWriter,
+			final OutputStream out
+		)
+			throws XMLStreamException
+		{
+			write(chromosome, alleleWriter, out, null);
+		}
+
 	}
 
-
+	/**
+	 * Writer methods for {@link org.jenetics.Genotype} objects.
+	 *
+	 * <pre>{@code
+	 * final Writer<Genotype<DoubleGene>> writer =
+	 *     genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <genotype length="2" ngenes="5">
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *     </double-chromosome>
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.18390258154466066</allele>
+	 *         <allele>0.4026521545744768</allele>
+	 *         <allele>0.36137605952663554</allele>
+	 *     </double-chromosome>
+	 * </genotype>
+	 * }</pre>
+	 */
 	public static final class Genotype {
 		private Genotype() {}
 
 		/**
 		 * Create a writer for genotypes of arbitrary chromosomes. How to write the
-		 * genotypes chromosomes is defined by the given {@link Writer}. The
-		 * following writer allows to write double-gene chromosomes:
-		 * <pre>{@code
-		 * final Writer<Genotype<DoubleGene>> writer =
-		 *     genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
-		 * }</pre>
-		 *
-		 * Example output:
-		 * <pre> {@code
-		 * <genotype length="2" ngenes="5">
-		 *     <double-chromosome min="0.0" max="1.0" length="3">
-		 *         <allele>0.27251556008507416</allele>
-		 *         <allele>0.003140816229067145</allele>
-		 *         <allele>0.43947528327497376</allele>
-		 *     </double-chromosome>
-		 *     <double-chromosome min="0.0" max="1.0" length="3">
-		 *         <allele>0.18390258154466066</allele>
-		 *         <allele>0.4026521545744768</allele>
-		 *         <allele>0.36137605952663554</allele>
-		 *     </double-chromosome>
-		 * </genotype>
-		 * }</pre>
+		 * genotypes chromosomes is defined by the given {@link Writer}.
 		 *
 		 * @param writer the chromosome writer
 		 * @param <A> the allele type
@@ -410,7 +669,7 @@ public final class Writers {
 			A,
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
-			>
+		>
 		Writer<org.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem("genotype",
 				attr("length", org.jenetics.Genotype<G>::length),
@@ -418,6 +677,40 @@ public final class Writers {
 				elems(gt -> cast(gt.toSeq()), writer)
 			);
 		}
+
+		/**
+		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * stream.
+		 *
+		 * @param genotype the chromosome to write
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the {@code chromosome} or output
+		 *         stream is {@code null}
+		 */
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		> void write(
+			final org.jenetics.Genotype<G> genotype,
+			final Writer<? super C> chromosomeWriter,
+			final OutputStream out,
+			final String indent
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(genotype);
+			requireNonNull(chromosomeWriter);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				Genotype.<A, G, C>writer(chromosomeWriter).write(genotype, writer);
+			}
+		}
+
 	}
 
 	public static final class Genotypes {
