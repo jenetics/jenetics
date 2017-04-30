@@ -26,14 +26,6 @@ import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
 import static org.jenetics.internal.math.random.nextString;
 import static org.jenetics.util.RandomRegistry.using;
-import static org.jenetics.xml.Writers.BIT_CHROMOSOME_WRITER;
-import static org.jenetics.xml.Writers.CHARACTER_CHROMOSOME_WRITER;
-import static org.jenetics.xml.Writers.DOUBLE_CHROMOSOME_WRITER;
-import static org.jenetics.xml.Writers.INTEGER_CHROMOSOME_WRITER;
-import static org.jenetics.xml.Writers.LONG_CHROMOSOME_WRITER;
-import static org.jenetics.xml.Writers.genotypeWriter;
-import static org.jenetics.xml.Writers.genotypesWriter;
-import static org.jenetics.xml.Writers.permutationChromosomeWriter;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -132,50 +124,50 @@ public class PersistentObject<T> {
 		 * Chromosomes
 		 **********************************************************************/
 
-		put("BitChromosome", nextBitChromosome(), BIT_CHROMOSOME_WRITER);
-		put("CharacterChromosome", nextCharacterChromosome(), CHARACTER_CHROMOSOME_WRITER);
-		put("IntegerChromosome", nextIntegerChromosome(), INTEGER_CHROMOSOME_WRITER);
-		put("LongChromosome", nextLongChromosome(), LONG_CHROMOSOME_WRITER);
-		put("DoubleChromosome", nextDoubleChromosome(), DOUBLE_CHROMOSOME_WRITER);
+		put("BitChromosome", nextBitChromosome(), Writers.BitChromosome.writer());
+		put("CharacterChromosome", nextCharacterChromosome(), Writers.CharacterChromosome.writer());
+		put("IntegerChromosome", nextIntegerChromosome(), Writers.IntegerChromosome.writer());
+		put("LongChromosome", nextLongChromosome(), Writers.LongChromosome.writer());
+		put("DoubleChromosome", nextDoubleChromosome(), Writers.DoubleChromosome.writer());
 
-		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Short]", nextShortPermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Long]", nextLongPermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(), permutationChromosomeWriter());
-		put("PermutationChromosome[String]", nextStringPermutationChromosome(), permutationChromosomeWriter());
+		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Short]", nextShortPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Long]", nextLongPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[String]", nextStringPermutationChromosome(), Writers.PermutationChromosome.writer());
 
 		/* *********************************************************************
 		 * Genotypes
 		 **********************************************************************/
 
-		put("Genotype[BitGene]", nextGenotypeBitGene(), genotypeWriter(BIT_CHROMOSOME_WRITER));
-		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), genotypeWriter(CHARACTER_CHROMOSOME_WRITER));
-		put("Genotype[IntegerGene]", nextGenotypeIntegerGene(), genotypeWriter(INTEGER_CHROMOSOME_WRITER));
-		put("Genotype[LongGene]", nextGenotypeLongGene(), genotypeWriter(LONG_CHROMOSOME_WRITER));
-		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), genotypeWriter(DOUBLE_CHROMOSOME_WRITER));
+		put("Genotype[BitGene]", nextGenotypeBitGene(), Writers.Genotype.writer(Writers.BitChromosome.writer()));
+		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), Writers.Genotype.writer(Writers.CharacterChromosome.writer()));
+		put("Genotype[IntegerGene]", nextGenotypeIntegerGene(), Writers.Genotype.writer(Writers.IntegerChromosome.writer()));
+		put("Genotype[LongGene]", nextGenotypeLongGene(), Writers.Genotype.writer(Writers.LongChromosome.writer()));
+		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), Writers.Genotype.writer(Writers.DoubleChromosome.writer()));
 
-		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), genotypeWriter(permutationChromosomeWriter()));
-		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), genotypeWriter(permutationChromosomeWriter()));
+		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
 
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
 
-		put("Population[BitGene]", nextPopulationBitGene(), genotypesWriter(BIT_CHROMOSOME_WRITER));
-		put("Population[CharacterGene]", nextPopulationCharacterGene(), genotypesWriter(CHARACTER_CHROMOSOME_WRITER));
-		put("Population[IntegerGene]", nextPopulationIntegerGene(), genotypesWriter(INTEGER_CHROMOSOME_WRITER));
-		put("Population[LongGene]", nextPopulationLongGene(), genotypesWriter(LONG_CHROMOSOME_WRITER));
-		put("Population[DoubleGene]", nextPopulationDoubleGene(), genotypesWriter(DOUBLE_CHROMOSOME_WRITER));
-		put("Population[EnumGene[Integer]]", nextPopulationEnumGene(), genotypesWriter(permutationChromosomeWriter()));
+		put("Population[BitGene]", nextPopulationBitGene(), Writers.Genotypes.writer(Writers.BitChromosome.writer()));
+		put("Population[CharacterGene]", nextPopulationCharacterGene(), Writers.Genotypes.writer(Writers.CharacterChromosome.writer()));
+		put("Population[IntegerGene]", nextPopulationIntegerGene(), Writers.Genotypes.writer(Writers.IntegerChromosome.writer()));
+		put("Population[LongGene]", nextPopulationLongGene(), Writers.Genotypes.writer(Writers.LongChromosome.writer()));
+		put("Population[DoubleGene]", nextPopulationDoubleGene(), Writers.Genotypes.writer(Writers.DoubleChromosome.writer()));
+		put("Population[EnumGene[Integer]]", nextPopulationEnumGene(), Writers.Genotypes.writer(Writers.PermutationChromosome.writer()));
 	}
 
 

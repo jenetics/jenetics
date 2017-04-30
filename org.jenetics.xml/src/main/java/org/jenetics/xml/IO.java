@@ -44,17 +44,17 @@ public final class IO<T> {
 
 	public static final IO<IntegerChromosome> INTEGER_CHROMOSOME = of(
 		Readers.INTEGER_CHROMOSOME,
-		Writers.INTEGER_CHROMOSOME_WRITER
+		Writers.IntegerChromosome.writer()
 	);
 
 	public static final IO<LongChromosome> LONG_CHROMOSOME = of(
 		Readers.LONG_CHROMOSOME,
-		Writers.LONG_CHROMOSOME_WRITER
+		Writers.LongChromosome.writer()
 	);
 
 	public static final IO<DoubleChromosome> DOUBLE_CHROMOSOME = of(
 		Readers.DOUBLE_CHROMOSOME,
-		Writers.DOUBLE_CHROMOSOME_WRITER
+		Writers.DoubleChromosome.writer()
 	);
 
 	private final Reader<T> _reader;

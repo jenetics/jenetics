@@ -133,10 +133,10 @@ public final class Readers {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 		final XMLStreamWriter writer = XML.writer(out, "    ");
-		Writer.doc(Writers.DOUBLE_CHROMOSOME_WRITER).write(ch, writer);
+		Writer.doc(Writers.DoubleChromosome.writer()).write(ch, writer);
 		writer.flush();
 
-		Writer.doc(Writers.DOUBLE_CHROMOSOME_WRITER).write(ch, XML.writer(System.out, "    "));
+		Writer.doc(Writers.DoubleChromosome.writer()).write(ch, XML.writer(System.out, "    "));
 		System.out.flush();
 		System.out.println();
 
