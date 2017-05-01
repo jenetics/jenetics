@@ -24,21 +24,19 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
+import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
-import org.jenetics.IntegerChromosome;
 import org.jenetics.IntegerGene;
-import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
 /**
@@ -47,6 +45,7 @@ import org.jenetics.xml.stream.XML;
  * @since !__version__!
  */
 public final class Readers {
+	private Readers() {}
 
 	@FunctionalInterface
 	private static interface GeneCreator<A, G> {
@@ -58,32 +57,102 @@ public final class Readers {
 		C create(final G[] genes);
 	}
 
-	public static final Reader<IntegerChromosome> INTEGER_CHROMOSOME = chromosome(
-		"integer-chromosome",
-		Integer::parseInt,
-		IntegerGene::of,
-		IntegerGene[]::new,
-		IntegerChromosome::of
-	);
+	// <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+	public static final class BitChromosome {
+		public static Reader<org.jenetics.BitChromosome> reader() {
+			return Reader.of(
+				p -> {
+					final int length = Integer.parseInt((String)p[0]);
+					final double prob = Double.parseDouble((String)p[1]);
+					return org.jenetics.BitChromosome.of((String)p[2]);
+				},
+				"bit-chromosome",
+				Reader.attrs("length", "ones-probability")
+			);
+		}
 
-	public static final Reader<LongChromosome> LONG_CHROMOSOME = chromosome(
-		"long-chromosome",
-		Long::parseLong,
-		LongGene::of,
-		LongGene[]::new,
-		LongChromosome::of
-	);
-
-	public static final Reader<DoubleChromosome> DOUBLE_CHROMOSOME = chromosome(
-		"double-chromosome",
-		Double::parseDouble,
-		DoubleGene::of,
-		DoubleGene[]::new,
-		DoubleChromosome::of
-	);
-
-	private Readers() {
+		public static org.jenetics.BitChromosome read(final InputStream in)
+			throws XMLStreamException
+		{
+			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+				reader.next();
+				return reader().read(reader);
+			}
+		}
 	}
+
+	public static final class IntegerChromosome {
+		private IntegerChromosome() {}
+
+		public static Reader<org.jenetics.IntegerChromosome> reader() {
+			return chromosome(
+				"integer-chromosome",
+				Integer::parseInt,
+				IntegerGene::of,
+				IntegerGene[]::new,
+				org.jenetics.IntegerChromosome::of
+			);
+		}
+
+		public static org.jenetics.IntegerChromosome read(final InputStream in)
+			throws XMLStreamException
+		{
+			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+				reader.next();
+				return reader().read(reader);
+			}
+		}
+
+	}
+
+	public static final class LongChromosome {
+		private LongChromosome() {}
+
+		public static Reader<org.jenetics.LongChromosome> reader() {
+			return chromosome(
+				"long-chromosome",
+				Long::parseLong,
+				LongGene::of,
+				LongGene[]::new,
+				org.jenetics.LongChromosome::of
+			);
+		}
+
+		public static org.jenetics.LongChromosome read(final InputStream in)
+			throws XMLStreamException
+		{
+			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+				reader.next();
+				return reader().read(reader);
+			}
+		}
+
+	}
+
+	public static final class DoubleChromosome {
+		private DoubleChromosome() {}
+
+		public static Reader<org.jenetics.DoubleChromosome> reader() {
+			return chromosome(
+				"double-chromosome",
+				Double::parseDouble,
+				DoubleGene::of,
+				DoubleGene[]::new,
+				org.jenetics.DoubleChromosome::of
+			);
+		}
+
+		public static org.jenetics.DoubleChromosome read(final InputStream in)
+			throws XMLStreamException
+		{
+			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+				reader.next();
+				return reader().read(reader);
+			}
+		}
+
+	}
+
 
 	private static <A, G, C> Reader<C> chromosome(
 		final String name,
@@ -125,26 +194,15 @@ public final class Readers {
 		);
 	}
 
-
 	public static void main(final String[] args) throws Exception {
-		final DoubleChromosome ch = DoubleChromosome.of(0, 1, 10);
-		System.out.println(ch);
+		final org.jenetics.BitChromosome bch = org.jenetics.BitChromosome.of(10);
 
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-		final XMLStreamWriter writer = XML.writer(out, "    ");
-		Writer.doc(Writers.DoubleChromosome.writer()).write(ch, writer);
-		writer.flush();
-
-		Writer.doc(Writers.DoubleChromosome.writer()).write(ch, XML.writer(System.out, "    "));
-		System.out.flush();
-		System.out.println();
+		Writers.BitChromosome.write(bch, out);
 
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-		final XMLStreamReader reader = XML.reader(in);
-		reader.next();
-		final DoubleChromosome dch = DOUBLE_CHROMOSOME.read(reader);
-		System.out.println(dch);
+		final org.jenetics.BitChromosome bch1 = BitChromosome.read(in);
+		System.out.println(bch1);
 	}
 
 }

@@ -19,6 +19,7 @@
  */
 package org.jenetics.xml.stream;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
@@ -113,6 +114,7 @@ final class ReaderImpl<T> extends AbstractReader<T> {
 			param.put(attr, value);
 		}
 
+		final StringBuilder text = new StringBuilder();
 		while (reader.hasNext()) {
 			switch (reader.next()) {
 				case XMLStreamReader.START_ELEMENT:
@@ -134,16 +136,28 @@ final class ReaderImpl<T> extends AbstractReader<T> {
 						param.put(child.name(), child.read(reader));
 					}
 					break;
+				case XMLStreamReader.CHARACTERS:
+				case XMLStreamReader.CDATA:
+					text.append(reader.getText());
+					break;
 				case XMLStreamReader.END_ELEMENT:
 					if (name().equals(reader.getLocalName())) {
-						final int size = attrs().size() + _children.size();
-						final Object[] args = new Object[size];
+						final int size = attrs().size() +
+							_children.size() +
+							min(text.length(), 1);
 
+						final Object[] args = new Object[size];
 						for (int i = 0; i < attrs().size(); ++i) {
 							args[i] = param.get(attrs().get(i));
 						}
+
+						int offset = attrs().size();
+						if (text.length() > 0) {
+							args[offset] = text.toString();
+							offset += 1;
+						}
 						for (int i = 0; i < _children.size(); ++i) {
-							args[attrs().size() + i] =
+							args[offset + i] =
 								param.get(_children.get(i).name());
 						}
 
