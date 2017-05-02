@@ -70,10 +70,7 @@ public final class Readers {
 					final double prob = Double.parseDouble((String)p[1]);
 					final String genes = (String)p[2];
 
-					return org.jenetics.BitChromosome.of(
-						genes.substring(0, length),
-						prob
-					);
+					return org.jenetics.BitChromosome.of(genes, length, prob);
 				},
 				"bit-chromosome",
 				Reader.attrs("length", "ones-probability")
