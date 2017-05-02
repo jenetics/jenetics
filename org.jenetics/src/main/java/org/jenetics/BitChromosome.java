@@ -455,6 +455,8 @@ public class BitChromosome extends Number
 	}
 
 	/**
+	 * Create a new {@code BitChromosome} with the given parameters.
+	 *
 	 * @param length length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
 	 * @return a new {@code BitChromosome} with the given parameter
@@ -476,6 +478,8 @@ public class BitChromosome extends Number
 	}
 
 	/**
+	 * Create a new {@code BitChromosome} with the given parameters.
+	 *
 	 * @param length length of the BitChromosome.
 	 * @param bits the bit-set which initializes the chromosome
 	 * @param p Probability of the TRUEs in the BitChromosome.
@@ -571,6 +575,29 @@ public class BitChromosome extends Number
 	public static BitChromosome of(final CharSequence value, final double p) {
 		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
 		return new BitChromosome(bits, bits.length*8, require.probability(p));
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method.
+	 *
+	 * @param value the input string.
+	 * @param length length of the BitChromosome
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(
+		final CharSequence value,
+		final int length,
+		final double p
+	) {
+		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
+		return new BitChromosome(bits, length, require.probability(p));
 	}
 
 	@Override
