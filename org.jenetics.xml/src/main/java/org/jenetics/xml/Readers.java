@@ -67,6 +67,7 @@ public final class Readers {
 	 * }
 	 */
 	public static final class BitChromosome {
+		private BitChromosome() {}
 
 		/**
 		 * Return a XML reader for {@link org.jenetics.BitChromosome} objects.
@@ -117,6 +118,7 @@ public final class Readers {
 	 * }</pre>
 	 */
 	public static final class CharacterChromosome {
+		private CharacterChromosome() {}
 
 		/**
 		 * Return a XML reader for {@link org.jenetics.CharacterChromosome}
@@ -161,6 +163,7 @@ public final class Readers {
 	}
 
 	public static final class PermutationChromosome {
+		private PermutationChromosome() {}
 
 	}
 
