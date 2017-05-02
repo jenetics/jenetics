@@ -57,12 +57,21 @@ public final class Readers {
 		C create(final G[] genes);
 	}
 
-	// <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
-
 	/**
-	 * Bit chromosome reader methods.
+	 * Bit chromosome reader methods, which reads XML-representations of
+	 * bit-chromosomes.
+	 * <p>
+	 * {@code
+	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+	 * }
 	 */
 	public static final class BitChromosome {
+
+		/**
+		 * Return a XML reader for {@link org.jenetics.BitChromosome} objects.
+		 *
+		 * @return bit-chromosome reader
+		 */
 		public static Reader<org.jenetics.BitChromosome> reader() {
 			return Reader.of(
 				p -> {
@@ -77,6 +86,15 @@ public final class Readers {
 			);
 		}
 
+		/**
+		 * Read a new {@link org.jenetics.BitChromosome} from the given input
+		 * stream.
+		 *
+		 * @param in the data source of the bit-chromosome
+		 * @return the bit-chromosome read from the input stream
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if the given input stream is {@code null}
+		 */
 		public static org.jenetics.BitChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
