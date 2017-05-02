@@ -45,9 +45,6 @@ public abstract class IndexSorter {
 	//private static final int INSERTION_SORT_THRESHOLD = 80;
 	private static final int INSERTION_SORT_THRESHOLD = 80;
 
-	static final IndexSorter INSERTION_SORTER = new InsertionSorter();
-	static final IndexSorter HEAP_SORTER = new HeapSorter();
-
 	/**
 	 * This method must be implemented by the different sorting algorithms.
 	 *
@@ -66,8 +63,8 @@ public abstract class IndexSorter {
 	 */
 	public static int[] sort(final double[] array) {
 		final IndexSorter sorter = array.length < INSERTION_SORT_THRESHOLD
-			? INSERTION_SORTER
-			: HEAP_SORTER;
+			? InsertionSorter.INSTANCE
+			: HeapSorter.INSTANCE;
 
 		return sorter.sort(array, indexes(array.length));
 	}
@@ -91,6 +88,8 @@ public abstract class IndexSorter {
  * Heap sort implementation.
  */
 final class HeapSorter extends IndexSorter {
+
+	static final HeapSorter INSTANCE = new HeapSorter();
 
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
@@ -130,6 +129,8 @@ final class HeapSorter extends IndexSorter {
  * Insertion sort implementation.
  */
 final class InsertionSorter extends IndexSorter {
+
+	static final InsertionSorter INSTANCE = new InsertionSorter();
 
 	@Override
 	int[] sort(final double[] array, final int[] indexes) {
