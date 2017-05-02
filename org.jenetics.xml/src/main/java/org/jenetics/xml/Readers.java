@@ -58,6 +58,10 @@ public final class Readers {
 	}
 
 	// <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+
+	/**
+	 * Bit chromosome reader methods.
+	 */
 	public static final class BitChromosome {
 		public static Reader<org.jenetics.BitChromosome> reader() {
 			return Reader.of(
@@ -81,6 +85,17 @@ public final class Readers {
 		}
 	}
 
+	public static final class CharacterChromosome {
+
+	}
+
+	public static final class PermutationChromosome {
+
+	}
+
+	/**
+	 * Integer chromosome reader methods.
+	 */
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
 
@@ -105,6 +120,9 @@ public final class Readers {
 
 	}
 
+	/**
+	 * Long chromosome reader methods.
+	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
 
@@ -129,6 +147,9 @@ public final class Readers {
 
 	}
 
+	/**
+	 * Double chromosome reader methods.
+	 */
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
 
@@ -153,6 +174,13 @@ public final class Readers {
 
 	}
 
+	public static final class Genotype {
+
+	}
+
+	public static final class Genotypes {
+
+	}
 
 	private static <A, G, C> Reader<C> chromosome(
 		final String name,
