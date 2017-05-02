@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.bit;
+import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
 
@@ -475,6 +476,31 @@ public class BitChromosome extends Number
 	}
 
 	/**
+	 * @param length length of the BitChromosome.
+	 * @param bits the bit-set which initializes the chromosome
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NegativeArraySizeException if the {@code length} is smaller than
+	 *         one.
+	 * @throws NullPointerException if the {@code bitSet} is {@code null}.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(
+		final BitSet bits,
+		final int length,
+		final double p
+	) {
+		final byte[] bytes = bit.newArray(length);
+		for (int i = 0; i < length; ++i) {
+			if (bits.get(i)) {
+				bit.set(bytes, i);
+			}
+		}
+
+		return new BitChromosome(bytes, length, require.probability(p));
+	}
+
+	/**
 	 * Constructing a new BitChromosome from a given BitSet.
 	 * The BitSet is copied while construction. The length of the constructed
 	 * BitChromosome will be {@code bitSet.length()} ({@link BitSet#length}).
@@ -500,6 +526,21 @@ public class BitChromosome extends Number
 	}
 
 	/**
+	 * Create a new {@code BitChromosome} from the given big integer value and
+	 * ones probability.
+	 *
+	 * @param value the value of the created {@code BitChromosome}
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the given {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(final BigInteger value, final double p) {
+		final byte[] bits = value.toByteArray();
+		return new BitChromosome(bits, bits.length*8, require.probability(p));
+	}
+
+	/**
 	 * Create a new {@code BitChromosome} from the given character sequence
 	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
 	 * method.
@@ -512,6 +553,24 @@ public class BitChromosome extends Number
 	 */
 	public static BitChromosome of(final CharSequence value) {
 		return new BitChromosome(toByteArray(requireNonNull(value, "Input")), -1);
+	}
+
+	/**
+	 * Create a new {@code BitChromosome} from the given character sequence
+	 * containing '0' and '1'; as created with the {@link #toCanonicalString()}
+	 * method.
+	 *
+	 * @param value the input string.
+	 * @param p Probability of the TRUEs in the BitChromosome.
+	 * @return a new {@code BitChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code value} is {@code null}.
+	 * @throws IllegalArgumentException if the length of the character sequence
+	 *         is zero or contains other characters than '0' or '1'.
+	 * @throws IllegalArgumentException if {@code p} is not a valid probability.
+	 */
+	public static BitChromosome of(final CharSequence value, final double p) {
+		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
+		return new BitChromosome(bits, bits.length*8, require.probability(p));
 	}
 
 	@Override
