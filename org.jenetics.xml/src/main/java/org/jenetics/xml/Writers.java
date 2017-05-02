@@ -529,6 +529,7 @@ public final class Writers {
 		 * Write the given {@link org.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
+		 * @param <A> the allele type
 		 * @param chromosome the chromosome to write
 		 * @param out the target output stream
 		 * @param indent the XML level indentation
@@ -556,6 +557,7 @@ public final class Writers {
 		 * Write the given {@link org.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
+		 * @param <A> the allele type
 		 * @param chromosome the chromosome to write
 		 * @param alleleWriter the allele writer of the permutation chromosome
 		 * @param out the target output stream
@@ -587,6 +589,7 @@ public final class Writers {
 		 * Write the given {@link org.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
+		 * @param <A> the allele type
 		 * @param chromosome the chromosome to write
 		 * @param out the target output stream
 		 * @throws XMLStreamException if an error occurs while writing the
@@ -607,7 +610,10 @@ public final class Writers {
 		 * Write the given {@link org.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
+		 * @param <A> the allele type
 		 * @param chromosome the chromosome to write
+		 * @param alleleWriter the allele writer used to write the chromosome
+		 *         alleles
 		 * @param out the target output stream
 		 * @throws XMLStreamException if an error occurs while writing the
 		 *         chromosome
@@ -682,7 +688,12 @@ public final class Writers {
 		 * Write the given {@link org.jenetics.Genotype} to the given output
 		 * stream.
 		 *
+		 * @param <A> the allele type
+		 * @param <G> the gene type
+		 * @param <C> the chromosome type
 		 * @param genotype the chromosome to write
+		 * @param chromosomeWriter the chromosome writer used to write the
+		 *        genotypes
 		 * @param out the target output stream
 		 * @param indent the XML level indentation
 		 * @throws XMLStreamException if an error occurs while writing the
