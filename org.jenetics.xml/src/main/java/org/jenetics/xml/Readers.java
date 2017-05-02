@@ -68,7 +68,12 @@ public final class Readers {
 				p -> {
 					final int length = Integer.parseInt((String)p[0]);
 					final double prob = Double.parseDouble((String)p[1]);
-					return org.jenetics.BitChromosome.of((String)p[2]);
+					final String genes = (String)p[2];
+
+					return org.jenetics.BitChromosome.of(
+						genes.substring(0, length),
+						prob
+					);
 				},
 				"bit-chromosome",
 				Reader.attrs("length", "ones-probability")
