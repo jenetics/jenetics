@@ -35,6 +35,7 @@ import javax.xml.stream.XMLStreamException;
 import org.jenetics.DoubleGene;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
+import org.jenetics.util.CharSeq;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.XML;
@@ -70,7 +71,7 @@ public final class Readers {
 		/**
 		 * Return a XML reader for {@link org.jenetics.BitChromosome} objects.
 		 *
-		 * @return bit-chromosome reader
+		 * @return a chromosome reader
 		 */
 		public static Reader<org.jenetics.BitChromosome> reader() {
 			return Reader.of(
@@ -98,14 +99,64 @@ public final class Readers {
 		public static org.jenetics.BitChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
-			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
-				reader.next();
-				return reader().read(reader);
+			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+				xml.next();
+				return reader().read(xml);
 			}
 		}
 	}
 
+	/**
+	 * Reader methods for {@link org.jenetics.CharacterChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <character-chromosome length="4">
+	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
+	 *     <alleles>ASDF</alleles>
+	 * </character-chromosome>
+	 * }</pre>
+	 */
 	public static final class CharacterChromosome {
+
+		/**
+		 * Return a XML reader for {@link org.jenetics.CharacterChromosome}
+		 * objects.
+		 *
+		 * @return a chromosome reader
+		 */
+		public static Reader<org.jenetics.CharacterChromosome> reader() {
+			return Reader.of(
+				p -> {
+					final int length = Integer.parseInt((String)p[0]);
+					final CharSeq valid = new CharSeq((String)p[1]);
+					final String alleles = (String)p[2];
+
+					return org.jenetics.CharacterChromosome.of(alleles, valid);
+				},
+				"character-chromosome",
+				Reader.attrs("length"),
+				Reader.of("valid-alleles"),
+				Reader.of("alleles")
+			);
+		}
+
+		/**
+		 * Read a new {@link org.jenetics.CharacterChromosome} from the given
+		 * input stream.
+		 *
+		 * @param in the data source of the chromosome
+		 * @return the bit-chromosome read from the input stream
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if the given input stream is {@code null}
+		 */
+		public static org.jenetics.CharacterChromosome read(final InputStream in)
+			throws XMLStreamException
+		{
+			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+				xml.next();
+				return reader().read(xml);
+			}
+		}
 
 	}
 

@@ -29,6 +29,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.BitChromosome;
+import org.jenetics.CharacterChromosome;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.Reader;
@@ -78,7 +79,16 @@ public class WritersReadersTests {
 	@DataProvider
 	public Object[][] marshallings() {
 		return new Object[][] {
-			{BitChromosome.of(10), Writers.BitChromosome.writer(), Readers.BitChromosome.reader()}
+			{
+				BitChromosome.of(10),
+				Writers.BitChromosome.writer(),
+				Readers.BitChromosome.reader()
+			},
+			{
+				CharacterChromosome.of(15),
+				Writers.CharacterChromosome.writer(),
+				Readers.CharacterChromosome.reader()
+			}
 		};
 	}
 
