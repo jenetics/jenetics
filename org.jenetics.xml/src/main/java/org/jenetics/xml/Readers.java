@@ -261,14 +261,27 @@ public final class Readers {
 	}
 
 	/**
-	 * Integer chromosome reader methods.
+	 * Reader methods for {@link org.jenetics.IntegerChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <int-chromosome length="3" min="-2147483648" max="2147483647">
+	 *     <allele>-1878762439</allele>
+	 *     <allele>-957346595</allele>
+	 *     <allele>-88668137</allele>
+	 * </int-chromosome>
+	 * }</pre>
 	 */
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
 
+		/**
+		 * Return a {@link org.jenetics.IntegerChromosome} reader.
+		 *
+		 * @return a integer chromosome reader
+		 */
 		public static Reader<org.jenetics.IntegerChromosome> reader() {
 			return chromosome(
-				"integer-chromosome",
+				"int-chromosome",
 				Integer::parseInt,
 				IntegerGene::of,
 				IntegerGene[]::new,
@@ -276,6 +289,15 @@ public final class Readers {
 			);
 		}
 
+		/**
+		 * Read a new {@link org.jenetics.IntegerChromosome} from the given
+		 * input stream.
+		 *
+		 * @param in the data source of the chromosome
+		 * @return a new chromosome
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if the given input stream is {@code null}
+		 */
 		public static org.jenetics.IntegerChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
@@ -288,11 +310,24 @@ public final class Readers {
 	}
 
 	/**
-	 * Long chromosome reader methods.
+	 * Reader methods for {@link org.jenetics.LongChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
+	 *     <allele>-1345217698116542402</allele>
+	 *     <allele>-7144755673073475303</allele>
+	 *     <allele>6053786736809578435</allele>
+	 * </long-chromosome>
+	 * }</pre>
 	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
 
+		/**
+		 * Return a {@link org.jenetics.LongChromosome} reader.
+		 *
+		 * @return a long chromosome reader
+		 */
 		public static Reader<org.jenetics.LongChromosome> reader() {
 			return chromosome(
 				"long-chromosome",
@@ -303,6 +338,15 @@ public final class Readers {
 			);
 		}
 
+		/**
+		 * Read a new {@link org.jenetics.LongChromosome} from the given
+		 * input stream.
+		 *
+		 * @param in the data source of the chromosome
+		 * @return a new chromosome
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if the given input stream is {@code null}
+		 */
 		public static org.jenetics.LongChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
@@ -315,11 +359,24 @@ public final class Readers {
 	}
 
 	/**
-	 * Double chromosome reader methods.
+	 * Reader methods for {@link org.jenetics.DoubleChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <double-chromosome length="3" min="0.0" max="1.0">
+	 *     <allele>0.27251556008507416</allele>
+	 *     <allele>0.003140816229067145</allele>
+	 *     <allele>0.43947528327497376</allele>
+	 * </double-chromosome>
+	 * }</pre>
 	 */
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
 
+		/**
+		 * Return a {@link org.jenetics.DoubleChromosome} reader.
+		 *
+		 * @return a double chromosome reader
+		 */
 		public static Reader<org.jenetics.DoubleChromosome> reader() {
 			return chromosome(
 				"double-chromosome",
@@ -330,6 +387,15 @@ public final class Readers {
 			);
 		}
 
+		/**
+		 * Read a new {@link org.jenetics.DoubleChromosome} from the given
+		 * input stream.
+		 *
+		 * @param in the data source of the chromosome
+		 * @return a new chromosome
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if the given input stream is {@code null}
+		 */
 		public static org.jenetics.DoubleChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
