@@ -29,13 +29,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
 import org.jenetics.util.CharSeq;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.XML;
@@ -162,8 +166,61 @@ public final class Readers {
 
 	}
 
+	/**
+	 * Reader methods for {@link org.jenetics.CharacterChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <permutation-chromosome length="15">
+	 *     <valid-alleles>
+	 *         <allele>0.2725</allele>
+	 *         <allele>0.0031</allele>
+	 *         <allele>0.4395</allele>
+	 *         <allele>0.1065</allele>
+	 *         <allele>0.1970</allele>
+	 *         <allele>0.7450</allele>
+	 *         <allele>0.5594</allele>
+	 *         <allele>0.0282</allele>
+	 *         <allele>0.5741</allele>
+	 *         <allele>0.4534</allele>
+	 *         <allele>0.8111</allele>
+	 *         <allele>0.5710</allele>
+	 *         <allele>0.3017</allele>
+	 *         <allele>0.5455</allele>
+	 *         <allele>0.2107</allele>
+	 *     </valid-alleles>
+	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 * </permutation-chromosome>
+	 * }</pre>
+	 */
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
+
+		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
+		reader(final Reader<A> reader) {
+			return Reader.of(
+				p -> {
+					final int length = Integer.parseInt((String)p[0]);
+					@SuppressWarnings("unchecked")
+					final ISeq<A> validAlleles = ISeq.of((List<A>)p[1]);
+
+					final int[] order = Stream.of(((String) p[2]).split("\\s"))
+						.mapToInt(Integer::parseInt)
+						.toArray();
+
+					final MSeq<EnumGene<A>> alleles = MSeq.ofLength(length);
+					for (int i = 0; i < length; ++i) {
+						final EnumGene<A> gene = EnumGene.of(order[i], validAlleles);
+						alleles.set(i, gene);
+					}
+
+					return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
+				},
+				"permutation-chromosome",
+				Reader.attrs("length"),
+				Reader.of("valid-alleles", Reader.ofList(reader)),
+				Reader.of("order")
+			);
+		}
 
 	}
 

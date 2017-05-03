@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.CharacterChromosome;
+import org.jenetics.PermutationChromosome;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.Reader;
@@ -88,6 +89,11 @@ public class WritersReadersTests {
 				CharacterChromosome.of(15),
 				Writers.CharacterChromosome.writer(),
 				Readers.CharacterChromosome.reader()
+			},
+			{
+				PermutationChromosome.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+				Writers.PermutationChromosome.writer(),
+				Readers.PermutationChromosome.reader(Reader.of("allele").map(Integer::parseInt))
 			}
 		};
 	}

@@ -144,6 +144,11 @@ public interface Reader<T> {
 		return of(creator, name, emptyList(), children);
 	}
 
+	static <T> Reader<T> of(final String name, final Reader<T> reader) {
+		//return r -> reader.read(r);
+		return of(a -> (T)a[0], name, reader);
+	}
+
 	/**
 	 * Create a reader for a leaf element with the given {@code name}.
 	 *
