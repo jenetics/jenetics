@@ -195,8 +195,20 @@ public final class Readers {
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
 
+		/**
+		 * Return a reader for permutation chromosomes with the given allele
+		 * reader.
+		 *
+		 * @param alleleReader the allele reader
+		 * @param <A> the allele type
+		 * @return a permutation chromosome reader
+		 * @throws NullPointerException if the given allele reader is
+		 *        {@code null}
+		 */
 		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
-		reader(final Reader<A> reader) {
+		reader(final Reader<A> alleleReader) {
+			requireNonNull(alleleReader);
+
 			return Reader.of(
 				p -> {
 					final int length = Integer.parseInt((String)p[0]);
@@ -217,9 +229,33 @@ public final class Readers {
 				},
 				"permutation-chromosome",
 				Reader.attrs("length"),
-				Reader.of("valid-alleles", Reader.ofList(reader)),
+				Reader.of("valid-alleles", Reader.ofList(alleleReader)),
 				Reader.of("order")
 			);
+		}
+
+		/**
+		 * Reads a new {@link org.jenetics.PermutationChromosome} from the given
+		 * input stream.
+		 *
+		 * @param alleleReader the allele reader
+		 * @param in the data source of the chromosome
+		 * @param <A> the allele type
+		 * @return a new permutation chromosome
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if one of the arguments is {@code null}
+		 */
+		public static <A> org.jenetics.PermutationChromosome<A>
+		read(final Reader<A> alleleReader, final InputStream in)
+			throws XMLStreamException
+		{
+			requireNonNull(alleleReader);
+			requireNonNull(in);
+
+			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+				xml.next();
+				return reader(alleleReader).read(xml);
+			}
 		}
 
 	}
