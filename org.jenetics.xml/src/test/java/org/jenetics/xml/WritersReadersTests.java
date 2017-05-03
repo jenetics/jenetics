@@ -30,6 +30,9 @@ import org.testng.annotations.Test;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.CharacterChromosome;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.IntegerChromosome;
+import org.jenetics.LongChromosome;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
@@ -72,6 +75,7 @@ public class WritersReadersTests {
 		throws XMLStreamException
 	{
 		final byte[] bytes = toBytes(expected, writer);
+		//System.out.println(new String(bytes));
 		final T actual = fromBytes(bytes, reader);
 
 		Assert.assertEquals(actual, expected);
@@ -93,7 +97,23 @@ public class WritersReadersTests {
 			{
 				PermutationChromosome.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
 				Writers.PermutationChromosome.writer(),
-				Readers.PermutationChromosome.reader(Reader.of("allele").map(Integer::parseInt))
+				Readers.PermutationChromosome
+					.reader(Reader.of("allele").map(Integer::parseInt))
+			},
+			{
+				IntegerChromosome.of(0, 1_000_000, 15),
+				Writers.IntegerChromosome.writer(),
+				Readers.IntegerChromosome.reader()
+			},
+			{
+				LongChromosome.of(0, 1_000_000, 15),
+				Writers.LongChromosome.writer(),
+				Readers.LongChromosome.reader()
+			},
+			{
+				DoubleChromosome.of(0, 1_000_000, 15),
+				Writers.DoubleChromosome.writer(),
+				Readers.DoubleChromosome.reader()
 			}
 		};
 	}
