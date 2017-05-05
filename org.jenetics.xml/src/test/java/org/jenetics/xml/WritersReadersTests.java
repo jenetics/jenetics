@@ -92,7 +92,7 @@ public class WritersReadersTests {
 				Readers.BitChromosome.reader()
 			},
 			{
-				CharacterChromosome.of(15),
+				CharacterChromosome.of(5),
 				Writers.CharacterChromosome.writer(),
 				Readers.CharacterChromosome.reader()
 			},*/

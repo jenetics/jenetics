@@ -130,10 +130,10 @@ public final class Writers {
 		public static Writer<org.jenetics.CharacterChromosome> writer() {
 			return elem("character-chromosome",
 				attr("length").map(org.jenetics.CharacterChromosome::length),
-				elem("valid-alleles")
-					.map(ch -> ch.getGene().getValidCharacters()),
-				elem("alleles")
-					.map(org.jenetics.CharacterChromosome::toString)
+				elem("valid-alleles",
+					text(ch -> ch.getGene().getValidCharacters().toString())),
+				elem("alleles",
+					text(org.jenetics.CharacterChromosome::toString))
 			);
 		}
 
