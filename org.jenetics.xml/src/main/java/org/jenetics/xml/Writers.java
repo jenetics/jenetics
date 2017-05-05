@@ -55,10 +55,7 @@ import org.jenetics.xml.stream.XML;
  * @since !__version__!
  */
 public final class Writers {
-
-	private Writers() {
-	}
-
+	private Writers() {}
 
 	/**
 	 * Writer methods for {@link org.jenetics.BitChromosome} classes.
@@ -188,18 +185,98 @@ public final class Writers {
 	}
 
 	/**
+	 * Writer template methods for {@link org.jenetics.BoundedChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <root-name length="3">
+	 *     <min>aaa</min>
+	 *     <max>zzz</max>
+	 *     <alleles>
+	 *         <allele>iii</allele>
+	 *         <allele>fff</allele>
+	 *         <allele>ggg</allele>
+	 *     </alleles>
+	 * </root-name>
+	 * }</pre>
+	 */
+	public static final class BoundedChromosome {
+		private BoundedChromosome() {}
+
+		/**
+		 * Create a bounded chromosome writer with the given configuration.
+		 *
+		 * @param rootName the name of the root element. E.g. {@code int-chromosome}
+		 * @param alleleWriter the XML writer used for the alleles
+		 * @param <A> the allele type
+		 * @param <G> the bounded gene type
+		 * @param <C> the bounded chromosome type
+		 * @return a bounded chromosome XML writer
+		 * @throws NullPointerException if one of the arguments is {@code null}
+		 */
+		public static <
+			A extends Comparable<? super A>,
+			G extends BoundedGene<A, G>,
+			C extends org.jenetics.BoundedChromosome<A, G>
+			>
+		Writer<C> writer(
+			final String rootName,
+			final Writer<? super A> alleleWriter)
+		{
+			requireNonNull(rootName);
+			requireNonNull(alleleWriter);
+
+			return elem(rootName,
+						attr("length", org.jenetics.BoundedChromosome<A, G>::length),
+						elem("min", org.jenetics.BoundedChromosome<A, G>::getMin, alleleWriter),
+						elem("max", org.jenetics.BoundedChromosome<A, G>::getMax, alleleWriter),
+						elems("allele", ch -> ch.toSeq().map(G::getAllele), alleleWriter)
+			);
+		}
+	}
+
+	/**
 	 * Writer methods for {@link org.jenetics.IntegerChromosome} objects.
 	 *
 	 * <pre> {@code
-	 * <int-chromosome length="3" min="-2147483648" max="2147483647">
-	 *     <allele>-1878762439</allele>
-	 *     <allele>-957346595</allele>
-	 *     <allele>-88668137</allele>
+	 * <int-chromosome length="3">
+	 *     <min>-2147483648</min>
+	 *     <max>2147483647</max>
+	 *     <alleles>
+	 *         <allele>-1878762439</allele>
+	 *         <allele>-957346595</allele>
+	 *         <allele>-88668137</allele>
+	 *     </alleles>
 	 * </int-chromosome>
 	 * }</pre>
 	 */
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
+
+		/**
+		 * Return the default integer allele writer for the
+		 * {@code IntegerChromosome}.
+		 *
+		 * @return the default integer allele writer
+		 */
+		public static Writer<Integer> alleleWriter() {
+			return Writer.text(Object::toString);
+		}
+
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.IntegerChromosome}
+		 * objects.
+		 *
+		 * @param alleleWriter the allele writer used for writing the integer
+		 *        allele. Might be useful for using different integer
+		 *        <i>encodings</i>.
+		 * @return a chromosome writer
+		 */
+		public static Writer<org.jenetics.IntegerChromosome>
+		writer(final Writer<? super Integer> alleleWriter) {
+			requireNonNull(alleleWriter);
+
+			return BoundedChromosome.writer("int-chromosome", alleleWriter);
+		}
 
 		/**
 		 * Return a {@link Writer} for {@link org.jenetics.IntegerChromosome}
@@ -208,7 +285,7 @@ public final class Writers {
 		 * @return a chromosome writer
 		 */
 		public static Writer<org.jenetics.IntegerChromosome> writer() {
-			return BoundedChromosome.writer("int-chromosome");
+			return writer(alleleWriter());
 		}
 
 		/**
@@ -263,15 +340,43 @@ public final class Writers {
 	 * Writer methods for {@link org.jenetics.LongChromosome} objects.
 	 *
 	 * <pre> {@code
-	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
-	 *     <allele>-1345217698116542402</allele>
-	 *     <allele>-7144755673073475303</allele>
-	 *     <allele>6053786736809578435</allele>
+	 * <long-chromosome length="3">
+	 *     <min>-9223372036854775808</min>
+	 *     <max>9223372036854775807</max>
+	 *     <alleles>
+	 *         <allele>-1345217698116542402</allele>
+	 *         <allele>-7144755673073475303</allele>
+	 *         <allele>6053786736809578435</allele>
+	 *     </alleles>
 	 * </long-chromosome>
 	 * }</pre>
 	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
+
+		/**
+		 * Return the default long allele writer for the
+		 * {@code IntegerChromosome}.
+		 *
+		 * @return the default long allele writer
+		 */
+		public static Writer<Long> alleleWriter() {
+			return Writer.text(Object::toString);
+		}
+
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.LongChromosome}
+		 * objects.
+		 *
+		 * @param alleleWriter the allele writer used for writing the long
+		 *        allele. Might be useful for using different long
+		 *        <i>encodings</i>.
+		 * @return a chromosome writer
+		 */
+		public static Writer<org.jenetics.LongChromosome>
+		writer(final Writer<? super Long> alleleWriter) {
+			return BoundedChromosome.writer("long-chromosome", alleleWriter);
+		}
 
 		/**
 		 * Return a {@link Writer} for {@link org.jenetics.LongChromosome}
@@ -280,7 +385,7 @@ public final class Writers {
 		 * @return a chromosome writer
 		 */
 		public static Writer<org.jenetics.LongChromosome> writer() {
-			return BoundedChromosome.writer("long-chromosome");
+			return writer(alleleWriter());
 		}
 
 		/**
@@ -335,15 +440,43 @@ public final class Writers {
 	 * Writer methods for {@link org.jenetics.DoubleChromosome} objects.
 	 *
 	 * <pre> {@code
-	 * <double-chromosome length="3" min="0.0" max="1.0">
-	 *     <allele>0.27251556008507416</allele>
-	 *     <allele>0.003140816229067145</allele>
-	 *     <allele>0.43947528327497376</allele>
+	 * <double-chromosome length="3">
+	 *     <min>0.0</min>
+	 *     <max>1.0</max>
+	 *     <alleles>
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *     </alleles>
 	 * </double-chromosome>
 	 * }</pre>
 	 */
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
+
+		/**
+		 * Return the default double allele writer for the
+		 * {@code DoubleChromosome}.
+		 *
+		 * @return the default double allele writer
+		 */
+		public static Writer<Double> alleleWriter() {
+			return Writer.text(Object::toString);
+		}
+
+		/**
+		 * Return a {@link Writer} for {@link org.jenetics.DoubleChromosome}
+		 * objects.
+		 *
+		 * @param alleleWriter the allele writer used for writing the long
+		 *        allele. Might be useful for using different long
+		 *        <i>encodings</i>.
+		 * @return a chromosome writer
+		 */
+		public static Writer<org.jenetics.DoubleChromosome>
+		writer(final Writer<? super Double> alleleWriter) {
+			return BoundedChromosome.writer("double-chromosome", alleleWriter);
+		}
 
 		/**
 		 * Return a {@link Writer} for {@link org.jenetics.DoubleChromosome}
@@ -352,7 +485,7 @@ public final class Writers {
 		 * @return a chromosome writer
 		 */
 		public static Writer<org.jenetics.DoubleChromosome> writer() {
-			return BoundedChromosome.writer("double-chromosome");
+			return writer(alleleWriter());
 		}
 
 		/**
@@ -403,25 +536,6 @@ public final class Writers {
 		}
 	}
 
-
-	static final class BoundedChromosome {
-		private BoundedChromosome() {}
-
-		public static <
-			A extends Comparable<? super A>,
-			G extends BoundedGene<A, G>,
-			C extends org.jenetics.BoundedChromosome<A, G>
-			>
-		Writer<C> writer(final String root) {
-			return elem(root,
-				attr("min", org.jenetics.BoundedChromosome<A, G>::getMin),
-				attr("max", org.jenetics.BoundedChromosome<A, G>::getMax),
-				attr("length", org.jenetics.BoundedChromosome<A, G>::length),
-				elems("allele", ch -> ch.toSeq().map(G::getAllele))
-			);
-		}
-	}
-
 	/**
 	 * Writer methods for {@link org.jenetics.PermutationChromosome} objects.
 	 * <pre>{@code
@@ -460,21 +574,21 @@ public final class Writers {
 		 * Create a writer for permutation-chromosomes. How to write the valid
 		 * alleles is defined by the given {@link Writer}.
 		 *
-		 * @param writer the allele writer
+		 * @param alleleWriter the allele writer
 		 * @param <A> the allele type
 		 * @return a new permutation chromosome writer
 		 * @throws NullPointerException if the given allele {@code writer} is
 		 *         {@code null}
 		 */
 		public static <A> Writer<org.jenetics.PermutationChromosome<A>>
-		writer(final Writer<? super A> writer) {
+		writer(final Writer<? super A> alleleWriter) {
 			return elem("permutation-chromosome",
 				attr("length", org.jenetics.PermutationChromosome::length),
 				elem("valid-alleles",
 					elems(
 						"allele",
 						org.jenetics.PermutationChromosome::getValidAlleles,
-						writer
+						alleleWriter
 					)
 				),
 				elem(
@@ -637,21 +751,29 @@ public final class Writers {
 	 *
 	 * <pre>{@code
 	 * final Writer<Genotype<DoubleGene>> writer =
-	 *     genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
+	 *     Writers.Genotype.writer(Writers.DoubleChromosome.writer());
 	 * }</pre>
 	 *
 	 * Example output:
 	 * <pre> {@code
-	 * <genotype length="2" ngenes="5">
-	 *     <double-chromosome min="0.0" max="1.0" length="3">
-	 *         <allele>0.27251556008507416</allele>
-	 *         <allele>0.003140816229067145</allele>
-	 *         <allele>0.43947528327497376</allele>
+	 * <genotype length="2" ngenes="6">
+	 *     <double-chromosome length="3">
+	 *         <min>0.0</min>
+	 *         <max>1.0</max>
+	 *         <alleles>
+	 *             <allele>0.27251556008507416</allele>
+	 *             <allele>0.003140816229067145</allele>
+	 *             <allele>0.43947528327497376</allele>
+	 *         </alleles>
 	 *     </double-chromosome>
-	 *     <double-chromosome min="0.0" max="1.0" length="3">
-	 *         <allele>0.18390258154466066</allele>
-	 *         <allele>0.4026521545744768</allele>
-	 *         <allele>0.36137605952663554</allele>
+	 *     <double-chromosome length="3">
+	 *         <min>0.0</min>
+	 *         <max>1.0</max>
+	 *         <alleles>
+	 *             <allele>0.18390258154466066</allele>
+	 *             <allele>0.4026521545744768</allele>
+	 *             <allele>0.36137605952663554</allele>
+	 *         <alleles>
 	 *     </double-chromosome>
 	 * </genotype>
 	 * }</pre>
@@ -724,6 +846,34 @@ public final class Writers {
 
 	}
 
+	/**
+	 * Writer for genotypes.
+	 *
+	 * <pre> {@code
+	 * <genotypes length="1">
+	 *     <genotype length="2" ngenes="6">
+	 *         <double-chromosome length="3">
+	 *             <min>0.0</min>
+	 *             <max>1.0</max>
+	 *             <alleles>
+	 *                 <allele>0.27251556008507416</allele>
+	 *                 <allele>0.003140816229067145</allele>
+	 *                 <allele>0.43947528327497376</allele>
+	 *             </alleles>
+	 *         </double-chromosome>
+	 *         <double-chromosome length="3">
+	 *             <min>0.0</min>
+	 *             <max>1.0</max>
+	 *             <alleles>
+	 *                 <allele>0.18390258154466066</allele>
+	 *                 <allele>0.4026521545744768</allele>
+	 *                 <allele>0.36137605952663554</allele>
+	 *             <alleles>
+	 *         </double-chromosome>
+	 *     </genotype>
+	 * </genotypes>
+	 * }</pre>
+	 */
 	public static final class Genotypes {
 		private Genotypes() {}
 
@@ -733,25 +883,7 @@ public final class Writers {
 		 * following writer allows to write double-gene chromosomes:
 		 * <pre>{@code
 		 * final Writer<Genotype<DoubleGene>> writer =
-		 *     genotypesWriter(DOUBLE_CHROMOSOME_WRITER);
-		 * }</pre>
-		 *
-		 * Example output:
-		 * <pre> {@code
-		 * <genotypes>
-		 *     <genotype length="2" ngenes="5">
-		 *         <double-chromosome min="0.0" max="1.0" length="3">
-		 *             <allele>0.27251556008507416</allele>
-		 *             <allele>0.003140816229067145</allele>
-		 *             <allele>0.43947528327497376</allele>
-		 *         </double-chromosome>
-		 *         <double-chromosome min="0.0" max="1.0" length="3">
-		 *             <allele>0.18390258154466066</allele>
-		 *             <allele>0.4026521545744768</allele>
-		 *             <allele>0.36137605952663554</allele>
-		 *         </double-chromosome>
-		 *     </genotype>
-		 * </genotypes>
+		 *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer());
 		 * }</pre>
 		 *
 		 * @param writer the chromosome writer
@@ -772,8 +904,6 @@ public final class Writers {
 			return elems("genotypes", Genotype.writer(writer));
 		}
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	private static <A, B> B cast(final A value) {
