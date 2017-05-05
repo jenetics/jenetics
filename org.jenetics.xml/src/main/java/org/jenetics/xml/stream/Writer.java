@@ -21,8 +21,6 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
-import java.util.Objects;
 import java.util.function.Function;
 
 import javax.xml.stream.XMLStreamException;
@@ -61,14 +59,6 @@ public interface Writer<T> {
 				if (value != null) {
 					write(value, xml);
 				}
-			}
-		};
-	}
-
-	public default Writer<T> using(final Writer<? super T> writer) {
-		return (data, xml) -> {
-			if (data != null) {
-				writer.write(data, xml);
 			}
 		};
 	}
@@ -194,121 +184,19 @@ public interface Writer<T> {
 	 * );
 	 * }</pre>
 	 *
-	 * @param property the elements to write
+	 * @param mapper the elements to write
 	 * @param <T> the writer base type
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> Writer<T> text(final Function<? super T, ?> property) {
-		requireNonNull(property);
-
-		return (data, writer) -> {
-			if (data != null) {
-				final Object value = property.apply(data);
-				if (value != null) {
-					writer.writeCharacters(value.toString());
-				}
-			}
-		};
+	public static <T> Writer<T> text(final Function<? super T, ?> mapper) {
+		return text().map(mapper);
 	}
 
 	public static <T> Writer<T> text() {
-		return text(Objects::toString);
-	}
-
-	/**
-	 * Create a new {@code Writer}, which writes elements of the given
-	 * {@code name} for each of the given properties.
-	 *
-	 * <pre>{@code
-	 * final Writer<DoubleChromosome> = elem("double-chromosome",
-	 *     attr("min", DoubleChromosome::getMin),
-	 *     attr("max", DoubleChromosome::getMax),
-	 *     attr("length", DoubleChromosome::length),
-	 *     elems("allele", ch -> ch.toSeq().map(DoubleGene::getAllele))
-	 * );
-	 * }</pre>
-	 *
-	 * @param name the element name
-	 * @param properties the elements to write
-	 * @param <T> the writer base type
-	 * @param <P> the element type.
-	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, P> Writer<T> elems(
-		final String name,
-		final Function<T, ? extends Iterable<? extends P>> properties
-	) {
-		requireNonNull(name);
-		requireNonNull(properties);
-
-		return (value, writer) -> {
-			if (value != null) {
-				final Iterable<? extends P> it = properties.apply(value);
-				if (it != null) {
-					for (P v : it) {
-						if (v != null) {
-							writer.writeStartElement(name);
-							writer.writeCharacters(v.toString());
-							writer.writeEndElement();
-						}
-					}
-				}
-			}
-		};
-	}
-
-	/*
-	public static <T, P> Writer<T> elems(
-		final String name,
-		final Function<T, ? extends Iterable<? extends P>> properties,
-		final Writer<? super P> writer
-	) {
-		return (value, w) -> {
-			if (value != null) {
-				final Iterable<? extends P> it = properties.apply(value);
-				if (it != null) {
-					for (P v : it) {
-						w.writeStartElement(name);
-						if (v != null) {
-							writer.write(v, w);
-						}
-						w.writeEndElement();
-					}
-				}
-			}
-		};
-	}
-	*/
-
-	/**
-	 * Create a new {@code Writer}, which writes a collection of values of a
-	 * given type.
-	 *
-	 * @param name the root element name
-	 * @param writer the child element writer
-	 * @param <T> the element type
-	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T> Writer<Collection<T>> elems(
-		final String name,
-		final Writer<? super T> writer
-	) {
-		requireNonNull(name);
-		requireNonNull(writer);
-
-		return (data, w) -> {
+		return (data, writer) -> {
 			if (data != null) {
-				w.writeStartElement(name);
-
-				for (T value : data) {
-					if (value != null) {
-						writer.write(value, w);
-					}
-				}
-				w.writeEndElement();
+				writer.writeCharacters(data.toString());
 			}
 		};
 	}
@@ -317,24 +205,17 @@ public interface Writer<T> {
 	 * Creates a new {@code Writer}, which writes the given {@code children} as
 	 * sub-elements, defined by the given {@code childWriter}.
 	 *
-	 * @param children the sub-elements to write
 	 * @param writer the sub-element writer
 	 * @param <T> the writer base type
-	 * @param <P> the element type.
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T, P> Writer<T> elems(
-		final Function<T, ? extends Iterable<? extends P>> children,
-		final Writer<? super P> writer
-	) {
-		requireNonNull(children);
+	public static <T> Writer<Iterable<T>> elems(final Writer<? super T> writer) {
 		requireNonNull(writer);
 
-		return (value, baseWriter) -> {
-			final Iterable<? extends P> values = children.apply(value);
+		return (values, baseWriter) -> {
 			if (values != null) {
-				for (P val : values) {
+				for (T val : values) {
 					if (val != null) {
 						writer.write(val, baseWriter);
 					}

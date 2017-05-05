@@ -77,7 +77,7 @@ public final class Writers {
 			return elem("bit-chromosome",
 				attr("length").map(org.jenetics.BitChromosome::length),
 				attr("ones-probability").map(org.jenetics.BitChromosome::getOneProbability),
-				text(org.jenetics.BitChromosome::toCanonicalString)
+				text().map(org.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
 
@@ -230,8 +230,8 @@ public final class Writers {
 				elem("min", alleleWriter.map(ch -> ch.getMin())),
 				elem("max", alleleWriter.map(ch -> ch.getMax())),
 				elem("alleles",
-					elems("allele", alleleWriter)
-						.map((C ch) -> ch.toSeq().map(G::getAllele).asList())
+					elems(elem("allele", alleleWriter))
+						.map(ch -> ch.toSeq().map(G::getAllele))
 				)
 			);
 		}
@@ -804,7 +804,7 @@ public final class Writers {
 			return elem("genotype",
 				attr("length").map(org.jenetics.Genotype<G>::length),
 				attr("ngenes").map(org.jenetics.Genotype<G>::getNumberOfGenes),
-				elems(gt -> cast(gt.toSeq()), writer)
+				elems(writer).map(gt -> cast(gt.toSeq()))
 			);
 		}
 
@@ -900,10 +900,10 @@ public final class Writers {
 			A,
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
-			>
+		>
 		Writer<Collection<org.jenetics.Genotype<G>>>
 		writer(final Writer<? super C> writer) {
-			return elems("genotypes", Genotype.writer(writer));
+			return elem("genotypes", elems(Genotype.writer(writer)));
 		}
 	}
 
