@@ -47,6 +47,31 @@ public interface Writer<T> {
 	public void write(final T value, final XMLStreamWriter writer)
 		throws XMLStreamException;
 
+	/**
+	 * Maps this writer to a different base type.
+	 *
+	 * @param mapper the mapper function
+	 * @param <B> the new writer type
+	 * @return a writer with changed type
+	 */
+	public default <B> Writer<B> map(final Function<? super B, ? extends T> mapper) {
+		return (data, xml) -> {
+			if (data != null) {
+				final T value = mapper.apply(data);
+				if (value != null) {
+					write(value, xml);
+				}
+			}
+		};
+	}
+
+	public default Writer<T> using(final Writer<? super T> writer) {
+		return (data, xml) -> {
+			if (data != null) {
+				writer.write(data, xml);
+			}
+		};
+	}
 
 
 	/* *************************************************************************
@@ -64,32 +89,27 @@ public interface Writer<T> {
 	 * <em>outer</em> element.
 	 *
 	 * <pre>{@code
-	 * final Writer<MyObject> = elem("element",
-	 *     attr("value", MyObject::getValue)
+	 * final Writer<String> writer1 = elem("element",
+	 *     attr("value");
+	 * );
+	 * final Writer<MyObject> writer2 = elem("element",
+	 *     attr("value").map(object::getMyObject);
 	 * );
 	 * }</pre>
 	 *
 	 * @see #attr(String, Object)
 	 *
 	 * @param name the attribute name
-	 * @param property the attribute value
 	 * @param <T> the writer base type
 	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if the attribute {@code name} is {@code null}
 	 */
-	public static <T> Writer<T> attr(
-		final String name,
-		final Function<? super T, ?> property
-	) {
+	public static <T> Writer<T> attr(final String name) {
 		requireNonNull(name);
-		requireNonNull(property);
 
-		return (data, writer) -> {
+		return (data, xml) -> {
 			if (data != null) {
-				final Object value = property.apply(data);
-				if (value != null) {
-					writer.writeAttribute(name, value.toString());
-				}
+				xml.writeAttribute(name, data.toString());
 			}
 		};
 	}
@@ -101,11 +121,9 @@ public interface Writer<T> {
 	 * <pre>{@code
 	 * final Writer<MyObject> = elem("element",
 	 *     attr("version", "1.0"),
-	 *     attr("value", MyObject::getValue)
+	 *     attr("value").map(MyObject::getValue)
 	 * );
 	 * }</pre>
-	 *
-	 * @see #attr(String, Function)
 	 *
 	 * @param name the attribute name
 	 * @param value the attribute value
@@ -117,7 +135,7 @@ public interface Writer<T> {
 		final String name,
 		final Object value
 	) {
-		return attr(name, data -> value);
+		return attr(name).map(data -> value);
 	}
 
 
@@ -163,65 +181,6 @@ public interface Writer<T> {
 		};
 	}
 
-	public static <T, P> Writer<T> elem(
-		final String name,
-		final Function<T, P> property,
-		final Writer<? super P> writer
-	) {
-		return (data, xml) -> {
-			if (data != null) {
-				xml.writeStartElement(name);
-				final P prop = property.apply(data);
-				if (prop != null) {
-					writer.write(property.apply(data), xml);
-				}
-				xml.writeEndElement();
-			}
-		};
-	}
-
-	/**
-	 * Create a new {@code Writer}, which writes an element with the given
-	 * {@code name} and the value, given by the {@code property}.
-	 *
-	 * <pre>{@code
-	 * final Writer<File> writer = Writer.elem("full-path", File::getAbsolutePath)
-	 * writer.write(new File("./"), xmlStreamWriter);
-	 * }</pre>
-	 *
-	 * The code snippet above will create the following XML element:
-	 * <p>
-	 * {@code
-	 * <full-path>/some/full/path</full-path>
-	 * }
-	 *
-	 * @param name the element name
-	 * @param property the element property
-	 * @param <T> the writer base type
-	 * @param <P> the element type.
-	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T, P> Writer<T> elem(
-		final String name,
-		final Function<T, P> property
-	) {
-		requireNonNull(name);
-		requireNonNull(property);
-
-		return (data, writer) -> {
-			if (data != null) {
-				writer.writeStartElement(name);
-
-				final P prop = property.apply(data);
-				if (prop != null) {
-					writer.writeCharacters(prop.toString());
-				}
-
-				writer.writeEndElement();
-			}
-		};
-	}
 
 	/**
 	 * Create a new {@code Writer}, which writes given property to the current
@@ -237,24 +196,10 @@ public interface Writer<T> {
 	 *
 	 * @param property the elements to write
 	 * @param <T> the writer base type
-	 * @param <P> the element type.
 	 * @return a new writer instance
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T, P> Writer<T> elem(final Function<T, P> property) {
-		requireNonNull(property);
-
-		return (data, writer) -> {
-			if (data != null) {
-				final P prop = property.apply(data);
-				if (prop != null) {
-					writer.writeCharacters(prop.toString());
-				}
-			}
-		};
-	}
-
-	public static <T> Writer<T> text(final Function<T, Object> property) {
+	public static <T> Writer<T> text(final Function<? super T, ?> property) {
 		requireNonNull(property);
 
 		return (data, writer) -> {
@@ -314,6 +259,7 @@ public interface Writer<T> {
 		};
 	}
 
+	/*
 	public static <T, P> Writer<T> elems(
 		final String name,
 		final Function<T, ? extends Iterable<? extends P>> properties,
@@ -334,6 +280,7 @@ public interface Writer<T> {
 			}
 		};
 	}
+	*/
 
 	/**
 	 * Create a new {@code Writer}, which writes a collection of values of a
@@ -355,7 +302,6 @@ public interface Writer<T> {
 		return (data, w) -> {
 			if (data != null) {
 				w.writeStartElement(name);
-				w.writeAttribute("length", String.valueOf(data.size()));
 
 				for (T value : data) {
 					if (value != null) {

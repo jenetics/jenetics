@@ -75,9 +75,9 @@ public final class Writers {
 		 */
 		public static Writer<org.jenetics.BitChromosome> writer() {
 			return elem("bit-chromosome",
-				attr("length", org.jenetics.BitChromosome::length),
-				attr("ones-probability", org.jenetics.BitChromosome::getOneProbability),
-				elem(org.jenetics.BitChromosome::toCanonicalString)
+				attr("length").map(org.jenetics.BitChromosome::length),
+				attr("ones-probability").map(org.jenetics.BitChromosome::getOneProbability),
+				text(org.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
 
@@ -129,9 +129,9 @@ public final class Writers {
 		 */
 		public static Writer<org.jenetics.CharacterChromosome> writer() {
 			return elem("character-chromosome",
-				attr("length", org.jenetics.CharacterChromosome::length),
-				elem("valid-alleles", ch -> ch.getGene().getValidCharacters()),
-				elem("alleles", org.jenetics.CharacterChromosome::toString)
+				attr("length").map(org.jenetics.CharacterChromosome::length),
+				elem("valid-alleles").map(ch -> ch.getGene().getValidCharacters()),
+				elem("alleles").map(org.jenetics.CharacterChromosome::toString)
 			);
 		}
 
@@ -217,7 +217,7 @@ public final class Writers {
 			A extends Comparable<? super A>,
 			G extends BoundedGene<A, G>,
 			C extends org.jenetics.BoundedChromosome<A, G>
-			>
+		>
 		Writer<C> writer(
 			final String rootName,
 			final Writer<? super A> alleleWriter)
@@ -226,10 +226,13 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 
 			return elem(rootName,
-						attr("length", org.jenetics.BoundedChromosome<A, G>::length),
-						elem("min", org.jenetics.BoundedChromosome<A, G>::getMin, alleleWriter),
-						elem("max", org.jenetics.BoundedChromosome<A, G>::getMax, alleleWriter),
-						elems("allele", ch -> ch.toSeq().map(G::getAllele), alleleWriter)
+				attr("length").map(ch -> ch.length()),
+				elem("min", alleleWriter.map(ch -> ch.getMin())),
+				elem("max", alleleWriter.map(ch -> ch.getMax())),
+				elem("alleles",
+					elems("allele", alleleWriter)
+						.map((C ch) -> ch.toSeq().map(G::getAllele).asList())
+				)
 			);
 		}
 	}
@@ -583,17 +586,16 @@ public final class Writers {
 		public static <A> Writer<org.jenetics.PermutationChromosome<A>>
 		writer(final Writer<? super A> alleleWriter) {
 			return elem("permutation-chromosome",
-				attr("length", org.jenetics.PermutationChromosome::length),
-				elem("valid-alleles",
+				attr("length").map(org.jenetics.PermutationChromosome::length),
+				elem("valid-alleles"/*,
 					elems(
 						"allele",
 						org.jenetics.PermutationChromosome::getValidAlleles,
 						alleleWriter
-					)
+					)*/
 				),
-				elem(
-					"order",
-					ch -> ch.stream()
+				elem("order")
+					.map(ch -> ch.stream()
 						.map(g -> Integer.toString(g.getAlleleIndex()))
 						.collect(Collectors.joining(" ")))
 			);
@@ -800,8 +802,8 @@ public final class Writers {
 		>
 		Writer<org.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem("genotype",
-				attr("length", org.jenetics.Genotype<G>::length),
-				attr("ngenes", org.jenetics.Genotype<G>::getNumberOfGenes),
+				attr("length").map(org.jenetics.Genotype<G>::length),
+				attr("ngenes").map(org.jenetics.Genotype<G>::getNumberOfGenes),
 				elems(gt -> cast(gt.toSeq()), writer)
 			);
 		}

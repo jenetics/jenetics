@@ -77,7 +77,7 @@ public class WritersReadersTests {
 		throws XMLStreamException
 	{
 		final byte[] bytes = toBytes(expected, writer);
-		//System.out.println(new String(bytes));
+		System.out.println(new String(bytes));
 		final T actual = fromBytes(bytes, reader);
 
 		Assert.assertEquals(actual, expected);
@@ -97,7 +97,7 @@ public class WritersReadersTests {
 				Readers.CharacterChromosome.reader()
 			},*/
 			{
-				IntegerChromosome.of(0, 1_000_000, 15),
+				IntegerChromosome.of(0, 1_000_000, 2),
 				Writers.IntegerChromosome.writer(),
 				Readers.IntegerChromosome.reader()
 			}/*,

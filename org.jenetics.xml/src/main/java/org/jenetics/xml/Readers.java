@@ -530,9 +530,11 @@ public final class Readers {
 
 		return Reader.of(
 			p -> {
-				final A min = allele.apply((String)p[0]);
-				final A max = allele.apply((String)p[1]);
-				final int length = Integer.parseInt((String)p[2]);
+				System.out.println(Arrays.toString(p));
+
+				final int length = Integer.parseInt((String)p[0]);
+				final A min = allele.apply((String)p[1]);
+				final A max = allele.apply((String)p[2]);
 
 				@SuppressWarnings("unchecked")
 				final List<A> alleles = (List<A>)p[3];
@@ -550,7 +552,9 @@ public final class Readers {
 				);
 			},
 			name,
-			Reader.attrs("min", "max", "length"),
+			Reader.attrs("length"),
+			Reader.of("min"),
+			Reader.of("max"),
 			Reader.ofList(Reader.of("allele").map(allele))
 		);
 	}
