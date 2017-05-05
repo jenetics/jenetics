@@ -76,8 +76,8 @@ public final class Writers {
 		public static Writer<org.jenetics.BitChromosome> writer() {
 			return elem("bit-chromosome",
 				attr("length").map(org.jenetics.BitChromosome::length),
-				attr("ones-probability").map(org.jenetics.BitChromosome::getOneProbability),
-				text().map(org.jenetics.BitChromosome::toCanonicalString)
+				attr("ones-probability").map(ch -> ch.getOneProbability()),
+				text(org.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
 
@@ -130,8 +130,10 @@ public final class Writers {
 		public static Writer<org.jenetics.CharacterChromosome> writer() {
 			return elem("character-chromosome",
 				attr("length").map(org.jenetics.CharacterChromosome::length),
-				elem("valid-alleles").map(ch -> ch.getGene().getValidCharacters()),
-				elem("alleles").map(org.jenetics.CharacterChromosome::toString)
+				elem("valid-alleles")
+					.map(ch -> ch.getGene().getValidCharacters()),
+				elem("alleles")
+					.map(org.jenetics.CharacterChromosome::toString)
 			);
 		}
 
@@ -262,7 +264,7 @@ public final class Writers {
 		 * @return the default integer allele writer
 		 */
 		public static Writer<Integer> alleleWriter() {
-			return Writer.text(Object::toString);
+			return Writer.text();
 		}
 
 		/**
@@ -273,6 +275,8 @@ public final class Writers {
 		 *        allele. Might be useful for using different integer
 		 *        <i>encodings</i>.
 		 * @return a chromosome writer
+		 * @throws NullPointerException if the given {@code alleleWriter} is
+		 *         {@code null}
 		 */
 		public static Writer<org.jenetics.IntegerChromosome>
 		writer(final Writer<? super Integer> alleleWriter) {
@@ -364,7 +368,7 @@ public final class Writers {
 		 * @return the default long allele writer
 		 */
 		public static Writer<Long> alleleWriter() {
-			return Writer.text(Object::toString);
+			return Writer.text();
 		}
 
 		/**
@@ -375,6 +379,8 @@ public final class Writers {
 		 *        allele. Might be useful for using different long
 		 *        <i>encodings</i>.
 		 * @return a chromosome writer
+		 * @throws NullPointerException if the given {@code alleleWriter} is
+		 *         {@code null}
 		 */
 		public static Writer<org.jenetics.LongChromosome>
 		writer(final Writer<? super Long> alleleWriter) {
@@ -475,6 +481,8 @@ public final class Writers {
 		 *        allele. Might be useful for using different long
 		 *        <i>encodings</i>.
 		 * @return a chromosome writer
+		 * @throws NullPointerException if the given {@code alleleWriter} is
+		 *         {@code null}
 		 */
 		public static Writer<org.jenetics.DoubleChromosome>
 		writer(final Writer<? super Double> alleleWriter) {
@@ -587,12 +595,9 @@ public final class Writers {
 		writer(final Writer<? super A> alleleWriter) {
 			return elem("permutation-chromosome",
 				attr("length").map(org.jenetics.PermutationChromosome::length),
-				elem("valid-alleles"/*,
-					elems(
-						"allele",
-						org.jenetics.PermutationChromosome::getValidAlleles,
-						alleleWriter
-					)*/
+				elem("valid-alleles",
+					elems(elem("allele", alleleWriter))
+						.map(org.jenetics.PermutationChromosome::getValidAlleles)
 				),
 				elem("order")
 					.map(ch -> ch.stream()
