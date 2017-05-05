@@ -144,6 +144,7 @@ public interface Reader<T> {
 		return of(creator, name, emptyList(), children);
 	}
 
+	@SuppressWarnings("unchecked")
 	static <T> Reader<T> of(final String name, final Reader<T> reader) {
 		//return r -> reader.read(r);
 		return of(a -> (T)a[0], name, reader);

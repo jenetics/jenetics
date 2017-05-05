@@ -26,6 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -33,8 +34,11 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.EnumGene;
+import org.jenetics.Gene;
+import org.jenetics.Genotype;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
 import org.jenetics.util.CharSeq;
@@ -407,12 +411,108 @@ public final class Readers {
 
 	}
 
+	/**
+	 * Writer methods for {@link org.jenetics.Genotype} objects.
+	 *
+	 * <pre>{@code
+	 * final Writer<Genotype<DoubleGene>> writer =
+	 *     genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
+	 * }</pre>
+	 *
+	 * Example output:
+	 * <pre> {@code
+	 * <genotype length="2" ngenes="5">
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *     </double-chromosome>
+	 *     <double-chromosome min="0.0" max="1.0" length="3">
+	 *         <allele>0.18390258154466066</allele>
+	 *         <allele>0.4026521545744768</allele>
+	 *         <allele>0.36137605952663554</allele>
+	 *     </double-chromosome>
+	 * </genotype>
+	 * }</pre>
+	 */
 	public static final class Genotype {
+		private Genotype() {}
 
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		Reader<org.jenetics.Genotype<G>>
+		reader(final Reader<C> chromosomeReader) {
+			requireNonNull(chromosomeReader);
+
+			return Reader.of(
+				p -> {
+					@SuppressWarnings("unchecked")
+					final List<C> chromosomes = (List<C>)p[2];
+					final org.jenetics.Genotype<G> genotype =
+						org.jenetics.Genotype.of(chromosomes);
+
+					final int length = Integer.parseInt((String)p[0]);
+					final int ngenes = Integer.parseInt((String)p[1]);
+					if (length != genotype.length()) {
+						throw new IllegalArgumentException(format(
+							"Expected %d chromosome, but read %d.",
+							length, genotype.length()
+						));
+					}
+					if (ngenes != genotype.getNumberOfGenes()) {
+						throw new IllegalArgumentException(format(
+							"Expected %d genes, but read %d.",
+							ngenes, genotype.getNumberOfGenes()
+						));
+					}
+
+					return genotype;
+				},
+				"genotype",
+				Reader.attrs("length", "ngenes"),
+				Reader.ofList(chromosomeReader)
+			);
+		}
+
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		org.jenetics.Genotype<G>
+		read(final Reader<C> chromosomeReader, final InputStream in)
+			throws XMLStreamException
+		{
+			requireNonNull(chromosomeReader);
+			requireNonNull(in);
+
+			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+				xml.next();
+				return reader(chromosomeReader).read(xml);
+			}
+		}
 	}
 
 	public static final class Genotypes {
+		private Genotypes() {}
 
+		@SuppressWarnings("unchecked")
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		Reader<Collection<org.jenetics.Genotype<G>>>
+		reader(final Reader<C> chromosomeReader) {
+			return Reader.of(
+				p -> (Collection<org.jenetics.Genotype<G>>)p[0],
+				"genotypes",
+				Reader.ofList(Genotype.reader(chromosomeReader))
+			);
+		}
 	}
 
 	private static <A, G, C> Reader<C> chromosome(
