@@ -261,7 +261,7 @@ public final class Readers {
 		>
 		Reader<C> reader(
 			final String name,
-			final BoundedGeneCreator<A, G> gene,
+			final Function3<A, A, A, G> gene,
 			final IntFunction<G[]> genes,
 			final Function<G[], C> chromosome,
 			final Reader<? extends A> alleleReader
@@ -282,7 +282,7 @@ public final class Readers {
 
 					return chromosome.apply(
 						alleles.stream()
-							.map(value -> gene.create(value, min, max))
+							.map(value -> gene.apply(value, min, max))
 							.toArray(genes)
 					);
 				},

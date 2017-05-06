@@ -25,6 +25,6 @@ package org.jenetics.xml;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface BoundedGeneCreator<A, G> {
-	G create(final A value, final A min, final A max);
+public interface Function3<T1, T2, T3, R> {
+	R apply(final T1 t1, final T2 t2, final T3 t3);
 }
