@@ -24,6 +24,9 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
+import static javax.xml.stream.XMLStreamConstants.CDATA;
+import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,7 +247,33 @@ final class TextReader extends Reader<String> {
 
 	@Override
 	public String read(final XMLStreamReader xml) throws XMLStreamException {
-		return xml.getText();
+		final StringBuilder text = new StringBuilder();
+
+		read(xml, text);
+		while (xml.hasNext()) {
+			xml.next();
+			read(xml, text);
+			if (xml.getEventType() != CHARACTERS && xml.getEventType() != CDATA) {
+				System.out.println(xml.getLocalName() + ":" + text);
+				return text.toString();
+			}
+		}
+
+		throw new XMLStreamException(format(
+			"Premature end of file while reading '%s'.", name()
+		));
+	}
+
+	private static int read(final XMLStreamReader xml, final StringBuilder text)
+		throws XMLStreamException
+	{
+		switch (xml.getEventType()) {
+			case CHARACTERS:
+			case CDATA:
+				text.append(xml.getText());
+		}
+
+		return xml.getEventType();
 	}
 
 }
@@ -314,15 +343,15 @@ final class ElemReader<T> extends Reader<T> {
 					System.out.println("PUT: " + result.reader() + "->" + obj);
 					result.put(obj);
 					break;
-				case XMLStreamReader.CHARACTERS:
-				case XMLStreamReader.CDATA:
+				case CHARACTERS:
+				case CDATA:
 					for (ReaderResult r: results.values()) {
 						if (r.reader().type() == Type.TEXT) {
 							r.put(r.reader().read(xml));
 						}
 					}
 					break;
-				case XMLStreamReader.END_ELEMENT:
+				case END_ELEMENT:
 					if (name().equals(xml.getLocalName())) {
 						final Object[] array = new Object[results.size()];
 						for (ReaderResult r : results.values()) {
