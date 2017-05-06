@@ -599,7 +599,7 @@ public final class Writers {
 					elems(elem("allele", alleleWriter))
 						.map(org.jenetics.PermutationChromosome::getValidAlleles)
 				),
-				elem("order")
+				elem("order", text())
 					.map(ch -> ch.stream()
 						.map(g -> Integer.toString(g.getAlleleIndex()))
 						.collect(Collectors.joining(" ")))

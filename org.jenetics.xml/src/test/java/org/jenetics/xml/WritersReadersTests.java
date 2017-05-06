@@ -86,50 +86,49 @@ public class WritersReadersTests {
 	@DataProvider
 	public Object[][] marshallings() {
 		return new Object[][] {
-			/*{
-				BitChromosome.of(10),
-				Writers.BitChromosome.writer(),
-				Readers.BitChromosome.reader()
-			},
+//			{
+//				BitChromosome.of(10),
+//				Writers.BitChromosome.writer(),
+//				Readers.BitChromosome.reader()
+//			},
 			{
 				CharacterChromosome.of(5),
 				Writers.CharacterChromosome.writer(),
 				Readers.CharacterChromosome.reader()
-			},*/
-			{
-				IntegerChromosome.of(0, 1_000_000, 2),
-				Writers.IntegerChromosome.writer(),
-				Readers.IntegerChromosome.reader()
-			}/*,
-			{
-				LongChromosome.of(0, 1_000_000, 15),
-				Writers.LongChromosome.writer(),
-				Readers.LongChromosome.reader()
-			},
-			{
-				DoubleChromosome.of(0, 1_000_000, 15),
-				Writers.DoubleChromosome.writer(),
-				Readers.DoubleChromosome.reader()
-			},
-			{
-				PermutationChromosome.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-				Writers.PermutationChromosome.writer(),
-				Readers.PermutationChromosome
-					.reader(Reader.of("allele").map(Integer::parseInt))
-			},
-			{
-				Genotype.of(DoubleChromosome.of(0, 1, 10), 10),
-				Writers.Genotype.writer(Writers.DoubleChromosome.writer()),
-				Readers.Genotype.reader(Readers.DoubleChromosome.reader())
-			},
-			{
-				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
-					.instances()
-					.limit(10)
-					.collect(Collectors.toList()),
-				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
-				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
-			}*/
+			}
+//			{
+//				IntegerChromosome.of(0, 1_000_000, 2),
+//				Writers.IntegerChromosome.writer(),
+//				Readers.IntegerChromosome.reader()
+//			},
+//			{
+//				LongChromosome.of(0, 1_000_000, 15),
+//				Writers.LongChromosome.writer(),
+//				Readers.LongChromosome.reader()
+//			},
+//			{
+//				DoubleChromosome.of(0, 1_000_000, 15),
+//				Writers.DoubleChromosome.writer(),
+//				Readers.DoubleChromosome.reader()
+//			},
+//			{
+//				PermutationChromosome.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+//				Writers.PermutationChromosome.writer(Writers.IntegerChromosome.alleleWriter()),
+//				Readers.PermutationChromosome.reader(Readers.IntegerChromosome.alleleReader())
+//			},
+//			{
+//				Genotype.of(DoubleChromosome.of(0, 1, 2), 2),
+//				Writers.Genotype.writer(Writers.DoubleChromosome.writer()),
+//				Readers.Genotype.reader(Readers.DoubleChromosome.reader())
+//			},
+//			{
+//				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
+//					.instances()
+//					.limit(10)
+//					.collect(Collectors.toList()),
+//				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
+//				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
+//			}
 		};
 	}
 

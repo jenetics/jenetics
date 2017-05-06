@@ -129,7 +129,7 @@ public abstract class Reader<T> {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Reader<T> elem(final String name, final Reader<?>... children) {
-		return elem(name, v -> (T)v[0], children);
+		return elem(name, v -> v.length > 0 ? (T)v[0] : null, children);
 	}
 
 	public static <T> Reader<T> text(final Function<String, ? extends T> mapper) {
@@ -247,35 +247,8 @@ final class TextReader extends Reader<String> {
 
 	@Override
 	public String read(final XMLStreamReader xml) throws XMLStreamException {
-		final StringBuilder text = new StringBuilder();
-
-		read(xml, text);
-		while (xml.hasNext()) {
-			xml.next();
-			read(xml, text);
-			if (xml.getEventType() != CHARACTERS && xml.getEventType() != CDATA) {
-				System.out.println(xml.getLocalName() + ":" + text);
-				return text.toString();
-			}
-		}
-
-		throw new XMLStreamException(format(
-			"Premature end of file while reading '%s'.", name()
-		));
+		return xml.getText();
 	}
-
-	private static int read(final XMLStreamReader xml, final StringBuilder text)
-		throws XMLStreamException
-	{
-		switch (xml.getEventType()) {
-			case CHARACTERS:
-			case CDATA:
-				text.append(xml.getText());
-		}
-
-		return xml.getEventType();
-	}
-
 }
 
 final class ListReader<T> extends Reader<List<T>> {
@@ -320,7 +293,6 @@ final class ElemReader<T> extends Reader<T> {
 		throws XMLStreamException
 	{
 		xml.require(XMLStreamReader.START_ELEMENT, null, name());
-		System.out.println("TAG: " + name());
 
 		final Map<String, ReaderResult> results = ReaderResult.of(_children);
 
@@ -334,13 +306,9 @@ final class ElemReader<T> extends Reader<T> {
 			switch (xml.next()) {
 				case XMLStreamReader.START_ELEMENT:
 					final ReaderResult result = results.get(xml.getLocalName());
-					if (result == null) {
-						System.out.println("BREAK: " + xml.getLocalName());
-						break;
-					}
+					if (result == null) break;
 
 					final Object obj = result.reader().read(xml);
-					System.out.println("PUT: " + result.reader() + "->" + obj);
 					result.put(obj);
 					break;
 				case CHARACTERS:
@@ -382,7 +350,7 @@ interface ReaderResult {
 		for (int i = 0; i < readers.size(); ++i) {
 			final Reader<?> reader = readers.get(i);
 			final ReaderResult result; switch (reader.type()) {
-				case TEXT: result = new TextResult(reader, i); break;
+				case TEXT: result = new ValueResult(reader, i); break;
 				case LIST: result = new ListResult(reader, i); break;
 				default: result = new ValueResult(reader, i);
 			}

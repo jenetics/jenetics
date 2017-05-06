@@ -34,16 +34,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.jenetics.BoundedGene;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleGene;
+import org.jenetics.EnumGene;
 import org.jenetics.Gene;
 import org.jenetics.IntegerGene;
 import org.jenetics.LongGene;
 import org.jenetics.util.CharSeq;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.xml.Readers.BoundedChromosome.ChromosomeCreator;
 import org.jenetics.xml.Readers.BoundedChromosome.GeneCreator;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
@@ -195,16 +199,15 @@ public final class Readers {
 		 */
 		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
 		reader(final Reader<A> alleleReader) {
-			/*
 			requireNonNull(alleleReader);
 
-			return Reader.of(
-				p -> {
-					final int length = Integer.parseInt((String)p[0]);
+			return elem("permutation-chromosome",
+				v -> {
+					final int length = (int)v[0];
 					@SuppressWarnings("unchecked")
-					final ISeq<A> validAlleles = ISeq.of((List<A>)p[1]);
+					final ISeq<A> validAlleles = ISeq.of((List<A>)v[1]);
 
-					final int[] order = Stream.of(((String) p[2]).split("\\s"))
+					final int[] order = Stream.of(((String) v[2]).split("\\s"))
 						.mapToInt(Integer::parseInt)
 						.toArray();
 
@@ -216,13 +219,12 @@ public final class Readers {
 
 					return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
 				},
-				"permutation-chromosome",
-				Reader.attrs("length"),
-				Reader.of("valid-alleles", Reader.ofList(alleleReader)),
-				Reader.of("order")
+				attr("length").map(Integer::parseInt),
+				elem("valid-alleles",
+					elems(elem("allele", alleleReader))
+				),
+				elem("order", text())
 			);
-			*/
-			return null;
 		}
 
 		/**
@@ -279,8 +281,6 @@ public final class Readers {
 		) {
 			return elem(name,
 				v -> {
-					System.out.println(Arrays.toString(v));
-
 					final int length = (int)v[0];
 					final A min = (A)v[1];
 					final A max = (A)v[2];
@@ -371,15 +371,23 @@ public final class Readers {
 	 * Reader methods for {@link org.jenetics.LongChromosome} objects.
 	 *
 	 * <pre> {@code
-	 * <long-chromosome length="3" min="-9223372036854775808" max="9223372036854775807">
-	 *     <allele>-1345217698116542402</allele>
-	 *     <allele>-7144755673073475303</allele>
-	 *     <allele>6053786736809578435</allele>
+	 * <long-chromosome length="3">
+	 *     <min>-9223372036854775808</min>
+	 *     <max>9223372036854775807</max>
+	 *     <alleles>
+	 *         <allele>-1345217698116542402</allele>
+	 *         <allele>-7144755673073475303</allele>
+	 *         <allele>6053786736809578435</allele>
+	 *     </alleles>
 	 * </long-chromosome>
 	 * }</pre>
 	 */
 	public static final class LongChromosome {
 		private LongChromosome() {}
+
+		public static Reader<Long> alleleReader() {
+			return text(Long::parseLong);
+		}
 
 		/**
 		 * Return a {@link org.jenetics.LongChromosome} reader.
@@ -387,12 +395,12 @@ public final class Readers {
 		 * @return a long chromosome reader
 		 */
 		public static Reader<org.jenetics.LongChromosome> reader() {
-			return chromosome(
+			return BoundedChromosome.reader(
 				"long-chromosome",
-				Long::parseLong,
 				LongGene::of,
 				LongGene[]::new,
-				org.jenetics.LongChromosome::of
+				org.jenetics.LongChromosome::of,
+				alleleReader()
 			);
 		}
 
@@ -421,14 +429,22 @@ public final class Readers {
 	 *
 	 * <pre> {@code
 	 * <double-chromosome length="3" min="0.0" max="1.0">
-	 *     <allele>0.27251556008507416</allele>
-	 *     <allele>0.003140816229067145</allele>
-	 *     <allele>0.43947528327497376</allele>
+	 *     <min>0.0</min>
+	 *     <max>1.0</max>
+	 *     <alleles>
+	 *         <allele>0.27251556008507416</allele>
+	 *         <allele>0.003140816229067145</allele>
+	 *         <allele>0.43947528327497376</allele>
+	 *     </alleles>
 	 * </double-chromosome>
 	 * }</pre>
 	 */
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
+
+		public static Reader<Double> alleleReader() {
+			return text(Double::parseDouble);
+		}
 
 		/**
 		 * Return a {@link org.jenetics.DoubleChromosome} reader.
@@ -436,12 +452,12 @@ public final class Readers {
 		 * @return a double chromosome reader
 		 */
 		public static Reader<org.jenetics.DoubleChromosome> reader() {
-			return chromosome(
+			return BoundedChromosome.reader(
 				"double-chromosome",
-				Double::parseDouble,
 				DoubleGene::of,
 				DoubleGene[]::new,
-				org.jenetics.DoubleChromosome::of
+				org.jenetics.DoubleChromosome::of,
+				alleleReader()
 			);
 		}
 
@@ -476,15 +492,22 @@ public final class Readers {
 	 * Example output:
 	 * <pre> {@code
 	 * <genotype length="2" ngenes="5">
-	 *     <double-chromosome min="0.0" max="1.0" length="3">
-	 *         <allele>0.27251556008507416</allele>
-	 *         <allele>0.003140816229067145</allele>
-	 *         <allele>0.43947528327497376</allele>
+	 *     <double-chromosome length="3">
+	 *         <min>0.0</min>
+	 *         <max>1.0</max>
+	 *         <alleles>
+	 *             <allele>0.27251556008507416</allele>
+	 *             <allele>0.003140816229067145</allele>
+	 *             <allele>0.43947528327497376</allele>
+	 *         </alleles>
 	 *     </double-chromosome>
-	 *     <double-chromosome min="0.0" max="1.0" length="3">
-	 *         <allele>0.18390258154466066</allele>
-	 *         <allele>0.4026521545744768</allele>
-	 *         <allele>0.36137605952663554</allele>
+	 *     <double-chromosome length="2">
+	 *         <min>0.0</min>
+	 *         <max>1.0</max>
+	 *         <alleles>
+	 *             <allele>0.4026521545744768</allele>
+	 *             <allele>0.36137605952663554</allele>
+	 *         </alleles>
 	 *     </double-chromosome>
 	 * </genotype>
 	 * }</pre>
@@ -501,16 +524,15 @@ public final class Readers {
 		reader(final Reader<C> chromosomeReader) {
 			requireNonNull(chromosomeReader);
 
-			/*
-			return Reader.of(
-				p -> {
+			return elem("genotype",
+				v -> {
 					@SuppressWarnings("unchecked")
-					final List<C> chromosomes = (List<C>)p[2];
+					final List<C> chromosomes = (List<C>)v[2];
 					final org.jenetics.Genotype<G> genotype =
 						org.jenetics.Genotype.of(chromosomes);
 
-					final int length = Integer.parseInt((String)p[0]);
-					final int ngenes = Integer.parseInt((String)p[1]);
+					final int length = (int)v[0];
+					final int ngenes = (int)v[1];
 					if (length != genotype.length()) {
 						throw new IllegalArgumentException(format(
 							"Expected %d chromosome, but read %d.",
@@ -526,12 +548,10 @@ public final class Readers {
 
 					return genotype;
 				},
-				"genotype",
-				Reader.attrs("length", "ngenes"),
-				Reader.ofList(chromosomeReader)
+				attr("length").map(Integer::parseInt),
+				attr("ngenes").map(Integer::parseInt),
+				elems(chromosomeReader)
 			);
-			*/
-			return null;
 		}
 
 		public static <
@@ -564,14 +584,10 @@ public final class Readers {
 		>
 		Reader<Collection<org.jenetics.Genotype<G>>>
 		reader(final Reader<C> chromosomeReader) {
-			/*
-			return Reader.of(
+			return elem("genotypes",
 				p -> (Collection<org.jenetics.Genotype<G>>)p[0],
-				"genotypes",
-				Reader.ofList(Genotype.reader(chromosomeReader))
+				elems(Genotype.reader(chromosomeReader))
 			);
-			*/
-			return null;
 		}
 	}
 
