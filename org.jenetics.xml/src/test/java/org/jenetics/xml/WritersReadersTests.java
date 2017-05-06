@@ -63,6 +63,7 @@ public class WritersReadersTests {
 	{
 		final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
 		try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			xml.next();
 			return reader.read(xml);
 		}
 	}
@@ -85,21 +86,21 @@ public class WritersReadersTests {
 	@DataProvider
 	public Object[][] marshallings() {
 		return new Object[][] {
-			{
+			/*{
 				BitChromosome.of(10),
 				Writers.BitChromosome.writer(),
 				Readers.BitChromosome.reader()
-			}/*,
+			},
 			{
 				CharacterChromosome.of(5),
 				Writers.CharacterChromosome.writer(),
 				Readers.CharacterChromosome.reader()
-			},
+			},*/
 			{
 				IntegerChromosome.of(0, 1_000_000, 2),
 				Writers.IntegerChromosome.writer(),
 				Readers.IntegerChromosome.reader()
-			},
+			}/*,
 			{
 				LongChromosome.of(0, 1_000_000, 15),
 				Writers.LongChromosome.writer(),

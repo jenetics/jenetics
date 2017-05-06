@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -120,7 +121,7 @@ public abstract class Reader<T> {
 		requireNonNull(mapper);
 		requireNonNull(children);
 
-		return new NodeReader<>(name, mapper, asList(children));
+		return new NodeReader<>(name, mapper, asList(children), Type.ELEM);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -129,15 +130,26 @@ public abstract class Reader<T> {
 	}
 
 	public static <T> Reader<T> text(final Function<String, ? extends T> mapper) {
-		return elem("", v -> (String)v[0]).map(mapper);
+		return text().map(mapper);
 	}
 
 	public static Reader<String> text() {
-		return elem("", v -> (String)v[0]);
+		return new NodeReader("", v -> ((Object[])v)[0], emptyList(), Type.TEXT);
+		/*
+		return elem("", v -> {
+			System.out.println("TEXT: " + v[0]);
+			return (String)v[0];
+		});
+		*/
 	}
 
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
-		return new ListReader<T>(reader);
+		System.out.println("SETUP_ELEMES: " + reader);
+		return new NodeReader(reader.name(), v -> {
+			System.out.println("LIST: " + Arrays.toString((Object[])v));
+			return ((Object[])v)[0];
+		}, asList(reader), Type.LIST);
+		//return new ListReader<T>(reader);
 	}
 
 
@@ -157,7 +169,7 @@ public abstract class Reader<T> {
 		final List<String> attrs,
 		final Reader<?>... children
 	) {
-		return new NodeReader<T>(name, creator, asList(children));
+		return new NodeReader<T>(name, creator, asList(children), Type.ELEM);
 	}
 
 	/**
@@ -210,7 +222,7 @@ public abstract class Reader<T> {
 	 * @return the reader for the given elements
 	 */
 	static <T> Reader<List<T>> ofList(final Reader<T> reader) {
-		return new ListReader<T>(reader);
+		return null; //new ListReader<T>(reader);
 	}
 
 }
@@ -238,70 +250,222 @@ final class AttrReader extends Reader<String> {
  */
 final class NodeReader<T> extends Reader<T> {
 
+	private static interface Result {
+		void put(final Object value);
+		Reader<?> reader();
+		int index();
+		Object value();
+
+		static Map<String, Result> results(final List<Reader<?>> readers) {
+			final Map<String, Result> results = new HashMap<>();
+			for (int i = 0; i < readers.size(); ++i) {
+				final Reader<?> reader = readers.get(i);
+				results.put(
+					reader.name(),
+					reader.type() == Type.LIST
+						? new ListResult(reader, i)
+						: reader.type() == Type.TEXT
+							? new TextResult(reader, i)
+							: new ValueResult(reader, i)
+					);
+			}
+
+			return results;
+		}
+	}
+
+	private static final class ValueResult implements Result {
+		private final Reader<?> _reader;
+		private final int _index;
+		private Object _value;
+
+		ValueResult(final Reader<?> reader, final int index) {
+			_reader = reader;
+			_index = index;
+		}
+
+		@Override
+		public void put(final Object value) {
+			_value = value;
+		}
+
+		@Override
+		public Reader<?> reader() {
+			return _reader;
+		}
+
+		@Override
+		public int index() {
+			return _index;
+		}
+
+		@Override
+		public Object value() {
+			return _value;
+		}
+	}
+
+	private static final class TextResult implements Result {
+		private final Reader<?> _reader;
+		private final int _index;
+		private final StringBuilder _value = new StringBuilder();
+
+		TextResult(final Reader<?> reader, final int index) {
+			_reader = reader;
+			_index = index;
+		}
+
+		@Override
+		public void put(final Object value) {
+			_value.append(value);
+		}
+
+		@Override
+		public Reader<?> reader() {
+			return _reader;
+		}
+
+		@Override
+		public int index() {
+			return _index;
+		}
+
+		@Override
+		public String value() {
+			return _value.toString();
+		}
+	}
+
+	private static final class ListResult implements Result {
+		private final Reader<?> _reader;
+		private final int _index;
+		private final List<Object> _value = new ArrayList<>();
+
+		ListResult(final Reader<?> reader, final int index) {
+			_reader = reader;
+			_index = index;
+		}
+
+		@Override
+		public void put(final Object value) {
+			_value.add(value);
+		}
+
+		@Override
+		public Reader<?> reader() {
+			return _reader;
+		}
+
+		@Override
+		public int index() {
+			return _index;
+		}
+
+		@Override
+		public List<Object> value() {
+			return _value;
+		}
+	}
+
+
+	private final Function<Object[], T> _creator;
 	private final List<Reader<?>> _children;
+
+	/*s
 	private final Map<String, Reader<?>> _childMap = new HashMap<>();
 	private final List<Reader<?>> _attributes = new ArrayList<>();
 	private final Function<Object[], T> _creator;
 
 	private final Map<Reader<?>, Integer> _index = new HashMap<>();
+*/
 
 	NodeReader(
 		final String name,
 		final Function<Object[], T> creator,
-		final List<Reader<?>> children
+		final List<Reader<?>> children,
+		final Type type
 	) {
-		super(name, Type.ELEM);
-		_children = children;
+		super(name, type);
 		_creator = requireNonNull(creator);
+		_children = requireNonNull(children);
 
-		for (Reader<?> child : children) {
-			if (child.type() == Type.ATTR) {
-				_attributes.add(child);
-			} else {
-				_childMap.put(child.name(), child);
-			}
-		}
+		//elem("root", attr("size"), text());
+		// <root size="3">foo</root>
+
 	}
 
 	@Override
 	public T read(final XMLStreamReader xml)
 		throws XMLStreamException
 	{
-		final Map<String, List<Object>> lists = new HashMap<>();
+		//final Map<String, List<Object>> lists = new HashMap<>();
+		//final List<Object> values = new ArrayList<>();
 
-		final List<Object> values = new ArrayList<>();
+		final Map<String, Result> results = Result.results(_children);
+
+		for (Result result: results.values()) {
+			if (result.reader().type() == Type.ATTR) {
+				result.put(result.reader().read(xml));
+			}
+		}
 
 		final StringBuilder text = new StringBuilder();
 		while (xml.hasNext()) {
 			switch (xml.next()) {
 				case XMLStreamReader.START_ELEMENT:
-					if (name().equals(xml.getLocalName())) {
-						for (Reader<?> reader : _attributes) {
-							values.add(reader.read(xml));
-						}
-					} else {
-						final Reader<?> child = _childMap.get(xml.getLocalName());
-						if (child == null) break;
+					System.out.println("START: " + xml.getLocalName());
 
-						if (child.type() == Type.LIST) {
-							lists
-								.computeIfAbsent(child.name(), k -> new ArrayList<>())
-								.add(((ListReader<?>)child).adoptee().read(xml));
+					final Result result = results.get(xml.getLocalName());
+					if (result == null) break;
 
-							values.add(((ListReader<?>)child).adoptee().read(xml));
-						} else if (child.type() == Type.ELEM) {
-							values.add(child.read(xml));
-						}
+					System.out.println("PUT: " + xml.getLocalName() + "; " + result.reader());
+					final Object obj = result.reader().read(xml);
+					System.out.println("READ: " + result.reader().name() + "--" + obj);
+					result.put(obj);
+
+
+
+					/*
+					if (child.type() == Type.LIST) {
+						lists
+							.computeIfAbsent(child.name(), k -> new ArrayList<>())
+							.add(((ListReader<?>)child).adoptee().read(xml));
+
+						values.add(((ListReader<?>)child).adoptee().read(xml));
+					} else if (child.type() == Type.ELEM) {
+						values.add(child.read(xml));
 					}
+					*/
 					break;
 				case XMLStreamReader.CHARACTERS:
 				case XMLStreamReader.CDATA:
-					text.append(xml.getText());
+					for (Result r: results.values()) {
+						System.out.println("READER: " + r.reader() + ":" + r.reader().type());
+						if (r.reader().type() == Type.TEXT) {
+							System.out.println("TEXT: " + xml.getText());
+							r.put(xml.getText());
+						}
+					}
 					break;
 				case XMLStreamReader.END_ELEMENT:
+					System.out.println("END: " + xml.getLocalName());
 					if (name().equals(xml.getLocalName())) {
-						values.add(text.toString());
-						return _creator.apply(values.toArray());
+						final Object[] array = new Object[results.size()];
+						for (Result r : results.values()) {
+							array[r.index()] = r.value();
+						}
+
+						/*
+						final List<Object> list = results.values().stream()
+							.map(Result::value)
+							.collect(Collectors.toList());
+
+						list.add(text.toString());
+						*/
+						return _creator.apply(array);
+
+						//values.add(text.toString());
+						//return _creator.apply(values.toArray());
 					}
 			}
 		}
@@ -313,47 +477,47 @@ final class NodeReader<T> extends Reader<T> {
 
 }
 
-/**
- * List element reader.
- *
- * @param <T> the object type.
- */
-final class ListReader<T> extends Reader<List<T>> {
-
-	private final Reader<? extends T> _adoptee;
-
-	ListReader(final Reader<? extends T> adoptee) {
-		super(adoptee.name(), Type.LIST);
-		_adoptee = requireNonNull(adoptee);
-	}
-
-	Reader<? extends T> adoptee() {
-		return _adoptee;
-	}
-
-	@Override
-	public List<T> read(final XMLStreamReader xml)
-		throws XMLStreamException
-	{
-		/*
-		final List<Object> values = new ArrayList<>();
-
-		while (xml.hasNext()) {
-			switch (xml.next()) {
-				case XMLStreamReader.START_ELEMENT:
-					if (_adoptee.name().equals(xml.getLocalName())) {
-						values.add(_adoptee.read(xml));
-					}
-					break;
-				case XMLStreamReader.END_ELEMENT:
-					if (name().equals(xml.getLocalName())) {
-						values.add(text.toString());
-						return _creator.apply(values.toArray());
-					}
-			}
-		}
-		*/
-		return null;
-	}
-
-}
+///**
+// * List element reader.
+// *
+// * @param <T> the object type.
+// */
+//final class ListReader<T> extends Reader<List<T>> {
+//
+//	private final Reader<? extends T> _adoptee;
+//
+//	ListReader(final Reader<? extends T> adoptee) {
+//		super(adoptee.name(), Type.LIST);
+//		_adoptee = requireNonNull(adoptee);
+//	}
+//
+//	Reader<? extends T> adoptee() {
+//		return _adoptee;
+//	}
+//
+//	@Override
+//	public List<T> read(final XMLStreamReader xml)
+//		throws XMLStreamException
+//	{
+//		/*
+//		final List<Object> values = new ArrayList<>();
+//
+//		while (xml.hasNext()) {
+//			switch (xml.next()) {
+//				case XMLStreamReader.START_ELEMENT:
+//					if (_adoptee.name().equals(xml.getLocalName())) {
+//						values.add(_adoptee.read(xml));
+//					}
+//					break;
+//				case XMLStreamReader.END_ELEMENT:
+//					if (name().equals(xml.getLocalName())) {
+//						values.add(text.toString());
+//						return _creator.apply(values.toArray());
+//					}
+//			}
+//		}
+//		*/
+//		return null;
+//	}
+//
+//}
