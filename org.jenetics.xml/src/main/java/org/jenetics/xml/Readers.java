@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
@@ -58,7 +59,6 @@ import org.jenetics.xml.stream.XML;
 public final class Readers {
 	private Readers() {}
 
-
 	/**
 	 * Bit chromosome reader methods, which reads XML-representations of
 	 * bit-chromosomes.
@@ -81,7 +81,8 @@ public final class Readers {
 					(String)v[2], (int)v[0], (double)v[1]
 				),
 				attr("length").map(Integer::parseInt),
-				attr("ones-probability").map(Double::parseDouble)
+				attr("ones-probability").map(Double::parseDouble),
+				text()
 			);
 		}
 
@@ -252,16 +253,6 @@ public final class Readers {
 	public static final class BoundedChromosome {
 		private BoundedChromosome() {}
 
-		@FunctionalInterface
-		public static interface GeneCreator<A, G> {
-			G create(final A value, final A min, final A max);
-		}
-
-		@FunctionalInterface
-		public static interface ChromosomeCreator<G, C> {
-			C create(final G[] genes);
-		}
-
 		@SuppressWarnings("unchecked")
 		public static <
 			A extends Comparable<? super A>,
@@ -270,9 +261,9 @@ public final class Readers {
 		>
 		Reader<C> reader(
 			final String name,
-			final GeneCreator<A, G> gene,
+			final BoundedGeneCreator<A, G> gene,
 			final IntFunction<G[]> genes,
-			final ChromosomeCreator<G, C> chromosome,
+			final Function<G[], C> chromosome,
 			final Reader<? extends A> alleleReader
 		) {
 			return elem(name,
@@ -289,7 +280,7 @@ public final class Readers {
 						));
 					}
 
-					return chromosome.create(
+					return chromosome.apply(
 						alleles.stream()
 							.map(value -> gene.create(value, min, max))
 							.toArray(genes)
