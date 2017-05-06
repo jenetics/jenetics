@@ -95,12 +95,12 @@ public class WritersReadersTests {
 				CharacterChromosome.of(5),
 				Writers.CharacterChromosome.writer(),
 				Readers.CharacterChromosome.reader()
+			},
+			{
+				IntegerChromosome.of(0, 1_000_000, 2),
+				Writers.IntegerChromosome.writer(),
+				Readers.IntegerChromosome.reader()
 			}
-//			{
-//				IntegerChromosome.of(0, 1_000_000, 2),
-//				Writers.IntegerChromosome.writer(),
-//				Readers.IntegerChromosome.reader()
-//			},
 //			{
 //				LongChromosome.of(0, 1_000_000, 15),
 //				Writers.LongChromosome.writer(),

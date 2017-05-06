@@ -24,7 +24,13 @@ import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static javax.xml.stream.XMLStreamConstants.CDATA;
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.COMMENT;
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.ENTITY_REFERENCE;
+import static javax.xml.stream.XMLStreamConstants.PROCESSING_INSTRUCTION;
+import static javax.xml.stream.XMLStreamConstants.SPACE;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,7 +160,7 @@ final class AttrReader extends Reader<String> {
 
 	@Override
 	public String read(final XMLStreamReader xml) throws XMLStreamException {
-		xml.require(XMLStreamReader.START_ELEMENT, null, null);
+		xml.require(START_ELEMENT, null, null);
 		return xml.getAttributeValue(null, name());
 	}
 
@@ -171,7 +177,28 @@ final class TextReader extends Reader<String> {
 
 	@Override
 	public String read(final XMLStreamReader xml) throws XMLStreamException {
-		return xml.getText();
+		int eventType = xml.getEventType();
+
+		StringBuffer buf = new StringBuffer();
+		while(eventType != END_ELEMENT) {
+			if(eventType == CHARACTERS
+				|| eventType == CDATA
+				|| eventType == SPACE
+				|| eventType == ENTITY_REFERENCE) {
+				buf.append(xml.getText());
+			} else if(eventType == PROCESSING_INSTRUCTION
+				|| eventType == COMMENT) {
+				// skipping
+			} else if(eventType == END_DOCUMENT) {
+				throw new XMLStreamException("unexpected end of document when reading element text content");
+			} else if(eventType == START_ELEMENT) {
+				throw new XMLStreamException("element text content may not contain START_ELEMENT");
+			} else {
+				throw new XMLStreamException("Unexpected event type "+eventType);
+			}
+			eventType = xml.next();
+		}
+		return buf.toString();
 	}
 }
 
@@ -186,7 +213,7 @@ final class ListReader<T> extends Reader<List<T>> {
 
 	@Override
 	public List<T> read(final XMLStreamReader xml) throws XMLStreamException {
-		xml.require(XMLStreamReader.START_ELEMENT, null, name());
+		xml.require(START_ELEMENT, null, name());
 		return Collections.singletonList(_adoptee.read(xml));
 	}
 }
@@ -208,6 +235,10 @@ final class ElemReader<T> extends Reader<T> {
 		final Type type
 	) {
 		super(name, type);
+		if (children.stream().filter(r -> r.type() == Type.TEXT).count() > 1) {
+			throw new IllegalArgumentException("Found more than one TEXT reader.");
+		}
+
 		_creator = requireNonNull(creator);
 		_children = requireNonNull(children);
 	}
@@ -216,9 +247,13 @@ final class ElemReader<T> extends Reader<T> {
 	public T read(final XMLStreamReader xml)
 		throws XMLStreamException
 	{
-		xml.require(XMLStreamReader.START_ELEMENT, null, name());
+		xml.require(START_ELEMENT, null, name());
 
 		final Map<String, ReaderResult> results = ReaderResult.of(_children);
+		final ReaderResult text = results.values().stream()
+			.filter(r -> r.reader().type() == Type.TEXT)
+			.findFirst()
+			.orElse(null);
 
 		for (ReaderResult result: results.values()) {
 			if (result.reader().type() == Type.ATTR) {
@@ -226,21 +261,22 @@ final class ElemReader<T> extends Reader<T> {
 			}
 		}
 
-		while (xml.hasNext()) {
-			switch (xml.next()) {
-				case XMLStreamReader.START_ELEMENT:
-					final ReaderResult result = results.get(xml.getLocalName());
-					if (result == null) break;
+		if (xml.hasNext()) {
+			xml.next();
 
-					final Object obj = result.reader().read(xml);
-					result.put(obj);
+			switch (xml.getEventType()) {
+				case START_ELEMENT:
+					final ReaderResult result = results.get(xml.getLocalName());
+					if (result != null) {
+						result.put(result.reader().read(xml));
+						if (xml.hasNext()) xml.next();
+					}
+
 					break;
 				case CHARACTERS:
 				case CDATA:
-					for (ReaderResult r: results.values()) {
-						if (r.reader().type() == Type.TEXT) {
-							r.put(r.reader().read(xml));
-						}
+					if (text != null) {
+						text.put(text.reader().read(xml));
 					}
 					break;
 				case END_ELEMENT:
@@ -253,6 +289,35 @@ final class ElemReader<T> extends Reader<T> {
 					}
 			}
 		}
+
+		/*
+		while (xml.hasNext()) {
+			switch (type) {
+				case START_ELEMENT:
+					final ReaderResult result = results.get(xml.getLocalName());
+					if (result != null) {
+						result.put(result.reader().read(xml));
+						if (xml.hasNext()) type = xml.next();
+					}
+
+					break;
+				case CHARACTERS:
+				case CDATA:
+					if (text != null) {
+						text.put(text.reader().read(xml));
+					}
+					break;
+				case END_ELEMENT:
+					if (name().equals(xml.getLocalName())) {
+						final Object[] array = new Object[results.size()];
+						for (ReaderResult r : results.values()) {
+							array[r.index()] = r.value();
+						}
+						return _creator.apply(array);
+					}
+			}
+		}
+		*/
 
 		throw new XMLStreamException(format(
 			"Premature end of file while reading '%s'.", name()
