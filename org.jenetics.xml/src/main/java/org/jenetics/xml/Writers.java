@@ -908,7 +908,10 @@ public final class Writers {
 		>
 		Writer<Collection<org.jenetics.Genotype<G>>>
 		writer(final Writer<? super C> writer) {
-			return elem("genotypes", elems(Genotype.writer(writer)));
+			return elem("genotypes",
+				attr("length").map(Collection::size),
+				elems(Genotype.writer(writer))
+			);
 		}
 	}
 

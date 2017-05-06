@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genotypes>
+<genotypes length="7">
     <genotype length="5" ngenes="75">
         <permutation-chromosome length="15">
             <valid-alleles>

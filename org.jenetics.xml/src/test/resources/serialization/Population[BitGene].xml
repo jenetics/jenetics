@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genotypes>
+<genotypes length="7">
     <genotype length="5" ngenes="100">
         <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
         <bit-chromosome length="20" ones-probability="0.5">10000110100000100110</bit-chromosome>
