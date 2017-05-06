@@ -126,7 +126,7 @@ public abstract class Reader<T> {
 		return elem(name, v -> v.length > 0 ? (T)v[0] : null, children);
 	}
 
-	public static <T> Reader<T> text(final Function<String, ? extends T> mapper) {
+	public static <T> Reader<T> text(final Function<? super String, ? extends T> mapper) {
 		return text().map(mapper);
 	}
 

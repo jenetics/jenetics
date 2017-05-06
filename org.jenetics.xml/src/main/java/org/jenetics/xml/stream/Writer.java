@@ -27,6 +27,40 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * XML writer interface, used for writing objects in XML format.
+ *
+ * <pre>{@code
+ * final Writer<IntegerChromosome> writer writer = elem("int-chromosome",
+ *     attr("length").map(ch -> ch.length()),
+ *     elem("min", text().map(ch -> ch.getMin())),
+ *     elem("max", text().map(ch -> ch.getMax())),
+ *     elem("alleles",
+ *         elems(elem("allele", text()))
+ *             .map(ch -> ch.toSeq().map(g -> g.getAllele()))
+ *     )
+ * );
+ *
+ * final IntegerChromosome chromosome = IntegerChromosome.of(1, 1000, 3);
+ * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+ *     writer.write(chromosome, xml);
+ * }
+ * }</pre>
+ *
+ * The writer in the code snippet above creates a XML writer for
+ * {@code IntegerChromosomes} and will create the following output.
+ *
+ * <pre> {@code
+ * <int-chromosome length="3">
+ *     <min>0</min>
+ *     <max>1000</max>
+ *     <alleles>
+ *         <allele>345</allele>
+ *         <allele>653</allele>
+ *         <allele>5</allele>
+ *     </alleles>
+ * </int-chromosome>
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -38,11 +72,11 @@ public interface Writer<T> {
 	 * Write the data of type {@code T} to the given XML stream writer.
 	 *
 	 * @param value the value to write
-	 * @param writer the XML data sink
+	 * @param xml the XML data sink
 	 * @throws XMLStreamException if writing the data fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public void write(final T value, final XMLStreamWriter writer)
+	public void write(final T value, final XMLStreamWriter xml)
 		throws XMLStreamException;
 
 	/**
@@ -160,13 +194,13 @@ public interface Writer<T> {
 		requireNonNull(name);
 		requireNonNull(children);
 
-		return (data, writer) -> {
+		return (data, xml) -> {
 			if (data != null) {
-				writer.writeStartElement(name);
+				xml.writeStartElement(name);
 				for (Writer<? super T> child : children) {
-					child.write(data, writer);
+					child.write(data, xml);
 				}
-				writer.writeEndElement();
+				xml.writeEndElement();
 			}
 		};
 	}
@@ -194,9 +228,9 @@ public interface Writer<T> {
 	}
 
 	public static <T> Writer<T> text() {
-		return (data, writer) -> {
+		return (data, xml) -> {
 			if (data != null) {
-				writer.writeCharacters(data.toString());
+				xml.writeCharacters(data.toString());
 			}
 		};
 	}
@@ -213,11 +247,11 @@ public interface Writer<T> {
 	public static <T> Writer<Iterable<T>> elems(final Writer<? super T> writer) {
 		requireNonNull(writer);
 
-		return (values, baseWriter) -> {
+		return (values, xml) -> {
 			if (values != null) {
 				for (T val : values) {
 					if (val != null) {
-						writer.write(val, baseWriter);
+						writer.write(val, xml);
 					}
 				}
 			}
@@ -225,10 +259,10 @@ public interface Writer<T> {
 	}
 
 	public static <T> Writer<T> doc(final Writer<T> writer) {
-		return (data, w) -> {
-			w.writeStartDocument("UTF-8", "1.0");
-			writer.write(data, w);
-			w.writeEndDocument();
+		return (data, xml) -> {
+			xml.writeStartDocument("UTF-8", "1.0");
+			writer.write(data, xml);
+			xml.writeEndDocument();
 		};
 	}
 

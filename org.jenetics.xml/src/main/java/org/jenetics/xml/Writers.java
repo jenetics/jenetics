@@ -264,7 +264,7 @@ public final class Writers {
 		 * @return the default integer allele writer
 		 */
 		public static Writer<Integer> alleleWriter() {
-			return Writer.text();
+			return text();
 		}
 
 		/**

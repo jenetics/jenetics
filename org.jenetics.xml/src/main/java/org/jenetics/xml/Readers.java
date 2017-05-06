@@ -155,101 +155,6 @@ public final class Readers {
 
 	}
 
-	/**
-	 * Reader methods for {@link org.jenetics.CharacterChromosome} objects.
-	 *
-	 * <pre> {@code
-	 * <permutation-chromosome length="15">
-	 *     <valid-alleles>
-	 *         <allele>0.2725</allele>
-	 *         <allele>0.0031</allele>
-	 *         <allele>0.4395</allele>
-	 *         <allele>0.1065</allele>
-	 *         <allele>0.1970</allele>
-	 *         <allele>0.7450</allele>
-	 *         <allele>0.5594</allele>
-	 *         <allele>0.0282</allele>
-	 *         <allele>0.5741</allele>
-	 *         <allele>0.4534</allele>
-	 *         <allele>0.8111</allele>
-	 *         <allele>0.5710</allele>
-	 *         <allele>0.3017</allele>
-	 *         <allele>0.5455</allele>
-	 *         <allele>0.2107</allele>
-	 *     </valid-alleles>
-	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
-	 * </permutation-chromosome>
-	 * }</pre>
-	 */
-	public static final class PermutationChromosome {
-		private PermutationChromosome() {}
-
-		/**
-		 * Return a reader for permutation chromosomes with the given allele
-		 * reader.
-		 *
-		 * @param alleleReader the allele reader
-		 * @param <A> the allele type
-		 * @return a permutation chromosome reader
-		 * @throws NullPointerException if the given allele reader is
-		 *        {@code null}
-		 */
-		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
-		reader(final Reader<A> alleleReader) {
-			requireNonNull(alleleReader);
-
-			return elem("permutation-chromosome",
-				v -> {
-					final int length = (int)v[0];
-					@SuppressWarnings("unchecked")
-					final ISeq<A> validAlleles = ISeq.of((List<A>)v[1]);
-
-					final int[] order = Stream.of(((String) v[2]).split("\\s"))
-						.mapToInt(Integer::parseInt)
-						.toArray();
-
-					final MSeq<EnumGene<A>> alleles = MSeq.ofLength(length);
-					for (int i = 0; i < length; ++i) {
-						final EnumGene<A> gene = EnumGene.of(order[i], validAlleles);
-						alleles.set(i, gene);
-					}
-
-					return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
-				},
-				attr("length").map(Integer::parseInt),
-				elem("valid-alleles",
-					elems(elem("allele", alleleReader))
-				),
-				elem("order", text())
-			);
-		}
-
-		/**
-		 * Reads a new {@link org.jenetics.PermutationChromosome} from the given
-		 * input stream.
-		 *
-		 * @param alleleReader the allele reader
-		 * @param in the data source of the chromosome
-		 * @param <A> the allele type
-		 * @return a new permutation chromosome
-		 * @throws XMLStreamException if reading the chromosome fails
-		 * @throws NullPointerException if one of the arguments is {@code null}
-		 */
-		public static <A> org.jenetics.PermutationChromosome<A>
-		read(final Reader<A> alleleReader, final InputStream in)
-			throws XMLStreamException
-		{
-			requireNonNull(alleleReader);
-			requireNonNull(in);
-
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
-				xml.next();
-				return reader(alleleReader).read(xml);
-			}
-		}
-
-	}
-
 	public static final class BoundedChromosome {
 		private BoundedChromosome() {}
 
@@ -315,6 +220,17 @@ public final class Readers {
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
 
+		public static Reader<Integer>
+		alleleReader(final Function<? super String, Integer> format) {
+			requireNonNull(format);
+			return text(format);
+		}
+
+		/**
+		 * Return the default allele reader for the {@code IntegerChromosome}.
+		 *
+		 * @return the default allele reader
+		 */
 		public static Reader<Integer> alleleReader() {
 			return text(Integer::parseInt);
 		}
@@ -463,6 +379,101 @@ public final class Readers {
 			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
 				reader.next();
 				return reader().read(reader);
+			}
+		}
+
+	}
+
+	/**
+	 * Reader methods for {@link org.jenetics.CharacterChromosome} objects.
+	 *
+	 * <pre> {@code
+	 * <permutation-chromosome length="15">
+	 *     <valid-alleles>
+	 *         <allele>0.2725</allele>
+	 *         <allele>0.0031</allele>
+	 *         <allele>0.4395</allele>
+	 *         <allele>0.1065</allele>
+	 *         <allele>0.1970</allele>
+	 *         <allele>0.7450</allele>
+	 *         <allele>0.5594</allele>
+	 *         <allele>0.0282</allele>
+	 *         <allele>0.5741</allele>
+	 *         <allele>0.4534</allele>
+	 *         <allele>0.8111</allele>
+	 *         <allele>0.5710</allele>
+	 *         <allele>0.3017</allele>
+	 *         <allele>0.5455</allele>
+	 *         <allele>0.2107</allele>
+	 *     </valid-alleles>
+	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 * </permutation-chromosome>
+	 * }</pre>
+	 */
+	public static final class PermutationChromosome {
+		private PermutationChromosome() {}
+
+		/**
+		 * Return a reader for permutation chromosomes with the given allele
+		 * reader.
+		 *
+		 * @param alleleReader the allele reader
+		 * @param <A> the allele type
+		 * @return a permutation chromosome reader
+		 * @throws NullPointerException if the given allele reader is
+		 *        {@code null}
+		 */
+		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
+		reader(final Reader<A> alleleReader) {
+			requireNonNull(alleleReader);
+
+			return elem("permutation-chromosome",
+				v -> {
+					final int length = (int)v[0];
+					@SuppressWarnings("unchecked")
+					final ISeq<A> validAlleles = ISeq.of((List<A>)v[1]);
+
+					final int[] order = Stream.of(((String) v[2]).split("\\s"))
+						.mapToInt(Integer::parseInt)
+						.toArray();
+
+					final MSeq<EnumGene<A>> alleles = MSeq.ofLength(length);
+					for (int i = 0; i < length; ++i) {
+						final EnumGene<A> gene = EnumGene.of(order[i], validAlleles);
+						alleles.set(i, gene);
+					}
+
+					return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
+				},
+				attr("length").map(Integer::parseInt),
+				elem("valid-alleles",
+					elems(elem("allele", alleleReader))
+				),
+				elem("order", text())
+			);
+		}
+
+		/**
+		 * Reads a new {@link org.jenetics.PermutationChromosome} from the given
+		 * input stream.
+		 *
+		 * @param alleleReader the allele reader
+		 * @param in the data source of the chromosome
+		 * @param <A> the allele type
+		 * @return a new permutation chromosome
+		 * @throws XMLStreamException if reading the chromosome fails
+		 * @throws NullPointerException if one of the arguments is {@code null}
+		 */
+		public static <A> org.jenetics.PermutationChromosome<A>
+		read(final Reader<A> alleleReader, final InputStream in)
+			throws XMLStreamException
+		{
+			requireNonNull(alleleReader);
+			requireNonNull(in);
+
+			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+				xml.next();
+				return reader(alleleReader).read(xml);
 			}
 		}
 
