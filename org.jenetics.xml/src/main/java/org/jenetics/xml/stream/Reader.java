@@ -120,7 +120,7 @@ public abstract class Reader<T> {
 		requireNonNull(mapper);
 		requireNonNull(children);
 
-		return new ReaderImpl<>(name, mapper, asList(children));
+		return new NodeReader<>(name, mapper, asList(children));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -157,7 +157,7 @@ public abstract class Reader<T> {
 		final List<String> attrs,
 		final Reader<?>... children
 	) {
-		return new ReaderImpl<T>(name, creator, asList(children));
+		return new NodeReader<T>(name, creator, asList(children));
 	}
 
 	/**
@@ -231,61 +231,34 @@ final class AttrReader extends Reader<String> {
 
 }
 
-final class TextReader extends Reader<String> {
-
-	TextReader() {
-		super("", Type.TEXT);
-	}
-
-	@Override
-	public String read(final XMLStreamReader reader)
-		throws XMLStreamException
-	{
-		final StringBuilder result = new StringBuilder();
-		while (reader.hasNext()) {
-			switch (reader.next()) {
-				case XMLStreamReader.CHARACTERS:
-				case XMLStreamReader.CDATA:
-					result.append(reader.getText());
-					break;
-				case XMLStreamReader.END_ELEMENT:
-					if (name().equals(reader.getLocalName())) {
-						return result.toString();
-					}
-			}
-		}
-
-		throw new XMLStreamException(format(
-			"Premature end of file while reading '%s'.", name()
-		));
-	}
-
-}
-
 /**
  * The main XML reader implementation.
  *
  * @param <T> the object type
  */
-final class ReaderImpl<T> extends Reader<T> {
+final class NodeReader<T> extends Reader<T> {
 
-	private final Map<String, Reader<?>> _children = new HashMap<>();
+	private final List<Reader<?>> _children;
+	private final Map<String, Reader<?>> _childMap = new HashMap<>();
 	private final List<Reader<?>> _attributes = new ArrayList<>();
 	private final Function<Object[], T> _creator;
 
-	ReaderImpl(
+	private final Map<Reader<?>, Integer> _index = new HashMap<>();
+
+	NodeReader(
 		final String name,
 		final Function<Object[], T> creator,
 		final List<Reader<?>> children
 	) {
 		super(name, Type.ELEM);
+		_children = children;
 		_creator = requireNonNull(creator);
 
 		for (Reader<?> child : children) {
 			if (child.type() == Type.ATTR) {
 				_attributes.add(child);
 			} else {
-				_children.put(child.name(), child);
+				_childMap.put(child.name(), child);
 			}
 		}
 	}
@@ -298,25 +271,27 @@ final class ReaderImpl<T> extends Reader<T> {
 
 		final List<Object> values = new ArrayList<>();
 
-		for (Reader<?> reader : _attributes) {
-			values.add(reader.read(xml));
-		}
-
 		final StringBuilder text = new StringBuilder();
 		while (xml.hasNext()) {
 			switch (xml.next()) {
 				case XMLStreamReader.START_ELEMENT:
-					final Reader<?> child = _children.get(xml.getLocalName());
-					if (child == null) break;
+					if (name().equals(xml.getLocalName())) {
+						for (Reader<?> reader : _attributes) {
+							values.add(reader.read(xml));
+						}
+					} else {
+						final Reader<?> child = _childMap.get(xml.getLocalName());
+						if (child == null) break;
 
-					if (child.type() == Type.LIST) {
-						lists
-							.computeIfAbsent(child.name(), k -> new ArrayList<>())
-							.add(((ListReader<?>)child).adoptee().read(xml));
+						if (child.type() == Type.LIST) {
+							lists
+								.computeIfAbsent(child.name(), k -> new ArrayList<>())
+								.add(((ListReader<?>)child).adoptee().read(xml));
 
-						values.add(((ListReader<?>)child).adoptee().read(xml));
-					} else if (child.type() == Type.ELEM) {
-						values.add(child.read(xml));
+							values.add(((ListReader<?>)child).adoptee().read(xml));
+						} else if (child.type() == Type.ELEM) {
+							values.add(child.read(xml));
+						}
 					}
 					break;
 				case XMLStreamReader.CHARACTERS:
@@ -360,6 +335,7 @@ final class ListReader<T> extends Reader<List<T>> {
 	public List<T> read(final XMLStreamReader xml)
 		throws XMLStreamException
 	{
+		/*
 		final List<Object> values = new ArrayList<>();
 
 		while (xml.hasNext()) {
@@ -376,6 +352,8 @@ final class ListReader<T> extends Reader<List<T>> {
 					}
 			}
 		}
+		*/
+		return null;
 	}
 
 }
