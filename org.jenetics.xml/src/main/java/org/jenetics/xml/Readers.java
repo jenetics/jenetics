@@ -29,10 +29,8 @@ import static org.jenetics.xml.stream.Reader.text;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
@@ -48,8 +46,6 @@ import org.jenetics.LongGene;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
-import org.jenetics.xml.Readers.BoundedChromosome.ChromosomeCreator;
-import org.jenetics.xml.Readers.BoundedChromosome.GeneCreator;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.XML;
@@ -589,55 +585,6 @@ public final class Readers {
 				elems(Genotype.reader(chromosomeReader))
 			);
 		}
-	}
-
-	private static <A, G, C> Reader<C> chromosome(
-		final String name,
-		final Function<String, A> allele,
-		final GeneCreator<A, G> gene,
-		final IntFunction<G[]> genes,
-		final ChromosomeCreator<G, C> chromosome
-	) {
-		requireNonNull(name);
-		requireNonNull(allele);
-		requireNonNull(gene);
-		requireNonNull(genes);
-		requireNonNull(chromosome);
-
-		/*
-		return Reader.of(
-			p -> {
-				System.out.println(Arrays.toString(p));
-
-				final int length = Integer.parseInt((String)p[0]);
-				final A min = allele.apply((String)p[1]);
-				final A max = allele.apply((String)p[2]);
-
-				@SuppressWarnings("unchecked")
-				final List<A> alleles = (List<A>)p[3];
-				if (alleles.size() != length) {
-					throw new IllegalArgumentException(format(
-						"Expected %d alleles, but got %d,",
-						length, alleles.size()
-					));
-				}
-
-				return chromosome.create(
-					alleles.stream()
-						.map(value -> gene.create(value, min, max))
-						.toArray(genes)
-				);
-			},
-			name,
-			Reader.attrs("length"),
-			Reader.of("min"),
-			Reader.of("max"),
-			Reader.of("alleles",
-				Reader.ofList(Reader.of("allele").map(allele))
-			)
-		);
-		*/
-		return null;
 	}
 
 	public static void main(final String[] args) throws Exception {

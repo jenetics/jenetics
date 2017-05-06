@@ -19,10 +19,8 @@
  */
 package org.jenetics.xml.stream;
 
-import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Objects.requireNonNull;
 import static javax.xml.stream.XMLStreamConstants.CDATA;
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
@@ -143,80 +141,6 @@ public abstract class Reader<T> {
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
 		return new ListReader<T>(reader);
 	}
-
-
-	/**
-	 * Create a new {@code XMLReader} with the given elements.
-	 *
-	 * @param creator creates the final object from the read arguments
-	 * @param name the element name
-	 * @param attrs the element attributes
-	 * @param children the child element readers
-	 * @param <T> the object type
-	 * @return the reader for the given element
-	 */
-	public static <T> Reader<T> of(
-		final Function<Object[], T> creator,
-		final String name,
-		final List<String> attrs,
-		final Reader<?>... children
-	) {
-		return new ElemReader<T>(name, creator, asList(children), Type.ELEM);
-	}
-
-	/**
-	 * Create a new {@code XMLReader} with the given elements.
-	 * <pre>{@code
-	 * XMLReader.of(
-	 *     a -> Link.of((String)a[0], (String)a[1], (String)a[2]),
-	 *     "link", attr("href"),
-	 *     XMLReader.of("text"),
-	 *     XMLReader.of("type")
-	 * )
-	 * }</pre>
-	 *
-	 * @param creator creates the final object from the read arguments
-	 * @param name the element name
-	 * @param children the child element readers
-	 * @param <T> the object type
-	 * @return the reader for the given element
-	 */
-	static <T> Reader<T> of(
-		final Function<Object[], T> creator,
-		final String name,
-		final Reader<?>... children
-	) {
-		return of(creator, name, emptyList(), children);
-	}
-
-	@SuppressWarnings("unchecked")
-	static <T> Reader<T> of(final String name, final Reader<T> reader) {
-		//return r -> reader.read(r);
-		return of(a -> (T)a[0], name, reader);
-	}
-
-	/**
-	 * Create a reader for a leaf element with the given {@code name}.
-	 *
-	 * @param name the element
-	 * @return the reader for the given element
-	 */
-	static Reader<String> of(final String name) {
-		return null;
-		//return new TextReader(name);
-	}
-
-	/**
-	 * Return a reader which reads a list of elements.
-	 *
-	 * @param reader the basic element reader
-	 * @param <T> the object type
-	 * @return the reader for the given elements
-	 */
-	static <T> Reader<List<T>> ofList(final Reader<T> reader) {
-		return null; //new ListReader<T>(reader);
-	}
-
 }
 
 /**
