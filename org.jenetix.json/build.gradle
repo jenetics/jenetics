@@ -31,16 +31,16 @@ apply plugin: 'packaging'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-compileTestJava.dependsOn tasks.getByPath(':org.jenetics:compileTestJava')
+compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
 dependencies {
-	compile project(':org.jenetics')
+	compile project(':jenetics')
 	compile Include.Gson
 	compile Include.Jettison
     compile Include.Eclipse.Persistence.Moxy
 
 	testCompile Include.TestNG
-    testCompile project(':org.jenetics').sourceSets.test.output
+    testCompile project(':jenetics').sourceSets.test.output
 }
 
 jar.manifest.instruction('Export-Package',
