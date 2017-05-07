@@ -23,34 +23,35 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since @__version__@
- * @version @__version__@ &mdash; <em>$Date: 2014-03-20 $</em>
+ * @since !__version__!
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-
-compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
 dependencies {
 	compile project(':jenetics')
 	compile Include.Gson
-	compile Include.Jettison
-    compile Include.Eclipse.Persistence.Moxy
 
 	testCompile Include.TestNG
-    testCompile project(':jenetics').sourceSets.test.output
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetix.json'
+	'org.jenetics.json'
 )
 
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
 packaging {
-	name = 'Jenetics JSON support'
+	name = 'Jenetics XML marshalling'
 	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	url = 'http://jenetics.io'
+	jarjar = false
+	javadoc = true
 }
 
 
