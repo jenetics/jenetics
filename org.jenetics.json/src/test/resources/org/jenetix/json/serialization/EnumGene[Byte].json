@@ -1,1 +1,0 @@
-{"enum-gene":{"@length":"5","valid-alleles":{"allele":[{"@xsi.type":"xs:byte","$":"16"},{"@xsi.type":"xs:byte","$":"70"},{"@xsi.type":"xs:byte","$":"122"},{"@xsi.type":"xs:byte","$":"-42"},{"@xsi.type":"xs:byte","$":"-85"}]},"allele":{"@index":"0","value":{"@xsi.type":"xs:byte","$":"16"}}}}
