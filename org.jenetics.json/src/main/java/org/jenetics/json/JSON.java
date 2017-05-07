@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.json;
+package org.jenetics.json;
 
 import static org.jenetics.internal.util.jaxb.adapterFor;
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix.json;
+package org.jenetics.json;
 
 import java.text.DateFormat;
 
