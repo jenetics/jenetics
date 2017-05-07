@@ -19,10 +19,37 @@
  */
 package org.jenetics.json.stream;
 
+import static java.util.Objects.requireNonNull;
+
+import java.io.IOException;
+
+import com.google.gson.stream.JsonWriter;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Writer {
+@FunctionalInterface
+public interface Writer<T> {
+
+	public void write(final T value, final JsonWriter json) throws IOException;
+
+
+	public static <T> Writer<T> obj(final String name, final Writer<? super T>... children) {
+		requireNonNull(name);
+		requireNonNull(children);
+
+		return (data, json) -> {
+			if (data != null) {
+				json.beginObject();
+				json.name(name);
+				for (Writer<? super T> child : children) {
+					child.write(data, json);
+				}
+				json.endObject();
+			}
+		};
+	}
+
 }
