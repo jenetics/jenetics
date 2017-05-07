@@ -38,60 +38,60 @@ import org.jenetics.PersistentObject.Marshalling;
  */
 public class JSONTest {
 
-	private static final String RESOURCE_PATTERN = "/org/jenetix/json/serialization/%s.%s";
-
-	//@Test(dataProvider = "persistentObjectMarshallings")
-	public void marshallingCompatibility(
-		final PersistentObject<?> object,
-		final Marshalling marshalling
-	)
-		throws IOException
-	{
-		final String resource = String.format(
-			RESOURCE_PATTERN, object.getName(), marshalling.name
-		);
-
-		try (InputStream in = getClass().getResourceAsStream(resource)) {
-			final Object o = marshalling.io.read(in);
-
-			Assert.assertEquals(o, object.getValue());
-		}
-	}
-
-	@DataProvider(name = "persistentObjectMarshallings")
-	public Object[][] getPersistentObjects() {
-		final List<Object[]> combinations = new ArrayList<>();
-		for (PersistentObject<?> po : PersistentObject.VALUES) {
-			Marshalling marshalling = new Marshalling("json", JSON.json);
-			combinations.add(new Object[]{po, marshalling});
-		}
-
-		final Object[][] result = new Object[combinations.size()][];
-		for (int i = 0; i < result.length; ++i) {
-			result[i] = combinations.get(i);
-		}
-
-		return result;
-	}
-
-	public static void main(final String[] args) throws Exception {
-		write();
-		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
-	}
-
-	private static void write() throws IOException {
-		final File baseDir = new File(
-			"org.jenetix.json/src/test/resources/org/jenetix/json/serialization"
-		);
-
-		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
-			throw new IOException("Error while creating directory " + baseDir);
-		}
-
-		for (PersistentObject<?> object : PersistentObject.VALUES) {
-			Marshalling marshalling = new Marshalling("json", JSON.json);
-			marshalling.write(baseDir, object);
-		}
-	}
+//	private static final String RESOURCE_PATTERN = "/org/jenetix/json/serialization/%s.%s";
+//
+//	//@Test(dataProvider = "persistentObjectMarshallings")
+//	public void marshallingCompatibility(
+//		final PersistentObject<?> object,
+//		final Marshalling marshalling
+//	)
+//		throws IOException
+//	{
+//		final String resource = String.format(
+//			RESOURCE_PATTERN, object.getName(), marshalling.name
+//		);
+//
+//		try (InputStream in = getClass().getResourceAsStream(resource)) {
+//			final Object o = marshalling.io.read(in);
+//
+//			Assert.assertEquals(o, object.getValue());
+//		}
+//	}
+//
+//	@DataProvider(name = "persistentObjectMarshallings")
+//	public Object[][] getPersistentObjects() {
+//		final List<Object[]> combinations = new ArrayList<>();
+//		for (PersistentObject<?> po : PersistentObject.VALUES) {
+//			Marshalling marshalling = new Marshalling("json", JSON.json);
+//			combinations.add(new Object[]{po, marshalling});
+//		}
+//
+//		final Object[][] result = new Object[combinations.size()][];
+//		for (int i = 0; i < result.length; ++i) {
+//			result[i] = combinations.get(i);
+//		}
+//
+//		return result;
+//	}
+//
+//	public static void main(final String[] args) throws Exception {
+//		write();
+//		//IO.jaxb.write(nextGenotypeDoubleGene(), System.out);
+//	}
+//
+//	private static void write() throws IOException {
+//		final File baseDir = new File(
+//			"org.jenetix.json/src/test/resources/org/jenetix/json/serialization"
+//		);
+//
+//		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
+//			throw new IOException("Error while creating directory " + baseDir);
+//		}
+//
+//		for (PersistentObject<?> object : PersistentObject.VALUES) {
+//			Marshalling marshalling = new Marshalling("json", JSON.json);
+//			marshalling.write(baseDir, object);
+//		}
+//	}
 
 }

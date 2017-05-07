@@ -19,7 +19,6 @@
  */
 package org.jenetix.json;
 
-import static org.jenetics.internal.util.jaxb.context;
 import static org.jenetics.internal.util.jaxb.adapterFor;
 
 import java.io.BufferedReader;
@@ -52,70 +51,70 @@ import org.jenetics.util.IO;
 public final class JSON {
 	private JSON() {}
 
-	public static final IO json = new IO() {
-		@Override
-		public void write(Object object, OutputStream out) throws IOException {
-			try {
-				final Marshaller marshaller = context().createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-
-				final XMLStreamWriter writer = new MappedXMLStreamWriter(
-					new MappedNamespaceConvention(),
-					new OutputStreamWriter(out)
-				);
-				try {
-					final XmlAdapter<Object, Object> adapter = adapterFor(object);
-					if (adapter != null) {
-						marshaller.marshal(adapter.marshal(object), writer);
-					} else {
-						marshaller.marshal(object, writer);
-					}
-				} finally {
-					writer.close();
-				}
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
-		}
-
-		@Override
-		public <T> T read(Class<T> type, InputStream in) throws IOException {
-			try {
-				final Unmarshaller unmarshaller = context().createUnmarshaller();
-
-				final XMLStreamReader reader = new MappedXMLStreamReader(
-					new JSONObject(toText(in)),
-					new MappedNamespaceConvention(new Configuration())
-				);
-				try {
-					final Object object = unmarshaller.unmarshal(reader);
-					final XmlAdapter<Object, Object> adapter = adapterFor(object);
-					if (adapter != null) {
-						return type.cast(adapter.unmarshal(object));
-					} else {
-						return type.cast(object);
-					}
-				} finally {
-					reader.close();
-				}
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
-		}
-	};
-
-	private static String toText(final InputStream in) throws IOException {
-		try (final Reader r = new InputStreamReader(in);
-			 final BufferedReader br = new BufferedReader(r))
-		{
-			final StringBuilder builder = new StringBuilder();
-			final char[] buffer = new char[2048];
-			int count = 0;
-			while ((count = br.read(buffer)) != -1) {
-				builder.append(buffer, 0, count);
-			}
-
-			return builder.toString();
-		}
-	}
+//	public static final IO json = new IO() {
+//		@Override
+//		public void write(Object object, OutputStream out) throws IOException {
+//			try {
+//				final Marshaller marshaller = context().createMarshaller();
+//				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//
+//				final XMLStreamWriter writer = new MappedXMLStreamWriter(
+//					new MappedNamespaceConvention(),
+//					new OutputStreamWriter(out)
+//				);
+//				try {
+//					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+//					if (adapter != null) {
+//						marshaller.marshal(adapter.marshal(object), writer);
+//					} else {
+//						marshaller.marshal(object, writer);
+//					}
+//				} finally {
+//					writer.close();
+//				}
+//			} catch (Exception e) {
+//				throw new IOException(e);
+//			}
+//		}
+//
+//		@Override
+//		public <T> T read(Class<T> type, InputStream in) throws IOException {
+//			try {
+//				final Unmarshaller unmarshaller = context().createUnmarshaller();
+//
+//				final XMLStreamReader reader = new MappedXMLStreamReader(
+//					new JSONObject(toText(in)),
+//					new MappedNamespaceConvention(new Configuration())
+//				);
+//				try {
+//					final Object object = unmarshaller.unmarshal(reader);
+//					final XmlAdapter<Object, Object> adapter = adapterFor(object);
+//					if (adapter != null) {
+//						return type.cast(adapter.unmarshal(object));
+//					} else {
+//						return type.cast(object);
+//					}
+//				} finally {
+//					reader.close();
+//				}
+//			} catch (Exception e) {
+//				throw new IOException(e);
+//			}
+//		}
+//	};
+//
+//	private static String toText(final InputStream in) throws IOException {
+//		try (final Reader r = new InputStreamReader(in);
+//			 final BufferedReader br = new BufferedReader(r))
+//		{
+//			final StringBuilder builder = new StringBuilder();
+//			final char[] buffer = new char[2048];
+//			int count = 0;
+//			while ((count = br.read(buffer)) != -1) {
+//				builder.append(buffer, 0, count);
+//			}
+//
+//			return builder.toString();
+//		}
+//	}
 }
