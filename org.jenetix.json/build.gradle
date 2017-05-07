@@ -18,23 +18,39 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 3.8
+ * @since @__version__@
+ * @version @__version__@ &mdash; <em>$Date: 2014-03-20 $</em>
  */
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetix.json'
-include 'org.jenetix'
+apply plugin: 'packaging'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-rootProject.name = 'jenetics'
+compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+dependencies {
+	compile project(':jenetics')
+	compile Include.Gson
+	compile Include.Jettison
+    compile Include.Eclipse.Persistence.Moxy
+
+	testCompile Include.TestNG
+    testCompile project(':jenetics').sourceSets.test.output
 }
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetix.json'
+)
+
+packaging {
+	name = 'Jenetics JSON support'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+}
+
+

@@ -1,0 +1,1 @@
+{"enum-gene":{"@length":"5","valid-alleles":{"allele":[{"@xsi.type":"xs:boolean","$":"true"},{"@xsi.type":"xs:boolean","$":"true"},{"@xsi.type":"xs:boolean","$":"true"},{"@xsi.type":"xs:boolean","$":"false"},{"@xsi.type":"xs:boolean","$":"false"}]},"allele":{"@index":"0","value":{"@xsi.type":"xs:boolean","$":"true"}}}}
