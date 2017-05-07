@@ -53,6 +53,9 @@ public interface Alterer<
 >
 {
 
+	/**
+	 * The default alter probability: 0.2
+	 */
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
@@ -107,7 +110,7 @@ public interface Alterer<
 			? (p, g) -> 0
 			: alterers.length == 1
 				? alterers[0]
-				: new CompositeAlterer<G, C>(ISeq.of(alterers));
+				: new CompositeAlterer<>(ISeq.of(alterers));
 	}
 
 }

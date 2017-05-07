@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -105,6 +106,23 @@ public final class Array<T> implements Serializable {
 	 */
 	public void set(final int index, final T value) {
 		_store.set(index + _start, value);
+	}
+
+	/**
+	 * Sort the store.
+	 *
+	 * @param from the start index where to start sorting (inclusively)
+	 * @param until the end index where to stop sorting (exclusively)
+	 * @param comparator the {@code Comparator} used to compare sequence
+	 *        elements. A {@code null} value indicates that the elements'
+	 *        Comparable natural ordering should be used
+	 */
+	public void sort(
+		final int from,
+		final int until,
+		final Comparator<? super T> comparator
+	) {
+		_store.sort(from + _start, until + _start, comparator);
 	}
 
 	/**
@@ -344,6 +362,21 @@ public final class Array<T> implements Serializable {
 		public T get(final int index);
 
 		/**
+		 * Sort the store.
+		 *
+		 * @param from the start index where to start sorting (inclusively)
+		 * @param until the end index where to stop sorting (exclusively)
+		 * @param comparator the {@code Comparator} used to compare sequence
+		 *        elements. A {@code null} value indicates that the elements'
+		 *        Comparable natural ordering should be used
+		 */
+		public void sort(
+			final int from,
+			final int until,
+			final Comparator<? super T> comparator
+		);
+
+		/**
 		 * Return the length of the array {@code Store}.
 		 *
 		 * @return the array store length
@@ -427,6 +460,15 @@ public final class Array<T> implements Serializable {
 			public void set(final int index, final T value) {
 				copyIfSealed();
 				_value.set(index, value);
+			}
+
+			public void sort(
+				final int from,
+				final int until,
+				final Comparator<? super T> comparator
+			) {
+				copyIfSealed();
+				_value.sort(from, until, comparator);
 			}
 
 			void copyIfSealed() {

@@ -21,64 +21,53 @@ package org.jenetics.tool.evaluation;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Console;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.jenetics.internal.util.Args;
-import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.tool.trial.Trial;
 import org.jenetics.tool.trial.TrialMeter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 3.5
  * @since 3.4
  */
 public class Runner<
 	P,
 	G extends Gene<?, G>,
 	N extends Number &  Comparable<? super N>
-> {
+>
+	extends AbstractRunner<P>
+{
 
-	private final Engine<G, N> _engine;
+	private final Function<? super P, Engine<G, N>> _engine;
 	private final Function<? super P, Predicate<? super EvolutionResult<G, N>>> _terminator;
-	private final Supplier<TrialMeter<P>> _trialMeter;
-	private final int _sampleCount;
-	private final Path _resultPath;
-
-
-	private volatile Thread _trialThread = null;
-	private final AtomicBoolean _stop = new AtomicBoolean(false);
 
 	public Runner(
-		final Engine<G, N> engine,
+		final Function<? super P, Engine<G, N>> engine,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final int sampleCount,
 		final Path resultPath
 	) {
+		super(trialMeter, sampleCount, resultPath);
 		_engine = requireNonNull(engine);
 		_terminator = requireNonNull(terminator);
-		_trialMeter = requireNonNull(trialMeter);
-		_sampleCount = require.positive(sampleCount);
-		_resultPath = requireNonNull(resultPath);
 	}
 
-	private double[] fitness(final P param) {
+	protected double[] fitness(final P param) {
 		final Predicate<? super EvolutionResult<G, N>> terminator =
 			_terminator.apply(param);
 
 		final long start = System.currentTimeMillis();
-		final EvolutionResult<G, N> result = _engine.stream()
+		final EvolutionResult<G, N> result = _engine.apply(param).stream()
 			.limit(terminator)
 			.collect(EvolutionResult.toBestEvolutionResult());
 		final long end = System.currentTimeMillis();
@@ -92,56 +81,9 @@ public class Runner<
 		};
 	}
 
-	public void start() {
-		if (_trialThread != null) {
-			throw new IllegalStateException("Trial thread already running.");
-		}
-
-		final Trial<P> trial = new Trial<>(
-			this::fitness,
-			_trialMeter,
-			count -> count >= _sampleCount || _stop.get(),
-			_resultPath
-		);
-
-		_trialThread = new Thread(trial);
-		_trialThread.start();
-	}
-
-	public void join() throws InterruptedException {
-		if (_trialThread == null) {
-			throw new IllegalStateException("Trial thread is not running.");
-		}
-
-		try {
-			final Console console = System.console();
-			if (console != null) {
-				final Thread interrupter = new Thread(() -> {
-					String command;
-					do {
-						command = console.readLine();
-						Trial.info("Got command '" + command + "'");
-					} while (!"exit".equals(command));
-
-					Trial.info("Stopping trial...");
-					_trialThread.interrupt();
-				});
-				interrupter.setName("Console read thread");
-				interrupter.setDaemon(true);
-				interrupter.start();
-			}
-
-			_trialThread.join();
-			Trial.info("Sopped trial.");
-		} finally {
-			_trialThread = null;
-		}
-	}
-
-
 	public static <P, G extends Gene<?, G>, N extends Number &  Comparable<? super N>>
 	Runner<P, G, N> of(
-		final Engine<G, N> engine,
+		final Function<? super P, Engine<G, N>> engine,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final String[] arguments

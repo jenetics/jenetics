@@ -66,7 +66,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 3.7
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -152,6 +152,39 @@ public class LongMomentStatistics
 	 */
 	public long getSum() {
 		return _sum;
+	}
+
+	/**
+	 * Compares the state of two {@code LongMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final LongMomentStatistics lms1 = ...;
+	 * final LongMomentStatistics lms2 = ...;
+	 *
+	 * if (lms1.sameState(lms2)) {
+	 *     final long value = random.nextInt(1_000_000);
+	 *     lms1.accept(value);
+	 *     lms2.accept(value);
+	 *
+	 *     assert lms1.sameState(lms2);
+	 *     assert lms2.sameState(lms1);
+	 *     assert lms1.sameState(lms1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final LongMomentStatistics other) {
+		return _min == other._min &&
+			_max == other._max &&
+			_sum == other._sum &&
+			super.sameState(other);
 	}
 
 	@Override

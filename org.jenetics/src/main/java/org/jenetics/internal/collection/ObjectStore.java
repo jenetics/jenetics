@@ -23,6 +23,8 @@ import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.jenetics.internal.collection.Array.Store;
 
@@ -50,6 +52,16 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	@SuppressWarnings("unchecked")
 	public T get(final int index) {
 		return (T)_array[index];
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void sort(
+		final int from,
+		final int until,
+		final Comparator<? super T> comparator
+	) {
+		Arrays.sort((T[])_array, from, until, comparator);
 	}
 
 	@Override

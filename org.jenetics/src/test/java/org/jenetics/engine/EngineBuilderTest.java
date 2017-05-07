@@ -79,4 +79,120 @@ public class EngineBuilderTest {
 		Assert.assertEquals(engine.getMaximalPhenotypeAge(), phenotypeAge);
 	}
 
+	@Test
+	public void offspringFractionZero() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.offspringFraction(0)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void offspringFractionOne() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.offspringFraction(1)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void survivorsFraction() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.survivorsFraction(0.3)
+			.build();
+
+		Assert.assertEquals(engine.getSurvivorsCount(), 15);
+		Assert.assertEquals(engine.getOffspringCount(), 35);
+	}
+
+	@Test
+	public void survivorsFractionZero() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.survivorsFraction(0)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void survivorsFractionOne() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.survivorsFraction(1)
+			.build();
+
+		engine.stream()
+			.limit(10)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@Test
+	public void survivorsSize() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.survivorsSize(15)
+			.build();
+
+		Assert.assertEquals(engine.getSurvivorsCount(), 15);
+		Assert.assertEquals(engine.getOffspringCount(), 35);
+	}
+
+	@Test
+	public void offspringSize() {
+		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
+			gt -> gt.getGene().getAllele();
+		final Factory<Genotype<DoubleGene>> genotypeFactory =
+			Genotype.of(DoubleChromosome.of(0, 1));
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(fitnessFunction, genotypeFactory)
+			.offspringSize(35)
+			.build();
+
+		Assert.assertEquals(engine.getSurvivorsCount(), 15);
+		Assert.assertEquals(engine.getOffspringCount(), 35);
+	}
+
 }

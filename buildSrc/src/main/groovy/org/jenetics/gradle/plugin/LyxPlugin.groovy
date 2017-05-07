@@ -29,11 +29,12 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.8
  */
 class LyxPlugin extends JeneticsPlugin {
 
 	private static final String BUILD = 'build'
+	private static final String CLEAN = 'clean'
 	private static final String LYX = 'lyx'
 
 	@Override
@@ -46,10 +47,13 @@ class LyxPlugin extends JeneticsPlugin {
 	}
 
 	private void applyLyx() {
-		project.task(BUILD, dependsOn: LYX) << {
+		if (project.tasks.findByPath(BUILD) != null) {
+			project.tasks.findByPath(BUILD).dependsOn(LYX)
+		} else {
+			project.task(BUILD, dependsOn: LYX).doLast {}
 		}
 
-		project.task('preparePDFGeneration') << {
+		project.task('preparePDFGeneration').doLast {
 			project.copy {
 				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
@@ -85,8 +89,10 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		project.task('clean') << {
-			project.buildDir.deleteDir()
+		if (project.tasks.findByPath(CLEAN) == null) {
+			project.task(CLEAN).doLast {
+				project.buildDir.deleteDir()
+			}
 		}
 	}
 

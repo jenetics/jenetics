@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.4
+ * @version 3.8
  */
 
 // The Jenetics projects.
@@ -30,12 +30,11 @@ include 'org.jenetics.doc'
 include 'org.jenetics.example'
 include 'org.jenetics.tool'
 include 'org.jenetix.json'
+include 'org.jenetix'
 
 rootProject.name = 'jenetics'
 
-// Rename the build scripts of the projects to ${project.name}.gradle
-rootProject.children.each {
-	it.buildFileName = it.name + '.gradle'
+// Rename the project names by removing the trailing 'org.'.
+rootProject.children.each { project ->
+	project.name = project.name.substring(4)
 }
-
-
