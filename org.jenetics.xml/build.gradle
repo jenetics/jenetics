@@ -18,13 +18,15 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
+
+plugins {
+	id "me.champeau.gradle.jmh" version "0.2.0"
+}
 
 apply plugin: 'packaging'
 
@@ -37,6 +39,9 @@ dependencies {
 	compile project(':jenetics')
 
 	testCompile Include.TestNG
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+	jmh files('build/classes/main')
 }
 
 jar.manifest.instruction('Export-Package',
@@ -57,4 +62,8 @@ packaging {
 	javadoc = true
 }
 
-
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
+}
