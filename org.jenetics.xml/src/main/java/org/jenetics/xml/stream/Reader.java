@@ -150,8 +150,8 @@ public abstract class Reader<T> {
 	}
 
 	public static <T> Reader<T> elem(
-		final String name,
 		final Function<Object[], T> mapper,
+		final String name,
 		final Reader<?>... children
 	) {
 		requireNonNull(name);
@@ -163,7 +163,7 @@ public abstract class Reader<T> {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Reader<T> elem(final String name, final Reader<?>... children) {
-		return elem(name, v -> v.length > 0 ? (T)v[0] : null, children);
+		return elem(v -> v.length > 0 ? (T)v[0] : null, name, children);
 	}
 
 	public static Reader<String> text() {

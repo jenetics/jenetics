@@ -76,10 +76,11 @@ public final class Readers {
 		 * @return a chromosome reader
 		 */
 		public static Reader<org.jenetics.BitChromosome> reader() {
-			return elem("bit-chromosome",
+			return elem(
 				v -> org.jenetics.BitChromosome.of(
 					(String)v[2], (int)v[0], (double)v[1]
 				),
+				"bit-chromosome",
 				attr("length").map(Integer::parseInt),
 				attr("ones-probability").map(Double::parseDouble),
 				text()
@@ -125,10 +126,9 @@ public final class Readers {
 		 * @return a chromosome reader
 		 */
 		public static Reader<org.jenetics.CharacterChromosome> reader() {
-			return elem("character-chromosome",
-				v -> org.jenetics.CharacterChromosome.of(
-					(String)v[2], (CharSeq)v[1]
-				),
+			return elem(v -> org.jenetics.CharacterChromosome.of(
+				(String)v[2], (CharSeq)v[1]
+			), "character-chromosome",
 				attr("length").map(Integer::parseInt),
 				elem("valid-alleles", text().map(CharSeq::new)),
 				elem("alleles", text())
@@ -171,26 +171,25 @@ public final class Readers {
 			final Function<G[], C> chromosome,
 			final Reader<? extends A> alleleReader
 		) {
-			return elem(name,
-				v -> {
-					final int length = (int)v[0];
-					final A min = (A)v[1];
-					final A max = (A)v[2];
-					final List<A> alleles = (List<A>)v[3];
+			return elem(v -> {
+				final int length = (int)v[0];
+				final A min = (A)v[1];
+				final A max = (A)v[2];
+				final List<A> alleles = (List<A>)v[3];
 
-					if (alleles.size() != length) {
-						throw new IllegalArgumentException(format(
-							"Expected %d alleles, but got %d,",
-							length, alleles.size()
-						));
-					}
+				if (alleles.size() != length) {
+					throw new IllegalArgumentException(format(
+						"Expected %d alleles, but got %d,",
+						length, alleles.size()
+					));
+				}
 
-					return chromosome.apply(
-						alleles.stream()
-							.map(value -> gene.apply(value, min, max))
-							.toArray(genes)
-					);
-				},
+				return chromosome.apply(
+					alleles.stream()
+						.map(value -> gene.apply(value, min, max))
+						.toArray(genes)
+				);
+			}, name,
 				attr("length").map(Integer::parseInt),
 				elem("min", alleleReader),
 				elem("max", alleleReader),
@@ -427,24 +426,23 @@ public final class Readers {
 		reader(final Reader<A> alleleReader) {
 			requireNonNull(alleleReader);
 
-			return elem("permutation-chromosome",
-				v -> {
-					final int length = (int)v[0];
-					@SuppressWarnings("unchecked")
-					final ISeq<A> validAlleles = ISeq.of((List<A>)v[1]);
+			return elem(v -> {
+				final int length = (int)v[0];
+				@SuppressWarnings("unchecked")
+				final ISeq<A> validAlleles = ISeq.of((List<A>)v[1]);
 
-					final int[] order = Stream.of(((String) v[2]).split("\\s"))
-						.mapToInt(Integer::parseInt)
-						.toArray();
+				final int[] order = Stream.of(((String) v[2]).split("\\s"))
+					.mapToInt(Integer::parseInt)
+					.toArray();
 
-					final MSeq<EnumGene<A>> alleles = MSeq.ofLength(length);
-					for (int i = 0; i < length; ++i) {
-						final EnumGene<A> gene = EnumGene.of(order[i], validAlleles);
-						alleles.set(i, gene);
-					}
+				final MSeq<EnumGene<A>> alleles = MSeq.ofLength(length);
+				for (int i = 0; i < length; ++i) {
+					final EnumGene<A> gene = EnumGene.of(order[i], validAlleles);
+					alleles.set(i, gene);
+				}
 
-					return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
-				},
+				return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
+			}, "permutation-chromosome",
 				attr("length").map(Integer::parseInt),
 				elem("valid-alleles",
 					elems(elem("allele", alleleReader))
@@ -522,30 +520,29 @@ public final class Readers {
 		reader(final Reader<C> chromosomeReader) {
 			requireNonNull(chromosomeReader);
 
-			return elem("genotype",
-				v -> {
-					@SuppressWarnings("unchecked")
-					final List<C> chromosomes = (List<C>)v[2];
-					final org.jenetics.Genotype<G> genotype =
-						org.jenetics.Genotype.of(chromosomes);
+			return elem(v -> {
+				@SuppressWarnings("unchecked")
+				final List<C> chromosomes = (List<C>)v[2];
+				final org.jenetics.Genotype<G> genotype =
+					org.jenetics.Genotype.of(chromosomes);
 
-					final int length = (int)v[0];
-					final int ngenes = (int)v[1];
-					if (length != genotype.length()) {
-						throw new IllegalArgumentException(format(
-							"Expected %d chromosome, but read %d.",
-							length, genotype.length()
-						));
-					}
-					if (ngenes != genotype.getNumberOfGenes()) {
-						throw new IllegalArgumentException(format(
-							"Expected %d genes, but read %d.",
-							ngenes, genotype.getNumberOfGenes()
-						));
-					}
+				final int length = (int)v[0];
+				final int ngenes = (int)v[1];
+				if (length != genotype.length()) {
+					throw new IllegalArgumentException(format(
+						"Expected %d chromosome, but read %d.",
+						length, genotype.length()
+					));
+				}
+				if (ngenes != genotype.getNumberOfGenes()) {
+					throw new IllegalArgumentException(format(
+						"Expected %d genes, but read %d.",
+						ngenes, genotype.getNumberOfGenes()
+					));
+				}
 
-					return genotype;
-				},
+				return genotype;
+			}, "genotype",
 				attr("length").map(Integer::parseInt),
 				attr("ngenes").map(Integer::parseInt),
 				elems(chromosomeReader)
@@ -582,8 +579,7 @@ public final class Readers {
 		>
 		Reader<Collection<org.jenetics.Genotype<G>>>
 		reader(final Reader<C> chromosomeReader) {
-			return elem("genotypes",
-				p -> (Collection<org.jenetics.Genotype<G>>)p[0],
+			return elem(p -> (Collection<org.jenetics.Genotype<G>>)p[0], "genotypes",
 				elems(Genotype.reader(chromosomeReader))
 			);
 		}
