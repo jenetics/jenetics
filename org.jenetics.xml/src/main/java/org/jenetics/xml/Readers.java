@@ -47,6 +47,7 @@ import org.jenetics.LongGene;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.xml.Writers.CharacterChromosome;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.XML;
@@ -80,9 +81,11 @@ public final class Readers {
 				v -> org.jenetics.BitChromosome.of(
 					(String)v[2], (int)v[0], (double)v[1]
 				),
-				"bit-chromosome",
-				attr("length").map(Integer::parseInt),
-				attr("ones-probability").map(Double::parseDouble),
+				Writers.BitChromosome.ROOT_NAME,
+				attr(Writers.BitChromosome.LENGTH_NAME)
+					.map(Integer::parseInt),
+				attr(Writers.BitChromosome.ONES_PROBABILITY_NAME)
+					.map(Double::parseDouble),
 				text()
 			);
 		}
@@ -126,12 +129,16 @@ public final class Readers {
 		 * @return a chromosome reader
 		 */
 		public static Reader<org.jenetics.CharacterChromosome> reader() {
-			return elem(v -> org.jenetics.CharacterChromosome.of(
+			return elem(
+				v -> org.jenetics.CharacterChromosome.of(
 				(String)v[2], (CharSeq)v[1]
-			), "character-chromosome",
-				attr("length").map(Integer::parseInt),
-				elem("valid-alleles", text().map(CharSeq::new)),
-				elem("alleles", text())
+				),
+				Writers.CharacterChromosome.ROOT_NAME,
+				attr(Writers.CharacterChromosome.LENGTH_NAME)
+					.map(Integer::parseInt),
+				elem(Writers.CharacterChromosome.VALID_ALLELES_NAME,
+					text().map(CharSeq::new)),
+				elem(Writers.CharacterChromosome.ALLELES_NAME, text())
 			);
 		}
 

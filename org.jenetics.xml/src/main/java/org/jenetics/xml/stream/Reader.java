@@ -32,15 +32,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 
 /**
- * XML reader class, used for reading objects in XML format. The {@code Reader}
- * needed for creating an {@code IntegerChromosome} from it's XML representation,
+ * XML reader class, used for reading objects in XML format.
+ *
+ * <h3>XML</h3>
  * <pre> {@code
  * <int-chromosome length="3">
  *     <min>-2147483648</min>
@@ -52,17 +55,11 @@ import javax.xml.stream.XMLStreamReader;
  *     </alleles>
  * </int-chromosome>
  * }</pre>
- * , will look like in the following code snippet:
  *
+ * <h3>Reader definition</h3>
  * <pre>{@code
  * final Reader<IntegerChromosome> reader =
- *     elem("int-chromosome",
- *         attr("length").map(Integer::parseInt),
- *         elem("min", text().map(Integer::parseInt)),
- *         elem("max", text().map(Integer::parseInt)),
- *         elem("alleles",
- *             elems(elem("allele", text().map(Integer::parseInt)))
- *         ),
+ *     elem(
  *         (Object[] v) -> {
  *             final int length = (int)v[0];
  *             final int min = (int)v[1];
@@ -75,7 +72,14 @@ import javax.xml.stream.XMLStreamReader;
  *                     .map(value -> IntegerGene.of(value, min, max)
  *                     .toArray(IntegerGene[]::new)
  *             );
- *         }
+ *         },
+ *         "int-chromosome",
+ *         attr("length").map(Integer::parseInt),
+ *         elem("min", text().map(Integer::parseInt)),
+ *         elem("max", text().map(Integer::parseInt)),
+ *         elem("alleles",
+ *             elems(elem("allele", text().map(Integer::parseInt)))
+ *         )
  *     );
  * }</pre>
  *
@@ -85,13 +89,43 @@ import javax.xml.stream.XMLStreamReader;
  */
 public abstract class Reader<T> {
 
+	/**
+	 * Represents the XML element type.
+	 */
 	static enum Type {
-		ELEM, ATTR, LIST, TEXT
+
+		/**
+		 * Denotes a element reader.
+		 */
+		ELEM,
+
+		/**
+		 * Denotes a element attribute reader.
+		 */
+		ATTR,
+
+		/**
+		 * Denotes a reader of elements of the same type.
+		 */
+		LIST,
+
+		/**
+		 * Denotes a reader of the text of a element.
+		 */
+		TEXT
+
 	}
 
 	private final String _name;
 	private final Type _type;
 
+	/**
+	 * Create a new XML reader with the given name and type.
+	 *
+	 * @param name the element name of the reader
+	 * @param type the element type of the reader
+	 * @throws NullPointerException if one of the give arguments is {@code null}
+	 */
 	Reader(final String name, final Type type) {
 		_name = requireNonNull(name);
 		_type = requireNonNull(type);
@@ -100,29 +134,32 @@ public abstract class Reader<T> {
 	/**
 	 * Read the given type from the underlying XML stream {@code reader}.
 	 *
-	 * @param reader the underlying XML stream {@code reader}
-	 * @return the read type, maybe {@code null}
+	 * @param xml the underlying XML stream {@code reader}
+	 * @return the data read from the XML stream, maybe {@code null}
 	 * @throws XMLStreamException if an error occurs while reading the value
+	 * @throws NullPointerException if the given {@code xml} stream reader is
+	 *         {@code null}
 	 */
-	public abstract T read(final XMLStreamReader reader)
-		throws XMLStreamException;
+	public abstract T read(final XMLStreamReader xml) throws XMLStreamException;
 
 	/**
-	 * Create a new reader with the new type {@code B}.
+	 * Create a new reader for the new mapped type {@code B}.
 	 *
 	 * @param mapper the mapper function
 	 * @param <B> the target type of the new reader
 	 * @return a new reader
+	 * @throws NullPointerException if the given {@code mapper} function is
+	 *         {@code null}
 	 */
 	public <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
 		return new Reader<B>(_name, _type) {
 			@Override
-			public B read(final XMLStreamReader reader)
+			public B read(final XMLStreamReader xml)
 				throws XMLStreamException
 			{
-				return mapper.apply(Reader.this.read(reader));
+				return mapper.apply(Reader.this.read(xml));
 			}
 		};
 	}
@@ -132,10 +169,15 @@ public abstract class Reader<T> {
 	 *
 	 * @return the element name the reader is processing
 	 */
-	public String name() {
+	String name() {
 		return _name;
 	}
 
+	/**
+	 * Return the element type of the reader.
+	 *
+	 * @return the element type of the reader
+	 */
 	Type type() {
 		return _type;
 	}
@@ -145,30 +187,150 @@ public abstract class Reader<T> {
 		return format("Reader[%s, %s]", name(), type());
 	}
 
+
+	/* *************************************************************************
+	 * Static reader factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return a {@code Reader} for reading an attribute of an element.
+	 * <p>
+	 * <b>XML</b>
+	 * <pre> {@code <element length="3"/>}</pre>
+	 *
+	 * <b>Reader definition</b>
+	 * <pre>{@code
+	 * final Reader<Integer> reader =
+	 *     elem(
+	 *         v -> (Integer)v[0],
+	 *         "element",
+	 *         attr("length").map(Integer::parseInt)
+	 *     );
+	 * }</pre>
+	 *
+	 * @param name the attribute name
+	 * @return an attribute reader
+	 * @throws NullPointerException if the given {@code name} is {@code null}
+	 */
 	public static Reader<String> attr(final String name) {
 		return new AttrReader(name);
 	}
 
+	/**
+	 * Return a {@code Reader} for reading the text of an element.
+	 * <p>
+	 * <b>XML</b>
+	 * <pre> {@code <element>1234<element>}</pre>
+	 *
+	 * <b>Reader definition</b>
+	 * <pre>{@code
+	 * final Reader<Integer> reader =
+	 *     elem(
+	 *         v -> (Integer)v[0],
+	 *         "element",
+	 *         text().map(Integer::parseInt)
+	 *     );
+	 * }</pre>
+	 *
+	 * @return an element text reader
+	 */
+	public static Reader<String> text() {
+		return new TextReader();
+	}
+
+	/**
+	 * Return a {@code Reader} for reading an object of type {@code T} from the
+	 * XML element with the given {@code name}.
+	 *
+	 * <p>
+	 * <b>XML</b>
+	 * <pre> {@code <property name="size">1234<property>}</pre>
+	 *
+	 * <b>Reader definition</b>
+	 * <pre>{@code
+	 * final Reader<Property> reader =
+	 *     elem(
+	 *         v -> {
+	 *             final String name = (String)v[0];
+	 *             final Integer value = (Integer)v[1];
+	 *             return Property.of(name, value);
+	 *         },
+	 *         "property",
+	 *         attr("name"),
+	 *         text().map(Integer::parseInt)
+	 *     );
+	 * }</pre>
+	 *
+	 * @param generator the generator function, which build the result object
+	 *        from the given parameter array
+	 * @param name the name of the root (sub-tree) element
+	 * @param children the child element reader, which creates the values
+	 *        forwarded to the {@code generator} function
+	 * @param <T> the reader result type
+	 * @return a node reader
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
 	public static <T> Reader<T> elem(
-		final Function<Object[], T> mapper,
+		final Function<Object[], T> generator,
 		final String name,
 		final Reader<?>... children
 	) {
 		requireNonNull(name);
-		requireNonNull(mapper);
-		requireNonNull(children);
+		requireNonNull(generator);
+		Stream.of(requireNonNull(children)).forEach(Objects::requireNonNull);
 
-		return new ElemReader<>(name, mapper, asList(children), Type.ELEM);
+		return new ElemReader<>(name, generator, asList(children), Type.ELEM);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> Reader<T> elem(final String name, final Reader<?>... children) {
-		return elem(v -> v.length > 0 ? (T)v[0] : null, name, children);
+	/**
+	 * Return a {@code Reader} which reads the value from the child elements of
+	 * the given parent element {@code name}.
+	 * <p>
+	 * <b>XML</b>
+	 * <pre> {@code <min><property name="size">1234<property></min>}</pre>
+	 *
+	 * <b>Reader definition</b>
+	 * <pre>{@code
+	 * final Reader<Property> reader =
+	 *     elem("min",
+	 *         elem(
+	 *             v -> {
+	 *                 final String name = (String)v[0];
+	 *                 final Integer value = (Integer)v[1];
+	 *                 return Property.of(name, value);
+	 *             },
+	 *             "property",
+	 *             attr("name"),
+	 *             text().map(Integer::parseInt)
+	 *         )
+	 *     );
+	 * }</pre>
+	 *
+	 * @param name the parent element name
+	 * @param reader the child elements reader
+	 * @param <T> the result type
+	 * @return a node reader
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 */
+	public static <T> Reader<T> elem(
+		final String name,
+		final Reader<? extends T> reader
+	) {
+		requireNonNull(name);
+		requireNonNull(reader);
+
+		return elem(
+			v -> {
+				@SuppressWarnings("unchecked")
+				T value = v.length > 0 ? (T)v[0] : null;
+				return value;
+			},
+			name,
+			reader
+		);
 	}
 
-	public static Reader<String> text() {
-		return new TextReader();
-	}
+
 
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
 		return new ListReader<T>(reader);

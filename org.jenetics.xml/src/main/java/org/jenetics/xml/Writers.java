@@ -67,6 +67,10 @@ public final class Writers {
 	public static final class BitChromosome {
 		private BitChromosome() {}
 
+		static final String ROOT_NAME = "bit-chromosome";
+		static final String LENGTH_NAME = "length";
+		static final String ONES_PROBABILITY_NAME = "ones-probability";
+
 		/**
 		 * Return a {@link Writer} for {@link org.jenetics.BitChromosome}
 		 * objects.
@@ -74,9 +78,9 @@ public final class Writers {
 		 * @return a chromosome writer
 		 */
 		public static Writer<org.jenetics.BitChromosome> writer() {
-			return elem("bit-chromosome",
-				attr("length").map(org.jenetics.BitChromosome::length),
-				attr("ones-probability").map(ch -> ch.getOneProbability()),
+			return elem(ROOT_NAME,
+				attr(LENGTH_NAME).map(org.jenetics.BitChromosome::length),
+				attr(ONES_PROBABILITY_NAME).map(ch -> ch.getOneProbability()),
 				text().map(org.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
@@ -121,6 +125,11 @@ public final class Writers {
 	public static final class CharacterChromosome {
 		private CharacterChromosome() {}
 
+		static final String ROOT_NAME = "character-chromosome";
+		static final String LENGTH_NAME = "length";
+		static final String VALID_ALLELES_NAME = "valid-alleles";
+		static final String ALLELES_NAME = "alleles";
+
 		/**
 		 * Return a {@link Writer} for {@link org.jenetics.CharacterChromosome}
 		 * objects.
@@ -128,11 +137,11 @@ public final class Writers {
 		 * @return a chromosome writer
 		 */
 		public static Writer<org.jenetics.CharacterChromosome> writer() {
-			return elem("character-chromosome",
-				attr("length").map(org.jenetics.CharacterChromosome::length),
-				elem("valid-alleles",
-					text().map(ch -> ch.getGene().getValidCharacters().toString())),
-				elem("alleles",
+			return elem(ROOT_NAME,
+				attr(LENGTH_NAME).map(org.jenetics.CharacterChromosome::length),
+				elem(VALID_ALLELES_NAME,
+					text().map(ch -> ch.getGene().getValidCharacters())),
+				elem(ALLELES_NAME,
 					text().map(org.jenetics.CharacterChromosome::toString))
 			);
 		}
