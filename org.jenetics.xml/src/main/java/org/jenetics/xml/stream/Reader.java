@@ -134,6 +134,14 @@ public abstract class Reader<T> {
 	/**
 	 * Read the given type from the underlying XML stream {@code reader}.
 	 *
+	 * <pre>{@code
+	 * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+	 *     // Move XML stream to first element.
+	 *     xml.next();
+	 *     return reader.read(xml);
+	 * }
+	 * }</pre>
+	 *
 	 * @param xml the underlying XML stream {@code reader}
 	 * @return the data read from the XML stream, maybe {@code null}
 	 * @throws XMLStreamException if an error occurs while reading the value
@@ -330,8 +338,33 @@ public abstract class Reader<T> {
 		);
 	}
 
-
-
+	/**
+	 * Return a {@code Reader} which collects the elements, read by the given
+	 * child {@code reader}, and returns it as list of these elements.
+	 * <p>
+	 * <b>XML</b>
+	 * <pre> {@code
+	 * <properties length="3">
+	 *     <property>-1878762439</property>
+	 *     <property>-957346595</property>
+	 *     <property>-88668137</property>
+	 * </properties>
+	 * }</pre>
+	 *
+	 * <b>Reader definition</b>
+	 * <pre>{@code
+	 * Reader<List<Integer>> reader =
+	 *     elem(
+	 *         v -> (List<Integer>)v[0],
+	 *         "properties",
+	 *         elems(elem("property", text().map(Integer::parseInt)))
+	 *     );
+	 * }</pre>
+	 *
+	 * @param reader the child element reader
+	 * @param <T> the element type
+	 * @return a list reader
+	 */
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
 		return new ListReader<T>(reader);
 	}

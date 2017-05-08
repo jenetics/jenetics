@@ -21,9 +21,11 @@ package org.jenetics.xml.stream;
 
 import static org.jenetics.xml.stream.Reader.attr;
 import static org.jenetics.xml.stream.Reader.elem;
+import static org.jenetics.xml.stream.Reader.elems;
 import static org.jenetics.xml.stream.Reader.text;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -88,6 +90,19 @@ public class ReaderTest {
 					)
 				),
 				123
+			},
+			{
+				"<properties length=\"3\">" +
+					"<property>1</property>" +
+					"<property>2</property>" +
+					"<property>3</property>" +
+				"</properties>",
+				elem(
+					v -> v[0],
+					"properties",
+					elems(elem("property", text().map(Integer::parseInt)))
+				),
+				Arrays.asList(1, 2, 3)
 			}
 		};
 	}
