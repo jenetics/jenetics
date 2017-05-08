@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
@@ -462,9 +464,14 @@ final class ListReader<T> extends Reader<List<T>> {
  */
 final class ElemReader<T> extends Reader<T> {
 
+	// Given parameters.
 	private final Function<Object[], T> _creator;
 	private final List<Reader<?>> _children;
-	private final Map<String, Integer> _indexes = new HashMap<>();
+
+	// Derived parameters.
+	private final Map<String, Integer> _readerIndexMapping = new HashMap<>();
+	private final int[] _attrReaderIndexes;
+	private final int[] _textReaderIndex;
 
 	ElemReader(
 		final String name,
@@ -473,16 +480,24 @@ final class ElemReader<T> extends Reader<T> {
 		final Type type
 	) {
 		super(name, type);
-		if (children.stream().filter(r -> r.type() == Type.TEXT).count() > 1) {
-			throw new IllegalArgumentException(
-				"Found more than one TEXT reader."
-			);
-		}
 
 		_creator = requireNonNull(creator);
 		_children = requireNonNull(children);
+
 		for (int i = 0; i < _children.size(); ++i) {
-			_indexes.put(_children.get(i).name(), i);
+			_readerIndexMapping.put(_children.get(i).name(), i);
+		}
+		_attrReaderIndexes = IntStream.range(0, _children.size())
+			.filter(i -> _children.get(i).type() == Type.ATTR)
+			.toArray();
+		_textReaderIndex = IntStream.range(0, _children.size())
+			.filter(i -> _children.get(i).type() == Type.TEXT)
+			.toArray();
+
+		if (_textReaderIndex.length > 1) {
+			throw new IllegalArgumentException(
+				"Found more than one TEXT reader."
+			);
 		}
 	}
 
@@ -492,16 +507,17 @@ final class ElemReader<T> extends Reader<T> {
 	{
 		xml.require(START_ELEMENT, null, name());
 
-		final Map<String, ReaderResult> results = ReaderResult.of(_children);
-		final ReaderResult text = results.values().stream()
-			.filter(r -> r.reader().type() == Type.TEXT)
-			.findFirst()
-			.orElse(null);
+		final List<ReaderResult> results = _children.stream()
+			.map(ReaderResult::of)
+			.collect(Collectors.toList());
 
-		for (ReaderResult result: results.values()) {
-			if (result.reader().type() == Type.ATTR) {
-				result.put(result.reader().read(xml));
-			}
+		final ReaderResult text = _textReaderIndex.length == 1
+			? results.get(_textReaderIndex[0])
+			: null;
+
+		for (int i = 0; i < _attrReaderIndexes.length; ++i) {
+			final ReaderResult result = results.get(_attrReaderIndexes[i]);
+			result.put(result.reader().read(xml));
 		}
 
 		if (xml.hasNext()) {
@@ -511,7 +527,9 @@ final class ElemReader<T> extends Reader<T> {
 			do {
 				switch (xml.getEventType()) {
 					case START_ELEMENT:
-						final ReaderResult result = results.get(xml.getLocalName());
+						final ReaderResult result = results
+							.get(_readerIndexMapping.get(xml.getLocalName()));
+
 						if (result != null) {
 							result.put(result.reader().read(xml));
 							if (xml.hasNext()) {
@@ -532,11 +550,11 @@ final class ElemReader<T> extends Reader<T> {
 						break;
 					case END_ELEMENT:
 						if (name().equals(xml.getLocalName())) {
-							final Object[] array = new Object[results.size()];
-							for (ReaderResult r : results.values()) {
-								array[r.index()] = r.value();
-							}
-							return _creator.apply(array);
+							return _creator.apply(
+								results.stream()
+									.map(ReaderResult::value)
+									.toArray()
+							);
 						}
 				}
 
@@ -570,13 +588,6 @@ interface ReaderResult {
 	void put(final Object value);
 
 	/**
-	 * Return the index of the result object array, this result resides.
-	 *
-	 * @return the result array index
-	 */
-	int index();
-
-	/**
 	 * Return the current reader result value.
 	 *
 	 * @return the current reader result value
@@ -584,32 +595,15 @@ interface ReaderResult {
 	Object value();
 
 	/**
-	 * Create a reader result map from the given list of XML readers.
+	 * Create a reader result for the given XML reader
 	 *
-	 * @param readers the XML readers
-	 * @return a reader result map
+	 * @param reader the XML reader
+	 * @return a reader result for the given reader
 	 */
-	static Map<String, ReaderResult> of(final List<Reader<?>> readers) {
-		final Map<String, ReaderResult> results = new HashMap<>();
-
-		for (int i = 0; i < readers.size(); ++i) {
-			final Reader<?> reader = readers.get(i);
-
-			results.put(
-				reader.name(),
-				reader.type() == Type.LIST
-					? new ListResult(reader, i)
-					: new ValueResult(reader, i)
-			);
-		}
-
-		return results;
-	}
-
 	static ReaderResult of(final Reader<?> reader) {
 		return reader.type() == Type.LIST
-			? new ListResult(reader, 0)
-			: new ValueResult(reader, 0);
+			? new ListResult(reader)
+			: new ValueResult(reader);
 	}
 
 }
@@ -618,13 +612,12 @@ interface ReaderResult {
  * Result object for values read from XML elements.
  */
 final class ValueResult implements ReaderResult {
+
 	private final Reader<?> _reader;
-	private final int _index;
 	private Object _value;
 
-	ValueResult(final Reader<?> reader, final int index) {
+	ValueResult(final Reader<?> reader) {
 		_reader = reader;
-		_index = index;
 	}
 
 	@Override
@@ -637,10 +630,6 @@ final class ValueResult implements ReaderResult {
 		return _reader;
 	}
 
-	@Override
-	public int index() {
-		return _index;
-	}
 
 	@Override
 	public Object value() {
@@ -653,13 +642,12 @@ final class ValueResult implements ReaderResult {
  * Result object for list values read from XML elements.
  */
 final class ListResult implements ReaderResult {
+
 	private final Reader<?> _reader;
-	private final int _index;
 	private final List<Object> _value = new ArrayList<>();
 
-	ListResult(final Reader<?> reader, final int index) {
+	ListResult(final Reader<?> reader) {
 		_reader = reader;
-		_index = index;
 	}
 
 	@Override
@@ -674,11 +662,6 @@ final class ListResult implements ReaderResult {
 	@Override
 	public Reader<?> reader() {
 		return _reader;
-	}
-
-	@Override
-	public int index() {
-		return _index;
 	}
 
 	@Override
