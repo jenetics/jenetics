@@ -60,7 +60,15 @@ public class GenotypesXMLPerf {
 		.writer(Writers.DoubleChromosome.writer());
 
 	@Benchmark
-	public Object jaxb() throws IOException {
+	public Object object() throws Exception {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IO.object.write(gt, out);
+
+		return out.toByteArray();
+	}
+
+	@Benchmark
+	public Object jaxb() throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		IO.jaxb.write(gt, out);
 
