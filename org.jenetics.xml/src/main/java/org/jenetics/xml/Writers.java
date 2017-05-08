@@ -624,11 +624,11 @@ public final class Writers {
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
-	 * final IntegerChromosome value = IntegerChromosome
-	 *     .of(Integer.MIN_VALUE, Integer.MAX_VALUE, 3);
-	 * final Writer<PermutationChromosome<Double> writer =
-	 *     Writers.PermutationChromosome
-	 *         .writer(text().map(d -> String.format("%1.4f", d)));
+	 * final PermutationChromosome<Integer> value =
+	 *     PermutationChromosome.ofInteger(5)
+	 *
+	 * final Writer<PermutationChromosome<Integer> writer =
+	 *     Writers.PermutationChromosome.writer();
 	 *
 	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
 	 *     Writers.PermutationChromosome.writer().write(value, xml);
@@ -637,25 +637,15 @@ public final class Writers {
 	 *
 	 * <b>XML output</b>
 	 * <pre> {@code
-	 * <permutation-chromosome length="15">
+	 * <permutation-chromosome length="5">
 	 *     <valid-alleles>
 	 *         <allele>0.2725</allele>
 	 *         <allele>0.0031</allele>
 	 *         <allele>0.4395</allele>
 	 *         <allele>0.1065</allele>
 	 *         <allele>0.1970</allele>
-	 *         <allele>0.7450</allele>
-	 *         <allele>0.5594</allele>
-	 *         <allele>0.0282</allele>
-	 *         <allele>0.5741</allele>
-	 *         <allele>0.4534</allele>
-	 *         <allele>0.8111</allele>
-	 *         <allele>0.5710</allele>
-	 *         <allele>0.3017</allele>
-	 *         <allele>0.5455</allele>
-	 *         <allele>0.2107</allele>
 	 *     </valid-alleles>
-	 *     <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+	 *     <order>2 1 3 5 4</order>
 	 * </permutation-chromosome>
 	 * }</pre>
 	 */
