@@ -22,6 +22,8 @@ package org.jenetics.xml.stream;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Makes the {@link XMLStreamWriter} interface {@link AutoCloseable}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

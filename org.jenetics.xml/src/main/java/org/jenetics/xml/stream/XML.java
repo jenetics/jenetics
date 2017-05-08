@@ -29,16 +29,61 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 
 /**
+ * This class contains helper methods for creating
+ * {@link javax.xml.stream.XMLStreamReader} and
+ * {@link javax.xml.stream.XMLStreamWriter} objects.
+ * <p>
+ * Creating a new XML stream reader:
+ * <pre>{@code
+ * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+ *     // Move XML stream to first element.
+ *     xml.next();
+ *     return reader.read(xml);
+ * }
+ * }</pre>
+ *
+ * Create a new XML stream reader:
+ * <pre>{@code
+ * try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+ *     writer.write(value, xml);
+ * }
+ * }</pre>
+ *
+ * Create a new XML stream reader with pretty-print-indentation:
+ * <pre>{@code
+ * final String indent = "    ";
+ * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+ *     writer.write(value, xml);
+ * }
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public final class XML {
+	private XML() {}
 
-	private XML() {
-	}
-
-
+	/**
+	 * Create a new XML stream reader from the given {@code input} stream.
+	 * <em>
+	 * The caller is responsible for closing the returned {@code XMLStreamReader}.
+	 * </em>
+	 *
+	 * <pre>{@code
+	 * try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+	 *     // Move XML stream to first element.
+	 *     xml.next();
+	 *     return reader.read(xml);
+	 * }
+	 * }</pre>
+	 *
+	 * @param input the input stream
+	 * @return a new {@code Closeable} XML stream reader
+	 * @throws XMLStreamException if the creation of the XML stream reader fails
+	 * @throws NullPointerException if the given {@code input} stream is
+	 *         {@code null}
+	 */
 	public static AutoCloseableXMLStreamReader reader(final InputStream input)
 		throws XMLStreamException
 	{
@@ -51,46 +96,60 @@ public final class XML {
 	/**
 	 * Create a new {@code XMLStreamWriter} from the given output stream.
 	 * <em>
-	 * The caller is responsible for closing the returned {@code XMLStreamWriter}
-	 * <b>and</b> the given output stream.
+	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
 	 *
-	 * @param out the underlying output stream
+	 * <pre>{@code
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, "    ")) {
+	 *     writer.write(value, xml);
+	 * }
+	 * }</pre>
+	 *
+	 * @param output the underlying output stream
 	 * @param indent the element indent used for the XML output
 	 * @return a new {@code XMLStreamWriter} instance
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
+	 * @throws NullPointerException if the given {@code output} stream is
+	 *         {@code null}
 	 */
 	public static AutoCloseableXMLStreamWriter writer(
-		final OutputStream out,
+		final OutputStream output,
 		final String indent
 	)
 		throws XMLStreamException
 	{
-		requireNonNull(out);
+		requireNonNull(output);
 
 		final XMLOutputFactory factory = XMLOutputFactory.newFactory();
 		return indent != null
-			? new IndentingXMLWriter(factory.createXMLStreamWriter(out), indent)
-			: new XMLWriterProxy(factory.createXMLStreamWriter(out));
+			? new IndentingXMLWriter(factory.createXMLStreamWriter(output), indent)
+			: new XMLWriterProxy(factory.createXMLStreamWriter(output));
 	}
 
 	/**
 	 * Create a new {@code XMLStreamWriter} from the given output stream.
 	 * <em>
-	 * The caller is responsible for closing the returned {@code XMLStreamWriter}
-	 * <b>and</b> the given output stream.
+	 * The caller is responsible for closing the returned {@code XMLStreamWriter}.
 	 * </em>
 	 *
-	 * @param out the underlying output stream
+	 * <pre>{@code
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+	 *     writer.write(value, xml);
+	 * }
+	 * }</pre>
+	 *
+	 * @param output the underlying output stream
 	 * @return a new {@code XMLStreamWriter} instance
 	 * @throws XMLStreamException if an error occurs while creating the XML
 	 *         stream writer
+	 * @throws NullPointerException if the given {@code output} stream is
+	 *         {@code null}
 	 */
-	public static AutoCloseableXMLStreamWriter writer(final OutputStream out)
+	public static AutoCloseableXMLStreamWriter writer(final OutputStream output)
 		throws XMLStreamException
 	{
-		return writer(out, null);
+		return writer(output, null);
 	}
 
 }
