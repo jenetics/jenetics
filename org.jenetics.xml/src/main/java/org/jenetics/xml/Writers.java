@@ -39,15 +39,18 @@ import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
 /**
- * This class contains static fields and methods, which create chromosome- and
- * genotype writers for different gene types. Some writer creation examples:
+ * This class contains static fields and methods, for creating chromosome- and
+ * genotype writers for different gene types.
  *
  * <pre>{@code
- * final Writer<Genotype<LongGene>> lgw = genotypeWriter(LONG_CHROMOSOME_WRITER);
- * final Writer<Genotype<DoubleGene>> dgw = genotypeWriter(DOUBLE_CHROMOSOME_WRITER);
+ * final Writer<Genotype<BitGene> bch =
+ *     Writers.Genotypes.writer(Writers.BitChromosome.writer()));
  *
- * final Writer<PermutationChromosome<Integer>> ipc = permutationChromosomeWriter();
- * final Writer<Genotype<EnumGene<Double>>> pgw = genotypeWriter(permutationChromosomeWriter());
+ * final Writer<Genotype<IntegerGene>> igw =
+ *     Writers.Genotypes.writer(Writers.IntegerChromosome.writer()));
+ *
+ * final Writer<Genotype<DoubleGene>> igw =
+ *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer()));
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -58,11 +61,25 @@ public final class Writers {
 	private Writers() {}
 
 	/**
-	 * Writer methods for {@link org.jenetics.BitChromosome} classes.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.BitChromosome} objects.
 	 * <p>
-	 * {@code
-	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final BitChromosome value = BitChromosome.of(20, 0.5);
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.BitChromosome.writer().write(value, xml);
 	 * }
+	 * }</pre>
+	 *
+	 * <b>XML output</b>
+	 * <pre> {@code
+	 * <bit-chromosome length="20" ones-probability="0.5">11100011101011001010</bit-chromosome>
+	 * }</pre>
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
 	 */
 	public static final class BitChromosome {
 		private BitChromosome() {}
@@ -113,8 +130,18 @@ public final class Writers {
 
 
 	/**
-	 * Writer methods for {@link org.jenetics.CharacterChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.CharacterChromosome} objects.
+	 * <p>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final CharacterChromosome value = CharacterChromosome.of("ASDF", CharSeq.of("A-Z"));
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.CharacterChromosome.writer().write(value, xml);
+	 * }
+	 * }</pre>
 	 *
+	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <character-chromosome length="4">
 	 *     <valid-alleles>ABCDEFGHIJKLMNOPQRSTUVWXYZ<valid-alleles>
@@ -196,8 +223,11 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer template methods for {@link org.jenetics.BoundedChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.BoundedChromosome} objects.
 	 *
+	 * <p>
+	 * <b>XML template</b>
 	 * <pre> {@code
 	 * <root-name length="3">
 	 *     <min>aaa</min>
@@ -249,8 +279,19 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.IntegerChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.IntegerChromosome} objects.
+	 * <p>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final IntegerChromosome value = IntegerChromosome
+	 *     .of(Integer.MIN_VALUE, Integer.MAX_VALUE, 3);
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.IntegerChromosome.writer().write(value, xml);
+	 * }
+	 * }</pre>
 	 *
+	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <int-chromosome length="3">
 	 *     <min>-2147483648</min>
@@ -353,8 +394,19 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.LongChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.LongChromosome} objects.
+	 * <p>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final LongChromosome value = LongChromosome
+	 *     .of(Long.MIN_VALUE, Long.MAX_VALUE, 3);
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.LongChromosome.writer().write(value, xml);
+	 * }
+	 * }</pre>
 	 *
+	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <long-chromosome length="3">
 	 *     <min>-9223372036854775808</min>
@@ -455,8 +507,18 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.DoubleChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.DoubleChromosome} objects.
+	 * <p>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final DoubleChromosome value = DoubleChromosome.of(0.0, 1.0, 3);
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.DoubleChromosome.writer().write(value, xml);
+	 * }
+	 * }</pre>
 	 *
+	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <double-chromosome length="3">
 	 *     <min>0.0</min>
@@ -557,13 +619,23 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.PermutationChromosome} objects.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.PermutationChromosome} objects.
+	 * <p>
+	 * <b>Writer code</b>
 	 * <pre>{@code
+	 * final IntegerChromosome value = IntegerChromosome
+	 *     .of(Integer.MIN_VALUE, Integer.MAX_VALUE, 3);
 	 * final Writer<PermutationChromosome<Double> writer =
-	 *     permutationChromosomeWriter(Writer.text(d -> String.format("%1.4f", d)));
+	 *     Writers.PermutationChromosome
+	 *         .writer(text().map(d -> String.format("%1.4f", d)));
+	 *
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     Writers.PermutationChromosome.writer().write(value, xml);
+	 * }
 	 * }</pre>
 	 *
-	 * Example output:
+	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <permutation-chromosome length="15">
 	 *     <valid-alleles>
@@ -621,7 +693,7 @@ public final class Writers {
 		 * this method is equivalent with:
 		 * <pre>{@code
 		 * final Writer<PermutationChromosome<Double> writer =
-		 *     PermutationChromosome.write(Writer.text(Objects::toString));
+		 *     PermutationChromosome.write(text().map(Objects::toString));
 		 * }</pre>
 		 *
 		 * Example output:
@@ -763,16 +835,26 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.Genotype} objects.
-	 *
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.Genotype} objects.
+	 * <p>
+	 * <b>Writer code</b>
 	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt = Genotype.of(
+	 *     DoubleChromosome.of(0.0, 1.0, 3),
+	 *     DoubleChromosome.of(0.0, 1.0, 2)
+	 * );
 	 * final Writer<Genotype<DoubleGene>> writer =
 	 *     Writers.Genotype.writer(Writers.DoubleChromosome.writer());
+	 *
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     writer.write(value, xml);
+	 * }
 	 * }</pre>
 	 *
-	 * Example output:
+	 * <b>XML output</b>
 	 * <pre> {@code
-	 * <genotype length="2" ngenes="6">
+	 * <genotype length="2" ngenes="5">
 	 *     <double-chromosome length="3">
 	 *         <min>0.0</min>
 	 *         <max>1.0</max>
@@ -782,11 +864,10 @@ public final class Writers {
 	 *             <allele>0.43947528327497376</allele>
 	 *         </alleles>
 	 *     </double-chromosome>
-	 *     <double-chromosome length="3">
+	 *     <double-chromosome length="2">
 	 *         <min>0.0</min>
 	 *         <max>1.0</max>
 	 *         <alleles>
-	 *             <allele>0.18390258154466066</allele>
 	 *             <allele>0.4026521545744768</allele>
 	 *             <allele>0.36137605952663554</allele>
 	 *         <alleles>
@@ -863,11 +944,27 @@ public final class Writers {
 	}
 
 	/**
-	 * Writer for genotypes.
+	 * This class contains static writer methods for
+	 * {@link org.jenetics.Genotype} objects.
+	 * <p>
+	 * <b>Writer code</b>
+	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt = Genotype.of(
+	 *     DoubleChromosome.of(0.0, 1.0, 3),
+	 *     DoubleChromosome.of(0.0, 1.0, 2)
+	 * );
+	 *
+	 * final Writer<Collection<Genotype<DoubleGene>>> writer =
+	 *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer());
+	 *
+	 * try (AutoCloseableXMLStreamWriter xml = XML.writer(System.out, "    ")) {
+	 *     writer.write(asList(value), xml);
+	 * }
+	 * }</pre>
 	 *
 	 * <pre> {@code
 	 * <genotypes length="1">
-	 *     <genotype length="2" ngenes="6">
+	 *     <genotype length="2" ngenes="5">
 	 *         <double-chromosome length="3">
 	 *             <min>0.0</min>
 	 *             <max>1.0</max>
@@ -877,11 +974,10 @@ public final class Writers {
 	 *                 <allele>0.43947528327497376</allele>
 	 *             </alleles>
 	 *         </double-chromosome>
-	 *         <double-chromosome length="3">
+	 *         <double-chromosome length="2">
 	 *             <min>0.0</min>
 	 *             <max>1.0</max>
 	 *             <alleles>
-	 *                 <allele>0.18390258154466066</allele>
 	 *                 <allele>0.4026521545744768</allele>
 	 *                 <allele>0.36137605952663554</allele>
 	 *             <alleles>
@@ -898,7 +994,7 @@ public final class Writers {
 		 * genotypes chromosomes is defined by the given {@link Writer}. The
 		 * following writer allows to write double-gene chromosomes:
 		 * <pre>{@code
-		 * final Writer<Genotype<DoubleGene>> writer =
+		 * final Writer<Collection<Genotype<DoubleGene>>> writer =
 		 *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer());
 		 * }</pre>
 		 *
