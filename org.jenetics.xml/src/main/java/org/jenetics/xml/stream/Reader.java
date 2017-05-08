@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.jenetics.xml.stream.Reader.Type;
 
 /**
  * XML reader class, used for reading objects in XML format.
@@ -277,6 +278,8 @@ public abstract class Reader<T> {
 	 * @param <T> the reader result type
 	 * @return a node reader
 	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 * @throws IllegalArgumentException if the given child readers contains more
+	 *         than one <em>text</em> reader
 	 */
 	public static <T> Reader<T> elem(
 		final Function<Object[], T> generator,
@@ -370,8 +373,17 @@ public abstract class Reader<T> {
 	}
 }
 
+
+/* *****************************************************************************
+ * XML reader implementations.
+ * ****************************************************************************/
+
 /**
  * Reader implementation for reading the attribute of the current node.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class AttrReader extends Reader<String> {
 
@@ -389,6 +401,10 @@ final class AttrReader extends Reader<String> {
 
 /**
  * Reader implementation for reading the text of the current node.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class TextReader extends Reader<String> {
 
@@ -410,6 +426,15 @@ final class TextReader extends Reader<String> {
 	}
 }
 
+/**
+ * Reader implementation for reading list of elements.
+ *
+ * @param <T> the element type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
 final class ListReader<T> extends Reader<List<T>> {
 
 	private final Reader<? extends T> _adoptee;
@@ -427,14 +452,19 @@ final class ListReader<T> extends Reader<List<T>> {
 }
 
 /**
- * The main XML reader implementation.
+ * The main XML element reader implementation.
  *
- * @param <T> the object type
+ * @param <T> the reader data type
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 final class ElemReader<T> extends Reader<T> {
 
 	private final Function<Object[], T> _creator;
 	private final List<Reader<?>> _children;
+	private final Map<String, Integer> _indexes = new HashMap<>();
 
 	ElemReader(
 		final String name,
@@ -444,11 +474,16 @@ final class ElemReader<T> extends Reader<T> {
 	) {
 		super(name, type);
 		if (children.stream().filter(r -> r.type() == Type.TEXT).count() > 1) {
-			throw new IllegalArgumentException("Found more than one TEXT reader.");
+			throw new IllegalArgumentException(
+				"Found more than one TEXT reader."
+			);
 		}
 
 		_creator = requireNonNull(creator);
 		_children = requireNonNull(children);
+		for (int i = 0; i < _children.size(); ++i) {
+			_indexes.put(_children.get(i).name(), i);
+		}
 	}
 
 	@Override
@@ -515,31 +550,73 @@ final class ElemReader<T> extends Reader<T> {
 
 }
 
+/**
+ * Helper interface for storing the XML reader (intermediate) results.
+ */
 interface ReaderResult {
-	void put(final Object value);
+
+	/**
+	 * Return the underlying XML reader, which reads the result.
+	 *
+	 * @return return the underlying XML reader
+	 */
 	Reader<?> reader();
+
+	/**
+	 * Put the given {@code value} to the reader result.
+	 *
+	 * @param value the reader result
+	 */
+	void put(final Object value);
+
+	/**
+	 * Return the index of the result object array, this result resides.
+	 *
+	 * @return the result array index
+	 */
 	int index();
+
+	/**
+	 * Return the current reader result value.
+	 *
+	 * @return the current reader result value
+	 */
 	Object value();
 
+	/**
+	 * Create a reader result map from the given list of XML readers.
+	 *
+	 * @param readers the XML readers
+	 * @return a reader result map
+	 */
 	static Map<String, ReaderResult> of(final List<Reader<?>> readers) {
 		final Map<String, ReaderResult> results = new HashMap<>();
 
-
 		for (int i = 0; i < readers.size(); ++i) {
 			final Reader<?> reader = readers.get(i);
-			final ReaderResult result; switch (reader.type()) {
-				case TEXT: result = new ValueResult(reader, i); break;
-				case LIST: result = new ListResult(reader, i); break;
-				default: result = new ValueResult(reader, i);
-			}
 
-			results.put(reader.name(), result);
+			results.put(
+				reader.name(),
+				reader.type() == Type.LIST
+					? new ListResult(reader, i)
+					: new ValueResult(reader, i)
+			);
 		}
 
 		return results;
 	}
+
+	static ReaderResult of(final Reader<?> reader) {
+		return reader.type() == Type.LIST
+			? new ListResult(reader, 0)
+			: new ValueResult(reader, 0);
+	}
+
 }
 
+/**
+ * Result object for values read from XML elements.
+ */
 final class ValueResult implements ReaderResult {
 	private final Reader<?> _reader;
 	private final int _index;
@@ -569,39 +646,12 @@ final class ValueResult implements ReaderResult {
 	public Object value() {
 		return _value;
 	}
+
 }
 
-final class TextResult implements ReaderResult {
-	private final Reader<?> _reader;
-	private final int _index;
-	private final StringBuilder _value = new StringBuilder();
-
-	TextResult(final Reader<?> reader, final int index) {
-		_reader = reader;
-		_index = index;
-	}
-
-	@Override
-	public void put(final Object value) {
-		_value.append(value);
-	}
-
-	@Override
-	public Reader<?> reader() {
-		return _reader;
-	}
-
-	@Override
-	public int index() {
-		return _index;
-	}
-
-	@Override
-	public String value() {
-		return _value.toString();
-	}
-}
-
+/**
+ * Result object for list values read from XML elements.
+ */
 final class ListResult implements ReaderResult {
 	private final Reader<?> _reader;
 	private final int _index;
@@ -635,4 +685,5 @@ final class ListResult implements ReaderResult {
 	public List<Object> value() {
 		return _value;
 	}
+
 }
