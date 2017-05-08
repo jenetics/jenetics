@@ -22,6 +22,7 @@ package org.jenetics.json.stream;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import com.google.gson.stream.JsonWriter;
 
@@ -35,6 +36,16 @@ public interface Writer<T> {
 
 	public void write(final T value, final JsonWriter json) throws IOException;
 
+	public default <B> Writer<B> map(final Function<? super B, ? extends T> mapper) {
+		return (data, json) -> {
+			if (data != null) {
+				final T value = mapper.apply(data);
+				if (value != null) {
+					write(value, json);
+				}
+			}
+		};
+	}
 
 	public static <T> Writer<T> obj(final String name, final Writer<? super T>... children) {
 		requireNonNull(name);
@@ -49,6 +60,12 @@ public interface Writer<T> {
 				}
 				json.endObject();
 			}
+		};
+	}
+
+	public static Writer<Integer> value(final String name, final Integer value) {
+		return (data, json) -> {
+			json.name(name).value(value);
 		};
 	}
 
