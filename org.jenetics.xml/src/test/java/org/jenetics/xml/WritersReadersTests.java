@@ -97,17 +97,17 @@ public class WritersReadersTests {
 				Readers.CharacterChromosome.reader()
 			},
 			{
-				IntegerChromosome.of(0, 1_000_000, 2),
+				IntegerChromosome.of(0, 1_000_000, 20),
 				Writers.IntegerChromosome.writer(),
 				Readers.IntegerChromosome.reader()
 			},
 			{
-				LongChromosome.of(0, 1_000_000, 15),
+				LongChromosome.of(0, 1_000_000, 20),
 				Writers.LongChromosome.writer(),
 				Readers.LongChromosome.reader()
 			},
 			{
-				DoubleChromosome.of(0, 1_000_000, 15),
+				DoubleChromosome.of(0, 1_000_000, 20),
 				Writers.DoubleChromosome.writer(),
 				Readers.DoubleChromosome.reader()
 			},
@@ -117,14 +117,14 @@ public class WritersReadersTests {
 				Readers.PermutationChromosome.reader(Readers.IntegerChromosome.alleleReader())
 			},
 			{
-				Genotype.of(DoubleChromosome.of(0, 1, 2), 2),
+				Genotype.of(DoubleChromosome.of(0, 1, 2), 20),
 				Writers.Genotype.writer(Writers.DoubleChromosome.writer()),
 				Readers.Genotype.reader(Readers.DoubleChromosome.reader())
 			},
 			{
 				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
 					.instances()
-					.limit(10)
+					.limit(20)
 					.collect(Collectors.toList()),
 				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
 				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
