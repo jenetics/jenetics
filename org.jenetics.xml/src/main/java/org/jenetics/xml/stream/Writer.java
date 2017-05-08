@@ -27,38 +27,42 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML writer interface, used for writing objects in XML format.
- *
- * <pre>{@code
- * final Writer<IntegerChromosome> writer writer = elem("int-chromosome",
- *     attr("length").map(ch -> ch.length()),
- *     elem("min", text().map(ch -> ch.getMin())),
- *     elem("max", text().map(ch -> ch.getMax())),
- *     elem("alleles",
- *         elems(elem("allele", text()))
- *             .map(ch -> ch.toSeq().map(g -> g.getAllele()))
- *     )
- * );
- *
- * final IntegerChromosome chromosome = IntegerChromosome.of(1, 1000, 3);
- * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
- *     writer.write(chromosome, xml);
- * }
- * }</pre>
- *
- * The writer in the code snippet above creates a XML writer for
- * {@code IntegerChromosomes} and will create the following output.
- *
+ * XML writer interface, used for writing objects in XML format. The following
+ * XML will show the marshaled representation of an {@code IntegerChromosome}.
  * <pre> {@code
  * <int-chromosome length="3">
- *     <min>0</min>
- *     <max>1000</max>
+ *     <min>-2147483648</min>
+ *     <max>2147483647</max>
  *     <alleles>
- *         <allele>345</allele>
- *         <allele>653</allele>
- *         <allele>5</allele>
+ *         <allele>-1878762439</allele>
+ *         <allele>-957346595</allele>
+ *         <allele>-88668137</allele>
  *     </alleles>
  * </int-chromosome>
+ * }</pre>
+ *
+ * The XML has been written by the following {@code Writer} definition.
+ *
+ * <pre>{@code
+ * final Writer<IntegerChromosome> writer =
+ *     elem("int-chromosome",
+ *         attr("length").map(ch -> ch.length()),
+ *         elem("min", text().map(ch -> ch.getMin())),
+ *         elem("max", text().map(ch -> ch.getMax())),
+ *         elem("alleles",
+ *             elems(elem("allele", text())).map(ch -> ch.toSeq().map(g -> g.getAllele()))
+ *         )
+ *     );
+ * }</pre>
+ *
+ * How to write the XML writing is shown by the next code snippet.
+ *
+ * <pre>{@code
+ * final IntegerChromosome ch = IntegerChromosome.of(MIN_VALUE, MAX_VALUE, 3);
+ *
+ * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+ *     write(ch, xml);
+ * }
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -72,7 +76,8 @@ public interface Writer<T> {
 	 * Write the data of type {@code T} to the given XML stream writer.
 	 *
 	 * @param value the value to write
-	 * @param xml the XML data sink
+	 * @param xml the underlying {@code XMLStreamWriter}, where the value is
+	 *        written to
 	 * @throws XMLStreamException if writing the data fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
@@ -80,13 +85,17 @@ public interface Writer<T> {
 		throws XMLStreamException;
 
 	/**
-	 * Maps this writer to a different base type.
+	 * Maps this writer to a different base type. Mapping to a different data
+	 * type is necessary when you are going to write <em>sub</em>-objects of
+	 * your basic data type {@code T}. E.g. the chromosome length or the
+	 * {@code min} and {@code max} value of an {@code IntegerChromosome}.
 	 *
 	 * @param mapper the mapper function
-	 * @param <B> the new writer type
+	 * @param <B> the new data type of returned writer
 	 * @return a writer with changed type
 	 */
-	public default <B> Writer<B> map(final Function<? super B, ? extends T> mapper) {
+	public default <B> Writer<B>
+	map(final Function<? super B, ? extends T> mapper) {
 		return (data, xml) -> {
 			if (data != null) {
 				final T value = mapper.apply(data);
@@ -113,12 +122,7 @@ public interface Writer<T> {
 	 * <em>outer</em> element.
 	 *
 	 * <pre>{@code
-	 * final Writer<String> writer1 = elem("element",
-	 *     attr("value");
-	 * );
-	 * final Writer<MyObject> writer2 = elem("element",
-	 *     attr("value").map(object::getMyObject);
-	 * );
+	 * final Writer<String> writer1 = elem("element", attr("attribute"));
 	 * }</pre>
 	 *
 	 * @see #attr(String, Object)
@@ -139,21 +143,18 @@ public interface Writer<T> {
 	}
 
 	/**
-	 * Writes the attribute with the given {@code name} and {@code value} to the
-	 * current <em>outer</em> element.
+	 * Writes the attribute with the given {@code name} and a constant
+	 * {@code value} to the current <em>outer</em> element.
 	 *
 	 * <pre>{@code
-	 * final Writer<MyObject> = elem("element",
-	 *     attr("version", "1.0"),
-	 *     attr("value").map(MyObject::getValue)
-	 * );
+	 * final Writer<MyObject> = elem("element", attr("version", "1.0"));
 	 * }</pre>
 	 *
 	 * @param name the attribute name
 	 * @param value the attribute value
 	 * @param <T> the writer base type
 	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if one of the {@code name} is {@code null}
 	 */
 	public static <T> Writer<T> attr(
 		final String name,
@@ -170,15 +171,6 @@ public interface Writer<T> {
 	/**
 	 * Create a new {@code Writer}, which writes a XML element with the given
 	 * name and writes the given children into it.
-	 *
-	 * <pre>{@code
-	 * final Writer<DoubleChromosome> = elem("double-chromosome",
-	 *     attr("min", DoubleChromosome::getMin),
-	 *     attr("max", DoubleChromosome::getMax),
-	 *     attr("length", DoubleChromosome::length),
-	 *     elems("allele", ch -> ch.toSeq().map(DoubleGene::getAllele))
-	 * );
-	 * }</pre>
 	 *
 	 * @param name the root element name
 	 * @param children the XML child elements
@@ -205,28 +197,13 @@ public interface Writer<T> {
 		};
 	}
 
-
 	/**
-	 * Create a new {@code Writer}, which writes given property to the current
-	 * outer element.
+	 * Create a new text {@code Writer}, which writes the given data as string
+	 * to the outer element.
 	 *
-	 * <pre>{@code
-	 * elem("bit-chromosome",
-	 *     attr("length", BitChromosome::length),
-	 *     attr("one-probability", BitChromosome::getOneProbability),
-	 *     elem(BitChromosome::toCanonicalString)
-	 * );
-	 * }</pre>
-	 *
-	 * @param mapper the elements to write
-	 * @param <T> the writer base type
-	 * @return a new writer instance
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @param <T> the data type, which is written as string to the outer element
+	 * @return a new text writer
 	 */
-	public static <T> Writer<T> text(final Function<? super T, ?> mapper) {
-		return text().map(mapper);
-	}
-
 	public static <T> Writer<T> text() {
 		return (data, xml) -> {
 			if (data != null) {
@@ -258,7 +235,19 @@ public interface Writer<T> {
 		};
 	}
 
-	public static <T> Writer<T> doc(final Writer<T> writer) {
+	/**
+	 * Adds a XML prolog element written by the given {@code writer}. The default
+	 * values for encoding and version is set to "UTF-8" and "1.0", respectively.
+	 *
+	 * <pre> {@code
+	 * <?xml version="1.0" encoding="UTF-8"?>
+	 * }</pre>
+	 *
+	 * @param writer the root element writer
+	 * @param <T> the writer data type
+	 * @return a new writer instance
+	 */
+	public static <T> Writer<T> doc(final Writer<? super T> writer) {
 		return (data, xml) -> {
 			xml.writeStartDocument("UTF-8", "1.0");
 			writer.write(data, xml);

@@ -77,7 +77,7 @@ public final class Writers {
 			return elem("bit-chromosome",
 				attr("length").map(org.jenetics.BitChromosome::length),
 				attr("ones-probability").map(ch -> ch.getOneProbability()),
-				text(org.jenetics.BitChromosome::toCanonicalString)
+				text().map(org.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
 
@@ -131,9 +131,9 @@ public final class Writers {
 			return elem("character-chromosome",
 				attr("length").map(org.jenetics.CharacterChromosome::length),
 				elem("valid-alleles",
-					text(ch -> ch.getGene().getValidCharacters().toString())),
+					text().map(ch -> ch.getGene().getValidCharacters().toString())),
 				elem("alleles",
-					text(org.jenetics.CharacterChromosome::toString))
+					text().map(org.jenetics.CharacterChromosome::toString))
 			);
 		}
 
@@ -470,7 +470,7 @@ public final class Writers {
 		 * @return the default double allele writer
 		 */
 		public static Writer<Double> alleleWriter() {
-			return Writer.text(Object::toString);
+			return text().map(Object::toString);
 		}
 
 		/**

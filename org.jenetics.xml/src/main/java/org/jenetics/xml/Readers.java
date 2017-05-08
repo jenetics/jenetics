@@ -130,7 +130,7 @@ public final class Readers {
 					(String)v[2], (CharSeq)v[1]
 				),
 				attr("length").map(Integer::parseInt),
-				elem("valid-alleles", text(CharSeq::new)),
+				elem("valid-alleles", text().map(CharSeq::new)),
 				elem("alleles", text())
 			);
 		}
@@ -223,7 +223,7 @@ public final class Readers {
 		public static Reader<Integer>
 		alleleReader(final Function<? super String, Integer> format) {
 			requireNonNull(format);
-			return text(format);
+			return text().map(format);
 		}
 
 		/**
@@ -232,7 +232,7 @@ public final class Readers {
 		 * @return the default allele reader
 		 */
 		public static Reader<Integer> alleleReader() {
-			return text(Integer::parseInt);
+			return text().map(Integer::parseInt);
 		}
 
 		/**
@@ -289,7 +289,7 @@ public final class Readers {
 		private LongChromosome() {}
 
 		public static Reader<Long> alleleReader() {
-			return text(Long::parseLong);
+			return text().map(Long::parseLong);
 		}
 
 		/**
@@ -346,7 +346,7 @@ public final class Readers {
 		private DoubleChromosome() {}
 
 		public static Reader<Double> alleleReader() {
-			return text(Double::parseDouble);
+			return text().map(Double::parseDouble);
 		}
 
 		/**

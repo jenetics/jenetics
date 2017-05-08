@@ -39,6 +39,46 @@ import javax.xml.stream.XMLStreamReader;
 
 
 /**
+ * XML reader class, used for reading objects in XML format. The {@code Reader}
+ * needed for creating an {@code IntegerChromosome} from it's XML representation,
+ * <pre> {@code
+ * <int-chromosome length="3">
+ *     <min>-2147483648</min>
+ *     <max>2147483647</max>
+ *     <alleles>
+ *         <allele>-1878762439</allele>
+ *         <allele>-957346595</allele>
+ *         <allele>-88668137</allele>
+ *     </alleles>
+ * </int-chromosome>
+ * }</pre>
+ * , will look like in the following code snippet:
+ *
+ * <pre>{@code
+ * final Reader<IntegerChromosome> reader =
+ *     elem("int-chromosome",
+ *         attr("length").map(Integer::parseInt),
+ *         elem("min", text().map(Integer::parseInt)),
+ *         elem("max", text().map(Integer::parseInt)),
+ *         elem("alleles",
+ *             elems(elem("allele", text().map(Integer::parseInt)))
+ *         ),
+ *         (Object[] v) -> {
+ *             final int length = (int)v[0];
+ *             final int min = (int)v[1];
+ *             final int max = (int)v[2];
+ *             final List<Integer> alleles = (List<Integer>)v[3];
+ *             assert alleles.size() == length;
+ *
+ *             return IntegerChromosome.of(
+ *                 alleles.stream()
+ *                     .map(value -> IntegerGene.of(value, min, max)
+ *                     .toArray(IntegerGene[]::new)
+ *             );
+ *         }
+ *     );
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -124,10 +164,6 @@ public abstract class Reader<T> {
 	@SuppressWarnings("unchecked")
 	public static <T> Reader<T> elem(final String name, final Reader<?>... children) {
 		return elem(name, v -> v.length > 0 ? (T)v[0] : null, children);
-	}
-
-	public static <T> Reader<T> text(final Function<? super String, ? extends T> mapper) {
-		return text().map(mapper);
 	}
 
 	public static Reader<String> text() {
