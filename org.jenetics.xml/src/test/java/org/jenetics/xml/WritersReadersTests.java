@@ -19,6 +19,8 @@
  */
 package org.jenetics.xml;
 
+import static java.util.Collections.emptyList;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.stream.Collectors;
@@ -126,6 +128,11 @@ public class WritersReadersTests {
 					.instances()
 					.limit(20)
 					.collect(Collectors.toList()),
+				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
+				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
+			},
+			{
+				emptyList(),
 				Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
 				Readers.Genotypes.reader(Readers.DoubleChromosome.reader())
 			}
