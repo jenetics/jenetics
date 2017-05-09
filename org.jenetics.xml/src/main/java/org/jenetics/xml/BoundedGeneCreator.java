@@ -35,6 +35,10 @@ public interface BoundedGeneCreator<A, G> {
 	/**
 	 * Create a new bounded gene from the given parameters.
 	 *
+	 * <pre>{@code
+	 * final BoundedGeneCreator<Long, LongGene> creator = LongGene::of;
+	 * }</pre>
+	 *
 	 * @param value the gene value
 	 * @param min the minimum value
 	 * @param max the maximum value
