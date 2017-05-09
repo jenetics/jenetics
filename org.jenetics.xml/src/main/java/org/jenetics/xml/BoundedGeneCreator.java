@@ -20,11 +20,25 @@
 package org.jenetics.xml;
 
 /**
+ * Functional interface for creating bounded genes.
+ *
+ * @param <A> the allele type
+ * @param <G> ghe gene type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
 public interface BoundedGeneCreator<A, G> {
-	G apply(final A value, final A min, final A max);
+
+	/**
+	 * Create a new bounded gene from the given parameters.
+	 *
+	 * @param value the gene value
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @return a newly created bounded gene
+	 */
+	public G create(final A value, final A min, final A max);
 }

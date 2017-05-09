@@ -239,7 +239,7 @@ public final class Readers {
 
 				return chromosome.apply(
 					alleles.stream()
-						.map(value -> gene.apply(value, min, max))
+						.map(value -> gene.create(value, min, max))
 						.toArray(genes)
 				);
 			}, name,
