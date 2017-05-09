@@ -20,9 +20,15 @@
 package org.jenetics.xml;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.util.IO;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.XML;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -34,14 +40,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.util.IO;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -52,9 +50,8 @@ import org.jenetics.xml.stream.XML;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class GenotypesXMLPerf {
 
-	final Genotype<DoubleGene> gt = Genotype.of(
-		DoubleChromosome.of(0.0, 1.0, 100), 100
-	);
+	final Genotype<DoubleGene> gt = Genotype
+		.of(DoubleChromosome.of(0.0, 1.0, 100), 10000);
 
 	final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
 		.writer(Writers.DoubleChromosome.writer());

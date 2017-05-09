@@ -44,13 +44,13 @@ import org.jenetics.xml.stream.XML;
  *
  * <pre>{@code
  * final Writer<Genotype<BitGene> bch =
- *     Writers.Genotypes.writer(Writers.BitChromosome.writer()));
+ *     Writers.Genotype.writer(Writers.BitChromosome.writer()));
  *
  * final Writer<Genotype<IntegerGene>> igw =
- *     Writers.Genotypes.writer(Writers.IntegerChromosome.writer()));
+ *     Writers.Genotype.writer(Writers.IntegerChromosome.writer()));
  *
  * final Writer<Genotype<DoubleGene>> igw =
- *     Writers.Genotypes.writer(Writers.DoubleChromosome.writer()));
+ *     Writers.Genotype.writer(Writers.DoubleChromosome.writer()));
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -243,6 +243,12 @@ public final class Writers {
 	public static final class BoundedChromosome {
 		private BoundedChromosome() {}
 
+		static final String LENGTH_NAME = "length";
+		static final String MIN_NAME = "min";
+		static final String MAX_NAME = "max";
+		static final String ALLELE_NAME = "allele";
+		static final String ALLELES_NAME = "alleles";
+
 		/**
 		 * Create a bounded chromosome writer with the given configuration.
 		 *
@@ -267,11 +273,11 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 
 			return elem(rootName,
-				attr("length").map(ch -> ch.length()),
-				elem("min", alleleWriter.map(ch -> ch.getMin())),
-				elem("max", alleleWriter.map(ch -> ch.getMax())),
-				elem("alleles",
-					elems(elem("allele", alleleWriter))
+				attr(LENGTH_NAME).map(ch -> ch.length()),
+				elem(MIN_NAME, alleleWriter.map(ch -> ch.getMin())),
+				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
+				elem(ALLELES_NAME,
+					elems(elem(ALLELE_NAME, alleleWriter))
 						.map(ch -> ch.toSeq().map(G::getAllele))
 				)
 			);
@@ -307,6 +313,8 @@ public final class Writers {
 	public static final class IntegerChromosome {
 		private IntegerChromosome() {}
 
+		static final String ROOT_NAME = "int-chromosome";
+
 		/**
 		 * Return the default integer allele writer for the
 		 * {@code IntegerChromosome}.
@@ -332,7 +340,7 @@ public final class Writers {
 		writer(final Writer<? super Integer> alleleWriter) {
 			requireNonNull(alleleWriter);
 
-			return BoundedChromosome.writer("int-chromosome", alleleWriter);
+			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -422,6 +430,8 @@ public final class Writers {
 	public static final class LongChromosome {
 		private LongChromosome() {}
 
+		static final String ROOT_NAME = "long-chromosome";
+
 		/**
 		 * Return the default long allele writer for the
 		 * {@code IntegerChromosome}.
@@ -445,7 +455,7 @@ public final class Writers {
 		 */
 		public static Writer<org.jenetics.LongChromosome>
 		writer(final Writer<? super Long> alleleWriter) {
-			return BoundedChromosome.writer("long-chromosome", alleleWriter);
+			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -534,6 +544,8 @@ public final class Writers {
 	public static final class DoubleChromosome {
 		private DoubleChromosome() {}
 
+		static final String ROOT_NAME = "double-chromosome";
+
 		/**
 		 * Return the default double allele writer for the
 		 * {@code DoubleChromosome}.
@@ -557,7 +569,7 @@ public final class Writers {
 		 */
 		public static Writer<org.jenetics.DoubleChromosome>
 		writer(final Writer<? super Double> alleleWriter) {
-			return BoundedChromosome.writer("double-chromosome", alleleWriter);
+			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -639,11 +651,11 @@ public final class Writers {
 	 * <pre> {@code
 	 * <permutation-chromosome length="5">
 	 *     <valid-alleles>
-	 *         <allele>0.2725</allele>
-	 *         <allele>0.0031</allele>
-	 *         <allele>0.4395</allele>
-	 *         <allele>0.1065</allele>
-	 *         <allele>0.1970</allele>
+	 *         <allele>0</allele>
+	 *         <allele>1</allele>
+	 *         <allele>2</allele>
+	 *         <allele>3</allele>
+	 *         <allele>4</allele>
 	 *     </valid-alleles>
 	 *     <order>2 1 3 5 4</order>
 	 * </permutation-chromosome>
@@ -651,6 +663,12 @@ public final class Writers {
 	 */
 	public static final class PermutationChromosome {
 		private PermutationChromosome() {}
+
+		static final String ROOT_NAME = "permutation-chromosome";
+		static final String LENGTH_NAME = "length";
+		static final String VALIDS_NAME = "valid-alleles";
+		static final String ALLELE_NAME = "allele";
+		static final String ORDER_NAME = "order";
 
 		/**
 		 * Create a writer for permutation-chromosomes. How to write the valid
@@ -664,13 +682,13 @@ public final class Writers {
 		 */
 		public static <A> Writer<org.jenetics.PermutationChromosome<A>>
 		writer(final Writer<? super A> alleleWriter) {
-			return elem("permutation-chromosome",
-				attr("length").map(org.jenetics.PermutationChromosome::length),
-				elem("valid-alleles",
-					elems(elem("allele", alleleWriter))
+			return elem(ROOT_NAME,
+				attr(LENGTH_NAME).map(org.jenetics.PermutationChromosome::length),
+				elem(VALIDS_NAME,
+					elems(elem(ALLELE_NAME, alleleWriter))
 						.map(org.jenetics.PermutationChromosome::getValidAlleles)
 				),
-				elem("order", text())
+				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
 						.map(g -> Integer.toString(g.getAlleleIndex()))
 						.collect(Collectors.joining(" ")))
@@ -868,6 +886,10 @@ public final class Writers {
 	public static final class Genotype {
 		private Genotype() {}
 
+		static final String ROOT_NAME = "genotype";
+		static final String LENGTH_NAME = "length";
+		static final String NGENES_NAME = "ngenes";
+
 		/**
 		 * Create a writer for genotypes of arbitrary chromosomes. How to write the
 		 * genotypes chromosomes is defined by the given {@link Writer}.
@@ -886,9 +908,10 @@ public final class Writers {
 			C extends Chromosome<G>
 		>
 		Writer<org.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
-			return elem("genotype",
-				attr("length").map(org.jenetics.Genotype<G>::length),
-				attr("ngenes").map(org.jenetics.Genotype<G>::getNumberOfGenes),
+			return elem(
+				ROOT_NAME,
+				attr(LENGTH_NAME).map(org.jenetics.Genotype<G>::length),
+				attr(NGENES_NAME).map(org.jenetics.Genotype<G>::getNumberOfGenes),
 				elems(writer).map(gt -> cast(gt.toSeq()))
 			);
 		}
@@ -900,21 +923,22 @@ public final class Writers {
 		 * @param <A> the allele type
 		 * @param <G> the gene type
 		 * @param <C> the chromosome type
-		 * @param genotype the chromosome to write
+		 * @param genotype the genotype to write
 		 * @param chromosomeWriter the chromosome writer used to write the
 		 *        genotypes
 		 * @param out the target output stream
 		 * @param indent the XML level indentation
 		 * @throws XMLStreamException if an error occurs while writing the
 		 *         chromosome
-		 * @throws NullPointerException if the {@code chromosome} or output
-		 *         stream is {@code null}
+		 * @throws NullPointerException if the one of the arguments is
+		 *         {@code null}
 		 */
 		public static <
 			A,
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
-		> void write(
+		>
+		void write(
 			final org.jenetics.Genotype<G> genotype,
 			final Writer<? super C> chromosomeWriter,
 			final OutputStream out,
@@ -927,6 +951,43 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				Genotype.<A, G, C>writer(chromosomeWriter).write(genotype, writer);
+			}
+		}
+
+		/**
+		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * stream.
+		 *
+		 * @param <A> the allele type
+		 * @param <G> the gene type
+		 * @param <C> the chromosome type
+		 * @param genotype the genotype to write
+		 * @param chromosomeWriter the chromosome writer used to write the
+		 *        genotypes
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the one of the arguments is
+		 *         {@code null}
+		 */
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		void write(
+			final org.jenetics.Genotype<G> genotype,
+			final Writer<? super C> chromosomeWriter,
+			final OutputStream out
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(genotype);
+			requireNonNull(chromosomeWriter);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(genotype, writer);
 			}
 		}
@@ -979,6 +1040,9 @@ public final class Writers {
 	public static final class Genotypes {
 		private Genotypes() {}
 
+		static final String ROOT_NAME = "genotypes";
+		static final String LENGTH_NAME = "length";
+
 		/**
 		 * Create a writer for genotypes of arbitrary chromosomes. How to write the
 		 * genotypes chromosomes is defined by the given {@link Writer}. The
@@ -1003,11 +1067,89 @@ public final class Writers {
 		>
 		Writer<Collection<org.jenetics.Genotype<G>>>
 		writer(final Writer<? super C> writer) {
-			return elem("genotypes",
-				attr("length").map(Collection::size),
+			return elem(
+				ROOT_NAME,
+				attr(LENGTH_NAME).map(Collection::size),
 				elems(Genotype.writer(writer))
 			);
 		}
+
+		/**
+		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * stream.
+		 *
+		 * @param <A> the allele type
+		 * @param <G> the gene type
+		 * @param <C> the chromosome type
+		 * @param genotypes the genotypes to write
+		 * @param chromosomeWriter the chromosome writer used to write the
+		 *        genotypes
+		 * @param out the target output stream
+		 * @param indent the XML level indentation
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the one of the arguments is
+		 *         {@code null}
+		 */
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		void write(
+			final Collection<org.jenetics.Genotype<G>> genotypes,
+			final Writer<? super C> chromosomeWriter,
+			final OutputStream out,
+			final String indent
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(genotypes);
+			requireNonNull(chromosomeWriter);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+				Genotypes.<A, G, C>writer(chromosomeWriter).write(genotypes, writer);
+			}
+		}
+
+		/**
+		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * stream.
+		 *
+		 * @param <A> the allele type
+		 * @param <G> the gene type
+		 * @param <C> the chromosome type
+		 * @param genotypes the genotypes to write
+		 * @param chromosomeWriter the chromosome writer used to write the
+		 *        genotypes
+		 * @param out the target output stream
+		 * @throws XMLStreamException if an error occurs while writing the
+		 *         chromosome
+		 * @throws NullPointerException if the one of the arguments is
+		 *         {@code null}
+		 */
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		void write(
+			final Collection<org.jenetics.Genotype<G>> genotypes,
+			final Writer<? super C> chromosomeWriter,
+			final OutputStream out
+		)
+			throws XMLStreamException
+		{
+			requireNonNull(genotypes);
+			requireNonNull(chromosomeWriter);
+			requireNonNull(out);
+
+			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
+				Genotypes.<A, G, C>writer(chromosomeWriter).write(genotypes, writer);
+			}
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
