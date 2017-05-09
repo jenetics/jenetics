@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.2.0"
+	id "me.champeau.gradle.jmh" version "0.3.1"
 }
 
 apply plugin: 'packaging'
@@ -41,7 +41,10 @@ dependencies {
 	testCompile Include.TestNG
 	jmh Include.JMH.Core
 	jmh Include.JMH.Processor
-	jmh files('build/classes/main')
+}
+
+jmh {
+	duplicateClassesStrategy = 'warn'
 }
 
 jar.manifest.instruction('Export-Package',

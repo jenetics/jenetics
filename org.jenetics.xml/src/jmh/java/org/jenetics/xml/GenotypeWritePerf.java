@@ -53,7 +53,7 @@ import org.jenetics.xml.stream.XML;
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class GenotypeWritePerf {
 
-	public final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
+	public static final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
 		.writer(Writers.DoubleChromosome.writer());
 
 	@State(Scope.Thread)
@@ -101,7 +101,7 @@ public class GenotypeWritePerf {
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
-			.include(".*" + GenotypeWritePerf.class.getSimpleName() + ".*")
+			.include(GenotypeWritePerf.class.getSimpleName())
 			.warmupIterations(10)
 			.measurementIterations(15)
 			.threads(1)
