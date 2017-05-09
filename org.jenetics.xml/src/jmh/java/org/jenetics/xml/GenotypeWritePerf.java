@@ -56,7 +56,7 @@ public class GenotypeWritePerf {
 	public static final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
 		.writer(Writers.DoubleChromosome.writer());
 
-	@State(Scope.Thread)
+	@State(Scope.Benchmark)
 	public static class IOState {
 
 		@Param({"1", "10", "100", "1000", "10000", "100000"})
