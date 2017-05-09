@@ -20676,8 +20676,11 @@ Nano\SpecialChar softhyphen
 Clock
 \family default
  for measuring the time.
- To have the possibility to define a different Clock implementation is especiall
-y useful for testing purposes.
+ To have the possibility to define a different 
+\family typewriter
+Clock
+\family default
+ implementation is especially useful for testing purposes.
 \end_layout
 
 \begin_layout Standard
