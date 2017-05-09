@@ -24,9 +24,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -48,36 +51,51 @@ import org.jenetics.xml.stream.XML;
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class GenotypesXMLPerf {
-
-	final Genotype<DoubleGene> gt = Genotype
-		.of(DoubleChromosome.of(0.0, 1.0, 100), 10000);
-
-	final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
+	
+	public final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
 		.writer(Writers.DoubleChromosome.writer());
 
+	@State(Scope.Thread)
+	public static class IOState {
+
+		@Param({"1", "10", "100", "1000", "10000", "100000"})
+		public int chromosomeCount;
+
+		public Genotype<DoubleGene> genotype;
+
+		@Setup
+		public void setup() {
+			genotype = Genotype.of(
+				DoubleChromosome.of(0.0, 1.0, 100),
+				chromosomeCount
+			);
+		}
+
+	}
+
+
 	@Benchmark
-	public Object object() throws Exception {
+	public Object object(final IOState state) throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.object.write(gt, out);
+		IO.object.write(state.genotype, out);
+		return out.toByteArray();
+	}
+
+	@Benchmark
+	public Object jaxb(final IOState state) throws Exception {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IO.jaxb.write(state.genotype, out);
 
 		return out.toByteArray();
 	}
 
 	@Benchmark
-	public Object jaxb() throws Exception {
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.jaxb.write(gt, out);
-
-		return out.toByteArray();
-	}
-
-	@Benchmark
-	public Object stream() throws Exception {
+	public Object stream(final IOState state) throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
-			writer.write(gt, xml);
+			writer.write(state.genotype, xml);
 		}
 
 		return out.toByteArray();
