@@ -543,21 +543,25 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public default T[] toArray(final T[] array) {
+	public default <B> B[] toArray(final B[] array) {
 		if (array.length < length()) {
-			final T[] copy = (T[])java.lang.reflect.Array.newInstance(
-				array.getClass().getComponentType(), length()
-			);
+			final Object[] copy = (Object[])java.lang.reflect.Array
+				.newInstance(array.getClass().getComponentType(), length());
+
 			for (int i = length(); --i >= 0;) {
 				copy[i] = get(i);
 			}
 
-			return copy;
+			return (B[])copy;
 		}
 
 		for (int i = 0, n = length(); i < n; ++i) {
-			array[i] = get(i);
+			((Object[])array)[i] = get(i);
 		}
+		if (array.length > length()) {
+			array[length()] = null;
+		}
+
 		return array;
 	}
 
