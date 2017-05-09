@@ -23,7 +23,7 @@ package org.jenetics.xml;
  * Functional interface for creating bounded genes.
  *
  * @param <A> the allele type
- * @param <G> ghe gene type
+ * @param <G> the gene type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
