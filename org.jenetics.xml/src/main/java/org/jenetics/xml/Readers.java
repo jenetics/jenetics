@@ -216,7 +216,7 @@ public final class Readers {
 		>
 		Reader<C> reader(
 			final String name,
-			final Function3<A, A, A, G> gene,
+			final BoundedGeneCreator<A, G> gene,
 			final IntFunction<G[]> genes,
 			final Function<G[], C> chromosome,
 			final Reader<? extends A> alleleReader
