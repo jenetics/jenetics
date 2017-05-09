@@ -22,13 +22,6 @@ package org.jenetics.xml;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.util.IO;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
@@ -39,6 +32,14 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.util.IO;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.XML;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.Genotype;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -33,6 +32,7 @@ import org.testng.annotations.Test;
 import org.jenetics.BitChromosome;
 import org.jenetics.CharacterChromosome;
 import org.jenetics.DoubleChromosome;
+import org.jenetics.Genotype;
 import org.jenetics.IntegerChromosome;
 import org.jenetics.LongChromosome;
 import org.jenetics.PermutationChromosome;
