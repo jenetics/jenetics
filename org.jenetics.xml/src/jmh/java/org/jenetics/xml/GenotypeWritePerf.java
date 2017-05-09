@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
-import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Param;
@@ -52,8 +51,8 @@ import org.jenetics.xml.stream.XML;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-public class GenotypesXMLPerf {
-	
+public class GenotypeWritePerf {
+
 	public final Writer<Genotype<DoubleGene>> writer = Writers.Genotype
 		.writer(Writers.DoubleChromosome.writer());
 
@@ -103,7 +102,7 @@ public class GenotypesXMLPerf {
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
-			.include(".*" + GenotypesXMLPerf.class.getSimpleName() + ".*")
+			.include(".*" + GenotypeWritePerf.class.getSimpleName() + ".*")
 			.warmupIterations(10)
 			.measurementIterations(15)
 			.threads(1)
