@@ -533,6 +533,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @see java.util.Collection#toArray(Object[])
 	 *
+	 * @param <B> the runtime type of the array to contain the sequence
 	 * @param array the array into which the elements of this array are to be
 	 *         stored, if it is big enough; otherwise, a new array of the same
 	 *         runtime type is allocated for this purpose.
