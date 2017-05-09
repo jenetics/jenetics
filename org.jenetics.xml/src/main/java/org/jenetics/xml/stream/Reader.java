@@ -170,7 +170,11 @@ public abstract class Reader<T> {
 			public B read(final XMLStreamReader xml)
 				throws XMLStreamException
 			{
-				return mapper.apply(Reader.this.read(xml));
+				try {
+					return mapper.apply(Reader.this.read(xml));
+				} catch (RuntimeException e) {
+					throw new XMLStreamException(e);
+				}
 			}
 		};
 	}
@@ -550,11 +554,15 @@ final class ElemReader<T> extends Reader<T> {
 						break;
 					case END_ELEMENT:
 						if (name().equals(xml.getLocalName())) {
-							return _creator.apply(
-								results.stream()
-									.map(ReaderResult::value)
-									.toArray()
-							);
+							try {
+								return _creator.apply(
+									results.stream()
+										.map(ReaderResult::value)
+										.toArray()
+								);
+							} catch (RuntimeException e) {
+								throw new XMLStreamException(e);
+							}
 						}
 				}
 
