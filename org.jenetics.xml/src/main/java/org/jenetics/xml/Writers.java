@@ -819,7 +819,7 @@ public final class Writers {
 		)
 			throws XMLStreamException
 		{
-			write(out, data, null);
+			write(out, data, null, text());
 		}
 
 		/**
