@@ -161,7 +161,7 @@ public class BitChromosome extends Number
 	/**
 	 * Return the one probability of this chromosome.
 	 *
-	 * @since !__version__!
+	 * @since 3.9
 	 *
 	 * @return the one probability of this chromosome.
 	 */
