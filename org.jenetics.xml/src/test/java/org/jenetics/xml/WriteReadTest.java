@@ -26,8 +26,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.testng.Assert;
@@ -48,9 +46,10 @@ import org.jenetics.PermutationChromosome;
  */
 public class WriteReadTest {
 
+	/*
 	@FunctionalInterface
 	interface Write<T> {
-		void write(final T data, final OutputStream out) throws Exception;
+		void write(final OutputStream out, final T data) throws Exception;
 	}
 
 	@FunctionalInterface
@@ -134,5 +133,6 @@ public class WriteReadTest {
 			}
 		};
 	}
+	*/
 
 }
