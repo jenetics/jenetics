@@ -27,9 +27,6 @@ import static org.jenetics.xml.stream.Writer.text;
 
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
@@ -669,7 +666,7 @@ public final class Writers {
 
 		static final String ROOT_NAME = "permutation-chromosome";
 		static final String LENGTH_NAME = "length";
-		static final String VALIDS_NAME = "valid-alleles";
+		static final String VALID_ALLELES_NAME = "valid-alleles";
 		static final String ALLELE_NAME = "allele";
 		static final String ORDER_NAME = "order";
 
@@ -687,15 +684,21 @@ public final class Writers {
 		writer(final Writer<? super A> alleleWriter) {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(org.jenetics.PermutationChromosome::length),
-				elem(VALIDS_NAME,
-					elems(elem(ALLELE_NAME, alleleWriter))
-						.map(org.jenetics.PermutationChromosome::getValidAlleles)
+				elem(VALID_ALLELES_NAME,
+					attr("type").map(PermutationChromosome::toAlleleTypeName),
+					elems(elem(ALLELE_NAME, alleleWriter)).map(ch -> ch.getValidAlleles())
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
 						.map(g -> Integer.toString(g.getAlleleIndex()))
 						.collect(Collectors.joining(" ")))
 			);
+		}
+
+		private static String toAlleleTypeName(
+			final org.jenetics.PermutationChromosome<?> ch
+		) {
+			return ch.getGene().getAllele().getClass().getCanonicalName();
 		}
 
 		/**
@@ -710,7 +713,7 @@ public final class Writers {
 		 * Example output:
 		 * <pre> {@code
 		 * <permutation-chromosome length="15">
-		 *     <valid-alleles>
+		 *     <valid-alleles type="java.lang.Double">
 		 *         <allele>0.27251556008507416</allele>
 		 *         <allele>0.003140816229067145</allele>
 		 *         <allele>0.43947528327497376</allele>

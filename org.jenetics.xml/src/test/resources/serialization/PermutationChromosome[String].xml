@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <permutation-chromosome length="15">
-    <valid-alleles>
+    <valid-alleles type="java.lang.String">
         <allele>웰覆嚱勻鼸萰萉墧蠬䧉鳘吃䶈㲴</allele>
         <allele>ጿ謁揖䩵ញ䦷렴됍ཫ웬䶎摫侄哐</allele>
         <allele>엿氱㖍䪠硯뒦驜낦宺离ᓲ幀犟鎑Ρ鐨챢寶</allele>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genotype length="5" ngenes="75">
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Character">
             <allele>逄</allele>
             <allele>웰</allele>
             <allele>覆</allele>
@@ -21,7 +21,7 @@
         <order>4 7 2 13 6 3 10 12 11 1 8 9 5 14 0</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Character">
             <allele>摫</allele>
             <allele>侄</allele>
             <allele>哐</allele>
@@ -41,7 +41,7 @@
         <order>11 8 0 9 12 2 10 4 6 1 3 7 5 13 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Character">
             <allele>㕈</allele>
             <allele>筠</allele>
             <allele>錜</allele>
@@ -61,7 +61,7 @@
         <order>0 10 6 9 14 4 1 11 5 13 2 8 7 12 3</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Character">
             <allele>镬</allele>
             <allele>踧</allele>
             <allele>䅹</allele>
@@ -81,7 +81,7 @@
         <order>3 6 0 7 2 12 5 8 11 13 10 14 1 9 4</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Character">
             <allele>䆮</allele>
             <allele>ᚦ</allele>
             <allele>对</allele>

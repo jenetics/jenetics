@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genotype length="5" ngenes="75">
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.String">
             <allele>웰覆嚱勻鼸萰萉墧蠬䧉鳘吃䶈㲴</allele>
             <allele>ጿ謁揖䩵ញ䦷렴됍ཫ웬䶎摫侄哐</allele>
             <allele>엿氱㖍䪠硯뒦驜낦宺离ᓲ幀犟鎑Ρ鐨챢寶</allele>
@@ -21,7 +21,7 @@
         <order>3 13 12 1 0 9 8 14 5 10 6 2 7 4 11</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.String">
             <allele>璉攙絈選㓕ᚬ逽Ꝛ叅㘋忚</allele>
             <allele>쭞魲㥶嗘祎䠓ㅃ眱ꄪ</allele>
             <allele>ḕ挴㣸遲鲎ᛚɰ塱巷챹坉렣稤筫轅퓀뾂ᘴ</allele>
@@ -41,7 +41,7 @@
         <order>13 1 2 10 7 12 9 14 11 6 4 8 5 0 3</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.String">
             <allele>飦憶ꍉ佈䤔퀚蟤瞫犍</allele>
             <allele>쎇谢踕䖘㻞廷䉳律㣞ໆ죿璄㤚靁灅陼喙䣤Ἶ嗯</allele>
             <allele>쪕䴵ᇶ땵㼝ᚻ쪯镕陑탋ꋛޅⲗ盩摜</allele>
@@ -61,7 +61,7 @@
         <order>5 2 1 9 12 7 3 4 14 8 10 6 13 0 11</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.String">
             <allele>漵茣ࢠ敢爸ຈ큘챥蠳薥ཙఎ媊ⱆ末뻓ⅉ쓈똩ᕹ</allele>
             <allele>屵莙漎寨ವ谷ꋪ塉뛇ꚾ庲謹阌</allele>
             <allele>ᒊ싚㴁ᤏﲞ馏縿</allele>
@@ -81,7 +81,7 @@
         <order>9 14 0 6 3 13 5 11 8 7 12 1 4 10 2</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.String">
             <allele>ˡ묯ᚉ꽔ㄩ</allele>
             <allele>辖ﬕ뇜哥ȁ袗谦뗧唪闕歮䔭褀hᑫ䣹</allele>
             <allele>珖蝲핥䨳뼢쥝壵칣</allele>

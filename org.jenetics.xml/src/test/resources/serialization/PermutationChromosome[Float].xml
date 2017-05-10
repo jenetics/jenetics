@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <permutation-chromosome length="15">
-    <valid-alleles>
+    <valid-alleles type="java.lang.Float">
         <allele>0.5625665</allele>
         <allele>0.7771003</allele>
         <allele>0.97935534</allele>

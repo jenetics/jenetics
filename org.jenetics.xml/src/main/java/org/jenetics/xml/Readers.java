@@ -496,7 +496,7 @@ public final class Readers {
 			},
 				Writers.PermutationChromosome.ROOT_NAME,
 				attr(Writers.PermutationChromosome.LENGTH_NAME).map(Integer::parseInt),
-				elem(Writers.PermutationChromosome.VALIDS_NAME,
+				elem(Writers.PermutationChromosome.VALID_ALLELES_NAME,
 					elems(elem(Writers.PermutationChromosome.ALLELE_NAME, alleleReader))
 				),
 				elem(Writers.PermutationChromosome.ORDER_NAME, text())

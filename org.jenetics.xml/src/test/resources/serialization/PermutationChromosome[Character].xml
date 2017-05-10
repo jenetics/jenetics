@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <permutation-chromosome length="15">
-    <valid-alleles>
+    <valid-alleles type="java.lang.Character">
         <allele>逄</allele>
         <allele>웰</allele>
         <allele>覆</allele>

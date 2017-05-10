@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genotype length="5" ngenes="75">
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Float">
             <allele>0.5625665</allele>
             <allele>0.7771003</allele>
             <allele>0.97935534</allele>
@@ -21,7 +21,7 @@
         <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Float">
             <allele>0.143049</allele>
             <allele>0.30294955</allele>
             <allele>0.12774062</allele>
@@ -41,7 +41,7 @@
         <order>10 5 4 0 3 1 6 2 9 7 8 11 13 14 12</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Float">
             <allele>0.5787437</allele>
             <allele>0.79838026</allele>
             <allele>0.35923374</allele>
@@ -61,7 +61,7 @@
         <order>13 11 8 0 10 1 3 9 7 12 5 6 2 4 14</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Float">
             <allele>0.34240592</allele>
             <allele>0.58021784</allele>
             <allele>0.777117</allele>
@@ -81,7 +81,7 @@
         <order>14 3 8 5 1 6 13 2 7 9 4 0 11 12 10</order>
     </permutation-chromosome>
     <permutation-chromosome length="15">
-        <valid-alleles>
+        <valid-alleles type="java.lang.Float">
             <allele>0.76386607</allele>
             <allele>0.07718873</allele>
             <allele>0.24029279</allele>
