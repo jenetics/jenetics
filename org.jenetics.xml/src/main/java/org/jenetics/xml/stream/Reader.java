@@ -549,8 +549,11 @@ final class ElemReader<T> extends Reader<T> {
 					case CDATA:
 						if (text != null) {
 							text.put(text.reader().read(xml));
-							hasNext = true;
+						} else {
+							xml.next();
 						}
+						hasNext = true;
+
 						break;
 					case END_ELEMENT:
 						if (name().equals(xml.getLocalName())) {
