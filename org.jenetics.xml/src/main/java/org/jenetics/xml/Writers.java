@@ -54,8 +54,8 @@ import org.jenetics.xml.stream.XML;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public final class Writers {
 	private Writers() {}
@@ -78,8 +78,8 @@ public final class Writers {
 	 * }</pre>
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 3.9
+	 * @since 3.9
 	 */
 	public static final class BitChromosome {
 		private BitChromosome() {}

@@ -26,8 +26,8 @@ package org.jenetics.xml;
  * @param <G> the gene type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 @FunctionalInterface
 public interface BoundedGeneCreator<A, G> {

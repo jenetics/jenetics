@@ -87,8 +87,8 @@ import org.jenetics.xml.stream.Reader.Type;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public abstract class Reader<T> {
 
@@ -388,8 +388,8 @@ public abstract class Reader<T> {
  * Reader implementation for reading the attribute of the current node.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 final class AttrReader extends Reader<String> {
 
@@ -409,8 +409,8 @@ final class AttrReader extends Reader<String> {
  * Reader implementation for reading the text of the current node.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 final class TextReader extends Reader<String> {
 
@@ -438,8 +438,8 @@ final class TextReader extends Reader<String> {
  * @param <T> the element type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 final class ListReader<T> extends Reader<List<T>> {
 
@@ -463,8 +463,8 @@ final class ListReader<T> extends Reader<List<T>> {
  * @param <T> the reader data type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 final class ElemReader<T> extends Reader<T> {
 
