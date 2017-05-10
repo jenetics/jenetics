@@ -17,24 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.xml;
 
 /**
+ * Functional interface for creating bounded genes.
+ *
+ * @param <A> the allele type
+ * @param <G> the gene type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
+@FunctionalInterface
+public interface BoundedGeneCreator<A, G> {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-include 'org.jenetix'
-
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+	/**
+	 * Create a new bounded gene from the given parameters.
+	 *
+	 * <pre>{@code
+	 * final BoundedGeneCreator<Long, LongGene> creator = LongGene::of;
+	 * }</pre>
+	 *
+	 * @param value the gene value
+	 * @param min the minimum value
+	 * @param max the maximum value
+	 * @return a newly created bounded gene
+	 */
+	public G create(final A value, final A min, final A max);
 }

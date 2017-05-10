@@ -17,24 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.xml.stream;
+
+import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Makes the {@link XMLStreamWriter} interface {@link AutoCloseable}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
-
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-include 'org.jenetix'
-
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+public interface AutoCloseableXMLStreamWriter
+	extends XMLStreamWriter, AutoCloseable
+{
 }

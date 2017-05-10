@@ -161,9 +161,11 @@ public class BitChromosome extends Number
 	/**
 	 * Return the one probability of this chromosome.
 	 *
+	 * @since !__version__!
+	 *
 	 * @return the one probability of this chromosome.
 	 */
-	double getOneProbability() {
+	public double getOneProbability() {
 		return _p;
 	}
 

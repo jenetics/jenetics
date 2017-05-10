@@ -17,24 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.xml.stream;
+
+import static java.util.Objects.requireNonNull;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
  * @version !__version__!
+ * @since !__version__!
  */
+final class AutoCloseableAdapter implements AutoCloseable {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-include 'org.jenetix'
+	private final XMLStreamWriter _writer;
 
-rootProject.name = 'jenetics'
+	AutoCloseableAdapter(final XMLStreamWriter writer) {
+		_writer = requireNonNull(writer);
+	}
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+	XMLStreamWriter writer() {
+		return _writer;
+	}
+
+	@Override
+	public void close() throws XMLStreamException {
+		_writer.close();
+	}
+
 }
