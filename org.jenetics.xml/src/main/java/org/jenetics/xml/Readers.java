@@ -507,15 +507,15 @@ public final class Readers {
 		 * Reads a new {@link org.jenetics.PermutationChromosome} from the given
 		 * input stream.
 		 *
-		 * @param alleleReader the allele reader
-		 * @param in the data source of the chromosome
 		 * @param <A> the allele type
+		 * @param in the data source of the chromosome
+		 * @param alleleReader the allele reader
 		 * @return a new permutation chromosome
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
 		public static <A> org.jenetics.PermutationChromosome<A>
-		read(final Reader<? extends A> alleleReader, final InputStream in)
+		read(final InputStream in, final Reader<? extends A> alleleReader)
 			throws XMLStreamException
 		{
 			requireNonNull(alleleReader);
@@ -611,11 +611,11 @@ public final class Readers {
 		/**
 		 * Reads a genotype by using the given chromosome reader.
 		 *
-		 * @param chromosomeReader the used chromosome reader
-		 * @param in the input stream to read the genotype from
 		 * @param <A> the allele type
 		 * @param <G> the gene type
 		 * @param <C> the chromosome type
+		 * @param in the input stream to read the genotype from
+		 * @param chromosomeReader the used chromosome reader
 		 * @return a genotype by using the given chromosome reader
 		 * @throws XMLStreamException if reading the genotype fails
 		 * @throws NullPointerException if one of the arguments is {@code null}
@@ -626,7 +626,7 @@ public final class Readers {
 			C extends Chromosome<G>
 		>
 		org.jenetics.Genotype<G>
-		read(final Reader<? extends C> chromosomeReader, final InputStream in)
+		read(final InputStream in, final Reader<? extends C> chromosomeReader)
 			throws XMLStreamException
 		{
 			requireNonNull(chromosomeReader);
@@ -700,11 +700,11 @@ public final class Readers {
 		/**
 		 * Reads the genotypes by using the given chromosome reader.
 		 *
-		 * @param chromosomeReader the used chromosome reader
-		 * @param in the input stream to read the genotype from
 		 * @param <A> the allele type
 		 * @param <G> the gene type
 		 * @param <C> the chromosome type
+		 * @param in the input stream to read the genotype from
+		 * @param chromosomeReader the used chromosome reader
 		 * @return a genotype by using the given chromosome reader
 		 * @throws XMLStreamException if reading the genotype fails
 		 * @throws NullPointerException if one of the arguments is {@code null}
@@ -715,7 +715,7 @@ public final class Readers {
 			C extends Chromosome<G>
 		>
 		Collection<org.jenetics.Genotype<G>>
-		read(final Reader<? extends C> chromosomeReader, final InputStream in)
+		read(final InputStream in, final Reader<? extends C> chromosomeReader)
 			throws XMLStreamException
 		{
 			requireNonNull(chromosomeReader);
@@ -732,13 +732,13 @@ public final class Readers {
 	/**
 	 * Reads the genotypes by using the given chromosome reader.
 	 *
-	 * @see Genotypes#read(Reader, InputStream)
+	 * @see Genotypes#read(InputStream, Reader)
 	 *
-	 * @param chromosomeReader the used chromosome reader
-	 * @param in the input stream to read the genotype from
 	 * @param <A> the allele type
 	 * @param <G> the gene type
 	 * @param <C> the chromosome type
+	 * @param in the input stream to read the genotype from
+	 * @param chromosomeReader the used chromosome reader
 	 * @return a genotype by using the given chromosome reader
 	 * @throws XMLStreamException if reading the genotype fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -749,10 +749,10 @@ public final class Readers {
 		C extends Chromosome<G>
 	>
 	Collection<org.jenetics.Genotype<G>>
-	read(final Reader<? extends C> chromosomeReader, final InputStream in)
+	read(final InputStream in, final Reader<? extends C> chromosomeReader)
 		throws XMLStreamException
 	{
-		return Genotypes.read(chromosomeReader, in);
+		return Genotypes.read(in, chromosomeReader);
 	}
 
 }
