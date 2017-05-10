@@ -26,6 +26,7 @@ import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
 import static org.jenetics.internal.math.random.nextString;
 import static org.jenetics.util.RandomRegistry.using;
+import static org.jenetics.xml.stream.Reader.text;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -56,6 +57,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import org.jenetics.xml.stream.Reader;
 import org.jenetics.xml.stream.Writer;
 import org.jenetics.xml.stream.XML;
 
@@ -69,15 +71,18 @@ public class PersistentObject<T> {
 	private final String _name;
 	private final T _value;
 	private final Writer<T> _writer;
+	private final Reader<T> _reader;
 
 	public PersistentObject(
 		final String name,
 		final T value,
-		final Writer<T> writer
+		final Writer<T> writer,
+		final Reader<T> reader
 	) {
 		_name = requireNonNull(name);
 		_value = requireNonNull(value);
 		_writer = requireNonNull(writer);
+		_reader = requireNonNull(reader);
 	}
 
 	public String getName() {
@@ -90,6 +95,10 @@ public class PersistentObject<T> {
 
 	public Writer<T> getWriter() {
 		return _writer;
+	}
+
+	public Reader<T> getReader() {
+		return _reader;
 	}
 
 	public void write(final File baseDir)
@@ -113,8 +122,13 @@ public class PersistentObject<T> {
 
 	public static final List<PersistentObject<?>> VALUES = new ArrayList<>();
 
-	private static <T> void put(final String name, final T value, final Writer<T> writer) {
-		VALUES.add(new PersistentObject<>(name, value, writer));
+	private static <T> void put(
+		final String name,
+		final T value,
+		final Writer<T> writer,
+		final Reader<T> reader
+	) {
+		VALUES.add(new PersistentObject<>(name, value, writer, reader));
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
@@ -124,50 +138,114 @@ public class PersistentObject<T> {
 		 * Chromosomes
 		 **********************************************************************/
 
-		put("BitChromosome", nextBitChromosome(), Writers.BitChromosome.writer());
-		put("CharacterChromosome", nextCharacterChromosome(), Writers.CharacterChromosome.writer());
-		put("IntegerChromosome", nextIntegerChromosome(), Writers.IntegerChromosome.writer());
-		put("LongChromosome", nextLongChromosome(), Writers.LongChromosome.writer());
-		put("DoubleChromosome", nextDoubleChromosome(), Writers.DoubleChromosome.writer());
+		put("BitChromosome", nextBitChromosome(),
+			Writers.BitChromosome.writer(),
+			Readers.BitChromosome.reader());
+		put("CharacterChromosome", nextCharacterChromosome(),
+			Writers.CharacterChromosome.writer(),
+			Readers.CharacterChromosome.reader());
+		put("IntegerChromosome", nextIntegerChromosome(),
+			Writers.IntegerChromosome.writer(),
+			Readers.IntegerChromosome.reader());
+		put("LongChromosome", nextLongChromosome(),
+			Writers.LongChromosome.writer(),
+			Readers.LongChromosome.reader());
+		put("DoubleChromosome", nextDoubleChromosome(),
+			Writers.DoubleChromosome.writer(),
+			Readers.DoubleChromosome.reader());
 
-		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Short]", nextShortPermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Long]", nextLongPermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(), Writers.PermutationChromosome.writer());
-		put("PermutationChromosome[String]", nextStringPermutationChromosome(), Writers.PermutationChromosome.writer());
+		put("PermutationChromosome[Byte]", nextBytePermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Byte::parseByte)));
+		put("PermutationChromosome[Short]", nextShortPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Short::parseShort)));
+		put("PermutationChromosome[Integer]", nextIntegerPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Integer::parseInt)));
+		put("PermutationChromosome[Long]", nextLongPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Long::parseLong)));
+		put("PermutationChromosome[Float]", nextFloatPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Float::parseFloat)));
+		put("PermutationChromosome[Double]", nextDoublePermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(Double::parseDouble)));
+		put("PermutationChromosome[Character]", nextCharacterPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text().map(s -> s.charAt(0))));
+		put("PermutationChromosome[String]", nextStringPermutationChromosome(),
+			Writers.PermutationChromosome.writer(),
+			Readers.PermutationChromosome.reader(text()));
 
 		/* *********************************************************************
 		 * Genotypes
 		 **********************************************************************/
 
-		put("Genotype[BitGene]", nextGenotypeBitGene(), Writers.Genotype.writer(Writers.BitChromosome.writer()));
-		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(), Writers.Genotype.writer(Writers.CharacterChromosome.writer()));
-		put("Genotype[IntegerGene]", nextGenotypeIntegerGene(), Writers.Genotype.writer(Writers.IntegerChromosome.writer()));
-		put("Genotype[LongGene]", nextGenotypeLongGene(), Writers.Genotype.writer(Writers.LongChromosome.writer()));
-		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(), Writers.Genotype.writer(Writers.DoubleChromosome.writer()));
+		put("Genotype[BitGene]", nextGenotypeBitGene(),
+			Writers.Genotype.writer(Writers.BitChromosome.writer()),
+			Readers.Genotype.reader(Readers.BitChromosome.reader()));
+		put("Genotype[CharacterGene]", nextGenotypeCharacterGene(),
+			Writers.Genotype.writer(Writers.CharacterChromosome.writer()),
+			Readers.Genotype.reader(Readers.CharacterChromosome.reader()));
+		put("Genotype[IntegerGene]", nextGenotypeIntegerGene(),
+			Writers.Genotype.writer(Writers.IntegerChromosome.writer()),
+			Readers.Genotype.reader(Readers.IntegerChromosome.reader()));
+		put("Genotype[LongGene]", nextGenotypeLongGene(),
+			Writers.Genotype.writer(Writers.LongChromosome.writer()),
+			Readers.Genotype.reader(Readers.LongChromosome.reader()));
+		put("Genotype[DoubleGene]", nextGenotypeDoubleGene(),
+			Writers.Genotype.writer(Writers.DoubleChromosome.writer()),
+			Readers.Genotype.reader(Readers.DoubleChromosome.reader()));
 
-		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
-		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(), Writers.Genotype.writer(Writers.PermutationChromosome.writer()));
+		put("Genotype[EnumGene[Byte]]", nextGenotypeEnumGeneByte(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Byte::parseByte))));
+		put("Genotype[EnumGene[Character]]", nextGenotypeEnumGeneCharacter(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(s -> s.charAt(0)))));
+		put("Genotype[EnumGene[Short]]", nextGenotypeEnumGeneShort(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Short::parseShort))));
+		put("Genotype[EnumGene[Integer]]", nextGenotypeEnumGeneInteger(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Integer::parseInt))));
+		put("Genotype[EnumGene[Long]]", nextGenotypeEnumGeneLong(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Long::parseLong))));
+		put("Genotype[EnumGene[Float]]", nextGenotypeEnumGeneFloat(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Float::parseFloat))));
+		put("Genotype[EnumGene[Double]]", nextGenotypeEnumGeneDouble(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text().map(Double::parseDouble))));
+		put("Genotype[EnumGene[String]]", nextGenotypeEnumGeneString(),
+			Writers.Genotype.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotype.reader(Readers.PermutationChromosome.reader(text())));
 
 		/* *********************************************************************
 		 * Populations
 		 **********************************************************************/
 
-		put("Population[BitGene]", nextPopulationBitGene(), Writers.Genotypes.writer(Writers.BitChromosome.writer()));
-		put("Population[CharacterGene]", nextPopulationCharacterGene(), Writers.Genotypes.writer(Writers.CharacterChromosome.writer()));
-		put("Population[IntegerGene]", nextPopulationIntegerGene(), Writers.Genotypes.writer(Writers.IntegerChromosome.writer()));
-		put("Population[LongGene]", nextPopulationLongGene(), Writers.Genotypes.writer(Writers.LongChromosome.writer()));
-		put("Population[DoubleGene]", nextPopulationDoubleGene(), Writers.Genotypes.writer(Writers.DoubleChromosome.writer()));
-		put("Population[EnumGene[Integer]]", nextPopulationEnumGene(), Writers.Genotypes.writer(Writers.PermutationChromosome.writer()));
+		put("Genotypes[BitGene]", nextPopulationBitGene(),
+			Writers.Genotypes.writer(Writers.BitChromosome.writer()),
+			Readers.Genotypes.reader(Readers.BitChromosome.reader()));
+		put("Genotypes[CharacterGene]", nextPopulationCharacterGene(),
+			Writers.Genotypes.writer(Writers.CharacterChromosome.writer()),
+			Readers.Genotypes.reader(Readers.CharacterChromosome.reader()));
+		put("Genotypes[IntegerGene]", nextPopulationIntegerGene(),
+			Writers.Genotypes.writer(Writers.IntegerChromosome.writer()),
+			Readers.Genotypes.reader(Readers.IntegerChromosome.reader()));
+		put("Genotypes[LongGene]", nextPopulationLongGene(),
+			Writers.Genotypes.writer(Writers.LongChromosome.writer()),
+			Readers.Genotypes.reader(Readers.LongChromosome.reader()));
+		put("Genotypes[DoubleGene]", nextPopulationDoubleGene(),
+			Writers.Genotypes.writer(Writers.DoubleChromosome.writer()),
+			Readers.Genotypes.reader(Readers.DoubleChromosome.reader()));
+		put("Genotypes[EnumGene[Integer]]", nextPopulationEnumGene(),
+			Writers.Genotypes.writer(Writers.PermutationChromosome.writer()),
+			Readers.Genotypes.reader(Readers.PermutationChromosome.reader(text().map(Integer::parseInt))));
 	}
 
 
