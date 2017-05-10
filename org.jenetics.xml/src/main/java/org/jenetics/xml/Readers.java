@@ -145,7 +145,7 @@ public final class Readers {
 		public static Reader<org.jenetics.CharacterChromosome> reader() {
 			return elem(
 				v -> org.jenetics.CharacterChromosome.of(
-				(String)v[2], (CharSeq)v[1]
+					(String)v[2], (CharSeq)v[1]
 				),
 				Writers.CharacterChromosome.ROOT_NAME,
 				attr(Writers.CharacterChromosome.LENGTH_NAME)

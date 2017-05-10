@@ -21,6 +21,7 @@ package org.jenetics.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -35,7 +36,7 @@ import org.jenetics.xml.stream.XML;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class MarshalingTest {
-	private static final String RESOURCE_PATTERN = "/org/jenetics/serialization/%s.xml";
+	private static final String RESOURCE_PATTERN = "/serialization/%s.xml";
 
 	@Test(dataProvider = "persistentObjectMarshallings")
 	public void marshallingCompatibility(final PersistentObject<?> object)
@@ -46,6 +47,7 @@ public class MarshalingTest {
 		try (InputStream in = getClass().getResourceAsStream(resource);
 			 AutoCloseableXMLStreamReader xml = XML.reader(in))
 		{
+			xml.next();
 			final Object o = object.getReader().read(xml);
 			Assert.assertEquals(o, object.getValue());
 		}
@@ -56,6 +58,7 @@ public class MarshalingTest {
 		final Object[][] result = new Object[PersistentObject.VALUES.size()][1];
 		for (int i = 0; i < PersistentObject.VALUES.size(); ++i) {
 			result[i][0] = PersistentObject.VALUES.get(i);
+			System.out.println(PersistentObject.VALUES.get(i).getName());
 		}
 
 		return result;
