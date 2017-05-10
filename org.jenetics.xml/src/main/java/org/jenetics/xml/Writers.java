@@ -650,7 +650,7 @@ public final class Writers {
 	 * <b>XML output</b>
 	 * <pre> {@code
 	 * <permutation-chromosome length="5">
-	 *     <valid-alleles>
+	 *     <valid-alleles type="java.lang.Integer">
 	 *         <allele>0</allele>
 	 *         <allele>1</allele>
 	 *         <allele>2</allele>
