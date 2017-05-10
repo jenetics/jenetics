@@ -75,13 +75,13 @@ public interface Writer<T> {
 	/**
 	 * Write the data of type {@code T} to the given XML stream writer.
 	 *
-	 * @param value the value to write
 	 * @param xml the underlying {@code XMLStreamWriter}, where the value is
 	 *        written to
+	 * @param data the value to write
 	 * @throws XMLStreamException if writing the data fails
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public void write(final T value, final XMLStreamWriter xml)
+	public void write(final XMLStreamWriter xml, final T data)
 		throws XMLStreamException;
 
 	/**
@@ -96,11 +96,11 @@ public interface Writer<T> {
 	 */
 	public default <B> Writer<B>
 	map(final Function<? super B, ? extends T> mapper) {
-		return (data, xml) -> {
+		return (xml, data) -> {
 			if (data != null) {
 				final T value = mapper.apply(data);
 				if (value != null) {
-					write(value, xml);
+					write(xml, value);
 				}
 			}
 		};
@@ -135,7 +135,7 @@ public interface Writer<T> {
 	public static <T> Writer<T> attr(final String name) {
 		requireNonNull(name);
 
-		return (data, xml) -> {
+		return (xml, data) -> {
 			if (data != null) {
 				xml.writeAttribute(name, data.toString());
 			}
@@ -186,11 +186,11 @@ public interface Writer<T> {
 		requireNonNull(name);
 		requireNonNull(children);
 
-		return (data, xml) -> {
+		return (xml, data) -> {
 			if (data != null) {
 				xml.writeStartElement(name);
 				for (Writer<? super T> child : children) {
-					child.write(data, xml);
+					child.write(xml, data);
 				}
 				xml.writeEndElement();
 			}
@@ -205,7 +205,7 @@ public interface Writer<T> {
 	 * @return a new text writer
 	 */
 	public static <T> Writer<T> text() {
-		return (data, xml) -> {
+		return (xml, data) -> {
 			if (data != null) {
 				xml.writeCharacters(data.toString());
 			}
@@ -224,11 +224,11 @@ public interface Writer<T> {
 	public static <T> Writer<Iterable<T>> elems(final Writer<? super T> writer) {
 		requireNonNull(writer);
 
-		return (values, xml) -> {
-			if (values != null) {
-				for (T val : values) {
-					if (val != null) {
-						writer.write(val, xml);
+		return (xml, data) -> {
+			if (data != null) {
+				for (T value : data) {
+					if (value != null) {
+						writer.write(xml, value);
 					}
 				}
 			}
@@ -248,9 +248,9 @@ public interface Writer<T> {
 	 * @return a new writer instance
 	 */
 	public static <T> Writer<T> doc(final Writer<? super T> writer) {
-		return (data, xml) -> {
+		return (xml, data) -> {
 			xml.writeStartDocument("UTF-8", "1.0");
-			writer.write(data, xml);
+			writer.write(xml, data);
 			xml.writeEndDocument();
 		};
 	}

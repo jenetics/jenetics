@@ -93,7 +93,7 @@ public class GenotypeWritePerf {
 	public Object stream(final IOState state) throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
-			writer.write(state.genotype, xml);
+			writer.write(xml, state.genotype);
 		}
 
 		return out.toByteArray();
@@ -103,7 +103,7 @@ public class GenotypeWritePerf {
 	public Object emptyStream(final IOState state) throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try (AutoCloseableXMLStreamWriter xml = new EmptyXMLStreamWriter(out)) {
-			writer.write(state.genotype, xml);
+			writer.write(xml, state.genotype);
 		}
 
 		return out.toByteArray();

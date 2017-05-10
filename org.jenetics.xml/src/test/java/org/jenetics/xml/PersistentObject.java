@@ -107,7 +107,7 @@ public class PersistentObject<T> {
 			 BufferedOutputStream bout = new BufferedOutputStream(fout);
 			 AutoCloseableXMLStreamWriter writer = XML.writer(bout, "    "))
 		{
-			Writer.doc(_writer).write(_value, writer);
+			Writer.doc(_writer).write(writer, _value);
 		}
 	}
 

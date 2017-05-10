@@ -54,7 +54,7 @@ public class WritersReadersTests {
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
-			writer.write(value, xml);
+			writer.write(xml, value);
 		}
 
 		return out.toByteArray();

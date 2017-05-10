@@ -123,7 +123,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
-				writer().write(data, writer);
+				writer().write(writer, data);
 			}
 		}
 	}
@@ -196,7 +196,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				writer().write(data, writer);
+				writer().write(writer, data);
 			}
 		}
 
@@ -376,7 +376,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				writer().write(data, writer);
+				writer().write(writer, data);
 			}
 		}
 
@@ -491,7 +491,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				writer().write(data, writer);
+				writer().write(writer, data);
 			}
 		}
 
@@ -605,7 +605,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				writer().write(data, writer);
+				writer().write(writer, data);
 			}
 		}
 
@@ -765,7 +765,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				PermutationChromosome.<A>writer().write(data, writer);
+				PermutationChromosome.<A>writer().write(writer, data);
 			}
 		}
 
@@ -797,7 +797,7 @@ public final class Writers {
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer(alleleWriter)
-					.write(data, writer);
+					.write(writer, data);
 			}
 		}
 
@@ -962,7 +962,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				Genotype.<A, G, C>writer(chromosomeWriter).write(data, writer);
+				Genotype.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
 
@@ -999,7 +999,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
-				Genotype.<A, G, C>writer(chromosomeWriter).write(data, writer);
+				Genotype.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
 
@@ -1120,7 +1120,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
-				Genotypes.<A, G, C>writer(chromosomeWriter).write(data, writer);
+				Genotypes.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
 
@@ -1157,7 +1157,7 @@ public final class Writers {
 			requireNonNull(out);
 
 			try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
-				Genotypes.<A, G, C>writer(chromosomeWriter).write(data, writer);
+				Genotypes.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
 
