@@ -46,7 +46,6 @@ import org.jenetics.PermutationChromosome;
  */
 public class WriteReadTest {
 
-	/*
 	@FunctionalInterface
 	interface Write<T> {
 		void write(final OutputStream out, final T data) throws Exception;
@@ -66,7 +65,7 @@ public class WriteReadTest {
 		throws Exception
 	{
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		writer.write(data, out);
+		writer.write(out, data);
 
 		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
 		Assert.assertEquals(reader.read(in), data);
@@ -105,14 +104,14 @@ public class WriteReadTest {
 				(Write<org.jenetics.PermutationChromosome<Integer>>)
 					Writers.PermutationChromosome::write,
 				(Read<org.jenetics.PermutationChromosome<Integer>>)
-					in -> Readers.PermutationChromosome.read(Readers.IntegerChromosome.alleleReader(), in)
+					in -> Readers.PermutationChromosome.read(in, Readers.IntegerChromosome.alleleReader())
 			},
 			{
 				Genotype.of(DoubleChromosome.of(0, 1, 2), 20),
 				(Write<org.jenetics.Genotype<DoubleGene>>)
-					(data, out) -> Writers.Genotype.write(data, Writers.DoubleChromosome.writer(), out),
+					(out, data) -> Writers.Genotype.write(out, data, Writers.DoubleChromosome.writer()),
 				(Read<org.jenetics.Genotype<DoubleGene>>)
-					in -> Readers.Genotype.read(Readers.DoubleChromosome.reader(), in)
+					in -> Readers.Genotype.read(in, Readers.DoubleChromosome.reader())
 			},
 			{
 				Genotype.of(DoubleChromosome.of(0, 1, 10), 10)
@@ -120,19 +119,18 @@ public class WriteReadTest {
 					.limit(20)
 					.collect(Collectors.toList()),
 				(Write<Collection<Genotype<DoubleGene>>>)
-					(data, out) -> Writers.Genotypes.write(data, Writers.DoubleChromosome.writer(), out),
+					(out, data) -> Writers.Genotypes.write(out, data, Writers.DoubleChromosome.writer()),
 				(Read<Collection<Genotype<DoubleGene>>>)
-					in -> Readers.Genotypes.read(Readers.DoubleChromosome.reader(), in)
+					in -> Readers.Genotypes.read(in, Readers.DoubleChromosome.reader())
 			},
 			{
 				emptyList(),
 				(Write<Collection<Genotype<DoubleGene>>>)
-					(data, out) -> Writers.Genotypes.write(data, Writers.DoubleChromosome.writer(), out),
+					(out, data) -> Writers.Genotypes.write(out, data, Writers.DoubleChromosome.writer()),
 				(Read<Collection<Genotype<DoubleGene>>>)
-					in -> Readers.Genotypes.read(Readers.DoubleChromosome.reader(), in)
+					in -> Readers.Genotypes.read(in, Readers.DoubleChromosome.reader())
 			}
 		};
 	}
-	*/
 
 }
