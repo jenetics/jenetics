@@ -34,14 +34,14 @@ import com.google.gson.stream.JsonWriter;
 @FunctionalInterface
 public interface Writer<T> {
 
-	public void write(final T value, final JsonWriter json) throws IOException;
+	public void write(final JsonWriter json, final T value) throws IOException;
 
 	public default <B> Writer<B> map(final Function<? super B, ? extends T> mapper) {
-		return (data, json) -> {
+		return (json, data) -> {
 			if (data != null) {
 				final T value = mapper.apply(data);
 				if (value != null) {
-					write(value, json);
+					write(json, value);
 				}
 			}
 		};
@@ -51,12 +51,12 @@ public interface Writer<T> {
 		requireNonNull(name);
 		requireNonNull(children);
 
-		return (data, json) -> {
+		return (json, data) -> {
 			if (data != null) {
 				json.beginObject();
 				json.name(name);
 				for (Writer<? super T> child : children) {
-					child.write(data, json);
+					child.write(json, data);
 				}
 				json.endObject();
 			}
@@ -64,7 +64,7 @@ public interface Writer<T> {
 	}
 
 	public static Writer<Integer> value(final String name, final Integer value) {
-		return (data, json) -> {
+		return (json, data) -> {
 			json.name(name).value(value);
 		};
 	}

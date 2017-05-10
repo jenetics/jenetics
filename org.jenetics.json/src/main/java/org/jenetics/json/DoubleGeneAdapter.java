@@ -30,6 +30,50 @@ import com.google.gson.stream.JsonWriter;
 import org.jenetics.DoubleGene;
 
 /**
+ * <pre> {@code
+ * {
+ *   "length": 2,
+ *   "genotypes": [
+ *     {
+ *       "length": 2,
+ *       "ngenes": 10,
+ *       "chromosomes": [
+ *         {
+ *           "name": "int-chromosome",
+ *           "min": 23,
+ *           "max": 12321,
+ *           "alleles": [1, 2, 3, 4, 5]
+ *         },
+ *         {
+ *           "name": "int-chromosome",
+ *           "min": 23,
+ *           "max": 12321,
+ *           "alleles": [1, 2, 3, 4, 5]
+ *         }
+ *       ]
+ *     },
+ *     {
+ *       "length": 2,
+ *       "ngenes": 10,
+ *       "chromosomes": [
+ *         {
+ *           "name": "int-chromosome",
+ *           "min": 23,
+ *           "max": 12321,
+ *           "alleles": [1, 2, 3, 4, 5]
+ *         },
+ *         {
+ *           "name": "int-chromosome",
+ *           "min": 23,
+ *           "max": 12321,
+ *           "alleles": [1, 2, 3, 4, 5]
+ *         }
+ *       ]
+ *     }
+ *   ]
+ * }
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
