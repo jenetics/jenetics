@@ -92,10 +92,10 @@ public class ReaderTest {
 				123
 			},
 			{
-				"<properties length=\"3\">" +
-					"<property>1</property>" +
-					"<property>2</property>" +
-					"<property>3</property>" +
+				"<properties length=\"3\">\n" +
+				"    <property>1</property>   \n" +
+				"    <property>2</property> \n" +
+				"    <property>3</property>\n" +
 				"</properties>",
 				elem(
 					v -> v[0],
