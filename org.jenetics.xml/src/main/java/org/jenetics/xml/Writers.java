@@ -1161,26 +1161,24 @@ public final class Writers {
 	}
 
 
-	private static final class ChromosomeWriterRegistry {
-		private final Map<Class<?>, Writer<?>> _registry = new HashMap<>();
-
-		<T> void put(final Class<T> type, final Writer<? super T> writer) {
-			_registry.put(type, writer);
-		}
-
-		@SuppressWarnings("unchecked")
-		<T> Writer<? super T> get(final Class<T> type) {
-			return (Writer<? super T>)_registry.get(type);
-		}
-	}
-
-	private static final ChromosomeWriterRegistry WRITER_REGISTRY =
-		new ChromosomeWriterRegistry();
-
-	static {
-		WRITER_REGISTRY.put(org.jenetics.BitChromosome.class, BitChromosome.writer());
-	}
-
+	/**
+	 * Write the given {@link org.jenetics.Genotype} to the given output
+	 * stream.
+	 *
+	 * @see Genotypes#write(Collection, Writer, OutputStream)
+	 *
+	 * @param <A> the allele type
+	 * @param <G> the gene type
+	 * @param <C> the chromosome type
+	 * @param genotypes the genotypes to write
+	 * @param chromosomeWriter the chromosome writer used to write the
+	 *        genotypes
+	 * @param out the target output stream
+	 * @throws XMLStreamException if an error occurs while writing the
+	 *         chromosome
+	 * @throws NullPointerException if the one of the arguments is
+	 *         {@code null}
+	 */
 	public static <
 		A,
 		G extends Gene<A, G>,
@@ -1188,26 +1186,12 @@ public final class Writers {
 	>
 	void write(
 		final Collection<org.jenetics.Genotype<G>> genotypes,
+		final Writer<? super C> chromosomeWriter,
 		final OutputStream out
 	)
 		throws XMLStreamException
 	{
-		requireNonNull(genotypes);
-		requireNonNull(out);
-
-		final Iterator<org.jenetics.Genotype<G>> it = genotypes.iterator();
-		if (it.hasNext()) {
-			final org.jenetics.Genotype<G> gt = it.next();
-			@SuppressWarnings("unchecked")
-			final Class<C> type = (Class<C>)gt.getChromosome().getClass();
-			final Writer<? super C> writer = WRITER_REGISTRY.get(type);
-
-			Genotypes.write(genotypes, writer, out);
-		}
-
-		//try (AutoCloseableXMLStreamWriter writer = XML.writer(out)) {
-		//	Genotypes.<A, G, C>writer(chromosomeWriter).write(genotypes, writer);
-		//}
+		Genotypes.write(genotypes, chromosomeWriter, out);
 	}
 
 }

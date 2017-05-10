@@ -729,4 +729,30 @@ public final class Readers {
 
 	}
 
+	/**
+	 * Reads the genotypes by using the given chromosome reader.
+	 *
+	 * @see Genotypes#read(Reader, InputStream)
+	 *
+	 * @param chromosomeReader the used chromosome reader
+	 * @param in the input stream to read the genotype from
+	 * @param <A> the allele type
+	 * @param <G> the gene type
+	 * @param <C> the chromosome type
+	 * @return a genotype by using the given chromosome reader
+	 * @throws XMLStreamException if reading the genotype fails
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <
+		A,
+		G extends Gene<A, G>,
+		C extends Chromosome<G>
+	>
+	Collection<org.jenetics.Genotype<G>>
+	read(final Reader<? extends C> chromosomeReader, final InputStream in)
+		throws XMLStreamException
+	{
+		return Genotypes.read(chromosomeReader, in);
+	}
+
 }
