@@ -99,11 +99,21 @@ public class GenotypeWritePerf {
 		return out.toByteArray();
 	}
 
+	@Benchmark
+	public Object emptyStream(final IOState state) throws Exception {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try (AutoCloseableXMLStreamWriter xml = new EmptyXMLStreamWriter(out)) {
+			writer.write(state.genotype, xml);
+		}
+
+		return out.toByteArray();
+	}
+
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(GenotypeWritePerf.class.getSimpleName())
 			.warmupIterations(10)
-			.measurementIterations(15)
+			.measurementIterations(25)
 			.threads(1)
 			.forks(1)
 			.build();
@@ -114,25 +124,31 @@ public class GenotypeWritePerf {
 }
 
 /*
-# Run complete. Total time: 00:12:33
+# Run complete. Total time: 00:22:27
 
-Benchmark                 (chromosomeCount)  Mode  Cnt        Score        Error  Units
-GenotypeWritePerf.jaxb                    1  avgt   15       44.528 ±      0.630  us/op
-GenotypeWritePerf.jaxb                   10  avgt   15      435.334 ±      5.573  us/op
-GenotypeWritePerf.jaxb                  100  avgt   15     4436.904 ±     97.704  us/op
-GenotypeWritePerf.jaxb                 1000  avgt   15    46180.033 ±    705.693  us/op
-GenotypeWritePerf.jaxb                10000  avgt   15   469439.712 ±   5947.615  us/op
-GenotypeWritePerf.jaxb               100000  avgt   15  5205345.300 ± 434537.458  us/op
-GenotypeWritePerf.object                  1  avgt   15        5.283 ±      0.070  us/op
-GenotypeWritePerf.object                 10  avgt   15       18.274 ±      0.253  us/op
-GenotypeWritePerf.object                100  avgt   15      141.953 ±      3.564  us/op
-GenotypeWritePerf.object               1000  avgt   15     1989.419 ±     37.496  us/op
-GenotypeWritePerf.object              10000  avgt   15    23284.665 ±    216.587  us/op
-GenotypeWritePerf.object             100000  avgt   15   304091.647 ± 122564.251  us/op
-GenotypeWritePerf.stream                  1  avgt   15       63.584 ±      0.666  us/op
-GenotypeWritePerf.stream                 10  avgt   15      595.413 ±     16.380  us/op
-GenotypeWritePerf.stream                100  avgt   15     5872.970 ±     79.351  us/op
-GenotypeWritePerf.stream               1000  avgt   15    60282.170 ±    777.615  us/op
-GenotypeWritePerf.stream              10000  avgt   15   605028.098 ±   9447.686  us/op
-GenotypeWritePerf.stream             100000  avgt   15  6825602.710 ± 812527.632  us/op
+Benchmark                      (chromosomeCount)  Mode  Cnt        Score        Error  Units
+GenotypeWritePerf.emptyStream                  1  avgt   25       32.393 ±      0.467  us/op
+GenotypeWritePerf.emptyStream                 10  avgt   25      315.596 ±      4.421  us/op
+GenotypeWritePerf.emptyStream                100  avgt   25     3162.672 ±     40.256  us/op
+GenotypeWritePerf.emptyStream               1000  avgt   25    32254.042 ±    222.167  us/op
+GenotypeWritePerf.emptyStream              10000  avgt   25   326237.190 ±   6900.882  us/op
+GenotypeWritePerf.emptyStream             100000  avgt   25  3230708.933 ±  17768.231  us/op
+GenotypeWritePerf.jaxb                         1  avgt   25       46.237 ±      0.564  us/op
+GenotypeWritePerf.jaxb                        10  avgt   25      448.078 ±      5.265  us/op
+GenotypeWritePerf.jaxb                       100  avgt   25     4477.686 ±     62.613  us/op
+GenotypeWritePerf.jaxb                      1000  avgt   25    45964.522 ±    552.452  us/op
+GenotypeWritePerf.jaxb                     10000  avgt   25   477826.242 ±  12626.502  us/op
+GenotypeWritePerf.jaxb                    100000  avgt   25  5146163.050 ± 318853.258  us/op
+GenotypeWritePerf.object                       1  avgt   25        5.464 ±      0.115  us/op
+GenotypeWritePerf.object                      10  avgt   25       18.431 ±      0.159  us/op
+GenotypeWritePerf.object                     100  avgt   25      140.085 ±      1.799  us/op
+GenotypeWritePerf.object                    1000  avgt   25     1975.590 ±     25.421  us/op
+GenotypeWritePerf.object                   10000  avgt   25    23747.132 ±    380.077  us/op
+GenotypeWritePerf.object                  100000  avgt   25   329312.176 ± 219264.291  us/op
+GenotypeWritePerf.stream                       1  avgt   25       66.248 ±      0.967  us/op
+GenotypeWritePerf.stream                      10  avgt   25      593.448 ±      7.709  us/op
+GenotypeWritePerf.stream                     100  avgt   25     5938.576 ±     77.691  us/op
+GenotypeWritePerf.stream                    1000  avgt   25    58722.709 ±    520.807  us/op
+GenotypeWritePerf.stream                   10000  avgt   25   614540.820 ±   7481.422  us/op
+GenotypeWritePerf.stream                  100000  avgt   25  6975361.258 ± 554799.213  us/op
 */
