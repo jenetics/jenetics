@@ -17,27 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package org.jenetics.xml.stream;
 
-import java.util.stream.IntStream;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Makes the {@link XMLStreamWriter} interface {@link AutoCloseable}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class StackTest {
-
-	@Test
-	public void forLoop() {
-		final Stack<Integer> stack = new Stack<>();
-		IntStream.range(1000, 10_000).forEach(stack::push);
-
-		int expected = 10_000;
-		for (Integer value = stack.pop(); value != null; value = stack.pop()) {
-			Assert.assertEquals(value.intValue(), --expected);
-		}
-	}
-
+public interface AutoCloseableXMLStreamWriter
+	extends XMLStreamWriter, AutoCloseable
+{
 }

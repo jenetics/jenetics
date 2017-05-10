@@ -20,22 +20,53 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
+ * @since !__version__!
  * @version !__version__!
  */
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.json'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-include 'org.jenetix'
+plugins {
+	id "me.champeau.gradle.jmh" version "0.3.1"
+}
 
-rootProject.name = 'jenetics'
+apply plugin: 'packaging'
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile project(':jenetics')
+
+	testCompile Include.TestNG
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+}
+
+jmh {
+	duplicateClassesStrategy = 'warn'
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.xml'
+)
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
+packaging {
+	name = 'Jenetics XML marshalling'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.io'
+	jarjar = false
+	javadoc = true
+}
+
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
 }
