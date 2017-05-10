@@ -47,14 +47,12 @@ public interface Writer<T> {
 		};
 	}
 
-	public static <T> Writer<T> obj(final String name, final Writer<? super T>... children) {
-		requireNonNull(name);
+	public static <T> Writer<T> obj(final Writer<? super T>... children) {
 		requireNonNull(children);
 
 		return (json, data) -> {
 			if (data != null) {
 				json.beginObject();
-				json.name(name);
 				for (Writer<? super T> child : children) {
 					child.write(json, data);
 				}
@@ -63,9 +61,53 @@ public interface Writer<T> {
 		};
 	}
 
-	public static Writer<Integer> value(final String name, final Integer value) {
+
+	public static Writer<String> text(final String name) {
+		return (json, data) -> {
+			json.name(name).value(data);
+		};
+	}
+
+	public static <T> Writer<T> text(final String name, final String value) {
 		return (json, data) -> {
 			json.name(name).value(value);
+		};
+	}
+
+	public static Writer<Number> number(final String name) {
+		return (json, data) -> {
+			if (data != null) {
+				json.name(name).value(data);
+			}
+		};
+	}
+
+	public static Writer<Number> number() {
+		return (json, data) -> {
+			if (data != null) {
+				json.value(data);
+			}
+		};
+	}
+
+	public static Writer<Boolean> bool(final String name) {
+		return (json, data) -> {
+			if (data != null) {
+				json.name(name).value(data);
+			}
+		};
+	}
+
+	public static <T> Writer<Iterable<T>> array(final String name, final Writer<? super T> writer) {
+		return (json, data) -> {
+			if (data != null) {
+				json.name(name);
+				json.beginArray();
+				for (T value : data) {
+					writer.write(json, value);
+				}
+				json.endArray();
+			}
 		};
 	}
 
