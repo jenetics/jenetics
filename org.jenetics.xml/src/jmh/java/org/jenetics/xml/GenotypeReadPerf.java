@@ -19,6 +19,8 @@
  */
 package org.jenetics.xml;
 
+import static java.lang.String.format;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +86,18 @@ public class GenotypeReadPerf {
 			objectData = object(genotype);
 			jaxbData = jaxb(genotype);
 			streamData = stream(genotype);
+
+			System.out.println(format(
+				"Size[chromosomes=%s, object=%s, jaxb=%s, stream=%s]",
+				chromosomeCount,
+				mib(objectData.length),
+				mib(jaxbData.length),
+				mib(streamData.length)
+			));
+		}
+
+		private static String mib(final int size) {
+			return format("%.4f MiB", (double)size/(1024*1024));
 		}
 
 		public static byte[] object(final Genotype<DoubleGene> gt) throws Exception {
@@ -144,3 +158,34 @@ public class GenotypeReadPerf {
 	}
 
 }
+
+/*
+Size[chromosomes=1, object=0.0017 MiB, jaxb=0.0045 MiB, stream=0.0035 MiB]
+Size[chromosomes=10, object=0.0090 MiB, jaxb=0.0439 MiB, stream=0.0346 MiB]
+Size[chromosomes=100, object=0.0812 MiB, jaxb=0.4379 MiB, stream=0.3459 MiB]
+Size[chromosomes=1000, object=0.8039 MiB, jaxb=4.3772 MiB, stream=3.4578 MiB]
+Size[chromosomes=10000, object=8.0309 MiB, jaxb=43.7730 MiB, stream=34.5795 MiB]
+Size[chromosomes=100000, object=80.3003 MiB, jaxb=437.7283 MiB, stream=345.7940 MiB]
+
+# Run complete. Total time: 00:23:17
+
+Benchmark                (chromosomeCount)  Mode  Cnt         Score        Error  Units
+GenotypeReadPerf.jaxb                    1  avgt   25       168.178 ±     43.804  us/op
+GenotypeReadPerf.jaxb                   10  avgt   25       932.813 ±    103.739  us/op
+GenotypeReadPerf.jaxb                  100  avgt   25      9102.482 ±    841.143  us/op
+GenotypeReadPerf.jaxb                 1000  avgt   25     93216.813 ±   9814.003  us/op
+GenotypeReadPerf.jaxb                10000  avgt   25    901538.952 ±  52950.669  us/op
+GenotypeReadPerf.jaxb               100000  avgt   25   9050957.940 ± 403521.551  us/op
+GenotypeReadPerf.object                  1  avgt   25        43.193 ±      0.371  us/op
+GenotypeReadPerf.object                 10  avgt   25        65.423 ±      0.748  us/op
+GenotypeReadPerf.object                100  avgt   25       279.793 ±      2.188  us/op
+GenotypeReadPerf.object               1000  avgt   25      1886.943 ±     16.895  us/op
+GenotypeReadPerf.object              10000  avgt   25     18830.820 ±    268.658  us/op
+GenotypeReadPerf.object             100000  avgt   25    273564.198 ±  36077.894  us/op
+GenotypeReadPerf.stream                  1  avgt   25       106.167 ±      0.967  us/op
+GenotypeReadPerf.stream                 10  avgt   25       899.680 ±     11.792  us/op
+GenotypeReadPerf.stream                100  avgt   25      9100.424 ±     79.534  us/op
+GenotypeReadPerf.stream               1000  avgt   25     88677.488 ±    817.563  us/op
+GenotypeReadPerf.stream              10000  avgt   25    911031.414 ±   7758.277  us/op
+GenotypeReadPerf.stream             100000  avgt   25  10284911.531 ± 667552.440  us/op
+*/
