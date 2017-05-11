@@ -27,6 +27,10 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * @version !__version__!
  */
 
+plugins {
+	id "me.champeau.gradle.jmh" version "0.3.1"
+}
+
 apply plugin: 'packaging'
 
 dependencies {
@@ -34,6 +38,12 @@ dependencies {
 	compile Include.Gson
 
 	testCompile Include.TestNG
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+}
+
+jmh {
+	duplicateClassesStrategy = 'warn'
 }
 
 jar.manifest.instruction('Export-Package',
@@ -55,3 +65,8 @@ packaging {
 }
 
 
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
+}
