@@ -47,6 +47,12 @@ public interface Writer<T> {
 		};
 	}
 
+	/* *************************************************************************
+	 * *************************************************************************
+	 * Static factory methods.
+	 * *************************************************************************
+	 * ************************************************************************/
+
 	public static <T> Writer<T> obj(final Writer<? super T>... children) {
 		requireNonNull(children);
 
@@ -61,36 +67,55 @@ public interface Writer<T> {
 		};
 	}
 
+	public static <T> Writer<T> obj(
+		final String name,
+		final Writer<? super T>... children
+	) {
+		requireNonNull(name);
+
+		return (json, data) -> {
+			if (data != null) {
+				json.name(name);
+				json.beginObject();
+				for (Writer<? super T> child : children) {
+					child.write(json, data);
+				}
+				json.endObject();
+			}
+		};
+	}
+
+	public static Writer<String> text() {
+		return JsonWriter::value;
+	}
 
 	public static Writer<String> text(final String name) {
+		requireNonNull(name);
+
 		return (json, data) -> {
-			json.name(name).value(data);
+			if (data != null) {
+				json.name(name).value(data);
+			}
 		};
 	}
 
 	public static <T> Writer<T> text(final String name, final String value) {
-		return (json, data) -> {
-			json.name(name).value(value);
-		};
-	}
+		requireNonNull(name);
 
-	public static Writer<Number> number(final String name) {
 		return (json, data) -> {
-			if (data != null) {
-				json.name(name).value(data);
+			if (value != null) {
+				json.name(name).value(value);
 			}
 		};
 	}
 
 	public static Writer<Number> number() {
-		return (json, data) -> {
-			if (data != null) {
-				json.value(data);
-			}
-		};
+		return JsonWriter::value;
 	}
 
-	public static Writer<Boolean> bool(final String name) {
+	public static Writer<Number> number(final String name) {
+		requireNonNull(name);
+
 		return (json, data) -> {
 			if (data != null) {
 				json.name(name).value(data);
@@ -98,7 +123,54 @@ public interface Writer<T> {
 		};
 	}
 
-	public static <T> Writer<Iterable<T>> array(final String name, final Writer<? super T> writer) {
+	public static Writer<Number> number(final String name, final Number value) {
+		requireNonNull(name);
+
+		return (json, data) -> {
+			if (value != null) {
+				json.name(name).value(value);
+			}
+		};
+	}
+
+
+	public static Writer<Boolean> bool() {
+		return JsonWriter::value;
+	}
+
+	public static Writer<Boolean> bool(final String name) {
+		requireNonNull(name);
+
+		return (json, data) -> {
+			if (data != null) {
+				json.name(name).value(data);
+			}
+		};
+	}
+
+	public static Writer<Boolean> bool(final String name, final Boolean value) {
+		requireNonNull(name);
+
+		return (json, data) -> {
+			if (value != null) {
+				json.name(name).value(value);
+			}
+		};
+	}
+
+	public static <T> Writer<Iterable<T>> array(final Writer<? super T> writer) {
+		return (json, data) -> {
+
+		};
+	}
+
+	public static <T> Writer<Iterable<T>> array(
+		final String name,
+		final Writer<? super T> writer
+	) {
+		requireNonNull(name);
+		requireNonNull(writer);
+
 		return (json, data) -> {
 			if (data != null) {
 				json.name(name);
