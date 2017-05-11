@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
-import org.jenetics.Genotype;
 import org.jenetics.json.stream.Writer;
 
 /**
@@ -46,8 +45,8 @@ public class Writers {
 		public static Writer<org.jenetics.IntegerChromosome> writer() {
 			return obj(
 				text("name", "int-chromosome"),
-				number("min").map(org.jenetics.IntegerChromosome::getMin),
-				number("max").map(org.jenetics.IntegerChromosome::getMax),
+				number("min").map(ch -> ch.getMin()),
+				number("max").map(ch -> ch.getMax()),
 				array("alleles", number())
 					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
             );
@@ -61,8 +60,8 @@ public class Writers {
 		public static Writer<org.jenetics.LongChromosome> writer() {
 			return obj(
 				text("name", "long-chromosome"),
-				number("min").map(org.jenetics.LongChromosome::getMin),
-				number("max").map(org.jenetics.LongChromosome::getMax),
+				number("min").map(ch -> ch.getMin()),
+				number("max").map(ch -> ch.getMax()),
 				array("alleles", number())
 					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
 			);
@@ -76,8 +75,8 @@ public class Writers {
 		public static Writer<org.jenetics.DoubleChromosome> writer() {
 			return obj(
 				text("name", "double-chromosome"),
-				number("min").map(org.jenetics.DoubleChromosome::getMin),
-				number("max").map(org.jenetics.DoubleChromosome::getMax),
+				number("min").map(ch -> ch.getMin()),
+				number("max").map(ch -> ch.getMax()),
 				array("alleles", number())
 					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
 			);
