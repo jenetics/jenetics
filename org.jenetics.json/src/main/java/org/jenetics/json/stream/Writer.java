@@ -53,6 +53,7 @@ public interface Writer<T> {
 	 * *************************************************************************
 	 * ************************************************************************/
 
+	@SafeVarargs
 	public static <T> Writer<T> obj(final Writer<? super T>... children) {
 		requireNonNull(children);
 
@@ -67,6 +68,7 @@ public interface Writer<T> {
 		};
 	}
 
+	@SafeVarargs
 	public static <T> Writer<T> obj(
 		final String name,
 		final Writer<? super T>... children

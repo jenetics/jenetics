@@ -19,11 +19,6 @@
  */
 package org.jenetics.json.stream;
 
-import static org.jenetics.json.stream.Writer.array;
-import static org.jenetics.json.stream.Writer.number;
-import static org.jenetics.json.stream.Writer.obj;
-import static org.jenetics.json.stream.Writer.text;
-
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -31,7 +26,10 @@ import com.google.gson.stream.JsonWriter;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.IntegerChromosome;
+import org.jenetics.DoubleChromosome;
+import org.jenetics.DoubleGene;
+import org.jenetics.Genotype;
+import org.jenetics.json.Writers;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -40,18 +38,15 @@ public class WriterTest {
 
 	@Test
 	public void write() throws IOException {
-		final Writer<IntegerChromosome> writer = obj(
-			text("name", "int-chromosome"),
-			number("min").map(IntegerChromosome::getMin),
-			number("max").map(IntegerChromosome::getMax),
-			array("alleles", number())
-				.map(ch -> ch.toSeq().map(g -> g.getAllele()))
+		final Genotype<DoubleGene> genotype = Genotype.of(
+			DoubleChromosome.of(0.0, 1.0, 2),
+			2
 		);
 
-		final IntegerChromosome chromosome = IntegerChromosome.of(0, 10, 10);
-
 		final JsonWriter json = new JsonWriter(new OutputStreamWriter(System.out));
-		writer.write(json, chromosome);
+		Writers.Genotype.writer(Writers.DoubleChromosome.writer())
+			.write(json, genotype);
+
 		json.close();
 	}
 

@@ -19,8 +19,16 @@
  */
 package org.jenetics.json;
 
+import static org.jenetics.json.stream.Writer.array;
+import static org.jenetics.json.stream.Writer.number;
 import static org.jenetics.json.stream.Writer.obj;
+import static org.jenetics.json.stream.Writer.text;
 
+import java.util.Collection;
+
+import org.jenetics.Chromosome;
+import org.jenetics.Gene;
+import org.jenetics.Genotype;
 import org.jenetics.json.stream.Writer;
 
 /**
@@ -36,9 +44,174 @@ public class Writers {
 		private IntegerChromosome() {}
 
 		public static Writer<org.jenetics.IntegerChromosome> writer() {
-			obj(
-
+			return obj(
+				text("name", "int-chromosome"),
+				number("min").map(org.jenetics.IntegerChromosome::getMin),
+				number("max").map(org.jenetics.IntegerChromosome::getMax),
+				array("alleles", number())
+					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
             );
+		}
+
+	}
+
+	public static final class LongChromosome {
+		private LongChromosome() {}
+
+		public static Writer<org.jenetics.LongChromosome> writer() {
+			return obj(
+				text("name", "long-chromosome"),
+				number("min").map(org.jenetics.LongChromosome::getMin),
+				number("max").map(org.jenetics.LongChromosome::getMax),
+				array("alleles", number())
+					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
+			);
+		}
+
+	}
+
+	public static final class DoubleChromosome {
+		private DoubleChromosome() {}
+
+		public static Writer<org.jenetics.DoubleChromosome> writer() {
+			return obj(
+				text("name", "double-chromosome"),
+				number("min").map(org.jenetics.DoubleChromosome::getMin),
+				number("max").map(org.jenetics.DoubleChromosome::getMax),
+				array("alleles", number())
+					.map(ch -> ch.toSeq().map(g -> g.getAllele()))
+			);
+		}
+
+	}
+
+	/**
+	 * <pre> {@code
+	 * {
+	 *   "length": 2,
+	 *   "genotypes": [
+	 *     {
+	 *       "length": 2,
+	 *       "ngenes": 10,
+	 *       "chromosomes": [
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         },
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         }
+	 *       ]
+	 *     },
+	 *     {
+	 *       "length": 2,
+	 *       "ngenes": 10,
+	 *       "chromosomes": [
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         },
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         }
+	 *       ]
+	 *     }
+	 *   ]
+	 * }
+	 * }</pre>
+	 */
+	public static final class Genotype {
+		private Genotype() {}
+
+
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		Writer<org.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
+			return obj(
+				number("length").map(org.jenetics.Genotype<G>::length),
+				number("ngenes").map(org.jenetics.Genotype<G>::getNumberOfGenes),
+				array("chromosomes", writer).map(gt -> cast(gt.toSeq()))
+			);
+		}
+
+		@SuppressWarnings("unchecked")
+		private static <A, B> B cast(final A value) {
+			return (B)value;
+		}
+	}
+
+	/**
+	 * <pre> {@code
+	 * {
+	 *   "length": 2,
+	 *   "genotypes": [
+	 *     {
+	 *       "length": 2,
+	 *       "ngenes": 10,
+	 *       "chromosomes": [
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         },
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         }
+	 *       ]
+	 *     },
+	 *     {
+	 *       "length": 2,
+	 *       "ngenes": 10,
+	 *       "chromosomes": [
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         },
+	 *         {
+	 *           "name": "int-chromosome",
+	 *           "min": 23,
+	 *           "max": 12321,
+	 *           "alleles": [1, 2, 3, 4, 5]
+	 *         }
+	 *       ]
+	 *     }
+	 *   ]
+	 * }
+	 * }</pre>
+	 */
+	public static final class Genotypes {
+		private Genotypes() {}
+
+		public static <
+			A,
+			G extends Gene<A, G>,
+			C extends Chromosome<G>
+		>
+		Writer<Collection<org.jenetics.Genotype<G>>>
+		writer(final Writer<? super C> writer) {
+			return obj(
+				number("length").map(Collection::size),
+				array("genotypes", Genotype.writer(writer))
+			);
 		}
 
 	}
