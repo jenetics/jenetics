@@ -592,7 +592,7 @@ pagenumbering{arabic}
 \end_layout
 
 \begin_layout Chapter
-Basics
+Fundamentals
 \end_layout
 
 \begin_layout Standard
@@ -12814,6 +12814,28 @@ DoubleMoments moments = chromosome.stream()
 
 \end_layout
 
+\begin_layout Chapter
+Advanced topics
+\end_layout
+
+\begin_layout Standard
+This section describes some advanced topics for setting up an evolution
+ 
+\family typewriter
+Engine
+\family default
+ or 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ It contains some problem encoding examples and how to override the default
+ validation strategy of the given Genotypes.
+ The last section contains a detailed description of the implemented termination
+ strategies.
+\end_layout
+
 \begin_layout Section
 Extending
 \family sans
@@ -14653,28 +14675,6 @@ Function
 \end_layout
 
 \begin_layout Section
-Advanced topics
-\end_layout
-
-\begin_layout Standard
-This section describes some advanced topics for setting up an evolution
- 
-\family typewriter
-Engine
-\family default
- or 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-.
- It contains some problem encoding examples and how to override the default
- validation strategy of the given Genotypes.
- The last section contains a detailed description of the implemented termination
- strategies.
-\end_layout
-
-\begin_layout Subsection
 Encoding
 \begin_inset CommandInset label
 LatexCommand label
@@ -14789,7 +14789,7 @@ codecs
  class.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Real function
 \begin_inset CommandInset label
 LatexCommand label
@@ -15118,7 +15118,7 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Scalar function
 \begin_inset CommandInset label
 LatexCommand label
@@ -15474,7 +15474,7 @@ Value()
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Vector function
 \begin_inset CommandInset label
 LatexCommand label
@@ -15708,7 +15708,7 @@ static double[] toVector(final Genotype<DoubleGene> gt) {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Affine transformation
 \begin_inset CommandInset label
 LatexCommand label
@@ -16270,7 +16270,7 @@ Alterer
  to the list of alterers.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Graph
 \begin_inset CommandInset label
 LatexCommand label
@@ -16765,7 +16765,7 @@ final double[][] array = gt.stream()
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Codec
 \begin_inset Index idx
 status collapsed
@@ -17150,7 +17150,7 @@ codecs
  The following sub-sections shows some of the implementation of this methods.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Scalar codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -17373,7 +17373,7 @@ class Main {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Vector codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -17641,7 +17641,7 @@ class Main {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Subset codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -18130,7 +18130,7 @@ public class SubsetSum
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Permutation codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -18459,7 +18459,7 @@ public class TSM {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Composite codec
 \end_layout
 
@@ -18962,7 +18962,7 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Problem
 \begin_inset Index idx
 status collapsed
@@ -19256,7 +19256,7 @@ Engine
  definition.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Validation
 \begin_inset CommandInset label
 LatexCommand label
@@ -19695,7 +19695,7 @@ reference "sec:Extending-Jenetics"
  for a more detailed description on how to implement this classes.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Termination
 \begin_inset CommandInset label
 LatexCommand label
@@ -20067,7 +20067,7 @@ Strategy
  will always work as expected.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fixed generation
 \begin_inset Index idx
 status collapsed
@@ -20236,7 +20236,7 @@ maximal
  value.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Steady fitness
 \begin_inset Index idx
 status collapsed
@@ -20577,7 +20577,7 @@ steady fitness
  Only the mean values of the maximal fitness is shown.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Evolution time
 \begin_inset Index idx
 status collapsed
@@ -20739,7 +20739,7 @@ While running the tests, all other CPU intensive process has been stopped.
  of evolved generations.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fitness threshold
 \begin_inset Index idx
 status collapsed
@@ -20875,7 +20875,7 @@ easily
  achieved.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fitness convergence
 \begin_inset Index idx
 status collapsed
@@ -21323,7 +21323,7 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolution performance
 \begin_inset Index idx
 status collapsed
@@ -21472,7 +21472,7 @@ Selector
 s is much better than a random search.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolution strategies
 \begin_inset Index idx
 status collapsed
@@ -21569,7 +21569,7 @@ Engine
 -ES.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -21905,7 +21905,7 @@ Mutation probability
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -22117,7 +22117,7 @@ This has the risk, that very fit parents can defeat other individuals over
  and over again, which leads to a prematurely convergence to a local optimum.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Internals
 \begin_inset Index idx
 status collapsed
@@ -22162,7 +22162,7 @@ internal
  package can be changed and removed without announcement.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 PRNG testing
 \begin_inset Index idx
 status collapsed
@@ -22548,7 +22548,7 @@ LCG64ShiftRandom
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Random seeding
 \begin_inset Index idx
 status collapsed
@@ -24098,7 +24098,7 @@ reference "lis:Weasel-program"
 Appendix
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Examples
 \begin_inset Index idx
 status collapsed
@@ -24166,7 +24166,7 @@ reference "sec:Build"
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Ones counting
 \begin_inset CommandInset label
 LatexCommand label
@@ -24322,7 +24322,7 @@ Evolution statistics
  termination criteria—finding no better result after 7 consecutive generations.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Real function
 \begin_inset CommandInset label
 LatexCommand label
@@ -24511,7 +24511,7 @@ exact
  You can also see, that we reached the final result after 19 generations.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Rastrigin function
 \begin_inset CommandInset label
 LatexCommand label
@@ -24742,7 +24742,7 @@ footnotesize}
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 0/1 Knapsack
 \begin_inset CommandInset label
 LatexCommand label
@@ -24869,7 +24869,7 @@ footnotesize}
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Traveling salesman
 \begin_inset CommandInset label
 LatexCommand label
@@ -25049,7 +25049,7 @@ The listing above shows the output generated by our example.
  As you can see, the GA has found the shortest path, in reverse order.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolving images
 \begin_inset Index idx
 status collapsed
@@ -25755,7 +25755,7 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
 100
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Build
 \begin_inset Index idx
 status collapsed
@@ -26762,7 +26762,7 @@ Gradle
 'io.jenetics:jenetics:@__version__@'
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph
 License
 \begin_inset Index idx
 status collapsed
