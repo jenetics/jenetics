@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass book
+\textclass article
 \begin_preamble
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
@@ -538,65 +538,13 @@ http://creativecommons.org/licenses/by-sa/3.0/at/
 \end_layout
 
 \begin_layout Standard
-\noindent
 \begin_inset Newpage pagebreak
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset CommandInset toc
-LatexCommand tableofcontents
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset FloatList figure
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pagenumbering{arabic}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Part
-Jenetics
-\end_layout
-
-\begin_layout Standard
+\begin_layout Abstract
 
 \family sans
 \series bold
@@ -688,7 +636,62 @@ Stream
  project and gives examples and best practice tips.
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Standard
+\noindent
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Introduction
 \end_layout
 
@@ -1501,7 +1504,7 @@ Engine\SpecialChar softhyphen
  is fulfilled.
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Section
 Architecture
 \end_layout
 
@@ -2060,7 +2063,7 @@ Population
 s.
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Section
 Base classes
 \begin_inset Index idx
 status collapsed
@@ -2177,7 +2180,7 @@ org\SpecialChar softhyphen
  package.
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Domain classes
 \begin_inset Index idx
 status collapsed
@@ -2345,7 +2348,7 @@ s.
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Gene
 \begin_inset CommandInset label
 LatexCommand label
@@ -2601,7 +2604,7 @@ Gene
  types.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Chromosome
 \begin_inset CommandInset label
 LatexCommand label
@@ -2780,7 +2783,7 @@ Gene
  sequence.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Genotype
 \begin_inset CommandInset label
 LatexCommand label
@@ -3805,7 +3808,7 @@ reference "subsec:Scalar-codec"
  for an advanced description on how to use the predefined scalar codecs.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Phenotype
 \begin_inset CommandInset label
 LatexCommand label
@@ -4050,7 +4053,7 @@ Population
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Population
 \begin_inset CommandInset label
 LatexCommand label
@@ -4264,7 +4267,7 @@ theoretical
  and parameters, for the problem to be solved.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Selector
 \begin_inset Index idx
 status collapsed
@@ -5235,7 +5238,7 @@ key "Sivanandam2010"
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Alterer
 \begin_inset Index idx
 status collapsed
@@ -6884,7 +6887,7 @@ The crossover parameter,
  
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Engine classes
 \begin_inset CommandInset label
 LatexCommand label
@@ -9464,7 +9467,7 @@ live
  view on the evolution progress.
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Section
 Nuts and bolts
 \begin_inset CommandInset label
 LatexCommand label
@@ -9475,7 +9478,7 @@ name "sec:Nuts-and-bolts"
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Concurrency
 \begin_inset Index idx
 status collapsed
@@ -9513,7 +9516,7 @@ The
  immutable and re-entrant.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Basic configuration
 \begin_inset Index idx
 status collapsed
@@ -9794,7 +9797,7 @@ Such a configuration can be useful for performing reproducible (performance)
  tests, without the uncertainty of a concurrent execution environment.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsubsection
 Concurrency tweaks
 \begin_inset Index idx
 status collapsed
@@ -10211,7 +10214,7 @@ https://www.youtube.com/watch?v=rUDGQQ83ZtI
 
 \end_layout
 
-\begin_layout Section
+\begin_layout Subsection
 Randomness
 \begin_inset Index idx
 status collapsed
@@ -11583,7 +11586,7 @@ The default PRNG used by the
  values).
 \end_layout
 
-\begin_layout Chapter
+\begin_layout Subsection
 Serialization
 \begin_inset Index idx
 status collapsed
@@ -20673,11 +20676,8 @@ Nano\SpecialChar softhyphen
 Clock
 \family default
  for measuring the time.
- To have the possibility to define a different 
-\family typewriter
-Clock
-\family default
- implementation is especially useful for testing purposes.
+ To have the possibility to define a different Clock implementation is especiall
+y useful for testing purposes.
 \end_layout
 
 \begin_layout Standard
@@ -24089,22 +24089,6 @@ reference "lis:Weasel-program"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Part
-Modules
-\end_layout
-
-\begin_layout Chapter
-Serialization
-\end_layout
-
-\begin_layout Section
-jenetics.xml
-\end_layout
-
-\begin_layout Section
-jenetics.json
 \end_layout
 
 \begin_layout Standard
