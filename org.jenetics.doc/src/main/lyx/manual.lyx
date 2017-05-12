@@ -14,6 +14,23 @@
 
 \fi % end if pdflatex is used
 
+\renewcommand\part{%
+   \if@openright
+     \cleardoublepage
+   \else
+     \clearpage
+   \fi
+   \thispagestyle{empty}%
+   \if@twocolumn
+     \onecolumn
+     \@tempswatrue
+   \else
+     \@tempswafalse
+   \fi
+   \null\vfil
+   \secdef\@part\@spart}
+\makeatother
+
 \usepackage{listings}
 %\usepackage{listingsutf8}
 \usepackage{color}
@@ -454,7 +471,7 @@ status open
 \noindent
 \align left
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -524,7 +541,7 @@ License
  Attribution-ShareAlike 3.0 Austria License.
  To view a copy of this license, visit 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -573,6 +590,26 @@ LatexCommand tableofcontents
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Jenetics
 \end_layout
 
 \begin_layout Standard
@@ -676,15 +713,12 @@ Stream
 Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
- This manual describes the concepts implemented in the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- project and gives examples and best practice tips.
+ 
+\end_layout
+
+\begin_layout Standard
+This chapter describes the design concepts and its implementation.
+ It also gives some basic examples and best practice tips.
 \end_layout
 
 \begin_layout Section
@@ -24087,14 +24121,46 @@ reference "lis:Weasel-program"
 .
 \end_layout
 
-\begin_layout Part*
+\begin_layout Part
+Modules
+\end_layout
+
+\begin_layout Chapter
+Serialization
+\end_layout
+
+\begin_layout Section
+
+\family typewriter
+jenetics.xml
+\end_layout
+
+\begin_layout Standard
+asdf
+\end_layout
+
+\begin_layout Section
+
+\family typewriter
+jenetics.json
+\end_layout
+
+\begin_layout Standard
+asdf
+\end_layout
+
+\begin_layout Chapter
+PRNG
+\end_layout
+
+\begin_layout Part
 Appendix
 \end_layout
 
 \begin_layout Chapter
 Examples
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples
