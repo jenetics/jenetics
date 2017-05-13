@@ -17417,7 +17417,7 @@ name "subsec:Vector-codec"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Vector codec
@@ -17427,7 +17427,7 @@ Vector codec
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Codec!Vector
@@ -17685,7 +17685,7 @@ name "subsec:Subset-codec"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Subset codec
@@ -17695,7 +17695,7 @@ Subset codec
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Codec!Subset
@@ -17952,7 +17952,7 @@ class Main {
 \begin_layout Paragraph
 Fixed-size subsets
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The algorithm for choosing subsets based on a FORTRAN77 version, originally
@@ -17987,11 +17987,11 @@ best
  subset of a given, fixed size.
  A classical usage for this encoding is the Subset sum problem
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -18023,13 +18023,13 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
  sums to zero.
  The problem is NP-complete
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 \emph on
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -18174,7 +18174,7 @@ name "subsec:Permutation-codec"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Permutation codec
@@ -18184,7 +18184,7 @@ Permutation codec
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Codec!Permutation
@@ -18999,7 +18999,7 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 \begin_layout Section
 Problem
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Problem
@@ -19300,7 +19300,7 @@ name "subsec:Validation"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Validation
@@ -19419,7 +19419,7 @@ tr
 \family default
 ies)
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -19569,11 +19569,11 @@ prototype
 \emph default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -19739,7 +19739,7 @@ name "subsec:Termination"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination
@@ -19785,6 +19785,7 @@ Stream\SpecialChar softhyphen
 .limit(r -> true)
 \family default
  will create an infinite evolution stream.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -19799,13 +19800,13 @@ org\SpecialChar softhyphen
  class.
  The termination strategies where tested by solving the Knapsack problem
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The actual implementation used for the termination tests can be found in
  the Github repository: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -20104,7 +20105,7 @@ Strategy
 \begin_layout Subsection
 Fixed generation
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Fixed generation
@@ -20114,7 +20115,7 @@ Termination!Fixed generation
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Fixed generation
@@ -20273,7 +20274,7 @@ maximal
 \begin_layout Subsection
 Steady fitness
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Steady fitness
@@ -20283,7 +20284,7 @@ Termination!Steady fitness
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Steady fitness
@@ -20614,7 +20615,7 @@ steady fitness
 \begin_layout Subsection
 Evolution time
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Evolution time
@@ -20624,7 +20625,7 @@ Termination!Evolution time
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution time
@@ -20760,7 +20761,7 @@ reference "fig:Execution-time-diagram"
  Except for very small execution times, the evaluated generations per time
  unit stays quite stable.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 While running the tests, all other CPU intensive process has been stopped.
@@ -20776,7 +20777,7 @@ While running the tests, all other CPU intensive process has been stopped.
 \begin_layout Subsection
 Fitness threshold
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Fitness threshold
@@ -20786,7 +20787,7 @@ Termination!Fitness threshold
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Fitness threshold
@@ -20912,7 +20913,7 @@ easily
 \begin_layout Subsection
 Fitness convergence
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Fitness convergence
@@ -20922,7 +20923,7 @@ Termination!Fitness convergence
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Fitness convergence
@@ -21084,11 +21085,11 @@ reference "lis:Mean-fitness-convergence"
 
 ) creates a fitness convergence predicate, which uses the moving average
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -21360,7 +21361,7 @@ A termination method that stops the evolution when a user-specified percentage
 \begin_layout Section
 Evolution performance
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution!performance
@@ -21387,7 +21388,7 @@ Monte\SpecialChar softhyphen
 Carlo\SpecialChar softhyphen
 Selector
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Monte Carlo selector
@@ -21509,7 +21510,7 @@ s is much better than a random search.
 \begin_layout Section
 Evolution strategies
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution strategy
@@ -21519,7 +21520,7 @@ Evolution strategy
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 ES
@@ -21555,7 +21556,7 @@ Evolutionary Computation
 .
  ES uses truncation selection
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See 
@@ -21572,7 +21573,7 @@ reference "par:Truncation-selector"
 
  for selecting the individuals and usually mutation
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See 
@@ -21609,7 +21610,7 @@ Engine
 
  evolution strategy
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution strategy!
@@ -21878,7 +21879,7 @@ Survivors size of
  values pushes the algorithm towards exploitative search, because only the
  best individuals are used for reproduction.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 As you can see in listing 
@@ -21945,7 +21946,7 @@ Mutation probability
 
  evolution strategy
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Evolution strategy!
@@ -22154,7 +22155,7 @@ This has the risk, that very fit parents can defeat other individuals over
 \begin_layout Chapter
 Internals
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Internals
@@ -22199,7 +22200,7 @@ internal
 \begin_layout Section
 PRNG testing
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG testing
@@ -22209,7 +22210,7 @@ PRNG testing
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!testing
@@ -22235,13 +22236,13 @@ dieharder
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 From Robert G.
  Brown: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22300,7 +22301,7 @@ Harder
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Dieharder
@@ -22398,7 +22399,7 @@ LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
 Random
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 LCG64ShiftRandom
@@ -22454,11 +22455,11 @@ Random
 \family default
  class.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22585,7 +22586,7 @@ LCG64ShiftRandom
 \begin_layout Section
 Random seeding
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Seeding
@@ -22595,7 +22596,7 @@ Seeding
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!seeding
@@ -22609,7 +22610,7 @@ Random!seeding
 \begin_layout Standard
 The PRNGs
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -22734,7 +22735,7 @@ dieharder
 \family default
  report.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The detailed test report can be found in the source of the Nano\SpecialChar softhyphen
@@ -22743,7 +22744,7 @@ Random
  class.
  
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -22971,12 +22972,12 @@ dieharder
 \family default
  report
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Full report: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23231,7 +23232,7 @@ lcg64_shift
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This class is part of the 
@@ -23244,7 +23245,7 @@ target "http://numbercrunch.de/trng/"
 
  library: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23287,12 +23288,12 @@ $ java -cp org.jenetics-@__version__@.jar
 \begin_layout Standard
 leads to the statistics summary
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Full report: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23502,13 +23503,13 @@ org.jenetics.tool
 \family typewriter
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 \family typewriter
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23536,13 +23537,13 @@ org.jenetix
 \family typewriter
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
 \family typewriter
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23582,7 +23583,7 @@ name "subsec:Weasel-program"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Weasel program
@@ -23596,11 +23597,11 @@ Weasel program
 \begin_layout Standard
 The Weasel program
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -23625,7 +23626,7 @@ selection
 \emph default
 .
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The classes are located in the 
@@ -23793,7 +23794,7 @@ Jenetics
 Weasel\SpecialChar softhyphen
 Selector
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 WeaselSelector
@@ -23810,7 +23811,7 @@ Mutator
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 WeaselMutator
@@ -24129,6 +24130,11 @@ Modules
 Serialization
 \end_layout
 
+\begin_layout Standard
+When used in a distributed environment, there is the need of serializing
+ a collection of individuals and send it to another evolution engine.
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
@@ -24151,6 +24157,13 @@ asdf
 
 \begin_layout Chapter
 PRNG
+\end_layout
+
+\begin_layout Standard
+The prngine module contains pseudo random number generator implementations,
+ which fit nicely into the Jenetics library.
+ The module itself has no additional dependencies and can be used without
+ Jenetics.
 \end_layout
 
 \begin_layout Part
