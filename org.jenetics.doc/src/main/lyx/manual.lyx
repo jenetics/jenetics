@@ -22999,7 +22999,7 @@ netics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -24137,10 +24137,16 @@ When used in a distributed environment, there is the need of serializing
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="3" columns="5">
+<lyxtabular version="3" rows="7" columns="4">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -24150,7 +24156,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Chromosome count
 \end_layout
 
 \end_inset
@@ -24159,7 +24165,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Java serialization
 \end_layout
 
 \end_inset
@@ -24168,16 +24174,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+JAXB
 \end_layout
 
 \end_inset
@@ -24186,7 +24183,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+XML writer
 \end_layout
 
 \end_inset
@@ -24197,7 +24194,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+1
 \end_layout
 
 \end_inset
@@ -24206,7 +24203,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+0.0017 MiB
 \end_layout
 
 \end_inset
@@ -24215,16 +24212,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+0.0045 MiB
 \end_layout
 
 \end_inset
@@ -24233,7 +24221,159 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
+0.0035 MiB
+\end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0090 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0439 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0346 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0812 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4379 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.3459 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8039 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.3772 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.4578 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8.0309 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43.7730 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34.5795 MiB
 \end_layout
 
 \end_inset
@@ -24244,7 +24384,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+100000
 \end_layout
 
 \end_inset
@@ -24253,7 +24393,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+80.3003 MiB
 \end_layout
 
 \end_inset
@@ -24262,16 +24402,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+437.7283 MiB
 \end_layout
 
 \end_inset
@@ -24280,7 +24411,7 @@ When used in a distributed environment, there is the need of serializing
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+345.7940 MiB
 \end_layout
 
 \end_inset
@@ -24291,6 +24422,57 @@ When used in a distributed environment, there is the need of serializing
 \end_inset
 
 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Marshaling size
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Foo bar
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=1, object=0.0017 MiB, jaxb=0.0045 MiB, stream=0.0035 MiB]
+ 
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=10, object=0.0090 MiB, jaxb=0.0439 MiB, stream=0.0346 MiB]
+ 
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=100, object=0.0812 MiB, jaxb=0.4379 MiB, stream=0.3459 MiB]
+ 
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=1000, object=0.8039 MiB, jaxb=4.3772 MiB, stream=3.4578 MiB]
+ 
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=10000, object=8.0309 MiB, jaxb=43.7730 MiB, stream=34.5795
+ MiB] 
+\end_layout
+
+\begin_layout Standard
+Size[chromosomes=100000, object=80.3003 MiB, jaxb=437.7283 MiB, stream=345.7940
+ MiB]
 \end_layout
 
 \begin_layout Standard
