@@ -23,15 +23,12 @@ set format y "   10^{%L}"
 set key right bottom
 set style fill empty
 
-set size 1, 0.60
-set origin 0, 0.40
-set bmargin 0.1
+set bmargin
+set origin 0.0, 0.0
+set tmargin 1
 set format x "10^{%L}"
 set ylabel "{/:Bold Marshaling time [µs]}"
 set xlabel "{/:Bold Chromosomes count}"
-
-set lmargin 10
-set rmargin 2
 
 plot 'genotype_write_perf.dat' using 1:4 with linespoints ls 1 title 'JAXB', \
 		'' using 1:6 with linespoints ls 2 title 'Java serialization', \
