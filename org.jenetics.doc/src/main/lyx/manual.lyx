@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass article
+\textclass book
 \begin_preamble
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
@@ -13,6 +13,23 @@
  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
 
 \fi % end if pdflatex is used
+
+\renewcommand\part{%
+   \if@openright
+     \cleardoublepage
+   \else
+     \clearpage
+   \fi
+   \thispagestyle{empty}%
+   \if@twocolumn
+     \onecolumn
+     \@tempswatrue
+   \else
+     \@tempswafalse
+   \fi
+   \null\vfil
+   \secdef\@part\@spart}
+\makeatother
 
 \usepackage{listings}
 %\usepackage{listingsutf8}
@@ -513,7 +530,7 @@ target "http://creativecommons.org/licenses/by-sa/3.0/at/"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 License
@@ -544,7 +561,58 @@ http://creativecommons.org/licenses/by-sa/3.0/at/
 
 \end_layout
 
-\begin_layout Abstract
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Fundamentals
+\end_layout
+
+\begin_layout Standard
 
 \family sans
 \series bold
@@ -625,70 +693,12 @@ Stream
 Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
- This manual describes the concepts implemented in the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- project and gives examples and best practice tips.
+ 
 \end_layout
 
 \begin_layout Standard
-\noindent
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset toc
-LatexCommand tableofcontents
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset FloatList figure
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Newpage pagebreak
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pagenumbering{arabic}
-\end_layout
-
-\end_inset
-
-
+This chapter describes the design concepts and its implementation.
+ It also gives some basic examples and best practice tips.
 \end_layout
 
 \begin_layout Section
@@ -711,7 +721,7 @@ status collapsed
 \begin_layout Plain Layout
 The library is build with and depends on Java SE 8: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -1066,7 +1076,7 @@ Hello World
 
  GA
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Hello World
@@ -1186,7 +1196,7 @@ Genotype
  
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:Domain-classes-Genotype"
+reference "subsubsec:Domain-classes-Genotype"
 
 \end_inset
 
@@ -2352,7 +2362,7 @@ s.
 Gene
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Domain-classes-Gene"
+name "subsubsec:Domain-classes-Gene"
 
 \end_inset
 
@@ -2608,7 +2618,7 @@ Gene
 Chromosome
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Domain-classes-Chromosome"
+name "subsubsec:Domain-classes-Chromosome"
 
 \end_inset
 
@@ -2787,7 +2797,7 @@ Gene
 Genotype
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Domain-classes-Genotype"
+name "subsubsec:Domain-classes-Genotype"
 
 \end_inset
 
@@ -3812,7 +3822,7 @@ reference "subsec:Scalar-codec"
 Phenotype
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Domain-classes-Phenotype"
+name "subsubsec:Domain-classes-Phenotype"
 
 \end_inset
 
@@ -3871,7 +3881,7 @@ Function
  See section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:Fitness-function"
+reference "subsubsec:Fitness-function"
 
 \end_inset
 
@@ -4057,7 +4067,7 @@ Population
 Population
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Domain-classes-Population"
+name "subsubsec:Domain-classes-Population"
 
 \end_inset
 
@@ -4325,7 +4335,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -5453,7 +5463,7 @@ The mutator has to deal with the problem, that the genes are arranged in
  structure (see chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "subsec:Domain-classes-Genotype"
+reference "subsubsec:Domain-classes-Genotype"
 
 \end_inset
 
@@ -6186,7 +6196,7 @@ reference "fig:3-point-crossover"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -6506,7 +6516,7 @@ key "chawdhry1998soft"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -6682,7 +6692,7 @@ name "par:Line-crossover"
 \begin_layout Standard
 The line crossover
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The line crossover, also known as line recombination, was originally described
@@ -6975,7 +6985,7 @@ plugged
 Fitness function
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Fitness-function"
+name "subsubsec:Fitness-function"
 
 \end_inset
 
@@ -7236,7 +7246,7 @@ Comparable
 Fitness scaler
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Fitness-scaler"
+name "subsubsec:Fitness-scaler"
 
 \end_inset
 
@@ -7410,7 +7420,7 @@ height "1pt"
 Engine
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Engine"
+name "subsubsec:Engine"
 
 \end_inset
 
@@ -7628,7 +7638,7 @@ Stream
 , which is used for controlling the evolution process—see section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:EvolutionStream"
+reference "subsubsec:EvolutionStream"
 
 \end_inset
 
@@ -7777,7 +7787,7 @@ Engine
  (See section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:Fitness-function"
+reference "subsubsec:Fitness-function"
 
 \end_inset
 
@@ -7798,7 +7808,7 @@ Engine
  (See section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:Fitness-scaler"
+reference "subsubsec:Fitness-scaler"
 
 \end_inset
 
@@ -7840,7 +7850,7 @@ Genotype
 \family typewriter
 genotypeValidator
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Validation
@@ -7852,7 +7862,7 @@ Validation
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Genotype!Validation
@@ -8141,7 +8151,7 @@ Engine
 EvolutionStream
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:EvolutionStream"
+name "subsubsec:EvolutionStream"
 
 \end_inset
 
@@ -8202,7 +8212,7 @@ status collapsed
 It is recommended to make yourself familiar with the Java Stream API.
  A good introduction can be found here: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -8636,7 +8646,7 @@ final EvolutionStream<DoubleGene, Double> stream =
 EvolutionResult
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:EvolutionResult"
+name "subsubsec:EvolutionResult"
 
 \end_inset
 
@@ -8668,7 +8678,7 @@ value
  described in section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:EvolutionStream"
+reference "subsubsec:EvolutionStream"
 
 \end_inset
 
@@ -8755,7 +8765,7 @@ name "lis:EvolutionResult-class"
 Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:EvolutionResult"
+reference "subsubsec:EvolutionResult"
 
 \end_inset
 
@@ -8939,7 +8949,7 @@ Genotype<DoubleGene> result = stream
 EvolutionStatistics
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:EvolutionStatistics"
+name "subsubsec:EvolutionStatistics"
 
 \end_inset
 
@@ -9800,7 +9810,7 @@ Such a configuration can be useful for performing reproducible (performance)
 \begin_layout Subsubsection
 Concurrency tweaks
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Concurrency!tweaks
@@ -9856,7 +9866,7 @@ shold
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Java property!splitThreshold
@@ -9866,7 +9876,7 @@ Java property!splitThreshold
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Concurrency!splitThreshold
@@ -9896,7 +9906,7 @@ Count()
 \family default
  method.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Excerpt from the Javadoc: 
@@ -9935,7 +9945,7 @@ Count
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Java property!maxSurplusQueuedTaskCount
@@ -9945,7 +9955,7 @@ Java property!maxSurplusQueuedTaskCount
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Concurrency!maxSurplusQueuedTaskCount
@@ -10094,7 +10104,7 @@ Service
  overhead.
  The original population is divided into a fixed number
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The number of sub-populations actually depends on the number of available
@@ -10127,7 +10137,7 @@ Size
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Java property!maxBatchSize
@@ -10137,7 +10147,7 @@ Java property!maxBatchSize
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Concurrency!maxBatchSize
@@ -10217,7 +10227,7 @@ https://www.youtube.com/watch?v=rUDGQQ83ZtI
 \begin_layout Subsection
 Randomness
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Randomness
@@ -10227,7 +10237,7 @@ Randomness
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random
@@ -10252,7 +10262,7 @@ In general, GAs heavily depends on
 \emph default
  random number generators (PRNG)
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG
@@ -10285,7 +10295,7 @@ Registry
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random!Registry
@@ -10307,7 +10317,7 @@ Random
 \family default
  engine
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random!Engine
@@ -10636,7 +10646,7 @@ Random seeding
 \series default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!Random seeding
@@ -10646,7 +10656,7 @@ PRNG!Random seeding
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random seeding
@@ -10698,7 +10708,7 @@ concurrent
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 This is also expressed by Donald Knuth’s advice: 
@@ -10738,7 +10748,7 @@ Parameterization
 \series default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!Parameterization
@@ -10772,7 +10782,7 @@ Block splitting
 \series default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!Block splitting
@@ -10782,7 +10792,7 @@ PRNG!Block splitting
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Block splitting
@@ -10889,7 +10899,7 @@ Leapfrog
 \series default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!Leapfrog
@@ -10899,7 +10909,7 @@ PRNG!Leapfrog
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Leapfrog
@@ -10994,7 +11004,7 @@ Leapfrogging
 \family typewriter
 LCG64ShiftRandom
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Random!LCG64ShiftRandom
@@ -11004,7 +11014,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!
@@ -11016,7 +11026,7 @@ LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 LCG64ShiftRandom
@@ -11054,7 +11064,7 @@ target "http://numbercrunch.de/trng/"
 
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -11239,7 +11249,7 @@ jump2
 \begin_layout Paragraph
 Runtime performance
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 PRNG!Performance
@@ -11264,7 +11274,7 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
@@ -11589,7 +11599,7 @@ The default PRNG used by the
 \begin_layout Subsection
 Serialization
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Serialization
@@ -11788,7 +11798,7 @@ Stream
 \family default
  package, supports native Java serialization and JAXB
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 JAXB
@@ -11902,7 +11912,7 @@ reference "fig:Genotype-structure"
  on page 
 \begin_inset CommandInset ref
 LatexCommand pageref
-reference "subsec:Domain-classes-Genotype"
+reference "subsubsec:Domain-classes-Genotype"
 
 \end_inset
 
@@ -11980,7 +11990,7 @@ IO
 \family default
  class can also be used for serializing own JAXB
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 JAXB
@@ -11990,7 +12000,7 @@ JAXB
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Serialization!JAXB
@@ -12234,7 +12244,7 @@ org.jenetics.stat
 \family typewriter
 org.jenetics.util.Seq
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Seq
@@ -12459,7 +12469,7 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 \family typewriter
 org.jenetics.stat
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Statistics
@@ -12818,6 +12828,28 @@ DoubleMoments moments = chromosome.stream()
 
 \end_layout
 
+\begin_layout Chapter
+Advanced topics
+\end_layout
+
+\begin_layout Standard
+This section describes some advanced topics for setting up an evolution
+ 
+\family typewriter
+Engine
+\family default
+ or 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ It contains some problem encoding examples and how to override the default
+ validation strategy of the given Genotypes.
+ The last section contains a detailed description of the implemented termination
+ strategies.
+\end_layout
+
 \begin_layout Section
 Extending
 \family sans
@@ -12859,7 +12891,7 @@ The
 \begin_layout Subsection
 Genes
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Gene
@@ -12922,7 +12954,7 @@ For implementing your own gene type you have to implement the
 \family default
 ()
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Allele
@@ -13192,7 +13224,7 @@ AnyGene
 \family default
  example
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 AnyGene
@@ -13304,7 +13336,7 @@ PartiallyMatchedCrossover
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Chromosome
@@ -13554,7 +13586,7 @@ AnyChromosome
 \family default
  example
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 AnyChromosome
@@ -13601,7 +13633,7 @@ Codec
 \family default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 See section 
@@ -13653,7 +13685,7 @@ Alterer
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Selector
@@ -14004,7 +14036,7 @@ name "lis:Elite-selector"
 
 Elitist selector
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Selector!Elitist
@@ -14014,7 +14046,7 @@ Selector!Elitist
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Elitism
@@ -14085,7 +14117,7 @@ Stream
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Alterer
@@ -14287,7 +14319,7 @@ height "1pt"
 \begin_layout Subsection
 Statistics
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Statistics
@@ -14355,7 +14387,7 @@ Result<G, C>\SpecialChar softhyphen
 \begin_layout Subsection
 Engine
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Engine
@@ -14382,13 +14414,13 @@ Engine
 \family default
  class.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Also refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:EvolutionStream"
+reference "subsubsec:EvolutionStream"
 
 \end_inset
 
@@ -14657,28 +14689,6 @@ Function
 \end_layout
 
 \begin_layout Section
-Advanced topics
-\end_layout
-
-\begin_layout Standard
-This section describes some advanced topics for setting up an evolution
- 
-\family typewriter
-Engine
-\family default
- or 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-.
- It contains some problem encoding examples and how to override the default
- validation strategy of the given Genotypes.
- The last section contains a detailed description of the implemented termination
- strategies.
-\end_layout
-
-\begin_layout Subsection
 Encoding
 \begin_inset CommandInset label
 LatexCommand label
@@ -14688,7 +14698,7 @@ name "subsec:Encoding"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding
@@ -14768,7 +14778,7 @@ Codec
 \family default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 See section 
@@ -14793,7 +14803,7 @@ codecs
  class.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Real function
 \begin_inset CommandInset label
 LatexCommand label
@@ -14803,7 +14813,7 @@ name "subsec:Real-function"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Real function
@@ -14958,7 +14968,7 @@ scalar
 \emph default
  chromosomes
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Scalar chromosomes contains only one gene.
@@ -14968,7 +14978,7 @@ Scalar chromosomes contains only one gene.
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Chromosome!scalar
@@ -14978,7 +14988,7 @@ Chromosome!scalar
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Scalar chromosome
@@ -14988,7 +14998,7 @@ Scalar chromosome
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Genotype!scalar
@@ -14998,7 +15008,7 @@ Genotype!scalar
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Scalar genotype
@@ -15122,7 +15132,7 @@ height "1pt"
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Scalar function
 \begin_inset CommandInset label
 LatexCommand label
@@ -15132,7 +15142,7 @@ name "subsec:Scalar-function"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Scalar function
@@ -15478,7 +15488,7 @@ Value()
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Vector function
 \begin_inset CommandInset label
 LatexCommand label
@@ -15488,7 +15498,7 @@ name "subsec:Vector-function"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Vector function
@@ -15712,7 +15722,7 @@ static double[] toVector(final Genotype<DoubleGene> gt) {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Affine transformation
 \begin_inset CommandInset label
 LatexCommand label
@@ -15722,7 +15732,7 @@ name "subsec:Affine-transformation"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Affine transformation
@@ -15736,7 +15746,7 @@ Encoding!Affine transformation
 \begin_layout Standard
 An affine transformation
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -15756,7 +15766,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 , 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -15777,7 +15787,7 @@ http://mathworld.wolfram.com/AffineTransformation.html
  is usually performed by a matrix multiplication with a transformation matrix—in
  a homogeneous coordinates system
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -15806,7 +15816,7 @@ https://en.wikipedia.org/wiki/Homogeneous_coordinates
 
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -16274,7 +16284,7 @@ Alterer
  to the list of alterers.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Graph
 \begin_inset CommandInset label
 LatexCommand label
@@ -16284,7 +16294,7 @@ name "subsec:Graph"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Graph
@@ -16294,7 +16304,7 @@ Graph
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Graph
@@ -16315,7 +16325,7 @@ A graph can be represented in many different ways.
 \begin_layout Paragraph
 Undirected graph
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Undirected graph
@@ -16325,7 +16335,7 @@ Undirected graph
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Undirected graph
@@ -16409,7 +16419,7 @@ reference "fig:Undirected-graph"
  An application which optimizes an undirected graph has to ignore this part
  of the matrix.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 This property violates the 
@@ -16535,7 +16545,7 @@ final int[][] array = gt.toSeq().stream()
 \begin_layout Paragraph
 Directed graph
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Directed graph
@@ -16545,7 +16555,7 @@ Directed graph
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Directed graph
@@ -16618,7 +16628,7 @@ reference "fig:Directed-graph"
 \begin_layout Paragraph
 Weighted directed graph
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Weighted graph
@@ -16628,7 +16638,7 @@ Weighted graph
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Encoding!Weighted graph
@@ -16769,10 +16779,10 @@ final double[][] array = gt.stream()
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Codec
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Codec
@@ -16858,7 +16868,7 @@ Genotype
 \family default
  definition and the transformation code.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Section 
@@ -17154,7 +17164,7 @@ codecs
  The following sub-sections shows some of the implementation of this methods.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Scalar codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -17164,7 +17174,7 @@ name "subsec:Scalar-codec"
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Scalar codec
@@ -17174,7 +17184,7 @@ Scalar codec
 
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Codec!Scalar
@@ -17377,7 +17387,7 @@ class Main {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Vector codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -17645,7 +17655,7 @@ class Main {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Subset codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -17961,7 +17971,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -17999,7 +18009,7 @@ status collapsed
 
 \emph on
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -18134,7 +18144,7 @@ public class SubsetSum
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Permutation codec
 \begin_inset CommandInset label
 LatexCommand label
@@ -18463,7 +18473,7 @@ public class TSM {
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Composite codec
 \end_layout
 
@@ -18582,7 +18592,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset CommandInset line
@@ -18966,7 +18976,7 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Problem
 \begin_inset Index idx
 status collapsed
@@ -19260,7 +19270,7 @@ Engine
  definition.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Validation
 \begin_inset CommandInset label
 LatexCommand label
@@ -19395,7 +19405,7 @@ status collapsed
 See section 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "subsec:Engine"
+reference "subsubsec:Engine"
 
 \end_inset
 
@@ -19543,7 +19553,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -19699,7 +19709,7 @@ reference "sec:Extending-Jenetics"
  for a more detailed description on how to implement this classes.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Termination
 \begin_inset CommandInset label
 LatexCommand label
@@ -20071,7 +20081,7 @@ Strategy
  will always work as expected.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fixed generation
 \begin_inset Index idx
 status collapsed
@@ -20240,7 +20250,7 @@ maximal
  value.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Steady fitness
 \begin_inset Index idx
 status collapsed
@@ -20581,7 +20591,7 @@ steady fitness
  Only the mean values of the maximal fitness is shown.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Evolution time
 \begin_inset Index idx
 status collapsed
@@ -20743,7 +20753,7 @@ While running the tests, all other CPU intensive process has been stopped.
  of evolved generations.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fitness threshold
 \begin_inset Index idx
 status collapsed
@@ -20879,7 +20889,7 @@ easily
  achieved.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 Fitness convergence
 \begin_inset Index idx
 status collapsed
@@ -21058,7 +21068,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -21296,7 +21306,7 @@ reference "fig:Fitness-convergence-diagram-50-150"
 
 \begin_layout Standard
 \begin_inset Note Comment
-status collapsed
+status open
 
 \begin_layout Subsubsection
 Population convergence
@@ -21327,7 +21337,7 @@ A termination method that stops the evolution when a user-specified percentage
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolution performance
 \begin_inset Index idx
 status collapsed
@@ -21427,7 +21437,7 @@ tor
 \family default
 
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 The termination tests are using a 
@@ -21476,7 +21486,7 @@ Selector
 s is much better than a random search.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolution strategies
 \begin_inset Index idx
 status collapsed
@@ -21573,7 +21583,7 @@ Engine
 -ES.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -21848,7 +21858,7 @@ Survivors size of
  values pushes the algorithm towards exploitative search, because only the
  best individuals are used for reproduction.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 As you can see in listing 
@@ -21909,7 +21919,7 @@ Mutation probability
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsection
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -22121,7 +22131,7 @@ This has the risk, that very fit parents can defeat other individuals over
  and over again, which leads to a prematurely convergence to a local optimum.
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Internals
 \begin_inset Index idx
 status collapsed
@@ -22166,7 +22176,7 @@ internal
  package can be changed and removed without announcement.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 PRNG testing
 \begin_inset Index idx
 status collapsed
@@ -22552,7 +22562,7 @@ LCG64ShiftRandom
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Random seeding
 \begin_inset Index idx
 status collapsed
@@ -22969,7 +22979,7 @@ netics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -23570,7 +23580,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -24091,18 +24101,500 @@ reference "lis:Weasel-program"
 .
 \end_layout
 
+\begin_layout Chapter
+Modules
+\end_layout
+
+\begin_layout Section
+XML serialization
+\end_layout
+
 \begin_layout Standard
-\begin_inset Newpage pagebreak
+When used in a distributed environment, there is the need of serializing
+ a collection of individuals and send it to another evolution engine.
+ To keep the size of the Jenetics base module small, the serialization has
+ been moved into separate modules.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Chromosome count
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Java serialization
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+JAXB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+XML writer
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0017 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0045 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0035 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0090 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0439 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0346 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0812 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4379 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.3459 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.8039 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4.3772 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3.4578 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8.0309 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43.7730 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34.5795 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100000
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+80.3003 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+437.7283 MiB
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+345.7940 MiB
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Marshaling size
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/genotype_write_perf.svg
+	lyxscale 80
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genotype-write-performance"
+
+\end_inset
+
+Genotype write performance
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+JSON serialization
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+<description>
+\end_layout
+
+\begin_layout Section
+PRNG
+\end_layout
+
+\begin_layout Standard
+The PRNGine
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ module contains pseudo-random number generators for sequential and parallel
+ Monte Carlo simulations
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ It has been designed to work smoothly with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ GA library, but it has no dependency to it.
+ All PRNG implementations of this library extends the Java Random class,
+ which makes it easily usable in other projects.
+ 
+\emph on
+The implemented PRNGs are not cryptographically strong RNGs.
+\end_layout
+
+\begin_layout Standard
+The following PRNGs are currently implemented:
+\end_layout
+
+\begin_layout Itemize
+KISS32Random: Implementation of an simple PRNG as proposed in Good Practice
+ in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS32,
+ page 3) David Jones, UCL Bioinformatics Group.
+ 
+\end_layout
+
+\begin_layout Itemize
+KISS64Random: Implementation of an simple PRNG as proposed in Good Practice
+ in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS64,
+ page 10) David Jones, UCL Bioinformatics Group.
+ 
+\end_layout
+
+\begin_layout Itemize
+LCG64ShiftRandom: This class implements a linear congruential PRNG with
+ additional bit-shift transition.
+ It is a port of the trng::lcg64_shift PRNG class of the TRNG library created
+ by Heiko Bauke.
+ 
+\end_layout
+
+\begin_layout Itemize
+MT19937_32Random: This is a 32-bit version of Mersenne Twister pseudorandom
+ number generator.
+ 
+\end_layout
+
+\begin_layout Itemize
+MT19937_64Random: This is a 64-bit version of Mersenne Twister pseudorandom
+ number generator.
+ 
+\end_layout
+
+\begin_layout Itemize
+XOR32ShiftRandom: This generator was discovered and characterized by George
+ Marsaglia [Xorshift RNGs].
+ In just three XORs and three shifts (generally fast operations) it produces
+ a full period of 232 - 1 on 32 bits.
+ (The missing value is zero, which perpetuates itself and must be avoided.)
+ High and low bits pass Diehard.
+ 
+\end_layout
+
+\begin_layout Itemize
+XOR64ShiftRandom: This generator was discovered and characterized by George
+ Marsaglia [Xorshift RNGs].
+ In just three XORs and three shifts (generally fast operations) it produces
+ a full period of 264 - 1 on 64 bits.
+ (The missing value is zero, which perpetuates itself and must be avoided.)
+ High and low bits pass Diehard.
+ 
 \end_layout
 
 \begin_layout Part*
 Appendix
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Examples
 \begin_inset Index idx
 status collapsed
@@ -24170,7 +24662,7 @@ reference "sec:Build"
 .
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Ones counting
 \begin_inset CommandInset label
 LatexCommand label
@@ -24263,7 +24755,7 @@ status collapsed
 For the other default values (population size, maximal age, ...) have a look
  at the Javadoc: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -24326,7 +24818,7 @@ Evolution statistics
  termination criteria—finding no better result after 7 consecutive generations.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Real function
 \begin_inset CommandInset label
 LatexCommand label
@@ -24515,7 +25007,7 @@ exact
  You can also see, that we reached the final result after 19 generations.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Rastrigin function
 \begin_inset CommandInset label
 LatexCommand label
@@ -24746,7 +25238,7 @@ footnotesize}
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 0/1 Knapsack
 \begin_inset CommandInset label
 LatexCommand label
@@ -24784,7 +25276,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -24873,7 +25365,7 @@ footnotesize}
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Traveling salesman
 \begin_inset CommandInset label
 LatexCommand label
@@ -24911,7 +25403,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -25053,7 +25545,7 @@ The listing above shows the output generated by our example.
  As you can see, the GA has found the shortest path, in reverse order.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
 Evolving images
 \begin_inset Index idx
 status collapsed
@@ -25086,7 +25578,7 @@ status collapsed
 \begin_layout Plain Layout
 Original idea by Roger Johansson 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -25689,7 +26181,7 @@ Evolving
 \emph on
 Mona Lisa
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Mona Lisa
@@ -25759,7 +26251,7 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
 100
 \end_layout
 
-\begin_layout Section
+\begin_layout Chapter
 Build
 \begin_inset Index idx
 status collapsed
@@ -25911,7 +26403,7 @@ status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -25962,7 +26454,7 @@ If you are calling the
 \family typewriter
  gradlew
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Build!gradlew
@@ -25972,7 +26464,7 @@ Build!gradlew
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 gradlew
@@ -26766,7 +27258,7 @@ Gradle
 'io.jenetics:jenetics:@__version__@'
 \end_layout
 
-\begin_layout Section
+\begin_layout Paragraph
 License
 \begin_inset Index idx
 status collapsed
