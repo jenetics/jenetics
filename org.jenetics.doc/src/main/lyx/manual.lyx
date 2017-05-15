@@ -608,26 +608,6 @@ pagenumbering{arabic}
 
 \end_layout
 
-\begin_layout Part
-Jenetics
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-pagenumbering{arabic}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Chapter
 Fundamentals
 \end_layout
@@ -24121,12 +24101,12 @@ reference "lis:Weasel-program"
 .
 \end_layout
 
-\begin_layout Part
+\begin_layout Chapter
 Modules
 \end_layout
 
-\begin_layout Chapter
-Serialization
+\begin_layout Section
+XML serialization
 \end_layout
 
 \begin_layout Standard
@@ -24442,40 +24422,6 @@ Marshaling size
 \end_layout
 
 \begin_layout Standard
-Foo bar
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=1, object=0.0017 MiB, jaxb=0.0045 MiB, stream=0.0035 MiB]
- 
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=10, object=0.0090 MiB, jaxb=0.0439 MiB, stream=0.0346 MiB]
- 
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=100, object=0.0812 MiB, jaxb=0.4379 MiB, stream=0.3459 MiB]
- 
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=1000, object=0.8039 MiB, jaxb=4.3772 MiB, stream=3.4578 MiB]
- 
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=10000, object=8.0309 MiB, jaxb=43.7730 MiB, stream=34.5795
- MiB] 
-\end_layout
-
-\begin_layout Standard
-Size[chromosomes=100000, object=80.3003 MiB, jaxb=437.7283 MiB, stream=345.7940
- MiB]
-\end_layout
-
-\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -24514,37 +24460,137 @@ Genotype write performance
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
-jenetics.xml
+JSON serialization
 \end_layout
 
 \begin_layout Standard
-asdf
+
+\emph on
+<description>
 \end_layout
 
 \begin_layout Section
-
-\family typewriter
-jenetics.json
-\end_layout
-
-\begin_layout Standard
-asdf
-\end_layout
-
-\begin_layout Chapter
 PRNG
 \end_layout
 
 \begin_layout Standard
-The prngine module contains pseudo random number generator implementations,
- which fit nicely into the Jenetics library.
- The module itself has no additional dependencies and can be used without
- Jenetics.
+The PRNGine
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine
 \end_layout
 
-\begin_layout Part
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ module contains pseudo-random number generators for sequential and parallel
+ Monte Carlo simulations
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ It has been designed to work smoothly with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ GA library, but it has no dependency to it.
+ All PRNG implementations of this library extends the Java Random class,
+ which makes it easily usable in other projects.
+ 
+\emph on
+The implemented PRNGs are not cryptographically strong RNGs.
+\end_layout
+
+\begin_layout Standard
+The following PRNGs are currently implemented:
+\end_layout
+
+\begin_layout Itemize
+KISS32Random: Implementation of an simple PRNG as proposed in Good Practice
+ in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS32,
+ page 3) David Jones, UCL Bioinformatics Group.
+ 
+\end_layout
+
+\begin_layout Itemize
+KISS64Random: Implementation of an simple PRNG as proposed in Good Practice
+ in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS64,
+ page 10) David Jones, UCL Bioinformatics Group.
+ 
+\end_layout
+
+\begin_layout Itemize
+LCG64ShiftRandom: This class implements a linear congruential PRNG with
+ additional bit-shift transition.
+ It is a port of the trng::lcg64_shift PRNG class of the TRNG library created
+ by Heiko Bauke.
+ 
+\end_layout
+
+\begin_layout Itemize
+MT19937_32Random: This is a 32-bit version of Mersenne Twister pseudorandom
+ number generator.
+ 
+\end_layout
+
+\begin_layout Itemize
+MT19937_64Random: This is a 64-bit version of Mersenne Twister pseudorandom
+ number generator.
+ 
+\end_layout
+
+\begin_layout Itemize
+XOR32ShiftRandom: This generator was discovered and characterized by George
+ Marsaglia [Xorshift RNGs].
+ In just three XORs and three shifts (generally fast operations) it produces
+ a full period of 232 - 1 on 32 bits.
+ (The missing value is zero, which perpetuates itself and must be avoided.)
+ High and low bits pass Diehard.
+ 
+\end_layout
+
+\begin_layout Itemize
+XOR64ShiftRandom: This generator was discovered and characterized by George
+ Marsaglia [Xorshift RNGs].
+ In just three XORs and three shifts (generally fast operations) it produces
+ a full period of 264 - 1 on 64 bits.
+ (The missing value is zero, which perpetuates itself and must be avoided.)
+ High and low bits pass Diehard.
+ 
+\end_layout
+
+\begin_layout Part*
 Appendix
 \end_layout
 
