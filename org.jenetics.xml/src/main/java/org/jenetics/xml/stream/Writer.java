@@ -47,10 +47,14 @@ import javax.xml.stream.XMLStreamWriter;
  * final Writer<IntegerChromosome> writer =
  *     elem("int-chromosome",
  *         attr("length").map(ch -> ch.length()),
- *         elem("min", text().map(ch -> ch.getMin())),
- *         elem("max", text().map(ch -> ch.getMax())),
+ *         elem("min", Writer.<Integer>text().map(ch -> ch.getMin())),
+ *         elem("max", Writer.<Integer>text().map(ch -> ch.getMax())),
  *         elem("alleles",
- *             elems(elem("allele", text())).map(ch -> ch.toSeq().map(g -> g.getAllele()))
+ *             elems(elem(
+ *                 "allele",
+ *                 Writer.<Integer>text()))
+ *                     .map(ch -> ch.toSeq().map(g -> g.getAllele()
+ *             ))
  *         )
  *     );
  * }</pre>
