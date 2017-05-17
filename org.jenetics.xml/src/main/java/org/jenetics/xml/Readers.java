@@ -27,7 +27,6 @@ import static org.jenetics.xml.stream.Reader.elems;
 import static org.jenetics.xml.stream.Reader.text;
 
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
@@ -688,10 +687,10 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Reader<Collection<org.jenetics.Genotype<G>>>
+		Reader<List<org.jenetics.Genotype<G>>>
 		reader(final Reader<C> chromosomeReader) {
 			return elem(
-				p -> (Collection<org.jenetics.Genotype<G>>)p[0],
+				p -> (List<org.jenetics.Genotype<G>>)p[0],
 				Writers.Genotypes.ROOT_NAME,
 				elems(Genotype.reader(chromosomeReader))
 			);
@@ -714,7 +713,7 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Collection<org.jenetics.Genotype<G>>
+		List<org.jenetics.Genotype<G>>
 		read(final InputStream in, final Reader<? extends C> chromosomeReader)
 			throws XMLStreamException
 		{
@@ -748,7 +747,7 @@ public final class Readers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	Collection<org.jenetics.Genotype<G>>
+	List<org.jenetics.Genotype<G>>
 	read(final InputStream in, final Reader<? extends C> chromosomeReader)
 		throws XMLStreamException
 	{

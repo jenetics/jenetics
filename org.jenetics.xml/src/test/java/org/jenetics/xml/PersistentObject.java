@@ -68,14 +68,14 @@ public class PersistentObject<T> {
 
 	private final String _name;
 	private final T _value;
-	private final Writer<T> _writer;
-	private final Reader<T> _reader;
+	private final Writer<? super T> _writer;
+	private final Reader<? extends T> _reader;
 
 	public PersistentObject(
 		final String name,
 		final T value,
-		final Writer<T> writer,
-		final Reader<T> reader
+		final Writer<? super T> writer,
+		final Reader<? extends T> reader
 	) {
 		_name = requireNonNull(name);
 		_value = requireNonNull(value);
@@ -91,11 +91,11 @@ public class PersistentObject<T> {
 		return _value;
 	}
 
-	public Writer<T> getWriter() {
+	public Writer<? super T> getWriter() {
 		return _writer;
 	}
 
-	public Reader<T> getReader() {
+	public Reader<? extends T> getReader() {
 		return _reader;
 	}
 
@@ -123,8 +123,8 @@ public class PersistentObject<T> {
 	private static <T> void put(
 		final String name,
 		final T value,
-		final Writer<T> writer,
-		final Reader<T> reader
+		final Writer<? super T> writer,
+		final Reader<? extends T> reader
 	) {
 		VALUES.add(new PersistentObject<>(name, value, writer, reader));
 		RandomRegistry.getRandom().setSeed(SEED);
