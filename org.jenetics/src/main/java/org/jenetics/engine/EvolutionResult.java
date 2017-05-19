@@ -23,8 +23,10 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
@@ -126,6 +128,19 @@ public final class EvolutionResult<
 	 */
 	public Population<G, C> getPopulation() {
 		return _population.copy();
+	}
+
+	/**
+	 * Return the current list of genotypes of this evolution result.
+	 *
+	 * @since 3.9
+	 *
+	 * @return the list of genotypes of this evolution result.
+	 */
+	public List<Genotype<G>> getGenotypes() {
+		return _population.stream()
+			.map(Phenotype::getGenotype)
+			.collect(Collectors.toList());
 	}
 
 	/**
