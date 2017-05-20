@@ -24117,10 +24117,126 @@ When used in a distributed environment, there is the need of serializing
 \end_layout
 
 \begin_layout Standard
+The jenetics.xml allows to write and read objects in XML format.
+ Especially it allows you to read and write collections of Genotypes in
+ XML format.
+\end_layout
+
+\begin_layout Subsection
+Writing
+\end_layout
+
+\begin_layout Standard
+The basic Writer interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Writer<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public void write(XMLStreamWriter xml, T data) 
+\end_layout
+
+\begin_layout Plain Layout
+
+        throws XMLStreamException;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:XML-Writer-interface"
+
+\end_inset
+
+XML Writer interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It's a low level interface.
+ Together with the factory method, you can build up your XML tree structure.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Writer<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    static <T> Writer<T> attr(String name);
+\end_layout
+
+\begin_layout Plain Layout
+
+    static <T> Writer<T> attr(String name, Object value);
+\end_layout
+
+\begin_layout Plain Layout
+
+    static <T> Writer<T> text();
+\end_layout
+
+\begin_layout Plain Layout
+
+    static <T> Writer<T> elem(String name, Writer<? super T>...
+ children);
+\end_layout
+
+\begin_layout Plain Layout
+
+    static <T> Writer<Iterable<T>> elems(Writer<? super T> writer);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -24457,6 +24573,10 @@ Genotype write performance
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Reading
 \end_layout
 
 \begin_layout Section
