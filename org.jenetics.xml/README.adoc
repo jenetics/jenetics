@@ -1,0 +1,10 @@
+# XML marshalling module
+
+The `jenetics.xml` module allows to write/read chromosomes and genotypes to/from XML. It has only a dependency to the `java.xml` module and doesn't use *JAXB* for the XML marshalling.
+
+## Writing XML files
+
+
+
+## Reading XML files
+asdf
