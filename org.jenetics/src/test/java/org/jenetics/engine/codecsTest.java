@@ -19,11 +19,8 @@
  */
 package org.jenetics.engine;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-import java.awt.geom.AffineTransform;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -106,11 +103,11 @@ public class codecsTest {
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
 		Assert.assertEquals(gt.getChromosome().length(), 1);
-		Assert.assertEquals(gt.getGene().getMin().doubleValue(), domain.getMin());
-		Assert.assertEquals(gt.getGene().getMax().doubleValue(), domain.getMax());
+		Assert.assertEquals(gt.getGene().getMin(), domain.getMin());
+		Assert.assertEquals(gt.getGene().getMax(), domain.getMax());
 
 		final Function<Genotype<DoubleGene>, Double> f = codec.decoder();
-		Assert.assertEquals(f.apply(gt).doubleValue(), gt.getGene().doubleValue());
+		Assert.assertEquals(f.apply(gt), gt.getGene().doubleValue());
 	}
 
 	@DataProvider(name = "doubleScalarData")
@@ -199,8 +196,8 @@ public class codecsTest {
 		Assert.assertEquals(gt.length(), 1);
 		Assert.assertEquals(gt.getChromosome().length(), length);
 		for (DoubleGene gene : gt.getChromosome()) {
-			Assert.assertEquals(gene.getMin().doubleValue(), domain.getMin());
-			Assert.assertEquals(gene.getMax().doubleValue(), domain.getMax());
+			Assert.assertEquals(gene.getMin(), domain.getMin());
+			Assert.assertEquals(gene.getMax(), domain.getMax());
 		}
 
 		final Function<Genotype<DoubleGene>, double[]> f = codec.decoder();
@@ -311,8 +308,8 @@ public class codecsTest {
 			Assert.assertEquals(ch.length(), 1);
 
 			final DoubleGene gene = ch.getGene();
-			Assert.assertEquals(gene.getMin().doubleValue(), domain[i].getMin());
-			Assert.assertEquals(gene.getMax().doubleValue(), domain[i].getMax());
+			Assert.assertEquals(gene.getMin(), domain[i].getMin());
+			Assert.assertEquals(gene.getMax(), domain[i].getMax());
 		}
 
 		final Function<Genotype<DoubleGene>, double[]> f = codec.decoder();
@@ -338,65 +335,64 @@ public class codecsTest {
 
 	@Test
 	public void ofPermutation() {
-		final Codec<String[], EnumGene<String>> codec = codecs.ofPermutation(
-			"foo", "bar", "zoo"
-		);
+		final Codec<ISeq<String>, EnumGene<String>> codec = codecs
+			.ofPermutation(ISeq.of("foo", "bar", "zoo"));
 
 		final Genotype<EnumGene<String>> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
 
-		final Function<Genotype<EnumGene<String>>, String[]> f = codec.decoder();
-		final String[] value = f.apply(gt);
-		Assert.assertEquals(value.length, gt.getChromosome().length());
+		final Function<Genotype<EnumGene<String>>, ISeq<String>> f = codec.decoder();
+		final ISeq<String> value = f.apply(gt);
+		Assert.assertEquals(value.length(), gt.getChromosome().length());
 
-		for (int i = 0; i < value.length; ++i) {
-			Assert.assertEquals(value[i], gt.get(0, i).toString());
+		for (int i = 0; i < value.length(); ++i) {
+			Assert.assertEquals(value.get(i), gt.get(0, i).toString());
 		}
 	}
 
 
-	@Test
-	public void ofAffineTransform() {
-		final DoubleRange sxr = DoubleRange.of(0, 100);
-		final DoubleRange syr = DoubleRange.of(0, 200);
-		final DoubleRange txr = DoubleRange.of(0, 50);
-		final DoubleRange tyr = DoubleRange.of(0, 100);
-		final DoubleRange thr = DoubleRange.of(0, 2*Math.PI);
-		final DoubleRange kxr = DoubleRange.of(0, 10);
-		final DoubleRange kyr = DoubleRange.of(0, 15);
-
-		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
-			sxr, syr, txr, tyr, thr, kxr, kyr
-		);
-
-		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
-		final double sx = gt.get(0, 0).doubleValue();
-		final double sy = gt.get(1, 0).doubleValue();
-		final double tx = gt.get(2, 0).doubleValue();
-		final double ty = gt.get(3, 0).doubleValue();
-		final double th = gt.get(4, 0).doubleValue();
-		final double kx = gt.get(5, 0).doubleValue();
-		final double ky = gt.get(6, 0).doubleValue();
-
-		final double cos_th = cos(th);
-		final double sin_th = sin(th);
-		final double a11 = cos_th*sx + kx*sy*sin_th;
-		final double a12 = cos_th*kx*sy - sx*sin_th;
-		final double a21 = cos_th*ky*sx + sy*sin_th;
-		final double a22 = cos_th*sy - ky*sx*sin_th;
-
-		final AffineTransform eat = new AffineTransform(a11, a21, a12, a22, tx, ty);
-		final AffineTransform at = codec.decoder().apply(gt);
-
-		final double[] expectedMatrix = new double[6];
-		final double[] matrix = new double[6];
-		eat.getMatrix(expectedMatrix);
-		at.getMatrix(matrix);
-
-		for (int i = 0; i < matrix.length; ++i) {
-			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
-		}
-	}
+//	@Test
+//	public void ofAffineTransform() {
+//		final DoubleRange sxr = DoubleRange.of(0, 100);
+//		final DoubleRange syr = DoubleRange.of(0, 200);
+//		final DoubleRange txr = DoubleRange.of(0, 50);
+//		final DoubleRange tyr = DoubleRange.of(0, 100);
+//		final DoubleRange thr = DoubleRange.of(0, 2*Math.PI);
+//		final DoubleRange kxr = DoubleRange.of(0, 10);
+//		final DoubleRange kyr = DoubleRange.of(0, 15);
+//
+//		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
+//			sxr, syr, txr, tyr, thr, kxr, kyr
+//		);
+//
+//		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+//		final double sx = gt.get(0, 0).doubleValue();
+//		final double sy = gt.get(1, 0).doubleValue();
+//		final double tx = gt.get(2, 0).doubleValue();
+//		final double ty = gt.get(3, 0).doubleValue();
+//		final double th = gt.get(4, 0).doubleValue();
+//		final double kx = gt.get(5, 0).doubleValue();
+//		final double ky = gt.get(6, 0).doubleValue();
+//
+//		final double cos_th = cos(th);
+//		final double sin_th = sin(th);
+//		final double a11 = cos_th*sx + kx*sy*sin_th;
+//		final double a12 = cos_th*kx*sy - sx*sin_th;
+//		final double a21 = cos_th*ky*sx + sy*sin_th;
+//		final double a22 = cos_th*sy - ky*sx*sin_th;
+//
+//		final AffineTransform eat = new AffineTransform(a11, a21, a12, a22, tx, ty);
+//		final AffineTransform at = codec.decoder().apply(gt);
+//
+//		final double[] expectedMatrix = new double[6];
+//		final double[] matrix = new double[6];
+//		eat.getMatrix(expectedMatrix);
+//		at.getMatrix(matrix);
+//
+//		for (int i = 0; i < matrix.length; ++i) {
+//			Assert.assertEquals(matrix[i], expectedMatrix[i], 0.0001);
+//		}
+//	}
 
 	@Test
 	public void ofAnyScalar() {
@@ -434,12 +430,12 @@ public class codecsTest {
 	@Test
 	public void ofAnyVector() {
 		final int length = 23;
-		final Codec<Integer[], AnyGene<Integer>> codec = codecs.ofVector(
-			() -> RandomRegistry.getRandom().nextInt(1000),
-			Integer[]::new,
-			i -> i < 100,
-			length
-		);
+		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
+			codecs.ofVector(
+				() -> RandomRegistry.getRandom().nextInt(1000),
+				(Predicate<Integer>) i -> i < 100,
+				length
+			);
 
 		for (int i = 0; i < 100; ++i) {
 			final Chromosome<AnyGene<Integer>> ch = codec.encoding()

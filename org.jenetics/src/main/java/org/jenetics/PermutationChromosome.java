@@ -48,6 +48,7 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.array;
 import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.reflect;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
@@ -245,12 +246,11 @@ public final class PermutationChromosome<T>
 		}
 
 		final int[] subset = array.shuffle(base.subset(alleles.size(), length));
-		return new PermutationChromosome<T>(
-			IntStream.of(subset)
-				.mapToObj(i -> EnumGene.<T>of(i, alleles))
-				.collect(ISeq.toISeq()),
-			true
-		);
+		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
+			.mapToObj(i -> EnumGene.<T>of(i, alleles))
+			.collect(ISeq.toISeq());
+
+		return new PermutationChromosome<>(genes, true);
 	}
 
 	/**

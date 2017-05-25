@@ -47,11 +47,11 @@ public class Runner<
 	extends AbstractRunner<P>
 {
 
-	private final Engine<G, N> _engine;
+	private final Function<? super P, Engine<G, N>> _engine;
 	private final Function<? super P, Predicate<? super EvolutionResult<G, N>>> _terminator;
 
 	public Runner(
-		final Engine<G, N> engine,
+		final Function<? super P, Engine<G, N>> engine,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final int sampleCount,
@@ -67,7 +67,7 @@ public class Runner<
 			_terminator.apply(param);
 
 		final long start = System.currentTimeMillis();
-		final EvolutionResult<G, N> result = _engine.stream()
+		final EvolutionResult<G, N> result = _engine.apply(param).stream()
 			.limit(terminator)
 			.collect(EvolutionResult.toBestEvolutionResult());
 		final long end = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class Runner<
 
 	public static <P, G extends Gene<?, G>, N extends Number &  Comparable<? super N>>
 	Runner<P, G, N> of(
-		final Engine<G, N> engine,
+		final Function<? super P, Engine<G, N>> engine,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator,
 		final Supplier<TrialMeter<P>> trialMeter,
 		final String[] arguments

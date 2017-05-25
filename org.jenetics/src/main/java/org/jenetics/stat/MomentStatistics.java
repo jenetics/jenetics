@@ -187,4 +187,12 @@ abstract class MomentStatistics {
 		return kurtosis;
 	}
 
+	final boolean sameState(final MomentStatistics statistics) {
+		return _n == statistics._n &&
+			_m1.sameState(statistics._m1) &&
+			_m2.sameState(statistics._m2) &&
+			_m3.sameState(statistics._m3) &&
+			_m4.sameState(statistics._m4);
+	}
+
 }

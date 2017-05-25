@@ -53,6 +53,9 @@ public interface Alterer<
 >
 {
 
+	/**
+	 * The default alter probability: 0.2
+	 */
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**

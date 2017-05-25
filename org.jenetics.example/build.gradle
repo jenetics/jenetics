@@ -18,58 +18,44 @@
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
 
+import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.5
+ * @version 2.0
  */
 
 apply plugin: 'packaging'
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
-	compile project(':org.jenetics')
-
-	testCompile Include.TestNG
+	compile project(':jenetics')
 }
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.example'
+)
 
 packaging {
-	name = 'Jenetics doc'
+	name = 'Jenetics examples'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
-
 	jarjar = false
+	javadoc = false
+
+	doLast {
+		copy {
+			from('src/main/scripts') {
+				include '**/*'
+			}
+			into exportScriptDir
+			filter(ReplaceTokens, tokens: [
+				__identifier__: identifier,
+				__year__: copyrightYear,
+				__version__: version
+			])
+		}
+	}
 }
 
-task asciidoc(type: Exec) {
-	outputs.upToDateWhen { false }
-
-	def mainDoc = file("$projectDir/src/main/asciidoc/internals/main.adoc")
-	def outputFile = file("$buildDir/asciidoc/internals.html")
-
-	outputFile.parentFile.mkdirs()
-	inputs.dir mainDoc.parentFile
-	outputs.file outputFile
-
-	commandLine([
-		'asciidoc',
-		//'-b', 'html5',
-		//'-a', 'linkcss',
-		//'-a', 'docinfo',
-		'-a', 'toc-placement=manual',
-		'-a', "stylesdir=${projectDir}/src/main/asciidoc",
-		'-a', "scriptsdir=${projectDir}/src/main/asciidoc",
-		'-a', "stylesheet=${projectDir}/src/main/asciidoc/asciidoc.css",
-		//'--theme', 'volnitsky',
-		'-o', outputFile,
-		mainDoc
-	])
-}
-
-//asciidoc -b html5 -a linkcss -a stylesdir=$PWD myfile.txt
 

@@ -22,40 +22,42 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version 2.0
+ * @since 3.4
+ * @version 3.4
  */
 
 apply plugin: 'packaging'
 
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
 dependencies {
-	compile project(':org.jenetics')
+	compile project(':jenetics')
+
+	testCompile Include.TestNG
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
+	'org.jenetics.tool',
+	'org.jenetics.tool.evaluation',
+	'org.jenetics.tool.problem',
+	'org.jenetics.tool.trial'
 )
 
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
+	}
+}
+
 packaging {
-	name = 'Jenetics examples'
+	name = 'Jenetics Tools'
 	author = 'Franz Wilhelmstötter'
 	url = 'http://jenetics.sourceforge.net'
 	jarjar = false
-	javadoc = false
-
-	doLast {
-		copy {
-			from('src/main/scripts') {
-				include '**/*'
-			}
-			into exportScriptDir
-			filter(ReplaceTokens, tokens: [
-				__identifier__: identifier,
-				__year__: copyrightYear,
-				__version__: version
-			])
-		}
-	}
+	javadoc = true
 }
 
 

@@ -63,7 +63,7 @@ import org.jenetics.util.NanoClock;
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
  *        final double x = gt.getGene().doubleValue();
- *        return cos(0.5 + sin(x)) * cos(x);
+ *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *
  *    public static void main(String[] args) {
@@ -113,7 +113,7 @@ import org.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.2
+ * @version 3.7
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -422,6 +422,11 @@ public final class Engine<
 		return population;
 	}
 
+
+	/* *************************************************************************
+	 * Evolution Stream/Iterator creation.
+	 **************************************************************************/
+
 	/**
 	 * Create a new <b>infinite</b> evolution iterator with a newly created
 	 * population. This is an alternative way for evolution. It lets the user
@@ -431,8 +436,8 @@ public final class Engine<
 	 */
 	public Iterator<EvolutionResult<G, C>> iterator() {
 		return new EvolutionIterator<>(
-			this::evolve,
-			this::evolutionStart
+			this::evolutionStart,
+			this::evolve
 		);
 	}
 
@@ -457,29 +462,6 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new <b>infinite</b> evolution stream with the given initial
-	 * individuals. If an empty {@code Iterable} is given, the engines genotype
-	 * factory is used for creating the population.
-	 *
-	 * @param genotypes the initial individuals used for the evolution stream.
-	 *        Missing individuals are created and individuals not needed are
-	 *        skipped.
-	 * @return a new evolution stream.
-	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
-	 *         {@code null}.
-	 */
-	public EvolutionStream<G, C> stream(
-		final Iterable<Genotype<G>> genotypes
-	) {
-		requireNonNull(genotypes);
-
-		return EvolutionStream.of(
-			() -> evolutionStart(genotypes, 1),
-			this::evolve
-		);
-	}
-
-	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given initial
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
@@ -497,8 +479,31 @@ public final class Engine<
 		requireNonNull(genotypes);
 
 		return new EvolutionIterator<>(
-			this::evolve,
-			() -> evolutionStart(genotypes, 1)
+			() -> evolutionStart(genotypes, 1),
+			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
+	 *
+	 * @since 3.7
+	 *
+	 * @param genotypes the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @return a new evolution stream.
+	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
+	 *         {@code null}.
+	 */
+	public EvolutionStream<G, C> stream(final Iterable<Genotype<G>> genotypes) {
+		requireNonNull(genotypes);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(genotypes, 1),
+			this::evolve
 		);
 	}
 
@@ -521,6 +526,95 @@ public final class Engine<
 	}
 
 	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
+	 *
+	 * @since 3.7
+	 *
+	 * @param genotypes the initial individuals used for the evolution iterator.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the stream starts from; must be greater
+	 *        than zero.
+	 * @return a new <b>infinite</b> evolution iterator
+	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final Iterable<Genotype<G>> genotypes,
+		final long generation
+	) {
+		requireNonNull(genotypes);
+		require.positive(generation);
+
+		return new EvolutionIterator<>(
+			() -> evolutionStart(genotypes, generation),
+			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * individuals. If an empty {@code Iterable} is given, the engines genotype
+	 * factory is used for creating the population.
+	 *
+	 * @since 3.7
+	 *
+	 * @param genotypes the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the stream starts from; must be greater
+	 *        than zero.
+	 * @return a new evolution stream.
+	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
+	public EvolutionStream<G, C> stream(
+		final Iterable<Genotype<G>> genotypes,
+		final long generation
+	) {
+		requireNonNull(genotypes);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(genotypes, generation),
+			this::evolve
+		);
+	}
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @since 3.7
+	 *
+	 * @param population the initial individuals used for the evolution iterator.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @return a new <b>infinite</b> evolution iterator
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final Population<G, C> population
+	) {
+		requireNonNull(population);
+
+		return new EvolutionIterator<>(
+			() -> evolutionStart(population, 1),
+			this::evolve
+		);
+	}
+
+	/**
 	 * Create a new <b>infinite</b> evolution stream with the given initial
 	 * population. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -531,25 +625,39 @@ public final class Engine<
 	 * @param population the initial individuals used for the evolution stream.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
-	 * @param generation the generation the stream starts from; must be greater
-	 *        than zero.
 	 * @return a new evolution stream.
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is smaller
-	 *        then one
 	 */
 	public EvolutionStream<G, C> stream(
+		final Population<G, C> population
+	) {
+		requireNonNull(population);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(population, 1),
+			this::evolve
+		);
+	}
+
+	private EvolutionStart<G, C> evolutionStart(
 		final Population<G, C> population,
 		final long generation
 	) {
-		requireNonNull(population);
-		require.positive(generation);
-
-		return EvolutionStream.of(
-			() -> evolutionStart(population, generation),
-			this::evolve
+		final Stream<Phenotype<G, C>> stream = Stream.concat(
+			population.stream()
+				.map(p -> p.newInstance(
+					p.getGeneration(),
+					_fitnessFunction,
+					_fitnessScaler)),
+			Stream.generate(() -> newPhenotype(generation))
 		);
+
+		final Population<G, C> pop = stream
+			.limit(getPopulationSize())
+			.collect(toPopulation());
+
+		return EvolutionStart.of(pop, generation);
 	}
 
 	/**
@@ -579,31 +687,115 @@ public final class Engine<
 		require.positive(generation);
 
 		return new EvolutionIterator<>(
-			this::evolve,
-			() -> evolutionStart(population, generation)
+			() -> evolutionStart(population, generation),
+			this::evolve
 		);
 	}
 
-	private EvolutionStart<G, C> evolutionStart(
+	/**
+	 * Create a new <b>infinite</b> evolution stream with the given initial
+	 * population. If an empty {@code Population} is given, the engines genotype
+	 * factory is used for creating the population. The given population might
+	 * be the result of an other engine and this method allows to start the
+	 * evolution with the outcome of an different engine. The fitness function
+	 * and the fitness scaler are replaced by the one defined for this engine.
+	 *
+	 * @param population the initial individuals used for the evolution stream.
+	 *        Missing individuals are created and individuals not needed are
+	 *        skipped.
+	 * @param generation the generation the stream starts from; must be greater
+	 *        than zero.
+	 * @return a new evolution stream.
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
+	public EvolutionStream<G, C> stream(
 		final Population<G, C> population,
 		final long generation
 	) {
-		final Stream<Phenotype<G, C>> stream = Stream.concat(
-			population.stream()
-				.map(p -> p.newInstance(
-					p.getGeneration(),
-					_fitnessFunction,
-					_fitnessScaler)),
-			Stream.generate(() -> newPhenotype(generation))
+		requireNonNull(population);
+		require.positive(generation);
+
+		return EvolutionStream.of(
+			() -> evolutionStart(population, generation),
+			this::evolve
 		);
-
-		final Population<G, C> pop = stream
-			.limit(getPopulationSize())
-			.collect(toPopulation());
-
-		return EvolutionStart.of(pop, generation);
 	}
 
+	/**
+	 * Create a new <b>infinite</b> evolution iterator starting with a
+	 * previously evolved {@link EvolutionResult}. The iterator is initialized
+	 * with the population of the given {@code result} and its total generation
+	 * {@link EvolutionResult#getTotalGenerations()}.
+	 *
+	 * @since 3.7
+	 *
+	 * @param result the previously evolved {@code EvolutionResult}
+	 * @return a new evolution stream, which continues a previous one
+	 * @throws NullPointerException if the given evolution {@code result} is
+	 *         {@code null}
+	 */
+	public Iterator<EvolutionResult<G, C>> iterator(
+		final EvolutionResult<G, C> result
+	) {
+		return iterator(result.getPopulation(), result.getTotalGenerations());
+	}
+
+	/**
+	 * Create a new {@code EvolutionStream} starting with a previously evolved
+	 * {@link EvolutionResult}. The stream is initialized with the population
+	 * of the given {@code result} and its total generation
+	 * {@link EvolutionResult#getTotalGenerations()}.
+	 *
+	 * <pre>{@code
+	 * private static final Problem<Double, DoubleGene, Double>
+	 * PROBLEM = Problem.of(
+	 *     x -> cos(0.5 + sin(x))*cos(x),
+	 *     codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+	 * );
+	 *
+	 * private static final Engine<DoubleGene, Double>
+	 * ENGINE = Engine.builder(PROBLEM)
+	 *     .optimize(Optimize.MINIMUM)
+	 *     .offspringSelector(new RouletteWheelSelector<>())
+	 *     .build();
+	 *
+	 * public static void main(final String[] args) throws IOException {
+	 *     // Result of the first evolution run.
+	 *     final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
+	 *         .limit(limit.bySteadyFitness(10))
+	 *         .collect(EvolutionResult.toBestEvolutionResult());
+	 *
+	 *     // Save the result of the first run into a file.
+	 *     final Path path = Paths.get("result.bin");
+	 *     IO.object.write(rescue, path);
+	 *
+	 *     // Load the previous result and continue evolution.
+	 *     \@SuppressWarnings("unchecked")
+	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
+	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
+	 *         .limit(limit.bySteadyFitness(20))
+	 *         .collect(EvolutionResult.toBestEvolutionResult());
+	 *
+	 *     System.out.println(result.getBestPhenotype());
+	 * }
+	 * }</pre>
+	 *
+	 * The example above shows how to save an {@link EvolutionResult} from a
+	 * first run, save it to disk and continue the evolution.
+	 *
+	 * @since 3.7
+	 *
+	 * @param result the previously evolved {@code EvolutionResult}
+	 * @return a new evolution stream, which continues a previous one
+	 * @throws NullPointerException if the given evolution {@code result} is
+	 *         {@code null}
+	 */
+	public EvolutionStream<G, C> stream(final EvolutionResult<G, C> result) {
+		return stream(result.getPopulation(), result.getTotalGenerations());
+	}
 
 
 	/* *************************************************************************
@@ -739,12 +931,12 @@ public final class Engine<
 	/**
 	 * Create a new evolution {@code Engine.Builder} initialized with the values
 	 * of the current evolution {@code Engine}. With this method, the evolution
-	 * engine can serve as a template for an new one.
+	 * engine can serve as a template for a new one.
 	 *
 	 * @return a new engine builder
 	 */
 	public Builder<G, C> builder() {
-		return new Builder<>(_genotypeFactory, _fitnessFunction)
+		return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 			.alterers(_alterer)
 			.clock(_clock)
 			.executor(_executor.get())
@@ -854,7 +1046,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 3.0
+	 * @version 3.8
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -881,6 +1073,7 @@ public final class Engine<
 		private int _populationSize = 50;
 		private long _maximalPhenotypeAge = 70;
 
+		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
@@ -1093,6 +1286,11 @@ public final class Engine<
 
 		/**
 		 * The offspring fraction. <i>Default values is set to {@code 0.6}.</i>
+		 * This method call is equivalent to
+		 * {@code survivorsFraction(1 - offspringFraction)} and will override
+		 * any previously set survivors-fraction.
+		 *
+		 * @see #survivorsFraction(double)
 		 *
 		 * @param fraction the offspring fraction
 		 * @return {@code this} builder, for command chaining
@@ -1102,6 +1300,68 @@ public final class Engine<
 		public Builder<G, C> offspringFraction(final double fraction) {
 			_offspringFraction = probability(fraction);
 			return this;
+		}
+
+		/**
+		 * The survivors fraction. <i>Default values is set to {@code 0.4}.</i>
+		 * This method call is equivalent to
+		 * {@code offspringFraction(1 - survivorsFraction)} and will override
+		 * any previously set offspring-fraction.
+		 *
+		 * @since 3.8
+		 *
+		 * @see #offspringFraction(double)
+		 *
+		 * @param fraction the survivors fraction
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the fraction is not
+		 *         within the range [0, 1].
+		 */
+		public Builder<G, C> survivorsFraction(final double fraction) {
+			_offspringFraction = 1.0 - probability(fraction);
+			return this;
+		}
+
+		/**
+		 * The number of offspring individuals.
+		 *
+		 * @since 3.8
+		 *
+		 * @param size the number of offspring individuals.
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the size is not
+		 *         within the range [0, population-size].
+		 */
+		public Builder<G, C> offspringSize(final int size) {
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Offspring size must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return offspringFraction((double)size/(double)_populationSize);
+		}
+
+		/**
+		 * The number of survivors.
+		 *
+		 * @since 3.8
+		 *
+		 * @param size the number of survivors.
+		 * @return {@code this} builder, for command chaining
+		 * @throws java.lang.IllegalArgumentException if the size is not
+		 *         within the range [0, population-size].
+		 */
+		public Builder<G, C> survivorsSize(final int size) {
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Survivors must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return survivorsFraction((double)size/(double)_populationSize);
 		}
 
 		/**
@@ -1115,7 +1375,8 @@ public final class Engine<
 		public Builder<G, C> populationSize(final int size) {
 			if (size < 1) {
 				throw new IllegalArgumentException(format(
-					"Population size must be greater than zero, but was %s.", size
+					"Population size must be greater than zero, but was %s.",
+					size
 				));
 			}
 			_populationSize = size;
@@ -1370,7 +1631,7 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<>(_genotypeFactory, _fitnessFunction)
+			return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)

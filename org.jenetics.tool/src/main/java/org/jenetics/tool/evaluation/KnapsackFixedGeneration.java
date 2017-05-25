@@ -45,7 +45,7 @@ public class KnapsackFixedGeneration {
 		"Fixed generation",
 		IntStream.rangeClosed(1, 50)
 			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
-			.mapToObj(Long::new)
+			.mapToObj(Long::valueOf)
 			.collect(ISeq.toISeq())
 	);
 
@@ -61,7 +61,7 @@ public class KnapsackFixedGeneration {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Long, BitGene, Double> runner = Runner.of(
-			KNAPSACK,
+			generation -> KNAPSACK,
 			limit::byFixedGeneration,
 			TRIAL_METER,
 			args

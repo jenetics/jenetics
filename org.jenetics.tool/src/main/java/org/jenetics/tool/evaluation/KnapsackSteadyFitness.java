@@ -45,7 +45,7 @@ public class KnapsackSteadyFitness {
 		"Generations",
 		IntStream.rangeClosed(1, 50)
 			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.mapToObj(Integer::new)
+			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq())
 	);
 
@@ -61,7 +61,7 @@ public class KnapsackSteadyFitness {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Integer, BitGene, Double> runner = Runner.of(
-			KNAPSACK,
+			fitness -> KNAPSACK,
 			limit::bySteadyFitness,
 			TRIAL_METER,
 			args

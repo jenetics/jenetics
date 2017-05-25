@@ -1,7 +1,7 @@
 #!/usr/bin/gnuplot -p
 
-set terminal svg size 600,300 enhanced fname "Times Roman" fsize 11
-set output "RealFunction2D.svg"
+set terminal svg size 700,300 fname "Serif" fsize 16
+set output "RealFunction.svg"
 
 set grid
 set xlabel "x"
