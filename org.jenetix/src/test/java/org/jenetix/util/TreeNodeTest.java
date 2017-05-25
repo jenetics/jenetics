@@ -155,7 +155,7 @@ public class TreeNodeTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void ofShape() {
 		final Random random = new Random();
 		final TreeNode<Integer> tree = TreeNode.ofShape(
