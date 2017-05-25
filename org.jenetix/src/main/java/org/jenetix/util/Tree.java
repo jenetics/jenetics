@@ -176,7 +176,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		boolean result;
 		do {
 			result = ancestor.filter(a -> a.equals(node)).isPresent();
-		} while(!result &&
+		} while (!result &&
 				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
 
 		return result;
@@ -255,6 +255,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public default boolean isRelated(final Tree<V, ?> node) {
+		requireNonNull(node);
 		return node.getRoot() == getRoot();
 	}
 

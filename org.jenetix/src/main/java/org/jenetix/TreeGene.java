@@ -74,7 +74,9 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 
 		tree.isAncestor(tree);
 
-		return asTree(null).getParent().map(p -> p.getValue()).orElse(null);
+		return asTree(null).getParent()
+			.map(p -> p.getValue())
+			.orElse(null);
 	}
 
 	/**
