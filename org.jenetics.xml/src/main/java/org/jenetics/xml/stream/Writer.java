@@ -217,6 +217,36 @@ public interface Writer<T> {
 	 * Creates a new {@code Writer}, which writes the given {@code children} as
 	 * sub-elements, defined by the given {@code childWriter}.
 	 *
+	 * @param name the enclosing element name used for each data value
+	 * @param writer the sub-element writer
+	 * @param <T> the writer base type
+	 * @return a new writer instance
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> Writer<Iterable<T>> elems(
+		final String name,
+		final Writer<? super T> writer
+	) {
+		requireNonNull(name);
+		requireNonNull(writer);
+
+		return (xml, data) -> {
+			if (data != null) {
+				for (T value : data) {
+					if (value != null) {
+						xml.writeStartElement(name);
+						writer.write(xml, value);
+						xml.writeEndElement();
+					}
+				}
+			}
+		};
+	}
+
+	/**
+	 * Creates a new {@code Writer}, which writes the given {@code children} as
+	 * sub-elements, defined by the given {@code childWriter}.
+	 *
 	 * @param writer the sub-element writer
 	 * @param <T> the writer base type
 	 * @return a new writer instance

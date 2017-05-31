@@ -686,7 +686,8 @@ public final class Writers {
 				attr(LENGTH_NAME).map(org.jenetics.PermutationChromosome::length),
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
-					elems(elem(ALLELE_NAME, alleleWriter)).map(ch -> ch.getValidAlleles())
+					elems(ALLELE_NAME, alleleWriter)
+						.map(ch -> ch.getValidAlleles())
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
