@@ -277,7 +277,7 @@ public final class Writers {
 				elem(MIN_NAME, alleleWriter.map(ch -> ch.getMin())),
 				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
 				elem(ALLELES_NAME,
-					elems(elem(ALLELE_NAME, alleleWriter))
+					elems(ALLELE_NAME, alleleWriter)
 						.map(ch -> ch.toSeq().map(G::getAllele))
 				)
 			);

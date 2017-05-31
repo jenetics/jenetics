@@ -50,8 +50,8 @@ import javax.xml.stream.XMLStreamWriter;
  *         elem("min", Writer.<Integer>text().map(ch -> ch.getMin())),
  *         elem("max", Writer.<Integer>text().map(ch -> ch.getMax())),
  *         elem("alleles",
- *         elems(elem("allele",  Writer.<Integer>text()))
- *             .map(ch -> ch.toSeq().map(g -> g.getAllele()))
+ *             elems("allele",  Writer.<Integer>text())
+ *                 .map(ch -> ch.toSeq().map(g -> g.getAllele()))
  *         )
  *     );
  * }</pre>
