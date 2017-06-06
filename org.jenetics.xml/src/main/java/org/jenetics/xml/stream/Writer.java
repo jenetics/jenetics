@@ -21,14 +21,7 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -298,6 +291,7 @@ public interface Writer<T> {
 	 * ************************************************************************/
 
 
+	/*
 	public static abstract class Provider<T> {
 		private static final Map<Class<?>, Object>
 			PROVIDERS = new ConcurrentHashMap<>();
@@ -309,8 +303,6 @@ public interface Writer<T> {
 		public static <T> Optional<Provider<T>> of(final Class<T> type) {
 			requireNonNull(type);
 
-			UUID.nameUUIDFromBytes(null);
-
 			return (Optional<Provider<T>>)PROVIDERS.computeIfAbsent(type, t -> {
 				final ServiceLoader<Provider> loader =
 					ServiceLoader.load(Provider.class);
@@ -321,5 +313,6 @@ public interface Writer<T> {
 			});
 		}
 	}
+	*/
 
 }
