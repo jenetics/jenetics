@@ -21,7 +21,14 @@ package org.jenetics.xml.stream;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -60,7 +67,6 @@ import javax.xml.stream.XMLStreamWriter;
  *
  * <pre>{@code
  * final IntegerChromosome ch = IntegerChromosome.of(MIN_VALUE, MAX_VALUE, 3);
- *
  * try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
  *     write(ch, xml);
  * }
@@ -284,6 +290,36 @@ public interface Writer<T> {
 			writer.write(xml, data);
 			xml.writeEndDocument();
 		};
+	}
+
+
+	/* *************************************************************************
+	 * Service lookup
+	 * ************************************************************************/
+
+
+	public static abstract class Provider<T> {
+		private static final Map<Class<?>, Object>
+			PROVIDERS = new ConcurrentHashMap<>();
+
+		public abstract Class<T> type();
+		public abstract Writer<T> writer();
+
+		@SuppressWarnings({"unchecked", "rawtypes"})
+		public static <T> Optional<Provider<T>> of(final Class<T> type) {
+			requireNonNull(type);
+
+			UUID.nameUUIDFromBytes(null);
+
+			return (Optional<Provider<T>>)PROVIDERS.computeIfAbsent(type, t -> {
+				final ServiceLoader<Provider> loader =
+					ServiceLoader.load(Provider.class);
+
+				return StreamSupport.stream(loader.spliterator(), false)
+					.filter(p -> p.type() == type)
+					.findFirst();
+			});
+		}
 	}
 
 }

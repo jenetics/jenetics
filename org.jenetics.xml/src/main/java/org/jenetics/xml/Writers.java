@@ -53,6 +53,15 @@ import org.jenetics.xml.stream.XML;
  *     Writers.Genotype.writer(Writers.DoubleChromosome.writer()));
  * }</pre>
  *
+ * This class also contains some helper methods, which makes it easier to write
+ * Jenetics domain objects to a given output stream.
+ * <pre>{@code
+ * final List<Genotype<BitGene>> genotypes = ...;
+ * try (OutputStream out = Files.newOutputStream(Paths.get("path"))) {
+ *     Writers.write(out, genotypes, Writers.BitChromosome.writer());
+ * }
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
  * @since 3.9
@@ -541,7 +550,9 @@ public final class Writers {
 	 * </double-chromosome>
 	 * }</pre>
 	 */
-	public static final class DoubleChromosome {
+	public static final class DoubleChromosome
+		//extends WriterProvider<org.jenetics.DoubleChromosome>
+	{
 		private DoubleChromosome() {}
 
 		static final String ROOT_NAME = "double-chromosome";
@@ -580,6 +591,10 @@ public final class Writers {
 		 */
 		public static Writer<org.jenetics.DoubleChromosome> writer() {
 			return writer(alleleWriter());
+		}
+
+		public Class<org.jenetics.DoubleChromosome> type() {
+			return org.jenetics.DoubleChromosome.class;
 		}
 
 		/**
