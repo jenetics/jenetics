@@ -20,12 +20,10 @@
 package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.time.Duration;
-
-import org.jenetics.internal.util.Hash;
+import java.util.Objects;
 
 /**
  * This class contains timing information about one evolution step.
@@ -166,32 +164,33 @@ public final class EvolutionDurations
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_offspringSelectionDuration)
-			.and(_survivorsSelectionDuration)
-			.and(_offspringAlterDuration)
-			.and(_offspringFilterDuration)
-			.and(_survivorFilterDuration)
-			.and(_evaluationDuration)
-			.and(_evolveDuration).value();
+		int hash = 17;
+		hash += 31*Objects.hashCode(_offspringSelectionDuration) + 17;
+		hash += 31*Objects.hashCode(_survivorsSelectionDuration) + 17;
+		hash += 31*Objects.hashCode(_offspringAlterDuration) + 17;
+		hash += 31*Objects.hashCode(_offspringFilterDuration) + 17;
+		hash += 31*Objects.hashCode(_survivorFilterDuration) + 17;
+		hash += 31*Objects.hashCode(_evaluationDuration) + 17;
+		hash += 31*Objects.hashCode(_evolveDuration) + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof EvolutionDurations &&
-			eq(_offspringSelectionDuration,
+			Objects.equals(_offspringSelectionDuration,
 				((EvolutionDurations)obj)._offspringSelectionDuration) &&
-			eq(_survivorsSelectionDuration,
+			Objects.equals(_survivorsSelectionDuration,
 				((EvolutionDurations)obj)._survivorsSelectionDuration) &&
-			eq(_offspringAlterDuration,
+			Objects.equals(_offspringAlterDuration,
 				((EvolutionDurations)obj)._offspringAlterDuration) &&
-			eq(_offspringFilterDuration,
+			Objects.equals(_offspringFilterDuration,
 				((EvolutionDurations)obj)._offspringFilterDuration) &&
-			eq(_survivorFilterDuration,
+			Objects.equals(_survivorFilterDuration,
 				((EvolutionDurations)obj)._survivorFilterDuration) &&
-			eq(_evaluationDuration,
+			Objects.equals(_evaluationDuration,
 				((EvolutionDurations)obj)._evaluationDuration) &&
-			eq(_evolveDuration,
+			Objects.equals(_evolveDuration,
 				((EvolutionDurations)obj)._evolveDuration);
 	}
 
