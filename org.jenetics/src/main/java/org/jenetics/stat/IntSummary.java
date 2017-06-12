@@ -20,14 +20,11 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.IntSummaryStatistics;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical summary information.
@@ -122,22 +119,23 @@ public final class IntSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(IntMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*_sum + 37;
+		hash += 33*_min + 37;
+		hash += 33*_max + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof IntSummary &&
-			eq(_count, ((IntSummary)obj)._count) &&
-			eq(_sum, ((IntSummary)obj)._sum) &&
-			eq(_min, ((IntSummary)obj)._min) &&
-			eq(_max, ((IntSummary)obj)._max) &&
-			eq(_mean, ((IntSummary)obj)._mean);
+			_count == ((IntSummary)obj)._count &&
+			_sum == ((IntSummary)obj)._sum &&
+			_min == ((IntSummary)obj)._min &&
+			_max == ((IntSummary)obj)._max &&
+			Double.compare(_mean, ((IntSummary)obj)._mean) == 0;
 	}
 
 	@Override
