@@ -292,14 +292,69 @@ public final class limit {
 		return new FitnessConvergenceLimit<>(
 			shortFilterSize,
 			longFilterSize,
-			(s, l) -> eps(s, l) >= epsilon
+			(s, l) -> eps(s.getMean(), l.getMean()) >= epsilon
 		);
 	}
 
 	// Calculate the relative mean difference between short and long filter.
-	private static double eps(final DoubleMoments s, final DoubleMoments l) {
-		final double div = max(abs(s.getMean()), abs(l.getMean()));
-		return abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
+	private static double eps(final double s, final double l) {
+		final double div = max(abs(s), abs(l));
+		return abs(s - l)/(div <= 10E-20 ? 1.0 : div);
 	}
+
+	/**
+	 * A termination method that stops the evolution when the population is
+	 * deemed as converged. The population is deemed as converged when the
+	 * average fitness across the current population is less than a
+	 * user-specified percentage away from the best fitness of the current
+	 * population. This method takes a predicate with the <em>best</em> fitness
+	 * and the population fitness moments and determine whether to proceed or
+	 * not.
+	 *
+	 * @param proceed the predicate which determines when the evolution stream
+	 *        is truncated. The first parameter of the predicate contains the
+	 *        best fitness of the population and the second parameter contains
+	 *        the statistics of population fitness values
+	 * @param <N> the fitness type
+	 * @return a new fitness convergence strategy
+	 * @throws NullPointerException if the {@code proceed} predicate is
+	 *         {@code null}
+	 */
+	public static <N extends Number & Comparable<? super N>>
+	Predicate<EvolutionResult<?, N>> byPopulationConvergence(
+		final BiPredicate<Double, DoubleMoments> proceed
+	) {
+		return new PopulationConvergenceLimit<>(proceed);
+	}
+
+	/**
+	 * A termination method that stops the evolution when the population is
+	 * deemed as converged. The population is deemed as converged when the
+	 * average fitness across the current population is less than a
+	 * user-specified percentage away from the best fitness of the current
+	 * population.
+	 *
+	 * @param epsilon the maximal relative distance of the best fitness value of
+	 *        the population and the mean value of the population fitness values.
+	 * @param <N> the fitness type
+	 * @return a new fitness convergence strategy
+	 * @throws IllegalArgumentException if {@code epsilon} is not in the range
+	 *         of {@code [0..1]}
+	 */
+	public static <N extends Number & Comparable<? super N>>
+	Predicate<EvolutionResult<?, N>> byPopulationConvergence(
+		final double epsilon
+	) {
+		if (epsilon < 0.0 || epsilon > 1.0) {
+			throw new IllegalArgumentException(format(
+				"The given epsilon is not in the range [0, 1]: %f", epsilon
+			));
+		}
+
+		return new PopulationConvergenceLimit<>((best, moments) ->
+			eps(best, moments.getMean()) >= epsilon
+		);
+	}
+
 
 }
