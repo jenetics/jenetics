@@ -182,7 +182,7 @@ public final class DoubleMoments implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof DoubleMoments &&
-			Long.compare(_count, ((DoubleMoments)obj)._count) == 0 &&
+			_count == ((DoubleMoments)obj)._count &&
 			Double.compare(_sum, ((DoubleMoments)obj)._sum) == 0 &&
 			Double.compare(_min, ((DoubleMoments)obj)._min) == 0 &&
 			Double.compare(_max, ((DoubleMoments)obj)._max) == 0 &&
