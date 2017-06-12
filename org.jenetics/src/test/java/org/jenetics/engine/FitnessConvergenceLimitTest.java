@@ -174,7 +174,7 @@ public class FitnessConvergenceLimitTest {
 		);
 	}
 
-	@Test
+	@Test(invocationCount = 5)
 	public void onesCountLimit() {
 		final Problem<ISeq<BitGene>, BitGene, Integer> problem = Problem.of(
 			genes -> (int)genes.stream().filter(BitGene::getBit).count(),
