@@ -311,6 +311,8 @@ public final class limit {
 	 * and the population fitness moments and determine whether to proceed or
 	 * not.
 	 *
+	 * @since 3.9
+	 *
 	 * @param proceed the predicate which determines when the evolution stream
 	 *        is truncated. The first parameter of the predicate contains the
 	 *        best fitness of the population and the second parameter contains
@@ -334,6 +336,8 @@ public final class limit {
 	 * user-specified percentage away from the best fitness of the current
 	 * population.
 	 *
+	 * @since 3.9
+	 *
 	 * @param epsilon the maximal relative distance of the best fitness value of
 	 *        the population and the mean value of the population fitness values.
 	 * @param <N> the fitness type
@@ -342,9 +346,8 @@ public final class limit {
 	 *         of {@code [0..1]}
 	 */
 	public static <N extends Number & Comparable<? super N>>
-	Predicate<EvolutionResult<?, N>> byPopulationConvergence(
-		final double epsilon
-	) {
+	Predicate<EvolutionResult<?, N>>
+	byPopulationConvergence(final double epsilon) {
 		if (epsilon < 0.0 || epsilon > 1.0) {
 			throw new IllegalArgumentException(format(
 				"The given epsilon is not in the range [0, 1]: %f", epsilon
