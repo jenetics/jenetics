@@ -22,9 +22,9 @@ package org.jenetics.stat;
 import static java.lang.Double.compare;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
@@ -400,11 +400,11 @@ public class Quantile implements DoubleConsumer {
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final Quantile other) {
-		return eq(_quantile, other._quantile) &&
-			eq(_dn, other._dn) &&
-			eq(_n, other._n) &&
-			eq(_nn, other._nn) &&
-			eq(_q, other._q);
+		return Objects.equals(_quantile, other._quantile) &&
+			Arrays.equals(_dn, other._dn) &&
+			Arrays.equals(_n, other._n) &&
+			Arrays.equals(_nn, other._nn) &&
+			Arrays.equals(_q, other._q);
 	}
 
 	@Override

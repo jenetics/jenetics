@@ -20,13 +20,14 @@
 package org.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
 
 import org.jenetics.Gene;
@@ -57,7 +58,7 @@ import org.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.6
+ * @version 3.9
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -126,6 +127,19 @@ public final class EvolutionResult<
 	 */
 	public Population<G, C> getPopulation() {
 		return _population.copy();
+	}
+
+	/**
+	 * Return the current list of genotypes of this evolution result.
+	 *
+	 * @since 3.9
+	 *
+	 * @return the list of genotypes of this evolution result.
+	 */
+	public List<Genotype<G>> getGenotypes() {
+		return _population.stream()
+			.map(Phenotype::getGenotype)
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -256,30 +270,40 @@ public final class EvolutionResult<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_optimize)
-			.and(_population)
-			.and(_generation)
-			.and(_totalGenerations)
-			.and(_durations)
-			.and(_killCount)
-			.and(_invalidCount)
-			.and(_alterCount)
-			.and(getBestFitness()).value();
+		int hash = 17;
+		hash += 31*Objects.hashCode(_optimize) + 17;
+		hash += 31*Objects.hashCode(_population) + 17;
+		hash += 31*Objects.hashCode(_generation) + 17;
+		hash += 31*Objects.hashCode(_totalGenerations) + 17;
+		hash += 31*Objects.hashCode(_durations) + 17;
+		hash += 31*Objects.hashCode(_killCount) + 17;
+		hash += 31*Objects.hashCode(_invalidCount) + 17;
+		hash += 31*Objects.hashCode(_alterCount) + 17;
+		hash += 31*Objects.hashCode(getBestFitness()) + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof EvolutionResult<?, ?> &&
-			eq(_optimize, ((EvolutionResult<?, ?>)obj)._optimize) &&
-			eq(_population, ((EvolutionResult<?, ?>)obj)._population) &&
-			eq(_generation, ((EvolutionResult<?, ?>)obj)._generation) &&
-			eq(_totalGenerations, ((EvolutionResult<?, ?>)obj)._totalGenerations) &&
-			eq(_durations, ((EvolutionResult<?, ?>)obj)._durations) &&
-			eq(_killCount, ((EvolutionResult<?, ?>)obj)._killCount) &&
-			eq(_invalidCount, ((EvolutionResult<?, ?>)obj)._invalidCount) &&
-			eq(_alterCount, ((EvolutionResult<?, ?>)obj)._alterCount) &&
-			eq(getBestFitness(), ((EvolutionResult<?, ?>)obj).getBestFitness());
+			Objects.equals(_optimize,
+				((EvolutionResult<?, ?>)obj)._optimize) &&
+			Objects.equals(_population,
+				((EvolutionResult<?, ?>)obj)._population) &&
+			Objects.equals(_generation,
+				((EvolutionResult<?, ?>)obj)._generation) &&
+			Objects.equals(_totalGenerations,
+				((EvolutionResult<?, ?>)obj)._totalGenerations) &&
+			Objects.equals(_durations,
+				((EvolutionResult<?, ?>)obj)._durations) &&
+			Objects.equals(_killCount,
+				((EvolutionResult<?, ?>)obj)._killCount) &&
+			Objects.equals(_invalidCount,
+				((EvolutionResult<?, ?>)obj)._invalidCount) &&
+			Objects.equals(_alterCount,
+				((EvolutionResult<?, ?>)obj)._alterCount) &&
+			Objects.equals(getBestFitness(),
+				((EvolutionResult<?, ?>)obj).getBestFitness());
 	}
 
 

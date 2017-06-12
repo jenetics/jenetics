@@ -145,4 +145,43 @@ public class SeqTest {
 		Assert.assertEquals(iseq.asMSeq(), iseq);
 	}
 
+	@Test
+	public void toArray() {
+		final Seq<String> mseq = MSeq.of("1");
+		final String[] array = mseq.toArray(new String[0]);
+
+		Assert.assertEquals(array.length, mseq.size());
+		Assert.assertEquals(array[0], mseq.get(0));
+	}
+
+	@Test
+	public void toArray2() {
+		final Seq<String> mseq = MSeq.of("1", "2");
+		final String[] array = mseq.toArray(new String[]{"a", "b", "c", "d"});
+
+		Assert.assertEquals(array.length, 4);
+		Assert.assertEquals(array[0], mseq.get(0));
+		Assert.assertEquals(array[1], mseq.get(1));
+		Assert.assertEquals(array[2], null);
+		Assert.assertEquals(array[3], "d");
+	}
+
+	@Test
+	public void toArray3() {
+		final Seq<String> mseq = MSeq.of("1", "2");
+		final Object[] array = mseq.toArray(new Object[]{"a", "b", "c", "d"});
+
+		Assert.assertEquals(array.length, 4);
+		Assert.assertEquals(array[0], mseq.get(0));
+		Assert.assertEquals(array[1], mseq.get(1));
+		Assert.assertEquals(array[2], null);
+		Assert.assertEquals(array[3], "d");
+	}
+
+	@Test(expectedExceptions = ArrayStoreException.class)
+	public void toArray4() {
+		final Seq<String> mseq = MSeq.of("1", "2");
+		final Integer[] array = mseq.toArray(new Integer[]{1, 2, 3, 4});
+	}
+
 }

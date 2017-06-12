@@ -17,27 +17,56 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
-
-import java.util.stream.IntStream;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 3.9
+ * @version 3.9
  */
-public class StackTest {
 
-	@Test
-	public void forLoop() {
-		final Stack<Integer> stack = new Stack<>();
-		IntStream.range(1000, 10_000).forEach(stack::push);
+plugins {
+	id "me.champeau.gradle.jmh" version "0.3.1"
+}
 
-		int expected = 10_000;
-		for (Integer value = stack.pop(); value != null; value = stack.pop()) {
-			Assert.assertEquals(value.intValue(), --expected);
-		}
+apply plugin: 'packaging'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile project(':jenetics')
+
+	testCompile Include.TestNG
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+}
+
+jmh {
+	duplicateClassesStrategy = 'warn'
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.xml'
+)
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/org.jenetics'
 	}
+}
 
+packaging {
+	name = 'Jenetics XML marshalling'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.io'
+	jarjar = false
+	javadoc = true
+}
+
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
 }

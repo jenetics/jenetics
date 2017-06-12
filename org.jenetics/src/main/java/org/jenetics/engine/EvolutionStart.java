@@ -21,9 +21,9 @@ package org.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Hash;
+import java.util.Objects;
+
 import org.jenetics.internal.util.require;
 
 import org.jenetics.Gene;
@@ -78,16 +78,17 @@ public final class EvolutionStart<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_population)
-			.and(_generation).value();
+		int hash = 17;
+		hash += 31*_generation + 17;
+		hash += 31*Objects.hashCode(_population) + 17;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof EvolutionStart<?, ?> &&
-			eq(_generation, ((EvolutionStart<?, ?>)obj)._generation) &&
-			eq(_population, ((EvolutionStart<?, ?>)obj)._population);
+			_generation == ((EvolutionStart<?, ?>)obj)._generation &&
+			Objects.equals(_population, ((EvolutionStart<?, ?>)obj)._population);
 	}
 
 	@Override
