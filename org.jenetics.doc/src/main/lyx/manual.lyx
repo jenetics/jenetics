@@ -21304,21 +21304,21 @@ reference "fig:Fitness-convergence-diagram-50-150"
  
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status open
-
-\begin_layout Subsubsection
+\begin_layout Subsection
 Population convergence
 \end_layout
 
-\begin_layout Plain Layout
+\begin_layout Standard
 A termination method that stops the evolution when the population is deemed
  as converged.
  The population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
 \end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
 
 \begin_layout Subsubsection
 Gene convergence
