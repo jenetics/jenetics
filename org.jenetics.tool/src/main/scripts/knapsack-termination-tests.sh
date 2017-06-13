@@ -40,5 +40,5 @@ do
 		RESULT="${RESULT_BASE_PATH}/${parts[1]}.xml"
 	fi
 
-	${JRUN} ${CLASS} ${PARAMS} --result-file ${RESULT} --sample-count 2
+	${JRUN} ${CLASS} ${PARAMS} --result-file ${RESULT} --sample-count 1000
 done
