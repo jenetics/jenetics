@@ -20,12 +20,13 @@
 package org.jenetics.tool.evaluation;
 
 import static java.lang.Math.log10;
-import static java.lang.Math.max;
 import static java.lang.Math.pow;
 import static org.jenetics.tool.evaluation.engines.KNAPSACK;
 
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+
+import org.jenetics.internal.util.Args;
 
 import org.jenetics.BitGene;
 import org.jenetics.engine.limit;
@@ -35,24 +36,27 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
- * @since 3.4
+ * @version 3.9
+ * @since 3.9
  */
-public class KnapsackSteadyFitness {
+public class KnapsackPopulationConvergence {
 
-	private static final double GEN_BASE = pow(10, log10(100)/20.0);
-	private static final Params<Integer> PARAMS = Params.of(
-		"Generations",
-		IntStream.rangeClosed(1, 50)
-			.map(i -> max((int)pow(GEN_BASE, i), i))
-			.boxed()
+	private static final double GEN_BASE = pow(10, log10(1000)/10.0);
+	private static final Params<Double> PARAMS = Params.of(
+		"Convergence epsilon",
+		IntStream.rangeClosed(0, 10)
+			.mapToObj(i -> 0.01 - i*(0.01 - 0.001)/10)
 			.collect(ISeq.toISeq())
 	);
 
-	private static final Supplier<TrialMeter<Integer>>
-	TRIAL_METER = () -> TrialMeter.of(
-		"Steady fitness",
-		"Create steady fitness performance measures",
+	static {
+		System.out.println(PARAMS);
+	}
+
+	private static final Supplier<TrialMeter<Double>>
+		TRIAL_METER = () -> TrialMeter.of(
+		"Population convergence",
+		"Create population convergence performance measures",
 		PARAMS,
 		"Generation",
 		"Fitness",
@@ -60,9 +64,11 @@ public class KnapsackSteadyFitness {
 	);
 
 	public static void main(final String[] args) throws InterruptedException {
-		final Runner<Integer, BitGene, Double> runner = Runner.of(
+		final Args arguments = Args.of(args);
+
+		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
-			limit::bySteadyFitness,
+			limit::byPopulationConvergence,
 			TRIAL_METER,
 			args
 		);

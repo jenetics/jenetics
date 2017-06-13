@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<measurement xmlns="http://jenetics.io/Jenetics/trial/1" name="Population convergence" description="Create population convergence performance measures">
+    <environment>
+        <os-name>Linux</os-name>
+        <os-version>4.10.0-22-generic</os-version>
+        <os-architecture>amd64</os-architecture>
+        <java-version>1.8.0_131</java-version>
+        <java-runtime-name>Java(TM) SE Runtime Environment</java-runtime-name>
+        <java-runtime-version>1.8.0_131-b11</java-runtime-version>
+        <java-vm-name>Java HotSpot(TM) 64-Bit Server VM</java-vm-name>
+        <java-vm-version>25.131-b11</java-vm-version>
+    </environment>
+    <params name="Convergence epsilon">
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.01</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0091</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0082</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0073</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0063999999999999994</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0055</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0046</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0037</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.0027999999999999995</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">0.001899999999999999</param>
+        <param xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:double">9.999999999999992E-4</param>
+    </params>
+    <data-set>
+        <data name="Generation">
+            <sample>63.0 58.0 321.0 86.0 401.0 1110.0 400.0 8639.0 32210.0 110725.0 3902173.0</sample>
+            <sample>39.0 65.0 87.0 94.0 204.0 409.0 3161.0 2065.0 52799.0 139421.0 3237178.0</sample>
+        </data>
+        <data name="Fitness">
+            <sample>8795.057700066995 8539.331106101115 9567.313271742327 9003.864585284759 9602.179111550093 9924.586484564186 9719.010362659501 10499.407546246157 10756.398424147204 10886.293618768517 11013.40529947945</sample>
+            <sample>8655.982847208084 8914.779422719666 8954.051105242492 9119.632148114528 9258.085676579567 9690.441747871128 10281.984761927575 9997.801737241814 10813.806611709266 10842.449208738217 11006.060592452372</sample>
+        </data>
+        <data name="Runtime">
+            <sample>179.0 46.0 199.0 46.0 166.0 319.0 115.0 2113.0 6842.0 23649.0 871024.0</sample>
+            <sample>47.0 39.0 31.0 54.0 87.0 119.0 885.0 629.0 11884.0 30639.0 741002.0</sample>
+        </data>
+    </data-set>
+</measurement>
