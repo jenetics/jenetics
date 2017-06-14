@@ -58,9 +58,8 @@ final class EvolutionSpliterator<
 	}
 
 	@Override
-	public boolean tryAdvance(
-		final Consumer<? super EvolutionResult<G, C>> action
-	) {
+	public boolean
+	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
 		if (_start == null) {
 			_start = _initial.get();
 		}
