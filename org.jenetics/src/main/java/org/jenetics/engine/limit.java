@@ -25,6 +25,7 @@ import static java.lang.String.format;
 
 import java.time.Clock;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -72,10 +73,10 @@ public final class limit {
 		}
 
 		return new Predicate<Object>() {
-			private long _current;
+			private final AtomicLong _current = new AtomicLong();
 			@Override
 			public boolean test(final Object o) {
-				return ++_current < generation;
+				return _current.incrementAndGet() < generation;
 			}
 		};
 	}
