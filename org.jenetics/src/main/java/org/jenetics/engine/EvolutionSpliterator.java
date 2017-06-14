@@ -22,7 +22,6 @@ package org.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -33,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -45,22 +44,19 @@ final class EvolutionSpliterator<
 	private final Supplier<EvolutionStart<G, C>> _initial;
 	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
-	private final int _level;
+
 	private long _estimate;
+	private EvolutionStart<G, C> _next = null;
 
-	private final AtomicReference<EvolutionStart<G, C>> _next = new AtomicReference<>();
-
-	EvolutionSpliterator(
+	private EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> initial,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed,
-		final int level,
 		final long estimate
 	) {
 		_evolution = requireNonNull(evolution);
 		_initial = requireNonNull(initial);
 		_proceed = requireNonNull(proceed);
-		_level = level;
 		_estimate = estimate;
 	}
 
@@ -69,39 +65,29 @@ final class EvolutionSpliterator<
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		this(initial, evolution, proceed, 0, Long.MAX_VALUE);
+		this(initial, evolution, proceed, Long.MAX_VALUE);
 	}
-
-	int _count = 0;
 
 	@Override
 	public boolean
 	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
-		if (_next.get() == null) {
-			_next.set(_initial.get());
+		if (_next == null) {
+			_next = _initial.get();
 		}
-		System.out.println("tryAdvance: " + _level + ":" + ++_count);
 
-		final EvolutionResult<G, C> result = _evolution.apply(_next.get());
+		final EvolutionResult<G, C> result = _evolution.apply(_next);
 		action.accept(result);
-		_next.set(result.next());
+		_next = result.next();
 
 		return _proceed.test(result);
 	}
 
 	@Override
 	public Spliterator<EvolutionResult<G, C>> trySplit() {
-		System.out.println("trySplit: " + _level);
-
 		return _estimate > 0
 			? new EvolutionSpliterator<>(
-				this::next, _evolution, _proceed, _level + 1, _estimate >>>= 1)
+				_initial, _evolution, _proceed, _estimate >>>= 1)
 			: null;
-	}
-
-	private EvolutionStart<G, C> next() {
-		final EvolutionStart<G, C> next = _next.get();
-		return next != null ? next : _initial.get();
 	}
 
 	@Override
