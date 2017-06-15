@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -45,44 +45,59 @@ final class EvolutionSpliterator<
 	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
-	private EvolutionStart<G, C> _start;
+	private long _estimate;
+	private EvolutionStart<G, C> _next = null;
+
+	private EvolutionSpliterator(
+		final Supplier<EvolutionStart<G, C>> initial,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
+		final Predicate<? super EvolutionResult<G, C>> proceed,
+		final long estimate
+	) {
+		_evolution = requireNonNull(evolution);
+		_initial = requireNonNull(initial);
+		_proceed = requireNonNull(proceed);
+		_estimate = estimate;
+	}
 
 	EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> initial,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		_evolution = requireNonNull(evolution);
-		_initial = requireNonNull(initial);
-		_proceed = requireNonNull(proceed);
+		this(initial, evolution, proceed, Long.MAX_VALUE);
 	}
 
 	@Override
 	public boolean
 	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
-		if (_start == null) {
-			_start = _initial.get();
+		if (_next == null) {
+			_next = _initial.get();
 		}
 
-		final EvolutionResult<G, C> result = _evolution.apply(_start);
+		final EvolutionResult<G, C> result = _evolution.apply(_next);
 		action.accept(result);
-		_start = result.next();
+		_next = result.next();
 
 		return _proceed.test(result);
 	}
 
 	@Override
 	public Spliterator<EvolutionResult<G, C>> trySplit() {
-		return null;
+		return _estimate > 0
+			? new EvolutionSpliterator<>(
+				_initial, _evolution, _proceed, _estimate >>>= 1)
+			: null;
 	}
 
 	@Override
 	public long estimateSize() {
-		return Long.MAX_VALUE;
+		return _estimate;
 	}
 
 	@Override
 	public int characteristics() {
 		return NONNULL | IMMUTABLE;
 	}
+
 }
