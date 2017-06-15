@@ -57,11 +57,12 @@ public class ExecutionTimeLimitTest {
 		final Duration duration = Duration.ofMillis(millis);
 
 		final AtomicInteger count = new AtomicInteger();
-		stream().limit(limit.byExecutionTime(duration, clock))
+		stream()
+			.limit(limit.byExecutionTime(duration, clock))
 			.forEach(s -> count.incrementAndGet());
 
-		Assert.assertEquals(count.get(), Math.max(millis.intValue(), 1));
-		Assert.assertEquals(clock.count, count.get() + 1);
+		Assert.assertEquals(count.get(), millis + 1);
+		Assert.assertEquals(clock.count, count.get());
 	}
 
 	private static EvolutionStream<DoubleGene, Double> stream() {
