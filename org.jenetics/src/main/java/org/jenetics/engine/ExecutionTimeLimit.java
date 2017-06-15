@@ -24,19 +24,20 @@ import static java.util.Objects.requireNonNull;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 3.1
+ * @version !__version__!
  */
 final class ExecutionTimeLimit implements Predicate<Object>  {
 
 	private final Duration _duration;
 	private final Clock _clock;
 
-	private Instant _start = Instant.MIN;
+	private final AtomicReference<Instant> _start = new AtomicReference<>();
 
 	ExecutionTimeLimit(final Duration duration, final Clock clock) {
 		_duration = requireNonNull(duration);
@@ -45,11 +46,10 @@ final class ExecutionTimeLimit implements Predicate<Object>  {
 
 	@Override
 	public boolean test(final Object ignore) {
-		if (_start == Instant.MIN) {
-			_start = _clock.instant();
-		}
+		final Instant instant = _clock.instant();
+		_start.compareAndSet(null, instant);
 
-		return _start.plus(_duration).isAfter(_clock.instant());
+		return _start.get().plus(_duration).isAfter(instant);
 	}
 
 }
