@@ -217,12 +217,15 @@ public class EngineTest {
 
 		final EvolutionResult<DoubleGene, Double> result = engine
 			.stream()
-			.limit(limit.byFixedGeneration(10000))
+			.limit(limit.byFixedGeneration(1000))
 			.parallel()
-			//.limit(100)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getTotalGenerations());
+		Assert.assertTrue(
+			result.getTotalGenerations() >= 1000,
+			"Total generation must be bigger than 1000: " +
+			result.getTotalGenerations()
+		);
 	}
 
 	// https://github.com/jenetics/jenetics/issues/47
