@@ -213,6 +213,11 @@ public final class limit {
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
 	 *
+	 * <p>
+	 * <b>API note: </b><em>The returned predicate maintains mutable state.
+	 * Using it in a parallel evolution streams needs external synchronization
+	 * of the {@code test} method.</em>
+	 *
 	 * @since 3.7
 	 *
 	 * @param shortFilterSize the size of the short filter
@@ -260,6 +265,11 @@ public final class limit {
 	 * filter calculates the mean of the best fitness values of the last 5
 	 * generations. The long filter uses the best fitness values of the last 15
 	 * generations.
+	 *
+	 * <p>
+	 * <b>API note: </b><em>The returned predicate maintains mutable state.
+	 * Using it in a parallel evolution streams needs external synchronization
+	 * of the {@code test} method.</em>
 	 *
 	 * @since 3.7
 	 *
