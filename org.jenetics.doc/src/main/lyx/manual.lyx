@@ -23442,7 +23442,8 @@ Incubation
 \end_layout
 
 \begin_layout Standard
-This section describes the classes in the 
+This section describes the experimental functionality and classes in the
+ 
 \emph on
 not yet
 \emph default
@@ -23476,7 +23477,7 @@ Currently incubation modules:
 \begin_layout Description
 
 \family typewriter
-org.jenetics.tool
+jenetics.tool
 \family default
  Contains utility classes for measuring the evolution performance.
 \family typewriter
@@ -23510,7 +23511,7 @@ http://jenetics.io/javadoc/org.jenetics.tool/@__minor_version__@/index.html
 \begin_layout Description
 
 \family typewriter
-org.jenetix
+jenetix
 \family default
  Contains non-standard selector and mutator classes.
 \family typewriter
@@ -23550,6 +23551,15 @@ reference "subsec:Weasel-program"
 \end_inset
 
 ) are part of this module.
+\end_layout
+
+\begin_layout Subsection
+Parallel evolution stream
+\end_layout
+
+\begin_layout Standard
+The EvolutionStream class of the library extends the Java Stream interface,
+ which also ...
 \end_layout
 
 \begin_layout Subsection
