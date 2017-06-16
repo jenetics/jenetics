@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.9
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
