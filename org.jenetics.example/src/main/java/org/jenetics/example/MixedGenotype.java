@@ -19,8 +19,6 @@
  */
 package org.jenetics.example;
 
-import java.util.function.Function;
-
 import org.jenetics.BitChromosome;
 import org.jenetics.Chromosome;
 import org.jenetics.DoubleChromosome;
@@ -49,7 +47,7 @@ public class MixedGenotype {
 
 	public static void main(final String[] args) {
 		final Engine engine = Engine
-			.builder((Function<Genotype, Double>)MixedGenotype::fitness, ENCODING)
+			.builder(MixedGenotype::fitness, ENCODING)
 			.build();
 
 		final Phenotype best = (Phenotype)engine.stream()
