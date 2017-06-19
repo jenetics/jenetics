@@ -187,6 +187,17 @@ public class LongMomentStatistics
 			super.sameState(other);
 	}
 
+	/**
+	 * Return a {@code LongMoments} object from the current statistics,
+	 *
+	 * @since 3.9
+	 *
+	 * @return a {@code LongMoments} object from the current statistics
+	 */
+	public LongMoments toLongMoments() {
+		return LongMoments.of(this);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(

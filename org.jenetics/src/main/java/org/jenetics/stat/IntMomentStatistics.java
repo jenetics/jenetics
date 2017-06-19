@@ -176,6 +176,17 @@ public class IntMomentStatistics
 			super.sameState(other);
 	}
 
+	/**
+	 * Return an {@code IntMoments} object from the current statistics,
+	 *
+	 * @since 3.9
+	 *
+	 * @return an {@code IntMoments} object from the current statistics
+	 */
+	public IntMoments toIntMoments() {
+		return IntMoments.of(this);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
