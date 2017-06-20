@@ -71,7 +71,7 @@ public abstract class IndexSorter {
 
 	static int[] indexes(final int length) {
 		final int[] indexes = new int[length];
-		for (int i = length; --i >= 0;) {
+		for (int i = 0; i < length; ++i) {
 			indexes[i] = i;
 		}
 		return indexes;
