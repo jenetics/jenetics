@@ -148,6 +148,30 @@ public final class EvolutionDurations
 	}
 
 	/**
+	 * Returns a copy of this duration with the specified duration added.
+	 * <p>
+	 * This instance is immutable and unaffected by this method call.
+	 *
+	 * @param other the duration to add
+	 * @return a {@code EvolutionDurations} based on this duration with the
+	 *         specified duration added
+	 * @throws NullPointerException if the {@code other} duration is {@code null}
+	 * @throws ArithmeticException if numeric overflow occurs
+	 */
+	public EvolutionDurations plus(final EvolutionDurations other) {
+		requireNonNull(other);
+		return of(
+			_offspringSelectionDuration.plus(other._offspringSelectionDuration),
+			_survivorsSelectionDuration.plus(other._survivorsSelectionDuration),
+			_offspringAlterDuration.plus(other._offspringAlterDuration),
+			_offspringFilterDuration.plus(other._offspringFilterDuration),
+			_survivorFilterDuration.plus(other._survivorFilterDuration),
+			_evaluationDuration.plus(other._evaluationDuration),
+			_evolveDuration.plus(other._evolveDuration)
+		);
+	}
+
+	/**
 	 * Compares two durations objects. Only the {@link #getEvolveDuration()}
 	 * property is taken into account for the comparison.
 	 *
