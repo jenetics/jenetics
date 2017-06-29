@@ -20,7 +20,6 @@
 package org.jenetix.util;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.Spliterators.spliteratorUnknownSize;
 import static org.jenetics.internal.math.random.nextInt;
 
 import java.io.Serializable;
@@ -33,13 +32,9 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.IntSupplier;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.jenetics.util.Copyable;
-import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
-import org.jenetics.util.MSeq;
 
 /**
  * A general purpose node in a tree data-structure.
@@ -245,7 +240,7 @@ public final class TreeNode<T>
 	 * nothing.
 	 */
 	public void removeAllChildren() {
-		for (int i = childCount() - 1; i >= 0; i--) {
+		for (int i = 0; i < childCount(); ++i) {
 			remove(i);
 		}
 	}
@@ -284,18 +279,13 @@ public final class TreeNode<T>
 			fill(child, targetChild);
 		});
 	}
-
 	@Override
 	public int hashCode() {
-		return hash(this);
-	}
-
-	private static int hash(final TreeNode<?> node) {
-		int hash = 31*Objects.hashCode(node.getValue()) + 17;
-		for (TreeNode<?> child : node._children) {
-			hash += 31*hash(child) + 17;
+		int hash = 17;
+		final Iterator<?> it = depthFirstIterator();
+		while (it.hasNext()) {
+			hash += 31*Objects.hashCode(it.next()) + 17;
 		}
-
 		return hash;
 	}
 
