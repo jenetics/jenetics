@@ -44,7 +44,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public default Tree<G, ?> asTree(final Seq<? extends G> genes) {
 		return new Tree() {
 			@Override
