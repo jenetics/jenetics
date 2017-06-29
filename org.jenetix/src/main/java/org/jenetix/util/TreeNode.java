@@ -267,21 +267,9 @@ public final class TreeNode<T>
 
 	@Override
 	public TreeNode<T> copy() {
-		final TreeNode<T> target = TreeNode.of(getValue());
-		fill(this, target);
-		return target;
+		return of(this);
 	}
 
-	private static <T> void fill(
-		final Tree<? extends T, ?> source,
-		final TreeNode<T> target
-	) {
-		source.childStream().forEachOrdered(child -> {
-			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
-			target.attach(targetChild);
-			fill(child, targetChild);
-		});
-	}
 	@Override
 	public int hashCode() {
 		int hash = 17;
@@ -367,6 +355,17 @@ public final class TreeNode<T>
 		final TreeNode<T> target = TreeNode.of(tree.getValue());
 		fill(tree, target);
 		return target;
+	}
+
+	private static <T> void fill(
+		final Tree<? extends T, ?> source,
+		final TreeNode<T> target
+	) {
+		source.childStream().forEachOrdered(child -> {
+			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
+			target.attach(targetChild);
+			fill(child, targetChild);
+		});
 	}
 
 	/**
