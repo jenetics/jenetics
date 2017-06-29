@@ -614,6 +614,17 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
 	}
 
+	/**
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in breadth-first order. The first node returned by the iterator is
+	 * {@code this} node.
+	 * <p>
+	 * Modifying the tree by inserting, removing, or moving a node invalidates
+	 * any iterator created before the modification.
+	 *
+	 * @see #breadthFirstIterator
+	 * @return an iterator for traversing the tree in breadth-first order
+	 */
 	@Override
 	public default Iterator<T> iterator() {
 		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
@@ -737,7 +748,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code ancestor} is {@code null}
 	 */
 	public default Iterator<T>
-	pathFromAncestorIterator(final Tree<V, ?> ancestor) {
+	pathFromAncestorIterator(final Tree<?, ?> ancestor) {
 		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
 	}
 
