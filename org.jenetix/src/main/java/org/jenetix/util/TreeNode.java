@@ -272,7 +272,10 @@ public final class TreeNode<T>
 		return target;
 	}
 
-	private static <T> void fill(final TreeNode<T> source, final TreeNode<T> target) {
+	private static <T> void fill(
+		final Tree<? extends T, ?> source,
+		final TreeNode<T> target
+	) {
 		source.childStream().forEachOrdered(child -> {
 			final TreeNode<T> targetChild = TreeNode.of(child.getValue());
 			target.attach(targetChild);
@@ -351,6 +354,20 @@ public final class TreeNode<T>
 	/* *************************************************************************
 	 * Static factory methods.
 	 **************************************************************************/
+
+	/**
+	 * Return a new {@code TreeNode} from the given source {@code tree}.
+	 *
+	 * @param tree the source tree the new tree-node is created from
+	 * @param <T> the tree value type
+	 * @return a new {@code TreeNode} from the given source {@code tree}
+	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 */
+	public static <T> TreeNode<T> of(final Tree<? extends T, ?> tree) {
+		final TreeNode<T> target = TreeNode.of(tree.getValue());
+		fill(tree, target);
+		return target;
+	}
 
 	/**
 	 * Return a new {@code TreeNode} with the given node {@code value}.
