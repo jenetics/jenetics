@@ -135,7 +135,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the index of the node in this node's child array, or {@code -1}
 	 *         if the node could not be found
 	 */
-	public default int getIndex(final Tree<V, ?> child) {
+	public default int getIndex(final Tree<?, ?> child) {
 		int index = -1;
 		for (int i = 0, n = childCount(); i < n && index == -1; ++i) {
 			if (getChild(i).equals(child)) {
@@ -169,7 +169,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         {@code this} node, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isAncestor(final Tree<V, ?> node) {
+	public default boolean isAncestor(final Tree<?, ?> node) {
 		requireNonNull(node);
 
 		Optional<T> ancestor = Optional.of(self(this));
@@ -192,7 +192,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return {@code true} if this node is an ancestor of the given {@code node}
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isDescendant(final Tree<V, ?> node) {
+	public default boolean isDescendant(final Tree<?, ?> node) {
 		return requireNonNull(node).isAncestor(this);
 	}
 
@@ -205,7 +205,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         or {@link Optional#empty()} if no common ancestor exists.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default Optional<T> sharedAncestor(final Tree<V, ?> node) {
+	public default Optional<T> sharedAncestor(final Tree<?, ?> node) {
 		requireNonNull(node);
 
 		T ancestor = null;
@@ -215,8 +215,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			final int level1 = level();
 			final int level2 = node.level();
 
-			Tree<V, ?> node1;
-			Tree<V, ?> node2;
+			Tree<?, ?> node1;
+			Tree<?, ?> node2;
 			int diff;
 			if (level2 > level1) {
 				diff = level2 - level1;
@@ -254,7 +254,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         node, {@code false} otherwise.
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isRelated(final Tree<V, ?> node) {
+	public default boolean isRelated(final Tree<?, ?> node) {
 		requireNonNull(node);
 		return node.getRoot() == getRoot();
 	}
@@ -301,7 +301,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isChild(final Tree<V, ?> node) {
+	public default boolean isChild(final Tree<?, ?> node) {
 		requireNonNull(node);
 		return childCount() != 0 && node.getParent().equals(Optional.of(this));
 	}
@@ -341,7 +341,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *          first node.
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public default Optional<T> childAfter(final Tree<V, ?> child) {
+	public default Optional<T> childAfter(final Tree<?, ?> child) {
 		requireNonNull(child);
 
 		final int index = getIndex(child);
@@ -364,7 +364,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *          or {@code null} if the given {@code node} is the first node.
 	 * @throws NullPointerException if the given {@code child} is {@code null}
 	 */
-	public default Optional<T> childBefore(final Tree<V, ?> child) {
+	public default Optional<T> childBefore(final Tree<?, ?> child) {
 		requireNonNull(child);
 
 		final int index = getIndex(child);
@@ -441,7 +441,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         node
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
-	public default boolean isSibling(final Tree<V, ?> node) {
+	public default boolean isSibling(final Tree<?, ?> node) {
 		return requireNonNull(node) == this ||
 			getParent().equals(node.getParent());
 	}
