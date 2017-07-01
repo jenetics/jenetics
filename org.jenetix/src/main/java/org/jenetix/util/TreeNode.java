@@ -272,11 +272,15 @@ public final class TreeNode<T>
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		final Iterator<?> it = depthFirstIterator();
-		while (it.hasNext()) {
-			hash += 31*Objects.hashCode(it.next()) + 17;
+		return hash(this);
+	}
+
+	private static int hash(final TreeNode<?> node) {
+		int hash = 31*Objects.hashCode(node.getValue()) + 17;
+		for (TreeNode<?> child : node._children) {
+			hash += 31*hash(child) + 17;
 		}
+
 		return hash;
 	}
 
