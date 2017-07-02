@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -48,10 +49,12 @@ import java.util.stream.StreamSupport;
  * @since 1.0
  * @version 3.4
  */
-public interface Seq<T> extends Iterable<T> {
+public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
+	 *
+	 * @see #apply(int)
 	 *
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
@@ -59,6 +62,22 @@ public interface Seq<T> extends Iterable<T> {
 	 *         (index &lt; 0 || index &gt;= size()).
 	 */
 	public T get(final int index);
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #get(int)
+	 *
+	 * @param index index of the element to return.
+	 * @return the value at the given {@code index}.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         (index &lt; 0 || index &gt;= size()).
+	 */
+	public default T apply(final int index) {
+		return get(index);
+	}
 
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the
