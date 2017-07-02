@@ -21,6 +21,7 @@ package org.jenetix;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.IntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -100,7 +101,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
 	 * @throws NullPointerException if the given {@code genes} sequence is
 	 *        {@code null}
 	 */
-	public G getChild(final int index, final Seq<? extends G> genes);
+	public G getChild(final int index, final IntFunction<? extends G> genes);
 
 	/**
 	 * Return the children stream of the {@code this} tree-gene.

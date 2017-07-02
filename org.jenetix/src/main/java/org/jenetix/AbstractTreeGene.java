@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -71,7 +72,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		// Find the index of 'this' gene in the gene sequence.
 		final Optional<Integer> index = IntStream.range(0, genes.length())
 			.filter(i -> genes.get(i) == this)
-			.mapToObj(Integer::valueOf)
+			.boxed()
 			.findFirst();
 
 		return index.flatMap(i -> parentFor(i, genes));
@@ -94,8 +95,8 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public G getChild(final int index, final Seq<? extends G> genes) {
-		return genes.get(_children[index]);
+	public G getChild(final int index, final IntFunction<? extends G> genes) {
+		return genes.apply(_children[index]);
 	}
 
 	@Override
