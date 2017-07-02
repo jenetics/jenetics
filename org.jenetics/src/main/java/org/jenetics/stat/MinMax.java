@@ -156,7 +156,7 @@ public final class MinMax<C> implements Consumer<C> {
 
 	@Override
 	public String toString() {
-		return format("MinMax[count=%d, min=%s, max:%s]", _count, _max, _max);
+		return format("MinMax[count=%d, min=%s, max:%s]", _count, _min, _max);
 	}
 
 	/* *************************************************************************
