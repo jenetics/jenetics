@@ -39,7 +39,9 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public interface TreeGene<A, G extends TreeGene<A, G>> extends Gene<A, G> {
+public interface TreeGene<A, G extends TreeGene<A, G>>
+	extends Gene<A, G>
+{
 
 	public class Tr {
 
