@@ -20,13 +20,30 @@
 package org.jenetix;
 
 import org.jenetics.util.IntRange;
+import org.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ProgramGene {
+public abstract class ProgramGene<A, G extends ProgramGene<A, G>>
+	implements TreeGene<A, G>
+{
+
+
+	public A apply(final A[] values) {
+		return values[0];
+	}
+
+	public A eval(final A[] variables) {
+		final MSeq<A> values = MSeq.ofLength(arity());
+		for (int i = 0; i < arity(); ++i) {
+			values.set(i, getChild(i, null).eval(variables));
+		}
+
+		return apply((A[])values.toArray());
+	}
 
 	public int arity() {
 		return 1;

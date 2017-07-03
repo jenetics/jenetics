@@ -19,12 +19,18 @@
  */
 package org.jenetix;
 
+import java.util.Optional;
+import java.util.function.IntFunction;
+import java.util.stream.Stream;
+
+import org.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Plus<N extends Number> implements Op<N> {
+public class Plus<N extends Number> extends ProgramGene<N, Plus<N>> {
 
 	@Override
 	public N apply(final N... value) {
@@ -36,4 +42,43 @@ public class Plus<N extends Number> implements Op<N> {
 		return 0;
 	}
 
+	@Override
+	public boolean isValid() {
+		return false;
+	}
+
+	@Override
+	public N getAllele() {
+		return null;
+	}
+
+	@Override
+	public Plus<N> newInstance() {
+		return null;
+	}
+
+	@Override
+	public Plus<N> newInstance(N value) {
+		return null;
+	}
+
+	@Override
+	public Optional<Plus<N>> getParent(Seq<? extends Plus<N>> genes) {
+		return null;
+	}
+
+	@Override
+	public Plus<N> getChild(int index, IntFunction<? extends Plus<N>> genes) {
+		return null;
+	}
+
+	@Override
+	public Stream<Plus<N>> children(Seq<? extends Plus<N>> genes) {
+		return null;
+	}
+
+	@Override
+	public int childCount() {
+		return 0;
+	}
 }
