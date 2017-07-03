@@ -137,6 +137,17 @@ public final class TreeNode<T>
 		return _children.size();
 	}
 
+	/**
+	 * Return an iterator that traverses the subtree rooted at {@code this} node
+	 * in pre-order. The first node returned by the iterator is {@code this}
+	 * node.
+	 * <p>
+	 * Modifying the tree by inserting, removing, or moving a node invalidates
+	 * any iterator created before the modification.
+	 *
+	 * @see #postorderIterator
+	 * @return an iterator for traversing the tree in pre-order
+	 */
 	@Override
 	public Iterator<TreeNode<T>> iterator() {
 		return preorderIterator();
