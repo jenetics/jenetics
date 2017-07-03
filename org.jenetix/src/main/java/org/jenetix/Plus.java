@@ -19,21 +19,21 @@
  */
 package org.jenetix;
 
-import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class TreeGeneChromosome<A>
-	implements
-		Gene<A, TreeGeneChromosome<A>>,
-		Chromosome<TreeGeneChromosome<A>>
-{
+public class Plus<N extends Number> implements Op<N> {
 
 	@Override
-	public abstract TreeGeneChromosome<A> newInstance();
+	public N apply(final N... value) {
+		return null;
+	}
+
+	@Override
+	public int arity() {
+		return 0;
+	}
 
 }

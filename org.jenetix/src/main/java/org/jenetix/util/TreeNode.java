@@ -137,6 +137,11 @@ public final class TreeNode<T>
 		return _children.size();
 	}
 
+	@Override
+	public Iterator<TreeNode<T>> iterator() {
+		return preorderIterator();
+	}
+
 	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's

@@ -35,61 +35,61 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeChromosome<A>
-	implements Chromosome<TreeGene<A>>, Tree<A, TreeChromosome<A, G>>
+public interface TreeChromosome<A, G extends TreeGene<A, G>>
+	extends Chromosome<G>, Tree<A, TreeChromosome<A, G>>
 {
 	@Override
-	public boolean isValid() {
+	public default boolean isValid() {
 		return false;
 	}
 
 	@Override
-	public A getValue() {
+	public default A getValue() {
 		return null;
 	}
 
 	@Override
-	public Optional<TreeChromosome<A, G>> getParent() {
+	public default Optional<TreeChromosome<A, G>> getParent() {
 		return null;
 	}
 
 	@Override
-	public TreeChromosome<A, G> getChild(int index) {
+	public default TreeChromosome<A, G> getChild(int index) {
 		return null;
 	}
 
 	@Override
-	public int childCount() {
+	public default int childCount() {
 		return 0;
 	}
 
 	@Override
-	public Chromosome<G> newInstance(ISeq<G> genes) {
+	public default Chromosome<G> newInstance(ISeq<G> genes) {
 		return null;
 	}
 
 	@Override
-	public G getGene(int index) {
+	public default G getGene(int index) {
 		return null;
 	}
 
 	@Override
-	public int length() {
+	public default int length() {
 		return 0;
 	}
 
 	@Override
-	public ISeq<G> toSeq() {
+	public default ISeq<G> toSeq() {
 		return null;
 	}
 
 	@Override
-	public Iterator<G> iterator() {
+	public default Iterator<G> iterator() {
 		return null;
 	}
 
 	@Override
-	public Chromosome<G> newInstance() {
+	public default Chromosome<G> newInstance() {
 		return null;
 	}
 

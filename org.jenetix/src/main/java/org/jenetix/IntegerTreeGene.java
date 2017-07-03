@@ -194,7 +194,7 @@ public final class IntegerTreeGene
 	 */
 	public static Collector<TreeNode<Integer>, ?, ISeq<IntegerTreeGene>>
 	toLinearizedGenes(final IntRange range) {
-		return TreeGene.toLinearizedGenes((v, c) -> of(v, range, c));
+		return null; //TreeGene.toLinearizedGenes((v, c) -> of(v, range, c));
 	}
 
 }
