@@ -93,6 +93,11 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 		return null;
 	}
 
+
+	public default A eval(final A... value)  {
+		return null;
+	}
+
 	/*
 	@Override
 	public boolean isValid() {
