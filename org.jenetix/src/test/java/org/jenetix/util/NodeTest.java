@@ -43,10 +43,10 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final List<Node<Integer>> seq = Node.serialize(tree);
-		Assert.assertEquals(Node.tree(seq), tree);
+		final List<FlattenedTreeNode<Integer>> seq = FlattenedTreeNode.flatten(tree);
+		Assert.assertEquals(FlattenedTreeNode.unflatten(seq), tree);
 
-		System.out.println(Node.serialize(tree));
+		System.out.println(FlattenedTreeNode.flatten(tree));
 	}
 
 }

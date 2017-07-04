@@ -19,24 +19,31 @@
  */
 package org.jenetix.util;
 
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Node<T> {
+public final class FlattenedTreeNode<T> {
 
 	private final T _value;
 	private final int _arity;
 	private final int _childOffset;
 
-	private Node(final T value, final int arity, final int childOffset) {
+	private FlattenedTreeNode(
+		final T value,
+		final int arity,
+		final int childOffset
+	) {
 		_value = value;
 		_arity = arity;
 		_childOffset = childOffset;
@@ -56,48 +63,57 @@ public final class Node<T> {
 
 	@Override
 	public String toString() {
-		return format("%s[%d]", _value, _arity);
+		return Objects.toString(_value);
 	}
 
-	public static <T> Node<T> of(final T value, final int arity, final int childOffset) {
-		return new Node<>(value, arity, childOffset);
-	}
+	public static <V, T extends Tree<V, T>> ISeq<FlattenedTreeNode<V>>
+	flatten(final T tree)  {
+		requireNonNull(tree);
 
-
-	public static <V, T extends Tree<V, T>> List<Node<V>> serialize(final T tree)  {
-		final List<Node<V>> result = new ArrayList<>();
+		final List<FlattenedTreeNode<V>> result = new ArrayList<>();
 		final Iterator<T> it = tree.breadthFirstIterator();
-		int childOffset = 1;
 
+		int childOffset = 1;
 		while (it.hasNext()) {
-			final T t  = it.next();
-			final Node<V> node = Node.of(t.getValue(), t.childCount(), childOffset);
-			result.add(node);
-			childOffset += t.childCount();
+			final T node  = it.next();
+			result.add(new FlattenedTreeNode<>(
+				node.getValue(), node.childCount(), childOffset
+			));
+
+			childOffset += node.childCount();
 		}
 
-		return result;
+		return ISeq.of(result);
 	}
 
-	public static <V> TreeNode<V> tree(final List<Node<V>> seq) {
+	public static <V> TreeNode<V> unflatten(final List<FlattenedTreeNode<V>> seq) {
 		return fill(TreeNode.of(), 0, seq);
 	}
 
-	private static <V> TreeNode<V> fill(final TreeNode<V> tree, final int index, final List<Node<V>> seq) {
+	private static <V> TreeNode<V> fill(
+		final TreeNode<V> tree,
+		final int index,
+		final List<FlattenedTreeNode<V>> seq
+	) {
 		if (index < seq.size()) {
-			final Node<V> node = seq.get(index);
+			final FlattenedTreeNode<V> node = seq.get(index);
 			tree.setValue(node.getValue());
 
 			/*
-			int firstChildOffset = 1;
+			int childOffset = 1;
 			for (int i = 0; i < index; ++i) {
-				firstChildOffset += seq.get(i).getArity();
+				childOffset += seq.get(i).getArity();
 			}
 			*/
 
 			for (int i = 0; i < node.getArity(); ++i) {
-				final int childOffset = node.getChildOffset() + i;
-				tree.attach(fill(TreeNode.of(), childOffset, seq));
+				tree.attach(
+					fill(
+						TreeNode.of(),
+						node.getChildOffset() + i,
+						seq
+					)
+				);
 			}
 		}
 
