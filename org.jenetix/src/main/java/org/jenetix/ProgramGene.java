@@ -19,6 +19,10 @@
  */
 package org.jenetix;
 
+import static java.util.Objects.requireNonNull;
+
+import org.jenetics.Gene;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
 
@@ -27,10 +31,15 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class ProgramGene<A, G extends ProgramGene<A, G>>
-	implements TreeGene<A, G>
-{
+public final class ProgramGene<A> implements Gene<Op<A>, ProgramGene<A>> {
 
+	private final Op<A> _op;
+	private final ISeq<? extends Op<A>> _ops;
+
+	public ProgramGene(final Op<A> op, final ISeq<? extends Op<A>> ops) {
+		_op = requireNonNull(op);
+		_ops = requireNonNull(ops);
+	}
 
 	public A apply(final A[] values) {
 		return values[0];
@@ -39,18 +48,45 @@ public abstract class ProgramGene<A, G extends ProgramGene<A, G>>
 	public A eval(final A[] variables) {
 		final MSeq<A> values = MSeq.ofLength(arity());
 		for (int i = 0; i < arity(); ++i) {
-			values.set(i, getChild(i, null).eval(variables));
+			values.set(i, getChild(i).eval(variables));
 		}
 
 		return apply((A[])values.toArray());
 	}
 
+	public ProgramGene<A> getChild(final int index) {
+		return null;
+	}
+
+	public ISeq<? extends Op<A>> getOps() {
+		return _ops;
+	}
+
 	public int arity() {
-		return 1;
+		return _op.arity();
 	}
 
 	public IntRange arityRange() {
 		return IntRange.of(0, 10);
 	}
 
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public Op<A> getAllele() {
+		return _op;
+	}
+
+	@Override
+	public ProgramGene<A> newInstance() {
+		return null;
+	}
+
+	@Override
+	public ProgramGene<A> newInstance(Op<A> value) {
+		return null;
+	}
 }

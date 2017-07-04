@@ -19,12 +19,84 @@
  */
 package org.jenetix;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.jenetics.Chromosome;
+import org.jenetics.util.ISeq;
+
+import org.jenetix.util.TreeNode;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ProgramChromosome<A, G extends TreeGene<A, G>>
-	implements TreeChromosome<A, G>
-{
+public class ProgramChromosome<A> implements Chromosome<ProgramGene<A>> {
+
+	private final ISeq<ProgramGene<A>> _genes;
+	private final ISeq<? extends Op<A>> _ops;
+	private final Map<Integer, List<Op<A>>> _map = new HashMap<>();
+
+	public ProgramChromosome(final ISeq<ProgramGene<A>> genes) {
+		_genes = requireNonNull(genes);
+		_ops = _genes.get(0).getOps();
+	}
+
+	@Override
+	public boolean isValid() {
+		return true;
+	}
+
+	@Override
+	public ProgramChromosome<A> newInstance(final ISeq<ProgramGene<A>> genes) {
+		final TreeNode<ProgramGene<A>> tree = TreeNode.of(genes.get(0));
+
+		final ProgramGene<A> root = genes.get(0);
+		final int childIndex = root.arity() > 0 ? 1 : -1;
+
+		return null;
+	}
+
+	private void build(
+		final TreeNode<ProgramGene<A>> root,
+		final ISeq<ProgramGene<A>> genes,
+		final int index
+	) {
+		final int arity = root.getValue().arity();
+		for (int i = 0; i < arity; ++i) {
+			final TreeNode<ProgramGene<A>> node = TreeNode.of(genes.get(index + i));
+
+		}
+	}
+
+	@Override
+	public ProgramGene<A> getGene(int index) {
+		return null;
+	}
+
+	@Override
+	public int length() {
+		return _genes.length();
+	}
+
+	@Override
+	public ISeq<ProgramGene<A>> toSeq() {
+		return _genes;
+	}
+
+	@Override
+	public Iterator<ProgramGene<A>> iterator() {
+		return _genes.iterator();
+	}
+
+	@Override
+	public ProgramChromosome<A> newInstance() {
+		return null;
+	}
+
 }

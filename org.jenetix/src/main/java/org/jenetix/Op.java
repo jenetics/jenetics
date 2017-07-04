@@ -26,7 +26,7 @@ package org.jenetix;
  */
 public interface Op<T> {
 
-	public T apply(final T... value);
+	public T apply(final T[] value);
 
 	public int arity();
 

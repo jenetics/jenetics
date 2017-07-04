@@ -17,23 +17,36 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetix;
+package org.jenetix.util;
+
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class Plus<N extends Number> implements Op<N> {
+public class NodeTest {
 
-	@Override
-	public N apply(final N[] value) {
-		return null;
-	}
+	@Test
+	public void serialize() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(4, 5))
+			.attach(TreeNode.of(2)
+				.attach(6))
+			.attach(TreeNode.of(3)
+				.attach(TreeNode.of(7)
+					.attach(10, 11))
+				.attach(TreeNode.of(8))
+				.attach(TreeNode.of(9)));
 
-	@Override
-	public int arity() {
-		return 0;
+		System.out.println(tree);
+		final List<Node<Integer>> seq = Node.serialize(tree);
+		Assert.assertEquals(Node.tree(seq), tree);
+
+		System.out.println(Node.serialize(tree));
 	}
 
 }

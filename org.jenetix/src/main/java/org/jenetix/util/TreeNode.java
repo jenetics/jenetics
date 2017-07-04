@@ -281,6 +281,15 @@ public final class TreeNode<T>
 		return this;
 	}
 
+	@SafeVarargs
+	public final TreeNode<T> attach(final T... children) {
+		for (T child : children) {
+			attach(TreeNode.of(child));
+		}
+
+		return this;
+	}
+
 	@Override
 	public TreeNode<T> copy() {
 		return of(this);
