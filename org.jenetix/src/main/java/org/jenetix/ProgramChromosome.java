@@ -62,16 +62,30 @@ public class ProgramChromosome<A> implements Chromosome<ProgramGene<A>> {
 		return null;
 	}
 
-	private void build(
-		final TreeNode<ProgramGene<A>> root,
-		final ISeq<ProgramGene<A>> genes,
-		final int index
-	) {
-		final int arity = root.getValue().arity();
-		for (int i = 0; i < arity; ++i) {
-			final TreeNode<ProgramGene<A>> node = TreeNode.of(genes.get(index + i));
+	private static <A> TreeNode<Op<A>> unflatten(final ISeq<ProgramGene<A>> genes) {
+		return fill(TreeNode.of(), 0, genes);
+	}
 
+	private static <A> TreeNode<Op<A>> fill(
+		final TreeNode<Op<A>> tree,
+		final int index,
+		final ISeq<ProgramGene<A>> genes
+	) {
+		if (index < genes.size()) {
+			final ProgramGene<A> gene = genes.get(index);
+			tree.setValue(gene.getAllele());
+
+			int childOffset = 1;
+			for (int i = 0; i < index; ++i) {
+				childOffset += genes.get(i).arity();
+			}
+
+			for (int i = 0; i < gene.arity(); ++i) {
+				tree.attach(fill(TreeNode.of(),childOffset + i, genes));
+			}
 		}
+
+		return tree;
 	}
 
 	@Override
