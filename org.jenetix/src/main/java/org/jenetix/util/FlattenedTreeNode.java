@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -86,14 +87,14 @@ public final class FlattenedTreeNode<T> {
 		return ISeq.of(result);
 	}
 
-	public static <V> TreeNode<V> unflatten(final List<FlattenedTreeNode<V>> seq) {
+	public static <V> TreeNode<V> unflatten(final Seq<FlattenedTreeNode<V>> seq) {
 		return unflatten(TreeNode.of(), 0, seq);
 	}
 
 	private static <V> TreeNode<V> unflatten(
 		final TreeNode<V> tree,
 		final int index,
-		final List<FlattenedTreeNode<V>> seq
+		final Seq<FlattenedTreeNode<V>> seq
 	) {
 		if (index < seq.size()) {
 			final FlattenedTreeNode<V> node = seq.get(index);

@@ -24,6 +24,8 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
@@ -43,7 +45,7 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final List<FlattenedTreeNode<Integer>> seq = FlattenedTreeNode.flatten(tree);
+		final ISeq<FlattenedTreeNode<Integer>> seq = FlattenedTreeNode.flatten(tree);
 		Assert.assertEquals(FlattenedTreeNode.unflatten(seq), tree);
 
 		System.out.println(FlattenedTreeNode.flatten(tree));
