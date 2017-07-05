@@ -19,30 +19,47 @@
  */
 package org.jenetix;
 
-import org.testng.annotations.Test;
-
-import org.jenetics.util.ISeq;
-
-import org.jenetix.util.TreeNode;
+import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class ProgramsTest {
+public final class Var<T> implements Op<T> {
 
-	@Test
-	public void creation() {
-		final ISeq<Op<Double>> operations = ISeq.of(
-			Ops.ADD, Ops.SUB, Ops.DIV, Ops.MUL
-		);
-		final ISeq<Op<Double>> terminals = ISeq.of(
-			Ops.constant(1), Ops.constant(2),
-			Var.of(0), Var.of(1), Var.of(2)
-		);
+	private final int _index;
 
-		final TreeNode<Op<Double>> tree = Programs.of(4, operations, terminals);
-		System.out.println(tree);
+	private Var(final int index) {
+		if (index < 0) {
+			throw new IndexOutOfBoundsException(
+				"Index smaller than zero: " + index
+			);
+		}
+		_index = index;
 	}
 
+	public int index() {
+		return _index;
+	}
+
+	@Override
+	public int arity() {
+		return 0;
+	}
+
+	@Override
+	public T apply(final T[] variables) {
+		return variables[_index];
+	}
+
+	@Override
+	public String toString() {
+		return format("Var(%d)", _index);
+	}
+
+	public static <T> Var<T> of(final int index) {
+		return new Var<>(index);
+	}
 
 }

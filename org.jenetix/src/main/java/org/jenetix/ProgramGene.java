@@ -97,7 +97,12 @@ public final class ProgramGene<A>
 		);
 
 		for (int i = 0; i < childCount(); ++i) {
-			values[i] = getChild(i).eval(variables);
+			final ProgramGene<A> child = getChild(i);
+			if (child._op instanceof Var<?>) {
+				values[i] = child._op.apply(variables);
+			} else {
+				values[i] = child.eval(variables);
+			}
 		}
 
 		return apply(values);

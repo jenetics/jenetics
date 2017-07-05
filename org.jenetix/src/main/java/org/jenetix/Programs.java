@@ -69,7 +69,7 @@ public final class Programs {
 			}
 		} else {
 			for (int i = 0; i < op.arity(); ++i) {
-				final Op<A> term = terminals.get(random.nextInt(operations.size()));
+				final Op<A> term = terminals.get(random.nextInt(terminals.size()));
 				tree.attach(TreeNode.of(term));
 			}
 		}

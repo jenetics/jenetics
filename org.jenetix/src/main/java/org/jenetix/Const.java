@@ -33,7 +33,7 @@ public class Const<T> implements Op<T> {
 	}
 
 	@Override
-	public T apply(final T... value) {
+	public T apply(final T[] value) {
 		return _const;
 	}
 

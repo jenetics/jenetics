@@ -38,7 +38,7 @@ import org.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Tree<V, T extends Tree<V, T>> {
+public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/* *************************************************************************
 	 * Basic (abstract) operations.
@@ -614,21 +614,21 @@ public interface Tree<V, T extends Tree<V, T>> {
 		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
 	}
 
-//	/**
-//	 * Return an iterator that traverses the subtree rooted at {@code this}
-//	 * node in breadth-first order. The first node returned by the iterator is
-//	 * {@code this} node.
-//	 * <p>
-//	 * Modifying the tree by inserting, removing, or moving a node invalidates
-//	 * any iterator created before the modification.
-//	 *
-//	 * @see #breadthFirstIterator
-//	 * @return an iterator for traversing the tree in breadth-first order
-//	 */
-//	@Override
-//	public default Iterator<T> iterator() {
-//		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
-//	}
+	/**
+	 * Return an iterator that traverses the subtree rooted at {@code this}
+	 * node in breadth-first order. The first node returned by the iterator is
+	 * {@code this} node.
+	 * <p>
+	 * Modifying the tree by inserting, removing, or moving a node invalidates
+	 * any iterator created before the modification.
+	 *
+	 * @see #breadthFirstIterator
+	 * @return an iterator for traversing the tree in breadth-first order
+	 */
+	@Override
+	public default Iterator<T> iterator() {
+		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
+	}
 
 	/**
 	 * Return a stream that traverses the subtree rooted at {@code this} node in

@@ -36,31 +36,11 @@ import org.jenetix.util.TreeNode;
  * @since !__version__!
  */
 public interface TreeChromosome<A, G extends TreeGene<A, G>>
-	extends Chromosome<G>, Tree<A, TreeChromosome<A, G>>
+	extends Chromosome<G>
 {
 	@Override
 	public default boolean isValid() {
 		return false;
-	}
-
-	@Override
-	public default A getValue() {
-		return null;
-	}
-
-	@Override
-	public default Optional<TreeChromosome<A, G>> getParent() {
-		return null;
-	}
-
-	@Override
-	public default TreeChromosome<A, G> getChild(int index) {
-		return null;
-	}
-
-	@Override
-	public default int childCount() {
-		return 0;
 	}
 
 	@Override
@@ -94,7 +74,7 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	}
 
 
-	public default A eval(final A... value)  {
+	public default A eval(final A[] value)  {
 		return null;
 	}
 
