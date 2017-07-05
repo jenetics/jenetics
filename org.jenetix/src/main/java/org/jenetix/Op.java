@@ -30,4 +30,15 @@ public interface Op<T> {
 
 	public int arity();
 
+
+	public static final class Default<Object> implements Op<Object> {
+		@Override
+		public Object apply(final Object[] value) {
+			return null;
+		}
+		@Override
+		public int arity() {
+			return 0;
+		}
+	}
 }

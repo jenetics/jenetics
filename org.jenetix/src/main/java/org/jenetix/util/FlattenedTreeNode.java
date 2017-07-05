@@ -87,10 +87,10 @@ public final class FlattenedTreeNode<T> {
 	}
 
 	public static <V> TreeNode<V> unflatten(final List<FlattenedTreeNode<V>> seq) {
-		return fill(TreeNode.of(), 0, seq);
+		return unflatten(TreeNode.of(), 0, seq);
 	}
 
-	private static <V> TreeNode<V> fill(
+	private static <V> TreeNode<V> unflatten(
 		final TreeNode<V> tree,
 		final int index,
 		final List<FlattenedTreeNode<V>> seq
@@ -108,7 +108,7 @@ public final class FlattenedTreeNode<T> {
 
 			for (int i = 0; i < node.getArity(); ++i) {
 				tree.attach(
-					fill(
+					unflatten(
 						TreeNode.of(),
 						node.getChildOffset() + i,
 						seq
