@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
@@ -121,11 +122,54 @@ public class ProgramChromosome<A> implements Chromosome<ProgramGene<A>> {
 	}
 
 	public static <A, T extends Tree<? extends Op<A>, T>>
-	ProgramChromosome<A> of(final T tree, final ISeq<? extends Op<A>> ops) {
+	ProgramChromosome<A> of(
+		final T tree,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
 		requireNonNull(tree);
-		requireNonNull(ops);
+		requireNonNull(operations);
+		requireNonNull(terminals);
 
 		return null;
+	}
+
+	public static <A> ProgramChromosome<A> of(
+		final int size,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		requireNonNull(operations);
+		requireNonNull(terminals);
+
+		final TreeNode<Op<A>> root = TreeNode.of();
+
+		return null;
+	}
+
+	private static <A> void fill(
+		final int level,
+		final TreeNode<Op<A>> tree,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		final Op<A> op = operations.get(random.nextInt(operations.size()));
+		tree.setValue(op);
+
+		if (level > 1) {
+			for (int i = 0; i < op.arity(); ++i) {
+				final TreeNode<Op<A>> node = TreeNode.of();
+				fill(level - 1, node, operations, terminals, random);
+				tree.attach(node);
+			}
+		} else {
+			for (int i = 0; i < op.arity(); ++i) {
+				final Op<A> term = operations.get(random.nextInt(operations.size()));
+				final TreeNode<Op<A>> node = TreeNode.of(term);
+				tree.attach(node);
+			}
+		}
 	}
 
 }

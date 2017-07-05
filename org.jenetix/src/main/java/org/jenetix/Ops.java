@@ -19,65 +19,44 @@
  */
 package org.jenetix;
 
-import static java.util.Objects.requireNonNull;
+import static java.lang.String.format;
 
-import java.util.function.Function;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Op<T> extends Function<T[], T> {
-
-	public int arity();
-
-	public default String name() {
-		return "Op";
+public final class Ops {
+	private Ops() {
 	}
 
-	public static <T> Op<T> of(final String name, final Function<T[], T> function, final int arity) {
-		requireNonNull(function);
-		if (arity < 0) {
-			throw new IllegalArgumentException("Arity smaller than zero: " + arity);
-		}
+	public static final Op<Double> ADD = Op.of("add", v -> v[0] + v[1], 2);
 
-		return new Op<T>() {
+	public static final Op<Double> SUB = Op.of("sub", v -> v[0] - v[1], 2);
 
-			@Override
-			public String name() {
-				return name;
-			}
+	public static final Op<Double> MUL = Op.of("mul", v -> v[0]*v[1], 2);
 
-			@Override
-			public T apply(final T[] value) {
-				return function.apply(value);
-			}
+	public static final Op<Double> DIV = Op.of("div", v -> v[0]/v[1], 2);
 
+	public static Op<Double> constant(final double value) {
+		return new Op<Double>() {
 			@Override
 			public int arity() {
-				return arity;
+				return 0;
+			}
+
+			@Override
+			public Double apply(final Double[] doubles) {
+				return value;
 			}
 
 			@Override
 			public String toString() {
-				return name();
+				return Objects.toString(value);
 			}
 		};
 	}
 
-	public static <T> Op<T> ofScalar(final Function<T, T> function) {
-		return null;
-	}
-
-	public static final class Default<Object> implements Op<Object> {
-		@Override
-		public Object apply(final Object[] value) {
-			return null;
-		}
-		@Override
-		public int arity() {
-			return 0;
-		}
-	}
 }
