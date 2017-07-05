@@ -752,4 +752,23 @@ public interface Tree<V, T extends Tree<V, T>> {
 		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
 	}
 
+
+	/* *************************************************************************
+	 * Static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return a string representation of the given tree.
+	 *
+	 * @param tree the input tree
+	 * @param <A> the tree value type
+	 * @param <T> the tree type
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static <A, T extends Tree<A, T>> String toString(final T tree) {
+		requireNonNull(tree);
+		return Trees.toString(tree);
+	}
+
 }

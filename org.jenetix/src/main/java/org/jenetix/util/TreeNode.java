@@ -31,7 +31,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.IntSupplier;
-import java.util.stream.IntStream;
 
 import org.jenetics.util.Copyable;
 import org.jenetics.util.IntRange;
@@ -341,27 +340,7 @@ public final class TreeNode<T>
 
 	@Override
 	public String toString() {
-		return toString(this, new StringBuilder(), 0).toString();
-	}
-
-	private StringBuilder toString(
-		final TreeNode<?> node,
-		final StringBuilder out,
-		final int level
-	) {
-		for (int i = 0; i < level; ++i) {
-			out.append("  ");
-		}
-
-		out.append("+- ").append(node.getValue() + ": " + node.s() + " : " + node.size()).append("\n");
-		IntStream.range(0, node.childCount())
-			.forEach(i -> toString(node.getChild(i), out, level + 1));
-
-		return out;
-	}
-
-	private int s() {
-		return (int)breathFirstStream().count();
+		return Tree.toString(this);
 	}
 
 	/* *************************************************************************

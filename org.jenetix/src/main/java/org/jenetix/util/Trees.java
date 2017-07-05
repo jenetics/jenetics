@@ -19,6 +19,13 @@
  */
 package org.jenetix.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.MSeq;
@@ -61,6 +68,62 @@ final class Trees {
 		}
 
 		return path;
+	}
+
+	/**
+	 * Return a string representation of the given tree.
+	 *
+	 * @param tree the input tree
+	 * @param <A> the tree value type
+	 * @param <T> the tree type
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	static <A, T extends Tree<A, T>> String toString(final T tree) {
+		requireNonNull(tree);
+
+		return render(tree).stream()
+			.map(StringBuilder::toString)
+			.collect(Collectors.joining("\n"));
+	}
+
+	private static <A, T extends Tree<A, T>>
+	List<StringBuilder> render(final T tree) {
+		final List<StringBuilder> result = new ArrayList<>();
+		result.add(new StringBuilder().append(tree.getValue()));
+
+		final Iterator<T> it = tree.childIterator();
+		while (it.hasNext()) {
+			final List<StringBuilder> subtree = render(it.next());
+			if (it.hasNext()) {
+				subtree(result, subtree);
+			} else {
+				lastSubtree(result, subtree);
+			}
+		}
+		return result;
+	}
+
+	private static void subtree(
+		final List<StringBuilder> result,
+		final List<StringBuilder> subtree
+	) {
+		final Iterator<StringBuilder> it = subtree.iterator();
+		result.add(it.next().insert(0, "├── "));
+		while (it.hasNext()) {
+			result.add(it.next().insert(0, "│   "));
+		}
+	}
+
+	private static void lastSubtree(
+		final List<StringBuilder> result,
+		final List<StringBuilder> subtree
+	) {
+		final Iterator<StringBuilder> it = subtree.iterator();
+		result.add(it.next().insert(0, "└── "));
+		while (it.hasNext()) {
+			result.add(it.next().insert(0, "    "));
+		}
 	}
 
 }
