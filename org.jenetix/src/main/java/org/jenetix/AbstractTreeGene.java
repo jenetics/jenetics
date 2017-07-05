@@ -19,16 +19,11 @@
  */
 package org.jenetix;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.IntFunction;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import org.jenetics.util.Seq;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface.
@@ -44,78 +39,80 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	/**
 	 * The allele of the tree-gene.
 	 */
-	protected final A _value;
+	private final A _allele;
+	private final int _childrenOffset;
 
-	/**
-	 * The chromosome indexes of the tree-gene children.
-	 */
-	protected final int[] _children;
+	private AbstractTreeChromosome<A, G> _chromosome;
 
-	/**
-	 * Create a new {@code AbstractTreeGene} instance for the given parameters.
-	 *
-	 * @param value the tree-gene value (allele)
-	 * @param children the gene indexes of the child genes. The given int[]
-	 *        array is <b>not</b> copied and it's the responsibility of the
-	 *        implementor to not change the indexes after gene creation.
-	 */
 	protected AbstractTreeGene(
-		final A value,
-		final int[] children
+		final A allele,
+		final int childrenOffset
 	) {
-		_value = value;
-		_children = requireNonNull(children);
-	}
-
-	@Override
-	public Optional<G> getParent(final Seq<? extends G> genes) {
-		// Find the index of 'this' gene in the gene sequence.
-		final Optional<Integer> index = IntStream.range(0, genes.length())
-			.filter(i -> genes.get(i) == this)
-			.boxed()
-			.findFirst();
-
-		return index.flatMap(i -> parentFor(i, genes));
-	}
-
-	@SuppressWarnings("unchecked")
-	private Optional<G>
-	parentFor(final int child, final Seq<? extends G> genes) {
-		return (Optional<G>)genes.stream()
-			.filter(g -> contains(g._children, child))
-			.findFirst();
-	}
-
-	private static boolean contains(final int[] array, final int value) {
-		boolean found = false;
-		for (int i = 0; i < array.length && !found; ++i) {
-			found = array[i] == value;
+		if (childrenOffset < 0) {
+			throw new IllegalArgumentException(
+				"Children offset smaller than zero: " + childrenOffset
+			);
 		}
-		return found;
+
+		_allele = requireNonNull(allele);
+		_childrenOffset = childrenOffset;
 	}
 
-	@Override
-	public G getChild(final int index, final IntFunction<? extends G> genes) {
-		return genes.apply(_children[index]);
+	protected AbstractTreeGene(final A allele) {
+		this(allele, 0);
 	}
 
-	@Override
-	public Stream<G> children(final Seq<? extends G> genes) {
-		requireNonNull(genes);
-
-		return IntStream.of(_children)
-			.filter(i -> i >= 0 && i < genes.length())
-			.mapToObj(genes::get);
+	final void attachTo(final AbstractTreeChromosome<A, G> chromosome) {
+		_chromosome = requireNonNull(chromosome);
 	}
 
-	@Override
-	public int childCount() {
-		return _children.length;
+	public int getChildrenOffset() {
+		return _childrenOffset;
 	}
 
 	@Override
 	public A getAllele() {
-		return _value;
+		return _allele;
+	}
+
+	@Override
+	public A getValue() {
+		return _allele;
+	}
+
+	@Override
+	public Optional<G> getParent() {
+		checkTreeState();
+
+		return _chromosome.stream()
+			.filter(g -> g.childStream().anyMatch(c -> c == this))
+			.findFirst();
+	}
+
+	void checkTreeState() {
+		if (_chromosome == null) {
+			throw new IllegalStateException(
+				"Gene is not attached to a chromosome."
+			);
+		}
+	}
+
+	@Override
+	public G getChild(final int index) {
+		checkTreeState();
+		if (index < 0 || index >= childCount()) {
+			throw new IndexOutOfBoundsException(format(
+				"Child index out of bounds: %s", index
+			));
+		}
+
+		assert _chromosome != null;
+		return _chromosome.getGene(_childrenOffset + index);
+	}
+
+	@Override
+	public int childCount() {
+		return 0;
 	}
 
 	@Override
@@ -126,21 +123,23 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public int hashCode() {
 		int hash = 31;
-		hash += 31*Objects.hashCode(_value) + 17;
-		hash += 31*Arrays.hashCode(_children) + 17;
+		hash += 31*Objects.hashCode(_allele) + 17;
+		hash += 31*_childrenOffset + 17;
+		hash += 31*System.identityHashCode(_chromosome) + 17;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof AbstractTreeGene<?, ?> &&
-			Objects.equals(((AbstractTreeGene<?, ?>)obj)._value, _value) &&
-			Arrays.equals(((AbstractTreeGene<?, ?>)obj)._children, _children);
+			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
+			((AbstractTreeGene)obj)._chromosome == _chromosome &&
+			((AbstractTreeGene)obj)._childrenOffset == _childrenOffset;
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(_value);
+		return Objects.toString(_allele);
 	}
 
 }

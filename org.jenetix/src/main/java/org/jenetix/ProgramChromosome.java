@@ -23,13 +23,12 @@ import static java.util.Objects.requireNonNull;
 import static org.jenetix.util.FlatTreeNode.flatten;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
+
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
@@ -38,22 +37,14 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public class ProgramChromosome<A> implements Chromosome<ProgramGene<A>> {
+public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramGene<A>> {
 
-	private final ISeq<ProgramGene<A>> _genes;
 	private final ISeq<? extends Op<A>> _ops;
 	private final Map<Integer, List<Op<A>>> _map = new HashMap<>();
 
 	ProgramChromosome(final ISeq<ProgramGene<A>> genes) {
-		_genes = requireNonNull(genes);
-		_ops = _genes.get(0).getOps();
-
-		genes.forEach(g -> g.attachTo(this));
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
+		super(genes);
+		_ops = genes.get(0).getOps();
 	}
 
 	@Override
@@ -94,26 +85,6 @@ public class ProgramChromosome<A> implements Chromosome<ProgramGene<A>> {
 		}
 
 		return tree;
-	}
-
-	@Override
-	public ProgramGene<A> getGene(int index) {
-		return null;
-	}
-
-	@Override
-	public int length() {
-		return _genes.length();
-	}
-
-	@Override
-	public ISeq<ProgramGene<A>> toSeq() {
-		return _genes;
-	}
-
-	@Override
-	public Iterator<ProgramGene<A>> iterator() {
-		return _genes.iterator();
 	}
 
 	@Override

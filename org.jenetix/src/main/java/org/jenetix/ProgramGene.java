@@ -19,17 +19,14 @@
  */
 package org.jenetix;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Array;
-import java.util.Optional;
 import java.util.Random;
 
 import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetix.util.Tree;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -37,34 +34,23 @@ import org.jenetix.util.Tree;
  * @since !__version__!
  */
 public final class ProgramGene<A>
-	implements
-		Gene<Op<A>, ProgramGene<A>>,
-		Tree<Op<A>, ProgramGene<A>>
+	extends AbstractTreeGene<Op<A>, ProgramGene<A>>
+	implements Gene<Op<A>, ProgramGene<A>>
 {
 
-	private final Op<A> _op;
 	private final ISeq<? extends Op<A>> _ops;
-
-	private int _childStartIndex;
-	private ProgramChromosome<A> _chromosome;
 
 	ProgramGene(
 		final Op<A> op,
 		final ISeq<? extends Op<A>> ops,
 		final int childStartIndex
 	) {
-		_op = requireNonNull(op);
+		super(op, childStartIndex);
 		_ops = requireNonNull(ops);
-		_childStartIndex = childStartIndex;
 	}
 
 	public ProgramGene(final Op<A> op, final ISeq<? extends Op<A>> ops) {
 		this(op, ops, -1);
-	}
-
-	public ProgramGene<A> attachTo(final ProgramChromosome<A> chromosome) {
-		_chromosome = requireNonNull(chromosome);
-		return this;
 	}
 
 	/**
@@ -76,7 +62,7 @@ public final class ProgramGene<A>
 	 */
 	public A apply(final A[] values) {
 		requireNonNull(values);
-		return _op.apply(values);
+		return getAllele().apply(values);
 	}
 
 	/**
@@ -98,8 +84,8 @@ public final class ProgramGene<A>
 
 		for (int i = 0; i < childCount(); ++i) {
 			final ProgramGene<A> child = getChild(i);
-			if (child._op instanceof Var<?>) {
-				values[i] = child._op.apply(variables);
+			if (child.getAllele() instanceof Var<?>) {
+				values[i] = child.getAllele().apply(variables);
 			} else {
 				values[i] = child.eval(variables);
 			}
@@ -108,57 +94,13 @@ public final class ProgramGene<A>
 		return apply(values);
 	}
 
-	private void checkTreeState() {
-		if (_chromosome == null || _childStartIndex <= 0) {
-			throw new IllegalStateException(
-				"Gene is not attached to a chromosome."
-			);
-		}
-	}
-
 	@Override
 	public int childCount() {
-		return _op.arity();
-	}
-
-	@Override
-	public Op<A> getValue() {
-		return _op;
-	}
-
-	@Override
-	public Optional<ProgramGene<A>> getParent() {
-		checkTreeState();
-
-		return _chromosome.stream()
-			.filter(g -> g.childStream().anyMatch(c -> c == this))
-			.findFirst();
-	}
-
-	public ProgramGene<A> getChild(final int index) {
-		checkTreeState();
-		if (index < 0 || index >= childCount()) {
-			throw new IndexOutOfBoundsException(format(
-				"Child index out of bounds: %s", index
-			));
-		}
-
-		assert _chromosome != null;
-		return _chromosome.getGene(_childStartIndex + index);
+		return getAllele().arity();
 	}
 
 	public ISeq<? extends Op<A>> getOps() {
 		return _ops;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	@Override
-	public Op<A> getAllele() {
-		return _op;
 	}
 
 	@Override

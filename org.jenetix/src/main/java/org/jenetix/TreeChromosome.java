@@ -38,126 +38,14 @@ import org.jenetix.util.TreeNode;
 public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	extends Chromosome<G>
 {
-	@Override
-	public default boolean isValid() {
-		return false;
+
+	/**
+	 * Return the root gene of this chromosome.
+	 *
+	 * @return the root tree gene of this chromosome
+	 */
+	public default G getRoot() {
+		return getGene();
 	}
-
-	@Override
-	public default Chromosome<G> newInstance(ISeq<G> genes) {
-		return null;
-	}
-
-	@Override
-	public default G getGene(int index) {
-		return null;
-	}
-
-	@Override
-	public default int length() {
-		return 0;
-	}
-
-	@Override
-	public default ISeq<G> toSeq() {
-		return null;
-	}
-
-	@Override
-	public default Iterator<G> iterator() {
-		return null;
-	}
-
-	@Override
-	public default Chromosome<G> newInstance() {
-		return null;
-	}
-
-
-	public default A eval(final A[] value)  {
-		return null;
-	}
-
-	/*
-	@Override
-	public boolean isValid() {
-		return false;
-	}
-
-	@Override
-	public Chromosome<G> newInstance(ISeq<G> genes) {
-		return null;
-	}
-
-	@Override
-	public G getGene(int index) {
-		return null;
-	}
-
-	@Override
-	public int length() {
-		return 0;
-	}
-
-	@Override
-	public ISeq<G> toSeq() {
-		return null;
-	}
-
-	@Override
-	public Iterator<G> iterator() {
-		return null;
-	}
-
-	@Override
-	public Chromosome<G> newInstance() {
-		return null;
-	}
-	*/
-
-
-//	/**
-//	 * Return the root gene of the {@code TreeChromosome}.
-//	 *
-//	 * @return the root gene of the {@code TreeChromosome}
-//	 */
-//	//public default G getRoot() {
-//	//	return getGene();
-//	//}
-//
-//
-//	public A getValue();
-//
-//	public Optional<TreeChromosome<A, G>> getParent();
-//
-//	public TreeChromosome<A, G> getChild(final int index);
-//
-//	public int childCount();
-//
-//	public default Optional<G> getParent(final G child) {
-//		return child.getParent(toSeq());
-//	}
-//
-//	public default G getChild(final G parent, final int index) {
-//		return parent.getChild(index, toSeq());
-//	}
-//
-//	public default int childCount(final G parent) {
-//		return parent.childCount();
-//	}
-//
-//	public default Stream<G> children(final G parent) {
-//		return parent.children(toSeq());
-//	}
-//
-//	public default boolean isLeaf(final G gene) {
-//		return gene.isLeaf();
-//	}
-//
-//	public default TreeNode<A> toTree() {
-//		return null;
-//		//return getRoot().toTreeNode(toSeq());
-//	}
-
 
 }
