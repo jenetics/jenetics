@@ -34,13 +34,13 @@ import org.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class FlattenedTreeNode<T> {
+public final class FlatTreeNode<T> {
 
 	private final T _value;
 	private final int _arity;
 	private final int _childOffset;
 
-	private FlattenedTreeNode(
+	private FlatTreeNode(
 		final T value,
 		final int arity,
 		final int childOffset
@@ -67,17 +67,17 @@ public final class FlattenedTreeNode<T> {
 		return Objects.toString(_value);
 	}
 
-	public static <V, T extends Tree<V, T>> ISeq<FlattenedTreeNode<V>>
+	public static <V, T extends Tree<V, T>> ISeq<FlatTreeNode<V>>
 	flatten(final T tree)  {
 		requireNonNull(tree);
 
-		final List<FlattenedTreeNode<V>> result = new ArrayList<>();
+		final List<FlatTreeNode<V>> result = new ArrayList<>();
 		final Iterator<T> it = tree.breadthFirstIterator();
 
 		int childOffset = 1;
 		while (it.hasNext()) {
 			final T node  = it.next();
-			result.add(new FlattenedTreeNode<>(
+			result.add(new FlatTreeNode<>(
 				node.getValue(), node.childCount(), childOffset
 			));
 
@@ -87,17 +87,17 @@ public final class FlattenedTreeNode<T> {
 		return ISeq.of(result);
 	}
 
-	public static <V> TreeNode<V> unflatten(final Seq<FlattenedTreeNode<V>> seq) {
+	public static <V> TreeNode<V> unflatten(final Seq<FlatTreeNode<V>> seq) {
 		return unflatten(TreeNode.of(), 0, seq);
 	}
 
 	private static <V> TreeNode<V> unflatten(
 		final TreeNode<V> tree,
 		final int index,
-		final Seq<FlattenedTreeNode<V>> seq
+		final Seq<FlatTreeNode<V>> seq
 	) {
 		if (index < seq.size()) {
-			final FlattenedTreeNode<V> node = seq.get(index);
+			final FlatTreeNode<V> node = seq.get(index);
 			tree.setValue(node.getValue());
 
 			/*

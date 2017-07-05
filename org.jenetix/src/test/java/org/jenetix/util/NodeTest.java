@@ -19,8 +19,6 @@
  */
 package org.jenetix.util;
 
-import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -45,10 +43,10 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final ISeq<FlattenedTreeNode<Integer>> seq = FlattenedTreeNode.flatten(tree);
-		Assert.assertEquals(FlattenedTreeNode.unflatten(seq), tree);
+		final ISeq<FlatTreeNode<Integer>> seq = FlatTreeNode.flatten(tree);
+		Assert.assertEquals(FlatTreeNode.unflatten(seq), tree);
 
-		System.out.println(FlattenedTreeNode.flatten(tree));
+		System.out.println(FlatTreeNode.flatten(tree));
 	}
 
 }

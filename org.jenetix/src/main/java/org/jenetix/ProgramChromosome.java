@@ -20,7 +20,7 @@
 package org.jenetix;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetix.util.FlattenedTreeNode.flatten;
+import static org.jenetix.util.FlatTreeNode.flatten;
 
 import java.util.HashMap;
 import java.util.Iterator;
