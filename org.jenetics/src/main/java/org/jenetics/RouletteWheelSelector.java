@@ -19,9 +19,6 @@
  */
 package org.jenetics;
 
-import static java.lang.Math.abs;
-import static org.jenetics.internal.math.arithmetic.pow;
-import static org.jenetics.internal.math.base.ulpDistance;
 import static org.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;
@@ -41,7 +38,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.2
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -50,9 +47,12 @@ public class RouletteWheelSelector<
 	extends ProbabilitySelector<G, N>
 {
 
-	private static final long MAX_ULP_DISTANCE = pow(10, 9);
-
 	public RouletteWheelSelector() {
+		this(false);
+	}
+
+	protected RouletteWheelSelector(final boolean sorted) {
+		super(sorted);
 	}
 
 	@Override
@@ -60,8 +60,9 @@ public class RouletteWheelSelector<
 		final Population<G, N> population,
 		final int count
 	) {
-		assert(population != null) : "Population can not be null. ";
-		assert(count > 0) : "Population to select must be greater than zero. ";
+		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
+		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.
 		final double[] fitness = new double[population.size()];
@@ -72,15 +73,14 @@ public class RouletteWheelSelector<
 		final double worst = Math.min(min(fitness), 0.0);
 		final double sum = DoubleAdder.sum(fitness) - worst*population.size();
 
-		if (abs(ulpDistance(sum, 0.0)) > MAX_ULP_DISTANCE) {
+		if (eq(sum, 0.0)) {
+			Arrays.fill(fitness, 1.0/population.size());
+		} else {
 			for (int i = population.size(); --i >= 0;) {
 				fitness[i] = (fitness[i] - worst)/sum;
 			}
-		} else {
-			Arrays.fill(fitness, 1.0/population.size());
 		}
 
-		assert (sum2one(fitness)) : "Probabilities doesn't sum to one.";
 		return fitness;
 	}
 

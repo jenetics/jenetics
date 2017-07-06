@@ -21,6 +21,7 @@ package org.jenetics.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -31,7 +32,6 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
 public abstract class MSeqTestBase extends SeqTestBase {
 
@@ -39,7 +39,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 	protected abstract MSeq<Integer> newSeq(final int length);
 
 	private Supplier<Integer> RandomInt(final Random random) {
-		return () -> random.nextInt();
+		return random::nextInt;
 	}
 
 	@Test
@@ -67,6 +67,58 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		for (int i = 0; i < seq.length(); ++i) {
 			Assert.assertEquals(seq.get(i).intValue(), random.nextInt());
 		}
+	}
+
+	@Test(dataProvider = "sequences")
+	public void reverse(final MSeq<Integer> seq) {
+		final ISeq<Integer> original = seq.toISeq();
+
+		seq.reverse();
+		Assert.assertNotEquals(seq, original);
+		for (int i = 0; i < seq.length(); ++i) {
+			Assert.assertEquals(seq.get(i), original.get(seq.length() - i - 1));
+		}
+
+		Assert.assertEquals(original, seq.reverse());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sort(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort();
+		Assert.assertTrue(seq.isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithComparator(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort((a, b) -> b.compareTo(a));
+		Assert.assertTrue(seq.isSorted((a, b) -> b.compareTo(a)));
+		Assert.assertTrue(seq.reverse().isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithStart(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort(2);
+		Assert.assertTrue(seq.subSeq(2).isSorted());
+		Assert.assertFalse(seq.isSorted());
+	}
+
+	@Test(dataProvider = "sequences")
+	public void sortWithEnd(final MSeq<Integer> seq) {
+		seq.shuffle(new Random(23));
+		Assert.assertFalse(seq.isSorted());
+
+		seq.sort(0, seq.length() - 2);
+		Assert.assertTrue(seq.subSeq(0, seq.length() - 2).isSorted());
+		Assert.assertFalse(seq.isSorted());
 	}
 
 	@Test(dataProvider = "sequences")
@@ -229,6 +281,42 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		for (int i = 0; i < seq.length(); ++i) {
 			Assert.assertEquals(iseq.get(i), copy[i]);
 		}
+	}
+
+	@Test
+	public void toSeqMSeqChange() {
+		final MSeq<Integer> mseq = newSeq(20);
+		final ISeq<Integer> iseq1 = mseq.toISeq();
+
+		mseq.shuffle();
+
+		final ISeq<Integer> iseq2 = mseq.toISeq();
+		Assert.assertNotEquals(iseq1, iseq2, "ISeq instances must not be equal.");
+	}
+
+	@Test
+	public void toListIteratorChange() {
+		final MSeq<Integer> mseq = newSeq(20);
+		final ISeq<Integer> iseq1 = mseq.toISeq();
+
+		final ListIterator<Integer> it = mseq.listIterator();
+		it.next();
+		it.set(300);
+
+		final ISeq<Integer> iseq2 = mseq.toISeq();
+		Assert.assertNotEquals(iseq1, iseq2, "ISeq instances must not be equal.");
+	}
+
+	@Test
+	public void toListChange() {
+		final MSeq<Integer> mseq = newSeq(20);
+		final ISeq<Integer> iseq1 = mseq.toISeq();
+
+		final List<Integer> list = mseq.asList();
+		list.set(0, 300);
+
+		final ISeq<Integer> iseq2 = mseq.toISeq();
+		Assert.assertNotEquals(iseq1, iseq2, "ISeq instances must not be equal.");
 	}
 
 }

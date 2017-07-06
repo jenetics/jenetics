@@ -24,8 +24,6 @@ import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static org.jenetics.internal.util.require.probability;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -36,7 +34,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0 &mdash; <em>$Date: 2014-10-18 $</em>
+ * @version 3.0
  */
 public final class random {
 	private random() {require.noInstance();}
@@ -59,16 +57,16 @@ public final class random {
 	}
 
 	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
 	 *
-	 * @param random the random engine to use for calculating the random
-	 *        int value
+	 * @param random the random engine to use for calculating the random int
+	 *        value
 	 * @param min lower bound for generated integer
 	 * @param max upper bound for generated integer
 	 * @return a random integer greater than or equal to {@code min} and
 	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws IllegalArgumentException if {@code min > max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
@@ -76,7 +74,7 @@ public final class random {
 		final Random random,
 		final int min, final int max
 	) {
-		if (min >= max) {
+		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"Min >= max: %d >= %d", min, max
 			));
@@ -106,7 +104,7 @@ public final class random {
 	 * @param max upper bound for generated long integer
 	 * @return a random long integer greater than or equal to {@code min}
 	 *         and less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min >= max}
+	 * @throws IllegalArgumentException if {@code min > max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
@@ -114,7 +112,7 @@ public final class random {
 		final Random random,
 		final long min, final long max
 	) {
-		if (min >= max) {
+		if (min > max) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %d >= %d.", min, max
 			));
@@ -234,77 +232,6 @@ public final class random {
 		return value;
 	}
 
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between 0
-	 * (inclusive) and the specified value (exclusive), drawn from the given
-	 * random number generator's sequence.
-	 *
-	 * @param random the random engine used for creating the random number.
-	 * @param n the bound on the random number to be returned. Must be
-	 *        positive.
-	 * @return the next pseudo-random, uniformly distributed int value
-	 *         between 0 (inclusive) and n (exclusive) from the given random
-	 *         number generator's sequence
-	 * @throws IllegalArgumentException if n is smaller than 1.
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine of the maximal value {@code n} is {@code null}.
-	 */
-	public static BigInteger nextBigInteger(
-		final Random random,
-		final BigInteger n
-	) {
-		if (n.compareTo(BigInteger.ONE) < 0) {
-			throw new IllegalArgumentException(format(
-				"n is smaller than one: %d", n
-			));
-		}
-
-		BigInteger result = null;
-		if (n.bitLength() <= Integer.SIZE - 1) {
-			result = BigInteger.valueOf(random.nextInt(n.intValue()));
-		} else if (n.bitLength() <= Long.SIZE - 1) {
-			result = BigInteger.valueOf(nextLong(random, n.longValue()));
-		} else {
-			do {
-				result = new BigInteger(n.bitLength(), random);
-			} while (result.compareTo(n) >= 0);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random
-	 *        long value
-	 * @param min lower bound for generated long integer (inclusively)
-	 * @param max upper bound for generated long integer (inclusively)
-	 * @return a random long integer greater than or equal to {@code min}
-	 *         and less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min >= max}
-	 * @throws NullPointerException if one of the given parameters
-	 *         are {@code null}.
-	 */
-	public static BigInteger nextBigInteger(
-		final Random random,
-		final BigInteger min, final BigInteger max
-	) {
-		if (min.compareTo(max) >= 0) {
-			throw new IllegalArgumentException(format(
-				"min >= max: %d >= %d.", min, max
-			));
-		}
-
-		final BigInteger n = max.subtract(min).add(BigInteger.ONE);
-		return nextBigInteger(random, n).add(min);
-	}
-
-	public static BigInteger nextBigInteger(final Random random) {
-		return new BigInteger(100, random);
-	}
-
 	public static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
@@ -316,19 +243,6 @@ public final class random {
 
 	public static String nextString(final Random random) {
 		return nextString(random, nextInt(random, 5, 20));
-	}
-
-	public static BigDecimal nextBigDecimal(final Random random) {
-		final StringBuilder out = new StringBuilder();
-		for (int i = 0; i < 10; ++i) {
-			out.append(Long.toString(abs(random.nextLong())));
-		}
-		out.append(".");
-		for (int i = 0; i < 20; ++i) {
-			out.append(Long.toString(abs(random.nextLong())));
-		}
-
-		return new BigDecimal(out.toString());
 	}
 
 	/*
@@ -395,11 +309,11 @@ public final class random {
 		probability(p);
 		final int P = probability.toInt(p);
 
-		return equals(p, 0, 1E-20) ?
-			IntStream.empty() :
-			equals(p, 1, 1E-20) ?
-				IntStream.range(start, end) :
-				IntStream.range(start, end)
+		return equals(p, 0, 1E-20)
+			? IntStream.empty()
+			: equals(p, 1, 1E-20)
+				? IntStream.range(start, end)
+				: IntStream.range(start, end)
 					.filter(i -> random.nextInt() < P);
 	}
 
@@ -476,11 +390,11 @@ public final class random {
 	 * and {@code new Object().hashCode()} calls to create a reasonable safe
 	 * seed value:
 	 * <p>
-	 * [code]
+	 * <pre>{@code
 	 * public static long seed() {
 	 *     return seed(System.nanoTime());
 	 * }
-	 * [/code]
+	 * }</pre>
 	 * <p>
 	 * This method passes all of the statistical tests of the
 	 * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">
@@ -502,17 +416,17 @@ public final class random {
 	 * value. This is done by combining it with values of
 	 * {@code new Object().hashCode()}:
 	 * <p>
-	 * [code]
+	 * <pre>{@code
 	 * public static long seed(final long base) {
-	 *     final long objectHashSeed = ((long)(new Object().hashCode()) &lt;&lt; 32) |
+	 *     final long objectHashSeed = ((long)(new Object().hashCode()) << 32) |
 	 *                                         new Object().hashCode();
-	 *     long seed = base ^ objectHashSeed;
-	 *     seed ^= seed &lt;&lt; 17;
-	 *     seed ^= seed &gt;&gt;&gt; 31;
-	 *     seed ^= seed &lt;&lt; 8;
+	 *     long seed = base^objectHashSeed;
+	 *     seed ^= seed << 17;
+	 *     seed ^= seed >>> 31;
+	 *     seed ^= seed << 8;
 	 *     return seed;
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * @param base the base value of the seed to create
 	 * @return the created seed value.
@@ -530,7 +444,6 @@ public final class random {
 	}
 
 	private static long objectHashSeed() {
-		return ((long)(new Object().hashCode()) << 32) |
-						new Object().hashCode();
+		return (long)new Object().hashCode() << 32 | new Object().hashCode();
 	}
 }

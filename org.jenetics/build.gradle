@@ -1,0 +1,125 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ */
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 1.2
+ * @version 2.0
+ */
+
+plugins {
+	id "me.champeau.gradle.jmh" version "0.2.0"
+}
+
+apply plugin: 'packaging'
+apply plugin: 'nexus'
+
+description = 'Jenetics - Java Genetic Algorithm Library'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	testCompile Include.Apache.Commons.Math
+	testCompile Include.TestNG
+
+	jmh Include.JMH.Core
+	jmh Include.JMH.Processor
+	jmh files('build/classes/main')
+}
+
+/*
+javadoc {
+	options.docletpath = files(
+			"${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
+			//"${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
+		).asType(List)
+
+	//options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
+	//options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
+	//options.addStringOption('-padExcludeTag', 'exclude')
+}
+*/
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics',
+	'org.jenetics.engine',
+	'org.jenetics.util',
+	'org.jenetics.stat'
+)
+
+packaging {
+	name = 'Jenetics'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.sourceforge.net'
+
+	jarjar = false
+}
+
+modifyPom {
+	project {
+		name jenetics.name
+		description jenetics.description
+		url jenetics.url
+		inceptionYear '2007'
+
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'fwilhelm'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmx.at'
+			}
+		}
+	}
+}
+
+nexus {
+	identifier = project.identifier
+	copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+    //snapshotRepository = "file://$buildDir/repo"
+}
+
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
+}

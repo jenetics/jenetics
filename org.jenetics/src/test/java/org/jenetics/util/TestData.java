@@ -45,7 +45,6 @@ import org.jenetics.internal.util.exception;
  * format: {@code $resource[$param1, $param2,...].dat}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-01 $</em>
  */
 public class TestData implements Iterable<String[]> {
 

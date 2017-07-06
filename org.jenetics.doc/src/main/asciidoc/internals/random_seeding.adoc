@@ -1,0 +1,146 @@
+== Random seeding
+
+The PRNGs, used by the Jenetics library, needs to be initialized with a proper
+seed value before they can be used. The usual way for doing this, is to take the
+current time stamp.
+
+[source,java]
+-----------------
+public static long seed() {
+    return System.nanoTime();
+}
+-----------------
+
+Before applying this method throughout the whole library, I decided to perform
+some statistical tests. For this purpose I treated the _seed()_ method itself
+as PRNG and analyzed the created long values with the _DieHarder_ class. The
+_seed()_ method has been wrapped into the _NanoTimeRandom_
+ class. Assuming that the dieharder tool is in the search path, calling
+
+[source,bash]
+-----------------
+$ java -cp org.jenetics-3.2.0.jar \
+      org.jenetics.internal.util.DieHarder \
+      org.jenetics.internal.util.NanoTimeRandom -a
+-----------------
+
+will perform the statistical tests for the nano time random engine. The statistical
+quality is rather bad: every single test failed. Table
+<<NanoTimeSeeding-quality, Nano time seeding quality>> shows the summary of
+the dieharder https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/internal/util/NanoTimeRandom.java[report].
+
+[[NanoTimeSeeding-quality]]
+.Nano time seeding quality
+|===
+|Passed tests |Weak tests |Failed tests
+
+|0
+|0
+|114
+|===
+
+An alternative source of entropy, for generating seed values, would be the
+_/dev/random_ or _/dev/urandom_ file. But this approach is not portable, which
+was a prerequisite for the ##Jenetics## library.
+
+
+The next attempt tries to fetch the seeds from the JVM, via the _Object.hashCode()_
+method. Since the hash code of an Object is available for every operating system
+and most likely "randomly" distributed.
+
+[source,java]
+-----------------
+public static long seed() {
+    return ((long)new Object().hashCode() << 32) |
+        new Object().hashCode();
+}
+-----------------
+
+This seed method has been wrapped into the ObjectHashRandom class and tested as
+well with
+
+[source,bash]
+-----------------
+$ java -cp org.jenetics-3.2.0.jar \
+      org.jenetics.internal.util.DieHarder \
+      org.jenetics.internal.util.ObjectHashRandom -a
+-----------------
+
+Table <<ObjectHashSeeding-quality, Object hash seeding quality>> shows the
+summary of the dieharder
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/internal/util/ObjectHashRandom.java[report],
+which looks better than the nano time seeding, but 86 failing tests was still
+not very satisfying.
+
+[[ObjectHashSeeding-quality]]
+.Object hash seeding quality
+|===
+|Passed tests |Weak tests |Failed tests
+
+|28
+|0
+|86
+|===
+
+After additional experimentation, a combination of the nano time seed and the
+object hash seeding seems to be the "right" solution. The rational behind this
+was, that the PRNG seed shouldn't rely on a single source of entropy.
+
+[source,java]
+-----------------
+public static long seed() {
+    return mix(System.nanoType(), objectHashSeed());
+}
+
+private static long mix(final long a, final long b) {
+    long c = a^b;
+    c ^= c << 17;
+    c ^= c >>> 31;
+    c ^= c << 8;
+    return c;
+}
+
+private static long objectHashSeed() {
+    return ((long)new Object().hashCode() << 32) |
+        new Object().hashCode();
+}
+-----------------
+
+The code above shows how the nano time seed is mixed  with the object seed.
+The mix method was inspired by the mixing step of the
+https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp[lcg64_shift]
+random engine, which is part of the http://numbercrunch.de/trng/[TRNG] library
+and has been reimplemented in the https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/util/LCG64ShiftRandom.java[_LCG64ShiftRandom_]
+ class. Running the tests with
+
+[source,bash]
+-----------------
+$ java -cp org.jenetics-3.2.0.jar \
+      org.jenetics.internal.util.DieHarder \
+      org.jenetics.internal.util.SeedRandom -a
+-----------------
+
+leads to the statistics summary (the full report can be found
+https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/jenetics/internal/util/SeedRandom.java[here]),
+which is shown in following <<CombinedSeeding-quality, table>>.
+
+[[CombinedSeeding-quality]]
+.Combined random seeding quality
+|===
+|Passed tests |Weak tests |Failed tests
+
+|112
+|2
+|0
+|===
+
+The statistical performance of this seeding is better, according to the
+_dieharder_ test suite, than some of the real random engines, including the
+default Java _Random_ engine. Using the proposed _seed()_ method is in any
+case preferable to the simple _System.nanoTime()_ call.
+
+*Open questions*
+
+* How does this method perform on operating systems other than Linux?
+* How does this method perform on other JVM implementations?
+

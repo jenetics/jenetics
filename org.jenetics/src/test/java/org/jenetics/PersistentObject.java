@@ -19,8 +19,6 @@
  */
 package org.jenetics;
 
-import static org.jenetics.internal.math.random.nextBigDecimal;
-import static org.jenetics.internal.math.random.nextBigInteger;
 import static org.jenetics.internal.math.random.nextByte;
 import static org.jenetics.internal.math.random.nextCharacter;
 import static org.jenetics.internal.math.random.nextShort;
@@ -31,8 +29,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +42,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-11-28 $</em>
  */
 public class PersistentObject<T> {
 
@@ -117,7 +112,7 @@ public class PersistentObject<T> {
 	public static final List<PersistentObject<?>> VALUES = new ArrayList<>();
 
 	private static <T> void put(final String name, final T value, final String... ios) {
-		VALUES.add(new PersistentObject<T>(name, value, ios));
+		VALUES.add(new PersistentObject<>(name, value, ios));
 		RandomRegistry.getRandom().setSeed(SEED);
 	}
 
@@ -143,8 +138,8 @@ public class PersistentObject<T> {
 		put("EnumGene[Long]", nextEnumGeneLong(), ios);
 		put("EnumGene[Float]", nextEnumGeneFloat(), ios);
 		put("EnumGene[Double]", nextEnumGeneDouble(), ios);
-		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
-		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
+//		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
+//		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
 		put("EnumGene[String]", nextEnumGeneString(), ios);
 
 		/* *********************************************************************
@@ -208,7 +203,7 @@ public class PersistentObject<T> {
 		put("Phenotype[EnumGene[Long], Double]", nextPhenotypeEnumGeneLongDouble(), ios);
 		put("Phenotype[EnumGene[Float], Double]", nextPhenotypeEnumGeneFloatDouble(), ios);
 		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
-		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
+//		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
 
 		/* *********************************************************************
 		 * Populations
@@ -220,7 +215,7 @@ public class PersistentObject<T> {
 		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
 		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
 		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
-		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
+//		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
 	}
 
 	/* *************************************************************************
@@ -244,19 +239,19 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Boolean> nextEnumGeneBoolean() {
-		return EnumGene.of(ISeq.<Boolean>of(random()::nextBoolean, 5));
+		return EnumGene.of(ISeq.of(random()::nextBoolean, 5));
 	}
 
 	public static EnumGene<Byte> nextEnumGeneByte() {
-		return EnumGene.of(ISeq.<Byte>of(() -> nextByte(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextByte(random()), 5));
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.of(ISeq.<Character>of(() -> nextCharacter(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextCharacter(random()), 5));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
-		return EnumGene.of(ISeq.<Short>of(() -> nextShort(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextShort(random()), 5));
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
@@ -264,24 +259,24 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
-		return EnumGene.of(ISeq.<Long>of(random()::nextLong, 5));
+		return EnumGene.of(ISeq.of(random()::nextLong, 5));
 	}
 
 	public static EnumGene<Float> nextEnumGeneFloat() {
-		return EnumGene.of(ISeq.<Float>of(random()::nextFloat, 5));
+		return EnumGene.of(ISeq.of(random()::nextFloat, 5));
 	}
 
 	public static EnumGene<Double> nextEnumGeneDouble() {
-		return EnumGene.of(ISeq.<Double>of(random()::nextDouble, 5));
+		return EnumGene.of(ISeq.of(random()::nextDouble, 5));
 	}
 
-	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
-		return EnumGene.of(ISeq.of(() -> nextBigInteger(random()), 5));
-	}
-
-	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
-		return EnumGene.of(ISeq.of(() -> nextBigDecimal(random()), 5));
-	}
+//	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
+//		return EnumGene.of(ISeq.of(() -> nextBigInteger(random()), 5));
+//	}
+//
+//	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
+//		return EnumGene.of(ISeq.of(() -> nextBigDecimal(random()), 5));
+//	}
 
 	public static EnumGene<String> nextEnumGeneString() {
 		return EnumGene.of(ISeq.of(() -> nextString(random()), 5));
@@ -312,11 +307,11 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Byte> nextBytePermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Byte>of(() -> nextByte(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextByte(random()), 15));
 	}
 
 	public static PermutationChromosome<Short> nextShortPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Short>of(() -> nextShort(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextShort(random()), 15));
 	}
 
 	public static PermutationChromosome<Integer> nextIntegerPermutationChromosome() {
@@ -324,19 +319,19 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Long> nextLongPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Long>of(random()::nextLong, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextLong, 15));
 	}
 
 	public static PermutationChromosome<Float> nextFloatPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Float>of(random()::nextFloat, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextFloat, 15));
 	}
 
 	public static PermutationChromosome<Double> nextDoublePermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Double>of(random()::nextDouble, 15));
+		return PermutationChromosome.of(ISeq.of(random()::nextDouble, 15));
 	}
 
 	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.<Character>of(() -> nextCharacter(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextCharacter(random()), 15));
 	}
 
 	public static PermutationChromosome<String> nextStringPermutationChromosome() {
@@ -532,13 +527,13 @@ public class PersistentObject<T> {
 		).evaluate();
 	}
 
-	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
-		return Phenotype.of(
-			nextGenotypeEnumGeneString(),
-			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
-			FitnessScaler()
-		).evaluate();
-	}
+//	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
+//		return Phenotype.of(
+//			nextGenotypeEnumGeneString(),
+//			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
+//			FitnessScaler()
+//		).evaluate();
+//	}
 
 	/* *************************************************************************
 	 * Populations
@@ -586,12 +581,12 @@ public class PersistentObject<T> {
 		return new Population<>(seq.asList());
 	}
 
-	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {
-		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
+//	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {
+//		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7
+//		);
+//
+//		return new Population<>(seq.asList());
+//	}
 
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {

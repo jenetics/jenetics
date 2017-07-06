@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-04-05 $</em>
+ * @version 2.0
  * @since 2.0
  */
 final class RunnablesRunnable implements Runnable {

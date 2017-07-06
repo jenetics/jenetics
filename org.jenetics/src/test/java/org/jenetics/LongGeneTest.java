@@ -34,7 +34,6 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
@@ -47,7 +46,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 	public void newInstanceDistribution() {
 		final Long min = 0L;
 		final Long max = (long)Integer.MAX_VALUE;
-		final Histogram<Long> histogram = Histogram.of(min, max, 10);
+		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
 
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)

@@ -20,7 +20,9 @@
 package org.jenetics;
 
 import static org.jenetics.internal.math.random.nextInt;
+import static org.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,10 +34,12 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * NumericGene implementation which holds a 32 bit integer number.
@@ -48,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene
@@ -56,7 +60,8 @@ public final class IntegerGene
 	implements
 		NumericGene<Integer, IntegerGene>,
 		Mean<IntegerGene>,
-		Comparable<IntegerGene>
+		Comparable<IntegerGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;
@@ -97,6 +102,23 @@ public final class IntegerGene
 	}
 
 	/**
+	 * Create a new random {@code IntegerGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max],
+	 * no exception is thrown. In this case the method
+	 * {@link IntegerGene#isValid()} returns {@code false}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param value the value of the gene.
+	 * @param range the integer range to use
+	 * @return a new random {@code IntegerGene}
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static IntegerGene of(final int value, final IntRange range) {
+		return new IntegerGene(value, range.getMin(), range.getMax());
+	}
+
+	/**
 	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
 	 * the {@code IntegerGene} lies in the interval [min, max].
 	 *
@@ -105,7 +127,21 @@ public final class IntegerGene
 	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
-		return of(nextInt(RandomRegistry.getRandom(), min, max), min, max);
+		return of(nextInt(getRandom(), min, max), min, max);
+	}
+
+	/**
+	 * Create a new random {@code IntegerGene}. It is guaranteed that the value of
+	 * the {@code IntegerGene} lies in the interval [min, max].
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the integer range to use
+	 * @return a new random {@code IntegerGene}
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static IntegerGene of(final IntRange range) {
+		return of(nextInt(getRandom(), range.getMin(), range.getMax()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -113,9 +149,11 @@ public final class IntegerGene
 		final Integer maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final int min = minimum;
 		final int max = maximum;
-		final Random r = RandomRegistry.getRandom();
+		final Random r = getRandom();
 
 		return MSeq.<IntegerGene>ofLength(length)
 			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
@@ -130,7 +168,7 @@ public final class IntegerGene
 	@Override
 	public IntegerGene newInstance() {
 		return new IntegerGene(
-			nextInt(RandomRegistry.getRandom(), _min, _max), _min, _max
+			nextInt(getRandom(), _min, _max), _min, _max
 		);
 	}
 

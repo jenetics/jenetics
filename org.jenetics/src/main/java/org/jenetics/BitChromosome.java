@@ -54,7 +54,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.4
  */
 @XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
@@ -82,15 +82,14 @@ public class BitChromosome extends Number
 	protected byte[] _genes;
 
 	// Wraps the genes byte array into a Seq<BitGene>.
-	private transient BitGeneArray _seq;
+	private transient BitGeneISeq _seq;
 
 	// Private primary constructor.
 	private BitChromosome(final byte[] bits, final int length, final double p) {
 		_genes = bits;
 		_length = length;
 		_p = p;
-		_seq = new BitGeneArray(_genes, 0, _length);
-
+		_seq = BitGeneMSeq.of(_genes, length).toISeq();
 	}
 
 	/**
@@ -169,8 +168,8 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitGene getGene() {
-		assert (_genes != null);
-		assert (_genes.length > 0);
+		assert _genes != null;
+		assert _genes.length > 0;
 		return BitGene.of(bit.get(_genes, 0));
 	}
 
@@ -187,7 +186,7 @@ public class BitChromosome extends Number
 	@Override
 	public BitGene getGene(final int index) {
 		rangeCheck(index);
-		assert(_genes != null);
+		assert _genes != null;
 		return BitGene.of(bit.get(_genes, index));
 	}
 
@@ -207,7 +206,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public ISeq<BitGene> toSeq() {
-		return _seq.toISeq();
+		return _seq;
 	}
 
 	@Override
@@ -364,7 +363,7 @@ public class BitChromosome extends Number
 	@Override
 	public BitChromosome newInstance(final ISeq<BitGene> genes) {
 		requireNonNull(genes, "Genes");
-		if (genes.length() == 0) {
+		if (genes.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The genes sequence must contain at least one gene."
 			);
@@ -375,8 +374,8 @@ public class BitChromosome extends Number
 		);
 		int ones = 0;
 
-		if (genes instanceof BitGeneArray.BitGeneISeq) {
-			final BitGeneArray.BitGeneISeq iseq = (BitGeneArray.BitGeneISeq)genes;
+		if (genes instanceof BitGeneISeq) {
+			final BitGeneISeq iseq = (BitGeneISeq)genes;
 			iseq.copyTo(chromosome._genes);
 			ones = bit.count(chromosome._genes);
 		} else {
@@ -563,7 +562,7 @@ public class BitChromosome extends Number
 		_genes = new byte[bytes];
 		in.readFully(_genes);
 
-		_seq = new BitGeneArray(_genes, 0, _length);
+		_seq = BitGeneISeq.of(_genes, _length);
 	}
 
 	/* *************************************************************************

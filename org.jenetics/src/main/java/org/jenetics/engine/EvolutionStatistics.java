@@ -19,6 +19,7 @@
  */
 package org.jenetics.engine;
 
+import static java.lang.Math.sqrt;
 import static java.lang.String.format;
 
 import java.text.NumberFormat;
@@ -38,57 +39,58 @@ import org.jenetics.stat.MinMax;
  * following example shows how to integrate the <i>statistics</i> object into
  * your evolution <i>stream</i>.
  *
- * [code]
- * final Engine&lt;DoubleGene, Double&gt; engine = ...
- * final EvolutionStatistics&lt;Double, DoubleMomentStatistics&gt; statistics =
+ * <pre>{@code
+ * final Engine<DoubleGene, Double> engine = ...
+ * final EvolutionStatistics<Double, DoubleMomentStatistics> statistics =
  *     EvolutionStatistics.ofNumber();
  *
- * final Phenotype&lt;DoubleGene, Double&gt; result = engine.stream()
+ * final Phenotype<DoubleGene, Double> result = engine.stream()
  *     .limit(bySteadyFitness(7))
  *     .limit(100)
  *     .peek(statistics)
  *     .collect(toBestPhenotype());
  *
  * System.println(statistics);
- * [/code]
+ * }</pre>
  *
  * <b>Example output</b>
  *
- * [code]
- +---------------------------------------------------------------------------+
- |  Time statistics                                                          |
- +---------------------------------------------------------------------------+
- |             Selection: sum=0.046538278000 s; mean=0.003878189833 s        |
- |              Altering: sum=0.086155457000 s; mean=0.007179621417 s        |
- |   Fitness calculation: sum=0.022901606000 s; mean=0.001908467167 s        |
- |     Overall execution: sum=0.147298067000 s; mean=0.012274838917 s        |
- +---------------------------------------------------------------------------+
- |  Evolution statistics                                                     |
- +---------------------------------------------------------------------------+
- |           Generations: 12                                                 |
- |               Altered: sum=7,331; mean=610.916666667                      |
- |                Killed: sum=0; mean=0.000000000                            |
- |              Invalids: sum=0; mean=0.000000000                            |
- +---------------------------------------------------------------------------+
- |  Population statistics                                                    |
- +---------------------------------------------------------------------------+
- |                   Age: max=11; mean=1.951000; var=5.545190                |
- |               Fitness:                                                    |
- |                      min  = 0.000000000000                                |
- |                      max  = 481.748227114537                              |
- |                      mean = 384.430345078660                              |
- |                      var  = 13006.132537301528                            |
- +---------------------------------------------------------------------------+
- * [/code]
+ * <pre>{@code
+ * +---------------------------------------------------------------------------+
+ * |  Time statistics                                                          |
+ * +---------------------------------------------------------------------------+
+ * |             Selection: sum=0.046538278000 s; mean=0.003878189833 s        |
+ * |              Altering: sum=0.086155457000 s; mean=0.007179621417 s        |
+ * |   Fitness calculation: sum=0.022901606000 s; mean=0.001908467167 s        |
+ * |     Overall execution: sum=0.147298067000 s; mean=0.012274838917 s        |
+ * +---------------------------------------------------------------------------+
+ * |  Evolution statistics                                                     |
+ * +---------------------------------------------------------------------------+
+ * |           Generations: 12                                                 |
+ * |               Altered: sum=7,331; mean=610.916666667                      |
+ * |                Killed: sum=0; mean=0.000000000                            |
+ * |              Invalids: sum=0; mean=0.000000000                            |
+ * +---------------------------------------------------------------------------+
+ * |  Population statistics                                                    |
+ * +---------------------------------------------------------------------------+
+ * |                   Age: max=11; mean=1.951000; var=5.545190                |
+ * |               Fitness:                                                    |
+ * |                      min  = 0.000000000000                                |
+ * |                      max  = 481.748227114537                              |
+ * |                      mean = 384.430345078660                              |
+ * |                      var  = 13006.132537301528                            |
+ * |                      std  = 114.044432                                    |
+ * +---------------------------------------------------------------------------+
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
+ * @version 3.0
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
 	FitnessStatistics
-	>
+>
 	implements Consumer<EvolutionResult<?, C>>
 {
 
@@ -375,6 +377,7 @@ public abstract class EvolutionStatistics<
 				format(spattern, "max  =", d(_fitness.getMax())) +
 				format(spattern, "mean =", d(_fitness.getMean())) +
 				format(spattern, "var  =", d(_fitness.getVariance())) +
+				format(spattern, "std  =", d(sqrt(_fitness.getVariance()))) +
 				"+---------------------------------------------------------------------------+";
 		}
 

@@ -24,7 +24,7 @@ import org.jenetics.internal.util.require;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0
  */
 public final class arithmetic {
 	private arithmetic() {require.noInstance();}
@@ -94,8 +94,8 @@ public final class arithmetic {
 		return result;
 	}
 
-	static boolean isMultiplicationSave(final int a, final int b) {
+	public static boolean isMultiplicationSave(final int a, final int b) {
 		final long m = (long)a*(long)b;
-		return ((int)m) == m;
+		return (int)m == m;
 	}
 }

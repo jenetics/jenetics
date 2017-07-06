@@ -24,7 +24,7 @@ package org.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 3.0
  */
 public interface NumericGene<
 	N extends Number & Comparable<? super N>,

@@ -25,7 +25,6 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-05 $</em>
  */
 public final class shuffling {
 	private shuffling() {require.noInstance();}

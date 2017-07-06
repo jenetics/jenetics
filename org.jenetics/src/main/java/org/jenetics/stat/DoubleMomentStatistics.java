@@ -36,21 +36,21 @@ import org.jenetics.internal.math.DoubleAdder;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of doubles with:
- * [code]
+ * <pre>{@code
  * final DoubleStream stream = ...
  * final DoubleMomentStatistics statistics = stream.collect(
  *         DoubleMomentStatistics::new,
  *         DoubleMomentStatistics::accept,
  *         DoubleMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non double stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final DoubleMomentStatistics statistics = stream
- *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
- * [/code]
+ *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -68,7 +68,7 @@ import org.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
+ * @version 3.7
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -147,6 +147,39 @@ public class DoubleMomentStatistics
 		return _sum.doubleValue();
 	}
 
+	/**
+	 * Compares the state of two {@code DoubleMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final DoubleMomentStatistics ds1 = ...;
+	 * final DoubleMomentStatistics ds2 = ...;
+	 *
+	 * if (ds1.sameState(ds2)) {
+	 *     final double value = random.nextDouble();
+	 *     ds1.accept(value);
+	 *     ds2.accept(value);
+	 *
+	 *     assert ds1.sameState(ds2);
+	 *     assert ds2.sameState(ds1);
+	 *     assert ds1.sameState(ds1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final DoubleMomentStatistics other) {
+		return Double.compare(_min, other._min) == 0 &&
+			Double.compare(_max, other._max) == 0 &&
+			_sum.sameState(other._sum) &&
+			super.sameState(other);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -157,15 +190,15 @@ public class DoubleMomentStatistics
 	}
 
 	/**
-	 * Return a {@code Collector} which applies an long-producing mapping
+	 * Return a {@code Collector} which applies an double-producing mapping
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final DoubleMomentStatistics statistics = stream
-	 *     .collect(toDoubleMomentStatistics(v -&gt; v.doubleValue()));
-	 * [/code]
+	 *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

@@ -40,6 +40,7 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.LongRange;
 import org.jenetics.util.MSeq;
 
 /**
@@ -47,7 +48,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
@@ -70,6 +71,8 @@ public class LongChromosome
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public LongChromosome(final Long min, final Long max, final int length) {
 		this(LongGene.seq(min, max, length));
@@ -131,6 +134,7 @@ public class LongChromosome
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty.
+	 * @throws NullPointerException if the given {@code genes} are {@code null}
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		return new LongChromosome(ISeq.of(genes));
@@ -143,6 +147,8 @@ public class LongChromosome
 	 * @param max the max value of the {@link LongGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 * @return a new {@code LongChromosome} with the given gene parameters.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
 	public static LongChromosome of(
 		final long min,
@@ -150,6 +156,22 @@ public class LongChromosome
 		final int length
 	) {
 		return new LongChromosome(min, max, length);
+	}
+
+	/**
+	 * Create a new random {@code LongChromosome}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the long range of the chromosome.
+	 * @param length the length of the chromosome.
+	 * @return a new random {@code LongChromosome}
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static LongChromosome of(final LongRange range, final int length) {
+		return new LongChromosome(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -161,6 +183,19 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final long min, final long max) {
 		return new LongChromosome(min, max);
+	}
+
+	/**
+	 * Create a new random {@code LongChromosome} of length one.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the long range of the chromosome.
+	 * @return a new random {@code LongChromosome} of length one
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static LongChromosome of(final LongRange range) {
+		return new LongChromosome(range.getMin(), range.getMax());
 	}
 
 	@Override
@@ -193,11 +228,11 @@ public class LongChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeLong(_min.longValue());
-		out.writeLong(_max.longValue());
+		out.writeLong(_min);
+		out.writeLong(_max);
 
 		for (LongGene gene : _genes) {
-			out.writeLong(gene.getAllele().longValue());
+			out.writeLong(gene.getAllele());
 		}
 	}
 

@@ -22,6 +22,8 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
+
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -30,14 +32,14 @@ import org.jenetics.internal.util.Hash;
  * value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-07-16 $</em>
+ * @version 1.6
  * @since 1.6
  */
 abstract class AbstractBoundedGene<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	implements BoundedGene<A, G>
+	implements BoundedGene<A, G>, Serializable
 {
 
 	private static final long serialVersionUID = 1L;

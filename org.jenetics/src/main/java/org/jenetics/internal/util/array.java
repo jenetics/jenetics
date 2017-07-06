@@ -28,7 +28,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-29 $</em>
+ * @version 3.0
  */
 public final class array {
 	private array() {require.noInstance();}
@@ -61,13 +61,34 @@ public final class array {
 		return array;
 	}
 
-	public static void shuffle(final double[] array, final Random random) {
-		for (int i = array.length; --i >=0;) {
-			swap(array, i, random.nextInt(array.length));
+	/**
+	 * Randomize the {@code array} using the given {@link Random} object. The used
+	 * shuffling algorithm is from D. Knuth TAOCP, Seminumerical Algorithms,
+	 * Third edition, page 142, Algorithm S (Selection sampling technique).
+	 *
+	 * @param array the array to shuffle
+	 * @param random the PRNG
+	 */
+	public static double[] shuffle(final double[] array, final Random random) {
+		for (int j = array.length - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
 		}
+		return array;
 	}
 
-	public static void shuffle(final double[] array) {
-		shuffle(array, RandomRegistry.getRandom());
+	public static double[] shuffle(final double[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
 	}
+
+	public static int[] shuffle(final int[] array, final Random random) {
+		for (int j = array.length - 1; j > 0; --j) {
+			swap(array, j, random.nextInt(j + 1));
+		}
+		return array;
+	}
+
+	public static int[] shuffle(final int[] array) {
+		return shuffle(array, RandomRegistry.getRandom());
+	}
+
 }

@@ -31,7 +31,7 @@ import org.jenetics.util.Random64;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.0
  */
 public class DevURandom extends Random64 implements Closeable {
 	private static final long serialVersionUID = 1L;

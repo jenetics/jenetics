@@ -26,16 +26,16 @@ import org.jenetics.util.ISeq;
  * Alterers can be chained by appending a list of alterers with the
  * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
- * [code]
- * final Engine&lt;DoubleGene, Double&gt; engine = Engine
+ * <pre>{@code
+ * final Engine<DoubleGene, Double> engine = Engine
  *     .builder(gtf, ff)
  *     .alterers(
- *         new Crossover&lt;&gt;(0.1),
- *         new Mutator&lt;&gt;(0.05),
- *         new MeanAlterer&lt;&gt;(0.2))
+ *         new Crossover<>(0.1),
+ *         new Mutator<>(0.05),
+ *         new MeanAlterer<>(0.2))
  *     .build();
- * final EvolutionStream&lt;DoubleGene, Double&gt; stream = engine.stream();
- * [/code]
+ * final EvolutionStream<DoubleGene, Double> stream = engine.stream();
+ * }</pre>
  *
  * The order of the alterer calls is: Crossover, Mutation and MeanAlterer.
  *
@@ -44,7 +44,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 3.0
  */
 @FunctionalInterface
 public interface Alterer<
@@ -53,6 +53,9 @@ public interface Alterer<
 >
 {
 
+	/**
+	 * The default alter probability: 0.2
+	 */
 	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
@@ -103,11 +106,11 @@ public interface Alterer<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
-		return alterers.length == 0 ?
-			(p, g) -> 0 :
-			alterers.length == 1 ?
-				alterers[0] :
-				new CompositeAlterer<G, C>(ISeq.of(alterers));
+		return alterers.length == 0
+			? (p, g) -> 0
+			: alterers.length == 1
+				? alterers[0]
+				: new CompositeAlterer<>(ISeq.of(alterers));
 	}
 
 }

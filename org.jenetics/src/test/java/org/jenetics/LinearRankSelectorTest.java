@@ -20,6 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -31,14 +32,12 @@ import org.testng.annotations.Test;
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class LinearRankSelectorTest
 	extends ProbabilitySelectorTester<LinearRankSelector<DoubleGene, Double>>
@@ -59,25 +58,27 @@ public class LinearRankSelectorTest
 		return new LinearRankSelector<>(0.0);
 	}
 
-	@Test(dataProvider = "expectedDistribution", invocationCount = 20, successPercentage = 95)
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
 	public void selectDistribution(
 		final Double nminus,
 		final Named<double[]> expected,
 		final Optimize opt
 	) {
-		final int loops = (int)(nminus*1.7);
-		final int npopulation = POPULATION_COUNT;
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
 
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		using(random, r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new LinearRankSelector<>(nminus),
-				opt,
-				npopulation,
-				loops
-			);
+			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new LinearRankSelector<>(nminus),
+					opt,
+					npopulation,
+					loops
+				);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.001);
+				assertDistribution(distribution, expected.value, 0.001, 5);
+			});
 		});
 	}
 

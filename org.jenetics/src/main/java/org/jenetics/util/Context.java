@@ -24,8 +24,8 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
- * @since 3.0
+ * @version 3.0
+ * @since 2.0
  */
 final class Context<T> {
 
@@ -40,7 +40,9 @@ final class Context<T> {
 
 	void set(final T value) {
 		final Entry<T> e = _threadLocalEntry.get();
-		if (e != null) e.value = value; else _entry.set(new Entry<T>(value));
+
+		if (e != null) e.value = value;
+		else _entry.set(new Entry<>(value));
 	}
 
 	T get() {
@@ -57,7 +59,7 @@ final class Context<T> {
 		if (e != null) {
 			_threadLocalEntry.set(e.inner(value));
 		} else {
-			_threadLocalEntry.set(new Entry<T>(value, Thread.currentThread()));
+			_threadLocalEntry.set(new Entry<>(value, Thread.currentThread()));
 		}
 
 		try {
@@ -69,7 +71,7 @@ final class Context<T> {
 
 	/**
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @version 2.0 &mdash; <em>$Date: 2014-10-20 $</em>
+	 * @version 2.0
 	 * @since 2.0
 	 */
 	private static final class Entry<T> {
@@ -92,7 +94,7 @@ final class Context<T> {
 		}
 
 		Entry<T> inner(final T value) {
-			assert(thread == Thread.currentThread());
+			assert thread == Thread.currentThread();
 			return new Entry<>(value, this, thread);
 		}
 

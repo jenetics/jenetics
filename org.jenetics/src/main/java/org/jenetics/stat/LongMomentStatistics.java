@@ -35,21 +35,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of longs with:
- * [code]
+ * <pre>{@code
  * final LongStream stream = ...
  * final LongMomentStatistics statistics = stream.collect(
  *         LongMomentStatistics::new,
  *         LongMomentStatistics::accept,
  *         LongMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non long stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final LongMomentStatistics statistics = stream
- *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
- * [/code]
+ *     .collect(toLongMomentStatistics(v -> v.longValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -66,7 +66,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
+ * @version 3.7
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -154,6 +154,39 @@ public class LongMomentStatistics
 		return _sum;
 	}
 
+	/**
+	 * Compares the state of two {@code LongMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final LongMomentStatistics lms1 = ...;
+	 * final LongMomentStatistics lms2 = ...;
+	 *
+	 * if (lms1.sameState(lms2)) {
+	 *     final long value = random.nextInt(1_000_000);
+	 *     lms1.accept(value);
+	 *     lms2.accept(value);
+	 *
+	 *     assert lms1.sameState(lms2);
+	 *     assert lms2.sameState(lms1);
+	 *     assert lms1.sameState(lms1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final LongMomentStatistics other) {
+		return _min == other._min &&
+			_max == other._max &&
+			_sum == other._sum &&
+			super.sameState(other);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -168,11 +201,11 @@ public class LongMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final LongMomentStatistics statistics = stream
-	 *     .collect(toLongMomentStatistics(v -&gt; v.longValue()));
-	 * [/code]
+	 *     .collect(toLongMomentStatistics(v -> v.longValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

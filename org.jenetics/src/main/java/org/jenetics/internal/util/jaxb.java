@@ -26,9 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 
-import javax.xml.bind.DataBindingException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.jenetics.internal.util.model.CharacterModel;
@@ -37,29 +34,11 @@ import org.jenetics.internal.util.model.CharacterModel;
  * JAXB helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 1.6
  * @since 2.0
  */
 public class jaxb {
 	private jaxb() {require.noInstance();}
-
-	private static final class JAXBContextHolder {
-		private static final JAXBContext CONTEXT; static {
-			try {
-				CONTEXT = JAXBContext.newInstance(
-					"org.jenetics:org.jenetics.internal.util"
-				);
-			} catch (JAXBException e) {
-				throw new DataBindingException(
-					"Something went wrong while creating JAXBContext.", e
-				);
-			}
-		}
-	}
-
-	public static JAXBContext context() {
-		return JAXBContextHolder.CONTEXT;
-	}
 
 	private static final XmlAdapter<Object, Object> IDENTITY_ADAPTER =
 		new XmlAdapter<Object, Object>() {
@@ -89,9 +68,8 @@ public class jaxb {
 	 */
 	@SuppressWarnings("unchecked")
 	public static XmlAdapter<Object, Object> adapterFor(final Object value) {
-		return (XmlAdapter<Object, Object>)ADAPTERS.computeIfAbsent(
-			classOf(value), jaxb::newXmlAdapter
-		);
+		return (XmlAdapter<Object, Object>)ADAPTERS
+			.computeIfAbsent(classOf(value), jaxb::newXmlAdapter);
 	}
 
 	private static XmlAdapter<Object, Object> newXmlAdapter(final Class<?> cls) {

@@ -62,7 +62,7 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 2.0
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -74,10 +74,19 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 {
 	private static final long serialVersionUID = 2L;
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private static final Population<?, ?> EMPTY =
+		new Population(Collections.EMPTY_LIST);
+
+
 	private final List<Phenotype<G, C>> _population;
 
+	/**
+	 * Private <i>primary</i> constructor which assigns the underlying
+	 * population without copying and precondition check.
+	 */
 	private Population(final List<Phenotype<G, C>> population, boolean foo) {
-		_population = population;
+		_population = requireNonNull(population);
 	}
 
 	/**
@@ -320,6 +329,19 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 		return _population.stream()
 			.map(Object::toString)
 			.collect(joining("\n", "", "\n"));
+	}
+
+	/**
+	 * Return an empty population.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return an empty population
+	 */
+	@SuppressWarnings("unchecked")
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Population<G, C> empty() {
+		return (Population<G, C>)EMPTY;
 	}
 
 	/**

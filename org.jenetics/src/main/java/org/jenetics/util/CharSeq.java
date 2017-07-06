@@ -25,9 +25,11 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
+import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.ArrayProxyISeq;
-import org.jenetics.internal.collection.CharArrayProxy;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ArrayISeq;
+import org.jenetics.internal.collection.CharStore;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
@@ -37,15 +39,15 @@ import org.jenetics.internal.util.Hash;
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *
- * [code]
+ * <pre>{@code
  * final CharSeq cs1 = new CharSeq("abcdeaafg");
  * final CharSeq cs2 = new CharSeq("gfedcbabb");
  * assert(cs1.equals(cs2));
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-07-10 $</em>
+ * @version 2.0
  */
 public final class CharSeq
 	extends CharSeqBase
@@ -78,7 +80,7 @@ public final class CharSeq
 	 * @throws NullPointerException if the {@code characters} are {@code null}.
 	 */
 	public CharSeq(final CharSequence characters) {
-		this(toCharArray(characters));
+		super(distinct(toCharArray(characters)));
 	}
 
 	private static char[] toCharArray(final CharSequence characters) {
@@ -95,14 +97,14 @@ public final class CharSeq
 	private static char[] distinct(final char[] chars) {
 		Arrays.sort(chars);
 
-		int size = 0;
-		for (int i = 0, j = 0, n = chars.length; i < n && j < n; ++i) {
-			chars[i] = chars[j];
-			++size;
-
-			while (j < n && chars[j] == chars[i]) ++j;
+		int j = 0;
+		for (int i = 1; i < chars.length; ++i) {
+			if (chars[j] != chars[i]) {
+				chars[++j] = chars[i];
+			}
 		}
 
+		final int size = Math.min(chars.length, j + 1);
 		final char[] array = new char[size];
 		System.arraycopy(chars, 0, array, 0, size);
 		return array;
@@ -134,22 +136,22 @@ public final class CharSeq
 	 *          {@code false} otherwise.
 	 */
 	public boolean contains(final char c) {
-		return Arrays.binarySearch(proxy.array, c) >= 0;
+		return Arrays.binarySearch(array, c) >= 0;
 	}
 
 	@Override
-	public char charAt(int index) {
-		return proxy.array[index];
+	public char charAt(final int index) {
+		return array[index];
 	}
 
 	@Override
 	public int length() {
-		return proxy.array.length;
+		return array.length;
 	}
 
 	@Override
-	public CharSeq subSequence(int start, int end) {
-		return new CharSeq(new String(proxy.array, start, end - start));
+	public CharSeq subSequence(final int start, final int end) {
+		return new CharSeq(new String(array, start, end - start));
 	}
 
 	/**
@@ -159,29 +161,31 @@ public final class CharSeq
 	 *          otherwise.
 	 */
 	public boolean isEmpty() {
-		return proxy.array.length == 0;
+		return array.length == 0;
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(proxy.array).value();
+		return Hash.of(getClass()).and(array).value();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(ch -> eq(proxy.array, ch.proxy.array));
+		return Equality.of(this, obj).test(ch ->
+			eq(array, ch.array)
+		);
 	}
 
 	@Override
 	public int compareTo(final CharSeq set) {
 		int result = 0;
 
-		final int n = Math.min(proxy.array.length, set.proxy.array.length);
+		final int n = Math.min(array.length, set.array.length);
 		for (int i = 0; i < n && result == 0; ++i) {
-			result = proxy.array[i] - set.proxy.array[i];
+			result = array[i] - set.array[i];
 		}
 		if (result == 0) {
-			result = proxy.array.length - set.proxy.array.length;
+			result = array.length - set.array.length;
 		}
 
 		return result;
@@ -189,7 +193,7 @@ public final class CharSeq
 
 	@Override
 	public String toString() {
-		return new String(proxy.array);
+		return new String(array);
 	}
 
 	/**
@@ -255,7 +259,7 @@ public final class CharSeq
 			char c = a;
 			while (c >= b) {
 				out.append(c);
-				c = (char) (c - 1);
+				c = (char)(c - 1);
 			}
 		}
 
@@ -263,7 +267,7 @@ public final class CharSeq
 	}
 
 	/**
-	 * Expands the character range for the given {@code pattern}. E.g
+	 * Expands the character range for the given {@code pattern}. E.g.
 	 * {@code a-zA-Z0-1} will return a string containing all upper and lower
 	 * case characters (from a to z) and all digits form 0 to 9.
 	 *
@@ -308,11 +312,25 @@ public final class CharSeq
 
 		return seq.toISeq();
 	}
+
+	public static Collector<Character, ?, CharSeq> toCharSeq() {
+		return Collector.of(
+			StringBuilder::new,
+			StringBuilder::append,
+			(a, b) -> {a.append(b); return a;},
+			CharSeq::new
+		);
+	}
+
 }
 
-abstract class CharSeqBase extends ArrayProxyISeq<Character, CharArrayProxy> {
+abstract class CharSeqBase extends ArrayISeq<Character> {
 	private static final long serialVersionUID = 1L;
+
+	final char[] array;
+
 	protected CharSeqBase(final char[] characters) {
-		super(new CharArrayProxy(characters, 0, characters.length));
+		super(Array.of(CharStore.of(characters)).seal());
+		array = characters;
 	}
 }

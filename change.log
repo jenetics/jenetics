@@ -1,3 +1,129 @@
+Jenetics-3.8.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/157: Add `LineCrossover` class.
+    * https://github.com/jenetics/jenetics/issues/158: Add `IntermediateCrossover` class.
+    * https://github.com/jenetics/jenetics/issues/168: Remove dependency to `java.desktop` module.
+    * https://github.com/jenetics/jenetics/issues/169: Describe how to configure (μ, λ) and (μ + λ) Evolution Strategies in manual.
+    * https://github.com/jenetics/jenetics/issues/177: Additional 'Seq' conversion functions:
+        * Seq.asISeq()
+        * Seq.asMSeq()
+    * https://github.com/jenetics/jenetics/issues/182: Rename build script to default names. All build scripts are now named `build.gradle`.
+    * https://github.com/jenetics/jenetics/issues/188: Additional `Engine.Builder` methods
+        * Engine.Builder.survivorsSize(int)
+        * Engine.Builder.offspringSize(int)
+        * Engine.Builder.survivorsFraction(double)
+    * https://github.com/jenetics/jenetics/issues/189: `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
+    * https://github.com/jenetics/jenetics/issues/197: Improve CPU utilization for long running fitness functions. The original concurrent fitness function evaluation where assumed to be quite *fast*.
+
+Jenetics-3.7.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/127: Change the maven group and artifact ID from `org.bitbucket:org.jenetics` to `io.jenetics:jenetics`.
+    * https://github.com/jenetics/jenetics/issues/142: Jenetics now compiles without warnings with Java 9 EA.
+    * https://github.com/jenetics/jenetics/issues/145: Add additional `Engine.stream(...)` and `Engine.iterator(...)` methods:
+        * stream(Iterable<Genotype<G>> genotypes)
+        * stream(Iterable<Genotype<G>> genotypes, long generation)
+        * stream(EvolutionResult<G, C> result)
+        * iterator(Iterable<Genotype<G>> genotypes, long generation)
+        * iterator(Population<G, C> population)
+        * iterator(EvolutionResult<G, C> result)
+    * https://github.com/jenetics/jenetics/issues/150: Implement fitness convergence termination strategy.
+    * https://github.com/jenetics/jenetics/issues/152: Remove `hashCode` and replace `equals` method with `sameState(T)` for mutable objects.
+    * https://github.com/jenetics/jenetics/issues/156: Implementation of an UniformCrossover.
+    * https://github.com/jenetics/jenetics/issues/162: Update and improve User's Manual.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/143: Fix serialization of `EvolutionResult` class.
+    * https://github.com/jenetics/jenetics/issues/146: NPE in `EvolutionResult.toBestEvolutionResult()` when collecting empty `EvolutionStream`s.
+    * https://github.com/jenetics/jenetics/issues/159: The _User's Manual_ build fails for [Lyx](http://www.lyx.org/) version 2.2.2.
+
+
+Jenetics-3.6.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/114: `Alterer` implementations are now able to handle `Chromosome`s of different length.
+    * https://github.com/jenetics/jenetics/issues/103: Add `MSeq.sort` method.
+    * https://github.com/jenetics/jenetics/issues/135: Add `Codec.decode(Genotype)` default method.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/129: Fix Javadoc encoding.
+
+- Updates
+    * https://github.com/jenetics/jenetics/issues/134: Update Gradle to 3.1.
+    * https://github.com/jenetics/jenetics/issues/138: Update TestNG to 6.9.13.
+
+Jenetics-3.5.1
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/111: Dead lock for single-threaded executors.
+
+Jenetics-3.5.0
+
+- Improvement
+    * https://github.com/jenetics/jenetics/issues/81: It is now easier to register user-defined JAXB marshallings -- `org.jenetics.util.IO.JAXB.register`
+    * https://github.com/jenetics/jenetics/issues/90, [#91](https://github.com/jenetics/jenetics/issues/91): The manual contains now a section where the performance of the `MonteCarloSelector` and an evolutionary `Selector` is compared (fig. 6.8, page 52).
+    * https://github.com/jenetics/jenetics/issues/96: Merge branch with incubation module `org.jenetix`, which contains experimental classes.
+    * https://github.com/jenetics/jenetics/issues/101: Add manual example for solving the *Rastrigin* function.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/92: Fix example code in user manual.
+    * https://github.com/jenetics/jenetics/issues/94: Inconsistent pre-condition check of `Engine.Builder.build` method.
+    * https://github.com/jenetics/jenetics/issues/99: `EvolutionResult` was not completely immutable.
+
+Jenetics-3.4.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/68: Improve implementations of 'Seq' interfaces. Note: The changes of this issue changes the Java serialization of the 'Genes' and 'Chromosomes'. 'Gene'/'Chromosomes' which has been serialized with version 3.3 can't be loaded with version 3.4. As a workaround, it is still possible to write the 'Genes'/'Chromosomes' in XML format and load it with version 3.4.
+    * https://github.com/jenetics/jenetics/issues/73: Add additional methods to 'Seq' interface: 'Seq.append' and 'Seq.prepend'.
+    * https://github.com/jenetics/jenetics/issues/79: Improve evolution performance measuring. Code resides now in (experimental) 'org.jenetics.tool' module.
+    * https://github.com/jenetics/jenetics/issues/85: Add support for fixed-sized subsets in 'PermutationChromosome' class.
+
+Jenetics-3.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/43: Add _Evolving images_ example.
+    * https://github.com/jenetics/jenetics/issues/62: Two or more `Codec` interfaces can be combined into a single one.
+    * https://github.com/jenetics/jenetics/issues/66: Add `AnyGene` and `AnyChromosome` for arbitrary allele types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/52: Immutability of ISeq violated.
+    * https://github.com/jenetics/jenetics/issues/55: Fixing example-run script for Mac.
+
+Jenetics-3.2.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/24: Stabilize statistical selector tests.
+    * https://github.com/jenetics/jenetics/issues/25: Remove `testng.xml` file. The test classes are now determined automatically.
+    * https://github.com/jenetics/jenetics/issues/40: Introduce `Codec` interface for defining problem encodings.
+    * Add _Internal_ section in manual, which describes implementation details.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/33: Selectors must not change the input population. This occasionally caused `ConcurrentModificationException`.  Such selectors are now creating a defensive copy of the input population.
+    * https://github.com/jenetics/jenetics/issues/34: `IndexOutOfBoundsException` when selecting populations which are too short.
+    * https://github.com/jenetics/jenetics/issues/35: `IndexOutOfBoundsException` when altering populations which are too short.
+    * https://github.com/jenetics/jenetics/issues/39: Numerical instabilities of `ProbabilitySelector`.
+    * https://github.com/jenetics/jenetics/issues/47: `Engine` deadlock for long running fitness functions.
+
+Jenetics-3.1.0
+
+- Add 'combine' method to 'Quantile' object. This makes the class usable for (parallel) streams.
+- Minor code streamlining and bug-fixing.
+- Improve termination strategies.
+- Add 'EvolutionStream.of' factory method as an alternative way for creating an evolution stream.
+- https://github.com/jenetics/jenetics/issues/12: Fix typos in user manual.
+- https://github.com/jenetics/jenetics/issues/13: Add link to Javadoc and manual to README file.
+- https://github.com/jenetics/jenetics/issues/14: Remove `Serialize` interface from `Gene` and `Chromosome`.
+- https://github.com/jenetics/jenetics/issues/16: Make code examples in Javadoc standard conform.
+- https://github.com/jenetics/jenetics/issues/17: Improve recombination section in manual.
+- https://github.com/jenetics/jenetics/issues/20: Advance `Genotype` validity checks.
+
+
+Jenetics-3.0.1
+
+- Fixes: * https://github.com/jenetics/jenetics/issues/2
+         * https://github.com/jenetics/jenetics/issues/7
+
 Jenetics-3.0.0
 
 - Rewrite of *engine* classes to make use of Java 8 Stream API.
@@ -305,7 +431,7 @@ Jenetics-0.3.2.0
 - The PropabilitySelector no longer sorts the population before calling the
   ProbabilitySelector.probabilities() method. The subclass must sort the
   population if needed.
-- Move Verifiyble interface to util package.
+- Move Verifiable interface to util package.
 - Change signature of the Alterer.alter(Population, int) method. Adding the
   generation of the altered phenotype.
 - Add new abstract Alterer class Recombination.

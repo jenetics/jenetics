@@ -19,23 +19,24 @@
  */
 package org.jenetics;
 
+import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
-import org.jenetics.stat.StatisticsAssert;
 import org.jenetics.util.Factory;
 import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class TruncationSelectorTest
 	extends SelectorTester<TruncationSelector<DoubleGene, Double>>
@@ -46,22 +47,48 @@ public class TruncationSelectorTest
 		return TruncationSelector::new;
 	}
 
-	// Working, but not stable enough.
-	//@Test(dataProvider = "expectedDistribution")
-	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-		final int loops = 5;
-		final int npopulation = POPULATION_COUNT;
-
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
-		using(random, r -> {
-			final Histogram<Double> distribution = SelectorTester.distribution(
-				new TruncationSelector<>(),
-				opt,
-				npopulation,
-				loops
+	@Test
+	public void worstIndividual() {
+		final int size = 20;
+		final Population<DoubleGene, Integer> population = new Population<>(size);
+		for (int i = 0; i < size; ++i) {
+			final DoubleGene gene = DoubleGene.of(i, 0, size + 10);
+			final DoubleChromosome ch = DoubleChromosome.of(gene);
+			final Genotype<DoubleGene> gt = Genotype.of(ch);
+			final Phenotype<DoubleGene, Integer> pt = Phenotype.of(
+				gt, 1, g -> g.getGene().intValue()
 			);
 
-			StatisticsAssert.assertDistribution(distribution, expected.value, 0.999);
+			population.add(pt);
+		}
+
+		final TruncationSelector<DoubleGene, Integer> selector =
+			new TruncationSelector<>(5);
+		final Population<DoubleGene, Integer> selected =
+			selector.select(population, 10, Optimize.MINIMUM);
+
+		for (Phenotype<DoubleGene, Integer> pt : selected) {
+			Assert.assertTrue(pt.getFitness() < 5);
+		}
+	}
+
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
+
+			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new TruncationSelector<>(),
+					opt,
+					npopulation,
+					loops
+				);
+
+				assertDistribution(distribution, expected.value, 0.001, 10);
+			});
 		});
 	}
 

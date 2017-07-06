@@ -20,13 +20,14 @@
 package org.jenetics.util;
 
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
+@Test
 public class LCG64ShiftRandomTest extends RandomTestBase {
 
 	@Override @DataProvider(name = "seededPRNGPair")

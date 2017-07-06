@@ -40,7 +40,6 @@ import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
@@ -78,9 +77,9 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void seqTypes() {
 		final BitChromosome c = BitChromosome.of(100, 0.3);
 
-		Assert.assertEquals(c.toSeq().getClass(), BitGeneArray.BitGeneISeq.class);
-		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneArray.class);
-		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneArray.BitGeneISeq.class);
+		Assert.assertEquals(c.toSeq().getClass(), BitGeneISeq.class);
+		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneMSeq.class);
+		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneISeq.class);
 	}
 
 	@Test

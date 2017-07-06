@@ -28,7 +28,7 @@ import org.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 1.4
  */
 public final class probability {
 	private probability() {require.noInstance();}

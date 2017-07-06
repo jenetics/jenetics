@@ -42,40 +42,42 @@
  * Factory&lt;Genotype&lt;?&gt;&gt;, and a fitness Function. The Genotype
  * implements the Factory interface and can therefore be used as prototype for
  * creating the initial Population and for creating new random Genotypes.</p>
- * [code]
+ *
+ * <pre>{@code
  * import org.jenetics.BitChromosome;
  * import org.jenetics.BitGene;
  * import org.jenetics.Genotype;
  * import org.jenetics.engine.Engine;
  * import org.jenetics.engine.EvolutionResult;
+ * import org.jenetics.util.Factory;
  *
  * public class HelloWorld {
  *      // 2.) Definition of the fitness function.
- *     private static Integer eval(Genotype&lt;BitGene&gt; gt) {
+ *     private static Integer eval(Genotype<BitGene> gt) {
  *         return ((BitChromosome)gt.getChromosome()).bitCount();
  *     }
  *
  *     public static void main(String[] args) {
  *         // 1.) Define the genotype (factory) suitable
  *         //     for the problem.
- *         Factory&lt;Genotype&lt;BitGene&gt;&gt; gtf =
+ *         Factory<Genotype<BitGene>> gtf =
  *         Genotype.of(BitChromosome.of(10, 0.5));
  *
  *         // 3.) Create the execution environment.
- *         Engine&lt;BitGene, Integer&gt; engine = Engine
+ *         Engine<BitGene, Integer> engine = Engine
  *            .builder(HelloWorld::eval, gtf)
  *            .build();
  *
  *         // 4.) Start the execution (evolution) and
  *         //     collect the result.
- *         Genotype&lt;BitGene&gt; result = engine.stream()
+ *         Genotype<BitGene> result = engine.stream()
  *             .limit(100)
  *             .collect(EvolutionResult.toBestGenotype());
  *
- *         System.out.println(&quot;Hello World:\n&quot; + result);
+ *         System.out.println("Hello World:\n" + result);
  *     }
  * }
- * [/code]
+ * }</pre>
  *
  * <p>In contrast to other GA implementations, the library uses the concept of
  * an evolution stream (EvolutionStream) for executing the evolution steps.
@@ -120,7 +122,7 @@
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-27 $</em>
+ * @version 3.1
  */
 package org.jenetics;
 

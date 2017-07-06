@@ -23,7 +23,6 @@ import static org.jenetics.internal.util.require.noInstance;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-01 $</em>
  */
 public final class exception {
 	private exception() {noInstance();}

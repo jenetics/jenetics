@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-23 $</em>
+ * @version 3.0
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -41,15 +41,15 @@ final class EvolutionSpliterator<
 	implements Spliterator<EvolutionResult<G, C>>
 {
 
-	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
 	private EvolutionStart<G, C> _start;
 
 	EvolutionSpliterator(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Supplier<EvolutionStart<G, C>> initial,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
 		_evolution = requireNonNull(evolution);
@@ -84,6 +84,6 @@ final class EvolutionSpliterator<
 
 	@Override
 	public int characteristics() {
-		return Spliterator.NONNULL | Spliterator.IMMUTABLE;
+		return NONNULL | IMMUTABLE;
 	}
 }

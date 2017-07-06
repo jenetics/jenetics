@@ -67,11 +67,15 @@ import org.jenetics.util.RandomRegistry;
  *     C2 = 987|345|6210
  * </pre>
  *
+ * <em>The {@code PartiallyMatchedCrossover} class requires chromosomes with the
+ * same length. An {@code IllegalArgumentException} is thrown at runtime if this
+ * requirement is not fulfilled.</em>
+ *
  * @see PermutationChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-01 $</em>
+ * @version 3.6
  */
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
@@ -86,7 +90,12 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 		final MSeq<EnumGene<T>> that,
 		final MSeq<EnumGene<T>> other
 	) {
-		assert (that.length() == other.length());
+		if (that.length() != other.length()) {
+			throw new IllegalArgumentException(format(
+				"Required chromosomes with same length: %s != %s",
+				that.length(), other.length()
+			));
+		}
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();

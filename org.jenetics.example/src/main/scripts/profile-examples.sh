@@ -27,26 +27,24 @@
 #    http://kcachegrind.sourceforge.net/html/Home.html
 ##
 
-SCRIPT_DIR=`readlink -f $0`
-SCRIPT_DIR=`dirname ${SCRIPT_DIR}`
-REPORT_DIR=`readlink -f ${SCRIPT_DIR}/../report`
-REPORT_DIR=$REPORT_DIR/performance
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REPORT_DIR="${SCRIPT_DIR}/../report/performance"
 
 VERSION="@__version__@"
-CLS_PATH=`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics-${VERSION}.jar`
-CLS_PATH=${CLS_PATH}:`readlink -f ${SCRIPT_DIR}/../lib/org.jenetics.example-${VERSION}.jar`:.
+CLS_PATH="${SCRIPT_DIR}/../lib/jenetics-${VERSION}.jar"
+CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/jenetics.example-${VERSION}.jar":.
 
 agent_param() {
 	output_file=$1
-	agent=`readlink -f ${SCRIPT_DIR}/../project/buildSrc/lib/libjgrind-x86_64.so` 
-	agent="${agent}=output=${REPORT_DIR}/${output_file}:include=org.jenetics"
+	agent="${SCRIPT_DIR}/../project/buildSrc/lib/libjgrind-x86_64.so"
+	agent="${agent}=output=${REPORT_DIR}/${output_file}:include=jenetics"
 
 	echo ${agent}
 }
 
 main() {
 	mkdir -p "${REPORT_DIR}"
-	
+
 	opts="-XX:+UseG1GC"
 
 	java ${opts} -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH org.jenetics.example.Knapsack

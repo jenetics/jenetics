@@ -19,11 +19,11 @@
  */
 package org.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
@@ -39,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.6
  */
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -79,7 +79,9 @@ public final class MeanAlterer<
 		final Genotype<G> gt1 = pt1.getGenotype();
 		final Genotype<G> gt2 = pt2.getGenotype();
 
-		final int cindex = random.nextInt(gt1.length());
+		//Choosing the Chromosome index for crossover.
+		final int cindex = random.nextInt(min(gt1.length(), gt2.length()));
+
 		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
 		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
 
@@ -114,7 +116,7 @@ public final class MeanAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
+		return obj instanceof MeanAlterer && super.equals(obj);
 	}
 
 	@Override

@@ -21,14 +21,12 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import java.util.function.Supplier;
-
 /**
  * Some helper methods for creating hash codes and comparing values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6 &mdash; <em>$Date: 2014-12-01 $</em>
+ * @version 1.6
  */
 public final class require {
 	private require() { noInstance(); }
@@ -65,7 +63,7 @@ public final class require {
 	public static double nonNegative(final double value, final String message) {
 		if (value < 0) {
 			throw new IllegalArgumentException(format(
-				"%s must not negative: %f.", message, value
+				"%s must not be negative: %f.", message, value
 			));
 		}
 		return value;
@@ -99,7 +97,7 @@ public final class require {
 	}
 
 	/**
-	 * Require the given {@code value} to be positive (&gt: 0).
+	 * Require the given {@code value} to be positive (&gt; 0).
 	 * @param value the value to check
 	 * @return the given value
 	 * @throws IllegalArgumentException if the given {@code value} is smaller than
@@ -137,14 +135,6 @@ public final class require {
 			));
 		}
 		return p;
-	}
-
-	public static <T> T safe(final Supplier<T> access) {
-		try {
-			return access.get();
-		} catch (NullPointerException ignore) {
-			return null;
-		}
 	}
 
 }

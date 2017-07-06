@@ -26,7 +26,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-08 $</em>
+ * @version 3.0
  */
 @FunctionalInterface
 public interface Factory<T> {
@@ -40,6 +40,8 @@ public interface Factory<T> {
 
 	/**
 	 * Return a new stream of object instances, created by this factory.
+	 *
+	 * @since 3.0
 	 *
 	 * @return a stream of objects, created by this factory
 	 */

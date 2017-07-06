@@ -34,7 +34,6 @@ import org.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-17 $</em>
  */
 public class PartiallyMatchedCrossoverTest {
 
@@ -86,7 +85,7 @@ public class PartiallyMatchedCrossoverTest {
 
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters")
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
 	public void alterProbability(
 		final Integer ngenes,
 		final Integer nchromosomes,
@@ -107,7 +106,7 @@ public class PartiallyMatchedCrossoverTest {
 		final long max = nallgenes;
 		final Range<Long> domain = new Range<>(min, max);
 
-		final Histogram<Long> histogram = Histogram.of(min, max, 10);
+		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {

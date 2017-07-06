@@ -1,0 +1,11 @@
+= Jenetics User's Manual
+Franz Wilhelmstötter <franz.wilhelmstoetter@gmail.com>
+:Author Initials: FW
+:toc:
+:icons:
+:numbered:
+:website: http://jenetics.io/
+
+== Introduction
+
+Jenetics is a library, written in Java. The library is build with and depends on http://www.oracle.com/technetwork/java/javase/downloads/index.html[Java SE 8], which provides an [http://en.wikipedia.org/wiki/Genetic_algorithm||genetic algorithm] (GA) implementation. It has no runtime dependencies to other libraries, except the Java 8 runtime. Since the library is available on maven central repositoryIf you are using Gradle, you can use the following dependency string: 'org.bitbucket.fwilhelm:org.jenetics:3.0.0'., it can be easily integrated into existing projects. The very clear structuring of the different parts of the GA allows an easy adaption for different problem domains.

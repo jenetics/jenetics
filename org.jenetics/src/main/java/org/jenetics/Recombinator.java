@@ -50,7 +50,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-25 $</em>
+ * @version 3.0
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -96,19 +96,25 @@ public abstract class Recombinator<
 		final Population<G, C> population,
 		final long generation
 	) {
-		final Random random = RandomRegistry.getRandom();
-		final int order = Math.min(_order, population.size());
+		int count = 0;
+		if (population.size() >= 2) {
+			final Random random = RandomRegistry.getRandom();
+			final int order = Math.min(_order, population.size());
 
-		final IntFunction<int[]> individuals = i -> {
-			final int[] ind = subset(population.size(), order, random);
-			ind[0] = i;
-			return ind;
-		};
+			// Selection of the individuals for recombination.
+			final IntFunction<int[]> individuals = i -> {
+				final int[] ind = subset(population.size(), order, random);
+				ind[0] = i;
+				return ind;
+			};
 
-		return indexes(random, population.size(), _probability)
-			.mapToObj(individuals)
-			.mapToInt(i -> recombine(population, i, generation))
-			.sum();
+			count = indexes(random, population.size(), _probability)
+				.mapToObj(individuals)
+				.mapToInt(i -> recombine(population, i, generation))
+				.sum();
+		}
+
+		return count;
 	}
 
 	/**
@@ -127,6 +133,5 @@ public abstract class Recombinator<
 		final int[] individuals,
 		final long generation
 	);
-
 
 }

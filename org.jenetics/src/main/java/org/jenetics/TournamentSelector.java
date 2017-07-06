@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -45,7 +46,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-10-28 $</em>
+ * @version 2.0
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -95,10 +96,10 @@ public class TournamentSelector<
 		}
 
 		final Random random = RandomRegistry.getRandom();
-		return new Population<G, C>(count).fill(
-			() -> select(population, opt, _sampleSize, random),
-			count
-		);
+		return population.isEmpty()
+			? new Population<>(0)
+			: new Population<G, C>(count)
+				.fill(() -> select(population, opt, _sampleSize, random), count);
 	}
 
 	private Phenotype<G, C> select(
@@ -108,8 +109,8 @@ public class TournamentSelector<
 		final Random random
 	) {
 		final int N = population.size();
-		return IntStream.range(0, sampleSize)
-			.mapToObj(i -> population.get(random.nextInt(N)))
+		return Stream.generate(() -> population.get(random.nextInt(N)))
+			.limit(sampleSize)
 			.collect(maxBy(opt.ascending())).get();
 	}
 

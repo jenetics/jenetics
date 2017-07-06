@@ -34,7 +34,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0
  */
 public final class base {
 	private base() {require.noInstance();}
@@ -55,7 +55,7 @@ public final class base {
 	 *        </ul>
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
-		return v < lo ? lo : (v > hi ? hi : v);
+		return v < lo ? lo : v > hi ? hi : v;
 	}
 
 	/**
@@ -75,19 +75,19 @@ public final class base {
 	 * Calculating the <a href="http://en.wikipedia.org/wiki/Unit_in_the_last_place">ULP</a>
 	 * position of a double number.
 	 *
-	 * [code]
+	 * <pre>{@code
 	 * double a = 0.0;
-	 * for (int i = 0; i &lt; 10; ++i) {
+	 * for (int i = 0; i < 10; ++i) {
 	 *     a = Math.nextAfter(a, Double.POSITIVE_INFINITY);
 	 * }
 	 *
-	 * for (int i = 0; i &lt; 19; ++i) {
+	 * for (int i = 0; i < 19; ++i) {
 	 *     a = Math.nextAfter(a, Double.NEGATIVE_INFINITY);
 	 *     System.out.println(
 	 *          a + "\t" + ulpPosition(a) + "\t" + ulpDistance(0.0, a)
 	 *     );
 	 * }
-	 * [/code]
+	 * }</pre>
 	 *
 	 * The code fragment above will create the following output:
 	 * <pre>
@@ -175,11 +175,7 @@ public final class base {
 	 * {@code n}.
 	 * </p>
 	 *
-	 * <p>
-	 * <em>Authors:</em>
-	 * 	 FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 * 	 version based on the  C++ version by John Burkardt.
-	 * </p>
+	 * <p>This is a Java re-implementation of the C++ version by John Burkardt.</p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
@@ -208,11 +204,7 @@ public final class base {
 	 * {@code n}.
 	 * </p>
 	 *
-	 * <p>
-	 * <em>Authors:</em>
-	 *      FORTRAN77 original version by Albert Nijenhuis, Herbert Wilf. This
-	 *      version based on the  C++ version by John Burkardt.
-	 * </p>
+	 * <p>This is a Java re-implementation of the  C++ version by John Burkardt.</p>
 	 *
 	 * <p><em><a href="https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html">
 	 *  Reference:</a></em>
@@ -239,25 +231,10 @@ public final class base {
 		requireNonNull(sub, "Sub set array");
 
 		final int k = sub.length;
-		if (k <= 0) {
-			throw new IllegalArgumentException(format(
-				"Subset size smaller or equal zero: %s", k
-			));
-		}
-		if (n < k) {
-			throw new IllegalArgumentException(format(
-				"n smaller than k: %s < %s.", n, k
-			));
-		}
-		if (!arithmetic.isMultiplicationSave(n, k)) {
-			throw new IllegalArgumentException(format(
-				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
-				n, sub.length, (long)n*(long)k, Integer.MAX_VALUE
-			));
-		}
+		checkSubSet(n, k);
 
 		if (sub.length == n) {
-			for (int i = 0; i < sub.length; ++i) {
+			for (int i = 0; i < k; ++i) {
 				sub[i] = i;
 			}
 			return sub;
@@ -327,6 +304,25 @@ public final class base {
 		}
 
 		return sub;
+	}
+
+	public static void checkSubSet(final int n, final int k) {
+		if (k <= 0) {
+			throw new IllegalArgumentException(format(
+				"Subset size smaller or equal zero: %s", k
+			));
+		}
+		if (n < k) {
+			throw new IllegalArgumentException(format(
+				"n smaller than k: %s < %s.", n, k
+			));
+		}
+		if (!arithmetic.isMultiplicationSave(n, k)) {
+			throw new IllegalArgumentException(format(
+				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
+				n, k, (long)n*(long)k, Integer.MAX_VALUE
+			));
+		}
 	}
 
 	private static int nextInt(final Random random, final int a, final int b) {

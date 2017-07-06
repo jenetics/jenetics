@@ -19,12 +19,14 @@
  */
 package org.jenetics.internal.collection;
 
+import java.util.function.Consumer;
+
 /**
  * Minimal implementation of stack data-structure. {@code Null} values are not
  * permitted, but not checked.
  *
- * [code]
- * final Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+ * <pre>{@code
+ * final Stack<Integer> stack = new Stack<>();
  * for (int i = 0; i &lt; 10; ++i) {
  *     stack.push(i);
  * }
@@ -32,10 +34,10 @@ package org.jenetics.internal.collection;
  * for (Integer i = stack.pop(); i != null; i = stack.pop()) {
  *     System.out.println(i);
  * }
- * [/code]
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0 &mdash; <em>$Date$</em>
+ * @version 2.0
  * @since 2.0
  */
 public final class Stack<T> {
@@ -60,6 +62,16 @@ public final class Stack<T> {
 		return value;
 	}
 
+	public void popAll(final Consumer<T> consumer) {
+		for (T element = pop(); element != null; element = pop()) {
+			consumer.accept(element);
+		}
+	}
+
+	public void clear() {
+		_tail = null;
+		length = 0;
+	}
 
 	private static final class Node<T> {
 		final T _value;

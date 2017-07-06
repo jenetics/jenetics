@@ -40,7 +40,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.0 &mdash; <em>$Date: 2014-08-24 $</em>
+ * @version 3.0
  * @since 3.0
  */
 @State(Scope.Benchmark)

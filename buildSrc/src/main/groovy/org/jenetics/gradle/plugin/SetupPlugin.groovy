@@ -35,14 +35,14 @@ import java.text.SimpleDateFormat
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 3.8
  */
 class SetupPlugin extends JeneticsPlugin {
 
 	private Calendar now = Calendar.getInstance()
 	private int year = now.get(Calendar.YEAR)
 	private String copyrightYear = "2007-${year}"
-	private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
 
 	@Override
 	void apply(final Project project) {
@@ -71,11 +71,11 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void applyJava() {
-		plugins.apply(EclipsePlugin)
-		plugins.apply(IdeaPlugin)
+		project.plugins.apply(EclipsePlugin)
+		project.plugins.apply(IdeaPlugin)
 
-		clean.doLast {
-			file("${project.projectDir}/test-output").deleteDir()
+		project.clean.doLast {
+			project.file("${project.projectDir}/test-output").deleteDir()
 		}
 
 		if (!isBuildSrc()) {
@@ -86,39 +86,42 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void configureOsgi() {
-		plugins.apply(OsgiPlugin)
+		project.plugins.apply(OsgiPlugin)
 		project.jar {
 			manifest {
 				version = version
 				symbolicName = project.name
 				name = project.name
-				instruction 'Bundle-Vendor', jenetics.author
-				instruction 'Bundle-Description', jenetics.description
-				instruction 'Bundle-DocURL', jenetics.url
+				instruction 'Bundle-Vendor', project.jenetics.author
+				instruction 'Bundle-Description', project.jenetics.description
+				instruction 'Bundle-DocURL', project.jenetics.url
 
 				attributes(
-					'Implementation-Title': name,
-					'Implementation-Version': version,
-					'Implementation-URL': jenetics.url,
-					'Implementation-Vendor': jenetics.name,
+					'Implementation-Title': project.name,
+					'Implementation-Version': project.version,
+					'Implementation-URL': project.jenetics.url,
+					'Implementation-Vendor': project.jenetics.name,
 					'ProjectName': project.jenetics.name,
-					'Version': version,
-					'Maintainer': jenetics.author
+					'Version': project.version,
+					'Maintainer': project.jenetics.author
 				)
 			}
 		}
 	}
 
 	private void configureTestReporting() {
-		plugins.apply(JacocoPlugin)
+		project.plugins.apply(JacocoPlugin)
 		project.test {
+			outputs.upToDateWhen { false }
 			useTestNG {
-				//parallel = 'tests' // 'methods'
-				//threadCount = Runtime.runtime.availableProcessors() + 1
-				//include '**/*Test.class'
-				suites project.file(
-                        "${project.projectDir}/src/test/resources/testng.xml"
-                    )
+				parallel = 'tests' // 'methods'
+				threadCount = Math.max(
+					Runtime.runtime.availableProcessors() + 1,
+					4
+				)
+				if (project.hasProperty('excludeGroups')) {
+					excludeGroups project.excludeGroups
+				}
 			}
 		}
 
@@ -128,7 +131,7 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
-		task('testReport', dependsOn: 'test') << {
+		project.task('testReport', dependsOn: 'test').doLast {
 			project.jacocoTestReport.execute()
 		}
 	}
@@ -147,8 +150,8 @@ class SetupPlugin extends JeneticsPlugin {
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
-				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateformat.format(now.time)})</i>"
-				stylesheetFile = project.file("${rootDir}/buildSrc/resources/javadoc/stylesheet.css")
+				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now.time)})</i>"
+				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				exclude '**/internal/**'
 
@@ -162,7 +165,7 @@ class SetupPlugin extends JeneticsPlugin {
 
 			// Copy the doc-files.
 			doLast {
-				copy {
+				project.copy {
 					from('src/main/java') {
 						include 'org/**/doc-files/*.*'
 					}
@@ -172,23 +175,23 @@ class SetupPlugin extends JeneticsPlugin {
 			}
 		}
 
-		task('colorize', type: ColorizerTask) {
-			directory = file(project.javadoc.destinationDir.path)
+		project.task('colorize', type: ColorizerTask) {
+			directory = project.file(project.javadoc.destinationDir.path)
 		}
 
-		task('java2html') {
+		project.task('java2html') {
 			ext {
 				destination = project.javadoc.destinationDir.path
 			}
 
 			doLast {
-				javaexec {
+				project.javaexec {
 					main = 'de.java2html.Java2Html'
 					args = [
 						'-srcdir', 'src/main/java',
 						'-targetdir', "${destination}/src-html"
 					]
-					classpath = files("${rootDir}/buildSrc/lib/java2html.jar")
+					classpath = project.files("${project.rootDir}/buildSrc/lib/java2html.jar")
 				}
 
 			}

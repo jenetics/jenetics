@@ -26,8 +26,6 @@ import org.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 2.0 &mdash; <em>$Date$</em>
  */
 public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 

@@ -22,8 +22,10 @@ package org.jenetics;
 import static java.lang.Math.min;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -34,18 +36,23 @@ import org.jenetics.internal.math.base;
 import org.jenetics.util.CharSeq;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
-public class MultiPointCrossoverTest {
+public class MultiPointCrossoverTest extends AltererTester {
 
-	@Test(dataProvider = "parameters")
+	@Override
+	public Alterer<DoubleGene, Double> newAlterer(final double p) {
+		return new MultiPointCrossover<>(p);
+	}
+
+	@Test(dataProvider = "crossoverParameters")
 	public void crossover(
 		final String stringA,
 		final String stringB,
-		final MSeq<Integer> points,
+		final Seq<Integer> points,
 		final String expectedA,
 		final String expectedB
 	) {
@@ -55,160 +62,203 @@ public class MultiPointCrossoverTest {
 		final MSeq<Character> ma = a.copy();
 		final MSeq<Character> mb = b.copy();
 
-		final int[] intPoints = points.stream().mapToInt(Integer::intValue).toArray();
+		final int[] intPoints = points.stream()
+			.mapToInt(Integer::intValue)
+			.toArray();
+
 		MultiPointCrossover.crossover(ma, mb, intPoints);
-		Assert.assertEquals(ma, CharSeq.toISeq(expectedA));
-		Assert.assertEquals(mb, CharSeq.toISeq(expectedB));
+		Assert.assertEquals(toString(ma), expectedA);
+		Assert.assertEquals(toString(mb), expectedB);
 	}
 
-	@DataProvider(name = "parameters")
+	private String toString(final MSeq<Character> seq) {
+		return seq.stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining(""));
+	}
+
+	@DataProvider(name = "crossoverParameters")
 	public Object[][] getParameters() {
 		return new Object[][] {{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.empty(),
+			ISeq.empty(),
 			"0123456789", "ABCDEFGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0),
+			ISeq.of(0),
 			"ABCDEFGHIJ", "0123456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(1),
+			ISeq.of(1),
 			"0BCDEFGHIJ", "A123456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(2),
+			ISeq.of(2),
 			"01CDEFGHIJ", "AB23456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(3),
+			ISeq.of(3),
 			"012DEFGHIJ", "ABC3456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(8),
+			ISeq.of(8),
 			"01234567IJ", "ABCDEFGH89"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(9),
+			ISeq.of(9),
 			"012345678J", "ABCDEFGHI9"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(10),
+			ISeq.of(10),
 			"0123456789", "ABCDEFGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1),
+			ISeq.of(0, 1),
 			"A123456789", "0BCDEFGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(3, 5),
+			ISeq.of(3, 5),
 			"012DE56789", "ABC34FGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2),
+			ISeq.of(0, 1, 2),
 			"A1CDEFGHIJ", "0B23456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3),
+			ISeq.of(0, 1, 2, 3),
 			"A1C3456789", "0B2DEFGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4),
+			ISeq.of(0, 1, 2, 3, 4),
 			"A1C3EFGHIJ", "0B2D456789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5),
+			ISeq.of(0, 1, 2, 3, 4, 5),
 			"A1C3E56789", "0B2D4FGHIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6),
 			"A1C3E5GHIJ", "0B2D4F6789"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7),
 			"A1C3E5G789", "0B2D4F6HIJ"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8),
 			"A1C3E5G7IJ", "0B2D4F6H89"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
 			"A1C3E5G7I9", "0B2D4F6H8J"
 		},{
 			"0123456789", "ABCDEFGHIJ",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
 			"A1C3E5G7I9", "0B2D4F6H8J"
 		},
 
 		{
 			"012345678", "ABCDEFGHI",
-			MSeq.empty(),
+			ISeq.empty(),
 			"012345678", "ABCDEFGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0),
+			ISeq.of(0),
 			"ABCDEFGHI", "012345678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(1),
+			ISeq.of(1),
 			"0BCDEFGHI", "A12345678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(2),
+			ISeq.of(2),
 			"01CDEFGHI", "AB2345678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(3),
+			ISeq.of(3),
 			"012DEFGHI", "ABC345678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(8),
+			ISeq.of(8),
 			"01234567I", "ABCDEFGH8"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(9),
+			ISeq.of(9),
 			"012345678", "ABCDEFGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1),
+			ISeq.of(0, 1),
 			"A12345678", "0BCDEFGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(3, 5),
+			ISeq.of(3, 5),
 			"012DE5678", "ABC34FGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2),
+			ISeq.of(0, 1, 2),
 			"A1CDEFGHI", "0B2345678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3),
+			ISeq.of(0, 1, 2, 3),
 			"A1C345678", "0B2DEFGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4),
+			ISeq.of(0, 1, 2, 3, 4),
 			"A1C3EFGHI", "0B2D45678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4, 5),
+			ISeq.of(0, 1, 2, 3, 4, 5),
 			"A1C3E5678", "0B2D4FGHI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6),
 			"A1C3E5GHI", "0B2D4F678"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7),
 			"A1C3E5G78", "0B2D4F6HI"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8),
 			"A1C3E5G7I", "0B2D4F6H8"
 		},{
 			"012345678", "ABCDEFGHI",
-			MSeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
 			"A1C3E5G7I", "0B2D4F6H8"
+		},
+
+		{
+			"0123456789", "ABCDEF",
+			ISeq.empty(),
+			"0123456789", "ABCDEF",
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(0),
+			"ABCDEF6789", "012345"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(1),
+			"0BCDEF6789", "A12345"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(2),
+			"01CDEF6789", "AB2345"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(3),
+			"012DEF6789", "ABC345"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(5),
+			"01234F6789", "ABCDE5"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(6),
+			"0123456789", "ABCDEF"
+		},{
+			"0123456789", "ABCDEF",
+			ISeq.of(1, 3),
+			"0BC3456789", "A12DEF"
 		}
 		};
 	}

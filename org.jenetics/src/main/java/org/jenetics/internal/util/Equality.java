@@ -30,10 +30,12 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-08-05 $</em>
+ * @version 3.0
  */
 public final class Equality {
 	private Equality() {require.noInstance();}
+
+	public static final Predicate<Object> TRUE = a -> true;
 
 	/**
 	 * Create a new {@code Equality} object for testing object equality.
@@ -51,7 +53,7 @@ public final class Equality {
 		Objects.requireNonNull(self);
 		return self == other ?
 			p -> true :
-			(other == null || self.getClass() != other.getClass()) ?
+			other == null || self.getClass() != other.getClass() ?
 				p -> false : p -> p.test((T)other);
 	}
 
@@ -67,7 +69,7 @@ public final class Equality {
 	public static boolean ofType(final Object self, final Object other) {
 		Objects.requireNonNull(self);
 		return self == other ||
-			(other != null && self.getClass() == other.getClass());
+			other != null && self.getClass() == other.getClass();
 	}
 
 	/**
@@ -283,7 +285,7 @@ public final class Equality {
 	 *          otherwise.
 	 */
 	public static boolean eq(final Object a, final Object b) {
-		return (a != null ? a.equals(b) : b == null);
+		return a != null ? a.equals(b) : b == null;
 	}
 
 	/**

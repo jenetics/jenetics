@@ -20,9 +20,11 @@
 package org.jenetics.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -30,20 +32,34 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
-import org.jenetics.internal.collection.ArrayProxyMSeq;
-import org.jenetics.internal.collection.ObjectArrayProxy;
+import org.jenetics.internal.collection.Array;
+import org.jenetics.internal.collection.ArrayMSeq;
+import org.jenetics.internal.collection.Empty;
+import org.jenetics.internal.collection.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.
+ *
+ * <p>
+ * <b>Implementation note:</b>
+ * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
+ * respectively, must be protected by the same lock, when they are accessed
+ * (get/set) by different threads.</i>
  *
  * @see ISeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-12 $</em>
+ * @version 3.4
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
+
+	public default List<T> asList() {
+		return new MSeqList<>(this);
+	}
 
 	/**
 	 * Set the {@code value} at the given {@code index}.
@@ -51,7 +67,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param index the index of the new value.
 	 * @param value the new value.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         <code>(index &lt; 0 || index &gt;= size())</code>.
+	 *         {@code (index < 0 || index >= size())}.
 	 */
 	public void set(final int index, final T value);
 
@@ -148,12 +164,12 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		if (otherStart < 0 || (otherStart + (end - start)) > length()) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %d)",
-				otherStart, (otherStart + (end - start))
+				otherStart, otherStart + (end - start)
 			));
 		}
 
 		if (start < end) {
-			for (int i = (end - start); --i >= 0;) {
+			for (int i = end - start; --i >= 0;) {
 				final T temp = get(start + i);
 				set(start + i, other.get(otherStart + i));
 				other.set(otherStart + i, temp);
@@ -190,13 +206,143 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param end the end index where to stop sorting (exclusively)
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public MSeq<T> sort(
+		final int start,
+		final int end,
+		final Comparator<? super T> comparator
+	);
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param end the end index where to stop sorting (exclusively)
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final int start, final int end) {
+		return sort(start, end, null);
+	}
+
+	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(
+		final int start,
+		final Comparator<? super T> comparator
+	) {
+		return sort(start, length(), comparator);
+	}
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @param start the start index where to start sorting (inclusively)
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final int start) {
+		return sort(start, length(), null);
+	}
+
+	/**
+	 * Sorts this sequence according to the order induced by the specified
+	 * {@link Comparator}.
+	 *
+	 * <p>All elements in this sequence must be <i>mutually comparable</i> using
+	 * the specified comparator (that is, {@code c.compare(e1, e2)} must not
+	 * throw a {@code ClassCastException} for any elements {@code e1} and
+	 * {@code e2} in the sequence).
+	 *
+	 * <p>If the specified comparator is {@code null} then all elements in this
+	 * list must implement the {@link Comparable} interface and the elements'
+	 * Comparable natural ordering should be used.
+	 *
+	 * @param comparator the {@code Comparator} used to compare sequence elements.
+	 *          A {@code null} value indicates that the elements' Comparable
+	 *          natural ordering should be used
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort(final Comparator<? super T> comparator) {
+		return sort(0, length(), comparator);
+	}
+
+	/**
+	 * Sorts this sequence according to the natural order of the elements.
+	 *
+	 * @throws ClassCastException if the sequence contains elements that are not
+	 *         <i>mutually comparable</i> using the specified comparator
+	 * @return {@code this} sequence
+	 */
+	public default MSeq<T> sort() {
+		return sort(0, length(), null);
+	}
+
+	/**
+	 * Reverses the order of the elements this sequence (in place).
+	 *
+	 * @return this sequence with reverse order or the elements
+	 */
+	public default MSeq<T> reverse() {
+		for (int i = 0, j = length() - 1; i < j; ++i, --j) {
+			swap(i, j);
+		}
+		return this;
+	}
+
+	/**
 	 * Returns a list iterator over the elements in this sequence (in proper
 	 * sequence).
 	 *
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public ListIterator<T> listIterator();
+	public default ListIterator<T> listIterator() {
+		return asList().listIterator();
+	}
 
 	@Override
 	public MSeq<T> subSeq(final int start, final int end);
@@ -206,6 +352,24 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 	@Override
 	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default MSeq<T> append(final T... values) {
+		return append(MSeq.of(values));
+	}
+
+	@Override
+	public MSeq<T> append(final Iterable<? extends T> values);
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public default MSeq<T> prepend(final T... values) {
+		return prepend(MSeq.of(values));
+	}
+
+	@Override
+	public MSeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
@@ -219,6 +383,21 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
+
+	/**
+	 * Single instance of an empty {@code MSeq}.
+	 */
+	public static final MSeq<?> EMPTY = Empty.MSEQ;
+
+	/**
+	 * Return an empty {@code MSeq}.
+	 *
+	 * @param <T> the element type of the returned {@code MSeq}.
+	 * @return an empty {@code MSeq}.
+	 */
+	public static <T> MSeq<T> empty() {
+		return Empty.mseq();
+	}
 
 	/**
 	 * Returns a {@code Collector} that accumulates the input elements into a
@@ -238,30 +417,18 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
-	 * Single instance of an empty {@code MSeq}.
-	 */
-	public static final MSeq<?> EMPTY = ofLength(0);
-
-	/**
-	 * Return an empty {@code MSeq}.
-	 *
-	 * @param <T> the element type of the new {@code MSeq}.
-	 * @return an empty {@code MSeq}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> empty() {
-		return (MSeq<T>)EMPTY;
-	}
-
-	/**
 	 * Create a new {@code MSeq} with the given {@code length}.
 	 *
 	 * @param length the length of the created {@code MSeq}.
 	 * @param <T> the element type of the new {@code MSeq}.
 	 * @return the new mutable sequence.
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
 	 */
 	public static <T> MSeq<T> ofLength(final int length) {
-		return new ArrayProxyMSeq<>(new ObjectArrayProxy<T>(length));
+		return length == 0
+			? empty()
+			: new ArrayMSeq<>(Array.of(ObjectStore.ofLength(length)));
 	}
 
 	/**
@@ -274,10 +441,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SafeVarargs
 	public static <T> MSeq<T> of(final T... values) {
-		final ObjectArrayProxy<T> proxy = new ObjectArrayProxy<>(
-			values.clone(), 0, values.length
-		);
-		return new ArrayProxyMSeq<>(proxy);
+		return values.length == 0
+			? empty()
+			: new ArrayMSeq<>(Array.of(ObjectStore.of(values.clone())));
 	}
 
 	/**
@@ -286,28 +452,83 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type
 	 * @param values the array values.
 	 * @return a new {@code MSeq} with the given values.
-	 * @throws NullPointerException if the {@code values} array is {@code null}.
+	 * @throws NullPointerException if the {@code values} object is
+	 *        {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
-		MSeq<T> mseq = null;
+		final MSeq<T> mseq;
 		if (values instanceof ISeq<?>) {
-			mseq = ((ISeq<T>)values).copy();
+			final ISeq<T> seq = (ISeq<T>)values;
+			mseq = seq.isEmpty() ? empty() : seq.copy();
 		} else if (values instanceof MSeq<?>) {
-			mseq = (MSeq<T>)values;
+			final MSeq<T> seq = (MSeq<T>)values;
+			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
 		} else if (values instanceof Collection<?>) {
 			final Collection<T> collection = (Collection<T>)values;
-			mseq = MSeq.<T>ofLength(collection.size()).setAll(values);
+			mseq = collection.isEmpty()
+				? empty()
+				: MSeq.<T>ofLength(collection.size()).setAll(values);
 		} else {
-			int length = 0;
-			for (final T value : values) ++length;
+			final Stream.Builder<T> builder = Stream.builder();
+			values.forEach(builder::add);
+			final Object[] objects = builder.build().toArray();
 
-			mseq = MSeq.ofLength(length);
-			int index = 0;
-			for (final T value : values) mseq.set(index++, value);
+			mseq = objects.length == 0
+				? empty()
+				: new ArrayMSeq<>(Array.of(ObjectStore.of(objects)));
 		}
 
 		return mseq;
+	}
+
+//	/**
+//	 * Create a new {@code MSeq} instance from the remaining elements of the
+//	 * given iterator.
+//	 *
+//	 * @since 3.3
+//	 *
+//	 * @param <T> the element type.
+//	 * @return a new {@code MSeq} with the given remaining values.
+//	 * @throws NullPointerException if the {@code values} object is
+//	 *        {@code null}.
+//	 */
+//	public static <T> MSeq<T> of(final Iterator<? extends T> values) {
+//		final Stream.Builder<T> builder = Stream.builder();
+//		values.forEachRemaining(builder::add);
+//		final Object[] objects = builder.build().toArray();
+//
+//		return objects.length == 0
+//			? empty()
+//			: new ArrayProxyMSeq<>(
+//				new ObjectArrayProxy<>(objects, 0, objects.length));
+//	}
+
+	/**
+	 * Creates a new sequence, which is filled with objects created be the given
+	 * {@code supplier}.
+	 *
+	 * @since 3.3
+	 *
+	 * @param <T> the element type of the sequence
+	 * @param supplier the {@code Supplier} which creates the elements, the
+	 *        returned sequence is filled with
+	 * @param length the length of the returned sequence
+	 * @return a new sequence filled with elements given by the {@code supplier}
+	 * @throws NegativeArraySizeException if the given {@code length} is
+	 *         negative
+	 * @throws NullPointerException if the given {@code supplier} is
+	 *         {@code null}
+	 */
+	public static <T> MSeq<T> of(
+		final Supplier<? extends T> supplier,
+		final int length
+	) {
+		requireNonNull(supplier);
+
+		return length == 0
+			? empty()
+			: MSeq.<T>ofLength(length).fill(supplier);
 	}
 
 	/**
@@ -319,9 +540,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayProxyMSeq<?, ?> ?
-			((ArrayProxyMSeq<T, ?>)values).copy() :
-			MSeq.<T>ofLength(values.length()).setAll(values);
+		return values instanceof ArrayMSeq<?>
+			? ((ArrayMSeq<T>)values).copy()
+			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 
 }

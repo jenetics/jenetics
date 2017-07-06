@@ -27,7 +27,6 @@ import java.util.IntSummaryStatistics;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -37,7 +36,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-17 $</em>
+ * @version 3.0
  */
 public final class IntSummary implements Serializable {
 
@@ -133,13 +132,12 @@ public final class IntSummary implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(summary ->
-			eq(_count, summary._count) &&
-			eq(_sum, summary._sum) &&
-			eq(_min, summary._min) &&
-			eq(_max, summary._max) &&
-			eq(_mean, summary._mean)
-		);
+		return obj instanceof IntSummary &&
+			eq(_count, ((IntSummary)obj)._count) &&
+			eq(_sum, ((IntSummary)obj)._sum) &&
+			eq(_min, ((IntSummary)obj)._min) &&
+			eq(_max, ((IntSummary)obj)._max) &&
+			eq(_mean, ((IntSummary)obj)._mean);
 	}
 
 	@Override
@@ -198,11 +196,11 @@ public final class IntSummary implements Serializable {
 	 * function to each input element, and returns summary-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final IntSummary summary = stream
-	 *     .collect(toIntSummary(v -&gt; v.intValue()));
-	 * [/code]
+	 *     .collect(toIntSummary(v -> v.intValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

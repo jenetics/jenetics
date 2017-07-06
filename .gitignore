@@ -6,14 +6,15 @@ syntax: glob
 ################################################################################
 
 # Build artifacts
-bin/**
-build/**
+**/bin/**
+**/build/**
 out/**
 test-output/**
 output/**
+*.jar
 
 # Gradle
-.gradle/**
+**/.gradle/**
 .groovy/*
 gradle-app.setting
 

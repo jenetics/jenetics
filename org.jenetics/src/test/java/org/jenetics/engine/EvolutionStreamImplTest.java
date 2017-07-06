@@ -30,7 +30,6 @@ import org.jenetics.DoubleGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-12-01 $</em>
  */
 public class EvolutionStreamImplTest {
 
@@ -53,6 +52,42 @@ public class EvolutionStreamImplTest {
 
 		Assert.assertEquals(count.get(), 10L);
 		Assert.assertEquals(result.getTotalGenerations(), 10L);
+	}
+
+	@Test
+	public void limit0() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(
+				gt -> gt.getGene().getAllele(),
+				DoubleChromosome.of(0, 1))
+			.build();
+
+		final AtomicLong count = new AtomicLong();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(new CountLimit(0))
+			.peek(r -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.get(), 1L);
+		Assert.assertEquals(result.getTotalGenerations(), 1L);
+	}
+
+	@Test
+	public void limit1() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(
+				gt -> gt.getGene().getAllele(),
+				DoubleChromosome.of(0, 1))
+			.build();
+
+		final AtomicLong count = new AtomicLong();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(new CountLimit(1))
+			.peek(r -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.get(), 1L);
+		Assert.assertEquals(result.getTotalGenerations(), 1L);
 	}
 
 	private static final class CountLimit implements Predicate<Object> {

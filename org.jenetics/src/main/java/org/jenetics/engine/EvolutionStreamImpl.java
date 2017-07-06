@@ -32,7 +32,7 @@ import org.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-01 $</em>
+ * @version 3.0
  */
 final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -42,31 +42,30 @@ final class EvolutionStreamImpl<
 	implements EvolutionStream<G, C>
 {
 
-	private final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
-	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Supplier<EvolutionStart<G, C>> _start;
+	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
 	private EvolutionStreamImpl(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial,
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Stream<EvolutionResult<G, C>> stream,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
 		super(stream);
 		_evolution = requireNonNull(evolution);
-		_initial = requireNonNull(initial);
+		_start = requireNonNull(start);
 		_proceed = requireNonNull(proceed);
 	}
 
 	EvolutionStreamImpl(
-		final Function<EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Supplier<EvolutionStart<G, C>> initial
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
 		this(
-			evolution,
-			initial,
+			start, evolution,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(evolution, initial, TRUE()),
+				new EvolutionSpliterator<>(start, evolution, TRUE()),
 				false
 			),
 			TRUE()
@@ -77,14 +76,13 @@ final class EvolutionStreamImpl<
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
 		final Predicate<? super EvolutionResult<G, C>> prcd =
-			_proceed == TRUE ? proceed :
-				r -> proceed.test(r) & _proceed.test(r);
+			_proceed == TRUE ? proceed : r -> proceed.test(r) & _proceed.test(r);
 
 		return new EvolutionStreamImpl<>(
+			_start,
 			_evolution,
-			_initial,
 			StreamSupport.stream(
-				new EvolutionSpliterator<>(_evolution, _initial, prcd),
+				new EvolutionSpliterator<>(_start, _evolution, prcd),
 				false
 			),
 			prcd

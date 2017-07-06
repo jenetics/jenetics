@@ -21,6 +21,7 @@ package org.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
+import org.jenetics.gradle.Version
 import org.jenetics.gradle.task.Lyx2PDFTask
 
 /**
@@ -28,16 +29,17 @@ import org.jenetics.gradle.task.Lyx2PDFTask
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5 &mdash; <em>$Date: 2014-02-15 $</em>
+ * @version 3.8
  */
 class LyxPlugin extends JeneticsPlugin {
 
 	private static final String BUILD = 'build'
+	private static final String CLEAN = 'clean'
 	private static final String LYX = 'lyx'
 
 	@Override
 	public void apply(final Project project) {
-		super.apply(project)
+		this.project = project
 
 		if (hasLyxSources()) {
 			applyLyx()
@@ -45,22 +47,27 @@ class LyxPlugin extends JeneticsPlugin {
 	}
 
 	private void applyLyx() {
-		task(BUILD, dependsOn: LYX) << {
+		if (project.tasks.findByPath(BUILD) != null) {
+			project.tasks.findByPath(BUILD).dependsOn(LYX)
+		} else {
+			project.task(BUILD, dependsOn: LYX).doLast {}
 		}
 
-		task('preparyPDFGeneration') << {
-			copy {
+		project.task('preparePDFGeneration').doLast {
+			project.copy {
 				from("${project.projectDir}/src/main") {
 					include 'lyx/manual.lyx'
 				}
 				into project.build.temporaryDir
 				filter(ReplaceTokens, tokens: [
-					__identifier__: project.identifier,
 					__year__: project.copyrightYear,
-					__identifier__: project.manualIdentifier
+					__identifier__: project.manualIdentifier,
+					__version__: project.version,
+					__minor_version__: Version.parse(project.version.toString())
+						.minorVersionString()
 				])
 			}
-			copy {
+			project.copy {
 				from("${project.projectDir}/src/main") {
 					exclude 'lyx/manual.lyx'
 				}
@@ -68,22 +75,24 @@ class LyxPlugin extends JeneticsPlugin {
 			}
 		}
 
-		task(LYX, type: Lyx2PDFTask, dependsOn: 'preparyPDFGeneration') {
+		project.task(LYX, type: Lyx2PDFTask, dependsOn: 'preparePDFGeneration') {
 			document = new File("${project.build.temporaryDir}/lyx/manual.lyx")
 
 			doLast {
-				copy {
+				project.copy {
 					from "${project.build.temporaryDir}/lyx/manual.pdf"
 					into "${project.buildDir}/doc"
 					rename { String fileName ->
-						fileName.replace('manual.pdf', "manual-${version}.pdf")
+						fileName.replace('manual.pdf', "manual-${project.version}.pdf")
 					}
 				}
 			}
 		}
 
-		task('clean') << {
-			project.buildDir.deleteDir()
+		if (project.tasks.findByPath(CLEAN) == null) {
+			project.task(CLEAN).doLast {
+				project.buildDir.deleteDir()
+			}
 		}
 	}
 

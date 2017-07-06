@@ -51,7 +51,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0 &mdash; <em>$Date: 2014-11-06 $</em>
+ * @version 3.0
  */
 @XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
@@ -247,7 +247,7 @@ public class CharacterChromosome
 		out.writeObject(_validCharacters);
 
 		for (CharacterGene gene : _genes) {
-			out.writeChar(gene.getAllele().charValue());
+			out.writeChar(gene.getAllele());
 		}
 	}
 

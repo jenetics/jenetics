@@ -24,7 +24,6 @@ import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -35,7 +34,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-03 $</em>
+ * @version 3.0
  */
 public final class DoubleAdder
 	extends Number
@@ -192,6 +191,20 @@ public final class DoubleAdder
 		return Double.compare(doubleValue(), other.doubleValue());
 	}
 
+	/**
+	 * Check if {@code this} and the {@code other} {@code DoubleAdder} maintain
+	 * the same internal state.
+	 *
+	 * @param other the other object
+	 * @return {@code true} if {@code this} and the {@code other} adder have
+	 *         the same state, {@code false otherwise}
+	 */
+	public boolean sameState(final DoubleAdder other) {
+		return Double.compare(_sum, other._sum) == 0 &&
+			Double.compare(_simpleSum, other._simpleSum) == 0 &&
+			Double.compare(_compensation, other._compensation) == 0;
+	}
+
 	@Override
 	public int hashCode() {
 		return Hash.of(DoubleAdder.class).and(doubleValue()).value();
@@ -199,9 +212,8 @@ public final class DoubleAdder
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(adder ->
-			eq(doubleValue(), adder.doubleValue())
-		);
+		return obj instanceof DoubleAdder &&
+			eq(doubleValue(), ((DoubleAdder)obj).doubleValue());
 	}
 
 	@Override

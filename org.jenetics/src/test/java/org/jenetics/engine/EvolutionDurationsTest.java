@@ -22,14 +22,16 @@ package org.jenetics.engine;
 import java.time.Duration;
 import java.util.Random;
 
+import org.testng.annotations.Test;
+
 import org.jenetics.util.Factory;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-20 $</em>
  */
+@Test
 public class EvolutionDurationsTest extends ObjectTester<EvolutionDurations> {
 
 	@Override

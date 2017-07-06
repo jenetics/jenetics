@@ -19,7 +19,7 @@
  */
 package org.jenetics;
 
-import java.io.Serializable;
+import java.util.stream.Stream;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
@@ -32,20 +32,20 @@ import org.jenetics.util.Verifiable;
  * <p>
  * <span class="simpleTagLabel">API Note: </span>
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
- * and guarantee an efficient random access ({@code O(1)}) to the genes.
+ * and guarantee an efficient random access ({@code O(1)}) to the genes. A
+ * {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+ * @version 3.7
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
 		Iterable<G>,
-		Factory<Chromosome<G>>,
-		Serializable
+		Factory<Chromosome<G>>
 {
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
@@ -94,5 +94,47 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
+
+	/**
+	 * Casts this {@code Chromosome} to an instance of type {@code C}.
+	 * This is a convenient method for an ordinary cast and allows seamless
+	 * method-chaining. Instead of
+	 * <pre>{@code
+	 * final Genotype<BitGene> gt = ...
+	 * final int count = ((BitChromosome)gt.getChromosome()).bitCount()
+	 * }</pre>
+	 * you can write
+	 * <pre>{@code
+	 * final Genotype<BitGene> gt = ...
+	 * final int count = gt.getChromosome()
+	 *     .as(BitChromosome.class)
+	 *     .bitCount()
+	 * }</pre>
+	 * This may lead to a more elegant programming style in some cases.
+	 *
+	 * @since 3.7
+	 *
+	 * @param type the target type class
+	 * @param <C> the target chromosome type
+	 * @return this chromosome casted as {@code C}
+	 * @throws NullPointerException if the target type class is {@code null}
+	 * @throws ClassCastException if this chromosome can't be casted to a
+	 *         chromosome of type {@code C}
+	 */
+	public default <C extends Chromosome<G>> C as(final Class<C> type) {
+		return type.cast(this);
+	}
+
+	/**
+	 * Returns a sequential {@code Stream} of genes with this chromosome as
+	 * its source.
+	 *
+	 * @since 3.3
+	 *
+	 * @return a sequential {@code Stream} of genes
+	 */
+	public default Stream<G> stream() {
+		return toSeq().stream();
+	}
 
 }

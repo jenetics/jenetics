@@ -31,7 +31,6 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-09 $</em>
  */
 public final class StatisticsAssert {
 	private StatisticsAssert() {require.noInstance();}
@@ -76,7 +75,8 @@ public final class StatisticsAssert {
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> distribution,
 		final double[] expected,
-		final double alpha
+		final double alpha,
+		final double safety
 	) {
 		final double[] exp = Arrays.stream(expected)
 			.map(v -> Math.max(v, Double.MIN_VALUE))
@@ -86,7 +86,7 @@ public final class StatisticsAssert {
 
 		final double χ2 = new ChiSquareTest().chiSquare(exp, dist);
 		final double max_χ2 = chi(1 - alpha, distribution.length());
-		final boolean reject = χ2 > max_χ2*1.75;
+		final boolean reject = χ2 > max_χ2*safety;
 		//final boolean reject = new ChiSquareTest().chiSquareTest(exp, dist, alpha);
 
 		Assert.assertFalse(
@@ -97,6 +97,14 @@ public final class StatisticsAssert {
 				max_χ2, χ2
 			)
 		);
+	}
+
+	public static <C extends Comparable<? super C>> void assertDistribution(
+		final Histogram<C> distribution,
+		final double[] expected,
+		final double alpha
+	) {
+		assertDistribution(distribution, expected, alpha, 1.75);
 	}
 
 	private static double chi(final double p, final int degreeOfFreedom) {

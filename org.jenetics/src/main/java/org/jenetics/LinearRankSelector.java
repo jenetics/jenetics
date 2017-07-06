@@ -20,9 +20,7 @@
 package org.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 /**
@@ -57,7 +55,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-28 $</em>
+ * @version 2.0
  */
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
@@ -105,11 +103,9 @@ public final class LinearRankSelector<
 		final Population<G, C> population,
 		final int count
 	) {
-		assert(population != null) : "Population can not be null. ";
-		assert(count > 0) : "Population to select must be greater than zero. ";
-
-		//Sort the population.
-		population.populationSort();
+		assert population != null : "Population must not be null. ";
+		assert !population.isEmpty() : "Population is empty.";
+		assert count > 0 : "Population to select must be greater than zero. ";
 
 		final double N = population.size();
 		final double[] probabilities = new double[population.size()];
@@ -119,11 +115,10 @@ public final class LinearRankSelector<
 		} else {
 			for (int i = probabilities.length; --i >= 0; ) {
 				probabilities[probabilities.length - i - 1] =
-					(_nminus + ((_nplus - _nminus)*i)/(N - 1))/N;
+					(_nminus + (_nplus - _nminus)*i/(N - 1))/N;
 			}
 		}
 
-		assert (sum2one(probabilities)) : "Probabilities doesn't sum to one.";
 		return probabilities;
 	}
 
@@ -134,10 +129,9 @@ public final class LinearRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(selector ->
-			eq(_nminus, selector._nminus) &&
-			eq(_nplus, selector._nplus)
-		);
+		return obj instanceof LinearRankSelector &&
+			eq(((LinearRankSelector)obj)._nminus, _nminus) &&
+			eq(((LinearRankSelector)obj)._nplus, _nplus);
 	}
 
 	@Override

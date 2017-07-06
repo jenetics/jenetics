@@ -24,25 +24,26 @@ import static java.util.Objects.requireNonNull;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.function.LongSupplier;
 
-import org.jenetics.internal.util.NanoClock;
+import org.jenetics.util.NanoClock;
 
 /**
  * Timer implementation for measuring execution durations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-15 $</em>
+ * @version 3.1
  */
 final class Timer {
 
-	private final Clock _clock;
+	private final LongSupplier _nanoClock;
 
-	private Instant _start;
-	private Instant _stop;
+	private long _start;
+	private long _stop;
 
-	private Timer(final Clock clock) {
-		_clock = requireNonNull(clock);
+	private Timer(final LongSupplier nanoClock) {
+		_nanoClock = requireNonNull(nanoClock);
 	}
 
 	/**
@@ -51,7 +52,7 @@ final class Timer {
 	 * @return {@code this} timer, for method chaining
 	 */
 	public Timer start() {
-		_start = _clock.instant();
+		_start = _nanoClock.getAsLong();
 		return this;
 	}
 
@@ -61,7 +62,7 @@ final class Timer {
 	 * @return {@code this} timer, for method chaining
 	 */
 	public Timer stop() {
-		_stop = _clock.instant();
+		_stop = _nanoClock.getAsLong();
 		return this;
 	}
 
@@ -72,14 +73,7 @@ final class Timer {
 	 * @return the duration between two {@code start} and {@code stop} calls
 	 */
 	public Duration getTime() {
-		return minus(_stop, _start);
-	}
-
-	private static Duration minus(final Instant a, final Instant b)  {
-		final long seconds = a.getEpochSecond() - b.getEpochSecond();
-		final long nanos = a.getNano() - b.getNano();
-
-		return Duration.ofNanos(seconds*NanoClock.NANOS_PER_SECOND + nanos);
+		return Duration.ofNanos(_stop - _start);
 	}
 
 	/**
@@ -90,7 +84,13 @@ final class Timer {
 	 * @return a new timer
 	 */
 	public static Timer of(final Clock clock) {
-		return new Timer(clock);
+		requireNonNull(clock);
+		return clock instanceof NanoClock ? of() : new Timer(() -> nanos(clock));
+	}
+
+	private static long nanos(final Clock clock) {
+		final Instant now = clock.instant();
+		return now.getEpochSecond()*NanoClock.NANOS_PER_SECOND + now.getNano();
 	}
 
 	/**
@@ -99,7 +99,7 @@ final class Timer {
 	 * @return a new timer
 	 */
 	public static Timer of() {
-		return of(NanoClock.INSTANCE);
+		return new Timer(System::nanoTime);
 	}
 
 }

@@ -20,15 +20,12 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.math.random.nextBigInteger;
-import static org.jenetics.internal.math.random.nextLong;
 import static org.jenetics.internal.math.random.toDouble;
 import static org.jenetics.internal.math.random.toDouble2;
 import static org.jenetics.internal.math.random.toFloat;
 import static org.jenetics.internal.math.random.toFloat2;
 import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -42,43 +39,42 @@ import org.jenetics.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-28 $</em>
  */
 public class baseRandomTest {
 
-	@Test(dataProvider = "nextBigIntegerIntData")
-	public void nextBigIntegerInt(int n) {
-		final long seed = random.seed();
-		final Random random = new Random(seed);
-
-		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
-
-		random.setSeed(seed);
-		Assert.assertEquals(value.intValueExact(), random.nextInt(n));
-	}
-
-	@DataProvider(name = "nextBigIntegerIntData")
-	public Object[][] nextBigIntegerIntData() {
-		return new Object[][] {
-			{1},
-			{14},
-			{100},
-			{10_000_000},
-			{100_000_000},
-			{Integer.MAX_VALUE}
-		};
-	}
-
-	@Test(dataProvider = "nextBigIntegerLongData")
-	public void nextBigIntegerLong(long n) {
-		final long seed = random.seed();
-		final Random random = new Random(seed);
-
-		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
-
-		random.setSeed(seed);
-		Assert.assertEquals(value.longValueExact(), nextLong(random, n));
-	}
+//	@Test(dataProvider = "nextBigIntegerIntData")
+//	public void nextBigIntegerInt(int n) {
+//		final long seed = random.seed();
+//		final Random random = new Random(seed);
+//
+//		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
+//
+//		random.setSeed(seed);
+//		Assert.assertEquals(value.intValueExact(), random.nextInt(n));
+//	}
+//
+//	@DataProvider(name = "nextBigIntegerIntData")
+//	public Object[][] nextBigIntegerIntData() {
+//		return new Object[][] {
+//			{1},
+//			{14},
+//			{100},
+//			{10_000_000},
+//			{100_000_000},
+//			{Integer.MAX_VALUE}
+//		};
+//	}
+//
+//	@Test(dataProvider = "nextBigIntegerLongData")
+//	public void nextBigIntegerLong(long n) {
+//		final long seed = random.seed();
+//		final Random random = new Random(seed);
+//
+//		final BigInteger value = nextBigInteger(random, BigInteger.valueOf(n));
+//
+//		random.setSeed(seed);
+//		Assert.assertEquals(value.longValueExact(), nextLong(random, n));
+//	}
 
 	@DataProvider(name = "nextBigIntegerLongData")
 	public Object[][] nextBigIntegerLongData() {
@@ -92,17 +88,17 @@ public class baseRandomTest {
 		};
 	}
 
-	@Test(dataProvider = "nextBigIntegerData")
-	public void nextBigIntegerTest(final String string) {
-		final long seed = random.seed();
-		final Random random = new Random(seed);
-
-		final BigInteger n = new BigInteger(string);
-		final BigInteger value = nextBigInteger(random, n);
-
-		Assert.assertTrue(value.compareTo(BigInteger.ZERO) >= 0);
-		Assert.assertTrue(value.compareTo(n) < 0);
-	}
+//	@Test(dataProvider = "nextBigIntegerData")
+//	public void nextBigIntegerTest(final String string) {
+//		final long seed = random.seed();
+//		final Random random = new Random(seed);
+//
+//		final BigInteger n = new BigInteger(string);
+//		final BigInteger value = nextBigInteger(random, n);
+//
+//		Assert.assertTrue(value.compareTo(BigInteger.ZERO) >= 0);
+//		Assert.assertTrue(value.compareTo(n) < 0);
+//	}
 
 	@DataProvider(name = "nextBigIntegerData")
 	public Object[][] nextBigIntegerData() {
@@ -148,7 +144,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept((double)toFloat(random.nextInt()));
@@ -160,7 +156,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept((double)toFloat(random.nextLong()));
@@ -172,7 +168,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toDouble(random.nextLong()));
@@ -184,7 +180,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble_int_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();
@@ -197,7 +193,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat2_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept((double)toFloat2(random.nextInt()));
@@ -209,7 +205,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toFloat2_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept((double)toFloat2(random.nextLong()));
@@ -221,7 +217,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble2_long() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			histogram.accept(toDouble2(random.nextLong()));
@@ -233,7 +229,7 @@ public class baseRandomTest {
 	@Test(invocationCount = 5)
 	public void toDouble2_int_int() {
 		final Random random = new LCG64ShiftRandom();
-		final Histogram<Double> histogram = Histogram.of(0.0, 1.0, 15);
+		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 1.0, 15);
 
 		for (int i = 0; i < 100000; ++i) {
 			final long value = random.nextLong();

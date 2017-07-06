@@ -32,7 +32,6 @@ import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-09-17 $</em>
  */
 public class LongMomentStatisticsTest {
 
@@ -135,6 +134,24 @@ public class LongMomentStatisticsTest {
 			{1_000_000, 0.000001},
 			{2_000_000, 0.0000005}
 		};
+	}
+
+	@Test
+	public void sameState() {
+		final LongMomentStatistics ms1 = new LongMomentStatistics();
+		final LongMomentStatistics ms2 = new LongMomentStatistics();
+
+		final Random random = new Random();
+		for (int i = 0; i < 100; ++i) {
+			final long value = random.nextInt(1_000_000);
+			ms1.accept(value);
+			ms2.accept(value);
+
+			Assert.assertTrue(ms1.sameState(ms2));
+			Assert.assertTrue(ms2.sameState(ms1));
+			Assert.assertTrue(ms1.sameState(ms1));
+			Assert.assertTrue(ms2.sameState(ms2));
+		}
 	}
 
 }

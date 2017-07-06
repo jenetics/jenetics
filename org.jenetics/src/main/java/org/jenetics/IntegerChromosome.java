@@ -38,6 +38,7 @@ import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.util.IntRange;
 import org.jenetics.util.MSeq;
 
 /**
@@ -45,7 +46,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 3.0 &mdash; <em>$Date: 2014-12-08 $</em>
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
@@ -56,7 +57,13 @@ public class IntegerChromosome
 {
 	private static final long serialVersionUID = 1L;
 
-
+	/**
+	 * Create a new chromosome from the given genes array.
+	 *
+	 * @param genes the genes of the new chromosome.
+	 * @throws IllegalArgumentException if the gene sequence is empty
+	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 */
 	protected IntegerChromosome(final ISeq<IntegerGene> genes) {
 		super(genes);
 	}
@@ -68,8 +75,14 @@ public class IntegerChromosome
 	 * @param max the max value of the {@link IntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
 	 */
-	public IntegerChromosome(final Integer min, final Integer max, final int length) {
+	public IntegerChromosome(
+		final Integer min,
+		final Integer max,
+		final int length
+	) {
 		this(IntegerGene.seq(min, max, length));
 		_valid = true;
 	}
@@ -141,6 +154,7 @@ public class IntegerChromosome
 	 * @param max the max value of the {@link IntegerGene}s (inclusively).
 	 * @param length the length of the chromosome.
 	 * @return a new random {@code IntegerChromosome}
+	 * @throws IllegalArgumentException if the length is smaller than one
 	 */
 	public static IntegerChromosome of(
 		final int min,
@@ -148,6 +162,21 @@ public class IntegerChromosome
 		final int length
 	) {
 		return new IntegerChromosome(min, max, length);
+	}
+
+	/**
+	 * Create a new random {@code IntegerChromosome}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @param length the length of the chromosome.
+	 * @return a new random {@code IntegerChromosome}
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 * @throws IllegalArgumentException if the length is smaller than one
+	 */
+	public static IntegerChromosome of(final IntRange range, final int length) {
+		return new IntegerChromosome(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -159,6 +188,19 @@ public class IntegerChromosome
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
 		return new IntegerChromosome(min, max);
+	}
+
+	/**
+	 * Create a new random {@code IntegerChromosome} of length one.
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @return a new random {@code IntegerChromosome} of length one
+	 * @throws NullPointerException if the given {@code range} is {@code null}
+	 */
+	public static IntegerChromosome of(final IntRange range) {
+		return new IntegerChromosome(range.getMin(), range.getMax());
 	}
 
 	@Override
@@ -191,11 +233,11 @@ public class IntegerChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
-		out.writeInt(_min.intValue());
-		out.writeInt(_max.intValue());
+		out.writeInt(_min);
+		out.writeInt(_max);
 
 		for (IntegerGene gene : _genes) {
-			out.writeInt(gene.getAllele().intValue());
+			out.writeInt(gene.getAllele());
 		}
 	}
 

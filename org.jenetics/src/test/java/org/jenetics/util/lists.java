@@ -26,7 +26,6 @@ import org.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-05 $</em>
  */
 public class lists {
 	private lists() {require.noInstance();}

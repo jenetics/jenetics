@@ -33,20 +33,15 @@ import org.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-08-01 $</em>
  */
 public class CharSeqTest extends ObjectTester<CharSeq> {
 
-	private final Factory<CharSeq> _factory = new Factory<CharSeq>() {
-		@Override
-		public CharSeq newInstance() {
-			final Random r = RandomRegistry.getRandom();
-			return new CharSeq(random.nextString(r, r.nextInt(200) + 100));
-		}
-	};
 	@Override
 	protected Factory<CharSeq> factory() {
-		return _factory;
+		return () -> {
+			final Random r = RandomRegistry.getRandom();
+			return new CharSeq(random.nextString(r, r.nextInt(200) + 100));
+		};
 	}
 
 	@Test
@@ -224,7 +219,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 		final Iterator<Character> it = set.iterator();
 		for (int i = 0; i < values.length(); ++i) {
 			Assert.assertTrue(it.hasNext());
-			Assert.assertEquals(it.next(), new Character(values.charAt(i)));
+			Assert.assertEquals(it.next(), Character.valueOf(values.charAt(i)));
 		}
 		Assert.assertFalse(it.hasNext());
 	}

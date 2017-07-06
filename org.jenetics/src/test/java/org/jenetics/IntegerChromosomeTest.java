@@ -32,7 +32,6 @@ import org.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
@@ -54,7 +53,7 @@ public class IntegerChromosomeTest
 			final int max = 10000000;
 
 			final MinMax<Integer> mm = MinMax.of();
-			final Histogram<Integer> histogram = Histogram.of(min, max, 10);
+			final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);

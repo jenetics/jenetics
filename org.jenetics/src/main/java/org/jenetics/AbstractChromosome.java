@@ -22,13 +22,13 @@ package org.jenetics;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.Verifiable;
@@ -42,14 +42,15 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0 &mdash; <em>$Date: 2014-12-22 $</em>
+ * @version 2.0
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements
 		Chromosome<G>,
-		RandomAccess
+		RandomAccess,
+		Serializable
 {
-	private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Array of genes which forms the chromosome. This array must
@@ -65,25 +66,24 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	/**
 	 * Create a new {@code AbstractChromosome} from the given {@code genes}
-	 * array. The genes array is not copied, but sealed, so changes to the given
-	 * genes array doesn't effect the genes of this chromosome.
+	 * array.
 	 *
 	 * @param genes the genes that form the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene array is
-	 *          smaller than one.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty.
 	 */
 	protected AbstractChromosome(final ISeq<? extends G> genes) {
 		requireNonNull(genes, "Gene array");
-		assert (genes.forAll(Objects::nonNull)) : "Found at least on null gene.";
+		assert genes.forAll(Objects::nonNull) : "Found at least on null gene.";
 
-		if (genes.length() == 0) {
+		if (genes.isEmpty()) {
 			throw new IllegalArgumentException(
 				"The genes sequence must contain at least one gene."
 			);
 		}
 
-		_genes = reflect.cast(genes);
+		_genes = ISeq.upcast(genes);
 	}
 
 	@Override

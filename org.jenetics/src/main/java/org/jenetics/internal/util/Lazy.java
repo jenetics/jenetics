@@ -21,6 +21,9 @@ package org.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -30,23 +33,43 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-09-19 $</em>
+ * @version 3.7
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
-	private final Supplier<T> _supplier;
+	private final transient Supplier<T> _supplier;
 
 	private T _value;
-	private volatile boolean _evaluated = false;
+	private volatile boolean _evaluated;
+
+	private Lazy(
+		final T value,
+		final boolean evaluated,
+		final Supplier<T> supplier
+	) {
+		_value = value;
+		_evaluated = evaluated;
+		_supplier = supplier;
+	}
 
 	private Lazy(final Supplier<T> supplier) {
-		_supplier = requireNonNull(supplier);
+		this(null, false, requireNonNull(supplier));
 	}
 
 	@Override
 	public T get() {
 		return _evaluated ? _value : evaluate();
+	}
+
+	/**
+	 * Return the evaluation state of the {@code Lazy} variable.
+	 *
+	 * @return {@code true} is the {@code Lazy} variable has been evaluated,
+	 *         {@code false} otherwise
+	 */
+	public synchronized boolean isEvaluated() {
+		return _evaluated;
 	}
 
 	private synchronized T evaluate() {
@@ -88,6 +111,42 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 */
 	public static <T> Lazy<T> of(final Supplier<T> supplier) {
 		return new Lazy<>(supplier);
+	}
+
+	/**
+	 * Create a new {@code Lazy} object with the given {@code value}. This
+	 * method allows to create a <em>lazy</em> object with the given
+	 * {@code value}.
+	 *
+	 * @since 3.7
+	 *
+	 * @param value the value this {@code Lazy} object is initialized with
+	 * @param <T> the value type
+	 * @return return a new lazy value with the given value
+	 */
+	public static <T> Lazy<T> ofValue(final T value) {
+		return new Lazy<T>(value, true, null);
+	}
+
+
+	/**************************************************************************
+	 *  Java object serialization
+	 *************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+		out.writeObject(get());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		_value = (T)in.readObject();
+		_evaluated = true;
 	}
 
 }

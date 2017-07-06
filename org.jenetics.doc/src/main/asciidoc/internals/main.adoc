@@ -1,0 +1,26 @@
+= Internals
+:toc:
+:icons:
+:numbered:
+:website: http://jenetics.io/
+
+++++
+<div class="bs-docs-masthead" role="main">
+<div class="container">
+<p class="lead">
+This site contains internal implementation details. They are not essential for using the library, but would give the user a deeper insight in some design decisions, made when implementing the library.
+</p>
+</div>
+</div>
+++++
+
+toc::[]
+
+include::prng_testing.adoc[]
+include::random_seeding.adoc[]
+
+//////////////////////////////////////////
+:author: Franz Wilhelmstötter
+:email: franz.wilhelmstoetter@gmx.at
+//////////////////////////////////////////
+

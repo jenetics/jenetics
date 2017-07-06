@@ -20,7 +20,9 @@
 package org.jenetics;
 
 import static org.jenetics.internal.math.random.nextDouble;
+import static org.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,10 +34,12 @@ import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.jenetics.internal.util.require;
+
+import org.jenetics.util.DoubleRange;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.Mean;
-import org.jenetics.util.RandomRegistry;
 
 /**
  * Implementation of the NumericGene which holds a 64 bit floating point number.
@@ -48,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0 &mdash; <em>$Date: 2014-11-12 $</em>
+ * @version 3.2
  */
 @XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
@@ -56,7 +60,8 @@ public final class DoubleGene
 	implements
 		NumericGene<Double, DoubleGene>,
 		Mean<DoubleGene>,
-		Comparable<DoubleGene>
+		Comparable<DoubleGene>,
+		Serializable
 {
 
 	private static final long serialVersionUID = 1L;
@@ -101,6 +106,23 @@ public final class DoubleGene
 	}
 
 	/**
+	 * Create a new random {@code DoubleGene} with the given value and the
+	 * given range. If the {@code value} isn't within the interval [min, max),
+	 * no exception is thrown. In this case the method
+	 * {@link DoubleGene#isValid()} returns {@code false}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param value the value of the gene.
+	 * @param range the double range to use
+	 * @return a new random {@code DoubleGene}
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static DoubleGene of(final double value, final DoubleRange range) {
+		return new DoubleGene(value, range.getMin(), range.getMax());
+	}
+
+	/**
 	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
 	 * of the {@code DoubleGene} lies in the interval [min, max).
 	 *
@@ -109,7 +131,21 @@ public final class DoubleGene
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(RandomRegistry.getRandom(), min, max), min, max);
+		return of(nextDouble(getRandom(), min, max), min, max);
+	}
+
+	/**
+	 * Create a new random {@code DoubleGene}. It is guaranteed that the value
+	 * of the {@code DoubleGene} lies in the interval [min, max).
+	 *
+	 * @since 3.2
+	 *
+	 * @param range the double range to use
+	 * @return a new {@code DoubleGene} with the given parameter
+	 * @throws NullPointerException if the given {@code range} is {@code null}.
+	 */
+	public static DoubleGene of(final DoubleRange range) {
+		return of(nextDouble(getRandom(), range.getMin(), range.getMax()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -117,9 +153,11 @@ public final class DoubleGene
 		final Double maximum,
 		final int length
 	) {
+		require.positive(length);
+
 		final double min = minimum;
 		final double max = maximum;
-		final Random r = RandomRegistry.getRandom();
+		final Random r = getRandom();
 
 		return MSeq.<DoubleGene>ofLength(length)
 			.fill(() -> new DoubleGene(nextDouble(r, min, max), minimum, maximum))
@@ -134,7 +172,7 @@ public final class DoubleGene
 	@Override
 	public DoubleGene newInstance() {
 		return new DoubleGene(
-			nextDouble(RandomRegistry.getRandom(), _min, _max), _min, _max
+			nextDouble(getRandom(), _min, _max), _min, _max
 		);
 	}
 

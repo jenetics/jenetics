@@ -31,7 +31,7 @@ import org.gradle.api.tasks.TaskAction
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 1.6 &mdash; <em>$Date: 2014-02-16 $</em>
+ * @version 1.6
  */
 class TrimLineFeedTask extends DefaultTask {
 

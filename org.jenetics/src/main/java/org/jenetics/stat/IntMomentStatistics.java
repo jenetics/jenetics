@@ -34,21 +34,21 @@ import java.util.stream.Collector;
  * <p>
  * This class is designed to work with (though does not require) streams. For
  * example, you can compute moments-statistics on a stream of ints with:
- * [code]
+ * <pre>{@code
  * final IntStream stream = ...
  * final IntMomentStatistics statistics = stream.collect(
  *         IntMomentStatistics::new,
  *         IntMomentStatistics::accept,
  *         IntMomentStatistics::combine
  *     );
- * [/code]
+ * }</pre>
  *
  * For a non int stream, you can use a collector:
- * [code]
- * final Stream&lt;SomeObject&gt; stream = ...
+ * <pre>{@code
+ * final Stream<SomeObject> stream = ...
  * final IntMomentStatistics statistics = stream
- *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
- * [/code]
+ *     .collect(toIntMomentStatistics(v -> v.intValue()));
+ * }</pre>
  *
  * <p>
  * <b>Implementation note:</b>
@@ -65,7 +65,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0 &mdash; <em>$Date: 2014-10-03 $</em>
+ * @version 3.7
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -143,6 +143,39 @@ public class IntMomentStatistics
 		return _sum;
 	}
 
+	/**
+	 * Compares the state of two {@code IntMomentStatistics} objects. This is
+	 * a replacement for the {@link #equals(Object)} which is not advisable to
+	 * implement for this mutable object. If two object have the same state, it
+	 * has still the same state when updated with the same value.
+	 * <pre>{@code
+	 * final IntMomentStatistics ims1 = ...;
+	 * final IntMomentStatistics ims2 = ...;
+	 *
+	 * if (ims1.sameState(ims2)) {
+	 *     final int value = random.nextInt(1_000_000);
+	 *     ims1.accept(value);
+	 *     ims2.accept(value);
+	 *
+	 *     assert ims1.sameState(ims2);
+	 *     assert ims2.sameState(ims1);
+	 *     assert ims1.sameState(ims1);
+	 * }
+	 * }</pre>
+	 *
+	 * @since 3.7
+	 *
+	 * @param other the other object for the test
+	 * @return {@code true} the {@code this} and the {@code other} objects have
+	 *         the same state, {@code false} otherwise
+	 */
+	public boolean sameState(final IntMomentStatistics other) {
+		return _min == other._min &&
+			_max == other._max &&
+			_sum == other._sum &&
+			super.sameState(other);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
@@ -157,11 +190,11 @@ public class IntMomentStatistics
 	 * function to each input element, and returns moments-statistics for the
 	 * resulting values.
 	 *
-	 * [code]
-	 * final Stream&lt;SomeObject&gt; stream = ...
+	 * <pre>{@code
+	 * final Stream<SomeObject> stream = ...
 	 * final IntMomentStatistics statistics = stream
-	 *     .collect(toIntMomentStatistics(v -&gt; v.intValue()));
-	 * [/code]
+	 *     .collect(toIntMomentStatistics(v -> v.intValue()));
+	 * }</pre>
 	 *
 	 * @param mapper a mapping function to apply to each element
 	 * @param <T> the type of the input elements

@@ -34,7 +34,6 @@ import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version <em>$Date: 2014-10-19 $</em>
  */
 public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
@@ -47,7 +46,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	public void newInstanceDistribution() {
 		final Integer min = 0;
 		final Integer max = Integer.MAX_VALUE;
-		final Histogram<Integer> histogram = Histogram.of(min, max, 10);
+		final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
@@ -56,6 +55,14 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		);
 
 		assertUniformDistribution(histogram);
+	}
+
+	@Test
+	public void parameters() {
+		final IntegerGene gene = IntegerGene.of(10, 10);
+		Assert.assertEquals(gene.getMin().intValue(), 10);
+		Assert.assertEquals(gene.getMax().intValue(), 10);
+		Assert.assertEquals(gene.getAllele().intValue(), 10);
 	}
 
 	@Test
