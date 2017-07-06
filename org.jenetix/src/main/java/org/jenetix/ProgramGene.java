@@ -38,31 +38,18 @@ public final class ProgramGene<A>
 	implements Gene<Op<A>, ProgramGene<A>>
 {
 
-	private final ISeq<? extends Op<A>> _ops;
+	private final ISeq<? extends Op<A>> _operations;
+	private final ISeq<? extends Op<A>> _terminals;
 
 	ProgramGene(
 		final Op<A> op,
-		final ISeq<? extends Op<A>> ops,
-		final int childStartIndex
+		final int childOffset,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
 	) {
-		super(op, childStartIndex);
-		_ops = requireNonNull(ops);
-	}
-
-	public ProgramGene(final Op<A> op, final ISeq<? extends Op<A>> ops) {
-		this(op, ops, -1);
-	}
-
-	/**
-	 * Evaluates the actual operation of the program gene.
-	 *
-	 * @param values the operation values
-	 * @return the evaluated operation value
-	 * @throws NullPointerException if the given values array is {@code null}
-	 */
-	public A apply(final A[] values) {
-		requireNonNull(values);
-		return getAllele().apply(values);
+		super(op, childOffset, op.arity());
+		_operations = requireNonNull(operations);
+		_terminals = requireNonNull(terminals);
 	}
 
 	/**
@@ -72,7 +59,7 @@ public final class ProgramGene<A>
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
 	 */
-	public A eval(final A[] variables) {
+	public A apply(final A[] variables) {
 		requireNonNull(variables);
 		checkTreeState();
 
@@ -87,31 +74,34 @@ public final class ProgramGene<A>
 			if (child.getAllele() instanceof Var<?>) {
 				values[i] = child.getAllele().apply(variables);
 			} else {
-				values[i] = child.eval(variables);
+				values[i] = child.apply(variables);
 			}
 		}
 
-		return apply(values);
+		return getAllele().apply(values);
 	}
 
-	@Override
-	public int childCount() {
-		return getAllele().arity();
+	public ISeq<? extends Op<A>> getOperations() {
+		return _operations;
 	}
 
-	public ISeq<? extends Op<A>> getOps() {
-		return _ops;
+	public ISeq<? extends Op<A>> getTerminals() {
+		return _terminals;
 	}
 
 	@Override
 	public ProgramGene<A> newInstance() {
 		final Random random = RandomRegistry.getRandom();
-		final int index = random.nextInt(_ops.length());
-		return newInstance(_ops.get(index));
+		return newInstance(
+			isLeaf()
+				? _terminals.get(random.nextInt(_terminals.length()))
+				: _operations.get(random.nextInt(_operations.length()))
+		);
 	}
 
 	@Override
-	public ProgramGene<A> newInstance(final Op<A> value) {
-		return new ProgramGene<>(value, _ops);
+	public ProgramGene<A> newInstance(final Op<A> op) {
+		return new ProgramGene<>(op, childOffset(), _operations, _terminals);
 	}
+
 }

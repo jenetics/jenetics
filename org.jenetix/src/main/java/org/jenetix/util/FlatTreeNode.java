@@ -21,104 +21,215 @@ package org.jenetix.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import org.jenetics.util.MSeq;
 
 /**
+ * Tree implementation, where the nodes of the whole tree are stored in an array.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class FlatTreeNode<T> {
+public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 
-	private final T _value;
-	private final int _arity;
-	private final int _childOffset;
+	private final int _index;
+	private final MSeq<? extends T> _nodes;
+	private final int[] _childOffsets;
+	private final int[] _childCounts;
 
 	private FlatTreeNode(
-		final T value,
-		final int arity,
-		final int childOffset
+		final int index,
+		final MSeq<? extends T> nodes,
+		final int[] childOffsets,
+		final int[] childCounts
 	) {
-		_value = value;
-		_arity = arity;
-		_childOffset = childOffset;
+		_index = index;
+		_nodes = requireNonNull(nodes);
+		_childOffsets = childOffsets;
+		_childCounts = childCounts;
 	}
 
+	/**
+	 * Returns the root of the tree that contains this node. The root is the
+	 * ancestor with no parent. This implementation have a runtime complexity
+	 * of O(1).
+	 *
+	 * @return the root of the tree that contains this node
+	 */
+	@Override
+	public FlatTreeNode<T> getRoot() {
+		return node(0);
+	}
+
+	@Override
+	public boolean isRoot() {
+		return _index == 0;
+	}
+
+	private FlatTreeNode<T> node(final int index) {
+		return new FlatTreeNode<T>(
+			index,
+			_nodes,
+			_childOffsets,
+			_childCounts
+		);
+	}
+
+	@Override
 	public T getValue() {
-		return _value;
+		return _nodes.get(_index);
 	}
 
-	public int getArity() {
-		return _arity;
+	@Override
+	public Optional<FlatTreeNode<T>> getParent() {
+		return breathFirstStream()
+			.filter(node -> node.childStream()
+				.anyMatch(n -> n._nodes == _nodes && n._index == _index))
+			.findFirst();
 	}
 
-	public int getChildOffset() {
-		return _childOffset;
+	@Override
+	public FlatTreeNode<T> getChild(final int index) {
+		if (index < 0 || index >= childCount()) {
+			throw new IndexOutOfBoundsException("" + index);
+		}
+
+		return new FlatTreeNode<T>(
+			childOffset() + index,
+			_nodes,
+			_childOffsets,
+			_childCounts
+		);
+	}
+
+	@Override
+	public int childCount() {
+		return _childCounts[_index];
+	}
+
+	public int childOffset() {
+		return _childOffsets[_index];
+	}
+
+	public Stream<FlatTreeNode<T>> rootStream() {
+		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
+	}
+
+	public ListIterator<FlatTreeNode<T>> fullTreeIterator() {
+		return new ListIterator<FlatTreeNode<T>>() {
+			int cursor = 0;
+			int lastElement = -1;
+
+			@Override
+			public boolean hasNext() {
+				return cursor != _nodes.length();
+			}
+
+			@Override
+			public FlatTreeNode<T> next() {
+				final int i = cursor;
+				if (cursor >= _nodes.length()) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i + 1;
+				return node(lastElement = i);
+			}
+
+			@Override
+			public int nextIndex() {
+				return cursor;
+			}
+
+			@Override
+			public boolean hasPrevious() {
+				return cursor != 0;
+			}
+
+			@Override
+			public FlatTreeNode<T> previous() {
+				final int i = cursor - 1;
+				if (i < 0) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i;
+				return node(lastElement = i);
+			}
+
+			@Override
+			public int previousIndex() {
+				return cursor - 1;
+			}
+
+			@Override
+			public void set(final FlatTreeNode<T> value) {
+				throw new UnsupportedOperationException(
+					"Iterator is immutable."
+				);
+			}
+
+			@Override
+			public void add(final FlatTreeNode<T> value) {
+				throw new UnsupportedOperationException(
+					"Can't change Iterator size."
+				);
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException(
+					"Can't change Iterator size."
+				);
+			}
+		};
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(_value);
+		return Objects.toString(getValue());
 	}
 
-	public static <V, T extends Tree<V, T>> ISeq<FlatTreeNode<V>>
-	flatten(final T tree)  {
+	public static <V, T extends Tree<? extends V, T>>
+	FlatTreeNode<V> of(final T tree) {
 		requireNonNull(tree);
 
-		final List<FlatTreeNode<V>> result = new ArrayList<>();
-		final Iterator<T> it = tree.breadthFirstIterator();
+		final int size = tree.size();
+		final MSeq<V> elements = MSeq.ofLength(size);
+		final int[] childOffsets = new int[size];
+		final int[] childCounts = new int[size];
+
+		assert size >= 1;
+		final FlatTreeNode<V> root = new FlatTreeNode<>(
+			0,
+			elements,
+			childOffsets,
+			childCounts
+		);
 
 		int childOffset = 1;
+		int index = 0;
+		final Iterator<T> it = tree.breadthFirstIterator();
 		while (it.hasNext()) {
-			final T node  = it.next();
-			result.add(new FlatTreeNode<>(
-				node.getValue(), node.childCount(), childOffset
-			));
+			final T node = it.next();
+
+			elements.set(index, node.getValue());
+			childCounts[index] = node.childCount();
+			childOffsets[index] = node.isLeaf() ? 0 : childOffset;
 
 			childOffset += node.childCount();
+			++index;
 		}
 
-		return ISeq.of(result);
-	}
-
-	public static <V> TreeNode<V> unflatten(final Seq<FlatTreeNode<V>> seq) {
-		return unflatten(TreeNode.of(), 0, seq);
-	}
-
-	private static <V> TreeNode<V> unflatten(
-		final TreeNode<V> tree,
-		final int index,
-		final Seq<FlatTreeNode<V>> seq
-	) {
-		if (index < seq.size()) {
-			final FlatTreeNode<V> node = seq.get(index);
-			tree.setValue(node.getValue());
-
-			/*
-			int childOffset = 1;
-			for (int i = 0; i < index; ++i) {
-				childOffset += seq.get(i).getArity();
-			}
-			*/
-
-			for (int i = 0; i < node.getArity(); ++i) {
-				tree.attach(
-					unflatten(
-						TreeNode.of(),
-						node.getChildOffset() + i,
-						seq
-					)
-				);
-			}
-		}
-
-		return tree;
+		return root;
 	}
 
 }

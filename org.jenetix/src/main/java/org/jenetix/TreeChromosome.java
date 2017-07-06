@@ -19,16 +19,7 @@
  */
 package org.jenetix;
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-import org.jenetics.util.ISeq;
-
-import org.jenetix.util.Tree;
-import org.jenetix.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

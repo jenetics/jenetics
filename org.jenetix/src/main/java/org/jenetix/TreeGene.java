@@ -20,7 +20,6 @@
 package org.jenetix;
 
 import org.jenetics.Gene;
-
 import org.jenetix.util.Tree;
 
 /**
@@ -35,5 +34,10 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 		Gene<A, G>,
 		Tree<A, G>
 {
+
+	@Override
+	public default A getValue() {
+		return getAllele();
+	}
 
 }

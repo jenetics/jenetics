@@ -25,8 +25,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.jenetics.util.ISeq;
+
 /**
- * Abstract implementation of the {@link TreeGene} interface.
+ * Abstract implementation of the {@link TreeGene} interface. This class is
+ * tightly coupled with the {@link AbstractTreeChromosome} class an they should
+ * be always implemented in pairs.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -40,34 +44,50 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * The allele of the tree-gene.
 	 */
 	private final A _allele;
-	private final int _childrenOffset;
+	private final int _childOffset;
+	private final int _childCount;
 
-	private AbstractTreeChromosome<A, G> _chromosome;
+	private ISeq<G> _genes;
 
+	/**
+	 * Creates a new tree-gene from the given data.
+	 *
+	 * @param allele the actual value (allele) of the tree-gene
+	 * @param childOffset the offset index of the child in the containing
+	 *        chromosome. If this node has no child, the value should be set
+	 *        to zero.
+	 * @param childCount the number of children of this gene
+	 * @throws IllegalArgumentException if the {@code childCount} is smaller
+	 *         than zero
+	 */
 	protected AbstractTreeGene(
 		final A allele,
-		final int childrenOffset
+		final int childOffset,
+		final int childCount
 	) {
-		if (childrenOffset < 0) {
-			throw new IllegalArgumentException(
-				"Children offset smaller than zero: " + childrenOffset
-			);
+		if (childCount < 0) {
+			throw new IllegalArgumentException(format(
+				"Child count smaller than zero: %s", childCount
+			));
 		}
 
-		_allele = requireNonNull(allele);
-		_childrenOffset = childrenOffset;
+		_allele = allele;
+		_childOffset = childOffset;
+		_childCount = childCount;
 	}
 
-	protected AbstractTreeGene(final A allele) {
-		this(allele, 0);
+	/**
+	 * This method is used by the {@code AbstractTreeChromosome} to attach
+	 * itself to this gene.
+	 *
+	 * @param genes the genes of the attached chromosome
+	 */
+	final void attachTo(final ISeq<G> genes) {
+		_genes = requireNonNull(genes);
 	}
 
-	final void attachTo(final AbstractTreeChromosome<A, G> chromosome) {
-		_chromosome = requireNonNull(chromosome);
-	}
-
-	public int getChildrenOffset() {
-		return _childrenOffset;
+	public int childOffset() {
+		return _childOffset;
 	}
 
 	@Override
@@ -76,21 +96,16 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public A getValue() {
-		return _allele;
-	}
-
-	@Override
 	public Optional<G> getParent() {
 		checkTreeState();
 
-		return _chromosome.stream()
+		return _genes.stream()
 			.filter(g -> g.childStream().anyMatch(c -> c == this))
 			.findFirst();
 	}
 
 	void checkTreeState() {
-		if (_chromosome == null) {
+		if (_genes == null) {
 			throw new IllegalStateException(
 				"Gene is not attached to a chromosome."
 			);
@@ -106,26 +121,27 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 			));
 		}
 
-		assert _chromosome != null;
-		return _chromosome.getGene(_childrenOffset + index);
+		assert _genes != null;
+		return _genes.get(_childOffset + index);
 	}
 
 	@Override
 	public int childCount() {
-		return 0;
+		return _childCount;
 	}
 
 	@Override
 	public boolean isValid() {
-		return true;
+		return _genes != null;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 31;
 		hash += 31*Objects.hashCode(_allele) + 17;
-		hash += 31*_childrenOffset + 17;
-		hash += 31*System.identityHashCode(_chromosome) + 17;
+		hash += 31*_childOffset + 17;
+		hash += 32*_childCount + 17;
+		hash += 31*System.identityHashCode(_genes) + 17;
 		return hash;
 	}
 
@@ -133,8 +149,9 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	public boolean equals(final Object obj) {
 		return obj instanceof AbstractTreeGene<?, ?> &&
 			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
-			((AbstractTreeGene)obj)._chromosome == _chromosome &&
-			((AbstractTreeGene)obj)._childrenOffset == _childrenOffset;
+			((AbstractTreeGene)obj)._genes == _genes &&
+			((AbstractTreeGene)obj)._childOffset == _childOffset &&
+			((AbstractTreeGene)obj)._childCount == _childCount;
 	}
 
 	@Override

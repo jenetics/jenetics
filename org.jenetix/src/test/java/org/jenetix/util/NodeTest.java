@@ -43,10 +43,15 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
+		final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
+		System.out.println(flat);
+		System.out.println(Tree.toString(flat));
+		/*
 		final ISeq<FlatTreeNode<Integer>> seq = FlatTreeNode.flatten(tree);
 		Assert.assertEquals(FlatTreeNode.unflatten(seq), tree);
 
 		System.out.println(FlatTreeNode.flatten(tree));
+		*/
 	}
 
 }

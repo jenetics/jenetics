@@ -615,9 +615,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this}
-	 * node in breadth-first order. The first node returned by the iterator is
-	 * {@code this} node.
+	 * Return an iterator that traverses the subtree rooted at {@code this}.
+	 * The first node returned by the iterator is {@code this} node.
 	 * <p>
 	 * Modifying the tree by inserting, removing, or moving a node invalidates
 	 * any iterator created before the modification.
@@ -759,6 +758,21 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/**
 	 * Return a string representation of the given tree.
+	 *
+	 * <pre>
+	 * 0
+	 * ├── 1
+	 * │   ├── 4
+	 * │   └── 5
+	 * ├── 2
+	 * │   └── 6
+	 * └── 3
+	 *     ├── 7
+	 *     │   ├── 10
+	 *     │   └── 11
+	 *     ├── 8
+	 *     └── 9
+	 * </pre>
 	 *
 	 * @param tree the input tree
 	 * @param <A> the tree value type
