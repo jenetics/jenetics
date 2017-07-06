@@ -27,6 +27,8 @@ import java.util.Optional;
 
 import org.jenetics.util.ISeq;
 
+import org.jenetix.util.Tree;
+
 /**
  * Abstract implementation of the {@link TreeGene} interface. This class is
  * tightly coupled with the {@link AbstractTreeChromosome} class an they should
@@ -100,7 +102,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		checkTreeState();
 
 		return _genes.stream()
-			.filter(g -> g.childStream().anyMatch(c -> c == this))
+			.filter(g -> g.childStream().anyMatch(this::sameNode))
 			.findFirst();
 	}
 
@@ -136,12 +138,20 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
+	public boolean sameNode(final Tree<?, ?> other) {
+		return other instanceof AbstractTreeGene<?, ?> &&
+			Objects.equals(((AbstractTreeGene<?, ?>)other)._allele, _allele) &&
+			((AbstractTreeGene)other)._genes == _genes &&
+			((AbstractTreeGene)other)._childOffset == _childOffset &&
+			((AbstractTreeGene)other)._childCount == _childCount;
+	}
+
+	@Override
 	public int hashCode() {
 		int hash = 31;
 		hash += 31*Objects.hashCode(_allele) + 17;
 		hash += 31*_childOffset + 17;
 		hash += 32*_childCount + 17;
-		hash += 31*System.identityHashCode(_genes) + 17;
 		return hash;
 	}
 
@@ -149,7 +159,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	public boolean equals(final Object obj) {
 		return obj instanceof AbstractTreeGene<?, ?> &&
 			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
-			((AbstractTreeGene)obj)._genes == _genes &&
 			((AbstractTreeGene)obj)._childOffset == _childOffset &&
 			((AbstractTreeGene)obj)._childCount == _childCount;
 	}
