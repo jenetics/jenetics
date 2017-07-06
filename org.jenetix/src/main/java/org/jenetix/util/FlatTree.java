@@ -165,8 +165,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	@Override
 	public String toString() {
-		//return Objects.toString(getValue());
-		return Tree.toString(this);
+		return Objects.toString(getValue());
 	}
 
 	/**
