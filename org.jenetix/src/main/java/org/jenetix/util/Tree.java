@@ -757,7 +757,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 **************************************************************************/
 
 	/**
-	 * Return a string representation of the given tree.
+	 * Return a string representation of the given tree, like the following
+	 * example.
 	 *
 	 * <pre>
 	 * 0
@@ -773,6 +774,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *     ├── 8
 	 *     └── 9
 	 * </pre>
+	 *
+	 * This method is intended to be used when override the
+	 * {@link Object#toString()} method.
 	 *
 	 * @param tree the input tree
 	 * @param <A> the tree value type
