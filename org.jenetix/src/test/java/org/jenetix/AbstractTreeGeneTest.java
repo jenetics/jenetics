@@ -42,7 +42,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, TestTreeGene> {
 		fill(root, levels, random);
 
 		final FlatTree<Integer> flattened = FlatTree.of(root);
-		final ISeq<TestTreeGene> genes = flattened.rootStream()
+		final ISeq<TestTreeGene> genes = flattened.stream()
 			.map(n -> new TestTreeGene(n.getValue(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());
 

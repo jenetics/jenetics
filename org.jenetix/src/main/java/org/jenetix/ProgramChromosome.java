@@ -78,8 +78,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		requireNonNull(terminals);
 		check(program);
 
-		final FlatTree<? extends Op<A>> flattened = FlatTree.of(program);
-		final ISeq<ProgramGene<A>> genes = flattened.rootStream()
+		final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
 			.map(n -> new ProgramGene<>(
 				n.getValue(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());

@@ -89,7 +89,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	@Override
 	public Optional<FlatTree<T>> getParent() {
-		return rootStream()
+		return stream()
 			.filter(node -> node.childStream().anyMatch(this::sameNode))
 			.findFirst();
 	}
@@ -133,7 +133,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 *
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
-	public Stream<FlatTree<T>> rootStream() {
+	public Stream<FlatTree<T>> stream() {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
 	}
 
