@@ -290,7 +290,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
 			Assert.assertEquals(
-				node.getPath().map(Tree::getValue),
+				node.getPath().map(t -> t.getValue()),
 				ISeq.of(snode.getUserObjectPath())
 			);
 		}
