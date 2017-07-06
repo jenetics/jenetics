@@ -22,8 +22,6 @@ package org.jenetix.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -38,14 +36,14 @@ import org.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
+public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	private final int _index;
 	private final MSeq<? extends T> _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
-	private FlatTreeNode(
+	private FlatTree(
 		final int index,
 		final MSeq<? extends T> nodes,
 		final int[] childOffsets,
@@ -65,7 +63,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTreeNode<T> getRoot() {
+	public FlatTree<T> getRoot() {
 		return node(0);
 	}
 
@@ -74,8 +72,8 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> node(final int index) {
-		return new FlatTreeNode<T>(
+	private FlatTree<T> node(final int index) {
+		return new FlatTree<T>(
 			index,
 			_nodes,
 			_childOffsets,
@@ -89,7 +87,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	}
 
 	@Override
-	public Optional<FlatTreeNode<T>> getParent() {
+	public Optional<FlatTree<T>> getParent() {
 		return breathFirstStream()
 			.filter(node -> node.childStream()
 				.anyMatch(n -> n._nodes == _nodes && n._index == _index))
@@ -97,12 +95,12 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	}
 
 	@Override
-	public FlatTreeNode<T> getChild(final int index) {
+	public FlatTree<T> getChild(final int index) {
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException("" + index);
 		}
 
-		return new FlatTreeNode<T>(
+		return new FlatTree<T>(
 			childOffset() + index,
 			_nodes,
 			_childOffsets,
@@ -135,7 +133,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	 *
 	 * @return
 	 */
-	public Stream<FlatTreeNode<T>> rootStream() {
+	public Stream<FlatTree<T>> rootStream() {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
 	}
 
@@ -154,7 +152,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static <V, T extends Tree<? extends V, T>>
-	FlatTreeNode<V> of(final T tree) {
+	FlatTree<V> of(final T tree) {
 		requireNonNull(tree);
 
 		final int size = tree.size();
@@ -163,7 +161,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 		final int[] childCounts = new int[size];
 
 		assert size >= 1;
-		final FlatTreeNode<V> root = new FlatTreeNode<>(
+		final FlatTree<V> root = new FlatTree<>(
 			0,
 			elements,
 			childOffsets,

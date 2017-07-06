@@ -25,7 +25,7 @@ import java.util.Random;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetix.util.FlatTreeNode;
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
@@ -77,7 +77,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		requireNonNull(terminals);
 		check(program);
 
-		final FlatTreeNode<? extends Op<A>> flattened = FlatTreeNode.of(program);
+		final FlatTree<? extends Op<A>> flattened = FlatTree.of(program);
 		final ISeq<ProgramGene<A>> genes = flattened.rootStream()
 			.map(n -> new ProgramGene<>(
 				n.getValue(), n.childOffset(), operations, terminals))

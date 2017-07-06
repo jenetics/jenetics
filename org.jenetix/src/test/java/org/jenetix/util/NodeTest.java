@@ -19,10 +19,7 @@
  */
 package org.jenetix.util;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -43,7 +40,7 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
+		final FlatTree<Integer> flat = FlatTree.of(tree);
 		System.out.println(flat);
 		System.out.println(Tree.toString(flat));
 		/*
