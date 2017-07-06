@@ -20,6 +20,7 @@
 package org.jenetix;
 
 import org.jenetics.Gene;
+
 import org.jenetix.util.Tree;
 
 /**

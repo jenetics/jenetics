@@ -25,6 +25,7 @@ import java.util.Random;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
+
 import org.jenetix.util.FlatTree;
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
