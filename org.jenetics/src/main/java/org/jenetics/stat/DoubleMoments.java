@@ -20,13 +20,10 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical moments.
@@ -170,28 +167,29 @@ public final class DoubleMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(DoubleMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean)
-			.and(_variance)
-			.and(_skewness)
-			.and(_kurtosis).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*Double.doubleToLongBits(_sum) + 37;
+		hash += 33*Double.doubleToLongBits(_min) + 37;
+		hash += 33*Double.doubleToLongBits(_max) + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.doubleToLongBits(_variance) + 37;
+		hash += 33*Double.doubleToLongBits(_skewness) + 37;
+		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof DoubleMoments &&
-			eq(_count, ((DoubleMoments)obj)._count) &&
-			eq(_sum, ((DoubleMoments)obj)._sum) &&
-			eq(_min, ((DoubleMoments)obj)._min) &&
-			eq(_max, ((DoubleMoments)obj)._max) &&
-			eq(_mean, ((DoubleMoments)obj)._mean) &&
-			eq(_variance, ((DoubleMoments)obj)._variance) &&
-			eq(_skewness, ((DoubleMoments)obj)._skewness) &&
-			eq(_kurtosis, ((DoubleMoments)obj)._kurtosis);
+			_count == ((DoubleMoments)obj)._count &&
+			Double.compare(_sum, ((DoubleMoments)obj)._sum) == 0 &&
+			Double.compare(_min, ((DoubleMoments)obj)._min) == 0 &&
+			Double.compare(_max, ((DoubleMoments)obj)._max) == 0 &&
+			Double.compare(_mean, ((DoubleMoments)obj)._mean) == 0 &&
+			Double.compare(_variance, ((DoubleMoments)obj)._variance) == 0 &&
+			Double.compare(_skewness, ((DoubleMoments)obj)._skewness) == 0&&
+			Double.compare(_kurtosis, ((DoubleMoments)obj)._kurtosis) == 0;
 	}
 
 	@Override

@@ -269,15 +269,15 @@ public final class random {
 	 */
 
 	public static float toFloat(final int a) {
-		return (a >>> 8)/((float)(1 << 24));
+		return (a >>> 8)/(float)(1 << 24);
 	}
 
 	public static float toFloat(final long a) {
-		return (int)(a >>> 40)/((float)(1 << 24));
+		return (int)(a >>> 40)/(float)(1 << 24);
 	}
 
 	public static double toDouble(final long a) {
-		return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
+		return (((a >>> 38) << 27) + ((int)a >>> 5))/(double)(1L << 53);
 	}
 
 	public static double toDouble(final int a, final int b) {

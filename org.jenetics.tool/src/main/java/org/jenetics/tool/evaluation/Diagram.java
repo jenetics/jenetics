@@ -74,10 +74,16 @@ public class Diagram {
 		FITNESS_THRESHOLD("fitness_threshold_termination"),
 
 		/**
-		 * Template for fitness threshold termination diagrams.
+		 * Template for fitness convergence termination diagrams.
 		 */
 		FITNESS_CONVERGENCE("fitness_convergence_termination"),
 
+		/**
+		 * Template for population convergence termination diagrams.
+		 */
+		POPULATION_CONVERGENCE("population_convergence_termination"),
+
+		/**
 		/**
 		 * Template for fixed generation termination diagrams.
 		 */

@@ -20,13 +20,10 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical moments.
@@ -170,28 +167,29 @@ public final class IntMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(IntMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean)
-			.and(_variance)
-			.and(_skewness)
-			.and(_kurtosis).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*_sum + 37;
+		hash += 33*_min + 37;
+		hash += 33*_max + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.doubleToLongBits(_variance) + 37;
+		hash += 33*Double.doubleToLongBits(_skewness) + 37;
+		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof IntMoments &&
-			eq(_count, ((IntMoments)obj)._count) &&
-			eq(_sum, ((IntMoments)obj)._sum) &&
-			eq(_min, ((IntMoments)obj)._min) &&
-			eq(_max, ((IntMoments)obj)._max) &&
-			eq(_mean, ((IntMoments)obj)._mean) &&
-			eq(_variance, ((IntMoments)obj)._variance) &&
-			eq(_skewness, ((IntMoments)obj)._skewness) &&
-			eq(_kurtosis, ((IntMoments)obj)._kurtosis);
+			_count == ((IntMoments)obj)._count &&
+			_sum == ((IntMoments)obj)._sum &&
+			_min == ((IntMoments)obj)._min &&
+			_max == ((IntMoments)obj)._max &&
+			Double.compare(_mean, ((IntMoments)obj)._mean) == 0 &&
+			Double.compare(_variance, ((IntMoments)obj)._variance) == 0 &&
+			Double.compare(_skewness, ((IntMoments)obj)._skewness) == 0 &&
+			Double.compare(_kurtosis, ((IntMoments)obj)._kurtosis) == 0;
 	}
 
 	@Override

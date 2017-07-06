@@ -122,10 +122,12 @@ public final class Engine<
 	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
 {
 
-	// Needed context for population evolving.
+	// Problem definition.
 	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
-	private final Function<? super C, ? extends C> _fitnessScaler;
 	private final Factory<Genotype<G>> _genotypeFactory;
+
+	// Evolution parameters.
+	private final Function<? super C, ? extends C> _fitnessScaler;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
@@ -146,8 +148,8 @@ public final class Engine<
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
-	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessFunction the fitness function this GA is using.
+	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param survivorsSelector the selector used for selecting the survivors
 	 * @param offspringSelector the selector used for selecting the offspring
@@ -168,8 +170,8 @@ public final class Engine<
 	 */
 	Engine(
 		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
-		final Function<? super C, ? extends C> fitnessScaler,
 		final Factory<Genotype<G>> genotypeFactory,
+		final Function<? super C, ? extends C> fitnessScaler,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
@@ -1454,8 +1456,8 @@ public final class Engine<
 		public Engine<G, C> build() {
 			return new Engine<>(
 				_fitnessFunction,
-				_fitnessScaler,
 				_genotypeFactory,
+				_fitnessScaler,
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
