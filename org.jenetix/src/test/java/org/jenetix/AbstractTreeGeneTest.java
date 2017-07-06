@@ -68,7 +68,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, TestTreeGene> {
 
 }
 
-class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
+final class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
 
 	public TestTreeGene(
 		final Integer allele,
@@ -89,7 +89,7 @@ class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
 	}
 }
 
-class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
+final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
 
 	public TestTreeChromosome(final ISeq<? extends TestTreeGene> genes) {
 		super(genes);
