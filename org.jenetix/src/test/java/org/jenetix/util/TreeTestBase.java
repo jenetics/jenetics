@@ -265,6 +265,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 		final Iterator<T> treeIt =
 			tree.firstLeaf().pathFromAncestorIterator(tree);
+
 		final Enumeration<?> streeIt =
 			stree.getFirstLeaf().pathFromAncestorEnumeration(stree);
 

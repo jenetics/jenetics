@@ -751,6 +751,19 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
 	}
 
+	/**
+	 * Tests whether {@code this} node is the same as the {@code other} node.
+	 * The default implementation compares the references of the two objects,
+	 * but other implementations may use different criteria for checking the
+	 * <i>sameness</i>.
+	 *
+	 * @param other the {@code other} node
+	 * @return {@code true} if the {@code other} node is the same as {@code this}
+	 *         node.
+	 */
+	public default boolean sameNode(final Tree<?, ?> other) {
+		return this == other;
+	}
 
 	/* *************************************************************************
 	 * Static helper methods.

@@ -53,7 +53,7 @@ final class TreeNodePathIterator<V, T extends Tree<V, T>>
 		_stack.push(requireNonNull(descendant));
 
 		T current = descendant;
-		while (current != ancestor) {
+		while (!current.sameNode(ancestor)) {
 			current = current.getParent().orElseThrow(() ->
 				new IllegalArgumentException(format(
 					"Node %s is not an ancestor of %s.",

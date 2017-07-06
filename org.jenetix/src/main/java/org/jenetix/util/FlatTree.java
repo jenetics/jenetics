@@ -21,6 +21,7 @@ package org.jenetix.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -88,9 +89,8 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	@Override
 	public Optional<FlatTree<T>> getParent() {
-		return breathFirstStream()
-			.filter(node -> node.childStream()
-				.anyMatch(n -> n._nodes == _nodes && n._index == _index))
+		return rootStream()
+			.filter(node -> node.childStream().anyMatch(this::sameNode))
 			.findFirst();
 	}
 
@@ -131,15 +131,42 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breathFirstStream();
 	 * }</pre>
 	 *
-	 * @return
+	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTree<T>> rootStream() {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
 	}
 
 	@Override
+	public boolean sameNode(final Tree<?, ?> other) {
+		return other instanceof FlatTree<?> &&
+			((FlatTree)other)._index == _index &&
+			((FlatTree)other)._nodes == _nodes;
+	}
+
+	@Override
+	public int hashCode(){
+		int hash = 17;
+		hash += 31*_index + 37;
+		hash += 31*_nodes.hashCode() + 37;
+		hash += 31*Arrays.hashCode(_childCounts) + 37;
+		hash += 31*Arrays.hashCode(_childOffsets) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof FlatTree<?> &&
+			((FlatTree)obj)._index == _index &&
+			Objects.equals(((FlatTree)obj)._nodes, _nodes) &&
+			Arrays.equals(((FlatTree)obj)._childCounts, _childCounts) &&
+			Arrays.equals(((FlatTree)obj)._childOffsets, _childOffsets);
+	}
+
+	@Override
 	public String toString() {
-		return Objects.toString(getValue());
+		//return Objects.toString(getValue());
+		return Tree.toString(this);
 	}
 
 	/**
