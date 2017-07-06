@@ -20,20 +20,15 @@
 package org.jenetix.util;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.random.nextInt;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
-import java.util.function.IntSupplier;
 
 import org.jenetics.util.Copyable;
-import org.jenetics.util.IntRange;
 
 /**
  * A general purpose node in a tree data-structure.
@@ -306,36 +301,8 @@ public final class TreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof TreeNode<?> && equals(this, (TreeNode<?>)obj);
-	}
-
-	private static boolean equals(
-		final TreeNode<?> that,
-		final TreeNode<?> other
-	) {
-		boolean equals = that.childCount() == other.childCount();
-		if (equals) {
-			equals = Objects.equals(that.getValue(), other.getValue());
-			if (equals && !that._children.isEmpty()) {
-				equals = equals(that._children, other._children);
-			}
-		}
-
-		return equals;
-	}
-
-	private static boolean equals(
-		final Collection<? extends TreeNode<?>> that,
-		final Collection<? extends TreeNode<?>> other
-	) {
-		boolean equals = true;
-		final Iterator<? extends TreeNode<?>> it1 = that.iterator();
-		final Iterator<? extends TreeNode<?>> it2 = other.iterator();
-		while (it1.hasNext() && equals) {
-			equals = equals(it1.next(), it2.next());
-		}
-
-		return equals;
+		return obj instanceof TreeNode<?> &&
+			Tree.equals(this, (TreeNode<?>)obj);
 	}
 
 	@Override
@@ -391,45 +358,6 @@ public final class TreeNode<T>
 	 */
 	public static <T> TreeNode<T> of() {
 		return new TreeNode<>(null);
-	}
-
-	public static <T> TreeNode<T> ofShape(
-		final IntRange childCount,
-		final IntRange leafLevel,
-		final Random random
-	) {
-		return ofShape(() -> nextInt(random, childCount), leafLevel, random);
-	}
-
-	public static <T> TreeNode<T> ofShape(
-		final IntSupplier childCount,
-		final IntRange leafLevel,
-		final Random random
-	) {
-		final TreeNode<T> root = TreeNode.of();
-		addChildren(root, 0, childCount, leafLevel, random);
-		return root;
-	}
-
-	private static <T> void addChildren(
-		final TreeNode<T> node,
-		final int nodeLevel,
-		final IntSupplier childCount,
-		final IntRange leafLevel,
-		final Random random
-	) {
-		assert node.level() == nodeLevel;
-
-		for (int i = 0, n = childCount.getAsInt(); i < n; ++i) {
-			final TreeNode<T> child = TreeNode.of();
-			node.attach(child);
-
-			final int d = nextInt(random, leafLevel);
-
-			if (nodeLevel < d) {
-				addChildren(child, nodeLevel + 1, childCount, leafLevel, random);
-			}
-		}
 	}
 
 }

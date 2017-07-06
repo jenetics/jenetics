@@ -22,8 +22,10 @@ package org.jenetix.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
@@ -124,6 +126,38 @@ final class Trees {
 		while (it.hasNext()) {
 			result.add(it.next().insert(0, "    "));
 		}
+	}
+
+	/**
+	 * Checks if the two given trees has the same structure with the same values.
+	 *
+	 * @param a the first tree
+	 * @param b the second tree
+	 * @return {@code true} if the two given trees are structurally equals,
+	 *         {@code false} otherwise
+	 */
+	static boolean equals(final Tree<?, ?> a, final Tree<?, ?> b) {
+		boolean equals = a.childCount() == b.childCount();
+		if (equals) {
+			equals = Objects.equals(a.getValue(), b.getValue());
+			if (equals && a.childCount() > 0) {
+				equals = equals(a.childIterator(), b.childIterator());
+			}
+		}
+
+		return equals;
+	}
+
+	private static boolean equals(
+		final Iterator<? extends Tree<?, ?>> a,
+		final Iterator<? extends Tree<?, ?>> b
+	) {
+		boolean equals = true;
+		while (a.hasNext() && equals) {
+			equals = equals(a.next(), b.next());
+		}
+
+		return equals;
 	}
 
 }

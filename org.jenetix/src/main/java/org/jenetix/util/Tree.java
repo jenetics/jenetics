@@ -770,6 +770,18 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 **************************************************************************/
 
 	/**
+	 * Checks if the two given trees has the same structure with the same values.
+	 *
+	 * @param a the first tree
+	 * @param b the second tree
+	 * @return {@code true} if the two given trees are structurally equals,
+	 *         {@code false} otherwise
+	 */
+	public static boolean equals(final Tree<?, ?> a, final Tree<?, ?> b) {
+		return Trees.equals(a, b);
+	}
+
+	/**
 	 * Return a string representation of the given tree, like the following
 	 * example.
 	 *
