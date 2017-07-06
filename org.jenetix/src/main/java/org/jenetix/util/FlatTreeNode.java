@@ -115,82 +115,28 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 		return _childCounts[_index];
 	}
 
+	/**
+	 * Return the index of the first child node in the underlying node array.
+	 * {@code -1} is returned if {@code this} node is a leaf.
+	 *
+	 * @return Return the index of the first child node in the underlying node
+	 *         array, or {@code -1} if {@code this} node is a leaf
+	 */
 	public int childOffset() {
 		return _childOffsets[_index];
 	}
 
+	/**
+	 * Return a stream of all nodes of the whole underlying tree. This method
+	 * call is equivalent to
+	 * <pre>{@code
+	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breathFirstStream();
+	 * }</pre>
+	 *
+	 * @return
+	 */
 	public Stream<FlatTreeNode<T>> rootStream() {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
-	}
-
-	public ListIterator<FlatTreeNode<T>> fullTreeIterator() {
-		return new ListIterator<FlatTreeNode<T>>() {
-			int cursor = 0;
-			int lastElement = -1;
-
-			@Override
-			public boolean hasNext() {
-				return cursor != _nodes.length();
-			}
-
-			@Override
-			public FlatTreeNode<T> next() {
-				final int i = cursor;
-				if (cursor >= _nodes.length()) {
-					throw new NoSuchElementException();
-				}
-
-				cursor = i + 1;
-				return node(lastElement = i);
-			}
-
-			@Override
-			public int nextIndex() {
-				return cursor;
-			}
-
-			@Override
-			public boolean hasPrevious() {
-				return cursor != 0;
-			}
-
-			@Override
-			public FlatTreeNode<T> previous() {
-				final int i = cursor - 1;
-				if (i < 0) {
-					throw new NoSuchElementException();
-				}
-
-				cursor = i;
-				return node(lastElement = i);
-			}
-
-			@Override
-			public int previousIndex() {
-				return cursor - 1;
-			}
-
-			@Override
-			public void set(final FlatTreeNode<T> value) {
-				throw new UnsupportedOperationException(
-					"Iterator is immutable."
-				);
-			}
-
-			@Override
-			public void add(final FlatTreeNode<T> value) {
-				throw new UnsupportedOperationException(
-					"Can't change Iterator size."
-				);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException(
-					"Can't change Iterator size."
-				);
-			}
-		};
 	}
 
 	@Override
@@ -198,6 +144,15 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 		return Objects.toString(getValue());
 	}
 
+	/**
+	 * Create a new {@code FlatTreeNode} from the given {@code tree}.
+	 *
+	 * @param tree the source tree
+	 * @param <V> the tree value types
+	 * @param <T> the tree type
+	 * @return a new {@code FlatTreeNode} from the given {@code tree}
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
 	public static <V, T extends Tree<? extends V, T>>
 	FlatTreeNode<V> of(final T tree) {
 		requireNonNull(tree);
@@ -223,7 +178,7 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 
 			elements.set(index, node.getValue());
 			childCounts[index] = node.childCount();
-			childOffsets[index] = node.isLeaf() ? 0 : childOffset;
+			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
 
 			childOffset += node.childCount();
 			++index;
