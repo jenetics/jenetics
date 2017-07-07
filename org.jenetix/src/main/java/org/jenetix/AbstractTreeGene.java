@@ -29,9 +29,7 @@ import org.jenetics.util.ISeq;
 import org.jenetix.util.Tree;
 
 /**
- * Abstract implementation of the {@link TreeGene} interface. This class is
- * tightly coupled with the {@link AbstractTreeChromosome} class an they should
- * be always implemented in pairs.
+ * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!

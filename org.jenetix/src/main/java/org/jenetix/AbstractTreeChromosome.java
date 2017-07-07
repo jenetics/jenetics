@@ -23,11 +23,13 @@ import org.jenetics.AbstractChromosome;
 import org.jenetics.util.ISeq;
 
 /**
+ * Abstract base implementation of a {@code TreeChromosome}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>>
+public abstract class AbstractTreeChromosome<A, G extends TreeGene<A, G>>
 	extends AbstractChromosome<G>
 	implements TreeChromosome<A, G>
 {
