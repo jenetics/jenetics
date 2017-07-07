@@ -28,9 +28,9 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
+final class IntTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
 
-	public TestTreeChromosome(final ISeq<? extends TestTreeGene> genes) {
+	public IntTreeChromosome(final ISeq<? extends TestTreeGene> genes) {
 		super(genes);
 	}
 
@@ -45,6 +45,6 @@ final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeG
 
 	@Override
 	public Chromosome<TestTreeGene> newInstance(final ISeq<TestTreeGene> genes) {
-		return new TestTreeChromosome(genes);
+		return new IntTreeChromosome(genes);
 	}
 }

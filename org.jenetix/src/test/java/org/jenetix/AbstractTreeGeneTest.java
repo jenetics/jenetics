@@ -23,7 +23,6 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
 
 import org.jenetix.util.FlatTree;
@@ -46,7 +45,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, TestTreeGene> {
 			.map(n -> new TestTreeGene(n.getValue(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());
 
-		return new TestTreeChromosome(genes).getRoot();
+		return new IntTreeChromosome(genes).getRoot();
 	}
 
 	private static void fill(
