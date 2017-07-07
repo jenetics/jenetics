@@ -68,19 +68,3 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, TestTreeGene> {
 
 }
 
-final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
-
-	public TestTreeChromosome(final ISeq<? extends TestTreeGene> genes) {
-		super(genes);
-	}
-
-	@Override
-	public Chromosome<TestTreeGene> newInstance() {
-		return null;
-	}
-
-	@Override
-	public Chromosome<TestTreeGene> newInstance(final ISeq<TestTreeGene> genes) {
-		return null;
-	}
-}
