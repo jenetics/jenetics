@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
+import org.jenetics.programming.ops.Op;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 

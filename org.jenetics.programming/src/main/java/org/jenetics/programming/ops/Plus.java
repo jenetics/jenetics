@@ -19,8 +19,6 @@
  */
 package org.jenetics.programming.ops;
 
-import org.jenetics.programming.Op;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!

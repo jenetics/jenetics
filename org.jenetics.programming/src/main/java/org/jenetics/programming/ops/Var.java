@@ -21,8 +21,6 @@ package org.jenetics.programming.ops;
 
 import static java.lang.String.format;
 
-import org.jenetics.programming.Op;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!

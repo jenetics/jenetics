@@ -25,6 +25,7 @@ import java.lang.reflect.Array;
 import java.util.Random;
 
 import org.jenetics.Gene;
+import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
