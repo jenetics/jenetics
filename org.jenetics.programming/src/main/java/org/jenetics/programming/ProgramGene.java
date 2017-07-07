@@ -19,14 +19,15 @@
  */
 package org.jenetics.programming;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Array;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.Var;
+import org.jenetics.programming.ops.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,7 +40,7 @@ import org.jenetix.AbstractTreeGene;
  */
 public final class ProgramGene<A>
 	extends AbstractTreeGene<Op<A>, ProgramGene<A>>
-	implements Gene<Op<A>, ProgramGene<A>>
+	implements Gene<Op<A>, ProgramGene<A>>, Function<A[], A>
 {
 
 	private final ISeq<? extends Op<A>> _operations;
@@ -63,26 +64,10 @@ public final class ProgramGene<A>
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
 	 */
+	@Override
 	public A apply(final A[] variables) {
-		requireNonNull(variables);
 		checkTreeState();
-
-		@SuppressWarnings("unchecked")
-		final A[] values = (A[])Array.newInstance(
-			variables.getClass().getComponentType(),
-			childCount()
-		);
-
-		for (int i = 0; i < childCount(); ++i) {
-			final ProgramGene<A> child = getChild(i);
-			if (child.getAllele() instanceof Var<?>) {
-				values[i] = child.getAllele().apply(variables);
-			} else {
-				values[i] = child.apply(variables);
-			}
-		}
-
-		return getAllele().apply(values);
+		return Program.eval(this, variables);
 	}
 
 	void checkTreeState() {
@@ -117,7 +102,18 @@ public final class ProgramGene<A>
 	}
 
 	@Override
-	public ProgramGene<A> newInstance(Op<A> allele, int childOffset, int childCount) {
-		return null;
+	public ProgramGene<A> newInstance(
+		final Op<A> allele,
+		final int childOffset,
+		final int childCount
+	) {
+		if (allele.arity() != childCount) {
+			throw new IllegalArgumentException(format(
+				"Operation arity and child count are different: %d, != %d",
+				allele.arity(), childCount
+			));
+		}
+
+		return new ProgramGene<>(allele, childOffset, _operations, _terminals);
 	}
 }

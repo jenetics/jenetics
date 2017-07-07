@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Ops;
+import org.jenetics.programming.ops.Program;
 import org.jenetics.programming.ops.Programs;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
@@ -36,24 +37,39 @@ public class ProgramsTest {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		Ops.ADD,
-		Ops.DIV,
+		Ops.SUB,
 		Ops.MUL,
-		Ops.DIV
+		Ops.DIV,
+		Ops.EXP,
+		Ops.SIN,
+		Ops.COS
 	);
 
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
-		Var.of(0), Var.of(1), Var.of(2)
+		Var.of("x", 0),
+		Var.of("y", 1),
+		Var.of("z", 2),
+		Ops.fixed(Math.PI),
+		Ops.fixed(1)
 	);
 
 	@Test
 	public void program() {
-		final TreeNode<Op<Double>> program = Programs.of(
-			3,
+		final TreeNode<Op<Double>> tree = Programs.of(
+			5,
 			OPERATIONS,
 			TERMINALS
 		);
 
-		System.out.println(program);
+		final TreeNode<Op<Double>> formula = TreeNode.of(Ops.ADD);
+
+		System.out.println(tree);
+
+		final Program<Double> program = new Program<>("foo", tree);
+		final Double result = program.apply(new Double[]{1.0, 2.0, 3.0});
+		System.out.println("Arity: " + program.arity());
+		System.out.println(result);
+		System.out.flush();
 	}
 
 }

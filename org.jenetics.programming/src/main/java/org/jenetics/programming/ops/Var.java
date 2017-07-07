@@ -19,7 +19,7 @@
  */
 package org.jenetics.programming.ops;
 
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -28,9 +28,11 @@ import static java.lang.String.format;
  */
 public final class Var<T> implements Op<T> {
 
+	private final String _name;
 	private final int _index;
 
-	private Var(final int index) {
+	private Var(final String name, final int index) {
+		_name = requireNonNull(name);
 		if (index < 0) {
 			throw new IndexOutOfBoundsException(
 				"Index smaller than zero: " + index
@@ -45,7 +47,7 @@ public final class Var<T> implements Op<T> {
 
 	@Override
 	public String name() {
-		return null;
+		return _name;
 	}
 
 	@Override
@@ -60,11 +62,11 @@ public final class Var<T> implements Op<T> {
 
 	@Override
 	public String toString() {
-		return format("Var(%d)", _index);
+		return _name;
 	}
 
-	public static <T> Var<T> of(final int index) {
-		return new Var<>(index);
+	public static <T> Var<T> of(final String name, final int index) {
+		return new Var<>(name, index);
 	}
 
 }

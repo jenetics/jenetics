@@ -19,8 +19,6 @@
  */
 package org.jenetics.programming.ops;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Random;
 
 import org.jenetics.util.ISeq;
@@ -59,7 +57,7 @@ public final class Programs {
 				"Operation list contains terminal op."
 			);
 		}
-		if (!terminals.forAll(Op::isTerminal)) {
+		if (!terminals.forAll(o -> o.isTerminal())) {
 			throw new IllegalArgumentException(
 				"Terminal list contains non-terminal op."
 			);
