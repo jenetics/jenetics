@@ -240,12 +240,10 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 *
 	 * @param tree the source tree
 	 * @param <V> the tree value types
-	 * @param <T> the tree type
 	 * @return a new {@code FlatTreeNode} from the given {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <V, T extends Tree<? extends V, T>>
-	FlatTree<V> of(final T tree) {
+	public static <V> FlatTree<V> of(final Tree<? extends V, ?> tree) {
 		requireNonNull(tree);
 
 		final int size = tree.size();
@@ -263,9 +261,11 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 		int childOffset = 1;
 		int index = 0;
-		final Iterator<T> it = tree.breadthFirstIterator();
+		final Iterator<? extends Tree<? extends V, ?>> it =
+			tree.breadthFirstIterator();
+
 		while (it.hasNext()) {
-			final T node = it.next();
+			final Tree<? extends V, ?> node = it.next();
 
 			elements.set(index, node.getValue());
 			childCounts[index] = node.childCount();

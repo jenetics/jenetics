@@ -70,9 +70,9 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		return of(getRoot().depth(), _operations, _terminals);
 	}
 
-	public static <A, T extends Tree<? extends Op<A>, T>>
+	public static <A>
 	ProgramChromosome<A> of(
-		final T program,
+		final Tree<? extends Op<A>, ?> program,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
@@ -88,8 +88,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		return new ProgramChromosome<>(genes, operations, terminals);
 	}
 
-	public static <A, T extends Tree<? extends Op<A>, T>>
-	void check(final T program) {
+	public static <A> void check(final Tree<? extends Op<A>, ?> program) {
 		requireNonNull(program);
 
 		program.breadthFirstStream().forEach(node -> {
