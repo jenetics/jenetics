@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 
 /**
+ * Operation interface.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
