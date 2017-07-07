@@ -26,8 +26,8 @@ import org.jenetics.util.ISeq;
  * Abstract base implementation of a {@code TreeChromosome}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public abstract class AbstractTreeChromosome<A, G extends TreeGene<A, G>>
 	extends AbstractChromosome<G>

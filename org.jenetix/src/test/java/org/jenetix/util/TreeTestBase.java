@@ -42,8 +42,8 @@ import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {

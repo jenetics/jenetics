@@ -25,8 +25,8 @@ import org.jenetics.Chromosome;
  * Chromosome for tree shaped genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	extends Chromosome<G>

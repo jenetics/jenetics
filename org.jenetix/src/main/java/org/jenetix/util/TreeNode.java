@@ -36,8 +36,8 @@ import org.jenetics.util.Copyable;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public final class TreeNode<T>
 	implements

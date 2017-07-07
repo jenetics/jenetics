@@ -47,7 +47,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 3.9
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -66,7 +66,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	/**
 	 * Return the value at the given {@code index}.
 	 *
-	 * @since !__version__!
+	 * @since 3.9
 	 *
 	 * @see #get(int)
 	 *
