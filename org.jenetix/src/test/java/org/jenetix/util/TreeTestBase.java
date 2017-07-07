@@ -106,7 +106,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 		final int level,
 		final Random random
 	) {
-		for (int i = 0, n = random.nextInt(5); i < n; ++i) {
+		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
 			final DefaultMutableTreeNode child = new DefaultMutableTreeNode();
 			child.setUserObject(random.nextInt());
 

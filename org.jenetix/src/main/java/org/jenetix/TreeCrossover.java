@@ -31,6 +31,7 @@ import org.jenetics.Recombinator;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+
 import org.jenetix.util.FlatTree;
 import org.jenetix.util.TreeNode;
 

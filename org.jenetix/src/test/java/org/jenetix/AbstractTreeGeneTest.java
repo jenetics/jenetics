@@ -53,7 +53,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 		final int level,
 		final Random random
 	) {
-		for (int i = 0, n = random.nextInt(5); i < n; ++i) {
+		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();
 			child.setValue(random.nextInt());
 

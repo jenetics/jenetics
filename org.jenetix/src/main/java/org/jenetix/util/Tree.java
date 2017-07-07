@@ -167,7 +167,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default int getIndex(final Tree<?, ?> child) {
 		int index = -1;
 		for (int i = 0, n = childCount(); i < n && index == -1; ++i) {
-			if (getChild(i).equals(child)) {
+			if (getChild(i).identical(child)) {
 				index = i;
 			}
 		}
