@@ -59,15 +59,15 @@ public class Program<T> implements Op<T> {
 	}
 
 	@Override
-	public T apply(final T[] variables) {
-		if (variables.length < arity() && !isTerminal()) {
+	public T apply(final T[] args) {
+		if (args.length < arity() && !isTerminal()) {
 			throw new IllegalArgumentException(format(
-				"Variable length is smaller the program arity: %d < %d",
-				variables.length, arity()
+				"Arguments length is smaller the program arity: %d < %d",
+				args.length, arity()
 			));
 		}
 
-		return eval(_tree, variables);
+		return eval(_tree, args);
 	}
 
 	/**
