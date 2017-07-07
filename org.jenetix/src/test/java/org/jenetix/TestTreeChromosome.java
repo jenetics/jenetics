@@ -19,13 +19,14 @@
  */
 package org.jenetix;
 
+import java.util.Random;
+
 import org.jenetics.Chromosome;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
 
@@ -35,11 +36,15 @@ final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeG
 
 	@Override
 	public Chromosome<TestTreeGene> newInstance() {
-		return null;
+		final Random random = RandomRegistry.getRandom();
+
+		return newInstance(
+			_genes.map(g -> g.newInstance(random.nextInt(10000)))
+		);
 	}
 
 	@Override
 	public Chromosome<TestTreeGene> newInstance(final ISeq<TestTreeGene> genes) {
-		return null;
+		return new TestTreeChromosome(genes);
 	}
 }
