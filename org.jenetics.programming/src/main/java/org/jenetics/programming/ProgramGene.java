@@ -28,6 +28,8 @@ import org.jenetics.Gene;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
+import org.jenetix.AbstractTreeGene;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -79,6 +81,14 @@ public final class ProgramGene<A>
 		}
 
 		return getAllele().apply(values);
+	}
+
+	void checkTreeState() {
+		if (genes() == null) {
+			throw new IllegalStateException(
+				"Gene is not attached to a chromosome."
+			);
+		}
 	}
 
 	public ISeq<? extends Op<A>> getOperations() {
