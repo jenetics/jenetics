@@ -19,8 +19,6 @@
  */
 package org.jenetics.programming.ops;
 
-import java.util.Objects;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -37,24 +35,5 @@ public final class Ops {
 	public static final Op<Double> MUL = Op.of("mul", 2, v -> v[0]*v[1]);
 
 	public static final Op<Double> DIV = Op.of("div", 2, v -> v[0]/v[1]);
-
-	public static Op<Double> constant(final double value) {
-		return new Op<Double>() {
-			@Override
-			public int arity() {
-				return 0;
-			}
-
-			@Override
-			public Double apply(final Double[] doubles) {
-				return value;
-			}
-
-			@Override
-			public String toString() {
-				return Objects.toString(value);
-			}
-		};
-	}
 
 }

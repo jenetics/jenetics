@@ -38,6 +38,11 @@ public class Const<T> implements Op<T> {
 	}
 
 	@Override
+	public String name() {
+		return null;
+	}
+
+	@Override
 	public int arity() {
 		return 0;
 	}

@@ -37,17 +37,36 @@ public final class Programs {
 	private Programs() {
 	}
 
-
+	/**
+	 * Create a new program tree from the given (non) terminal operations with
+	 * the desired depth. The created program tree is a <em>full</em> tree.
+	 *
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param <A> the operational type
+	 * @return a new program tree
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 */
 	public static <A> TreeNode<Op<A>> of(
-		final int levels,
+		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		requireNonNull(operations);
-		requireNonNull(terminals);
+		if (!operations.forAll(o -> !o.isTerminal())) {
+			throw new IllegalArgumentException(
+				"Operation list contains terminal op."
+			);
+		}
+		if (!terminals.forAll(Op::isTerminal)) {
+			throw new IllegalArgumentException(
+				"Terminal list contains non-terminal op."
+			);
+		}
 
 		final TreeNode<Op<A>> root = TreeNode.of();
-		fill(levels, root, operations, terminals, RandomRegistry.getRandom());
+		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
 		return root;
 	}
 

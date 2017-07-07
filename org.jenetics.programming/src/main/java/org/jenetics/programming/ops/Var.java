@@ -44,6 +44,11 @@ public final class Var<T> implements Op<T> {
 	}
 
 	@Override
+	public String name() {
+		return null;
+	}
+
+	@Override
 	public int arity() {
 		return 0;
 	}

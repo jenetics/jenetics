@@ -17,23 +17,43 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming.ops;
+package org.jenetics.programming;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.programming.ops.Op;
+import org.jenetics.programming.ops.Ops;
+import org.jenetics.programming.ops.Programs;
+import org.jenetics.programming.ops.Var;
+import org.jenetics.util.ISeq;
+
+import org.jenetix.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class Plus<N extends Number> implements Op<N> {
+public class ProgramsTest {
 
-	@Override
-	public N apply(final N[] value) {
-		return null;
-	}
+	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+		Ops.ADD,
+		Ops.DIV,
+		Ops.MUL,
+		Ops.DIV
+	);
 
-	@Override
-	public int arity() {
-		return 0;
+	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+		Var.of(0), Var.of(1), Var.of(2)
+	);
+
+	@Test
+	public void program() {
+		final TreeNode<Op<Double>> program = Programs.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		System.out.println(program);
 	}
 
 }
