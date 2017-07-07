@@ -62,7 +62,7 @@ public class Program<T> implements Op<T> {
 	public T apply(final T[] variables) {
 		if (variables.length < arity() && !isTerminal()) {
 			throw new IllegalArgumentException(format(
-				"Variable length doesn't match the program arity: %d < %d",
+				"Variable length is smaller the program arity: %d < %d",
 				variables.length, arity()
 			));
 		}
