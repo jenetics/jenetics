@@ -17,23 +17,51 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming;
+package org.jenetics.programming.ops;
+
+import static java.lang.String.format;
+
+import org.jenetics.programming.Op;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Plus<N extends Number> implements Op<N> {
+public final class Var<T> implements Op<T> {
 
-	@Override
-	public N apply(final N[] value) {
-		return null;
+	private final int _index;
+
+	private Var(final int index) {
+		if (index < 0) {
+			throw new IndexOutOfBoundsException(
+				"Index smaller than zero: " + index
+			);
+		}
+		_index = index;
+	}
+
+	public int index() {
+		return _index;
 	}
 
 	@Override
 	public int arity() {
 		return 0;
+	}
+
+	@Override
+	public T apply(final T[] variables) {
+		return variables[_index];
+	}
+
+	@Override
+	public String toString() {
+		return format("Var(%d)", _index);
+	}
+
+	public static <T> Var<T> of(final int index) {
+		return new Var<>(index);
 	}
 
 }
