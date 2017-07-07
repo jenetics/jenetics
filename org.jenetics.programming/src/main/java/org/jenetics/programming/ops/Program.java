@@ -40,7 +40,7 @@ public class Program<T> implements Op<T> {
 
 	public Program(final String name, final Tree<? extends Op<T>, ?> tree) {
 		_name = requireNonNull(name);
-		_tree = tree;
+		_tree = requireNonNull(tree);
 		_arity = tree.breadthFirstStream()
 			.filter(t -> t.getValue() instanceof Var<?>)
 			.mapToInt(v -> ((Var<?>)v.getValue()).index() + 1)
@@ -69,6 +69,16 @@ public class Program<T> implements Op<T> {
 
 		return eval(_tree, args);
 	}
+
+	@Override
+	public String toString() {
+		return _name;
+	}
+
+
+	/* *************************************************************************
+	 * Static helper methods.
+	 * ************************************************************************/
 
 	/**
 	 * Evaluates the given operation tree with the given variables.
@@ -105,9 +115,14 @@ public class Program<T> implements Op<T> {
 		return op.apply(args);
 	}
 
-	@Override
-	public String toString() {
-		return _name;
+	public static <A> void check(final Tree<? extends Op<A>, ?> program) {
+		requireNonNull(program);
+
+		program.breadthFirstStream().forEach(node -> {
+			if (node.getValue() != null && node.getValue().arity() != node.childCount()) {
+				throw new IllegalArgumentException("");
+			}
+		});
 	}
 
 }

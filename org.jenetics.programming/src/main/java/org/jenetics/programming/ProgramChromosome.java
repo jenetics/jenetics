@@ -22,8 +22,10 @@ package org.jenetics.programming;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
+import java.util.function.Predicate;
 
 import org.jenetics.programming.ops.Op;
+import org.jenetics.programming.ops.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -39,15 +41,18 @@ import org.jenetix.util.TreeNode;
  */
 public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramGene<A>> {
 
+	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<? extends Op<A>> _operations;
 	private final ISeq<? extends Op<A>> _terminals;
 
 	ProgramChromosome(
 		final ISeq<ProgramGene<A>> genes,
+		final Predicate<? super ProgramChromosome<A>> validator,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
 		super(genes);
+		_validator = validator;
 		_operations = requireNonNull(operations);
 		_terminals = requireNonNull(terminals);
 	}
@@ -61,41 +66,65 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 	}
 
 	@Override
+	public boolean isValid() {
+		if (_validator != null) {
+			if (_valid == null) {
+				_valid = _validator.test(this);
+			}
+		} else {
+			_valid = super.isValid();
+		}
+
+		return _valid;
+	}
+
+	@Override
 	public ProgramChromosome<A> newInstance(final ISeq<ProgramGene<A>> genes) {
-		return of(genes, _operations, _terminals);
+		genes.forEach(g -> g.bind(genes));
+		return of(genes, _validator, _operations, _terminals);
 	}
 
 	@Override
 	public ProgramChromosome<A> newInstance() {
-		return of(getRoot().depth(), _operations, _terminals);
+		return of(getRoot().depth(), _validator, _operations, _terminals);
 	}
 
-	public static <A>
-	ProgramChromosome<A> of(
+	public static <A> ProgramChromosome<A> of(
+		final Tree<? extends Op<A>, ?> program,
+		final Predicate<? super ProgramChromosome<A>> validator,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		Program.check(program);
+
+		final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
+			.map(n -> new ProgramGene<>(
+				n.getValue(),
+				n.childOffset(),
+				operations,
+				terminals))
+			.collect(ISeq.toISeq());
+
+		return new ProgramChromosome<>(genes, validator, operations, terminals);
+	}
+
+	public static <A> ProgramChromosome<A> of(
 		final Tree<? extends Op<A>, ?> program,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		requireNonNull(operations);
-		requireNonNull(terminals);
-		check(program);
-
-		final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
-			.map(n -> new ProgramGene<>(
-				n.getValue(), n.childOffset(), operations, terminals))
-			.collect(ISeq.toISeq());
-
-		return new ProgramChromosome<>(genes, operations, terminals);
+		return of(program, null, operations, terminals);
 	}
 
-	public static <A> void check(final Tree<? extends Op<A>, ?> program) {
-		requireNonNull(program);
-
-		program.breadthFirstStream().forEach(node -> {
-			if (node.getValue().arity() != node.childCount()) {
-				throw new IllegalArgumentException("");
-			}
-		});
+	public static <A> ProgramChromosome<A> of(
+		final int depth,
+		final Predicate<? super ProgramChromosome<A>> validator,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		final TreeNode<Op<A>> root = TreeNode.of();
+		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
+		return of(root, validator, operations, terminals);
 	}
 
 	public static <A> ProgramChromosome<A> of(
@@ -103,12 +132,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		requireNonNull(operations);
-		requireNonNull(terminals);
-
-		final TreeNode<Op<A>> root = TreeNode.of();
-		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
-		return of(root, operations, terminals);
+		return of(depth, null, operations, terminals);
 	}
 
 	private static <A> void fill(
@@ -138,11 +162,12 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 
 	public static <A> ProgramChromosome<A> of(
 		final ISeq<ProgramGene<A>> genes,
+		final Predicate<? super ProgramChromosome<A>> validator,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
 		final TreeNode<Op<A>> program = unflatten(genes);
-		return of(program, operations, terminals);
+		return of(program, validator, operations, terminals);
 	}
 
 	private static <A> TreeNode<Op<A>> unflatten(final ISeq<ProgramGene<A>> genes) {
@@ -154,7 +179,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		final int index,
 		final ISeq<ProgramGene<A>> genes
 	) {
-		if (index < genes.size()) {
+		//if (index < genes.size()) {
 			final ProgramGene<A> gene = genes.get(index);
 			tree.setValue(gene.getAllele());
 
@@ -171,7 +196,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 					tree.attach(TreeNode.of());
 				}
 			}
-		}
+		//}
 
 		return tree;
 	}

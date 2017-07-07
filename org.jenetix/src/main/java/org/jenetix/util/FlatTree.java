@@ -85,8 +85,8 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	) {
 		_index = index;
 		_nodes = requireNonNull(nodes);
-		_childOffsets = childOffsets;
-		_childCounts = childCounts;
+		_childOffsets = requireNonNull(childOffsets);
+		_childCounts = requireNonNull(childCounts);
 	}
 
 	/**

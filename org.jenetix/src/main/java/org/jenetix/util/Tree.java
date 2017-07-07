@@ -204,7 +204,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		Optional<T> ancestor = Optional.of(self(this));
 		boolean result;
 		do {
-			result = ancestor.filter(a -> a.equals(node)).isPresent();
+			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
 				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
 
