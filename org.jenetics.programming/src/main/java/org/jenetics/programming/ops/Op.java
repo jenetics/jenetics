@@ -32,20 +32,56 @@ import java.util.function.Function;
  */
 public interface Op<T> extends Function<T[], T> {
 
+	/**
+	 * Return the name of the operation.
+	 *
+	 * @return the name of the operation
+	 */
+	public  String name();
+
+	/**
+	 * Return the arity of the operation function. If the arity is zero, the
+	 * operation is <em>terminal</em> operation.
+	 *
+	 * @return the arity of the operation
+	 */
 	public int arity();
 
-	public default String name() {
-		return "Op";
+	/**
+	 * Determines if the operation is a terminal operation.
+	 *
+	 * @return {@code true} if the operation is a terminal operation,
+	 *         {@code false} otherwise
+	 */
+	public default boolean isTerminal() {
+		return arity() == 0;
 	}
 
-	public static <T> Op<T> of(final String name, final Function<T[], T> function, final int arity) {
+	/**
+	 * Create a new operation from the given parameter.
+	 *
+	 * @param name the operation name
+	 * @param arity the arity of the operation
+	 * @param function the function executed by the operation
+	 * @param <T> the operation type
+	 * @return a new operation from the given parameter
+	 * @throws NullPointerException if the given {@code name} or {@code function}
+	 *         is {@code null}
+	 * @throws IllegalArgumentException if the given {@code arity} is smaller
+	 *         than zero
+	 */
+	public static <T> Op<T> of(
+		final String name,
+		final int arity,
+		final Function<T[], T> function
+	) {
+		requireNonNull(name);
 		requireNonNull(function);
 		if (arity < 0) {
 			throw new IllegalArgumentException("Arity smaller than zero: " + arity);
 		}
 
 		return new Op<T>() {
-
 			@Override
 			public String name() {
 				return name;
@@ -66,20 +102,5 @@ public interface Op<T> extends Function<T[], T> {
 				return name();
 			}
 		};
-	}
-
-	public static <T> Op<T> ofScalar(final Function<T, T> function) {
-		return null;
-	}
-
-	public static final class Default<Object> implements Op<Object> {
-		@Override
-		public Object apply(final Object[] value) {
-			return null;
-		}
-		@Override
-		public int arity() {
-			return 0;
-		}
 	}
 }

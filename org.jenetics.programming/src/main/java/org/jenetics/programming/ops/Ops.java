@@ -30,13 +30,13 @@ public final class Ops {
 	private Ops() {
 	}
 
-	public static final Op<Double> ADD = Op.of("add", v -> v[0] + v[1], 2);
+	public static final Op<Double> ADD = Op.of("add", 2, v -> v[0] + v[1]);
 
-	public static final Op<Double> SUB = Op.of("sub", v -> v[0] - v[1], 2);
+	public static final Op<Double> SUB = Op.of("sub", 2, v -> v[0] - v[1]);
 
-	public static final Op<Double> MUL = Op.of("mul", v -> v[0]*v[1], 2);
+	public static final Op<Double> MUL = Op.of("mul", 2, v -> v[0]*v[1]);
 
-	public static final Op<Double> DIV = Op.of("div", v -> v[0]/v[1], 2);
+	public static final Op<Double> DIV = Op.of("div", 2, v -> v[0]/v[1]);
 
 	public static Op<Double> constant(final double value) {
 		return new Op<Double>() {
