@@ -68,6 +68,17 @@ public final class IntRange implements Serializable {
 	}
 
 	/**
+	 * Return the size of the {@code IntRange}: {@code max - min}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the size of the int range
+	 */
+	public int size() {
+		return _max - _min;
+	}
+
+	/**
 	 * Returns a sequential ordered {@code IntStream} from {@link #getMin()}
 	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
 	 * {@code 1}.

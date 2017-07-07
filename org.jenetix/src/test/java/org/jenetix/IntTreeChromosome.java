@@ -17,38 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix;
+
+import java.util.Random;
+
+import org.jenetics.Chromosome;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since 1.6
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
-{
+final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGene> {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
+	public IntTreeChromosome(final ISeq<? extends IntTreeGene> genes) {
+		super(genes);
 	}
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+	@Override
+	public Chromosome<IntTreeGene> newInstance() {
+		final Random random = RandomRegistry.getRandom();
+
+		return newInstance(
+			_genes.map(g -> g.newInstance(random.nextInt(10000)))
+		);
 	}
 
+	@Override
+	public Chromosome<IntTreeGene> newInstance(final ISeq<IntTreeGene> genes) {
+		return new IntTreeChromosome(genes);
+	}
 }

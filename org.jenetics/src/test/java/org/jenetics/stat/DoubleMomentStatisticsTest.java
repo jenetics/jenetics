@@ -20,7 +20,6 @@
 package org.jenetics.stat;
 
 import static org.jenetics.stat.DoubleMomentStatistics.toDoubleMomentStatistics;
-import static org.jenetics.util.RandomRegistry.with;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,6 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import org.jenetics.internal.math.DoubleAdder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

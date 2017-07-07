@@ -17,38 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix;
+
+import org.jenetics.Chromosome;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
+ * Chromosome for tree shaped genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 1.6
+ * @since !__version__!
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
+public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	extends Chromosome<G>
 {
 
 	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
+	 * Return the root gene of this chromosome.
 	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
+	 * @return the root tree gene of this chromosome
 	 */
-	public default A getMin() {
-		return getGene().getMin();
-	}
-
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+	public default G getRoot() {
+		return getGene();
 	}
 
 }

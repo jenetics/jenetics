@@ -17,38 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix;
+
+import org.jenetics.AbstractChromosome;
+import org.jenetics.util.ISeq;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
+ * Abstract base implementation of a {@code TreeChromosome}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 1.6
+ * @since !__version__!
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
+public abstract class AbstractTreeChromosome<A, G extends TreeGene<A, G>>
+	extends AbstractChromosome<G>
+	implements TreeChromosome<A, G>
 {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
-	}
-
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
+		super(genes);
+		genes.forEach(g -> g.bind(toSeq()));
 	}
 
 }

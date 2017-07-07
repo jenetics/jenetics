@@ -80,21 +80,10 @@ public class WeaselMutator<
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
 		alterations.value += IntStream.range(0, chromosomes.size())
-			.map(i -> mutate(chromosomes, i))
+			.map(i -> mutate(chromosomes, i, _probability))
 			.sum();
 
 		return Genotype.of(chromosomes);
-	}
-
-	private int mutate(final MSeq<Chromosome<G>> c, final int index) {
-		final Chromosome<G> chromosome = c.get(index);
-		final MSeq<G> genes = chromosome.toSeq().copy();
-
-		final int mutations = mutate(genes, _probability);
-		if (mutations > 0) {
-			c.set(index, chromosome.newInstance(genes.toISeq()));
-		}
-		return mutations;
 	}
 
 }

@@ -17,38 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix.util;
+
+import org.testng.annotations.Test;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since 1.6
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
-{
+public class NodeTest {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
-	}
+	@Test
+	public void serialize() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(4, 5))
+			.attach(TreeNode.of(2)
+				.attach(6))
+			.attach(TreeNode.of(3)
+				.attach(TreeNode.of(7)
+					.attach(10, 11))
+				.attach(TreeNode.of(8))
+				.attach(TreeNode.of(9)));
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+		System.out.println(tree);
+		final FlatTree<Integer> flat = FlatTree.of(tree);
+		System.out.println(flat);
+		System.out.println(Tree.toString(flat));
+		/*
+		final ISeq<FlatTreeNode<Integer>> seq = FlatTreeNode.flatten(tree);
+		Assert.assertEquals(FlatTreeNode.unflatten(seq), tree);
+
+		System.out.println(FlatTreeNode.flatten(tree));
+		*/
 	}
 
 }

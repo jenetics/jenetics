@@ -95,7 +95,7 @@ public final class IntegerGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @return a new random {@code IntegerGene}
+	 * @return a new {@code IntegerGene} with the given {@code value}
 	 */
 	public static IntegerGene of(final int value, final int min, final int max) {
 		return new IntegerGene(value, min, max);
@@ -111,7 +111,7 @@ public final class IntegerGene
 	 *
 	 * @param value the value of the gene.
 	 * @param range the integer range to use
-	 * @return a new random {@code IntegerGene}
+	 * @return a new {@code IntegerGene} with the give {@code value}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final int value, final IntRange range) {

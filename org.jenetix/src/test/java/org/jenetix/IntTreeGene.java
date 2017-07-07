@@ -17,38 +17,39 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package org.jenetix;
+
+import org.jenetics.util.RandomRegistry;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since 1.6
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
-{
+final class IntTreeGene extends AbstractTreeGene<Integer, IntTreeGene> {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
+	public IntTreeGene(
+		final Integer allele,
+		final int childOffset,
+		final int childCount
+	) {
+		super(allele, childOffset, childCount);
 	}
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+	@Override
+	public IntTreeGene newInstance() {
+		return newInstance(RandomRegistry.getRandom().nextInt(10000));
 	}
 
+	@Override
+	public IntTreeGene newInstance(final Integer value) {
+		return newInstance(value, childOffset(), childCount());
+	}
+
+	@Override
+	public IntTreeGene newInstance(
+		final Integer allele,
+		final int childOffset,
+		final int childCount
+	) {
+		return new IntTreeGene(allele, childOffset, childCount);
+	}
 }

@@ -136,7 +136,7 @@ public class Mutator<
 		return genotype.newInstance(chromosomes.toISeq());
 	}
 
-	private int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
+	protected int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
 		final Chromosome<G> chromosome = c.get(i);
 		final MSeq<G> genes = chromosome.toSeq().copy();
 
