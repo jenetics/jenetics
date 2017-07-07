@@ -41,7 +41,7 @@ import org.jenetix.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class TreeMutator<
+public abstract class TreeCrossover<
 	G extends TreeGene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -55,7 +55,7 @@ public abstract class TreeMutator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}
 	 */
-	protected TreeMutator(final double probability) {
+	protected TreeCrossover(final double probability) {
 		super(probability, 2);
 	}
 
