@@ -24,9 +24,9 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-final class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
+final class IntTreeGene extends AbstractTreeGene<Integer, IntTreeGene> {
 
-	public TestTreeGene(
+	public IntTreeGene(
 		final Integer allele,
 		final int childOffset,
 		final int childCount
@@ -35,21 +35,21 @@ final class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
 	}
 
 	@Override
-	public TestTreeGene newInstance() {
+	public IntTreeGene newInstance() {
 		return newInstance(RandomRegistry.getRandom().nextInt(10000));
 	}
 
 	@Override
-	public TestTreeGene newInstance(final Integer value) {
+	public IntTreeGene newInstance(final Integer value) {
 		return newInstance(value, childOffset(), childCount());
 	}
 
 	@Override
-	public TestTreeGene newInstance(
+	public IntTreeGene newInstance(
 		final Integer allele,
 		final int childOffset,
 		final int childCount
 	) {
-		return new TestTreeGene(allele, childOffset, childCount);
+		return new IntTreeGene(allele, childOffset, childCount);
 	}
 }

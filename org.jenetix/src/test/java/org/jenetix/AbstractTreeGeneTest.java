@@ -33,16 +33,16 @@ import org.jenetix.util.TreeTestBase;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class AbstractTreeGeneTest extends TreeTestBase<Integer, TestTreeGene> {
+public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 
 	@Override
-	public TestTreeGene newTree(int levels, Random random) {
+	public IntTreeGene newTree(int levels, Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 
 		final FlatTree<Integer> flattened = FlatTree.of(root);
-		final ISeq<TestTreeGene> genes = flattened.stream()
-			.map(n -> new TestTreeGene(n.getValue(), n.childOffset(), n.childCount()))
+		final ISeq<IntTreeGene> genes = flattened.stream()
+			.map(n -> new IntTreeGene(n.getValue(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());
 
 		return new IntTreeChromosome(genes).getRoot();

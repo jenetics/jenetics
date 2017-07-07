@@ -28,14 +28,14 @@ import org.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-final class IntTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {
+final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGene> {
 
-	public IntTreeChromosome(final ISeq<? extends TestTreeGene> genes) {
+	public IntTreeChromosome(final ISeq<? extends IntTreeGene> genes) {
 		super(genes);
 	}
 
 	@Override
-	public Chromosome<TestTreeGene> newInstance() {
+	public Chromosome<IntTreeGene> newInstance() {
 		final Random random = RandomRegistry.getRandom();
 
 		return newInstance(
@@ -44,7 +44,7 @@ final class IntTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGe
 	}
 
 	@Override
-	public Chromosome<TestTreeGene> newInstance(final ISeq<TestTreeGene> genes) {
+	public Chromosome<IntTreeGene> newInstance(final ISeq<IntTreeGene> genes) {
 		return new IntTreeChromosome(genes);
 	}
 }
