@@ -68,7 +68,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	 *
 	 * @see #genes()
 	 *
-	 * @param genes the genes of the attached chromosome
+	 * @param genes the genes of the underlying chromosome
 	 */
 	public void bind(final ISeq<G> genes);
 
