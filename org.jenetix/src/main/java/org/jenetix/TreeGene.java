@@ -46,7 +46,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	 * Return the genes of the underlying chromosome, where this tree gene is
 	 * part of. For an unattached gene, {@code null} is returned.
 	 *
-	 * @see #attachTo(ISeq)
+	 * @see #bind(ISeq)
 	 *
 	 * @return the genes of the underlying chromosome
 	 */
@@ -62,15 +62,15 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	public int childOffset();
 
 	/**
-	 * This method is used by the {@code AbstractTreeChromosome} to attach
-	 * itself to this gene. Once set, the genes can be queried with
+	 * This method is used by the {@code AbstractTreeChromosome} to bind the
+	 * rest of the genes to this one. Once set, the genes can be queried with
 	 * {@link #genes()}.
 	 *
 	 * @see #genes()
 	 *
 	 * @param genes the genes of the attached chromosome
 	 */
-	public void attachTo(final ISeq<G> genes);
+	public void bind(final ISeq<G> genes);
 
 	/**
 	 * Return a new tree gene with the given allele and the <em>local</em> tree

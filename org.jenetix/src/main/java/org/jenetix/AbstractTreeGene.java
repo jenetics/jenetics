@@ -89,7 +89,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @param genes the genes of the attached chromosome
 	 */
 	@Override
-	public void attachTo(final ISeq<G> genes) {
+	public void bind(final ISeq<G> genes) {
 		_genes = requireNonNull(genes);
 	}
 
