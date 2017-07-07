@@ -44,7 +44,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 
 	/**
 	 * Return the genes of the underlying chromosome, where this tree gene is
-	 * part of. For an unattached gene, {@code null} is returned.
+	 * part of. For an unbound gene, {@code null} is returned.
 	 *
 	 * @see #bind(ISeq)
 	 *
