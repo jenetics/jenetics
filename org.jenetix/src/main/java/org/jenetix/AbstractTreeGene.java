@@ -32,8 +32,8 @@ import org.jenetix.util.Tree;
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	implements TreeGene<A, G>

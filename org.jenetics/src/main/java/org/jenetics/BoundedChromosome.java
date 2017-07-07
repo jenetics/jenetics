@@ -23,7 +23,7 @@ package org.jenetics;
  * Chromosome interface for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 3.9
  * @since 1.6
  */
 public interface BoundedChromosome<

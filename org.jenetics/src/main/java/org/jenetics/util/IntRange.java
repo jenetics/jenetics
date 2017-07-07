@@ -70,7 +70,7 @@ public final class IntRange implements Serializable {
 	/**
 	 * Return the size of the {@code IntRange}: {@code max - min}.
 	 *
-	 * @since !__version__!
+	 * @since 3.9
 	 *
 	 * @return the size of the int range
 	 */

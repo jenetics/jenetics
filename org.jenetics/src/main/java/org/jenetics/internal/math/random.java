@@ -62,7 +62,7 @@ public final class random {
 	 * Returns a pseudo-random, uniformly distributed int value between min and
 	 * max (min and max included).
 	 *
-	 * @since !__version__!
+	 * @since 3.9
 	 *
 	 * @param random the random engine to use for calculating the random int
 	 *        value
