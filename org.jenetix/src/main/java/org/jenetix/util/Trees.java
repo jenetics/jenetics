@@ -22,14 +22,12 @@ package org.jenetix.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
-
 import org.jenetics.util.MSeq;
 
 /**
@@ -81,7 +79,7 @@ final class Trees {
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	static <A, T extends Tree<A, T>> String toString(final T tree) {
+	static <A, T extends Tree<? extends A, T>> String toString(final T tree) {
 		requireNonNull(tree);
 
 		return render(tree).stream()
@@ -89,7 +87,7 @@ final class Trees {
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static <A, T extends Tree<A, T>>
+	private static <A, T extends Tree<? extends A, T>>
 	List<StringBuilder> render(final T tree) {
 		final List<StringBuilder> result = new ArrayList<>();
 		result.add(new StringBuilder().append(tree.getValue()));

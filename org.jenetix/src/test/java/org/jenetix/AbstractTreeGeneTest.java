@@ -87,6 +87,11 @@ final class TestTreeGene extends AbstractTreeGene<Integer, TestTreeGene> {
 	public TestTreeGene newInstance(Integer value) {
 		return null;
 	}
+
+	@Override
+	public TestTreeGene newInstance(Integer allele, int childOffset, int childCount) {
+		return null;
+	}
 }
 
 final class TestTreeChromosome extends AbstractTreeChromosome<Integer, TestTreeGene> {

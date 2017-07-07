@@ -90,7 +90,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 	void check(final T program) {
 		requireNonNull(program);
 
-		program.breathFirstStream().forEach(node -> {
+		program.breadthFirstStream().forEach(node -> {
 			if (node.getValue().arity() != node.childCount()) {
 				throw new IllegalArgumentException("");
 			}

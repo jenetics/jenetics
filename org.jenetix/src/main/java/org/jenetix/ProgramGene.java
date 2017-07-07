@@ -104,4 +104,8 @@ public final class ProgramGene<A>
 		return new ProgramGene<>(op, childOffset(), _operations, _terminals);
 	}
 
+	@Override
+	public ProgramGene<A> newInstance(Op<A> allele, int childOffset, int childCount) {
+		return null;
+	}
 }

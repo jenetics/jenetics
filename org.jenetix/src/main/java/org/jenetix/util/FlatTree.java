@@ -25,13 +25,46 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
  * Tree implementation, where the nodes of the whole tree are stored in an array.
+ * The tree
+ * <pre>
+ * 0
+ * ├── 1
+ * │   ├── 4
+ * │   └── 5
+ * ├── 2
+ * │   └── 6
+ * └── 3
+ *     ├── 7
+ *     │   ├── 10
+ *     │   └── 11
+ *     ├── 8
+ *     └── 9
+ * </pre>
+ * will be stored as
+ * <pre>
+ * ┌─┬───┐       ┌──────┬──┐
+ * 0 1 2 3 4 5 6 7 8 9 10 11
+ *   └─│─│─┴─┘ │ │   │
+ *     └─│─────┘ │   │
+ *       └───────┴───┘
+ * </pre>
+ * The child nodes are always stored on the right side of the parent nodes. So
+ * you have to read the tree from left to right. All children of a parent node
+ * are stored continuously after the {@code childOffset} and are defined by the
+ * sub-array {@code [childOffset, childOffset + childCount)}.
+ * <p>
+ * This class is mainly used in the {@code ProgramChromosome}, where it is
+ * required to map a tree structure (the AST of the program) onto a
+ * array-structured chromosome.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -90,7 +123,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	@Override
 	public Optional<FlatTree<T>> getParent() {
 		return stream()
-			.filter(node -> node.childStream().anyMatch(this::sameNode))
+			.filter(node -> node.childStream().anyMatch(this::identical))
 			.findFirst();
 	}
 
@@ -125,10 +158,25 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	}
 
 	/**
+	 * Return the whole flattened tree values in breadth-first order. This is
+	 * equivalent to
+	 * <pre>{@code
+	 * final ISeq<? extends T> seq = getRoot().breadthFirstStream()
+	 *     .map(Tree::getValue)
+	 *     .collect(ISeq.toISeq());
+	 * }</pre>
+	 *
+	 * @return the flattened tree values in breadth-first order
+	 */
+	public ISeq<? extends T> nodes() {
+		return _nodes.toISeq();
+	}
+
+	/**
 	 * Return a stream of all nodes of the whole underlying tree. This method
 	 * call is equivalent to
 	 * <pre>{@code
-	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breathFirstStream();
+	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breadthFirstStream();
 	 * }</pre>
 	 *
 	 * @return a stream of all nodes of the whole underlying tree
@@ -137,8 +185,27 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
 	}
 
+	/**
+	 * Return a sequence of all <em>mapped</em> nodes of the whole underlying
+	 * tree. This is a convenient method for
+	 * <pre>{@code
+	 * final ISeq<B> seq = stream()
+	 *     .map(mapper)
+	 *     .collect(ISeq.toISeq())
+	 * }</pre>
+	 *
+	 * @param mapper the mapper function
+	 * @param <B> the mapped type
+	 * @return a sequence of all <em>mapped</em> nodes
+	 */
+	public <B> ISeq<B> map(final Function<FlatTree<T>, ? extends B> mapper) {
+		return stream()
+			.map(mapper)
+			.collect(ISeq.toISeq());
+	}
+
 	@Override
-	public boolean sameNode(final Tree<?, ?> other) {
+	public boolean identical(final Tree<?, ?> other) {
 		return other instanceof FlatTree<?> &&
 			((FlatTree)other)._index == _index &&
 			((FlatTree)other)._nodes == _nodes;

@@ -22,6 +22,8 @@ package org.jenetix;
 import org.jenetics.Chromosome;
 
 /**
+ * Chromosome for tree shaped genes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

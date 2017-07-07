@@ -190,7 +190,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 	private void checkTreeSize(final T tree) {
 		Assert.assertEquals(
 			tree.size(),
-			(int)tree.breathFirstStream().count()
+			(int)tree.breadthFirstStream().count()
 		);
 	}
 

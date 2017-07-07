@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.jenetics.util.ISeq;
-
 import org.jenetix.util.Tree;
 
 /**
@@ -78,16 +77,23 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		_childCount = childCount;
 	}
 
+	@Override
+	public ISeq<G> genes() {
+		return _genes;
+	}
+
 	/**
 	 * This method is used by the {@code AbstractTreeChromosome} to attach
 	 * itself to this gene.
 	 *
 	 * @param genes the genes of the attached chromosome
 	 */
-	final void attachTo(final ISeq<G> genes) {
+	@Override
+	public void attachTo(final ISeq<G> genes) {
 		_genes = requireNonNull(genes);
 	}
 
+	@Override
 	public int childOffset() {
 		return _childOffset;
 	}
@@ -97,12 +103,19 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _allele;
 	}
 
+	/**
+	 * Return the <em>parent</em> node of this tree node.
+	 *
+	 * @return the parent node, or {@code Optional.empty()} if this node is the
+	 *         root of the tree
+	 * @throws IllegalStateException if this gene is not part of a chromosome
+	 */
 	@Override
 	public Optional<G> getParent() {
 		checkTreeState();
 
 		return _genes.stream()
-			.filter(g -> g.childStream().anyMatch(this::sameNode))
+			.filter(g -> g.childStream().anyMatch(this::identical))
 			.findFirst();
 	}
 
@@ -114,6 +127,15 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		}
 	}
 
+	/**
+	 * Return the child gene with the given index.
+	 *
+	 * @param index the child index
+	 * @return the child node with the given index
+	 * @throws IndexOutOfBoundsException  if the {@code index} is out of
+	 *         bounds ({@code [0, childCount())})
+	 * @throws IllegalStateException if this gene is not part of a chromosome
+	 */
 	@Override
 	public G getChild(final int index) {
 		checkTreeState();
@@ -138,7 +160,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public boolean sameNode(final Tree<?, ?> other) {
+	public boolean identical(final Tree<?, ?> other) {
 		return other instanceof AbstractTreeGene<?, ?> &&
 			Objects.equals(((AbstractTreeGene<?, ?>)other)._allele, _allele) &&
 			((AbstractTreeGene)other)._genes == _genes &&

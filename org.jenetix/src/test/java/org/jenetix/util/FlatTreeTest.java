@@ -76,7 +76,7 @@ public class FlatTreeTest extends TreeTestBase<Integer, FlatTree<Integer>> {
 
 	private void print(final Tree<?, ?> tree) {
 		System.out.println(tree);
-		tree.breathFirstStream().forEach(n -> {
+		tree.breadthFirstStream().forEach(n -> {
 			System.out.println("" + n.getParent().map(t -> t.getValue()) + "->" + n.getValue());
 		});
 

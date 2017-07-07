@@ -35,10 +35,10 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 
 	private final T _tree;
 
-	protected int cursor = 0;
-	protected int lastElement = -1;
+	private int cursor = 0;
+	private int lastElement = -1;
 
-	public TreeChildIterator(final T tree) {
+	TreeChildIterator(final T tree) {
 		_tree = requireNonNull(tree, "Tree must not be null.");
 	}
 

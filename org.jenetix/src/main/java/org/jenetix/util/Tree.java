@@ -32,7 +32,10 @@ import java.util.stream.StreamSupport;
 import org.jenetics.util.ISeq;
 
 /**
- * General purpose tree structure.
+ * General purpose tree structure. The interface only contains tree read methods.
+ * For a mutable tree implementation have a look at the {@link TreeNode} class.
+ *
+ * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -41,15 +44,41 @@ import org.jenetics.util.ISeq;
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/* *************************************************************************
-	 * Basic (abstract) operations.
+	 * Basic (abstract) operations. All other tree operations can be derived
+	 * from this methods.
 	 **************************************************************************/
 
+	/**
+	 * Return the value of the current {@code Tree} node. The value my be
+	 * {@code null}.
+	 *
+	 * @return the value of the current {@code Tree} node
+	 */
 	public V getValue();
 
+	/**
+	 * Return the <em>parent</em> node of this tree node.
+	 *
+	 * @return the parent node, or {@code Optional.empty()} if this node is the
+	 *         root of the tree
+	 */
 	public Optional<T> getParent();
 
+	/**
+	 * Return the child node with the given index.
+	 *
+	 * @param index the child index
+	 * @return the child node with the given index
+	 * @throws IndexOutOfBoundsException  if the {@code index} is out of
+	 *         bounds ({@code [0, childCount())})
+	 */
 	public T getChild(final int index);
 
+	/**
+	 * Return the number of children this tree node consists of.
+	 *
+	 * @return the number of children this tree node consists of
+	 */
 	public int childCount();
 
 
@@ -152,7 +181,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
 	public default int size() {
-		return (int)breathFirstStream().count();
+		return (int) breadthFirstStream().count();
 	}
 
 	/* *************************************************************************
@@ -256,7 +285,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default boolean isRelated(final Tree<?, ?> node) {
 		requireNonNull(node);
-		return node.getRoot() == getRoot();
+		return node.getRoot().identical(getRoot());
 	}
 
 	/**
@@ -442,7 +471,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public default boolean isSibling(final Tree<?, ?> node) {
-		return requireNonNull(node) == this ||
+		return identical(requireNonNull(node)) ||
 			getParent().equals(node.getParent());
 	}
 
@@ -590,7 +619,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of leaves beneath this node
 	 */
 	public default int leafCount() {
-		return (int)breathFirstStream()
+		return (int) breadthFirstStream()
 			.filter(Tree<V, T>::isLeaf)
 			.count();
 	}
@@ -637,7 +666,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see #depthFirstIterator
 	 * @return a stream for traversing the tree in breadth-first order
 	 */
-	public default Stream<T> breathFirstStream() {
+	public default Stream<T> breadthFirstStream() {
 		return StreamSupport
 			.stream(spliteratorUnknownSize(breadthFirstIterator(), 0), false);
 	}
@@ -753,15 +782,15 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/**
 	 * Tests whether {@code this} node is the same as the {@code other} node.
-	 * The default implementation compares the references of the two objects,
-	 * but other implementations may use different criteria for checking the
-	 * <i>sameness</i>.
+	 * The default implementation compares the object identity
+	 * ({@code this == other}) of the two objects, but other implementations may
+	 * use different criteria for checking the <i>identity</i>.
 	 *
 	 * @param other the {@code other} node
 	 * @return {@code true} if the {@code other} node is the same as {@code this}
 	 *         node.
 	 */
-	public default boolean sameNode(final Tree<?, ?> other) {
+	public default boolean identical(final Tree<?, ?> other) {
 		return this == other;
 	}
 
@@ -809,7 +838,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <A, T extends Tree<A, T>> String toString(final T tree) {
+	public static <A, T extends Tree<? extends A, T>>
+	String toString(final T tree) {
 		requireNonNull(tree);
 		return Trees.toString(tree);
 	}
