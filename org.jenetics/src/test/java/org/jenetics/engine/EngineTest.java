@@ -209,6 +209,25 @@ public class EngineTest {
 		Assert.assertEquals(result.getInvalidCount(), populationSize);
 	}
 
+	@Test
+	public void parallelStream() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine
+			.stream()
+			.limit(limit.byFixedGeneration(1000))
+			.parallel()
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertTrue(
+			result.getTotalGenerations() >= 1000,
+			"Total generation must be bigger than 1000: " +
+			result.getTotalGenerations()
+		);
+	}
+
 	// https://github.com/jenetics/jenetics/issues/47
 	@Test(timeOut = 15_000L)
 	public void deadLock() {

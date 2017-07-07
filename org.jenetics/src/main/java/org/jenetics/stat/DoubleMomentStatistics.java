@@ -180,6 +180,17 @@ public class DoubleMomentStatistics
 			super.sameState(other);
 	}
 
+	/**
+	 * Return a {@code DoubleMoments} object from the current statistics,
+	 *
+	 * @since 3.9
+	 *
+	 * @return a {@code DoubleMoments} object from the current statistics
+	 */
+	public DoubleMoments toDoubleMoments() {
+		return DoubleMoments.of(this);
+	}
+
 	@Override
 	public String toString() {
 		return String.format(

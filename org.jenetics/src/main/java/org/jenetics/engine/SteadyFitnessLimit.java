@@ -37,7 +37,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 	private int _stable = 0;
 	private C _fitness;
 
-	public SteadyFitnessLimit(final int generations) {
+	SteadyFitnessLimit(final int generations) {
 		if (generations < 1) {
 			throw new IllegalArgumentException("Generations < 1: " + generations);
 		}

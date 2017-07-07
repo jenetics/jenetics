@@ -20,14 +20,11 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.DoubleSummaryStatistics;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical summary information.
@@ -122,22 +119,23 @@ public final class DoubleSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(DoubleMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*Double.doubleToLongBits(_sum) + 37;
+		hash += 33*Double.doubleToLongBits(_min) + 37;
+		hash += 33*Double.doubleToLongBits(_max) + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof DoubleSummary &&
-			eq(_count, ((DoubleSummary)obj)._count) &&
-			eq(_sum, ((DoubleSummary)obj)._sum) &&
-			eq(_min, ((DoubleSummary)obj)._min) &&
-			eq(_max, ((DoubleSummary)obj)._max) &&
-			eq(_mean, ((DoubleSummary)obj)._mean);
+			_count == ((DoubleSummary)obj)._count &&
+			Double.compare(_sum, ((DoubleSummary)obj)._sum) == 0 &&
+			Double.compare(_min, ((DoubleSummary)obj)._min) == 0 &&
+			Double.compare(_max, ((DoubleSummary)obj)._max) == 0 &&
+			Double.compare(_mean, ((DoubleSummary)obj)._mean) == 0;
 	}
 
 	@Override

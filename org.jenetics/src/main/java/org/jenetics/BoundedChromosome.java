@@ -23,7 +23,7 @@ package org.jenetics;
  * Chromosome interface for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 1.6
+ * @version !__version__!
  * @since 1.6
  */
 public interface BoundedChromosome<
@@ -38,13 +38,17 @@ public interface BoundedChromosome<
 	 *
 	 * @return the minimum value of this {@code BoundedChromosome}.
 	 */
-	public A getMin();
+	public default A getMin() {
+		return getGene().getMin();
+	}
 
 	/**
 	 * Return the maximum value of this {@code BoundedChromosome}.
 	 *
 	 * @return the maximum value of this {@code BoundedChromosome}.
 	 */
-	public A getMax();
+	public default A getMax() {
+		return getGene().getMax();
+	}
 
 }

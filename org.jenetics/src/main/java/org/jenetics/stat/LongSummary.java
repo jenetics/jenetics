@@ -20,14 +20,11 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.LongSummaryStatistics;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical summary information.
@@ -122,22 +119,23 @@ public final class LongSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(LongMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*_sum + 37;
+		hash += 33*_min + 37;
+		hash += 33*_max + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof LongSummary &&
-			eq(_count, ((LongSummary)obj)._count) &&
-			eq(_sum, ((LongSummary)obj)._sum) &&
-			eq(_min, ((LongSummary)obj)._min) &&
-			eq(_max, ((LongSummary)obj)._max) &&
-			eq(_mean, ((LongSummary)obj)._mean);
+			_count == ((LongSummary)obj)._count &&
+			_sum == ((LongSummary)obj)._sum &&
+			_min == ((LongSummary)obj)._min &&
+			_max == ((LongSummary)obj)._max &&
+			Double.compare(_mean, ((LongSummary)obj)._mean) == 0;
 	}
 
 	@Override

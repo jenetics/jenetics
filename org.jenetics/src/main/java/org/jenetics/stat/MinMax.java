@@ -156,7 +156,7 @@ public final class MinMax<C> implements Consumer<C> {
 
 	@Override
 	public String toString() {
-		return format("MinMax[count=%d, min=%s, max:%s]", _count, _max, _max);
+		return format("MinMax[count=%d, min=%s, max:%s]", _count, _min, _max);
 	}
 
 	/* *************************************************************************
@@ -269,7 +269,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * @return a new {@code MinMax} <i>consumer</i>
 	 */
 	public static <C extends Comparable<? super C>> MinMax<C> of() {
-		return of((a, b) -> a.compareTo(b));
+		return of(Comparator.naturalOrder());
 	}
 
 }

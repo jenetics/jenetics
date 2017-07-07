@@ -20,13 +20,10 @@
 package org.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.function.ToLongFunction;
 import java.util.stream.Collector;
-
-import org.jenetics.internal.util.Hash;
 
 /**
  * <i>Value</i> objects which contains statistical moments.
@@ -170,28 +167,29 @@ public final class LongMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(LongMoments.class)
-			.and(_count)
-			.and(_sum)
-			.and(_min)
-			.and(_max)
-			.and(_mean)
-			.and(_variance)
-			.and(_skewness)
-			.and(_kurtosis).value();
+		int hash = 17;
+		hash += 33*_count + 37;
+		hash += 33*_sum + 37;
+		hash += 33*_min + 37;
+		hash += 33*_max + 37;
+		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.doubleToLongBits(_variance) + 37;
+		hash += 33*Double.doubleToLongBits(_skewness) + 37;
+		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof LongMoments &&
-			eq(_count, ((LongMoments)obj)._count) &&
-			eq(_sum, ((LongMoments)obj)._sum) &&
-			eq(_min, ((LongMoments)obj)._min) &&
-			eq(_max, ((LongMoments)obj)._max) &&
-			eq(_mean, ((LongMoments)obj)._mean) &&
-			eq(_variance, ((LongMoments)obj)._variance) &&
-			eq(_skewness, ((LongMoments)obj)._skewness) &&
-			eq(_kurtosis, ((LongMoments)obj)._kurtosis);
+			_count == ((LongMoments)obj)._count &&
+			_sum == ((LongMoments)obj)._sum &&
+			_min == ((LongMoments)obj)._min &&
+			_max == ((LongMoments)obj)._max &&
+			Double.compare(_mean, ((LongMoments)obj)._mean) == 0 &&
+			Double.compare(_variance, ((LongMoments)obj)._variance) == 0 &&
+			Double.compare(_skewness, ((LongMoments)obj)._skewness) == 0 &&
+			Double.compare(_kurtosis, ((LongMoments)obj)._kurtosis) == 0;
 	}
 
 	@Override

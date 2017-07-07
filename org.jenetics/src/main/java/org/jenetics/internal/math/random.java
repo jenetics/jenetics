@@ -29,6 +29,8 @@ import java.util.stream.IntStream;
 
 import org.jenetics.internal.util.require;
 
+import org.jenetics.util.IntRange;
+
 /**
  * Some random helper functions.
  *
@@ -54,6 +56,23 @@ public final class random {
 
 	public static short nextShort(final Random random) {
 		return (short)nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE);
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
+	 *
+	 * @since !__version__!
+	 *
+	 * @param random the random engine to use for calculating the random int
+	 *        value
+	 * @param range the int range
+	 * @return a random integer greater than or equal to {@code min} and
+	 *         less than or equal to {@code max}
+	 * @throws NullPointerException if one of the parameters is {@code null}.
+	 */
+	public static int nextInt(final Random random, final IntRange range) {
+		return nextInt(random, range.getMin(), range.getMax());
 	}
 
 	/**
@@ -250,15 +269,15 @@ public final class random {
 	 */
 
 	public static float toFloat(final int a) {
-		return (a >>> 8)/((float)(1 << 24));
+		return (a >>> 8)/(float)(1 << 24);
 	}
 
 	public static float toFloat(final long a) {
-		return (int)(a >>> 40)/((float)(1 << 24));
+		return (int)(a >>> 40)/(float)(1 << 24);
 	}
 
 	public static double toDouble(final long a) {
-		return (((a >>> 38) << 27) + (((int)a) >>> 5))/(double)(1L << 53);
+		return (((a >>> 38) << 27) + ((int)a >>> 5))/(double)(1L << 53);
 	}
 
 	public static double toDouble(final int a, final int b) {

@@ -31,9 +31,10 @@ import org.jenetics.Phenotype;
 import org.jenetics.SinglePointCrossover;
 import org.jenetics.StochasticUniversalSelector;
 import org.jenetics.TournamentSelector;
+import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
+import org.jenetics.engine.Problem;
 import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -44,22 +45,21 @@ public class StringGenerator {
 
 	private static final String TARGET_STRING = "jenetics";
 
-	private static Integer evaluate(final Genotype<CharacterGene> gt) {
-		final CharSequence source = (CharSequence)gt.getChromosome();
-
-		return IntStream.range(0, TARGET_STRING.length())
-			.map(i -> source.charAt(i) == TARGET_STRING.charAt(i) ? 1 : 0)
-			.sum();
-	}
-
-	public static void main(String[] args) throws Exception {
-		final CharSeq chars = CharSeq.of("a-z");
-		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			new CharacterChromosome(chars, TARGET_STRING.length())
+	private static final Problem<CharSequence, CharacterGene, Integer> PROBLEM =
+		Problem.of(
+			seq -> IntStream.range(0, TARGET_STRING.length())
+				.map(i -> seq.charAt(i) == TARGET_STRING.charAt(i) ? 1 : 0)
+				.sum(),
+			Codec.of(
+				Genotype.of(new CharacterChromosome(
+					CharSeq.of("a-z"), TARGET_STRING.length()
+				)),
+				gt -> (CharSequence)gt.getChromosome()
+			)
 		);
 
-		final Engine<CharacterGene, Integer> engine = Engine
-			.builder(StringGenerator::evaluate, gtf)
+	public static void main(final String[] args) {
+		final Engine<CharacterGene, Integer> engine = Engine.builder(PROBLEM)
 			.populationSize(500)
 			.survivorsSelector(new StochasticUniversalSelector<>())
 			.offspringSelector(new TournamentSelector<>(5))

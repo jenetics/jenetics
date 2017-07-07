@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
@@ -46,12 +47,14 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version !__version__!
  */
-public interface Seq<T> extends Iterable<T> {
+public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
+	 *
+	 * @see #apply(int)
 	 *
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
@@ -59,6 +62,22 @@ public interface Seq<T> extends Iterable<T> {
 	 *         (index &lt; 0 || index &gt;= size()).
 	 */
 	public T get(final int index);
+
+	/**
+	 * Return the value at the given {@code index}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #get(int)
+	 *
+	 * @param index index of the element to return.
+	 * @return the value at the given {@code index}.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         (index &lt; 0 || index &gt;= size()).
+	 */
+	public default T apply(final int index) {
+		return get(index);
+	}
 
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the
@@ -533,6 +552,7 @@ public interface Seq<T> extends Iterable<T> {
 	 *
 	 * @see java.util.Collection#toArray(Object[])
 	 *
+	 * @param <B> the runtime type of the array to contain the sequence
 	 * @param array the array into which the elements of this array are to be
 	 *         stored, if it is big enough; otherwise, a new array of the same
 	 *         runtime type is allocated for this purpose.
@@ -543,21 +563,25 @@ public interface Seq<T> extends Iterable<T> {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public default T[] toArray(final T[] array) {
+	public default <B> B[] toArray(final B[] array) {
 		if (array.length < length()) {
-			final T[] copy = (T[])java.lang.reflect.Array.newInstance(
-				array.getClass().getComponentType(), length()
-			);
+			final Object[] copy = (Object[])java.lang.reflect.Array
+				.newInstance(array.getClass().getComponentType(), length());
+
 			for (int i = length(); --i >= 0;) {
 				copy[i] = get(i);
 			}
 
-			return copy;
+			return (B[])copy;
 		}
 
 		for (int i = 0, n = length(); i < n; ++i) {
-			array[i] = get(i);
+			((Object[])array)[i] = get(i);
 		}
+		if (array.length > length()) {
+			array[length()] = null;
+		}
+
 		return array;
 	}
 

@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.jenetics.internal.util.Equality;
