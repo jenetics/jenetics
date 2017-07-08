@@ -72,8 +72,6 @@ public class SingleNodeCrossover<
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
 			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
 
-			//System.out.println(n1.getValue() + "<-->" + n2.getValue());
-
 			final int i1 = p1.getIndex(n1);
 			final int i2 = p2.getIndex(n2);
 

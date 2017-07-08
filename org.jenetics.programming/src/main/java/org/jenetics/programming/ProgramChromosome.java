@@ -26,6 +26,7 @@ import java.util.function.Predicate;
 
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Program;
+import org.jenetics.programming.ops.Programs;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
@@ -96,24 +97,12 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 	) {
 		Program.check(program);
 
-		try {
-			final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
-				.map(n -> new ProgramGene<>(
-					n.getValue(),
-					n.childOffset(),
-					operations,
-					terminals))
-				.collect(ISeq.toISeq());
+		final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
+			.map(n -> new ProgramGene<>(
+				n.getValue(), n.childOffset(), operations, terminals))
+			.collect(ISeq.toISeq());
 
-			return new ProgramChromosome<>(genes, validator, operations, terminals);
-		} catch (NullPointerException e) {
-			System.out.println(program);
-			FlatTreeNode.of(program).stream().forEach(System.out::println);
-			throw e;
-		}
-
-
-
+		return new ProgramChromosome<>(genes, validator, operations, terminals);
 	}
 
 	public static <A> ProgramChromosome<A> of(
@@ -174,39 +163,8 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		genes.forEach(g -> g.bind(genes));
-		genes.forEach(g -> requireNonNull(g.getAllele()));
-		final TreeNode<Op<A>> program = toTree(genes);
-		//System.out.println("----------------------------------------");
-		//System.out.println(program);
-		//System.out.println("----------------------------------------");
+		final TreeNode<Op<A>> program = Programs.toTree(genes, terminals);
 		return of(program, validator, operations, terminals);
-	}
-
-	private static <A> TreeNode<Op<A>> toTree(final ISeq<ProgramGene<A>> genes) {
-		return toTree(TreeNode.of(), 0, genes);
-	}
-
-	private static <A> TreeNode<Op<A>> toTree(
-		final TreeNode<Op<A>> tree,
-		final int index,
-		final ISeq<ProgramGene<A>> genes
-	) {
-		if (index < genes.size()) {
-			final ProgramGene<A> gene = genes.get(index);
-			final Op<A> op = gene.getAllele();
-			tree.setValue(requireNonNull(op));
-
-			for (int i  = 0; i < op.arity(); ++i) {
-				final ProgramGene<A> child = genes.get(gene.childOffset() + i);
-				final TreeNode<Op<A>> node = TreeNode.of();
-
-				toTree(node, gene.childOffset() + i, genes);
-				tree.attach(node);
-			}
-		}
-
-		return tree;
 	}
 
 	public static <A> ProgramChromosome<A> of(

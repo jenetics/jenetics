@@ -124,17 +124,8 @@ public abstract class TreeCrossover<
 		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
 		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));
 
-		genes1.forEach(g -> Objects.requireNonNull(g.getValue()));
-		genes2.forEach(g -> Objects.requireNonNull(g.getValue()));
-
-		try {
-			c1.set(index, c1.get(index).newInstance(genes1));
-			c2.set(index, c2.get(index).newInstance(genes2));
-		} catch (Exception e) {
-			System.out.println(genes1);
-			System.out.println(genes2);
-			throw e;
-		}
+		c1.set(index, c1.get(index).newInstance(genes1));
+		c2.set(index, c2.get(index).newInstance(genes2));
 	}
 
 	@SuppressWarnings("unchecked")
