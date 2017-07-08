@@ -28,6 +28,7 @@ import org.jenetics.programming.ops.Programs;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
@@ -83,6 +84,36 @@ public class ProgramChromosomeTest {
 			ProgramChromosome.of(genes, OPERATIONS, TERMINALS);
 
 		Assert.assertEquals(ch2, ch1);
+	}
+
+	@Test
+	public void createTreeFromChromosome() {
+		final TreeNode<Op<Double>> tree = Programs.of(
+			6,
+			OPERATIONS,
+			TERMINALS
+		);
+		final ProgramChromosome<Double> ch =
+			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
+
+		final TreeNode<Op<Double>> node = TreeNode.of(ch.getGene());
+		System.out.println(node);
+	}
+
+	@Test
+	public void treeToFlatTree() {
+		final TreeNode<Op<Double>> tree = Programs.of(
+			6,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		System.out.println(tree);
+
+		final FlatTree<Op<Double>> flat = FlatTree.of(tree);
+		System.out.println(Tree.toString(flat));
+
+		flat.stream().forEach(System.out::println);
 	}
 
 }

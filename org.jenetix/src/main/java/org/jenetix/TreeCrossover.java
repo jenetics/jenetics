@@ -21,6 +21,7 @@ package org.jenetix;
 
 import static java.lang.Math.min;
 
+import java.util.Objects;
 import java.util.Random;
 
 import org.jenetics.Chromosome;
@@ -110,6 +111,9 @@ public abstract class TreeCrossover<
 
 		crossover(tree1, tree2);
 
+		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+
 		final FlatTree<A> flat1 = FlatTree.of(tree1);
 		final FlatTree<A> flat2 = FlatTree.of(tree2);
 
@@ -119,8 +123,17 @@ public abstract class TreeCrossover<
 		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
 		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));
 
-		c1.set(index, c1.get(index).newInstance(genes1));
-		c2.set(index, c2.get(index).newInstance(genes2));
+		genes1.forEach(g -> Objects.requireNonNull(g.getValue()));
+		genes2.forEach(g -> Objects.requireNonNull(g.getValue()));
+
+		try {
+			c1.set(index, c1.get(index).newInstance(genes1));
+			c2.set(index, c2.get(index).newInstance(genes2));
+		} catch (Exception e) {
+			System.out.println(genes1);
+			System.out.println(genes2);
+			throw e;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

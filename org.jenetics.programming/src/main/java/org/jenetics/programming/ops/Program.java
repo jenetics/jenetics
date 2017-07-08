@@ -120,7 +120,11 @@ public class Program<T> implements Op<T> {
 
 		program.breadthFirstStream().forEach(node -> {
 			if (node.getValue() != null && node.getValue().arity() != node.childCount()) {
-				throw new IllegalArgumentException("");
+				System.out.println(node);
+				throw new IllegalArgumentException(format(
+					"Op arity != child count: %d != %d",
+					node.getValue().arity(), node.childCount()
+				));
 			}
 		});
 	}

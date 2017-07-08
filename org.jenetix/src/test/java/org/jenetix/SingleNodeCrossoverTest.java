@@ -19,6 +19,7 @@
  */
 package org.jenetix;
 
+import java.util.Objects;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -93,6 +94,8 @@ public class SingleNodeCrossoverTest {
 		//System.out.println(tree2);
 
 		Assert.assertEquals(tree1.size() + tree2.size(), size1 + size2);
+		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
 	}
 
 	@Test(dataProvider = "treeLevels")

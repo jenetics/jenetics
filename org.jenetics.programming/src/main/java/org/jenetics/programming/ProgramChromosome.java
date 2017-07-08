@@ -80,7 +80,6 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 
 	@Override
 	public ProgramChromosome<A> newInstance(final ISeq<ProgramGene<A>> genes) {
-		genes.forEach(g -> g.bind(genes));
 		return of(genes, _validator, _operations, _terminals);
 	}
 
@@ -97,12 +96,24 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 	) {
 		Program.check(program);
 
-		final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
-			.map(n -> new ProgramGene<>(
-				n.getValue(), n.childOffset(), operations, terminals))
-			.collect(ISeq.toISeq());
+		try {
+			final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
+				.map(n -> new ProgramGene<>(
+					n.getValue(),
+					n.childOffset(),
+					operations,
+					terminals))
+				.collect(ISeq.toISeq());
 
-		return new ProgramChromosome<>(genes, validator, operations, terminals);
+			return new ProgramChromosome<>(genes, validator, operations, terminals);
+		} catch (NullPointerException e) {
+			System.out.println(program);
+			FlatTree.of(program).stream().forEach(System.out::println);
+			throw e;
+		}
+
+
+
 	}
 
 	public static <A> ProgramChromosome<A> of(
@@ -163,7 +174,12 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
+		genes.forEach(g -> g.bind(genes));
+		genes.forEach(g -> requireNonNull(g.getAllele()));
 		final TreeNode<Op<A>> program = toTree(genes);
+		//System.out.println("----------------------------------------");
+		//System.out.println(program);
+		//System.out.println("----------------------------------------");
 		return of(program, validator, operations, terminals);
 	}
 
@@ -178,11 +194,15 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 	) {
 		if (index < genes.size()) {
 			final ProgramGene<A> gene = genes.get(index);
-			tree.setValue(gene.getAllele());
+			final Op<A> op = gene.getAllele();
+			tree.setValue(requireNonNull(op));
 
-			for (int i  = 0; i < gene.childCount(); ++i) {
-				final ProgramGene<A> child = genes.get(i);
+			//System.out.println(gene.getAllele() + ":" + gene.getValue().arity() + ":" + gene.childCount());
+
+			for (int i  = 0; i < op.arity(); ++i) {
+				final ProgramGene<A> child = genes.get(gene.childOffset() + i);
 				final TreeNode<Op<A>> node = TreeNode.of();
+
 				toTree(node, gene.childOffset() + i, genes);
 				tree.attach(node);
 			}

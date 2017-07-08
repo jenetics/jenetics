@@ -58,7 +58,7 @@ public final class ProgramGene<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		super(op, childOffset, op.arity());
+		super(requireNonNull(op), childOffset, op.arity());
 		_operations = requireNonNull(operations);
 		_terminals = requireNonNull(terminals);
 	}
@@ -95,15 +95,33 @@ public final class ProgramGene<A>
 	@Override
 	public ProgramGene<A> newInstance() {
 		final Random random = RandomRegistry.getRandom();
-		return newInstance(
-			isLeaf()
-				? _terminals.get(random.nextInt(_terminals.length()))
-				: _operations.get(random.nextInt(_operations.length()))
-		);
+
+		final Op<A> operation;
+		if (isLeaf()) {
+			final ISeq<? extends Op<A>> terminals = _terminals.stream()
+				.filter(op -> op.arity() == getValue().arity())
+				.collect(ISeq.toISeq());
+
+			operation = terminals.get(random.nextInt(terminals.length()));
+		} else {
+			final ISeq<? extends Op<A>> operations = _operations.stream()
+				.filter(op -> op.arity() == getValue().arity())
+				.collect(ISeq.toISeq());
+
+			operation = operations.get(random.nextInt(operations.length()));
+		}
+
+		return newInstance(operation);
 	}
 
 	@Override
 	public ProgramGene<A> newInstance(final Op<A> op) {
+		if (getValue().arity() != op.arity()) {
+			throw new IllegalArgumentException(format(
+				"New operation must have same arity: %s[%d] != %s[%d]",
+				getValue().name(), getValue().arity(), op.name(), op.arity()
+			));
+		}
 		return new ProgramGene<>(op, childOffset(), _operations, _terminals);
 	}
 

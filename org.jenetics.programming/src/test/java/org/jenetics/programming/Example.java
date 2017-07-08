@@ -26,6 +26,7 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Ops;
+import org.jenetics.programming.ops.Program;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
@@ -45,14 +46,14 @@ public class Example {
 		Ops.SUB,
 		Ops.MUL,
 		Ops.DIV,
-		Ops.EXP,
+		//Ops.EXP,
 		Ops.SIN,
 		Ops.COS
 	);
 
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
-		Ops.fixed(Math.PI),
+		//Ops.fixed(Math.PI),
 		Ops.fixed(1)
 	);
 
@@ -73,7 +74,7 @@ public class Example {
 		final Codec<ProgramGene<Double>, ProgramGene<Double>>
 			codec = Codec.of(
 				Genotype.of(ProgramChromosome.of(
-					5,
+					7,
 					ch -> ch.length() < 200,
 					OPERATIONS,
 					TERMINALS
@@ -90,11 +91,18 @@ public class Example {
 			.build();
 
 		final Tree<? extends Op<Double>, ?> program = engine.stream()
-			.limit(50)
+			.limit(200)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
-		System.out.println(program);
+		System.out.println(Tree.toString(program));
+
+		for (int i = 0; i < 20; ++i) {
+			final double x = 2*Math.PI/20.0*i;
+			final double result = Program.eval(program, x);
+
+			System.out.println(i + ": " + Math.sin(x) + " -> " + result);
+		}
 	}
 
 }
