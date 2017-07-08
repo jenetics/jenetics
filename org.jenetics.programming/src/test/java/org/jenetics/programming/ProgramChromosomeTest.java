@@ -28,7 +28,7 @@ import org.jenetics.programming.ops.Programs;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
-import org.jenetix.util.FlatTree;
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
@@ -110,7 +110,7 @@ public class ProgramChromosomeTest {
 
 		System.out.println(tree);
 
-		final FlatTree<Op<Double>> flat = FlatTree.of(tree);
+		final FlatTreeNode<Op<Double>> flat = FlatTreeNode.of(tree);
 		System.out.println(Tree.toString(flat));
 
 		flat.stream().forEach(System.out::println);

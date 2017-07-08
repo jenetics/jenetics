@@ -30,7 +30,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.AbstractTreeChromosome;
-import org.jenetix.util.FlatTree;
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.Tree;
 import org.jenetix.util.TreeNode;
 
@@ -97,7 +97,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		Program.check(program);
 
 		try {
-			final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
+			final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
 				.map(n -> new ProgramGene<>(
 					n.getValue(),
 					n.childOffset(),
@@ -108,7 +108,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 			return new ProgramChromosome<>(genes, validator, operations, terminals);
 		} catch (NullPointerException e) {
 			System.out.println(program);
-			FlatTree.of(program).stream().forEach(System.out::println);
+			FlatTreeNode.of(program).stream().forEach(System.out::println);
 			throw e;
 		}
 

@@ -70,14 +70,14 @@ import org.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
+public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 
 	private final int _index;
 	private final MSeq<? extends T> _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
-	private FlatTree(
+	private FlatTreeNode(
 		final int index,
 		final MSeq<? extends T> nodes,
 		final int[] childOffsets,
@@ -97,7 +97,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTree<T> getRoot() {
+	public FlatTreeNode<T> getRoot() {
 		return node(0);
 	}
 
@@ -106,8 +106,8 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 		return _index == 0;
 	}
 
-	private FlatTree<T> node(final int index) {
-		return new FlatTree<T>(
+	private FlatTreeNode<T> node(final int index) {
+		return new FlatTreeNode<T>(
 			index,
 			_nodes,
 			_childOffsets,
@@ -121,19 +121,19 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	}
 
 	@Override
-	public Optional<FlatTree<T>> getParent() {
+	public Optional<FlatTreeNode<T>> getParent() {
 		return stream()
 			.filter(node -> node.childStream().anyMatch(this::identical))
 			.findFirst();
 	}
 
 	@Override
-	public FlatTree<T> getChild(final int index) {
+	public FlatTreeNode<T> getChild(final int index) {
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException("" + index);
 		}
 
-		return new FlatTree<T>(
+		return new FlatTreeNode<T>(
 			childOffset() + index,
 			_nodes,
 			_childOffsets,
@@ -181,7 +181,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 *
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
-	public Stream<FlatTree<T>> stream() {
+	public Stream<FlatTreeNode<T>> stream() {
 		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
 	}
 
@@ -198,7 +198,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 * @param <B> the mapped type
 	 * @return a sequence of all <em>mapped</em> nodes
 	 */
-	public <B> ISeq<B> map(final Function<FlatTree<T>, ? extends B> mapper) {
+	public <B> ISeq<B> map(final Function<FlatTreeNode<T>, ? extends B> mapper) {
 		return stream()
 			.map(mapper)
 			.collect(ISeq.toISeq());
@@ -206,9 +206,9 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof FlatTree<?> &&
-			((FlatTree)other)._index == _index &&
-			((FlatTree)other)._nodes == _nodes;
+		return other instanceof FlatTreeNode<?> &&
+			((FlatTreeNode)other)._index == _index &&
+			((FlatTreeNode)other)._nodes == _nodes;
 	}
 
 	@Override
@@ -223,11 +223,11 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FlatTree<?> &&
-			((FlatTree)obj)._index == _index &&
-			Objects.equals(((FlatTree)obj)._nodes, _nodes) &&
-			Arrays.equals(((FlatTree)obj)._childCounts, _childCounts) &&
-			Arrays.equals(((FlatTree)obj)._childOffsets, _childOffsets);
+		return obj instanceof FlatTreeNode<?> &&
+			((FlatTreeNode)obj)._index == _index &&
+			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
+			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
+			Arrays.equals(((FlatTreeNode)obj)._childOffsets, _childOffsets);
 	}
 
 	@Override
@@ -243,7 +243,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 	 * @return a new {@code FlatTreeNode} from the given {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <V> FlatTree<V> of(final Tree<? extends V, ?> tree) {
+	public static <V> FlatTreeNode<V> of(final Tree<? extends V, ?> tree) {
 		requireNonNull(tree);
 
 		final int size = tree.size();
@@ -252,7 +252,7 @@ public final class FlatTree<T> implements Tree<T, FlatTree<T>> {
 		final int[] childCounts = new int[size];
 
 		assert size >= 1;
-		final FlatTree<V> root = new FlatTree<>(
+		final FlatTreeNode<V> root = new FlatTreeNode<>(
 			0,
 			elements,
 			childOffsets,

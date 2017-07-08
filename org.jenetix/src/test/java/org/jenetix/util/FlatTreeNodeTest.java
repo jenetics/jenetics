@@ -27,12 +27,12 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 @Test
-public class FlatTreeTest extends TreeTestBase<Integer, FlatTree<Integer>> {
+public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer>> {
 
-	public FlatTree<Integer> newTree(final int levels, final Random random) {
+	public FlatTreeNode<Integer> newTree(final int levels, final Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
-		return FlatTree.of(root);
+		return FlatTreeNode.of(root);
 	}
 
 	private static void fill(

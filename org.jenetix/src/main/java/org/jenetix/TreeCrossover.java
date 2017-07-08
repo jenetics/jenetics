@@ -33,7 +33,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
-import org.jenetix.util.FlatTree;
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 
 /**
@@ -114,8 +114,8 @@ public abstract class TreeCrossover<
 		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
 		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
 
-		final FlatTree<A> flat1 = FlatTree.of(tree1);
-		final FlatTree<A> flat2 = FlatTree.of(tree2);
+		final FlatTreeNode<A> flat1 = FlatTreeNode.of(tree1);
+		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
 		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).getGene();
@@ -137,7 +137,7 @@ public abstract class TreeCrossover<
 	}
 
 	@SuppressWarnings("unchecked")
-	private <A> G gene(final TreeGene<A, ?> template, final FlatTree<A> tree) {
+	private <A> G gene(final TreeGene<A, ?> template, final FlatTreeNode<A> tree) {
 		return (G)template.newInstance(
 			tree.getValue(),
 			tree.childOffset(),

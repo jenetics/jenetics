@@ -40,7 +40,7 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final FlatTree<Integer> flat = FlatTree.of(tree);
+		final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
 		System.out.println(flat);
 		System.out.println(Tree.toString(flat));
 		/*
