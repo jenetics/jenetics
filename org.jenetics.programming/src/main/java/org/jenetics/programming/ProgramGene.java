@@ -34,6 +34,12 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetix.AbstractTreeGene;
 
 /**
+ * This gene represents a program, build upon an AST of {@link Op} functions.
+ * Because of the tight coupling with the {@link ProgramChromosome}, a
+ * {@code ProgramGene} can't be created directly. This reduces the the possible
+ * <em>error space</em>. Since the {@code ProgramGene} also is a
+ * {@code Tree<? extends Op<T>, ?>}, it can be easily directly used as result.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
