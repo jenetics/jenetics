@@ -19,14 +19,19 @@
  */
 package org.jenetics.programming.ops;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Random;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.TreeNode;
 
 /**
+ * Helper methods for creating program trees.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -90,6 +95,103 @@ public final class Programs {
 				tree.attach(TreeNode.of(term));
 			}
 		}
+	}
+
+	/**
+	 * Creates a valid program tree from the given flattened sequence of
+	 * op nodes. The given {@code operations} and {@code termination} nodes are
+	 * used for <em>repairing</em> the program tree, if necessary.
+	 *
+	 * @param nodes the flattened, possible corrupt, program tree
+	 * @param operations the usable non-terminal operation nodes to use for
+	 *        reparation
+	 * @param terminals the usable non-terminal operation nodes to use for
+	 *        reparation
+	 * @param <A> the operation argument type
+	 * @return a new valid program tree build from the flattened program tree
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <A> TreeNode<Op<A>> toTree(
+		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		if (nodes.isEmpty()) {
+			throw new IllegalArgumentException("Tree nodes must not be empty.");
+		}
+
+		final Op<A> op = requireNonNull(nodes.get(0).getValue());
+		final TreeNode<Op<A>> tree = TreeNode.of(op);
+		return toTree(
+			tree,
+			0,
+			nodes,
+			operations,
+			terminals,
+			RandomRegistry.getRandom()
+		);
+	}
+
+	private static <A> TreeNode<Op<A>> toTree(
+		final TreeNode<Op<A>> root,
+		final int index,
+		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		if (index < nodes.size()) {
+			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);
+			final Op<A> op = node.getValue();
+
+			/*
+			final int childOffset = node.childOffset() < index
+				? node.childOffset() + index
+				: node.childOffset();
+				*/
+
+			int childOffset = 1;
+			for (int i = 0; i < index; ++i) {
+				childOffset += op.arity();
+			}
+
+			for (int i  = 0; i < op.arity(); ++i) {
+				final TreeNode<Op<A>> treeNode = TreeNode.of();
+
+				if (childOffset + i < nodes.size()) {
+					final Op<A> childOp = nodes.get(childOffset + i).getValue();
+					treeNode.setValue(childOp);
+				} else {
+					final Op<A> childOp = terminals.get(random.nextInt(terminals.size()));
+					treeNode.setValue(childOp);
+				}
+
+				toTree(treeNode, childOffset + i, nodes, operations, terminals, random);
+				root.attach(treeNode);
+			}
+
+		}
+
+		return root;
+	}
+
+	/*
+			int childOffset = 1;
+			for (int i = 0; i < index; ++i) {
+				childOffset += genes.get(i).childCount();
+			}
+	 */
+
+	static int[]
+	offsets(final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes) {
+		final int[] offsets = new int[nodes.size()];
+
+		offsets[0] = 1;
+		for (int i = 1; i < offsets.length; ++i) {
+			offsets[i] += nodes.get(i).getValue().arity();
+		}
+
+		return offsets;
 	}
 
 }

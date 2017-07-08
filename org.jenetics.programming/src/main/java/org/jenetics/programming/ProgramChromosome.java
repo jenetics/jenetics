@@ -197,8 +197,6 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 			final Op<A> op = gene.getAllele();
 			tree.setValue(requireNonNull(op));
 
-			//System.out.println(gene.getAllele() + ":" + gene.getValue().arity() + ":" + gene.childCount());
-
 			for (int i  = 0; i < op.arity(); ++i) {
 				final ProgramGene<A> child = genes.get(gene.childOffset() + i);
 				final TreeNode<Op<A>> node = TreeNode.of();

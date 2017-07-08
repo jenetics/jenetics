@@ -22,6 +22,8 @@ package org.jenetix;
 import org.jenetics.Gene;
 
 import org.jenetics.util.ISeq;
+
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.Tree;
 
 /**
@@ -34,23 +36,13 @@ import org.jenetix.util.Tree;
 public interface TreeGene<A, G extends TreeGene<A, G>>
 	extends
 		Gene<A, G>,
-		Tree<A, G>
+		FlatTree<A, G>
 {
 
 	@Override
 	public default A getValue() {
 		return getAllele();
 	}
-
-	/**
-	 * Return the genes of the underlying chromosome, where this tree gene is
-	 * part of. For an unbound gene, {@code null} is returned.
-	 *
-	 * @see #bind(ISeq)
-	 *
-	 * @return the genes of the underlying chromosome
-	 */
-	public ISeq<G> genes();
 
 	/**
 	 * Return the index of the first child node in the underlying gene array.

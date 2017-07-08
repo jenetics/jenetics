@@ -19,6 +19,9 @@
  */
 package org.jenetics.programming;
 
+import java.util.Arrays;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.programming.ops.Op;
@@ -28,6 +31,7 @@ import org.jenetics.programming.ops.Programs;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 
 /**
@@ -70,6 +74,53 @@ public class ProgramsTest {
 		System.out.println("Arity: " + program.arity());
 		System.out.println(result);
 		System.out.flush();
+	}
+
+	@Test(invocationCount = 1)
+	public void toTree() {
+		final TreeNode<Op<Double>> tree = Programs.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).nodes();
+
+		Assert.assertEquals(
+			Programs.toTree(seq, OPERATIONS, TERMINALS),
+			tree
+		);
+	}
+
+	@Test
+	public void toTreeAndRepair() {
+		final TreeNode<Op<Double>> tree1 = Programs.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+		final TreeNode<Op<Double>> tree2 = Programs.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		System.out.println(tree1);
+		System.out.println(tree2);
+		System.out.println(Arrays.toString(Programs.offsets(FlatTreeNode.of(tree1).nodes())));
+
+
+		/*
+		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.of(tree1).nodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.of(tree2).nodes();
+
+		final ISeq<FlatTreeNode<Op<Double>>> seq3 = ISeq
+			.of(seq1.subSeq(0, seq1.length()/2))
+			.append(seq2.subSeq(0, seq2.length()/2));
+
+		final TreeNode<Op<Double>> tree3 = Programs.toTree(seq3, OPERATIONS, TERMINALS);
+		System.out.println(tree3);
+		*/
 	}
 
 }

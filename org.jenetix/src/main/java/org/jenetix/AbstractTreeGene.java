@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.jenetics.util.ISeq;
+
 import org.jenetix.util.Tree;
 
 /**
@@ -76,8 +77,16 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public ISeq<G> genes() {
+	public ISeq<G> nodes() {
 		return _genes;
+	}
+
+	protected void checkTreeState() {
+		if (_genes == null) {
+			throw new IllegalStateException(
+				"Gene is not attached to a chromosome."
+			);
+		}
 	}
 
 	/**
@@ -115,14 +124,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _genes.stream()
 			.filter(g -> g.childStream().anyMatch(this::identical))
 			.findFirst();
-	}
-
-	void checkTreeState() {
-		if (_genes == null) {
-			throw new IllegalStateException(
-				"Gene is not attached to a chromosome."
-			);
-		}
 	}
 
 	/**

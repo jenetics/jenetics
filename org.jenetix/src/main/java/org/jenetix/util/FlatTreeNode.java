@@ -70,16 +70,16 @@ import org.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
+public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 
 	private final int _index;
-	private final MSeq<? extends T> _nodes;
+	private final MSeq<T> _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final MSeq<? extends T> nodes,
+		final MSeq<T> nodes,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
@@ -153,23 +153,14 @@ public final class FlatTreeNode<T> implements Tree<T, FlatTreeNode<T>> {
 	 * @return Return the index of the first child node in the underlying node
 	 *         array, or {@code -1} if {@code this} node is a leaf
 	 */
+	@Override
 	public int childOffset() {
 		return _childOffsets[_index];
 	}
 
-	/**
-	 * Return the whole flattened tree values in breadth-first order. This is
-	 * equivalent to
-	 * <pre>{@code
-	 * final ISeq<? extends T> seq = getRoot().breadthFirstStream()
-	 *     .map(Tree::getValue)
-	 *     .collect(ISeq.toISeq());
-	 * }</pre>
-	 *
-	 * @return the flattened tree values in breadth-first order
-	 */
-	public ISeq<? extends T> nodes() {
-		return _nodes.toISeq();
+	@Override
+	public ISeq<FlatTreeNode<T>> nodes() {
+		return stream().collect(ISeq.toISeq());
 	}
 
 	/**

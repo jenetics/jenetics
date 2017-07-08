@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.jenetics.Gene;
 import org.jenetics.programming.ops.Op;
@@ -74,14 +75,6 @@ public final class ProgramGene<A>
 	public A apply(final A[] variables) {
 		checkTreeState();
 		return Program.eval(this, variables);
-	}
-
-	void checkTreeState() {
-		if (genes() == null) {
-			throw new IllegalStateException(
-				"Gene is not attached to a chromosome."
-			);
-		}
 	}
 
 	public ISeq<? extends Op<A>> getOperations() {
@@ -144,4 +137,5 @@ public final class ProgramGene<A>
 
 		return new ProgramGene<>(allele, childOffset, _operations, _terminals);
 	}
+
 }

@@ -33,6 +33,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 
@@ -137,7 +138,10 @@ public abstract class TreeCrossover<
 	}
 
 	@SuppressWarnings("unchecked")
-	private <A> G gene(final TreeGene<A, ?> template, final FlatTreeNode<A> tree) {
+	private <A> G gene(
+		final TreeGene<A, ?> template,
+		final FlatTree<? extends A, ?> tree
+	) {
 		return (G)template.newInstance(
 			tree.getValue(),
 			tree.childOffset(),
