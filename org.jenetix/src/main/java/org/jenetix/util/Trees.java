@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
+
 import org.jenetics.util.MSeq;
 
 /**
@@ -74,12 +75,10 @@ final class Trees {
 	 * Return a string representation of the given tree.
 	 *
 	 * @param tree the input tree
-	 * @param <A> the tree value type
-	 * @param <T> the tree type
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	static <A, T extends Tree<? extends A, T>> String toString(final T tree) {
+	static String toString(final Tree<?, ?> tree) {
 		requireNonNull(tree);
 
 		return render(tree).stream()
@@ -87,12 +86,12 @@ final class Trees {
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static <A, T extends Tree<? extends A, T>>
-	List<StringBuilder> render(final T tree) {
+	private static
+	List<StringBuilder> render(final Tree<?, ?> tree) {
 		final List<StringBuilder> result = new ArrayList<>();
 		result.add(new StringBuilder().append(tree.getValue()));
 
-		final Iterator<T> it = tree.childIterator();
+		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
 		while (it.hasNext()) {
 			final List<StringBuilder> subtree = render(it.next());
 			if (it.hasNext()) {

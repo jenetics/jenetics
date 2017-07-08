@@ -833,13 +833,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * {@link Object#toString()} method.
 	 *
 	 * @param tree the input tree
-	 * @param <A> the tree value type
-	 * @param <T> the tree type
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <A, T extends Tree<? extends A, T>>
-	String toString(final T tree) {
+	public static String toString(final Tree<?, ?> tree) {
 		requireNonNull(tree);
 		return Trees.toString(tree);
 	}
