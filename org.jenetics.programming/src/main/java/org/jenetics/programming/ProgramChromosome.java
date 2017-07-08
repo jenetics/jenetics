@@ -99,10 +99,7 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 
 		final ISeq<ProgramGene<A>> genes = FlatTree.of(program).stream()
 			.map(n -> new ProgramGene<>(
-				n.getValue(),
-				n.childOffset(),
-				operations,
-				terminals))
+				n.getValue(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());
 
 		return new ProgramChromosome<>(genes, validator, operations, terminals);
@@ -166,39 +163,40 @@ public class ProgramChromosome<A> extends AbstractTreeChromosome<Op<A>, ProgramG
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		final TreeNode<Op<A>> program = unflatten(genes);
+		final TreeNode<Op<A>> program = toTree(genes);
 		return of(program, validator, operations, terminals);
 	}
 
-	private static <A> TreeNode<Op<A>> unflatten(final ISeq<ProgramGene<A>> genes) {
-		return unflatten(TreeNode.of(), 0, genes);
+	private static <A> TreeNode<Op<A>> toTree(final ISeq<ProgramGene<A>> genes) {
+		return toTree(TreeNode.of(), 0, genes);
 	}
 
-	private static <A> TreeNode<Op<A>> unflatten(
+	private static <A> TreeNode<Op<A>> toTree(
 		final TreeNode<Op<A>> tree,
 		final int index,
 		final ISeq<ProgramGene<A>> genes
 	) {
-		//if (index < genes.size()) {
+		if (index < genes.size()) {
 			final ProgramGene<A> gene = genes.get(index);
 			tree.setValue(gene.getAllele());
 
-			int childOffset = 1;
-			for (int i = 0; i < index; ++i) {
-				childOffset += genes.get(i).childCount();
+			for (int i  = 0; i < gene.childCount(); ++i) {
+				final ProgramGene<A> child = genes.get(i);
+				final TreeNode<Op<A>> node = TreeNode.of();
+				toTree(node, gene.childOffset() + i, genes);
+				tree.attach(node);
 			}
-
-			for (int i = 0; i < gene.childCount(); ++i) {
-				final int childIndex = childOffset + 1;
-				if (childIndex < genes.size()) {
-					tree.attach(unflatten(TreeNode.of(), childIndex, genes));
-				} else {
-					tree.attach(TreeNode.of());
-				}
-			}
-		//}
+		}
 
 		return tree;
+	}
+
+	public static <A> ProgramChromosome<A> of(
+		final ISeq<ProgramGene<A>> genes,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		return of(genes, null, operations, terminals);
 	}
 
 }
