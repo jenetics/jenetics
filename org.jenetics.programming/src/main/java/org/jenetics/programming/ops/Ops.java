@@ -30,6 +30,8 @@ public final class Ops {
 
 	public static final Op<Double> ADD = Op.of("add", 2, v -> v[0] + v[1]);
 
+	public static final Op<Double> ADD3 = Op.of("add", 3, v -> v[0] + v[1] + v[2]);
+
 	public static final Op<Double> SUB = Op.of("sub", 2, v -> v[0] - v[1]);
 
 	public static final Op<Double> MUL = Op.of("mul", 2, v -> v[0]*v[1]);

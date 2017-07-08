@@ -17,18 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming;
-
-import java.util.Arrays;
+package org.jenetics.programming.ops;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.Ops;
-import org.jenetics.programming.ops.Program;
-import org.jenetics.programming.ops.Programs;
-import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
 import org.jenetix.util.FlatTreeNode;
@@ -41,6 +34,7 @@ public class ProgramsTest {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		Ops.ADD,
+		Ops.ADD3,
 		Ops.SUB,
 		Ops.MUL,
 		Ops.DIV,
@@ -76,10 +70,10 @@ public class ProgramsTest {
 		System.out.flush();
 	}
 
-	@Test(invocationCount = 1)
+	@Test(invocationCount = 5)
 	public void toTree() {
 		final TreeNode<Op<Double>> tree = Programs.of(
-			3,
+			6,
 			OPERATIONS,
 			TERMINALS
 		);
@@ -87,7 +81,7 @@ public class ProgramsTest {
 		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).nodes();
 
 		Assert.assertEquals(
-			Programs.toTree(seq, OPERATIONS, TERMINALS),
+			Programs.toTree(seq, TERMINALS),
 			tree
 		);
 	}
@@ -105,12 +99,6 @@ public class ProgramsTest {
 			TERMINALS
 		);
 
-		System.out.println(tree1);
-		System.out.println(tree2);
-		System.out.println(Arrays.toString(Programs.offsets(FlatTreeNode.of(tree1).nodes())));
-
-
-		/*
 		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.of(tree1).nodes();
 		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.of(tree2).nodes();
 
@@ -118,9 +106,24 @@ public class ProgramsTest {
 			.of(seq1.subSeq(0, seq1.length()/2))
 			.append(seq2.subSeq(0, seq2.length()/2));
 
-		final TreeNode<Op<Double>> tree3 = Programs.toTree(seq3, OPERATIONS, TERMINALS);
-		System.out.println(tree3);
-		*/
+		final TreeNode<Op<Double>> tree3 = Programs.toTree(seq3, TERMINALS);
+	}
+
+	@Test
+	public void offsets() {
+		final TreeNode<Op<Double>> tree = Programs.of(
+			6,
+			OPERATIONS,
+			TERMINALS
+		);
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).nodes();
+
+		final int[] expected = seq.stream()
+			.mapToInt(FlatTreeNode::childOffset)
+			.toArray();
+
+		final int[] offsets = Programs.offsets(seq);
+		Assert.assertEquals(offsets, expected);
 	}
 
 }

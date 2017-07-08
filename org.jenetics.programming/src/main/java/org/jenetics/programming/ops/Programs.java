@@ -103,8 +103,6 @@ public final class Programs {
 	 * used for <em>repairing</em> the program tree, if necessary.
 	 *
 	 * @param nodes the flattened, possible corrupt, program tree
-	 * @param operations the usable non-terminal operation nodes to use for
-	 *        reparation
 	 * @param terminals the usable non-terminal operation nodes to use for
 	 *        reparation
 	 * @param <A> the operation argument type
@@ -113,7 +111,6 @@ public final class Programs {
 	 */
 	public static <A> TreeNode<Op<A>> toTree(
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
-		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
 		if (nodes.isEmpty()) {
@@ -126,7 +123,7 @@ public final class Programs {
 			tree,
 			0,
 			nodes,
-			operations,
+			offsets(nodes),
 			terminals,
 			RandomRegistry.getRandom()
 		);
@@ -136,7 +133,7 @@ public final class Programs {
 		final TreeNode<Op<A>> root,
 		final int index,
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
-		final ISeq<? extends Op<A>> operations,
+		final int[] offsets,
 		final ISeq<? extends Op<A>> terminals,
 		final Random random
 	) {
@@ -144,51 +141,48 @@ public final class Programs {
 			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);
 			final Op<A> op = node.getValue();
 
-			/*
-			final int childOffset = node.childOffset() < index
-				? node.childOffset() + index
-				: node.childOffset();
-				*/
-
-			int childOffset = 1;
-			for (int i = 0; i < index; ++i) {
-				childOffset += op.arity();
-			}
-
 			for (int i  = 0; i < op.arity(); ++i) {
-				final TreeNode<Op<A>> treeNode = TreeNode.of();
+				assert offsets[index] != -1;
 
-				if (childOffset + i < nodes.size()) {
-					final Op<A> childOp = nodes.get(childOffset + i).getValue();
-					treeNode.setValue(childOp);
+				final TreeNode<Op<A>> treeNode = TreeNode.of();
+				if (offsets[index] + i < nodes.size()) {
+					treeNode.setValue(nodes.get(offsets[index] + i).getValue());
 				} else {
-					final Op<A> childOp = terminals.get(random.nextInt(terminals.size()));
-					treeNode.setValue(childOp);
+					treeNode.setValue(terminals.get(random.nextInt(terminals.size())));
 				}
 
-				toTree(treeNode, childOffset + i, nodes, operations, terminals, random);
+				toTree(
+					treeNode,
+					offsets[index] + i,
+					nodes,
+					offsets,
+					terminals,
+					random
+				);
 				root.attach(treeNode);
 			}
-
 		}
 
 		return root;
 	}
 
-	/*
-			int childOffset = 1;
-			for (int i = 0; i < index; ++i) {
-				childOffset += genes.get(i).childCount();
-			}
+	/**
+	 * Create the offset array for the given nodes. The offsets are calculated
+	 * using the arity of the stored operations.
+	 *
+	 * @param nodes the flattened tree nodes
+	 * @return the offset array for the given nodes
 	 */
-
 	static int[]
-	offsets(final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes) {
+	offsets(final ISeq<? extends FlatTree<? extends Op<?>, ?>> nodes) {
 		final int[] offsets = new int[nodes.size()];
 
-		offsets[0] = 1;
-		for (int i = 1; i < offsets.length; ++i) {
-			offsets[i] += nodes.get(i).getValue().arity();
+		int offset = 1;
+		for (int i = 0; i < offsets.length; ++i) {
+			final Op<?> op = nodes.get(i).getValue();
+
+			offsets[i] = op.arity() == 0 ? -1 : offset;
+			offset += nodes.get(i).getValue().arity();
 		}
 
 		return offsets;
