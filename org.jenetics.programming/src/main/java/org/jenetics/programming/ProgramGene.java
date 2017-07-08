@@ -96,19 +96,23 @@ public final class ProgramGene<A>
 	public ProgramGene<A> newInstance() {
 		final Random random = RandomRegistry.getRandom();
 
-		final Op<A> operation;
+		Op<A> operation = getValue();
 		if (isLeaf()) {
 			final ISeq<? extends Op<A>> terminals = _terminals.stream()
 				.filter(op -> op.arity() == getValue().arity())
 				.collect(ISeq.toISeq());
 
-			operation = terminals.get(random.nextInt(terminals.length()));
+			if (terminals.length() > 1) {
+				operation = terminals.get(random.nextInt(terminals.length()));
+			}
 		} else {
 			final ISeq<? extends Op<A>> operations = _operations.stream()
 				.filter(op -> op.arity() == getValue().arity())
 				.collect(ISeq.toISeq());
 
-			operation = operations.get(random.nextInt(operations.length()));
+			if (operations.length() > 1) {
+				operation = operations.get(random.nextInt(operations.length()));
+			}
 		}
 
 		return newInstance(operation);
