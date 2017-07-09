@@ -91,7 +91,7 @@ public final class ProgramGene<A>
 
 		Op<A> operation = getValue();
 		if (isLeaf()) {
-			final ISeq<? extends Op<A>> terminals = _terminals.stream()
+			final ISeq<Op<A>> terminals = _terminals.stream()
 				.filter(op -> op.arity() == getValue().arity())
 				.collect(ISeq.toISeq());
 
@@ -99,7 +99,7 @@ public final class ProgramGene<A>
 				operation = terminals.get(random.nextInt(terminals.length()));
 			}
 		} else {
-			final ISeq<? extends Op<A>> operations = _operations.stream()
+			final ISeq<Op<A>> operations = _operations.stream()
 				.filter(op -> op.arity() == getValue().arity())
 				.collect(ISeq.toISeq());
 
