@@ -238,7 +238,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		requireNonNull(node);
 
 		T ancestor = null;
-		if (node == this) {
+		if (node.identical(this)) {
 			ancestor = Trees.<V, T>self(this);
 		} else {
 			final int level1 = level();
@@ -263,10 +263,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			}
 
 			do {
-				if (node1 == node2) {
+				if (node1 != null && node1.identical(node2)) {
 					ancestor = Trees.<V, T>self(node1);
 				}
-				node1 = node1.getParent().orElse(null);
+				node1 = node1 != null
+					? node1.getParent().orElse(null)
+					: null;
 				node2 = node2.getParent().orElse(null);
 			} while (node1 != null && ancestor == null);
 		}
