@@ -46,9 +46,10 @@ public class Example {
 		Ops.SUB,
 		Ops.MUL,
 		Ops.DIV,
+		Ops.POW,
 		//Ops.EXP,
-		Ops.SIN,
-		Ops.COS
+		Ops.SIN
+		//Ops.COS
 	);
 
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
@@ -84,14 +85,14 @@ public class Example {
 
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(Example::error, codec)
-			.maximizing()
+			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),
 				new Mutator<>())
 			.build();
 
 		final Tree<? extends Op<Double>, ?> program = engine.stream()
-			.limit(200)
+			.limit(50)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
