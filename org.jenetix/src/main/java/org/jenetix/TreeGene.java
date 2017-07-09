@@ -56,9 +56,9 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	/**
 	 * This method is used by the {@code AbstractTreeChromosome} to bind the
 	 * rest of the genes to this one. Once set, the genes can be queried with
-	 * {@link #genes()}.
+	 * {@link #nodes()}.
 	 *
-	 * @see #genes()
+	 * @see #nodes()
 	 *
 	 * @param genes the genes of the underlying chromosome
 	 */
