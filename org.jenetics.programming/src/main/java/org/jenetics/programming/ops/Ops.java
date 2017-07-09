@@ -38,6 +38,8 @@ public final class Ops {
 
 	public static final Op<Double> DIV = Op.of("div", 2, v -> v[0]/v[1]);
 
+	public static final Op<Double> POW = Op.of("pow", 2, v -> Math.pow(v[0], v[1]));
+
 	public static final Op<Double> EXP = Op.of("exp", 1, v -> Math.exp(v[0]));
 
 	public static final Op<Double> SIN = Op.of("sin", 1, v -> Math.sin(v[0]));
