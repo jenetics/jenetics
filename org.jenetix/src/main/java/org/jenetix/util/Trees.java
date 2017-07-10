@@ -81,19 +81,19 @@ final class Trees {
 	static String toString(final Tree<?, ?> tree) {
 		requireNonNull(tree);
 
-		return render(tree).stream()
+		return toStrings(tree).stream()
 			.map(StringBuilder::toString)
 			.collect(Collectors.joining("\n"));
 	}
 
 	private static
-	List<StringBuilder> render(final Tree<?, ?> tree) {
+	List<StringBuilder> toStrings(final Tree<?, ?> tree) {
 		final List<StringBuilder> result = new ArrayList<>();
 		result.add(new StringBuilder().append(tree.getValue()));
 
 		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
 		while (it.hasNext()) {
-			final List<StringBuilder> subtree = render(it.next());
+			final List<StringBuilder> subtree = toStrings(it.next());
 			if (it.hasNext()) {
 				subtree(result, subtree);
 			} else {
