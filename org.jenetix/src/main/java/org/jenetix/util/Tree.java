@@ -843,4 +843,32 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return Trees.toString(tree);
 	}
 
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String toCompactString(final Tree<?, ?> tree) {
+		return Trees.toCompactString(tree);
+	}
+
 }

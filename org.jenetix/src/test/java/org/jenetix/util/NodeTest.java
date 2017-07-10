@@ -43,6 +43,9 @@ public class NodeTest {
 		final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
 		System.out.println(flat);
 		System.out.println(Tree.toString(flat));
+
+		System.out.println(Trees.toCompactString(tree));
+
 		/*
 		final ISeq<FlatTreeNode<Integer>> seq = FlatTreeNode.flatten(tree);
 		Assert.assertEquals(FlatTreeNode.unflatten(seq), tree);

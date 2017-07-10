@@ -126,6 +126,48 @@ final class Trees {
 	}
 
 	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String toCompactString(final Tree<?, ?> tree) {
+		final StringBuilder out = new StringBuilder();
+		toCompactString(out, tree);
+		return out.toString();
+	}
+
+	private static void toCompactString(final StringBuilder out, final Tree<?, ?> tree) {
+		out.append(tree.getValue());
+		if (!tree.isLeaf()) {
+			out.append("(");
+			toCompactString(out, tree.getChild(0));
+			for (int i = 1; i < tree.childCount(); ++i) {
+				out.append(", ");
+				toCompactString(out, tree.getChild(i));
+			}
+			out.append(")");
+		}
+	}
+
+	/**
 	 * Checks if the two given trees has the same structure with the same values.
 	 *
 	 * @param a the first tree

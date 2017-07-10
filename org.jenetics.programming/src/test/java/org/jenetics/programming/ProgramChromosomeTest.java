@@ -19,6 +19,7 @@
  */
 package org.jenetics.programming;
 
+import org.jenetics.programming.ops.Const;
 import org.jenetics.programming.ops.Program;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -51,8 +52,8 @@ public class ProgramChromosomeTest {
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
-		Ops.fixed(Math.PI),
-		Ops.fixed(1)
+		Const.of("π", Math.PI),
+		Const.of(1.0)
 	);
 
 	@Test(invocationCount = 10)
@@ -100,7 +101,7 @@ public class ProgramChromosomeTest {
 		System.out.println(node);
 	}
 
-	@Test
+	//@Test
 	public void treeToFlatTree() {
 		final TreeNode<Op<Double>> tree = Program.of(
 			6,
@@ -114,6 +115,18 @@ public class ProgramChromosomeTest {
 		System.out.println(Tree.toString(flat));
 
 		flat.stream().forEach(System.out::println);
+	}
+
+	@Test
+	public void toCompactString() {
+		final TreeNode<Op<Double>> tree = Program.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		System.out.println(tree);
+		System.out.println(Tree.toCompactString(tree));
 	}
 
 }

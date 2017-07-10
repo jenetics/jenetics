@@ -92,7 +92,7 @@ public class Example {
 			.build();
 
 		final Tree<? extends Op<Double>, ?> program = engine.stream()
-			.limit(50)
+			.limit(150)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
