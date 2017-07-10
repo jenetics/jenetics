@@ -58,9 +58,20 @@ public final class ProgramGene<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		super(requireNonNull(op), childOffset, op.arity());
+		super(requireNonNull(get(op)), childOffset, op.arity());
 		_operations = requireNonNull(operations);
 		_terminals = requireNonNull(terminals);
+	}
+
+	private static <A> Op<A> get(final Op<A> op) {
+		final Op<A> instance = op.get();
+		if (instance != op && instance.arity() != op.arity()) {
+			throw new IllegalArgumentException(format(
+				"Original op and created op has different arity: %d != %d,",
+				instance.arity(), op.arity()
+			));
+		}
+		return instance;
 	}
 
 	/**

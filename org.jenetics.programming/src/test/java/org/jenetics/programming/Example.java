@@ -21,17 +21,18 @@ package org.jenetics.programming;
 
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
-import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.programming.ops.Const;
+import org.jenetics.programming.ops.EphemeralConst;
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Ops;
 import org.jenetics.programming.ops.Program;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.SingleNodeCrossover;
-import org.jenetix.TreeCrossover;
 import org.jenetix.util.Tree;
 
 /**
@@ -55,7 +56,8 @@ public class Example {
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		//Ops.fixed(Math.PI),
-		Ops.fixed(1)
+		Const.of(1.0),
+		EphemeralConst.of(RandomRegistry.getRandom()::nextDouble)
 	);
 
 
@@ -73,7 +75,8 @@ public class Example {
 
 	public static void main(final String[] args) {
 		final Genotype<ProgramGene<Double>> gt =
-			Genotype.of(ProgramChromosome.of(
+			Genotype.of(
+				ProgramChromosome.of(
 					7,
 					ch -> ch.length() < 200,
 					OPERATIONS,

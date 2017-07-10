@@ -22,6 +22,7 @@ package org.jenetics.programming.ops;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Operation interface. An operation is a function which maps some argument type
@@ -35,13 +36,22 @@ import java.util.function.Function;
  * final Op<Double> sin = Op.of("sin", 1, v -> Math.sin(v[0]));
  * }</pre>
  *
+ * Implementations of the {@code Op} interface are usually immutable and doesn't
+ * maintain internal state. But some instance are ephemeral with changing state.
+ * This classes must override the {@link #get()} method inherited from the
+ * {@link Supplier} interface and return a new instance.
+ *
+ * @see Var
+ * @see Const
+ * @see EphemeralConst
+ *
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface Op<T> extends Function<T[], T> {
+public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 
 	/**
 	 * Return the name of the operation.
@@ -66,6 +76,17 @@ public interface Op<T> extends Function<T[], T> {
 	 */
 	public default boolean isTerminal() {
 		return arity() == 0;
+	}
+
+	/**
+	 * Return {@code this} operation, or a new instance from the same type, if
+	 * the operation needs to maintain internal state.
+	 *
+	 * @return {@code this} operation, or a new instance
+	 */
+	@Override
+	public default Op<T> get() {
+		return this;
 	}
 
 	/**
