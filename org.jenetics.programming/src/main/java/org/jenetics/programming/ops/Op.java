@@ -28,6 +28,13 @@ import java.util.function.Function;
  * with a given <em>arity</em> to a result object of the same type:
  * {@code T[] -> T}.
  *
+ * <pre>{@code
+ * final Op<Double> add = Op.of("add", 2, v -> v[0] + v[1]);
+ * final Op<Double> add3 = Op.of("add3", 3, v -> v[0] + v[1] + v[2]);
+ * final Op<Double> sub = Op.of("sub", 2, v -> v[0] - v[1]);
+ * final Op<Double> sin = Op.of("sin", 1, v -> Math.sin(v[0]));
+ * }</pre>
+ *
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
