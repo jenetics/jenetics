@@ -33,38 +33,7 @@ import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
- * Tree implementation, where the nodes of the whole tree are stored in an array.
- * The tree
- * <pre>
- * 0
- * ├── 1
- * │   ├── 4
- * │   └── 5
- * ├── 2
- * │   └── 6
- * └── 3
- *     ├── 7
- *     │   ├── 10
- *     │   └── 11
- *     ├── 8
- *     └── 9
- * </pre>
- * will be stored as
- * <pre>
- * ┌─┬───┐       ┌──────┬──┐
- * 0 1 2 3 4 5 6 7 8 9 10 11
- *   └─│─│─┴─┘ │ │   │
- *     └─│─────┘ │   │
- *       └───────┴───┘
- * </pre>
- * The child nodes are always stored on the right side of the parent nodes. So
- * you have to read the tree from left to right. All children of a parent node
- * are stored continuously after the {@code childOffset} and are defined by the
- * sub-array {@code [childOffset, childOffset + childCount)}.
- * <p>
- * This class is mainly used in the {@code ProgramChromosome}, where it is
- * required to map a tree structure (the AST of the program) onto a
- * array-structured chromosome.
+ * Default implementation of the {@link FlatTree} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -159,7 +128,7 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 	}
 
 	@Override
-	public ISeq<FlatTreeNode<T>> nodes() {
+	public ISeq<FlatTreeNode<T>> flattenedNodes() {
 		return stream().collect(ISeq.toISeq());
 	}
 

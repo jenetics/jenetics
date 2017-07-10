@@ -22,16 +22,55 @@ package org.jenetics.programming.ops;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Represents the program variables. The {@code Var} operation is a termination
+ * operation, which just returns the value with the defined index of the input
+ * variable array. It is essentially an orthogonal projection of the
+ * <em>n</em>-dimensional input space to the <em>1</em>-dimensional result space.
+ *
+ * <pre>{@code
+ * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
+ * final ISeq<? extends Op<Double>> terminals = ISeq.of(
+ *     Var.of("x", 0), Var.of("x", 1)
+ * );
+ * }</pre>
+ *
+ * The example above shows how to define the terminal operations for a GP, which
+ * tries to optimize a 2-dimensional function.
+ *
+ * <pre>{@code
+ * static double error(final ProgramChromosome<Double> program) {
+ *     ...
+ *     final double x = ...;
+ *     final double y = ...;
+ *     final double result = program.apply(x, y);
+ *     ...
+ *
+ *     return ...;
+ * }
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class Var<T> implements Op<T> {
+public class Var<T> implements Op<T> {
 
 	private final String _name;
 	private final int _index;
 
-	private Var(final String name, final int index) {
+	/**
+	 * Create a new variable with the given {@code name} and projection
+	 * {@code index}.
+	 *
+	 * @param name the variable name. Used when printing the operation tree
+	 *        (program)
+	 * @param index the projection index
+	 * @throws IllegalArgumentException if the projection {@code index} is
+	 *         smaller than zero
+	 * @throws NullPointerException if the given variable {@code name} is
+	 *         {@code null}
+	 */
+	protected Var(final String name, final int index) {
 		_name = requireNonNull(name);
 		if (index < 0) {
 			throw new IndexOutOfBoundsException(
@@ -41,6 +80,11 @@ public final class Var<T> implements Op<T> {
 		_index = index;
 	}
 
+	/**
+	 * The projection index of the variable.
+	 *
+	 * @return the projection index of the variable
+	 */
 	public int index() {
 		return _index;
 	}
@@ -65,6 +109,17 @@ public final class Var<T> implements Op<T> {
 		return _name;
 	}
 
+	/**
+	 * Create a new variable with the given {@code name} and projection
+	 * {@code index}.
+	 *
+	 * @param name the variable name. Used when printing the operation tree
+	 *        (program)
+	 * @param index the projection index
+	 * @param <T> the variable type
+	 * @return a new variable with the given {@code name} and projection
+	 *         {@code index}
+	 */
 	public static <T> Var<T> of(final String name, final int index) {
 		return new Var<>(name, index);
 	}

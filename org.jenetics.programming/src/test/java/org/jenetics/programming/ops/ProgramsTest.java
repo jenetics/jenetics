@@ -53,7 +53,7 @@ public class ProgramsTest {
 
 	@Test
 	public void program() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			5,
 			OPERATIONS,
 			TERMINALS
@@ -72,57 +72,57 @@ public class ProgramsTest {
 
 	@Test(invocationCount = 5)
 	public void toTree() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS
 		);
 
-		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).nodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).flattenedNodes();
 
 		Assert.assertEquals(
-			Programs.toTree(seq, TERMINALS),
+			Program.toTree(seq, TERMINALS),
 			tree
 		);
 	}
 
 	@Test
 	public void toTreeAndRepair() {
-		final TreeNode<Op<Double>> tree1 = Programs.of(
+		final TreeNode<Op<Double>> tree1 = Program.of(
 			3,
 			OPERATIONS,
 			TERMINALS
 		);
-		final TreeNode<Op<Double>> tree2 = Programs.of(
+		final TreeNode<Op<Double>> tree2 = Program.of(
 			3,
 			OPERATIONS,
 			TERMINALS
 		);
 
-		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.of(tree1).nodes();
-		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.of(tree2).nodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq1 = FlatTreeNode.of(tree1).flattenedNodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq2 = FlatTreeNode.of(tree2).flattenedNodes();
 
 		final ISeq<FlatTreeNode<Op<Double>>> seq3 = ISeq
 			.of(seq1.subSeq(0, seq1.length()/2))
 			.append(seq2.subSeq(0, seq2.length()/2));
 
-		final TreeNode<Op<Double>> tree3 = Programs.toTree(seq3, TERMINALS);
+		final TreeNode<Op<Double>> tree3 = Program.toTree(seq3, TERMINALS);
 	}
 
 	@Test
 	public void offsets() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS
 		);
-		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).nodes();
+		final ISeq<FlatTreeNode<Op<Double>>> seq = FlatTreeNode.of(tree).flattenedNodes();
 
 		final int[] expected = seq.stream()
 			.mapToInt(FlatTreeNode::childOffset)
 			.toArray();
 
-		final int[] offsets = Programs.offsets(seq);
+		final int[] offsets = Program.offsets(seq);
 		Assert.assertEquals(offsets, expected);
 	}
 

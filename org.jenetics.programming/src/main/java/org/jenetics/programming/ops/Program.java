@@ -23,10 +23,20 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Array;
+import java.util.Random;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
+import org.jenetix.util.FlatTree;
 import org.jenetix.util.Tree;
+import org.jenetix.util.TreeNode;
 
 /**
+ * This class composes a given operation tree to a new operation. which can
+ * serve as a sub <em>program</em> in an other operation tree.
+ *
+ * @param <T> the argument type of the operation
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -37,10 +47,22 @@ public class Program<T> implements Op<T> {
 	private final int _arity;
 	private final Tree<? extends Op<T>, ?> _tree;
 
-
+	/**
+	 * Create a new program with the given name and the given operation tree.
+	 * The arity of the program is calculated from the given operation tree and
+	 * set to the maximal arity of the operations of the tree.
+	 *
+	 * @param name the program name
+	 * @param tree the operation tree
+	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 * @throws IllegalArgumentException if the given operation tree is invalid,
+	 *         which means there is at least one node where the operation arity
+	 *         and the node child count differ.
+	 */
 	public Program(final String name, final Tree<? extends Op<T>, ?> tree) {
 		_name = requireNonNull(name);
 		_tree = requireNonNull(tree);
+		check(tree);
 		_arity = tree.breadthFirstStream()
 			.filter(t -> t.getValue() instanceof Var<?>)
 			.mapToInt(v -> ((Var<?>)v.getValue()).index() + 1)
@@ -60,7 +82,7 @@ public class Program<T> implements Op<T> {
 
 	@Override
 	public T apply(final T[] args) {
-		if (args.length < arity() && !isTerminal()) {
+		if (args.length < arity()) {
 			throw new IllegalArgumentException(format(
 				"Arguments length is smaller the program arity: %d < %d",
 				args.length, arity()
@@ -115,18 +137,175 @@ public class Program<T> implements Op<T> {
 		return op.apply(args);
 	}
 
+	/**
+	 * Validates the given program tree.
+	 *
+	 * @param program the program to validate
+	 * @param <A> the operation type
+	 * @throws NullPointerException if the given {@code program} is {@code null}
+	 * @throws IllegalArgumentException if the given operation tree is invalid,
+	 *         which means there is at least one node where the operation arity
+	 *         and the node child count differ.
+	 */
 	public static <A> void check(final Tree<? extends Op<A>, ?> program) {
 		requireNonNull(program);
 
 		program.breadthFirstStream().forEach(node -> {
 			if (node.getValue() != null && node.getValue().arity() != node.childCount()) {
-				System.out.println(node);
 				throw new IllegalArgumentException(format(
 					"Op arity != child count: %d != %d",
 					node.getValue().arity(), node.childCount()
 				));
 			}
 		});
+	}
+
+	/**
+	 * Create a new program tree from the given (non) terminal operations with
+	 * the desired depth. The created program tree is a <em>full</em> tree.
+	 *
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param <A> the operational type
+	 * @return a new program tree
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 */
+	public static <A> TreeNode<Op<A>> of(
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		if (!operations.forAll(o -> !o.isTerminal())) {
+			throw new IllegalArgumentException(
+				"Operation list contains terminal op."
+			);
+		}
+		if (!terminals.forAll(o -> o.isTerminal())) {
+			throw new IllegalArgumentException(
+				"Terminal list contains non-terminal op."
+			);
+		}
+
+		final TreeNode<Op<A>> root = TreeNode.of();
+		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
+		return root;
+	}
+
+	private static <A> void fill(
+		final int level,
+		final TreeNode<Op<A>> tree,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		final Op<A> op = operations.get(random.nextInt(operations.size()));
+		tree.setValue(op);
+
+		if (level > 1) {
+			for (int i = 0; i < op.arity(); ++i) {
+				final TreeNode<Op<A>> node = TreeNode.of();
+				fill(level - 1, node, operations, terminals, random);
+				tree.attach(node);
+			}
+		} else {
+			for (int i = 0; i < op.arity(); ++i) {
+				final Op<A> term = terminals.get(random.nextInt(terminals.size()));
+				tree.attach(TreeNode.of(term));
+			}
+		}
+	}
+
+	/**
+	 * Creates a valid program tree from the given flattened sequence of
+	 * op nodes. The given {@code operations} and {@code termination} nodes are
+	 * used for <em>repairing</em> the program tree, if necessary.
+	 *
+	 * @param nodes the flattened, possible corrupt, program tree
+	 * @param terminals the usable non-terminal operation nodes to use for
+	 *        reparation
+	 * @param <A> the operation argument type
+	 * @return a new valid program tree build from the flattened program tree
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <A> TreeNode<Op<A>> toTree(
+		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		if (nodes.isEmpty()) {
+			throw new IllegalArgumentException("Tree nodes must not be empty.");
+		}
+
+		final Op<A> op = requireNonNull(nodes.get(0).getValue());
+		final TreeNode<Op<A>> tree = TreeNode.of(op);
+		return toTree(
+			tree,
+			0,
+			nodes,
+			offsets(nodes),
+			terminals,
+			RandomRegistry.getRandom()
+		);
+	}
+
+	private static <A> TreeNode<Op<A>> toTree(
+		final TreeNode<Op<A>> root,
+		final int index,
+		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
+		final int[] offsets,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		if (index < nodes.size()) {
+			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);
+			final Op<A> op = node.getValue();
+
+			for (int i  = 0; i < op.arity(); ++i) {
+				assert offsets[index] != -1;
+
+				final TreeNode<Op<A>> treeNode = TreeNode.of();
+				if (offsets[index] + i < nodes.size()) {
+					treeNode.setValue(nodes.get(offsets[index] + i).getValue());
+				} else {
+					treeNode.setValue(terminals.get(random.nextInt(terminals.size())));
+				}
+
+				toTree(
+					treeNode,
+					offsets[index] + i,
+					nodes,
+					offsets,
+					terminals,
+					random
+				);
+				root.attach(treeNode);
+			}
+		}
+
+		return root;
+	}
+
+	/**
+	 * Create the offset array for the given nodes. The offsets are calculated
+	 * using the arity of the stored operations.
+	 *
+	 * @param nodes the flattened tree nodes
+	 * @return the offset array for the given nodes
+	 */
+	static int[]
+	offsets(final ISeq<? extends FlatTree<? extends Op<?>, ?>> nodes) {
+		final int[] offsets = new int[nodes.size()];
+
+		int offset = 1;
+		for (int i = 0; i < offsets.length; ++i) {
+			final Op<?> op = nodes.get(i).getValue();
+
+			offsets[i] = op.arity() == 0 ? -1 : offset;
+			offset += nodes.get(i).getValue().arity();
+		}
+
+		return offsets;
 	}
 
 }

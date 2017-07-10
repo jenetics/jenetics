@@ -38,7 +38,7 @@ import org.jenetics.util.ISeq;
  *     ├── 8
  *     └── 9
  * </pre>
- * will be stored as
+ * will be stored in breadth-first order and will look like this:
  * <pre>
  * ┌─┬───┐       ┌──────┬──┐
  * 0 1 2 3 4 5 6 7 8 9 10 11
@@ -46,7 +46,7 @@ import org.jenetics.util.ISeq;
  *     └─│─────┘ │   │
  *       └───────┴───┘
  * </pre>
- * The child nodes are always stored on the right side of the parent nodes. So
+ * The child nodes are always stored on the right side of the parent flattenedNodes. So
  * you have to read the tree from left to right. All children of a parent node
  * are stored continuously after the {@code childOffset} and are defined by the
  * sub-array {@code [childOffset, childOffset + childCount)}.
@@ -74,7 +74,7 @@ public interface FlatTree<V, T extends Tree<V, T>> extends Tree<V, T> {
 	 *
 	 * @return the flattened tree values in breadth-first order
 	 */
-	public default ISeq<T> nodes() {
+	public default ISeq<T> flattenedNodes() {
 		return getRoot().breadthFirstStream().collect(ISeq.toISeq());
 	}
 

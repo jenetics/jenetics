@@ -19,12 +19,12 @@
  */
 package org.jenetics.programming;
 
+import org.jenetics.programming.ops.Program;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Ops;
-import org.jenetics.programming.ops.Programs;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
@@ -57,7 +57,7 @@ public class ProgramChromosomeTest {
 
 	@Test(invocationCount = 10)
 	public void createFromTree() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS
@@ -71,7 +71,7 @@ public class ProgramChromosomeTest {
 
 	@Test(invocationCount = 10)
 	public void createFromSeq() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS
@@ -88,7 +88,7 @@ public class ProgramChromosomeTest {
 
 	@Test
 	public void createTreeFromChromosome() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS
@@ -102,7 +102,7 @@ public class ProgramChromosomeTest {
 
 	@Test
 	public void treeToFlatTree() {
-		final TreeNode<Op<Double>> tree = Programs.of(
+		final TreeNode<Op<Double>> tree = Program.of(
 			6,
 			OPERATIONS,
 			TERMINALS

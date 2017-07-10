@@ -24,14 +24,12 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import org.jenetics.Gene;
 import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-
 import org.jenetix.AbstractTreeGene;
 
 /**
@@ -67,20 +65,49 @@ public final class ProgramGene<A>
 	/**
 	 * Evaluates this program gene (recursively) with the given variable values.
 	 *
-	 * @param variables the variables
+	 * @see #eval(Object[])
+	 * @see ProgramChromosome#apply(Object[])
+	 *
+	 * @param args the input variables
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
 	 */
 	@Override
-	public A apply(final A[] variables) {
+	public A apply(final A[] args) {
 		checkTreeState();
-		return Program.eval(this, variables);
+		return Program.eval(this, args);
 	}
 
+	/**
+	 * Convenient method, which lets you apply the program function without
+	 * explicitly create a wrapper array.
+	 *
+	 * @see #apply(Object[])
+	 * @see ProgramChromosome#apply(Object[])
+	 *
+	 * @param args the function arguments
+	 * @return the evaluated value
+	 * @throws NullPointerException if the given variable array is {@code null}
+	 */
+	@SafeVarargs
+	public final A eval(final A... args) {
+		return apply(args);
+	}
+
+	/**
+	 * Return the allowed operations.
+	 *
+	 * @return the allowed operations
+	 */
 	public ISeq<? extends Op<A>> getOperations() {
 		return _operations;
 	}
 
+	/**
+	 * Return the allowed terminal operations.
+	 *
+	 * @return the allowed terminal operations
+	 */
 	public ISeq<? extends Op<A>> getTerminals() {
 		return _terminals;
 	}
@@ -91,13 +118,7 @@ public final class ProgramGene<A>
 
 		Op<A> operation = getValue();
 		if (isLeaf()) {
-			final ISeq<Op<A>> terminals = _terminals.stream()
-				.filter(op -> op.arity() == getValue().arity())
-				.collect(ISeq.toISeq());
-
-			if (terminals.length() > 1) {
-				operation = terminals.get(random.nextInt(terminals.length()));
-			}
+			operation = _terminals.get(random.nextInt(_terminals.length()));
 		} else {
 			final ISeq<Op<A>> operations = _operations.stream()
 				.filter(op -> op.arity() == getValue().arity())
@@ -111,6 +132,16 @@ public final class ProgramGene<A>
 		return newInstance(operation);
 	}
 
+	/**
+	 * Create a new program gene with the given operation.
+	 *
+	 * @param op the operation of the new program gene
+	 * @return a new program gene with the given operation
+	 * @throws NullPointerException if the given {@code op} is {@code null}
+	 * @throws IllegalArgumentException if the arity of the given operation is
+	 *         different from the arity of current operation. This restriction
+	 *         ensures that only valid program genes are created by this method.
+	 */
 	@Override
 	public ProgramGene<A> newInstance(final Op<A> op) {
 		if (getValue().arity() != op.arity()) {
@@ -122,20 +153,35 @@ public final class ProgramGene<A>
 		return new ProgramGene<>(op, childOffset(), _operations, _terminals);
 	}
 
+	/**
+	 * Return a new program gene with the given operation and the <em>local</em>
+	 * tree structure.
+	 *
+	 * @param op the new operation
+	 * @param childOffset the offset of the first node child within the
+	 *        chromosome
+	 * @param childCount the number of children of the new tree gene
+	 * @return a new tree gene with the given parameters
+	 * @throws IllegalArgumentException  if the {@code childCount} is smaller
+	 *         than zero
+	 * @throws IllegalArgumentException if the operation arity is different from
+	 *         the {@code childCount}.
+	 * @throws NullPointerException if the given {@code op} is {@code null}
+	 */
 	@Override
 	public ProgramGene<A> newInstance(
-		final Op<A> allele,
+		final Op<A> op,
 		final int childOffset,
 		final int childCount
 	) {
-		if (allele.arity() != childCount) {
+		if (op.arity() != childCount) {
 			throw new IllegalArgumentException(format(
 				"Operation arity and child count are different: %d, != %d",
-				allele.arity(), childCount
+				op.arity(), childCount
 			));
 		}
 
-		return new ProgramGene<>(allele, childOffset, _operations, _terminals);
+		return new ProgramGene<>(op, childOffset, _operations, _terminals);
 	}
 
 }

@@ -27,6 +27,42 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetix.util.TreeNode;
 
 /**
+ * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.
+ * <pre> {@code
+ *     Tree A                 Tree B
+ *   0                      a
+ *   ├── 1                  ├── b
+ *   │   ├── 4              │   ├── e
+ *   │   └── 5              │   └── f
+ *   ├── 2                  ├── c
+ *   │   └── 6              │   └── g
+ *   └── 3                  └── d
+ *       ├── 7                  ├── h
+ *       │   ├── 10             │   ├── k
+ *       │   └── 11             │   └── l
+ *       ├── 8                  ├── i
+ *       └── 9                  └── j
+ *
+ *     Swap node "3" of A with node "c" of B
+ *
+ *   0                      a
+ *   ├── 1                  ├── b
+ *   │   ├── 4              │   ├── e
+ *   │   └── 5              │   └── f
+ *   ├── 2                  ├── 3
+ *   │   └── 6              │   ├── 7
+ *   └── c                  │   │   ├── 10
+ *       └── g              │   │   └── 11
+ *                          │   ├── 8
+ *                          │   └── 9
+ *                          └── d
+ *                              ├── h
+ *                              │   ├── k
+ *                              │   └── l
+ *                              ├── i
+ *                              └── j
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
  * @since 3.9

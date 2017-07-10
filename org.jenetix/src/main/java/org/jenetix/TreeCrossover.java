@@ -38,7 +38,10 @@ import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 
 /**
- * Abstract implementation of tree crossover recombinator.
+ * Abstract implementation of tree base crossover recombinator. This class
+ * simplifies the implementation of tree base crossover implementation, by doing
+ * the transformation of the flattened tree genes to actual trees and vice versa.
+ * Only the {@link #crossover(TreeNode, TreeNode)} method must be implemented.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9

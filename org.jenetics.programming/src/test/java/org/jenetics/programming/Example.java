@@ -63,7 +63,7 @@ public class Example {
 		double error = 0;
 		for (int i = 0; i < 20; ++i) {
 			final double x = 2*Math.PI/20.0*i;
-			final double result = program.apply(new Double[]{x});
+			final double result = program.eval(x);
 
 			error += Math.abs(Math.sin(x) - result);
 		}

@@ -24,7 +24,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 
 /**
- * Operation interface.
+ * Operation interface. An operation is a function which maps some argument type
+ * with a given <em>arity</em> to a result object of the same type:
+ * {@code T[] -> T}.
+ *
+ * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -103,4 +107,5 @@ public interface Op<T> extends Function<T[], T> {
 			}
 		};
 	}
+
 }

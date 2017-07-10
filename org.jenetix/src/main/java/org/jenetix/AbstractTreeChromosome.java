@@ -29,7 +29,7 @@ import org.jenetics.util.ISeq;
  * @version 3.9
  * @since 3.9
  */
-public abstract class AbstractTreeChromosome<A, G extends TreeGene<A, G>>
+public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>>
 	extends AbstractChromosome<G>
 	implements TreeChromosome<A, G>
 {

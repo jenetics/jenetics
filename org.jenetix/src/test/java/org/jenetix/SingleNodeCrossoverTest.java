@@ -60,27 +60,27 @@ public class SingleNodeCrossoverTest {
 
 	@Test
 	public void crossover() {
-		final TreeNode<Integer> tree1 = TreeNode.of(0)
-			.attach(TreeNode.of(1)
-				.attach(4, 5))
-			.attach(TreeNode.of(2)
-				.attach(6))
-			.attach(TreeNode.of(3)
-				.attach(TreeNode.of(7)
-					.attach(10, 11))
-				.attach(TreeNode.of(8))
-				.attach(TreeNode.of(9)));
+		final TreeNode<String> tree1 = TreeNode.of("0")
+			.attach(TreeNode.of("1")
+				.attach("4", "5"))
+			.attach(TreeNode.of("2")
+				.attach("6"))
+			.attach(TreeNode.of("3")
+				.attach(TreeNode.of("7")
+					.attach("10", "11"))
+				.attach(TreeNode.of("8"))
+				.attach(TreeNode.of("9")));
 
-		final TreeNode<Integer> tree2 = TreeNode.of(20)
-			.attach(TreeNode.of(21)
-				.attach(24, 25))
-			.attach(TreeNode.of(22)
-				.attach(26))
-			.attach(TreeNode.of(23)
-				.attach(TreeNode.of(27)
-					.attach(30, 31))
-				.attach(TreeNode.of(28))
-				.attach(TreeNode.of(29)));
+		final TreeNode<String> tree2 = TreeNode.of("a")
+			.attach(TreeNode.of("b")
+				.attach("e", "f"))
+			.attach(TreeNode.of("c")
+				.attach("g"))
+			.attach(TreeNode.of("d")
+				.attach(TreeNode.of("h")
+					.attach("k", "l"))
+				.attach(TreeNode.of("i"))
+				.attach(TreeNode.of("j")));
 
 		final int size1 = tree1.size();
 		final int size2 = tree2.size();
