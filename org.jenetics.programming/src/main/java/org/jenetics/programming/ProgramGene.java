@@ -30,6 +30,7 @@ import org.jenetics.programming.ops.Op;
 import org.jenetics.programming.ops.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
+
 import org.jenetix.AbstractTreeGene;
 
 /**
