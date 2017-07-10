@@ -59,11 +59,11 @@ public class Example {
 	);
 
 
-	static double error(final ProgramGene<Double> program) {
+	static double error(final Genotype<ProgramGene<Double>> genotype) {
 		double error = 0;
 		for (int i = 0; i < 20; ++i) {
 			final double x = 2*Math.PI/20.0*i;
-			final double result = program.eval(x);
+			final double result = genotype.getGene().eval(x);
 
 			error += Math.abs(Math.sin(x) - result);
 		}
@@ -72,19 +72,17 @@ public class Example {
 	}
 
 	public static void main(final String[] args) {
-		final Codec<ProgramGene<Double>, ProgramGene<Double>>
-			codec = Codec.of(
-				Genotype.of(ProgramChromosome.of(
+		final Genotype<ProgramGene<Double>> gt =
+			Genotype.of(ProgramChromosome.of(
 					7,
 					ch -> ch.length() < 200,
 					OPERATIONS,
 					TERMINALS
-				)),
-				Genotype::getGene
+				)
 			);
 
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(Example::error, codec)
+			.builder(Example::error, gt)
 			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),
