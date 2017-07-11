@@ -38,7 +38,7 @@ import org.jenetix.AbstractTreeGene;
  * Because of the tight coupling with the {@link ProgramChromosome}, a
  * {@code ProgramGene} can't be created directly. This reduces the the possible
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
- * it can be easily directly used as result.
+ * it can be easily used as result.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
