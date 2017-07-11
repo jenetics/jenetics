@@ -130,15 +130,24 @@ public class ProgramChromosome<A>
 	}
 
 	/**
-	 * Convenient method, which lets you apply the program function without
-	 * explicitly create a wrapper array. It's shortcut for
+	 * Evaluates the root node of this chromosome.
 	 *
-	 * <pre>{@code
-	 * getRoot().eval(args);
-	 * }</pre>
+	 * @see ProgramGene#apply(Object[])
+	 * @see ProgramChromosome#eval(Object[])
+	 *
+	 * @param args the input variables
+	 * @return the evaluated value
+	 * @throws NullPointerException if the given variable array is {@code null}
+	 */
+	public A apply(final A[] args) {
+		return getRoot().apply(args);
+	}
+
+	/**
+	 * Evaluates the root node of this chromosome.
 	 *
 	 * @see ProgramGene#eval(Object[])
-	 * @see ProgramGene#apply(Object[])
+	 * @see ProgramChromosome#apply(Object[])
 	 *
 	 * @param args the function arguments
 	 * @return the evaluated value
