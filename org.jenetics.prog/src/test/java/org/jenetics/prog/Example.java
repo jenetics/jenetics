@@ -19,10 +19,13 @@
  */
 package org.jenetics.prog;
 
+import static java.lang.String.format;
+
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.engine.Problem;
 import org.jenetics.prog.ops.Const;
 import org.jenetics.prog.ops.EphemeralConst;
 import org.jenetics.prog.ops.Op;
@@ -42,32 +45,57 @@ import org.jenetix.util.Tree;
  */
 public class Example {
 
+	// Lookup table for 4*x^3 - 3*x^2 + x
+	private static final double[][] SAMPLES = new double[][] {
+		{-1.0, -8.0000},
+		{-0.9, -6.2460},
+		{-0.8, -4.7680},
+		{-0.7, -3.5420},
+		{-0.6, -2.5440},
+		{-0.5, -1.7500},
+		{-0.4, -1.1360},
+		{-0.3, -0.6780},
+		{-0.2, -0.3520},
+		{-0.1, -0.1340},
+		{0.0, 0.0000},
+		{0.1, 0.0740},
+		{0.2, 0.1120},
+		{0.3, 0.1380},
+		{0.4, 0.1760},
+		{0.5, 0.2500},
+		{0.6, 0.3840},
+		{0.7, 0.6020},
+		{0.8, 0.9280},
+		{0.9, 1.3860},
+		{1.0, 2.0000}
+	};
+
+	// The function we want to determine.
+	private static double f(final double x) {
+		return 4*x*x*x - 3*x*x + x;
+	}
+
+	// Definition of the allowed operations.
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
 		MathOp.SUB,
-		MathOp.MUL,
-		MathOp.DIV,
-		MathOp.POW,
-		//Ops.EXP,
-		MathOp.SIN
-		//Ops.COS
+		MathOp.MUL
 	);
 
+	// Definition of the terminals.
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
-		//Ops.fixed(Math.PI),
-		Const.of(1.0),
-		EphemeralConst.of(RandomRegistry.getRandom()::nextDouble)
+		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
 	);
 
 
 	static double error(final Genotype<ProgramGene<Double>> genotype) {
 		double error = 0;
-		for (int i = 0; i < 20; ++i) {
-			final double x = 2*Math.PI/20.0*i;
+		for (int i = 0; i < SAMPLES.length; ++i) {
+			final double x = SAMPLES[i][0];
 			final double result = genotype.getGene().eval(x);
 
-			error += Math.abs(Math.sin(x) - result);
+			error += Math.abs(SAMPLES[i][1] - result);
 		}
 
 		return error;
@@ -77,8 +105,8 @@ public class Example {
 		final Genotype<ProgramGene<Double>> gt =
 			Genotype.of(
 				ProgramChromosome.of(
-					7,
-					ch -> ch.length() < 200,
+					5,
+					ch -> ch.length() < 50,
 					OPERATIONS,
 					TERMINALS
 				)
@@ -87,23 +115,24 @@ public class Example {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(Example::error, gt)
 			.minimizing()
-			.alterers(
-				new SingleNodeCrossover<>(),
-				new Mutator<>())
+			.alterers(new SingleNodeCrossover<>())
 			.build();
 
 		final Tree<? extends Op<Double>, ?> program = engine.stream()
-			.limit(150)
+			.limit(3000)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
 		System.out.println(Tree.toString(program));
 
-		for (int i = 0; i < 20; ++i) {
-			final double x = 2*Math.PI/20.0*i;
+		for (int i = 0; i < SAMPLES.length; ++i) {
+			final double x = SAMPLES[i][0];
 			final double result = Program.eval(program, x);
 
-			System.out.println(i + ": " + Math.sin(x) + " -> " + result);
+			System.out.println(format(
+				"%2.2f: %2.4f, %2.4f: %2.5f",
+				x, f(x), result, Math.abs(f(x) - result)
+			));
 		}
 	}
 
