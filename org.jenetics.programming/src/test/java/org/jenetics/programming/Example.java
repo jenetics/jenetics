@@ -26,7 +26,7 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.programming.ops.Const;
 import org.jenetics.programming.ops.EphemeralConst;
 import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.Ops;
+import org.jenetics.programming.ops.MathOp;
 import org.jenetics.programming.ops.Program;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
@@ -43,13 +43,13 @@ import org.jenetix.util.Tree;
 public class Example {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		Ops.ADD,
-		Ops.SUB,
-		Ops.MUL,
-		Ops.DIV,
-		Ops.POW,
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.DIV,
+		MathOp.POW,
 		//Ops.EXP,
-		Ops.SIN
+		MathOp.SIN
 		//Ops.COS
 	);
 

@@ -25,7 +25,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.Ops;
+import org.jenetics.programming.ops.MathOp;
 import org.jenetics.programming.ops.Var;
 import org.jenetics.util.ISeq;
 
@@ -39,13 +39,13 @@ import org.jenetix.util.TreeNode;
 public class ProgramChromosomeTest {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		Ops.ADD,
-		Ops.SUB,
-		Ops.MUL,
-		Ops.DIV,
-		Ops.EXP,
-		Ops.SIN,
-		Ops.COS
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.DIV,
+		MathOp.EXP,
+		MathOp.SIN,
+		MathOp.COS
 	);
 
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(

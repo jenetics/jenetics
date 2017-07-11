@@ -50,8 +50,8 @@ import static java.lang.Math.tanh;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Ops {
-	private Ops() {}
+public final class MathOp {
+	private MathOp() {}
 
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
