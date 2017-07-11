@@ -204,7 +204,7 @@ public class ProgramChromosome<A>
 	}
 
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
-		final ISeq<Op<?>> terminals = operations.stream()
+		final ISeq<?> terminals = operations.stream()
 			.filter(op -> op.isTerminal())
 			.collect(ISeq.toISeq());
 
@@ -217,7 +217,7 @@ public class ProgramChromosome<A>
 	}
 
 	private static void checkTerminals(final ISeq<? extends Op<?>> terminals) {
-		final ISeq<Op<?>> operations = terminals.stream()
+		final ISeq<?> operations = terminals.stream()
 			.filter(op -> !op.isTerminal())
 			.collect(ISeq.toISeq());
 
