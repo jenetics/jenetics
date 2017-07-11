@@ -243,6 +243,7 @@ public class Program<T> implements Op<T> {
 	 * @param <A> the operation argument type
 	 * @return a new valid program tree build from the flattened program tree
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code nodes} sequence is empty
 	 */
 	public static <A> TreeNode<Op<A>> toTree(
 		final ISeq<? extends FlatTree<? extends Op<A>, ?>> nodes,
