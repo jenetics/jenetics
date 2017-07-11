@@ -87,6 +87,21 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _genes;
 	}
 
+	@Override
+	public G getRoot() {
+		return _genes.get(0);
+	}
+
+	@Override
+	public boolean isRoot() {
+		return getRoot() == this;
+	}
+
+	@Override
+	public int size() {
+		return isRoot() ? _genes.size() : TreeGene.super.size();
+	}
+
 	protected void checkTreeState() {
 		if (_genes == null) {
 			throw new IllegalStateException(
