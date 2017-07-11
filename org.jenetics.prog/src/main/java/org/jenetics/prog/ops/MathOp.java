@@ -289,23 +289,4 @@ public final class MathOp {
 		Op.of("xor", 2, v -> v[0] ^ v[1]);
 
 
-	public static final class Polynomial implements Op<Double> {
-
-		@Override
-		public String name() {
-			return null;
-		}
-
-		@Override
-		public int arity() {
-			return 0;
-		}
-
-		@Override
-		public Double apply(final Double[] doubles) {
-			return null;
-		}
-
-	}
-
 }
