@@ -19,6 +19,13 @@
  */
 package org.jenetix.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import org.jenetics.util.ISeq;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -27,7 +34,7 @@ import org.testng.annotations.Test;
 public class NodeTest {
 
 	@Test
-	public void serialize() {
+	public void treeToString() {
 		final TreeNode<Integer> tree = TreeNode.of(0)
 			.attach(TreeNode.of(1)
 				.attach(4, 5))
@@ -45,13 +52,32 @@ public class NodeTest {
 		System.out.println(Tree.toString(flat));
 
 		System.out.println(Trees.toCompactString(tree));
+	}
 
-		/*
-		final ISeq<FlatTreeNode<Integer>> seq = FlatTreeNode.flatten(tree);
-		Assert.assertEquals(FlatTreeNode.unflatten(seq), tree);
+	@Test
+	public void serialize() throws Exception {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(4, 5))
+			.attach(TreeNode.of(2)
+				.attach(6))
+			.attach(TreeNode.of(3)
+				.attach(TreeNode.of(7)
+					.attach(10, 11))
+				.attach(TreeNode.of(8))
+				.attach(TreeNode.of(9)));
 
-		System.out.println(FlatTreeNode.flatten(tree));
-		*/
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try (ObjectOutputStream oout = new ObjectOutputStream(out)) {
+			oout.writeObject(tree);
+		}
+
+		final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+		try (ObjectInputStream oin = new ObjectInputStream(in)) {
+			@SuppressWarnings("unchecked")
+			final TreeNode<Integer> object = (TreeNode<Integer>)oin.readObject();
+			Assert.assertEquals(object, tree);
+		}
 	}
 
 }

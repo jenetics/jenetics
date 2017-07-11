@@ -92,6 +92,21 @@ public class Program<T> implements Op<T> {
 		return eval(_tree, args);
 	}
 
+	/**
+	 * Convenient method, which lets you apply the program function without
+	 * explicitly create a wrapper array.
+	 *
+	 * @see #apply(Object[])
+	 *
+	 * @param args the function arguments
+	 * @return the evaluated value
+	 * @throws NullPointerException if the given variable array is {@code null}
+	 */
+	@SafeVarargs
+	public final T eval(final T... args) {
+		return apply(args);
+	}
+
 	@Override
 	public String toString() {
 		return _name;

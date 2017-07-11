@@ -41,7 +41,7 @@ final class Trees {
 
 
 	@SuppressWarnings("unchecked")
-	static <V, T extends Tree<V, T>> T self(final Object tree) {
+	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
 		return (T)tree;
 	}
 

@@ -145,7 +145,7 @@ public class ProgramChromosome<A>
 	 * @throws NullPointerException if the given variable array is {@code null}
 	 */
 	@SafeVarargs
-	public final A apply(final A... args) {
+	public final A eval(final A... args) {
 		return getRoot().eval(args);
 	}
 

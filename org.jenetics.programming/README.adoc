@@ -1,2 +1,16 @@
 # Genetic programming
 
+The `io.jenetics.programming` module extends the Jenetics library with the possibility to do Genetic Programming. A program is represented by a tree (AST), as defined in the `io.jenetics.ext` module.
+
+Lots of the features are left out. This is just a basic implementation. Future development will add missing features described in the literature.
+
+## Defining operations
+
+### Ephemeral operations
+
+## Create `ProgramChromosome`
+
+## GP example
+
+## Repair ProgramChromosome
+

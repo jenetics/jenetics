@@ -37,8 +37,8 @@ import org.jenetix.AbstractTreeGene;
  * This gene represents a program, build upon an AST of {@link Op} functions.
  * Because of the tight coupling with the {@link ProgramChromosome}, a
  * {@code ProgramGene} can't be created directly. This reduces the the possible
- * <em>error space</em>. Since the {@code ProgramGene} also is a
- * {@code Tree<? extends Op<T>, ?>}, it can be easily directly used as result.
+ * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
+ * it can be easily directly used as result.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -77,8 +77,8 @@ public final class ProgramGene<A>
 	/**
 	 * Evaluates this program gene (recursively) with the given variable values.
 	 *
-	 * @see #eval(Object[])
-	 * @see ProgramChromosome#apply(Object[])
+	 * @see ProgramGene#eval(Object[])
+	 * @see ProgramChromosome#eval(Object[])
 	 *
 	 * @param args the input variables
 	 * @return the evaluated value
@@ -94,8 +94,8 @@ public final class ProgramGene<A>
 	 * Convenient method, which lets you apply the program function without
 	 * explicitly create a wrapper array.
 	 *
-	 * @see #apply(Object[])
-	 * @see ProgramChromosome#apply(Object[])
+	 * @see ProgramGene#apply(Object[])
+	 * @see ProgramChromosome#eval(Object[])
 	 *
 	 * @param args the function arguments
 	 * @return the evaluated value

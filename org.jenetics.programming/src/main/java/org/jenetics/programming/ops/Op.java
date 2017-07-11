@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.jenetics.util.ISeq;
+
 /**
  * Operation interface. An operation is a function which maps some argument type
  * with a given <em>arity</em> to a result object of the same type:
@@ -80,7 +82,10 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 
 	/**
 	 * Return {@code this} operation, or a new instance from the same type, if
-	 * the operation needs to maintain internal state.
+	 * the operation needs to maintain internal state. This is essentially the
+	 * case for ephemeral constants.
+	 *
+	 * @see EphemeralConst
 	 *
 	 * @return {@code this} operation, or a new instance
 	 */
@@ -94,7 +99,9 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 *
 	 * @param name the operation name
 	 * @param arity the arity of the operation
-	 * @param function the function executed by the operation
+	 * @param function the function executed by the operation. In order to work
+	 *        properly, the given function should be stateless and must not have
+	 *        side effects.
 	 * @param <T> the operation type
 	 * @return a new operation from the given parameter
 	 * @throws NullPointerException if the given {@code name} or {@code function}
@@ -110,7 +117,9 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 		requireNonNull(name);
 		requireNonNull(function);
 		if (arity < 0) {
-			throw new IllegalArgumentException("Arity smaller than zero: " + arity);
+			throw new IllegalArgumentException(
+				"Arity smaller than zero: " + arity
+			);
 		}
 
 		return new Op<T>() {

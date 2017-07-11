@@ -19,6 +19,7 @@
  */
 package org.jenetics.programming.ops;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
@@ -28,9 +29,15 @@ import org.jenetics.internal.util.Lazy;
 
 /**
  * Implementation of an <em>ephemeral</em> constant. It causes the insertion of
- * a <em>mutable</em> constant into the operation tree.  Every time this terminal
+ * a <em>mutable</em> constant into the operation tree. Every time this terminal
  * is chosen a, different value is generated which is then used for that
- * particular terminal, and which will remain fixed for the rest of the run.
+ * particular terminal, and which will remain fixed for the given tree. The main
+ * usage would be to introduce random terminal values.
+ *
+ * <pre>{@code
+ * final Random random = ...;
+ * final Op<Double> val = EphemeralConst.of(random::nextDouble());
+ * }</pre>
  *
  *  @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -61,7 +68,7 @@ public final class EphemeralConst<T> implements Op<T> {
 	/**
 	 * Return a newly created, uninitialized constant of type {@code T}.
 	 *
-	 * @return a newly created, uninitialized constant of type {@code T}s
+	 * @return a newly created, uninitialized constant of type {@code T}
 	 */
 	@Override
 	public Op<T> get() {
@@ -75,7 +82,9 @@ public final class EphemeralConst<T> implements Op<T> {
 
 	@Override
 	public String toString() {
-		return _name != null ? _name : Objects.toString(_value.get());
+		return _name != null
+			? format("%s(%s)", _name, _value.get())
+			: Objects.toString(_value.get());
 	}
 
 	/**

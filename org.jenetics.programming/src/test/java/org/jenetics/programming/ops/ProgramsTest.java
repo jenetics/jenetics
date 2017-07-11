@@ -34,7 +34,6 @@ public class ProgramsTest {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		Ops.ADD,
-		Ops.ADD3,
 		Ops.SUB,
 		Ops.MUL,
 		Ops.DIV,
@@ -47,8 +46,8 @@ public class ProgramsTest {
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
-		Ops.fixed(Math.PI),
-		Ops.fixed(1)
+		Ops.PI,
+		Const.of(1.0)
 	);
 
 	@Test
@@ -64,7 +63,7 @@ public class ProgramsTest {
 		System.out.println(tree);
 
 		final Program<Double> program = new Program<>("foo", tree);
-		final Double result = program.apply(new Double[]{1.0, 2.0, 3.0});
+		final Double result = program.eval(1.0, 2.0, 3.0);
 		System.out.println("Arity: " + program.arity());
 		System.out.println(result);
 		System.out.flush();
