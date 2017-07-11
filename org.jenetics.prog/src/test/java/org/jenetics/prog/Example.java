@@ -25,11 +25,9 @@ import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Problem;
-import org.jenetics.prog.ops.Const;
 import org.jenetics.prog.ops.EphemeralConst;
-import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.MathOp;
+import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Program;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
@@ -95,7 +93,8 @@ public class Example {
 			final double x = SAMPLES[i][0];
 			final double result = genotype.getGene().eval(x);
 
-			error += Math.abs(SAMPLES[i][1] - result);
+			error += Math.abs(SAMPLES[i][1] - result) +
+				genotype.getGene().size()*0.01;
 		}
 
 		return error;
@@ -115,7 +114,9 @@ public class Example {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(Example::error, gt)
 			.minimizing()
-			.alterers(new SingleNodeCrossover<>())
+			.alterers(
+				new SingleNodeCrossover<>(),
+				new Mutator<>())
 			.build();
 
 		final Tree<? extends Op<Double>, ?> program = engine.stream()
