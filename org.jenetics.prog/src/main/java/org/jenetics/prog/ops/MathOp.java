@@ -59,7 +59,7 @@ public final class MathOp {
 	 * <p>
 	 * <b><em>Terminal operation</em></b>
 	 */
-	public static final Op<Double> PI = Const.of("π", Math.PI);
+	public static final Const<Double> PI = Const.of("π", Math.PI);
 
 	/**
 	 * The double value that is closer than any other to e, the base of the
@@ -67,7 +67,7 @@ public final class MathOp {
 	 * <p>
 	 * <b><em>Terminal operation</em></b>
 	 */
-	public static final Op<Double> E = Const.of("e", Math.E);
+	public static final Const<Double> E = Const.of("e", Math.E);
 
 
 	/* *************************************************************************
