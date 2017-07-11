@@ -17,14 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming.ops;
+package org.jenetics.prog.ops;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import org.jenetics.util.ISeq;
 
 /**
  * Operation interface. An operation is a function which maps some argument type

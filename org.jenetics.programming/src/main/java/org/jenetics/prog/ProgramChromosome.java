@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming;
+package org.jenetics.prog;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,8 +25,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.function.Predicate;
 
-import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.Program;
+import org.jenetics.prog.ops.Op;
+import org.jenetics.prog.ops.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetix.AbstractTreeChromosome;

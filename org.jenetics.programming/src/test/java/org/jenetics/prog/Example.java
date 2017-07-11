@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming;
+package org.jenetics.prog;
 
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
-import org.jenetics.programming.ops.Const;
-import org.jenetics.programming.ops.EphemeralConst;
-import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.MathOp;
-import org.jenetics.programming.ops.Program;
-import org.jenetics.programming.ops.Var;
+import org.jenetics.prog.ops.Const;
+import org.jenetics.prog.ops.EphemeralConst;
+import org.jenetics.prog.ops.Op;
+import org.jenetics.prog.ops.MathOp;
+import org.jenetics.prog.ops.Program;
+import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 

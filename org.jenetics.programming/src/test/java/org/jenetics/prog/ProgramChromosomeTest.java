@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.programming;
+package org.jenetics.prog;
 
-import org.jenetics.programming.ops.Const;
-import org.jenetics.programming.ops.Program;
+import org.jenetics.prog.ops.Const;
+import org.jenetics.prog.ops.Program;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.programming.ops.Op;
-import org.jenetics.programming.ops.MathOp;
-import org.jenetics.programming.ops.Var;
+import org.jenetics.prog.ops.Op;
+import org.jenetics.prog.ops.MathOp;
+import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 
 import org.jenetix.util.FlatTreeNode;

@@ -23,4 +23,4 @@
  * @version !__version__!
  * @since !__version__!
  */
-package org.jenetics.programming;
+package org.jenetics.prog.ops;
