@@ -56,12 +56,16 @@ public final class MathOp {
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
 	 * circumference of a circle to its diameter.
+	 * <p>
+	 * <b><em>Terminal operation</em></b>
 	 */
 	public static final Op<Double> PI = Const.of("π", Math.PI);
 
 	/**
 	 * The double value that is closer than any other to e, the base of the
 	 * natural logarithms.
+	 * <p>
+	 * <b><em>Terminal operation</em></b>
 	 */
 	public static final Op<Double> E = Const.of("e", Math.E);
 
@@ -72,18 +76,24 @@ public final class MathOp {
 
 	/**
 	 * Return the absolute value of a double value.
+	 * <p>
+	 * <b><em>Arity 1</em></b>
 	 */
 	public static final Op<Double> ABS =
 		Op.of("abs", 1, v -> abs(v[0]));
 
 	/**
 	 * Return the minimum of two values.
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> MIN =
 		Op.of("min", 2, v -> min(v[0], v[1]));
 
 	/**
 	 * Return the maximum of two values
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> MAX =
 		Op.of("max", 2, v -> max(v[0], v[1]));
@@ -92,6 +102,8 @@ public final class MathOp {
 	 * Returns the smallest (closest to negative infinity) double value that is
 	 * greater than or equal to the argument and is equal to a mathematical
 	 * integer.
+	 * <p>
+	 * <b><em>Arity 1</em></b>
 	 */
 	public static final Op<Double> CEIL =
 		Op.of("ceil", 1, v -> ceil(v[0]));
@@ -99,6 +111,8 @@ public final class MathOp {
 	/**
 	 * Returns the largest (closest to positive infinity) double value that is
 	 * less than or equal to the argument and is equal to a mathematical integer.
+	 * <p>
+	 * <b><em>Arity 1</em></b>
 	 */
 	public static final Op<Double> FLOOR =
 		Op.of("floor", 1, v -> floor(v[0]));
@@ -107,6 +121,8 @@ public final class MathOp {
 	 * Returns the signum function of the argument; zero if the argument is
 	 * zero, 1.0 if the argument is greater than zero, -1.0 if the argument is
 	 * less than zero.
+	 * <p>
+	 * <b><em>Arity 1</em></b>
 	 */
 	public static final Op<Double> SIGNUM =
 		Op.of("signum", 1, v -> signum(v[0]));
@@ -114,30 +130,40 @@ public final class MathOp {
 	/**
 	 * Returns the double value that is closest in value to the argument and is
 	 * equal to a mathematical integer.
+	 * <p>
+	 * <b><em>Arity 1</em></b>
 	 */
 	public static final Op<Double> RINT =
 		Op.of("rint", 1, v -> rint(v[0]));
 
 	/**
 	 * Returns the sum of its arguments.
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> ADD =
 		Op.of("add", 2, v -> v[0] + v[1]);
 
 	/**
 	 * Return the diff of its arguments.
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> SUB =
 		Op.of("sub", 2, v -> v[0] - v[1]);
 
 	/**
 	 * Returns the product of its arguments.
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> MUL =
 		Op.of("mul", 2, v -> v[0]*v[1]);
 
 	/**
 	 * Returns the quotient of its arguments.
+	 * <p>
+	 * <b><em>Arity 2</em></b>
 	 */
 	public static final Op<Double> DIV =
 		Op.of("div", 2, v -> v[0]/v[1]);
