@@ -4,6 +4,8 @@ The `io.jenetics.programming` module extends the Jenetics library with the possi
 
 Lots of the features are left out. This is just a basic implementation. Future development will add missing features described in the literature.
 
+The main entry point is the `ProgramChromosome` class
+
 ## Defining operations
 
 ### Ephemeral operations
@@ -11,6 +13,53 @@ Lots of the features are left out. This is just a basic implementation. Future d
 ## Create `ProgramChromosome`
 
 ## GP example
+
+	add
+	├── add
+	│   ├── x
+	│   └── mul
+	│       ├── mul
+	│       │   ├── x
+	│       │   └── x
+	│       └── x
+	└── mul
+		├── sub
+		│   ├── mul
+		│   │   ├── sub
+		│   │   │   ├── mul
+		│   │   │   │   ├── x
+		│   │   │   │   └── x
+		│   │   │   └── x
+		│   │   └── 3.0
+		│   └── mul
+		│       ├── sub
+		│       │   ├── x
+		│       │   └── x
+		│       └── 6.0
+		└── x
+
+
+	-1.00: -8.0000, -8.0000: 0.00000
+	-0.90: -6.2460, -6.2460: 0.00000
+	-0.80: -4.7680, -4.7680: 0.00000
+	-0.70: -3.5420, -3.5420: 0.00000
+	-0.60: -2.5440, -2.5440: 0.00000
+	-0.50: -1.7500, -1.7500: 0.00000
+	-0.40: -1.1360, -1.1360: 0.00000
+	-0.30: -0.6780, -0.6780: 0.00000
+	-0.20: -0.3520, -0.3520: 0.00000
+	-0.10: -0.1340, -0.1340: 0.00000
+	 0.00: 0.0000, 0.0000: 0.00000
+	 0.10: 0.0740, 0.0740: 0.00000
+	 0.20: 0.1120, 0.1120: 0.00000
+	 0.30: 0.1380, 0.1380: 0.00000
+	 0.40: 0.1760, 0.1760: 0.00000
+	 0.50: 0.2500, 0.2500: 0.00000
+	 0.60: 0.3840, 0.3840: 0.00000
+	 0.70: 0.6020, 0.6020: 0.00000
+	 0.80: 0.9280, 0.9280: 0.00000
+	 0.90: 1.3860, 1.3860: 0.00000
+	 1.00: 2.0000, 2.0000: 0.00000
 
 ## Repair ProgramChromosome
 
