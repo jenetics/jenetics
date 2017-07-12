@@ -1,8 +1,9 @@
 # Genetic programming
 
+Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
+
 The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
 
-Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
 
 ```java
 public interface Op<T> {
@@ -68,7 +69,9 @@ final Op<Double> rand1 = EphemeralConst.of(Math::random);
 final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 ```
 
-## Program
+## Program trees
+
+### Program creation
 
 The `ProgramChromosome` comes with some factory methods, which lets you easily create program trees with a given depth and a given set of _operations_ and _terminals_.
 
@@ -98,6 +101,13 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 ```
 
 For a detailed description on the correct `Engine` setup have a look at the _Example_ section.
+
+
+### Program repair
+
+The specialized `Alterer` classes for the `ProgramChromosome` guarantees that the program tree after the _alter_ operation is still valid. the obey the tree structure of the chromosome, although they are altering the flattened `ProgramGene` sequence. General alterers, not written for `ProgramChromosome`, will most likely destroy the tree property of the altered chromosome. There are essentially two possibility for handling invalid tree chromosomes: 1) marking the chromosome as _invalid_ or 2) try to repair the invalid chromosome. Possibility 1) would be easier, but it would also lead to a possible large number of invalid chromosomes.
+
+NOTE: Jenetics allows the usage of arbitrary `Alterer` implementations. Even alterers not implemented for `ProgramChromosomes`. Chromosomes _destroyed_  by the alterer are repaired.
 
 ## Examples
 
@@ -138,7 +148,7 @@ static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 );
 ```
 
-The chosen _non-terminal_ operation set is sufficient to create any polynomial. For the _terminal_ operations, we added a variable "x", whith _index_ zero, and an ephemeral _int_ constant. The purpose of the _ephemeral_ constant is to create constant values, which will differ for every tree, but stay constant within a tree.
+The chosen _non-terminal_ operation set is sufficient to create any polynomial. For the _terminal_ operations, we added a variable "x", with _index_ zero, and an ephemeral _int_ constant. The purpose of the _ephemeral_ constant is to create constant values, which will differ for every tree, but stay constant within a tree.
 
 In the next step define the fitness function for the GP, which will be an _error_ function we will minimize.
 
@@ -153,9 +163,9 @@ static final double[][] SAMPLES = new double[][] {
 static double error(final ProgramGene<Double> program) {
     return Arrays.stream(SAMPLES).mapToDouble(sample -> {
         final double x = sample[0];
+        final double y = sample[1];
         final double result = program.eval(x);
-        return Math.abs(sample[1] - result) +
-            program.size()*0.0001;
+        return abs(y - result) + program.size()*0.0001;
     })
     .sum();
 }
