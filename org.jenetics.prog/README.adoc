@@ -48,7 +48,56 @@ final ISeq<Op<Double>> terminals = ISeq.of(
 The terminal operation list in the example code above will lead to a program which takes three input parameters, _x_, _y_ and _z_, with the argument indices _0_, _1_ and _2_.
 
 
-## Create `ProgramChromosome`
+`*Const*`
+
+The `Const` operation will always return the same, constant, value when evaluated.
+
+```java
+final Op<Double> one = Const.of(1.0);
+final Op<Double> pi = Const.of("π", Math.PI);
+```
+
+We can create a constant operation in to flavours, with a value only and with a dedicated name. If a constant has a name, the _symbolic_ name is used, instead of the value, when the program tree is printing.
+
+`*EphemeralConst*`
+
+An ephemeral constant is a special constant, which is only constant within an tree. If a new tree is created, a new constant is created, by the `Supplier` function the ephemeral constant is created with.
+
+```java
+final Op<Double> rand1 = EphemeralConst.of(Math::random);
+final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
+```
+
+## Program
+
+The `ProgramChromosome` comes with some factory methods, which lets you easily create program trees with a given depth and a given set of _operations_ and _terminals_.
+
+```java
+final int depth = 5;
+final Op<Double> operations = ISeq.of(...);
+final Op<Double> terminals = ISeq.of(...);
+final ProgramChromosome<Double> program =
+    ProgramChromosome.of(5, operations, terminals);
+```
+
+The code snippet above will create a full program tree of depth _5_. All non-leaf nodes will contain operations, randomly selected from the _operations_ set. Whereas all leaf nodes are filled with operations from the _terminals_ set.
+
+NOTE: The created program tree is _complete_, which means that all leaf nodes have the same depth. If new trees needs to be created during evolution, they will be created with the depth, operations and terminals defined by the _template_ program tree.
+
+
+The _GP_ `Engine` is created in the exact same way as the _GA_ `Engine`.
+
+```java
+final Engine<ProgramGene<Double>, Double> engine = Engine
+    .builder(Main::error, program)
+    .minimizing()
+    .alterers(
+        new SingleNodeCrossover<>(),
+        new Mutator<>())
+    .build();
+```
+
+For a detailed description on the correct `Engine` setup have a look at the _Example_ section.
 
 ## Examples
 
