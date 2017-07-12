@@ -1,19 +1,60 @@
 # Genetic programming
 
-The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic Programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair. The `ProgramChromosome` is the main entry point when solving GP problems and represents a single, strong typed, program tree. The operation of a program are defined by the `Op` interface and can also be easily created with the corresponding factory methods.
+The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
+
+Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
+
+```java
+public interface Op<T> {
+    public String name();
+    public int arity();
+    public T apply(T[] args);
+}
+
+```
+
+The generic type of the `Op` enforces data-type constraints for the created program tree and makes the implementation a _strongly typed_ GP algorithm.
 
 
-Lots of the features are left out. This is just a basic implementation. Future development will add missing features described in the literature.
+## Operations
 
-The main entry point is the `ProgramChromosome` class
+When creating a new program tree, it is not necessary to implement own instance of the `ProgramGene` or `ProgramChromosome` class. The extension point for own programs is the `Op` interface.
 
-## Defining operations
+```java
+ final Op<Double> myop = Op.of("myop", 3, v -> v[0]*v[1] + v[2]);
+```
 
-### Ephemeral operations
+In the example above, a new operation with the "myop" and arity 3 is defined. Whenever the operation is evaluated, the function _f(x, y, z) = x*y + z_ is executed.
+
+NOTE: The class `MathOp` in the `org.jenetics.prog.ops` package defines a set of mathematical standard operations/functions.
+
+When creating a new `ProgramChromosome` we must distinguish two different kind of operations:
+
+1. _Non-terminal_ operations have an arity greater than zero and form their own sub-tree.
+1. _Terminal_ operations have an arity of zero and form the leaves of a program tree.
+
+There are currently three different types of non-terminal operations implemented, `Var`, `Const` and the `EphemeralConst` class.
+
+`*Var*`
+
+The `Var` operation defines a variable of a program, which are set from the program arguments.
+
+```java
+final ISeq<Op<Double>> terminals = ISeq.of(
+    Var.of("x", 0), Var.of("y", 1), Var.of("z", 2)
+);
+```
+
+The terminal operation list in the example code above will lead to a program which takes three input parameters, _x_, _y_ and _z_, with the argument indices _0_, _1_ and _2_.
+
 
 ## Create `ProgramChromosome`
 
-## Polynomial example
+## Examples
+
+### Symbolic regression
+
+> Symbolic regression involves finding a mathematical expression, in symbolic form, that provides a good, best, or perfect fit between a given finite sampling of values of the independent variables and the associated values of the dependent variables.–John R. Koza, Genetic Programming I
 
 The following example shows how to solve a GP problem with _Jenetics_. We are trying to find a polynomial (or an arbitrary mathematical function) which approximates a given data set.
 
@@ -22,7 +63,7 @@ The following example shows how to solve a GP problem with _Jenetics_. We are tr
 | x | y
 | 0.00 | 0.0000
 | 0.10 | 0.0740
-| 0.20 | 0.1120
+| 0.20 | 0.1120.
 | 0.30 | 0.1380
 | ... | ....
 |===
