@@ -152,11 +152,12 @@ static final double[][] SAMPLES = new double[][] {
 
 static double error(final ProgramGene<Double> program) {
     return Arrays.stream(SAMPLES).mapToDouble(sample -> {
-            final double x = sample[0];
-            final double result = program.eval(x);
-            return Math.abs(sample[1] - result) + program.size()*0.0001;
-        })
-        .sum();
+        final double x = sample[0];
+        final double result = program.eval(x);
+        return Math.abs(sample[1] - result) +
+            program.size()*0.0001;
+    })
+    .sum();
 }
 ```
 The error function calculates the sum of the (absolute) difference between the sample value and the value calculated the by the evolved _program_ (`ProgramGene`). Since we prefer compact programs over complex one, we will add a penalty for the program size (the number of nodes of the program tree).
