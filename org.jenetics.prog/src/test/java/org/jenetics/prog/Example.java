@@ -19,10 +19,16 @@
  */
 package org.jenetics.prog;
 
+import static java.lang.Math.abs;
 import static java.lang.String.format;
+
+import java.util.Arrays;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
+import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.prog.ops.EphemeralConst;
@@ -35,6 +41,7 @@ import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.SingleNodeCrossover;
 import org.jenetix.util.Tree;
+import org.jenetix.util.Trees;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -86,53 +93,49 @@ public class Example {
 		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
 	);
 
-
-	static double error(final Genotype<ProgramGene<Double>> genotype) {
-		double error = 0;
-		for (int i = 0; i < SAMPLES.length; ++i) {
-			final double x = SAMPLES[i][0];
-			final double result = genotype.getGene().eval(x);
-
-			error += Math.abs(SAMPLES[i][1] - result) +
-				genotype.getGene().size()*0.01;
-		}
-
-		return error;
+	private static double error(final ProgramGene<Double> program) {
+		return Arrays.stream(SAMPLES)
+			.mapToDouble(sample ->
+				abs(sample[1] - program.eval(sample[0])) +
+				program.size()*0.0001)
+			.sum();
 	}
 
-	public static void main(final String[] args) {
-		final Genotype<ProgramGene<Double>> gt =
-			Genotype.of(
-				ProgramChromosome.of(
-					5,
-					ch -> ch.length() < 50,
-					OPERATIONS,
-					TERMINALS
-				)
-			);
+	private static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
+		Codec.of(
+			Genotype.of(ProgramChromosome.of(
+				5,
+				ch -> ch.getRoot().size() <= 50,
+				OPERATIONS,
+				TERMINALS
+			)),
+			Genotype::getGene
+		);
 
+	public static void main(final String[] args) {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(Example::error, gt)
+			.builder(Example::error, CODEC)
 			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),
 				new Mutator<>())
 			.build();
 
-		final Tree<? extends Op<Double>, ?> program = engine.stream()
+		final ProgramGene<Double> program = engine.stream()
 			.limit(3000)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
 		System.out.println(Tree.toString(program));
+		System.out.println(Trees.toInfixString(program));
 
 		for (int i = 0; i < SAMPLES.length; ++i) {
 			final double x = SAMPLES[i][0];
-			final double result = Program.eval(program, x);
+			final double result = program.eval(x);
 
 			System.out.println(format(
 				"%2.2f: %2.4f, %2.4f: %2.5f",
-				x, f(x), result, Math.abs(f(x) - result)
+				x, f(x), result, abs(f(x) - result)
 			));
 		}
 	}

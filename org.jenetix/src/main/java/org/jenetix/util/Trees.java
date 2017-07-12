@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ import org.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-final class Trees {
+public final class Trees {
 	private Trees() {require.noInstance();}
 
 
@@ -163,6 +164,32 @@ final class Trees {
 				out.append(", ");
 				toCompactString(out, tree.getChild(i));
 			}
+			out.append(")");
+		}
+	}
+
+	public static String toInfixString(final Tree<?, ?> tree) {
+		final StringBuilder out = new StringBuilder();
+		toInfixString(out, tree);
+		return out.toString();
+	}
+
+	private static void toInfixString(final StringBuilder out, final Tree<?, ?> tree) {
+		if (!tree.isLeaf()) {
+			child(out, tree.getChild(0));
+			out.append(tree.getValue());
+			child(out, tree.getChild(1));
+		} else {
+			out.append(tree.getValue());
+		}
+	}
+
+	private static void child(final StringBuilder out, final Tree<?, ?> child) {
+		if (child.isLeaf()) {
+			toInfixString(out, child);
+		} else {
+			out.append("(");
+			toInfixString(out, child);
 			out.append(")");
 		}
 	}

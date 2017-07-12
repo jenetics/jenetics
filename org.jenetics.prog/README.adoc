@@ -1,6 +1,7 @@
 # Genetic programming
 
-The `io.jenetics.programming` module extends the Jenetics library with the possibility to do Genetic Programming. A program is represented by a tree (AST), as defined in the `io.jenetics.ext` module.
+The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic Programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair. The `ProgramChromosome` is the main entry point when solving GP problems and represents a single, strong typed, program tree. The operation of a program are defined by the `Op` interface and can also be easily created with the corresponding factory methods.
+
 
 Lots of the features are left out. This is just a basic implementation. Future development will add missing features described in the literature.
 
@@ -12,54 +13,131 @@ The main entry point is the `ProgramChromosome` class
 
 ## Create `ProgramChromosome`
 
-## GP example
+## Polynomial example
 
-	add
-	├── add
-	│   ├── x
-	│   └── mul
-	│       ├── mul
-	│       │   ├── x
-	│       │   └── x
-	│       └── x
-	└── mul
-		├── sub
-		│   ├── mul
-		│   │   ├── sub
-		│   │   │   ├── mul
-		│   │   │   │   ├── x
-		│   │   │   │   └── x
-		│   │   │   └── x
-		│   │   └── 3.0
-		│   └── mul
-		│       ├── sub
-		│       │   ├── x
-		│       │   └── x
-		│       └── 6.0
-		└── x
+The following example shows how to solve a GP problem with _Jenetics_. We are trying to find a polynomial (or an arbitrary mathematical function) which approximates a given data set.
+
+.Table Sample points
+|===
+| x | y
+| 0.00 | 0.0000
+| 0.10 | 0.0740
+| 0.20 | 0.1120
+| 0.30 | 0.1380
+| ... | ....
+|===
+
+The sample points has been created with the function _f(x) = 4*x^3 - 3*x^2 + x_. The knowledge of the creating function makes it easier to compare the quality of the evolved function. For the example we created 21 data points.
+
+NOTE: The function which created the sample points is not needed in the _error_ function we have to define for the GP. It just let us verify the final, evolved result.
 
 
-	-1.00: -8.0000, -8.0000: 0.00000
-	-0.90: -6.2460, -6.2460: 0.00000
-	-0.80: -4.7680, -4.7680: 0.00000
-	-0.70: -3.5420, -3.5420: 0.00000
-	-0.60: -2.5440, -2.5440: 0.00000
-	-0.50: -1.7500, -1.7500: 0.00000
-	-0.40: -1.1360, -1.1360: 0.00000
-	-0.30: -0.6780, -0.6780: 0.00000
-	-0.20: -0.3520, -0.3520: 0.00000
-	-0.10: -0.1340, -0.1340: 0.00000
-	 0.00: 0.0000, 0.0000: 0.00000
-	 0.10: 0.0740, 0.0740: 0.00000
-	 0.20: 0.1120, 0.1120: 0.00000
-	 0.30: 0.1380, 0.1380: 0.00000
-	 0.40: 0.1760, 0.1760: 0.00000
-	 0.50: 0.2500, 0.2500: 0.00000
-	 0.60: 0.3840, 0.3840: 0.00000
-	 0.70: 0.6020, 0.6020: 0.00000
-	 0.80: 0.9280, 0.9280: 0.00000
-	 0.90: 1.3860, 1.3860: 0.00000
-	 1.00: 2.0000, 2.0000: 0.00000
+As first step, we have to define the set of allowed _non-terminal_ and the _terminal_ operations the GP is working with. Selecting the right set of operation has a big influence on the performance of the GP. If the operation set is bigger than necessary, we will expand the potential search space, and the execution time for finding a solution. For our _polynomial_ example we will chose the following _operations_ and _terminals_.
 
-## Repair ProgramChromosome
+```java
+static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+    MathOp.ADD,
+    MathOp.SUB,
+    MathOp.MUL
+);
+
+static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+    Var.of("x", 0),
+    EphemeralConst.of(() ->
+        (double)RandomRegistry.getRandom().nextInt(10))
+);
+```
+
+The chosen _non-terminal_ operation set is sufficient to create any polynomial. For the _terminal_ operations, we added a variable "x", whith _index_ zero, and an ephemeral _int_ constant. The purpose of the _ephemeral_ constant is to create constant values, which will differ for every tree, but stay constant within a tree.
+
+In the next step define the fitness function for the GP, which will be an _error_ function we will minimize.
+
+```java
+// The lookup table where the data points are stored.
+static final double[][] SAMPLES = new double[][] {
+    {-1.0, -8.0000},
+    {-0.9, -6.2460},
+    ...
+};
+
+static double error(final ProgramGene<Double> program) {
+    return Arrays.stream(SAMPLES).mapToDouble(sample -> {
+            final double x = sample[0];
+            final double result = program.eval(x);
+            return Math.abs(sample[1] - result) + program.size()*0.0001;
+        })
+        .sum();
+}
+```
+The error function calculates the sum of the (absolute) difference between the sample value and the value calculated the by the evolved _program_ (`ProgramGene`). Since we prefer compact programs over complex one, we will add a penalty for the program size (the number of nodes of the program tree).
+
+CAUTION: The penalty for the tree size must be small enough to not dominate the error function. We still want to find an approximating function and not the smallest possible one.
+
+After we have defined the error function, we need to define the proper `Codec`.
+
+```java
+static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
+    Codec.of(
+        Genotype.of(ProgramChromosome.of(
+            // Program tree depth.
+            5,
+            // Chromosome validator.
+            ch -> ch.getRoot().size() <= 50,
+            OPERATIONS,
+            TERMINALS
+        )),
+        Genotype::getGene
+    );
+```
+
+There are two particularities in the definition of the `ProgramChromosome`:
+
+1. Since we want to narrow the search space, we are limiting the depth of newly created program trees to _5_.
+1. Because of crossover operations performed during evolution, the resulting programs can grow quite big. To prevent an unlimited growth of the program trees
+, we mark programs with more than _50_ nodes as invalid.
+
+Now we are ready to put everything together:
+
+```java
+public static void main(final String[] args) {
+    final Engine<ProgramGene<Double>, Double> engine = Engine
+        .builder(Polynomial::error, CODEC)
+        .minimizing()
+        .alterers(
+            new SingleNodeCrossover<>(),
+            new Mutator<>())
+        .build();
+
+    final ProgramGene<Double> program = engine.stream()
+        .limit(500)
+        .collect(EvolutionResult.toBestGenotype())
+        .getGene();
+
+    System.out.println(Tree.toString(program));
+}
+```
+
+The GP is capable of finding the polynomial which created the sample data. After a few tries, we got the following (correct) output program:
+
+
+    add
+    ├── mul
+    │   ├── x
+    │   └── sub
+    │       ├── 0.0
+    │       └── mul
+    │           ├── x
+    │           └── sub
+    │               ├── sub
+    │               │   ├── sub
+    │               │   │   ├── sub
+    │               │   │   │   ├── 3.0
+    │               │   │   │   └── x
+    │               │   │   └── x
+    │               │   └── x
+    │               └── x
+    └── x
+
+This program can be reduced to _4*x^3 - 3*x^2 + x_, which is exactly the polynomial, which created the sample data.
+
 
