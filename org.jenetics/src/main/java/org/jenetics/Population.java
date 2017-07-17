@@ -76,7 +76,7 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private static final Population<?, ?> EMPTY =
-		new Population(Collections.EMPTY_LIST);
+		new Population(Collections.EMPTY_LIST, true);
 
 
 	private final List<Phenotype<G, C>> _population;
