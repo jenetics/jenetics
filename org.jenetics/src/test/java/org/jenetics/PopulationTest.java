@@ -22,11 +22,13 @@ package org.jenetics;
 import java.io.Serializable;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.lists;
@@ -89,6 +91,21 @@ public class PopulationTest
 			Double second = FF.apply(population.get(i + 1).getGenotype());
 			Assert.assertTrue(first.compareTo(second) <= 0, first + ">" + second);
 		}
+	}
+
+	@Test(expectedExceptions = {UnsupportedOperationException.class})
+	public void empty() {
+		final Genotype<DoubleGene> genotype = Genotype.of(
+			IntStream.range(0, 10)
+				.mapToObj(i -> DoubleChromosome.of(0, 10, 10))
+				.collect(ISeq.toISeq())
+		);
+
+		final Population<DoubleGene, Boolean> pop = Population.empty();
+		Assert.assertEquals(pop.size(), 0);
+		Assert.assertTrue(pop.isEmpty());
+
+		pop.add(Phenotype.of(genotype, 1, chromosomes -> true));
 	}
 
 }
