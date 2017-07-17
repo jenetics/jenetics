@@ -105,6 +105,21 @@ public class Var<T> implements Op<T> {
 	}
 
 	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*_name.hashCode() + 37;
+		hash += 31*_index + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof Var<?> &&
+			((Var)obj)._name.equals(_name) &&
+			((Var)obj)._index == _index;
+	}
+
+	@Override
 	public String toString() {
 		return _name;
 	}

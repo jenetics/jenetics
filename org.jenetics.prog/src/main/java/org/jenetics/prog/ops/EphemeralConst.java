@@ -81,6 +81,21 @@ public final class EphemeralConst<T> implements Op<T> {
 	}
 
 	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*Objects.hashCode(_name) + 37;
+		hash += 31*Objects.hashCode(_value.get()) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof EphemeralConst<?> &&
+			Objects.equals(((EphemeralConst)obj)._name, _name) &&
+			Objects.equals(((EphemeralConst)obj)._value.get(), _value.get());
+	}
+
+	@Override
 	public String toString() {
 		return _name != null
 			? format("%s(%s)", _name, _value.get())
