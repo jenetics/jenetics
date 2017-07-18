@@ -46,6 +46,8 @@ import static java.lang.Math.tanh;
 /**
  * This class contains operations for performing basic numeric operations.
  *
+ * @see Math
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -55,17 +57,18 @@ public final class MathOp {
 
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
-	 * circumference of a circle to its diameter.
-	 * <p>
-	 * <b><em>Terminal operation</em></b>
+	 * circumference of a circle to its diameter. <em>This is a terminal
+	 * operation.</em>
+	 *
+	 * @see Math#PI
 	 */
 	public static final Const<Double> PI = Const.of("π", Math.PI);
 
 	/**
 	 * The double value that is closer than any other to e, the base of the
-	 * natural logarithms.
-	 * <p>
-	 * <b><em>Terminal operation</em></b>
+	 * natural logarithms. <em>This is a terminal operation.</em>
+	 *
+	 * @see Math#E
 	 */
 	public static final Const<Double> E = Const.of("e", Math.E);
 
@@ -76,24 +79,27 @@ public final class MathOp {
 
 	/**
 	 * Return the absolute value of a double value.
-	 * <p>
-	 * <b><em>Arity 1</em></b>
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#abs(double)
 	 */
 	public static final Op<Double> ABS =
 		Op.of("abs", 1, v -> abs(v[0]));
 
 	/**
 	 * Return the minimum of two values.
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
+	 *
+	 * @see Math#min(double, double)
 	 */
 	public static final Op<Double> MIN =
 		Op.of("min", 2, v -> min(v[0], v[1]));
 
 	/**
 	 * Return the maximum of two values
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
+	 *
+	 * @see Math#max(double, double)
 	 */
 	public static final Op<Double> MAX =
 		Op.of("max", 2, v -> max(v[0], v[1]));
@@ -102,8 +108,9 @@ public final class MathOp {
 	 * Returns the smallest (closest to negative infinity) double value that is
 	 * greater than or equal to the argument and is equal to a mathematical
 	 * integer.
-	 * <p>
-	 * <b><em>Arity 1</em></b>
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#ceil(double)
 	 */
 	public static final Op<Double> CEIL =
 		Op.of("ceil", 1, v -> ceil(v[0]));
@@ -111,8 +118,9 @@ public final class MathOp {
 	/**
 	 * Returns the largest (closest to positive infinity) double value that is
 	 * less than or equal to the argument and is equal to a mathematical integer.
-	 * <p>
-	 * <b><em>Arity 1</em></b>
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#floor(double)
 	 */
 	public static final Op<Double> FLOOR =
 		Op.of("floor", 1, v -> floor(v[0]));
@@ -121,8 +129,9 @@ public final class MathOp {
 	 * Returns the signum function of the argument; zero if the argument is
 	 * zero, 1.0 if the argument is greater than zero, -1.0 if the argument is
 	 * less than zero.
-	 * <p>
-	 * <b><em>Arity 1</em></b>
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#signum(double)
 	 */
 	public static final Op<Double> SIGNUM =
 		Op.of("signum", 1, v -> signum(v[0]));
@@ -130,65 +139,72 @@ public final class MathOp {
 	/**
 	 * Returns the double value that is closest in value to the argument and is
 	 * equal to a mathematical integer.
-	 * <p>
-	 * <b><em>Arity 1</em></b>
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#rint(double)
 	 */
 	public static final Op<Double> RINT =
 		Op.of("rint", 1, v -> rint(v[0]));
 
 	/**
 	 * Returns the sum of its arguments.
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static final Op<Double> ADD =
 		Op.of("add", 2, v -> v[0] + v[1]);
 
 	/**
 	 * Return the diff of its arguments.
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static final Op<Double> SUB =
 		Op.of("sub", 2, v -> v[0] - v[1]);
 
 	/**
 	 * Returns the product of its arguments.
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static final Op<Double> MUL =
 		Op.of("mul", 2, v -> v[0]*v[1]);
 
 	/**
 	 * Returns the quotient of its arguments.
-	 * <p>
-	 * <b><em>Arity 2</em></b>
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static final Op<Double> DIV =
 		Op.of("div", 2, v -> v[0]/v[1]);
 
 	/**
 	 * Returns the modulo of its arguments.
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static final Op<Double> MOD =
-		Op.of("div", 2, v -> v[0]%v[1]);
+		Op.of("mod", 2, v -> v[0]%v[1]);
 
 	/**
 	 * Returns the value of the first argument raised to the power of the second
 	 * argument.
+	 * <em>This operation has arity 2.</em>
+	 *
+	 * @see Math#pow(double, double)
 	 */
 	public static final Op<Double> POW =
 		Op.of("pow", 2, v -> pow(v[0], v[1]));
 
 	/**
 	 * Returns the correctly rounded positive square root of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#sqrt(double)
 	 */
 	public static final Op<Double> SQRT =
 		Op.of("sqrt", 1, v -> sqrt(v[0]));
 
 	/**
 	 * Returns the cube root of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#cbrt(double)
 	 */
 	public static final Op<Double> CBRT =
 		Op.of("cbrt", 1, v -> cbrt(v[0]));
@@ -196,29 +212,41 @@ public final class MathOp {
 	/**
 	 * Returns sqrt(<i>x</i><sup>2</sup>&nbsp;+<i>y</i><sup>2</sup>) without
 	 * intermediate overflow or underflow.
+	 * <em>This operation has arity 2.</em>
+	 *
+	 * @see Math#hypot(double, double)
 	 */
 	public static final Op<Double> HYPOT =
 		Op.of("hypot", 2, v -> hypot(v[0], v[1]));
 
 
 	/* *************************************************************************
-	 * Exponetial/logarithmic operations
+	 * Exponential/logarithmic operations
 	 * *************************************************************************/
 
 	/**
 	 * Returns Euler's number e raised to the power of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#exp(double)
 	 */
 	public static final Op<Double> EXP =
 		Op.of("exp", 1, v -> exp(v[0]));
 
 	/**
 	 * Returns the natural logarithm (base e) of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#log(double)
 	 */
 	public static final Op<Double> LOG =
 		Op.of("log", 1, v -> log((v[0])));
 
 	/**
 	 * Returns the base 10 logarithm of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#log10(double)
 	 */
 	public static final Op<Double> LOG10 =
 		Op.of("log10", 1, v -> log10(v[0]));
@@ -230,30 +258,43 @@ public final class MathOp {
 
 	/**
 	 * Returns the trigonometric sine of an angle.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#sin(double)
 	 */
 	public static final Op<Double> SIN =
 		Op.of("sin", 1, v -> sin(v[0]));
 
 	/**
 	 * Returns the trigonometric cosine of an angle.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#cos(double)
 	 */
 	public static final Op<Double> COS =
 		Op.of("cos", 1, v -> cos(v[0]));
 
 	/**
 	 * Returns the trigonometric tangent of an angle.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#tan(double)
 	 */
 	public static final Op<Double> TAN =
 		Op.of("tan", 1, v -> tan(v[0]));
 
 	/**
 	 * Returns the arc cosine of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#acos(double)
 	 */
 	public static final Op<Double> ACOS =
 		Op.of("acos", 1, v -> acos(v[0]));
 
 	/**
 	 * Returns the arc sine of a double value.
+	 * <em>This operation has arity 1.</em>
 	 *
 	 * @see Math#asin(double)
 	 */
@@ -262,24 +303,36 @@ public final class MathOp {
 
 	/**
 	 * Returns the arc tangent of a value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#atan(double)
 	 */
 	public static final Op<Double> ATAN =
 		Op.of("atan", 1, v -> atan(v[0]));
 
 	/**
 	 * Returns the hyperbolic cosine of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#cosh(double)
 	 */
 	public static final Op<Double> COSH =
 		Op.of("cosh", 1, v -> cosh(v[0]));
 
 	/**
 	 * Returns the hyperbolic sine of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#sinh(double)
 	 */
 	public static final Op<Double> SINH =
 		Op.of("sinh", 1, v -> sinh(v[0]));
 
 	/**
 	 * Returns the hyperbolic tangent of a double value.
+	 * <em>This operation has arity 1.</em>
+	 *
+	 * @see Math#tanh(double)
 	 */
 	public static final Op<Double> TANH =
 		Op.of("tanh", 1, v -> tanh(v[0]));
@@ -292,24 +345,28 @@ public final class MathOp {
 
 	/**
 	 * Returns the logical AND of two boolean values.
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static Op<Boolean> AND =
 		Op.of("and", 2, v -> v[0] && v[1]);
 
 	/**
 	 * Returns the logical OR of two boolean values.
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static Op<Boolean> OR =
 		Op.of("or", 2, v -> v[0] || v[1]);
 
 	/**
 	 * Negates a given boolean value.
+	 * <em>This operation has arity 1.</em>
 	 */
 	public static Op<Boolean> NOT =
 		Op.of("not", 1, v -> !v[0]);
 
 	/**
 	 * Returns the logical XOR of two boolean values.
+	 * <em>This operation has arity 2.</em>
 	 */
 	public static Op<Boolean> XOR =
 		Op.of("xor", 2, v -> v[0] ^ v[1]);

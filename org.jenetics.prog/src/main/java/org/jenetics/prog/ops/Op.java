@@ -58,7 +58,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 *
 	 * @return the name of the operation
 	 */
-	public  String name();
+	public String name();
 
 	/**
 	 * Return the arity of the operation function. If the arity is zero, the

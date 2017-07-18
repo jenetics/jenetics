@@ -19,9 +19,50 @@
  */
 package org.jenetics.prog;
 
+import org.jenetics.prog.ops.Const;
+import org.jenetics.prog.ops.MathOp;
+import org.jenetics.prog.ops.Op;
+import org.jenetics.prog.ops.Program;
+import org.jenetics.prog.ops.Var;
+import org.jenetics.util.ISeq;
+import org.jenetix.util.TreeNode;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
 public class ProgramTest {
+
+    private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+        MathOp.ADD,
+        MathOp.SUB,
+        MathOp.MUL,
+        MathOp.DIV,
+        MathOp.EXP,
+        MathOp.SIN,
+        MathOp.COS
+    );
+
+    private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+        Var.of("x", 0),
+        Var.of("y", 1),
+        Var.of("z", 2),
+        //Const.of("π", Math.PI),
+        Const.of(1.0)
+    );
+
+    @Test
+    public void eval() {
+        final TreeNode<Op<Double>> tree = Program.of(
+            0,
+            OPERATIONS,
+            TERMINALS
+        );
+
+        System.out.println(tree);
+        final double result = Program.eval(tree, 1.0, 2.0, 3.0);
+        System.out.println(result);
+
+    }
 
 }

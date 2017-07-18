@@ -22,6 +22,7 @@ package org.jenetics.prog;
 import org.jenetics.prog.ops.Const;
 import org.jenetics.prog.ops.Program;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.prog.ops.Op;
@@ -55,6 +56,24 @@ public class ProgramChromosomeTest {
 		Const.of("π", Math.PI),
 		Const.of(1.0)
 	);
+
+	@Test(dataProvider = "programDepths")
+	public void programDepth(final int depth) {
+		final TreeNode<Op<Double>> tree = Program.of(
+			depth,
+			OPERATIONS,
+			TERMINALS
+		);
+
+		Assert.assertEquals(tree.depth(), depth);
+	}
+
+	@DataProvider(name = "programDepths")
+	public Object[][] programDepths() {
+		return new Object[][] {
+			{0}, {1}, {2}, {3}, {7}, {11}, {13}
+		};
+	}
 
 	@Test(invocationCount = 10)
 	public void createFromTree() {
@@ -117,7 +136,7 @@ public class ProgramChromosomeTest {
 		flat.stream().forEach(System.out::println);
 	}
 
-	@Test
+	//@Test
 	public void toCompactString() {
 		final TreeNode<Op<Double>> tree = Program.of(
 			3,

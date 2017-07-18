@@ -1,3 +1,9 @@
-# Jenetics extensions
+# Jenetics extension module
+
+## BigInteger gene/chromosome
+
+## Additional operators
 
 ## Tree genes
+
+Implementation of tree genes/chromosomes, which allows to evolve tree like structures. The basic tree classes are used by the `io.jenetics.prog` module.

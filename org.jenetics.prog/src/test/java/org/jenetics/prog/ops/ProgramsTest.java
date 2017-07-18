@@ -59,10 +59,8 @@ public class ProgramsTest {
 		);
 
 		final TreeNode<Op<Double>> formula = TreeNode.of(MathOp.ADD);
-
-		System.out.println(tree);
-
 		final Program<Double> program = new Program<>("foo", tree);
+
 		final Double result = program.eval(1.0, 2.0, 3.0);
 		System.out.println("Arity: " + program.arity());
 		System.out.println(result);

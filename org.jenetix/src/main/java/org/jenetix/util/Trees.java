@@ -24,12 +24,10 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
-
 import org.jenetics.util.MSeq;
 
 /**
@@ -155,7 +153,10 @@ public final class Trees {
 		return out.toString();
 	}
 
-	private static void toCompactString(final StringBuilder out, final Tree<?, ?> tree) {
+	private static void toCompactString(
+		final StringBuilder out,
+		final Tree<?, ?> tree
+	) {
 		out.append(tree.getValue());
 		if (!tree.isLeaf()) {
 			out.append("(");

@@ -84,7 +84,7 @@ public class Program<T> implements Op<T> {
 	public T apply(final T[] args) {
 		if (args.length < arity()) {
 			throw new IllegalArgumentException(format(
-				"Arguments length is smaller the program arity: %d < %d",
+				"Arguments length is smaller than program arity: %d < %d",
 				args.length, arity()
 			));
 		}
@@ -101,6 +101,8 @@ public class Program<T> implements Op<T> {
 	 * @param args the function arguments
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
+	 * @throws IllegalArgumentException if the length of the arguments array
+	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
 	public final T eval(final T... args) {
@@ -125,6 +127,8 @@ public class Program<T> implements Op<T> {
 	 * @param variables the input variables
 	 * @return the result of the operation tree evaluation
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the length of the variable array
+	 *         is smaller than the program arity
 	 */
 	@SafeVarargs
 	public static <T> T eval(
@@ -133,23 +137,18 @@ public class Program<T> implements Op<T> {
 	) {
 		final Op<T> op = tree.getValue();
 
-		@SuppressWarnings("unchecked")
-		final T[] args = (T[])Array.newInstance(
-			variables.getClass().getComponentType(),
-			op.arity()
-		);
+		return op.isTerminal()
+			? op.apply(variables)
+			: op.apply(
+					tree.childStream()
+						.map(child -> eval(child, variables))
+						.toArray(size -> newArray(variables.getClass(), size))
+				);
+	}
 
-		for (int i = 0; i < op.arity(); ++i) {
-			final Tree<? extends Op<T>, ?> child = tree.getChild(i);
-
-			if (child.getValue() instanceof Var<?>) {
-				args[i] = child.getValue().apply(variables);
-			} else {
-				args[i] = eval(child, variables);
-			}
-		}
-
-		return op.apply(args);
+	@SuppressWarnings("unchecked")
+	private static <T> T[] newArray(final Class<?> arrayType, final int size) {
+		return (T[])Array.newInstance(arrayType.getComponentType(), size);
 	}
 
 	/**
@@ -186,12 +185,19 @@ public class Program<T> implements Op<T> {
 	 * @return a new program tree
 	 * @throws NullPointerException if one of the given operations is
 	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
 	 */
 	public static <A> TreeNode<Op<A>> of(
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
+		if (depth < 0) {
+			throw new IllegalArgumentException(
+				"Tree depth is smaller than zero: " + depth
+			);
+		}
 		if (!operations.forAll(o -> !o.isTerminal())) {
 			throw new IllegalArgumentException(
 				"Operation list contains terminal op."
@@ -215,7 +221,10 @@ public class Program<T> implements Op<T> {
 		final ISeq<? extends Op<A>> terminals,
 		final Random random
 	) {
-		final Op<A> op = operations.get(random.nextInt(operations.size()));
+		final Op<A> op = level == 0
+			? terminals.get(random.nextInt(terminals.size()))
+			: operations.get(random.nextInt(operations.size()));
+
 		tree.setValue(op);
 
 		if (level > 1) {
@@ -317,7 +326,7 @@ public class Program<T> implements Op<T> {
 		for (int i = 0; i < offsets.length; ++i) {
 			final Op<?> op = nodes.get(i).getValue();
 
-			offsets[i] = op.arity() == 0 ? -1 : offset;
+			offsets[i] = op.isTerminal() ? -1 : offset;
 			offset += nodes.get(i).getValue().arity();
 		}
 

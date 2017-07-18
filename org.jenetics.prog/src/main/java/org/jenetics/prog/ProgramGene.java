@@ -40,6 +40,15 @@ import org.jenetix.AbstractTreeGene;
  * <em>error space</em>. Since the {@code ProgramGene} also is a {@code Tree},
  * it can be easily used as result.
  *
+ * <pre>{@code
+ * final ProgramGene<Double> program = engine.stream()
+ *     .limit(300)
+ *     .collect(EvolutionResult.toBestGenotype())
+ *     .getGene();
+ *
+ * final double result = program.eval(3.4);
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -67,7 +76,7 @@ public final class ProgramGene<A>
 		final Op<A> instance = op.get();
 		if (instance != op && instance.arity() != op.arity()) {
 			throw new IllegalArgumentException(format(
-				"Original op and created op has different arity: %d != %d,",
+				"Original op and created op have different arity: %d != %d,",
 				instance.arity(), op.arity()
 			));
 		}

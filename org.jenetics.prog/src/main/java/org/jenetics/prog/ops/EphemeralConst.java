@@ -129,7 +129,7 @@ public final class EphemeralConst<T> implements Op<T> {
 	 * @param supplier the value supplier
 	 * @param <T> the constant type
 	 * @return a new ephemeral constant
-	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws NullPointerException if the {@code supplier} is {@code null}
 	 */
 	public static <T> EphemeralConst<T> of(final Supplier<T> supplier) {
 		return new EphemeralConst<>(null, supplier);

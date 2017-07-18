@@ -22,13 +22,11 @@ package org.jenetics.prog;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Program;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
 import org.jenetix.AbstractTreeChromosome;
 import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.Tree;
@@ -86,7 +84,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> terminals
 	) {
 		super(program);
-		_validator = validator;
+		_validator = requireNonNull(validator);
 		_operations = requireNonNull(operations);
 		_terminals = requireNonNull(terminals);
 
@@ -118,15 +116,15 @@ public class ProgramChromosome<A>
 
 	@Override
 	public boolean isValid() {
-		if (_validator != null) {
-			if (_valid == null) {
-				_valid = _validator.test(this);
-			}
-		} else {
-			_valid = super.isValid();
+		if (_valid == null) {
+			_valid = _validator.test(this);
 		}
 
 		return _valid;
+	}
+
+	private boolean isSuperValid() {
+		return ProgramChromosome.super.isValid();
 	}
 
 	/**
@@ -258,7 +256,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(program, null, operations, terminals);
+		return of(program, ProgramChromosome::isSuperValid, operations, terminals);
 	}
 
 	/**
@@ -282,11 +280,6 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		if (depth < 0) {
-			throw new IllegalArgumentException(format(
-				"Tree depth is smaller than zero: %d", depth
-			));
-		}
 		checkOperations(operations);
 		checkTerminals(terminals);
 
@@ -299,16 +292,19 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		final TreeNode<Op<A>> root = TreeNode.of();
-		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
-		return create(root, validator, operations, terminals);
+		return create(
+			Program.of(depth, operations, terminals),
+			validator,
+			operations,
+			terminals
+		);
 	}
 
 	/**
 	 * Create a new program chromosome with the defined depth. This method will
 	 * create a <em>full</em> program tree.
 	 *
-	 * @param depth the depth of the created program tree
+	 * @param depth the depth of the created (full) program tree
 	 * @param operations the allowed non-terminal operations
 	 * @param terminals the allowed terminal operations
 	 * @param <A> the operation type
@@ -321,32 +317,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(depth, null, operations, terminals);
-	}
-
-	private static <A> void fill(
-		final int depth,
-		final TreeNode<Op<A>> tree,
-		final ISeq<? extends Op<A>> operations,
-		final ISeq<? extends Op<A>> terminals,
-		final Random random
-	) {
-		final Op<A> op = operations.get(random.nextInt(operations.size()));
-		tree.setValue(op);
-
-		if (depth > 1) {
-			for (int i = 0; i < op.arity(); ++i) {
-				final TreeNode<Op<A>> node = TreeNode.of();
-				fill(depth - 1, node, operations, terminals, random);
-				tree.attach(node);
-			}
-		} else {
-			for (int i = 0; i < op.arity(); ++i) {
-				final Op<A> term = terminals.get(random.nextInt(terminals.size()));
-				final TreeNode<Op<A>> node = TreeNode.of(term);
-				tree.attach(node);
-			}
-		}
+		return of(depth, ProgramChromosome::isSuperValid, operations, terminals);
 	}
 
 	/**
@@ -398,7 +369,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(genes, null, operations, terminals);
+		return of(genes, ProgramChromosome::isSuperValid, operations, terminals);
 	}
 
 }

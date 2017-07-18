@@ -23,8 +23,6 @@ import static java.lang.Math.abs;
 import static java.lang.String.format;
 
 import java.util.Arrays;
-import java.util.stream.DoubleStream;
-import java.util.stream.IntStream;
 
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
@@ -34,11 +32,9 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.prog.ops.EphemeralConst;
 import org.jenetics.prog.ops.MathOp;
 import org.jenetics.prog.ops.Op;
-import org.jenetics.prog.ops.Program;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-
 import org.jenetix.SingleNodeCrossover;
 import org.jenetix.util.Tree;
 import org.jenetix.util.Trees;
