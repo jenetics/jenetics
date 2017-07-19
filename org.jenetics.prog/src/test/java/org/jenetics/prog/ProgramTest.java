@@ -25,7 +25,7 @@ import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Program;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
-import org.jenetix.util.TreeNode;
+import org.jenetics.ext.util.TreeNode;
 import org.testng.annotations.Test;
 
 /**

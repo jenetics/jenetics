@@ -27,9 +27,9 @@ import java.util.Random;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetix.util.FlatTree;
-import org.jenetix.util.Tree;
-import org.jenetix.util.TreeNode;
+import org.jenetics.ext.util.FlatTree;
+import org.jenetics.ext.util.Tree;
+import org.jenetics.ext.util.TreeNode;
 
 /**
  * This class composes a given operation tree to a new operation. which can

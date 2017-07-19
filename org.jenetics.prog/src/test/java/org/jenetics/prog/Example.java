@@ -35,9 +35,9 @@ import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetix.SingleNodeCrossover;
-import org.jenetix.util.Tree;
-import org.jenetix.util.Trees;
+import org.jenetics.ext.SingleNodeCrossover;
+import org.jenetics.ext.util.Tree;
+import org.jenetics.ext.util.Trees;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

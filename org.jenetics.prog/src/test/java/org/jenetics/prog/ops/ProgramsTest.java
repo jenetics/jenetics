@@ -24,8 +24,8 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.ISeq;
 
-import org.jenetix.util.FlatTreeNode;
-import org.jenetix.util.TreeNode;
+import org.jenetics.ext.util.FlatTreeNode;
+import org.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -30,9 +30,9 @@ import org.jenetics.prog.ops.MathOp;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 
-import org.jenetix.util.FlatTreeNode;
-import org.jenetix.util.Tree;
-import org.jenetix.util.TreeNode;
+import org.jenetics.ext.util.FlatTreeNode;
+import org.jenetics.ext.util.Tree;
+import org.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
