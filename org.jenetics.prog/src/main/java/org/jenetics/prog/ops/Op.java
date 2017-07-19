@@ -48,8 +48,8 @@ import java.util.function.Supplier;
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 

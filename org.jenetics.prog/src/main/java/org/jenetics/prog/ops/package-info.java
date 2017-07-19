@@ -102,7 +102,7 @@
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 package org.jenetics.prog.ops;

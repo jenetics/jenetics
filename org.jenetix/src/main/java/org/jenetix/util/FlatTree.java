@@ -52,8 +52,8 @@ import org.jenetics.util.ISeq;
  * sub-array {@code [childOffset, childOffset + childCount)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public interface FlatTree<V, T extends Tree<V, T>> extends Tree<V, T> {
 

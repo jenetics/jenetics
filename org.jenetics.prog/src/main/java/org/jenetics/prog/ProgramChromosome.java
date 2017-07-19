@@ -49,8 +49,8 @@ import org.jenetix.util.TreeNode;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>

@@ -38,8 +38,8 @@ import org.jenetix.util.TreeNode;
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 3.9
+ * @since 3.9
  */
 public class Program<T> implements Op<T> {
 
