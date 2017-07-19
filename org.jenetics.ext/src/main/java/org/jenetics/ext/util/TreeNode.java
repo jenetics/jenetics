@@ -297,12 +297,12 @@ public final class TreeNode<T>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof TreeNode<?> &&
-			equals(this, (TreeNode<?>)obj);
+			Tree.equals(this, (TreeNode<?>)obj);
 	}
 
 	@Override
 	public String toString() {
-		return toString(this);
+		return Tree.toString(this);
 	}
 
 
