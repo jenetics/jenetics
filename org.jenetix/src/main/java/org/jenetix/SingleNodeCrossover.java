@@ -27,6 +27,42 @@ import org.jenetics.util.RandomRegistry;
 import org.jenetix.util.TreeNode;
 
 /**
+ * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.
+ * <pre> {@code
+ *     Tree A                 Tree B
+ *   0                      a
+ *   ├── 1                  ├── b
+ *   │   ├── 4              │   ├── e
+ *   │   └── 5              │   └── f
+ *   ├── 2                  ├── c
+ *   │   └── 6              │   └── g
+ *   └── 3                  └── d
+ *       ├── 7                  ├── h
+ *       │   ├── 10             │   ├── k
+ *       │   └── 11             │   └── l
+ *       ├── 8                  ├── i
+ *       └── 9                  └── j
+ *
+ *     Swap node "3" of A with node "c" of B
+ *
+ *   0                      a
+ *   ├── 1                  ├── b
+ *   │   ├── 4              │   ├── e
+ *   │   └── 5              │   └── f
+ *   ├── 2                  ├── 3
+ *   │   └── 6              │   ├── 7
+ *   └── c                  │   │   ├── 10
+ *       └── g              │   │   └── 11
+ *                          │   ├── 8
+ *                          │   └── 9
+ *                          └── d
+ *                              ├── h
+ *                              │   ├── k
+ *                              │   └── l
+ *                              ├── i
+ *                              └── j
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
  * @since 3.9
@@ -71,8 +107,6 @@ public class SingleNodeCrossover<
 
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
 			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
-
-			//System.out.println(n1.getValue() + "<-->" + n2.getValue());
 
 			final int i1 = p1.getIndex(n1);
 			final int i2 = p2.getIndex(n2);

@@ -121,11 +121,6 @@ public final class TreeNode<T>
 		return _children.get(index);
 	}
 
-	/**
-	 * Returns the number of children of {@code this} node.
-	 *
-	 * @return the number of children of {@code this} node
-	 */
 	@Override
 	public int childCount() {
 		return _children.size();

@@ -21,6 +21,7 @@ package org.jenetix;
 
 import static java.lang.Math.min;
 
+import java.util.Objects;
 import java.util.Random;
 
 import org.jenetics.Chromosome;
@@ -33,10 +34,14 @@ import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 
 import org.jenetix.util.FlatTree;
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 
 /**
- * Abstract implementation of tree crossover recombinator.
+ * Abstract implementation of tree base crossover recombinator. This class
+ * simplifies the implementation of tree base crossover implementation, by doing
+ * the transformation of the flattened tree genes to actual trees and vice versa.
+ * Only the {@link #crossover(TreeNode, TreeNode)} method must be implemented.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -110,8 +115,11 @@ public abstract class TreeCrossover<
 
 		crossover(tree1, tree2);
 
-		final FlatTree<A> flat1 = FlatTree.of(tree1);
-		final FlatTree<A> flat2 = FlatTree.of(tree2);
+		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+
+		final FlatTreeNode<A> flat1 = FlatTreeNode.of(tree1);
+		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
 		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).getGene();
@@ -124,7 +132,10 @@ public abstract class TreeCrossover<
 	}
 
 	@SuppressWarnings("unchecked")
-	private <A> G gene(final TreeGene<A, ?> template, final FlatTree<A> tree) {
+	private <A> G gene(
+		final TreeGene<A, ?> template,
+		final FlatTree<? extends A, ?> tree
+	) {
 		return (G)template.newInstance(
 			tree.getValue(),
 			tree.childOffset(),

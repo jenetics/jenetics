@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.jenetics.util.ISeq;
+
 import org.jenetix.util.Tree;
 
 /**
@@ -75,9 +76,38 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		_childCount = childCount;
 	}
 
+	/**
+	 * Return the whole flattened tree values in breadth-first order. This method
+	 * will always return the same {@code ISeq} instance.
+	 *
+	 * @return the whole flattened tree values
+	 */
 	@Override
-	public ISeq<G> genes() {
+	public ISeq<G> flattenedNodes() {
 		return _genes;
+	}
+
+	@Override
+	public G getRoot() {
+		return _genes.get(0);
+	}
+
+	@Override
+	public boolean isRoot() {
+		return getRoot() == this;
+	}
+
+	@Override
+	public int size() {
+		return isRoot() ? _genes.size() : TreeGene.super.size();
+	}
+
+	protected void checkTreeState() {
+		if (_genes == null) {
+			throw new IllegalStateException(
+				"Gene is not attached to a chromosome."
+			);
+		}
 	}
 
 	/**
@@ -86,8 +116,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 *
 	 * @param genes the genes of the attached chromosome
 	 */
-	@Override
-	public void bind(final ISeq<G> genes) {
+	protected void bind(final ISeq<G> genes) {
 		_genes = requireNonNull(genes);
 	}
 
@@ -115,14 +144,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _genes.stream()
 			.filter(g -> g.childStream().anyMatch(this::identical))
 			.findFirst();
-	}
-
-	void checkTreeState() {
-		if (_genes == null) {
-			throw new IllegalStateException(
-				"Gene is not attached to a chromosome."
-			);
-		}
 	}
 
 	/**

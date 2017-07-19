@@ -35,12 +35,12 @@ import org.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-final class Trees {
+public final class Trees {
 	private Trees() {require.noInstance();}
 
 
 	@SuppressWarnings("unchecked")
-	static <V, T extends Tree<V, T>> T self(final Object tree) {
+	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
 		return (T)tree;
 	}
 
@@ -74,27 +74,25 @@ final class Trees {
 	 * Return a string representation of the given tree.
 	 *
 	 * @param tree the input tree
-	 * @param <A> the tree value type
-	 * @param <T> the tree type
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	static <A, T extends Tree<? extends A, T>> String toString(final T tree) {
+	static String toString(final Tree<?, ?> tree) {
 		requireNonNull(tree);
 
-		return render(tree).stream()
+		return toStrings(tree).stream()
 			.map(StringBuilder::toString)
 			.collect(Collectors.joining("\n"));
 	}
 
-	private static <A, T extends Tree<? extends A, T>>
-	List<StringBuilder> render(final T tree) {
+	private static
+	List<StringBuilder> toStrings(final Tree<?, ?> tree) {
 		final List<StringBuilder> result = new ArrayList<>();
 		result.add(new StringBuilder().append(tree.getValue()));
 
-		final Iterator<T> it = tree.childIterator();
+		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
 		while (it.hasNext()) {
-			final List<StringBuilder> subtree = render(it.next());
+			final List<StringBuilder> subtree = toStrings(it.next());
 			if (it.hasNext()) {
 				subtree(result, subtree);
 			} else {
@@ -123,6 +121,77 @@ final class Trees {
 		result.add(it.next().insert(0, "└── "));
 		while (it.hasNext()) {
 			result.add(it.next().insert(0, "    "));
+		}
+	}
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String toCompactString(final Tree<?, ?> tree) {
+		final StringBuilder out = new StringBuilder();
+		toCompactString(out, tree);
+		return out.toString();
+	}
+
+	private static void toCompactString(
+		final StringBuilder out,
+		final Tree<?, ?> tree
+	) {
+		out.append(tree.getValue());
+		if (!tree.isLeaf()) {
+			out.append("(");
+			toCompactString(out, tree.getChild(0));
+			for (int i = 1; i < tree.childCount(); ++i) {
+				out.append(", ");
+				toCompactString(out, tree.getChild(i));
+			}
+			out.append(")");
+		}
+	}
+
+	public static String toInfixString(final Tree<?, ?> tree) {
+		final StringBuilder out = new StringBuilder();
+		toInfixString(out, tree);
+		return out.toString();
+	}
+
+	private static void toInfixString(final StringBuilder out, final Tree<?, ?> tree) {
+		if (!tree.isLeaf()) {
+			child(out, tree.getChild(0));
+			out.append(tree.getValue());
+			child(out, tree.getChild(1));
+		} else {
+			out.append(tree.getValue());
+		}
+	}
+
+	private static void child(final StringBuilder out, final Tree<?, ?> child) {
+		if (child.isLeaf()) {
+			toInfixString(out, child);
+		} else {
+			out.append("(");
+			toInfixString(out, child);
+			out.append(")");
 		}
 	}
 

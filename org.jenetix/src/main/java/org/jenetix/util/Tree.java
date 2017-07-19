@@ -204,7 +204,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		Optional<T> ancestor = Optional.of(self(this));
 		boolean result;
 		do {
-			result = ancestor.filter(a -> a.equals(node)).isPresent();
+			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
 				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
 
@@ -238,7 +238,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		requireNonNull(node);
 
 		T ancestor = null;
-		if (node == this) {
+		if (node.identical(this)) {
 			ancestor = Trees.<V, T>self(this);
 		} else {
 			final int level1 = level();
@@ -263,10 +263,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			}
 
 			do {
-				if (node1 == node2) {
+				if (node1 != null && node1.identical(node2)) {
 					ancestor = Trees.<V, T>self(node1);
 				}
-				node1 = node1.getParent().orElse(null);
+				node1 = node1 != null
+					? node1.getParent().orElse(null)
+					: null;
 				node2 = node2.getParent().orElse(null);
 			} while (node1 != null && ancestor == null);
 		}
@@ -833,15 +835,40 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * {@link Object#toString()} method.
 	 *
 	 * @param tree the input tree
-	 * @param <A> the tree value type
-	 * @param <T> the tree type
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static <A, T extends Tree<? extends A, T>>
-	String toString(final T tree) {
+	public static String toString(final Tree<?, ?> tree) {
 		requireNonNull(tree);
 		return Trees.toString(tree);
+	}
+
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String toCompactString(final Tree<?, ?> tree) {
+		return Trees.toCompactString(tree);
 	}
 
 }

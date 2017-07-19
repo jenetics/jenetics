@@ -744,8 +744,6 @@ public final class codecs {
 		);
 	}
 
-	// https://trac.osgeo.org/postgis/wiki/DevWikiAffineParameters
-
 //	/**
 //	 * Creates a codec for a 2-dimensional affine transformation. The composed
 //	 * order of the transformation is: <i>R&bull;Sc&bull;Sh&bull;T</i>

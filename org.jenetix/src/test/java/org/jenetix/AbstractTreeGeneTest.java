@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.util.ISeq;
 
-import org.jenetix.util.FlatTree;
+import org.jenetix.util.FlatTreeNode;
 import org.jenetix.util.TreeNode;
 import org.jenetix.util.TreeTestBase;
 
@@ -40,7 +40,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 		final TreeNode<Integer> root = TreeNode.of(0);
 		fill(root, levels, random);
 
-		final FlatTree<Integer> flattened = FlatTree.of(root);
+		final FlatTreeNode<Integer> flattened = FlatTreeNode.of(root);
 		final ISeq<IntTreeGene> genes = flattened.stream()
 			.map(n -> new IntTreeGene(n.getValue(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());

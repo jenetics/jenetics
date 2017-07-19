@@ -20,12 +20,12 @@
 package org.jenetix;
 
 import org.jenetics.Gene;
-
-import org.jenetics.util.ISeq;
-import org.jenetix.util.Tree;
+import org.jenetix.util.FlatTree;
 
 /**
- * Representation of tree shaped gene.
+ * Representation of tree shaped gene. Since the genes are part of a chromosome,
+ * they are implementing the {@link FlatTree} interface, which makes the required
+ * storage layout explicit.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.9
@@ -34,7 +34,7 @@ import org.jenetix.util.Tree;
 public interface TreeGene<A, G extends TreeGene<A, G>>
 	extends
 		Gene<A, G>,
-		Tree<A, G>
+		FlatTree<A, G>
 {
 
 	@Override
@@ -43,34 +43,14 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	}
 
 	/**
-	 * Return the genes of the underlying chromosome, where this tree gene is
-	 * part of. For an unbound gene, {@code null} is returned.
-	 *
-	 * @see #bind(ISeq)
-	 *
-	 * @return the genes of the underlying chromosome
-	 */
-	public ISeq<G> genes();
-
-	/**
-	 * Return the index of the first child node in the underlying gene array.
-	 * {@code -1} is returned if {@code this} node is a leaf.
+	 * Return the index of the first child node in the underlying gene array
+	 * ({@code Chromosome}). {@code -1} is returned if {@code this} node is a
+	 * leaf.
 	 *
 	 * @return Return the index of the first child node in the underlying node
 	 *         array, or {@code -1} if {@code this} node is a leaf
 	 */
 	public int childOffset();
-
-	/**
-	 * This method is used by the {@code AbstractTreeChromosome} to bind the
-	 * rest of the genes to this one. Once set, the genes can be queried with
-	 * {@link #genes()}.
-	 *
-	 * @see #genes()
-	 *
-	 * @param genes the genes of the underlying chromosome
-	 */
-	public void bind(final ISeq<G> genes);
 
 	/**
 	 * Return a new tree gene with the given allele and the <em>local</em> tree
