@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
+
 import org.jenetics.util.MSeq;
 
 /**

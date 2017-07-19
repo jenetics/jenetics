@@ -21,7 +21,6 @@ package org.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.util.RandomRegistry.getRandom;
-import static org.jenetics.ext.internal.random.nextBigInteger;
 
 import java.io.Serializable;
 import java.math.BigInteger;
