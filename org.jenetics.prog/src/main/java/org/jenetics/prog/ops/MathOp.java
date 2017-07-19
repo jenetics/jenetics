@@ -87,6 +87,13 @@ public final class MathOp {
 		Op.of("abs", 1, v -> abs(v[0]));
 
 	/**
+	 * Return the negation value of a double value.
+	 * <em>This operation has arity 1.</em>
+	 */
+	public static final Op<Double> NEG =
+		Op.of("neg", 1, v -> -v[0]);
+
+	/**
 	 * Return the minimum of two values.
 	 * <em>This operation has arity 2.</em>
 	 *
@@ -190,6 +197,13 @@ public final class MathOp {
 	 */
 	public static final Op<Double> POW =
 		Op.of("pow", 2, v -> pow(v[0], v[1]));
+
+	/**
+	 * Returns the square value of a given double value.
+	 * <em>This operation has arity 1.</em>
+	 */
+	public static final Op<Double> SQR =
+		Op.of("sql", 1, v -> v[0]*v[0]);
 
 	/**
 	 * Returns the correctly rounded positive square root of a double value.

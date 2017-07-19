@@ -66,7 +66,7 @@ public final class Const<T> implements Op<T> {
 	public int hashCode() {
 		int hash = 17;
 		hash += 31*Objects.hashCode(_name) + 37;
-		hash += Objects.hashCode(_const) + 37;
+		hash += 31*Objects.hashCode(_const) + 37;
 		return hash;
 	}
 

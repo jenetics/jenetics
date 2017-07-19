@@ -93,7 +93,7 @@ public class Example {
 		return Arrays.stream(SAMPLES)
 			.mapToDouble(sample ->
 				abs(sample[1] - program.eval(sample[0])) +
-				program.size()*0.0001)
+				program.size()*0.00001)
 			.sum();
 	}
 

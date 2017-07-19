@@ -327,7 +327,7 @@ public class Program<T> implements Op<T> {
 			final Op<?> op = nodes.get(i).getValue();
 
 			offsets[i] = op.isTerminal() ? -1 : offset;
-			offset += nodes.get(i).getValue().arity();
+			offset += op.arity();
 		}
 
 		return offsets;
