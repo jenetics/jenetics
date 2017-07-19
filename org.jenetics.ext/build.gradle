@@ -30,7 +30,7 @@ plugins {
 
 apply plugin: 'packaging'
 
-description = 'Jenetix - Java Genetic Algorithm Library Extension'
+description = 'jenetics.ext - Java Genetic Algorithm Library Extension'
 
 compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 

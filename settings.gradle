@@ -28,10 +28,10 @@
 include 'org.jenetics'
 include 'org.jenetics.doc'
 include 'org.jenetics.example'
+include 'org.jenetics.ext'
 include 'org.jenetics.prog'
 include 'org.jenetics.tool'
 include 'org.jenetics.xml'
-include 'org.jenetix'
 
 rootProject.name = 'jenetics'
 

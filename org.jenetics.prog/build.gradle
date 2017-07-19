@@ -36,7 +36,7 @@ repositories {
 
 dependencies {
 	compile project(':jenetics')
-	compile project(':jenetix')
+	compile project(':jenetics.ext')
 
 	testCompile Include.TestNG
 }
