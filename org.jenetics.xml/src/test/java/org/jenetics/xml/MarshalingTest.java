@@ -21,7 +21,6 @@ package org.jenetics.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 
 import javax.xml.stream.XMLStreamException;
 

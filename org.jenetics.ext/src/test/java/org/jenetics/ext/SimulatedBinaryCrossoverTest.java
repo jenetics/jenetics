@@ -17,25 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
+ * @version 3.5
+ * @since 3.5
  */
-
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
-
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+public class SimulatedBinaryCrossoverTest {
 }

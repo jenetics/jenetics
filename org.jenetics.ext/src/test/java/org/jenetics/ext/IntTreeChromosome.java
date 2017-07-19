@@ -17,25 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
+
+import java.util.Random;
+
+import org.jenetics.Chromosome;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
  */
+final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGene> {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+	public IntTreeChromosome(final ISeq<? extends IntTreeGene> genes) {
+		super(genes);
+	}
 
-rootProject.name = 'jenetics'
+	@Override
+	public Chromosome<IntTreeGene> newInstance() {
+		final Random random = RandomRegistry.getRandom();
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+		return newInstance(
+			_genes.map(g -> g.newInstance(random.nextInt(10000)))
+		);
+	}
+
+	@Override
+	public Chromosome<IntTreeGene> newInstance(final ISeq<IntTreeGene> genes) {
+		return new IntTreeChromosome(genes);
+	}
 }

@@ -20,11 +20,9 @@
 package org.jenetics.xml;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.jenetics.BitChromosome;
 import org.jenetics.BitGene;
-import org.jenetics.EnumGene;
 import org.jenetics.Genotype;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;

@@ -17,25 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
+
+import org.jenetics.Chromosome;
 
 /**
+ * Chromosome for tree shaped genes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
+ * @version 3.9
+ * @since 3.9
  */
+public interface TreeChromosome<A, G extends TreeGene<A, G>>
+	extends Chromosome<G>
+{
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+	/**
+	 * Return the root gene of this chromosome.
+	 *
+	 * @return the root tree gene of this chromosome
+	 */
+	public default G getRoot() {
+		return getGene();
+	}
 
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
 }

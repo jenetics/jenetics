@@ -17,25 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
+
+import java.math.BigInteger;
+
+import org.testng.annotations.Test;
+
+import org.jenetics.Chromosome;
+import org.jenetics.NumericChromosomeTester;
+import org.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
+ * @version 3.5
+ * @since 3.5
  */
+@Test
+public class BigIntegerChromosomeTest
+	extends NumericChromosomeTester<BigInteger, BigIntegerGene>
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+{
+	private final BigIntegerChromosome _factory = new BigIntegerChromosome(
+		BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE), 500
+	);
 
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+	@Override
+	protected Factory<Chromosome<BigIntegerGene>> factory() {
+		return _factory;
+	}
 }

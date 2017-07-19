@@ -17,25 +17,39 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
+
+import org.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
  */
+final class IntTreeGene extends AbstractTreeGene<Integer, IntTreeGene> {
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+	public IntTreeGene(
+		final Integer allele,
+		final int childOffset,
+		final int childCount
+	) {
+		super(allele, childOffset, childCount);
+	}
 
-rootProject.name = 'jenetics'
+	@Override
+	public IntTreeGene newInstance() {
+		return newInstance(RandomRegistry.getRandom().nextInt(10000));
+	}
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
+	@Override
+	public IntTreeGene newInstance(final Integer value) {
+		return newInstance(value, childOffset(), childCount());
+	}
+
+	@Override
+	public IntTreeGene newInstance(
+		final Integer allele,
+		final int childOffset,
+		final int childCount
+	) {
+		return new IntTreeGene(allele, childOffset, childCount);
+	}
 }

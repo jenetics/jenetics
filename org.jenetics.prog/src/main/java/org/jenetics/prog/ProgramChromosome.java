@@ -27,10 +27,10 @@ import java.util.function.Predicate;
 import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Program;
 import org.jenetics.util.ISeq;
-import org.jenetix.AbstractTreeChromosome;
-import org.jenetix.util.FlatTreeNode;
-import org.jenetix.util.Tree;
-import org.jenetix.util.TreeNode;
+import org.jenetics.ext.AbstractTreeChromosome;
+import org.jenetics.ext.util.FlatTreeNode;
+import org.jenetics.ext.util.Tree;
+import org.jenetics.ext.util.TreeNode;
 
 /**
  * Holds the nodes of the operation tree.

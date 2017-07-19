@@ -17,25 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
+package org.jenetics.ext;
+
+import org.jenetics.AbstractChromosome;
+import org.jenetics.util.ISeq;
 
 /**
+ * Abstract base implementation of a {@code TreeChromosome}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since 1.2
- * @version !__version__!
+ * @version 3.9
+ * @since 3.9
  */
+public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>>
+	extends AbstractChromosome<G>
+	implements TreeChromosome<A, G>
+{
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
+		super(genes);
+		genes.forEach(g -> g.bind(toSeq()));
+	}
 
-rootProject.name = 'jenetics'
-
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
 }
