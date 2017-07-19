@@ -22,10 +22,9 @@ package org.jenetics.prog.ops;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
-
 import org.jenetics.ext.util.FlatTreeNode;
 import org.jenetics.ext.util.TreeNode;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -25,11 +25,11 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Array;
 import java.util.Random;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
 import org.jenetics.ext.util.FlatTree;
 import org.jenetics.ext.util.Tree;
 import org.jenetics.ext.util.TreeNode;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.RandomRegistry;
 
 /**
  * This class composes a given operation tree to a new operation. which can

@@ -29,15 +29,15 @@ import org.jenetics.Mutator;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
+import org.jenetics.ext.SingleNodeCrossover;
+import org.jenetics.ext.util.Tree;
+import org.jenetics.ext.util.Trees;
 import org.jenetics.prog.ops.EphemeralConst;
 import org.jenetics.prog.ops.MathOp;
 import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.ext.SingleNodeCrossover;
-import org.jenetics.ext.util.Tree;
-import org.jenetics.ext.util.Trees;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

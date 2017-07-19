@@ -19,20 +19,19 @@
  */
 package org.jenetics.prog;
 
-import org.jenetics.prog.ops.Const;
-import org.jenetics.prog.ops.Program;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.prog.ops.Op;
-import org.jenetics.prog.ops.MathOp;
-import org.jenetics.prog.ops.Var;
-import org.jenetics.util.ISeq;
-
 import org.jenetics.ext.util.FlatTreeNode;
 import org.jenetics.ext.util.Tree;
 import org.jenetics.ext.util.TreeNode;
+import org.jenetics.prog.ops.Const;
+import org.jenetics.prog.ops.MathOp;
+import org.jenetics.prog.ops.Op;
+import org.jenetics.prog.ops.Program;
+import org.jenetics.prog.ops.Var;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

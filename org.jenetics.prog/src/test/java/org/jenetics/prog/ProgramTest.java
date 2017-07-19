@@ -19,14 +19,15 @@
  */
 package org.jenetics.prog;
 
+import org.testng.annotations.Test;
+
+import org.jenetics.ext.util.TreeNode;
 import org.jenetics.prog.ops.Const;
 import org.jenetics.prog.ops.MathOp;
 import org.jenetics.prog.ops.Op;
 import org.jenetics.prog.ops.Program;
 import org.jenetics.prog.ops.Var;
 import org.jenetics.util.ISeq;
-import org.jenetics.ext.util.TreeNode;
-import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
