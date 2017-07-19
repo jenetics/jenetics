@@ -21,12 +21,12 @@ package org.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.Lazy;
 import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
@@ -227,20 +226,21 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_generation)
-			.and(getFitness())
-			.and(getRawFitness())
-			.and(_genotype).value();
+		int hash = 17;
+		hash += 31*_generation + 37;
+		hash += 31*Objects.hashCode(getFitness()) + 37;
+		hash += 31*Objects.hashCode(getRawFitness()) + 37;
+		hash += 31*_genotype.hashCode() + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof Phenotype<?, ?> &&
-			eq(getFitness(), ((Phenotype<?, ?>)obj).getFitness()) &&
-			eq(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
-			eq(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&
-			eq(_generation, ((Phenotype<?, ?>)obj)._generation);
+			Objects.equals(getFitness(), ((Phenotype<?, ?>) obj).getFitness()) &&
+			Objects.equals(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
+			Objects.equals(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&
+			_generation == ((Phenotype<?, ?>)obj)._generation;
 	}
 
 	@Override
@@ -379,9 +379,9 @@ public final class Phenotype<
 	}
 
 
-	/**************************************************************************
+	/* *************************************************************************
 	 *  Java object serialization
-	 *************************************************************************/
+	 * ************************************************************************/
 
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
