@@ -21,7 +21,6 @@ package org.jenetics.ext;
 
 import static java.lang.Math.min;
 
-import java.util.Objects;
 import java.util.Random;
 
 import org.jenetics.Chromosome;
@@ -113,9 +112,6 @@ public abstract class TreeCrossover<
 		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.of(c2.get(index).getGene());
 
 		crossover(tree1, tree2);
-
-		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
-		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
 
 		final FlatTreeNode<A> flat1 = FlatTreeNode.of(tree1);
 		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);

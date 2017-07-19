@@ -179,7 +179,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of nodes of {@code this} node (sub-tree)
 	 */
 	public default int size() {
-		return (int) breadthFirstStream().count();
+		return (int)breadthFirstStream().count();
 	}
 
 	/* *************************************************************************
