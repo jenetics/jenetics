@@ -6,8 +6,10 @@ set SCRIPT_DIR=%~dp0
 set MODULES=(^
 	%SCRIPT_DIR%org.jenetics^
 	%SCRIPT_DIR%org.jenetics.example^
+	%SCRIPT_DIR%org.jenetics.ext^
+	%SCRIPT_DIR%org.jenetics.prog^
 	%SCRIPT_DIR%org.jenetics.tool^
-	%SCRIPT_DIR%org.jenetix^
+	%SCRIPT_DIR%org.jenetics.xml^
 )
 
 set CLASSPATH=.
