@@ -1,4 +1,4 @@
-# Genetic programming
+# Genetic programming with _Jenetics_
 
 Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
 
@@ -124,7 +124,7 @@ The following example shows how to solve a GP problem with _Jenetics_. We are tr
 | 0.10 | 0.0740
 | 0.20 | 0.1120.
 | 0.30 | 0.1380
-| ... | ....
+| ... | ...
 |===
 
 The sample points has been created with the function _f(x) = 4*x^3 - 3*x^2 + x_. The knowledge of the creating function makes it easier to compare the quality of the evolved function. For the example we created 21 data points.
