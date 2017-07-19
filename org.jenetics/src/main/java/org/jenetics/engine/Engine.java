@@ -280,14 +280,14 @@ public final class Engine<
 				_clock
 			);
 
-		// Filter and replace invalid and to old survivor individuals.
+		// Filter and replace invalid and old survivor individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
 			_executor.thenApply(survivors, pop ->
 				filter(pop.result, start.getGeneration()),
 				_clock
 			);
 
-		// Filter and replace invalid and to old offspring individuals.
+		// Filter and replace invalid and old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
 			_executor.thenApply(alteredOffspring, pop ->
 				filter(pop.result.population, start.getGeneration()),
@@ -297,7 +297,11 @@ public final class Engine<
 		// Combining survivors and offspring to the new population.
 		final CompletableFuture<Population<G, C>> population =
 			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-					final Population<G, C> pop = s.result.population;
+					final Population<G, C> pop = new Population<>(
+						s.result.population.size() +
+						o.result.population.size()
+					);
+					pop.addAll(s.result.population);
 					pop.addAll(o.result.population);
 					return pop;
 				},
@@ -365,7 +369,7 @@ public final class Engine<
 			: Population.empty();
 	}
 
-	// Filters out invalid and to old individuals. Filtering is done in place.
+	// Filters out invalid and old individuals. Filtering is done in place.
 	private FilterResult<G, C> filter(
 		final Population<G, C> population,
 		final long generation
