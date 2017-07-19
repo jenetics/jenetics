@@ -23,6 +23,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -797,6 +798,22 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/* *************************************************************************
 	 * Static helper methods.
 	 **************************************************************************/
+
+	/**
+	 * Calculates the hash code of the given tree.
+	 *
+	 * @param tree the tree where the hash is calculated from
+	 * @return the hash code of the tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static int hashCode(final Tree<?, ?> tree) {
+		int hash = 17;
+		for (Tree<?, ?> node : tree) {
+			hash += 31*Objects.hashCode(node.getValue()) + 37;
+		}
+
+		return hash;
+	}
 
 	/**
 	 * Checks if the two given trees has the same structure with the same values.

@@ -287,12 +287,7 @@ public final class TreeNode<T>
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		for (TreeNode<?> node : this) {
-			hash += 31*Objects.hashCode(node.getValue()) + 37;
-		}
-
-		return hash;
+		return Tree.hashCode(this);
 	}
 
 	@Override

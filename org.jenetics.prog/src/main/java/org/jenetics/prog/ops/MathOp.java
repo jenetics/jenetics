@@ -254,7 +254,7 @@ public final class MathOp {
 	 * @see Math#log(double)
 	 */
 	public static final Op<Double> LOG =
-		Op.of("log", 1, v -> log((v[0])));
+		Op.of("log", 1, v -> log(v[0]));
 
 	/**
 	 * Returns the base 10 logarithm of a double value.
