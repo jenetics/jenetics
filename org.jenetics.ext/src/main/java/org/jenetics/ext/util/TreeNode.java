@@ -31,7 +31,8 @@ import java.util.Optional;
 import org.jenetics.util.Copyable;
 
 /**
- * A general purpose node in a tree data-structure.
+ * A general purpose node in a tree data-structure. The {@code TreeNode} is a
+ * mutable implementation of the {@link Tree} interface.
  *
  * @param <T> the value type of the tree node
  *
