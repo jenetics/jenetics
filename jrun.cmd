@@ -4,12 +4,12 @@ setlocal EnableDelayedExpansion
 set SCRIPT_DIR=%~dp0
 
 set MODULES=(^
-	%SCRIPT_DIR%org.jenetics^
-	%SCRIPT_DIR%org.jenetics.example^
-	%SCRIPT_DIR%org.jenetics.ext^
-	%SCRIPT_DIR%org.jenetics.prog^
-	%SCRIPT_DIR%org.jenetics.tool^
-	%SCRIPT_DIR%org.jenetics.xml^
+	%SCRIPT_DIR%jenetics^
+	%SCRIPT_DIR%jenetics.example^
+	%SCRIPT_DIR%jenetics.ext^
+	%SCRIPT_DIR%jenetics.prog^
+	%SCRIPT_DIR%jenetics.tool^
+	%SCRIPT_DIR%jenetics.xml^
 )
 
 set CLASSPATH=.
