@@ -25,17 +25,13 @@
  */
 
 // The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.ext'
-include 'org.jenetics.prog'
-include 'org.jenetics.tool'
-include 'org.jenetics.xml'
+include 'jenetics'
+include 'jenetics.doc'
+include 'jenetics.example'
+include 'jenetics.ext'
+include 'jenetics.prog'
+include 'jenetics.tool'
+include 'jenetics.xml'
 
 rootProject.name = 'jenetics'
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
-}
