@@ -73,10 +73,15 @@ import org.jenetics.internal.util.Hash;
  * @see <a href="http://numbercrunch.de/trng/">TRNG</a>
  * @see RandomRegistry
  *
+ * @deprecated This random class implementation has been moved to a separate
+ *             module. Use the implementation of the
+ *             <a href="https://github.com/jenetics/prngine">PRNGine</a> instead.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 2.0
  */
+@Deprecated
 public class LCG64ShiftRandom extends Random64 {
 
 	private static final long serialVersionUID = 1L;
@@ -111,6 +116,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @since 1.1
 	 * @version 3.0
 	 */
+	@Deprecated
 	public static final class ThreadLocal
 		extends java.lang.ThreadLocal<LCG64ShiftRandom>
 	{
@@ -199,6 +205,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @since 1.1
 	 * @version 3.0
 	 */
+	@Deprecated
 	public static final class ThreadSafe extends LCG64ShiftRandom {
 		private static final long serialVersionUID = 1L;
 
@@ -293,6 +300,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * @since 1.1
 	 * @version 2.0
 	 */
+	@Deprecated
 	public static final class Param implements Serializable {
 
 		private static final long serialVersionUID = 1L;
