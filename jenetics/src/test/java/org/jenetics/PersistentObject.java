@@ -37,7 +37,7 @@ import java.util.function.Function;
 
 import org.jenetics.util.IO;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.LCG64ShiftRandom;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**

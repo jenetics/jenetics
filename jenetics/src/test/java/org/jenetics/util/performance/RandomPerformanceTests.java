@@ -23,7 +23,7 @@ import java.text.NumberFormat;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.jenetics.util.LCG64ShiftRandom;
+import io.jenetics.prngine.LCG64ShiftRandom;
 //import org.jenetics.util.XORShiftRandom;
 
 /**

@@ -30,7 +30,8 @@ import org.jenetics.SinglePointCrossover;
 import org.jenetics.TournamentSelector;
 import org.jenetics.engine.Engine;
 import org.jenetics.tool.problem.Knapsack;
-import org.jenetics.util.LCG64ShiftRandom;
+
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * Definition of commonly used testing {@link Engine} objects.

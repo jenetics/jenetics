@@ -41,6 +41,7 @@ repositories {
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+	testCompile Include.PRNGine
 
 	jmh Include.JMH.Core
 	jmh Include.JMH.Processor

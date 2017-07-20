@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.LCG64ShiftRandom;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 
 /**

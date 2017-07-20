@@ -41,7 +41,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
 
 /**

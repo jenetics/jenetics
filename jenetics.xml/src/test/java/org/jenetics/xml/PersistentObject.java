@@ -54,7 +54,7 @@ import org.jenetics.LongChromosome;
 import org.jenetics.LongGene;
 import org.jenetics.PermutationChromosome;
 import org.jenetics.util.ISeq;
-import org.jenetics.util.LCG64ShiftRandom;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import org.jenetics.xml.stream.Reader;
