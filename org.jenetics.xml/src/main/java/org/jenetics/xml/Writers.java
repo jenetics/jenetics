@@ -43,13 +43,13 @@ import org.jenetics.xml.stream.XML;
  * genotype writers for different gene types.
  *
  * <pre>{@code
- * final Writer<Genotype<BitGene> bch =
+ * final Writer<Genotype<BitGene> bgw =
  *     Writers.Genotype.writer(Writers.BitChromosome.writer()));
  *
  * final Writer<Genotype<IntegerGene>> igw =
  *     Writers.Genotype.writer(Writers.IntegerChromosome.writer()));
  *
- * final Writer<Genotype<DoubleGene>> igw =
+ * final Writer<Genotype<DoubleGene>> dgw =
  *     Writers.Genotype.writer(Writers.DoubleChromosome.writer()));
  * }</pre>
  *

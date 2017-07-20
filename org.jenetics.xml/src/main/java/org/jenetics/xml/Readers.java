@@ -53,13 +53,13 @@ import org.jenetics.xml.stream.XML;
  * genotype readers for different gene types.
  *
  * <pre>{@code
- * final Reader<Genotype<BitGene> bch =
+ * final Reader<Genotype<BitGene> bgr =
  *     Readers.Genotype.reader(Readers.BitChromosome.reader()));
  *
- * final Reader<Genotype<IntegerGene>> igw =
+ * final Reader<Genotype<IntegerGene>> igr =
  *     Writers.Genotype.reader(Readers.IntegerChromosome.reader()));
  *
- * final Reader<Genotype<DoubleGene>> igw =
+ * final Reader<Genotype<DoubleGene>> dgr =
  *     Readers.Genotype.reader(Readers.DoubleChromosome.reader()));
  * }</pre>
  *
