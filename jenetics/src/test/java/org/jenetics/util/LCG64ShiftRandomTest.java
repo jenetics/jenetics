@@ -27,6 +27,7 @@ import org.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("deprecation")
 @Test
 public class LCG64ShiftRandomTest extends RandomTestBase {
 

@@ -33,8 +33,9 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.TestData;
+
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

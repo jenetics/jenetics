@@ -39,6 +39,7 @@ dependencies {
 	compile project(':jenetics')
 
 	testCompile Include.TestNG
+	testCompile Include.PRNGine
 	jmh Include.JMH.Core
 	jmh Include.JMH.Processor
 }

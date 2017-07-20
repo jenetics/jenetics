@@ -33,8 +33,9 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.EvolutionStatistics;
 import org.jenetics.engine.limit;
 import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.util.LCG64ShiftRandom;
 import org.jenetics.util.RandomRegistry;
+
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 public class Sorting {
 
