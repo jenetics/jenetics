@@ -19,14 +19,13 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.2
  * @since 3.2
  */
-public final class ObjectHashRandom extends Random64 {
+@SuppressWarnings("deprecation")
+public final class ObjectHashRandom extends org.jenetics.util.Random64 {
 
 	private static final long serialVersionUID = 1L;
 

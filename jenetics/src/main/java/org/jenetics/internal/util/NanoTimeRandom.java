@@ -19,14 +19,13 @@
  */
 package org.jenetics.internal.util;
 
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.2
  * @since 3.2
  */
-public final class NanoTimeRandom extends Random64 {
+@SuppressWarnings("deprecation")
+public final class NanoTimeRandom extends org.jenetics.util.Random64 {
 
 	private static final long serialVersionUID = 1L;
 

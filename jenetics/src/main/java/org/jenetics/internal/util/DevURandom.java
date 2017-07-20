@@ -26,14 +26,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
  */
-public class DevURandom extends Random64 implements Closeable {
+@SuppressWarnings("deprecation")
+public class DevURandom extends org.jenetics.util.Random64 implements Closeable {
 	private static final long serialVersionUID = 1L;
 
 	private final DataInputStream _input = input();

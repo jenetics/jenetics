@@ -21,14 +21,13 @@ package org.jenetics.internal.util;
 
 import org.jenetics.internal.math.random;
 
-import org.jenetics.util.Random64;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
  * @version 1.5
  */
-public final class SeedRandom extends Random64 {
+@SuppressWarnings("deprecation")
+public final class SeedRandom extends org.jenetics.util.Random64 {
 
 	private static final long serialVersionUID = 1L;
 

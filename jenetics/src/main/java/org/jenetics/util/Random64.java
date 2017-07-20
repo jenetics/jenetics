@@ -42,10 +42,15 @@ import org.jenetics.internal.math.random;
  * }
  * }</pre>
  *
+ * @deprecated This random class implementation has been moved to a separate
+ *             module. Use the implementation of the
+ *             <a href="https://github.com/jenetics/prngine">PRNGine</a> instead.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 2.0
  */
+@Deprecated
 public abstract class Random64 extends PRNG {
 
 	private static final long serialVersionUID = 1L;
