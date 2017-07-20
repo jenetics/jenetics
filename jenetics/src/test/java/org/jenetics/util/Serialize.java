@@ -28,6 +28,7 @@ import org.testng.Assert;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("deprecation")
 public class Serialize {
 
 	private final IO _io;
