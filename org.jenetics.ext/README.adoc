@@ -1,9 +1,21 @@
 # Jenetics extension module
 
-## BigInteger gene/chromosome
+This module contains additional genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `org.jenetics.base` module as small as possible.
 
-## Additional operators
+## Genes and chromosomes
 
-## Tree genes
+* `BigIntegerGene`
+* `BigIntegerChromosome`
+* `TreeGene`
+* `TreeChromosome`
 
-Implementation of tree genes/chromosomes, which allows to evolve tree like structures. The basic tree classes are used by the `io.jenetics.prog` module.
+## Operators
+
+* `WeaselMutator`
+* `WeaselSelector`
+* `SimulatedBinaryCrossover`
+* `SingleNodeCrossover`
+
+## Util classes
+
+* `Tree`: General tree implementation; needed for the `org.jenetics.prog` module.
