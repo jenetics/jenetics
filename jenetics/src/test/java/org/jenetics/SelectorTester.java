@@ -41,8 +41,9 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
-import io.jenetics.prngine.LCG64ShiftRandom;
 import org.jenetics.util.ObjectTester;
+
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
