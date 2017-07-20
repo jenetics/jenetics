@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "data-class")
 @XmlType(name = "DataClass")
 @XmlAccessorType(XmlAccessType.FIELD)
+@SuppressWarnings("deprecation")
 public class DataClass {
 	@XmlAttribute public String name;
 	@XmlValue public String value;

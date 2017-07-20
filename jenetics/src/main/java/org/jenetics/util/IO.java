@@ -113,10 +113,16 @@ public abstract class IO {
 	 * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than
 	 * once.
 	 *
+	 * @deprecated Since the {@code javax.xml.bind} is marked as deprecated for
+	 *             removal in Java 9, the JAXB marshalling will be removed as
+	 *             well. Use the {@code org.jenetics.xml} module when writing
+	 *             and reading Jenetics data-objects as XML.
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 3.5
 	 * @version 3.5
 	 */
+	@Deprecated
 	public static final class JAXB {
 		private JAXB() {require.noInstance();}
 
@@ -158,7 +164,13 @@ public abstract class IO {
 
 	/**
 	 * JAXB for <i>XML</i> serialization.
+	 *
+	 * @deprecated Since the {@code javax.xml.bind} is marked as deprecated for
+	 *             removal in Java 9, the JAXB marshalling will be removed as
+	 *             well. Use the {@code org.jenetics.xml} module when writing
+	 *             and reading Jenetics data-objects as XML.
 	 */
+	@Deprecated
 	public static final IO jaxb = new IO() {
 
 		@Override

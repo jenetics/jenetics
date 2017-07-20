@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
  * @version 3.5
  * @since 3.5
  */
+@SuppressWarnings("deprecation")
 public class IOTest {
 
 	@XmlRootElement(name = "data-class")
