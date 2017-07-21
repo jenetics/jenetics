@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 2.0
+ * @version !__version__!
  */
 
 plugins {
@@ -48,18 +48,11 @@ dependencies {
 	jmh files('build/classes/main')
 }
 
-/*
-javadoc {
-	options.docletpath = files(
-			"${project.rootDir}/buildSrc/build/libs/buildSrc.jar"
-			//"${project.rootDir}/buildSrc/lib/publishedApiDoclet1.5-0.4.jar"
-		).asType(List)
-
-	//options.doclet = 'org.jenetics.doclet.ExcludeInternalDoclet'
-	//options.doclet = 'de.kruis.padoclet.PublishedApiDoclet'
-	//options.addStringOption('-padExcludeTag', 'exclude')
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
 }
-*/
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics',
@@ -71,9 +64,10 @@ jar.manifest.instruction('Export-Package',
 packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	url = 'http://jenetics.io'
 
 	jarjar = false
+	javadoc = true
 }
 
 modifyPom {
@@ -99,9 +93,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id 'fwilhelm'
+				id 'jenetics'
 				name 'Franz Wilhelmstötter'
-				email 'franz.wilhelmstoetter@gmx.at'
+				email 'franz.wilhelmstoetter@gmail.com'
 			}
 		}
 	}
@@ -116,11 +110,4 @@ nexus {
 	sign = true
 	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
-    //snapshotRepository = "file://$buildDir/repo"
-}
-
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
 }
