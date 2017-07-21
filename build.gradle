@@ -25,7 +25,9 @@ import org.jenetics.gradle.plugin.SetupPlugin
 import org.jenetics.gradle.task.FixJavadocCodeBlockTask
 import org.jenetics.gradle.task.TrimLineFeedTask
 
-import java.text.SimpleDateFormat
+import java.time.Year
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -42,13 +44,13 @@ apply plugin: 'packaging'
 ext {
 	javaVersion = '1.8'
 
-	now = Calendar.getInstance()
-	year = now.get(Calendar.YEAR);
+	now = ZonedDateTime.now()
+	year = Year.now();
 	copyrightYear = "2007-${year}".toString()
 	identifier = "${rootProject.name}-${version}".toString()
-	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
+	manualDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(now)
 	manualIdentifier = "${version}—${manualDate}".toString()
-	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 }
 
 allprojects {
