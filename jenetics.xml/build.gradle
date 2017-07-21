@@ -25,9 +25,9 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.3.1"
+	id "me.champeau.gradle.jmh" version "0.4.4"
 }
-
+ 
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
@@ -41,8 +41,6 @@ dependencies {
 
 	testCompile Include.TestNG
 	testCompile Include.PRNGine
-	jmh Include.JMH.Core
-	jmh Include.JMH.Processor
 }
 
 jmh {
