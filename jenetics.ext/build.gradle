@@ -25,7 +25,7 @@
  */
 
 plugins {
-    id "me.champeau.gradle.jmh" version "0.2.0"
+    id "me.champeau.gradle.jmh" version "0.4.4"
 }
 
 apply plugin: 'packaging'
@@ -46,11 +46,6 @@ dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
 	testCompile project(':jenetics').sourceSets.test.output
-
-	jmh project(':jenetics')
-	jmh Include.JMH.Core
-	jmh Include.JMH.Processor
-	jmh files('build/classes/main')
 }
 
 idea {
