@@ -81,7 +81,7 @@ packaging {
 
 modifyPom {
 	project {
-		name 'Jenetics Extension'
+		name 'jenetics.ext'
 		description 'Jenetics Extension Library'
 		url jenetics.url
 		inceptionYear '2015'

@@ -76,7 +76,7 @@ packaging {
 
 modifyPom {
 	project {
-		name 'Jenetics XML marshalling'
+		name 'jenetics.xml'
 		description 'Jenetics XML marshalling module'
 		url jenetics.url
 		inceptionYear '2017'

@@ -72,8 +72,8 @@ packaging {
 
 modifyPom {
 	project {
-		name jenetics.name
-		description jenetics.description
+		name 'jenetics'
+		description 'Jenetics - Java Genetic Algorithm Library'
 		url jenetics.url
 		inceptionYear '2007'
 

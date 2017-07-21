@@ -65,7 +65,7 @@ packaging {
 
 modifyPom {
 	project {
-		name 'Jenetics GP'
+		name 'jentics.prog'
 		description 'Jenetics Genetic Programming Module'
 		url jenetics.url
 		inceptionYear '2017'
