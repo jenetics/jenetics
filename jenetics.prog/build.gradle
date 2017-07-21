@@ -23,11 +23,12 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 3.9
+ * @version 3.9
  */
 
 apply plugin: 'packaging'
+apply plugin: 'nexus'
 
 repositories {
 	mavenCentral()
@@ -42,24 +43,66 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.tool',
-	'org.jenetics.tool.evaluation',
-	'org.jenetics.tool.problem',
-	'org.jenetics.tool.trial'
+	'org.jenetics.prog',
+	'org.jenetics.prog.ops'
 )
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/org.jenetics'
+		links 'http://jenetics.io/javadoc/jenetics',
+			'http://jenetics.io/javadoc/jenetics.ext'
 	}
 }
 
 packaging {
-	name = 'Jenetics Tools'
+	name = 'Jenetics GP'
 	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	url = 'http://jenetics.io'
+
 	jarjar = false
 	javadoc = true
+}
+
+modifyPom {
+	project {
+		name 'jentics.prog'
+		description 'Jenetics Genetic Programming Module'
+		url jenetics.url
+		inceptionYear '2017'
+
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'jenetics'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmail.com'
+			}
+		}
+	}
+}
+
+nexus {
+	identifier = project.identifier
+	copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
 }
 
 

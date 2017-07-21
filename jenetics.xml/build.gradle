@@ -29,6 +29,7 @@ plugins {
 }
 
 apply plugin: 'packaging'
+apply plugin: 'nexus'
 
 repositories {
 	mavenCentral()
@@ -48,13 +49,20 @@ jmh {
 	duplicateClassesStrategy = 'warn'
 }
 
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
+}
+
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.xml'
+	'org.jenetics.xml',
+	'org.jenetics.xml.stream'
 )
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/org.jenetics'
+		links 'http://jenetics.io/javadoc/jenetics'
 	}
 }
 
@@ -66,8 +74,44 @@ packaging {
 	javadoc = true
 }
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
+modifyPom {
+	project {
+		name 'jenetics.xml'
+		description 'Jenetics XML marshalling module'
+		url jenetics.url
+		inceptionYear '2017'
+
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'jenetics'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmail.com'
+			}
+		}
 	}
+}
+
+nexus {
+	identifier = project.identifier
+	copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
 }
