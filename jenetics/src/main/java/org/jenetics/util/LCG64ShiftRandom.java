@@ -75,7 +75,8 @@ import org.jenetics.internal.util.Hash;
  *
  * @deprecated This random class implementation has been moved to a separate
  *             module. Use the implementation of the
- *             <a href="https://github.com/jenetics/prngine">PRNGine</a> instead.
+ *             <a href="https://github.com/jenetics/prngine">PRNGine</a>
+ *             project instead.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.1
@@ -111,6 +112,11 @@ public class LCG64ShiftRandom extends Random64 {
 	 * // Will throw 'UnsupportedOperationException'.
 	 * RandomRegistry.getRandom().setSeed(1234);
 	 * }</pre>
+	 *
+	 * @deprecated This random class implementation has been moved to a separate
+	 *             module. Use the implementation of the
+	 *             <a href="https://github.com/jenetics/prngine">PRNGine</a>
+	 *             project instead.
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
 	 * @since 1.1
