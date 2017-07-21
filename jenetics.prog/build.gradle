@@ -47,6 +47,8 @@ jar.manifest.instruction('Export-Package',
 	'org.jenetics.prog.ops'
 )
 
+jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')
+
 javadoc {
 	options {
 		links 'http://jenetics.io/javadoc/jenetics',

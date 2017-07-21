@@ -60,6 +60,8 @@ jar.manifest.instruction('Export-Package',
 	'org.jenetics.xml.stream'
 )
 
+jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.xml')
+
 javadoc {
 	options {
 		links 'http://jenetics.io/javadoc/jenetics'
