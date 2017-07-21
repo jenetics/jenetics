@@ -61,6 +61,8 @@ jar.manifest.instruction('Export-Package',
 	'org.jenetics.stat'
 )
 
+jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.base')
+
 packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'
