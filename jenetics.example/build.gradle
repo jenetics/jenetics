@@ -40,7 +40,7 @@ jar.manifest.instruction('Export-Package',
 packaging {
 	name = 'Jenetics examples'
 	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
+	url = 'http://jenetics.io'
 	jarjar = false
 	javadoc = false
 
