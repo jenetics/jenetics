@@ -27,8 +27,8 @@ import java.util.function.Function;
 
 import org.jenetics.Gene;
 import org.jenetics.ext.AbstractTreeGene;
-import org.jenetics.prog.ops.Op;
-import org.jenetics.prog.ops.Program;
+import org.jenetics.prog.op.Op;
+import org.jenetics.prog.op.Program;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog.ops;
+package org.jenetics.prog.op;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

@@ -31,10 +31,10 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.ext.SingleNodeCrossover;
 import org.jenetics.ext.util.Tree;
-import org.jenetics.prog.ops.EphemeralConst;
-import org.jenetics.prog.ops.MathOp;
-import org.jenetics.prog.ops.Op;
-import org.jenetics.prog.ops.Var;
+import org.jenetics.prog.op.EphemeralConst;
+import org.jenetics.prog.op.MathOp;
+import org.jenetics.prog.op.Op;
+import org.jenetics.prog.op.Var;
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
 

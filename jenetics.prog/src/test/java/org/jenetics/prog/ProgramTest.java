@@ -22,11 +22,11 @@ package org.jenetics.prog;
 import org.testng.annotations.Test;
 
 import org.jenetics.ext.util.TreeNode;
-import org.jenetics.prog.ops.Const;
-import org.jenetics.prog.ops.MathOp;
-import org.jenetics.prog.ops.Op;
-import org.jenetics.prog.ops.Program;
-import org.jenetics.prog.ops.Var;
+import org.jenetics.prog.op.Const;
+import org.jenetics.prog.op.MathOp;
+import org.jenetics.prog.op.Op;
+import org.jenetics.prog.op.Program;
+import org.jenetics.prog.op.Var;
 import org.jenetics.util.ISeq;
 
 /**
