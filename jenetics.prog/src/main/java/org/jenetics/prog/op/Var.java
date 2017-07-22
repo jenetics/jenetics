@@ -69,7 +69,7 @@ public final class Var<T> implements Op<T> {
 	 * @throws NullPointerException if the given variable {@code name} is
 	 *         {@code null}
 	 */
-	protected Var(final String name, final int index) {
+	private Var(final String name, final int index) {
 		_name = requireNonNull(name);
 		if (index < 0) {
 			throw new IndexOutOfBoundsException(
