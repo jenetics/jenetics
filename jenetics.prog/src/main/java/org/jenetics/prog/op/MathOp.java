@@ -42,7 +42,6 @@ import static java.lang.Math.sinh;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
-import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
@@ -334,14 +333,12 @@ public enum MathOp implements Op<Double> {
 		final int arity,
 		final Function<Double[], Double> function
 	) {
-		if (arity < 0) {
-			throw new IllegalArgumentException(
-				"Arity smaller than zero: " + arity
-			);
-		}
+		assert name != null;
+		assert arity >= 0;
+		assert function != null;
 
-		_name = requireNonNull(name);
-		_function = requireNonNull(function);
+		_name = name;
+		_function = function;
 		_arity = arity;
 	}
 
