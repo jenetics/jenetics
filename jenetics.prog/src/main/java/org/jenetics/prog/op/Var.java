@@ -52,7 +52,7 @@ import static java.util.Objects.requireNonNull;
  * @version 3.9
  * @since 3.9
  */
-public class Var<T> implements Op<T> {
+public final class Var<T> implements Op<T> {
 
 	private final String _name;
 	private final int _index;
