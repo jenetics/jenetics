@@ -30,7 +30,7 @@ import static java.util.Objects.requireNonNull;
  * <pre>{@code
  * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
  * final ISeq<? extends Op<Double>> terminals = ISeq.of(
- *     Var.of("x", 0), Var.of("x", 1)
+ *     Var.of("x", 0), Var.of("y", 1)
  * );
  * }</pre>
  *
