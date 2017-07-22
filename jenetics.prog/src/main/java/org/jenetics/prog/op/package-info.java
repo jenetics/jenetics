@@ -41,7 +41,7 @@
  * Whenever the operation is evaluated, the function <em>f(x, y, z) = x*y + z</em>
  * is executed.
  * <p>
- *     <b>NOTE</b>: <em>The class {@link org.jenetics.prog.op.MathOp} in the
+ *     <b>NOTE</b>: <em>The class {@link org.jenetics.prog.op.MathOps} in the
  *     defines a set of mathematical standard operations/functions.</em>
  * </p>
  *

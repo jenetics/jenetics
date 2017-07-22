@@ -52,8 +52,8 @@ import static java.lang.Math.tanh;
  * @version 3.9
  * @since 3.9
  */
-public final class MathOp {
-	private MathOp() {}
+public final class MathOps {
+	private MathOps() {}
 
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the

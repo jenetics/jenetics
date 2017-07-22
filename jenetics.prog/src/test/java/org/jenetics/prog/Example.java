@@ -32,7 +32,7 @@ import org.jenetics.engine.EvolutionResult;
 import org.jenetics.ext.SingleNodeCrossover;
 import org.jenetics.ext.util.Tree;
 import org.jenetics.prog.op.EphemeralConst;
-import org.jenetics.prog.op.MathOp;
+import org.jenetics.prog.op.MathOps;
 import org.jenetics.prog.op.Op;
 import org.jenetics.prog.op.Var;
 import org.jenetics.util.ISeq;
@@ -77,9 +77,9 @@ public class Example {
 
 	// Definition of the allowed operations.
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL
+		MathOps.ADD,
+		MathOps.SUB,
+		MathOps.MUL
 	);
 
 	// Definition of the terminals.
