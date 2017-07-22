@@ -807,9 +807,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static int hashCode(final Tree<?, ?> tree) {
-		int hash = 17;
-		for (Tree<?, ?> node : tree) {
-			hash += 31*Objects.hashCode(node.getValue()) + 37;
+		int hash = 0;
+		if (tree != null) {
+			hash = 17;
+			for (Tree<?, ?> node : tree) {
+				hash += 31*Objects.hashCode(node.getValue()) + 37;
+			}
 		}
 
 		return hash;
@@ -851,10 +854,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static String toString(final Tree<?, ?> tree) {
-		requireNonNull(tree);
 		return Trees.toString(tree);
 	}
 
@@ -880,7 +881,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static String toCompactString(final Tree<?, ?> tree) {
 		return Trees.toCompactString(tree);

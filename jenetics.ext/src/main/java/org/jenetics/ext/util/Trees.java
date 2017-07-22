@@ -76,14 +76,13 @@ final class Trees {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	static String toString(final Tree<?, ?> tree) {
-		requireNonNull(tree);
-
-		return toStrings(tree).stream()
-			.map(StringBuilder::toString)
-			.collect(Collectors.joining("\n"));
+		return tree != null
+			? toStrings(tree).stream()
+				.map(StringBuilder::toString)
+				.collect(Collectors.joining("\n"))
+			: "null";
 	}
 
 	private static
@@ -146,12 +145,15 @@ final class Trees {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static String toCompactString(final Tree<?, ?> tree) {
-		final StringBuilder out = new StringBuilder();
-		toCompactString(out, tree);
-		return out.toString();
+		if (tree != null) {
+			final StringBuilder out = new StringBuilder();
+			toCompactString(out, tree);
+			return out.toString();
+		} else {
+			return "null";
+		}
 	}
 
 	private static void toCompactString(
@@ -205,11 +207,14 @@ final class Trees {
 	 *         {@code false} otherwise
 	 */
 	static boolean equals(final Tree<?, ?> a, final Tree<?, ?> b) {
-		boolean equals = a.childCount() == b.childCount();
-		if (equals) {
-			equals = Objects.equals(a.getValue(), b.getValue());
-			if (equals && a.childCount() > 0) {
-				equals = equals(a.childIterator(), b.childIterator());
+		boolean equals = a == b;
+		if (!equals && a != null && b != null) {
+			equals = a.childCount() == b.childCount();
+			if (equals) {
+				equals = Objects.equals(a.getValue(), b.getValue());
+				if (equals && a.childCount() > 0) {
+					equals = equals(a.childIterator(), b.childIterator());
+				}
 			}
 		}
 
