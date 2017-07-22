@@ -31,7 +31,6 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.ext.SingleNodeCrossover;
 import org.jenetics.ext.util.Tree;
-import org.jenetics.ext.util.Trees;
 import org.jenetics.prog.ops.EphemeralConst;
 import org.jenetics.prog.ops.MathOp;
 import org.jenetics.prog.ops.Op;
@@ -123,7 +122,6 @@ public class Example {
 			.getGene();
 
 		System.out.println(Tree.toString(program));
-		System.out.println(Trees.toInfixString(program));
 
 		for (int i = 0; i < SAMPLES.length; ++i) {
 			final double x = SAMPLES[i][0];

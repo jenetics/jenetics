@@ -36,7 +36,7 @@ import org.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-public final class Trees {
+final class Trees {
 	private Trees() {require.noInstance();}
 
 
@@ -170,7 +170,7 @@ public final class Trees {
 		}
 	}
 
-	public static String toInfixString(final Tree<?, ?> tree) {
+	static String toInfixString(final Tree<?, ?> tree) {
 		final StringBuilder out = new StringBuilder();
 		toInfixString(out, tree);
 		return out.toString();
