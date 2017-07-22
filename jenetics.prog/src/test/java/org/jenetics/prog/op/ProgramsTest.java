@@ -32,20 +32,20 @@ import org.jenetics.util.ISeq;
 public class ProgramsTest {
 
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOps.ADD,
-		MathOps.SUB,
-		MathOps.MUL,
-		MathOps.DIV,
-		MathOps.EXP,
-		MathOps.SIN,
-		MathOps.COS
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.DIV,
+		MathOp.EXP,
+		MathOp.SIN,
+		MathOp.COS
 	);
 
 	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
-		MathOps.PI,
+		MathOp.PI,
 		Const.of(1.0)
 	);
 
@@ -57,7 +57,7 @@ public class ProgramsTest {
 			TERMINALS
 		);
 
-		final TreeNode<Op<Double>> formula = TreeNode.of(MathOps.ADD);
+		final TreeNode<Op<Double>> formula = TreeNode.of(MathOp.ADD);
 		final Program<Double> program = new Program<>("foo", tree);
 
 		final Double result = program.eval(1.0, 2.0, 3.0);

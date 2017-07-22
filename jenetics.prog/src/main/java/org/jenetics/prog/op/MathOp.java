@@ -44,7 +44,14 @@ import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
 /**
- * This class contains operations for performing basic numeric operations.
+ * This class contains operations for performing basic numeric operations. They
+ * are created by wrapping the mathematical functions, available int the
+ * {@link Math} class, into {@link Op} instances.
+ *
+ * <pre>{@code
+ * final Op<Double> abs = Op.of("abs", 1, v -> abs(v[0]));
+ * final Op<Double> hypot = Op.of("hypot", 2, v -> hypot(v[0], v[1]));
+ * }</pre>
  *
  * @see Math
  *
@@ -52,9 +59,10 @@ import static java.lang.Math.tanh;
  * @version 3.9
  * @since 3.9
  */
-public final class MathOps {
-	private MathOps() {}
+public enum MathOp implements Op<Double> {
 
+
+	;
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
 	 * circumference of a circle to its diameter. <em>This is a terminal
@@ -386,4 +394,6 @@ public final class MathOps {
 		Op.of("xor", 2, v -> v[0] ^ v[1]);
 
 
+
+	
 }

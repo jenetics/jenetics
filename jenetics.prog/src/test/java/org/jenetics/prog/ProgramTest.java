@@ -23,7 +23,7 @@ import org.testng.annotations.Test;
 
 import org.jenetics.ext.util.TreeNode;
 import org.jenetics.prog.op.Const;
-import org.jenetics.prog.op.MathOps;
+import org.jenetics.prog.op.MathOp;
 import org.jenetics.prog.op.Op;
 import org.jenetics.prog.op.Program;
 import org.jenetics.prog.op.Var;
@@ -35,13 +35,13 @@ import org.jenetics.util.ISeq;
 public class ProgramTest {
 
     private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-        MathOps.ADD,
-        MathOps.SUB,
-        MathOps.MUL,
-        MathOps.DIV,
-        MathOps.EXP,
-        MathOps.SIN,
-        MathOps.COS
+        MathOp.ADD,
+        MathOp.SUB,
+        MathOp.MUL,
+        MathOp.DIV,
+        MathOp.EXP,
+        MathOp.SIN,
+        MathOp.COS
     );
 
     private static final ISeq<Op<Double>> TERMINALS = ISeq.of(

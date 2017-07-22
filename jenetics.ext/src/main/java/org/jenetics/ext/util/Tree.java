@@ -783,8 +783,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/**
 	 * Tests whether {@code this} node is the same as the {@code other} node.
-	 * The default implementation compares the object identity
-	 * ({@code this == other}) of the two objects, but other implementations may
+	 * The default implementation returns the object identity,
+	 * {@code this == other}, of the two objects, but other implementations may
 	 * use different criteria for checking the <i>identity</i>.
 	 *
 	 * @param other the {@code other} node
