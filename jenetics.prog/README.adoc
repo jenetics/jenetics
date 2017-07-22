@@ -27,7 +27,7 @@ When creating a new program tree, it is not necessary to implement own instance 
 
 In the example above, a new operation with the "myop" and arity 3 is defined. Whenever the operation is evaluated, the function _f(x, y, z) = x*y + z_ is executed.
 
-NOTE: The class `MathOp` in the `org.jenetics.prog.ops` package defines a set of mathematical standard operations/functions.
+NOTE: The class `MathOp` in the `org.jenetics.prog.op` package defines a set of mathematical standard operations/functions.
 
 When creating a new `ProgramChromosome` we must distinguish two different kind of operations:
 
