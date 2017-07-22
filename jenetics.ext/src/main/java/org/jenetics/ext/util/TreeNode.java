@@ -270,6 +270,14 @@ public final class TreeNode<T>
 		return this;
 	}
 
+	/**
+	 * Attaches the given {@code children} to {@code this} node.
+	 *
+	 * @param children the children to attach to {@code this} node
+	 * @return {@code this} tree-node, for method chaining
+	 * @throws NullPointerException if the given {@code children} array is
+	 *         {@code null}
+	 */
 	@SafeVarargs
 	public final TreeNode<T> attach(final T... children) {
 		for (T child : children) {
@@ -277,6 +285,16 @@ public final class TreeNode<T>
 		}
 
 		return this;
+	}
+
+	/**
+	 * Attaches the given {@code child} to {@code this} node.
+	 *
+	 * @param child the child to attach to {@code this} node
+	 * @return {@code this} tree-node, for method chaining
+	 */
+	public TreeNode<T> attach(final T child) {
+		return attach(TreeNode.of(child));
 	}
 
 	@Override
