@@ -99,7 +99,7 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 	@Override
 	public FlatTreeNode<T> getChild(final int index) {
 		if (index < 0 || index >= childCount()) {
-			throw new IndexOutOfBoundsException("" + index);
+			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
 
 		return new FlatTreeNode<T>(
