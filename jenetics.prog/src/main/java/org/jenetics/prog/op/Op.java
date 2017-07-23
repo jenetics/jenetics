@@ -19,8 +19,6 @@
  */
 package org.jenetics.prog.op;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -112,35 +110,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 		final int arity,
 		final Function<T[], T> function
 	) {
-		requireNonNull(name);
-		requireNonNull(function);
-		if (arity < 0) {
-			throw new IllegalArgumentException(
-				"Arity smaller than zero: " + arity
-			);
-		}
-
-		return new Op<T>() {
-			@Override
-			public String name() {
-				return name;
-			}
-
-			@Override
-			public T apply(final T[] value) {
-				return function.apply(value);
-			}
-
-			@Override
-			public int arity() {
-				return arity;
-			}
-
-			@Override
-			public String toString() {
-				return name();
-			}
-		};
+		return new Operation<>(name, arity, function);
 	}
 
 }
