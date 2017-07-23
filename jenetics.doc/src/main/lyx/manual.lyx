@@ -23442,7 +23442,7 @@ Modules
 \end_layout
 
 \begin_layout Section
-jenetics.ext
+Extensions
 \end_layout
 
 \begin_layout Standard
@@ -24009,11 +24009,11 @@ reference "lis:Weasel-program"
 \end_layout
 
 \begin_layout Section
-jenetics.prog
+Genetic programming
 \end_layout
 
 \begin_layout Section
-jenetics.xml
+XML marshalling
 \end_layout
 
 \begin_layout Standard
@@ -28043,7 +28043,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
