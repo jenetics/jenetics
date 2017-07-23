@@ -23437,119 +23437,26 @@ How does this method perform on operating systems other than Linux?
 How does this method perform on other JVM implementations?
 \end_layout
 
+\begin_layout Chapter
+Modules
+\end_layout
+
 \begin_layout Section
-Incubation
+jenetics.ext
 \end_layout
 
 \begin_layout Standard
-This section describes the experimental functionality in 
-\emph on
-not yet
-\emph default
- released modules.
- Incubating features and experimental genetic operators will be implemented
- separate modules.
- If you find this classes useful, you must build the module yourself, since
- they are not yet available in the global maven repository.
- With
+This module contains additional, non-standard, data objects and operations.
+ The main reason for this division is the desire to keep the org.jenetics.base
+ module as small as possible.
 \end_layout
 
-\begin_layout LyX-Code
-$ ./gradlew 
-\emph on
-<module>
-\emph default
-:jar
+\begin_layout Subsection
+Tree genes
 \end_layout
 
 \begin_layout Standard
-it is possible to create a module JAR which can be added to your project
- classpath.
- Be aware that interface and/or implementation of incubating modules can
- be changed without noticing.
-\end_layout
-
-\begin_layout Standard
-Currently incubation modules:
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-jenetics.tool
-\family default
- Contains utility classes for measuring the evolution performance.
-\family typewriter
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-
-\family typewriter
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://jenetics.io/javadoc/org.jenetics.tool/@__minor_version__@/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\family default
- This classes where used for creating the diagrams in this manual.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-jenetix
-\family default
- Contains non-standard selector and mutator classes.
-\family typewriter
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-
-\family typewriter
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://jenetics.io/javadoc/org.jenetix/@__minor_version__@/index.html
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\family default
- The classes needed for the 
-\emph on
-Weasel program
-\emph default
- (see section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsec:Weasel-program"
-
-\end_inset
-
-) are part of this module.
+The 
 \end_layout
 
 \begin_layout Subsection
@@ -24101,12 +24008,12 @@ reference "lis:Weasel-program"
 .
 \end_layout
 
-\begin_layout Chapter
-Modules
+\begin_layout Section
+jenetics.prog
 \end_layout
 
 \begin_layout Section
-XML serialization
+jenetics.xml
 \end_layout
 
 \begin_layout Standard
@@ -24577,16 +24484,6 @@ Genotype write performance
 
 \begin_layout Subsection
 Reading
-\end_layout
-
-\begin_layout Section
-JSON serialization
-\end_layout
-
-\begin_layout Standard
-
-\emph on
-<description>
 \end_layout
 
 \begin_layout Section
@@ -28113,7 +28010,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 3.5
+: 4.0.1
 \end_layout
 
 \begin_layout Itemize
@@ -28146,11 +28043,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-3.5-bin.zip
+http://services.gradle.org/distributions/gradle-4.0.1-bin.zip
 \end_layout
 
 \end_inset
