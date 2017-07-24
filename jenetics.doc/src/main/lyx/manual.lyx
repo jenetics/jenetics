@@ -23449,7 +23449,13 @@ Extensions
 This module contains additional, non-standard, data objects and operations.
  In order to keep the jenetics project as small as possible, data structures
  and operators which are not necessary for doing basic GA, are moved to
- the jenetics.ext project.
+ the 
+\family typewriter
+org\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext
+\family default
+ module.
 \end_layout
 
 \begin_layout Subsection
@@ -24020,8 +24026,13 @@ Genetic programming
 \emph default
  (GP) is a technique where a set of genes are modified (evolved) using an
  evolutionary algorithm.
- The jenetics.prog module contains classes which are needed for doing GP
- with the 
+ The 
+\family typewriter
+org\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.prog
+\family default
+ module contains classes which are needed for doing GP with the 
 \family sans
 \series bold
 \shape smallcaps
@@ -24030,10 +24041,76 @@ Jenetics
 \series default
 \shape default
  library.
- It introduces a ProgramGene/Chromosome pair, which serves as main data-structur
-e for genetic programms.
- A ProgramGene is essentially a tree (AST) of operations (Op) stored in
- a ProgramChromosome.
+ It introduces a 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ and 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+ pair, which serves as main data-structure for genetic programs.
+ A 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ is essentially a tree (AST
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Abstract_syntax_tree
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+) of operations (
+\family typewriter
+Op
+\family default
+) stored in a 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Operations
+\end_layout
+
+\begin_layout Standard
+When creating own genetic programs, it is not necessary to derive own classes
+ from the 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ or 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+.
+ The intended extension point is the 
+\family typewriter
+Op
+\family default
+ interface.
 \end_layout
 
 \begin_layout Standard
@@ -24072,7 +24149,17 @@ public interface Op<T> {
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-GP Op interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:GP-Op-interface"
+
+\end_inset
+
+GP 
+\family typewriter
+Op
+\family default
+ interface
 \end_layout
 
 \end_inset
@@ -24086,17 +24173,22 @@ GP Op interface
 \end_layout
 
 \begin_layout Standard
-The generic type of the Op enforces data-type constraints for the created
- program tree and makes the implementation a 
+The generic type of the 
+\family typewriter
+Op
+\family default
+ interface enforces the data-type constraints for the created program tree
+ and makes the implementation a 
 \emph on
 strongly typed
 \emph default
- GP algorithm.
- When creating own genetic programs, it is not necessary to derive own classes
- of the ProgramGene or ProgramChromosome.
- The intendet extension point is the Op interface.
- Using the Op.of factory method, you essentially can define a new operation
- by delivering the desired operation function.
+ GP.
+ Using the
+\family typewriter
+ Op.of
+\family default
+ factory method, a new operation is created by defining the desired operation
+ function.
 \end_layout
 
 \begin_layout Standard
@@ -24121,33 +24213,73 @@ final Op<String> concat = Op.of("+", 2, v -> v[0] + v[1]);
 \end_layout
 
 \begin_layout Standard
-When creating a new ProgramChromosome, we must distinguish two different
- kind of opertations:
+A new 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+ is created with the operations suitable for our problem.
+ When creating a new 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+, we must distinguish two different kind of operations:
 \end_layout
 
 \begin_layout Enumerate
-Non-terminal operations have an arity greater than zero, which means they
- take at least one argument.
- This operations need to have child nodes.
+
+\emph on
+Non-terminal
+\emph default
+ operations have an arity greater than zero, which means they take at least
+ one argument.
+ This operations need to have child nodes, where the number of children
+ must be equal to the arity of the operation of the parent node.
 \end_layout
 
 \begin_layout Enumerate
-Terminal operations have an arity of zero and from the leaves of the program
- tree.
+
+\emph on
+Terminal
+\emph default
+ operations have an arity of zero and from the leaves of the program tree.
 \end_layout
 
 \begin_layout Standard
-The jenetics.prog module comes with three predifiend terminal operations:
- Var, Const and EphemeralConst classes.
+The 
+\family typewriter
+org.jenetics.prog
+\family default
+ module comes with three predefined terminal operations: 
+\family typewriter
+Var
+\family default
+, 
+\family typewriter
+Const
+\family default
+ and 
+\family typewriter
+Ephemeral\SpecialChar softhyphen
+Const
+\family default
+ classes.
 \end_layout
 
 \begin_layout Paragraph
+
+\family typewriter
 Var
 \end_layout
 
 \begin_layout Standard
-The Var operation defines a variable of a program, which is set from outside,
- when it is evaluated.
+The 
+\family typewriter
+Var
+\family default
+ operation defines a variable of a program, which is set from outside when
+ it is evaluated.
 \end_layout
 
 \begin_layout Standard
@@ -24171,23 +24303,85 @@ final Var<Double> y = Var.of("y", 1);
 final Var<Double> z = Var.of("z", 2);
 \end_layout
 
+\begin_layout Plain Layout
+
+final ISeq<Op<Double>> terminals = ISeq.of(x, y, z);
+\end_layout
+
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-The terminal operations defined in the listing above can be used to define
- a program which takes a 3-dimensional vector as input parameters, x, y,
- and z, with the argument indices 0, 1, and 2.
+The 
+\emph on
+terminal
+\emph default
+ operations defined in the listing above can be used for defining a program
+ which takes a 
+\begin_inset Formula $3$
+\end_inset
+
+-dimensional vector as input parameters, 
+\begin_inset Formula $x$
+\end_inset
+
+, 
+\begin_inset Formula $y$
+\end_inset
+
+, and 
+\begin_inset Formula $z$
+\end_inset
+
+, with the argument indices 
+\begin_inset Formula $0$
+\end_inset
+
+, 
+\begin_inset Formula $1$
+\end_inset
+
+, and 
+\begin_inset Formula $2$
+\end_inset
+
+.
+ If you have again a look at the 
+\family typewriter
+apply
+\family default
+ method of the operation interface, you can see that this method takes an
+ object array of type 
+\family typewriter
+T
+\family default
+.
+ The variable 
+\begin_inset Formula $x$
+\end_inset
+
+ will return the first element of the input arguments, because it has been
+ created with index 
+\begin_inset Formula $0$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph
+
+\family typewriter
 Const
 \end_layout
 
 \begin_layout Standard
-The Const operation will always return the same, constant, value when evaluated.
+The 
+\family typewriter
+Const
+\family default
+ operation will always return the same, constant, value when evaluated.
 \end_layout
 
 \begin_layout Standard
@@ -24212,13 +24406,15 @@ final Const<Double> pi = Const.of("PI", Math.PI);
 \end_layout
 
 \begin_layout Standard
-We can create a constant operation in to flavours, with a value only and
+We can create a constant operation in to flavors: with a value only and
  with a dedicated name.
  If a constant has a name, the symbolic name is used, instead of the value,
- when the program tree is printing.
+ when the program tree is printed.
 \end_layout
 
 \begin_layout Paragraph
+
+\family typewriter
 EphemeralConst
 \end_layout
 
@@ -24248,6 +24444,14 @@ final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Programs
+\end_layout
+
+\begin_layout Standard
+The non-terminal operations are 
 \end_layout
 
 \begin_layout Section
