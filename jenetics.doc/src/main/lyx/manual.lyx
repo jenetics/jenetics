@@ -23447,8 +23447,9 @@ Extensions
 
 \begin_layout Standard
 This module contains additional, non-standard, data objects and operations.
- The main reason for this division is the desire to keep the org.jenetics.base
- module as small as possible.
+ In order to keep the jenetics project as small as possible, data structures
+ and operators which are not necessary for doing basic GA, are moved to
+ the jenetics.ext project.
 \end_layout
 
 \begin_layout Subsection
@@ -24010,6 +24011,243 @@ reference "lis:Weasel-program"
 
 \begin_layout Section
 Genetic programming
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Genetic programming
+\emph default
+ (GP) is a technique where a set of genes are modified (evolved) using an
+ evolutionary algorithm.
+ The jenetics.prog module contains classes which are needed for doing GP
+ with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ It introduces a ProgramGene/Chromosome pair, which serves as main data-structur
+e for genetic programms.
+ A ProgramGene is essentially a tree (AST) of operations (Op) stored in
+ a ProgramChromosome.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Op<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public String name();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int arity();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T apply(T[] args);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+GP Op interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The generic type of the Op enforces data-type constraints for the created
+ program tree and makes the implementation a 
+\emph on
+strongly typed
+\emph default
+ GP algorithm.
+ When creating own genetic programs, it is not necessary to derive own classes
+ of the ProgramGene or ProgramChromosome.
+ The intendet extension point is the Op interface.
+ Using the Op.of factory method, you essentially can define a new operation
+ by delivering the desired operation function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Op<Double> add = Op.of("+", 2, v -> v[0] + v[1]);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<String> concat = Op.of("+", 2, v -> v[0] + v[1]);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When creating a new ProgramChromosome, we must distinguish two different
+ kind of opertations:
+\end_layout
+
+\begin_layout Enumerate
+Non-terminal operations have an arity greater than zero, which means they
+ take at least one argument.
+ This operations need to have child nodes.
+\end_layout
+
+\begin_layout Enumerate
+Terminal operations have an arity of zero and from the leaves of the program
+ tree.
+\end_layout
+
+\begin_layout Standard
+The jenetics.prog module comes with three predifiend terminal operations:
+ Var, Const and EphemeralConst classes.
+\end_layout
+
+\begin_layout Paragraph
+Var
+\end_layout
+
+\begin_layout Standard
+The Var operation defines a variable of a program, which is set from outside,
+ when it is evaluated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Var<Double> x = Var.of("x", 0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Var<Double> y = Var.of("y", 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Var<Double> z = Var.of("z", 2);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The terminal operations defined in the listing above can be used to define
+ a program which takes a 3-dimensional vector as input parameters, x, y,
+ and z, with the argument indices 0, 1, and 2.
+\end_layout
+
+\begin_layout Paragraph
+Const
+\end_layout
+
+\begin_layout Standard
+The Const operation will always return the same, constant, value when evaluated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Const<Double> one = Const.of(1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Const<Double> pi = Const.of("PI", Math.PI);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can create a constant operation in to flavours, with a value only and
+ with a dedicated name.
+ If a constant has a name, the symbolic name is used, instead of the value,
+ when the program tree is printing.
+\end_layout
+
+\begin_layout Paragraph
+EphemeralConst
+\end_layout
+
+\begin_layout Standard
+An ephemeral constant is a special constant, which is only constant within
+ an tree.
+ If a new tree is created, a new constant is created, by the Supplier function
+ the ephemeral constant is created with.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Op<Double> rand1 = EphemeralConst.of(Math::random); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
