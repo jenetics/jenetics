@@ -23459,7 +23459,17 @@ org\SpecialChar softhyphen
 \end_layout
 
 \begin_layout Subsection
-Tree genes
+Tree gene
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree gene
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24017,6 +24027,26 @@ reference "lis:Weasel-program"
 
 \begin_layout Section
 Genetic programming
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+GP
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24287,6 +24317,16 @@ Var
 The 
 \family typewriter
 Var
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Var
+\end_layout
+
+\end_inset
+
+
 \family default
  operation defines a variable of a program, which is set from outside when
  it is evaluated.
@@ -24390,6 +24430,16 @@ Const
 The 
 \family typewriter
 Const
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Const
+\end_layout
+
+\end_inset
+
+
 \family default
  operation will always return the same, constant, value when evaluated.
 \end_layout
@@ -24429,8 +24479,17 @@ EphemeralConst
 \end_layout
 
 \begin_layout Standard
-An ephemeral constant is a special constant, which is only constant within
- an tree.
+An ephemeral constant
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Genetic programming!EphemeralConst
+\end_layout
+
+\end_inset
+
+ is a special constant, which is only constant within an tree.
  If a new tree is created, a new constant is created, by the Supplier function
  the ephemeral constant is created with.
 \end_layout
@@ -27952,6 +28011,38 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
         --image-generation 
 \emph on
 100
+\end_layout
+
+\begin_layout Section
+Symbolic regression
+\end_layout
+
+\begin_layout Quote
+Symbolic regression involves finding a mathematical expression, in symbolic
+ form, that provides a good, best, or perfect fit between a given finite
+ sampling of values of the independent variables and the associated values
+ of the dependent variables.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:1992:GPP:138936"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following example shows how to solve a GP problem with 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+.
+ We are trying to find a polynomial (or an arbitrary mathematical function)
+ which approximates a given data set.
 \end_layout
 
 \begin_layout Chapter
