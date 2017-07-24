@@ -105,7 +105,7 @@ For a detailed description on the correct `Engine` setup have a look at the _Exa
 
 ### Program repair
 
-The specialized `Alterer` classes for the `ProgramChromosome` guarantees that the program tree after the _alter_ operation is still valid. the obey the tree structure of the chromosome, although they are altering the flattened `ProgramGene` sequence. General alterers, not written for `ProgramChromosome`, will most likely destroy the tree property of the altered chromosome. There are essentially two possibility for handling invalid tree chromosomes: 1) marking the chromosome as _invalid_ or 2) try to repair the invalid chromosome. Possibility 1) would be easier, but it would also lead to a possible large number of invalid chromosomes.
+The specialized `Alterer` classes for the `ProgramChromosome` guarantees that the program tree after the _alter_ operation is still valid. They obey the tree structure of the chromosome, although they are altering the flattened `ProgramGene` sequence. General alterers, not written for `ProgramChromosome`, will most likely destroy the tree property of the altered chromosome. There are essentially two possibility for handling invalid tree chromosomes: 1) marking the chromosome as _invalid_ or 2) try to repair the invalid chromosome. Possibility 1) would be easier, but it would also lead to a possible large number of invalid chromosomes.
 
 NOTE: Jenetics allows the usage of arbitrary `Alterer` implementations. Even alterers not implemented for `ProgramChromosomes`. Chromosomes _destroyed_  by the alterer are repaired.
 
