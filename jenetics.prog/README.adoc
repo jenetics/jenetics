@@ -34,7 +34,7 @@ When creating a new `ProgramChromosome` we must distinguish two different kind o
 1. _Non-terminal_ operations have an arity greater than zero and form their own sub-tree.
 1. _Terminal_ operations have an arity of zero and form the leaves of a program tree.
 
-There are currently three different types of non-terminal operations implemented, `Var`, `Const` and the `EphemeralConst` class.
+There are currently three different types of terminal operations implemented, `Var`, `Const` and the `EphemeralConst` class.
 
 `*Var*`
 
