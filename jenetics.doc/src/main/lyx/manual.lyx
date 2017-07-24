@@ -24236,6 +24236,11 @@ Non-terminal
  one argument.
  This operations need to have child nodes, where the number of children
  must be equal to the arity of the operation of the parent node.
+ Non-terminal operations will be abbreviated to 
+\emph on
+operations
+\emph default
+.
 \end_layout
 
 \begin_layout Enumerate
@@ -24244,6 +24249,11 @@ Non-terminal
 Terminal
 \emph default
  operations have an arity of zero and from the leaves of the program tree.
+ Terminal operations will be abbreviated to 
+\emph on
+terminals
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
@@ -24447,11 +24457,369 @@ final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 \end_layout
 
 \begin_layout Subsection
-Programs
+Program creation
 \end_layout
 
 \begin_layout Standard
-The non-terminal operations are 
+The 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+ comes with some factory methods, which lets you easily create program trees
+ with a given depth and a given set of 
+\emph on
+operations
+\emph default
+ and 
+\emph on
+terminals
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final int depth = 5; 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<Double> operations = ISeq.of(...); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<Double> terminals = ISeq.of(...); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> program = ProgramChromosome
+\end_layout
+
+\begin_layout Plain Layout
+
+    .of(depth, operations, terminals);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above will create a 
+\emph on
+perfect
+\emph default
+ program tree
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The leafs of a perfect tree have the same depth and all internal nodes have
+ degree 
+\family typewriter
+Op.arity
+\family default
+.
+\end_layout
+
+\end_inset
+
+ of depth 
+\begin_inset Formula $5$
+\end_inset
+
+.
+ All non-leaf nodes will contain operations, randomly selected from the
+ given operations, whereas all leaf nodes are filled with operations from
+ the terminals.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+The created program tree is 
+\emph on
+perfect
+\emph default
+, which means that all leaf nodes have the same 
+\emph on
+depth
+\emph default
+.
+ If new trees needs to be created during evolution, they will be created
+ with the 
+\emph on
+depth
+\emph default
+, 
+\emph on
+operations
+\emph default
+ and 
+\emph on
+terminals
+\emph default
+ defined by the 
+\emph on
+template
+\emph default
+ program tree.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The evolution 
+\family typewriter
+Engine
+\family default
+ used for solving GP problems is created the same way as for normal GA problems.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(Main::error, program)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SingleNodeCrossover<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a complete GP example have a look at the examples chapter.
+\end_layout
+
+\begin_layout Subsection
+Program repair
+\end_layout
+
+\begin_layout Standard
+The specialized crossover class, 
+\family typewriter
+Single\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Crossover
+\family default
+, for a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Gene
+\family default
+ guarantees that the program tree after the 
+\emph on
+alter
+\emph default
+ operation is still valid.
+ It obeys the tree structure of the gene.
+ General alterers, not written for 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ of 
+\family typewriter
+Tree\SpecialChar softhyphen
+Gene
+\family default
+ classes, will most likely destroy the tree property of the altered chromosome.
+ There are essentially two possibility for handling invalid tree chromosomes:
+ 
+\end_layout
+
+\begin_layout Enumerate
+Marking the chromosome as 
+\emph on
+invalid
+\emph default
+.
+ This possibility is easier to achieve, but would also to lead to a large
+ number of invalid chromosomes, which must be recreated.
+ When recreating invalid chromosomes we will also loose possible solutions.
+\end_layout
+
+\begin_layout Enumerate
+Try to repair the invalid chromosome.
+ This is the approach the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library has chosen.
+ The repair process reuses the operations in a 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromosome
+\family default
+ and rebuilds the tree property by using the operation arity.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ allows the usage of arbitrary 
+\family typewriter
+Alterer
+\family default
+ implementations.
+ Even alterers not implemented for 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+s.
+ Genes 
+\emph on
+destroyed
+\emph default
+ by such alterer are repaired.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
