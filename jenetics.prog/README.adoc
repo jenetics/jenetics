@@ -83,9 +83,9 @@ final ProgramChromosome<Double> program =
     ProgramChromosome.of(5, operations, terminals);
 ```
 
-The code snippet above will create a full program tree of depth _5_. All non-leaf nodes will contain operations, randomly selected from the _operations_ set. Whereas all leaf nodes are filled with operations from the _terminals_ set.
+The code snippet above will create a _perfect_ program tree of depth _5_. All non-leaf nodes will contain operations, randomly selected from the _operations_ set. Whereas all leaf nodes are filled with operations from the _terminals_ set.
 
-NOTE: The created program tree is _complete_, which means that all leaf nodes have the same depth. If new trees needs to be created during evolution, they will be created with the depth, operations and terminals defined by the _template_ program tree.
+NOTE: The created program tree is _perfect_, which means that all leaf nodes have the same depth. If new trees needs to be created during evolution, they will be created with the depth, operations and terminals defined by the _template_ program tree.
 
 
 The _GP_ `Engine` is created in the exact same way as the _GA_ `Engine`.
