@@ -46,11 +46,11 @@ public class NodeTest {
 				.attach(TreeNode.of(9)));
 
 		System.out.println(tree);
-		final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
-		System.out.println(flat);
-		System.out.println(Tree.toString(flat));
-
+		//final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
+		//System.out.println(flat);
+		//System.out.println(Tree.toString(flat));
 		System.out.println(Trees.toCompactString(tree));
+		System.out.println(Trees.toDottyString("number_tree", tree));
 	}
 
 	@Test
