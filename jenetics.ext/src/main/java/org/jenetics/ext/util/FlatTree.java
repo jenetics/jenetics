@@ -55,7 +55,7 @@ import org.jenetics.util.ISeq;
  * @version 3.9
  * @since 3.9
  */
-public interface FlatTree<V, T extends Tree<V, T>> extends Tree<V, T> {
+public interface FlatTree<V, T extends FlatTree<V, T>> extends Tree<V, T> {
 
 	/**
 	 * Returns the number of children of {@code this} node.
