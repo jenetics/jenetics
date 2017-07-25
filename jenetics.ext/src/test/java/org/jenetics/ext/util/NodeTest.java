@@ -42,8 +42,8 @@ public class NodeTest {
 			.attach(TreeNode.of(3)
 				.attach(TreeNode.of(7)
 					.attach(10, 11))
-				.attach(TreeNode.of(8))
-				.attach(TreeNode.of(9)));
+				.attach(8)
+				.attach(9));
 
 		System.out.println(tree);
 		//final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
@@ -51,6 +51,7 @@ public class NodeTest {
 		//System.out.println(Tree.toString(flat));
 		System.out.println(Trees.toCompactString(tree));
 		System.out.println(Trees.toDottyString("number_tree", tree));
+		System.out.println(tree.depth());
 	}
 
 	@Test
