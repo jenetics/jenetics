@@ -625,9 +625,13 @@ Jenetics
 \series bold
  Genetic Algorithm
 \series default
- and
+,
 \series bold
  Evolutionary Algorithm
+\series default
+ and 
+\series bold
+Genetic Programming
 \series default
  library, respectively, written in modern day Java.
  It is designed with a clear separation of the several algorithm concepts,
@@ -693,11 +697,7 @@ Stream
 Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
- 
-\end_layout
-
-\begin_layout Standard
-This chapter describes the design concepts and its implementation.
+ This chapter describes the design concepts and its implementation.
  It also gives some basic examples and best practice tips.
 \end_layout
 
@@ -743,7 +743,15 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 
 \end_inset
 
- (GA) implementation.
+ (GA) and 
+\begin_inset CommandInset href
+LatexCommand href
+name "genetic programming"
+target "https://en.wikipedia.org/wiki/Genetic_programming"
+
+\end_inset
+
+ (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
  Since the library is available on maven central repository
 \begin_inset Foot
@@ -855,6 +863,21 @@ key "Whitley94agenetic"
 \end_inset
 
 .
+ For genetic programming you can have a look at 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:1992:GPP:138936"
+
+\end_inset
+
+ or 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:2008:IGP:1388969.1389057"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -875,7 +898,7 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-To give a first impression of the library usage, lets start with a simple
+To give you a first impression of the library usage, lets start with a simple
  
 \begin_inset Quotes ald
 \end_inset
@@ -23734,11 +23757,143 @@ Flat tree
 \end_layout
 
 \begin_layout Standard
-The flat tree maps the nodes in a breadth first manner onto a 1-dimensional
- array.
- Additional information about the child offset and the child count allows
- to reconstruct the original tree from the flat tree nodes stored in the
- array.
+The main purpose for the Tree data type in the extension package is to support
+ tree shaped genes and implement genetic programming.
+ Since the chromosome type is essentially an array, I needed a way for mapping
+ the tree structure onto a 1-dimensional array.
+ The are mapping schemes for complete binary trees, which allows to map
+ a 
+\emph on
+perfect
+\emph default
+ binary tree into an array.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Binary_tree##Arrays
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ But for supporting arbitrary genetic programs, I needed to support arbitrary
+ shaped generic trees.
+ For arbitrary trees it is required to store additional information about
+ the child offset and child count along the actual tree value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface FlatTree<V, T extends FlatTree<V, T>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Tree<V, T> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int childOffset();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public default ISeq<T> flattenedNodes() {...};
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:FlatTree-interface"
+
+\end_inset
+
+
+\family typewriter
+FlatTree
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:FlatTree-interface"
+
+\end_inset
+
+ shows the additional child offset needed for reconstructing the tree from
+ the flattened version.
+ When flattening an existing tree, the nodes are traversed in breadth first
+ order.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Breadth-first_search
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ For each node the absolute array offset of the first child is stored, together
+ with the child count of the node.
+ If the node has no child, the child offset is set to 
+\begin_inset Formula $-1$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -23782,6 +23937,26 @@ FlatTree
 \end_layout
 
 \begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-FlatTree"
+
+\end_inset
+
+ shows the flattened example tree shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-tree"
+
+\end_inset
+
+.
+ The curved arrows denotes the child offset of a given parent node.
+ The curly braces denotes the child count of a given parent node.
+\end_layout
+
+\begin_layout Standard
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -23789,45 +23964,22 @@ status open
 
 \begin_layout Plain Layout
 
-public interface FlatTree<V, T extends FlatTree<V, T>> 
+final TreeNode<Integer> tree = ...;
 \end_layout
 
 \begin_layout Plain Layout
 
-    extends Tree<V, T> 
+final ISeq<FlatTreeNode<Integer>> nodes = 
 \end_layout
 
 \begin_layout Plain Layout
 
-{
+    FlatTreeNode.of(tree).flattenedNodes();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int childOffset();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:FlatTree-interface"
-
-\end_inset
-
-
-\family typewriter
-FlatTree
-\family default
- interface
+final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
 \end_layout
 
 \end_inset
@@ -23835,9 +23987,11 @@ FlatTree
 
 \end_layout
 
-\end_inset
-
-
+\begin_layout Standard
+The code snippet above shows how to flatten a given integer tree and convert
+ it back to a regular tree.
+ The first element of the flattened tree node sequence is always the root
+ node.
 \end_layout
 
 \begin_layout Subsection
@@ -23845,11 +23999,21 @@ Additional genes
 \end_layout
 
 \begin_layout Subsubsection
-BigIntegerGene/Chromosome
+BigIntegerGene
+\end_layout
+
+\begin_layout Standard
+The BigIntegerGene is an additional NumericGene implementation which can
+ be used, when the range of the existing LongGene or DoubleGene is not enough.
 \end_layout
 
 \begin_layout Subsubsection
-TreeGene/Chromosome
+TreeGene
+\end_layout
+
+\begin_layout Standard
+The TreeGene interface extends the Tree interface and serves as basis for
+ the ProgramGene, used for genetic programming.
 \end_layout
 
 \begin_layout Subsection
@@ -25064,7 +25228,7 @@ perfect
 status collapsed
 
 \begin_layout Plain Layout
-The leafs of a perfect tree have the same depth and all internal nodes have
+All leafs of a perfect tree have the same depth and all internal nodes have
  degree 
 \family typewriter
 Op.arity
@@ -28512,6 +28676,11 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
 
 \begin_layout Section
 Symbolic regression
+\end_layout
+
+\begin_layout Standard
+Symbolic regression is a classical example in genetic programming and tries
+ to find a mathematical expression for a given set of values.
 \end_layout
 
 \begin_layout Quote
