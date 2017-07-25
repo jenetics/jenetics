@@ -23459,12 +23459,82 @@ org\SpecialChar softhyphen
 \end_layout
 
 \begin_layout Subsection
-Tree gene
-\begin_inset Index idx
-status collapsed
+Additional data structures
+\end_layout
+
+\begin_layout Standard
+The org.jenetics.ext module contains implementation of a tree data structure.
+ The tree implementation doesn't have any dependencies an can be used for
+ its own.
+ The purpose was to implement other genes than the 1-dimensional available
+ in the base module
+\end_layout
+
+\begin_layout Paragraph
+Tree
+\end_layout
+
+\begin_layout Standard
+The tree interface defines the structure of a tree data-type.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
 
 \begin_layout Plain Layout
-Tree gene
+
+public interface Tree<V, T extends Tree<V, T>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T getValue();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Optional<T> getParent();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T getChild(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int childCount();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Tree-interface"
+
+\end_inset
+
+
+\family typewriter
+Tree
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -23473,7 +23543,35 @@ Tree gene
 \end_layout
 
 \begin_layout Standard
-The 
+This methods need to be implemented.
+ All other methods have default implementations.
+ A mutable implementation of the Tree interface is the TreeNode.
+ The FlatTree interface narrows the gap between the hierachical Tree and
+ the flat chromosome structure.
+\end_layout
+
+\begin_layout Paragraph
+FlatTree
+\end_layout
+
+\begin_layout Standard
+The flat tree maps the nodes in a breadth first manner onto a 1-dimensional
+ array.
+ Additional information about the child offset and the child count allows
+ to reconstruct the original tree from the flat tree nodes stored in the
+ array.
+\end_layout
+
+\begin_layout Subsection
+Additional genes
+\end_layout
+
+\begin_layout Subsubsection
+BitIntegerGene/Chromosome
+\end_layout
+
+\begin_layout Subsubsection
+TreeGene/Chromosome
 \end_layout
 
 \begin_layout Subsection
@@ -24050,19 +24148,39 @@ GP
 \end_layout
 
 \begin_layout Standard
-
+In artificial intelligence, 
 \emph on
-Genetic programming
+genetic programming
 \emph default
- (GP) is a technique where a set of genes are modified (evolved) using an
- evolutionary algorithm.
+ (GP) is a technique whereby computer programs are encoded as a set of genes
+ that are then modified (evolved) using an evolutionary algorithm (often
+ a genetic algorithm).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Genetic_programming
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
  The 
 \family typewriter
 org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .prog
 \family default
- module contains classes which are needed for doing GP with the 
+ module contains classes which enables the 
 \family sans
 \series bold
 \shape smallcaps
@@ -24070,7 +24188,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library.
+ library doing GP.
  It introduces a 
 \family typewriter
 Program\SpecialChar softhyphen
@@ -24081,7 +24199,7 @@ Gene
 Program\SpecialChar softhyphen
 Chromosome
 \family default
- pair, which serves as main data-structure for genetic programs.
+ pair, which serves as the main data-structure for genetic programs.
  A 
 \family typewriter
 Program\SpecialChar softhyphen
@@ -24117,10 +24235,35 @@ Program\SpecialChar softhyphen
 Chromosome
 \family default
 .
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+When implementing the GP module, the emphasis was to not create a prallel
+ world of genes and chromosomes.
+ It was an requirement, that the existing Alterer and Selector classes could
+ also be used for the new GP classes.
+ This has been achieved by flattening the AST of a genetic program to fit
+ into the 1-dimensional (flat) structure of a chromosome.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Operations
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Operations
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24141,6 +24284,59 @@ Chromosome
 Op
 \family default
  interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+The extension point for own GP implementations is the Op interface.
+ There is in general no need for extending the ProgramChromosome class.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24207,8 +24403,15 @@ The generic type of the
 \family typewriter
 Op
 \family default
- interface enforces the data-type constraints for the created program tree
- and makes the implementation a 
+ interface (see listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:GP-Op-interface"
+
+\end_inset
+
+) enforces the data-type constraints for the created program tree and makes
+ the implementation a 
 \emph on
 strongly typed
 \emph default
@@ -24481,7 +24684,7 @@ EphemeralConst
 \begin_layout Standard
 An ephemeral constant
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!EphemeralConst
@@ -24788,7 +24991,7 @@ invalid
 \end_layout
 
 \begin_layout Enumerate
-Try to repair the invalid chromosome.
+Trying to repair the invalid chromosome.
  This is the approach the 
 \family sans
 \series bold
@@ -24893,17 +25096,21 @@ When used in a distributed environment, there is the need of serializing
 \end_layout
 
 \begin_layout Standard
-The jenetics.xml allows to write and read objects in XML format.
- Especially it allows you to read and write collections of Genotypes in
- XML format.
+The org.jenetics.xml module allows to write/read chromosomes and genotypes
+ to/from XML.
+ Since the javax.xml.bind module is marked as deprecated (and for removal),
+ this module will replace the existing JAXB based XML marshalling.
 \end_layout
 
 \begin_layout Subsection
-Writing
+Writing XML
 \end_layout
 
 \begin_layout Standard
-The basic Writer interface.
+The XML marshalling, implemented in this module, is based on the javax.xml.stream.X
+MLStreamReader/Writer classes and only depends on the java.xml module.
+ This classes are used by the org.jenetics.xml.Reader/Writer classes which
+ can be easily composed to do XML marshalling for arbitrary complex objects.
 \end_layout
 
 \begin_layout Standard
@@ -24911,6 +25118,11 @@ The basic Writer interface.
 lstparams "language=Java"
 inline false
 status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -24957,7 +25169,14 @@ XML Writer interface
 \end_layout
 
 \begin_layout Standard
-It's a low level interface.
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:XML-Writer-interface"
+
+\end_inset
+
+ shows the interface of the XML Writer.
  Together with the factory method, you can build up your XML tree structure.
 \end_layout
 
