@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
@@ -196,6 +197,60 @@ final class Trees {
 			toInfixString(out, child);
 			out.append(")");
 		}
+	}
+
+	public static String toDottyString(final String name, final Tree<?, ?> tree) {
+		final StringBuilder out = new StringBuilder();
+		out.append("digraph ").append(name).append(" {\n    ");
+		nodes(out, tree, tree.firstChild().orElse(null));
+		out.append("}\n");
+
+		return out.toString();
+	}
+
+	private static void nodes(
+		final StringBuilder out,
+		final Tree<?, ?> parent,
+		final Tree<?, ?> child
+	) {
+		if (child != null) {
+			out.append(parent.getValue());
+			out.append(" -> ");
+			nodes(out, child, child.firstChild().orElse(null));
+		} else {
+			final Tree<?, ?> pp = parent.getParent().orElse(null);
+			if (pp != null) {
+				final Tree<?, ?> cc = pp.childAfter(parent).orElse(null);
+				out.append(parent.getValue());
+				out.append(";\n    ");
+				nodes(out, pp, pp.childAfter(parent).orElse(null));
+			}
+		}
+	}
+
+	private static void dottyNodes(final StringBuilder out, final Tree<?, ?> node, final String ident) {
+		out.append(node.getValue());
+		if (node.isLeaf()) {
+			out.append(";\n");
+			node.getParent().ifPresent(p -> out.append(p.getValue()));
+		} else {
+			out.append(" -> ");
+		}
+		for (int i = 0; i < node.childCount(); ++i) {
+			/*
+			if (node.isLeaf()) {
+				out.append(";\n");
+			} else {
+				node.getParent().ifPresent(p -> out.append(p.getValue()));
+				out.append(" -> ");
+			}
+			*/
+			dottyNodes(out, node.getChild(i), ident);
+		}
+	}
+
+	private static void trace(final StringBuilder out, final Tree<?, ?> node) {
+
 	}
 
 	/**
