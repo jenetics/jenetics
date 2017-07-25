@@ -23,6 +23,8 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
@@ -64,6 +66,11 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 					.attach(10, 11))
 				.attach(TreeNode.of(8))
 				.attach(TreeNode.of(9)));
+
+		final ISeq<FlatTreeNode<Integer>> nodes =
+			FlatTreeNode.of(tree).flattenedNodes();
+
+		final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
 
 		//print(FlatTree.of(tree));
 		//FlatTree.of(tree).childStream().map(t -> t.getValue()).forEach(System.out::println);
