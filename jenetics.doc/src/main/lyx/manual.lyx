@@ -21384,7 +21384,7 @@ Monte Carlo selector
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -23459,23 +23459,23 @@ org\SpecialChar softhyphen
 \end_layout
 
 \begin_layout Subsection
-Additional data structures
+Data structures
 \end_layout
 
-\begin_layout Standard
-The org.jenetics.ext module contains implementation of a tree data structure.
- The tree implementation doesn't have any dependencies an can be used for
- its own.
- The purpose was to implement other genes than the 1-dimensional available
- in the base module
-\end_layout
-
-\begin_layout Paragraph
+\begin_layout Subsubsection
 Tree
 \end_layout
 
 \begin_layout Standard
-The tree interface defines the structure of a tree data-type.
+The 
+\family typewriter
+org.jenetics.ext
+\family default
+ module contains an implementation of a general 
+\family typewriter
+Tree
+\family default
+ data type, where each tree node can have an arbitrary number of children.
 \end_layout
 
 \begin_layout Standard
@@ -23543,15 +23543,178 @@ Tree
 \end_layout
 
 \begin_layout Standard
-This methods need to be implemented.
- All other methods have default implementations.
- A mutable implementation of the Tree interface is the TreeNode.
- The FlatTree interface narrows the gap between the hierachical Tree and
- the flat chromosome structure.
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Tree-interface"
+
+\end_inset
+
+ shows the basic tree methods.
+ For all other tree methods exist default implementation, which are derived
+ from the four abstract tree methods.
+ A mutable default implementation of the 
+\family typewriter
+Tree
+\family default
+ interface is given by the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+ class.
 \end_layout
 
-\begin_layout Paragraph
-FlatTree
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ExampleTree.svg
+	lyxscale 80
+	width 70text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Example-tree"
+
+\end_inset
+
+Example tree
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As an example on how to use the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+ class, we will create a 
+\family typewriter
+Tree
+\family default
+ instance from the tree given in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-tree"
+
+\end_inset
+
+.
+ The tree has 
+\begin_inset Formula $12$
+\end_inset
+
+ nodes with a maximal depth of 
+\begin_inset Formula $3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeNode<Integer> tree = TreeNode.of(0)
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(TreeNode.of(1).attach(4, 5))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(TreeNode.of(2).attach(6))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(TreeNode.of(3)
+\end_layout
+
+\begin_layout Plain Layout
+
+		.attach(TreeNode.of(7).attach(10, 11))
+\end_layout
+
+\begin_layout Plain Layout
+
+		.attach(8)
+\end_layout
+
+\begin_layout Plain Layout
+
+		.attach(9));
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Example-TreeNode"
+
+\end_inset
+
+Example 
+\family typewriter
+TreeNode
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Example-TreeNode"
+
+\end_inset
+
+ shows the Tree representation of the tree example given in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-tree"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Flat tree
 \end_layout
 
 \begin_layout Standard
@@ -23562,12 +23725,111 @@ The flat tree maps the nodes in a breadth first manner onto a 1-dimensional
  array.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/FlatTree.eps
+	lyxscale 80
+	width 55text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Example-FlatTree"
+
+\end_inset
+
+Example 
+\family typewriter
+FlatTree
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface FlatTree<V, T extends FlatTree<V, T>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Tree<V, T> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int childOffset();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:FlatTree-interface"
+
+\end_inset
+
+
+\family typewriter
+FlatTree
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Additional genes
 \end_layout
 
 \begin_layout Subsubsection
-BitIntegerGene/Chromosome
+BigIntegerGene/Chromosome
 \end_layout
 
 \begin_layout Subsubsection
