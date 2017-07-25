@@ -23471,7 +23471,11 @@ The
 \family typewriter
 org.jenetics.ext
 \family default
- module contains an implementation of a general 
+ module contains a 
+\emph on
+general
+\emph default
+ 
 \family typewriter
 Tree
 \family default
@@ -23569,7 +23573,7 @@ Node
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -23604,7 +23608,7 @@ Example tree
 \end_layout
 
 \begin_layout Standard
-As an example on how to use the 
+To illustrate the usage of the 
 \family typewriter
 Tree\SpecialChar softhyphen
 Node
@@ -23613,7 +23617,7 @@ Node
 \family typewriter
 Tree
 \family default
- instance from the tree given in figure 
+ instance from the tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Example-tree"
@@ -23621,15 +23625,30 @@ reference "fig:Example-tree"
 \end_inset
 
 .
- The tree has 
+ The example tree consists of 
 \begin_inset Formula $12$
 \end_inset
 
- nodes with a maximal depth of 
-\begin_inset Formula $3$
+ nodes with a maximal depth of three and a varying child count from one
+ to three.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Example-TreeNode"
+
 \end_inset
 
-.
+ shows the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+ representation of the given example tree.
+ New children can be added with the 
+\family typewriter
+attach
+\family default
+ method.
 \end_layout
 
 \begin_layout Standard
@@ -23645,12 +23664,22 @@ final TreeNode<Integer> tree = TreeNode.of(0)
 
 \begin_layout Plain Layout
 
-	.attach(TreeNode.of(1).attach(4, 5))
+	.attach(TreeNode.of(1)
 \end_layout
 
 \begin_layout Plain Layout
 
-	.attach(TreeNode.of(2).attach(6))
+        .attach(4, 5))
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(TreeNode.of(2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .attach(6))
 \end_layout
 
 \begin_layout Plain Layout
@@ -23660,7 +23689,12 @@ final TreeNode<Integer> tree = TreeNode.of(0)
 
 \begin_layout Plain Layout
 
-		.attach(TreeNode.of(7).attach(10, 11))
+		.attach(TreeNode.of(7)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .attach(10, 11))
 \end_layout
 
 \begin_layout Plain Layout
@@ -23693,24 +23727,6 @@ TreeNode
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Example-TreeNode"
-
-\end_inset
-
- shows the Tree representation of the tree example given in figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Example-tree"
-
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Subsubsection
