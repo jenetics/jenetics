@@ -23464,6 +23464,49 @@ How does this method perform on other JVM implementations?
 Modules
 \end_layout
 
+\begin_layout Standard
+The 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library has been split up into several modules.
+ Beside the base module, 
+\family typewriter
+jenetics
+\family default
+, the library currently consists of the following modules, which will be
+ described in this chapter:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jenetics.ext
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jenetics.prog
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+jenetics.xml
+\end_layout
+
+\begin_layout Standard
+For a greater flexibility and to make the Jenetics library make more maintainabl
+e, the Jenetics library has been split into different modules.
+ This split makes the code cleaner and doesn't force the user to depend
+ on every class, when only needing the classes from the base module.
+\end_layout
+
 \begin_layout Section
 Extensions
 \end_layout
