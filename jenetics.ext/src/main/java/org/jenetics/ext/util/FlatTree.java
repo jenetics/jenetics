@@ -58,9 +58,11 @@ import org.jenetics.util.ISeq;
 public interface FlatTree<V, T extends FlatTree<V, T>> extends Tree<V, T> {
 
 	/**
-	 * Returns the number of children of {@code this} node.
+	 * Return the index of the first child node in the underlying node array.
+	 * {@code -1} is returned if {@code this} node is a leaf.
 	 *
-	 * @return the number of children of {@code this} node
+	 * @return Return the index of the first child node in the underlying node
+	 *         array, or {@code -1} if {@code this} node is a leaf
 	 */
 	public int childOffset();
 

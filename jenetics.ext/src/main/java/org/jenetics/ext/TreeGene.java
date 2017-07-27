@@ -43,16 +43,6 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	}
 
 	/**
-	 * Return the index of the first child node in the underlying gene array
-	 * ({@code Chromosome}). {@code -1} is returned if {@code this} node is a
-	 * leaf.
-	 *
-	 * @return Return the index of the first child node in the underlying node
-	 *         array, or {@code -1} if {@code this} node is a leaf
-	 */
-	public int childOffset();
-
-	/**
 	 * Return a new tree gene with the given allele and the <em>local</em> tree
 	 * structure.
 	 *
