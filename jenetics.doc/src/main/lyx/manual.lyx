@@ -24332,6 +24332,249 @@ reference "subsec:Flat-tree"
 \end_layout
 
 \begin_layout Subsection
+Operators
+\end_layout
+
+\begin_layout Paragraph
+Simulated binary crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Simulated binary crossover
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+SBX
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Crossover!Simulated binary crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Simulated\SpecialChar softhyphen
+Binary\SpecialChar softhyphen
+Crossover performs the simulated binary crossover (SBX)
+ on 
+\family typewriter
+Numeric\SpecialChar softhyphen
+Chromosome
+\family default
+s such that each position is either crossed contracted or expanded with
+ a certain probability.
+ The probability distribution is designed such that the children will lie
+ closer to their parents as is the case with the single point binary crossover.
+ It is implemented as described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb99self-adaptivegenetic"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+Single-node crossover
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Single-node crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+SingleNodeCrossover
+\family default
+ class works on 
+\family typewriter
+Tree\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+s.
+ It swaps two, randomly chosen, nodes from two tree chromosomes.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Single-node-crossover"
+
+\end_inset
+
+ shows how the single-node crossover works.
+ In this example node 
+\begin_inset Formula $3$
+\end_inset
+
+ of the first tree is swapped with node 
+\begin_inset Formula $h$
+\end_inset
+
+ of the second tree.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../resources/graphic/SingleNodeCrossover-t1.svg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../resources/graphic/SingleNodeCrossover-ta.svg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $3\,\,\,\longleftrightarrow\,\,\,h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../resources/graphic/SingleNodeCrossover-t1a.svg
+	lyxscale 50
+	width 42text%
+	BoundingBox 30bp -144bp 380bp 188bp
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ../resources/graphic/SingleNodeCrossover-ta1.svg
+	lyxscale 50
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Single-node-crossover"
+
+\end_inset
+
+Single-node crossover
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Weasel program
 \begin_inset CommandInset label
 LatexCommand label
