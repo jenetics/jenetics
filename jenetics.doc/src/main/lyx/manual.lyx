@@ -7089,33 +7089,14 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
-Since the fitness 
-\family typewriter
-Function
-\family default
- is shared by all 
-\family typewriter
-Phenotype
-\family default
-s, calls to the fitness 
-\family typewriter
-Function
-\family default
- has to be idempotent.
- A fitness 
-\family typewriter
-Function
-\family default
- is idempotent if, whenever it is applied twice to any 
-\family typewriter
-Genotype
-\family default
-, it returns the same fitness value as if it were applied once.
- In the simplest case, this is achieved by 
-\family typewriter
-Functions
-\family default
- which doesn't contain any global 
+
+\family sans
+Since the fitness Function is shared by all Phenotypes, calls to the fitness
+ Function has to be idempotent.
+ A fitness Function is idempotent if, whenever it is applied twice to any
+ Genotype, it returns the same fitness value as if it were applied once.
+ In the simplest case, this is achieved by Functions which doesn't contain
+ any global 
 \shape italic
 mutable
 \shape default
@@ -9889,7 +9870,7 @@ shold
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Java property!splitThreshold
@@ -9899,7 +9880,7 @@ Java property!splitThreshold
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Concurrency!splitThreshold
@@ -9929,7 +9910,7 @@ Count()
 \family default
  method.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Excerpt from the Javadoc: 
@@ -9968,7 +9949,7 @@ Count
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Java property!maxSurplusQueuedTaskCount
@@ -9978,7 +9959,7 @@ Java property!maxSurplusQueuedTaskCount
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Concurrency!maxSurplusQueuedTaskCount
@@ -11622,7 +11603,7 @@ The default PRNG used by the
 \begin_layout Subsection
 Serialization
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Serialization
@@ -14307,19 +14288,21 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
+
+\family sans
 To maximize the range of application of an 
 \family typewriter
 Alterer
-\family default
+\family sans
 , it is recommended that they can handle 
 \family typewriter
-Genotype
-\family default
-s and 
+Genotypes
+\family sans
+ and 
 \family typewriter
-Chromosome
-\family default
-s with variable length.
+Chromosomes
+\family sans
+ with variable length.
 \end_layout
 
 \begin_layout Plain Layout
@@ -14342,7 +14325,7 @@ height "1pt"
 \begin_layout Subsection
 Statistics
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Statistics
@@ -14410,7 +14393,7 @@ Result<G, C>\SpecialChar softhyphen
 \begin_layout Subsection
 Engine
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Engine
@@ -14437,7 +14420,7 @@ Engine
 \family default
  class.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Also refer to section 
@@ -14721,7 +14704,7 @@ name "subsec:Encoding"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding
@@ -14801,7 +14784,7 @@ Codec
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -14836,7 +14819,7 @@ name "subsec:Real-function"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Real function
@@ -18630,18 +18613,20 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
+
+\family sans
 Only 
 \family typewriter
 Codec
-\family default
+\family sans
 s which the same 
 \family typewriter
 Gene
-\family default
+\family sans
  type can be composed by the combining factory methods of the 
 \family typewriter
 Codec
-\family default
+\family sans
  class.
 \end_layout
 
@@ -19874,10 +19859,12 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
+
+\family sans
 The predicate given to the 
 \family typewriter
 EvolutionStream.limit
-\family default
+\family sans
  function must return 
 \emph on
 false
@@ -23462,6 +23449,16 @@ How does this method perform on other JVM implementations?
 
 \begin_layout Chapter
 Modules
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modules
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -23476,52 +23473,101 @@ Jenetics
  library has been split up into several modules.
  Beside the base module, 
 \family typewriter
-jenetics
+org.jenetics.base
 \family default
-, the library currently consists of the following modules, which will be
- described in this chapter:
+, the library currently consists of the following modules:
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The used module names follow the recommended naming scheme for the JPMS
+ automatic modules: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://blog.joda.org/2017/05/java-se-9-jpms-automatic-modules.html
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-jenetics.ext
+org.jenetics.ext
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-jenetics.prog
+org.jenetics.prog
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-jenetics.xml
+org.jenetics.xml
 \end_layout
 
 \begin_layout Standard
-For a greater flexibility and to make the Jenetics library make more maintainabl
-e, the Jenetics library has been split into different modules.
- This split makes the code cleaner and doesn't force the user to depend
- on every class, when only needing the classes from the base module.
-\end_layout
-
-\begin_layout Section
-Extensions
-\end_layout
-
-\begin_layout Standard
-This module contains additional, non-standard, data objects and operations.
- In order to keep the jenetics project as small as possible, data structures
- and operators which are not necessary for doing basic GA, are moved to
+With this module split the code is easier to maintain and doesn't force
+ the user to use parts of the library he or she isn't using, which keep
  the 
 \family typewriter
 org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
-.ext
+.base
 \family default
- module.
+ module as small as possible.
+ The additional 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ modules will be described in this chapter.
+\end_layout
+
+\begin_layout Section
+Extensions
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modules!org.jenetics.ext
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+org.jenetics.ext
+\family default
+ module implements additional 
+\emph on
+non
+\emph default
+-standard genes and evolutionary operations.
+ It also contains 
+\emph on
+data structures
+\emph default
+ which are used by this additional genes and operations.
 \end_layout
 
 \begin_layout Subsection
@@ -23530,22 +23576,25 @@ Data structures
 
 \begin_layout Subsubsection
 Tree
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 The 
 \family typewriter
-org.jenetics.ext
-\family default
- module contains a 
-\emph on
-general
-\emph default
- 
-\family typewriter
 Tree
 \family default
- data type, where each tree node can have an arbitrary number of children.
+ interface defines a general tree data type, where each tree node can have
+ an arbitrary number of children.
 \end_layout
 
 \begin_layout Standard
@@ -23620,10 +23669,19 @@ reference "lis:Tree-interface"
 
 \end_inset
 
- shows the basic tree methods.
- For all other tree methods exist default implementation, which are derived
- from the four abstract tree methods.
- A mutable default implementation of the 
+ shows the 
+\family typewriter
+Tree
+\family default
+ interface with its basic abstract tree methods.
+ All other needed tree methods, e.g.
+ for node traversal and search, are implemented with default methods, which
+ are derived from this four abstract tree methods.
+ A 
+\emph on
+mutable
+\emph default
+ default implementation of the 
 \family typewriter
 Tree
 \family default
@@ -23681,7 +23739,8 @@ Node
 \family default
  class, we will create a 
 \family typewriter
-Tree
+Tree\SpecialChar softhyphen
+Node
 \family default
  instance from the tree shown in figure 
 \begin_inset CommandInset ref
@@ -23697,24 +23756,7 @@ reference "fig:Example-tree"
 
  nodes with a maximal depth of three and a varying child count from one
  to three.
- Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Example-TreeNode"
-
-\end_inset
-
- shows the 
-\family typewriter
-Tree\SpecialChar softhyphen
-Node
-\family default
- representation of the given example tree.
- New children can be added with the 
-\family typewriter
-attach
-\family default
- method.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -23795,25 +23837,93 @@ TreeNode
 
 \end_layout
 
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Example-TreeNode"
+
+\end_inset
+
+ shows the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+ representation of the given example tree.
+ New children are added by using the 
+\family typewriter
+attach
+\family default
+ method.
+ For full 
+\family typewriter
+Tree
+\family default
+ method list have a look at the Javadoc documentation.
+\end_layout
+
 \begin_layout Subsubsection
 Flat tree
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Flat-tree"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+FlatTree
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The main purpose for the Tree data type in the extension package is to support
- tree shaped genes and implement genetic programming.
- Since the chromosome type is essentially an array, I needed a way for mapping
- the tree structure onto a 1-dimensional array.
- The are mapping schemes for complete binary trees, which allows to map
- a 
-\emph on
-perfect
-\emph default
- binary tree into an array.
+The main purpose for the 
+\family typewriter
+Tree
+\family default
+ data type in the 
+\family typewriter
+org\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext
+\family default
+ module is to support hierarchical 
+\family typewriter
+Tree\SpecialChar softhyphen
+Gene
+\family default
+s, which are needed for genetic programming (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+
+\end_inset
+
+).
+ Since the chromosome type is essentially an array, a mapping from the hierarchi
+cal tree structure to a 
+\begin_inset Formula $1$
+\end_inset
+
+-dimensional array is needed.
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
+There exists mapping schemes for 
+\emph on
+perfect
+\emph default
+ binary trees, which allows a bijective mapping from tree to array without
+ additional storage need: 
 \begin_inset Flex URL
 status collapsed
 
@@ -23824,15 +23934,27 @@ https://en.wikipedia.org/wiki/Binary_tree##Arrays
 
 \end_inset
 
-
+.
+ For general trees with arbitrary child count, such simple mapping doesn't
+ exist.
 \end_layout
 
 \end_inset
 
- But for supporting arbitrary genetic programs, I needed to support arbitrary
- shaped generic trees.
- For arbitrary trees it is required to store additional information about
- the child offset and child count along the actual tree value.
+ For general trees with arbitrary child count, additional information needs
+ to be stored for a bijective mapping between tree and array.
+ The 
+\family typewriter
+Flat\SpecialChar softhyphen
+Tree
+\family default
+ interface extends the Tree node with a 
+\family typewriter
+child\SpecialChar softhyphen
+Off\SpecialChar softhyphen
+set()
+\family default
+ method, which returns the absolute start index of the tree's children.
 \end_layout
 
 \begin_layout Standard
@@ -23908,7 +24030,7 @@ reference "lis:FlatTree-interface"
 \end_inset
 
  shows the additional child offset needed for reconstructing the tree from
- the flattened version.
+ the flattened array version.
  When flattening an existing tree, the nodes are traversed in breadth first
  order.
 \begin_inset Foot
@@ -23932,7 +24054,7 @@ https://en.wikipedia.org/wiki/Breadth-first_search
 
  For each node the absolute array offset of the first child is stored, together
  with the child count of the node.
- If the node has no child, the child offset is set to 
+ If the node has no children, the child offset is set to 
 \begin_inset Formula $-1$
 \end_inset
 
@@ -23987,7 +24109,7 @@ reference "fig:Example-FlatTree"
 
 \end_inset
 
- shows the flattened example tree shown in figure 
+ illustrates the flattened example tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Example-tree"
@@ -23995,8 +24117,8 @@ reference "fig:Example-tree"
 \end_inset
 
 .
- The curved arrows denotes the child offset of a given parent node.
- The curly braces denotes the child count of a given parent node.
+ The curved arrows denotes the child offset of a given parent node and the
+ curly braces denotes the child count of a given parent node.
 \end_layout
 
 \begin_layout Standard
@@ -24012,12 +24134,16 @@ final TreeNode<Integer> tree = ...;
 
 \begin_layout Plain Layout
 
-final ISeq<FlatTreeNode<Integer>> nodes = 
+final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
 \end_layout
 
 \begin_layout Plain Layout
 
-    FlatTreeNode.of(tree).flattenedNodes();
+    .of(tree).flattenedNodes();
+\end_layout
+
+\begin_layout Plain Layout
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -24035,28 +24161,174 @@ The code snippet above shows how to flatten a given integer tree and convert
  it back to a regular tree.
  The first element of the flattened tree node sequence is always the root
  node.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Since the 
+\family typewriter
+TreeGene
+\family sans
+ and the 
+\family typewriter
+ProgramGene
+\family sans
+ are implementing the 
+\family typewriter
+FlatTree
+\family sans
+ interface, it is helpful to know and understand the used tree to array
+ mapping.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
-Additional genes
+Genes
 \end_layout
 
 \begin_layout Subsubsection
+BigInteger gene
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 BigIntegerGene
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-The BigIntegerGene is an additional NumericGene implementation which can
- be used, when the range of the existing LongGene or DoubleGene is not enough.
+The 
+\family typewriter
+BigIntegerGene
+\family default
+ implements the 
+\family typewriter
+NumericGene
+\family default
+ interface and can be used when the range of the existing 
+\family typewriter
+Long\SpecialChar softhyphen
+Gene
+\family default
+ or 
+\family typewriter
+Double\SpecialChar softhyphen
+Gene
+\family default
+ is not enough.
+ Its allele type is a 
+\family typewriter
+Big\SpecialChar softhyphen
+Integer
+\family default
+, which can store arbitrary-precision integers.
+ There also exists a corresponding 
+\family typewriter
+Big\SpecialChar softhyphen
+Integer\SpecialChar softhyphen
+Chromosome
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
+Tree gene
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 TreeGene
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-The TreeGene interface extends the Tree interface and serves as basis for
- the ProgramGene, used for genetic programming.
+The 
+\family typewriter
+TreeGene
+\family default
+ interface extends the 
+\family typewriter
+Flat\SpecialChar softhyphen
+Tree
+\family default
+ interface and serves as basis for the 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+, used for genetic programming.
+ Its tree nodes are stored in the corresponding 
+\family typewriter
+Tree\SpecialChar softhyphen
+Chromosome
+\family default
+.
+ How the tree hierarchy is flattened and mapped to an array is described
+ in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Flat-tree"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -24610,6 +24882,13 @@ reference "lis:Weasel-program"
 
 \begin_layout Section
 Genetic programming
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Genetic-programming"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -24803,6 +25082,8 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
+
+\family sans
 The extension point for own GP implementations is the Op interface.
  There is in general no need for extending the ProgramChromosome class.
 \end_layout
@@ -25323,6 +25604,8 @@ height "1pt"
 \end_layout
 
 \begin_layout Plain Layout
+
+\family sans
 The created program tree is 
 \emph on
 perfect
@@ -25534,17 +25817,11 @@ Jenetics
 \family default
 \series default
 \shape default
- allows the usage of arbitrary 
-\family typewriter
-Alterer
-\family default
- implementations.
- Even alterers not implemented for 
-\family typewriter
-Program\SpecialChar softhyphen
-Gene
-\family default
-s.
+ 
+\family sans
+allows the usage of arbitrary Alterer implementations.
+ Even alterers not implemented for Program\SpecialChar softhyphen
+Genes.
  Genes 
 \emph on
 destroyed
