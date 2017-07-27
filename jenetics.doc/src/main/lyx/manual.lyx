@@ -23518,6 +23518,12 @@ org.jenetics.prog
 org.jenetics.xml
 \end_layout
 
+\begin_layout Itemize
+
+\family typewriter
+io.jenetics.prngine
+\end_layout
+
 \begin_layout Standard
 With this module split the code is easier to maintain and doesn't force
  the user to use parts of the library he or she isn't using, which keep
