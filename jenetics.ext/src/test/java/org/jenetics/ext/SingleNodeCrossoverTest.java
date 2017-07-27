@@ -19,6 +19,9 @@
  */
 package org.jenetics.ext;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Random;
 
@@ -27,6 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.ext.util.TreeNode;
+import org.jenetics.ext.util.Trees;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -59,7 +63,7 @@ public class SingleNodeCrossoverTest {
 	}
 
 	@Test
-	public void crossover() {
+	public void crossover() throws IOException {
 		final TreeNode<String> tree1 = TreeNode.of("0")
 			.attach(TreeNode.of("1")
 				.attach("4", "5"))
@@ -85,6 +89,17 @@ public class SingleNodeCrossoverTest {
 		final int size1 = tree1.size();
 		final int size2 = tree2.size();
 
+		/*
+		Files.write(
+			Paths.get("/home/fwilhelm/Workspace/SingleNodeCrossover-t1.dot"),
+			Trees.toDottyString("t1", tree1).getBytes()
+		);
+		Files.write(
+			Paths.get("/home/fwilhelm/Workspace/SingleNodeCrossover-ta.dot"),
+			Trees.toDottyString("ta", tree2).getBytes()
+		);
+		*/
+
 		//System.out.println(tree1);
 		//System.out.println("------------------");
 		//System.out.println(tree2);
@@ -92,6 +107,17 @@ public class SingleNodeCrossoverTest {
 		//System.out.println(tree1);
 		//System.out.println("------------------");
 		//System.out.println(tree2);
+
+		/*
+		Files.write(
+			Paths.get("/home/fwilhelm/Workspace/SingleNodeCrossover-t1a.dot"),
+			Trees.toDottyString("t1a", tree1).getBytes()
+		);
+		Files.write(
+			Paths.get("/home/fwilhelm/Workspace/SingleNodeCrossover-ta1.dot"),
+			Trees.toDottyString("ta1", tree2).getBytes()
+		);
+		*/
 
 		Assert.assertEquals(tree1.size() + tree2.size(), size1 + size2);
 		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
