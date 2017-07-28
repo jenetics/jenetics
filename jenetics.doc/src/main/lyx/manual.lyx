@@ -26626,6 +26626,64 @@ Marshalling performance
 \end_layout
 
 \begin_layout Standard
+Another important aspect when doing marshalling, is the space needed for
+ the marshaled objects and the time needed for doing the marshalling.
+ For the performance tests a genotype with a varying 
+\emph on
+chromosome count
+\emph default
+ is used.
+ The used genotype template can be seen in the code snippet below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> genotype = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DoubleChromosome.of(0.0, 1.0, 100),
+\end_layout
+
+\begin_layout Plain Layout
+
+    chromosomeCount
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Object-hash-seeding"
+
+\end_inset
+
+ shows the required space of the marshaled genotypes for different marshalling
+ methods: (a) Java serialization, (b) JAXB serialization and (c) XML 
+\family typewriter
+Writer
+\family default
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float table
 wide false
 sideways false
@@ -26917,7 +26975,13 @@ XML writer
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Marshaling size
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Marshaled-object-size"
+
+\end_inset
+
+Marshaled object size
 \end_layout
 
 \end_inset
@@ -26928,6 +26992,25 @@ Marshaling size
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Using the Java serialization will create the smallest files and the XML
+ 
+\family typewriter
+Writer
+\family default
+ of the 
+\family typewriter
+org\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.xml
+\family default
+ module will create files roughly 
+\begin_inset Formula $75\%$
+\end_inset
+
+ the size of the JAXB serialized genotypes.
 \end_layout
 
 \begin_layout Standard
