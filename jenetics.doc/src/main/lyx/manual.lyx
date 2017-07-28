@@ -27011,6 +27011,22 @@ org\SpecialChar softhyphen
 \end_inset
 
  the size of the JAXB serialized genotypes.
+ The size of the marshaled also influences the write performance.
+ As you can see in diagram 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Genotype-write-performance"
+
+\end_inset
+
+ the Java serialization is the fastest marshalling method, followed by the
+ JAXB marshalling.
+ The XML 
+\family typewriter
+Writer
+\family default
+ is the slowest one, but still comparable to the JAXB method.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -27049,6 +27065,21 @@ Genotype write performance
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+For reading the serialized genotypes, we will see similar results (see diagram
+ 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Genotype-read-performance"
+
+\end_inset
+
+).
+ Reading Java serialized genotypes has the best read performance, followed
+ by JAXB and the XML Reader.
+ This time the difference between JAXB and the XML Reader is hardly visible.
 \end_layout
 
 \begin_layout Standard
