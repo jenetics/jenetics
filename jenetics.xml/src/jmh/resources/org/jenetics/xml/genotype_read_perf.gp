@@ -32,4 +32,4 @@ set xlabel "{/:Bold Chromosomes count}"
 
 plot 'genotype_read_perf.dat' using 1:2 with linespoints ls 1 title 'JAXB', \
 		'' using 1:4 with linespoints ls 2 title 'Java serialization', \
-		'' using 1:6 with linespoints ls 3 title 'XML writer'
+		'' using 1:6 with linespoints ls 3 title 'XML reader'

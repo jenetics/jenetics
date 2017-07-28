@@ -301,10 +301,10 @@
 	<use xlink:href='#gpPt1' transform='translate(615.5,375.2) scale(6.00)' color='rgb(  0, 158, 115)'/>
 </g>
 	</g>
-	<g id="gnuplot_plot_3a" ><title>XML writer</title>
+	<g id="gnuplot_plot_3a" ><title>XML reader</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(575.9,404.4)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="end">
-		<text><tspan font-family="Serif" >XML writer</tspan></text>
+		<text><tspan font-family="Serif" >XML reader</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
