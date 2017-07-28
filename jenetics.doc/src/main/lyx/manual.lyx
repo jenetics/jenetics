@@ -26259,7 +26259,11 @@ name "lis:XML-Writer-interface"
 
 \end_inset
 
-XML Writer interface
+XML 
+\family typewriter
+Writer
+\family default
+ interface
 \end_layout
 
 \end_inset
@@ -26398,6 +26402,223 @@ final Writer<IntegerChromosome> writer =
 
 \begin_layout Subsection
 XML reader
+\end_layout
+
+\begin_layout Standard
+Reading and writing XML files uses the same concepts.
+ For reading XML there is an abstract 
+\family typewriter
+Reader
+\family default
+ class, which can be easily composed.
+ The main method of the Reader class can be seen in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:XML-Reader-class"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public abstract class Reader<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public abstract T read(final XMLStreamReader xml)
+\end_layout
+
+\begin_layout Plain Layout
+
+        throws XMLStreamException;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:XML-Reader-class"
+
+\end_inset
+
+XML 
+\family typewriter
+Reader
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When creating a XML 
+\family typewriter
+Reader
+\family default
+, the structure of the XML must be defined in a similar way as for the XML
+ 
+\family typewriter
+Writer
+\family default
+.
+ Additionally, a factory function, which will create the desired object
+ from the extracted XML data, is needed.
+ A 
+\family typewriter
+Reader
+\family default
+, which will read the XML representation of an 
+\family typewriter
+Integer\SpecialChar softhyphen
+Chromosome
+\family default
+ can be seen in the following code snippet below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ final Reader<IntegerChromosome> reader =
+\end_layout
+
+\begin_layout Plain Layout
+
+     elem(
+\end_layout
+
+\begin_layout Plain Layout
+
+         (Object[] v) -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+             final int length = (int)v[0];
+\end_layout
+
+\begin_layout Plain Layout
+
+             final int min = (int)v[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+             final int max = (int)v[2];
+\end_layout
+
+\begin_layout Plain Layout
+
+             final List<Integer> alleles = (List<Integer>)v[3];
+\end_layout
+
+\begin_layout Plain Layout
+
+             assert alleles.size() == length;
+\end_layout
+
+\begin_layout Plain Layout
+
+             return IntegerChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+                 alleles.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                     .map(value -> IntegerGene.of(value, min, max)
+\end_layout
+
+\begin_layout Plain Layout
+
+                     .toArray(IntegerGene[]::new)
+\end_layout
+
+\begin_layout Plain Layout
+
+             );
+\end_layout
+
+\begin_layout Plain Layout
+
+         },
+\end_layout
+
+\begin_layout Plain Layout
+
+         "int-chromosome",
+\end_layout
+
+\begin_layout Plain Layout
+
+         attr("length").map(Integer::parseInt),
+\end_layout
+
+\begin_layout Plain Layout
+
+         elem("min", text().map(Integer::parseInt)),
+\end_layout
+
+\begin_layout Plain Layout
+
+         elem("max", text().map(Integer::parseInt)),
+\end_layout
+
+\begin_layout Plain Layout
+
+         elem("alleles",
+\end_layout
+
+\begin_layout Plain Layout
+
+             elems(elem("allele",text().map(Integer::parseInt)))
+\end_layout
+
+\begin_layout Plain Layout
+
+         )
+\end_layout
+
+\begin_layout Plain Layout
+
+     );
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
