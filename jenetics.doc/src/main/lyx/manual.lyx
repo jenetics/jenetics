@@ -11278,7 +11278,7 @@ reference "tab:PRNG-performance"
 \family default
 generation speed for the different PRNG implementations.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
@@ -27125,11 +27125,33 @@ PRNG
 \end_layout
 
 \begin_layout Standard
-The PRNGine
+The 
+\family typewriter
+io.jenetics.prngine
+\family default
+
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
+This module is not part of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ project directly.
+ Since it has no dependency to any of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ modules, it has been extracted to a separate GitHub repository (
 \begin_inset Flex URL
 status collapsed
 
@@ -27140,7 +27162,7 @@ https://github.com/jenetics/prngine
 
 \end_inset
 
-
+) with an independent versioning.
 \end_layout
 
 \end_inset
@@ -27181,72 +27203,189 @@ Jenetics
  
 \emph on
 The implemented PRNGs are not cryptographically strong RNGs.
-\end_layout
 
-\begin_layout Standard
-The following PRNGs are currently implemented:
-\end_layout
-
-\begin_layout Itemize
-KISS32Random: Implementation of an simple PRNG as proposed in Good Practice
- in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS32,
- page 3) David Jones, UCL Bioinformatics Group.
- 
+\emph default
+ The io.jenetics.prngine module consists of the following PRNG implementations:
 \end_layout
 
 \begin_layout Itemize
-KISS64Random: Implementation of an simple PRNG as proposed in Good Practice
- in (Pseudo) Random Number Generation for Bioinformatics Applications (JKISS64,
- page 10) David Jones, UCL Bioinformatics Group.
- 
+
+\family typewriter
+KISS32Random
+\family default
+: Implementation of an simple PRNG as proposed in 
+\emph on
+Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicatio
+ns
+\emph default
+ (JKISS32, page 3) David Jones, UCL Bioinformatics Group.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "GoodPRNGPractice"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-LCG64ShiftRandom: This class implements a linear congruential PRNG with
- additional bit-shift transition.
+
+\family typewriter
+KISS64Random
+\family default
+: Implementation of an simple PRNG as proposed in 
+\emph on
+Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicatio
+ns
+\emph default
+ (JKISS64, page 10) David Jones, UCL Bioinformatics Group.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "GoodPRNGPractice"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+LCG64ShiftRandom
+\family default
+: This class implements a linear congruential PRNG with additional bit-shift
+ transition.
  It is a port of the trng::lcg64_shift PRNG class of the TRNG library created
  by Heiko Bauke.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/trng4
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MT19937_32Random
+\family default
+: This is a 32-bit version of Mersenne Twister pseudo random number generator.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Mersenne_Twister
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+MT19937_64Random
+\family default
+: This is a 64-bit version of Mersenne Twister pseudo random number generator.
  
 \end_layout
 
 \begin_layout Itemize
-MT19937_32Random: This is a 32-bit version of Mersenne Twister pseudorandom
- number generator.
- 
-\end_layout
 
-\begin_layout Itemize
-MT19937_64Random: This is a 64-bit version of Mersenne Twister pseudorandom
- number generator.
- 
-\end_layout
-
-\begin_layout Itemize
-XOR32ShiftRandom: This generator was discovered and characterized by George
- Marsaglia [Xorshift RNGs].
+\family typewriter
+XOR32ShiftRandom
+\family default
+: This generator was discovered and characterized by George Marsaglia [Xorshift
+ RNGs].
  In just three XORs and three shifts (generally fast operations) it produces
  a full period of 232 - 1 on 32 bits.
  (The missing value is zero, which perpetuates itself and must be avoided.)
- High and low bits pass Diehard.
- 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://digitalcommons.wayne.edu/jmasm/vol2/iss1/2/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Itemize
-XOR64ShiftRandom: This generator was discovered and characterized by George
- Marsaglia [Xorshift RNGs].
+
+\family typewriter
+XOR64ShiftRandom
+\family default
+: This generator was discovered and characterized by George Marsaglia [Xorshift
+ RNGs].
  In just three XORs and three shifts (generally fast operations) it produces
  a full period of 264 - 1 on 64 bits.
  (The missing value is zero, which perpetuates itself and must be avoided.)
- High and low bits pass Diehard.
  
-\end_layout
-
-\begin_layout Paragraph
-Statistical tests
 \end_layout
 
 \begin_layout Standard
 All implemented PRNGs has been tested with the dieharder test suite.
+ Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Dieharder-results"
+
+\end_inset
+
+ shows the statistical performance of the implemented PRNGs, including the
+ Java 
+\family typewriter
+Random
+\family default
+ implementation.
+ Beside the 
+\family typewriter
+XOR32ShiftRandom
+\family default
+ class, the 
+\family typewriter
+j.u.Random
+\family default
+ implementation has the poorest performance, concerning its statistical
+ performance.
 \end_layout
 
 \begin_layout Standard
@@ -27307,6 +27446,8 @@ Failed
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 KISS32Random
 \end_layout
 
@@ -27345,6 +27486,8 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 KISS64Random
 \end_layout
 
@@ -27383,6 +27526,8 @@ KISS64Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 LCG64ShiftRandom
 \end_layout
 
@@ -27421,6 +27566,8 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 MT19937_32Random
 \end_layout
 
@@ -27459,6 +27606,8 @@ MT19937_32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 MT19937_64Random
 \end_layout
 
@@ -27497,6 +27646,8 @@ MT19937_64Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 XOR32ShiftRandom
 \end_layout
 
@@ -27535,6 +27686,8 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 XOR64ShiftRandom
 \end_layout
 
@@ -27573,7 +27726,9 @@ XOR64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
-java.util.Random
+
+\family typewriter
+j.u.Random
 \end_layout
 
 \end_inset
@@ -27617,7 +27772,13 @@ java.util.Random
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Result
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Dieharder-results"
+
+\end_inset
+
+Dieharder results
 \end_layout
 
 \end_inset
@@ -27634,12 +27795,42 @@ Result
 
 \end_layout
 
-\begin_layout Paragraph
-Runtime performance tests
+\begin_layout Standard
+The second important performance measure for PRNGs is the number of random
+ number it is able to create per second.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
+ Runtime Environment (build 1.8.0_102-b14)—Java HotSpot(TM) 64-Bit Server
+ VM (build 25.102-b14, mixed mode)—, using the JHM micro-benchmark library.
+ 
 \end_layout
 
-\begin_layout Standard
-The runtime performance of the PRNGs was tested with the JMH testing framework.
+\end_inset
+
+ Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:PRNG-creation-speed"
+
+\end_inset
+
+ shows the PRN creation speed for all implemented generators.
+ The slowest random engine is the 
+\family typewriter
+j.u.Random
+\family default
+ class, which is caused by the synchronized implementations.
+ When the only the creation speed counts, the 
+\family typewriter
+j.u.c.\SpecialChar softhyphen
+Thread\SpecialChar softhyphen
+Local\SpecialChar softhyphen
+Random
+\family default
+ is the random engine to use.
 \end_layout
 
 \begin_layout Standard
@@ -27651,7 +27842,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="9" columns="5">
+<lyxtabular version="3" rows="10" columns="5">
 <features tabularvalignment="middle">
 <column alignment="left" valignment="top" width="0pt">
 <column alignment="decimal" decimal_point="." valignment="top">
@@ -27722,6 +27913,8 @@ PRNG
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 KISS32Random
 \end_layout
 
@@ -27769,6 +27962,8 @@ KISS32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 KISS64Random
 \end_layout
 
@@ -27816,6 +28011,8 @@ KISS64Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 LCG64ShiftRandom
 \end_layout
 
@@ -27863,6 +28060,8 @@ LCG64ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 MT19937_32Random
 \end_layout
 
@@ -27910,6 +28109,8 @@ MT19937_32Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 MT19937_64Random
 \end_layout
 
@@ -27957,6 +28158,8 @@ MT19937_64Random
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 XOR32ShiftRandom
 \end_layout
 
@@ -28004,6 +28207,8 @@ XOR32ShiftRandom
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 XOR64ShiftRandom
 \end_layout
 
@@ -28047,16 +28252,18 @@ XOR64ShiftRandom
 </cell>
 </row>
 <row>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-java.util.Random
+
+\family typewriter
+j.u.Random
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -28065,7 +28272,7 @@ java.util.Random
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -28074,7 +28281,7 @@ java.util.Random
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -28083,11 +28290,60 @@ java.util.Random
 
 \end_inset
 </cell>
-<cell alignment="decimal" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="decimal" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
 46
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+j.u.c.ThreadLocalRandom
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+264
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+224
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+268
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+216
 \end_layout
 
 \end_inset
@@ -28104,7 +28360,13 @@ java.util.Random
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Speed
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:PRNG-creation-speed"
+
+\end_inset
+
+PRNG creation speed
 \end_layout
 
 \end_inset
