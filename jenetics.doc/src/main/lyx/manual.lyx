@@ -12473,7 +12473,7 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 \family typewriter
 org.jenetics.stat
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Statistics
@@ -12795,7 +12795,7 @@ DoubleChromosome chromosome = ...
 
 \begin_layout Plain Layout
 
-DoubleMomentStatistics statistics = chromosome.stream() 
+DoubleMomentStatistics statistics = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -12819,7 +12819,7 @@ DoubleMomentStatistics statistics = chromosome.stream()
 
 \begin_layout Plain Layout
 
-DoubleMoments moments = chromosome.stream() 
+DoubleMoments moments = chromosome.stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -12895,7 +12895,7 @@ The
 \begin_layout Subsection
 Genes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Gene
@@ -12958,7 +12958,7 @@ For implementing your own gene type you have to implement the
 \family default
 ()
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Allele
@@ -13228,7 +13228,7 @@ AnyGene
 \family default
  example
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 AnyGene
@@ -13340,7 +13340,7 @@ PartiallyMatchedCrossover
 \begin_layout Subsection
 Chromosomes
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Chromosome
@@ -13590,7 +13590,7 @@ AnyChromosome
 \family default
  example
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 AnyChromosome
@@ -13637,7 +13637,7 @@ Codec
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -13689,7 +13689,7 @@ Alterer
 \begin_layout Subsection
 Selectors
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Selector
@@ -14974,7 +14974,7 @@ scalar
 \emph default
  chromosomes
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Scalar chromosomes contains only one gene.
@@ -14984,7 +14984,7 @@ Scalar chromosomes contains only one gene.
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Chromosome!scalar
@@ -14994,7 +14994,7 @@ Chromosome!scalar
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Scalar chromosome
@@ -15004,7 +15004,7 @@ Scalar chromosome
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genotype!scalar
@@ -15014,7 +15014,7 @@ Genotype!scalar
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Scalar genotype
@@ -15148,7 +15148,7 @@ name "subsec:Scalar-function"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Scalar function
@@ -15504,7 +15504,7 @@ name "subsec:Vector-function"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Vector function
@@ -15738,7 +15738,7 @@ name "subsec:Affine-transformation"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Affine transformation
@@ -15752,11 +15752,11 @@ Encoding!Affine transformation
 \begin_layout Standard
 An affine transformation
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -15772,11 +15772,11 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 , 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -15793,7 +15793,7 @@ http://mathworld.wolfram.com/AffineTransformation.html
  is usually performed by a matrix multiplication with a transformation matrix—in
  a homogeneous coordinates system
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -15822,11 +15822,11 @@ https://en.wikipedia.org/wiki/Homogeneous_coordinates
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -21447,7 +21447,7 @@ tor
 \family default
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The termination tests are using a 
@@ -26283,6 +26283,125 @@ Writer
 Writer
 \family default
  interface.
+ A simple example will show you how to create (compose) a Writer class for
+ the 
+\family typewriter
+Integer\SpecialChar softhyphen
+Chromosome
+\family default
+.
+ The created XML should look like the given example above.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+fontsize{6.8}{8}
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting[language=XML]{../resources/code/int-chromosome.xml}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following writer will create the desired XML from an integer chromosome.
+ As the example shows, the structure of the XML can easily be grasp from
+ the XML writer definition and vice versa.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Writer<IntegerChromosome> writer =
+\end_layout
+
+\begin_layout Plain Layout
+
+    elem("int-chromosome",
+\end_layout
+
+\begin_layout Plain Layout
+
+        attr("length").map(ch -> ch.length()),
+\end_layout
+
+\begin_layout Plain Layout
+
+        elem("min", Writer.<Integer>text().map(ch -> ch.getMin())),
+\end_layout
+
+\begin_layout Plain Layout
+
+        elem("max", Writer.<Integer>text().map(ch -> ch.getMax())),
+\end_layout
+
+\begin_layout Plain Layout
+
+        elem("alleles",
+\end_layout
+
+\begin_layout Plain Layout
+
+             elems("allele",  Writer.<Integer>text())
+\end_layout
+
+\begin_layout Plain Layout
+
+                 .map(ch -> ch.toSeq().map(g -> g.getAllele()))
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+     );
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+XML reader
+\end_layout
+
+\begin_layout Subsection
+Marshalling performance
 \end_layout
 
 \begin_layout Standard
@@ -26626,10 +26745,6 @@ Genotype write performance
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Reading
 \end_layout
 
 \begin_layout Section
