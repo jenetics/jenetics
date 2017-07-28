@@ -26671,7 +26671,7 @@ final Genotype<DoubleGene> genotype = Genotype.of(
 Table 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "tab:Object-hash-seeding"
+reference "tab:Marshaled-object-size"
 
 \end_inset
 
