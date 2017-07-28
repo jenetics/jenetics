@@ -25822,6 +25822,7 @@ Op.arity
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -26027,6 +26028,7 @@ Chromosome
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Box Shaded
 position "t"
 hor_pos "c"
@@ -26100,28 +26102,69 @@ XML marshalling
 \end_layout
 
 \begin_layout Standard
-When used in a distributed environment, there is the need of serializing
- a collection of individuals and send it to another evolution engine.
- To keep the size of the Jenetics base module small, the serialization has
- been moved into separate modules.
-\end_layout
-
-\begin_layout Standard
-The org.jenetics.xml module allows to write/read chromosomes and genotypes
- to/from XML.
- Since the javax.xml.bind module is marked as deprecated (and for removal),
- this module will replace the existing JAXB based XML marshalling.
+The 
+\family typewriter
+org.jenetics.xml
+\family default
+ module allows to write and read chromosomes and genotypes to and from XML.
+ Since the existing JAXB marshaling is part of the deprecated 
+\family typewriter
+javax.xml.bind
+\family default
+ module the 
+\family typewriter
+org.jenetics.xml
+\family default
+ module is now the recommended for XML marshalling of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ classes.
+ The XML marshalling, implemented in this module, is based on the Java 
+\family typewriter
+XML\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+Writer
+\family default
+ and 
+\family typewriter
+XML\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+Reader
+\family default
+ classes of the 
+\family typewriter
+java.xml
+\family default
+ module.
 \end_layout
 
 \begin_layout Subsection
-Writing XML
+XML writer
 \end_layout
 
 \begin_layout Standard
-The XML marshalling, implemented in this module, is based on the javax.xml.stream.X
-MLStreamReader/Writer classes and only depends on the java.xml module.
- This classes are used by the org.jenetics.xml.Reader/Writer classes which
- can be easily composed to do XML marshalling for arbitrary complex objects.
+The main entry point for writing XML files is the typed XML 
+\family typewriter
+Writer
+\family default
+ interface.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:XML-Writer-interface"
+
+\end_inset
+
+ shows the interface of the XML 
+\family typewriter
+Writer
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -26148,6 +26191,56 @@ public interface Writer<T> {
 \begin_layout Plain Layout
 
         throws XMLStreamException;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static <T> Writer<T> attr(String name);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static <T> Writer<T> attr(String name, Object value);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static <T> Writer<T> text();
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static <T> Writer<T> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    elem(String name, Writer<? super T>...
+ children);
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    public static <T> Writer<Iterable<T>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    elems(Writer<? super T> writer);
 \end_layout
 
 \begin_layout Plain Layout
@@ -26180,62 +26273,16 @@ XML Writer interface
 \end_layout
 
 \begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:XML-Writer-interface"
-
-\end_inset
-
- shows the interface of the XML Writer.
- Together with the factory method, you can build up your XML tree structure.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Writer<T> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    static <T> Writer<T> attr(String name);
-\end_layout
-
-\begin_layout Plain Layout
-
-    static <T> Writer<T> attr(String name, Object value);
-\end_layout
-
-\begin_layout Plain Layout
-
-    static <T> Writer<T> text();
-\end_layout
-
-\begin_layout Plain Layout
-
-    static <T> Writer<T> elem(String name, Writer<? super T>...
- children);
-\end_layout
-
-\begin_layout Plain Layout
-
-    static <T> Writer<Iterable<T>> elems(Writer<? super T> writer);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
+Together with the static 
+\family typewriter
+Writer
+\family default
+ factory method, it is possible to define arbitrary writers through composition.
+ There is no need for implementing the 
+\family typewriter
+Writer
+\family default
+ interface.
 \end_layout
 
 \begin_layout Standard
