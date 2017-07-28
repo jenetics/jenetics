@@ -27,8 +27,8 @@ set bmargin
 set origin 0.0, 0.0
 set tmargin 1
 set format x "10^{%L}"
-set ylabel "{/:Bold Marshaling time [µs]}"
-set xlabel "{/:Bold Chromosomes count}"
+set ylabel "{/:Bold Marshalling time [µs]}"
+set xlabel "{/:Bold Chromosome count}"
 
 plot 'genotype_read_perf.dat' using 1:2 with linespoints ls 1 title 'JAXB', \
 		'' using 1:4 with linespoints ls 2 title 'Java serialization', \

@@ -257,12 +257,12 @@
 	<path stroke='black'  d='M108.0,24.1 L108.0,423.2 L666.3,423.2 L666.3,24.1 L108.0,24.1 Z  '/></g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(22.8,223.7) rotate(270)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Serif"  font-weight="bold" >Marshaling time [µs]</tspan></text>
+		<text><tspan font-family="Serif"  font-weight="bold" >Marshalling time [µs]</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
 	<g transform="translate(387.1,488.4)" stroke="none" fill="black" font-family="Serif" font-size="16.00"  text-anchor="middle">
-		<text><tspan font-family="Serif"  font-weight="bold" >Chromosomes count</tspan></text>
+		<text><tspan font-family="Serif"  font-weight="bold" >Chromosome count</tspan></text>
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
