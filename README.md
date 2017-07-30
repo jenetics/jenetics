@@ -8,7 +8,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.8/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.8.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.9/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.9.0.pdf)).
 
 
 ## Requirements
