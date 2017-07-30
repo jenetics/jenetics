@@ -1,5 +1,33 @@
 ## Release notes
 
+### [3.9.0](https://github.com/jenetics/jenetics/releases/tag/v3.9.0)
+
+#### Improvements
+
+* [#26](https://github.com/jenetics/jenetics/issues/26): Extend Gradle scripts for multi-module releases.
+* [#27](https://github.com/jenetics/jenetics/issues/27): Parallel `EvolutionStream`.
+* [#64](https://github.com/jenetics/jenetics/issues/64): Implementation of `TreeGene`/`Chromosome`.
+* [#181](https://github.com/jenetics/jenetics/issues/181): XML marshaling module: `org.jenetics.xml`.
+* [#199](https://github.com/jenetics/jenetics/issues/199): Termination: Population convergence.
+* [#201](https://github.com/jenetics/jenetics/issues/201): Simplify Gradle build scripts.
+* [#204](https://github.com/jenetics/jenetics/issues/204): Remove internal 'Stack' container class.
+* [#207](https://github.com/jenetics/jenetics/issues/207): Add missing `BitChromosome` factory methods.
+* [#216](https://github.com/jenetics/jenetics/issues/216): Restructuring of User's Manual.
+* [#218](https://github.com/jenetics/jenetics/issues/218): Mark `LCG64ShiftRandom` class as deprecated.
+* [#219](https://github.com/jenetics/jenetics/issues/219): Mark `JAXB` marshaling as deprecated.
+* [#227](https://github.com/jenetics/jenetics/issues/227): Genetic Programming module: `org.jenetics.prog`.
+* [#228](https://github.com/jenetics/jenetics/issues/228): Upgrade Gradle to 4.0.2.
+* [#229](https://github.com/jenetics/jenetics/issues/229): Define stable module names.
+* [#236](https://github.com/jenetics/jenetics/issues/236): Rename module `jenetix` to `org.jenetics.ext`
+* [#238](https://github.com/jenetics/jenetics/issues/238): Align project directories with maven artifact names.
+
+#### Bugs
+
+* [#212](https://github.com/jenetics/jenetics/issues/212): Fix `Seq.toArray(Object[])` method.
+* [#226](https://github.com/jenetics/jenetics/pull/226): Incorrect `MinMax.toString()` output.
+* [#233](https://github.com/jenetics/jenetics/pull/233): `Engine.java` Comment Grammar Fix.
+* [#234](https://github.com/jenetics/jenetics/issues/234): `Population.empty()` isn't empty
+
 ### [3.8.0](https://github.com/jenetics/jenetics/releases/tag/v3.8.0)
 
 #### Improvements
