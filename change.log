@@ -1,3 +1,29 @@
+Jenetics-3.9.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/26: Extend Gradle scripts for multi-module releases.
+    * https://github.com/jenetics/jenetics/issues/27: Parallel `EvolutionStream`.
+    * https://github.com/jenetics/jenetics/issues/64: Implementation of `TreeGene`/`Chromosome`.
+    * https://github.com/jenetics/jenetics/issues/181: XML marshaling module: `org.jenetics.xml`.
+    * https://github.com/jenetics/jenetics/issues/199: Termination: Population convergence.
+    * https://github.com/jenetics/jenetics/issues/201: Simplify Gradle build scripts.
+    * https://github.com/jenetics/jenetics/issues/204: Remove internal `Stack` container class.
+    * https://github.com/jenetics/jenetics/issues/207: Add missing `BitChromosome` factory methods.
+    * https://github.com/jenetics/jenetics/issues/216: Restructuring of User's Manual.
+    * https://github.com/jenetics/jenetics/issues/218: Mark `LCG64ShiftRandom` class as deprecated.
+    * https://github.com/jenetics/jenetics/issues/219: Mark `JAXB` marshaling as deprecated.
+    * https://github.com/jenetics/jenetics/issues/227: Genetic Programming module: `org.jenetics.prog`.
+    * https://github.com/jenetics/jenetics/issues/228: Upgrade Gradle to 4.0.2.
+    * https://github.com/jenetics/jenetics/issues/229: Define stable module names.
+    * https://github.com/jenetics/jenetics/issues/236: Rename module `jenetix` to `org.jenetics.ext`
+    * https://github.com/jenetics/jenetics/issues/238: Align project directories with maven artifact names.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/212): Fix `Seq.toArray(Object[])` method.
+    * https://github.com/jenetics/jenetics/pull/226): Incorrect `MinMax.toString()` output.
+    * https://github.com/jenetics/jenetics/pull/233): `Engine.java` Comment Grammar Fix.
+    * https://github.com/jenetics/jenetics/issues/234): `Population.empty()` isn't empty
+
 Jenetics-3.8.0
 
 - Improvements
