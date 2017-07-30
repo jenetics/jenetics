@@ -20,8 +20,6 @@
 package org.jenetics.ext;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Random;
 
@@ -30,7 +28,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import org.jenetics.ext.util.TreeNode;
-import org.jenetics.ext.util.Trees;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
