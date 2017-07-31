@@ -30394,14 +30394,18 @@ gradlew
 \emph on
  sub
 \emph default
--directory:
+-directory.
+\end_layout
+
+\begin_layout Paragraph
+Published projects
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
 \series bold
-org.jenetics
+jenetics
 \family default
 \series default
 : This project contains the source code and tests for the
@@ -30422,7 +30426,63 @@ org.jenetics
 
 \family typewriter
 \series bold
-org.jenetics.example
+jenetics.ext
+\family default
+\series default
+: This module contains additional 
+\emph on
+non
+\emph default
+-standard GA operations and data types.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+jenetics.prog
+\family default
+\series default
+: The modules contains classes which allows to do genetic programming (GP).
+ It seamlessly works with the existing 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ and evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+jenetics.xml
+\family default
+\series default
+: XML marshalling module for the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ base data structures.
+\end_layout
+
+\begin_layout Paragraph
+Non-published projects
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+jenetics.example
 \family default
 \series default
 : This project contains example code for the
@@ -30436,7 +30496,7 @@ org.jenetics.example
 
 \family typewriter
 \series bold
-org.jenetics.doc
+jenetics.doc
 \family default
 \series default
 : Contains the
@@ -30448,6 +30508,19 @@ org.jenetics.doc
  this
 \emph default
  manual.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+jenetics.tool
+\family default
+\series default
+: This module contains classes used for doing integration testing and algorithmi
+c performance testing.
+ It is also used for creating GA performance measures and creating diagrams
+ from the performance measures.
 \end_layout
 
 \begin_layout Standard
@@ -31019,7 +31092,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.0.1
+: 4.0.2
 \end_layout
 
 \begin_layout Itemize
@@ -31056,7 +31129,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.0.1-bin.zip
+http://services.gradle.org/distributions/gradle-4.0.2-bin.zip
 \end_layout
 
 \end_inset
@@ -31141,7 +31214,11 @@ snippet for Maven
 \end_layout
 
 \begin_layout LyX-Code
-    <artifactId>jenetics</artifactId>
+    <artifactId>
+\emph on
+module
+\emph default
+</artifactId>
 \end_layout
 
 \begin_layout LyX-Code
@@ -31157,7 +31234,11 @@ Gradle
 \end_layout
 
 \begin_layout LyX-Code
-'io.jenetics:jenetics:@__version__@'
+'io.jenetics:
+\emph on
+module
+\emph default
+:@__version__@'
 \end_layout
 
 \begin_layout Paragraph
