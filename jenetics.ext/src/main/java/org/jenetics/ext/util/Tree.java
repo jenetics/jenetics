@@ -886,4 +886,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return Trees.toCompactString(tree);
 	}
 
+	/**
+	 * Return a string representation of the given {@code tree} in dotty syntax.
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 */
+	public static String toDottyString(final Tree<?, ?> tree) {
+		return Trees.toDottyString("T", tree);
+	}
+
 }

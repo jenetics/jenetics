@@ -30073,8 +30073,14 @@ Jenetics
 \series default
 \shape default
 .
- We are trying to find a polynomial (or an arbitrary mathematical function)
- which approximates a given data set.
+ We are trying to find the polynomial, 
+\begin_inset Formula $4x^{3}-3x^{2}+x$
+\end_inset
+
+, which fits a given data set.
+ The sample data where created with the polynomial we are searching for.
+ This makes it easy to check the quality of the approximation found by the
+ GP.
 \end_layout
 
 \begin_layout Standard
@@ -30086,6 +30092,60 @@ status open
 
 \backslash
 lstinputlisting{../java/SymbolicRegression.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One output of a GP run is shown is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Symbolic-regression-polynomial"
+
+\end_inset
+
+.
+ If we simplify this program tree, we will get exactly the polynomial which
+ created the sample data.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/code/SymbolicRegression.svg
+	lyxscale 70
+	width 90col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Symbolic-regression-polynomial"
+
+\end_inset
+
+Symbolic regression polynomial
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset

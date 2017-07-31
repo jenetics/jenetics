@@ -19,17 +19,15 @@
  */
 package org.jenetics.ext.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
 /**
@@ -181,15 +179,15 @@ final class Trees {
 
 	private static void toInfixString(final StringBuilder out, final Tree<?, ?> tree) {
 		if (!tree.isLeaf()) {
-			child(out, tree.getChild(0));
+			toInfixChild(out, tree.getChild(0));
 			out.append(tree.getValue());
-			child(out, tree.getChild(1));
+			toInfixChild(out, tree.getChild(1));
 		} else {
 			out.append(tree.getValue());
 		}
 	}
 
-	private static void child(final StringBuilder out, final Tree<?, ?> child) {
+	private static void toInfixChild(final StringBuilder out, final Tree<?, ?> child) {
 		if (child.isLeaf()) {
 			toInfixString(out, child);
 		} else {
@@ -201,56 +199,40 @@ final class Trees {
 
 	public static String toDottyString(final String name, final Tree<?, ?> tree) {
 		final StringBuilder out = new StringBuilder();
-		out.append("digraph ").append(name).append(" {\n    ");
-		nodes(out, tree, tree.firstChild().orElse(null));
+		out.append("digraph ").append(name).append(" {\n");
+		dotty(out, tree);
+		labels(out, tree);
 		out.append("}\n");
-
 		return out.toString();
 	}
 
-	private static void nodes(
-		final StringBuilder out,
-		final Tree<?, ?> parent,
-		final Tree<?, ?> child
-	) {
-		if (child != null) {
-			out.append(parent.getValue());
-			out.append(" -> ");
-			nodes(out, child, child.firstChild().orElse(null));
-		} else {
-			final Tree<?, ?> pp = parent.getParent().orElse(null);
-			if (pp != null) {
-				final Tree<?, ?> cc = pp.childAfter(parent).orElse(null);
-				out.append(parent.getValue());
-				out.append(";\n    ");
-				nodes(out, pp, pp.childAfter(parent).orElse(null));
-			}
+	private static void dotty(final StringBuilder out, final Tree<?, ?> node) {
+		final ISeq<? extends Tree<?, ?>> nodes = node.breadthFirstStream()
+			.collect(ISeq.toISeq());
+
+		for (int i = 0; i < nodes.length(); ++i) {
+			final Tree<?, ?> n = nodes.get(i);
+			n.childStream().forEach(child ->
+				out
+					.append("    ")
+					.append(id(n))
+					.append(" -> ")
+					.append(id(child))
+					.append(";\n")
+			);
 		}
 	}
 
-	private static void dottyNodes(final StringBuilder out, final Tree<?, ?> node, final String ident) {
-		out.append(node.getValue());
-		if (node.isLeaf()) {
-			out.append(";\n");
-			node.getParent().ifPresent(p -> out.append(p.getValue()));
-		} else {
-			out.append(" -> ");
-		}
-		for (int i = 0; i < node.childCount(); ++i) {
-			/*
-			if (node.isLeaf()) {
-				out.append(";\n");
-			} else {
-				node.getParent().ifPresent(p -> out.append(p.getValue()));
-				out.append(" -> ");
-			}
-			*/
-			dottyNodes(out, node.getChild(i), ident);
-		}
+	private static String id(final Tree<?, ?> node) {
+		return "node_" + Math.abs(System.identityHashCode(node));
 	}
 
-	private static void trace(final StringBuilder out, final Tree<?, ?> node) {
-
+	private static void labels(final StringBuilder out, final Tree<?, ?> tree) {
+		tree.depthFirstStream().forEach(node -> {
+			out.append("    ");
+			out.append(id(node));
+			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
+		});
 	}
 
 	/**

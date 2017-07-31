@@ -1,6 +1,4 @@
-import static java.lang.Math.abs;
 import static java.lang.Math.pow;
-import static java.lang.String.format;
 
 import java.util.Arrays;
 
@@ -22,7 +20,7 @@ import org.jenetics.util.RandomRegistry;
 
 public class SymbolicRegression {
 
-	// Lookup table for 4*x^3 - 3*x^2 + x
+	// Sample data created with 4*x^3 - 3*x^2 + x
 	static final double[][] SAMPLES = new double[][] {
 		{-1.0, -8.0000},
 		{-0.9, -6.2460},
@@ -94,22 +92,7 @@ public class SymbolicRegression {
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
-		System.out.println(Tree.toString(program));
-
-		for (int i = 0; i < SAMPLES.length; ++i) {
-			final double x = SAMPLES[i][0];
-			final double result = program.eval(x);
-
-			System.out.println(format(
-				"%2.2f: %2.4f, %2.4f: %2.5f",
-				x, f(x), result, abs(f(x) - result)
-			));
-		}
-	}
-
-	// The function we want to determine.
-	private static double f(final double x) {
-		return 4*x*x*x - 3*x*x + x;
+		System.out.println(Tree.toDottyString(program));
 	}
 
 }
