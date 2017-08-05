@@ -530,7 +530,7 @@ target "http://creativecommons.org/licenses/by-sa/3.0/at/"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 License
@@ -621,7 +621,7 @@ Jenetics
 \family default
 \series default
 \shape default
- is an
+ is an advanced
 \series bold
  Genetic Algorithm
 \series default
@@ -963,12 +963,22 @@ public final class HelloWorld {
 
 \begin_layout Plain Layout
 
-    private static Integer eval(final Genotype<BitGene> gt) {
+    private static int eval(final Genotype<BitGene> gt) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        return ((BitChromosome)gt.getChromosome()).bitCount();
+        return gt.getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(BitChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .bitCount();
 \end_layout
 
 \begin_layout Plain Layout
@@ -1099,7 +1109,7 @@ Hello World
 
  GA
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Hello World
@@ -1539,6 +1549,16 @@ Engine\SpecialChar softhyphen
 
 \begin_layout Section
 Architecture
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Architecture
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -6917,7 +6937,6 @@ The crossover parameter,
 \end_inset
 
  should be avoided.
- 
 \end_layout
 
 \begin_layout Subsection
@@ -8230,7 +8249,7 @@ http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Standard
@@ -9814,7 +9833,7 @@ Such a configuration can be useful for performing reproducible (performance)
 \begin_layout Subsubsection
 Concurrency tweaks
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Concurrency!tweaks
@@ -10108,7 +10127,7 @@ Service
  overhead.
  The original population is divided into a fixed number
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The number of sub-populations actually depends on the number of available
@@ -10141,7 +10160,7 @@ Size
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Java property!maxBatchSize
@@ -10151,7 +10170,7 @@ Java property!maxBatchSize
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Concurrency!maxBatchSize
@@ -10205,13 +10224,13 @@ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 A good introduction on how to use managed blocks, and the motivation behind
  it, is given in this talk: 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -10231,7 +10250,7 @@ https://www.youtube.com/watch?v=rUDGQQ83ZtI
 \begin_layout Subsection
 Randomness
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Randomness
@@ -10241,7 +10260,7 @@ Randomness
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random
@@ -10266,7 +10285,7 @@ In general, GAs heavily depends on
 \emph default
  random number generators (PRNG)
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG
@@ -10299,7 +10318,7 @@ Registry
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!Registry
@@ -10321,7 +10340,7 @@ Random
 \family default
  engine
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!Engine
@@ -10650,7 +10669,7 @@ Random seeding
 \series default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Random seeding
@@ -10660,7 +10679,7 @@ PRNG!Random seeding
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random seeding
@@ -10712,7 +10731,7 @@ concurrent
  Random seeding works well for the most problems but without theoretical
  foundation.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This is also expressed by Donald Knuth’s advice: 
@@ -10752,7 +10771,7 @@ Parameterization
 \series default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Parameterization
@@ -10786,7 +10805,7 @@ Block splitting
 \series default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Block splitting
@@ -10796,7 +10815,7 @@ PRNG!Block splitting
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Block splitting
@@ -10903,7 +10922,7 @@ Leapfrog
 \series default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Leapfrog
@@ -10913,7 +10932,7 @@ PRNG!Leapfrog
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Leapfrog
@@ -11008,7 +11027,7 @@ Leapfrogging
 \family typewriter
 LCG64ShiftRandom
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Random!LCG64ShiftRandom
@@ -11018,7 +11037,7 @@ Random!LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!
@@ -11030,7 +11049,7 @@ LCG64ShiftRandom
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 LCG64ShiftRandom
@@ -11068,11 +11087,11 @@ target "http://numbercrunch.de/trng/"
 
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -11253,7 +11272,7 @@ jump2
 \begin_layout Paragraph
 Runtime performance
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 PRNG!Performance
@@ -11994,7 +12013,7 @@ IO
 \family default
  class can also be used for serializing own JAXB
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 JAXB
@@ -12004,7 +12023,7 @@ JAXB
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Serialization!JAXB
@@ -12248,7 +12267,7 @@ org.jenetics.stat
 \family typewriter
 org.jenetics.util.Seq
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Seq
@@ -14040,7 +14059,7 @@ name "lis:Elite-selector"
 
 Elitist selector
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Selector!Elitist
@@ -14050,7 +14069,7 @@ Selector!Elitist
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Elitism
@@ -14121,7 +14140,7 @@ Stream
 \begin_layout Subsection
 Alterers
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Alterer
@@ -16300,7 +16319,7 @@ name "subsec:Graph"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Graph
@@ -16310,7 +16329,7 @@ Graph
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Graph
@@ -16331,7 +16350,7 @@ A graph can be represented in many different ways.
 \begin_layout Paragraph
 Undirected graph
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Undirected graph
@@ -16341,7 +16360,7 @@ Undirected graph
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Undirected graph
@@ -16425,7 +16444,7 @@ reference "fig:Undirected-graph"
  An application which optimizes an undirected graph has to ignore this part
  of the matrix.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 This property violates the 
@@ -16551,7 +16570,7 @@ final int[][] array = gt.toSeq().stream()
 \begin_layout Paragraph
 Directed graph
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Directed graph
@@ -16561,7 +16580,7 @@ Directed graph
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Directed graph
@@ -16634,7 +16653,7 @@ reference "fig:Directed-graph"
 \begin_layout Paragraph
 Weighted directed graph
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Weighted graph
@@ -16644,7 +16663,7 @@ Weighted graph
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Encoding!Weighted graph
@@ -16788,7 +16807,7 @@ final double[][] array = gt.stream()
 \begin_layout Section
 Codec
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Codec
@@ -16874,7 +16893,7 @@ Genotype
 \family default
  definition and the transformation code.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Section 
@@ -17180,7 +17199,7 @@ name "subsec:Scalar-codec"
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Scalar codec
@@ -17190,7 +17209,7 @@ Scalar codec
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Codec!Scalar
@@ -23503,25 +23522,25 @@ http://blog.joda.org/2017/05/java-se-9-jpms-automatic-modules.html
 \begin_layout Itemize
 
 \family typewriter
-org.jenetics.ext
+jenetics.ext
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-org.jenetics.prog
+jenetics.prog
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-org.jenetics.xml
+jenetics.xml
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-io.jenetics.prngine
+prngine
 \end_layout
 
 \begin_layout Standard
@@ -27127,7 +27146,7 @@ PRNG
 \begin_layout Standard
 The 
 \family typewriter
-io.jenetics.prngine
+prngine
 \family default
 
 \begin_inset Foot
@@ -30064,7 +30083,7 @@ key "Koza:1992:GPP:138936"
 \end_layout
 
 \begin_layout Standard
-The following example shows how to solve a GP problem with 
+The following example shows how to solve the GP problem with 
 \family sans
 \series bold
 \shape smallcaps
@@ -30398,7 +30417,7 @@ gradlew
 \end_layout
 
 \begin_layout Paragraph
-Published projects
+Published modules
 \end_layout
 
 \begin_layout Itemize
@@ -30474,8 +30493,19 @@ Jenetics
  base data structures.
 \end_layout
 
+\begin_layout Itemize
+
+\family typewriter
+\series bold
+prngine
+\family default
+\series default
+: PRNGine is a pseudo-random number generator library for sequential and
+ parallel Monte Carlo simulations.
+\end_layout
+
 \begin_layout Paragraph
-Non-published projects
+Non-published modules
 \end_layout
 
 \begin_layout Itemize
@@ -30629,7 +30659,7 @@ dir>/<module-dir>\SpecialChar breakableslash
 build\SpecialChar breakableslash
 docs
 \family default
- directory
+ directory.
 \end_layout
 
 \begin_layout Itemize
