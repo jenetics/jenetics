@@ -28,7 +28,7 @@ import java.util.function.Function;
  * @version 3.9
  * @since 3.9
  */
-class Operation<T> implements Op<T> {
+final class Operation<T> implements Op<T> {
 	private final String _name;
 	private final int _arity;
 	private final Function<T[], T> _function;
