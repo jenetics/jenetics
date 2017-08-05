@@ -699,6 +699,24 @@ Stream
  interface, it works smoothly with the rest of the Java Stream API.
  This chapter describes the design concepts and its implementation.
  It also gives some basic examples and best practice tips.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The classes described in this chapter reside in the 
+\family typewriter
+org.jenetics.base
+\family default
+ module or 
+\family typewriter
+io:jenetics:jenetics:@__version__@
+\family default
+ artifact, respectively.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -23490,11 +23508,22 @@ Jenetics
 \series default
 \shape default
  library has been split up into several modules.
- Beside the base module, 
-\family typewriter
-org.jenetics.base
+ It currently consists of the modules shown in table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Jenetics-modules"
+
+\end_inset
+
+, including the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
 \family default
-, the library currently consists of the following modules:
+\series default
+\shape default
+ base module.
 \begin_inset Foot
 status collapsed
 
@@ -23519,28 +23548,175 @@ http://blog.joda.org/2017/05/java-se-9-jpms-automatic-modules.html
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
 
-\family typewriter
-jenetics.ext
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Module
 \end_layout
 
-\begin_layout Itemize
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
 
-\family typewriter
-jenetics.prog
+\begin_layout Plain Layout
+Artifact
 \end_layout
 
-\begin_layout Itemize
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
 
-\family typewriter
-jenetics.xml
+\begin_layout Plain Layout
+org.jenetics.base
 \end_layout
 
-\begin_layout Itemize
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
 
-\family typewriter
-prngine
+\begin_layout Plain Layout
+io.jenetics:jenetics:@__version__@
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+org.jenetics.ext
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+io.jenetics:jenetics.ext:@__version__@
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+org.jenetics.prog
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+io.jenetics:jenetics.prog:@__version__@
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+org.jenetics.xml
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+io.jenetics:jenetics.xml:@__version__@
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+io.jenetics.prngine
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+io.jenetics:prngine:1.0.1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family sans
+\series bold
+\shape smallcaps
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Jenetics-modules"
+
+\end_inset
+
+Jenetics
+\family default
+\series default
+\shape default
+ modules
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
