@@ -156,7 +156,7 @@ public final class MinMax<C> implements Consumer<C> {
 
 	@Override
 	public String toString() {
-		return format("MinMax[count=%d, min=%s, max:%s]", _count, _min, _max);
+		return format("MinMax[count=%d, min=%s, max=%s]", _count, _min, _max);
 	}
 
 	/* *************************************************************************
@@ -219,8 +219,9 @@ public final class MinMax<C> implements Consumer<C> {
 	 * @throws java.lang.NullPointerException if the given {@code mapper} is
 	 *         {@code null}
 	 */
-	public static <T>
-	Collector<T, ?, MinMax<T>> toMinMax(final Comparator<? super T> comparator) {
+	public static <T> Collector<T, ?, MinMax<T>>
+	toMinMax(final Comparator<? super T> comparator) {
+		requireNonNull(comparator);
 		return Collector.of(
 			() -> MinMax.of(comparator),
 			MinMax::accept,
@@ -245,7 +246,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Collector<C, ?, MinMax<C>> toMinMax() {
-		return toMinMax((a, b) -> a.compareTo(b));
+		return toMinMax(Comparator.naturalOrder());
 	}
 
 	/**
