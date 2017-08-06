@@ -24,7 +24,7 @@
  * @version 3.9
  */
 
-// The Jenetics projects.
+// The Jenetics modules.
 include 'jenetics'
 include 'jenetics.doc'
 include 'jenetics.example'
