@@ -250,7 +250,7 @@ public final class Engine<
 	 *         {@code start} is {@code null}
 	 */
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
-		final Timer timer = Timer.of().start();
+		final Timer timer = Timer.of(_clock).start();
 
 		final Population<G, C> startPopulation = start.getPopulation();
 
