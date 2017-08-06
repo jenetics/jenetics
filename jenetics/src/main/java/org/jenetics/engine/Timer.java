@@ -85,7 +85,9 @@ final class Timer {
 	 */
 	public static Timer of(final Clock clock) {
 		requireNonNull(clock);
-		return clock instanceof NanoClock ? of() : new Timer(() -> nanos(clock));
+		return clock instanceof NanoClock
+			? new Timer(System::nanoTime)
+			: new Timer(() -> nanos(clock));
 	}
 
 	private static long nanos(final Clock clock) {
