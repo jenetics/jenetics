@@ -70,7 +70,7 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 		final ISeq<FlatTreeNode<Integer>> nodes =
 			FlatTreeNode.of(tree).flattenedNodes();
 
-		final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
+		final TreeNode<Integer> unflattened = TreeNode.ofTree(nodes.get(0));
 
 		//print(FlatTree.of(tree));
 		//FlatTree.of(tree).childStream().map(t -> t.getValue()).forEach(System.out::println);

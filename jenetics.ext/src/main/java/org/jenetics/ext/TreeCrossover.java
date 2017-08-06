@@ -107,9 +107,9 @@ public abstract class TreeCrossover<
 		final int index
 	) {
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.of(c1.get(index).getGene());
+		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).getGene());
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.of(c2.get(index).getGene());
+		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).getGene());
 
 		crossover(tree1, tree2);
 

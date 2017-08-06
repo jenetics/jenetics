@@ -115,7 +115,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> ch =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final TreeNode<Op<Double>> node = TreeNode.of(ch.getGene());
+		final TreeNode<Op<Double>> node = TreeNode.ofTree(ch.getGene());
 		System.out.println(node);
 	}
 

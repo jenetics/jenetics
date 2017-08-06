@@ -299,7 +299,7 @@ public final class TreeNode<T>
 
 	@Override
 	public TreeNode<T> copy() {
-		return of(this);
+		return ofTree(this);
 	}
 
 	@Override
@@ -325,14 +325,15 @@ public final class TreeNode<T>
 	 **************************************************************************/
 
 	/**
-	 * Return a new {@code TreeNode} from the given source {@code tree}.
+	 * Return a new {@code TreeNode} from the given source {@code tree}. The
+	 * whole tree is copied.
 	 *
 	 * @param tree the source tree the new tree-node is created from
 	 * @param <T> the tree value type
 	 * @return a new {@code TreeNode} from the given source {@code tree}
 	 * @throws NullPointerException if the source {@code tree} is {@code null}
 	 */
-	public static <T> TreeNode<T> of(final Tree<? extends T, ?> tree) {
+	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
 		final TreeNode<T> target = of(tree.getValue());
 		fill(tree, target);
 		return target;
