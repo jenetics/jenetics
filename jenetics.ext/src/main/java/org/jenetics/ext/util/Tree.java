@@ -656,7 +656,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	@Override
 	public default Iterator<T> iterator() {
-		return new TreeNodeBreadthFirstIterator<>(Trees.<V, T>self(this));
+		return breadthFirstIterator();
 	}
 
 	/**
@@ -665,11 +665,24 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * {@code this} node.
 	 *
 	 * @see #depthFirstIterator
+	 * @see #stream()
 	 * @return a stream for traversing the tree in breadth-first order
 	 */
 	public default Stream<T> breadthFirstStream() {
 		return StreamSupport
 			.stream(spliteratorUnknownSize(breadthFirstIterator(), 0), false);
+	}
+
+	/**
+	 * Return a stream that traverses the subtree rooted at {@code this} node in
+	 * breadth-first order. The first node returned by the stream is
+	 * {@code this} node.
+	 *
+	 * @see #breadthFirstStream
+	 * @return a stream for traversing the tree in breadth-first order
+	 */
+	public default Stream<T> stream() {
+		return breadthFirstStream();
 	}
 
 	/**

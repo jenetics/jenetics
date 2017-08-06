@@ -135,8 +135,10 @@ public class Program<T> implements Op<T> {
 		final Tree<? extends Op<T>, ?> tree,
 		final T... variables
 	) {
-		final Op<T> op = tree.getValue();
+		requireNonNull(tree);
+		requireNonNull(variables);
 
+		final Op<T> op = tree.getValue();
 		return op.isTerminal()
 			? op.apply(variables)
 			: op.apply(
@@ -155,23 +157,25 @@ public class Program<T> implements Op<T> {
 	 * Validates the given program tree.
 	 *
 	 * @param program the program to validate
-	 * @param <A> the operation type
 	 * @throws NullPointerException if the given {@code program} is {@code null}
 	 * @throws IllegalArgumentException if the given operation tree is invalid,
 	 *         which means there is at least one node where the operation arity
 	 *         and the node child count differ.
 	 */
-	public static <A> void check(final Tree<? extends Op<A>, ?> program) {
+	public static void check(final Tree<? extends Op<?>, ?> program) {
 		requireNonNull(program);
+		program.forEach(Program::checkArity);
+	}
 
-		program.breadthFirstStream().forEach(node -> {
-			if (node.getValue() != null && node.getValue().arity() != node.childCount()) {
-				throw new IllegalArgumentException(format(
-					"Op arity != child count: %d != %d",
-					node.getValue().arity(), node.childCount()
-				));
-			}
-		});
+	private static void checkArity(final Tree<? extends Op<?>, ?> node) {
+		if (node.getValue() != null &&
+			node.getValue().arity() != node.childCount())
+		{
+			throw new IllegalArgumentException(format(
+				"Op arity != child count: %d != %d",
+				node.getValue().arity(), node.childCount()
+			));
+		}
 	}
 
 	/**
