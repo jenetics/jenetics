@@ -46,7 +46,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = -1L;
+	private static final long serialVersionUID = 1L;
 
 	private T _value;
 	private TreeNode<T> _parent;
