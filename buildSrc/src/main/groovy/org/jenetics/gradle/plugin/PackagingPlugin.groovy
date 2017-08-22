@@ -97,7 +97,7 @@ class PackagingPlugin implements Plugin<Project> {
 		_project.task(JARJAR, type: Jar, dependsOn: 'jar') {
 			appendix = 'jarjar'
 
-			from _project.files(_project.sourceSets.main.output.classesDir)
+			from _project.files(_project.sourceSets.main.output.classesDirs)
 			from {
 				_project.configurations.compile.collect {
 					it.isDirectory() ? it : _project.zipTree(it)
@@ -349,7 +349,7 @@ class PackagingPluginExtension {
 
 	String name = 'Jenetics'
 	String author = 'Franz Wilhelmstötter'
-	String url = 'http://jenetics.sourceforge.net'
+	String url = 'http://jenetics.io'
 	Boolean jar = true
 	Boolean jarjar = true
 	Boolean javadoc = true

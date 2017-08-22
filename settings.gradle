@@ -21,19 +21,17 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.8
+ * @version 3.9
  */
 
-// The Jenetics projects.
-include 'org.jenetics'
-include 'org.jenetics.doc'
-include 'org.jenetics.example'
-include 'org.jenetics.tool'
-include 'org.jenetix'
+// The Jenetics modules.
+include 'jenetics'
+include 'jenetics.doc'
+include 'jenetics.example'
+include 'jenetics.ext'
+include 'jenetics.prog'
+include 'jenetics.tool'
+include 'jenetics.xml'
 
 rootProject.name = 'jenetics'
 
-// Rename the project names by removing the trailing 'org.'.
-rootProject.children.each { project ->
-	project.name = project.name.substring(4)
-}
