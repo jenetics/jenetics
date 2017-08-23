@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permutation-chromosome length="15">
+    <valid-alleles type="java.lang.Byte">
+        <allele>16</allele>
+        <allele>70</allele>
+        <allele>122</allele>
+        <allele>-42</allele>
+        <allele>-85</allele>
+        <allele>-46</allele>
+        <allele>31</allele>
+        <allele>4</allele>
+        <allele>4</allele>
+        <allele>-40</allele>
+        <allele>8</allele>
+        <allele>-55</allele>
+        <allele>109</allele>
+        <allele>28</allele>
+        <allele>-44</allele>
+    </valid-alleles>
+    <order>13 12 4 6 8 14 7 2 11 5 3 0 9 10 1</order>
+</permutation-chromosome>

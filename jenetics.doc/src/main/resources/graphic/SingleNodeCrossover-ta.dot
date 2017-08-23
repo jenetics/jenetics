@@ -1,0 +1,13 @@
+digraph ta {
+    a -> b -> e;
+    b -> f;
+    b;
+    a -> c -> g;
+    c;
+    a -> d -> h -> k;
+    h -> l;
+    h;
+    d -> i;
+    d -> j;
+    d;
+    }

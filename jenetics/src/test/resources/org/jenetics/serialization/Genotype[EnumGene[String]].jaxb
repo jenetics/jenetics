@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<genotype length="5" ngenes="75">
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ꗁ뫡퀦䊽䇪偖늯</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">翨㨳鐘ﺝ譎ᣂ鄅뫝率챽礗켕</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">抄巕皛璀襭愔๗ᐹ哿媒㮼ܔ薉펱䖪綇蒡</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">灜ﲶс춣귿嫔쮧璾錑䉇燺Ο</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">쨉浟욘㣄뒺㣐蛱郸쟕슀㻂䃛ℸ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">꾄ꐌ巃䕛家㸺ꆁ䟼㜴</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">퇹䪞ꑮ쓢젅ⵧ㷃첔㐧蠞燅窢栥ꃷ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䏊伓횑䑃詢㗌悻劉ሞ䗳篔莍錇䥣샴鼌雔샀憾</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">檈쨗㝧ẃ饊椐鎠춪</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">諸匑튆閐邏댸鳐䇪괐凣</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">怨姼쌡ꁁ쎪</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䪺琊Ṉ䯓䧊</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">傼㕍ꗣ墱廰ٷ膴</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">缉飿覂탩駫蝏縑Ɏ๓鍚眱眈횖쨤䵯륍</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䎓뾋骋䡏ꠐ贵o暳䎀뾸悶쬌وꏫ許鷗椇쾠ퟦ轡</allele>
+        </valid-alleles>
+        <order>14 7 8 10 2 6 5 3 13 12 9 11 1 0 4</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㞫ѫ毪ⳏ켩緁ᥱ쌜懷䟜亏䮎痿</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">堝㯟ⶫ옌郒鐝㔁䃛ᙟ釂짵輘</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">쑻陖ᬗ솵蝴饨뇚㶙塔䡂黣Ꮑ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">譹馴䡴욘욥촢㒪㬴ⲫ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">믙链裡苺苲ꇇ孛䎶斝桪津谐롣샛鼟</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鴙父褏᠕ẋ蹮</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">왋䟂廉휣遙六煝湴碚駱阤驐裧յ㫠磋盛饎</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">瞿곤笏䞜㓢嚁崘賑ﱙꠛ捊ࡀቂ讠잯塩ゲ稿뱭鴙</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">폮걗笪瀱ꏄ淉賦톕燬ሦ浔囵䍡嬢챑</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">픊췰貱숌䢥趹㺬</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ৱ荱憖놿悟</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">舮乃辬殃쫕Љਤ㕦哱</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䖋譙ꪢ롶줉쎳</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">듏鳙뎖銦隦枓</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">躔メ략鎇ﲇ噾Ꮌ沟쑱펚ฌ</allele>
+        </valid-alleles>
+        <order>6 13 0 2 5 12 9 4 8 10 3 11 7 1 14</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㞓駧㚺赺潖螪౯</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᄩꂒ鶆鬴ߩ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㒆鞠寫鮺䠸삁ꢢﳤ뺑킑夣콝㶙鋁ퟄ뒙럽랆</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">K賌䮹縥딊쮡ᢓ쌫贈㓆䀛满켪薠棞䪳軛侃ꯘ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᆁ矀슰杔谐</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">蔒峫씺䃬劧뢬鼖亚ჼ绝ꊓ扰욷䕺Ꮓᅹ픢牵䉿</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">橃ꌰ褥䰡䤑ꢂ睋烻ᵯڡ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">膡갡탴旧铟뀶뒌䤚쥷藀柞ﾣ壔텍뜎ጐ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᧂƷ氖灗羣榏橥㿙蠺궨蠉텝ꂚ쪭丞齋ꜚ馐펇듬</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">풛ﱎ효䭠绝圔</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">Ԥ먿ꇀ赭ⳟ薒</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">葻劣㵰ह揾䝋噧髩倠ᣥ纆熟냖</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">떝롊Ṻߴ裼ᬘ碞섞矲ổ퐕</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䳤ꍎꢤ哏羘ဪꠙ甁輅䇮鄱퍑ᠴ䍇㘳鲺彔빎༨蕚</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">咄뿕鉘䲝놌蟊흰舜夥낈뻩拢梨껎</allele>
+        </valid-alleles>
+        <order>3 5 6 9 4 8 13 10 7 11 12 14 0 1 2</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">囩稽䇩枼鑒根ᒥ䈁柕폧ถ玞ꅗስ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">銌衋㓑랛饙악苧磌띙嗕ἧ༤헡糉仏ﲉ륧缿ﻀ㮧</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᥭ型咧㩐멽弧ㆪ盒ꇛᏠⲼ릯</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᨴ걔ᠭ냹䨋㕼르聟忣쟙鉍콈ѿ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">余芋뷵松顬㯾뱆Ⲙ䧁ꪖ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">肸ṹ磤ॱᖞᘘ㫬ꉨ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">魚䲧盬绺ꇄ띵뻂諟ꉱﮥ偲먔벡颐掻㺓ტ鶪䯧</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">컏詬ꍵ夏Ⲡ帆䚵筁醬虛첸椲ꅿ㴜ၓ궪뽹洍</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">哂歹舚寑ﴄ확詉뙸ݖ蔿ꉌ둘梩ᐭ烈醶鞉</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">霍细揃ﮥ㣋</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">協ﲅ푞蹥ﲍ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鋋儿ﵺ솄삿傿译ḃ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">诔ꖅﰋ峖劝朖蹤籭돃㩂螵橫健賔롱锽ㄸ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">鑿苀ꇗ㹙偛ꛅ挐詪욄왱ꂳ揌万</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ﻶ漏팷龾듓斊ꐾﾟ놟၃횴쒹遲豋忢</allele>
+        </valid-alleles>
+        <order>13 14 8 6 1 12 10 11 2 7 5 0 3 4 9</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">였꼖ㅎ欩㵄닷艹</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">힔缵뜮꺨㿃豶耢잗䜔ﵱ곹飼㠿䜝턁ﾫ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">孽裤곆ꈫ馬쓕䔿䀜㙰㪙ה乎n易쎾瓄</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">㧄끾䩹姙꺁俨仌䶂꺓嵷な撇釥扤냇Ĝ뜘샬賨捯</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䖧췳翳홁㹅騙Ẽ瞀볓ῐ嘰ݢ뼌찹틅ᡳ䐨ᯄໆ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">Ƙᐧᔹ쾆ㆈ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">꼏㒉솃ꢥᣏ횇뎲睃쾋彊䋧앤믈鯕㞽㭨雭낞냋牠</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">娉끰䟴㦰쨸퍥儉逸턯ﺉߡ燌汔曱廄</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">秊䵤ﷲ䫾곻陂淼껂殗麲ⱞ윇ᗛ쭿뮞邇怯蔐幍鐅</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">䔗쇩𢡄ᆋ꽊䧡䡔벢Ђ</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᇒॐ盙䳩턂쀹춋驮寎欨偯辷腲푛攢쭉誫㚵鍩</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">Ց䬝ᆇ幒퀊ሐ攆䧅慧埵ᩄ켗鹅ຢ퇘䘈㞻</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">뿕ꏖ蛳滓闻鈲쵫尨錺麛迍燎飇ㅙ鍭밶</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">嗂䯳찓㫊馉７䇰ᑢ뢍을ᕕ덟积먜徭ⰳ榚</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ᵱB錱籶礵놣퉣</allele>
+        </valid-alleles>
+        <order>7 10 1 6 14 11 2 12 4 8 3 0 9 13 5</order>
+    </chromosome>
+</genotype>

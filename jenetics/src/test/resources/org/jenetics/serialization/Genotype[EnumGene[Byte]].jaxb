@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<genotype length="5" ngenes="75">
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-87</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">117</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">37</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">58</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">80</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-62</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-112</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-63</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-48</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">50</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-9</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">118</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-1</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-70</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">20</allele>
+        </valid-alleles>
+        <order>13 9 11 3 5 2 1 6 14 0 8 7 12 4 10</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-7</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-117</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">102</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">79</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">78</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-30</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-35</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">89</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-10</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-12</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">9</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-31</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">89</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-114</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">111</allele>
+        </valid-alleles>
+        <order>5 10 8 14 3 11 2 7 0 4 13 6 1 12 9</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-7</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">109</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-93</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-16</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-87</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-116</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">43</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">124</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-124</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">77</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">45</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-38</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-103</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">75</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">117</allele>
+        </valid-alleles>
+        <order>7 1 2 11 14 0 5 4 13 12 9 8 6 3 10</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-103</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-72</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">6</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">16</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">71</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">66</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-66</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-64</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-95</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-62</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">123</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-90</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">47</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">36</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-35</allele>
+        </valid-alleles>
+        <order>7 9 12 13 3 4 11 10 0 14 5 8 2 6 1</order>
+    </chromosome>
+    <chromosome xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.PermutationChromosome" length="15">
+        <valid-alleles>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-54</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">36</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-83</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-102</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">68</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">72</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-83</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-67</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">76</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">89</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-76</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">8</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">116</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-15</allele>
+            <allele xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:byte">-6</allele>
+        </valid-alleles>
+        <order>11 4 9 1 14 7 5 10 8 0 2 3 6 12 13</order>
+    </chromosome>
+</genotype>

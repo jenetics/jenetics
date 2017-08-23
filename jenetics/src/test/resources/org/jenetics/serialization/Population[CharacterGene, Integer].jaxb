@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<population size="7">
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1542712075">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>VvY*'TPs"8ku%zgM7hF'</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>%&gt;Wz`'aB'HNuW_(gH }B</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>"J`vV,"!3=8hk|dmXe2H</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>Hb_\,,VW |suG4UR-(+u</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>gU/*R3nXhUGl~Yj$?T${</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1573122920</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">1573122920</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1946874589">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>Ds"]|:LPjE(KOI^7|bUB</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>/5LxiAHp2P&lt;TBqp,G.dE</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>a!6)dD=3UM8lNA-,Mo)f</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>v&lt;(%h/*|]3|%ICJL_jBk</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>vnAM*:'{&gt;|], QPUVl83</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-418295168</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-418295168</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1088107459">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>zSl&amp;O$`MHx|1_A+]a,nC</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>tN|'U&amp;KvZC]lc*V!ARY6</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>kUuBQU$ [odj_"ks"3J=</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>I=Wh5*XdL@bENc3g\Z I</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>5]p&gt;OD!Yp% lxB`S]2R9</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">375378896</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">375378896</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1665805715">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>GXzToM"m)Qx.[CY1yH`?</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>oHTIMGsqi7?JyP#o4nm;</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>4f?r;a(?_=axqaT3"Cw#</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>$y_qm@pKjcs} |Mzd\Px</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>gzG|&gt;@CSEpv;6"Z{3FFr</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-229146577</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-229146577</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="58222235">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>NQy\T/%*Y%J^1Fj^Km0]</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>D+m6as6\L9=5bxzf\qyi</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>M4MQ=RLk0V"_UZKN^V~'</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>5E,U|$sfAmK,jHbhyh3t</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>e:-}s@S3nlX6&amp;coo-)_7</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">251645385</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">251645385</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1945093876">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>idV=#C_k~6PhgiAYKl.2</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>%D'q#irg&lt;KhVA.#T:dn4</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>),8JXU?|%k\ yzf*J_ZJ</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>J^zv&amp;Qj&gt;Mb\]`l[+O8$.</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>gN&gt;1~cK{Wyf3!)_rj24N</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-406825770</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">-406825770</raw-fitness>
+    </phenotype>
+    <phenotype xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.Phenotype" generation="1259549256">
+        <genotype length="5" ngenes="100">
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>b{w}q(dKUvvqw:[{24V\</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>:M)=u}bG&gt;9@:fTqnZ6Us</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>K`o\e8:ngcE&lt;xo.Z"yN2</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>_|#-Y(k"`VjTt*u_N&gt;V!</alleles>
+            </chromosome>
+            <chromosome xsi:type="org.jenetics.CharacterChromosome" length="20">
+                <valid-alleles> !"#$%&amp;'()*+,-./0123456789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~</valid-alleles>
+                <alleles>WoKfPZCuD$x`m*[M1ovP</alleles>
+            </chromosome>
+        </genotype>
+        <fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">521516252</fitness>
+        <raw-fitness xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:int">521516252</raw-fitness>
+    </phenotype>
+</population>
