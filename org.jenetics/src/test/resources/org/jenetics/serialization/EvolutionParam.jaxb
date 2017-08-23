@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <evolution-param>
-    <survivor-selector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.ExponentialRankSelector" c="0.27251556008507416"/>
-    <offspring-selector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.TournamentSelector" samples="360"/>
+    <survivor-selector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.ExponentialRankSelector" c="0.16277429400088883"/>
+    <offspring-selector xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.TournamentSelector" samples="6167"/>
     <alterer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.CompositeAlterer" length="5">
-        <alterers xsi:type="org.jenetics.GaussianMutator" probability="0.43947528327497376"/>
-        <alterers xsi:type="org.jenetics.MeanAlterer" probability="0.10654807463069327"/>
-        <alterers xsi:type="org.jenetics.MultiPointCrossover" probability="0.19696530915810317" n="780"/>
-        <alterers xsi:type="org.jenetics.SinglePointCrossover" probability="0.5594416969271359"/>
-        <alterers xsi:type="org.jenetics.SwapMutator" probability="0.02823782430152355"/>
+        <alterers xsi:type="org.jenetics.GaussianMutator" probability="0.7300108345312147"/>
+        <alterers xsi:type="org.jenetics.MeanAlterer" probability="0.26069678463904045"/>
+        <alterers xsi:type="org.jenetics.MultiPointCrossover" probability="0.25748658647863165" n="699"/>
+        <alterers xsi:type="org.jenetics.SinglePointCrossover" probability="0.46675042754070306"/>
+        <alterers xsi:type="org.jenetics.SwapMutator" probability="0.4996426735422532"/>
     </alterer>
-    <population-size>278</population-size>
-    <offspring-fraction>0.4533651041367144</offspring-fraction>
-    <maximal-phenotype-age>324550</maximal-phenotype-age>
+    <population-size>824</population-size>
+    <offspring-fraction>0.955347433605749</offspring-fraction>
+    <maximal-phenotype-age>980568</maximal-phenotype-age>
 </evolution-param>

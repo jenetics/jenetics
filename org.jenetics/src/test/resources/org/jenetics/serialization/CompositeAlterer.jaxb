@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <composite-alterer length="5">
-    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.GaussianMutator" probability="0.27251556008507416"/>
-    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.MeanAlterer" probability="0.003140816229067145"/>
-    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.MultiPointCrossover" probability="0.43947528327497376" n="327"/>
-    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.SinglePointCrossover" probability="0.19696530915810317"/>
-    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.SwapMutator" probability="0.7450003838065538"/>
+    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.GaussianMutator" probability="0.16277429400088883"/>
+    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.MeanAlterer" probability="0.6474816013874236"/>
+    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.MultiPointCrossover" probability="0.8130817899211762" n="103"/>
+    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.SinglePointCrossover" probability="0.25748658647863165"/>
+    <alterers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="org.jenetics.SwapMutator" probability="0.6979846874885324"/>
 </composite-alterer>

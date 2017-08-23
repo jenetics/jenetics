@@ -28,6 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.jenetics.util.ISeq;
+
 /**
  * Helper methods concerning Java reflection.
  *
