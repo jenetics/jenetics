@@ -8,10 +8,11 @@ syntax: glob
 # Build artifacts
 **/bin/**
 **/build/**
-out/**
+*/out/**
 test-output/**
 output/**
 *.jar
+*evSOLve*
 
 # Gradle
 **/.gradle/**
