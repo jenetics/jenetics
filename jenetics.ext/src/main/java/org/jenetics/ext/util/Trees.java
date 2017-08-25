@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.jenetics.internal.util.require;
@@ -70,30 +71,40 @@ final class Trees {
 		return path;
 	}
 
+	static String toString(final Tree<?, ?> tree) {
+		return toString(tree, t -> Objects.toString(t.getValue()));
+	}
+
 	/**
 	 * Return a string representation of the given tree.
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
 	 */
-	static String toString(final Tree<?, ?> tree) {
+	static String toString(
+		final Tree<?, ?> tree,
+		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
+	) {
 		return tree != null
-			? toStrings(tree).stream()
+			? toStrings(tree, toNodeString).stream()
 				.map(StringBuilder::toString)
 				.collect(Collectors.joining("\n"))
 			: "null";
 	}
 
 	private static
-	List<StringBuilder> toStrings(final Tree<?, ?> tree) {
+	List<StringBuilder> toStrings(
+		final Tree<?, ?> tree,
+		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
+	) {
 		final List<StringBuilder> result = new ArrayList<>();
-		result.add(new StringBuilder().append(tree.getValue()));
+		result.add(new StringBuilder().append(toNodeString.apply(tree)));
 
 		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
 		while (it.hasNext()) {
-			final List<StringBuilder> subtree = toStrings(it.next());
+			final List<StringBuilder> subtree = toStrings(it.next(), toNodeString);
 			if (it.hasNext()) {
-				subtree(result, subtree);
+				subtree(result, subtree, toNodeString);
 			} else {
 				lastSubtree(result, subtree);
 			}
@@ -103,7 +114,8 @@ final class Trees {
 
 	private static void subtree(
 		final List<StringBuilder> result,
-		final List<StringBuilder> subtree
+		final List<StringBuilder> subtree,
+		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
 	) {
 		final Iterator<StringBuilder> it = subtree.iterator();
 		result.add(it.next().insert(0, "├── "));
