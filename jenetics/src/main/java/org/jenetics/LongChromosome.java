@@ -19,22 +19,10 @@
  */
 package org.jenetics;
 
-import static org.jenetics.util.ISeq.toISeq;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -49,9 +37,8 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.2
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(LongChromosome.Model.Adapter.class)
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>
 	implements
@@ -253,50 +240,4 @@ public class LongChromosome
 		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "long-chromosome")
-	@XmlType(name = "org.jenetics.LongChromosome")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlAttribute(name = "min", required = true)
-		public long min;
-
-		@XmlAttribute(name = "max", required = true)
-		public long max;
-
-		@XmlElement(name = "allele", required = true, nillable = false)
-		public List<Long> values;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, LongChromosome>
-		{
-			@Override
-			public Model marshal(final LongChromosome c) {
-				final Model m = new Model();
-				m.length = c.length();
-				m.min = c._min;
-				m.max = c._max;
-				m.values = c.toSeq().map(LongGene::getAllele).asList();
-				return m;
-			}
-
-			@Override
-			public LongChromosome unmarshal(final Model model) {
-				final Long min = model.min;
-				final Long max = model.max;
-				return new LongChromosome(
-					model.values.stream()
-						.map(value -> new LongGene(value, min, max))
-						.collect(toISeq())
-				);
-			}
-		}
-	}
 }

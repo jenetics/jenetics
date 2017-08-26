@@ -23,23 +23,9 @@ import static java.lang.String.format;
 import static org.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.model.IndexedObject;
 
 import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
@@ -73,9 +59,8 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(EnumGene.Model.Adapter.class)
 public final class EnumGene<A>
 	implements
 		Gene<A, EnumGene<A>>,
@@ -276,55 +261,6 @@ public final class EnumGene<A>
 	@SafeVarargs
 	public static <A> EnumGene<A> of(final A... validAlleles) {
 		return EnumGene.of(ISeq.of(validAlleles));
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "enum-gene")
-	@XmlType(name = "org.jenetics.EnumGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	final static class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlElementWrapper(name = "valid-alleles", required = true, nillable = false)
-		@XmlElement(name = "allele", required = true, nillable = false)
-		public List alleles;
-
-		@XmlElement(name = "allele", required = true, nillable = false)
-		public IndexedObject allele = new IndexedObject();
-
-		public static final class Adapter
-			extends XmlAdapter<Model, EnumGene>
-		{
-			@Override
-			public Model marshal(final EnumGene gene) {
-				final Function marshaller = jaxb.Marshaller(gene.getAllele());
-				final Model m = new Model();
-				m.length = gene.getValidAlleles().length();
-				m.allele.index = gene.getAlleleIndex();
-				m.allele.value = marshaller.apply(gene.getAllele());
-				m.alleles = gene.getValidAlleles()
-					.map(marshaller)
-					.asList();
-
-				return m;
-			}
-
-			@Override
-			public EnumGene unmarshal(final Model m) {
-				return new EnumGene<>(
-					m.allele.index,
-					ISeq.of(m.alleles)
-						.map(jaxb.Unmarshaller(m.allele.value))
-				);
-			}
-
-		}
 	}
 
 }

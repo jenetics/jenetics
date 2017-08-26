@@ -25,7 +25,6 @@ import static java.nio.file.Files.deleteIfExists;
 import static java.nio.file.Files.move;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.jaxb.marshal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -171,7 +170,7 @@ public final class TrialMeter<T> {
 		try {
 			final Marshaller marshaller = jaxb.context().createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(marshal(this), out);
+			//marshaller.marshal(marshal(this), out);
 		} catch (Exception e) {
 			throw new UncheckedIOException(new IOException(e));
 		}

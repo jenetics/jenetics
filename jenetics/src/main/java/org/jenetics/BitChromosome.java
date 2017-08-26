@@ -34,15 +34,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.bit;
@@ -55,9 +46,8 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(BitChromosome.Model.Adapter.class)
 public class BitChromosome extends Number
 	implements
 		Chromosome<BitGene>,
@@ -651,47 +641,6 @@ public class BitChromosome extends Number
 		in.readFully(_genes);
 
 		_seq = BitGeneISeq.of(_genes, _length);
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "bit-chromosome")
-	@XmlType(name = "org.jenetics.BitChromosome")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlAttribute(name = "ones-probability", required = true)
-		public double probability;
-
-		@XmlValue
-		public String value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, BitChromosome>
-		{
-			@Override
-			public Model marshal(final BitChromosome chromosome) {
-				final Model model = new Model();
-				model.length = chromosome._length;
-				model.probability = chromosome._p;
-				model.value = chromosome.toCanonicalString();
-				return model;
-			}
-
-			@Override
-			public BitChromosome unmarshal(final Model model) {
-				return new BitChromosome(
-					toByteArray(model.value),
-					model.length,
-					model.probability
-				);
-			}
-		}
 	}
 
 }

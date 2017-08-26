@@ -25,15 +25,6 @@ import static org.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Hash;
 
 import org.jenetics.util.CharSeq;
@@ -52,9 +43,8 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(CharacterGene.Model.Adapter.class)
 public final class CharacterGene
 	implements
 		Gene<Character, CharacterGene>,
@@ -261,42 +251,6 @@ public final class CharacterGene
 		return MSeq.<CharacterGene>ofLength(length)
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
 			.toISeq();
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "character-gene")
-	@XmlType(name = "org.jenetics.CharacterGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "valid-alleles", required = true)
-		public String validCharacters;
-
-		@XmlValue
-		public String value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, CharacterGene>
-		{
-			@Override
-			public Model marshal(final CharacterGene value) {
-				final Model m = new Model();
-				m.validCharacters = value.getValidCharacters().toString();
-				m.value = value.getAllele().toString();
-				return m;
-			}
-
-			@Override
-			public CharacterGene unmarshal(final Model m) {
-				return CharacterGene.of(
-					m.value.charAt(0),
-					new CharSeq(m.validCharacters)
-				);
-			}
-		}
 	}
 
 }

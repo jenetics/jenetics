@@ -25,15 +25,6 @@ import static org.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
@@ -52,9 +43,8 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.2
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(LongGene.Model.Adapter.class)
 public final class LongGene
 	extends AbstractNumericGene<Long, LongGene>
 	implements
@@ -175,43 +165,6 @@ public final class LongGene
 	@Override
 	public LongGene mean(final LongGene that) {
 		return new LongGene(_value + (that._value - _value)/2, _min, _max);
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "long-gene")
-	@XmlType(name = "org.jenetics.LongGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "min", required = true)
-		public long min;
-
-		@XmlAttribute(name = "max", required = true)
-		public long max;
-
-		@XmlValue
-		public long value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, LongGene>
-		{
-			@Override
-			public Model marshal(final LongGene value) {
-				final Model m = new Model();
-				m.min = value.getMin();
-				m.max = value.getMax();
-				m.value = value.getAllele();
-				return m;
-			}
-
-			@Override
-			public LongGene unmarshal(final Model m) {
-				return LongGene.of(m.value, m.min, m.max);
-			}
-		}
 	}
 
 }

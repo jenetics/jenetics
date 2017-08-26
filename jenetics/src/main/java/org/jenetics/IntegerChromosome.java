@@ -23,16 +23,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
@@ -47,9 +37,8 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 3.2
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(IntegerChromosome.Model.Adapter.class)
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
 	implements
@@ -258,50 +247,4 @@ public class IntegerChromosome
 		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "int-chromosome")
-	@XmlType(name = "org.jenetics.IntegerChromosome")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlAttribute(name = "min", required = true)
-		public int min;
-
-		@XmlAttribute(name = "max", required = true)
-		public int max;
-
-		@XmlElement(name = "allele", required = true, nillable = false)
-		public List<Integer> values;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, IntegerChromosome>
-		{
-			@Override
-			public Model marshal(final IntegerChromosome c) {
-				final Model m = new Model();
-				m.length = c.length();
-				m.min = c._min;
-				m.max = c._max;
-				m.values = c.toSeq().map(IntegerGene::getAllele).asList();
-				return m;
-			}
-
-			@Override
-			public IntegerChromosome unmarshal(final Model model) {
-				final Integer min = model.min;
-				final Integer max = model.max;
-				return new IntegerChromosome(
-					ISeq.of(model.values)
-						.map(a -> new IntegerGene(a, min, max))
-				);
-			}
-		}
-
-	}
 }

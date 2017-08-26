@@ -19,10 +19,6 @@
  */
 package org.jenetics.util;
 
-import static org.jenetics.internal.util.JAXBContextCache.context;
-import static org.jenetics.internal.util.jaxb.adapterFor;
-import static org.jenetics.internal.util.jaxb.marshal;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,14 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
-
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
-import org.jenetics.internal.util.JAXBContextCache;
-import org.jenetics.internal.util.require;
 
 /**
  * Class for object serialization. The following example shows how to write and
@@ -51,166 +39,25 @@ import org.jenetics.internal.util.require;
  *     .collect(toBestEvolutionResult());
  *
  * // Writing the population to disk.
- * final File file = new File("population.xml");
- * IO.jaxb.write(result.getPopulation(), file);
+ * final File file = new File("population.bin");
+ * IO.object.write(result.getPopulation(), file);
  *
  * // Reading the population from disk.
  * Population<DoubleGene, Double> population =
- *     (Population<DoubleGene, Double>)IO.jaxb.read(file);
+ *     (Population<DoubleGene, Double>)IO.object.read(file);
  * EvolutionStream<DoubleGene, Double> stream = Engine
  *     .build(ff, gtf)
  *     .stream(population, 1);
  * }</pre>
  *
- * The {@code jaxb} marshalling also allows to read and write own classes. For
- * this you have to register your {@code @XmlType}d class first.
- * <pre>{@code
- * // The user defined 'JAXB' model class.
- * \@XmlRootElement(name = "data-class")
- * \@XmlType(name = "DataClass")
- * \@XmlAccessorType(XmlAccessType.FIELD)
- * public static final class DataClass {
- *     \@XmlAttribute public String name;
- *     \@XmlValue public String value;
- * }
- *
- * // Register the 'JAXB' model class.
- * IO.JAXB.register(DataClass.class);
- * final DataClass data = ...;
- * IO.jaxb.write(data, "data.xml");
- * }</pre>
- *
- * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than once.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.5
+ * @version !__version__!
  */
 public abstract class IO {
 
 	protected IO() {
 	}
-
-	/**
-	 * Helper class for <em>JAXB</em> class registering/de-registering.
-	 *
-	 * <pre>{@code
-	 * // The user defined 'JAXB' model class.
-	 * \@XmlRootElement(name = "data-class")
-	 * \@XmlType(name = "DataClass")
-	 * \@XmlAccessorType(XmlAccessType.FIELD)
-	 * public static final class DataClass {
-	 *     \@XmlAttribute public String name;
-	 *     \@XmlValue public String value;
-	 * }
-	 *
-	 * // Register the 'JAXB' model class.
-	 * IO.JAXB.register(DataClass.class);
-	 * final DataClass data = ...;
-	 * IO.jaxb.write(data, "data.xml");
-	 * }</pre>
-	 *
-	 * It is safe to call {@code IO.JAXB.register(DataClass.class)} more than
-	 * once.
-	 *
-	 * @deprecated Since the {@code javax.xml.bind} is marked as deprecated for
-	 *             removal in Java 9, the JAXB marshalling will be removed as
-	 *             well. Use the {@code org.jenetics.xml} module when writing
-	 *             and reading Jenetics data-objects as XML.
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
-	 * @since 3.5
-	 * @version 3.5
-	 */
-	@Deprecated
-	public static final class JAXB {
-		private JAXB() {require.noInstance();}
-
-		/**
-		 * Registers the given <em>JAXB</em> model classes. This allows to use
-		 * the {@code IO.jaxb} class with own <em>JAXB</em> marshallings.
-		 * <p>
-		 * <em>It is safe to call this method more than once for a given class.
-		 * The class is registered only once.</em>
-		 *
-		 * @param classes the <em>JAXB</em> model classes to register
-		 * @throws NullPointerException if one of the classes is {@code null}
-		 */
-		public static void register(final Class<?>... classes) {
-			Arrays.asList(classes).forEach(JAXBContextCache::add);
-		}
-
-		/**
-		 * De-registers the given <em>JAXB</em> model classes.
-		 *
-		 * @param classes the <em>JAXB</em> model classes to register
-		 * @throws NullPointerException if one of the classes is {@code null}
-		 */
-		public static void deregister(final Class<?>... classes) {
-			Arrays.asList(classes).forEach(JAXBContextCache::remove);
-		}
-
-		/**
-		 * Check is the given class is already registered.
-		 *
-		 * @param cls the class to check
-		 * @return {@code true} if the given class is already registered,
-		 *         {@code false} otherwise.
-		 */
-		public static boolean contains(final Class<?> cls) {
-			return JAXBContextCache.contains(cls);
-		}
-	}
-
-	/**
-	 * JAXB for <i>XML</i> serialization.
-	 *
-	 * @deprecated Since the {@code javax.xml.bind} is marked as deprecated for
-	 *             removal in Java 9, the JAXB marshalling will be removed as
-	 *             well. Use the {@code org.jenetics.xml} module when writing
-	 *             and reading Jenetics data-objects as XML.
-	 */
-	@Deprecated
-	public static final IO jaxb = new IO() {
-
-		@Override
-		public void write(final Object object, final OutputStream out)
-			throws IOException
-		{
-			try {
-				final Marshaller marshaller = context().createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				marshaller.marshal(marshal(object), out);
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
-		}
-
-		@Override
-		public <T> T read(final Class<T> type, final InputStream in)
-			throws IOException
-		{
-			try {
-				final Unmarshaller unmarshaller = context().createUnmarshaller();
-
-				//final XMLInputFactory factory = XMLInputFactory.newInstance();
-				//final XMLStreamReader reader = factory.createXMLStreamReader(in);
-				//try {
-					final Object object = unmarshaller.unmarshal(in);
-					final XmlAdapter<Object, Object> adapter = adapterFor(object);
-					if (adapter != null) {
-						return type.cast(adapter.unmarshal(object));
-					} else {
-						return type.cast(object);
-					}
-				//} finally {
-				//	reader.close();
-				//}
-			} catch (Exception e) {
-				throw new IOException(e);
-			}
-		}
-	};
 
 	/**
 	 * IO implementation for "native" <i>Java</i> serialization.

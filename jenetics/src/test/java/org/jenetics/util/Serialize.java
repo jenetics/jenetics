@@ -28,7 +28,6 @@ import org.testng.Assert;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-@SuppressWarnings("deprecation")
 public class Serialize {
 
 	private final IO _io;
@@ -38,8 +37,6 @@ public class Serialize {
 	}
 
 	public static final Serialize object = new Serialize(IO.object);
-
-	public static final Serialize xml = new Serialize(IO.jaxb);
 
 	public void test(final Object object) throws IOException {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
