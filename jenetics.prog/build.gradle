@@ -1,0 +1,111 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * Author:
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *
+ */
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @since 3.9
+ * @version 3.9
+ */
+
+apply plugin: 'packaging'
+apply plugin: 'nexus'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile project(':jenetics')
+	compile project(':jenetics.ext')
+
+	testCompile Include.TestNG
+}
+
+jar.manifest.instruction('Export-Package',
+	'org.jenetics.prog',
+	'org.jenetics.prog.ops'
+)
+
+jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')
+
+javadoc {
+	options {
+		links 'http://jenetics.io/javadoc/jenetics',
+			'http://jenetics.io/javadoc/jenetics.ext'
+	}
+}
+
+packaging {
+	name = 'Jenetics GP'
+	author = 'Franz Wilhelmstötter'
+	url = 'http://jenetics.io'
+
+	jarjar = false
+	javadoc = true
+}
+
+modifyPom {
+	project {
+		name 'jentics.prog'
+		description 'Jenetics Genetic Programming Module'
+		url jenetics.url
+		inceptionYear '2017'
+
+		scm {
+			url jenetics.maven.scm.url
+			connection jenetics.maven.scm.connection
+			developerConnection jenetics.maven.scm.developer_connection
+		}
+
+		licenses {
+			license {
+				name 'The Apache Software License, Version 2.0'
+				url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+				distribution 'repo'
+			}
+		}
+
+		developers {
+			developer {
+				id 'jenetics'
+				name 'Franz Wilhelmstötter'
+				email 'franz.wilhelmstoetter@gmail.com'
+			}
+		}
+	}
+}
+
+nexus {
+	identifier = project.identifier
+	copyrightYear = project.copyrightYear
+	attachSources = true
+	attachTests = false
+	attachJavadoc = true
+	sign = true
+	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+}
+
+
+

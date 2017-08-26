@@ -30,19 +30,21 @@ import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.jenetics.gradle.task.ColorizerTask
 
-import java.text.SimpleDateFormat
+import java.time.Year
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 1.5
+ * @version 3.8
  */
 class SetupPlugin extends JeneticsPlugin {
 
-	private Calendar now = Calendar.getInstance()
-	private int year = now.get(Calendar.YEAR)
+	private ZonedDateTime now = ZonedDateTime.now()
+	private Year year = Year.now()
 	private String copyrightYear = "2007-${year}"
-	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	private DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 
 	@Override
 	void apply(final Project project) {
@@ -131,7 +133,7 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
-		project.task('testReport', dependsOn: 'test') << {
+		project.task('testReport', dependsOn: 'test').doLast {
 			project.jacocoTestReport.execute()
 		}
 	}
@@ -150,7 +152,7 @@ class SetupPlugin extends JeneticsPlugin {
 				]
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
-				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now.time)})</i>"
+				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
 				stylesheetFile = project.file("${project.rootDir}/buildSrc/resources/javadoc/stylesheet.css")
 
 				exclude '**/internal/**'
