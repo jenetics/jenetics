@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enum-gene length="5">
+    <valid-alleles>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">ꗁ뫡퀦䊽䇪偖늯</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">翨㨳鐘ﺝ譎ᣂ鄅뫝率챽礗켕</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">抄巕皛璀襭愔๗ᐹ哿媒㮼ܔ薉펱䖪綇蒡</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">灜ﲶс춣귿嫔쮧璾錑䉇燺Ο</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">쨉浟욘㣄뒺㣐蛱郸쟕슀㻂䃛ℸ</allele>
+    </valid-alleles>
+    <allele index="1">
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">翨㨳鐘ﺝ譎ᣂ鄅뫝率챽礗켕</value>
+    </allele>
+</enum-gene>
