@@ -99,7 +99,7 @@ public abstract class Recombinator<
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		AlterResult<G, C> result = AlterResult.of(ISeq.of(population));
+		final AlterResult<G, C> result;
 		if (population.size() >= 2) {
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
@@ -118,6 +118,8 @@ public abstract class Recombinator<
 				.sum();
 
 			result = AlterResult.of(pop.toISeq(), count);
+		} else {
+			result = AlterResult.of(population.asISeq());
 		}
 
 		return result;
