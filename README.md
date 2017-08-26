@@ -1,10 +1,14 @@
-# Jenetics (_3.8.0_)
+# Jenetics
 
-**Jenetics** is an **Genetic Algorithm**, respectively an **Evolutionary Algorithm**, library written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
+![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/io.jenetics/jenetics/badge.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
+
+**Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm** and **Genetic Programming** library, respectively, written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jenetics/3.8/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.8.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/3.9/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.9.0.pdf)).
 
 
 ## Requirements
@@ -14,22 +18,20 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/org.jeneti
 
 ### Build time
 *  **JDK 8**: The Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 3.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
+*  **Gradle 4.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 6.11**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.8.0/jenetics-3.8.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.9.0/jenetics-3.9.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `io.jenetics:jenetics:3.8.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
+*  **Maven**: `io.jenetics:jenetics:3.9.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 
 ## Build Jenetics
 
-![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
-
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.8.0/jenetics-3.8.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.9.0/jenetics-3.9.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -39,9 +41,20 @@ For building the Jenetics library from source, download the most recent, stable 
 
 Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and organizes the source into *sub*-projects (modules). Each sub-project is located in it’s own sub-directory:
 
-* **org.jenetics**: This project contains the source code and tests for the Jenetics core-module.
-* **org.jenetics.example**: This project contains example code for the *core*-module.
-* **org.jenetics.doc**: Contains the code of the web-site and the manual.
+**Published projects**
+
+The follwing projects/modules are also published to Maven.
+
+* **jenetics**: This project contains the source code and tests for the Jenetics core-module.
+* **jenetics.ext**: This module contains additional _non_-standard GA operations and data types.
+* **jenetics.prog**: The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
+* **jenetics.xml**: XML marshalling module for the _Jenetics_ base data structures.
+
+**Non-published projects**
+
+* **jenetics.example**: This project contains example code for the *core*-module.
+* **jenetics.doc**: Contains the code of the web-site and the manual.
+* **jenetics.tool**: This module contains classes used for doing integration testing and algorithmic performance testing. It is also used for creating GA performance measures and creating diagrams from the performance measures.
 
 For building the library change into the `<builddir>` directory (or one of the module directory) and call one of the available tasks:
 
@@ -134,15 +147,15 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew compileTestJava
+    $ ./gradlew compileTestJava Sin
 
 you can start the example by calling
 
     $ ./jrun org.jenetics.example.image.EvolvingImages
-    
+
 ![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
-The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.                  
+The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 
 ## Citations
 
@@ -157,9 +170,9 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 * <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
 * <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
-* <a href="http://fxapps.blogspot.co.at/2017/01/genetic-algorithms-with-java.html">Genetic algorithms with Java</a>, by <em>William Antônio</em>, January 10. 2017                      
-* <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015    
-* <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015    
+* <a href="http://fxapps.blogspot.co.at/2017/01/genetic-algorithms-with-java.html">Genetic algorithms with Java</a>, by <em>William Antônio</em>, January 10. 2017
+* <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015
+* <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015
 
 ## License
 
@@ -182,24 +195,34 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-### [3.8.0](https://github.com/jenetics/jenetics/releases/tag/v3.8.0)
+### [3.9.0](https://github.com/jenetics/jenetics/releases/tag/v3.9.0)
 
 #### Improvements
 
-* [#157](https://github.com/jenetics/jenetics/issues/157): Add `LineCrossover` class.
-* [#158](https://github.com/jenetics/jenetics/issues/158): Add `IntermediateCrossover` class.
-* [#168](https://github.com/jenetics/jenetics/issues/168): Remove dependency to `java.desktop` module.
-* [#169](https://github.com/jenetics/jenetics/issues/169): Describe how to configure (μ, λ) and (μ + λ) Evolution Strategies in manual.
-* [#177](https://github.com/jenetics/jenetics/issues/177): Additional 'Seq' conversion functions:
-    * [Seq.asISeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asISeq--)
-    * [Seq.asMSeq()](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/util/Seq.html#asMSeq--)    
-* [#182](https://github.com/jenetics/jenetics/issues/182): Rename build script to default names. All build scripts are now named `build.gradle`.
-* [#188](https://github.com/jenetics/jenetics/issues/188): Additional `Engine.Builder` methods
-    * [Engine.Builder.survivorsSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsSize-int-)
-    * [Engine.Builder.offspringSize(int)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#offspringSize-int-)   
-    * [Engine.Builder.survivorsFraction(double)](http://jenetics.io/javadoc/org.jenetics/3.8/org/jenetics/engine/Engine.Builder.html#survivorsFraction-double-)      
-* [#189](https://github.com/jenetics/jenetics/issues/189): `TruncationSelector` is now able to globally limit best selected individuals. This is used for (μ, λ) and (μ + λ) Evolution Strategies.
-* [#197](https://github.com/jenetics/jenetics/issues/197): Improve CPU utilization for long running fitness functions. The original concurrent fitness function evaluation where assumed to be quite *fast*.
+* [#26](https://github.com/jenetics/jenetics/issues/26): Extend Gradle scripts for multi-module releases.
+* [#27](https://github.com/jenetics/jenetics/issues/27): Parallel `EvolutionStream`.
+* [#64](https://github.com/jenetics/jenetics/issues/64): Implementation of `TreeGene`/`Chromosome`.
+* [#181](https://github.com/jenetics/jenetics/issues/181): XML marshaling module: `org.jenetics.xml`.
+* [#199](https://github.com/jenetics/jenetics/issues/199): Termination: Population convergence.
+* [#201](https://github.com/jenetics/jenetics/issues/201): Simplify Gradle build scripts.
+* [#204](https://github.com/jenetics/jenetics/issues/204): Remove internal `Stack` container class.
+* [#207](https://github.com/jenetics/jenetics/issues/207): Add missing `BitChromosome` factory methods.
+* [#216](https://github.com/jenetics/jenetics/issues/216): Restructuring of User's Manual.
+* [#218](https://github.com/jenetics/jenetics/issues/218): Mark `LCG64ShiftRandom` class as deprecated.
+* [#219](https://github.com/jenetics/jenetics/issues/219): Mark `JAXB` marshaling as deprecated.
+* [#227](https://github.com/jenetics/jenetics/issues/227): Genetic Programming module: `org.jenetics.prog`.
+* [#228](https://github.com/jenetics/jenetics/issues/228): Upgrade Gradle to 4.0.2.
+* [#229](https://github.com/jenetics/jenetics/issues/229): Define stable module names.
+* [#236](https://github.com/jenetics/jenetics/issues/236): Rename module `jenetix` to `org.jenetics.ext`
+* [#238](https://github.com/jenetics/jenetics/issues/238): Align project directories with maven artifact names.
+
+#### Bugs
+
+* [#212](https://github.com/jenetics/jenetics/issues/212): Fix `Seq.toArray(Object[])` method.
+* [#226](https://github.com/jenetics/jenetics/pull/226): Incorrect `MinMax.toString()` output.
+* [#233](https://github.com/jenetics/jenetics/pull/233): `Engine.java` Comment Grammar Fix.
+* [#234](https://github.com/jenetics/jenetics/issues/234): `Population.empty()` isn't empty
+
 
 _[All Release Notes](RELEASE_NOTES.md)_
 

@@ -22,15 +22,15 @@
 import org.jenetics.gradle.PropertiesLoader
 import org.jenetics.gradle.Version
 import org.jenetics.gradle.plugin.SetupPlugin
-import org.jenetics.gradle.task.FixJavadocCodeBlockTask
-import org.jenetics.gradle.task.TrimLineFeedTask
 
-import java.text.SimpleDateFormat
+import java.time.Year
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 1.5
+ * @version 3.9
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -42,13 +42,13 @@ apply plugin: 'packaging'
 ext {
 	javaVersion = '1.8'
 
-	now = Calendar.getInstance()
-	year = now.get(Calendar.YEAR);
+	now = ZonedDateTime.now()
+	year = Year.now();
 	copyrightYear = "2007-${year}".toString()
 	identifier = "${rootProject.name}-${version}".toString()
-	manualDate = (new SimpleDateFormat("yyyy/MM/dd")).format(now.time)
+	manualDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(now)
 	manualIdentifier = "${version}—${manualDate}".toString()
-	dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm")
+	dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
 }
 
 allprojects {
@@ -73,27 +73,13 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '3.5'
-}
-
-task trimLineFeed(type: TrimLineFeedTask) {
-	directory = project.rootDir
-	outputs.upToDateWhen {
-		false
-	}
-}
-
-task fixCodeBlock(type: FixJavadocCodeBlockTask) {
-	directory = project.rootDir
-	outputs.upToDateWhen {
-		false
-	}
+	gradleVersion = '4.0.2'
 }
 
 task alljavadoc(type: Javadoc) {
 	options.encoding = 'UTF-8'
 	def jeneticsProjects = subprojects.findAll { project ->
-		project.name.startsWith('jeneti') &&
+		project.name.startsWith('jenetics') &&
 		project.name != 'jenetics.doc'
 	}
 	configure(jeneticsProjects) {
@@ -125,24 +111,3 @@ task zip(type: Zip) {
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
-
-/*
-task sha256(type: ChecksumTask) {
-	algorithm = 'SHA-256'
-	inputFile = file("build/distributions/${identifier}.zip")
-}
-
-task md5(type: ChecksumTask) {
-	inputFile = file("build/distributions/${identifier}.zip")
-}
-
-zip.finalizedBy([sha256, md5])
-
-signing {
-	//gpg --armor --detach-sign jenetics-1.4.0.zip
-	//gpg --verify jenetics-1.4.0.zip.asc jenetics-1.4.0.zip
-	sign zip
-}
-*/
-
-
