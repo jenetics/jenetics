@@ -48,10 +48,20 @@ public final class AlterResult<
 		_alterations = alterations;
 	}
 
+	/**
+	 * Return the altered population.
+	 *
+	 * @return the altered population
+	 */
 	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
 
+	/**
+	 * Return the number of altered individuals.
+	 *
+	 * @return the number of altered individuals
+	 */
 	public int getAlterations() {
 		return _alterations;
 	}
@@ -76,6 +86,16 @@ public final class AlterResult<
 		return format("[%s, %s]", _population, _alterations);
 	}
 
+	/**
+	 * Return a new alter result for the given arguments.
+	 *
+	 * @param population the altered population
+	 * @param alterations the number of altered individuals
+	 * @param <G> the gene type
+	 * @param <C> the result type
+	 * @return a new alterer for the given arguments
+	 * @throws NullPointerException if the given population is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AlterResult<G, C> of(
 		final ISeq<Phenotype<G, C>> population,
@@ -84,6 +104,15 @@ public final class AlterResult<
 		return new AlterResult<>(population, alterations);
 	}
 
+	/**
+	 * Return a new alter result for the given arguments.
+	 *
+	 * @param population the altered population
+	 * @param <G> the gene type
+	 * @param <C> the result type
+	 * @return a new alterer for the given arguments
+	 * @throws NullPointerException if the given population is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AlterResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
 		return new AlterResult<>(population, 0);
