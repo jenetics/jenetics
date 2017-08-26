@@ -52,7 +52,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.0
  */
 public class SinglePointCrossover<
 	G extends Gene<?, G>,

@@ -64,7 +64,7 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.0
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public final class Population<G extends Gene<?, G>, C extends Comparable<? super C>>

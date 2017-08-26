@@ -29,8 +29,8 @@ import org.jenetics.util.Seq;
  * Represents the result of a {@link Alterer#alter(Seq, long)} call.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.0
+ * @since 4.0
  */
 public final class AlterResult<
 	G extends Gene<?, G>,
