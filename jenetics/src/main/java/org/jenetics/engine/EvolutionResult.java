@@ -58,7 +58,7 @@ import org.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.0
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,

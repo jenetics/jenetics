@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 4.0
  */
 public class reflect {
 	private reflect() {require.noInstance();}

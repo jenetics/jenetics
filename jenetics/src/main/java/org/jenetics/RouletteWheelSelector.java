@@ -40,7 +40,7 @@ import org.jenetics.util.ISeq;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.0
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
