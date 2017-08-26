@@ -295,16 +295,9 @@ public final class Engine<
 			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<Population<G, C>> population =
-			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) -> {
-					final Population<G, C> pop = new Population<>(
-						s.result.population.size() +
-						o.result.population.size()
-					);
-					pop.addAll(s.result.population);
-					pop.addAll(o.result.population);
-					return pop;
-				},
+		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
+			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) ->
+					ISeq.of(s.result.population.append(o.result.population)),
 				_executor.get()
 			);
 

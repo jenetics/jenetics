@@ -27,6 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
 import org.jenetics.util.Seq;
@@ -54,9 +55,9 @@ public class LineCrossoverTest {
 	@Test
 	public void populationRecombine() {
 		RandomRegistry.using(new Random(123), r -> {
-			final Population<DoubleGene, Double> pop =
+			final ISeq<Phenotype<DoubleGene, Double>> pop =
 				newDoubleGenePopulation(5, 1, 2);
-			final Population<DoubleGene, Double> copy = pop.copy();
+			final MSeq<Phenotype<DoubleGene, Double>> copy = pop.copy();
 
 			final LineCrossover<DoubleGene, Double> recombinator =
 				new LineCrossover<>(1);

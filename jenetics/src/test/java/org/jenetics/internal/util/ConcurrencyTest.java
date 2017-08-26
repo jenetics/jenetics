@@ -21,11 +21,11 @@ package org.jenetics.internal.util;
 
 import static java.lang.String.format;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CancellationException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -36,9 +36,9 @@ public class ConcurrencyTest {
 	public void cpuTime() {
 		final Random random = new Random(123);
 
-		final List<Runnable> runnables = IntStream.range(0, 100)
+		final ISeq<Runnable> runnables = IntStream.range(0, 100)
 			.mapToObj(i -> new Sleeper(i, random.nextDouble() > 0.1 ? 50 : 1000))
-			.collect(Collectors.toList());
+			.collect(ISeq.toISeq());
 
 		final long start = System.currentTimeMillis();
 		try (Concurrency concurrency = Concurrency.withCommonPool()) {

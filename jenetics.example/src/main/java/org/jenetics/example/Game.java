@@ -25,12 +25,14 @@ import java.util.function.Function;
 import org.jenetics.DoubleChromosome;
 import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
-import org.jenetics.Population;
+import org.jenetics.Phenotype;
 import org.jenetics.engine.Codec;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.engine.limit;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -63,14 +65,14 @@ public class Game {
 			gt -> Player.of(gt.getGene().doubleValue())
 		);
 
-		final AtomicReference<Population<DoubleGene, Double>>
+		final AtomicReference<ISeq<Phenotype<DoubleGene, Double>>>
 			population = new AtomicReference<>();
 
 		// Fitness function chooses the second individual randomly from the
 		// current population. The population is set by the stream as side-
 		// effect.
 		final Function<Player, Double> fitness = player -> {
-			final Population<DoubleGene, Double> pop = population.get();
+			final Seq<Phenotype<DoubleGene, Double>> pop = population.get();
 
 			final Player other;
 			if (pop != null) {
@@ -78,7 +80,7 @@ public class Game {
 				other = codec.decode(pop.get(index).getGenotype());
 			} else {
 				other = Player.of(0.5);
-			}
+			} 
 
 			return (double)player.compareTo(other);
 		};

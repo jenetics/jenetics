@@ -23,9 +23,6 @@ import static java.lang.Math.max;
 import static java.security.AccessController.doPrivileged;
 
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.RandomAccess;
 import java.util.concurrent.RecursiveAction;
 
 import org.jenetics.util.Seq;
@@ -55,7 +52,7 @@ final class RunnablesAction extends RecursiveAction {
 	}
 
 	public RunnablesAction(final Seq<? extends Runnable> runnables) {
-		this(runnables, 0, runnables.size(), null);
+		this(runnables, 0, runnables.size());
 	}
 
 	@Override

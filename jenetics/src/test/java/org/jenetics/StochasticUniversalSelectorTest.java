@@ -33,6 +33,7 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.TestData;
 
 import io.jenetics.prngine.LCG64ShiftRandom;

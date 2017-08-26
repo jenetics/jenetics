@@ -312,11 +312,6 @@ public final class Population<G extends Gene<?, G>, C extends Comparable<? super
 	}
 
 	@Override
-	public Phenotype<G, C>[] toArray(Phenotype<G, C>[] array) {
-		return _population.toArray(array);
-	}
-
-	@Override
 	public String toString(
 		final String prefix,
 		final String separator,

@@ -36,6 +36,8 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
+import org.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.8
@@ -107,7 +109,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			_tasks.add(_pool.submit(new RunnablesAction(runnables)));
 		}
 
@@ -139,7 +141,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			final int[] parts = partition(
 				runnables.size(),
 				max(
@@ -192,7 +194,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		}
 
 		@Override
-		public void execute(final List<? extends Runnable> runnables) {
+		public void execute(final Seq<? extends Runnable> runnables) {
 			final int[] parts = partition(
 				runnables.size(),
 				max(
