@@ -55,14 +55,14 @@ public class IntermediateCrossoverTest {
 	@Test
 	public void populationRecombine() {
 		RandomRegistry.using(new Random(123), r -> {
-			final ISeq<Phenotype<DoubleGene, Double>> pop =
+			ISeq<Phenotype<DoubleGene, Double>> pop =
 				newDoubleGenePopulation(5, 1, 2);
 			final MSeq<Phenotype<DoubleGene, Double>> copy = pop.copy();
 
 			final IntermediateCrossover<DoubleGene, Double> recombinator =
 				new IntermediateCrossover<>(1);
 
-			recombinator.alter(pop, 10);
+			pop = recombinator.alter(pop, 10).getPopulation();
 
 			for (int i = 0; i < pop.size(); ++i) {
 				final Seq<DoubleGene> genes = pop.get(i)

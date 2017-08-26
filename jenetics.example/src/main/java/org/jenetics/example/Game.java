@@ -80,7 +80,7 @@ public class Game {
 				other = codec.decode(pop.get(index).getGenotype());
 			} else {
 				other = Player.of(0.5);
-			} 
+			}
 
 			return (double)player.compareTo(other);
 		};
