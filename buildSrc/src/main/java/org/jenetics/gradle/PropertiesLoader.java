@@ -62,7 +62,7 @@ public final class PropertiesLoader {
 			properties.load(in);
 		} catch (IOException e) {
 			throw new GradleException(format(
-				"Error while reading propertie file '%s'", file), e
+				"Error while reading property file '%s'", file), e
 			);
 		}
 

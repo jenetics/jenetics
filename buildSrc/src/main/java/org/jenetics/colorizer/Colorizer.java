@@ -116,16 +116,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			boolean modified = false;
 
 			for (int ch = in.read(); ch != -1; ch = in.read()) {
-				if (state != State.DATA) {
-					switch (ch) {
-						//case '<': out.append("&lt;"); break;
-						//case '>': out.append("&gt;"); break;
-						//case '&': out.append("&amp;"); break;
-						default: out.append((char)ch); break;
-					}
-				} else {
-					out.append((char)ch);
-				}
+				out.append((char)ch);
 
 				if (state == State.CODE_TAG) {
 					modified = true;
