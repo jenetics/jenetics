@@ -28,6 +28,8 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.stat.LongMomentStatistics;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.Range;
 
 /**
@@ -45,14 +47,14 @@ public class MeanAltererTest extends AltererTester {
 		final int ngenes = 11;
 		final int nchromosomes = 9;
 		final int npopulation = 100;
-		final Population<DoubleGene, Double> p1 = newDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
-		final Population<DoubleGene, Double> p2 = p1.copy();
+		final ISeq<Phenotype<DoubleGene, Double>> p1 =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
+
+		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
 		final int[] selected = new int[]{3, 34};
 
 		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(0.1);
-		crossover.recombine(p1, selected, 3);
+		crossover.recombine(p2, selected, 3);
 
 		Assert.assertEquals(diff(p1, p2), ngenes);
 	}
@@ -64,9 +66,8 @@ public class MeanAltererTest extends AltererTester {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<DoubleGene, Double> population = newDoubleGenePopulation(
-				ngenes, nchromosomes, npopulation
-			);
+		final ISeq<Phenotype<DoubleGene, Double>> population =
+			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
 		final MeanAlterer<DoubleGene, Double> crossover = new MeanAlterer<>(p);
@@ -83,7 +84,9 @@ public class MeanAltererTest extends AltererTester {
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover.alter(population, 1);
+			final long alterations = crossover
+				.alter(population, 1)
+				.getAlterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

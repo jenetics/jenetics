@@ -25,6 +25,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
@@ -42,14 +45,15 @@ public class SwapMutatorTest extends MutatorTester {
 		final Integer nchromosomes,
 		final Integer npopulation
 	) {
-		final Population<DoubleGene, Double> p1 =
+		final ISeq<Phenotype<DoubleGene, Double>> p1 =
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
-		final Population<DoubleGene, Double> p2 = p1.copy();
+
+		final MSeq<Phenotype<DoubleGene, Double>> p2 = p1.copy();
 		Assert.assertEquals(p2, p1);
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 
-		final int alterations = mutator.alter(p1, 1);
+		final int alterations = mutator.alter(p2, 1).getAlterations();
 		//final int diff = diff(p1, p2);
 
 		if (ngenes == 1) {

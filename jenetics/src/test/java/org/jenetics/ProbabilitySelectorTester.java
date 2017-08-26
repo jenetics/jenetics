@@ -30,8 +30,8 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import org.jenetics.util.ISeq;
 import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.lists;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -119,8 +119,10 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test
 	public void probabilities() {
-		final Population<DoubleGene, Double> population = TestUtils.newDoublePopulation(100);
-		lists.shuffle(population, new Random(System.currentTimeMillis()));
+		final ISeq<Phenotype<DoubleGene, Double>> population = TestUtils
+			.newDoublePopulation(100).copy()
+			.shuffle()
+			.toISeq();
 
 		final S selector = factory().newInstance();
 		final double[] props = selector.probabilities(population, 23);

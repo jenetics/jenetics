@@ -20,19 +20,22 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
-import static org.jenetics.internal.util.Equality.eq;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.RandomAccess;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -45,15 +48,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.jaxb;
 
-import org.jenetics.util.Copyable;
-import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
- * A population is a collection of Phenotypes.
+ * A population is a collection of Phenotypes. Mainly used for JAXB marshalling
+ * a collection of {@link Phenotype}, aka population.
  *
  * <p>
  * <strong>This class is not synchronized.</strong> If multiple threads access
@@ -62,32 +64,15 @@ import org.jenetics.util.Factory;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
 @XmlJavaTypeAdapter(Population.Model.Adapter.class)
-public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
-	implements
-		List<Phenotype<G, C>>,
-		Copyable<Population<G, C>>,
-		RandomAccess,
-		Serializable
+public final class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
+	implements ISeq<Phenotype<G, C>>, Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static final Population<?, ?> EMPTY =
-		new Population(Collections.EMPTY_LIST, true);
-
-
-	private final List<Phenotype<G, C>> _population;
-
-	/**
-	 * Private <i>primary</i> constructor which assigns the underlying
-	 * population without copying and precondition check.
-	 */
-	private Population(final List<Phenotype<G, C>> population, boolean foo) {
-		_population = requireNonNull(population);
-	}
+	private ISeq<Phenotype<G, C>> _population;
 
 	/**
 	 * Constructs a population containing the elements of the specified collection,
@@ -97,81 +82,51 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	 *         this list.
 	 * @throws NullPointerException if the specified population is {@code null}.
 	 */
-	public Population(final Collection<Phenotype<G, C>> population) {
-		this(new ArrayList<>(population), true);
+	public Population(final ISeq<Phenotype<G, C>> population) {
+		_population = requireNonNull(population);
 	}
 
-	/**
-	 * Creating a new {@code Population} with the pre-allocated population
-	 * size.
-	 *
-	 * @param size Pre-allocated population size.
-	 * @throws IllegalArgumentException if the specified initial capacity is
-	 *         negative
-	 */
-	public Population(final int size) {
-		this(new ArrayList<>(size), true);
-	}
-
-	/**
-	 * Creating a new {@code Population}.
-	 */
-	public Population() {
-		this(new ArrayList<>(), true);
-	}
-
-	/**
-	 * Fills the population with individuals created by the given factory.
-	 *
-	 * @param factory the {@code Phenotype} factory.
-	 * @param count the number of individuals to add to this population.
-	 * @return return this population, for command chaining.
-	 */
-	public Population<G, C> fill(
-		final Factory<Phenotype<G, C>> factory,
-		final int count
+	@Override
+	public ISeq<Phenotype<G, C>> append(
+		final Iterable<? extends Phenotype<G, C>> values
 	) {
-		for (int i = 0; i < count; ++i) {
-			_population.add(factory.newInstance());
-		}
-		return this;
+		return _population.append(values);
 	}
 
-	/**
-	 * Add {@code Phenotype} to the {@code Population}.
-	 *
-	 * @param phenotype {@code Phenotype} to be add.
-	 * @throws NullPointerException if the given {@code phenotype} is
-	 *         {@code null}.
-	 */
+	@SafeVarargs
 	@Override
-	public boolean add(final Phenotype<G, C> phenotype) {
-		requireNonNull(phenotype, "Phenotype");
-		return _population.add(phenotype);
-	}
-
-	/**
-	 * Add {@code Phenotype} to the {@code Population}.
-	 *
-	 * @param index Index of the
-	 * @param phenotype {@code Phenotype} to be add.
-	 * @throws NullPointerException if the given {@code phenotype} is
-	 *         {@code null}.
-	 */
-	@Override
-	public void add(final int index, final Phenotype<G, C> phenotype) {
-		requireNonNull(phenotype, "Phenotype");
-		_population.add(index, phenotype);
+	public final ISeq<Phenotype<G, C>> append(final Phenotype<G, C>... values) {
+		return _population.append(values);
 	}
 
 	@Override
-	public boolean addAll(final Collection<? extends Phenotype<G, C>> c) {
-		return _population.addAll(c);
+	public List<Phenotype<G, C>> asList() {
+		return _population.asList();
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends Phenotype<G, C>> c) {
-		return _population.addAll(index, c);
+	public boolean contains(final Object element) {
+		return _population.contains(element);
+	}
+
+	@Override
+	public MSeq<Phenotype<G, C>> copy() {
+		return _population.copy();
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		return _population.equals(object);
+	}
+
+	@Override
+	public boolean forAll(final Predicate<? super Phenotype<G, C>> predicate) {
+		return _population.forAll(predicate);
+	}
+
+	@Override
+	public void forEach(final Consumer<? super Phenotype<G, C>> action) {
+		_population.forEach(action);
 	}
 
 	@Override
@@ -180,88 +135,45 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public Phenotype<G, C> set(final int index, final Phenotype<G, C> pt) {
-		requireNonNull(pt, "Phenotype");
-		return _population.set(index, pt);
+	public int hashCode() {
+		return _population.hashCode();
 	}
 
 	@Override
-	public Stream<Phenotype<G, C>> stream() {
-		return _population.stream();
-	}
-
-	public void remove(final Phenotype<G, C> phenotype) {
-		requireNonNull(phenotype, "Phenotype");
-		_population.remove(phenotype);
+	public int indexOf(final Object element) {
+		return _population.indexOf(element);
 	}
 
 	@Override
-	public boolean remove(final Object o) {
-		return _population.remove(o);
+	public int indexOf(final Object element, final int start) {
+		return _population.indexOf(element, start);
 	}
 
 	@Override
-	public boolean removeAll(final Collection<?> c) {
-		return _population.removeAll(c);
+	public int indexOf(final Object element, final int start, final int end) {
+		return _population.indexOf(element, start, end);
 	}
 
 	@Override
-	public Phenotype<G, C> remove(final int index) {
-		return _population.remove(index);
+	public int indexWhere(final Predicate<? super Phenotype<G, C>> predicate) {
+		return _population.indexWhere(predicate);
 	}
 
 	@Override
-	public void clear() {
-		_population.clear();
-	}
-
-	/**
-	 * Sorting the phenotypes in this population according to its fitness
-	 * value in descending order.
-	 */
-	public void populationSort() {
-		sortWith(Optimize.MAXIMUM.descending());
-	}
-
-	/**
-	 * Sort this population according the order defined by the given
-	 * {@code comparator}.
-	 *
-	 * @param comparator the comparator which defines the sorting order.
-	 * @throws java.lang.NullPointerException if the {@code comparator} is
-	 *         {@code null}.
-	 */
-	public void sortWith(final Comparator<? super C> comparator) {
-		_population.sort((a, b) ->
-			comparator.compare(a.getFitness(), b.getFitness())
-		);
-	}
-
-	/**
-	 * Reverse the order of the population.
-	 */
-	public void reverse() {
-		Collections.reverse(_population);
+	public int indexWhere(
+		final Predicate<? super Phenotype<G, C>> predicate,
+		final int start
+	) {
+		return _population.indexWhere(predicate, start);
 	}
 
 	@Override
-	public Iterator<Phenotype<G, C>> iterator() {
-		return _population.iterator();
-	}
-
-	@Override
-	public ListIterator<Phenotype<G, C>> listIterator() {
-		return _population.listIterator();
-	}
-
-	@Override
-	public ListIterator<Phenotype<G, C>> listIterator(final int index) {
-		return _population.listIterator(index);
-	}
-
-	@Override
-	public int size() {
-		return _population.size();
+	public int indexWhere(
+		final Predicate<? super Phenotype<G, C>> predicate,
+		final int start,
+		final int end
+	) {
+		return _population.indexWhere(predicate, start, end);
 	}
 
 	@Override
@@ -270,33 +182,128 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public boolean contains(final Object o) {
-		return _population.contains(o);
+	public boolean isSorted() {
+		return _population.isSorted();
 	}
 
 	@Override
-	public boolean containsAll(final Collection<?> c) {
-		return _population.containsAll(c);
+	public boolean isSorted(
+		final Comparator<? super Phenotype<G, C>> comparator
+	) {
+		return _population.isSorted(comparator);
 	}
 
 	@Override
-	public int indexOf(final Object o) {
-		return _population.indexOf(o);
+	public Iterator<Phenotype<G, C>> iterator() {
+		return _population.iterator();
 	}
 
 	@Override
-	public int lastIndexOf(final Object o) {
-		return _population.lastIndexOf(o);
+	public int lastIndexOf(final Object element) {
+		return _population.lastIndexOf(element);
 	}
 
 	@Override
-	public boolean retainAll(final Collection<?> c) {
-		return _population.retainAll(c);
+	public int lastIndexOf(final Object element, final int end) {
+		return _population.lastIndexOf(element, end)
+			;}
+
+	@Override
+	public int lastIndexOf(final Object element, final int start, final int end) {
+		return _population.lastIndexOf(element, start, end);
 	}
 
 	@Override
-	public List<Phenotype<G, C>> subList(final int fromIndex, final int toIndex) {
-		return _population.subList(fromIndex, toIndex);
+	public int lastIndexWhere(final Predicate<? super Phenotype<G, C>> predicate) {
+		return _population.lastIndexWhere(predicate);
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Predicate<? super Phenotype<G, C>> predicate,
+		final int end
+	) {
+		return _population.lastIndexWhere(predicate, end);
+	}
+
+	@Override
+	public int lastIndexWhere(
+		final Predicate<? super Phenotype<G, C>> predicate,
+		final int start,
+		final int end
+	) {
+		return _population.lastIndexWhere(predicate, start, end);
+	}
+
+	@Override
+	public int length() {
+		return _population.length();
+	}
+
+	@Override
+	public ListIterator<Phenotype<G, C>> listIterator() {
+		return _population.listIterator();
+	}
+
+	@Override
+	public <B> ISeq<B> map(
+		final Function<? super Phenotype<G, C>, ? extends B> mapper
+	) {
+		return _population.map(mapper);
+	}
+
+	public static <T> ISeq<T> of(
+		final Supplier<? extends T> supplier,
+		final int length
+	) {
+		return ISeq.of(supplier, length);
+	}
+
+	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
+		return ISeq.of(values);
+	}
+
+	@Override
+	public Stream<Phenotype<G, C>> parallelStream() {
+		return _population.parallelStream();
+	}
+
+	@Override
+	public ISeq<Phenotype<G, C>> prepend(
+		final Iterable<? extends Phenotype<G, C>> values
+	) {
+		return _population.prepend(values);
+	}
+
+	@SafeVarargs
+	@Override
+	public final ISeq<Phenotype<G, C>> prepend(final Phenotype<G, C>... values) {
+		return _population.prepend(values);
+	}
+
+	@Override
+	public int size() {
+		return _population.size();
+	}
+
+	@Override
+	public Spliterator<Phenotype<G, C>> spliterator() {
+		return _population.spliterator();
+	}
+
+	@Override
+	public Stream<Phenotype<G, C>> stream() {
+		return _population.stream();
+	}
+
+	@Override
+	public ISeq<Phenotype<G, C>> subSeq(final int start) {
+		return _population.subSeq(start);
+	}
+
+	@Override
+	public ISeq<Phenotype<G, C>> subSeq(final int start, final int end) {
+		return _population.subSeq(start, end);
 	}
 
 	@Override
@@ -305,43 +312,17 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	}
 
 	@Override
-	public <A> A[] toArray(final A[] a) {
-		return _population.toArray(a);
+	public String toString(
+		final String prefix,
+		final String separator,
+		final String suffix
+	) {
+		return _population.toString(prefix, separator, suffix);
 	}
 
 	@Override
-	public Population<G, C> copy() {
-		return new Population<>(new ArrayList<>(_population), true);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(_population).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(p -> eq(_population, p._population));
-	}
-
-	@Override
-	public String toString() {
-		return _population.stream()
-			.map(Object::toString)
-			.collect(joining("\n", "", "\n"));
-	}
-
-	/**
-	 * Return an empty population.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness result type
-	 * @return an empty population
-	 */
-	@SuppressWarnings("unchecked")
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Population<G, C> empty() {
-		return (Population<G, C>)EMPTY;
+	public String toString(final String separator) {
+		return _population.toString(separator);
 	}
 
 	/**
@@ -356,10 +337,41 @@ public class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<Phenotype<G, C>, ?, Population<G, C>> toPopulation() {
 		return Collector.of(
-			Population::new,
-			Population::add,
-			(left, right) -> { left.addAll(right); return left; }
+			(Supplier<List<Phenotype<G, C>>>)ArrayList::new,
+			List::add,
+			(left, right) -> { left.addAll(right); return left; },
+			l -> new Population<>(ISeq.of(l))
 		);
+	}
+
+		/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+		out.writeInt(length());
+
+		for (Phenotype<G, C> pt : _population) {
+			out.writeObject(pt);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final MSeq<Phenotype<G, C>> population = MSeq.ofLength(in.readInt());
+
+		for (int i = 0; i < population.length(); ++i) {
+			population.set(i, (Phenotype<G, C>) in.readObject());
+		}
+
+		_population = new Population<>(population.toISeq());
 	}
 
 	/* *************************************************************************

@@ -42,6 +42,8 @@ import org.testng.annotations.Test;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.ObjectTester;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
@@ -68,14 +70,12 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(new DoubleChromosome(0.0, 1.0));
 
-		final Population<DoubleGene, Double> population =
-			new Population<>(2);
-
+		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {
-			population.add(Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
+			population.set(i, Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
 		}
 
-		selector().select(population, -1, Optimize.MAXIMUM);
+		selector().select(population.toISeq(), -1, Optimize.MAXIMUM);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -88,14 +88,12 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(new DoubleChromosome(0.0, 1.0));
 
-		final Population<DoubleGene, Double> population =
-			new Population<>(2);
-
+		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {
-			population.add(Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
+			population.set(i, Phenotype.of(gtf.newInstance(), 12, TestUtils.FF));
 		}
 
-		selector().select(population, 1, null);
+		selector().select(population.toISeq(), 1, null);
 	}
 
 	@Test(dataProvider = "selectionPerformanceParameters")
@@ -110,10 +108,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 100.0)), 1, ff);
 
-		using(new Random(543455), r -> {
-			final Population<DoubleGene, Double> population = IntStream.range(0, size)
+		using(new LCG64ShiftRandom(543455), r -> {
+			final ISeq<Phenotype<DoubleGene, Double>> population = IntStream.range(0, size)
 				.mapToObj(i -> ptf.newInstance())
-				.collect(Population.toPopulation());
+				.collect(ISeq.toISeq());
 
 			final Selector<DoubleGene, Double> selector = selector();
 
@@ -163,15 +161,15 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () ->
 			Phenotype.of(Genotype.of(DoubleChromosome.of(0.0, 1_000.0)), 1, ff);
 
-		final Population<DoubleGene, Double> population = IntStream.range(0, size)
+		final ISeq<Phenotype<DoubleGene, Double>> population = IntStream.range(0, size)
 			.mapToObj(i -> ptf.newInstance())
-			.collect(Population.toPopulation());
+			.collect(ISeq.toISeq());
 
-		final Population<DoubleGene, Double> selection =
+		final ISeq<Phenotype<DoubleGene, Double>> selection =
 			selector().select(population, count, opt);
 
 		if (size == 0) {
-			Assert.assertEquals( selection.size(), 0 );
+			Assert.assertEquals(selection.size(), 0);
 		} else {
 			Assert.assertEquals(selection.size(), count.intValue());
 		}
@@ -291,10 +289,10 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
 			final Histogram<Double> hist = Histogram.ofDouble(MIN, MAX, CLASS_COUNT);
 
-			final Population<DoubleGene, Double> population =
+			final ISeq<Phenotype<DoubleGene, Double>> population =
 				IntStream.range(0, populationCount)
 					.mapToObj(i -> ptf.newInstance())
-					.collect(Population.toPopulation());
+					.collect(ISeq.toISeq());
 
 			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 			selector.select(population, selectionCount, opt).stream()

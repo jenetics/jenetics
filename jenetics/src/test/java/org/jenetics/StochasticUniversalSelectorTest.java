@@ -34,6 +34,7 @@ import org.jenetics.internal.util.Named;
 
 import org.jenetics.stat.Histogram;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
 import org.jenetics.util.TestData;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
@@ -65,16 +66,16 @@ public class StochasticUniversalSelectorTest
 		Factory<Genotype<IntegerGene>> gtf =
 			Genotype.of(IntegerChromosome.of(0, 100, 10));
 
-		final Population<IntegerGene, Integer> population = IntStream.range(0, 50)
-			.mapToObj(i -> Phenotype.of(gtf.newInstance(), 50, ff))
-			.collect(Population.toPopulation());
+		final ISeq<Phenotype<IntegerGene, Integer>> population =
+			IntStream.range(0, 50)
+				.mapToObj(i -> Phenotype.of(gtf.newInstance(), 50, ff))
+				.collect(ISeq.toISeq());
 
 		final StochasticUniversalSelector<IntegerGene, Integer> selector =
 			new StochasticUniversalSelector<>();
 
-		final Population<IntegerGene, Integer> selection = selector.select(
-			population, 50, Optimize.MINIMUM
-		);
+		final ISeq<Phenotype<IntegerGene, Integer>> selection =
+			selector.select(population, 50, Optimize.MINIMUM);
 	}
 
 	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})

@@ -21,8 +21,8 @@ package org.jenetics.engine;
 
 import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
+import java.io.Serializable;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -37,8 +37,9 @@ import org.jenetics.IntegerChromosome;
 import org.jenetics.IntegerGene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.util.Factory;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.ObjectTester;
 import org.jenetics.util.RandomRegistry;
 
@@ -51,18 +52,19 @@ public class EvolutionResultTest
 
 	@Override
 	protected Factory<EvolutionResult<DoubleGene, Double>> factory() {
+		final Function<Genotype<DoubleGene>, Double> ff =
+			(Function<Genotype<DoubleGene>, Double> & Serializable)
+				a -> a.getGene().getAllele();
+
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
 				random.nextBoolean() ? Optimize.MAXIMUM : Optimize.MINIMUM,
-				new Population<DoubleGene, Double>(100)
-					.fill(() -> Phenotype.of(
-						Genotype.of(DoubleChromosome.of(0, 1)), 1,
-						a -> a.getGene().getAllele()),
-						100
-					),
+				IntStream.range(0, 100)
+					.mapToObj(i -> Phenotype.of(gt.newInstance(), 1, ff))
+					.collect(ISeq.toISeq()),
 				random.nextInt(1000),
 				random.nextInt(1000),
 				EvolutionDurations.of(
@@ -128,17 +130,17 @@ public class EvolutionResultTest
 		final int length = 100;
 		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
 
-		final Population<IntegerGene, Integer> population = new Population<>(length);
+		final MSeq<Phenotype<IntegerGene, Integer>> population = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			population.add(Phenotype.of(gt, 1, ff));
+			population.set(i, Phenotype.of(gt, 1, ff));
 		}
-		Collections.shuffle(population, RandomRegistry.getRandom());
+		population.shuffle(RandomRegistry.getRandom());
 
 		final EvolutionResult<IntegerGene, Integer> maxResult = EvolutionResult.of(
-			Optimize.MAXIMUM, population,
+			Optimize.MAXIMUM, population.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
@@ -146,7 +148,7 @@ public class EvolutionResultTest
 		Assert.assertEquals(maxResult.getWorstFitness().intValue(), 0);
 
 		final EvolutionResult<IntegerGene, Integer> minResult = EvolutionResult.of(
-				Optimize.MINIMUM, population,
+				Optimize.MINIMUM, population.toISeq(),
 				0, 0, EvolutionDurations.ZERO, 0, 0, 0
 			);
 
@@ -159,31 +161,31 @@ public class EvolutionResultTest
 		final int length = 100;
 		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
 
-		final Population<IntegerGene, Integer> small = new Population<>(length);
+		final MSeq<Phenotype<IntegerGene, Integer>> small = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			small.add(Phenotype.of(gt, 1, ff));
+			small.set(i, Phenotype.of(gt, 1, ff));
 		}
-		Collections.shuffle(small, RandomRegistry.getRandom());
+		small.shuffle(RandomRegistry.getRandom());
 
-		final Population<IntegerGene, Integer> big = new Population<>(length);
+		final MSeq<Phenotype<IntegerGene, Integer>> big = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i + length, 0, length)
 			));
-			big.add(Phenotype.of(gt, 1, ff));
+			big.set(i, Phenotype.of(gt, 1, ff));
 		}
-		Collections.shuffle(big, RandomRegistry.getRandom());
+		big.shuffle(RandomRegistry.getRandom());
 
 
 		final EvolutionResult<IntegerGene, Integer> smallMaxResult = EvolutionResult.of(
-			Optimize.MAXIMUM, small,
+			Optimize.MAXIMUM, small.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 		final EvolutionResult<IntegerGene, Integer> bigMaxResult = EvolutionResult.of(
-			Optimize.MAXIMUM, big,
+			Optimize.MAXIMUM, big.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
@@ -194,11 +196,11 @@ public class EvolutionResultTest
 
 
 		final EvolutionResult<IntegerGene, Integer> smallMinResult = EvolutionResult.of(
-			Optimize.MINIMUM, small,
+			Optimize.MINIMUM, small.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 		final EvolutionResult<IntegerGene, Integer> bigMinResult = EvolutionResult.of(
-			Optimize.MINIMUM, big,
+			Optimize.MINIMUM, big.toISeq(),
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
@@ -232,17 +234,18 @@ public class EvolutionResultTest
 		final int length = 1000;
 		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
 
-		final Population<IntegerGene, Integer> pop = new Population<>(length);
+		final MSeq<Phenotype<IntegerGene, Integer>> pop = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(value, 0, length)
 			));
-			pop.add(Phenotype.of(gt, 1, ff));
+			pop.set(i, Phenotype.of(gt, 1, ff));
 		}
-		Collections.shuffle(pop, RandomRegistry.getRandom());
+		pop.shuffle(RandomRegistry.getRandom());
 
 
-		return EvolutionResult.of(opt, pop, 0, 0, EvolutionDurations.ZERO, 0, 0, 0);
+		return EvolutionResult
+			.of(opt, pop.toISeq(), 0, 0, EvolutionDurations.ZERO, 0, 0, 0);
 	}
 
 }

@@ -19,21 +19,21 @@
  */
 package org.jenetics.internal.util;
 
-import java.util.List;
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 2.0
+ * @version !__version__!
  * @since 2.0
  */
 final class RunnablesRunnable implements Runnable {
 
-	private final List<? extends Runnable> _runnables;
+	private final Seq<? extends Runnable> _runnables;
 	private final int _start;
 	private final int _end;
 
 	RunnablesRunnable(
-		final List<? extends Runnable> runnables,
+		final Seq<? extends Runnable> runnables,
 		final int start,
 		final int end
 	) {

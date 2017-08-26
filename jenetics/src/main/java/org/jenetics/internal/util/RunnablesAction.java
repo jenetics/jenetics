@@ -23,25 +23,26 @@ import static java.lang.Math.max;
 import static java.security.AccessController.doPrivileged;
 
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.RandomAccess;
 import java.util.concurrent.RecursiveAction;
+
+import org.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.8
+ * @version !__version__!
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
 	private static final long serialVersionUID = 1;
 
-	private final List<? extends Runnable> _runnables;
+	private static final int DEFAULT_THRESHOLD = 7;
+
+	private final Seq<? extends Runnable> _runnables;
 	private final int _high;
 	private final int _low;
 
 	private RunnablesAction(
-		final List<? extends Runnable> runnables,
+		final Seq<? extends Runnable> runnables,
 		final int low,
 		final int high
 	) {
@@ -50,14 +51,8 @@ final class RunnablesAction extends RecursiveAction {
 		_high = high;
 	}
 
-	RunnablesAction(final List<? extends Runnable> runnables) {
-		this(
-			runnables instanceof RandomAccess
-				? runnables
-				: new ArrayList<>(runnables),
-			0,
-			runnables.size()
-		);
+	public RunnablesAction(final Seq<? extends Runnable> runnables) {
+		this(runnables, 0, runnables.size());
 	}
 
 	@Override

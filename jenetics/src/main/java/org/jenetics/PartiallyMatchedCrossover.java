@@ -75,7 +75,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.6
+ * @version !__version__!
  */
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>

@@ -4,13 +4,14 @@ import java.util.stream.IntStream;
 
 import org.jenetics.internal.util.IntRef;
 
+import org.jenetics.AlterResult;
 import org.jenetics.Chromosome;
 import org.jenetics.Gene;
 import org.jenetics.Genotype;
 import org.jenetics.Mutator;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.util.MSeq;
+import org.jenetics.util.Seq;
 
 /**
  * Mutator implementation which is part of the
@@ -58,19 +59,21 @@ public class WeaselMutator<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final long generation) {
+	public AlterResult<G, C>
+	alter(final Seq<Phenotype<G, C>> population, final long generation) {
 		final IntRef alterations = new IntRef(0);
 
-		for (int i = 0; i < population.size(); ++i) {
-			final Phenotype<G, C> pt = population.get(i);
+		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+		for (int i = 0; i < pop.size(); ++i) {
+			final Phenotype<G, C> pt = pop.get(i);
 
 			final Genotype<G> gt = pt.getGenotype();
 			final Genotype<G> mgt = mutate(gt, alterations);
 			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
-			population.set(i, mpt);
+			pop.set(i, mpt);
 		}
 
-		return alterations.value;
+		return AlterResult.of(pop.toISeq(), alterations.value);
 	}
 
 	private Genotype<G> mutate(

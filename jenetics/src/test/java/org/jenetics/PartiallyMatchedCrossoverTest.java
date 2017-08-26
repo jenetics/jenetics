@@ -92,7 +92,7 @@ public class PartiallyMatchedCrossoverTest {
 		final Integer npopulation,
 		final Double p
 	) {
-		final Population<EnumGene<Double>, Double> population =
+		final ISeq<Phenotype<EnumGene<Double>, Double>> population =
 			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		// The mutator to test.
@@ -110,7 +110,9 @@ public class PartiallyMatchedCrossoverTest {
 		final LongMomentStatistics variance = new LongMomentStatistics();
 
 		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover.alter(population, 1);
+			final long alterations = crossover
+				.alter(population, 1)
+				.getAlterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

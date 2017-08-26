@@ -26,6 +26,9 @@ import static java.util.Objects.requireNonNull;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
+
 /**
  * In truncation selection individuals are sorted according to their fitness.
  * Only the n  best individuals are selected. The truncation selection is a very
@@ -38,7 +41,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.8
+ * @version !__version__!
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -80,17 +83,16 @@ public final class TruncationSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating
-	 * the selection probabilities. (The method
-	 * {@link Population#sortWith(java.util.Comparator)} )} is called by this
-	 * method.) If the selection size is greater the the population size, the
-	 * whole population is duplicated until the desired sample size is reached.
+	 * the selection probabilities. If the selection size is greater the the
+	 * population size, the whole population is duplicated until the desired
+	 * sample size is reached.
 	 *
 	 * @throws NullPointerException if the {@code population} or {@code opt} is
 	 *         {@code null}.
 	 */
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -103,20 +105,26 @@ public final class TruncationSelector<
 			));
 		}
 
-		final Population<G, C> selection = new Population<>(count);
+		final MSeq<Phenotype<G, C>> selection = MSeq
+			.ofLength(population.isEmpty() ? 0 : count);
+
 		if (count > 0 && !population.isEmpty()) {
-			final Population<G, C> copy = population.copy();
-			copy.sortWith(opt.<C>descending());
+			final MSeq<Phenotype<G, C>> copy = population.copy();
+			copy.sort((a, b) ->
+				opt.<C>descending().compare(a.getFitness(), b.getFitness()));
 
 			int size = count;
 			do {
-				final int length = min(min(copy.size(), size), _n);
-				selection.addAll(copy.subList(0, length));
+				final int length = Math.min(copy.size(), size);
+				for (int i = 0; i < length; ++i) {
+					selection.set((count - size) + i, copy.get(i));
+				}
+
 				size -= length;
 			} while (size > 0);
 		}
 
-		return selection;
+		return selection.toISeq();
 	}
 
 	@Override

@@ -26,7 +26,10 @@ import static org.jenetics.internal.math.random.indexes;
 import java.util.Random;
 import java.util.function.IntFunction;
 
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 import org.jenetics.util.RandomRegistry;
+import org.jenetics.util.Seq;
 
 /**
  * <p>
@@ -50,7 +53,7 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -66,7 +69,7 @@ public abstract class Recombinator<
 	 *
 	 * @param probability The recombination probability.
 	 * @param order the number of individuals involved in the
-	 *        {@link #recombine(Population, int[], long)} step
+	 *        {@link #recombine(MSeq, int[], long)} step
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *         valid range of {@code [0, 1]} or the given {@code order} is
 	 *         smaller than two.
@@ -83,7 +86,7 @@ public abstract class Recombinator<
 
 	/**
 	 * Return the number of individuals involved in the
-	 * {@link #recombine(Population, int[], long)} step.
+	 * {@link #recombine(MSeq, int[], long)} step.
 	 *
 	 * @return the number of individuals involved in the recombination step.
 	 */
@@ -92,11 +95,11 @@ public abstract class Recombinator<
 	}
 
 	@Override
-	public final int alter(
-		final Population<G, C> population,
+	public final AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		int count = 0;
+		final AlterResult<G, C> result;
 		if (population.size() >= 2) {
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
@@ -108,17 +111,23 @@ public abstract class Recombinator<
 				return ind;
 			};
 
-			count = indexes(random, population.size(), _probability)
+			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+			final int count = indexes(random, population.size(), _probability)
 				.mapToObj(individuals)
-				.mapToInt(i -> recombine(population, i, generation))
+				.mapToInt(i -> recombine(pop, i, generation))
 				.sum();
+
+			result = AlterResult.of(pop.toISeq(), count);
+		} else {
+			result = AlterResult.of(population.asISeq());
 		}
 
-		return count;
+		return result;
 	}
 
 	/**
-	 * Recombination template method.
+	 * Recombination template method. This method is called 0 to n times. It is
+	 * guaranteed that this method is only called by one thread.
 	 *
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
@@ -129,7 +138,7 @@ public abstract class Recombinator<
 	 * @return the number of genes that has been altered.
 	 */
 	protected abstract int recombine(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
 		final long generation
 	);

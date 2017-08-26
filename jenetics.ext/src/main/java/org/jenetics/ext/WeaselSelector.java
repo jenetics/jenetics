@@ -6,9 +6,10 @@ import static java.util.Objects.requireNonNull;
 import org.jenetics.Gene;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
 import org.jenetics.Selector;
 import org.jenetics.stat.MinMax;
+import org.jenetics.util.ISeq;
+import org.jenetics.util.MSeq;
 
 /**
  * Selector implementation which is part of the
@@ -47,8 +48,8 @@ public class WeaselSelector<
 	implements Selector<G, C>
 {
 	@Override
-	public Population<G, C> select(
-		final Population<G, C> population,
+	public ISeq<Phenotype<G, C>> select(
+		final ISeq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -64,6 +65,7 @@ public class WeaselSelector<
 		final MinMax<Phenotype<G, C>> minMax = population.stream()
 			.collect(MinMax.toMinMax(opt.ascending()));
 
-		return new Population<G, C>(count).fill(minMax::getMax, count);
+		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(count);
+		return result.fill(minMax::getMax).toISeq();
 	}
 }

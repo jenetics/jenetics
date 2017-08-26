@@ -540,8 +540,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	public static <T> MSeq<T> of(final Seq<T> values) {
-		return values instanceof ArrayMSeq<?>
-			? ((ArrayMSeq<T>)values).copy()
+		return values instanceof MSeq<?>
+			? ((MSeq<T>)values).copy()
 			: MSeq.<T>ofLength(values.length()).setAll(values);
 	}
 

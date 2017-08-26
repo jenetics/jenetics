@@ -30,7 +30,7 @@ import org.jenetics.DoubleGene;
 import org.jenetics.Genotype;
 import org.jenetics.Optimize;
 import org.jenetics.Phenotype;
-import org.jenetics.Population;
+import org.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -85,14 +85,14 @@ public class FitnessThresholdLimitTest {
 		);
 	}
 
-	private static Population<DoubleGene, Double> population(
+	private static ISeq<Phenotype<DoubleGene, Double>> population(
 		final int min,
 		final int max
 	) {
 		return IntStream.rangeClosed(min, max)
 			.mapToDouble(i -> (double)i)
 			.mapToObj(FitnessThresholdLimitTest::phenotype)
-			.collect(Population.toPopulation());
+			.collect(ISeq.toISeq());
 	}
 
 	private static Phenotype<DoubleGene, Double> phenotype(final double value) {

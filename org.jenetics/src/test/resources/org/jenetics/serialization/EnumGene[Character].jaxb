@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<enum-gene length="5">
+    <valid-alleles>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">ꗁ</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">뫡</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">퀦</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䊽</allele>
+        <allele xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">䇪</allele>
+    </valid-alleles>
+    <allele index="2">
+        <value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="char">퀦</value>
+    </allele>
+</enum-gene>

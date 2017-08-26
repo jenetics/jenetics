@@ -39,7 +39,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.6
+ * @version !__version__!
  */
 public final class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -68,7 +68,7 @@ public final class MeanAlterer<
 
 	@Override
 	protected int recombine(
-		final Population<G, C> population,
+		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
 		final long generation
 	) {

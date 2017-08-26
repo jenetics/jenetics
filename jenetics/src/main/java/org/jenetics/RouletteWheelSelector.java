@@ -27,6 +27,8 @@ import org.jenetics.internal.math.DoubleAdder;
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+
 /**
  * The roulette-wheel selector is also known as fitness proportional selector,
  * but in the <em>Jenetics</em> library it is implemented as probability selector.
@@ -38,7 +40,7 @@ import org.jenetics.internal.util.Hash;
  *      </a>
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.2
+ * @version !__version__!
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -57,7 +59,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	protected double[] probabilities(
-		final Population<G, N> population,
+		final ISeq<Phenotype<G, N>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

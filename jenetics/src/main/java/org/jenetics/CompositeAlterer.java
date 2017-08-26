@@ -37,7 +37,7 @@ import org.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -72,10 +72,24 @@ final class CompositeAlterer<
 	}
 
 	@Override
-	public int alter(final Population<G, C> population, final long generation) {
-		return _alterers.stream()
-			.mapToInt(a -> a.alter(population, generation))
-			.sum();
+	public AlterResult<G, C> alter(
+		final Seq<Phenotype<G, C>> population,
+		final long generation
+	) {
+		AlterResult<G, C> result = AlterResult.of(population.asISeq());
+		for (Alterer<G, C> alterer : _alterers) {
+			final AlterResult<G, C> as = alterer.alter(
+				result.getPopulation(),
+				generation
+			);
+
+			result = AlterResult.of(
+				as.getPopulation(),
+				as.getAlterations() + result.getAlterations()
+			);
+		}
+
+		return result;
 	}
 
 	/**

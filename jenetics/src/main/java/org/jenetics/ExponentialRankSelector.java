@@ -24,6 +24,8 @@ import static java.lang.String.format;
 
 import org.jenetics.internal.util.Hash;
 
+import org.jenetics.util.ISeq;
+
 /**
  * <p>
  * An alternative to the "weak" {@code LinearRankSelector} is to assign
@@ -50,7 +52,7 @@ import org.jenetics.internal.util.Hash;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -88,12 +90,11 @@ public final class ExponentialRankSelector<
 
 	/**
 	 * This method sorts the population in descending order while calculating the
-	 * selection probabilities. (The method {@link Population#populationSort()} is called
-	 * by this method.)
+	 * selection probabilities.
 	 */
 	@Override
 	protected double[] probabilities(
-		final Population<G, C> population,
+		final ISeq<Phenotype<G, C>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<double-chromosome length="20" min="0.0" max="1.0">
+    <allele>0.16277429400088883</allele>
+    <allele>0.6474816013874236</allele>
+    <allele>0.8130817899211762</allele>
+    <allele>0.06557865824530407</allele>
+    <allele>0.31381873336411537</allele>
+    <allele>0.46675042754070306</allele>
+    <allele>0.4996426735422532</allele>
+    <allele>0.5784951292775187</allele>
+    <allele>0.9945972432252184</allele>
+    <allele>0.544162170539959</allele>
+    <allele>0.5664930601410192</allele>
+    <allele>0.8617698705064306</allele>
+    <allele>0.01146471461863885</allele>
+    <allele>0.9609275579272215</allele>
+    <allele>0.05580574978916464</allele>
+    <allele>0.04414127619435981</allele>
+    <allele>0.8089248360226289</allele>
+    <allele>0.384841581680367</allele>
+    <allele>0.8488012472289163</allele>
+    <allele>0.4550932725791905</allele>
+</double-chromosome>
