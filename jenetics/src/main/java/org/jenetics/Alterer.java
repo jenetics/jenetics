@@ -61,8 +61,8 @@ public interface Alterer<
 
 	/**
 	 * Alters (recombine) a given population. If the {@code population} is empty,
-	 * nothing is altered. The altering of the population is done in place; the
-	 * given <i>population</i> is altered.
+	 * nothing is altered. The altered population is part of the returned
+	 * {@code AlterResult} object.
 	 *
 	 * @param population The Population to be altered. If the
 	 *        {@code population} is {@code null} or empty, nothing is altered.
