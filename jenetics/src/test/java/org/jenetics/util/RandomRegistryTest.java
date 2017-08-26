@@ -94,11 +94,10 @@ public class RandomRegistryTest {
 
 	@Test
 	public void setThreadLocalRandom() {
-		final LCG64ShiftRandom.ThreadLocal random =
-			new LCG64ShiftRandom.ThreadLocal();
+		final Random random = new Random();
 		RandomRegistry.setRandom(random);
 
-		assertSame(RandomRegistry.getRandom(), random.get());
+		Assert.assertSame(RandomRegistry.getRandom(), random);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
@@ -172,13 +171,13 @@ public class RandomRegistryTest {
 	@Test
 	public void withScope() {
 		final List<Genotype<DoubleGene>> genotypes1 =
-			RandomRegistry.with(new LCG64ShiftRandom(123), random ->
+			RandomRegistry.with(new Random(123), random ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())
 			);
 		final List<Genotype<DoubleGene>> genotypes2 =
-			RandomRegistry.with(new LCG64ShiftRandom(123), random ->
+			RandomRegistry.with(new Random(123), random ->
 				Genotype.of(DoubleChromosome.of(0, 10)).instances()
 					.limit(100)
 					.collect(toList())

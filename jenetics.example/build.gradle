@@ -31,6 +31,8 @@ apply plugin: 'packaging'
 dependencies {
 	compile project(':jenetics')
 	compile Include.PRNGine
+
+	testCompile Include.TestNG
 }
 
 jar.manifest.instruction('Export-Package',

@@ -44,7 +44,7 @@ dependencies {
 
 jar.manifest.instruction('Export-Package',
 	'org.jenetics.prog',
-	'org.jenetics.prog.ops'
+	'org.jenetics.prog.op'
 )
 
 jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')

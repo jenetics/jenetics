@@ -89,7 +89,6 @@ import org.jenetics.internal.util.require;
  *
  * @see Random
  * @see ThreadLocalRandom
- * @see LCG64ShiftRandom
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0

@@ -24,6 +24,7 @@ import static org.jenetics.stat.StatisticsAssert.assertDistribution;
 import static org.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import org.testng.annotations.DataProvider;
@@ -69,7 +70,7 @@ public class LinearRankSelectorTest
 			final int loops = 50;
 			final int npopulation = POPULATION_COUNT;
 
-			final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+			final Random random = new Random();
 			using(random, r -> {
 				final Histogram<Double> distribution = SelectorTester.distribution(
 					new LinearRankSelector<>(nminus),
@@ -121,7 +122,7 @@ public class LinearRankSelectorTest
 	}
 
 	private static void writeDistributionData(final Optimize opt) {
-		final ThreadLocal<LCG64ShiftRandom> random = new LCG64ShiftRandom.ThreadLocal();
+		final Random random = new Random();
 		using(random, r -> {
 			final int npopulation = POPULATION_COUNT;
 			//final int loops = 2_500_000;

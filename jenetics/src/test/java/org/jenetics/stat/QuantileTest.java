@@ -62,7 +62,7 @@ public class QuantileTest {
 		final int N = 2_000_000;
 		final Quantile quantile = new Quantile(q);
 
-		new LCG64ShiftRandom(1234).doubles().limit(N).forEach(quantile);
+		new Random(1234).doubles().limit(N).forEach(quantile);
 
 		Assert.assertEquals(quantile.getSamples(), N);
 		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
@@ -71,7 +71,7 @@ public class QuantileTest {
 	@Test(dataProvider = "quantiles")
 	public void parallelQuantile(final Double q) {
 		final int N = 3_000_000;
-		final Quantile quantile = new LCG64ShiftRandom(1234).doubles().limit(N).parallel()
+		final Quantile quantile = new Random(1234).doubles().limit(N).parallel()
 			.collect(
 				() -> new Quantile(q),
 				Quantile::accept,

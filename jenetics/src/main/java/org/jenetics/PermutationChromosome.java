@@ -48,6 +48,7 @@ import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.array;
 import org.jenetics.internal.util.bit;
 import org.jenetics.internal.util.jaxb;
+import org.jenetics.internal.util.reflect;
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
@@ -370,7 +371,7 @@ public final class PermutationChromosome<T>
 			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
 		}
 
-		_genes = genes.toISeq();
+		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
 	/* *************************************************************************

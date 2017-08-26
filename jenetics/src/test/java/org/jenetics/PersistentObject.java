@@ -604,7 +604,7 @@ public class PersistentObject<T> {
 	}
 
 	static {
-		final Random random = new LCG64ShiftRandom.ThreadSafe(SEED);
+		final Random random = new Random(SEED);
 		using(random, r -> init());
 	}
 
