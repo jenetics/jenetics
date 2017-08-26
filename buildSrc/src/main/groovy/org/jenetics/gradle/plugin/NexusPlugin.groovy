@@ -212,7 +212,7 @@ class NexusPluginExtension {
     String configuration = Dependency.ARCHIVES_CONFIGURATION
 
 	String identifier = 'jenetics'
-	String copyrightYear = '2007-2014'
+	String copyrightYear = '2007-2017'
 
 	Boolean attachSources = true
 	Boolean attachTests = false
