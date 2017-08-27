@@ -39,7 +39,7 @@ public class StaticObjectTest {
 		} catch (AssertionError e) {
 			final String expected = String.format(
 				"Instantiation of '%s' is not allowed.",
-				"SomeStaticObject"
+				"io.jenetics.util.SomeStaticObject"
 			);
 
 			Assert.assertEquals(e.getMessage(), expected);
@@ -54,7 +54,7 @@ public class StaticObjectTest {
 		} catch (InvocationTargetException e) {
 			final String expected = String.format(
 				"Instantiation of '%s' is not allowed.",
-				"SomeStaticObject"
+				"io.jenetics.util.SomeStaticObject"
 			);
 
 			Assert.assertEquals(e.getTargetException().getMessage(), expected);
