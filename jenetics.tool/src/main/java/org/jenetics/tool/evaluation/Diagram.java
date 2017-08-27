@@ -218,11 +218,11 @@ public class Diagram {
 			.map(s -> s.split(","))
 			.orElse(new String[]{"Generation", "Fitness"});
 
-		final TrialMeter<Integer> trial = TrialMeter.read(
+		final TrialMeter<String> trial = TrialMeter.read(
 			input,
-			Reader.text().map(Integer::parseInt)
+			Reader.text()
 		);
-		final Params<Integer> params = trial.getParams();
+		final Params<String> params = trial.getParams();
 		final SampleSummary summary = trial.getData(samples[0]).summary();
 		final SampleSummary[] summaries = Arrays.stream(samples, 1, samples.length)
 			.map(s -> trial.getData(s).summary())

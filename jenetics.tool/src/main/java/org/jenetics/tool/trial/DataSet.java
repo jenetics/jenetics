@@ -124,7 +124,7 @@ public final class DataSet implements Serializable {
 	public static final Reader<DataSet> READER = Reader.elem(
 		(Object[] v) -> new DataSet(ISeq.of((List<Data>)v[0])),
 		"data-set",
-		Data.READER
+		Reader.elems(Data.READER)
 	);
 
 }

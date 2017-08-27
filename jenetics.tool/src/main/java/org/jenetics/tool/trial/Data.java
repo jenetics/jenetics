@@ -190,7 +190,7 @@ public final class Data implements Serializable {
 		(Object[] v) -> Data.of((String)v[0], (List<Sample>)v[1]),
 		"data",
 		Reader.attr("name"),
-		Sample.READER
+		Reader.elems(Sample.READER)
 	);
 
 }
