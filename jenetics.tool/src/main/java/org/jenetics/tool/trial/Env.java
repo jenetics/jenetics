@@ -20,27 +20,23 @@
 package org.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Hash;
+
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * Represents the collected runtime information.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(Env.Model.Adapter.class)
 public final class Env implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -240,67 +236,40 @@ public final class Env implements Serializable  {
 	}
 
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "environment")
-	@XmlType(name = "org.jenetics.tool.trial.Env")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Model {
+	public static final Writer<Env> WRITER = elem("environment",
+		elem("os-name", text().map(Env::getOSName)),
+		elem("os-version", text().map(Env::getOSVersion)),
+		elem("os-architecture", text().map(Env::getOSArch)),
+		elem("java-version", text().map(Env::getJavaVersion)),
+		elem("java-runtime-name", text().map(Env::getJavaRuntimeName)),
+		elem("java-runtime-version", text().map(Env::getJavaRuntimeVersion)),
+		elem("java-vm-name", text().map(Env::getJavaVMName)),
+		elem("java-vm-version", text().map(Env::getJavaVMVersion))
+	);
 
-		@XmlElement(name = "os-name")
-		public String osName;
-
-		@XmlElement(name = "os-version")
-		public String osVersion;
-
-		@XmlElement(name = "os-architecture")
-		public String osArch;
-
-		@XmlElement(name = "java-version")
-		public String javaVersion;
-
-		@XmlElement(name = "java-runtime-name")
-		public String javaRuntimeName;
-
-		@XmlElement(name = "java-runtime-version")
-		public String javaRuntimeVersion;
-
-		@XmlElement(name = "java-vm-name")
-		public String javaVMName;
-
-		@XmlElement(name = "java-vm-version")
-		public String javaVMVersion;
-
-		public static final class Adapter extends XmlAdapter<Model, Env> {
-			@Override
-			public Model marshal(final Env env) {
-				final Model model = new Model();
-				model.osName = env.getOSName();
-				model.osVersion = env.getOSVersion();
-				model.osArch = env.getOSArch();
-				model.javaVersion = env.getJavaVersion();
-				model.javaRuntimeName = env.getJavaRuntimeName();
-				model.javaRuntimeVersion = env.getJavaRuntimeVersion();
-				model.javaVMName = env.getJavaVMName();
-				model.javaVMVersion = env.getJavaVMVersion();
-				return model;
-			}
-
-			@Override
-			public Env unmarshal(final Model model) {
-				return Env.of(
-					model.osName,
-					model.osVersion,
-					model.osArch,
-					model.javaVersion,
-					model.javaRuntimeName,
-					model.javaRuntimeVersion,
-					model.javaVMName,
-					model.javaVMVersion
-				);
-			}
-		}
-	}
+	public static final Reader<Env> READER = Reader.elem(
+		(Object[] v) -> Env.of(
+			(String)v[0],
+			(String)v[1],
+			(String)v[2],
+			(String)v[3],
+			(String)v[4],
+			(String)v[5],
+			(String)v[6],
+			(String)v[7]
+		),
+		"environment",
+		Reader.elem("os-name", Reader.text()),
+		Reader.elem("os-version", Reader.text()),
+		Reader.elem("os-architecture", Reader.text()),
+		Reader.elem("java-version", Reader.text()),
+		Reader.elem("java-runtime-name", Reader.text()),
+		Reader.elem("java-runtime-version", Reader.text()),
+		Reader.elem("java-vm-name", Reader.text()),
+		Reader.elem("java-vm-version", Reader.text())
+	);
 
 }

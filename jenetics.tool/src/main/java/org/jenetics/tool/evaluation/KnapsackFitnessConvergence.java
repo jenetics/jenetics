@@ -31,10 +31,12 @@ import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.7
+ * @version !__version__!
  * @since 3.7
  */
 public class KnapsackFitnessConvergence {
@@ -64,6 +66,8 @@ public class KnapsackFitnessConvergence {
 			fitness -> KNAPSACK,
 			epsilon -> limit.byFitnessConvergence(sizes.get(0), sizes.get(1), epsilon),
 			TRIAL_METER,
+			Writer.text().map(Object::toString),
+			Reader.text().map(Double::parseDouble),
 			args
 		);
 

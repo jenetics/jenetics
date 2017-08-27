@@ -24,6 +24,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -50,7 +51,7 @@ public class TrialMeterTest {
 			});
 		}
 
-		trialMeter.write(System.out);
+		trialMeter.write(System.out, Writer.text());
 	}
 
 }

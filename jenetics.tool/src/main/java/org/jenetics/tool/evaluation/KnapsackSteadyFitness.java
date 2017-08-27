@@ -32,10 +32,12 @@ import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
 public class KnapsackSteadyFitness {
@@ -64,6 +66,8 @@ public class KnapsackSteadyFitness {
 			fitness -> KNAPSACK,
 			limit::bySteadyFitness,
 			TRIAL_METER,
+			Writer.text().map(Object::toString),
+			Reader.text().map(Integer::parseInt),
 			args
 		);
 

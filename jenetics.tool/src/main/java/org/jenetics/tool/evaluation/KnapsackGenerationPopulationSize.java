@@ -34,10 +34,12 @@ import org.jenetics.engine.limit;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.6
+ * @version !__version__!
  * @since 3.6
  */
 public class KnapsackGenerationPopulationSize {
@@ -86,6 +88,8 @@ public class KnapsackGenerationPopulationSize {
 			param -> KNAPSACK(toPopulationSize(param)),
 			param -> limit.byFixedGeneration(toGeneration(param)),
 			TRIAL_METER,
+			Writer.text(),
+			Reader.text(),
 			args
 		);
 

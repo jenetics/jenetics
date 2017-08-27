@@ -35,10 +35,12 @@ import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.TrialMeter;
 import org.jenetics.tool.trial.Tuple2;
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.6
+ * @version !__version__!
  * @since 3.6
  */
 public class KnapsackPopulationSize {
@@ -70,6 +72,8 @@ public class KnapsackPopulationSize {
 			param -> KNAPSACK(param._2),
 			param -> limit.byFixedGeneration(param._1),
 			TRIAL_METER,
+			Writer.text().map(Object::toString),
+			Reader.text().map(p -> Tuple2.of(toGeneration(p), toPopulationSize(p))),
 			args
 		);
 

@@ -33,10 +33,12 @@ import org.jenetics.Gene;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.tool.trial.TrialMeter;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version !__version__!
  * @since 3.5
  */
 public class Runner2<
@@ -58,10 +60,12 @@ public class Runner2<
 		final Engine<G, N> engine2,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator2,
 		final Supplier<TrialMeter<P>> trialMeter,
+		final Writer<P> writer,
+		final Reader<P> reader,
 		final int sampleCount,
 		final Path resultPath
 	) {
-		super(trialMeter, sampleCount, resultPath);
+		super(trialMeter, writer, reader, sampleCount, resultPath);
 		_engine1 = requireNonNull(engine1);
 		_terminator1 = requireNonNull(terminator1);
 		_engine2 = requireNonNull(engine2);
@@ -109,6 +113,8 @@ public class Runner2<
 		final Engine<G, N> engine2,
 		final Function<? super P, Predicate<? super EvolutionResult<G, N>>> terminator2,
 		final Supplier<TrialMeter<P>> trialMeter,
+		final Writer<P> writer,
+		final Reader<P> reader,
 		final String[] arguments
 	) {
 		final Args args = Args.of(arguments);
@@ -119,6 +125,8 @@ public class Runner2<
 			engine2,
 			terminator2,
 			trialMeter,
+			writer,
+			reader,
 			args.intArg("sample-count")
 				.orElse(50),
 			args.arg("result-file")
