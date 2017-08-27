@@ -21,29 +21,24 @@ package org.jenetics.tool.trial;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.elems;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * Collection of sample {@code Data} objects.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(DataSet.Model.Adapter.class)
 public final class DataSet implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -115,32 +110,21 @@ public final class DataSet implements Serializable {
 		);
 	}
 
+
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "data-set")
-	@XmlType(name = "org.jenetics.tool.trial.DataSet")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Model {
+	public static final Writer<DataSet> WRITER = elem(
+		"data-set",
+		elems(Data.WRITER).map(d -> d._sets)
+	);
 
-		@XmlElement(name = "data")
-		public List<Data> dataSet;
-
-		public static final class Adapter extends XmlAdapter<Model, DataSet> {
-			@Override
-			public Model marshal(final DataSet data) {
-				final Model model = new Model();
-				model.dataSet = data.values().asList();
-				return model;
-			}
-
-			@Override
-			public DataSet unmarshal(final Model model) {
-				return new DataSet(ISeq.of(model.dataSet));
-			}
-		}
-
-	}
+	@SuppressWarnings("unchecked")
+	public static final Reader<DataSet> READER = Reader.elem(
+		(Object[] v) -> new DataSet(ISeq.of((List<Data>)v[0])),
+		"data-set",
+		Reader.elems(Data.READER)
+	);
 
 }

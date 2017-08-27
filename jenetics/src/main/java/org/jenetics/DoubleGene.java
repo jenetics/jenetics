@@ -25,15 +25,6 @@ import static org.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.DoubleRange;
@@ -52,9 +43,8 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.2
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(DoubleGene.Model.Adapter.class)
 public final class DoubleGene
 	extends AbstractNumericGene<Double, DoubleGene>
 	implements
@@ -179,43 +169,6 @@ public final class DoubleGene
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
 		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "double-gene")
-	@XmlType(name = "org.jenetics.DoubleGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "min", required = true)
-		public double min;
-
-		@XmlAttribute(name = "max", required = true)
-		public double max;
-
-		@XmlValue
-		public double value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, DoubleGene>
-		{
-			@Override
-			public Model marshal(final DoubleGene value) {
-				final Model m = new Model();
-				m.min = value.getMin();
-				m.max = value.getMax();
-				m.value = value.getAllele();
-				return m;
-			}
-
-			@Override
-			public DoubleGene unmarshal(final Model m) {
-				return DoubleGene.of(m.value, m.min, m.max);
-			}
-		}
 	}
 
 }

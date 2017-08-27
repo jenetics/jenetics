@@ -23,21 +23,16 @@ import static java.lang.String.format;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static org.jenetics.tool.trial.SampleSummary.toSampleSummary;
+import static org.jenetics.xml.stream.Writer.attr;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.elems;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * This class collects a list of {@link Sample} result objects into on
@@ -46,10 +41,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @see Sample
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(Data.Model.Adapter.class)
 public final class Data implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -182,44 +176,21 @@ public final class Data implements Serializable {
 
 
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "data")
-	@XmlType(name = "org.jenetics.tool.trial.Data")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
+	public static final Writer<Data> WRITER = elem(
+		"data",
+		attr("name").map(Data::getName),
+		elems(Sample.WRITER).map(d -> d._samples)
+	);
 
-		@XmlAttribute
-		public String name;
+	@SuppressWarnings("unchecked")
+	public static final Reader<Data> READER = Reader.elem(
+		(Object[] v) -> Data.of((String)v[0], (List<Sample>)v[1]),
+		"data",
+		Reader.attr("name"),
+		Reader.elems(Sample.READER)
+	);
 
-		@XmlElement(name = "sample")
-		public List<String> samples;
-
-		public static final class Adapter extends XmlAdapter<Model, Data> {
-			@Override
-			public Model marshal(final Data data) {
-				final Model model = new Model();
-				model.name = data._name;
-				model.samples = data._samples.stream()
-					.map(s -> s.stream().mapToObj(Double::toString)
-								.collect(Collectors.joining(" ")))
-					.collect(Collectors.toList());
-				return model;
-			}
-
-			@Override
-			public Data unmarshal(final Model model) {
-				return Data.of(
-					model.name,
-					model.samples.stream()
-						.map(s -> Arrays.stream(s.split("\\s"))
-							.mapToDouble(Double::parseDouble).toArray())
-						.map(Sample::of)
-						.collect(Collectors.toList())
-				);
-			}
-		}
-
-	}
 }

@@ -30,15 +30,19 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.tool.trial.Trial;
 import org.jenetics.tool.trial.TrialMeter;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version !__version__!
  * @since 3.5
  */
 public abstract class AbstractRunner<P> {
 
 	private final Supplier<TrialMeter<P>> _trialMeter;
+	private final Writer<P> _writer;
+	private final Reader<P> _reader;
 	private final int _sampleCount;
 	private final Path _resultPath;
 
@@ -47,10 +51,14 @@ public abstract class AbstractRunner<P> {
 
 	protected AbstractRunner(
 		final Supplier<TrialMeter<P>> trialMeter,
+		final Writer<P> writer,
+		final Reader<P> reader,
 		final int sampleCount,
 		final Path resultPath
 	) {
 		_trialMeter = requireNonNull(trialMeter);
+		_writer = requireNonNull(writer);
+		_reader = requireNonNull(reader);
 		_sampleCount = require.positive(sampleCount);
 		_resultPath = requireNonNull(resultPath);
 	}
@@ -65,6 +73,8 @@ public abstract class AbstractRunner<P> {
 		final Trial<P> trial = new Trial<>(
 			this::fitness,
 			_trialMeter,
+			_writer,
+			_reader,
 			count -> count >= _sampleCount || _stop.get(),
 			_resultPath
 		);

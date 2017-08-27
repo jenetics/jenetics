@@ -20,31 +20,26 @@
 package org.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.xml.stream.Writer.attr;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.elems;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.util.ISeq;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * Collection of parameters the function under test is tested with.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(Params.Model.Adapter.class)
 public final class Params<T> implements Iterable<T>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -142,39 +137,30 @@ public final class Params<T> implements Iterable<T>, Serializable {
 		return new Params<>(name, params);
 	}
 
+
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "params")
-	@XmlType(name = "org.jenetics.tool.Params")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	static final class Model {
+	public static <T> Writer<Params<T>> writer(final Writer<? super T> writer) {
+		return elem(
+			"params",
+			attr("name").map(Params::getName),
+			elems("param", writer)
+		);
+	}
 
-		@XmlAttribute(name = "name")
-		public String name;
-
-		@XmlElement(name = "param", required = true, nillable = false)
-		public List params;
-
-		public static final class Adapter extends XmlAdapter<Model, Params> {
-			@Override
-			public Model marshal(final Params params) {
-				final Model model = new Model();
-				model.name = params.getName();
-				model.params = params.values().asList();
-				return model;
-			}
-
-			@Override
-			public Params unmarshal(final Model model) {
-				return Params.of(
-					model.name,
-					ISeq.of(model.params)
-				);
-			}
-		}
+	@SuppressWarnings("unchecked")
+	public static <T> Reader<Params<T>> reader(final Reader<? extends T> reader) {
+		return Reader.elem(
+			(Object[] v) -> Params.of(
+				(String)v[0],
+				ISeq.of((List<T>)v[1])
+			),
+			"params",
+			Reader.attr("name"),
+			Reader.elems(Reader.elem("param", reader))
+		);
 	}
 
 }

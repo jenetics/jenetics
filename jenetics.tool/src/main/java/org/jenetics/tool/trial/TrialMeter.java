@@ -25,7 +25,8 @@ import static java.nio.file.Files.deleteIfExists;
 import static java.nio.file.Files.move;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.jaxb.marshal;
+import static org.jenetics.xml.stream.Writer.attr;
+import static org.jenetics.xml.stream.Writer.elem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,25 +39,21 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.stream.XMLStreamException;
+
+import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
+import org.jenetics.xml.stream.XML;
 
 /**
  * Represents an function testing measurement environment.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(TrialMeter.Model.Adapter.class)
 public final class TrialMeter<T> {
 
 	private final String _name;
@@ -165,14 +162,13 @@ public final class TrialMeter<T> {
 	 * the parameters) to the given output stream.
 	 *
 	 * @param out the output stream where to write the trial meter
+	 * @param writer the writer of the parameter type
 	 * @throws UncheckedIOException if the marshalling fails
 	 */
-	public void write(final OutputStream out) {
-		try {
-			final Marshaller marshaller = jaxb.context().createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(marshal(this), out);
-		} catch (Exception e) {
+	public void write(final OutputStream out, final Writer<? super T> writer) {
+		try (AutoCloseableXMLStreamWriter xml = XML.writer(out, "    ")) {
+			TrialMeter.<T>writer(writer).write(xml, this);
+		} catch (XMLStreamException e) {
 			throw new UncheckedIOException(new IOException(e));
 		}
 	}
@@ -182,14 +178,15 @@ public final class TrialMeter<T> {
 	 * the parameters) to the given path.
 	 *
 	 * @param path the output path
+	 * @param writer the writer of the parameter type
 	 * @throws UncheckedIOException if the marshalling fails
 	 */
-	public void write(final Path path) {
+	public void write(final Path path, final Writer<? super T> writer) {
 		try {
 			final File tempFile = createTempFile("__trial_meter__", ".xml");
 			try {
 				try (OutputStream out = new FileOutputStream(tempFile)) {
-					write(out);
+					write(out, writer);
 				}
 
 				move(tempFile.toPath(), path, REPLACE_EXISTING);
@@ -258,17 +255,20 @@ public final class TrialMeter<T> {
 	 * input stream.
 	 *
 	 * @param in the {@link InputStream} to read from
+	 * @param reader the writer of the parameter type
 	 * @param <T> the parameter type
 	 * @throws UncheckedIOException if reading the {@code TrialMeter} fails
 	 * @return the {@code TrialMeter} object read from the input stream
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> TrialMeter<T> read(final InputStream in) {
-		try {
-			final Unmarshaller unmarshaller = jaxb.context().createUnmarshaller();
-			return (TrialMeter<T>)Model.ADAPTER
-				.unmarshal((Model)unmarshaller.unmarshal(in));
-		} catch (Exception e) {
+	public static <T> TrialMeter<T> read(
+		final InputStream in,
+		final Reader<? extends T> reader
+	) {
+		try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			xml.next();
+			return TrialMeter.<T>reader(reader).read(xml);
+		} catch (XMLStreamException e) {
 			throw new UncheckedIOException(new IOException(e));
 		}
 	}
@@ -279,12 +279,16 @@ public final class TrialMeter<T> {
 	 *
 	 * @param path the path the {@code TrialMeter} is read
 	 * @param <T> the parameter type
+	 * @param reader the writer of the parameter type
 	 * @throws UncheckedIOException if reading the {@code TrialMeter} fails
 	 * @return the {@code TrialMeter} object read from the input stream
 	 */
-	public static <T> TrialMeter<T> read(final Path path) {
+	public static <T> TrialMeter<T> read(
+		final Path path,
+		final Reader<? extends T> reader
+	) {
 		try (InputStream in = new FileInputStream(path.toFile())) {
-			return read(in);
+			return read(in, reader);
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
@@ -292,57 +296,37 @@ public final class TrialMeter<T> {
 
 
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "measurement")
-	@XmlType(name = "org.jenetics.tool.trial.TrialMeter")
-	@XmlAccessorType(XmlAccessType.FIELD)
+	public static <T> Writer<TrialMeter<T>> writer(final Writer<? super T> writer) {
+		return elem(
+			"measurement",
+			attr("name").map(TrialMeter::getName),
+			attr("description").map(tm -> tm.getDescription().orElse("")),
+			Env.WRITER.map(TrialMeter::getEnv),
+			Params.<T>writer(writer).map(TrialMeter::getParams),
+			DataSet.WRITER.map(TrialMeter::getDataSet)
+		);
+	}
+
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static final class Model {
-
-		@XmlAttribute
-		public String name;
-
-		@XmlAttribute
-		public String description;
-
-		@XmlElement(name = "environment", required = true, nillable = false)
-		public Env env;
-
-		@XmlElement(name = "params", required = true, nillable = false)
-		public Params params;
-
-		@XmlElement(name = "data-set", required = true, nillable = false)
-		public DataSet dataSet;
-
-		public static final class Adapter
-			extends XmlAdapter<Model, TrialMeter>
-		{
-			@Override
-			public Model marshal(final TrialMeter data) {
-				final Model model = new Model();
-				model.name = data._name;
-				model.description = data._description;
-				model.env = data._env;
-				model.params = data.getParams();
-				model.dataSet = data._dataSet;
-				return model;
-			}
-
-			@Override
-			public TrialMeter unmarshal(final Model model) {
-				return new TrialMeter(
-					model.name,
-					model.description,
-					model.env,
-					model.params,
-					model.dataSet
-				);
-			}
-		}
-
-		static final Adapter ADAPTER = new Adapter();
+	public static <T> Reader<TrialMeter<T>> reader(final Reader<? extends T> reader) {
+		return Reader.elem(
+			(Object[] v) -> new TrialMeter(
+				(String)v[0],
+				(String)v[1],
+				(Env)v[2],
+				(Params)v[3],
+				(DataSet)v[4]
+			),
+			"measurement",
+			Reader.attr("name"),
+			Reader.attr("description"),
+			Env.READER,
+			Params.reader(reader),
+			DataSet.READER
+		);
 	}
 
 }

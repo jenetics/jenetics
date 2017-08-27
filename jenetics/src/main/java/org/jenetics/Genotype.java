@@ -20,24 +20,12 @@
 package org.jenetics;
 
 import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.util.ISeq.toISeq;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.jaxb;
 
 import org.jenetics.util.Factory;
 import org.jenetics.util.ISeq;
@@ -71,9 +59,8 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(Genotype.Model.Adapter.class)
 public final class Genotype<G extends Gene<?, G>>
 	implements
 		Factory<Genotype<G>>,
@@ -343,50 +330,4 @@ public final class Genotype<G extends Gene<?, G>>
 		return new Genotype<>(ISeq.of(chromosomes));
 	}
 
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "genotype")
-	@XmlType(name = "org.jenetics.Genotype")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	static final class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlAttribute(name = "ngenes", required = true)
-		public int ngenes;
-
-		@XmlElement(name = "chromosome", required = true, nillable = false)
-		public List chromosomes;
-
-		public static final class Adapter
-			extends XmlAdapter<Model, Genotype>
-		{
-			@Override
-			public Model marshal(final Genotype gt) throws Exception {
-				final Model model = new Model();
-				model.length = gt.length();
-				model.ngenes = gt.getNumberOfGenes();
-				model.chromosomes = gt.toSeq()
-					.map(jaxb.Marshaller(gt.getChromosome()))
-					.asList();
-
-				return model;
-			}
-
-			@Override
-			public Genotype unmarshal(final Model model) throws Exception {
-				final ISeq chs = (ISeq)model.chromosomes.stream()
-					.map(jaxb.Unmarshaller(model.chromosomes.get(0)))
-					.collect(toISeq());
-
-				return new Genotype(chs, model.ngenes);
-			}
-		}
-
-		public static final Adapter ADAPTER = new Adapter();
-	}
 }

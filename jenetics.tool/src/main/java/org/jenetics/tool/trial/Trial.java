@@ -30,26 +30,35 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
 public class Trial<T> implements Runnable {
 
 	private final Function<T, double[]> _function;
 	private final Supplier<TrialMeter<T>> _trialMeter;
+	private final Writer<T> _writer;
+	private final Reader<T> _reader;
 	private final Predicate<Integer> _stop;
 	private final Path _resultPath;
 
 	public Trial(
 		final Function<T, double[]> function,
 		final Supplier<TrialMeter<T>> trialMeter,
+		final Writer<T> writer,
+		final Reader<T> reader,
 		final Predicate<Integer> stop,
 		final Path resultPath
 	) {
 		_function = requireNonNull(function);
 		_trialMeter = requireNonNull(trialMeter);
+		_writer = requireNonNull(writer);
+		_reader = requireNonNull(reader);
 		_stop = requireNonNull(stop);
 		_resultPath = requireNonNull(resultPath);
 	}
@@ -58,7 +67,7 @@ public class Trial<T> implements Runnable {
 	public void run() {
 		final TrialMeter<T> trialMeter;
 		if (exists(_resultPath)) {
-			trialMeter = TrialMeter.read(_resultPath);
+			trialMeter = TrialMeter.read(_resultPath, _reader);
 
 			info("Continue existing trial: '%s'.", _resultPath.toAbsolutePath());
 			info("    " + trialMeter);
@@ -78,7 +87,7 @@ public class Trial<T> implements Runnable {
 				return _function.apply(param);
 			});
 
-			trialMeter.write(_resultPath);
+			trialMeter.write(_resultPath, _writer);
 		}
 	}
 

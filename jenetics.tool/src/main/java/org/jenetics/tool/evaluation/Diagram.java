@@ -46,12 +46,13 @@ import org.jenetics.tool.trial.IO;
 import org.jenetics.tool.trial.Params;
 import org.jenetics.tool.trial.SampleSummary;
 import org.jenetics.tool.trial.TrialMeter;
+import org.jenetics.xml.stream.Reader;
 
 /**
  * Helper class for creating Gnuplot diagrams from result files.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.7
+ * @version !__version__!
  * @since 3.4
  */
 public class Diagram {
@@ -217,8 +218,11 @@ public class Diagram {
 			.map(s -> s.split(","))
 			.orElse(new String[]{"Generation", "Fitness"});
 
-		final TrialMeter<Integer> trial = TrialMeter.read(input);
-		final Params<Integer> params = trial.getParams();
+		final TrialMeter<String> trial = TrialMeter.read(
+			input,
+			Reader.text()
+		);
+		final Params<String> params = trial.getParams();
 		final SampleSummary summary = trial.getData(samples[0]).summary();
 		final SampleSummary[] summaries = Arrays.stream(samples, 1, samples.length)
 			.map(s -> trial.getData(s).summary())

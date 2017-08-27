@@ -21,28 +21,26 @@ package org.jenetics.tool.trial;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.jenetics.xml.stream.Writer.elem;
+import static org.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlList;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jenetics.xml.stream.Reader;
+import org.jenetics.xml.stream.Writer;
 
 /**
  * The sample class contains the results of one test run of all parameters. This
  * class is <i>mutable</i> and <b>not</b> thread safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-@XmlJavaTypeAdapter(Sample.Model.Adapter.class)
 public final class Sample implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -202,32 +200,24 @@ public final class Sample implements Serializable {
 		return of(values);
 	}
 
-
 	/* *************************************************************************
-	 *  JAXB object serialization
+	 *  XML reader/writer
 	 * ************************************************************************/
 
-	@XmlRootElement(name = "sample")
-	@XmlType(name = "org.jenetics.tool.trial.Sample")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	static final class Model {
+	public static final Writer<Sample> WRITER = elem(
+			"sample", text().map(s -> DoubleStream.of(s.values())
+				.mapToObj(Double::toString).collect(Collectors.joining(" ")))
+		);
 
-		@XmlList
-		public double[] sample;
 
-		public static final class Adapter extends XmlAdapter<Model, Sample> {
-			@Override
-			public Model marshal(final Sample sample) {
-				final Model model = new Model();
-				model.sample = sample._values;
-				return model;
-			}
-
-			@Override
-			public Sample unmarshal(final Model model) {
-				return Sample.of(model.sample);
-			}
-		}
-	}
+	public static final Reader<Sample> READER = Reader.elem(
+		(Object[] v) -> Sample.of(
+			Stream.of((String[])v[0])
+				.mapToDouble(Double::parseDouble)
+				.toArray()
+		),
+		"sample",
+		Reader.text().map(s -> s.split("\\s"))
+	);
 
 }

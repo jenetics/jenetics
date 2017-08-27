@@ -43,6 +43,4 @@ public class Tuple2<A, B> {
 		return new Tuple2<>(p1, p2);
 	}
 
-
-
 }

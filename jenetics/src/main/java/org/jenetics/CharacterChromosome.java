@@ -29,15 +29,6 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Equality;
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.IntRef;
@@ -52,9 +43,8 @@ import org.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(CharacterChromosome.Model.Adapter.class)
 public class CharacterChromosome
 	extends
 		AbstractChromosome<CharacterGene>
@@ -271,43 +261,4 @@ public class CharacterChromosome
 		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "character-chromosome")
-	@XmlType(name = "org.jenetics.CharacterChromosome")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "length", required = true)
-		public int length;
-
-		@XmlElement(name = "valid-alleles", required = true, nillable = false)
-		public String validCharacters;
-
-		@XmlElement(name = "alleles", required = true, nillable = false)
-		public String genes;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, CharacterChromosome>
-		{
-			@Override
-			public Model marshal(final CharacterChromosome value) {
-				final Model m = new Model();
-				m.length = value.length();
-				m.validCharacters = value._validCharacters.toString();
-				m.genes = value.toString();
-				return m;
-			}
-
-			@Override
-			public CharacterChromosome unmarshal(final Model m) {
-				return CharacterChromosome.of(
-					m.genes,
-					new CharSeq(m.validCharacters)
-				);
-			}
-		}
-	}
 }

@@ -25,15 +25,6 @@ import static org.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
@@ -52,9 +43,8 @@ import org.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 3.2
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(IntegerGene.Model.Adapter.class)
 public final class IntegerGene
 	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
@@ -175,43 +165,6 @@ public final class IntegerGene
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
 		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "int-gene")
-	@XmlType(name = "org.jenetics.IntegerGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "min", required = true)
-		public int min;
-
-		@XmlAttribute(name = "max", required = true)
-		public int max;
-
-		@XmlValue
-		public int value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, IntegerGene>
-		{
-			@Override
-			public Model marshal(final IntegerGene value) {
-				final Model m = new Model();
-				m.min = value.getMin();
-				m.max = value.getMax();
-				m.value = value.getAllele();
-				return m;
-			}
-
-			@Override
-			public IntegerGene unmarshal(final Model m) {
-				return IntegerGene.of(m.value, m.min, m.max);
-			}
-		}
 	}
 
 }

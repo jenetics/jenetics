@@ -21,14 +21,6 @@ package org.jenetics;
 
 import java.io.Serializable;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.util.RandomRegistry;
 
 /**
@@ -36,9 +28,8 @@ import org.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(BitGene.Model.Adapter.class)
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
@@ -128,36 +119,6 @@ public enum BitGene
 	 */
 	public static BitGene of(final boolean value) {
 		return value ? TRUE : FALSE;
-	}
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "bit-gene")
-	@XmlType(name = "org.jenetics.BitGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlValue
-		public boolean value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, BitGene>
-		{
-			@Override
-			public Model marshal(final BitGene value) {
-				final Model m = new Model();
-				m.value = value.booleanValue();
-				return m;
-			}
-
-			@Override
-			public BitGene unmarshal(final Model m) {
-				return BitGene.of(m.value);
-			}
-		}
 	}
 
 }

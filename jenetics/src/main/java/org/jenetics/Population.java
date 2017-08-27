@@ -20,7 +20,6 @@
 package org.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,17 +38,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.internal.util.jaxb;
-
 import org.jenetics.util.ISeq;
 import org.jenetics.util.MSeq;
 
@@ -66,7 +54,6 @@ import org.jenetics.util.MSeq;
  * @since 1.0
  * @version 4.0
  */
-@XmlJavaTypeAdapter(Population.Model.Adapter.class)
 public final class Population<G extends Gene<?, G>, C extends Comparable<? super C>>
 	implements ISeq<Phenotype<G, C>>, Serializable
 {
@@ -374,45 +361,4 @@ public final class Population<G extends Gene<?, G>, C extends Comparable<? super
 		_population = new Population<>(population.toISeq());
 	}
 
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "population")
-	@XmlType(name = "org.jenetics.Population")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	static final class Model {
-
-		@XmlAttribute(name = "size", required = true)
-		public int size;
-
-		@XmlElement(name = "phenotype", required = true)
-		public List phenotypes;
-
-		public static final class Adapter
-			extends XmlAdapter<Model, Population>
-		{
-			@Override
-			public Model marshal(final Population p) throws Exception {
-				final Model model = new Model();
-				model.size = p.size();
-				if (!p.isEmpty()) {
-					model.phenotypes = (List)p.stream()
-						.map(jaxb.Marshaller(p.get(0)))
-						.collect(toList());
-				}
-
-				return model;
-			}
-
-			@Override
-			public Population unmarshal(final Model model) throws Exception {
-				return (Population)model.phenotypes.stream()
-					.map(jaxb.Unmarshaller(model.phenotypes.get(0)))
-					.collect(toPopulation());
-			}
-		}
-
-	}
 }

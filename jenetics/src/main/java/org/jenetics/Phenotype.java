@@ -29,17 +29,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Lazy;
-import org.jenetics.internal.util.jaxb;
 import org.jenetics.internal.util.reflect;
 
 import org.jenetics.util.Verifiable;
@@ -63,9 +53,8 @@ import org.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.7
+ * @version !__version__!
  */
-@XmlJavaTypeAdapter(Phenotype.Model.Adapter.class)
 public final class Phenotype<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -405,57 +394,6 @@ public final class Phenotype<
 
 		reflect.setField(this, "_function", Function.identity());
 		reflect.setField(this, "_scaler", Function.identity());
-	}
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "phenotype")
-	@XmlType(name = "org.jenetics.Phenotype")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	final static class Model {
-
-		@XmlAttribute(name = "generation", required = true)
-		public long generation;
-
-		@XmlElement(name = "genotype", required = true, nillable = false)
-		public Genotype.Model genotype;
-
-		@XmlElement(name = "fitness", required = true, nillable = false)
-		public Object fitness;
-
-		@XmlElement(name = "raw-fitness", required = true, nillable = false)
-		public Object rawFitness;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, Phenotype>
-		{
-			@Override
-			public Model marshal(final Phenotype pt) throws Exception {
-				final Model m = new Model();
-				m.generation = pt.getGeneration();
-				m.genotype = Genotype.Model.ADAPTER.marshal(pt.getGenotype());
-				m.fitness = jaxb.marshal(pt.getFitness());
-				m.rawFitness = jaxb.marshal(pt.getRawFitness());
-				return m;
-			}
-
-			@Override
-			public Phenotype unmarshal(final Model m) throws Exception {
-				final Phenotype pt = new Phenotype(
-					Genotype.Model.ADAPTER.unmarshal(m.genotype),
-					m.generation,
-					Function.identity(),
-					Function.identity()
-				);
-
-				reflect.setField(pt, "_fitness", Lazy.ofValue(m.fitness));
-				reflect.setField(pt, "_rawFitness", Lazy.ofValue(m.rawFitness));
-				return pt;
-			}
-		}
 	}
 
 }
