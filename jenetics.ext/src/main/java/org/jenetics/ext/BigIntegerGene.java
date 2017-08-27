@@ -26,15 +26,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Random;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.jenetics.internal.util.Hash;
 import org.jenetics.internal.util.require;
 
@@ -59,7 +50,6 @@ import org.jenetics.util.RandomRegistry;
  * @since 3.5
  * @version 3.5
  */
-@XmlJavaTypeAdapter(BigIntegerGene.Model.Adapter.class)
 public final class BigIntegerGene
 	implements
 		NumericGene<BigInteger, BigIntegerGene>,
@@ -195,44 +185,6 @@ public final class BigIntegerGene
 			min,
 			max
 		);
-	}
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "big-integer-gene")
-	@XmlType(name = "org.jenetix.BigIntegerGene")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlAttribute(name = "min", required = true)
-		public BigInteger min;
-
-		@XmlAttribute(name = "max", required = true)
-		public BigInteger max;
-
-		@XmlValue
-		public BigInteger value;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, BigIntegerGene>
-		{
-			@Override
-			public Model marshal(final BigIntegerGene value) {
-				final Model m = new Model();
-				m.min = value.getMin();
-				m.max = value.getMax();
-				m.value = value.getAllele();
-				return m;
-			}
-
-			@Override
-			public BigIntegerGene unmarshal(final Model m) {
-				return BigIntegerGene.of(m.value, m.min, m.max);
-			}
-		}
 	}
 
 }
