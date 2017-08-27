@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
-//import org.jenetics.util.XORShiftRandom;
+//import io.jenetics.util.XORShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

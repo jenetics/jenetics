@@ -8,7 +8,7 @@
 # Java HotSpot(TM) 64-Bit Server VM (build 25.20-b23)                         #
 #=============================================================================#
 # Selector distributions (opt=MAXIMUM, npop=500, loops=100000):               #
-#    - org.jenetics.TruncationSelector                                        #
+#    - io.jenetics.TruncationSelector                                        #
 #=============================================================================#
 
 
