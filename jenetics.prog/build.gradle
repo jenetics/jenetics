@@ -43,11 +43,11 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.prog',
-	'org.jenetics.prog.op'
+	'io.jenetics.prog',
+	'io.jenetics.prog.op'
 )
 
-jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
 	options {
