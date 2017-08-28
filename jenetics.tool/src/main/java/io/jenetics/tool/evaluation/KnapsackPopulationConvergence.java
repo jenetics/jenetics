@@ -26,10 +26,9 @@ import static io.jenetics.tool.evaluation.engines.KNAPSACK;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.Args;
-
 import io.jenetics.BitGene;
 import io.jenetics.engine.limit;
+import io.jenetics.internal.util.Args;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;

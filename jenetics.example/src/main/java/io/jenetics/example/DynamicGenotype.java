@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.IntRef;
-
 import io.jenetics.AbstractAlterer;
 import io.jenetics.AlterResult;
 import io.jenetics.Chromosome;
@@ -39,6 +37,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;

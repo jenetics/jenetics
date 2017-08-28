@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.math.base;
-
 import io.jenetics.stat.Histogram;
 
 /**

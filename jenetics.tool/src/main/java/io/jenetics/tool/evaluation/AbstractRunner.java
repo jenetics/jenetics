@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.tool.trial.Trial;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.xml.stream.Reader;

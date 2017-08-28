@@ -27,7 +27,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 

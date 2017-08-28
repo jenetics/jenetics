@@ -19,9 +19,9 @@
  */
 package io.jenetics;
 
+import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
-import static org.testng.Assert.assertEquals;
 
 import java.util.Random;
 import java.util.stream.IntStream;

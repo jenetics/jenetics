@@ -25,13 +25,12 @@ import java.time.LocalDate;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.DoubleAdder;
-
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 

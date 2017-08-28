@@ -28,7 +28,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.base;
-
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;

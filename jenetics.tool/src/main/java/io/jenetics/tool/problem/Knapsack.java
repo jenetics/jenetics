@@ -29,12 +29,11 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.require;
-
 import io.jenetics.BitGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Problem;
 import io.jenetics.engine.codecs;
+import io.jenetics.internal.util.require;
 import io.jenetics.tool.problem.Knapsack.Item;
 import io.jenetics.util.ISeq;
 

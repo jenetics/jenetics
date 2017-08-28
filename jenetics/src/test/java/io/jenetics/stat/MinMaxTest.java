@@ -30,9 +30,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Named;
-
 import io.jenetics.Optimize;
+import io.jenetics.internal.util.Named;
 import io.jenetics.util.RandomRegistry;
 
 /**

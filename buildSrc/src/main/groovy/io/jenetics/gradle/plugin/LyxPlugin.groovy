@@ -19,10 +19,10 @@
  */
 package io.jenetics.gradle.plugin
 
-import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.api.Project
 import io.jenetics.gradle.Version
 import io.jenetics.gradle.task.Lyx2PDFTask
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.api.Project
 
 /**
  * Plugin which adds a build task for creating a PDF file from the lyx sources.

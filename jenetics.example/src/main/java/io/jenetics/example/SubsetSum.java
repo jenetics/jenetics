@@ -34,9 +34,8 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
 import io.jenetics.engine.codecs;
 import io.jenetics.engine.limit;
-import io.jenetics.util.ISeq;
-
 import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

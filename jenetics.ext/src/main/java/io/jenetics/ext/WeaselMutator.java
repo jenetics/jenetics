@@ -2,14 +2,13 @@ package io.jenetics.ext;
 
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.IntRef;
-
 import io.jenetics.AlterResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 

@@ -27,7 +27,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.ISeq;
 

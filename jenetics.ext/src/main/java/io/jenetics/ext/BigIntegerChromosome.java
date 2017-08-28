@@ -27,13 +27,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
-
 import io.jenetics.AbstractChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.NumericChromosome;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 

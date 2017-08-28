@@ -27,7 +27,6 @@ import java.util.function.ToDoubleFunction;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.Range;
 
 

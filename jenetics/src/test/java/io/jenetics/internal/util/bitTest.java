@@ -29,7 +29,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.random;
-
 import io.jenetics.util.RandomRegistry;
 
 /**

@@ -25,11 +25,10 @@ import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
-import io.jenetics.internal.util.require;
-
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
+import io.jenetics.internal.math.random;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 

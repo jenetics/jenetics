@@ -25,7 +25,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;

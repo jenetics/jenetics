@@ -27,7 +27,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.math.random;
-
 import io.jenetics.util.MSeq;
 
 /**

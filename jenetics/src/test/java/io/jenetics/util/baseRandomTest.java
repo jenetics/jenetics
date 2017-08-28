@@ -34,10 +34,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.random;
-
 import io.jenetics.stat.Histogram;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

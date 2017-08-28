@@ -25,7 +25,6 @@ import java.awt.geom.GeneralPath;
 import java.util.Random;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
 

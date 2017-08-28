@@ -19,11 +19,11 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static io.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 import java.util.stream.IntStream;

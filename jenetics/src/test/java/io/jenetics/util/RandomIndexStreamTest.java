@@ -30,11 +30,8 @@ import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.probability;
 import io.jenetics.internal.util.IntRef;
-
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -53,14 +53,13 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -20,9 +20,9 @@
 package io.jenetics.util;
 
 import static java.util.stream.Collectors.toList;
-import static io.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.List;
 import java.util.Random;
@@ -36,13 +36,10 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.Concurrency;
-
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.internal.util.Concurrency;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

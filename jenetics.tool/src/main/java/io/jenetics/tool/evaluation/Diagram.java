@@ -40,7 +40,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Args;
-
 import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.tool.trial.IO;
 import io.jenetics.tool.trial.Params;

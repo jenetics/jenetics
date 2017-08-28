@@ -19,6 +19,7 @@
  */
 package io.jenetics.gradle.plugin
 
+import io.jenetics.gradle.task.ColorizerTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -28,7 +29,6 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
-import io.jenetics.gradle.task.ColorizerTask
 
 import java.time.Year
 import java.time.ZonedDateTime

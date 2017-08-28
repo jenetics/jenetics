@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
 import io.jenetics.util.Range;
 
 /**

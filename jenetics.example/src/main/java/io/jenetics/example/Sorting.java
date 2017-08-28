@@ -36,8 +36,6 @@ import io.jenetics.engine.limit;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.RandomRegistry;
 
-import io.jenetics.prngine.LCG64ShiftRandom;
-
 public class Sorting {
 
 	private static int dist(Chromosome<EnumGene<Integer>> path, int i, int j) {

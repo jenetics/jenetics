@@ -26,7 +26,6 @@ import java.util.Random;
 import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.Population;
 import io.jenetics.Recombinator;
 import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.FlatTreeNode;
