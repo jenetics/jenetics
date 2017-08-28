@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package org.jenetics.gradle.plugin
+package io.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin

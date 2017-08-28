@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.plugin
+package io.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Project
-import org.jenetics.gradle.Version
-import org.jenetics.gradle.task.Lyx2PDFTask
+import io.jenetics.gradle.Version
+import io.jenetics.gradle.task.Lyx2PDFTask
 
 /**
  * Plugin which adds a build task for creating a PDF file from the lyx sources.

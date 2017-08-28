@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.plugin
+package io.jenetics.gradle.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

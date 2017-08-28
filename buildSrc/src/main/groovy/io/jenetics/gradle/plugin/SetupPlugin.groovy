@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.plugin
+package io.jenetics.gradle.plugin
 
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
@@ -28,7 +28,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
-import org.jenetics.gradle.task.ColorizerTask
+import io.jenetics.gradle.task.ColorizerTask
 
 import java.time.Year
 import java.time.ZonedDateTime
@@ -157,12 +157,12 @@ class SetupPlugin extends JeneticsPlugin {
 
 				exclude '**/internal/**'
 
-				//options.addStringOption('subpackages', 'org.jenetics')
+				//options.addStringOption('subpackages', 'io.jenetics')
                 //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
-				options.addStringOption('noqualifier', 'org.jenetics.internal.collection')
+				options.addStringOption('noqualifier', 'io.jenetics.internal.collection')
 
-				group('Core API', ['org.jenetics', 'org.jenetics.engine'])
-				group('Utilities', ['org.jenetics.util', 'org.jenetics.stat'])
+				group('Core API', ['io.jenetics', 'io.jenetics.engine'])
+				group('Utilities', ['io.jenetics.util', 'io.jenetics.stat'])
 			}
 
 			// Copy the doc-files.

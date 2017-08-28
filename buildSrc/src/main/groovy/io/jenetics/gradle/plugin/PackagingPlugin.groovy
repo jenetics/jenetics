@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.plugin
+package io.jenetics.gradle.plugin
 
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.Plugin
