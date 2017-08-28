@@ -34,7 +34,7 @@ import io.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.0
  * @since 3.4
  */
 public class KnapsackFitnessThreshold {

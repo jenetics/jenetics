@@ -37,7 +37,7 @@ import io.jenetics.xml.stream.Writer;
  * Collection of parameters the function under test is tested with.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.0
  * @since 3.4
  */
 public final class Params<T> implements Iterable<T>, Serializable {
