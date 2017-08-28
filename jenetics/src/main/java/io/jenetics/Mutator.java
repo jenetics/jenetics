@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.random.indexes;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.IntRef;
-
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;

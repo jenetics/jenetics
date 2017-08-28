@@ -24,10 +24,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
-import io.jenetics.internal.util.require;
-
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 
 /**

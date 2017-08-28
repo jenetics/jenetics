@@ -38,7 +38,6 @@ import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.ISeq;
 
 /**

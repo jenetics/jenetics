@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 

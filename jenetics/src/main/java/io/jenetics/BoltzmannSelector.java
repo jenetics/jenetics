@@ -26,7 +26,6 @@ import static io.jenetics.internal.math.arithmetic.normalize;
 import java.util.Arrays;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 
 /**

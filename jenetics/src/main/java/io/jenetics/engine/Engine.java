@@ -35,9 +35,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.internal.util.Concurrency;
-import io.jenetics.internal.util.require;
-
 import io.jenetics.AlterResult;
 import io.jenetics.Alterer;
 import io.jenetics.Chromosome;
@@ -49,6 +46,8 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
+import io.jenetics.internal.util.Concurrency;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;

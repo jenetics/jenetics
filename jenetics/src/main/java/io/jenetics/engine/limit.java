@@ -30,7 +30,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
 

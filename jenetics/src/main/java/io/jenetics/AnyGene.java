@@ -26,7 +26,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.internal.util.Equality;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 

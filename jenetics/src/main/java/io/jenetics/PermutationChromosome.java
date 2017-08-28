@@ -36,7 +36,6 @@ import io.jenetics.internal.util.array;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;

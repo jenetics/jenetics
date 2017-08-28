@@ -27,7 +27,6 @@ import java.util.Random;
 
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 

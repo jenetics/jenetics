@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;

@@ -29,7 +29,6 @@ import io.jenetics.internal.collection.ArrayISeq;
 import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.MSeq;
 
 /**

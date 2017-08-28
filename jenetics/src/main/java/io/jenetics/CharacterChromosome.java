@@ -33,7 +33,6 @@ import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.internal.util.reflect;
-
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;

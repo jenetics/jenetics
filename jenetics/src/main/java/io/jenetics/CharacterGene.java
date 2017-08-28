@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.Random;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;

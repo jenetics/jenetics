@@ -31,7 +31,6 @@ import java.util.function.Function;
 
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.internal.util.reflect;
-
 import io.jenetics.util.Verifiable;
 
 /**

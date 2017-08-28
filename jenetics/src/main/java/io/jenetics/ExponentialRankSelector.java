@@ -23,7 +23,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 
 /**

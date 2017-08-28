@@ -25,7 +25,6 @@ import java.io.Serializable;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 
 /**

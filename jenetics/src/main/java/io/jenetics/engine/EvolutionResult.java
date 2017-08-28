@@ -28,12 +28,11 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import io.jenetics.internal.util.Lazy;
-
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.util.Lazy;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.ISeq;
 

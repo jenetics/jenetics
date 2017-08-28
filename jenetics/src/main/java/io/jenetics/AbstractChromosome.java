@@ -29,7 +29,6 @@ import java.util.RandomAccess;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Verifiable;
 

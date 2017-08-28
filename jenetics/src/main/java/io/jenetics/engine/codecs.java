@@ -28,10 +28,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.math.base;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.require;
-
 import io.jenetics.AnyChromosome;
 import io.jenetics.AnyGene;
 import io.jenetics.BitChromosome;
@@ -46,6 +42,9 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
+import io.jenetics.internal.math.base;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;

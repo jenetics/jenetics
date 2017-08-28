@@ -19,13 +19,11 @@
  */
 package io.jenetics;
 
-import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 

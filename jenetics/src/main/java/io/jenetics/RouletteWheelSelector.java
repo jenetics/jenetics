@@ -26,7 +26,6 @@ import java.util.Arrays;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 
 /**

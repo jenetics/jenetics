@@ -25,7 +25,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.internal.util.Hash;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;

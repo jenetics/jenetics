@@ -23,7 +23,6 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
 
 import io.jenetics.internal.math.random;
-
 import io.jenetics.util.RandomRegistry;
 
 

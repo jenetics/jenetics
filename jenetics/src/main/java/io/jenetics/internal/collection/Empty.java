@@ -33,7 +33,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 

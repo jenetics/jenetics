@@ -26,7 +26,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.RandomRegistry;
 
 /**

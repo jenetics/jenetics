@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.Random;
 
 import io.jenetics.internal.util.require;
-
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
