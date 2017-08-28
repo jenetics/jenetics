@@ -39,15 +39,15 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.tool',
-	'org.jenetics.tool.evaluation',
-	'org.jenetics.tool.problem',
-	'org.jenetics.tool.trial'
+	'io.jenetics.tool',
+	'io.jenetics.tool.evaluation',
+	'io.jenetics.tool.problem',
+	'io.jenetics.tool.trial'
 )
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/org.jenetics'
+		links 'http://jenetics.io/javadoc/jenetics'
 	}
 }
 
