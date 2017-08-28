@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.ext.util;
 
@@ -51,7 +51,7 @@ import io.jenetics.util.ISeq;
  * are stored continuously after the {@code childOffset} and are defined by the
  * sub-array {@code [childOffset, childOffset + childCount)}.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
  * @since 3.9
  */

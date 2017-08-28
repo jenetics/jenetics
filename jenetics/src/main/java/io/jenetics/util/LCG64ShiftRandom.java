@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.util;
 
@@ -78,7 +78,7 @@ import io.jenetics.internal.util.Hash;
  *             <a href="https://github.com/jenetics/prngine">PRNGine</a>
  *             project instead.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.1
  * @version 2.0
  */
@@ -118,7 +118,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 *             <a href="https://github.com/jenetics/prngine">PRNGine</a>
 	 *             project instead.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 1.1
 	 * @version 3.0
 	 */
@@ -207,7 +207,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * This is a <i>thread safe</i> variation of the this PRNG&mdash;by
 	 * synchronizing the random number generation.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 1.1
 	 * @version 3.0
 	 */
@@ -302,7 +302,7 @@ public class LCG64ShiftRandom extends Random64 {
 	 * parameters <i>a</i> and <i>b</i> of the LC recursion
 	 * <i>r<sub>i+1</sub> = a · r<sub>i</sub> + b</i> mod <i>2<sup>64</sup></i>.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 1.1
 	 * @version 2.0
 	 */

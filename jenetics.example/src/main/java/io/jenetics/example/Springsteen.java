@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.example;
 
@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * <a href="https://programmers.stackexchange.com/questions/326378/finding-the-best-combination-of-sets-that-gives-the-maximum-number-of-unique-ite">
  *   Finding the best combination of sets that gives the maximum number of unique items</a>
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.6
  * @version 3.6
  */

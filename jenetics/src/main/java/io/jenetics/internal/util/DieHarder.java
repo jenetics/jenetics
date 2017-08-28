@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.internal.util;
 
@@ -49,7 +49,7 @@ import io.jenetics.util.Seq;
  * <a href="http://www.phy.duke.edu/~rgb/General/dieharder.php">dieharder</a>
  * test application.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
  * @version 3.0
  */
@@ -58,7 +58,7 @@ public final class DieHarder {
 	/**
 	 * Writes random numbers to an given data output stream.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 1.5
 	 * @version 3.0
 	 */
@@ -224,7 +224,7 @@ public final class DieHarder {
 	/**
 	 * Represents one DieHarder test result.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
 	 * @version 3.0
 	 */
@@ -348,7 +348,7 @@ public final class DieHarder {
 	/**
 	 * Counts the written bytes.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
 	 * @version 3.0
 	 */
