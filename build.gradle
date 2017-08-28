@@ -19,9 +19,9 @@
  */
 
 
-import org.jenetics.gradle.PropertiesLoader
-import org.jenetics.gradle.Version
-import org.jenetics.gradle.plugin.SetupPlugin
+import io.jenetics.gradle.PropertiesLoader
+import io.jenetics.gradle.Version
+import io.jenetics.gradle.plugin.SetupPlugin
 
 import java.time.Year
 import java.time.ZonedDateTime
