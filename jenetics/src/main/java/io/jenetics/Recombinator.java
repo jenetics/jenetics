@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.math.base.subset;
-import static org.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.base.subset;
+import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 import java.util.function.IntFunction;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * <p>

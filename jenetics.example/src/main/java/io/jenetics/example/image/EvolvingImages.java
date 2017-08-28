@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.lang.String.format;
 import static javax.swing.SwingUtilities.invokeLater;
-import static org.jenetics.example.image.EvolvingImagesCmd.writeImage;
+import static io.jenetics.example.image.EvolvingImagesCmd.writeImage;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -40,8 +40,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.jenetics.Genotype;
-import org.jenetics.engine.EvolutionResult;
+import io.jenetics.Genotype;
+import io.jenetics.engine.EvolutionResult;
 
 /**
  * This example shows a more advanced use of a genetic algorithm: approximate a
@@ -148,9 +148,9 @@ public final class EvolvingImages extends JFrame {
         pauseButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         resultPanel = new javax.swing.JPanel();
-        bestEvolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
-        currentevolutionResultPanel = new org.jenetics.example.image.EvolutionResultPanel();
-        engineParamPanel = new org.jenetics.example.image.EngineParamPanel();
+        bestEvolutionResultPanel = new io.jenetics.example.image.EvolutionResultPanel();
+        currentevolutionResultPanel = new io.jenetics.example.image.EvolutionResultPanel();
+        engineParamPanel = new io.jenetics.example.image.EngineParamPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Evolving images");
@@ -524,10 +524,10 @@ public final class EvolvingImages extends JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jenetics.example.image.EvolutionResultPanel bestEvolutionResultPanel;
+    private io.jenetics.example.image.EvolutionResultPanel bestEvolutionResultPanel;
     private javax.swing.JPanel buttonPanel;
-    private org.jenetics.example.image.EvolutionResultPanel currentevolutionResultPanel;
-    private org.jenetics.example.image.EngineParamPanel engineParamPanel;
+    private io.jenetics.example.image.EvolutionResultPanel currentevolutionResultPanel;
+    private io.jenetics.example.image.EngineParamPanel engineParamPanel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JSplitPane imageSplitPane;
     private javax.swing.JButton openButton;

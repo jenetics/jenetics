@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog.op;
+package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Lazy;
+import io.jenetics.internal.util.Lazy;
 
 /**
  * Implementation of an <em>ephemeral</em> constant. It causes the insertion of

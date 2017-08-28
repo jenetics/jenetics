@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -39,7 +39,7 @@ public class StaticObjectTest {
 		} catch (AssertionError e) {
 			final String expected = String.format(
 				"Instantiation of '%s' is not allowed.",
-				"org.jenetics.util.SomeStaticObject"
+				"io.jenetics.util.SomeStaticObject"
 			);
 
 			Assert.assertEquals(e.getMessage(), expected);
@@ -54,7 +54,7 @@ public class StaticObjectTest {
 		} catch (InvocationTargetException e) {
 			final String expected = String.format(
 				"Instantiation of '%s' is not allowed.",
-				"org.jenetics.util.SomeStaticObject"
+				"io.jenetics.util.SomeStaticObject"
 			);
 
 			Assert.assertEquals(e.getTargetException().getMessage(), expected);

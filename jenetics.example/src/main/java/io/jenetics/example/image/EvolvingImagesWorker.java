@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,15 +28,15 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 
-import org.jenetics.Genotype;
-import org.jenetics.MeanAlterer;
-import org.jenetics.Optimize;
-import org.jenetics.TournamentSelector;
-import org.jenetics.TruncationSelector;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.stat.MinMax;
+import io.jenetics.Genotype;
+import io.jenetics.MeanAlterer;
+import io.jenetics.Optimize;
+import io.jenetics.TournamentSelector;
+import io.jenetics.TruncationSelector;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.stat.MinMax;
 
 /**
  * Performs the actual evolution.

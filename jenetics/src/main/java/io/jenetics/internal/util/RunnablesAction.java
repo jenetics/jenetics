@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 import static java.lang.Math.max;
 import static java.security.AccessController.doPrivileged;
@@ -25,7 +25,7 @@ import static java.security.AccessController.doPrivileged;
 import java.security.PrivilegedAction;
 import java.util.concurrent.RecursiveAction;
 
-import org.jenetics.util.Seq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

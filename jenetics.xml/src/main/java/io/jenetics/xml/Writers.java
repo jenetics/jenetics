@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Writer.attr;
-import static org.jenetics.xml.stream.Writer.elem;
-import static org.jenetics.xml.stream.Writer.elems;
-import static org.jenetics.xml.stream.Writer.text;
+import static io.jenetics.xml.stream.Writer.attr;
+import static io.jenetics.xml.stream.Writer.elem;
+import static io.jenetics.xml.stream.Writer.elems;
+import static io.jenetics.xml.stream.Writer.text;
 
 import java.io.OutputStream;
 import java.util.Collection;
@@ -31,12 +31,12 @@ import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.BoundedGene;
-import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.BoundedGene;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.XML;
 
 /**
  * This class contains static fields and methods, for creating chromosome- and
@@ -71,7 +71,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.BitChromosome} objects.
+	 * {@link io.jenetics.BitChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -98,21 +98,21 @@ public final class Writers {
 		static final String ONES_PROBABILITY_NAME = "ones-probability";
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.BitChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.BitChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome writer
 		 */
-		public static Writer<org.jenetics.BitChromosome> writer() {
+		public static Writer<io.jenetics.BitChromosome> writer() {
 			return elem(ROOT_NAME,
-				attr(LENGTH_NAME).map(org.jenetics.BitChromosome::length),
+				attr(LENGTH_NAME).map(io.jenetics.BitChromosome::length),
 				attr(ONES_PROBABILITY_NAME).map(ch -> ch.getOneProbability()),
-				text().map(org.jenetics.BitChromosome::toCanonicalString)
+				text().map(io.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.BitChromosome} to the given
+		 * Write the given {@link io.jenetics.BitChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -124,7 +124,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.BitChromosome data
+			final io.jenetics.BitChromosome data
 		)
 			throws XMLStreamException
 		{
@@ -140,7 +140,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.CharacterChromosome} objects.
+	 * {@link io.jenetics.CharacterChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -167,23 +167,23 @@ public final class Writers {
 		static final String ALLELES_NAME = "alleles";
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.CharacterChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.CharacterChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome writer
 		 */
-		public static Writer<org.jenetics.CharacterChromosome> writer() {
+		public static Writer<io.jenetics.CharacterChromosome> writer() {
 			return elem(ROOT_NAME,
-				attr(LENGTH_NAME).map(org.jenetics.CharacterChromosome::length),
+				attr(LENGTH_NAME).map(io.jenetics.CharacterChromosome::length),
 				elem(VALID_ALLELES_NAME,
 					text().map(ch -> ch.getGene().getValidCharacters())),
 				elem(ALLELES_NAME,
-					text().map(org.jenetics.CharacterChromosome::toString))
+					text().map(io.jenetics.CharacterChromosome::toString))
 			);
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.CharacterChromosome} to the given
+		 * Write the given {@link io.jenetics.CharacterChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -196,7 +196,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.CharacterChromosome data,
+			final io.jenetics.CharacterChromosome data,
 			final String indent
 		)
 			throws XMLStreamException
@@ -210,7 +210,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.CharacterChromosome} to the given
+		 * Write the given {@link io.jenetics.CharacterChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -222,7 +222,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.CharacterChromosome data
+			final io.jenetics.CharacterChromosome data
 		)
 			throws XMLStreamException
 		{
@@ -233,7 +233,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.BoundedChromosome} objects.
+	 * {@link io.jenetics.BoundedChromosome} objects.
 	 *
 	 * <p>
 	 * <b>XML template</b>
@@ -272,7 +272,7 @@ public final class Writers {
 		public static <
 			A extends Comparable<? super A>,
 			G extends BoundedGene<A, G>,
-			C extends org.jenetics.BoundedChromosome<A, G>
+			C extends io.jenetics.BoundedChromosome<A, G>
 		>
 		Writer<C> writer(
 			final String rootName,
@@ -295,7 +295,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.IntegerChromosome} objects.
+	 * {@link io.jenetics.IntegerChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -335,7 +335,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.IntegerChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.IntegerChromosome}
 		 * objects.
 		 *
 		 * @param alleleWriter the allele writer used for writing the integer
@@ -345,7 +345,7 @@ public final class Writers {
 		 * @throws NullPointerException if the given {@code alleleWriter} is
 		 *         {@code null}
 		 */
-		public static Writer<org.jenetics.IntegerChromosome>
+		public static Writer<io.jenetics.IntegerChromosome>
 		writer(final Writer<? super Integer> alleleWriter) {
 			requireNonNull(alleleWriter);
 
@@ -353,17 +353,17 @@ public final class Writers {
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.IntegerChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.IntegerChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome writer
 		 */
-		public static Writer<org.jenetics.IntegerChromosome> writer() {
+		public static Writer<io.jenetics.IntegerChromosome> writer() {
 			return writer(alleleWriter());
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.IntegerChromosome} to the given
+		 * Write the given {@link io.jenetics.IntegerChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -376,7 +376,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.IntegerChromosome data,
+			final io.jenetics.IntegerChromosome data,
 			final String indent
 		)
 			throws XMLStreamException
@@ -390,7 +390,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.IntegerChromosome} to the given
+		 * Write the given {@link io.jenetics.IntegerChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -402,7 +402,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.IntegerChromosome data
+			final io.jenetics.IntegerChromosome data
 		)
 			throws XMLStreamException
 		{
@@ -412,7 +412,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.LongChromosome} objects.
+	 * {@link io.jenetics.LongChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -452,7 +452,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.LongChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.LongChromosome}
 		 * objects.
 		 *
 		 * @param alleleWriter the allele writer used for writing the long
@@ -462,23 +462,23 @@ public final class Writers {
 		 * @throws NullPointerException if the given {@code alleleWriter} is
 		 *         {@code null}
 		 */
-		public static Writer<org.jenetics.LongChromosome>
+		public static Writer<io.jenetics.LongChromosome>
 		writer(final Writer<? super Long> alleleWriter) {
 			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.LongChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.LongChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome writer
 		 */
-		public static Writer<org.jenetics.LongChromosome> writer() {
+		public static Writer<io.jenetics.LongChromosome> writer() {
 			return writer(alleleWriter());
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.LongChromosome} to the given
+		 * Write the given {@link io.jenetics.LongChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -491,7 +491,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.LongChromosome data,
+			final io.jenetics.LongChromosome data,
 			final String indent
 		)
 			throws XMLStreamException
@@ -505,7 +505,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.LongChromosome} to the given
+		 * Write the given {@link io.jenetics.LongChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -517,7 +517,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.LongChromosome data
+			final io.jenetics.LongChromosome data
 		)
 			throws XMLStreamException
 		{
@@ -527,7 +527,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.DoubleChromosome} objects.
+	 * {@link io.jenetics.DoubleChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -551,7 +551,7 @@ public final class Writers {
 	 * }</pre>
 	 */
 	public static final class DoubleChromosome
-		//extends WriterProvider<org.jenetics.DoubleChromosome>
+		//extends WriterProvider<io.jenetics.DoubleChromosome>
 	{
 		private DoubleChromosome() {}
 
@@ -568,7 +568,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.DoubleChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.DoubleChromosome}
 		 * objects.
 		 *
 		 * @param alleleWriter the allele writer used for writing the long
@@ -578,27 +578,27 @@ public final class Writers {
 		 * @throws NullPointerException if the given {@code alleleWriter} is
 		 *         {@code null}
 		 */
-		public static Writer<org.jenetics.DoubleChromosome>
+		public static Writer<io.jenetics.DoubleChromosome>
 		writer(final Writer<? super Double> alleleWriter) {
 			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
-		 * Return a {@link Writer} for {@link org.jenetics.DoubleChromosome}
+		 * Return a {@link Writer} for {@link io.jenetics.DoubleChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome writer
 		 */
-		public static Writer<org.jenetics.DoubleChromosome> writer() {
+		public static Writer<io.jenetics.DoubleChromosome> writer() {
 			return writer(alleleWriter());
 		}
 
-		public Class<org.jenetics.DoubleChromosome> type() {
-			return org.jenetics.DoubleChromosome.class;
+		public Class<io.jenetics.DoubleChromosome> type() {
+			return io.jenetics.DoubleChromosome.class;
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.DoubleChromosome} to the given
+		 * Write the given {@link io.jenetics.DoubleChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -611,7 +611,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.DoubleChromosome data,
+			final io.jenetics.DoubleChromosome data,
 			final String indent
 		)
 			throws XMLStreamException
@@ -625,7 +625,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.DoubleChromosome} to the given
+		 * Write the given {@link io.jenetics.DoubleChromosome} to the given
 		 * output stream.
 		 *
 		 * @param out the target output stream
@@ -637,7 +637,7 @@ public final class Writers {
 		 */
 		public static void write(
 			final OutputStream out,
-			final org.jenetics.DoubleChromosome data
+			final io.jenetics.DoubleChromosome data
 		)
 			throws XMLStreamException
 		{
@@ -647,7 +647,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.PermutationChromosome} objects.
+	 * {@link io.jenetics.PermutationChromosome} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -695,10 +695,10 @@ public final class Writers {
 		 * @throws NullPointerException if the given allele {@code writer} is
 		 *         {@code null}
 		 */
-		public static <A> Writer<org.jenetics.PermutationChromosome<A>>
+		public static <A> Writer<io.jenetics.PermutationChromosome<A>>
 		writer(final Writer<? super A> alleleWriter) {
 			return elem(ROOT_NAME,
-				attr(LENGTH_NAME).map(org.jenetics.PermutationChromosome::length),
+				attr(LENGTH_NAME).map(io.jenetics.PermutationChromosome::length),
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					elems(ALLELE_NAME, alleleWriter)
@@ -712,7 +712,7 @@ public final class Writers {
 		}
 
 		private static String toAlleleTypeName(
-			final org.jenetics.PermutationChromosome<?> ch
+			final io.jenetics.PermutationChromosome<?> ch
 		) {
 			return ch.getGene().getAllele().getClass().getCanonicalName();
 		}
@@ -753,12 +753,12 @@ public final class Writers {
 		 * @param <A> the allele type
 		 * @return a new permutation chromosome writer
 		 */
-		public static <A> Writer<org.jenetics.PermutationChromosome<A>> writer() {
+		public static <A> Writer<io.jenetics.PermutationChromosome<A>> writer() {
 			return writer(text());
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * Write the given {@link io.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
 		 * @param <A> the allele type
@@ -772,7 +772,7 @@ public final class Writers {
 		 */
 		public static <A> void write(
 			final OutputStream out,
-			final org.jenetics.PermutationChromosome<A> data,
+			final io.jenetics.PermutationChromosome<A> data,
 			final String indent
 		)
 			throws XMLStreamException
@@ -786,7 +786,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * Write the given {@link io.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
 		 * @param <A> the allele type
@@ -801,7 +801,7 @@ public final class Writers {
 		 */
 		public static <A> void write(
 			final OutputStream out,
-			final org.jenetics.PermutationChromosome<A> data,
+			final io.jenetics.PermutationChromosome<A> data,
 			final String indent,
 			final Writer<? super A> alleleWriter
 		)
@@ -818,7 +818,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * Write the given {@link io.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
 		 * @param <A> the allele type
@@ -831,7 +831,7 @@ public final class Writers {
 		 */
 		public static <A> void write(
 			final OutputStream out,
-			final org.jenetics.PermutationChromosome<A> data
+			final io.jenetics.PermutationChromosome<A> data
 		)
 			throws XMLStreamException
 		{
@@ -839,7 +839,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.PermutationChromosome} to the
+		 * Write the given {@link io.jenetics.PermutationChromosome} to the
 		 * given output stream.
 		 *
 		 * @param <A> the allele type
@@ -854,7 +854,7 @@ public final class Writers {
 		 */
 		public static <A> void write(
 			final OutputStream out,
-			final org.jenetics.PermutationChromosome<A> data,
+			final io.jenetics.PermutationChromosome<A> data,
 			final Writer<? super A> alleleWriter
 		)
 			throws XMLStreamException
@@ -866,7 +866,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.Genotype} objects.
+	 * {@link io.jenetics.Genotype} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -929,11 +929,11 @@ public final class Writers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Writer<org.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
+		Writer<io.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem(
 				ROOT_NAME,
-				attr(LENGTH_NAME).map(org.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(org.jenetics.Genotype<G>::getNumberOfGenes),
+				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
+				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::getNumberOfGenes),
 				elems(writer).map(gt -> cast(gt.toSeq()))
 			);
 		}
@@ -944,7 +944,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * Write the given {@link io.jenetics.Genotype} to the given output
 		 * stream.
 		 *
 		 * @param <A> the allele type
@@ -967,7 +967,7 @@ public final class Writers {
 		>
 		void write(
 			final OutputStream out,
-			final org.jenetics.Genotype<G> data,
+			final io.jenetics.Genotype<G> data,
 			final String indent,
 			final Writer<? super C> chromosomeWriter
 		)
@@ -983,7 +983,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * Write the given {@link io.jenetics.Genotype} to the given output
 		 * stream.
 		 *
 		 * @param <A> the allele type
@@ -1005,7 +1005,7 @@ public final class Writers {
 		>
 		void write(
 			final OutputStream out,
-			final org.jenetics.Genotype<G> data,
+			final io.jenetics.Genotype<G> data,
 			final Writer<? super C> chromosomeWriter
 		)
 			throws XMLStreamException
@@ -1023,7 +1023,7 @@ public final class Writers {
 
 	/**
 	 * This class contains static writer methods for
-	 * {@link org.jenetics.Genotype} objects.
+	 * {@link io.jenetics.Genotype} objects.
 	 * <p>
 	 * <b>Writer code</b>
 	 * <pre>{@code
@@ -1092,7 +1092,7 @@ public final class Writers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Writer<Collection<org.jenetics.Genotype<G>>>
+		Writer<Collection<io.jenetics.Genotype<G>>>
 		writer(final Writer<? super C> writer) {
 			return elem(
 				ROOT_NAME,
@@ -1102,7 +1102,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * Write the given {@link io.jenetics.Genotype} to the given output
 		 * stream.
 		 *
 		 * @param <A> the allele type
@@ -1125,7 +1125,7 @@ public final class Writers {
 		>
 		void write(
 			final OutputStream out,
-			final Collection<org.jenetics.Genotype<G>> data,
+			final Collection<io.jenetics.Genotype<G>> data,
 			final String indent,
 			final Writer<? super C> chromosomeWriter
 		)
@@ -1141,7 +1141,7 @@ public final class Writers {
 		}
 
 		/**
-		 * Write the given {@link org.jenetics.Genotype} to the given output
+		 * Write the given {@link io.jenetics.Genotype} to the given output
 		 * stream.
 		 *
 		 * @param <A> the allele type
@@ -1163,7 +1163,7 @@ public final class Writers {
 		>
 		void write(
 			final OutputStream out,
-			final Collection<org.jenetics.Genotype<G>> data,
+			final Collection<io.jenetics.Genotype<G>> data,
 			final Writer<? super C> chromosomeWriter
 		)
 			throws XMLStreamException
@@ -1181,7 +1181,7 @@ public final class Writers {
 
 
 	/**
-	 * Write the given {@link org.jenetics.Genotype} to the given output
+	 * Write the given {@link io.jenetics.Genotype} to the given output
 	 * stream.
 	 *
 	 * @see Genotypes#write(OutputStream, Collection, Writer)
@@ -1205,7 +1205,7 @@ public final class Writers {
 	>
 	void write(
 		final OutputStream out,
-		final Collection<org.jenetics.Genotype<G>> data,
+		final Collection<io.jenetics.Genotype<G>> data,
 		final Writer<? super C> chromosomeWriter
 	)
 		throws XMLStreamException

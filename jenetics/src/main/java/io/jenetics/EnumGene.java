@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * <p>
@@ -36,7 +36,7 @@ import org.jenetics.util.RandomRegistry;
  * problems in combination with the {@link PermutationChromosome}.
  * </p>
  * The following code shows how to create a combinatorial genotype factory which
- * can be used when creating an {@link org.jenetics.engine.Engine} instance.
+ * can be used when creating an {@link io.jenetics.engine.Engine} instance.
  * <pre>{@code
  * final ISeq<Integer> alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final Factory<Genotype<EnumGene<Integer>>> gtf = Genotype.of(

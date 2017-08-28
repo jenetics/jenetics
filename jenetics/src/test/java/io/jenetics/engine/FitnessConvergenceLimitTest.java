@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -26,18 +26,18 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.Population;
-import org.jenetics.engine.FitnessConvergenceLimit.Buffer;
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.DoubleMoments;
-import org.jenetics.util.ISeq;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.Population;
+import io.jenetics.engine.FitnessConvergenceLimit.Buffer;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.DoubleMoments;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

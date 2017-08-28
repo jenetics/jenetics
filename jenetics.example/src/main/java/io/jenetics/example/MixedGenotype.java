@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.Chromosome;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
+import io.jenetics.BitChromosome;
+import io.jenetics.Chromosome;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class MixedGenotype {

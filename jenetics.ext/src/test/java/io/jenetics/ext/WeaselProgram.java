@@ -1,17 +1,17 @@
-package org.jenetics.ext;
+package io.jenetics.ext;
 
-import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.engine.limit.byFitnessThreshold;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.limit.byFitnessThreshold;
 
 import java.util.stream.IntStream;
 
-import org.jenetics.CharacterChromosome;
-import org.jenetics.CharacterGene;
-import org.jenetics.Genotype;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
+import io.jenetics.CharacterChromosome;
+import io.jenetics.CharacterGene;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

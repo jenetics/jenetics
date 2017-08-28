@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * {@code StochasticUniversalSelector} is a method for selecting a

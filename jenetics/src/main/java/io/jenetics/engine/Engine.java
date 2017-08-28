@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
 import java.util.Iterator;
@@ -35,26 +35,26 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.util.Concurrency;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.Concurrency;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.AlterResult;
-import org.jenetics.Alterer;
-import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Mutator;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.Selector;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.TournamentSelector;
-import org.jenetics.util.Copyable;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.NanoClock;
-import org.jenetics.util.Seq;
+import io.jenetics.AlterResult;
+import io.jenetics.Alterer;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.Mutator;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.Selector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
+import io.jenetics.util.Copyable;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.NanoClock;
+import io.jenetics.util.Seq;
 
 /**
  * Genetic algorithm <em>engine</em> which is the main class. The following

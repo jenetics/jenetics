@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import java.util.stream.Stream;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Verifiable;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Verifiable;
 
 /**
  * A chromosome consists of one or more genes. It also provides a factory

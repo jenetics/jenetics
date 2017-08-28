@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import static java.nio.file.Files.exists;
 
@@ -28,14 +28,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.jenetics.BitGene;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Problem;
-import org.jenetics.example.Knapsack.Item;
-import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.BitGene;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.example.Knapsack.Item;
+import io.jenetics.util.IO;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

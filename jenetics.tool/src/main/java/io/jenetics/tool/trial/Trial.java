@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.lang.String.format;
 import static java.nio.file.Files.exists;
@@ -30,8 +30,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

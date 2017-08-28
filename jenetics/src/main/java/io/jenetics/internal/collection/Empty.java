@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -32,10 +32,10 @@ import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * Contains static {@code Seq} definitions.

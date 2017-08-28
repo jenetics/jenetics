@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
@@ -30,8 +30,8 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

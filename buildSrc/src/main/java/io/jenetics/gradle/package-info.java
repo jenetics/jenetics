@@ -23,4 +23,4 @@
  * @since 1.4
  * @version 1.4
  */
-package org.jenetics.gradle;
+package io.jenetics.gradle;

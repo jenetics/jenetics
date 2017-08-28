@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.bit.getAndSet;
+import static io.jenetics.internal.util.bit.getAndSet;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,17 +29,17 @@ import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.math.base;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.array;
-import org.jenetics.internal.util.bit;
-import org.jenetics.internal.util.reflect;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.math.base;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.array;
+import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.IntRange;
-import org.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.MSeq;
 
 /**
  * This chromosome can be used to model permutations of a given (sub) set of

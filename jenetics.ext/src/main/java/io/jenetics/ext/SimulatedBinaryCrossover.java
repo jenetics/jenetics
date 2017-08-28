@@ -17,21 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
-import static org.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Random;
 
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.math.random;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.Crossover;
-import org.jenetics.NumericGene;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Crossover;
+import io.jenetics.NumericGene;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Performs the simulated binary crossover (SBX) on a {@code Chromosome} of

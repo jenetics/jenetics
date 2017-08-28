@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * Selectors are responsible for selecting a given number of individuals from

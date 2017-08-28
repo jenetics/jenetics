@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.evaluation;
+package io.jenetics.tool.evaluation;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,12 +26,12 @@ import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.tool.trial.Trial;
-import org.jenetics.tool.trial.TrialMeter;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.tool.trial.Trial;
+import io.jenetics.tool.trial.TrialMeter;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

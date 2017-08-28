@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml.stream;
+package io.jenetics.xml.stream;
 
-import static org.jenetics.xml.stream.Reader.attr;
-import static org.jenetics.xml.stream.Reader.elem;
-import static org.jenetics.xml.stream.Reader.elems;
-import static org.jenetics.xml.stream.Reader.text;
+import static io.jenetics.xml.stream.Reader.attr;
+import static io.jenetics.xml.stream.Reader.elem;
+import static io.jenetics.xml.stream.Reader.elems;
+import static io.jenetics.xml.stream.Reader.text;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;

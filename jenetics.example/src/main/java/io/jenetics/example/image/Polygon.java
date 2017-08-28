@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.lang.Math.max;
 import static java.lang.String.format;
@@ -24,10 +24,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 import java.util.Random;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.Mean;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.Mean;
+import io.jenetics.util.RandomRegistry;
 
 final class Polygon implements Mean<Polygon> {
 

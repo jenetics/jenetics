@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.task;
+package io.jenetics.gradle.task;
 
 import static java.lang.String.format;
 

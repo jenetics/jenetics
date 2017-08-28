@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 /**
  * This interface indicates, that a class can create a copy of type {@code T}.

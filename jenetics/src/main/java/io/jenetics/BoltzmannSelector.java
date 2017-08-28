@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static org.jenetics.internal.math.arithmetic.normalize;
+import static io.jenetics.internal.math.arithmetic.normalize;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * <p>

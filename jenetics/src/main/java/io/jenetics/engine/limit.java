@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
@@ -29,10 +29,10 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.stat.DoubleMoments;
-import org.jenetics.util.NanoClock;
+import io.jenetics.stat.DoubleMoments;
+import io.jenetics.util.NanoClock;
 
 /**
  * This class contains factory methods for creating predicates, which can be

@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 /**
  * A mixin interface for genes which can have a mean value. This mixin is
- * required for the {@link org.jenetics.MeanAlterer}.
+ * required for the {@link io.jenetics.MeanAlterer}.
  *
- * @see org.jenetics.MeanAlterer
+ * @see io.jenetics.MeanAlterer
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -33,7 +33,7 @@ public interface Mean<T> {
 
 	/**
 	 * Return the (usually arithmetic) mean value of {@code this} and
-	 * {@code that}. For {@link org.jenetics.NumericGene}s the mean is the
+	 * {@code that}. For {@link io.jenetics.NumericGene}s the mean is the
 	 * arithmetic mean.
 	 *
 	 * @param that the second value for calculating the mean.

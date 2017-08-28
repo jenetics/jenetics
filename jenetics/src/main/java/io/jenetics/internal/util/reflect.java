@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Stream.concat;

@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.EnumGene;
-import org.jenetics.Mutator;
-import org.jenetics.PartiallyMatchedCrossover;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Problem;
-import org.jenetics.engine.codecs;
-import org.jenetics.engine.limit;
-import org.jenetics.util.ISeq;
+import io.jenetics.EnumGene;
+import io.jenetics.Mutator;
+import io.jenetics.PartiallyMatchedCrossover;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.engine.codecs;
+import io.jenetics.engine.limit;
+import io.jenetics.util.ISeq;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
@@ -29,8 +29,8 @@ import java.util.function.Predicate;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.DoubleMoments;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.DoubleMoments;
 
 /**
  * Implementation of the fitness-convergence limit strategy object.

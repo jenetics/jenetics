@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import java.util.Random;
 import java.util.function.ToDoubleFunction;
@@ -25,10 +25,10 @@ import java.util.function.ToDoubleFunction;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectTester;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Range;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ObjectTester;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

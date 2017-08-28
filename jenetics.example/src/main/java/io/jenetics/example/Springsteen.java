@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 
 import static java.util.Objects.requireNonNull;
@@ -25,13 +25,13 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.jenetics.BitGene;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Problem;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.ISeq;
+import io.jenetics.BitGene;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.engine.codecs;
+import io.jenetics.util.ISeq;
 
 /**
  * Solves:

@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Random;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Character gene implementation.

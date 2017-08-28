@@ -24,4 +24,4 @@
  * @since 1.4
  * @version 1.4
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;

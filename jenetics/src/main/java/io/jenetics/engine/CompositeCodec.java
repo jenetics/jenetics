@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
 
 /**
  * Composites a list of codecs into one {@code Codec} class.

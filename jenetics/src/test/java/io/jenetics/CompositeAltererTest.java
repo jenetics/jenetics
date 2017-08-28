@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

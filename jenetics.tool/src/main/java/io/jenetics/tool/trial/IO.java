@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;

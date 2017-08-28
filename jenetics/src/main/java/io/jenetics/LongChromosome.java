@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.reflect;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.LongRange;
-import org.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.LongRange;
+import io.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds 64 bit integer numbers.

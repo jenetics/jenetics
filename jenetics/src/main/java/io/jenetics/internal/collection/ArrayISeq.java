@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 
 import java.util.function.Function;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

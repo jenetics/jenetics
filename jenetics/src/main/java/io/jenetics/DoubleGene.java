@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.internal.math.random.nextDouble;
-import static org.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
 import java.util.Random;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Mean;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Mean;
 
 /**
  * Implementation of the NumericGene which holds a 64 bit floating point number.

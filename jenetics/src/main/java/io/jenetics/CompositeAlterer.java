@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
-import static org.jenetics.util.ISeq.toISeq;
+import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.util.ISeq.toISeq;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * Combines several alterers to one.

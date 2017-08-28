@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -25,8 +25,8 @@ import static org.testng.Assert.assertFalse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectTester;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -1,17 +1,17 @@
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
-import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.limit.bySteadyFitness;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.MeanAlterer;
-import org.jenetics.Mutator;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionStatistics;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.DoubleRange;
+import io.jenetics.DoubleGene;
+import io.jenetics.MeanAlterer;
+import io.jenetics.Mutator;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.engine.codecs;
+import io.jenetics.util.DoubleRange;
 
 public class RastriginFunction {
 	private static final double A = 10;

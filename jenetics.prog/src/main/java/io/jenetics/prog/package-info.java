@@ -188,4 +188,4 @@
  * @version 3.9
  * @since 3.9
  */
-package org.jenetics.prog;
+package io.jenetics.prog;

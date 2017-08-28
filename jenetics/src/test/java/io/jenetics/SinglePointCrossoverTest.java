@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.TestUtils.newDoubleGenePopulation;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.TestUtils.newDoubleGenePopulation;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -28,12 +28,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.stat.LongMomentStatistics;
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Range;
+import io.jenetics.stat.Histogram;
+import io.jenetics.stat.LongMomentStatistics;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

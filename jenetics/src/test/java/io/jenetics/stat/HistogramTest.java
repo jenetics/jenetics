@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

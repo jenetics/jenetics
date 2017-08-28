@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.io.File.createTempFile;
 import static java.lang.String.format;
@@ -132,7 +132,7 @@ public class Gnuplot {
 		throws IOException, InterruptedException
 	{
 		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
-			"Jenetics/org.jenetics/src/tool/resources/org/jenetics/trial/";
+			"Jenetics/io.jenetics/src/tool/resources/org/jenetics/trial/";
 
 		final Path data = Paths.get(base, "knapsack_execution_time.dat");
 		final Path output = Paths.get(base, "knapsack_execution_time.svg");

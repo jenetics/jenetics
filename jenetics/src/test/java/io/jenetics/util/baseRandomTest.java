@@ -18,13 +18,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.internal.math.random.toDouble;
-import static org.jenetics.internal.math.random.toDouble2;
-import static org.jenetics.internal.math.random.toFloat;
-import static org.jenetics.internal.math.random.toFloat2;
-import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.internal.math.random.toDouble;
+import static io.jenetics.internal.math.random.toDouble2;
+import static io.jenetics.internal.math.random.toFloat;
+import static io.jenetics.internal.math.random.toFloat2;
+import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -33,9 +33,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.random;
+import io.jenetics.internal.math.random;
 
-import org.jenetics.stat.Histogram;
+import io.jenetics.stat.Histogram;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

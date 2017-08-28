@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,18 +26,18 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.AnyGene;
-import org.jenetics.Chromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.EnumGene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerGene;
-import org.jenetics.LongGene;
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.IntRange;
-import org.jenetics.util.LongRange;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.AnyGene;
+import io.jenetics.Chromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.EnumGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerGene;
+import io.jenetics.LongGene;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.LongRange;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

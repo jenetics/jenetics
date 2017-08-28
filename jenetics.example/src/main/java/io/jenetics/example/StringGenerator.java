@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
-import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 
 import java.util.stream.IntStream;
 
-import org.jenetics.CharacterChromosome;
-import org.jenetics.CharacterGene;
-import org.jenetics.Genotype;
-import org.jenetics.Mutator;
-import org.jenetics.Phenotype;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.StochasticUniversalSelector;
-import org.jenetics.TournamentSelector;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.Problem;
-import org.jenetics.util.CharSeq;
+import io.jenetics.CharacterChromosome;
+import io.jenetics.CharacterGene;
+import io.jenetics.Genotype;
+import io.jenetics.Mutator;
+import io.jenetics.Phenotype;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.StochasticUniversalSelector;
+import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.CharSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

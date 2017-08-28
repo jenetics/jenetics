@@ -17,22 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.limit;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.limit;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

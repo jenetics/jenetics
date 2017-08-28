@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.lang.Double.compare;
 import static java.lang.String.format;

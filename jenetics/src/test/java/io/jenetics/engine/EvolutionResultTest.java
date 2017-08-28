@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
-import static org.jenetics.engine.EvolutionResult.toBestEvolutionResult;
+import static io.jenetics.engine.EvolutionResult.toBestEvolutionResult;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -30,18 +30,18 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.ObjectTester;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.ObjectTester;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

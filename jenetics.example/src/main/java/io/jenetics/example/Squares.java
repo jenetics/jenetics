@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import java.awt.Dimension;
 import java.util.Random;
 
-import org.jenetics.AnyGene;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.AnyGene;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.codecs;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

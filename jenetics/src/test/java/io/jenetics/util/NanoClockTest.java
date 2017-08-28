@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.lang.String.format;
 
@@ -25,7 +25,7 @@ import java.time.Clock;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.test.Retry;
+import io.jenetics.test.Retry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.gradle.task;
+package io.jenetics.gradle.task;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
 
-import org.jenetics.colorizer.Colorizer;
+import io.jenetics.colorizer.Colorizer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

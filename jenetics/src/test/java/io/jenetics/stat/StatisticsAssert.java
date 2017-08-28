@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import static java.lang.String.format;
 
@@ -27,7 +27,7 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.Assert;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

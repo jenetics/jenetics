@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext.util;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import org.jenetics.util.Copyable;
+import io.jenetics.util.Copyable;
 
 /**
  * A general purpose node in a tree data-structure. The {@code TreeNode} is a

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -37,18 +37,18 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
-import org.jenetics.Mutator;
-import org.jenetics.Optimize;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.IntRange;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
+import io.jenetics.Mutator;
+import io.jenetics.Optimize;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.IO;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

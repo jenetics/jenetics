@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import java.math.BigInteger;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.Chromosome;
-import org.jenetics.NumericChromosomeTester;
-import org.jenetics.util.Factory;
+import io.jenetics.Chromosome;
+import io.jenetics.NumericChromosomeTester;
+import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
-import static org.jenetics.stat.LongMomentStatistics.toLongMomentStatistics;
+import static io.jenetics.stat.LongMomentStatistics.toLongMomentStatistics;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.function.Function;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are

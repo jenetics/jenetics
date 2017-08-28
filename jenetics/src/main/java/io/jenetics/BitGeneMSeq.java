@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.jenetics.internal.collection.Array;
-import org.jenetics.internal.collection.ArrayISeq;
-import org.jenetics.internal.collection.ArrayMSeq;
-import org.jenetics.internal.util.bit;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.collection.Array;
+import io.jenetics.internal.collection.ArrayISeq;
+import io.jenetics.internal.collection.ArrayMSeq;
+import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.MSeq;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

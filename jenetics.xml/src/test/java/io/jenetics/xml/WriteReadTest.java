@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.util.Collections.emptyList;
 
@@ -32,14 +32,14 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.CharacterChromosome;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.LongChromosome;
-import org.jenetics.PermutationChromosome;
+import io.jenetics.BitChromosome;
+import io.jenetics.CharacterChromosome;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.LongChromosome;
+import io.jenetics.PermutationChromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -76,41 +76,41 @@ public class WriteReadTest {
 		return new Object[][] {
 			{
 				BitChromosome.of(10),
-				(Write<org.jenetics.BitChromosome>)Writers.BitChromosome::write,
-				(Read<org.jenetics.BitChromosome>)Readers.BitChromosome::read
+				(Write<io.jenetics.BitChromosome>)Writers.BitChromosome::write,
+				(Read<io.jenetics.BitChromosome>)Readers.BitChromosome::read
 			},
 			{
 				CharacterChromosome.of(5),
-				(Write<org.jenetics.CharacterChromosome>)Writers.CharacterChromosome::write,
-				(Read<org.jenetics.CharacterChromosome>)Readers.CharacterChromosome::read
+				(Write<io.jenetics.CharacterChromosome>)Writers.CharacterChromosome::write,
+				(Read<io.jenetics.CharacterChromosome>)Readers.CharacterChromosome::read
 			},
 			{
 				IntegerChromosome.of(0, 1_000_000, 20),
-				(Write<org.jenetics.IntegerChromosome>)Writers.IntegerChromosome::write,
-				(Read<org.jenetics.IntegerChromosome>)Readers.IntegerChromosome::read
+				(Write<io.jenetics.IntegerChromosome>)Writers.IntegerChromosome::write,
+				(Read<io.jenetics.IntegerChromosome>)Readers.IntegerChromosome::read
 			},
 			{
 				LongChromosome.of(0, 1_000_000, 20),
-				(Write<org.jenetics.LongChromosome>)Writers.LongChromosome::write,
-				(Read<org.jenetics.LongChromosome>)Readers.LongChromosome::read
+				(Write<io.jenetics.LongChromosome>)Writers.LongChromosome::write,
+				(Read<io.jenetics.LongChromosome>)Readers.LongChromosome::read
 			},
 			{
 				DoubleChromosome.of(0, 1_000_000, 20),
-				(Write<org.jenetics.DoubleChromosome>)Writers.DoubleChromosome::write,
-				(Read<org.jenetics.DoubleChromosome>)Readers.DoubleChromosome::read
+				(Write<io.jenetics.DoubleChromosome>)Writers.DoubleChromosome::write,
+				(Read<io.jenetics.DoubleChromosome>)Readers.DoubleChromosome::read
 			},
 			{
 				PermutationChromosome.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-				(Write<org.jenetics.PermutationChromosome<Integer>>)
+				(Write<io.jenetics.PermutationChromosome<Integer>>)
 					Writers.PermutationChromosome::write,
-				(Read<org.jenetics.PermutationChromosome<Integer>>)
+				(Read<io.jenetics.PermutationChromosome<Integer>>)
 					in -> Readers.PermutationChromosome.read(in, Readers.IntegerChromosome.alleleReader())
 			},
 			{
 				Genotype.of(DoubleChromosome.of(0, 1, 2), 20),
-				(Write<org.jenetics.Genotype<DoubleGene>>)
+				(Write<io.jenetics.Genotype<DoubleGene>>)
 					(out, data) -> Writers.Genotype.write(out, data, Writers.DoubleChromosome.writer()),
-				(Read<org.jenetics.Genotype<DoubleGene>>)
+				(Read<io.jenetics.Genotype<DoubleGene>>)
 					in -> Readers.Genotype.read(in, Readers.DoubleChromosome.reader())
 			},
 			{

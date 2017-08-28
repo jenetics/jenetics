@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
-import org.jenetics.Chromosome;
+import io.jenetics.Chromosome;
 
 /**
  * Chromosome for tree shaped genes.

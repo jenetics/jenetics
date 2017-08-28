@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.util.ISeq.toISeq;
+import static io.jenetics.util.ISeq.toISeq;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import org.jenetics.Gene;
+import io.jenetics.Gene;
 
 /**
  * This interface describes a <i>problem</i> which can be solved by the GA

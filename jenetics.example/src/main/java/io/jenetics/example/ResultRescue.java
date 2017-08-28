@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
@@ -27,16 +27,16 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.Optimize;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.Problem;
-import org.jenetics.engine.codecs;
-import org.jenetics.engine.limit;
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.IO;
+import io.jenetics.DoubleGene;
+import io.jenetics.Optimize;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.engine.codecs;
+import io.jenetics.engine.limit;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

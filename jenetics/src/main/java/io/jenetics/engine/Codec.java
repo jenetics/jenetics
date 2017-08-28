@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
 
 /**
  * A problem {@code Codec} contains the information about how to encode a given

@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.ProbabilitySelector.incremental;
-import static org.jenetics.internal.math.arithmetic.normalize;
+import static io.jenetics.ProbabilitySelector.incremental;
+import static io.jenetics.internal.math.arithmetic.normalize;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

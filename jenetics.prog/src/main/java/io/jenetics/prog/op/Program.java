@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog.op;
+package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,11 +25,11 @@ import static java.util.Objects.requireNonNull;
 import java.lang.reflect.Array;
 import java.util.Random;
 
-import org.jenetics.ext.util.FlatTree;
-import org.jenetics.ext.util.Tree;
-import org.jenetics.ext.util.TreeNode;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.ext.util.FlatTree;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This class composes a given operation tree to a new operation. which can

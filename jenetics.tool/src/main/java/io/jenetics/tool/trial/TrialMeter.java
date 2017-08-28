@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.io.File.createTempFile;
 import static java.lang.String.format;
@@ -25,8 +25,8 @@ import static java.nio.file.Files.deleteIfExists;
 import static java.nio.file.Files.move;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Writer.attr;
-import static org.jenetics.xml.stream.Writer.elem;
+import static io.jenetics.xml.stream.Writer.attr;
+import static io.jenetics.xml.stream.Writer.elem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,11 +41,11 @@ import java.util.function.Function;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.XML;
 
 /**
  * Represents an function testing measurement environment.

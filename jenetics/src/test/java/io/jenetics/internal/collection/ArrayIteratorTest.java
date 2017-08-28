@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package io.jenetics.internal.collection;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -26,7 +26,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.random;
+import io.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,25 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.Array;
-import org.jenetics.internal.collection.ArrayISeq;
-import org.jenetics.internal.collection.CharStore;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.collection.Array;
+import io.jenetics.internal.collection.ArrayISeq;
+import io.jenetics.internal.collection.CharStore;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
 /**
  * This class is used for holding the valid characters of an
- * {@link org.jenetics.CharacterGene}. It is not a character sequence in the
+ * {@link io.jenetics.CharacterGene}. It is not a character sequence in the
  * classical sense. The characters of this sequence are sorted and doesn't
  * contain duplicate values, like a set.
  *

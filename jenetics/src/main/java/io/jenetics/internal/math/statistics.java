@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * Some statistical (special) functions.

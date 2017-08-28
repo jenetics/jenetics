@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * Abstract chromosome for {@code BoundedGene}s.

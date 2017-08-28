@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,8 +41,8 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.Random;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * Class for testing a given random engine using the
@@ -91,7 +91,7 @@ public final class DieHarder {
 	public static void main(final String[] args) throws Exception {
 		if ( args.length < 1) {
 			println("Usage: \n" +
-				"   java org.jenetics.internal.util.DieHarder <random-class-name>");
+				"   java io.jenetics.internal.util.DieHarder <random-class-name>");
 			return;
 		}
 

@@ -41,11 +41,11 @@
  * Whenever the operation is evaluated, the function <em>f(x, y, z) = x*y + z</em>
  * is executed.
  * <p>
- *     <b>NOTE</b>: <em>The class {@link org.jenetics.prog.op.MathOp} in the
+ *     <b>NOTE</b>: <em>The class {@link io.jenetics.prog.op.MathOp} in the
  *     defines a set of mathematical standard operations/functions.</em>
  * </p>
  *
- * When creating a new {@link org.jenetics.prog.ProgramChromosome} we must
+ * When creating a new {@link io.jenetics.prog.ProgramChromosome} we must
  * distinguish two different kind of operations:
  * <ol>
  *     <li><em>Non-terminal</em> operations have an arity greater than zero and
@@ -55,9 +55,9 @@
  * </ol>
  *
  * There are currently three different types of non-terminal operations
- * implemented, {@link org.jenetics.prog.op.Var},
- * {@link org.jenetics.prog.op.Const} and
- * {@link org.jenetics.prog.op.EphemeralConst}.
+ * implemented, {@link io.jenetics.prog.op.Var},
+ * {@link io.jenetics.prog.op.Const} and
+ * {@link io.jenetics.prog.op.EphemeralConst}.
  *
  * <h3>Var</h3>
  *
@@ -105,4 +105,4 @@
  * @version 3.9
  * @since 3.9
  */
-package org.jenetics.prog.op;
+package io.jenetics.prog.op;

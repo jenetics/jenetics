@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,15 +25,15 @@ import java.time.LocalDate;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.math.DoubleAdder;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.LongChromosome;
-import org.jenetics.LongGene;
-import org.jenetics.Phenotype;
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.ISeq;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.LongChromosome;
+import io.jenetics.LongGene;
+import io.jenetics.Phenotype;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

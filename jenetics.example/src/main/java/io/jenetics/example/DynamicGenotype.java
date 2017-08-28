@@ -17,33 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import static java.lang.Math.pow;
-import static org.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.random.indexes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.IntRef;
+import io.jenetics.internal.util.IntRef;
 
-import org.jenetics.AbstractAlterer;
-import org.jenetics.AlterResult;
-import org.jenetics.Chromosome;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Phenotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import io.jenetics.AbstractAlterer;
+import io.jenetics.AlterResult;
+import io.jenetics.Chromosome;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 public class DynamicGenotype {
 

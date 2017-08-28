@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,7 +28,7 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

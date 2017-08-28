@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import java.util.Random;
 
-import org.jenetics.ext.util.TreeNode;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,7 +26,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.function.LongSupplier;
 
-import org.jenetics.util.NanoClock;
+import io.jenetics.util.NanoClock;
 
 /**
  * Timer implementation for measuring execution durations.

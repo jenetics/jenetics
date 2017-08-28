@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,14 +28,14 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.jenetics.internal.util.Lazy;
+import io.jenetics.internal.util.Lazy;
 
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.stat.MinMax;
-import org.jenetics.util.ISeq;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 
 /**
  * Represents a state of the GA after an evolution step. It also represents the

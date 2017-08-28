@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * <p>

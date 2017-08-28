@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.Gene;
-import org.jenetics.Phenotype;
-import org.jenetics.util.ISeq;
+import io.jenetics.Gene;
+import io.jenetics.Phenotype;
+import io.jenetics.util.ISeq;
 
 /**
  * Represent the result of the validation/filtering step.

@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool;
+package io.jenetics.tool;
 
 import static java.lang.Math.max;
 
-import org.jenetics.Gene;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.Selector;
-import org.jenetics.TournamentSelector;
-import org.jenetics.TruncationSelector;
-import org.jenetics.util.ISeq;
+import io.jenetics.Gene;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.Selector;
+import io.jenetics.TournamentSelector;
+import io.jenetics.TruncationSelector;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

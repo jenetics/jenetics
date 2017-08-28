@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package io.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
 
@@ -26,9 +26,9 @@ import java.util.stream.Stream;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
-import org.jenetics.util.SeqTestBase;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
+import io.jenetics.util.SeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

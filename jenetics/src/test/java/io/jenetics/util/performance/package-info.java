@@ -21,4 +21,4 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-package org.jenetics.util.performance;
+package io.jenetics.util.performance;

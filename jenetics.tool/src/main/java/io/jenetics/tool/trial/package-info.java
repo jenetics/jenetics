@@ -3,5 +3,5 @@
  * @version !__version__!
  * @since 3.4
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 

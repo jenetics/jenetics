@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.Math.sqrt;
 import static java.lang.String.format;
@@ -26,11 +26,11 @@ import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.function.Consumer;
 
-import org.jenetics.Phenotype;
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.IntMomentStatistics;
-import org.jenetics.stat.LongMomentStatistics;
-import org.jenetics.stat.MinMax;
+import io.jenetics.Phenotype;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.IntMomentStatistics;
+import io.jenetics.stat.LongMomentStatistics;
+import io.jenetics.stat.MinMax;
 
 /**
  * This class can be used to gather additional statistic information of an

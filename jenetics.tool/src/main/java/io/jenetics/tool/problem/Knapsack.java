@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.problem;
+package io.jenetics.tool.problem;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -29,19 +29,19 @@ import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.BitGene;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Problem;
-import org.jenetics.engine.codecs;
-import org.jenetics.tool.problem.Knapsack.Item;
-import org.jenetics.util.ISeq;
+import io.jenetics.BitGene;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Problem;
+import io.jenetics.engine.codecs;
+import io.jenetics.tool.problem.Knapsack.Item;
+import io.jenetics.util.ISeq;
 
 /**
  * <i>Canonical</i> definition of the <i>Knapsack</i> problem. This
  * <i>reference</i> implementation is used for (evolution) performance tests of
- * the GA {@link org.jenetics.engine.Engine}.
+ * the GA {@link io.jenetics.engine.Engine}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @version 3.4

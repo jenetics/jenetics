@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
@@ -34,12 +34,12 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.bit;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * Implementation of the <i>classical</i> BitChromosome.

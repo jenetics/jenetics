@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Optional.ofNullable;
@@ -38,7 +38,7 @@ import java.util.stream.LongStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.jenetics.internal.util.exception;
+import io.jenetics.internal.util.exception;
 
 /**
  * Helper class for reading test data from file. The file has the following

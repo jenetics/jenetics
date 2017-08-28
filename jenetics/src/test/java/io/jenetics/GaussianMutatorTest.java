@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Range;
+import io.jenetics.stat.Histogram;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

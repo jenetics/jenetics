@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.lang.String.format;
 
@@ -38,15 +38,15 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
-import org.jenetics.util.IO;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
+import io.jenetics.util.IO;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.XML;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

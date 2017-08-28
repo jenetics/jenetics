@@ -17,4 +17,4 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;

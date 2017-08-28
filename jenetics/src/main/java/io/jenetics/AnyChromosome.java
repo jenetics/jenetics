@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Equality;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * {@code Chromosome} implementation, which allows to create genes without

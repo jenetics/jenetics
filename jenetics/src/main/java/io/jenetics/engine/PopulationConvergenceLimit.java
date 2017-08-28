@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.stat.DoubleMoments;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.stat.DoubleMoments;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

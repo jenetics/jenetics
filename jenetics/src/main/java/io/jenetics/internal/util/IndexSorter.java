@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
-import static org.jenetics.internal.util.array.swap;
+import static io.jenetics.internal.util.array.swap;
 
 /**
  * Implementations of this class doesn't sort the given array directly, instead

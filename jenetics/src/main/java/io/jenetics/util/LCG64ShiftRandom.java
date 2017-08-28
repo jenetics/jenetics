@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.math.arithmetic;
-import org.jenetics.internal.math.random;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.math.arithmetic;
+import io.jenetics.internal.math.random;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
 /**
  * This class implements a linear congruential PRNG with additional bit-shift
@@ -646,7 +646,7 @@ public class LCG64ShiftRandom extends Random64 {
 
 /*
 #=============================================================================#
-# Testing: org.jenetics.util.LCG64ShiftRandom (2015-07-12 01:22)              #
+# Testing: io.jenetics.util.LCG64ShiftRandom (2015-07-12 01:22)              #
 #=============================================================================#
 #=============================================================================#
 # Linux 3.19.0-22-generic (amd64)                                             #

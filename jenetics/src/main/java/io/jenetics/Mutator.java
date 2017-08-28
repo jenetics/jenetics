@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static org.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.random.indexes;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.IntRef;
 
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.util.Seq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * This class is for mutating a chromosomes of an given population. There are

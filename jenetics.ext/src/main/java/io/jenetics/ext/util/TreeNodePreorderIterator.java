@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext.util;
+package io.jenetics.ext.util;
 
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;

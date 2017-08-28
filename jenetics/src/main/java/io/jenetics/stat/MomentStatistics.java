@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.sqrt;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.math.DoubleAdder;
 
 /**
  * Base class for statistical moments calculation.

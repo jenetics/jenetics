@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import org.jenetics.util.Seq;
+import io.jenetics.util.Seq;
 
 /**
  * Helper object for calculating object equality.

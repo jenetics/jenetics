@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.Gene;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Mean;
+import io.jenetics.Gene;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Mean;
 
 /**
  * Represents a fixed size polygon with its fill color.

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * This class holds the {@link Random} engine used for the GA. The

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
@@ -25,9 +25,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This object contains mathematical helper functions.

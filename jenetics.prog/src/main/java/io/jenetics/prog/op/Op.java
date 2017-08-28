@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog.op;
+package io.jenetics.prog.op;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

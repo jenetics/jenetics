@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.util.stream.Collectors.toList;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.util.RandomRegistry.using;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 
@@ -36,11 +36,11 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Concurrency;
+import io.jenetics.internal.util.Concurrency;
 
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.Genotype;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.random.nextByte;
-import static org.jenetics.internal.math.random.nextCharacter;
-import static org.jenetics.internal.math.random.nextShort;
-import static org.jenetics.internal.math.random.nextString;
-import static org.jenetics.util.RandomRegistry.using;
-import static org.jenetics.xml.stream.Reader.text;
+import static io.jenetics.internal.math.random.nextByte;
+import static io.jenetics.internal.math.random.nextCharacter;
+import static io.jenetics.internal.math.random.nextShort;
+import static io.jenetics.internal.math.random.nextString;
+import static io.jenetics.util.RandomRegistry.using;
+import static io.jenetics.xml.stream.Reader.text;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -40,25 +40,25 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.CharacterChromosome;
-import org.jenetics.CharacterGene;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.EnumGene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
-import org.jenetics.LongChromosome;
-import org.jenetics.LongGene;
-import org.jenetics.PermutationChromosome;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.CharacterChromosome;
+import io.jenetics.CharacterGene;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.EnumGene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
+import io.jenetics.LongChromosome;
+import io.jenetics.LongGene;
+import io.jenetics.PermutationChromosome;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.XML;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 
@@ -472,7 +472,7 @@ public class PersistentObject<T> {
 	}
 
 	private static void write() throws IOException, XMLStreamException {
-		final File baseDir = new File("org.jenetics.xml/src/test/resources/serialization");
+		final File baseDir = new File("io.jenetics.xml/src/test/resources/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}

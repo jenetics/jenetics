@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -66,9 +66,9 @@ public abstract class RandomTestBase {
 		final byte[] bytes = new byte[8];
 		for (int i = 0; i < 1234; ++i) {
 			rand1.nextBytes(bytes);
-			org.jenetics.internal.util.bit.reverse(bytes);
+			io.jenetics.internal.util.bit.reverse(bytes);
 
-			Assert.assertEquals(org.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
+			Assert.assertEquals(io.jenetics.internal.util.bit.toLong(bytes), rand2.nextLong());
 		}
 	}
 

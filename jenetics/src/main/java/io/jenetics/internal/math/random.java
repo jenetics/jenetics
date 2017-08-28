@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.nextDown;
 import static java.lang.String.format;
-import static org.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.require.probability;
 
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.util.IntRange;
+import io.jenetics.util.IntRange;
 
 /**
  * Some random helper functions.

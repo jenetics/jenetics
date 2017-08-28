@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -30,9 +30,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.Optimize;
-import org.jenetics.util.ISeq;
+import io.jenetics.DoubleGene;
+import io.jenetics.Optimize;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

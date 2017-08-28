@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
@@ -27,8 +27,8 @@ import java.util.function.Function;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.ObjectTester;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ObjectTester;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -19,10 +19,10 @@
  */
 
 /**
- * This package contains the collection classes ({@link org.jenetics.util.Seq},
- * {@link org.jenetics.util.ISeq} and {@link org.jenetics.util.MSeq}) which are
- * used in the public interfaces of the {@link org.jenetics.Chromosome} and
- * {@link org.jenetics.Genotype}. It also contains the RandomRegistry class,
+ * This package contains the collection classes ({@link io.jenetics.util.Seq},
+ * {@link io.jenetics.util.ISeq} and {@link io.jenetics.util.MSeq}) which are
+ * used in the public interfaces of the {@link io.jenetics.Chromosome} and
+ * {@link io.jenetics.Genotype}. It also contains the RandomRegistry class,
  * which implements the global PRNG lookup, as well as helper IO classes for
  * serializing Genotypes and whole Populations.
  *
@@ -30,4 +30,4 @@
  * @since 1.0
  * @version 3.0
  */
-package org.jenetics.util;
+package io.jenetics.util;

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog;
+package io.jenetics.prog;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,12 +25,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.Gene;
-import org.jenetics.ext.AbstractTreeGene;
-import org.jenetics.prog.op.Op;
-import org.jenetics.prog.op.Program;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Gene;
+import io.jenetics.ext.AbstractTreeGene;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This gene represents a program, build upon an AST of {@link Op} functions.

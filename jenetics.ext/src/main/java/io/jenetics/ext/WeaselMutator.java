@@ -1,17 +1,17 @@
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.IntRef;
+import io.jenetics.internal.util.IntRef;
 
-import org.jenetics.AlterResult;
-import org.jenetics.Chromosome;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Mutator;
-import org.jenetics.Phenotype;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Seq;
+import io.jenetics.AlterResult;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.Mutator;
+import io.jenetics.Phenotype;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * Mutator implementation which is part of the
@@ -23,7 +23,7 @@ import org.jenetics.util.Seq;
  * The mutator mutates the genes of <i>every</i> chromosome of <i>every</i>
  * genotype in the population with the given mutation probability.
  * </p>
- * {@link org.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
+ * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
  * <pre>{@code
  * final Engine<CharacterGene, Integer> engine = Engine
  *     .builder(fitness, gtf)

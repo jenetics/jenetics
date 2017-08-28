@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.colorizer;
+package io.jenetics.colorizer;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;

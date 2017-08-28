@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;
 
 import static java.lang.Double.isInfinite;
 import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
 /**
  * This class implements the the

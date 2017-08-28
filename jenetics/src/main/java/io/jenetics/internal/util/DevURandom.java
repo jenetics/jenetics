@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 import java.io.BufferedInputStream;
 import java.io.Closeable;
@@ -32,7 +32,7 @@ import java.io.UncheckedIOException;
  * @version 3.0
  */
 @SuppressWarnings("deprecation")
-public class DevURandom extends org.jenetics.util.Random64 implements Closeable {
+public class DevURandom extends io.jenetics.util.Random64 implements Closeable {
 	private static final long serialVersionUID = 1L;
 
 	private final DataInputStream _input = input();

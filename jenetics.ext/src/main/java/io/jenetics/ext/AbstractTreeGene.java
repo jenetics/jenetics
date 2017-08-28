@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,8 +25,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.jenetics.ext.util.Tree;
-import org.jenetics.util.ISeq;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.util.ISeq;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface..

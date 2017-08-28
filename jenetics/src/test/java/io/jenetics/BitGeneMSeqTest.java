@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import java.util.Random;
 
@@ -25,10 +25,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.collection.Array;
-import org.jenetics.internal.math.random;
+import io.jenetics.internal.collection.Array;
+import io.jenetics.internal.math.random;
 
-import org.jenetics.util.MSeq;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

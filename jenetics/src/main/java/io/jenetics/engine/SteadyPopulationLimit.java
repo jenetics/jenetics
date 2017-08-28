@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
-import static org.jenetics.stat.DoubleMoments.toDoubleMoments;
+import static io.jenetics.stat.DoubleMoments.toDoubleMoments;
 
 import java.util.function.Predicate;
 
-import org.jenetics.Optimize;
-import org.jenetics.stat.DoubleMoments;
+import io.jenetics.Optimize;
+import io.jenetics.stat.DoubleMoments;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

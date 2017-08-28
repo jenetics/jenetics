@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.util.MSeq.toMSeq;
-import static org.jenetics.util.RandomRegistry.with;
+import static io.jenetics.util.MSeq.toMSeq;
+import static io.jenetics.util.RandomRegistry.with;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.test.Retry;
+import io.jenetics.test.Retry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

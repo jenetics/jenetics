@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -32,10 +32,10 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.bit;
+import io.jenetics.internal.util.bit;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.Factory;
+import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

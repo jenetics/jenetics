@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

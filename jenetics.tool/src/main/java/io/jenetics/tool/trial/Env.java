@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Writer.elem;
-import static org.jenetics.xml.stream.Writer.text;
+import static io.jenetics.xml.stream.Writer.elem;
+import static io.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * Represents the collected runtime information.

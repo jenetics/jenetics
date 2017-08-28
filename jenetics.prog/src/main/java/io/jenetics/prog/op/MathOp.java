@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog.op;
+package io.jenetics.prog.op;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.acos;

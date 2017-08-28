@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.NumericGene;
-import org.jenetics.ext.internal.random;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Mean;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.NumericGene;
+import io.jenetics.ext.internal.random;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Mean;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Numeric chromosome implementation which holds an arbitrary sized integer

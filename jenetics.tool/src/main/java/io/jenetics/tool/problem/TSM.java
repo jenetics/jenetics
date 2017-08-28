@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.problem;
+package io.jenetics.tool.problem;
 
 import java.awt.Point;
 import java.util.stream.IntStream;
 
-import org.jenetics.EnumGene;
-import org.jenetics.Optimize;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.ISeq;
+import io.jenetics.EnumGene;
+import io.jenetics.Optimize;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.codecs;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

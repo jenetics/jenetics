@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -27,9 +27,9 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

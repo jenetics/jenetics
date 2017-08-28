@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -59,7 +59,7 @@ import java.util.stream.Collector;
  * safe and efficient parallel execution.</i>
  *
  * @see java.util.IntSummaryStatistics
- * @see org.jenetics.stat.IntMoments
+ * @see io.jenetics.stat.IntMoments
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *

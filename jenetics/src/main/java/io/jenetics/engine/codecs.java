@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
@@ -28,28 +28,28 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.math.base;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.math.base;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.AnyChromosome;
-import org.jenetics.AnyGene;
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.EnumGene;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.IntegerGene;
-import org.jenetics.LongChromosome;
-import org.jenetics.LongGene;
-import org.jenetics.PermutationChromosome;
-import org.jenetics.util.DoubleRange;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.IntRange;
-import org.jenetics.util.LongRange;
+import io.jenetics.AnyChromosome;
+import io.jenetics.AnyGene;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.EnumGene;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
+import io.jenetics.LongChromosome;
+import io.jenetics.LongGene;
+import io.jenetics.PermutationChromosome;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
+import io.jenetics.util.LongRange;
 
 /**
  * This class contains factory methods for creating common  problem encodings.

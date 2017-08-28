@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.stat.MinMax;
+import io.jenetics.stat.Histogram;
+import io.jenetics.stat.MinMax;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

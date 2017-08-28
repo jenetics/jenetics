@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml.stream;
+package io.jenetics.xml.stream;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -41,7 +41,7 @@ import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.jenetics.xml.stream.Reader.Type;
+import io.jenetics.xml.stream.Reader.Type;
 
 /**
  * XML reader class, used for reading objects in XML format.

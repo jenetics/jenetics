@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import java.util.Random;
 
 import org.testng.annotations.Test;
 
-import org.jenetics.ext.util.FlatTreeNode;
-import org.jenetics.ext.util.TreeNode;
-import org.jenetics.ext.util.TreeTestBase;
-import org.jenetics.util.ISeq;
+import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.util.TreeTestBase;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

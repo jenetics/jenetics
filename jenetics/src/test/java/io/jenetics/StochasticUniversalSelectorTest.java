@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -30,12 +30,12 @@ import java.util.stream.IntStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Named;
+import io.jenetics.internal.util.Named;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.util.Factory;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.TestData;
+import io.jenetics.stat.Histogram;
+import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.TestData;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

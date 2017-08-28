@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.collection;
+package io.jenetics.internal.collection;
 
 import static java.util.Arrays.copyOfRange;
 import static java.util.Objects.requireNonNull;
@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.jenetics.internal.collection.Array.Store;
+import io.jenetics.internal.collection.Array.Store;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

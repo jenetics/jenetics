@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,14 +29,14 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.IntRef;
-import org.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.IntRef;
+import io.jenetics.internal.util.reflect;
 
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * CharacterChromosome which represents character sequences.

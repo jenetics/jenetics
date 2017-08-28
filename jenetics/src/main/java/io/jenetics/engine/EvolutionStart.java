@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.Gene;
-import org.jenetics.Phenotype;
-import org.jenetics.util.ISeq;
+import io.jenetics.Gene;
+import io.jenetics.Phenotype;
+import io.jenetics.util.ISeq;
 
 /**
  * Represents a state of the GA at the start of an evolution step.

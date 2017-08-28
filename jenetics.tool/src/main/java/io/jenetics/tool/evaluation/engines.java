@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.evaluation;
+package io.jenetics.tool.evaluation;
 
 import java.util.Random;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.BitGene;
-import org.jenetics.Mutator;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.TournamentSelector;
-import org.jenetics.engine.Engine;
-import org.jenetics.tool.problem.Knapsack;
+import io.jenetics.BitGene;
+import io.jenetics.Mutator;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Engine;
+import io.jenetics.tool.problem.Knapsack;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

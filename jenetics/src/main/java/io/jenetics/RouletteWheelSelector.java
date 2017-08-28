@@ -17,17 +17,17 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.internal.math.statistics.min;
+import static io.jenetics.internal.math.statistics.min;
 
 import java.util.Arrays;
 
-import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 /**
  * The roulette-wheel selector is also known as fitness proportional selector,

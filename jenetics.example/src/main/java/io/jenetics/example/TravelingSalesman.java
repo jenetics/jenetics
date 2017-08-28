@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
-import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.limit.bySteadyFitness;
 
 import java.util.stream.IntStream;
 
-import org.jenetics.EnumGene;
-import org.jenetics.Optimize;
-import org.jenetics.PartiallyMatchedCrossover;
-import org.jenetics.Phenotype;
-import org.jenetics.SwapMutator;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionStatistics;
-import org.jenetics.engine.codecs;
+import io.jenetics.EnumGene;
+import io.jenetics.Optimize;
+import io.jenetics.PartiallyMatchedCrossover;
+import io.jenetics.Phenotype;
+import io.jenetics.SwapMutator;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.engine.codecs;
 
 public class TravelingSalesman {
 

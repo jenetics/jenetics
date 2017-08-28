@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
-import org.jenetics.internal.math.random;
+import io.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -27,7 +27,7 @@ import org.jenetics.internal.math.random;
  * @version 1.5
  */
 @SuppressWarnings("deprecation")
-public final class SeedRandom extends org.jenetics.util.Random64 {
+public final class SeedRandom extends io.jenetics.util.Random64 {
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,7 +40,7 @@ public final class SeedRandom extends org.jenetics.util.Random64 {
 
 /*
 #=============================================================================#
-# Testing: org.jenetics.internal.util.SeedRandom (2015-07-11 23:48)           #
+# Testing: io.jenetics.internal.util.SeedRandom (2015-07-11 23:48)           #
 #=============================================================================#
 #=============================================================================#
 # Linux 3.19.0-22-generic (amd64)                                             #

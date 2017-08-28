@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
-import org.jenetics.Gene;
-import org.jenetics.ext.util.FlatTree;
+import io.jenetics.Gene;
+import io.jenetics.ext.util.FlatTree;
 
 /**
  * Representation of tree shaped gene. Since the genes are part of a chromosome,

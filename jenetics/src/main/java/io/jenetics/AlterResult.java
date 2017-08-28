@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * Represents the result of a {@link Alterer#alter(Seq, long)} call.

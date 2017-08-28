@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.lang.String.format;
 
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
-import org.jenetics.stat.DoubleMomentStatistics;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.stat.DoubleMomentStatistics;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,

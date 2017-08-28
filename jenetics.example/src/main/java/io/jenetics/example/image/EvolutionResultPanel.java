@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.util.stream.Collectors.averagingLong;
 
@@ -23,7 +23,7 @@ import java.time.Duration;
 
 import javax.swing.JPanel;
 
-import org.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionResult;
 
 /**
  * Panel for showing the evolution result.

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.evaluation;
+package io.jenetics.tool.evaluation;
 
 import static java.io.File.createTempFile;
 import static java.lang.String.format;
@@ -39,14 +39,14 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.Args;
+import io.jenetics.internal.util.Args;
 
-import org.jenetics.tool.trial.Gnuplot;
-import org.jenetics.tool.trial.IO;
-import org.jenetics.tool.trial.Params;
-import org.jenetics.tool.trial.SampleSummary;
-import org.jenetics.tool.trial.TrialMeter;
-import org.jenetics.xml.stream.Reader;
+import io.jenetics.tool.trial.Gnuplot;
+import io.jenetics.tool.trial.IO;
+import io.jenetics.tool.trial.Params;
+import io.jenetics.tool.trial.SampleSummary;
+import io.jenetics.tool.trial.TrialMeter;
+import io.jenetics.xml.stream.Reader;
 
 /**
  * Helper class for creating Gnuplot diagrams from result files.

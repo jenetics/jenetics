@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
 
@@ -28,7 +28,7 @@ import java.util.stream.Collector;
 /**
  * <i>Value</i> objects which contains statistical moments.
  *
- * @see org.jenetics.stat.IntMomentStatistics
+ * @see io.jenetics.stat.IntMomentStatistics
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  * @since 3.0

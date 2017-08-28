@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
-import org.jenetics.AbstractChromosome;
-import org.jenetics.util.ISeq;
+import io.jenetics.AbstractChromosome;
+import io.jenetics.util.ISeq;
 
 /**
  * Abstract base implementation of a {@code TreeChromosome}.

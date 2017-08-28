@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.random.indexes;
 
 import java.util.PrimitiveIterator.OfInt;
 import java.util.Random;
@@ -28,11 +28,11 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.probability;
-import org.jenetics.internal.util.IntRef;
+import io.jenetics.internal.math.probability;
+import io.jenetics.internal.util.IntRef;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.stat.LongMomentStatistics;
+import io.jenetics.stat.Histogram;
+import io.jenetics.stat.LongMomentStatistics;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
 

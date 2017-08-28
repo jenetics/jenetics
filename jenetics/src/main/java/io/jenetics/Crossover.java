@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.min;
 
 import java.util.Random;
 
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * <p>

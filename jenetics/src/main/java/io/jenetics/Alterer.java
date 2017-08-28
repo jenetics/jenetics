@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Seq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * The Alterer is responsible for the changing/recombining the Population.
  * Alterers can be chained by appending a list of alterers with the
- * {@link org.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
+ * {@link io.jenetics.engine.Engine.Builder#alterers(Alterer, Alterer[])} method.
  *
  * <pre>{@code
  * final Engine<DoubleGene, Double> engine = Engine

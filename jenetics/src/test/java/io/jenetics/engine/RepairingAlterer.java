@@ -17,19 +17,19 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import org.jenetics.AlterResult;
-import org.jenetics.Alterer;
-import org.jenetics.Gene;
-import org.jenetics.Genotype;
-import org.jenetics.Phenotype;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.Seq;
+import io.jenetics.AlterResult;
+import io.jenetics.Alterer;
+import io.jenetics.Gene;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

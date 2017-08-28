@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import static org.jenetics.stat.StatisticsAssert.assertDistribution;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.stat.StatisticsAssert.assertDistribution;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
@@ -28,10 +28,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.stat.Histogram;
-import org.jenetics.stat.dist;
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.Factory;
+import io.jenetics.stat.Histogram;
+import io.jenetics.stat.dist;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

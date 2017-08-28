@@ -17,15 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext.internal;
+package io.jenetics.ext.internal;
 
 import static java.lang.String.format;
-import static org.jenetics.internal.math.random.nextLong;
+import static io.jenetics.internal.math.random.nextLong;
 
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

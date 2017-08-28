@@ -1,15 +1,15 @@
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.Gene;
-import org.jenetics.Optimize;
-import org.jenetics.Phenotype;
-import org.jenetics.Selector;
-import org.jenetics.stat.MinMax;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.Gene;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.Selector;
+import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * Selector implementation which is part of the
@@ -21,7 +21,7 @@ import org.jenetics.util.MSeq;
  * The selector always returns populations which only contains "{@code count}"
  * instances of the <i>best</i> {@link Phenotype}.
  * </p>
- * {@link org.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
+ * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
  * <pre>{@code
  * final Engine<CharacterGene, Integer> engine = Engine
  *     .builder(fitness, gtf)

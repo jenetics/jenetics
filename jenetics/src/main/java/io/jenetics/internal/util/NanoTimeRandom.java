@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -25,7 +25,7 @@ package org.jenetics.internal.util;
  * @since 3.2
  */
 @SuppressWarnings("deprecation")
-public final class NanoTimeRandom extends org.jenetics.util.Random64 {
+public final class NanoTimeRandom extends io.jenetics.util.Random64 {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public final class NanoTimeRandom extends org.jenetics.util.Random64 {
 
 /*
 #=============================================================================#
-# Testing: org.jenetics.internal.util.NanoTimeRandom (2015-07-11 21:47)       #
+# Testing: io.jenetics.internal.util.NanoTimeRandom (2015-07-11 21:47)       #
 #=============================================================================#
 #=============================================================================#
 # Linux 3.19.0-22-generic (amd64)                                             #

@@ -17,14 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Reader.attr;
-import static org.jenetics.xml.stream.Reader.elem;
-import static org.jenetics.xml.stream.Reader.elems;
-import static org.jenetics.xml.stream.Reader.text;
+import static io.jenetics.xml.stream.Reader.attr;
+import static io.jenetics.xml.stream.Reader.elem;
+import static io.jenetics.xml.stream.Reader.elems;
+import static io.jenetics.xml.stream.Reader.text;
 
 import java.io.InputStream;
 import java.util.List;
@@ -34,19 +34,19 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.jenetics.BoundedGene;
-import org.jenetics.Chromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.EnumGene;
-import org.jenetics.Gene;
-import org.jenetics.IntegerGene;
-import org.jenetics.LongGene;
-import org.jenetics.util.CharSeq;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.BoundedGene;
+import io.jenetics.Chromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.EnumGene;
+import io.jenetics.Gene;
+import io.jenetics.IntegerGene;
+import io.jenetics.LongGene;
+import io.jenetics.util.CharSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.XML;
 
 /**
  * This class contains static fields and methods, for creating chromosome- and
@@ -84,13 +84,13 @@ public final class Readers {
 		private BitChromosome() {}
 
 		/**
-		 * Return a XML reader for {@link org.jenetics.BitChromosome} objects.
+		 * Return a XML reader for {@link io.jenetics.BitChromosome} objects.
 		 *
 		 * @return a chromosome reader
 		 */
-		public static Reader<org.jenetics.BitChromosome> reader() {
+		public static Reader<io.jenetics.BitChromosome> reader() {
 			return elem(
-				v -> org.jenetics.BitChromosome.of(
+				v -> io.jenetics.BitChromosome.of(
 					(String)v[2], (int)v[0], (double)v[1]
 				),
 				Writers.BitChromosome.ROOT_NAME,
@@ -103,7 +103,7 @@ public final class Readers {
 		}
 
 		/**
-		 * Read a new {@link org.jenetics.BitChromosome} from the given input
+		 * Read a new {@link io.jenetics.BitChromosome} from the given input
 		 * stream.
 		 *
 		 * @param in the data source of the bit-chromosome
@@ -111,7 +111,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if the given input stream is {@code null}
 		 */
-		public static org.jenetics.BitChromosome read(final InputStream in)
+		public static io.jenetics.BitChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
 			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
@@ -122,7 +122,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.CharacterChromosome} objects.
+	 * Reader methods for {@link io.jenetics.CharacterChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -136,14 +136,14 @@ public final class Readers {
 		private CharacterChromosome() {}
 
 		/**
-		 * Return a XML reader for {@link org.jenetics.CharacterChromosome}
+		 * Return a XML reader for {@link io.jenetics.CharacterChromosome}
 		 * objects.
 		 *
 		 * @return a chromosome reader
 		 */
-		public static Reader<org.jenetics.CharacterChromosome> reader() {
+		public static Reader<io.jenetics.CharacterChromosome> reader() {
 			return elem(
-				v -> org.jenetics.CharacterChromosome.of(
+				v -> io.jenetics.CharacterChromosome.of(
 					(String)v[2], (CharSeq)v[1]
 				),
 				Writers.CharacterChromosome.ROOT_NAME,
@@ -156,7 +156,7 @@ public final class Readers {
 		}
 
 		/**
-		 * Read a new {@link org.jenetics.CharacterChromosome} from the given
+		 * Read a new {@link io.jenetics.CharacterChromosome} from the given
 		 * input stream.
 		 *
 		 * @param in the data source of the chromosome
@@ -164,7 +164,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if the given input stream is {@code null}
 		 */
-		public static org.jenetics.CharacterChromosome read(final InputStream in)
+		public static io.jenetics.CharacterChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
 			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
@@ -176,7 +176,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.BoundedChromosome} objects.
+	 * Reader methods for {@link io.jenetics.BoundedChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -211,7 +211,7 @@ public final class Readers {
 		public static <
 			A extends Comparable<? super A>,
 			G extends BoundedGene<A, G>,
-			C extends org.jenetics.BoundedChromosome<A, G>
+			C extends io.jenetics.BoundedChromosome<A, G>
 		>
 		Reader<C> reader(
 			final String name,
@@ -254,7 +254,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.IntegerChromosome} objects.
+	 * Reader methods for {@link io.jenetics.IntegerChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -282,22 +282,22 @@ public final class Readers {
 		}
 
 		/**
-		 * Return a {@link org.jenetics.IntegerChromosome} reader.
+		 * Return a {@link io.jenetics.IntegerChromosome} reader.
 		 *
 		 * @return a integer chromosome reader
 		 */
-		public static Reader<org.jenetics.IntegerChromosome> reader() {
+		public static Reader<io.jenetics.IntegerChromosome> reader() {
 			return BoundedChromosome.reader(
 				Writers.IntegerChromosome.ROOT_NAME,
 				IntegerGene::of,
 				IntegerGene[]::new,
-				org.jenetics.IntegerChromosome::of,
+				io.jenetics.IntegerChromosome::of,
 				alleleReader()
 			);
 		}
 
 		/**
-		 * Read a new {@link org.jenetics.IntegerChromosome} from the given
+		 * Read a new {@link io.jenetics.IntegerChromosome} from the given
 		 * input stream.
 		 *
 		 * @param in the data source of the chromosome
@@ -305,7 +305,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if the given input stream is {@code null}
 		 */
-		public static org.jenetics.IntegerChromosome read(final InputStream in)
+		public static io.jenetics.IntegerChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
 			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
@@ -317,7 +317,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.LongChromosome} objects.
+	 * Reader methods for {@link io.jenetics.LongChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -345,22 +345,22 @@ public final class Readers {
 		}
 
 		/**
-		 * Return a {@link org.jenetics.LongChromosome} reader.
+		 * Return a {@link io.jenetics.LongChromosome} reader.
 		 *
 		 * @return a long chromosome reader
 		 */
-		public static Reader<org.jenetics.LongChromosome> reader() {
+		public static Reader<io.jenetics.LongChromosome> reader() {
 			return BoundedChromosome.reader(
 				Writers.LongChromosome.ROOT_NAME,
 				LongGene::of,
 				LongGene[]::new,
-				org.jenetics.LongChromosome::of,
+				io.jenetics.LongChromosome::of,
 				alleleReader()
 			);
 		}
 
 		/**
-		 * Read a new {@link org.jenetics.LongChromosome} from the given
+		 * Read a new {@link io.jenetics.LongChromosome} from the given
 		 * input stream.
 		 *
 		 * @param in the data source of the chromosome
@@ -368,7 +368,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if the given input stream is {@code null}
 		 */
-		public static org.jenetics.LongChromosome read(final InputStream in)
+		public static io.jenetics.LongChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
 			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
@@ -380,7 +380,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.DoubleChromosome} objects.
+	 * Reader methods for {@link io.jenetics.DoubleChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -408,22 +408,22 @@ public final class Readers {
 		}
 
 		/**
-		 * Return a {@link org.jenetics.DoubleChromosome} reader.
+		 * Return a {@link io.jenetics.DoubleChromosome} reader.
 		 *
 		 * @return a double chromosome reader
 		 */
-		public static Reader<org.jenetics.DoubleChromosome> reader() {
+		public static Reader<io.jenetics.DoubleChromosome> reader() {
 			return BoundedChromosome.reader(
 				Writers.DoubleChromosome.ROOT_NAME,
 				DoubleGene::of,
 				DoubleGene[]::new,
-				org.jenetics.DoubleChromosome::of,
+				io.jenetics.DoubleChromosome::of,
 				alleleReader()
 			);
 		}
 
 		/**
-		 * Read a new {@link org.jenetics.DoubleChromosome} from the given
+		 * Read a new {@link io.jenetics.DoubleChromosome} from the given
 		 * input stream.
 		 *
 		 * @param in the data source of the chromosome
@@ -431,7 +431,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if the given input stream is {@code null}
 		 */
-		public static org.jenetics.DoubleChromosome read(final InputStream in)
+		public static io.jenetics.DoubleChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
 			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
@@ -443,7 +443,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Reader methods for {@link org.jenetics.PermutationChromosome} objects.
+	 * Reader methods for {@link io.jenetics.PermutationChromosome} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -472,7 +472,7 @@ public final class Readers {
 		 * @throws NullPointerException if the given allele reader is
 		 *        {@code null}
 		 */
-		public static <A> Reader<org.jenetics.PermutationChromosome<A>>
+		public static <A> Reader<io.jenetics.PermutationChromosome<A>>
 		reader(final Reader<? extends A> alleleReader) {
 			requireNonNull(alleleReader);
 
@@ -491,7 +491,7 @@ public final class Readers {
 					alleles.set(i, gene);
 				}
 
-				return new org.jenetics.PermutationChromosome<A>(alleles.toISeq());
+				return new io.jenetics.PermutationChromosome<A>(alleles.toISeq());
 			},
 				Writers.PermutationChromosome.ROOT_NAME,
 				attr(Writers.PermutationChromosome.LENGTH_NAME).map(Integer::parseInt),
@@ -503,7 +503,7 @@ public final class Readers {
 		}
 
 		/**
-		 * Reads a new {@link org.jenetics.PermutationChromosome} from the given
+		 * Reads a new {@link io.jenetics.PermutationChromosome} from the given
 		 * input stream.
 		 *
 		 * @param <A> the allele type
@@ -513,7 +513,7 @@ public final class Readers {
 		 * @throws XMLStreamException if reading the chromosome fails
 		 * @throws NullPointerException if one of the arguments is {@code null}
 		 */
-		public static <A> org.jenetics.PermutationChromosome<A>
+		public static <A> io.jenetics.PermutationChromosome<A>
 		read(final InputStream in, final Reader<? extends A> alleleReader)
 			throws XMLStreamException
 		{
@@ -529,7 +529,7 @@ public final class Readers {
 	}
 
 	/**
-	 * Writer methods for {@link org.jenetics.Genotype} objects.
+	 * Writer methods for {@link io.jenetics.Genotype} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -573,15 +573,15 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Reader<org.jenetics.Genotype<G>>
+		Reader<io.jenetics.Genotype<G>>
 		reader(final Reader<? extends C> chromosomeReader) {
 			requireNonNull(chromosomeReader);
 
 			return elem(v -> {
 				@SuppressWarnings("unchecked")
 				final List<C> chromosomes = (List<C>)v[2];
-				final org.jenetics.Genotype<G> genotype =
-					org.jenetics.Genotype.of(chromosomes);
+				final io.jenetics.Genotype<G> genotype =
+					io.jenetics.Genotype.of(chromosomes);
 
 				final int length = (int)v[0];
 				final int ngenes = (int)v[1];
@@ -624,7 +624,7 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		org.jenetics.Genotype<G>
+		io.jenetics.Genotype<G>
 		read(final InputStream in, final Reader<? extends C> chromosomeReader)
 			throws XMLStreamException
 		{
@@ -640,7 +640,7 @@ public final class Readers {
 
 	/**
 	 * This class contains static reader methods for
-	 * {@link org.jenetics.Genotype} objects.
+	 * {@link io.jenetics.Genotype} objects.
 	 * <p>
 	 * <b>XML format</b>
 	 * <pre> {@code
@@ -687,10 +687,10 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		Reader<List<org.jenetics.Genotype<G>>>
+		Reader<List<io.jenetics.Genotype<G>>>
 		reader(final Reader<C> chromosomeReader) {
 			return elem(
-				p -> (List<org.jenetics.Genotype<G>>)p[0],
+				p -> (List<io.jenetics.Genotype<G>>)p[0],
 				Writers.Genotypes.ROOT_NAME,
 				elems(Genotype.reader(chromosomeReader))
 			);
@@ -713,7 +713,7 @@ public final class Readers {
 			G extends Gene<A, G>,
 			C extends Chromosome<G>
 		>
-		List<org.jenetics.Genotype<G>>
+		List<io.jenetics.Genotype<G>>
 		read(final InputStream in, final Reader<? extends C> chromosomeReader)
 			throws XMLStreamException
 		{
@@ -747,7 +747,7 @@ public final class Readers {
 		G extends Gene<A, G>,
 		C extends Chromosome<G>
 	>
-	List<org.jenetics.Genotype<G>>
+	List<io.jenetics.Genotype<G>>
 	read(final InputStream in, final Reader<? extends C> chromosomeReader)
 		throws XMLStreamException
 	{

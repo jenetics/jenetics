@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,7 +27,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-import org.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Equality;
 
 /**
  * Clock implementation with <i>nano</i> second precision.

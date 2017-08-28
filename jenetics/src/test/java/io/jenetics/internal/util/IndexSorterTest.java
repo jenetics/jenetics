@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.util;
+package io.jenetics.internal.util;
 
-import static org.jenetics.internal.util.IndexSorter.indexes;
-import static org.jenetics.internal.util.array.revert;
+import static io.jenetics.internal.util.IndexSorter.indexes;
+import static io.jenetics.internal.util.array.revert;
 
 import java.util.Arrays;
 import java.util.Random;

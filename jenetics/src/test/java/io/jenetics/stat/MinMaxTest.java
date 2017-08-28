@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,10 +30,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.util.Named;
+import io.jenetics.internal.util.Named;
 
-import org.jenetics.Optimize;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Optimize;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

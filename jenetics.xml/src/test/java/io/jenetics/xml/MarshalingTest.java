@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +28,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import io.jenetics.xml.stream.XML;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

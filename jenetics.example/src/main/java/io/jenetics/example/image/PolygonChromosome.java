@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
@@ -23,9 +23,9 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import org.jenetics.AbstractChromosome;
-import org.jenetics.Chromosome;
-import org.jenetics.util.ISeq;
+import io.jenetics.AbstractChromosome;
+import io.jenetics.Chromosome;
+import io.jenetics.util.ISeq;
 
 /**
  * A simple chromosome representing a list of polygons.

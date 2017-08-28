@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
-import static org.jenetics.stat.StatisticsAssert.assertUniformDistribution;
+import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -27,10 +27,10 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.math.base;
+import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.math.base;
 
-import org.jenetics.stat.Histogram;
+import io.jenetics.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -32,4 +32,4 @@
  * @since 1.0
  * @version 3.0
  */
-package org.jenetics.stat;
+package io.jenetics.stat;

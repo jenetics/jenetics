@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import java.util.function.DoubleConsumer;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.util.Lazy;
+import io.jenetics.internal.util.Lazy;
 
 /**
  * A state object for collecting quantiles.

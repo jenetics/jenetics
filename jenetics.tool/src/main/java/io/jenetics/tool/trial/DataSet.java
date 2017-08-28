@@ -17,20 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Writer.elem;
-import static org.jenetics.xml.stream.Writer.elems;
+import static io.jenetics.xml.stream.Writer.elem;
+import static io.jenetics.xml.stream.Writer.elems;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.util.ISeq;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * Collection of sample {@code Data} objects.

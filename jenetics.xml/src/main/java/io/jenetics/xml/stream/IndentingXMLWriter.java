@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml.stream;
+package io.jenetics.xml.stream;
 
 import java.util.Deque;
 import java.util.LinkedList;

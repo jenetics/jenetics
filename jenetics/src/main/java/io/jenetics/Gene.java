@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
-import org.jenetics.util.Factory;
-import org.jenetics.util.Verifiable;
+import io.jenetics.util.Factory;
+import io.jenetics.util.Verifiable;
 
 /**
  * Genes are the atoms of the <em>Jenetics</em> library. They contain the actual
@@ -57,7 +57,7 @@ public interface Gene<A, G extends Gene<A, G>>
 	 * than this gene. For all genes returned by this method holds
 	 * {@code gene.getClass() == gene.newInstance().getClass()}. Implementations
 	 * of this method has to use the {@link java.util.Random} object which can
-	 * be fetched from the {@link org.jenetics.util.RandomRegistry}.
+	 * be fetched from the {@link io.jenetics.util.RandomRegistry}.
 	 */
 	@Override
 	public G newInstance();

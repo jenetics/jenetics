@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static java.lang.Math.max;
@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 
-import org.jenetics.Phenotype;
+import io.jenetics.Phenotype;
 
 /**
  * Command line version of the Evolving images example.

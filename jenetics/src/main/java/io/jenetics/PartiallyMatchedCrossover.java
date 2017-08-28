@@ -17,18 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.internal.math.base;
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.math.base;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * The {@code PartiallyMatchedCrossover} (PMX) guarantees that all {@link Gene}s

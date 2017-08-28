@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -34,10 +34,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.internal.collection.Array;
-import org.jenetics.internal.collection.ArrayMSeq;
-import org.jenetics.internal.collection.Empty;
-import org.jenetics.internal.collection.ObjectStore;
+import io.jenetics.internal.collection.Array;
+import io.jenetics.internal.collection.ArrayMSeq;
+import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.collection.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.

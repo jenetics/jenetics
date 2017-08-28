@@ -17,24 +17,24 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.evaluation;
+package io.jenetics.tool.evaluation;
 
 import static java.lang.Math.log10;
 import static java.lang.Math.pow;
-import static org.jenetics.tool.evaluation.engines.KNAPSACK;
+import static io.jenetics.tool.evaluation.engines.KNAPSACK;
 
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import org.jenetics.internal.util.Args;
+import io.jenetics.internal.util.Args;
 
-import org.jenetics.BitGene;
-import org.jenetics.engine.limit;
-import org.jenetics.tool.trial.Params;
-import org.jenetics.tool.trial.TrialMeter;
-import org.jenetics.util.ISeq;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.BitGene;
+import io.jenetics.engine.limit;
+import io.jenetics.tool.trial.Params;
+import io.jenetics.tool.trial.TrialMeter;
+import io.jenetics.util.ISeq;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

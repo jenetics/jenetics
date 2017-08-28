@@ -23,4 +23,4 @@
  * @version 3.5
  * @since 3.5
  */
-package org.jenetics.ext;
+package io.jenetics.ext;

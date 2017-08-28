@@ -17,11 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.internal.math;
+package io.jenetics.internal.math;
 
-import static org.jenetics.internal.math.arithmetic.pow;
+import static io.jenetics.internal.math.arithmetic.pow;
 
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.util.require;
 
 /**
  * Mathematical functions regarding probabilities.

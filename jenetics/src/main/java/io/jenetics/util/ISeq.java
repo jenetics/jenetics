@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,8 +27,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.collection.Empty;
-import org.jenetics.internal.util.require;
+import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.util.require;
 
 /**
  * Immutable, ordered, fixed sized sequence.

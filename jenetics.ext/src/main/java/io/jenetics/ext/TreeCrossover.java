@@ -17,23 +17,23 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
 import static java.lang.Math.min;
 
 import java.util.Random;
 
-import org.jenetics.Chromosome;
-import org.jenetics.Genotype;
-import org.jenetics.Phenotype;
-import org.jenetics.Population;
-import org.jenetics.Recombinator;
-import org.jenetics.ext.util.FlatTree;
-import org.jenetics.ext.util.FlatTreeNode;
-import org.jenetics.ext.util.TreeNode;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Chromosome;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.Population;
+import io.jenetics.Recombinator;
+import io.jenetics.ext.util.FlatTree;
+import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Abstract implementation of tree base crossover recombinator. This class

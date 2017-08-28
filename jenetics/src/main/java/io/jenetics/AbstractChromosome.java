@@ -17,21 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.Verifiable;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Verifiable;
 
 /**
  * The abstract base implementation of the Chromosome interface. The implementors

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.xml;
+package io.jenetics.xml;
 
 import static java.util.Collections.emptyList;
 
@@ -31,18 +31,18 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.BitChromosome;
-import org.jenetics.CharacterChromosome;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.Genotype;
-import org.jenetics.IntegerChromosome;
-import org.jenetics.LongChromosome;
-import org.jenetics.PermutationChromosome;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamReader;
-import org.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
-import org.jenetics.xml.stream.XML;
+import io.jenetics.BitChromosome;
+import io.jenetics.CharacterChromosome;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.LongChromosome;
+import io.jenetics.PermutationChromosome;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
+import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.XML;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -29,10 +29,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.jenetics.internal.util.Lazy;
-import org.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.Lazy;
+import io.jenetics.internal.util.reflect;
 
-import org.jenetics.util.Verifiable;
+import io.jenetics.util.Verifiable;
 
 /**
  * The {@code Phenotype} consists of a {@link Genotype} plus a fitness

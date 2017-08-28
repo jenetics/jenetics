@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.tool.trial;
+package io.jenetics.tool.trial;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.xml.stream.Writer.elem;
-import static org.jenetics.xml.stream.Writer.text;
+import static io.jenetics.xml.stream.Writer.elem;
+import static io.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-import org.jenetics.xml.stream.Reader;
-import org.jenetics.xml.stream.Writer;
+import io.jenetics.xml.stream.Reader;
+import io.jenetics.xml.stream.Writer;
 
 /**
  * The sample class contains the results of one test run of all parameters. This

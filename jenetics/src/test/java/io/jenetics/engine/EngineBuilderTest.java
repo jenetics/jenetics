@@ -17,23 +17,23 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import org.jenetics.Alterer;
-import org.jenetics.BoltzmannSelector;
-import org.jenetics.DoubleChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.GaussianMutator;
-import org.jenetics.Genotype;
-import org.jenetics.Optimize;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.Selector;
-import org.jenetics.util.Factory;
+import io.jenetics.Alterer;
+import io.jenetics.BoltzmannSelector;
+import io.jenetics.DoubleChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.GaussianMutator;
+import io.jenetics.Genotype;
+import io.jenetics.Optimize;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.Selector;
+import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.stat;
+package io.jenetics.stat;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -27,7 +27,7 @@ import java.util.function.DoubleConsumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
-import org.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.math.DoubleAdder;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
@@ -62,7 +62,7 @@ import org.jenetics.internal.math.DoubleAdder;
  * safe and efficient parallel execution.</i>
  *
  * @see java.util.DoubleSummaryStatistics
- * @see org.jenetics.stat.DoubleMoments
+ * @see io.jenetics.stat.DoubleMoments
  * @see <a href="http://people.xiph.org/~tterribe/notes/homs.html">
  *      Computing Higher-Order Moments Online</a>
  *

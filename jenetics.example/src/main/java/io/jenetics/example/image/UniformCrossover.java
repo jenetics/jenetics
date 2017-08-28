@@ -14,16 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jenetics.example.image;
+package io.jenetics.example.image;
 
 import static java.lang.String.format;
 
 import java.util.Random;
 
-import org.jenetics.Crossover;
-import org.jenetics.Gene;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Crossover;
+import io.jenetics.Gene;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Perform Uniform Crossover [UX] on the specified genes. A fixed mixing ratio

@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.engine;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.Gene;
-import org.jenetics.Population;
+import io.jenetics.Gene;
+import io.jenetics.Population;
 
 /**
  * Represents the result of the alter step.

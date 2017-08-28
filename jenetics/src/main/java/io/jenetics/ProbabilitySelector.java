@@ -17,25 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics;
+package io.jenetics;
 
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static org.jenetics.internal.math.arithmetic.pow;
-import static org.jenetics.internal.math.base.ulpDistance;
-import static org.jenetics.internal.util.IndexSorter.sort;
+import static io.jenetics.internal.math.arithmetic.pow;
+import static io.jenetics.internal.math.base.ulpDistance;
+import static io.jenetics.internal.util.IndexSorter.sort;
 
 import java.util.Comparator;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.internal.math.DoubleAdder;
-import org.jenetics.internal.util.array;
+import io.jenetics.internal.math.DoubleAdder;
+import io.jenetics.internal.util.array;
 
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and

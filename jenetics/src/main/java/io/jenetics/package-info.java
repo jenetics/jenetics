@@ -44,12 +44,12 @@
  * creating the initial Population and for creating new random Genotypes.</p>
  *
  * <pre>{@code
- * import org.jenetics.BitChromosome;
- * import org.jenetics.BitGene;
- * import org.jenetics.Genotype;
- * import org.jenetics.engine.Engine;
- * import org.jenetics.engine.EvolutionResult;
- * import org.jenetics.util.Factory;
+ * import io.jenetics.BitChromosome;
+ * import io.jenetics.BitGene;
+ * import io.jenetics.Genotype;
+ * import io.jenetics.engine.Engine;
+ * import io.jenetics.engine.EvolutionResult;
+ * import io.jenetics.util.Factory;
  *
  * public class HelloWorld {
  *      // 2.) Definition of the fitness function.
@@ -124,5 +124,5 @@
  * @since 1.0
  * @version 3.1
  */
-package org.jenetics;
+package io.jenetics;
 

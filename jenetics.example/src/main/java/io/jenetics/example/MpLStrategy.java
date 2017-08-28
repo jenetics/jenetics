@@ -17,16 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
-import org.jenetics.DoubleGene;
-import org.jenetics.Mutator;
-import org.jenetics.TruncationSelector;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.DoubleRange;
+import io.jenetics.DoubleGene;
+import io.jenetics.Mutator;
+import io.jenetics.TruncationSelector;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.codecs;
+import io.jenetics.util.DoubleRange;
 
 /**
  * The (μ + λ) evolution strategy.

@@ -17,21 +17,21 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.prog;
+package io.jenetics.prog;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import org.jenetics.ext.util.FlatTreeNode;
-import org.jenetics.ext.util.Tree;
-import org.jenetics.ext.util.TreeNode;
-import org.jenetics.prog.op.Const;
-import org.jenetics.prog.op.MathOp;
-import org.jenetics.prog.op.Op;
-import org.jenetics.prog.op.Program;
-import org.jenetics.prog.op.Var;
-import org.jenetics.util.ISeq;
+import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.prog.op.Const;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
+import io.jenetics.prog.op.Var;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

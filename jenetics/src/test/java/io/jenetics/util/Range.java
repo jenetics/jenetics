@@ -17,12 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.util;
+package io.jenetics.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import org.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.Hash;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.ext;
+package io.jenetics.ext;
 
-import static org.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,15 +27,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-import org.jenetics.internal.util.Equality;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.reflect;
 
-import org.jenetics.AbstractChromosome;
-import org.jenetics.DoubleGene;
-import org.jenetics.NumericChromosome;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.MSeq;
+import io.jenetics.AbstractChromosome;
+import io.jenetics.DoubleGene;
+import io.jenetics.NumericChromosome;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * Numeric chromosome implementation which holds arbitrary sized integer numbers.

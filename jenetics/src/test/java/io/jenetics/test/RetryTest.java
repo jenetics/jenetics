@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.test;
+package io.jenetics.test;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
