@@ -43,7 +43,7 @@ public class RandomIndexStreamTest {
 
 	@Test
 	public void compatibility() {
-		final TestData data = TestData.of("/org/jenetics/util/IndexStream.Random");
+		final TestData data = TestData.of("/io/jenetics/util/IndexStream.Random");
 
 		for (String[] line : data) {
 			final Random random = new Random(0);
