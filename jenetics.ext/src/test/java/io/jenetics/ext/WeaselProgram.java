@@ -14,7 +14,7 @@ import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
  * @version 3.5
  */

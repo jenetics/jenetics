@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.xml;
 
@@ -32,7 +32,7 @@ import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import io.jenetics.xml.stream.XML;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MarshalingTest {
 	private static final String RESOURCE_PATTERN = "/serialization/%s.xml";

@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.stat;
 
@@ -64,7 +64,7 @@ import io.jenetics.internal.util.Hash;
  * multiple threads access this object concurrently, and at least one of the
  * threads modifies it, it must be synchronized externally.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class Histogram<C> implements Consumer<C> {
 

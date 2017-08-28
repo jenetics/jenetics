@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.tool.problem;
 
@@ -42,7 +42,7 @@ import io.jenetics.util.ISeq;
  * <i>reference</i> implementation is used for (evolution) performance tests of
  * the GA {@link io.jenetics.engine.Engine}.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.4
  * @since 3.4
  */

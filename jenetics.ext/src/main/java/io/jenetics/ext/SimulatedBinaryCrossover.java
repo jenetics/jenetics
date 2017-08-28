@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.ext;
 
@@ -42,7 +42,7 @@ import io.jenetics.util.RandomRegistry;
  * It is implemented as described in Deb, K. and Agrawal, R. B. 1995. Simulated
  * binary crossover for continuous search space. Complex Systems, 9, pp. 115-148.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
  * @version 3.5
  */

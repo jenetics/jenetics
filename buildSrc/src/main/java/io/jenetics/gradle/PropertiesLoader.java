@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.gradle;
 
@@ -38,7 +38,7 @@ import org.gradle.api.plugins.ExtraPropertiesExtension;
  * Reads user properties from an property file and writes it to the given
  * {@code ExternalPropertiesExtension} object.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
  * @version 1.4
  */

@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.engine;
 
@@ -35,7 +35,7 @@ import io.jenetics.stat.DoubleMoments;
 /**
  * Implementation of the fitness-convergence limit strategy object.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.7
  * @since 3.7
  */
@@ -111,7 +111,7 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 	 * Ring buffer for {@code double} values. If the buffer is full, old values
 	 * are overridden.
 	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version 3.7
 	 * @since 3.7
 	 */

@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.internal.collection;
 
@@ -32,7 +32,7 @@ import java.util.Iterator;
  * the start index and the length.
  *
  * @param <T> the array element type
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.4
  * @since 3.4
  */
@@ -338,7 +338,7 @@ public final class Array<T> implements Serializable {
 	 * Minimal interface for accessing an underlying array structure.
 	 *
 	 * @param <T> the array element type
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version 3.4
 	 * @since 3.4
 	 */
@@ -426,7 +426,7 @@ public final class Array<T> implements Serializable {
 		 * Mutable reference of an underlying array {@code Store}.
 		 *
 		 * @param <T> the array element type
-		 * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+		 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 		 * @version 3.4
 		 * @since 3.4
 		 */

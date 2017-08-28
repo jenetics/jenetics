@@ -15,7 +15,7 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 package io.jenetics.stat;
 
@@ -27,7 +27,7 @@ import io.jenetics.util.Range;
  * Defines the <i>domain</i>, <i>PDF</i> and <i>CDF</i> of a probability
  * distribution.
  *
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public interface Distribution<C extends Comparable<? super C>> {
 
