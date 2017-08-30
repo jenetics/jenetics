@@ -17,23 +17,23 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package org.jenetics.example;
+package io.jenetics.example;
 
-import static org.jenetics.engine.limit.byFixedGeneration;
+import static io.jenetics.engine.limit.byFixedGeneration;
 
 import java.util.Random;
 
-import org.jenetics.AnyChromosome;
-import org.jenetics.AnyGene;
-import org.jenetics.Genotype;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.SwapMutator;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.AnyChromosome;
+import io.jenetics.AnyGene;
+import io.jenetics.Genotype;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.SwapMutator;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 public class RectFill {
 
