@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -113,7 +114,7 @@ public final class TruncationSelector<
 
 			int size = count;
 			do {
-				final int length = Math.min(copy.size(), size);
+				final int length = min(min(copy.size(), size), _n);
 				for (int i = 0; i < length; ++i) {
 					selection.set((count - size) + i, copy.get(i));
 				}
