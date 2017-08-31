@@ -25,12 +25,15 @@ import static io.jenetics.util.RandomRegistry.using;
 import java.util.Arrays;
 import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Named;
 import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 import io.jenetics.util.TestData;
 
 /**
@@ -43,6 +46,31 @@ public class TruncationSelectorTest
 	@Override
 	protected Factory<TruncationSelector<DoubleGene, Double>> factory() {
 		return TruncationSelector::new;
+	}
+
+	@Test
+	public void worstIndividual() {
+		final int size = 20;
+		final MSeq<Phenotype<DoubleGene, Integer>> population = MSeq.ofLength(size);
+		for (int i = 0; i < size; ++i) {
+			final DoubleGene gene = DoubleGene.of(i, 0, size + 10);
+			final DoubleChromosome ch = DoubleChromosome.of(gene);
+			final Genotype<DoubleGene> gt = Genotype.of(ch);
+			final Phenotype<DoubleGene, Integer> pt = Phenotype.of(
+				gt, 1, g -> g.getGene().intValue()
+			);
+
+			population.set(i, pt);
+		}
+
+		final TruncationSelector<DoubleGene, Integer> selector =
+			new TruncationSelector<>(5);
+		final ISeq<Phenotype<DoubleGene, Integer>> selected =
+			selector.select(population.toISeq(), 10, Optimize.MINIMUM);
+
+		for (Phenotype<DoubleGene, Integer> pt : selected) {
+			Assert.assertTrue(pt.getFitness() < 5);
+		}
 	}
 
 	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
