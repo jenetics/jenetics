@@ -32,7 +32,6 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
-import io.jenetics.Population;
 import io.jenetics.util.ISeq;
 
 /**
@@ -69,14 +68,14 @@ public class PopulationConvergenceLimitTest {
 		);
 	}
 
-	private static Population<DoubleGene, Double> population(
+	private static ISeq<Phenotype<DoubleGene, Double>> population(
 		final int min,
 		final int max
 	) {
 		return IntStream.rangeClosed(min, max)
 			.mapToDouble(i -> (double)i)
 			.mapToObj(PopulationConvergenceLimitTest::phenotype)
-			.collect(Population.toPopulation());
+			.collect(ISeq.toISeq());
 	}
 
 	private static Phenotype<DoubleGene, Double> phenotype(final double value) {

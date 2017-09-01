@@ -33,7 +33,6 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
-import io.jenetics.Population;
 import io.jenetics.engine.FitnessConvergenceLimit.Buffer;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.stat.DoubleMoments;
@@ -156,14 +155,14 @@ public class FitnessConvergenceLimitTest {
 		);
 	}
 
-	private static Population<DoubleGene, Double> population(
+	private static ISeq<Phenotype<DoubleGene, Double>> population(
 		final int min,
 		final int max
 	) {
 		return IntStream.rangeClosed(min, max)
 			.mapToDouble(i -> (double)i)
 			.mapToObj(FitnessConvergenceLimitTest::phenotype)
-			.collect(Population.toPopulation());
+			.collect(ISeq.toISeq());
 	}
 
 	private static Phenotype<DoubleGene, Double> phenotype(final double value) {

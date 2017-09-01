@@ -97,6 +97,9 @@ public class Mutator<
 
 	/**
 	 * Concrete implementation of the alter method.
+	 *
+	 * @see #mutate(MSeq, int, double)
+	 * @see #mutate(MSeq, double)
 	 */
 	@Override
 	public AlterResult<G, C> alter(
@@ -137,7 +140,19 @@ public class Mutator<
 		return genotype.newInstance(chromosomes.toISeq());
 	}
 
-	private int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
+	/**
+	 * Mutates the chromosome with the given index {@code i}. This method calls
+	 * the {@link #mutate(MSeq, double)} method fo the genes stored in
+	 * chromosome {@code i}.
+	 *
+	 * @see #mutate(MSeq, double)
+	 *
+	 * @param c the chromosome sequence
+	 * @param i the index of the chromosome to mutate
+	 * @param p the mutation probability
+	 * @return the number of mutated genes
+	 */
+	protected int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
 		final Chromosome<G> chromosome = c.get(i);
 		final MSeq<G> genes = chromosome.toSeq().copy();
 
@@ -153,6 +168,8 @@ public class Mutator<
 	 * Template method which gives an (re)implementation of the mutation class
 	 * the possibility to perform its own mutation operation, based on a
 	 * writable gene array and the gene mutation probability <i>p</i>.
+	 *
+	 * @see #mutate(MSeq, int, double)
 	 *
 	 * @param genes the genes to mutate.
 	 * @param p the gene mutation probability.
