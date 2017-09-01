@@ -541,7 +541,7 @@ public class PersistentObject<T> {
 	}
 
 	private static void write() throws IOException {
-		final File baseDir = new File("org.jenetics/src/test/resources/io/jenetics/serialization");
+		final File baseDir = new File("jenetics/src/test/resources/io/jenetics/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
