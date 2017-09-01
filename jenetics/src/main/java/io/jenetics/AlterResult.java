@@ -22,11 +22,16 @@ package io.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
- * Represents the result of a {@link Alterer#alter(Seq, long)} call.
+ * Represents the result pair of a {@link Alterer#alter(Seq, long)} call, which
+ * consists of the altered population and the number of altered individuals.
+ *
+ * @see Alterer
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
@@ -36,7 +41,10 @@ public final class AlterResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
+	implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	private final ISeq<Phenotype<G, C>> _population;
 	private final int _alterations;
 
@@ -44,6 +52,12 @@ public final class AlterResult<
 		final ISeq<Phenotype<G, C>> population,
 		final int alterations
 	) {
+		if (alterations < 0) {
+			throw new IllegalArgumentException(
+				"Alterations is negative: " + alterations
+			);
+		}
+
 		_population = requireNonNull(population);
 		_alterations = alterations;
 	}
@@ -95,6 +109,8 @@ public final class AlterResult<
 	 * @param <C> the result type
 	 * @return a new alterer for the given arguments
 	 * @throws NullPointerException if the given population is {@code null}
+	 * @throws IllegalArgumentException if the given {@code alterations} is
+	 *         negative
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AlterResult<G, C> of(

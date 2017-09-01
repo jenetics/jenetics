@@ -64,8 +64,8 @@ public interface Alterer<
 	 * nothing is altered. The altered population is part of the returned
 	 * {@code AlterResult} object.
 	 *
-	 * @param population The Population to be altered. If the
-	 *        {@code population} is {@code null} or empty, nothing is altered.
+	 * @param population The Population to be altered. If the {@code population}
+	 *        is {@code null} or empty, nothing is altered.
 	 * @param generation the date of birth (generation) of the altered phenotypes.
 	 * @return the alter-result object, which contains the altered population
 	 *         and the alteration count
