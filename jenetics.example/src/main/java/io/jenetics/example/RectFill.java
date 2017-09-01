@@ -22,6 +22,7 @@ package io.jenetics.example;
 import static io.jenetics.engine.limit.byFixedGeneration;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import io.jenetics.AnyChromosome;
 import io.jenetics.AnyGene;
@@ -58,8 +59,19 @@ public class RectFill {
 		}
 	}
 
+	static boolean valid(final ISeq<? super Rect> objects) {
+		@SuppressWarnings("unchecked") // Issue: #256
+		final ISeq<Rect> seq = (ISeq<Rect>)objects;
+		return true;
+	}
+
 	static final Codec<ISeq<Rect>, AnyGene<Rect>> CODEC = Codec.of(
-		Genotype.of(AnyChromosome.of(Rect::newInstance, MAX_RECT_COUNT)),
+		Genotype.of(AnyChromosome.<Rect>of(
+			Rect::newInstance,
+			a -> true,
+			RectFill::valid,
+			MAX_RECT_COUNT
+		)),
 		gt -> gt.getChromosome()
 				.stream()
 				.map(AnyGene::getAllele)
@@ -67,14 +79,21 @@ public class RectFill {
 				.collect(ISeq.toISeq())
 	);
 
+
 	static int fitness(final ISeq<Rect> rects) {
 		// Here comes your fitness function.
 		return rects.length();
 	}
 
+	static boolean gtv(final Genotype<AnyGene<Rect>> gt) {
+		return true;
+	}
+
 	public static void main(final String[] args) {
 		final Engine<AnyGene<Rect>, Integer> engine = Engine
 			.builder(RectFill::fitness, CODEC)
+			.individualCreationRetries(10)
+			.genotypeValidator(RectFill::gtv)
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
 				new SwapMutator<>(),
