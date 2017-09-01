@@ -508,15 +508,6 @@ public class PersistentObject<T> {
 		).evaluate();
 	}
 
-//	public static Phenotype<EnumGene<String>, BigDecimal> nextPhenotypeEnumGeneStringBigDecimal() {
-//		return Phenotype.of(
-//			nextGenotypeEnumGeneString(),
-//			Math.abs(random().nextInt()), FitnessFunction(nextBigDecimal(random())),
-//			FitnessScaler()
-//		).evaluate();
-//	}
-
-
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
 		return (Function<T, R> & Serializable)a -> result;
@@ -537,7 +528,6 @@ public class PersistentObject<T> {
 
 	public static void main(final String[] args) throws Exception {
 		write();
-		//IO.jaxb.write(nextPhenotypeEnumGeneIntegerDouble(), System.out);
 	}
 
 	private static void write() throws IOException {
