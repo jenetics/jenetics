@@ -137,8 +137,6 @@ public class PersistentObject<T> {
 		put("EnumGene[Long]", nextEnumGeneLong(), ios);
 		put("EnumGene[Float]", nextEnumGeneFloat(), ios);
 		put("EnumGene[Double]", nextEnumGeneDouble(), ios);
-//		put("EnumGene[BigInteger]", nextEnumGeneBigInteger(), ios);
-//		put("EnumGene[BigDecimal]", nextEnumGeneBigDecimal(), ios);
 		put("EnumGene[String]", nextEnumGeneString(), ios);
 
 		/* *********************************************************************
@@ -202,8 +200,6 @@ public class PersistentObject<T> {
 		put("Phenotype[EnumGene[Long], Double]", nextPhenotypeEnumGeneLongDouble(), ios);
 		put("Phenotype[EnumGene[Float], Double]", nextPhenotypeEnumGeneFloatDouble(), ios);
 		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
-//		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
-
 	}
 
 	/* *************************************************************************
