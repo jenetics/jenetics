@@ -19,11 +19,11 @@
  */
 package io.jenetics;
 
-import static org.jenetics.internal.math.random.nextByte;
-import static org.jenetics.internal.math.random.nextCharacter;
-import static org.jenetics.internal.math.random.nextShort;
-import static org.jenetics.internal.math.random.nextString;
-import static org.jenetics.util.RandomRegistry.using;
+import static io.jenetics.internal.math.random.nextByte;
+import static io.jenetics.internal.math.random.nextCharacter;
+import static io.jenetics.internal.math.random.nextShort;
+import static io.jenetics.internal.math.random.nextString;
+import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,11 +35,10 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
-import org.jenetics.util.IO;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
-
 import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.util.IO;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
@@ -68,7 +67,6 @@ public class PersistentObject<T> {
 
 		public static Marshalling of(final String name) {
 			switch (name) {
-				case "jaxb": return new Marshalling(name, IO.jaxb);
 				case "object": return new Marshalling(name, IO.object);
 				default: throw new IllegalArgumentException(name);
 			}
@@ -123,7 +121,7 @@ public class PersistentObject<T> {
 		 * Genes
 		 **********************************************************************/
 
-		final String[] ios = {"object", "jaxb"};
+		final String[] ios = {"object"};
 
 		put("BitGene_true", BitGene.TRUE, ios);
 		put("BitGene_false", BitGene.FALSE, ios);
@@ -207,17 +205,6 @@ public class PersistentObject<T> {
 		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
 //		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
 
-		/* *********************************************************************
-		 * Populations
-		 **********************************************************************/
-
-		put("Population[BitGene, Integer]", nextPopulationBitGeneInteger(), ios);
-		put("Population[CharacterGene, Integer]", nextPopulationCharacterGeneInteger(), ios);
-		put("Population[IntegerGene, Integer]", nextPopulationIntegerGeneInteger(), ios);
-		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
-		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
-		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
-//		put("Population[EnumGene[String], BigDecimal]", nextPopulationEnumGeneStringBigDecimal(), ios);
 	}
 
 	/* *************************************************************************
@@ -271,14 +258,6 @@ public class PersistentObject<T> {
 	public static EnumGene<Double> nextEnumGeneDouble() {
 		return EnumGene.of(ISeq.of(random()::nextDouble, 5));
 	}
-
-//	public static EnumGene<BigInteger> nextEnumGeneBigInteger() {
-//		return EnumGene.of(ISeq.of(() -> nextBigInteger(random()), 5));
-//	}
-//
-//	public static EnumGene<BigDecimal> nextEnumGeneBigDecimal() {
-//		return EnumGene.of(ISeq.of(() -> nextBigDecimal(random()), 5));
-//	}
 
 	public static EnumGene<String> nextEnumGeneString() {
 		return EnumGene.of(ISeq.of(() -> nextString(random()), 5));
@@ -537,58 +516,6 @@ public class PersistentObject<T> {
 //		).evaluate();
 //	}
 
-	/* *************************************************************************
-	 * Populations
-	 **************************************************************************/
-
-	public static Population<BitGene, Integer> nextPopulationBitGeneInteger() {
-		final ISeq<Phenotype<BitGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeBitGeneInteger, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<CharacterGene, Integer> nextPopulationCharacterGeneInteger() {
-		final ISeq<Phenotype<CharacterGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<IntegerGene, Integer> nextPopulationIntegerGeneInteger() {
-		final ISeq<Phenotype<IntegerGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
-		final ISeq<Phenotype<LongGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeLongGeneInteger, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<DoubleGene, Integer> nextPopulationDoubleGeneInteger() {
-		final ISeq<Phenotype<DoubleGene, Integer>> seq = ISeq.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
-		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7
-		);
-
-		return new Population<>(seq.asList());
-	}
-
-//	public static Population<EnumGene<String>, BigDecimal> nextPopulationEnumGeneStringBigDecimal() {
-//		final ISeq<Phenotype<EnumGene<String>, BigDecimal>> seq = ISeq.of(PersistentObject::nextPhenotypeEnumGeneStringBigDecimal, 7
-//		);
-//
-//		return new Population<>(seq.asList());
-//	}
 
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
@@ -614,7 +541,7 @@ public class PersistentObject<T> {
 	}
 
 	private static void write() throws IOException {
-		final File baseDir = new File("org.jenetics/src/test/resources/org/jenetics/serialization");
+		final File baseDir = new File("org.jenetics/src/test/resources/io/jenetics/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
