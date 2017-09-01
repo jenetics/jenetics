@@ -43,7 +43,6 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
  */
-@SuppressWarnings("deprecation")
 public class PersistentObject<T> {
 
 	public static final class Marshalling {
