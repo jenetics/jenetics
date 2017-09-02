@@ -26,7 +26,7 @@ import java.util.Arrays;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * The roulette-wheel selector is also known as fitness proportional selector,
@@ -58,7 +58,7 @@ public class RouletteWheelSelector<
 
 	@Override
 	protected double[] probabilities(
-		final ISeq<Phenotype<G, N>> population,
+		final Seq<Phenotype<G, N>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

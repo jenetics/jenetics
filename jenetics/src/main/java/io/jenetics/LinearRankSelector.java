@@ -22,7 +22,7 @@ package io.jenetics;
 import static java.lang.String.format;
 
 import io.jenetics.internal.util.Hash;
-import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * <p>
@@ -100,7 +100,7 @@ public final class LinearRankSelector<
 	 */
 	@Override
 	protected double[] probabilities(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";

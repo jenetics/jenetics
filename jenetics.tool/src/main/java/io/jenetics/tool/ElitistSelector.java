@@ -28,6 +28,7 @@ import io.jenetics.Selector;
 import io.jenetics.TournamentSelector;
 import io.jenetics.TruncationSelector;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -45,7 +46,7 @@ public class ElitistSelector<
 
 	@Override
 	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {

@@ -35,6 +35,7 @@ import io.jenetics.internal.util.array;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * Probability selectors are a variation of fitness proportional selectors and
@@ -74,7 +75,7 @@ public abstract class ProbabilitySelector<
 	 * Create a new {@code ProbabilitySelector} with the given {@code sorting}
 	 * flag. <em>This flag must set to {@code true} if the selector
 	 * implementation is sorting the population in the
-	 * {@link #probabilities(ISeq, int)} method.</em>
+	 * {@link #probabilities(Seq, int)} method.</em>
 	 *
 	 * @param sorted {@code true} if the implementation is sorting the
 	 *        population when calculating the selection probabilities,
@@ -94,7 +95,7 @@ public abstract class ProbabilitySelector<
 
 	@Override
 	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -111,8 +112,8 @@ public abstract class ProbabilitySelector<
 			.ofLength(population.isEmpty() ? 0 : count);
 
 		if (count > 0 && !population.isEmpty()) {
-			final ISeq<Phenotype<G, C>> pop = _sorted
-				? population.copy().sort(POPULATION_COMPARATOR).toISeq()
+			final Seq<Phenotype<G, C>> pop = _sorted
+				? population.asISeq().copy().sort(POPULATION_COMPARATOR)
 				: population;
 
 
@@ -134,7 +135,7 @@ public abstract class ProbabilitySelector<
 
 	/**
 	 * This method takes the probabilities from the
-	 * {@link #probabilities(ISeq, int)} method and inverts it if needed.
+	 * {@link #probabilities(Seq, int)} method and inverts it if needed.
 	 *
 	 * @param population The population.
 	 * @param count The number of phenotypes to select.
@@ -145,7 +146,7 @@ public abstract class ProbabilitySelector<
 	 * @return Probability array.
 	 */
 	protected final double[] probabilities(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -188,7 +189,7 @@ public abstract class ProbabilitySelector<
 	 *         in the base class.
 	 */
 	protected abstract double[] probabilities(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count
 	);
 

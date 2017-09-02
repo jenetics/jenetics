@@ -26,6 +26,7 @@ import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * {@code StochasticUniversalSelector} is a method for selecting a
@@ -66,7 +67,7 @@ public class StochasticUniversalSelector<
 	 */
 	@Override
 	public ISeq<Phenotype<G, N>> select(
-		final ISeq<Phenotype<G, N>> population,
+		final Seq<Phenotype<G, N>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -84,8 +85,8 @@ public class StochasticUniversalSelector<
 
 		final MSeq<Phenotype<G, N>> selection = MSeq.ofLength(count);
 
-		final ISeq<Phenotype<G, N>> pop = _sorted
-			? population.copy().sort(POPULATION_COMPARATOR).toISeq()
+		final Seq<Phenotype<G, N>> pop = _sorted
+			? population.asISeq().copy().sort(POPULATION_COMPARATOR)
 			: population;
 
 		final double[] probabilities = probabilities(pop, count, opt);

@@ -27,6 +27,7 @@ import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * In truncation selection individuals are sorted according to their fitness.
@@ -91,7 +92,7 @@ public final class TruncationSelector<
 	 */
 	@Override
 	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
@@ -108,7 +109,7 @@ public final class TruncationSelector<
 			.ofLength(population.isEmpty() ? 0 : count);
 
 		if (count > 0 && !population.isEmpty()) {
-			final MSeq<Phenotype<G, C>> copy = population.copy();
+			final MSeq<Phenotype<G, C>> copy = population.asISeq().copy();
 			copy.sort((a, b) ->
 				opt.<C>descending().compare(a.getFitness(), b.getFitness()));
 

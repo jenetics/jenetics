@@ -10,6 +10,7 @@ import io.jenetics.Selector;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * Selector implementation which is part of the
@@ -49,7 +50,7 @@ public class WeaselSelector<
 {
 	@Override
 	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {

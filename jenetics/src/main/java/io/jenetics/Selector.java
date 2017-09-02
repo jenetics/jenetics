@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * Selectors are responsible for selecting a given number of individuals from
@@ -61,7 +62,7 @@ public interface Selector<
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
 	public ISeq<Phenotype<G, C>> select(
-		final ISeq<Phenotype<G, C>> population,
+		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	);

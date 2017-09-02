@@ -26,7 +26,7 @@ import static io.jenetics.internal.math.arithmetic.normalize;
 import java.util.Arrays;
 
 import io.jenetics.internal.util.Hash;
-import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * <p>
@@ -88,7 +88,7 @@ public final class BoltzmannSelector<
 
 	@Override
 	protected double[] probabilities(
-		final ISeq<Phenotype<G, N>> population,
+		final Seq<Phenotype<G, N>> population,
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";
