@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.Equality;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -105,7 +104,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof AnyGene<?> &&
-			Equality.eq(((AnyGene<?>)obj)._allele, _allele);
+			Objects.equals(((AnyGene<?>)obj)._allele, _allele);
 	}
 
 	@Override
