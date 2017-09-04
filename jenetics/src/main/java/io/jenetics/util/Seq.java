@@ -363,9 +363,9 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int start,
 		final int end
 	) {
-		return element != null ?
-			lastIndexWhere(element::equals, start, end) :
-			lastIndexWhere(Objects::isNull, start, end);
+		return element != null
+			? lastIndexWhere(element::equals, start, end)
+			: lastIndexWhere(Objects::isNull, start, end);
 	}
 
 	/**
