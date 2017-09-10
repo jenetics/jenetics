@@ -35,7 +35,7 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 	private final int _fence;
 	private int _index;
 
-	public SeqSpliterator(
+	SeqSpliterator(
 		final Seq<T> seq,
 		final int origin,
 		final int fence
@@ -45,7 +45,7 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 		_fence = fence;
 	}
 
-	public SeqSpliterator(final Seq<T> seq) {
+	SeqSpliterator(final Seq<T> seq) {
 		this(seq, 0, seq.length());
 	}
 
