@@ -43,15 +43,9 @@ repositories {
 dependencies {
 	compile 'org.scala-lang:scala-library:2.12.3'
 	compile project(':jenetics')
-}
 
-/*
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
+	compile 'org.scalatest:scalatest_2.12:3.0.1'
 }
-*/
 
 jar.manifest.instruction('Export-Package',
 	'io.jenetics.scala'
