@@ -9,7 +9,6 @@ import io.jenetics.engine.Engine
 import io.jenetics.engine.EvolutionResult
 import io.jenetics.engine.limit
 import org.scalatest.FunSuite
-import io.jenetics.scala._
 
 /**
   * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -34,11 +33,12 @@ class WrapperTest extends FunSuite {
 		println(gt)
 
 		val engine1: Engine[BitGene, Integer] = Engine
-			.builder(
-				(WrapperTest.count _,
+			.builder((
+				WrapperTest.count3 _,
 				BitChromosome.of(20, 0.15)))
 	    	.build()
-		()
+
+		println(engine1)
 	}
 
 }
@@ -51,4 +51,9 @@ object WrapperTest {
 	def count(gt: Genotype[BitGene]): Integer = {
 		gt.getChromosome.as(classOf[BitChromosome]).bitCount()
 	}
+
+	def count3(gt: Genotype[BitGene]): Int = {
+		gt.getChromosome.as(classOf[BitChromosome]).bitCount()
+	}
+
 }

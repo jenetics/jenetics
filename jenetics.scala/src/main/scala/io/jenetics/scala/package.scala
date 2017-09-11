@@ -1,6 +1,9 @@
 package io.jenetics
 
+import io.jenetics.engine.Codec
 import io.jenetics.engine.Problem
+
+import _root_.scala.language.implicitConversions
 
 /**
   * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -9,15 +12,26 @@ import io.jenetics.engine.Problem
   */
 package object scala {
 
-	implicit def toJavaFunction[T, Int](f: (T => Int)): java.util.function.Function[T, Integer] = {
-		null
+	type FF[G <: Gene[_, G], C1] = Genotype[G] => C1
+
+	implicit def toFitnessFunction[T, C1, C2 <: Comparable[C2]](
+		f: T => C1)(
+		implicit c: ToComparable[C1, C2]): java.util.function.Function[T, C2] =
+	{
+		v => c.convert(f(v))
 	}
 
-	implicit def toGT[A, G <: Gene[A, G]](ch: Chromosome[G]): Genotype[G] = {
-		null
+	implicit def p[G <: Gene[_, G], C1, C2 <: Comparable[C2]](
+		p: (Genotype[G] => C1, Chromosome[G]))(
+		implicit c: ToComparable[C1, C2]): Problem[Genotype[G], G, C2] =
+	{
+		Problem.of(
+			p._1,
+			Codec.of(
+				Genotype.of(p._2),
+				(gt: Genotype[G]) => gt
+			)
+		)
 	}
-
-	implicit def problem[T, G <: Gene[_, G], C <: Comparable[C]](p: (Genotype[G] => C, Chromosome[G])): Problem[T, G, C] = ???
-
 
 }
