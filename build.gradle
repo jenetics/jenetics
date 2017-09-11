@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version !__version__!
  */
 new PropertiesLoader(ext).load(file('project.properties'))
 new PropertiesLoader(ext).load(file('include.properties'))
@@ -49,6 +49,11 @@ ext {
 	manualDate = DateTimeFormatter.ofPattern("yyyy/MM/dd").format(now)
 	manualIdentifier = "${version}—${manualDate}".toString()
 	dateformat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+	
+    // The scala modules we are using.
+    ScalaModules = [
+      'org.scala-lang:scala-library:2.12.3'
+    ]	
 }
 
 allprojects {

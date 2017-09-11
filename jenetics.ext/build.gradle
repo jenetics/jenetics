@@ -48,12 +48,6 @@ dependencies {
 	testCompile project(':jenetics').sourceSets.test.output
 }
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
-}
-
 jar.manifest.instruction('Export-Package',
 	'io.jenetics.ext',
 	'io.jenetics.ext.util'

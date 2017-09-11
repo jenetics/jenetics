@@ -47,12 +47,6 @@ jmh {
 	duplicateClassesStrategy = 'warn'
 }
 
-idea {
-	module{
-		scopes.COMPILE.plus += [configurations.jmh]
-	}
-}
-
 jar.manifest.instruction('Export-Package',
 	'io.jenetics.xml',
 	'io.jenetics.xml.stream'
