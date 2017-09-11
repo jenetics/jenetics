@@ -30,6 +30,7 @@ include 'jenetics.doc'
 include 'jenetics.example'
 include 'jenetics.ext'
 include 'jenetics.prog'
+include 'jenetics.scala'
 include 'jenetics.tool'
 include 'jenetics.xml'
 
