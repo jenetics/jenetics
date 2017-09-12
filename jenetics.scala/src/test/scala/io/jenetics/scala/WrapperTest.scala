@@ -18,13 +18,12 @@ import org.scalatest.FunSuite
 class WrapperTest extends FunSuite {
 
 	test("Hello World") {
-		val engine: Engine[BitGene, Integer] =
-			EngineBuilder(WrapperTest.count, BitChromosome.of(20, 0.15))
-				.alterers(
-					new Mutator[BitGene, Integer](),
-					new Mutator[BitGene, Integer]())
-				.selector(new TournamentSelector[BitGene, Integer]())
-				.build()
+		val engine = EngineBuilder[BitGene, Integer](WrapperTest.count, BitChromosome.of(20, 0.15))
+			.alterers(
+				new Mutator(),
+				new Mutator())
+			.selector(new TournamentSelector())
+			.build()
 
 		val gt = engine.stream()
 			.limit(limit.byFixedGeneration(100))
@@ -32,6 +31,7 @@ class WrapperTest extends FunSuite {
 
 		println(gt)
 
+		/*
 		val engine1: Engine[BitGene, Integer] = Engine
 			.builder((
 				WrapperTest.count3 _,
@@ -39,6 +39,7 @@ class WrapperTest extends FunSuite {
 	    	.build()
 
 		println(engine1)
+		*/
 	}
 
 }
@@ -48,7 +49,7 @@ object WrapperTest {
 	val count2: (Genotype[BitGene] => Int) = gt =>
 		gt.getChromosome.as(classOf[BitChromosome]).bitCount()
 
-	def count(gt: Genotype[BitGene]): Integer = {
+	def count(gt: Genotype[BitGene]): Int = {
 		gt.getChromosome.as(classOf[BitChromosome]).bitCount()
 	}
 

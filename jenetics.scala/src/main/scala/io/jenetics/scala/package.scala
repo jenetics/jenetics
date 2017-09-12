@@ -1,5 +1,7 @@
 package io.jenetics
 
+import java.util.function.{Function => JFunction}
+
 import io.jenetics.engine.Codec
 import io.jenetics.engine.Problem
 
@@ -14,16 +16,31 @@ package object scala {
 
 	type FF[G <: Gene[_, G], C1] = Genotype[G] => C1
 
-	implicit def toFitnessFunction[T, C1, C2 <: Comparable[C2]](
+	/*
+	implicit def toFF[T, C1, C2 <: Comparable[C2]](
 		f: T => C1)(
-		implicit c: ToComparable[C1, C2]): java.util.function.Function[T, C2] =
+		implicit c: ToComparable[C1, C2]): (T => C2) =
 	{
 		v => c.convert(f(v))
 	}
+	*/
 
-	implicit def p[G <: Gene[_, G], C1, C2 <: Comparable[C2]](
-		p: (Genotype[G] => C1, Chromosome[G]))(
-		implicit c: ToComparable[C1, C2]): Problem[Genotype[G], G, C2] =
+	/*
+	implicit def toFitnessFunction[T, C1, C2 <: Comparable[C2]](
+		f: T => C1)(
+		implicit c: ToComparable[C1, C2]): JFunction[T, C2] =
+	{
+		v => c.convert(f(v))
+	}
+	*/
+
+	implicit def toFitnessFunction[T, C <: Comparable[C]](f: T => C): JFunction[T, C] = {
+		v => f(v)
+	}
+
+	/*
+	implicit def p[G <: Gene[_, G], C <: Comparable[C]](
+		p: (Genotype[G] => C, Chromosome[G])): Problem[Genotype[G], G, C] =
 	{
 		Problem.of(
 			p._1,
@@ -33,5 +50,6 @@ package object scala {
 			)
 		)
 	}
+	*/
 
 }

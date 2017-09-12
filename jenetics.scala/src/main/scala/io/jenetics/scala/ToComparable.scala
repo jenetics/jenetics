@@ -1,5 +1,7 @@
 package io.jenetics.scala
 
+import java.lang.{Long => JLong}
+
 /**
   * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
   * @since !__version__!
@@ -29,8 +31,8 @@ object ToComparable {
 		override def convert(v: Int): Integer = v.asInstanceOf[Integer]
 	}
 
-	implicit object Long2Long extends ToComparable[Long, java.lang.Long] {
-		override def convert(v: Long): java.lang.Long = v.asInstanceOf[java.lang.Long]
+	implicit object Long2Long extends ToComparable[Long, JLong] {
+		override def convert(v: Long): JLong = v.asInstanceOf[JLong]
 	}
 
 	implicit object Float2Float extends ToComparable[Float, java.lang.Float] {
