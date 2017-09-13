@@ -44,6 +44,7 @@ object EngineBuilder {
 	  * //@param chromosomes the chromosome templates
 	  * @return a new engine builder
 	  */
+	/*
 	def apply[G <: Gene[_, G], C <: Comparable[C]](
 		fitness: Genotype[G] => C,
 		chromosome: Chromosome[G]/*,
@@ -59,5 +60,6 @@ object EngineBuilder {
 			)
 		)
 	}
+	*/
 
 }

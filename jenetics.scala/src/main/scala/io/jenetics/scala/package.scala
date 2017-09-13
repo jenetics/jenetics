@@ -38,6 +38,9 @@ package object scala {
 		v => f(v)
 	}
 
+	implicit def toGenotype[G <: Gene[_, G]](ch: Chromosome[G]): Genotype[G] =
+		Genotype.of(ch)
+
 	/*
 	implicit def p[G <: Gene[_, G], C <: Comparable[C]](
 		p: (Genotype[G] => C, Chromosome[G])): Problem[Genotype[G], G, C] =

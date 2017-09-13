@@ -2,6 +2,7 @@ package io.jenetics.scalawrapper
 
 import io.jenetics.BitChromosome
 import io.jenetics.BitGene
+import io.jenetics.Chromosome
 import io.jenetics.Genotype
 import io.jenetics.Mutator
 import io.jenetics.SwapMutator
@@ -10,6 +11,7 @@ import io.jenetics.engine.Codec
 import io.jenetics.engine.Engine
 import io.jenetics.engine.Problem
 import io.jenetics.scala.EngineBuilder
+import io.jenetics.scala._
 
 /**
   * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,14 +51,8 @@ object Engines {
 		.selector(new TournamentSelector())
 		.build()
 
-	/*
-	val e4 = Engine.builder(
-			count1 _,
-			Codec.of(
-				Genotype.of(BitChromosome.of(20, 0.15)),
-				(gt: Genotype[BitGene]) => gt
-			)
-	).build()
-	*/
+	val e4 = Engine
+		.builder[BitGene, Integer](count2 _, BitChromosome.of(20, 0.15), BitChromosome.of(20, 0.15))
+		.build()
 
 }
