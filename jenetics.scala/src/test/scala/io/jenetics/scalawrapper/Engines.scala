@@ -28,31 +28,32 @@ object Engines {
 		gt.getChromosome.as(classOf[BitChromosome]).bitCount()
 	}
 
-	val e1 = EngineBuilder[BitGene, Integer](count1, BitChromosome.of(20, 0.15))
+	val e1 = EngineBuilder(count1 _, BitChromosome.of(20, 0.15))
 		.alterers(
 			new Mutator(),
 			new SwapMutator())
 		.selector(new TournamentSelector())
 		.build()
 
-	val e2 = EngineBuilder[BitGene, Integer](count2, BitChromosome.of(20, 0.15))
+	val e2 = EngineBuilder(count2 _, BitChromosome.of(20, 0.15))
 		.alterers(
 			new Mutator(),
 			new SwapMutator())
 		.selector(new TournamentSelector())
 		.build()
 
-	val e3 = EngineBuilder[BitGene, Integer](
-			_.getChromosome.as(classOf[BitChromosome]).bitCount(),
-			BitChromosome.of(20, 0.15))
-		.alterers(
-			new Mutator(),
-			new SwapMutator())
-		.selector(new TournamentSelector())
-		.build()
 
-	val e4 = Engine
-		.builder[BitGene, Integer](count2 _, BitChromosome.of(20, 0.15), BitChromosome.of(20, 0.15))
-		.build()
+//	val e3 = EngineBuilder(
+//			_.getChromosome.as(classOf[BitChromosome]).bitCount(),
+//			BitChromosome.of(20, 0.15))
+//		.alterers(
+//			new Mutator(),
+//			new SwapMutator())
+//		.selector(new TournamentSelector())
+//		.build()
+
+//	val e4 = Engine
+//		.builder[BitGene, Integer](count2 _, BitChromosome.of(20, 0.15), BitChromosome.of(20, 0.15))
+//		.build()
 
 }

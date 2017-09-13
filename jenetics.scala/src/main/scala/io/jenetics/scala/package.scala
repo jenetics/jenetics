@@ -14,32 +14,37 @@ import _root_.scala.language.implicitConversions
   */
 package object scala {
 
+	/*
 	type FF[G <: Gene[_, G], C1] = Genotype[G] => C1
 
-	/*
 	implicit def toFF[T, C1, C2 <: Comparable[C2]](
 		f: T => C1)(
 		implicit c: ToComparable[C1, C2]): (T => C2) =
 	{
 		v => c.convert(f(v))
 	}
-	*/
 
-	/*
+	implicit def toJFF[T, C1, C2 <: Comparable[C2]](
+		f: T => C1)(
+		implicit c: ToComparable[C1, C2]): JFunction[T, C2] =
+	{
+		v => c.convert(f(v))
+	}
+
 	implicit def toFitnessFunction[T, C1, C2 <: Comparable[C2]](
 		f: T => C1)(
 		implicit c: ToComparable[C1, C2]): JFunction[T, C2] =
 	{
 		v => c.convert(f(v))
 	}
-	*/
 
-	implicit def toFitnessFunction[T, C <: Comparable[C]](f: T => C): JFunction[T, C] = {
+	implicit def toJavaFitnessFunction[T, C <: Comparable[C]](f: T => C): JFunction[T, C] = {
 		v => f(v)
 	}
+	*/
 
-	implicit def toGenotype[G <: Gene[_, G]](ch: Chromosome[G]): Genotype[G] =
-		Genotype.of(ch)
+//	implicit def toGenotype[G <: Gene[_, G]](ch: Chromosome[G]): Genotype[G] =
+//		Genotype.of(ch)
 
 	/*
 	implicit def p[G <: Gene[_, G], C <: Comparable[C]](
@@ -55,4 +60,10 @@ package object scala {
 	}
 	*/
 
+/*
+	def codec[G <: Gene[_, G], C <: Comparable[C]](
+		fitness: Genotype[G] => C,
+		chromosome: Chromosome[G],
+		chromosomes: Chromosome[G]):
+*/
 }

@@ -1,5 +1,6 @@
 package io.jenetics.scala
 
+import java.util.function.{Function => JFunction}
 import io.jenetics.Chromosome
 import io.jenetics.Gene
 import io.jenetics.Genotype
@@ -20,9 +21,40 @@ object EngineBuilder {
 		genotypeFactory: Factory[Genotype[G]]
 	 */
 
-	def apply[G <: Gene[_, G], C <: Comparable[C]](
-		fitness: Genotype[G] => C,
-		genotypeFactory: Genotype[G]): Engine.Builder[G, C] =
+//	implicit def toJFF1[T, C <: Comparable[C]](f: T => C): JFunction[T, C] = {
+//		v => f(v)
+//	}
+
+	implicit def toJFF2[T, C1, C2 <: Comparable[C2]](
+		f: T => C1)(
+		implicit c: ToComparable[C1, C2]): JFunction[T, C2] =
+	{
+		v => c.convert(f(v))
+	}
+
+//	def apply[G <: Gene[_, G], C <: Comparable[C]](
+//		fitness: Genotype[G] => C,
+//		genotypeFactory: Factory[Genotype[G]]): Engine.Builder[G, C] =
+//	{
+//		implicitly[ToComparable[C, C]]
+//		EngineBuilder[G, C, C](fitness, genotypeFactory)(ToComparable.identity[C])
+///*
+//		Engine.builder(
+//			Problem.of(
+//				fitness,
+//				Codec.of(
+//					genotypeFactory,
+//					(gt: Genotype[G]) => gt
+//				)
+//			)
+//		)
+//		*/
+//	}
+
+	def apply[G <: Gene[_, G], R, C <: Comparable[C]](
+		fitness: Genotype[G] => R,
+		genotypeFactory: Factory[Genotype[G]])(
+		implicit c: ToComparable[R, C]): Engine.Builder[G, C] =
 	{
 		Engine.builder(
 			Problem.of(
@@ -35,31 +67,21 @@ object EngineBuilder {
 		)
 	}
 
-	/**
-	  * Create a new evolution `Engine.Builder` with the given fitness function
-	  * and chromosome templates.
-	  *
-	  * @param fitness the fitness function
-	  * @param chromosome  the first chromosome
-	  * //@param chromosomes the chromosome templates
-	  * @return a new engine builder
-	  */
-	/*
-	def apply[G <: Gene[_, G], C <: Comparable[C]](
+	def apply[G <: Gene[_, G], CH <: Chromosome[G], R, C <: Comparable[C]](
 		fitness: Genotype[G] => C,
-		chromosome: Chromosome[G]/*,
-		chromosomes: Chromosome[G]**/): Engine.Builder[G, C] =
+		chromosome: CH,
+		chromosomes: CH*)(
+		implicit c: ToComparable[R, C]): Engine.Builder[G, C] =
 	{
 		Engine.builder(
 			Problem.of(
 				fitness,
 				Codec.of(
-					Genotype.of(chromosome),
+					Genotype.of(chromosome, chromosomes: _*),
 					(gt: Genotype[G]) => gt
 				)
 			)
 		)
 	}
-	*/
 
 }

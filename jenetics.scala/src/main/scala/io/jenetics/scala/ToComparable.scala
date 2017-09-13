@@ -13,7 +13,7 @@ trait ToComparable[T, C <: Comparable[C]] {
 
 object ToComparable {
 
-	implicit def identity[C <: Comparable[C]](): ToComparable[C, C] = c => c
+	//implicit def identity[C <: Comparable[C]]: ToComparable[C, C] = c => c
 
 	implicit object Byte2Byte extends ToComparable[Byte, java.lang.Byte] {
 		override def convert(v: Byte): java.lang.Byte = v.asInstanceOf[java.lang.Byte]
