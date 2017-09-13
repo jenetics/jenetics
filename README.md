@@ -6,6 +6,8 @@
 
 **Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm** and **Genetic Programming** library, respectively, written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
+_An experimental .Net port of the base library has been implemented by [Rupert Meindl](https://github.com/rmeindl) and can be found [here](https://github.com/rmeindl/jenetics.net)._
+
 ## Documentation
 
 The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/3.9/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.9.0.pdf)).
