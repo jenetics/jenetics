@@ -29,6 +29,6 @@ package object scala {
 		v => toc.convert(f(v))
 	}
 
-	implicit def toJavaFunction[T, R](f: T => R): JFunction[T, R] = v => f(v)
+	//implicit def toJavaFunction[T, R](f: T => R): JFunction[T, R] = v => f(v)
 
 }

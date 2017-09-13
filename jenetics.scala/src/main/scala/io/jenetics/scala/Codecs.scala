@@ -16,7 +16,7 @@ object Codecs {
 		encoding: Factory[Genotype[G]],
 		decoder: Genotype[G] => T): Codec[T, G] =
 	{
-		Codec.of(encoding, decoder)
+		Codec.of(encoding, gt => decoder(gt))
 	}
 
 }
