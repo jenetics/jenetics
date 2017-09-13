@@ -20,7 +20,6 @@ object EngineBuilder {
 		genotypeFactory: Factory[Genotype[G]]
 	 */
 
-	/*
 	def apply[G <: Gene[_, G], C <: Comparable[C]](
 		fitness: Genotype[G] => C,
 		genotypeFactory: Genotype[G]): Engine.Builder[G, C] =
@@ -35,7 +34,6 @@ object EngineBuilder {
 			)
 		)
 	}
-	*/
 
 	/**
 	  * Create a new evolution `Engine.Builder` with the given fitness function
@@ -43,19 +41,19 @@ object EngineBuilder {
 	  *
 	  * @param fitness the fitness function
 	  * @param chromosome  the first chromosome
-	  * @param chromosomes the chromosome templates
+	  * //@param chromosomes the chromosome templates
 	  * @return a new engine builder
 	  */
 	def apply[G <: Gene[_, G], C <: Comparable[C]](
 		fitness: Genotype[G] => C,
-		chromosome: Chromosome[G],
-		chromosomes: Chromosome[G]*): Engine.Builder[G, C] =
+		chromosome: Chromosome[G]/*,
+		chromosomes: Chromosome[G]**/): Engine.Builder[G, C] =
 	{
 		Engine.builder(
 			Problem.of(
 				fitness,
 				Codec.of(
-					Genotype.of(chromosome, chromosomes: _*),
+					Genotype.of(chromosome),
 					(gt: Genotype[G]) => gt
 				)
 			)

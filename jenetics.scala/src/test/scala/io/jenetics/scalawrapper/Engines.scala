@@ -6,6 +6,9 @@ import io.jenetics.Genotype
 import io.jenetics.Mutator
 import io.jenetics.SwapMutator
 import io.jenetics.TournamentSelector
+import io.jenetics.engine.Codec
+import io.jenetics.engine.Engine
+import io.jenetics.engine.Problem
 import io.jenetics.scala.EngineBuilder
 
 /**
@@ -45,5 +48,15 @@ object Engines {
 			new SwapMutator())
 		.selector(new TournamentSelector())
 		.build()
+
+	/*
+	val e4 = Engine.builder(
+			count1 _,
+			Codec.of(
+				Genotype.of(BitChromosome.of(20, 0.15)),
+				(gt: Genotype[BitGene]) => gt
+			)
+	).build()
+	*/
 
 }
