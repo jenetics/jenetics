@@ -1,7 +1,5 @@
 package io.jenetics.scala
 
-import java.util.function.{Function => JFunction}
-
 import io.jenetics.Chromosome
 import io.jenetics.Gene
 import io.jenetics.Genotype
