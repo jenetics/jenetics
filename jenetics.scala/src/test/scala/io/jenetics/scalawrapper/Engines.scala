@@ -43,14 +43,15 @@ object Engines {
 		.build()
 
 
-//	val e3 = EngineBuilder(
-//			_.getChromosome.as(classOf[BitChromosome]).bitCount(),
-//			BitChromosome.of(20, 0.15))
-//		.alterers(
-//			new Mutator(),
-//			new SwapMutator())
-//		.selector(new TournamentSelector())
-//		.build()
+	val e3 = EngineBuilder(
+			(gt: Genotype[BitGene]) =>
+				gt.getChromosome.as(classOf[BitChromosome]).bitCount(),
+			BitChromosome.of(20, 0.15))
+		.alterers(
+			new Mutator(),
+			new SwapMutator())
+		.selector(new TournamentSelector())
+		.build()
 
 //	val e4 = Engine
 //		.builder[BitGene, Integer](count2 _, BitChromosome.of(20, 0.15), BitChromosome.of(20, 0.15))
