@@ -83,14 +83,6 @@ public class GenotypeWritePerf {
 	}
 
 	@Benchmark
-	public Object jaxb(final IOState state) throws Exception {
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.jaxb.write(state.genotype, out);
-
-		return out.toByteArray();
-	}
-
-	@Benchmark
 	public Object stream(final IOState state) throws Exception {
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {

@@ -85,7 +85,6 @@ public class GenotypeReadPerf {
 			);
 
 			objectData = object(genotype);
-			jaxbData = jaxb(genotype);
 			streamData = stream(genotype);
 
 			System.out.println(format(
@@ -107,12 +106,6 @@ public class GenotypeReadPerf {
 			return out.toByteArray();
 		}
 
-		public static byte[] jaxb(final Genotype<DoubleGene> gt) throws Exception {
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			IO.jaxb.write(gt, out);
-			return out.toByteArray();
-		}
-
 		private static byte[] stream(final Genotype<DoubleGene> gt)
 			throws Exception
 		{
@@ -129,12 +122,6 @@ public class GenotypeReadPerf {
 	public Object object(final IOState state) throws Exception {
 		final ByteArrayInputStream in = new ByteArrayInputStream(state.objectData);
 		return IO.object.read(in);
-	}
-
-	@Benchmark
-	public Object jaxb(final IOState state) throws Exception {
-		final ByteArrayInputStream in = new ByteArrayInputStream(state.jaxbData);
-		return IO.jaxb.read(in);
 	}
 
 	@Benchmark
