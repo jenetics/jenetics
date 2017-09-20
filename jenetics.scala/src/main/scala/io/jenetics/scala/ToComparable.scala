@@ -1,6 +1,10 @@
 package io.jenetics.scala
 
+import java.lang.{Byte => JByte}
+import java.lang.{Double => JDouble}
+import java.lang.{Float => JFloat}
 import java.lang.{Long => JLong}
+import java.lang.{Short => JShort}
 
 /**
   * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -15,12 +19,12 @@ object ToComparable {
 
 	implicit def identity[C <: Comparable[C]]: ToComparable[C, C] = c => c
 
-	implicit object Byte2Byte extends ToComparable[Byte, java.lang.Byte] {
-		override def convert(v: Byte): java.lang.Byte = v.asInstanceOf[java.lang.Byte]
+	implicit object Byte2Byte extends ToComparable[Byte, JByte] {
+		override def convert(v: Byte): JByte = v.asInstanceOf[JByte]
 	}
 
-	implicit object Short2Short extends ToComparable[Short, java.lang.Short] {
-		override def convert(v: Short): java.lang.Short = v.asInstanceOf[java.lang.Short]
+	implicit object Short2Short extends ToComparable[Short, JShort] {
+		override def convert(v: Short): JShort = v.asInstanceOf[JShort]
 	}
 
 	implicit object Char2Character extends ToComparable[Char, Character] {
@@ -35,12 +39,12 @@ object ToComparable {
 		override def convert(v: Long): JLong = v.asInstanceOf[JLong]
 	}
 
-	implicit object Float2Float extends ToComparable[Float, java.lang.Float] {
-		override def convert(v: Float): java.lang.Float = v.asInstanceOf[java.lang.Float]
+	implicit object Float2Float extends ToComparable[Float, JFloat] {
+		override def convert(v: Float): JFloat = v.asInstanceOf[JFloat]
 	}
 
-	implicit object Double2Double extends ToComparable[Double, java.lang.Double] {
-		override def convert(v: Double): java.lang.Double = v.asInstanceOf[java.lang.Double]
+	implicit object Double2Double extends ToComparable[Double, JDouble] {
+		override def convert(v: Double): JDouble = v.asInstanceOf[JDouble]
 	}
 
 }
