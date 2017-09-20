@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 # Author:
-#    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+#    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
 #
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)

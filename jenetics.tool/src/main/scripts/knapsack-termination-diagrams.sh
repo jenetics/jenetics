@@ -36,5 +36,5 @@ do
 	SAMPLES="${item#*:}"
 	${JRUN} org.jenetics.tool.evaluation.Diagram --input ${RESULT} --samples ${SAMPLES}
 
-	cp -a "${RESULT%.*}.svg" "${SCRIPT_DIR}/../../../../org.jenetics.doc/src/main/resources/diagram"
+	cp -a "${RESULT%.*}.svg" "${SCRIPT_DIR}/../../../../jenetics.doc/src/main/resources/diagram"
 done

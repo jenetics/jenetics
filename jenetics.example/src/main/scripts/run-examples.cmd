@@ -14,7 +14,7 @@ rem See the License for the specific language governing permissions and
 rem limitations under the License.
 rem
 rem Author:
-rem   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+rem   Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
 
 set VERSION="@__version__@"
 set CLS_PATH=../lib/jenetics-%VERSION%.jar
