@@ -27,6 +27,6 @@
 apply plugin: 'java'
 
 project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	sourceCompatibility = 1.9
+	targetCompatibility = 1.9
 }
