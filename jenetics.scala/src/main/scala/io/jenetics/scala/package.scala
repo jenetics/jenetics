@@ -12,13 +12,22 @@ import _root_.scala.reflect.ClassTag
   */
 package object scala {
 
-	final implicit  class RichChromosome[G <: Gene[_, G]](val ch: Chromosome[G])
+	final implicit class RichChromosome[G <: Gene[_, G]](val ch: Chromosome[G])
 		extends AnyVal
 	{
 
-		def to[C <: Chromosome[G]: ClassTag]: C = {
-			???
-		}
+		def to[C <: Chromosome[G]: ClassTag]: C =  ???
+
+		def as[C <: Chromosome[G]: ClassTag]: C =  ???
+
+	}
+
+	final implicit class RichGenotype[G <: Gene[_, G]](val gt: Genotype[G])
+		extends AnyVal
+	{
+		def chromosome: Chromosome[G] = gt.getChromosome
+
+		//def chromosome[C <: Chromosome[G]: ClassTag]: C = ???
 
 	}
 
