@@ -484,7 +484,7 @@ public final class codecs {
 	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	public static <T> Codec<ISeq<T>, EnumGene<T>>
-	ofPermutation(final ISeq<T> alleles) {
+	ofPermutation(final ISeq<? extends T> alleles) {
 		if (alleles.isEmpty()) {
 			throw new IllegalArgumentException(
 				"Empty allele array is not allowed."
