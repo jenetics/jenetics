@@ -1,4 +1,4 @@
-# Jenetics extension module
+# Module: `io.jenetics.ext`
 
 This module contains additional genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `org.jenetics.base` module as small as possible.
 

@@ -1,4 +1,4 @@
-# XML marshalling module
+# Module: `io.jenetics.xml`
 
 The `org.jenetics.xml` module allows to write/read chromosomes and genotypes to/from XML. Since the `javax.xml.bind` module is marked as deprecated (and for removal), this module will replace the existing *JAXB* based XML marshalling.
 
