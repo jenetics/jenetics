@@ -388,7 +388,7 @@ public final class codecs {
 	public static <A> Codec<ISeq<A>, AnyGene<A>> ofVector(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> alleleValidator,
-		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
 		requireNonNull(supplier);
@@ -425,7 +425,12 @@ public final class codecs {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return ofVector(supplier, validator, Equality.TRUE, length);
+		return ofVector(
+			supplier,
+			validator,
+			Equality.<ISeq<A>>True(),
+			length
+		);
 	}
 
 	/**
