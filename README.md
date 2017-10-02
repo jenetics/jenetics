@@ -1,6 +1,6 @@
 # Jenetics
 
-![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
+[![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/io.jenetics/jenetics/badge.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
 
