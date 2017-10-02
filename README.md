@@ -133,13 +133,13 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew compileTestJava Sin
+    $ ./gradlew compileTestJava
 
 you can start the example by calling
 
-    $ ./jrun org.jenetics.example.image.EvolvingImages
+    $ ./jrun io.jenetics.example.image.EvolvingImages
 
-![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
+![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
 The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 
