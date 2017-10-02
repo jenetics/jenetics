@@ -22,8 +22,8 @@ package io.jenetics;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -76,7 +76,7 @@ public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 		return "valid".equals(name);
 	}
 
-	private static boolean alleleSeqValidator(final ISeq<String> names) {
+	private static boolean alleleSeqValidator(final Seq<String> names) {
 		return names.forAll(AnyChromosomeTest::alleleValidator);
 	}
 
