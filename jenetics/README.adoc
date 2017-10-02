@@ -1,8 +1,8 @@
-# Module: `io.jenetics.base`
+= Module: `io.jenetics.base`
 
 The basic module of the _Jenetics_ library contains all classes for solving optimization via _Genetic Algorithm_.
 
-## Hello World (Ones counting) example
+== Hello World (Ones counting) example
 
 The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
