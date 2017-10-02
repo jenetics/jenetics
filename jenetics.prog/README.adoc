@@ -1,8 +1,8 @@
-# Module: `io.jenetics.prog`
+= Module: `io.jenetics.prog`
 
-Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
+Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `io.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
 
-The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
+The `io.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
 
 
 ```java
@@ -17,7 +17,7 @@ public interface Op<T> {
 The generic type of the `Op` enforces data-type constraints for the created program tree and makes the implementation a _strongly typed_ GP algorithm.
 
 
-## Operations
+== Operations
 
 When creating a new program tree, it is not necessary to implement own instance of the `ProgramGene` or `ProgramChromosome` class. The extension point for own programs is the `Op` interface.
 
@@ -27,7 +27,7 @@ When creating a new program tree, it is not necessary to implement own instance 
 
 In the example above, a new operation with the "myop" and arity 3 is defined. Whenever the operation is evaluated, the function _f(x, y, z) = x*y + z_ is executed.
 
-NOTE: The class `MathOp` in the `org.jenetics.prog.op` package defines a set of mathematical standard operations/functions.
+NOTE: The class `MathOp` in the `io.jenetics.prog.op` package defines a set of mathematical standard operations/functions.
 
 When creating a new `ProgramChromosome` we must distinguish two different kind of operations:
 
@@ -69,9 +69,9 @@ final Op<Double> rand1 = EphemeralConst.of(Math::random);
 final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 ```
 
-## Program trees
+== Program trees
 
-### Program creation
+=== Program creation
 
 The `ProgramChromosome` comes with some factory methods, which lets you easily create program trees with a given depth and a given set of _operations_ and _terminals_.
 
@@ -103,15 +103,15 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 For a detailed description on the correct `Engine` setup have a look at the _Example_ section.
 
 
-### Program repair
+=== Program repair
 
 The specialized `Alterer` classes for the `ProgramChromosome` guarantees that the program tree after the _alter_ operation is still valid. They obey the tree structure of the chromosome, although they are altering the flattened `ProgramGene` sequence. General alterers, not written for `ProgramChromosome`, will most likely destroy the tree property of the altered chromosome. There are essentially two possibility for handling invalid tree chromosomes: 1) marking the chromosome as _invalid_ or 2) try to repair the invalid chromosome. Possibility 1) would be easier, but it would also lead to a possible large number of invalid chromosomes.
 
 NOTE: Jenetics allows the usage of arbitrary `Alterer` implementations. Even alterers not implemented for `ProgramChromosomes`. Chromosomes _destroyed_  by the alterer are repaired.
 
-## Examples
+== Examples
 
-### Symbolic regression
+=== Symbolic regression
 
 > Symbolic regression involves finding a mathematical expression, in symbolic form, that provides a good, best, or perfect fit between a given finite sampling of values of the independent variables and the associated values of the dependent variables.–John R. Koza, Genetic Programming I
 
