@@ -320,7 +320,7 @@ public final class PermutationChromosome<T>
 	ofInteger(final IntRange range, final int length) {
 		return of(
 			range.stream()
-				.mapToObj(i -> i)
+				.boxed()
 				.collect(ISeq.toISeq()),
 			length
 		);
