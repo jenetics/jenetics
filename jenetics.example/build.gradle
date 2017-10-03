@@ -15,13 +15,13 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
  * @version 3.9
  */
@@ -36,8 +36,10 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
+	'io.jenetics.example'
 )
+
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
 
 packaging {
 	name = 'Jenetics examples'

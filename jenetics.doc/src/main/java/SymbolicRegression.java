@@ -2,21 +2,21 @@ import static java.lang.Math.pow;
 
 import java.util.Arrays;
 
-import org.jenetics.Genotype;
-import org.jenetics.Mutator;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.ext.SingleNodeCrossover;
-import org.jenetics.ext.util.Tree;
-import org.jenetics.prog.ProgramChromosome;
-import org.jenetics.prog.ProgramGene;
-import org.jenetics.prog.op.EphemeralConst;
-import org.jenetics.prog.op.MathOp;
-import org.jenetics.prog.op.Op;
-import org.jenetics.prog.op.Var;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.Genotype;
+import io.jenetics.Mutator;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.ext.SingleNodeCrossover;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.prog.ProgramChromosome;
+import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.EphemeralConst;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Var;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 public class SymbolicRegression {
 
