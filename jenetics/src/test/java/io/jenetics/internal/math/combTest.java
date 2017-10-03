@@ -24,13 +24,11 @@ import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
-import io.jenetics.util.TestData;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,17 +37,19 @@ public class combTest {
 
 	@Test
 	public void compatibility() {
-		final String resource = "/io/jenetics/internal/math/comb/subset";
-		final TestData data = TestData.of(resource);
-		final int[][] sub = data.stream()
-			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
-			.toArray(int[][]::new);
+//		final String resource = "/io/jenetics/internal/math/comb/subset";
+//		final TestData data = TestData.of(resource);
+//		final int[][] sub = data.stream()
+//			.map(s -> Stream.of(s).mapToInt(Integer::parseInt).toArray())
+//			.toArray(int[][]::new);
 
-		for (int i = 1; i < 100; ++i) {
-			int[] sub2 = new int[i];
+		for (int i = 1; i <= 1000; ++i) {
+			int[] sub1 = subset(1000, new int[i], new Random(123));
+ 			int[] sub2 = new int[i];
 			comb.subset(1000, sub2, new Random(123));
+			//System.out.println(IntStream.of(sub1).mapToObj(Objects::toString).collect(Collectors.joining(",")));
 
-			Assert.assertTrue(Arrays.equals(sub[i - 1], sub2));
+			Assert.assertTrue(Arrays.equals(sub2, sub1), "K: " + i);
 		}
 	}
 
@@ -57,11 +57,13 @@ public class combTest {
 	public void subset() {
 		final Random random = new Random();
 
-		for (int i = 1; i < 100; ++i) {
+		for (int i = 1; i <= 1000; ++i) {
 			int[] sub = new int[i];
-			comb.subset(1000, sub, random);
+			System.out.println(i);
+			//comb.subset(1000, sub, random);
+			subset(1000, sub, random);
 
-			Assert.assertTrue(isSortedAndUnique(sub));
+			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
 		}
 	}
 
@@ -86,6 +88,87 @@ public class combTest {
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);
+	}
+
+
+	private static int[] subset(final int n, final int sub[], final Random random) {
+		final int k = sub.length;
+
+		if (sub.length == n) {
+			for (int i = 0; i < k; ++i) {
+				sub[i] = i;
+			}
+			return sub;
+		}
+
+		for (int i = 0; i < k; ++i) {
+			sub[i] = (i*n)/k;
+		}
+
+		int l = 0;
+		int ix = 0;
+		for (int i = 0; i < k; ++i) {
+			do {
+				ix = nextInt(random, 1, n);
+				l = (ix*k - 1)/n;
+			} while (sub[l] >= ix);
+
+			sub[l] = sub[l] + 1;
+		}
+
+		int m = 0;
+		int ip = 0;
+		int is = k;
+		for (int i = 0; i < k; ++i) {
+			m = sub[i];
+			sub[i] = 0;
+
+			if (m != (i*n)/k) {
+				ip = ip + 1;
+				sub[ip - 1] = m;
+			}
+		}
+
+		int ihi = ip;
+		int ids = 0;
+		for (int i = 1; i <= ihi; ++i) {
+			ip = ihi + 1 - i;
+			l = 1 + (sub[ip - 1]*k - 1)/n;
+			ids = sub[ip - 1] - ((l - 1)*n)/k;
+			sub[ip - 1] = 0;
+			sub[is - 1] = l;
+			is = is - ids;
+		}
+
+		int ir = 0;
+		int m0 = 0;
+		for (int ll = 1; ll <= k; ++ll) {
+			l = k + 1 - ll;
+
+			if (sub[l - 1] != 0) {
+				ir = l;
+				m0 = 1 + ((sub[l - 1] - 1)*n)/k;
+				m = (sub[l-1]*n)/k - m0 + 1;
+			}
+
+			ix = nextInt(random, m0, m0 + m - 1);
+
+			int i = l + 1;
+			while (i <= ir && ix >= sub[i - 1]) {
+				ix = ix + 1;
+				sub[ i- 2] = sub[i - 1];
+				i = i + 1;
+			}
+
+			sub[i - 2] = ix;
+			--m;
+		}
+
+		return sub;
+	}
+
+	private static int nextInt(final Random random, final int a, final int b) {
+		return a == b ? a - 1 : random.nextInt(b - a) + a;
 	}
 
 }

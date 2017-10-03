@@ -154,7 +154,7 @@ public final class comb {
 		for (int c = 0; c < k; ++c) {
 			do {
 				// Choose random x;
-				x = 1 + nextX(random, n);
+				x = 1 + nextX(random, n - 1);
 
 				// determine range Rl;
 				l = (x*k - 1)/n;
@@ -201,7 +201,7 @@ public final class comb {
 			}
 
 			// (F) Choose a random x.
-			x = m0 + nextX(random, m);
+			x = m0 + nextX(random, m - 1);
 			int i = l + 1;
 
 			// (G) Check x against previously entered elements in bin;
@@ -239,7 +239,7 @@ public final class comb {
 	}
 
 	private static int nextX(final Random random, final int m) {
-		return random.nextInt(m - 1);
+		return m > 0 ? random.nextInt(m) : m - 1;
 	}
 
 }
