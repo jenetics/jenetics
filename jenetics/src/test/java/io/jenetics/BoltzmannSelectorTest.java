@@ -92,7 +92,7 @@ public class BoltzmannSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/BoltzmannSelector";
+			"/io/jenetics/selector/distribution/BoltzmannSelector";
 
 		return Arrays.stream(Optimize.values())
 			.flatMap(opt -> {
