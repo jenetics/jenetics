@@ -77,7 +77,6 @@ import io.jenetics.util.RandomRegistry;
  * @since 1.0
  * @version !__version__!
  */
-@XmlJavaTypeAdapter(PartiallyMatchedCrossover.Model.Adapter.class)
 public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
 	implements Serializable

@@ -60,7 +60,6 @@ import io.jenetics.util.Seq;
  * @since 1.0
  * @version  !__version__!
  */
-@XmlJavaTypeAdapter(BoltzmannSelector.Model.Adapter.class)
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>

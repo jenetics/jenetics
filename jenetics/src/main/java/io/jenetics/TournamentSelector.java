@@ -50,7 +50,6 @@ import io.jenetics.util.Seq;
  * @since 1.0
  * @version !__version__!
  */
-@XmlJavaTypeAdapter(TournamentSelector.Model.Adapter.class)
 public class TournamentSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>

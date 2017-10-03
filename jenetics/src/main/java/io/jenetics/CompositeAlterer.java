@@ -36,20 +36,16 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.0
  */
-@XmlJavaTypeAdapter(CompositeAlterer.Model.Adapter.class)
-public final class CompositeAlterer<
+final class CompositeAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends AbstractAlterer<G, C>
-	implements Serializable
 {
 
-	private static final long serialVersionUID = 1L;
-
-	private final ISeq<? extends Alterer<G, C>> _alterers;
+	private final ISeq<Alterer<G, C>> _alterers;
 
 	/**
 	 * Combine the given alterers.
@@ -57,33 +53,21 @@ public final class CompositeAlterer<
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
-	public CompositeAlterer(final Seq<? extends Alterer<G, C>> alterers) {
+	public CompositeAlterer(final Seq<Alterer<G, C>> alterers) {
 		super(1.0);
 		_alterers = normalize(alterers);
 	}
 
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	ISeq<Alterer<G, C>> normalize(final Seq<? extends Alterer<G, C>> alterers) {
-		final Function<Alterer<G, C>, Stream<? extends Alterer<G, C>>> mapper =
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
+		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
 			a -> a instanceof CompositeAlterer<?, ?>
 				? ((CompositeAlterer<G, C>)a).getAlterers().stream()
 				: Stream.of(a);
 
 		return alterers.stream()
 			.flatMap(mapper)
-			.filter(a -> !a.equals(Alterer.empty()))
 			.collect(toISeq());
-	}
-
-	/**
-	 * Return the number of alterers the {@code CompositeAlterer} consists of.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return the number of alterers the {@code CompositeAlterer} consists of
-	 */
-	public int size() {
-		return _alterers.size();
 	}
 
 	@Override
@@ -113,7 +97,7 @@ public final class CompositeAlterer<
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	public ISeq<? extends Alterer<G, C>> getAlterers() {
+	public ISeq<Alterer<G, C>> getAlterers() {
 		return _alterers;
 	}
 
@@ -130,9 +114,12 @@ public final class CompositeAlterer<
 
 	@Override
 	public String toString() {
-		return _alterers.stream()
-			.map(Objects::toString)
-			.collect(Collectors.joining(",", "[", "]"));
+		return format(
+			"%s:\n%s", getClass().getSimpleName(),
+			_alterers.stream()
+				.map(a -> "   - " + a)
+				.collect(Collectors.joining("\n"))
+		);
 	}
 
 	/**
@@ -155,11 +142,12 @@ public final class CompositeAlterer<
 	 * of the given alterers is a CompositeAlterer the sub alterers of it are
 	 * unpacked and appended to the newly created CompositeAlterer.
 	 *
+	 * @param <T> the gene type of the alterers.
+	 *
+	 * @param <C> the fitness function result type
 	 * @param a1 the first alterer.
 	 * @param a2 the second alterer.
 	 * @return a new CompositeAlterer object.
-	 * @param <T> the gene type of the alterers.
-	 * @param <C> the fitness function result type
 	 * @throws NullPointerException if one of the given alterer is {@code null}.
 	 */
 	public static <T extends Gene<?, T>, C extends Comparable<? super C>>

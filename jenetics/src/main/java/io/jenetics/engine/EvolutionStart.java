@@ -41,15 +41,10 @@ import io.jenetics.util.ISeq;
  * @since 3.1
  * @version !__version__!
  */
-@XmlJavaTypeAdapter(EvolutionStart.Model.Adapter.class)
 public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-	implements Serializable
-{
-
-{
+> {
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;

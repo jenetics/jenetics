@@ -25,21 +25,12 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.Alterer;
-import org.jenetics.Gene;
-import org.jenetics.Selector;
-import org.jenetics.internal.util.Hash;
-import org.jenetics.internal.util.jaxb;
-import org.jenetics.internal.util.require;
-import org.jenetics.util.Seq;
+import io.jenetics.Alterer;
+import io.jenetics.Gene;
+import io.jenetics.Selector;
+import io.jenetics.internal.util.Hash;
+import io.jenetics.internal.util.require;
+import io.jenetics.util.Seq;
 
 /**
  * Collects the evolution {@code Engine} properties, which determines the
@@ -52,7 +43,6 @@ import org.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-@XmlJavaTypeAdapter(EvolutionParam.Model.Adapter.class)
 public final class EvolutionParam<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -251,75 +241,6 @@ public final class EvolutionParam<
 			offspringFraction,
 			maximalPhenotypeAge
 		);
-	}
-
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "evolution-param")
-	@XmlType(name = "org.jenetics.engine.EvolutionParam")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	static final class Model {
-
-		@XmlElement(name = "survivor-selector", required = true, nillable = false)
-		public Object survivorSelector;
-
-		@XmlElement(name = "offspring-selector", required = true, nillable = false)
-		public Object offspringSelector;
-
-		@XmlElement(name = "alterer", required = true, nillable = false)
-		public Object alterer;
-
-		@XmlElement(name = "population-size", required = true, nillable = false)
-		public int populationSize;
-
-		@XmlElement(name = "offspring-fraction", required = true, nillable = false)
-		public double offspringFraction;
-
-		@XmlElement(name = "maximal-phenotype-age", required = true, nillable = false)
-		public long maximalPhenotypeAge;
-
-		public static final class Adapter
-				extends XmlAdapter<Model, EvolutionParam>
-		{
-			@Override
-			public Model marshal(final EvolutionParam ep) throws Exception {
-				final Model model = new Model();
-				model.survivorSelector = jaxb
-					.Marshaller(ep.getSurvivorsSelector())
-					.apply(ep.getSurvivorsSelector());
-				model.offspringSelector = jaxb
-					.Marshaller(ep.getOffspringSelector())
-					.apply(ep.getOffspringSelector());
-				model.alterer = jaxb
-					.Marshaller(ep.getAlterer())
-					.apply(ep.getAlterer());
-				model.populationSize = ep.getPopulationSize();
-				model.offspringFraction = ep.getOffspringFraction();
-				model.maximalPhenotypeAge = ep.getMaximalPhenotypeAge();
-
-				return model;
-			}
-
-			@Override
-			public EvolutionParam unmarshal(final Model model) throws Exception {
-				return new EvolutionParam(
-					(Selector)jaxb.Unmarshaller(model.survivorSelector)
-						.apply(model.survivorSelector),
-					(Selector)jaxb.Unmarshaller(model.offspringSelector)
-						.apply(model.offspringSelector),
-					(Alterer)jaxb.Unmarshaller(model.alterer)
-						.apply(model.alterer),
-					model.populationSize,
-					model.offspringFraction,
-					model.maximalPhenotypeAge
-				);
-			}
-		}
 	}
 
 }

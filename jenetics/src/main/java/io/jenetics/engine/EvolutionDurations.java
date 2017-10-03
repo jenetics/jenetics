@@ -23,16 +23,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.time.Duration;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.jenetics.internal.util.Hash;
 import java.util.Objects;
 
 /**
@@ -42,7 +32,6 @@ import java.util.Objects;
  * @since 3.0
  * @version !__version__!
  */
-@XmlJavaTypeAdapter(EvolutionStart.Model.Adapter.class)
 public final class EvolutionDurations
 	implements
 		Comparable<EvolutionDurations>,
@@ -267,70 +256,6 @@ public final class EvolutionDurations
 			evaluationDuration,
 			evolveDuration
 		);
-	}
-
-
-	/* *************************************************************************
-	 *  JAXB object serialization
-	 * ************************************************************************/
-
-	@XmlRootElement(name = "evolution-durations")
-	@XmlType(name = "org.jenetics.engine.EvolutionDurations")
-	@XmlAccessorType(XmlAccessType.FIELD)
-	final static class Model {
-
-		@XmlElement(name = "offspring-selection", required = true, nillable = false)
-		public long offspringSelectionDuration;
-
-		@XmlElement(name = "survivors-selection", required = true, nillable = false)
-		public long survivorsSelectionDuration;
-
-		@XmlElement(name = "offspring-alterer", required = true, nillable = false)
-		public long offspringAlterDuration;
-
-		@XmlElement(name = "offspring-filter", required = true, nillable = false)
-		public long offspringFilterDuration;
-
-		@XmlElement(name = "survivor-filter", required = true, nillable = false)
-		public long survivorFilterDuration;
-
-		@XmlElement(name = "evaluation", required = true, nillable = false)
-		public long evaluationDuration;
-
-		@XmlElement(name = "evolve", required = true, nillable = false)
-		public long evolveDuration;
-
-		public final static class Adapter
-			extends XmlAdapter<Model, EvolutionDurations>
-		{
-			@Override
-			public Model marshal(final EvolutionDurations durations) throws Exception {
-				final Model m = new Model();
-				m.offspringSelectionDuration = durations.getOffspringSelectionDuration().toNanos();
-				m.survivorsSelectionDuration = durations.getSurvivorsSelectionDuration().toNanos();
-				m.offspringAlterDuration = durations.getOffspringAlterDuration().toNanos();
-				m.offspringFilterDuration = durations.getOffspringFilterDuration().toNanos();
-				m.survivorFilterDuration = durations.getSurvivorFilterDuration().toNanos();
-				m.evaluationDuration = durations.getEvaluationDuration().toNanos();
-				m.evolveDuration = durations.getEvolveDuration().toNanos();
-				return m;
-			}
-
-			@Override
-			public EvolutionDurations unmarshal(final Model m) throws Exception {
-				return EvolutionDurations.of(
-					Duration.ofNanos(m.offspringSelectionDuration),
-					Duration.ofNanos(m.survivorsSelectionDuration),
-					Duration.ofNanos(m.offspringAlterDuration),
-					Duration.ofNanos(m.offspringFilterDuration),
-					Duration.ofNanos(m.survivorFilterDuration),
-					Duration.ofNanos(m.evaluationDuration),
-					Duration.ofNanos(m.evolveDuration)
-				);
-			}
-		}
-
-		public static final Adapter ADAPTER = new Adapter();
 	}
 
 }

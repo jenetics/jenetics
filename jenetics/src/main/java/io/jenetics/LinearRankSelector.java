@@ -58,13 +58,11 @@ import io.jenetics.util.Seq;
  * @since 1.0
  * @version  !__version__!
  */
-@XmlJavaTypeAdapter(LinearRankSelector.Model.Adapter.class)
 public final class LinearRankSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends ProbabilitySelector<G, C>
-	implements Serializable
 {
 
 	private static final long serialVersionUID = 1L;
