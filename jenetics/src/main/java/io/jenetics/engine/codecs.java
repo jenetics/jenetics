@@ -41,7 +41,7 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.internal.math.base;
+import io.jenetics.internal.math.comb;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
@@ -582,7 +582,7 @@ public final class codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		base.checkSubSet(basicSet.size(), size);
+		comb.checkSubSet(basicSet.size(), size);
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),
