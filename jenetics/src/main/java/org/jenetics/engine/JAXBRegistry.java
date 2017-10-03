@@ -23,6 +23,8 @@ import org.jenetics.internal.util.require;
 
 import org.jenetics.util.ISeq;
 
+import io.jenetics.engine.EvolutionParam;
+
 /**
  * Defining all JAXB marshalling classes in this package.
  *
