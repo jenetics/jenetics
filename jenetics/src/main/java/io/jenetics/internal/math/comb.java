@@ -137,9 +137,7 @@ public final class comb {
 
 		// Early return.
 		if (a.length == n) {
-			for (int i = 0; i < k; ++i) {
-				a[i] = i;
-			}
+			for (int i = 0; i < k; ++i) a[i] = i;
 			return a;
 		}
 
@@ -149,8 +147,7 @@ public final class comb {
 		}
 
 		// (B)
-		int l = 0;
-		int x = 0;
+		int l = 0, x = 0;
 		for (int c = 0; c < k; ++c) {
 			do {
 				// Choose random x;
@@ -165,8 +162,7 @@ public final class comb {
 		int s = k;
 
 		// (C) Move a[i] of nonempty bins to the left.
-		int m = 0;
-		int p = 0;
+		int m = 0, p = 0;
 		for (int i = 0; i < k; ++i) {
 			if (a[i] == (i*n)/k) {
 				a[i] = 0;
@@ -189,8 +185,7 @@ public final class comb {
 		}
 
 		// (E) If a[l] != 0, a new bin is to be processed.
-		int r = 0;
-		int m0 = 0;
+		int r = 0, m0 = 0;
 		for (int ll = 1; ll <= k; ++ll) {
 			l = k + 1 - ll;
 
