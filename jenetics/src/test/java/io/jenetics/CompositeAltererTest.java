@@ -176,20 +176,4 @@ public class CompositeAltererTest {
 		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene, Double>());
 	}
 
-	@Test
-	public void emptyAlterer() {
-		final CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer.of(
-			Alterer.<DoubleGene, Double>empty(),
-			new SwapMutator<>(),
-			Alterer.empty(),
-			new Mutator<>(),
-			Alterer.empty(),
-			Alterer.empty()
-		);
-
-		Assert.assertEquals(alterer.getAlterers().size(), 2);
-		Assert.assertEquals(alterer.getAlterers().get(0).getClass(), SwapMutator.class);
-		Assert.assertEquals(alterer.getAlterers().get(1).getClass(), Mutator.class);
-	}
-
 }
