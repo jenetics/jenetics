@@ -59,9 +59,7 @@ public class combTest {
 
 		for (int i = 1; i <= 1000; ++i) {
 			int[] sub = new int[i];
-			System.out.println(i);
-			//comb.subset(1000, sub, random);
-			subset(1000, sub, random);
+			comb.subset(1000, sub, random);
 
 			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
 		}
