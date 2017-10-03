@@ -28,9 +28,11 @@ import io.jenetics.internal.util.require;
 import io.jenetics.util.RandomRegistry;
 
 /**
+ * Implementation of combinatorial helper methods.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.0
+ * @since 4.0
  */
 public final class comb {
 	private comb() {require.noInstance();}

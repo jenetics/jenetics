@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.math.base;
+import io.jenetics.internal.math.comb;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.array;
@@ -228,7 +228,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final int[] subset = array.shuffle(base.subset(alleles.size(), length));
+		final int[] subset = array.shuffle(comb.subset(alleles.size(), length));
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());

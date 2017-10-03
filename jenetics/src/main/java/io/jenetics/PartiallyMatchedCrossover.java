@@ -23,7 +23,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.base;
+import io.jenetics.internal.math.comb;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
@@ -98,7 +98,7 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 
 		if (that.length() >= 2) {
 			final Random random = RandomRegistry.getRandom();
-			final int[] points = base.subset(that.length(), 2, random);
+			final int[] points = comb.subset(that.length(), 2, random);
 
 			that.swap(points[0], points[1], other, points[0]);
 			repair(that, other, points[0], points[1]);
