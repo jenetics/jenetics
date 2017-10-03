@@ -29,8 +29,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,10 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
+import io.jenetics.engine.EvolutionDurations;
+import io.jenetics.engine.EvolutionParam;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
@@ -204,18 +206,6 @@ public class PersistentObject<T> {
 		put("Phenotype[EnumGene[Float], Double]", nextPhenotypeEnumGeneFloatDouble(), ios);
 		put("Phenotype[EnumGene[Double], Double]", nextPhenotypeEnumGeneDoubleDouble(), ios);
 //		put("Phenotype[EnumGene[String], BigDecimal]", nextPhenotypeEnumGeneStringBigDecimal(), ios);
-
-		/* *********************************************************************
-		 * Populations
-		 **********************************************************************/
-
-		put("Population[BitGene, Integer]", nextPopulationBitGeneInteger(), ios);
-		put("Population[CharacterGene, Integer]", nextPopulationCharacterGeneInteger(), ios);
-		put("Population[IntegerGene, Integer]", nextPopulationIntegerGeneInteger(), ios);
-		put("Population[LongGene, Integer]", nextPopulationLongGeneInteger(), ios);
-		put("Population[DoubleGene, Integer]", nextPopulationDoubleGeneInteger(), ios);
-		put("Population[DoubleGene, Double]", nextPopulationDoubleGeneDouble(), ios);
-		put("Population[EnumGene[Integer], Double]", nextPopulationEnumGeneIntegerDouble(), ios);
 
 		/* *********************************************************************
 		 * Alterers
@@ -562,59 +552,6 @@ public class PersistentObject<T> {
 //		).evaluate();
 //	}
 
-	/* *************************************************************************
-	 * Populations
-	 **************************************************************************/
-
-	public static Population<BitGene, Integer> nextPopulationBitGeneInteger() {
-		final ISeq<Phenotype<BitGene, Integer>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeBitGeneInteger, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<CharacterGene, Integer> nextPopulationCharacterGeneInteger() {
-		final ISeq<Phenotype<CharacterGene, Integer>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeCharacterGeneInteger, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<IntegerGene, Integer> nextPopulationIntegerGeneInteger() {
-		final ISeq<Phenotype<IntegerGene, Integer>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeIntegerGeneInteger, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<LongGene, Integer> nextPopulationLongGeneInteger() {
-		final ISeq<Phenotype<LongGene, Integer>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeLongGeneInteger, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<DoubleGene, Integer> nextPopulationDoubleGeneInteger() {
-		final ISeq<Phenotype<DoubleGene, Integer>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeDoubleGeneInteger, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<DoubleGene, Double> nextPopulationDoubleGeneDouble() {
-		final ISeq<Phenotype<DoubleGene, Double>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeDoubleGeneDouble, 7);
-
-		return new Population<>(seq.asList());
-	}
-
-	public static Population<EnumGene<Integer>, Double> nextPopulationEnumGeneIntegerDouble() {
-		final ISeq<Phenotype<EnumGene<Integer>, Double>> seq =
-			ISeq.of(PersistentObject::nextPhenotypeEnumGeneIntegerDouble, 7);
-
-		return new Population<>(seq.asList());
-	}
-
 	public static <T, R extends Comparable<R>> Function<T, R>
 	FitnessFunction(final R result) {
 		return (Function<T, R> & Serializable)a -> result;
@@ -705,6 +642,10 @@ public class PersistentObject<T> {
 	/* *************************************************************************
 	 * Engine objects
 	 **************************************************************************/
+
+	public static ISeq<Phenotype<DoubleGene, Double>> nextPopulationDoubleGeneDouble() {
+		return ISeq.of(PersistentObject::nextPhenotypeDoubleGeneDouble, 7);
+	}
 
 	public static EvolutionParam<DoubleGene, Double> nextEvolutionParam() {
 		return EvolutionParam.of(
