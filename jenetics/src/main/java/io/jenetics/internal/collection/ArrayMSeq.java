@@ -22,9 +22,6 @@ package io.jenetics.internal.collection;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -32,7 +29,6 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -205,30 +201,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		return isEmpty()
 			? Empty.iseq()
 			: new ArrayISeq<>(array.seal());
-	}
-
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		for (int i = 0; i < length(); ++i) {
-			out.writeObject(array.get(i));
-		}
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		final int length = in.readInt();
-		final Array<Object> array = Array.of(ObjectStore.ofLength(length));
-		for (int i = 0; i < length; ++i) {
-			array.set(i, in.readObject());
-		}
-		reflect.setField(this, "array", array);
 	}
 
 }
