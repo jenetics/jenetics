@@ -23,7 +23,11 @@ import static java.lang.String.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 import io.jenetics.util.MSeq;
@@ -33,6 +37,28 @@ import io.jenetics.util.MSeq;
  */
 public class SerializationTest {
 
+	private static final String RESOURCE_PATTERN = "/io/jenetics/collection/serialization/%s[%s].object";
+
+	@Test
+	public void serialization() throws IOException {
+		for (int i = 0; i < 10; ++i) {
+			final Random random = new Random(i);
+			final MSeq<Integer> seq = MSeq.ofLength(i);
+			seq.fill(random::nextInt);
+
+			String resource = format(RESOURCE_PATTERN, "MSeq", i);
+			try (InputStream in = getClass().getResourceAsStream(resource)) {
+				final Object o = IO.object.read(in);
+				Assert.assertEquals(o, seq);
+			}
+
+			resource = format(RESOURCE_PATTERN, "ISeq", i);
+			try (InputStream in = getClass().getResourceAsStream(resource)) {
+				final Object o = IO.object.read(in);
+				Assert.assertEquals(o, seq.toISeq());
+			}
+		}
+	}
 
 	public static void main(final String[] args) throws IOException {
 		final File baseDir = new File("jenetics/src/test/resources/io/jenetics/collection/serialization");
@@ -45,8 +71,8 @@ public class SerializationTest {
 			final MSeq<Integer> seq = MSeq.ofLength(i);
 			seq.fill(random::nextInt);
 
-			IO.object.write(seq, new File(baseDir, format("MSeq[%s].dat", i)));
-			IO.object.write(seq.toISeq(), new File(baseDir, format("ISeq[%s].dat", i)));
+			IO.object.write(seq, new File(baseDir, format("MSeq[%s].object", i)));
+			IO.object.write(seq.toISeq(), new File(baseDir, format("ISeq[%s].object", i)));
 		}
 	}
 
