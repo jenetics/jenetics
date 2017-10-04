@@ -21,8 +21,12 @@ package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.function.Function;
 
+import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -96,7 +100,6 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 			: new ArrayMSeq<>(array.copy());
 	}
 
-	/*
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
@@ -120,6 +123,5 @@ public class ArrayISeq<T> extends ArraySeq<T> implements ISeq<T> {
 		}
 		reflect.setField(this, "array", array.seal());
 	}
-	*/
 
 }

@@ -22,6 +22,9 @@ package io.jenetics.internal.collection;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -29,6 +32,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -203,7 +207,6 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 			: new ArrayISeq<>(array.seal());
 	}
 
-	/*
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
@@ -227,6 +230,5 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 		}
 		reflect.setField(this, "array", array);
 	}
-	*/
 
 }
