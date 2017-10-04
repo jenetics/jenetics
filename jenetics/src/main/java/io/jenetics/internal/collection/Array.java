@@ -462,8 +462,6 @@ public final class Array<T> implements Serializable {
 		 * @since 3.4
 		 */
 		public static final class Ref<T> implements Store<T> {
-			private static final long serialVersionUID = 1L;
-
 			private Store<T> _value;
 			private boolean _sealed;
 
