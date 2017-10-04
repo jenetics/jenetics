@@ -169,17 +169,16 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-		private void writeObject(final ObjectOutputStream out)
-			throws IOException
-		{
-			out.defaultWriteObject();
+		@Override
+		public int hashCode() {
+			return getClass().hashCode();
 		}
 
-		private void readObject(final ObjectInputStream in)
-			throws IOException, ClassNotFoundException
-		{
-			in.defaultReadObject();
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof EmptyMSeq;
 		}
+
 	}
 
 
@@ -266,6 +265,17 @@ public final class Empty {
 		public MSeq<Object> copy() {
 			return MSEQ;
 		}
+
+		@Override
+		public int hashCode() {
+			return getClass().hashCode();
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj instanceof EmptyISeq;
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")
