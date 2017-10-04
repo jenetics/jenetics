@@ -22,9 +22,6 @@ package io.jenetics.internal.collection;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,7 +41,7 @@ import io.jenetics.util.MSeq;
  * Contains static {@code Seq} definitions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 4.0
  * @since 3.4
  */
 public final class Empty {

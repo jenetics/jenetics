@@ -203,4 +203,30 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 			: new ArrayISeq<>(array.seal());
 	}
 
+	/*
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		for (int i = 0; i < length(); ++i) {
+			out.writeObject(array.get(i));
+		}
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final int length = in.readInt();
+		final Array<Object> array = Array.of(ObjectStore.ofLength(length));
+		for (int i = 0; i < length; ++i) {
+			array.set(i, in.readObject());
+		}
+		reflect.setField(this, "array", array);
+	}
+	*/
+
 }

@@ -37,7 +37,8 @@ import io.jenetics.util.MSeq;
  */
 public class SerializationTest {
 
-	private static final String RESOURCE_PATTERN = "/io/jenetics/collection/serialization/%s[%s].object";
+	private static final String RESOURCE_PATTERN =
+		"/io/jenetics/collection/serialization/%s[%s].object";
 
 	@Test
 	public void serialization() throws IOException {
@@ -61,7 +62,8 @@ public class SerializationTest {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		final File baseDir = new File("jenetics/src/test/resources/io/jenetics/collection/serialization");
+		final File baseDir = new File(
+			"jenetics/src/test/resources/io/jenetics/collection/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
