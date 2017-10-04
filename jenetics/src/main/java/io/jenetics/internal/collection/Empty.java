@@ -22,6 +22,10 @@ package io.jenetics.internal.collection;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -44,13 +48,15 @@ import io.jenetics.util.MSeq;
  * @since 3.4
  */
 public final class Empty {
-
 	private Empty() {require.noInstance();}
 
 	/**
 	 * Empty {@code MSeq} implementation.
 	 */
-	public static final MSeq<Object> MSEQ = new MSeq<Object>() {
+	public static final MSeq<Object> MSEQ = new EmptyMSeq();
+
+	private static final class EmptyMSeq implements MSeq<Object>, Serializable {
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public void set(final int index, final Object value) {
@@ -163,13 +169,27 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-	};
+		private void writeObject(final ObjectOutputStream out)
+			throws IOException
+		{
+			out.defaultWriteObject();
+		}
+
+		private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException
+		{
+			in.defaultReadObject();
+		}
+	}
 
 
 	/**
 	 * Empty {@code ISeq} implementation.
 	 */
-	public static final ISeq<Object> ISEQ = new ISeq<Object>() {
+	public static final ISeq<Object> ISEQ = new EmptyISeq();
+
+	private static final class EmptyISeq implements ISeq<Object>, Serializable {
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public Iterator<Object> iterator() {
@@ -246,8 +266,7 @@ public final class Empty {
 		public MSeq<Object> copy() {
 			return MSEQ;
 		}
-
-	};
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {
