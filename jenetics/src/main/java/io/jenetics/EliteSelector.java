@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.internal.util.require;
@@ -38,7 +39,9 @@ public class EliteSelector<
 >
 	implements Selector<G, C>
 {
-	private final TruncationSelector<G, C> _eliteSelector = new TruncationSelector<>();
+	private final TruncationSelector<G, C>
+	ELITE_SELECTOR = new TruncationSelector<>();
+
 	private final Selector<G, C> _nonEliteSelector;
 	private final int _eliteCount;
 
@@ -105,18 +108,45 @@ public class EliteSelector<
 		final int count,
 		final Optimize opt
 	) {
+		if (count < 0) {
+			throw new IllegalArgumentException(format(
+				"Selection count must be greater or equal then zero, but was %s.",
+				count
+			));
+		}
+
 		ISeq<Phenotype<G, C>> result;
 		if (population.isEmpty() || count <= 0) {
 			result = ISeq.empty();
 		} else {
 			final int ec = min(count, _eliteCount);
-			result = _eliteSelector.select(population, ec, opt);
+			result = ELITE_SELECTOR.select(population, ec, opt);
 			result = result.append(
 				_nonEliteSelector.select(population, max(0, count - ec), opt)
 			);
 		}
 
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*_eliteCount + 37;
+		hash += 31*_nonEliteSelector.hashCode() + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof EliteSelector<?, ?> &&
+			((EliteSelector)obj)._eliteCount == _eliteCount &&
+			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
+	}
+
+	@Override
+	public String toString() {
+		return format("EliteSelector[%d, %s]", _eliteCount, _nonEliteSelector);
 	}
 
 }
