@@ -20,13 +20,10 @@
 package io.jenetics;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.util.Objects.requireNonNull;
 
-import io.jenetics.Gene;
-import io.jenetics.Optimize;
-import io.jenetics.Phenotype;
-import io.jenetics.Selector;
-import io.jenetics.TournamentSelector;
-import io.jenetics.TruncationSelector;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -41,8 +38,66 @@ public class EliteSelector<
 >
 	implements Selector<G, C>
 {
-	private final TruncationSelector<G, C> _elitist = new TruncationSelector<>();
-	private final TournamentSelector<G, C> _rest = new TournamentSelector<>(3);
+	private final TruncationSelector<G, C> _eliteSelector = new TruncationSelector<>();
+	private final Selector<G, C> _nonEliteSelector;
+	private final int _eliteCount;
+
+	/**
+	 * Create a new elite selector with the desired number of elites to be
+	 * selected and the selector used for selecting the rest of the population.
+	 *
+	 * @param eliteCount the desired number of elite individual to be selected
+	 * @param nonEliteSelector the selector used for selecting the rest of the
+	 *        population
+	 * @throws IllegalArgumentException if {@code eliteCount < 1}
+	 * @throws NullPointerException if the {@code nonEliteSelector} is
+	 *         {@code null}
+	 */
+	public EliteSelector(
+		final int eliteCount,
+		final Selector<G, C> nonEliteSelector
+	) {
+		_eliteCount = require.positive(eliteCount);
+		_nonEliteSelector = requireNonNull(nonEliteSelector);
+	}
+
+	/**
+	 * Create a new elite selector with the desired number of elites to be
+	 * selected. The selector for selecting the rest of the population is
+	 * initialized with {@code TournamentSelector<>(3)}.
+	 *
+	 * @see TournamentSelector
+	 *
+	 * @param eliteCount the desired number of elite individual to be selected
+	 * @throws IllegalArgumentException if {@code eliteCount < 1}
+	 */
+	public EliteSelector(final int eliteCount) {
+		this(eliteCount, new TournamentSelector<>(3));
+	}
+
+	/**
+	 * Create a new elite selector with selector used for selecting the rest of
+	 * the population. The elite count is set to 1.
+	 *
+	 * @see TournamentSelector
+	 *
+	 * @param nonEliteSelector the selector used for selecting the rest of the
+	 *        population
+	 * @throws NullPointerException if the {@code nonEliteSelector} is
+	 *         {@code null}
+	 */
+	public EliteSelector(final Selector<G, C> nonEliteSelector) {
+		this(1, nonEliteSelector);
+	}
+
+	/**
+	 * Create a new elite selector with elite count 1 and the selector for
+	 * selecting the rest of the population is initialized with
+	 * {@code TournamentSelector<>(3)}
+	 */
+	public EliteSelector() {
+		this(1, new TournamentSelector<>(3));
+	}
 
 	@Override
 	public ISeq<Phenotype<G, C>> select(
@@ -50,10 +105,18 @@ public class EliteSelector<
 		final int count,
 		final Optimize opt
 	) {
-		return population.isEmpty() || count <= 0
-			? ISeq.empty()
-			: _elitist.select(population, 1, opt)
-				.append(_rest.select(population, max(0, count - 1), opt));
+		ISeq<Phenotype<G, C>> result;
+		if (population.isEmpty() || count <= 0) {
+			result = ISeq.empty();
+		} else {
+			final int ec = min(count, _eliteCount);
+			result = _eliteSelector.select(population, ec, opt);
+			result = result.append(
+				_nonEliteSelector.select(population, max(0, count - ec), opt)
+			);
+		}
+
+		return result;
 	}
 
 }
