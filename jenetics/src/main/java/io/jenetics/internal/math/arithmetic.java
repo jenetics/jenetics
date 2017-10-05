@@ -20,6 +20,7 @@
 package io.jenetics.internal.math;
 
 import io.jenetics.internal.util.require;
+import io.jenetics.stat.LongMomentStatistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -50,7 +51,7 @@ public final class arithmetic {
 
 	public static double[] normalize(final long[] values) {
 		final double[] result = new double[values.length];
-		final double sum = 1.0/statistics.sum(values);
+		final double sum = 1.0/LongMomentStatistics.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			result[i] = values[i]*sum;
 		}

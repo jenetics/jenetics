@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleConsumer;
@@ -68,7 +66,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 4.0
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -94,8 +92,8 @@ public class DoubleMomentStatistics
 	@Override
 	public void accept(final double value) {
 		super.accept(value);
-		_min = min(_min, value);
-		_max = max(_max, value);
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 		_sum.add(value);
 	}
 
@@ -110,8 +108,8 @@ public class DoubleMomentStatistics
 	 */
 	public DoubleMomentStatistics combine(final DoubleMomentStatistics other) {
 		super.combine(other);
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+		_min = Math.min(_min, other._min);
+		_max = Math.max(_max, other._max);
 		_sum.add(other._sum);
 
 		return this;
@@ -225,6 +223,74 @@ public class DoubleMomentStatistics
 			(r, t) -> r.accept(mapper.applyAsDouble(t)),
 			DoubleMomentStatistics::combine
 		);
+	}
+
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the double array.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double min(final double[] values) {
+		double min = Double.NaN;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the double array.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double max(final double[] values) {
+		double max = Double.NaN;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		return DoubleAdder.sum(values);
 	}
 
 }

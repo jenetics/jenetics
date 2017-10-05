@@ -34,7 +34,6 @@ import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
-import io.jenetics.internal.math.statistics;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 
@@ -235,7 +234,7 @@ public class Histogram<C> implements Consumer<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (statistics.sum(_histogram) == _count);
+		assert (LongMomentStatistics.sum(_histogram) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_count;
 		}
