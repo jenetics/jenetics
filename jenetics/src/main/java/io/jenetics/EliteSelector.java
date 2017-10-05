@@ -29,6 +29,8 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
+ * The {@code EliteSelector} guarantees the survival of the best individual(s)
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 3.4
