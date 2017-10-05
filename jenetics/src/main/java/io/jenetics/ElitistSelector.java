@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.tool;
+package io.jenetics;
 
 import static java.lang.Math.max;
 
