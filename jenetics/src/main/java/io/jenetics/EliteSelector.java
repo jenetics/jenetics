@@ -35,7 +35,7 @@ import io.jenetics.util.Seq;
  * @version 4.0
  * @since 3.4
  */
-public class ElitistSelector<
+public class EliteSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
