@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.IntConsumer;
@@ -91,8 +89,8 @@ public class LongMomentStatistics
 	@Override
 	public void accept(final long value) {
 		super.accept(value);
-		_min = min(_min, value);
-		_max = max(_max, value);
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 		_sum += value;
 	}
 
@@ -117,8 +115,8 @@ public class LongMomentStatistics
 	 */
 	public LongMomentStatistics combine(final LongMomentStatistics other) {
 		super.combine(other);
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+		_min = Math.min(_min, other._min);
+		_max = Math.max(_max, other._max);
 		_sum += other._sum;
 
 		return this;
@@ -232,6 +230,78 @@ public class LongMomentStatistics
 			(r, t) -> r.accept(mapper.applyAsLong(t)),
 			LongMomentStatistics::combine
 		);
+	}
+
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the minimum value or {@link Long#MAX_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long min(final long[] values) {
+		long min = Long.MAX_VALUE;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the maximum value or {@link Long#MIN_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long max(final long[] values) {
+		long max = Long.MIN_VALUE;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (int i = values.length; --i >= 0;) {
+			sum += values[i];
+		}
+		return sum;
 	}
 
 }

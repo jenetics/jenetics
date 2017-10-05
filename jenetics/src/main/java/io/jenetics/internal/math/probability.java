@@ -19,7 +19,7 @@
  */
 package io.jenetics.internal.math;
 
-import static io.jenetics.internal.math.arithmetic.pow;
+import static io.jenetics.internal.math.base.pow;
 
 import io.jenetics.internal.util.require;
 

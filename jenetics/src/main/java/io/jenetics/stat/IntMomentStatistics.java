@@ -19,13 +19,13 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.IntConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
+
+import io.jenetics.internal.math.DoubleAdder;
 
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
@@ -90,8 +90,8 @@ public class IntMomentStatistics
 	@Override
 	public void accept(final int value) {
 		super.accept(value);
-		_min = min(_min, value);
-		_max = max(_max, value);
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 		_sum += value;
 	}
 
@@ -106,8 +106,8 @@ public class IntMomentStatistics
 	 */
 	public IntMomentStatistics combine(final IntMomentStatistics other) {
 		super.combine(other);
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+		_min = Math.min(_min, other._min);
+		_max = Math.max(_max, other._max);
 		_sum += other._sum;
 
 		return this;
@@ -221,6 +221,78 @@ public class IntMomentStatistics
 			(r, t) -> r.accept(mapper.applyAsInt(t)),
 			IntMomentStatistics::combine
 		);
+	}
+
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the minimum value or {@link Integer#MAX_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static int min(final int[] values) {
+		int min = Integer.MAX_VALUE;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the maximum value or {@link Integer#MIN_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static int max(final int[] values) {
+		int max = Integer.MIN_VALUE;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long sum(final int[] values) {
+		long sum = 0;
+		for (int i = values.length; --i >= 0;) {
+			sum += values[i];
+		}
+		return sum;
 	}
 
 }

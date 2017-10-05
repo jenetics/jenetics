@@ -21,6 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.base.isMultiplicationSave;
 
 import java.util.Random;
 
@@ -225,7 +226,7 @@ public final class comb {
 				"n smaller than k: %s < %s.", n, k
 			));
 		}
-		if (!arithmetic.isMultiplicationSave(n, k)) {
+		if (!isMultiplicationSave(n, k)) {
 			throw new IllegalArgumentException(format(
 				"n*sub.length > Integer.MAX_VALUE (%s*%s = %s > %s)",
 				n, k, (long)n*(long)k, Integer.MAX_VALUE

@@ -22,6 +22,7 @@ package io.jenetics.internal.math;
 import static java.lang.Double.doubleToLongBits;
 
 import io.jenetics.internal.util.require;
+import io.jenetics.stat.LongMomentStatistics;
 
 /**
  * This object contains mathematical helper functions.
@@ -32,6 +33,75 @@ import io.jenetics.internal.util.require;
  */
 public final class base {
 	private base() {require.noInstance();}
+
+	/**
+	 * Normalize the given double array, so that it sum to one. The
+	 * normalization is performed in place and the same {@code values} are
+	 * returned.
+	 *
+	 * @param values the values to normalize.
+	 * @return the {@code values} array.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static double[] normalize(final double[] values) {
+		final double sum = 1.0/DoubleAdder.sum(values);
+		for (int i = values.length; --i >= 0;) {
+			values[i] = values[i]*sum;
+		}
+
+		return values;
+	}
+
+	public static double[] normalize(final long[] values) {
+		final double[] result = new double[values.length];
+		final double sum = 1.0/LongMomentStatistics.sum(values);
+		for (int i = values.length; --i >= 0;) {
+			result[i] = values[i]*sum;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Component wise division of the given double array.
+	 *
+	 * @param values the double values to divide.
+	 * @param divisor the divisor.
+	 * @throws NullPointerException if the given double array is {@code null}.
+	 */
+	public static void divide(final double[] values, final double divisor) {
+		for (int i = values.length; --i >= 0;) {
+			values[i] /= divisor;
+		}
+	}
+
+	/**
+	 * Binary exponentiation algorithm.
+	 *
+	 * @param b the base number.
+	 * @param e the exponent.
+	 * @return {@code b^e}.
+	 */
+	public static long pow(final long b, final long e) {
+		long base = b;
+		long exp = e;
+		long result = 1;
+
+		while (exp != 0) {
+			if ((exp & 1) != 0) {
+				result *= base;
+			}
+			exp >>>= 1;
+			base *= base;
+		}
+
+		return result;
+	}
+
+	public static boolean isMultiplicationSave(final int a, final int b) {
+		final long m = (long)a*(long)b;
+		return (int)m == m;
+	}
 
 	/**
 	 * <i>Clamping</i> a value between a pair of boundary values.
