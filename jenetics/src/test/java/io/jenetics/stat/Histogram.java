@@ -23,7 +23,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.arithmetic.normalize;
+import static io.jenetics.internal.math.base.normalize;
 import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.IOException;
