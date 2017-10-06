@@ -293,6 +293,8 @@ public final class IntSummary implements Serializable {
 	 * Returns a double describing the arithmetic mean of the values, or
 	 * {@link Double#NaN} if the {@code values} array is empty.
 	 *
+	 * @since 4.0
+	 *
 	 * @param values the values to calculate the mean of
 	 * @return the arithmetic mean of the given {@code values} or
 	 *         {@link Double#NaN} if the {@code values} array is empty
