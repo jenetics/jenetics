@@ -12,9 +12,9 @@ import io.jenetics.Phenotype;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
