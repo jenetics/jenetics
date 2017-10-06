@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.stat.DoubleMomentStatistics.min;
+import static io.jenetics.stat.DoubleSummary.min;
 
 import java.util.Arrays;
 

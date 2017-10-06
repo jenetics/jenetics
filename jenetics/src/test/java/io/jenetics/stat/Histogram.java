@@ -234,7 +234,7 @@ public class Histogram<C> implements Consumer<C> {
 	public double[] getProbabilities() {
 		final double[] probabilities = new double[_histogram.length];
 
-		assert (LongMomentStatistics.sum(_histogram) == _count);
+		assert (LongSummary.sum(_histogram) == _count);
 		for (int i = 0; i < probabilities.length; ++i) {
 			probabilities[i] = (double)_histogram[i]/(double)_count;
 		}

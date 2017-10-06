@@ -26,6 +26,8 @@ import java.util.DoubleSummaryStatistics;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 
+import io.jenetics.internal.math.DoubleAdder;
+
 /**
  * <i>Value</i> objects which contains statistical summary information.
  *
@@ -215,6 +217,74 @@ public final class DoubleSummary implements Serializable {
 			(a, b) -> {a.combine(b); return a;},
 			DoubleSummary::of
 		);
+	}
+
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the double array.
+	 * @return the minimum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double min(final double[] values) {
+		double min = Double.NaN;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the double array.
+	 * @return the maximum value or {@link Double#NaN} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double max(final double[] values) {
+		double max = Double.NaN;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double sum(final double[] values) {
+		return DoubleAdder.sum(values);
 	}
 
 }

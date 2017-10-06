@@ -22,7 +22,7 @@ package io.jenetics.internal.math;
 import static java.lang.Double.doubleToLongBits;
 
 import io.jenetics.internal.util.require;
-import io.jenetics.stat.LongMomentStatistics;
+import io.jenetics.stat.LongSummary;
 
 /**
  * This object contains mathematical helper functions.
@@ -54,7 +54,7 @@ public final class base {
 
 	public static double[] normalize(final long[] values) {
 		final double[] result = new double[values.length];
-		final double sum = 1.0/LongMomentStatistics.sum(values);
+		final double sum = 1.0/LongSummary.sum(values);
 		for (int i = values.length; --i >= 0;) {
 			result[i] = values[i]*sum;
 		}
