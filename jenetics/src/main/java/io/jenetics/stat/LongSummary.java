@@ -299,6 +299,7 @@ public final class LongSummary implements Serializable {
 	 * @param values the values to calculate the mean of
 	 * @return the arithmetic mean of the given {@code values} or
 	 *         {@link Double#NaN} if the {@code values} array is empty
+	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double mean(final long[] values) {
 		return values.length > 0 ? (double)sum(values)/values.length : NaN;
