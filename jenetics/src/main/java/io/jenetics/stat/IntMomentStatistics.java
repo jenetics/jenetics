@@ -25,8 +25,6 @@ import java.util.function.IntConsumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
-import io.jenetics.internal.math.DoubleAdder;
-
 /**
  * A state object for collecting statistics such as count, min, max, sum, mean,
  * variance, skewness and kurtosis. The design of this class is similar to the

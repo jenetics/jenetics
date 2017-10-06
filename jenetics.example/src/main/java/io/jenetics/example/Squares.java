@@ -24,9 +24,9 @@ import java.util.Random;
 
 import io.jenetics.AnyGene;
 import io.jenetics.Phenotype;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.RandomRegistry;
 
 /**

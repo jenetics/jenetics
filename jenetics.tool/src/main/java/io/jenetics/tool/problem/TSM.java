@@ -25,9 +25,9 @@ import java.util.stream.IntStream;
 import io.jenetics.EnumGene;
 import io.jenetics.Optimize;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.ISeq;
 
 /**

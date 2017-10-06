@@ -32,9 +32,9 @@ import io.jenetics.Optimize;
 import io.jenetics.PartiallyMatchedCrossover;
 import io.jenetics.Phenotype;
 import io.jenetics.SwapMutator;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.Codecs;
 
 public class TravelingSalesman {
 

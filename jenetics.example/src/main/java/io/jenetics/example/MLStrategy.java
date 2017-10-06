@@ -23,9 +23,9 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Mutator;
 import io.jenetics.TruncationSelector;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.DoubleRange;
 
 /**

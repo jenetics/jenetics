@@ -30,9 +30,9 @@ import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.DoubleRange;
 
 public class RealFunction {

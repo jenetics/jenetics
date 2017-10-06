@@ -19,7 +19,6 @@
  */
 package io.jenetics.example;
 
-
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
@@ -27,10 +26,10 @@ import java.util.stream.Collectors;
 
 import io.jenetics.BitGene;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.Codecs;
 import io.jenetics.util.ISeq;
 
 /**
