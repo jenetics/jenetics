@@ -19,6 +19,7 @@
  */
 package io.jenetics.stat;
 
+import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -235,7 +236,7 @@ public final class DoubleSummary implements Serializable {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double min(final double[] values) {
-		double min = Double.NaN;
+		double min = NaN;
 		if (values.length > 0) {
 			min = values[0];
 
@@ -260,7 +261,7 @@ public final class DoubleSummary implements Serializable {
 	 * @throws NullPointerException if the given array is {@code null}.
 	 */
 	public static double max(final double[] values) {
-		double max = Double.NaN;
+		double max = NaN;
 		if (values.length > 0) {
 			max = values[0];
 
@@ -298,11 +299,7 @@ public final class DoubleSummary implements Serializable {
 	 *         {@link Double#NaN} if the {@code values} array is empty
 	 */
 	public static double mean(final double[] values) {
-		double mean = Double.NaN;
-		if (values.length > 0) {
-			mean = sum(values)/values.length;
-		}
-		return mean;
+		return values.length > 0 ? sum(values)/values.length : NaN;
 	}
 
 }

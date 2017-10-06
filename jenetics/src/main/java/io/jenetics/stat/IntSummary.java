@@ -19,6 +19,7 @@
  */
 package io.jenetics.stat;
 
+import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -300,11 +301,7 @@ public final class IntSummary implements Serializable {
 	 *         {@link Double#NaN} if the {@code values} array is empty
 	 */
 	public static double mean(final int[] values) {
-		double mean = Double.NaN;
-		if (values.length > 0) {
-			mean = (double)sum(values)/(double)values.length;
-		}
-		return mean;
+		return values.length > 0 ? (double)sum(values)/values.length : NaN;
 	}
 
 }
