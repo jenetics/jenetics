@@ -30,7 +30,7 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.util.ISeq;
 
 /**
@@ -92,7 +92,7 @@ public class Springsteen
 
 	@Override
 	public Codec<ISeq<Record>, BitGene> codec() {
-		return codecs.ofSubSet(_records);
+		return Codecs.ofSubSet(_records);
 	}
 
 	public static void main(final String[] args) {

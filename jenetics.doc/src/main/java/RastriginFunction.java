@@ -10,7 +10,7 @@ import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.util.DoubleRange;
 
 public class RastriginFunction {
@@ -32,7 +32,7 @@ public class RastriginFunction {
 			.builder(
 				RastriginFunction::fitness,
 				// Codec for 'x' vector.
-				codecs.ofVector(DoubleRange.of(-R, R), N))
+				Codecs.ofVector(DoubleRange.of(-R, R), N))
 			.populationSize(500)
 			.optimize(Optimize.MINIMUM)
 			.alterers(

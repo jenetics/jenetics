@@ -41,7 +41,7 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.example.Knapsack.Item;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -165,7 +165,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * @throws NullPointerException if the {@code items} set is {@code null}
 	 */
 	public Knapsack(final ISeq<Item> items, final double knapsackSize) {
-		_codec = codecs.ofSubSet(items);
+		_codec = Codecs.ofSubSet(items);
 		_knapsackSize = knapsackSize;
 	}
 

@@ -25,7 +25,7 @@ import io.jenetics.TruncationSelector;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.util.DoubleRange;
 
 /**
@@ -46,7 +46,7 @@ public class MLStrategy {
 		final int λ = 20;
 		final double p = 0.2;
 
-		final Codec<Double, DoubleGene> codec = codecs
+		final Codec<Double, DoubleGene> codec = Codecs
 			.ofScalar(DoubleRange.of(0, 1));
 
 		final Engine<DoubleGene, Double> engine = Engine

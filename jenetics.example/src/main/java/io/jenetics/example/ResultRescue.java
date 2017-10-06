@@ -33,7 +33,7 @@ import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.limit;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
@@ -46,7 +46,7 @@ public final class ResultRescue {
 	private static final Problem<Double, DoubleGene, Double>
 	PROBLEM = Problem.of(
 		x -> cos(0.5 + sin(x))*cos(x),
-		codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+		Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
 	);
 
 	private static final Engine<DoubleGene, Double>

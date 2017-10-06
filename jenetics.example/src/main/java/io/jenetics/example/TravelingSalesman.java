@@ -34,7 +34,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.SwapMutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 
 public class TravelingSalesman {
 
@@ -73,7 +73,7 @@ public class TravelingSalesman {
 		final Engine<EnumGene<Integer>, Double> engine = Engine
 			.builder(
 				TravelingSalesman::dist,
-				codecs.ofPermutation(STOPS))
+				Codecs.ofPermutation(STOPS))
 			.optimize(Optimize.MINIMUM)
 			.maximalPhenotypeAge(11)
 			.populationSize(500)

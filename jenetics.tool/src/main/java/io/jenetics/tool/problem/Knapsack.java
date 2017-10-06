@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 import io.jenetics.BitGene;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.internal.util.require;
 import io.jenetics.tool.problem.Knapsack.Item;
 import io.jenetics.util.ISeq;
@@ -156,7 +156,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * @throws NullPointerException if the {@code items} set is {@code null}
 	 */
 	public Knapsack(final ISeq<Item> items, final double knapsackSize) {
-		_codec = codecs.ofSubSet(items);
+		_codec = Codecs.ofSubSet(items);
 		_knapsackSize = knapsackSize;
 	}
 

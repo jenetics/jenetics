@@ -14,7 +14,7 @@ import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.codecs;
+import io.jenetics.engine.Codecs;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -72,7 +72,7 @@ public class Knapsack {
 
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Double> engine = Engine
-			.builder(fitness(kssize), codecs.ofSubSet(items))
+			.builder(fitness(kssize), Codecs.ofSubSet(items))
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
