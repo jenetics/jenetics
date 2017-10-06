@@ -19,10 +19,9 @@
  */
 package io.jenetics.example;
 
-import static io.jenetics.engine.limit.byFixedGeneration;
+import static io.jenetics.engine.Limits.byFixedGeneration;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import io.jenetics.AnyChromosome;
 import io.jenetics.AnyGene;

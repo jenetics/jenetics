@@ -58,7 +58,7 @@ public class ExecutionTimeLimitTest {
 
 		final AtomicInteger count = new AtomicInteger();
 		stream()
-			.limit(limit.byExecutionTime(duration, clock))
+			.limit(Limits.byExecutionTime(duration, clock))
 			.forEach(s -> count.incrementAndGet());
 
 		Assert.assertEquals(count.get(), millis + 1);

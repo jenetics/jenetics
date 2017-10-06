@@ -42,7 +42,7 @@ public class PopulationConvergenceLimitTest {
 	@Test
 	public void limit() {
 		final Predicate<EvolutionResult<?, Double>> l =
-			limit.byPopulationConvergence(0.015);
+			Limits.byPopulationConvergence(0.015);
 
 		int g = 0;
 		while (l.test(result(10 + g, 100 + g, Optimize.MAXIMUM))) {
@@ -100,7 +100,7 @@ public class PopulationConvergenceLimitTest {
 			.build();
 
 		final EvolutionResult<BitGene, Integer> result = engine.stream()
-			.limit(limit.byPopulationConvergence(0.015))
+			.limit(Limits.byPopulationConvergence(0.015))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(

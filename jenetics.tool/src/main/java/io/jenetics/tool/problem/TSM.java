@@ -25,9 +25,9 @@ import java.util.stream.IntStream;
 import io.jenetics.EnumGene;
 import io.jenetics.Optimize;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.codecs;
 import io.jenetics.util.ISeq;
 
 /**
@@ -43,7 +43,7 @@ public class TSM {
 
 	// The permutation codec.
 	static final Codec<ISeq<Point>, EnumGene<Point>> CODEC =
-		codecs.ofPermutation(POINTS);
+		Codecs.ofPermutation(POINTS);
 
 	// The fitness function (in the problem domain).
 	static double dist(final ISeq<Point> p) {

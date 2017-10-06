@@ -32,7 +32,7 @@ import io.jenetics.SwapMutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.RandomRegistry;
 
@@ -70,7 +70,7 @@ public class Sorting {
 			EvolutionStatistics.ofNumber();
 
 		final EvolutionResult<EnumGene<Integer>, Integer> result = engine.stream()
-			.limit(limit.bySteadyFitness(100))
+			.limit(Limits.bySteadyFitness(100))
 			.limit(2500)
 			.peek(statistics)
 			.collect(EvolutionResult.toBestEvolutionResult());
