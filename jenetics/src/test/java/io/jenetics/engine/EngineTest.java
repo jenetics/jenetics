@@ -102,7 +102,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
-			.limit(limit.bySteadyFitness(10))
+			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -134,7 +134,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
-			.limit(limit.bySteadyFitness(10))
+			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		engine.builder()
@@ -162,7 +162,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(limit.byFixedGeneration(generations))
+			.limit(Limits.byFixedGeneration(generations))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
@@ -217,7 +217,7 @@ public class EngineTest {
 
 		final EvolutionResult<DoubleGene, Double> result = engine
 			.stream()
-			.limit(limit.byFixedGeneration(1000))
+			.limit(Limits.byFixedGeneration(1000))
 			.parallel()
 			.collect(EvolutionResult.toBestEvolutionResult());
 

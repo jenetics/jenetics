@@ -2,7 +2,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;

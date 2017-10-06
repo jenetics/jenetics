@@ -34,7 +34,7 @@ import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
 
@@ -57,7 +57,7 @@ public final class ResultRescue {
 
 	public static void main(final String[] args) throws IOException {
 		final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
-			.limit(limit.bySteadyFitness(10))
+			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final Path path = Paths.get("result.bin");
@@ -66,7 +66,7 @@ public final class ResultRescue {
 		@SuppressWarnings("unchecked")
 		final EvolutionResult<DoubleGene, Double> result = ENGINE
 			.stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
-			.limit(limit.bySteadyFitness(20))
+			.limit(Limits.bySteadyFitness(20))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		System.out.println(result);

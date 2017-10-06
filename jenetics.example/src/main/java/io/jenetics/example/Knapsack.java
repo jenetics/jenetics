@@ -22,7 +22,7 @@ package io.jenetics.example;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.io.Serializable;
 import java.util.Random;

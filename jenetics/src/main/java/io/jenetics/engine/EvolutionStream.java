@@ -58,7 +58,7 @@ public interface EvolutionStream<
 	 *     .collect(toBestPhenotype());
 	 * }</pre>
 	 *
-	 * @see limit
+	 * @see Limits
 	 *
 	 * @param proceed the predicate which determines whether the stream is
 	 *        truncated or not. <i>If the predicate returns {@code false}, the

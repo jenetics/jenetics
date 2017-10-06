@@ -19,7 +19,7 @@
  */
 package io.jenetics.example;
 
-import static io.jenetics.engine.limit.byFixedGeneration;
+import static io.jenetics.engine.Limits.byFixedGeneration;
 
 import java.util.Random;
 

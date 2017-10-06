@@ -129,7 +129,7 @@ public class FitnessConvergenceLimitTest {
 	@Test
 	public void limit() {
 		final Predicate<EvolutionResult<?, Double>> l =
-			limit.byFitnessConvergence(5, 10, 0.015);
+			Limits.byFitnessConvergence(5, 10, 0.015);
 
 		int g = 0;
 		while (l.test(result(10 + g, 100 + g, Optimize.MAXIMUM))) {
@@ -187,7 +187,7 @@ public class FitnessConvergenceLimitTest {
 			.build();
 
 		final EvolutionResult<BitGene, Integer> result = engine.stream()
-			.limit(limit.byFitnessConvergence(5, 10, 0.01))
+			.limit(Limits.byFitnessConvergence(5, 10, 0.01))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(
