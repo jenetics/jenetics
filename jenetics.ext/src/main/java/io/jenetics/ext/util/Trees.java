@@ -91,8 +91,7 @@ final class Trees {
 			: "null";
 	}
 
-	private static
-	List<StringBuilder> toStrings(
+	private static List<StringBuilder> toStrings(
 		final Tree<?, ?> tree,
 		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
 	) {
@@ -244,6 +243,19 @@ final class Trees {
 			out.append(id(node));
 			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
 		});
+	}
+
+
+	static String toLispString(Tree<?, ?> tree) {
+		final String value = String.valueOf(tree.getValue());
+		if (tree.isLeaf()) {
+			return value;
+		} else {
+			final String children = tree.childStream()
+				.map(Trees::toLispString)
+				.collect(Collectors.joining(" "));
+			return "(" + value + " " + children + ")";
+		}
 	}
 
 	/**
