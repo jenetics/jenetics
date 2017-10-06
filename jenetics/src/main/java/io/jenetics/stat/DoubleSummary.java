@@ -287,4 +287,20 @@ public final class DoubleSummary implements Serializable {
 		return DoubleAdder.sum(values);
 	}
 
+	/**
+	 * Returns a double describing the arithmetic mean of the values, or
+	 * {@link Double#NaN} if the {@code values} array is empty.
+	 *
+	 * @param values the values to calculate the mean of
+	 * @return the arithmetic mean of the given {@code values} or
+	 *         {@link Double#NaN} if the {@code values} array is empty
+	 */
+	public static double mean(final double[] values) {
+		double mean = Double.NaN;
+		if (values.length > 0) {
+			mean = sum(values)/values.length;
+		}
+		return mean;
+	}
+
 }

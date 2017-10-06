@@ -289,4 +289,20 @@ public final class IntSummary implements Serializable {
 		return sum;
 	}
 
+	/**
+	 * Returns a double describing the arithmetic mean of the values, or
+	 * {@link Double#NaN} if the {@code values} array is empty.
+	 *
+	 * @param values the values to calculate the mean of
+	 * @return the arithmetic mean of the given {@code values} or
+	 *         {@link Double#NaN} if the {@code values} array is empty
+	 */
+	public static double mean(final int[] values) {
+		double mean = Double.NaN;
+		if (values.length > 0) {
+			mean = (double)sum(values)/(double)values.length;
+		}
+		return mean;
+	}
+
 }
