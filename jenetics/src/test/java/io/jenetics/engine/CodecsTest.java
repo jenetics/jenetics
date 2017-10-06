@@ -42,7 +42,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class codecsTest {
+public class CodecsTest {
 
 	@Test(dataProvider = "intScalarData")
 	public void ofIntScalar(final IntRange domain) {
