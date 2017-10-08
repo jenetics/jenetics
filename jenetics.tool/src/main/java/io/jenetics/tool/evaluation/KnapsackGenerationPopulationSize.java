@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import io.jenetics.BitGene;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
@@ -86,7 +86,7 @@ public class KnapsackGenerationPopulationSize {
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<String, BitGene, Double> runner = Runner.of(
 			param -> KNAPSACK(toPopulationSize(param)),
-			param -> limit.byFixedGeneration(toGeneration(param)),
+			param -> Limits.byFixedGeneration(toGeneration(param)),
 			TRIAL_METER,
 			Writer.text(),
 			Reader.text(),

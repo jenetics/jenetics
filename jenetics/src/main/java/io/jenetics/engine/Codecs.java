@@ -41,7 +41,7 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.internal.math.base;
+import io.jenetics.internal.math.comb;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
@@ -56,9 +56,9 @@ import io.jenetics.util.LongRange;
  * @since 3.2
  * @version 3.4
  */
-public final class codecs {
+public final class Codecs {
 
-	private codecs() {require.noInstance();}
+	private Codecs() {require.noInstance();}
 
 	/**
 	 * Return a scalar {@code Codec} for the given range.
@@ -388,7 +388,7 @@ public final class codecs {
 	public static <A> Codec<ISeq<A>, AnyGene<A>> ofVector(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> alleleValidator,
-		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
 		requireNonNull(supplier);
@@ -425,7 +425,12 @@ public final class codecs {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return ofVector(supplier, validator, Equality.TRUE, length);
+		return ofVector(
+			supplier,
+			validator,
+			Equality.<ISeq<A>>True(),
+			length
+		);
 	}
 
 	/**
@@ -484,7 +489,7 @@ public final class codecs {
 	 * @throws NullPointerException if one of the alleles is {@code null}
 	 */
 	public static <T> Codec<ISeq<T>, EnumGene<T>>
-	ofPermutation(final ISeq<T> alleles) {
+	ofPermutation(final ISeq<? extends T> alleles) {
 		if (alleles.isEmpty()) {
 			throw new IllegalArgumentException(
 				"Empty allele array is not allowed."
@@ -577,7 +582,7 @@ public final class codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		base.checkSubSet(basicSet.size(), size);
+		comb.checkSubSet(basicSet.size(), size);
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),

@@ -52,6 +52,7 @@ public class NodeTest {
 		System.out.println(Trees.toCompactString(tree));
 		System.out.println(Trees.toDottyString("number_tree", tree));
 		System.out.println(tree.depth());
+		System.out.println(Trees.toLispString(tree));
 	}
 
 	@Test

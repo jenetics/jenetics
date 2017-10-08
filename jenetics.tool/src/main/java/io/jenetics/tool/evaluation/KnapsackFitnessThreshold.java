@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import io.jenetics.BitGene;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
@@ -65,7 +65,7 @@ public class KnapsackFitnessThreshold {
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			threshold -> KNAPSACK,
-			limit::byFitnessThreshold,
+			Limits::byFitnessThreshold,
 			TRIAL_METER,
 			Writer.text().map(Object::toString),
 			Reader.text().map(Double::parseDouble),

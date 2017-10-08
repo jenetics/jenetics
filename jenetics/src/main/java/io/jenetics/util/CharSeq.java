@@ -333,4 +333,5 @@ abstract class CharSeqBase extends ArrayISeq<Character> {
 		super(Array.of(CharStore.of(characters)).seal());
 		array = characters;
 	}
+
 }

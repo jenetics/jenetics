@@ -69,7 +69,7 @@ import io.jenetics.util.ISeq;
  * Calling the {@link Codec#of(Factory, Function)} method is the usual way for
  * creating new {@code Codec} instances.
  *
- * @see codecs
+ * @see Codecs
  * @see Engine
  * @see Engine.Builder
  *

@@ -82,7 +82,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
-	private final Predicate<? super ISeq<? super A>> _alleleSeqValidator;
+	private final Predicate<? super ISeq<A>> _alleleSeqValidator;
 
 	private Boolean _valid = null;
 
@@ -107,7 +107,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final ISeq<AnyGene<A>> genes,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> alleleValidator,
-		final Predicate<? super ISeq<? super A>> alleleSeqValidator
+		final Predicate<? super ISeq<A>> alleleSeqValidator
 	) {
 		super(genes);
 		_supplier = requireNonNull(supplier);
@@ -119,7 +119,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	public boolean isValid() {
 		Boolean valid =
 			(_alleleValidator == Equality.TRUE &&
-				_alleleSeqValidator == Equality.TRUE)
+				_alleleSeqValidator == Equality.<ISeq<A>>True())
 			? Boolean.TRUE
 			: _valid;
 
@@ -171,7 +171,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	public static <A> AnyChromosome<A> of(
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> alleleValidator,
-		final Predicate<? super ISeq<? super A>> alleleSeqValidator,
+		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
 		return new AnyChromosome<>(
@@ -201,7 +201,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return of(supplier, validator, Equality.TRUE, length);
+		return of(supplier, validator, Equality.<ISeq<A>>True(), length);
 	}
 
 	/**

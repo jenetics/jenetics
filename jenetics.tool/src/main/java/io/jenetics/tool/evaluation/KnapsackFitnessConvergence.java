@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import io.jenetics.BitGene;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.internal.util.Args;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
@@ -63,7 +63,7 @@ public class KnapsackFitnessConvergence {
 
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
-			epsilon -> limit.byFitnessConvergence(sizes.get(0), sizes.get(1), epsilon),
+			epsilon -> Limits.byFitnessConvergence(sizes.get(0), sizes.get(1), epsilon),
 			TRIAL_METER,
 			Writer.text().map(Object::toString),
 			Reader.text().map(Double::parseDouble),

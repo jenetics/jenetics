@@ -45,8 +45,8 @@ import io.jenetics.util.NanoClock;
  * @since 3.0
  * @version 3.7
  */
-public final class limit {
-	private limit() {require.noInstance();}
+public final class Limits {
+	private Limits() {require.noInstance();}
 
 	/**
 	 * Return a predicate, which will truncate the evolution stream after the

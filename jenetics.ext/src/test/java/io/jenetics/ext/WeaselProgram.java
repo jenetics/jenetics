@@ -1,7 +1,7 @@
 package io.jenetics.ext;
 
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.byFitnessThreshold;
+import static io.jenetics.engine.Limits.byFitnessThreshold;
 
 import java.util.stream.IntStream;
 

@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
 import io.jenetics.util.RandomRegistry;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -33,6 +34,50 @@ public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 	@Override
 	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
 		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
+	}
+
+	@Test
+	public void create() {
+		AnyChromosome.of(
+			() -> "foo",
+			AnyChromosomeTest::alleleValidator
+		);
+
+		AnyChromosome.of(
+			() -> "foo",
+			AnyChromosomeTest::alleleValidator,
+			3
+		);
+
+		AnyChromosome.of(
+			() -> "foo",
+			a -> true,
+			AnyChromosomeTest::alleleSeqValidator,
+			3
+		);
+
+		AnyChromosome.of(
+			() -> "foo",
+			a -> true,
+			a -> true,
+			3
+		);
+
+
+		AnyChromosome.of(
+			() -> "foo",
+			AnyChromosomeTest::alleleValidator,
+			AnyChromosomeTest::alleleSeqValidator,
+			3
+		);
+	}
+
+	private static boolean alleleValidator(final String name) {
+		return "valid".equals(name);
+	}
+
+	private static boolean alleleSeqValidator(final Seq<String> names) {
+		return names.forAll(AnyChromosomeTest::alleleValidator);
 	}
 
 	@Override

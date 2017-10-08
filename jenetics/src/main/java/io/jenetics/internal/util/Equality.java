@@ -38,6 +38,17 @@ public final class Equality {
 	public static final Predicate<Object> TRUE = a -> true;
 
 	/**
+	 * Return a predicate, which always return {@code true}.
+	 *
+	 * @param <T> the predicate type
+	 * @return a predicate, which always return {@code true}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Predicate<T> True() {
+		return (Predicate<T>)TRUE;
+	}
+
+	/**
 	 * Create a new {@code Equality} object for testing object equality.
 	 *
 	 * @param self the {@code this} object to test; must not be {@code null}

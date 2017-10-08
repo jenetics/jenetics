@@ -90,7 +90,8 @@ public final class XML {
 		requireNonNull(input);
 
 		final XMLInputFactory factory = XMLInputFactory.newFactory();
-		return new XMLReaderProxy(factory.createXMLStreamReader(input));
+		return new XMLReaderProxy(
+			factory.createXMLStreamReader(input, "UTF-8"));
 	}
 
 	/**
@@ -123,8 +124,10 @@ public final class XML {
 
 		final XMLOutputFactory factory = XMLOutputFactory.newFactory();
 		return indent != null
-			? new IndentingXMLWriter(factory.createXMLStreamWriter(output), indent)
-			: new XMLWriterProxy(factory.createXMLStreamWriter(output));
+			? new IndentingXMLWriter(
+				factory.createXMLStreamWriter(output, "UTF-8"), indent)
+			: new XMLWriterProxy(
+				factory.createXMLStreamWriter(output, "UTF-8"));
 	}
 
 	/**
