@@ -21,11 +21,20 @@ import io.jenetics.scala._
 object Engines {
 
 	def count1(gt: Genotype[BitGene]): Int = {
-		gt.chromosome.to[BitChromosome].bitCount()
+		gt.chromosome[BitChromosome].bitCount()
 	}
 
 	def count2(gt: Genotype[BitGene]): Integer = {
-		gt.chromosome.as[BitChromosome].bitCount()
+		gt.chromosome[BitChromosome].bitCount()
+	}
+
+	def count3(gt: Genotype[BitGene]): Integer = {
+		gt.chromosome.stream()
+			.filter(g => g.booleanValue())
+			.count()
+			.asInstanceOf[Integer]
+
+		gt.chromosome.as(classOf[BitChromosome]).bitCount()
 	}
 
 	val e1 = EngineBuilder(count1 _, BitChromosome.of(20, 0.15))
@@ -45,7 +54,7 @@ object Engines {
 
 	val e3 = EngineBuilder(
 			(gt: Genotype[BitGene]) =>
-				gt.chromosome.to[BitChromosome].bitCount(),
+				gt.chromosome[BitChromosome].bitCount(),
 			BitChromosome.of(20, 0.15))
 		.alterers(
 			new Mutator(),
@@ -56,7 +65,7 @@ object Engines {
 
 	val c1 = Codecs(
 		Genotype.of(BitChromosome.of(20, 0.15)),
-		(gt: Genotype[BitGene]) => gt.chromosome.to[BitChromosome].bitCount()
+		(gt: Genotype[BitGene]) => gt.chromosome[BitChromosome].bitCount()
 	)
 
 //	val e4 = Engine.builder(
