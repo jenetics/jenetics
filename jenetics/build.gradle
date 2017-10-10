@@ -15,11 +15,11 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
  * @version 3.9
  */
@@ -53,13 +53,13 @@ idea {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics',
-	'org.jenetics.engine',
-	'org.jenetics.util',
-	'org.jenetics.stat'
+	'io.jenetics',
+	'io.jenetics.engine',
+	'io.jenetics.util',
+	'io.jenetics.stat'
 )
 
-jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.base')
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
 
 packaging {
 	name = 'Jenetics'

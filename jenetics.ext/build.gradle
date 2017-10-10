@@ -15,11 +15,11 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
  * @version 3.9
  */
@@ -55,11 +55,11 @@ idea {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.ext',
-	'org.jenetics.ext.util'
+	'io.jenetics.ext',
+	'io.jenetics.ext.util'
 )
 
-jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.ext')
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.ext')
 
 javadoc {
 	options {

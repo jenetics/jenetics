@@ -15,20 +15,20 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 
-import org.jenetics.gradle.PropertiesLoader
-import org.jenetics.gradle.Version
-import org.jenetics.gradle.plugin.SetupPlugin
+import io.jenetics.gradle.PropertiesLoader
+import io.jenetics.gradle.Version
+import io.jenetics.gradle.plugin.SetupPlugin
 
 import java.time.Year
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
  * @version 3.9
  */
@@ -40,7 +40,7 @@ apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
-	javaVersion = '1.8'
+    javaVersion = '1.9'
 
 	now = ZonedDateTime.now()
 	year = Year.now();

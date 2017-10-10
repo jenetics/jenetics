@@ -21,6 +21,6 @@ include::random_seeding.adoc[]
 
 //////////////////////////////////////////
 :author: Franz Wilhelmstötter
-:email: franz.wilhelmstoetter@gmx.at
+:email: franz.wilhelmstoetter@gmail.com
 //////////////////////////////////////////
 
