@@ -32,7 +32,7 @@ package object scala {
 
 
 	/**
-	  * Scalafication of the `Chromosome` class.
+	  * Scalafication of the `Chromosome` interface.
 	  */
 	final implicit class RichChromosome[G <: Gene[_, G]](val ch: Chromosome[G])
 		extends AnyVal
@@ -42,16 +42,19 @@ package object scala {
 
 		def gene: G = ch.getGene
 
-		def to[C <: Chromosome[G]: ClassTag]: C =  ???
+		def to[C <: Chromosome[G]: ClassTag]: C =  {
+			ch.as(classTag[C].runtimeClass.asInstanceOf[Class[C]])
+		}
 
 	}
 
 	/**
-	  * Scalafication of the `Chromosome` class.
+	  * Scalafication of the `Gene` interface.
 	  */
-	final implicit class RichGene[G <: Gene[_, G]](val gene: G)
+	final implicit class RichGene[A, G <: Gene[A, G]](val gene: G)
 		extends AnyVal
 	{
+		def allele: A = gene.getAllele
 	}
 
 	implicit def toFitnessFunction[T, R, C <: Comparable[C]](
