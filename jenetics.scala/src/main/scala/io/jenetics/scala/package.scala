@@ -24,29 +24,35 @@ package object scala {
 
 		def apply(ci: Int, gi: Int): G = gt.get(ci, gi)
 
-		//def chromosome[C <: Chromosome[G]: ClassTag]: C = {
-		//	gt.getChromosome.as(classTag[C].runtimeClass.asInstanceOf[Class[C]])
-		//}
-
 		def chromosome: Chromosome[G] =  gt.getChromosome
+
+		def gene: G = gt.getGene
 
 	}
 
-	
 
+	/**
+	  * Scalafication of the `Chromosome` class.
+	  */
 	final implicit class RichChromosome[G <: Gene[_, G]](val ch: Chromosome[G])
 		extends AnyVal
 	{
 
-		def apply[C <: Chromosome[G]: ClassTag]: C =  ???
+		def apply(index: Int): G = ch.getGene(index)
 
-		//def to[C <: Chromosome[G]: ClassTag]: C =  ???
+		def gene: G = ch.getGene
 
-		def as[C <: Chromosome[G]: ClassTag]: C =  ???
+		def map[C <: Chromosome[G]: ClassTag]: C =  ???
 
 	}
 
-
+	/**
+	  * Scalafication of the `Chromosome` class.
+	  */
+	final implicit class RichGene[G <: Gene[_, G]](val gene: G)
+		extends AnyVal
+	{
+	}
 
 	implicit def toFitnessFunction[T, R, C <: Comparable[C]](
 		f: T => R)(
