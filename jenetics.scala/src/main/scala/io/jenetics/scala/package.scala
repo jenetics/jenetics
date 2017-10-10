@@ -42,7 +42,7 @@ package object scala {
 
 		def gene: G = ch.getGene
 
-		def map[C <: Chromosome[G]: ClassTag]: C =  ???
+		def to[C <: Chromosome[G]: ClassTag]: C =  ???
 
 	}
 
