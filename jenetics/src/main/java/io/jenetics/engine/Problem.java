@@ -30,6 +30,20 @@ import io.jenetics.Gene;
  * evolution {@code Engine}. It connects the actual {@link #fitness()} function
  * and the needed {@link #codec()}.
  *
+ * <pre>{@code
+ * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
+ *     // Native fitness function
+ *     genes -> (int)genes.stream()
+ *         .filter(BitGene::getBit)
+ *         .count(),
+ *     // Problem encoding
+ *     Codec.of(
+ *         Genotype.of(BitChromosome.of(100)),
+ *         gt -> gt.getChromosome().toSeq()
+ *     )
+ * );
+ * }</pre>
+ *
  * @see Codec
  * @see Engine
  *
@@ -45,8 +59,7 @@ public interface Problem<
 	T,
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	/**
 	 * Return the fitness function of the <i>problem</i> in the <i>native</i>
