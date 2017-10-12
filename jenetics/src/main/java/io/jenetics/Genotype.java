@@ -172,6 +172,22 @@ public final class Genotype<G extends Gene<?, G>>
 		return getChromosome(chromosomeIndex).getGene(geneIndex);
 	}
 
+	/**
+	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * returned chromosome is not null.
+	 *
+	 * @see #getChromosome(int)
+	 * @since 4.0
+	 *
+	 * @param chromosomeIndex Chromosome index.
+	 * @return The Chromosome.
+	 * @throws IndexOutOfBoundsException if
+	 *         {@code (index < 0 || index >= _length)}.
+	 */
+	public Chromosome<G> get(final int chromosomeIndex) {
+		return getChromosome(chromosomeIndex);
+	}
+
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
 	}
