@@ -2042,7 +2042,7 @@ Result
 \begin_layout Description
 
 \family typewriter
-org.jenetics.stat
+io.jenetics.stat
 \family default
  This package contains additional statistics classes which are not available
  in the Java core library.
@@ -2082,7 +2082,7 @@ Statistics
 \begin_layout Description
 
 \family typewriter
-org.jenetics.util
+io.jenetics.util
 \family default
  This package contains the collection classes (
 \family typewriter
@@ -2168,7 +2168,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
+http://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -2199,8 +2199,7 @@ classes This classes form the domain model of the evolutionary algorithm
 .
  They are located in the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics
+ io.jenetics
 \family default
  package.
 \end_layout
@@ -2221,8 +2220,7 @@ classes This classes operates on the domain classes and includes the
  classes.
  They are also located in the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics
+ io.jenetics
 \family default
  package.
 \end_layout
@@ -2235,8 +2233,7 @@ Engine
 classes This classes implements the actual evolutionary algorithm and reside
  solely in the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .engine
 \family default
  package.
@@ -2365,7 +2362,7 @@ reference "fig:Domain-model"
  shows the class diagram of the domain classes.
  All domain classes are located in the
 \family typewriter
- org.jenetics
+ io.jenetics
 \family default
  package.
  The
@@ -6972,8 +6969,7 @@ The
 \emph default
  classes, which perform the actual evolution, are located in the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine
 \family default
  package.
@@ -11627,7 +11623,7 @@ Jenetics
  supports serialization for a number of classes, most of them are located
  in the
 \family typewriter
- org.jenetics
+ io.jenetics
 \family default
  package.
  Only the concrete implementations of the
@@ -11792,7 +11788,7 @@ Stream
 \family default
  class, located in the
 \family typewriter
- org.jenetics.util
+ io.jenetics.util
 \family default
  package, supports native Java serialization and JAXB
 \begin_inset Index idx
@@ -12225,11 +12221,11 @@ Utility classes
 \begin_layout Standard
 The
 \family typewriter
- org.jenetics.util
+ io.jenetics.util
 \family default
  and the
 \family typewriter
- org.jenetics.stat
+ io.jenetics.stat
 \family default
  package of the library contains utility and helper classes which are essential
  for the implementation of the GA.
@@ -12238,7 +12234,7 @@ The
 \begin_layout Paragraph
 
 \family typewriter
-org.jenetics.util.Seq
+io.jenetics.util.Seq
 \begin_inset Index idx
 status collapsed
 
@@ -12463,7 +12459,7 @@ target "http://jenetics.sourceforge.net/javadoc/index.html"
 \begin_layout Paragraph
 
 \family typewriter
-org.jenetics.stat
+io.jenetics.stat
 \begin_inset Index idx
 status collapsed
 
@@ -14343,8 +14339,7 @@ Statistics
 \family default
  class in the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine
 \family default
  package (see listing
@@ -14790,8 +14785,7 @@ reference "subsec:Codec"
 
  interface, and are available through static factory methods of the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 codecs
 \family default
@@ -16799,8 +16793,7 @@ The
 \family default
  interface—located in the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine
 \family default
  package—narrows the gap between the fitness
@@ -17146,8 +17139,7 @@ Jenetics
  comes with a set of standard encodings, which are created via static factory
  methods of the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 codecs
 \family default
@@ -19743,8 +19735,7 @@ Stream\SpecialChar softhyphen
 All termination strategies described in the following sub-sections are part
  of the library and can be created by factory methods of the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .engine\SpecialChar softhyphen
 .limit
 \family default
@@ -19761,8 +19752,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/org.jenetics.tool/src/main/java/or
-g/jenetics/tool/problem/Knapsack.java
+https://github.com/jenetics/jenetics/blob/master/io.jenetics.tool/src/main/java/org
+/jenetics/tool/problem/Knapsack.java
 \end_layout
 
 \end_inset
@@ -20451,8 +20442,7 @@ ness(int)
 \family default
  in the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .engine
 \family default
  package.
@@ -20488,8 +20478,7 @@ Fitness
 \family default
  factory method of the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 limit
 \family default
@@ -20651,8 +20640,7 @@ Jenetics
 \shape default
  uses the nano precision clock
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Clock
@@ -22112,8 +22100,7 @@ This section contains internal implementation details which doesn't fit
  purpose.
  This classes resides below the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 internal
 \family default
  package.
@@ -22126,8 +22113,7 @@ internal
 \emph on
 Be aware that all classes below the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 internal
 \family default
  package can be changed and removed without announcement.
@@ -22246,8 +22232,7 @@ Dieharder
 
  class, which is part of the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
 util
 \family default
@@ -22266,13 +22251,13 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-@__version__@.jar
+$ java -cp io.jenetics-@__version__@.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.DieHarder
+      io.jenetics.internal.util.DieHarder
 \backslash
 
 \end_layout
@@ -22346,27 +22331,26 @@ LCG64ShiftRandom
 \family default
  class, which is part of the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 util
 \family default
  package, the following command can be called:
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-@__version__@.jar
+$ java -cp io.jenetics-@__version__@.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.DieHarder
+      io.jenetics.internal.util.DieHarder
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.util.LCG64ShiftRandom -a
+      io.jenetics.util.LCG64ShiftRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -22398,8 +22382,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
-netics/util/LCG64ShiftRandom.java
+https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
+etics/util/LCG64ShiftRandom.java
 \end_layout
 
 \end_inset
@@ -22618,8 +22602,7 @@ Harder class
 \family default
  method has been wrapped into the
 \family typewriter
- org.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
+ io.jenetics.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
@@ -22635,19 +22618,19 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-@__version__@.jar
+$ java -cp io.jenetics-@__version__@.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.DieHarder
+      io.jenetics.internal.util.DieHarder
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.NanoTimeRandom -a
+      io.jenetics.internal.util.NanoTimeRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -22682,8 +22665,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
-netics/internal/util/NanoTimeRandom.java
+https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
+etics/internal/util/NanoTimeRandom.java
 \end_layout
 
 \end_inset
@@ -22876,19 +22859,19 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-@__version__@.jar
+$ java -cp io.jenetics-@__version__@.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.DieHarder
+      io.jenetics.internal.util.DieHarder
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.ObjectHashRandom -a
+      io.jenetics.internal.util.ObjectHashRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -22914,8 +22897,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
-netics/internal/util/ObjectHashRandom.java
+https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
+etics/internal/util/ObjectHashRandom.java
 \end_layout
 
 \end_inset
@@ -23202,19 +23185,19 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp org.jenetics-@__version__@.jar
+$ java -cp io.jenetics-@__version__@.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.DieHarder
+      io.jenetics.internal.util.DieHarder
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      org.jenetics.internal.util.SeedRandom -a
+      io.jenetics.internal.util.SeedRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -23229,8 +23212,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/org.jenetics/src/main/java/org/je
-netics/internal/util/SeedRandom.java
+https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
+etics/internal/util/SeedRandom.java
 \end_layout
 
 \end_inset
@@ -23491,7 +23474,7 @@ Artifact
 \begin_inset Text
 
 \begin_layout Plain Layout
-org.jenetics.base
+io.jenetics.base
 \end_layout
 
 \end_inset
@@ -23511,7 +23494,7 @@ io.jenetics:jenetics:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
-org.jenetics.ext
+io.jenetics.ext
 \end_layout
 
 \end_inset
@@ -23531,7 +23514,7 @@ io.jenetics:jenetics.ext:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
-org.jenetics.prog
+io.jenetics.prog
 \end_layout
 
 \end_inset
@@ -23551,7 +23534,7 @@ io.jenetics:jenetics.prog:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
-org.jenetics.xml
+io.jenetics.xml
 \end_layout
 
 \end_inset
@@ -23629,8 +23612,7 @@ With this module split the code is easier to maintain and doesn't force
  the user to use parts of the library he or she isn't using, which keep
  the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .base
 \family default
  module as small as possible.
@@ -23651,7 +23633,7 @@ Extensions
 status collapsed
 
 \begin_layout Plain Layout
-Modules!org.jenetics.ext
+Modules!io.jenetics.ext
 \end_layout
 
 \end_inset
@@ -23662,7 +23644,7 @@ Modules!org.jenetics.ext
 \begin_layout Standard
 The
 \family typewriter
- org.jenetics.ext
+ io.jenetics.ext
 \family default
  module implements additional
 \emph on
@@ -23996,8 +23978,7 @@ The main purpose for the
 \family default
  data type in the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .ext
 \family default
  module is to support hierarchical
@@ -25287,8 +25268,7 @@ https://en.wikipedia.org/wiki/Genetic_programming
 
  The
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .prog
 \family default
  module contains classes which enables the
@@ -25605,7 +25585,7 @@ Terminal
 \begin_layout Standard
 The
 \family typewriter
- org.jenetics.prog
+ io.jenetics.prog
 \family default
  module comes with three predefined terminal operations:
 \family typewriter
@@ -26198,7 +26178,7 @@ XML marshalling
 \begin_layout Standard
 The
 \family typewriter
- org.jenetics.xml
+ io.jenetics.xml
 \family default
  module allows to write and read chromosomes and genotypes to and from XML.
  Since the existing JAXB marshaling is part of the deprecated
@@ -26207,7 +26187,7 @@ The
 \family default
  module the
 \family typewriter
- org.jenetics.xml
+ io.jenetics.xml
 \family default
  module is now the recommended for XML marshalling of the
 \family sans
@@ -27092,8 +27072,7 @@ Writer
 \family default
  of the
 \family typewriter
- org\SpecialChar softhyphen
-.jenetics\SpecialChar softhyphen
+ io.jenetics\SpecialChar softhyphen
 .xml
 \family default
  module will create files roughly
@@ -28632,7 +28611,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://jenetics.io/javadoc/org.jenetics/@__minor_version__@/index.html
+http://jenetics.io/javadoc/jenetics/@__minor_version__@/index.html
 \end_layout
 
 \end_inset
@@ -29478,7 +29457,7 @@ you can start the example by calling
 \end_layout
 
 \begin_layout LyX-Code
-$ ./jrun org.jenetics.example.image.EvolvingImages
+$ ./jrun io.jenetics.example.image.EvolvingImages
 \end_layout
 
 \begin_layout Standard
@@ -29696,7 +29675,7 @@ It is also possible to run and configure the
 \end_layout
 
 \begin_layout LyX-Code
-$ ./jrun org.jenetics.example.image.EvolvingImages evolve
+$ ./jrun io.jenetics.example.image.EvolvingImages evolve
 \backslash
 
 \end_layout
@@ -29833,7 +29812,7 @@ For a quick start, you can simply call
 \end_layout
 
 \begin_layout LyX-Code
-$ ./jrun org.jenetics.example.image.EvolvingImages evolve
+$ ./jrun io.jenetics.example.image.EvolvingImages evolve
 \end_layout
 
 \begin_layout Standard
@@ -30103,7 +30082,7 @@ reference "lis:Default-engine.properties"
 \end_layout
 
 \begin_layout LyX-Code
-$ ./jrun org.jenetics.example.image.EvolvingImages evolve
+$ ./jrun io.jenetics.example.image.EvolvingImages evolve
 \backslash
 
 \end_layout
