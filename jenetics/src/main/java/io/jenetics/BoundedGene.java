@@ -23,6 +23,8 @@ package io.jenetics;
  * Base interface for genes where the alleles are bound by a minimum and a
  * maximum value.
  *
+ * @see BoundedChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 3.0

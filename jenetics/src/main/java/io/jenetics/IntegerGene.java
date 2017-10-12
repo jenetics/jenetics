@@ -40,6 +40,8 @@ import io.jenetics.util.Mean;
  * instances of {@code IntegerGene} may have unpredictable results and should
  * be avoided.
  *
+ * @see IntegerChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
  * @version 4.0

@@ -40,6 +40,8 @@ import io.jenetics.util.MSeq;
 /**
  * CharacterChromosome which represents character sequences.
  *
+ * @see CharacterGene
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

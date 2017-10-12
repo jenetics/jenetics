@@ -44,6 +44,8 @@ import io.jenetics.Gene;
  * );
  * }</pre>
  *
+ * The example above shows the Ones-Counting problem definition.
+ *
  * @see Codec
  * @see Engine
  *

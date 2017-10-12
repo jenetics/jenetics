@@ -40,6 +40,8 @@ import io.jenetics.util.Mean;
  * instances of {@code DoubleGene} may have unpredictable results and should
  * be avoided.
  *
+ * @see DoubleChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 4.0

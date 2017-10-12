@@ -93,6 +93,7 @@ import io.jenetics.util.MSeq;
  * </p>
  *
  *
+ * @see EnumGene
  * @see PartiallyMatchedCrossover
  * @see SwapMutator
  *

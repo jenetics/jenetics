@@ -40,6 +40,8 @@ import io.jenetics.util.RandomRegistry;
  * instances of {@code CharacterGene} may have unpredictable results and should
  * be avoided.
  *
+ * @see CharacterChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

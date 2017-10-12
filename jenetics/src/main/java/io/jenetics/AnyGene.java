@@ -56,6 +56,8 @@ import io.jenetics.util.MSeq;
  * {@code Gene} interface. But the {@code AnyGene} can only be used for a subset
  * of the existing alterers.
  *
+ * @see AnyChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.3
  * @since 3.3

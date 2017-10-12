@@ -34,6 +34,8 @@ import io.jenetics.util.MSeq;
 /**
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
+ * @see IntegerGene
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
  * @version 4.0

@@ -74,6 +74,8 @@ import io.jenetics.util.ISeq;
  * The <i>full</i> example above shows how the {@code AnyChromosome} is used
  * to use for an allele-type with no predefined gene- and chromosome type.
  *
+ * @see AnyGene
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.3
  * @since 3.3
