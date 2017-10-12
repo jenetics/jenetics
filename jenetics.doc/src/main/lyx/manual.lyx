@@ -1259,7 +1259,7 @@ Once this is done, the fitness function, which should be maximized, can
  it's fitness value.
  If we want to use the optimized bit-counting method,
 \family typewriter
-bitCount()
+ bitCount()
 \family default
 , we have to cast the
 \family typewriter
@@ -1389,7 +1389,7 @@ As the example shows,
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -1681,7 +1681,7 @@ reference "fig:Evolution-workflow"
 
 \end_inset
 
-, where
+, where 
 \begin_inset Formula $E_{S(i)}$
 \end_inset
 
@@ -1690,11 +1690,11 @@ reference "fig:Evolution-workflow"
  Evolution\SpecialChar softhyphen
 Start
 \family default
- object at generation
+ object at generation 
 \begin_inset Formula $i$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $E_{R(i)}$
 \end_inset
 
@@ -1703,7 +1703,7 @@ Start
  Evolution\SpecialChar softhyphen
 Result
 \family default
- at the
+ at the 
 \begin_inset Formula $i^{th}$
 \end_inset
 
@@ -1723,11 +1723,11 @@ Streams
  Engine
 \family default
  doesn't have any mutable global state.
- It is practically a stateless function,
+ It is practically a stateless function, 
 \begin_inset Formula $f_{E}:\,\mathrm{P}\rightarrow\mathrm{P}$
 \end_inset
 
-, which maps a start population,
+, which maps a start population, 
 \begin_inset Formula $\mathrm{P}$
 \end_inset
 
@@ -1736,7 +1736,7 @@ Streams
 \family typewriter
  Engine
 \family default
- function,
+ function, 
 \begin_inset Formula $f_{E}$
 \end_inset
 
@@ -2877,13 +2877,13 @@ The central class, the evolution
 \emph on
  structural
 \emph default
- and immutable representative of an individual and consists of one to
+ and immutable representative of an individual and consists of one to 
 \begin_inset Formula $n$
 \end_inset
 
 
 \family typewriter
-Chromo\SpecialChar softhyphen
+ Chromo\SpecialChar softhyphen
 some
 \family default
 s.
@@ -2976,25 +2976,25 @@ reference "fig:Genotype-structure"
 \family typewriter
  Genotype
 \family default
- consists of
+ consists of 
 \begin_inset Formula $N_{G}$
 \end_inset
 
 
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s and a
 \family typewriter
  Chromosome
 \family default
- consists of
+ consists of 
 \begin_inset Formula $N_{C[i]}$
 \end_inset
 
 
 \family typewriter
-Gene
+ Gene
 \family default
 s (depending on the
 \family typewriter
@@ -3457,17 +3457,17 @@ reference "fig:Column-major-genotype-vector"
 \end_inset
 
 .
- For a vector of length
+ For a vector of length 
 \begin_inset Formula $n$
 \end_inset
 
-,
+, 
 \begin_inset Formula $n$
 \end_inset
 
 
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s of length
 \emph on
@@ -3808,12 +3808,12 @@ s are the same as for column-major
 \family default
  vectors:
 \family typewriter
-Mean\SpecialChar softhyphen
+ Mean\SpecialChar softhyphen
 Alterer
 \family default
 ,
 \family typewriter
-Line\SpecialChar softhyphen
+ Line\SpecialChar softhyphen
 Crossover
 \family default
  and
@@ -4105,11 +4105,7 @@ Durations
 \family default
  contains the generation when it was created.
  This allows to calculate the current age and the removal of overaged individual
-s from the
-\family typewriter
- Population
-\family default
-.
+s from the population.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4134,136 +4130,12 @@ Population
 \end_layout
 
 \begin_layout Standard
-The end of the class hierarchy of the domain model is the
-\family typewriter
- Population
-\family default
-.
- It is a collection of individuals and forms the start and the end of an
- evolution step.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public final class Population<
-\end_layout
-
-\begin_layout Plain Layout
-
-    G extends Gene<?, G>,
-\end_layout
-
-\begin_layout Plain Layout
-
-    C extends Comparable<? super C>
-\end_layout
-
-\begin_layout Plain Layout
-
->
-\end_layout
-
-\begin_layout Plain Layout
-
-    implements List<Phenotype<G, C>>
-\end_layout
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Phenotype<G, C> get(int index);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public void add(Phenotype<G, C> phenotype);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public void sortWith(Comparator<? super C> comparator);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\family typewriter
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Population-class"
-
-\end_inset
-
-Population
-\family default
- class
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Listing
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Population-class"
-
-\end_inset
-
- gives on overview of the most important methods of the
-\family typewriter
- Population
-\family default
- class.
- In addition to the
-\family typewriter
- List
-\family default
- methods, it provides a method for sorting the
+The end of the class hierarchy of the domain model is the population, which
+ is actually a sequence of
 \family typewriter
  Phenotype
 \family default
-s.
- Some
-\family typewriter
- Selector
-\family default
- implementations require a sorted list of individuals according its fitness
- value.
- Calling
-\family typewriter
- population.\SpecialChar softhyphen
-sortWith(\SpecialChar softhyphen
-optimize\SpecialChar softhyphen
-.descending()\SpecialChar softhyphen
-)
-\family default
- will sort the
-\family typewriter
- Population
-\family default
-, so that the first element will be the individual with the best fitness.
+ objects.
 \end_layout
 
 \begin_layout Subsection
@@ -4485,7 +4357,7 @@ The
 \family typewriter
  offspringFraction
 \family default
-,
+, 
 \begin_inset Formula $f_{O}\in[0,1]$
 \end_inset
 
@@ -4590,6 +4462,12 @@ BoltzmannSelector
 StochasticUniversalSelector
 \end_layout
 
+\begin_layout Itemize
+
+\family typewriter
+EliteSelector
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status open
@@ -4649,7 +4527,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \begin_inset Formula $s$
 \end_inset
 
- individuals is chosen from the population
+ individuals is chosen from the population 
 \begin_inset Formula $Pg$
 \end_inset
 
@@ -4668,7 +4546,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \end_inset
 
 .
- For large values of
+ For large values of 
 \begin_inset Formula $s$
 \end_inset
 
@@ -4706,17 +4584,7 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 \end_inset
 
  individuals are sorted according to their fitness.
- (This is one of the selectors, which relies on the
-\family typewriter
- sort\SpecialChar softhyphen
-With
-\family default
- method of the
-\family typewriter
- Pop\SpecialChar softhyphen
-ulation
-\family default
- class.) Only the
+ Only the 
 \begin_inset Formula $n$
 \end_inset
 
@@ -4791,7 +4659,7 @@ Probability selectors are a variation of
 \shape italic
  selection
 \shape default
- probability
+ probability 
 \begin_inset Formula $P(i)$
 \end_inset
 
@@ -4841,7 +4709,7 @@ reference "fig:Fitness-proportional-selection"
 \end_inset
 
 .
- An uniform distributed random number
+ An uniform distributed random number 
 \begin_inset Formula $r\in\left[0,F\right)$
 \end_inset
 
@@ -4853,24 +4721,24 @@ i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{argmin}}\left\{ r<\sum_{i=0}^
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $N$
 \end_inset
 
- is the number of individuals and
+ is the number of individuals and 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- the fitness value of the
+ the fitness value of the 
 \begin_inset Formula $i^{\textrm{th}}$
 \end_inset
 
  individual.
- The probability selector works the same way, only the fitness value
+ The probability selector works the same way, only the fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is replaced by the individual's selection probability
+ is replaced by the individual's selection probability 
 \begin_inset Formula $P(i)$
 \end_inset
 
@@ -4904,11 +4772,11 @@ where
 \end_inset
 
  in the set of selected individuals.
- The runtime complexity of the implemented probability selectors is
+ The runtime complexity of the implemented probability selectors is 
 \begin_inset Formula $O(n+\log(n))$
 \end_inset
 
- instead of
+ instead of 
 \begin_inset Formula $O(n^{2})$
 \end_inset
 
@@ -4953,7 +4821,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
  probability
 \emph default
  selector.
- The fitness value
+ The fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
 
@@ -4969,7 +4837,7 @@ P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
 
 \end_inset
 
-Selecting
+Selecting 
 \begin_inset Formula $n$
 \end_inset
 
@@ -5006,12 +4874,12 @@ name "par:Linear-rank-selector"
 \begin_layout Standard
 In linear-ranking selection the individuals are sorted according to their
  fitness values.
- The rank
+ The rank 
 \begin_inset Formula $N$
 \end_inset
 
  is assigned to the best individual and the rank 1 to the worst individual.
- The selection probability
+ The selection probability 
 \begin_inset Formula $P(i)$
 \end_inset
 
@@ -5030,20 +4898,20 @@ P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 
 \end_inset
 
-Here
+Here 
 \begin_inset Formula $\frac{n^{-}}{N}$
 \end_inset
 
- is the probability of the worst individual to be selected and
+ is the probability of the worst individual to be selected and 
 \begin_inset Formula $\frac{n^{+}}{N}$
 \end_inset
 
  the probability of the best individual to be selected.
- As the population size is held constant, the condition
+ As the population size is held constant, the condition 
 \begin_inset Formula $n^{+}=2-n^{-}$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $n^{-}\geq0$
 \end_inset
 
@@ -5169,12 +5037,12 @@ Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}.
 
 \end_inset
 
-Positive values of
+Positive values of 
 \begin_inset Formula $b$
 \end_inset
 
  increases the selection probability of individuals with high fitness values
- and negative values of
+ and negative values of 
 \begin_inset Formula $b$
 \end_inset
 
@@ -5183,7 +5051,7 @@ Positive values of
 \begin_inset Formula $b$
 \end_inset
 
- is zero, the selection probability of all individuals is set to
+ is zero, the selection probability of all individuals is set to 
 \begin_inset Formula $\frac{1}{N}$
 \end_inset
 
@@ -5296,6 +5164,25 @@ key "Sivanandam2010"
 
 \end_layout
 
+\begin_layout Paragraph
+Elite selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Elite selector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The EliteSelector always selects the best individual and guarantees that
+ it is part of the next generation.
+\end_layout
+
 \begin_layout Subsubsection
 Alterer
 \begin_inset Index idx
@@ -5325,7 +5212,7 @@ The problem encoding (representation) determines the bounds of the search
 \family default
 s determine how the space can be traversed:
 \family typewriter
-Alterer
+ Alterer
 \family default
 s are responsible for the genetic diversity of the
 \family typewriter
@@ -5432,7 +5319,7 @@ Maintaining diversity
 \end_layout
 
 \begin_layout Standard
-The mutation probability,
+The mutation probability, 
 \begin_inset Formula $P(m)$
 \end_inset
 
@@ -5444,7 +5331,7 @@ The mutation probability,
 \end_layout
 
 \begin_layout Standard
-The mutation probability,
+The mutation probability, 
 \begin_inset Formula $P(m)$
 \end_inset
 
@@ -5458,11 +5345,11 @@ The mutation probability,
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $N_{g}$
 \end_inset
 
- is the number of available genes of a genotype and
+ is the number of available genes of a genotype and 
 \begin_inset Formula $N_{P}$
 \end_inset
 
@@ -5501,7 +5388,7 @@ Mutator
 The mutator has to deal with the problem, that the genes are arranged in
  a
 \shape italic
-
+ 
 \begin_inset Formula $3D$
 \end_inset
 
@@ -5519,11 +5406,11 @@ reference "subsubsec:Domain-classes-Genotype"
 \end_layout
 
 \begin_layout Enumerate
-Select a genotype
+Select a genotype 
 \begin_inset Formula $G[i]$
 \end_inset
 
- from the population with probability
+ from the population with probability 
 \begin_inset Formula $P_{G}(m)$
 \end_inset
 
@@ -5531,15 +5418,15 @@ Select a genotype
 \end_layout
 
 \begin_layout Enumerate
-select a chromosome
+select a chromosome 
 \begin_inset Formula $C[j]$
 \end_inset
 
- from the selected genotype
+ from the selected genotype 
 \begin_inset Formula $G[i]$
 \end_inset
 
- with probability
+ with probability 
 \begin_inset Formula $P_{C}(m)$
 \end_inset
 
@@ -5547,15 +5434,15 @@ select a chromosome
 \end_layout
 
 \begin_layout Enumerate
-select a gene
+select a gene 
 \begin_inset Formula $g[k]$
 \end_inset
 
- from the selected chromosome
+ from the selected chromosome 
 \begin_inset Formula $C[j]$
 \end_inset
 
- with probability
+ with probability 
 \begin_inset Formula $P_{g}(m)$
 \end_inset
 
@@ -5708,7 +5595,7 @@ status open
 
 \begin_layout Plain Layout
 
-void recombine(final Population<G, C> pop) {
+void recombine(final ISeq<Phenotype<G, C>> pop) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -5825,12 +5712,17 @@ void recombine(final Population<G, C> pop) {
 
 \begin_layout Plain Layout
 
-    pop.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
+    MSeq<Phenotype<G, C>> result = pop.copy();
 \end_layout
 
 \begin_layout Plain Layout
 
-    pop.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
+    result.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
+\end_layout
+
+\begin_layout Plain Layout
+
+    result.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
@@ -5978,22 +5870,22 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-The recombination probability,
+The recombination probability, 
 \begin_inset Formula $P(r)$
 \end_inset
 
 , determines the probability that a given individual (genotype) of a population
  is selected for recombination.
  The (mean) number of changed individuals depend on the concrete implementation
- and can be vary from
+ and can be vary from 
 \begin_inset Formula $P(r)\cdot N_{G}$
 \end_inset
 
- to
+ to 
 \begin_inset Formula $P(r)\cdot N_{G}\cdot O_{R}$
 \end_inset
 
-, where
+, where 
 \begin_inset Formula $O_{R}$
 \end_inset
 
@@ -6111,7 +6003,7 @@ reference "fig:Single-point-crossover"
  SinglePointCrossover
 \family default
  class is performing the crossover for different crossover points—in the
- given example for the chromosome indexes
+ given example for the chromosome indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6127,7 +6019,7 @@ reference "fig:Single-point-crossover"
 \begin_inset Formula $6$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $7$
 \end_inset
 
@@ -6166,11 +6058,11 @@ If the
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
  The following picture shows how the multi-point crossover works with two
- crossover points, defined at index
+ crossover points, defined at index 
 \begin_inset Formula $1$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $4$
 \end_inset
 
@@ -6539,7 +6431,7 @@ In uniform crossover, the genes at index
 \begin_inset Formula $i$
 \end_inset
 
- of two chromosomes are swapped with the swap-probability,
+ of two chromosomes are swapped with the swap-probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -6628,11 +6520,11 @@ reference "fig:Uniform-crossover"
 \end_inset
 
  shows an example of a uniform crossover with four crossover points.
- A gene is swapped, if a uniformly created random number,
+ A gene is swapped, if a uniformly created random number, 
 \begin_inset Formula $r\in\left[0,1\right]$
 \end_inset
 
-, is smaller than the swap-probability,
+, is smaller than the swap-probability, 
 \begin_inset Formula $p_{S}$
 \end_inset
 
@@ -6706,7 +6598,7 @@ Mean alterer
 \begin_layout Standard
 The Mean alterer works on genes which implement the
 \family typewriter
-Mean
+ Mean
 \family default
  interface.
  All numeric genes implement this interface by calculating the arithmetic
@@ -6737,7 +6629,7 @@ name "par:Line-crossover"
 \begin_layout Standard
 The line crossover
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The line crossover, also known as line recombination, was originally described
@@ -6758,7 +6650,7 @@ key "Muhlenbein:1993:PMB:1326623.1326626"
  numeric
 \emph default
  chromosomes and treats it as a real number vector.
- Each of this vectors can also be seen as a point in
+ Each of this vectors can also be seen as a point in 
 \begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
 
@@ -6820,17 +6712,17 @@ reference "fig:Line-crossover-hypercube"
  circles).
  The dashed line, connecting the two points, form the possible solutions
  created by the line crossover.
- An additional variable,
+ An additional variable, 
 \begin_inset Formula $p$
 \end_inset
 
 , determines how far out along the line the created children will be.
- If
+ If 
 \begin_inset Formula $p=0$
 \end_inset
 
  then the children will be located along the line within the hypercube.
- If
+ If 
 \begin_inset Formula $p>0$
 \end_inset
 
@@ -6909,32 +6801,32 @@ Crossover
 \end_layout
 
 \begin_layout Standard
-The crossover parameter,
+The crossover parameter, 
 \begin_inset Formula $p$
 \end_inset
 
 , has the same properties as for the line crossover.
- If the chosen value for
+ If the chosen value for 
 \begin_inset Formula $p$
 \end_inset
 
- is greater than
+ is greater than 
 \begin_inset Formula $0$
 \end_inset
 
 , it is likely that some genes must be created more than once, because they
  are not in the valid range.
- The probability for gene re-creation rises sharply with the value of
+ The probability for gene re-creation rises sharply with the value of 
 \begin_inset Formula $p$
 \end_inset
 
 .
- Setting
+ Setting 
 \begin_inset Formula $p$
 \end_inset
 
  to a value greater than one, doesn't make sense in most of the cases.
- A value greater than
+ A value greater than 
 \begin_inset Formula $10$
 \end_inset
 
@@ -7149,7 +7041,7 @@ Function
 \family typewriter
  Function
 \family default
- simply returns the allele of a
+ simply returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -7545,7 +7437,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-        Population<G,C> population,
+        ISeq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -7685,7 +7577,7 @@ Result
 \begin_layout Standard
 As already shown in previous examples, the
 \family typewriter
-Engine
+ Engine
 \family default
  can only be created via its
 \family typewriter
@@ -7717,7 +7609,7 @@ alterers
 \family default
  A list of
 \family typewriter
-Alterer
+ Alterer
 \family default
 s which are applied to the offspring
 \family typewriter
@@ -7936,12 +7828,12 @@ offspringFraction
 \family default
  Through this property it is possible to define the fraction of offspring
  (and survivors) for evaluating the next generation.
- The fraction value must within the interval
+ The fraction value must within the interval 
 \begin_inset Formula $[0,1]$
 \end_inset
 
 .
- The default value is set to
+ The default value is set to 
 \begin_inset Formula $0.6$
 \end_inset
 
@@ -8080,7 +7972,7 @@ populationSize
 Result
 \family default
  always contains the number of entries defined by this property.
- The default value is set to
+ The default value is set to 
 \begin_inset Formula $50$
 \end_inset
 
@@ -8156,7 +8048,7 @@ individualCreationRetries
  Engine
 \family default
  gives up and accept invalid individuals.
- The default value is set to
+ The default value is set to 
 \begin_inset Formula $10$
 \end_inset
 
@@ -9198,7 +9090,7 @@ Statistics
 Stream
 \family default
  after it is finished.
- It doesn't give you a
+ It doesn't give you a 
 \begin_inset Formula $live$
 \end_inset
 
@@ -9685,7 +9577,7 @@ If no
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -9976,19 +9868,19 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \end_layout
 
 \begin_layout LyX-Code
-    -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2
+       -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    -cp jenetics-@__version__@.jar:app.jar
+       -cp jenetics-@__version__@.jar:app.jar
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    com.foo.bar.MyJeneticsApp
+        com.foo.bar.MyJeneticsApp
 \end_layout
 
 \begin_layout Standard
@@ -10529,11 +10421,12 @@ height "1pt"
 
 \begin_layout Standard
 The parallel nature of the GA implementation requires the creation of streams
+ 
 \begin_inset Formula $t_{i,j}$
 \end_inset
 
  of random numbers which are statistically independent, where the streams
- are numbered with
+ are numbered with 
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
@@ -10833,7 +10726,7 @@ Local
 .
 
 \emph default
- This class assigns every thread a block of
+ This class assigns every thread a block of 
 \begin_inset Formula $2^{56}\thickapprox7,2\cdot10^{16}$
 \end_inset
 
@@ -10842,7 +10735,7 @@ Local
 .
 
 \emph default
- After
+ After 
 \begin_inset Formula $128$
 \end_inset
 
@@ -10930,15 +10823,16 @@ name "par:Leapfrog"
 \end_layout
 
 \begin_layout Standard
-With the leapfrog method each thread
+With the leapfrog method each thread 
 \begin_inset Formula $t\in\left[0,P\right)$
 \end_inset
 
- only consumes the
+ only consumes the 
 \begin_inset Formula $P^{th}$
 \end_inset
 
  random number and jump ahead in the random sequence by the number of threads,
+ 
 \begin_inset Formula $P$
 \end_inset
 
@@ -11187,19 +11081,20 @@ split
 \family typewriter
  nextLong()
 \family default
- will generated the
+ will generated the 
 \begin_inset Formula $s^{th}$
 \end_inset
 
- sub-stream of
+ sub-stream of 
 \begin_inset Formula $p^{th}$
 \end_inset
 
  sub-streams.
+ 
 \begin_inset Formula $s$
 \end_inset
 
- must be within the range of
+ must be within the range of 
 \begin_inset Formula $\left[0,p-1\right)$
 \end_inset
 
@@ -11217,6 +11112,7 @@ split
 jump
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
+ 
 \begin_inset Formula $s$
 \end_inset
 
@@ -11234,6 +11130,7 @@ jump
 jump2
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
+ 
 \begin_inset Formula $2^{s}$
 \end_inset
 
@@ -13822,7 +13719,7 @@ Selector
 \family default
  implementation).
  It is worth the effort to try to express your selection strategy in terms
- of selection property
+ of selection property 
 \begin_inset Formula $P(i)$
 \end_inset
 
@@ -14823,7 +14720,7 @@ Jenetics
 \series default
 \shape default
  contains three different numeric gene and chromosome implementations, which
- can be used to encode a real function,
+ can be used to encode a real function, 
 \begin_inset Formula $f:\,\mathbb{R}\rightarrow\mathbb{R}$
 \end_inset
 
@@ -15141,7 +15038,7 @@ Encoding!Scalar function
 \end_layout
 
 \begin_layout Standard
-Optimizing a function
+Optimizing a function 
 \begin_inset Formula $f\left(x_{1},...,x_{n}\right)$
 \end_inset
 
@@ -15157,7 +15054,7 @@ key "MathWorld_Weisstein"
 \emph on
  first
 \emph default
- encoding we expect that all variables,
+ encoding we expect that all variables, 
 \begin_inset Formula $x_{i}$
 \end_inset
 
@@ -15174,7 +15071,7 @@ key "MathWorld_Weisstein"
 \SpecialChar softhyphen
 Chromosome
 \family default
- of the desired length
+ of the desired length 
 \begin_inset Formula $n$
 \end_inset
 
@@ -15227,7 +15124,7 @@ Chromosome
  DoubleChromosome.\SpecialChar softhyphen
 toArray()
 \family default
- method we return the variables
+ method we return the variables 
 \begin_inset Formula $\left(x_{1},...,x_{n}\right)$
 \end_inset
 
@@ -15430,7 +15327,7 @@ As already mentioned, with the use of scalar chromosomes we can only use
 \family default
 ,
 \family typewriter
-GaussianAlterer
+ GaussianAlterer
 \family default
  or
 \family typewriter
@@ -15497,7 +15394,7 @@ Encoding!Vector function
 \end_layout
 
 \begin_layout Standard
-A function
+A function 
 \begin_inset Formula $f\left(X_{1},...,X_{n}\right)$
 \end_inset
 
@@ -15505,20 +15402,20 @@ A function
 \begin_inset Formula $n$
 \end_inset
 
- variables whose range is
+ variables whose range is 
 \begin_inset Formula $m$
 \end_inset
 
--dimensional, is encoded by
+-dimensional, is encoded by 
 \begin_inset Formula $m$
 \end_inset
 
 
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
-s of length
+s of length 
 \begin_inset Formula $n$
 \end_inset
 
@@ -15529,7 +15426,7 @@ key "MathWorld_Weisstein2"
 
 \end_inset
 
- The domain–minimum and maximum values–of one variable
+ The domain–minimum and maximum values–of one variable 
 \begin_inset Formula $X_{i}$
 \end_inset
 
@@ -15664,7 +15561,7 @@ static double[][] toVectors(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Standard
-For the special case of
+For the special case of 
 \begin_inset Formula $n=1$
 \end_inset
 
@@ -15793,7 +15690,7 @@ https://en.wikipedia.org/wiki/Homogeneous_coordinates
 \end_inset
 
 .
- For a transformation in
+ For a transformation in 
 \begin_inset Formula $\mathbb{R}^{2}$
 \end_inset
 
@@ -16092,7 +15989,7 @@ a_{23} & = & t_{y}\nonumber
 
 \end_inset
 
-This corresponds to an transformation order of
+This corresponds to an transformation order of 
 \begin_inset Formula $T\cdot S_{h}\cdot S_{c}\cdot R$
 \end_inset
 
@@ -16253,7 +16150,7 @@ For the introduced encoding all kind of alterers can be used.
  Double\SpecialChar softhyphen
 Chromosome
 \family default
-, the rotation angle
+, the rotation angle 
 \begin_inset Formula $\theta$
 \end_inset
 
@@ -16334,19 +16231,19 @@ Encoding!Undirected graph
 
 \begin_layout Standard
 In an undirected graph the edges between the vertices have no direction.
- If there is a path between nodes
+ If there is a path between nodes 
 \begin_inset Formula $i$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $j$
 \end_inset
 
-, it is assumed that there is also path from
+, it is assumed that there is also path from 
 \begin_inset Formula $j$
 \end_inset
 
- to
+ to 
 \begin_inset Formula $i$
 \end_inset
 
@@ -16451,26 +16348,26 @@ final Genotype<BitGene> gt = Genotype.of(BitChromosome.of(n), n);
 
 \begin_layout Standard
 The code snippet above shows how to create an adjacency matrix for a graph
- with
+ with 
 \begin_inset Formula $n=6$
 \end_inset
 
  nodes.
- It creates a genotype which consists of
+ It creates a genotype which consists of 
 \begin_inset Formula $n$
 \end_inset
 
 
 \family typewriter
-Bit\SpecialChar softhyphen
+ Bit\SpecialChar softhyphen
 Chromosome
 \family default
-s of length
+s of length 
 \begin_inset Formula $n$
 \end_inset
 
  each.
- Whether the node
+ Whether the node 
 \begin_inset Formula $i$
 \end_inset
 
@@ -17417,7 +17314,7 @@ reference "lis:Codec-factory-method-ofVector"
 \family default
  for an
 \family typewriter
-int[]
+ int[]
 \family default
  array.
  The
@@ -17794,7 +17691,7 @@ reference "subsec:0/1-Knapsack-example"
  SET
 \family default
 , where the sum of the values is as big as possible, but smaller or equal
- than
+ than 
 \begin_inset Formula $20$
 \end_inset
 
@@ -17969,11 +17866,11 @@ https://en.wikipedia.org/wiki/Subset_sum_problem
 \end_inset
 
 Given a set (or multi-set) of integers, is there a non-empty subset whose
- sum is zero? For example, given the set
+ sum is zero? For example, given the set 
 \begin_inset Formula $\left\{ -7,-3,-2,5,8\right\} $
 \end_inset
 
-, the answer is yes because the subset
+, the answer is yes because the subset 
 \begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
 \end_inset
 
@@ -18856,9 +18753,9 @@ class Main {
 If you have to combine more than one Codec into one, you have to use the
  second, more general,
 \emph on
-combining
+ combining
 \emph default
- function:
+ function: 
 \family typewriter
 Codec\SpecialChar softhyphen
 .of(\SpecialChar softhyphen
@@ -19652,7 +19549,7 @@ Creating your own
 \family default
 ,
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  and
 \family typewriter
@@ -19770,12 +19667,12 @@ reference "subsec:0/1-Knapsack-example"
 
 \end_inset
 
-) with
+) with 
 \begin_inset Formula $250$
 \end_inset
 
  items.
- This makes it a real problem with a search-space size of
+ This makes it a real problem with a search-space size of 
 \begin_inset Formula $2^{250}\thickapprox10^{75}$
 \end_inset
 
@@ -20174,7 +20071,7 @@ reference "fig:Fixed-generation-diagram"
 \emph default
 ,
 \emph on
-
+ 
 \begin_inset Formula $25^{th}$
 \end_inset
 
@@ -20182,11 +20079,11 @@ percentile
 \emph default
 ,
 \emph on
-median
+ median
 \emph default
 ,
 \emph on
-
+ 
 \begin_inset Formula $75^{th}$
 \end_inset
 
@@ -20196,7 +20093,7 @@ median
 \emph on
  max
 \emph default
- fitness after
+ fitness after 
 \begin_inset Formula $250$
 \end_inset
 
@@ -20483,7 +20380,7 @@ engine.\SpecialChar softhyphen
 limit
 \family default
  class.
- In the example above, the evolution stream is terminated after
+ In the example above, the evolution stream is terminated after 
 \begin_inset Formula $15$
 \end_inset
 
@@ -20541,6 +20438,7 @@ reference "fig:Steady-fitness-diagram"
  The variation of the total generation is quite big, as shown by the candle-stic
 ks.
  Though the variation can be quite big—the termination test has been repeated
+ 
 \begin_inset Formula $250$
 \end_inset
 
@@ -20631,10 +20529,11 @@ time.\SpecialChar softhyphen
 Clock
 \family default
 , which is used for measure the execution time.
+
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -21118,15 +21017,15 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_inset
 
 For using the fitness convergence strategy you have to specify three parameter.
- The length of the short filter,
+ The length of the short filter, 
 \begin_inset Formula $N_{S}$
 \end_inset
 
-, the length of the long filter,
+, the length of the long filter, 
 \begin_inset Formula $N_{L}$
 \end_inset
 
- and the relative difference between the smoothed fitness values,
+ and the relative difference between the smoothed fitness values, 
 \begin_inset Formula $\epsilon$
 \end_inset
 
@@ -21189,7 +21088,7 @@ reference "fig:Fitness-convergence-diagram-10-30"
 
  shows the termination behavior of the fitness convergence termination strategy.
  It can be seen that the minimum number of evolved generations is the length
- of the long filter,
+ of the long filter, 
 \begin_inset Formula $N_{L}$
 \end_inset
 
@@ -21251,11 +21150,11 @@ reference "fig:Fitness-convergence-diagram-50-150"
 \end_inset
 
  shows the generations needed for terminating the evolution for higher values
- of the
+ of the 
 \begin_inset Formula $N_{S}$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $N_{L}$
 \end_inset
 
@@ -21530,11 +21429,11 @@ reference "par:Mutator"
 \family typewriter
  Engine
 \family default
- of the library for the
+ of the library for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-- and
+- and 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -21563,25 +21462,25 @@ Evolution strategy!
 \end_layout
 
 \begin_layout Standard
-The
+The 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
- algorithm starts by generating
+ algorithm starts by generating 
 \begin_inset Formula $\lambda$
 \end_inset
 
  individuals randomly.
- After evaluating the fitness of all the individuals, all but the
+ After evaluating the fitness of all the individuals, all but the 
 \begin_inset Formula $\mu$
 \end_inset
 
  fittest ones are deleted.
- Each of the
+ Each of the 
 \begin_inset Formula $\mu$
 \end_inset
 
- fittest individuals gets to produce
+ fittest individuals gets to produce 
 \begin_inset Formula $\frac{\lambda}{\mu}$
 \end_inset
 
@@ -21597,15 +21496,15 @@ key "Luke2013Metaheuristics"
 \end_layout
 
 \begin_layout Standard
-To summarize it:
+To summarize it: 
 \begin_inset Formula $\mu$
 \end_inset
 
- is the number of parents which survive, and
+ is the number of parents which survive, and 
 \begin_inset Formula $\lambda$
 \end_inset
 
- is the number of offspring, created by the
+ is the number of offspring, created by the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -21614,31 +21513,31 @@ To summarize it:
 \begin_inset Formula $\lambda$
 \end_inset
 
- should be a multiple of
+ should be a multiple of 
 \begin_inset Formula $\mu$
 \end_inset
 
 .
- ES practitioners usually refer to their algorithm by the choice of
+ ES practitioners usually refer to their algorithm by the choice of 
 \begin_inset Formula $\mu$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $\lambda$
 \end_inset
 
 .
- If we set
+ If we set 
 \begin_inset Formula $\mu=5$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $\lambda=5$
 \end_inset
 
 , then we have a
 \emph on
-
+ 
 \begin_inset Formula $\left(5,20\right)$
 \end_inset
 
@@ -21724,12 +21623,12 @@ reference "lis:mu-lambda-Engine-configuration"
 
 \end_inset
 
- shows how to configure the evolution Engine for
+ shows how to configure the evolution Engine for 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
 -ES.
- The population size is set to
+ The population size is set to 
 \begin_inset Formula $\lambda$
 \end_inset
 
@@ -21746,7 +21645,7 @@ Selector
  Truncation\SpecialChar softhyphen
 Selector
 \family default
- is parameterized with
+ is parameterized with 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -21756,7 +21655,7 @@ Selector
  Truncation\SpecialChar softhyphen
 Selector
 \family default
- only select the
+ only select the 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -21764,7 +21663,7 @@ Selector
 \end_layout
 
 \begin_layout Standard
-There are mainly three levers for the
+There are mainly three levers for the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -21781,18 +21680,18 @@ key "Luke2013Metaheuristics"
 \begin_layout Itemize
 
 \series bold
-Population size
+Population size 
 \begin_inset Formula $\lambda$
 \end_inset
 
 
 \series default
 : This parameter controls the sample size for each population.
- For the extreme case, as
+ For the extreme case, as 
 \begin_inset Formula $\lambda$
 \end_inset
 
- approaches
+ approaches 
 \begin_inset Formula $\infty$
 \end_inset
 
@@ -21802,7 +21701,7 @@ Population size
 \begin_layout Itemize
 
 \series bold
-Survivors size of
+Survivors size of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -21859,14 +21758,14 @@ Selector
 \begin_layout Itemize
 
 \series bold
-Mutation probability
+Mutation probability 
 \begin_inset Formula $p$
 \end_inset
 
 
 \series default
 : A high mutation probability pushes the algorithm toward a fairly random
- search, regardless of the selectivity of
+ search, regardless of the selectivity of 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -21895,7 +21794,7 @@ Evolution strategy!
 \end_layout
 
 \begin_layout Standard
-In the
+In the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -21903,25 +21802,25 @@ In the
 \emph on
 -ES
 \emph default
-, the next generation consists of the selected best
+, the next generation consists of the selected best 
 \begin_inset Formula $\mu$
 \end_inset
 
- parents and the
+ parents and the 
 \begin_inset Formula $\lambda$
 \end_inset
 
  new children.
- This is also the main difference to
+ This is also the main difference to 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
-, where the
+, where the 
 \begin_inset Formula $\mu$
 \end_inset
 
  parents are not part of the next generation.
- Thus the next and all successive generations are
+ Thus the next and all successive generations are 
 \begin_inset Formula $\mu+\lambda$
 \end_inset
 
@@ -21950,7 +21849,7 @@ Jenetics
 \family typewriter
  Engine
 \family default
- configuration for the
+ configuration for the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -22034,7 +21933,7 @@ name "lis:mu-plus-lambda-Engine-configuration"
 \end_layout
 
 \begin_layout Standard
-Since the selected
+Since the selected 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -22043,7 +21942,7 @@ Since the selected
  survivors\SpecialChar softhyphen
 Size
 \family default
- property must be set to
+ property must be set to 
 \begin_inset Formula $\mu$
 \end_inset
 
@@ -22064,11 +21963,11 @@ Selector
 \end_layout
 
 \begin_layout Standard
-Because the best parents are also part of the next generation, the
+Because the best parents are also part of the next generation, the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
--ES may be more exploitative than the
+-ES may be more exploitative than the 
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
@@ -22110,8 +22009,9 @@ internal
 \series default
  part of the official API, they are packed into the delivered jar and can
  be used accordingly.
+
 \emph on
-Be aware that all classes below the
+ Be aware that all classes below the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 internal
@@ -24140,7 +24040,7 @@ https://en.wikipedia.org/wiki/Breadth-first_search
 
  For each node the absolute array offset of the first child is stored, together
  with the child count of the node.
- If the node has no children, the child offset is set to
+ If the node has no children, the child offset is set to 
 \begin_inset Formula $-1$
 \end_inset
 
@@ -24756,12 +24656,12 @@ key "dawkins1986"
 \end_layout
 
 \begin_layout Standard
-The search space of the 28 character long target string is
+The search space of the 28 character long target string is 
 \begin_inset Formula $27^{28}\approx10^{40}$
 \end_inset
 
 .
- If the monkey writes
+ If the monkey writes 
 \begin_inset Formula $1,000,000$
 \end_inset
 
@@ -24769,12 +24669,12 @@ The search space of the 28 character long target string is
 \emph on
  sentences
 \emph default
- per second, it would take about
+ per second, it would take about 
 \begin_inset Formula $10^{26}$
 \end_inset
 
  years (in average) writing the correct one.
- Although Dawkins did not provide the source code for his program, a
+ Although Dawkins did not provide the source code for his program, a 
 \begin_inset Quotes ald
 \end_inset
 
@@ -24802,7 +24702,7 @@ Mutate the characters with an mutation probability of 5%.
 \end_layout
 
 \begin_layout Enumerate
-Compare each new string with the target string
+Compare each new string with the target string 
 \begin_inset Quotes ald
 \end_inset
 
@@ -24832,7 +24732,7 @@ Richard Dawkins was also very careful to point out the limitations of this
 Although the monkey/Shakespeare model is useful for explaining the distinction
  between single-step selection and cumulative selection, it is misleading
  in important ways.
- One of these is that, in each generation of selective
+ One of these is that, in each generation of selective 
 \begin_inset Quotes ald
 \end_inset
 
@@ -24840,7 +24740,7 @@ breeding
 \begin_inset Quotes ard
 \end_inset
 
-, the mutant
+, the mutant 
 \begin_inset Quotes ald
 \end_inset
 
@@ -25144,7 +25044,7 @@ raction of one.
 Fitness\SpecialChar softhyphen
 Threshold
 \family default
-, which is set to
+, which is set to 
 \begin_inset Formula $score_{max}-1$
 \end_inset
 
@@ -25201,7 +25101,7 @@ reference "lis:Weasel-program"
 
 \end_inset
 
-) shows, that the optimal solution is reached in generation
+) shows, that the optimal solution is reached in generation 
 \begin_inset Formula $46$
 \end_inset
 
@@ -25665,23 +25565,23 @@ The
  terminal
 \emph default
  operations defined in the listing above can be used for defining a program
- which takes a
+ which takes a 
 \begin_inset Formula $3$
 \end_inset
 
--dimensional vector as input parameters,
+-dimensional vector as input parameters, 
 \begin_inset Formula $x$
 \end_inset
 
-,
+, 
 \begin_inset Formula $y$
 \end_inset
 
-, and
+, and 
 \begin_inset Formula $z$
 \end_inset
 
-, with the argument indices
+, with the argument indices 
 \begin_inset Formula $0$
 \end_inset
 
@@ -25689,7 +25589,7 @@ The
 \begin_inset Formula $1$
 \end_inset
 
-, and
+, and 
 \begin_inset Formula $2$
 \end_inset
 
@@ -25709,7 +25609,7 @@ The
 \end_inset
 
  will return the first element of the input arguments, because it has been
- created with index
+ created with index 
 \begin_inset Formula $0$
 \end_inset
 
@@ -25889,7 +25789,7 @@ Op.arity
 
 \end_inset
 
- of depth
+ of depth 
 \begin_inset Formula $5$
 \end_inset
 
@@ -26045,7 +25945,7 @@ Program repair
 \begin_layout Standard
 The specialized crossover class,
 \family typewriter
-Single\SpecialChar softhyphen
+ Single\SpecialChar softhyphen
 Node\SpecialChar softhyphen
 Crossover
 \family default
@@ -27075,7 +26975,7 @@ Writer
  io.jenetics\SpecialChar softhyphen
 .xml
 \family default
- module will create files roughly
+ module will create files roughly 
 \begin_inset Formula $75\%$
 \end_inset
 
@@ -27442,7 +27342,7 @@ reference "tab:Dieharder-results"
  implementation.
  Beside the
 \family typewriter
-XOR32ShiftRandom
+ XOR32ShiftRandom
 \family default
  class, the
 \family typewriter
@@ -28762,7 +28662,7 @@ reference "eq:Example-real-function"
 
 \end_inset
 
-, in the range of
+, in the range of 
 \begin_inset Formula $\left[0,2\pi\right]$
 \end_inset
 
@@ -28803,7 +28703,7 @@ The GA works with
  Double\SpecialChar softhyphen
 Chromosomes
 \family default
- whose values are restricted to the range
+ whose values are restricted to the range 
 \begin_inset Formula $[0,2\pi]$
 \end_inset
 
@@ -28852,7 +28752,7 @@ The GA will generated an console output like above.
 \emph on
  exact
 \emph default
- result of the function–for the given range–will be
+ result of the function–for the given range–will be 
 \begin_inset Formula $3.389,125,782,8907,939...$
 \end_inset
 
@@ -28928,19 +28828,19 @@ reference "fig:Rastrigin-function"
 
  shows, the Rastrigin function has many local minima, which makes it difficult
  for standard, gradient-based methods to find the global minimum.
- If
+ If 
 \begin_inset Formula $A=10$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $x_{i}\in\left[-5.12,5.12\right]$
 \end_inset
 
-, the function has only one global minimum at
+, the function has only one global minimum at 
 \begin_inset Formula $\mathbf{x}=\mathbf{0}$
 \end_inset
 
- with
+ with 
 \begin_inset Formula $f\left(\mathbf{x}\right)=0$
 \end_inset
 
@@ -29047,7 +28947,7 @@ The console output of the program shows, that
 \emph on
  optimal
 \emph default
- solution after
+ solution after 
 \begin_inset Formula $38$
 \end_inset
 
@@ -29150,11 +29050,11 @@ https://en.wikipedia.org/wiki/Knapsack_problem
  BitChromosome
 \family default
 , one bit for each item.
- If the
+ If the 
 \begin_inset Formula $i^{th}$
 \end_inset
 
- bit is set to one the
+ bit is set to one the 
 \begin_inset Formula $i^{th}$
 \end_inset
 
@@ -29534,7 +29434,7 @@ reference "fig:Evolving-images"
 \end_inset
 
  show the GUI after evolving the default image for about 4,000 generations.
- With the
+ With the 
 \begin_inset Quotes ald
 \end_inset
 
@@ -29547,7 +29447,7 @@ Open
  polygonization
 \emph default
 .
- The
+ The 
 \begin_inset Quotes ald
 \end_inset
 
@@ -29609,7 +29509,7 @@ magnitude In case a polygon
  component
 \emph default
  is going to be mutated, its value will be randomly modified in the uniform
- range of
+ range of 
 \begin_inset Formula $[-m,+m]$
 \end_inset
 
@@ -30136,7 +30036,7 @@ The following example shows how to solve the GP problem with
 \series default
 \shape default
 .
- We are trying to find the polynomial,
+ We are trying to find the polynomial, 
 \begin_inset Formula $4x^{3}-3x^{2}+x$
 \end_inset
 
