@@ -631,7 +631,7 @@ Jenetics
 \series default
  and
 \series bold
-Genetic Programming
+ Genetic Programming
 \series default
  library, respectively, written in modern day Java.
  It is designed with a clear separation of the several algorithm concepts,
@@ -679,7 +679,7 @@ some
  In contrast to other GA implementations, the library uses the concept of
  an evolution
 \emph on
-stream
+ stream
 \emph default
  (
 \family typewriter
@@ -689,12 +689,12 @@ Stream
 ) for executing the evolution steps.
  Since the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  implements the Java
 \family typewriter
-Stream
+ Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
  This chapter describes the design concepts and its implementation.
@@ -705,11 +705,11 @@ status open
 \begin_layout Plain Layout
 The classes described in this chapter reside in the
 \family typewriter
-org.jenetics.base
+ io.jenetics.base
 \family default
  module or
 \family typewriter
-io:jenetics:jenetics:@__version__@
+ io:jenetics:jenetics:@__version__@
 \family default
  artifact, respectively.
 \end_layout
@@ -917,7 +917,6 @@ height "1pt"
 
 \begin_layout Standard
 To give you a first impression of the library usage, lets start with a simple
-
 \begin_inset Quotes ald
 \end_inset
 
@@ -937,32 +936,32 @@ status open
 
 \begin_layout Plain Layout
 
-import org.jenetics.BitChromosome;
+import io.jenetics.BitChromosome;
 \end_layout
 
 \begin_layout Plain Layout
 
-import org.jenetics.BitGene;
+import io.jenetics.BitGene;
 \end_layout
 
 \begin_layout Plain Layout
 
-import org.jenetics.Genotype;
+import io.jenetics.Genotype;
 \end_layout
 
 \begin_layout Plain Layout
 
-import org.jenetics.engine.Engine;
+import io.jenetics.engine.Engine;
 \end_layout
 
 \begin_layout Plain Layout
 
-import org.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionResult;
 \end_layout
 
 \begin_layout Plain Layout
 
-import org.jenetics.util.Factory;
+import io.jenetics.util.Factory;
 \end_layout
 
 \begin_layout Plain Layout
@@ -1088,7 +1087,6 @@ public final class HelloWorld {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -1159,7 +1157,7 @@ Jenetics
 \shape default
  uses the concept of an evolution
 \emph on
-stream
+ stream
 \emph default
  (
 \family typewriter
@@ -1169,12 +1167,12 @@ Stream
 ) for executing the evolution steps.
  Since the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  implements the Java
 \family typewriter
-Stream
+ Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
  Now let's have a closer look at listing
@@ -1190,11 +1188,11 @@ reference "lis:Hello-World-GA"
 \begin_layout Enumerate
 The probably most challenging part, when setting up a new evolution
 \family typewriter
-Engine
+ Engine
 \family default
 , is to transform the problem domain into an appropriate
 \family typewriter
-Genotype
+ Genotype
 \family default
  (factory) representation.
 \begin_inset Foot
@@ -1215,28 +1213,28 @@ reference "subsec:Encoding"
 
  In our example we want to count the number of
 \emph on
-ones
+ ones
 \emph default
  of a
 \family typewriter
-Bit\SpecialChar softhyphen
+ Bit\SpecialChar softhyphen
 Chromosome
 \family default
 .
  Since we are counting only the ones of one chromosome, we are adding only
  one
 \family typewriter
-Bit\SpecialChar softhyphen
+ Bit\SpecialChar softhyphen
 Chromosome
 \family default
  to our
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
  In general, the
 \family typewriter
-Genotype
+ Genotype
 \family default
  can be created with 1 to
 \begin_inset Formula $n$
@@ -1244,7 +1242,6 @@ Genotype
 
  chromosomes.
  For a detailed description of the genotype's structure have a look at section
-
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:Domain-classes-Genotype"
@@ -1266,22 +1263,22 @@ bitCount()
 \family default
 , we have to cast the
 \family typewriter
-Chromosome\SpecialChar softhyphen
+ Chromosome\SpecialChar softhyphen
 <BitGene>
 \family default
  class to the actual used
 \family typewriter
-Bit\SpecialChar softhyphen
+ Bit\SpecialChar softhyphen
 Chromosome
 \family default
  class.
  Since we know for sure that we created the
 \family typewriter
-Genotype
+ Genotype
 \family default
  with a
 \family typewriter
-BitChromosome
+ BitChromosome
 \family default
 , this can be done safely.
  A reference to the
@@ -1290,7 +1287,7 @@ BitChromosome
 \family default
  method is then used as fitness function and passed to the
 \family typewriter
-Engine\SpecialChar softhyphen
+ Engine\SpecialChar softhyphen
 .build
 \family default
  method.
@@ -1299,11 +1296,10 @@ Engine\SpecialChar softhyphen
 \begin_layout Enumerate
 In the third step we are creating the
 \emph on
-evolution
-\emph default
-
+ evolution
 \family typewriter
-Engine
+\emph default
+ Engine
 \family default
 , which is responsible for changing, respectively evolving, a given population.
  The Engine is highly configurable and takes parameters for controlling
@@ -1319,21 +1315,21 @@ reference "subsec:Operation-classes"
 ).
  By changing the used
 \family typewriter
-Executor
+ Executor
 \family default
  service, you control the number of threads, the
 \family typewriter
-Engine
+ Engine
 \family default
  is allowed to use.
  An new
 \family typewriter
-Engine
+ Engine
 \family default
  instance can only be created via its builder, which is created by calling
  the
 \family typewriter
-Engine.builder
+ Engine.builder
 \family default
  method.
 \end_layout
@@ -1341,22 +1337,22 @@ Engine.builder
 \begin_layout Enumerate
 In the last step, we can create a new
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  from our
 \family typewriter
-Engine
+ Engine
 \family default
 .
  The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is the model (or view) of the
 \emph on
-evolutionary
+ evolutionary
 \emph default
  process.
  It serves as a
@@ -1372,18 +1368,18 @@ process handle
  In our example, we simply truncate the stream after 100 generations.
  If you don't limit the stream, the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  will not terminate and run forever.
  The final result, the best
 \family typewriter
-Genotype
+ Genotype
 \family default
  in our example, is then collected with one of the predefined collectors
  of the
 \family typewriter
-EvolutionResult
+ EvolutionResult
 \family default
  class.
 \end_layout
@@ -1399,11 +1395,11 @@ Jenetics
 \shape default
  makes heavy use of the
 \family typewriter
-Stream
+ Stream
 \family default
  and
 \family typewriter
-Collector
+ Collector
 \family default
  classes in Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
@@ -1413,7 +1409,6 @@ Collector
 \begin_layout Standard
 There are many other GA implementations out there and they may slightly
  differ in the order of the single execution steps.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -1550,7 +1545,7 @@ Line (1) creates the initial population and line (2) calculates the fitness
 \family default
  property of the
 \family typewriter
-Engine\SpecialChar softhyphen
+ Engine\SpecialChar softhyphen
 .Builder
 \family default
 .
@@ -1584,13 +1579,13 @@ The basic metaphor of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  library is the
 \emph on
-Evolution Stream
+ Evolution Stream
 \emph default
 
 \begin_inset Index idx
@@ -1606,16 +1601,16 @@ Evolution!Stream
  Therefore it is no longer necessary (and advised) to perform the evolution
  steps in an
 \emph on
-imperative
+ imperative
 \emph default
  way.
  An evolution stream is powered by—and bound to—an
 \emph on
-Evolution Engine
+ Evolution Engine
 \emph default
 , which performs the needed
 \emph on
-evolution
+ evolution
 \emph default
  steps for each generation; the steps are described in the body of the while-loo
 p of listing
@@ -1626,7 +1621,6 @@ reference "lis:Genetic-algorithm"
 \end_inset
 
 .
-
 \end_layout
 
 \begin_layout Standard
@@ -1693,7 +1687,7 @@ reference "fig:Evolution-workflow"
 
  denotes the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Start
 \family default
  object at generation
@@ -1706,7 +1700,7 @@ Start
 
  the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  at the
@@ -1716,17 +1710,17 @@ Result
  generation.
  Once the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  is created, it can be used by multiple
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Streams
 \family default
 , which can be safely used in different execution threads.
  This is possible, because the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  doesn't have any mutable global state.
  It is practically a stateless function,
@@ -1740,7 +1734,7 @@ Engine
 , to an evolved result population.
  The
 \family typewriter
-Engine
+ Engine
 \family default
  function,
 \begin_inset Formula $f_{E}$
@@ -1758,17 +1752,17 @@ non
 \begin_layout Standard
 The evolution process terminates, if the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is truncated and the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  truncation is controlled by the
 \family typewriter
-limit
+ limit
 \family default
  predicate.
  As long as the predicate returns true, the evolution is continued.
@@ -1790,17 +1784,17 @@ reference "subsec:Termination"
 
  At last, the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  is collected from the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  by one of the available
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  collectors.
@@ -1854,60 +1848,60 @@ reference "fig:Evolution-engine-model"
 
  shows the
 \emph on
-static
+ static
 \emph default
  view of the main
 \emph on
-evolution
+ evolution
 \emph default
  classes, together with its dependencies.
  Since the
 \family typewriter
-Engine
+ Engine
 \family default
  class itself is immutable, and can't be changed after creation, it is instantia
 ted (configured) via a builder.
  The
 \family typewriter
-Engine
+ Engine
 \family default
  can be used to create an arbitrary number of
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 s.
  The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is used to control the evolutionary process and collect the final result.
  This is done in the same way as for the normal
 \family typewriter
-java.\SpecialChar softhyphen
+ java.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 stream.\SpecialChar softhyphen
 Stream
 \family default
-classes.
+ classes.
  With the additional
 \family typewriter
-limit(Predicate)
+ limit(Predicate)
 \family default
  method, it is possible to truncate the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  if some termination criteria is fulfilled.
  The separation of
 \family typewriter
-Engine
+ Engine
 \family default
  and
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is the separation of the evolution definition and evolution execution.
@@ -1976,19 +1970,19 @@ reference "fig:Package-structure"
 \begin_layout Description
 
 \family typewriter
-org.jenetics
+io.jenetics
 \family default
  This is the base package of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  library and contains all domain classes, like
 \family typewriter
-Gene
+ Gene
 \family default
 ,
 \family typewriter
@@ -1996,18 +1990,18 @@ Chromosome
 \family default
  or
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
  Most of this types are immutable data classes and doesn't implement any
  behavior.
  It also contains the
 \family typewriter
-Selector
+ Selector
 \family default
  and
 \family typewriter
-Alterer
+ Alterer
 \family default
  interfaces and its implementations.
  The classes in this package are (almost) sufficient to implement an own
@@ -2017,14 +2011,13 @@ Alterer
 \begin_layout Description
 
 \family typewriter
-org.jenetics.engine
+io.jenetics.engine
 \family default
  This package contains the actual GA implementation classes, e.
 \begin_inset space ~
 \end_inset
 
 g.
-
 \family typewriter
 Engine
 \family default
@@ -2035,14 +2028,13 @@ Stream
 \family default
  or
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
 .
  They mainly operate on the domain classes of the
 \family typewriter
-org.\SpecialChar softhyphen
-jenetics
+ io.jenetics
 \family default
  package.
 \end_layout
@@ -2052,19 +2044,18 @@ jenetics
 \family typewriter
 org.jenetics.stat
 \family default
-This package contains additional statistics classes which are not available
+ This package contains additional statistics classes which are not available
  in the Java core library.
  Java only includes classes for calculating the sum and the average of a
  given
 \emph on
-numeric
+ numeric
 \emph default
  stream (e.
 \begin_inset space ~
 \end_inset
 
 g.
-
 \family typewriter
 Double\SpecialChar softhyphen
 Summary\SpecialChar softhyphen
@@ -2074,14 +2065,14 @@ Statistics
  With the additions in this package it is also possible to calculate the
  variance, skewness and kurtosis—using the
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Moment\SpecialChar softhyphen
 Statistics
 \family default
  class.
  The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  object, which can be calculated for every generation, relies on the classes
@@ -2103,33 +2094,33 @@ ISeq
 \family default
  and
 \family typewriter
-MS
+ MS
 \family default
 eq) which are used in the public interfaces of the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  and
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
  It also contains the
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Registry
 \family default
  class, which implements the global PRNG lookup, as well as helper
 \family typewriter
-IO
+ IO
 \family default
  classes for serializing
 \family typewriter
-Genotype
+ Genotype
 \family default
 s and whole
 \family typewriter
-Population
+ Population
 \family default
 s.
 \end_layout
@@ -2161,7 +2152,7 @@ This chapter describes the main classes which are needed to setup and run
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -2199,16 +2190,16 @@ Domain
 classes This classes form the domain model of the evolutionary algorithm
  and contain the structural classes like
 \family typewriter
-Gene
+ Gene
 \family default
  and
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 .
  They are located in the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics
 \family default
  package.
@@ -2221,16 +2212,16 @@ Operation
 
 classes This classes operates on the domain classes and includes the
 \family typewriter
-Alterer
+ Alterer
 \family default
  and
 \family typewriter
-Selector
+ Selector
 \family default
  classes.
  They are also located in the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics
 \family default
  package.
@@ -2244,7 +2235,7 @@ Engine
 classes This classes implements the actual evolutionary algorithm and reside
  solely in the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .engine
 \family default
@@ -2268,7 +2259,7 @@ Domain classes
 \begin_layout Standard
 Most of the domain classes are pure data classes and can be treated as
 \emph on
-value
+ value
 \emph default
  objects
 \begin_inset Foot
@@ -2293,24 +2284,24 @@ https://en.wikipedia.org/wiki/Value_object
 .
  All
 \family typewriter
-Gene
+ Gene
 \family default
  and
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  implementations are immutable as well as the
 \family typewriter
-Genotype
+ Genotype
 \family default
  and
 \family typewriter
-Phenotype
+ Phenotype
 \family default
  class.
  The only exception is the
 \family typewriter
-Population
+ Population
 \family default
  class, where it is possible to add and/or remove elements after it's creation.
 \end_layout
@@ -2374,7 +2365,7 @@ reference "fig:Domain-model"
  shows the class diagram of the domain classes.
  All domain classes are located in the
 \family typewriter
-org.jenetics
+ org.jenetics
 \family default
  package.
  The
@@ -2467,12 +2458,12 @@ Allele
 .
  Some of the implementations also contains domain information of the
 \emph on
-wrapped
+ wrapped
 \emph default
  allele.
  This is the case for all
 \family typewriter
-Bounded\SpecialChar softhyphen
+ Bounded\SpecialChar softhyphen
 Gene
 \family default
 , which contain the allowed minimum and maximum values.
@@ -2516,17 +2507,17 @@ http://blog.joda.org/2014/03/valjos-value-java-objects.html
 \begin_layout Standard
 Beside the container functionality for the allele, every
 \family typewriter
-Gene
+ Gene
 \family default
  is its own factory and is able to create new, random instances of the same
  type and with the same constraints.
  The factory methods are used by the
 \family typewriter
-Alterer
+ Alterer
 \family default
 s for creating new
 \family typewriter
-Gene
+ Gene
 \family default
 s from the existing one and play a crucial role by the exploration of the
  problem space.
@@ -2612,12 +2603,12 @@ reference "lis:Gene-interface"
 
  shows the most important methods of the
 \family typewriter
-Gene
+ Gene
 \family default
  interface.
  The
 \family typewriter
-isValid
+ isValid
 \begin_inset Index idx
 status collapsed
 
@@ -2641,7 +2632,7 @@ Validation
 \family default
  method, introduced by the
 \family typewriter
-Verifiable
+ Verifiable
 \family default
  interface, allows the gene to mark itself as invalid.
  All invalid genes are replaced with new ones during the evolution phase.
@@ -2650,7 +2641,7 @@ Verifiable
 \begin_layout Standard
 The available
 \family typewriter
-Gene
+ Gene
 \family default
  implementations in the
 \family sans
@@ -2670,7 +2661,7 @@ reference "subsec:Genes"
 
  for how to implement your own
 \family typewriter
-Gene
+ Gene
 \family default
  types.
 \end_layout
@@ -2699,37 +2690,37 @@ Chromosome
 \begin_layout Standard
 A
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  is a collection of
 \family typewriter
-Gene
+ Gene
 \family default
 s which contains at least one
 \family typewriter
-Gene
+ Gene
 \family default
 .
  This allows to encode problems which requires more than one
 \family typewriter
-Gene
+ Gene
 \family default
 .
  Like the
 \family typewriter
-Gene
+ Gene
 \family default
  interface, the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  is also it's own factory and allows to create a new
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  from a given
 \family typewriter
-Gene
+ Gene
 \family default
  sequence.
 \end_layout
@@ -2819,37 +2810,37 @@ reference "lis:Chromosome-interface"
 
  shows the main methods of the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  interface.
  This are the methods for accessing single
 \family typewriter
-Gene
+ Gene
 \family default
 s by index and as an
 \family typewriter
-ISeq
+ ISeq
 \family default
  respectively, and the factory method for creating a new
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  from a given sequence of
 \family typewriter
-Gene
+ Gene
 \family default
 s.
  The factory method is used by the
 \family typewriter
-Alterer
+ Alterer
 \family default
  classes which were able to create altered
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  from a (changed)
 \family typewriter
-Gene
+ Gene
 \family default
  sequence.
 \end_layout
@@ -2878,7 +2869,7 @@ Genotype
 \begin_layout Standard
 The central class, the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  is working with, is the
 \family typewriter
@@ -2901,17 +2892,17 @@ some
 s.
  All
 \family typewriter
-Chromo\SpecialChar softhyphen
+ Chromo\SpecialChar softhyphen
 some
 \family default
 s must be parameterized with the same
 \family typewriter
-Gene
+ Gene
 \family default
  type, but it is allowed to have different lengths and constraints.
  The allowed minimal- and maximal values of a
 \family typewriter
-Numeric\SpecialChar softhyphen
+ Numeric\SpecialChar softhyphen
 Chromosome
 \family default
  is an example of such a constraint.
@@ -2981,12 +2972,12 @@ reference "fig:Genotype-structure"
 
  shows the
 \family typewriter
-Genotype
+ Genotype
 \family default
  structure.
  A
 \family typewriter
-Genotype
+ Genotype
 \family default
  consists of
 \begin_inset Formula $N_{G}$
@@ -2998,7 +2989,7 @@ Chromosome
 \family default
 s and a
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  consists of
 \begin_inset Formula $N_{C[i]}$
@@ -3010,24 +3001,24 @@ Gene
 \family default
 s (depending on the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 ).
  The overall number of
 \family typewriter
-Gene
+ Gene
 \family default
 s of a
 \family typewriter
-Genotype
+ Genotype
 \family default
  is given by the sum of the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 's
 \family typewriter
-Gene
+ Gene
 \family default
 s, which can be accessed via the
 \family typewriter
@@ -3038,7 +3029,7 @@ Of\SpecialChar softhyphen
 Genes()
 \family default
  method:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 \end{equation}
@@ -3047,20 +3038,20 @@ N_{g}=\sum_{i=0}^{N_{G}-1}N_{C[i]}\label{eq:Number of genes}
 
 As already mentioned, the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s of a
 \family typewriter
-Genotype
+ Genotype
 \family default
  doesn't have to have necessarily the same size.
  It is only required that all genes are from the same type and the
 \family typewriter
-Gene
+ Gene
 \family default
 s within a
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  have the same constraints; e.
 \begin_inset space ~
@@ -3069,7 +3060,7 @@ Chromosome
 g.
  the same min- and max values for numerical
 \family typewriter
-Gene
+ Gene
 \family default
 s.
 \end_layout
@@ -3118,7 +3109,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \begin_layout Standard
 The code snippet in the listing above creates a
 \family typewriter
-Genotype
+ Genotype
 \family default
  with the same structure as shown in figure
 \begin_inset CommandInset ref
@@ -3135,7 +3126,7 @@ Gene
 \family default
  has been chosen as
 \family typewriter
-Gene
+ Gene
 \family default
  type.
 \end_layout
@@ -3161,25 +3152,25 @@ Genotype!vector
 \begin_layout Standard
 The
 \family typewriter
-Genotype
+ Genotype
 \family default
  is essentially a two-dimensional composition of
 \family typewriter
-Gene
+ Gene
 \family default
 s.
  This makes it trivial to create
 \family typewriter
-Genotype
+ Genotype
 \family default
 s which can be treated as a
 \family typewriter
-Gene
+ Gene
 \family default
  matrices.
  If its needed to create a vector of
 \family typewriter
-Gene
+ Gene
 \family default
 s, there are two possibilities to do so:
 \end_layout
@@ -3187,7 +3178,7 @@ s, there are two possibilities to do so:
 \begin_layout Enumerate
 creating a
 \emph on
-row-major
+ row-major
 \emph default
  or
 \end_layout
@@ -3195,7 +3186,7 @@ row-major
 \begin_layout Enumerate
 creating a
 \emph on
-column-major
+ column-major
 \end_layout
 
 \begin_layout Standard
@@ -3234,7 +3225,7 @@ name "fig:Row-major-genotype-vector"
 
 Row-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector
 \end_layout
@@ -3259,12 +3250,12 @@ reference "fig:Row-major-genotype-vector"
 
  shows a
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector in row-major layout.
  A
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector of length
 \begin_inset Formula $n$
@@ -3272,7 +3263,7 @@ Genotype
 
  needs one
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  of length
 \begin_inset Formula $n$
@@ -3281,7 +3272,7 @@ Chromosome
 .
  Each
 \family typewriter
-Gene
+ Gene
 \family default
  of such a vector obeys the same constraints.
  E.
@@ -3290,32 +3281,32 @@ Gene
 
 g., for
 \family typewriter
-Genotype
+ Genotype
 \family default
  vectors containing
 \family typewriter
-Numeric\SpecialChar softhyphen
+ Numeric\SpecialChar softhyphen
 Gene
 \family default
 s, all
 \family typewriter
-Gene
+ Gene
 \family default
 s must have the same minimum and maximum values.
  If the problem space doesn't need to have different minimum and maximum
  values, the row-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector is the preferred choice.
  Beside the easier
 \family typewriter
-Geno\SpecialChar softhyphen
+ Geno\SpecialChar softhyphen
 type
 \family default
  creation, the available
 \family typewriter
-Re\SpecialChar softhyphen
+ Re\SpecialChar softhyphen
 com\SpecialChar softhyphen
 bi\SpecialChar softhyphen
 na\SpecialChar softhyphen
@@ -3360,16 +3351,16 @@ height "1pt"
 \family sans
 If the problem space allows equal
 \family typewriter
-Gene
+ Gene
 \family sans
  constraint, the row-major
 \family typewriter
-Genotype
+ Genotype
 \family sans
  vector encoding should be chosen.
  It is easier to create and the available
 \family typewriter
-Recombinator
+ Recombinator
 \family sans
  classes are more efficient in exploring the search domain.
 \end_layout
@@ -3394,20 +3385,20 @@ height "1pt"
 \begin_layout Standard
 The following code snippet shows the creation of a row-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector.
  All
 \family typewriter
-Alterer
+ Alterer
 \family default
 s derived from the
 \family typewriter
-Recombinator
+ Recombinator
 \family default
  do a fairly good job in exploring the problem space for row-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector.
 \end_layout
@@ -3444,7 +3435,7 @@ Genotype<DoubleGene> genotype = Genotype.of(
 
 The column-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector layout must be chosen when the problem space requires components
  (
@@ -3454,12 +3445,12 @@ Gene
 s) with different constraints.
  This is almost the
 \emph on
-only
+ only
 \emph default
  reason for choosing the column-major layout.
  The layout of this
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector is shown in
 \begin_inset CommandInset ref
@@ -3483,7 +3474,7 @@ Chromosome
 \family default
 s of length
 \emph on
-one
+ one
 \emph default
  are needed.
 \end_layout
@@ -3515,7 +3506,7 @@ name "fig:Column-major-genotype-vector"
 
 Column-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector
 \end_layout
@@ -3533,21 +3524,21 @@ Genotype
 \begin_layout Standard
 The code snippet below shows how to create a
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector in column-major layout.
  It's a little more effort to create such a vector, since every
 \family typewriter
-Gene
+ Gene
 \family default
  has to be wrapped into a separate
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 .
  The
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
  in the given example has length of one, when the length parameter is omitted.
@@ -3597,30 +3588,30 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \begin_layout Standard
 The greater flexibility of a column-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vector has to be payed with a lower exploration capability of the
 \family typewriter
-Recombinator
+ Recombinator
 \family default
  alterers.
  Using
 \family typewriter
-Crossover
+ Crossover
 \family default
  alterers will have the same effect as the
 \family typewriter
-Swap\SpecialChar softhyphen
+ Swap\SpecialChar softhyphen
 Mutator
 \family default
 , when used with row-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vectors.
  Recommended alterers for vectors of
 \family typewriter
-Numeric\SpecialChar softhyphen
+ Numeric\SpecialChar softhyphen
 Gene
 \family default
 s are:
@@ -3733,18 +3724,18 @@ Genotype!scalar
 \begin_layout Standard
 A very special case of a
 \family typewriter
-Genotype
+ Genotype
 \family default
  contains only one
 \family typewriter
-Chro\SpecialChar softhyphen
+ Chro\SpecialChar softhyphen
 mo\SpecialChar softhyphen
 some
 \family default
  with length one.
  The layout of such a
 \family typewriter
-Genotype
+ Genotype
 \family default
  scalar is shown in
 \begin_inset CommandInset ref
@@ -3756,7 +3747,7 @@ reference "fig:Genotype-scalar"
 .
  Such
 \family typewriter
-Genotype
+ Genotype
 \family default
 s are mostly used for encoding real function problems.
 \end_layout
@@ -3806,17 +3797,17 @@ Genotype
 \begin_layout Standard
 How to create a
 \family typewriter
-Genotype
+ Genotype
 \family default
  for a real function optimization problem, is shown in the code snippet
  below.
  The recommended
 \family typewriter
-Alterer
+ Alterer
 \family default
 s are the same as for column-major
 \family typewriter
-Genotype
+ Genotype
 \family default
  vectors:
 \family typewriter
@@ -3830,7 +3821,7 @@ Crossover
 \family default
  and
 \family typewriter
-Inter\SpecialChar softhyphen
+ Inter\SpecialChar softhyphen
 me\SpecialChar softhyphen
 di\SpecialChar softhyphen
 ate\SpecialChar softhyphen
@@ -3911,7 +3902,7 @@ The
 \emph default
  representative of an individual and consists of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  and the fitness
 \family typewriter
@@ -3919,7 +3910,7 @@ Function
 \family default
 , which is used to (lazily) calculate the
 \family typewriter
-Genotype
+ Genotype
 \family default
 's fitness value.
 \begin_inset Foot
@@ -3957,20 +3948,20 @@ reference "subsubsec:Fitness-function"
 \emph default
  a container which forms the
 \emph on
-environment
+ environment
 \emph default
  of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  and doesn't change the structure.
  Like the
 \family typewriter
-Genotype
+ Genotype
 \family default
 , the
 \family typewriter
-Phenotype
+ Phenotype
 \family default
  is immutable and can't be changed after creation.
 \end_layout
@@ -4070,21 +4061,21 @@ reference "lis:Phenotype-class"
 
  shows the main methods of the
 \family typewriter
-Pheno\SpecialChar softhyphen
+ Pheno\SpecialChar softhyphen
 type
 \family default
 .
  The
 \family typewriter
-fitness
+ fitness
 \family default
  property will return the actual fitness value of the
 \family typewriter
-Genotype
+ Genotype
 \family default
 , which can be fetched with the
 \family typewriter
-get\SpecialChar softhyphen
+ get\SpecialChar softhyphen
 Geno\SpecialChar softhyphen
 type
 \family default
@@ -4093,33 +4084,33 @@ type
  lazily.
  Either by querying the
 \family typewriter
-fitness
+ fitness
 \family default
  property or through the call of the
 \family typewriter
-evaluate
+ evaluate
 \family default
  method.
  The evolution
 \family typewriter
-Engine
+ Engine
 \family default
  is calling the evaluate method in a separate step and makes the fitness
  evaluation time available through the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Durations
 \family default
  class.
  Additionally to the fitness value, the
 \family typewriter
-Phenotype
+ Phenotype
 \family default
  contains the generation when it was created.
  This allows to calculate the current age and the removal of overaged individual
 s from the
 \family typewriter
-Population
+ Population
 \family default
 .
 \end_layout
@@ -4148,7 +4139,7 @@ Population
 \begin_layout Standard
 The end of the class hierarchy of the domain model is the
 \family typewriter
-Population
+ Population
 \family default
 .
  It is a collection of individuals and forms the start and the end of an
@@ -4245,27 +4236,27 @@ reference "lis:Population-class"
 
  gives on overview of the most important methods of the
 \family typewriter
-Population
+ Population
 \family default
  class.
  In addition to the
 \family typewriter
-List
+ List
 \family default
  methods, it provides a method for sorting the
 \family typewriter
-Phenotype
+ Phenotype
 \family default
 s.
  Some
 \family typewriter
-Selector
+ Selector
 \family default
  implementations require a sorted list of individuals according its fitness
  value.
  Calling
 \family typewriter
-population.\SpecialChar softhyphen
+ population.\SpecialChar softhyphen
 sortWith(\SpecialChar softhyphen
 optimize\SpecialChar softhyphen
 .descending()\SpecialChar softhyphen
@@ -4273,7 +4264,7 @@ optimize\SpecialChar softhyphen
 \family default
  will sort the
 \family typewriter
-Population
+ Population
 \family default
 , so that the first element will be the individual with the best fitness.
 \end_layout
@@ -4332,7 +4323,7 @@ Selector
  library.
  It also contains some
 \emph on
-theoretical
+ theoretical
 \emph default
  information, which should help you to choose the right combination of operators
  and parameters, for the problem to be solved.
@@ -4416,25 +4407,25 @@ height "1pt"
 The selection process of the
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \series default
 \shape default
  library acts on
 \family typewriter
-Phenotype
+ Phenotype
 \family sans
 s and indirectly, via the fitness function, on
 \family typewriter
-Genotype
+ Genotype
 \family sans
 s.
  Direct
 \family typewriter
-Gene
+ Gene
 \family sans
 - or
 \family typewriter
-Population
+ Population
 \family sans
  selection is not supported by the library.
 \end_layout
@@ -4502,7 +4493,7 @@ The
 \end_inset
 
 , determines the number of selected offspring
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{O_{g}}=\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right\Vert \cdot f_{O}\right)
 \end{equation}
@@ -4510,7 +4501,7 @@ N_{O_{g}}=\left\Vert O_{g}\right\Vert =\textrm{rint}\left(\left\Vert P_{g}\right
 \end_inset
 
 and the number of selected survivors
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 N_{S_{g}}=\left\Vert S_{g}\right\Vert =\left\Vert P_{g}\right\Vert -\left\Vert O_{g}\right\Vert .
 \end{equation}
@@ -4525,7 +4516,7 @@ The
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -4720,12 +4711,12 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
  individuals are sorted according to their fitness.
  (This is one of the selectors, which relies on the
 \family typewriter
-sort\SpecialChar softhyphen
+ sort\SpecialChar softhyphen
 With
 \family default
  method of the
 \family typewriter
-Pop\SpecialChar softhyphen
+ Pop\SpecialChar softhyphen
 ulation
 \family default
  class.) Only the
@@ -4858,7 +4849,7 @@ reference "fig:Fitness-proportional-selection"
 \end_inset
 
  specifies which individual is selected, by argument minimization:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 i\leftarrow\underset{n\in\left[0,N\right)}{\textrm{argmin}}\left\{ r<\sum_{i=0}^{n}f_{i}\right\} ,
 \end{equation}
@@ -4893,7 +4884,7 @@ where
 \end_inset
 
  follows a binomial distribution
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P(i,k)=\left(\begin{array}{c}
 n\\
@@ -4974,7 +4965,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
 \end_inset
 
 .
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
 \end{equation}
@@ -5035,7 +5026,7 @@ In linear-ranking selection the individuals are sorted according to their
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
@@ -5102,7 +5093,7 @@ An alternative to the
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
@@ -5158,7 +5149,7 @@ name "par:Boltzmann-selector"
 
 \begin_layout Standard
 The selection probability of the Boltzmann selector is defined as
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P(i)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
@@ -5174,7 +5165,7 @@ where
 \end_inset
 
  is defined as
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 Z=\sum_{i=1}^{n}\textrm{e}^{f_{i}}.
 \end{equation}
@@ -5241,7 +5232,6 @@ key "back1996evolutionary"
  SUS uses a single random value for selecting individuals by choosing them
  at equally spaced intervals.
  The selection method was introduced by James Baker.
-
 \begin_inset CommandInset citation
 LatexCommand cite
 key "baker1987selection"
@@ -5334,7 +5324,7 @@ name "subsec:Alterer"
 The problem encoding (representation) determines the bounds of the search
  space, but the
 \family typewriter
-Alterer
+ Alterer
 \family default
 s determine how the space can be traversed:
 \family typewriter
@@ -5342,13 +5332,13 @@ Alterer
 \family default
 s are responsible for the genetic diversity of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
  The two
 \family typewriter
-Alterer
+ Alterer
 \family default
  types used in
 \family sans
@@ -5378,7 +5368,6 @@ recombination (e.
 \end_inset
 
 g.
-
 \begin_inset CommandInset href
 LatexCommand href
 name "crossover"
@@ -5465,7 +5454,7 @@ The mutation probability,
 , is defined as the probability that a specific gene, over the whole population,
  is mutated.
  That means, the (average) number of genes mutated by a mutator is
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \hat{\mu}=N_{P}\cdot N_{g}\cdot P(m)
 \end{equation}
@@ -5582,7 +5571,7 @@ The needed
  sub
 \emph default
 -selection probabilities are set to
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 P_{G}(m)=P_{C}(m)=P_{g}(m)=\sqrt[3]{P(m)}.
 \end{equation}
@@ -5619,7 +5608,7 @@ The Gaussian mutator performs the mutation of number genes.
  the current value of the gene.
  The variance of the new value (before clipping to the allowed gene range)
  will be
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \hat{\sigma}^{2}=\left(\frac{g_{max}-g_{min}}{4}\right)^{2}
 \end{equation}
@@ -5893,12 +5882,12 @@ reference "lis:Chromosome-selection-recombination"
 
  shows how two chromosomes are selected for
 \emph on
-recombination
+ recombination
 \emph default
 .
  It is done this way for preserving the given
 \emph on
-constraints
+ constraints
 \emph default
  and to avoid the creation of invalid individuals.
 \end_layout
@@ -5942,23 +5931,23 @@ height "1pt"
 \emph on
 Because of the possible different
 \family typewriter
-Chromosome
+ Chromosome
 \family sans
  length and/or
 \family typewriter
-Chromosome
+ Chromosome
 \family sans
  constraints within a
 \family typewriter
-Genotype
+ Genotype
 \family sans
 , only
 \family typewriter
-Chromosome
+ Chromosome
 \family sans
 s with the same
 \family typewriter
-Genotype
+ Genotype
 \family sans
  position are recombined
 \family default
@@ -6401,7 +6390,6 @@ end{multicols}
 \begin_layout Standard
 The PMX is similar to the two-point crossover.
  A crossing region is chosen by selecting two crossing points (see figure
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6473,7 +6461,6 @@ Crossover!Partially-matched crossover
 \end_inset
 
 After performing the crossover we–normally–got two invalid chromosomes (figure
-
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Partially-matched-crossover"
@@ -6771,7 +6758,7 @@ key "Muhlenbein:1993:PMB:1326623.1326626"
 
  takes two
 \emph on
-numeric
+ numeric
 \emph default
  chromosomes and treats it as a real number vector.
  Each of this vectors can also be seen as a point in
@@ -6853,7 +6840,7 @@ reference "fig:Line-crossover-hypercube"
 , the children may be located on an arbitrary place on the line, even outside
  of the hypercube.This is useful if you want to explore
 \emph on
-unknown
+ unknown
 \emph default
  regions, and you need a way to generate chromosomes further out than the
  parents are.
@@ -6862,13 +6849,13 @@ unknown
 \begin_layout Standard
 The
 \emph on
-internal
+ internal
 \emph default
  random parameters, which define the location of the new crossover point,
  are generated once for the whole vector (chromosome).
  If the
 \family typewriter
-Line\SpecialChar softhyphen
+ Line\SpecialChar softhyphen
 Crossover
 \family default
  generates numeric genes which lie outside the allowed minimum and maximum
@@ -6901,22 +6888,22 @@ name "par:Intermediate-crossover"
 The intermediate crossover is quite similar to the line crossover.
  It differs in the way on how the
 \emph on
-internal
+ internal
 \emph default
  random parameters are generated and the handling of the invalid–out of
  range–genes.
  The
 \emph on
-internal
+ internal
 \emph default
  random parameters of the
 \family typewriter
-Intermediate\SpecialChar softhyphen
+ Intermediate\SpecialChar softhyphen
 Crossover
 \family default
  class are generated for
 \emph on
-each
+ each
 \emph default
  gene of the chromosome, instead once for all genes.
  If the newly generated gene is not within the allowed range, a new one
@@ -6981,18 +6968,18 @@ Engine classes
 \begin_layout Standard
 The
 \emph on
-executing
+ executing
 \emph default
  classes, which perform the actual evolution, are located in the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine
 \family default
  package.
  The
 \emph on
-evolution stream
+ evolution stream
 \begin_inset Index idx
 status collapsed
 
@@ -7012,31 +6999,31 @@ Stream
 ) is the base metaphor for performing an GA.
  On the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  you can define the termination predicate and than collect the final
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
 .
  This decouples the static data structure from the executing evolution part.
  The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is also very flexible, when it comes to collecting the final result.
  The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  class has several predefined collectors, but you are free to create your
  own one, which can be seamlessly
 \emph on
-plugged
+ plugged
 \emph default
  into the existing stream.
 \end_layout
@@ -7070,7 +7057,7 @@ Function
  is also an important part when modeling an genetic algorithm.
  It takes a
 \family typewriter
-Genotype
+ Genotype
 \family default
  as argument and returns, at least, a
 \family typewriter
@@ -7079,12 +7066,11 @@ Genotype
  object as result—the fitness value.
  This allows the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 , respectively the selection operators, to select the offspring- and survivor
-
 \family typewriter
-Population
+ Population
 \family default
 .
  Some selectors have stronger requirements to the fitness value than a
@@ -7135,7 +7121,7 @@ Since the fitness Function is shared by all Phenotypes, calls to the fitness
  In the simplest case, this is achieved by Functions which doesn't contain
  any global
 \shape italic
-mutable
+ mutable
 \shape default
  state.
 \end_layout
@@ -7165,7 +7151,7 @@ Function
 .
  This
 \family typewriter
-Function
+ Function
 \family default
  simply returns the allele of a
 \begin_inset Formula $1\mathsf{x}1$
@@ -7174,10 +7160,9 @@ Function
 
 \shape italic
  float
-\shape default
-
 \family typewriter
-Genotype
+\shape default
+ Genotype
 \family default
 .
 \end_layout
@@ -7273,12 +7258,12 @@ The first type parameter of the
 \family default
  defines the kind of
 \family typewriter
-Genotype
+ Genotype
 \family default
  from which the fitness value is calculated and the second type parameter
  determines the return type, which must be, at least, a
 \family typewriter
-Comparable
+ Comparable
 \family default
  type.
 \end_layout
@@ -7491,28 +7476,27 @@ Evolution!Engine
 \begin_layout Standard
 The
 \emph on
-evolution
-\emph default
-
+ evolution
 \family typewriter
-Engine
+\emph default
+ Engine
 \family default
  controls how the evolution steps are executed.
  Once the Engine is created, via a
 \family typewriter
-Builder
+ Builder
 \family default
  class, it can't be changed.
  It doesn't contain any mutable global state and can therefore safely used/calle
 d from different threads.
  This allows to create more than one
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Streams
 \family default
  from the
 \family typewriter
-Engine
+ Engine
 \family default
  and execute them in parallel.
 \end_layout
@@ -7646,34 +7630,34 @@ reference "lis:Engine-class"
 
  shows the main methods of the
 \family typewriter
-Engine
+ Engine
 \family default
  class.
  It is used for performing the actual evolution of a give population.
  One evolution step is executed by calling the
 \family typewriter
-Engine.\SpecialChar softhyphen
+ Engine.\SpecialChar softhyphen
 evolve
 \family default
  method, which returns an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  object.
  This object contains the evolved
 \family typewriter
-Population
+ Population
 \family default
  plus additional information like execution duration of the several evolution
  sub-steps and information about the killed and as invalid marked individuals.
  With the
 \family typewriter
-stream
+ stream
 \family default
  method you create a new
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 , which is used for controlling the evolution process—see section
@@ -7688,16 +7672,16 @@ reference "subsubsec:EvolutionStream"
  an imperative way (for whatever reasons this should be necessary).
  Just create an
 \family typewriter
-Iterator
+ Iterator
 \family default
  of
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  object by calling the
 \family typewriter
-iterator
+ iterator
 \family default
  method.
 \end_layout
@@ -7709,7 +7693,7 @@ Engine
 \family default
  can only be created via its
 \family typewriter
-Builder
+ Builder
 \family default
  class.
  Only the fitness
@@ -7718,14 +7702,14 @@ Function
 \family default
  and the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s, which represents the problem encoding, must be specified for creating
  an Engine instance.
  For the rest of the parameters default values are specified.
  This are the
 \family typewriter
-Engine
+ Engine
 \family default
  parameters which can configured:
 \end_layout
@@ -7741,18 +7725,18 @@ Alterer
 \family default
 s which are applied to the offspring
 \family typewriter
-Population
+ Population
 \family default
 , in the defined order.
  The default value of this property is set to
 \family typewriter
-Single\SpecialChar softhyphen
+ Single\SpecialChar softhyphen
 Point\SpecialChar softhyphen
 Crossover<>(0.2)
 \family default
  followed by
 \family typewriter
-Mutator<>(0.15)
+ Mutator<>(0.15)
 \family default
 .
 \end_layout
@@ -7764,14 +7748,14 @@ clock
 \family default
  The
 \family typewriter
-java\SpecialChar softhyphen
+ java\SpecialChar softhyphen
 .time\SpecialChar softhyphen
 .Clock
 \family default
  used for calculating the execution durations.
  A
 \family typewriter
-Clock
+ Clock
 \family default
  with nanosecond precision (
 \family typewriter
@@ -7788,7 +7772,7 @@ executor
 \family default
  With this property it is possible to change the
 \family typewriter
-java\SpecialChar softhyphen
+ java\SpecialChar softhyphen
 .util\SpecialChar softhyphen
 .concur\SpecialChar softhyphen
 rent\SpecialChar softhyphen
@@ -7797,12 +7781,12 @@ rent\SpecialChar softhyphen
  engine used for evaluating the evolution steps.
  This property can be used to define an application wide
 \family typewriter
-Executor
+ Executor
 \family default
  or for controlling the number of execution threads.
  The default value is set to
 \family typewriter
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool\SpecialChar softhyphen
 .common\SpecialChar softhyphen
@@ -7822,7 +7806,7 @@ Function
 \family default
  used by the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
  (See section
@@ -7842,7 +7826,7 @@ fitnessScaler
 \family default
  This property defines the fitness scaler used by the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
  The default value is set to the identity function.
@@ -7863,27 +7847,22 @@ genotypeFactory
 \family default
  Defines the
 \family typewriter
-Genotype
-\family default
-
-\family typewriter
-Facto
+ Genotype Facto
 \family default
 ry used for creating new individuals.
  Since the
 \family typewriter
-Genotype
+ Genotype
 \family default
  is its own
 \family typewriter
-Fact
+ Fact
 \family default
 ory, it is sufficient to create a
 \family typewriter
-Genotype
+ Genotype
 \family default
 , which then serves as template.
-
 \end_layout
 
 \begin_layout Description
@@ -7920,17 +7899,17 @@ name "Engine-genotypeValidator"
 
  This property lets you
 \emph on
-override
+ override
 \emph default
  the default implementation of the
 \family typewriter
-Geno\SpecialChar softhyphen
+ Geno\SpecialChar softhyphen
 type\SpecialChar softhyphen
 .isValid
 \family default
  method, which is useful if the
 \family typewriter
-Genotype
+ Genotype
 \family default
  validity not only depends on valid property of the elements it consists
  of.
@@ -7944,11 +7923,11 @@ maximalPhenotypeAge
  Set the maximal allowed age of an individual (Phenotype).
  This prevents
 \emph on
-super
+ super
 \emph default
  individuals to live
 \emph on
-forever
+ forever
 \emph default
 .
  The default value is set to 70.
@@ -7973,24 +7952,24 @@ offspringFraction
 .
  Additionally to this property, it is also possible to set the
 \family typewriter
-survivors\SpecialChar softhyphen
+ survivors\SpecialChar softhyphen
 Frac\SpecialChar softhyphen
 tion
 \family default
 ,
 \family typewriter
-survivors\SpecialChar softhyphen
+ survivors\SpecialChar softhyphen
 Size
 \family default
  or
 \family typewriter
-offspringS\SpecialChar softhyphen
+ offspringS\SpecialChar softhyphen
 ize
 \family default
 .
  All this additional properties effectively set the
 \family typewriter
-offspring\SpecialChar softhyphen
+ offspring\SpecialChar softhyphen
 Frac\SpecialChar softhyphen
 tion
 \family default
@@ -8004,16 +7983,16 @@ offspringSelector
 \family default
  This property defines the
 \family typewriter
-Selector
+ Selector
 \family default
  used for selecting the offspring
 \family typewriter
-Population
+ Population
 \family default
 .
  The default values is set to
 \family typewriter
-Tournament\SpecialChar softhyphen
+ Tournament\SpecialChar softhyphen
 Select\SpecialChar softhyphen
 or<>(3)
 \family default
@@ -8064,17 +8043,17 @@ Phenotype!Validation
 
  This property lets you
 \emph on
-override
+ override
 \emph default
  the default implementation of the
 \family typewriter
-Pheno\SpecialChar softhyphen
+ Pheno\SpecialChar softhyphen
 type\SpecialChar softhyphen
 .isValid
 \family default
  method, which is useful if the
 \family typewriter
-Phenotype
+ Phenotype
 \family default
  validity not only depends on valid property of the elements it consists
  of.
@@ -8087,21 +8066,21 @@ populationSize
 \family default
  Defines the number of individuals of a
 \family typewriter
-Population
+ Population
 \family default
 .
  The evolution
 \family typewriter
-Engine
+ Engine
 \family default
  keeps the number of individuals constant.
  That means, the
 \family typewriter
-Population
+ Population
 \family default
  of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  always contains the number of entries defined by this property.
@@ -8119,11 +8098,11 @@ selector
 \family default
  This method allows to set the
 \family typewriter
-offspringSelector
+ offspringSelector
 \family default
  and
 \family typewriter
-survivors\SpecialChar softhyphen
+ survivors\SpecialChar softhyphen
 Selec\SpecialChar softhyphen
 tor
 \family default
@@ -8137,16 +8116,16 @@ survivorsSelector
 \family default
  This property defines the
 \family typewriter
-Selector
+ Selector
 \family default
  used for selecting the survivors
 \family typewriter
-Population
+ Population
 \family default
 .
  The default values is set to
 \family typewriter
-Tournament\SpecialChar softhyphen
+ Tournament\SpecialChar softhyphen
 Selec\SpecialChar softhyphen
 tor<>(3)
 \family default
@@ -8160,25 +8139,25 @@ individualCreationRetries
 \family default
  The evolution
 \family typewriter
-Engine
+ Engine
 \family default
  tries to create only valid individuals.
  If a newly created
 \family typewriter
-Genotype
+ Genotype
 \family default
  is not valid, the
 \family typewriter
-Engine
+ Engine
 \family default
  creates another one, till the created
 \family typewriter
-Genotype
+ Genotype
 \family default
  is valid.
  This parameter sets the maximal number of retries before the
 \family typewriter
-Engine
+ Engine
 \family default
  gives up and accept invalid individuals.
  The default value is set to
@@ -8222,28 +8201,28 @@ Evolution!Stream
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  controls the execution of the evolution process and can be seen as a kind
  of execution
 \emph on
-handle
+ handle
 \emph default
 .
  This handle can be used to define the termination criteria and to
 \emph on
-collect
+ collect
 \emph default
  the final evolution result.
  Since the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  extends the Java
 \family typewriter
-Stream
+ Stream
 \family default
  interface, it integrates smoothly with the rest of the Java Stream API.
 \begin_inset Foot
@@ -8356,51 +8335,51 @@ reference "lis:EvolutionStream-class"
 
  shows the whole
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  interface.
  As it can be seen, it only adds one additional method.
  But this additional
 \family typewriter
-limit
+ limit
 \family default
  method allows to truncate the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  based on a
 \family typewriter
-Predicate
+ Predicate
 \family default
  which takes an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
 .
  Once the
 \family typewriter
-Predicate
+ Predicate
 \family default
  returns
 \family typewriter
-false
+ false
 \family default
 , the evolution process is stopped.
  Since the
 \family typewriter
-limit
+ limit
 \family default
  method returns an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 , it is possible to define more than one
 \family typewriter
-Predicate
+ Predicate
 \family default
 , which both must be fulfilled to continue the evolution process.
 \end_layout
@@ -8444,46 +8423,46 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 , created in the example above, will be truncated if one of the two predicates
  is
 \family typewriter
-false
+ false
 \family default
  or if the maximal allowed generations, of 100, is reached.
  An
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is usually created via the
 \family typewriter
-Engine\SpecialChar softhyphen
+ Engine\SpecialChar softhyphen
 .stream()
 \family default
  method.
  The
 \emph on
-im
+ im
 \emph default
 mutable and
 \emph on
-stateless
+ stateless
 \emph default
  nature of the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  allows to create more than one
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  with the same
 \family typewriter
-Engine
+ Engine
 \family default
  instance.
 \end_layout
@@ -8524,12 +8503,12 @@ height "1pt"
 \family sans
 The generations of the
 \family typewriter
-EvolutionStream
+ EvolutionStream
 \family sans
  are evolved serially.
  Calls of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family sans
  methods (e.
@@ -8537,7 +8516,6 @@ Stream
 \end_inset
 
 g.
-
 \family typewriter
 limit
 \family sans
@@ -8547,7 +8525,7 @@ peek
 \family sans
 , ...) are executed in the thread context of the created
 \family typewriter
-Stream
+ Stream
 \family sans
 .
  In a
@@ -8577,26 +8555,25 @@ height "1pt"
 \begin_layout Standard
 In cases where you appreciate the usage of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  but need a different
 \family typewriter
-Engine
+ Engine
 \family default
  implementation, you can use the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
 .of
 \family default
  factory method for creating an new
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
-
 \end_layout
 
 \begin_layout Standard
@@ -8634,27 +8611,26 @@ EvolutionStream<G, C> of(
 
 This factory method takes a start value, of type
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Start
 \family default
 , and an evolution
 \family typewriter
-Function
+ Function
 \family default
 .
  The evolution
 \family typewriter
-Function
+ Function
 \family default
  takes the start value and returns an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  object.
  To make the runtime behavior more predictable, the start value is fetched/creat
 ed lazily at the evolution start time.
-
 \end_layout
 
 \begin_layout Standard
@@ -8707,12 +8683,12 @@ EvolutionResult
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  collects the result data of an evolution step into an immutable
 \emph on
-value
+ value
 \emph default
  class.
  This class is the type of the stream elements of the EvolutionStream, as
@@ -8812,37 +8788,37 @@ reference "subsubsec:EvolutionResult"
 
  shows the two most important properties, the
 \family typewriter
-population
+ population
 \family default
  and the
 \family typewriter
-generation
+ generation
 \family default
  the result belongs to.
  This are also the two properties needed for the next evolution step.
  The
 \family typewriter
-generation
+ generation
 \family default
  is, of course, incremented by one.
  To make collecting the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  object easier, it also implements the
 \family typewriter
-Comparable
+ Comparable
 \family default
  interface.
  Two
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
 s are compared by its best
 \family typewriter
-Phenotype
+ Phenotype
 \family default
 .
 \end_layout
@@ -8850,16 +8826,16 @@ Phenotype
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  classes has three predefined factory methods, which will return
 \family typewriter
-Collector
+ Collector
 \family default
 s usable for the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 :
@@ -8872,10 +8848,10 @@ toBestEvolutionResult()
 \family default
  Collects the best
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
- of an
+ of a 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -8890,7 +8866,7 @@ toBestPhenotype()
 \family default
  This collector can be used if you are only interested in the best
 \family typewriter
-Phenotype
+ Phenotype
 \family default
 .
 \end_layout
@@ -8902,11 +8878,11 @@ toBestGenotype()
 \family default
  Use this collector if you only need the best
 \family typewriter
-Genotype
+ Genotype
 \family default
  of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
@@ -8915,11 +8891,10 @@ Stream
 \begin_layout Standard
 The following code snippets shows how to use the different
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  collectors.
-
 \end_layout
 
 \begin_layout Standard
@@ -9010,52 +8985,50 @@ EvolutionStatistics
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  class allows you to gather additional statistical information from the
-
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
  This is especially useful during the development phase of the application,
  when you have to find the right parametrization of the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
  Besides other informations, the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  contains (statistical) information about the fitness, invalid and killed
-
 \family typewriter
-Phenotypes
+ Phenotypes
 \family default
  and runtime information of the different evolution steps.
  Since the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  class implements the
 \family typewriter
-Consumer<\SpecialChar softhyphen
+ Consumer<\SpecialChar softhyphen
 Evolution\SpecialChar softhyphen
 Result<?, C>>
 \family default
  interface, it can be easily plugged into the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 , adding it with the
 \family typewriter
-peek
+ peek
 \family default
  method of the stream.
 \end_layout
@@ -9136,12 +9109,12 @@ reference "lis:EvolutionStatistics-usage"
 
  shows how to add the the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  to the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
@@ -9152,18 +9125,18 @@ Stream
 \begin_layout Standard
 There are two different specializations of the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  object available.
  The first is the general one, which will be working for every kind of
 \family typewriter
-Gene
+ Gene
 \family default
 s and fitness types.
  It can be created via the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics.\SpecialChar softhyphen
 ofComparable()
 \family default
@@ -9172,7 +9145,7 @@ ofComparable()
  values.
  This can be created with the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics.\SpecialChar softhyphen
 ofNumber()
 \family default
@@ -9211,7 +9184,7 @@ footnotesize}
 
 A typical output of an number
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  object will look like the example above.
@@ -9220,12 +9193,12 @@ Statistics
 \begin_layout Standard
 The
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  object is a simple for inspecting the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  after it is finished.
@@ -9497,19 +9470,19 @@ reference "lis:Live-evolution-statistics"
  shows how to implement a manual statistics gathering.
  The update method is called whenever a new
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Result
 \family default
  is has been calculated.
  If a new best
 \family typewriter
-Pheno\SpecialChar softhyphen
+ Pheno\SpecialChar softhyphen
 type
 \family default
  is available, it is stored and logged.
  With the
 \family typewriter
-TSM::update
+ TSM::update
 \family default
  method, which is called on every finished generation, you have a
 \emph on
@@ -9584,18 +9557,13 @@ Concurrency!configuration
 \begin_layout Standard
 The used
 \family typewriter
-Executor
+ Executor
 \family default
  can be defined when building the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  object.
-
-\family sans
-\series bold
-\shape smallcaps
-
 \end_layout
 
 \begin_layout Standard
@@ -9715,7 +9683,7 @@ public class Main {
 \begin_layout Standard
 If no
 \family typewriter
-Executor
+ Executor
 \family default
  is given,
 \family sans
@@ -9727,7 +9695,7 @@ Jenetics
 \shape default
  uses a common
 \family typewriter
-ForkJoinPool
+ ForkJoinPool
 \begin_inset Foot
 status collapsed
 
@@ -9752,18 +9720,17 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
 
 \family default
  for concurrency.
-
 \end_layout
 
 \begin_layout Standard
 Sometimes it might be useful to run the evaluation
 \family typewriter
-Engine
+ Engine
 \family default
  single-threaded, or even execute all operations in the main thread.
  This can be easily achieved by setting the appropriate
 \family typewriter
-Executor
+ Executor
 \family default
 .
 \end_layout
@@ -9802,12 +9769,12 @@ final Engine<DoubleGene, Double> engine = Engine.builder(...)
 \begin_layout Standard
 The code snippet above shows how to do the
 \family typewriter
-Engine
+ Engine
 \family default
  operations in the main thread.
  Whereas the snippet below executes the
 \family typewriter
-Engine
+ Engine
 \family default
  operations in a single thread, other than the main thread.
 \end_layout
@@ -9874,14 +9841,14 @@ Jenetics
  uses different strategies for minimizing the concurrency overhead, depending
  on the configured
 \family typewriter
-Exe\SpecialChar softhyphen
+ Exe\SpecialChar softhyphen
 cutor
 \family default
 .
  For the
 \family typewriter
 \series bold
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool
 \family default
@@ -9889,16 +9856,15 @@ Pool
 , the fitness evaluation of the population is done by recursively dividing
  it into sub-populations using the abstract
 \family typewriter
-Recursive\SpecialChar softhyphen
+ Recursive\SpecialChar softhyphen
 Action
 \family default
  class.
  If a minimal sub-population size is reached, the fitness values for this
  sub-population are directly evaluated.
  The default value of this threshold is five and can be controlled via the
-
 \family typewriter
-io\SpecialChar softhyphen
+ io\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .concurrency\SpecialChar softhyphen
 .split\SpecialChar softhyphen
@@ -9928,14 +9894,14 @@ Concurrency!splitThreshold
  system property.
  Besides the
 \family typewriter
-split\SpecialChar softhyphen
+ split\SpecialChar softhyphen
 Thre\SpecialChar softhyphen
 shold
 \family default
 , the size of the evaluated sub-population is dynamically determined by
  the
 \family typewriter
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Task\SpecialChar softhyphen
 .get\SpecialChar softhyphen
@@ -9974,7 +9940,7 @@ Tasks
  sub-population are also evaluated immediately.
  The default value can be overridden by the
 \family typewriter
-io\SpecialChar softhyphen
+ io\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .concurrency\SpecialChar softhyphen
 .max\SpecialChar softhyphen
@@ -10038,12 +10004,12 @@ You may want to tweak this parameters, if you realize a low CPU utilization
  they already finished the fitness evaluation.
  Since the workload has been already distributed, no
 \emph on
-work-stealing
+ work-stealing
 \emph default
  is possible.
  Reducing the
 \family typewriter
-split\SpecialChar softhyphen
+ split\SpecialChar softhyphen
 Thre\SpecialChar softhyphen
 shold
 \family default
@@ -10051,7 +10017,7 @@ shold
  CPUs.
  Reducing the
 \family typewriter
-max\SpecialChar softhyphen
+ max\SpecialChar softhyphen
 Sur\SpecialChar softhyphen
 plus\SpecialChar softhyphen
 Queued\SpecialChar softhyphen
@@ -10100,7 +10066,7 @@ The fitness function shouldn't acquire locks for achieving thread safety.
  It is also recommended to avoid calls to blocking methods.
  If such calls are unavoidable, consider using the
 \family typewriter
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool\SpecialChar softhyphen
 .managed\SpecialChar softhyphen
@@ -10109,7 +10075,7 @@ Block
  method.
  Especially if you are using a
 \family typewriter
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool
 \family sans
@@ -10137,7 +10103,7 @@ height "1pt"
 If the Engine is using an
 \family typewriter
 \series bold
-Executor\SpecialChar softhyphen
+ Executor\SpecialChar softhyphen
 Service
 \family default
 \series default
@@ -10169,7 +10135,7 @@ cessors()
 s for a better CPU utilization.
  With the
 \family typewriter
-io\SpecialChar softhyphen
+ io\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .concurrency\SpecialChar softhyphen
 .max\SpecialChar softhyphen
@@ -10199,7 +10165,7 @@ Concurrency!maxBatchSize
  system property, it is possible to reduce the sub-population size.
  The default value is set to
 \family typewriter
-Inte\SpecialChar softhyphen
+ Inte\SpecialChar softhyphen
 ger\SpecialChar softhyphen
 .MAX_\SpecialChar softhyphen
 VALUE
@@ -10207,7 +10173,7 @@ VALUE
 .
  This means, that only the number of CPU cores influences the
 \emph on
-batch
+ batch
 \emph default
  size.
 \end_layout
@@ -10234,11 +10200,11 @@ Another source of under-utilized CPUs are lock contentions.
  in your fitness function at all.
  If blocking calls are unavoidable, consider using the
 \emph on
-managed block
+ managed block
 \emph default
  functionality of the
 \family typewriter
-Fork\SpecialChar softhyphen
+ Fork\SpecialChar softhyphen
 Join\SpecialChar softhyphen
 Pool.
 \begin_inset Foot
@@ -10349,12 +10315,12 @@ Random!Registry
  without changing the client code.
  The central
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Registry
 \family default
  also allows to easily change
 \family typewriter
-Random
+ Random
 \family default
  engine
 \begin_inset Index idx
@@ -10377,7 +10343,7 @@ The following example shows how to change and restore the
  object.
  When opening the
 \family typewriter
-with
+ with
 \family default
  scope, changes to the
 \family typewriter
@@ -10386,7 +10352,7 @@ with
  are only visible within this scope.
  Once the
 \family typewriter
-with
+ with
 \family default
  scope is left, the original
 \family typewriter
@@ -10447,7 +10413,7 @@ With the previous listing, a random, but reproducible, list of genotypes
  This might be useful while testing your application or when you want to
  evaluate the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  several times with the same initial population.
@@ -10497,7 +10463,7 @@ Phenotype<DoubleGene, Double> best = engine.stream(genotypes)
 \begin_layout Standard
 The example above uses the generated genotypes for creating the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
@@ -10543,7 +10509,7 @@ height "1pt"
 Setting the PRNG to a Random object with a defined seed has the effect,
  that every evolution
 \emph on
-stream
+ stream
 \emph default
  will produce the same result—in an single threaded environment.
 \end_layout
@@ -10567,7 +10533,6 @@ height "1pt"
 
 \begin_layout Standard
 The parallel nature of the GA implementation requires the creation of streams
-
 \begin_inset Formula $t_{i,j}$
 \end_inset
 
@@ -10654,7 +10619,7 @@ height "1pt"
 \begin_layout Standard
 When the
 \family typewriter
-Random
+ Random
 \family default
  engine is used in an multi-threaded environment, there must be a way to
  parallelize the sequential PRNG.
@@ -10978,7 +10943,6 @@ With the leapfrog method each thread
 \end_inset
 
  random number and jump ahead in the random sequence by the number of threads,
-
 \begin_inset Formula $P$
 \end_inset
 
@@ -11236,7 +11200,6 @@ split
 \end_inset
 
  sub-streams.
-
 \begin_inset Formula $s$
 \end_inset
 
@@ -11275,7 +11238,6 @@ jump
 jump2
 \family default
  Changes the internal state of the PRNG in such a way that the engine jumps
-
 \begin_inset Formula $2^{s}$
 \end_inset
 
@@ -11309,11 +11271,7 @@ reference "tab:PRNG-performance"
 
 \end_inset
 
- shows the random number
-\family typewriter
-
-\family default
-generation speed for the different PRNG implementations.
+ shows the random number generation speed for the different PRNG implementations.
 \begin_inset Foot
 status collapsed
 
@@ -11321,7 +11279,6 @@ status collapsed
 Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
  Runtime Environment (build 1.8.0_102-b14)—Java HotSpot(TM) 64-Bit Server
  VM (build 25.102-b14, mixed mode)—, using the JHM micro-benchmark library.
-
 \end_layout
 
 \end_inset
@@ -11675,24 +11632,24 @@ Jenetics
  package.
  Only the concrete implementations of the
 \family typewriter
-Gene
+ Gene
 \family default
  and the
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  interfaces implements the
 \family typewriter
-Serializable
+ Serializable
 \family default
  interface.
  This gives a greater flexibility when implementing own
 \family typewriter
-Gene
+ Gene
 \family default
 s and
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s.
 \end_layout
@@ -11823,7 +11780,7 @@ end{multicols}
 With the serialization mechanism you can write a population to disk and
  load it into an new
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  at a later time.
@@ -11839,7 +11796,7 @@ Stream
 \family default
  package, supports native Java serialization and JAXB
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 JAXB
@@ -11937,11 +11894,11 @@ EvolutionStream<DoubleGene, Double> stream = Engine
 \begin_layout Standard
 The following listing shows the XML serialization of a
 \family typewriter
-Population
+ Population
 \family default
  which consists of
 \family typewriter
-Genotype
+ Genotype
 \family default
 s as shown in figure
 \begin_inset CommandInset ref
@@ -11959,7 +11916,7 @@ reference "subsubsec:Domain-classes-Genotype"
 
 ; only the first
 \family typewriter
-Phenotype
+ Phenotype
 \family default
  is shown.
 \end_layout
@@ -12005,29 +11962,28 @@ When serializing a whole population the fitness function and fitness scaler
  are not part of the serialized XML file.
  If an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  is initialized with a previously serialized
 \family typewriter
-Population
+ Population
 \family default
 , the
 \family typewriter
-Engine
+ Engine
 \family default
 's current fitness function and fitness scaler are used for
 \emph on
  re
 \emph default
 -calculating the fitness values.
-
 \end_layout
 
 \begin_layout Standard
 The
 \family typewriter
-IO
+ IO
 \family default
  class can also be used for serializing own JAXB
 \begin_inset Index idx
@@ -12059,7 +12015,7 @@ reference "lis:DataClassJAXB-serialization"
 
  shows how an user-defined JAXB class can be marshaled with the
 \family typewriter
-IO
+ IO
 \family default
  helper class.
 \end_layout
@@ -12164,7 +12120,6 @@ public class DataClass {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -12222,7 +12177,7 @@ name "lis:DataClassJAXB-serialization"
 \begin_layout Standard
 The output of the marshaled
 \family typewriter
-DataClass
+ DataClass
 \family default
  looks like expected.
 \end_layout
@@ -12274,7 +12229,7 @@ The
 \family default
  and the
 \family typewriter
-org.jenetics.stat
+ org.jenetics.stat
 \family default
  package of the library contains utility and helper classes which are essential
  for the implementation of the GA.
@@ -12321,7 +12276,7 @@ s and
 s, respectively.
  The
 \family typewriter
-Seq
+ Seq
 \family default
  interface itself represents a fixed-sized, ordered sequence of elements.
  It is an abstraction over the Java build-in
@@ -12808,7 +12763,7 @@ reference "tab:Statistics-classes"
  The following code snippet shows an example on how to collect double statistics
  from an given
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Gene
 \family default
  stream.
@@ -12875,13 +12830,12 @@ Advanced topics
 
 \begin_layout Standard
 This section describes some advanced topics for setting up an evolution
-
 \family typewriter
-Engine
+ Engine
 \family default
  or
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
@@ -12979,7 +12933,7 @@ int
 \family default
 - and
 \family typewriter
-long
+ long
 \family default
  values), characters and enumeration types.
 \end_layout
@@ -13027,7 +12981,7 @@ Gene
  class.
  Every
 \family typewriter
-Gene
+ Gene
 \family default
  extends the
 \family typewriter
@@ -13077,30 +13031,30 @@ height "1pt"
 \family sans
 The custom
 \family typewriter
-Gene
+ Gene
 \family sans
 s and
 \family typewriter
-Chromosome
+ Chromosome
 \family sans
 s implementations must use the
 \family typewriter
-Random
+ Random
 \family sans
  engine available via the
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
 .getRandom
 \family sans
  method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the
 \family typewriter
-Random
+ Random
 \family sans
  engine by using the
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
 .setRandom
 \family sans
@@ -13128,17 +13082,17 @@ height "1pt"
 If you want to support your own allele type, but want to avoid the effort
  of implementing the
 \family typewriter
-Gene
+ Gene
 \family default
  interface, you can alternatively use the
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Gene
 \family default
  class.
  It can be created with
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Gene\SpecialChar softhyphen
 .of(Sup\SpecialChar softhyphen
 plier, Predi\SpecialChar softhyphen
@@ -13147,23 +13101,22 @@ cate)
 .
  The given
 \family typewriter
-Supplier
+ Supplier
 \family default
  is responsible for creating new random alleles, similar to the
 \family typewriter
-newInstance
+ newInstance
 \family default
  method in the
 \family typewriter
-Gene
+ Gene
 \family default
  interface.
  Additional validity checks are performed by the given
 \family typewriter
-Predicate
+ Predicate
 \family default
 .
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -13296,21 +13249,21 @@ reference "lis:AnyGene-example"
 
  shows the (almost) minimal setup for creating user defined
 \family typewriter
-Gene
+ Gene
 \family default
  allele types.
  By convention, the
 \family typewriter
-Random
+ Random
 \family default
  engine, used for creating the new
 \family typewriter
-Local\SpecialChar softhyphen
+ Local\SpecialChar softhyphen
 Date
 \family default
  objects, must be requested from the
 \family typewriter
-Random\SpecialChar softhyphen
+ Random\SpecialChar softhyphen
 Registry
 \family default
 .
@@ -13320,7 +13273,7 @@ isValid
 \family default
 , it is possible to reject
 \family typewriter
-Genes
+ Genes
 \family default
  whose alleles doesn't conform some criteria.
 \end_layout
@@ -13328,26 +13281,26 @@ Genes
 \begin_layout Standard
 The simple usage of the
 \family typewriter
-AnyGene
+ AnyGene
 \family default
  has also its downsides.
  Since the
 \family typewriter
-AnyGene
+ AnyGene
 \family default
  instances are created from function objects, serialization is not supported
  by the
 \family typewriter
-AnyGene
+ AnyGene
 \family default
  class.
  It is also not possible to use some
 \family typewriter
-Alterer
+ Alterer
 \family default
  implementations with the
 \family typewriter
-AnyGene
+ AnyGene
 \family default
 , like:
 \end_layout
@@ -13397,24 +13350,24 @@ Instance
 \family default
 , which lets the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  create a new
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  instance from a sequence of
 \family typewriter
-Gene
+ Gene
 \family default
 s.
  This method is used by the
 \family typewriter
-Alterer
+ Alterer
 \family default
 s when creating new, combined
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 s.
  It is allowed, that the newly created chromosome has a different length
@@ -13431,12 +13384,12 @@ s.
 \begin_layout Standard
 Corresponding to the
 \family typewriter
-AnyGene
+ AnyGene
 \family default
 , it is possible to create chromosomes with arbitrary allele types with
  the
 \family typewriter
-AnyChromosome
+ AnyChromosome
 \family default
 .
 \begin_inset listings
@@ -13658,19 +13611,19 @@ reference "lis:AnyChromosome-example"
 
  shows a full usage example of the
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Gene
 \family default
  and
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Chromosome
 \family default
  class.
  The example tries to find a Monday with a maximal day of month.
  An interesting detail is, that an
 \family typewriter
-Codec
+ Codec
 \family default
 
 \begin_inset Foot
@@ -13689,18 +13642,17 @@ reference "subsec:Codec"
 Codec
 \family default
  description.
-
 \end_layout
 
 \end_inset
 
  definition is used for creating new
 \family typewriter
-Genotypes
+ Genotypes
 \family default
  and for converting them back to
 \family typewriter
-LocalDate
+ LocalDate
 \family default
  alleles.
 \end_layout
@@ -13708,17 +13660,17 @@ LocalDate
 \begin_layout Standard
 The convenient usage of the
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Chromosome
 \family default
  has to be payed by the same restriction as for the
 \family typewriter
-Any\SpecialChar softhyphen
+ Any\SpecialChar softhyphen
 Gene
 \family default
 : no serialization support for the chromosome and not usable for all
 \family typewriter
-Alterer
+ Alterer
 \family default
  implementations.
 \end_layout
@@ -13870,7 +13822,7 @@ Selector
 \family default
  (or any other available
 \family typewriter
-Selector
+ Selector
 \family default
  implementation).
  It is worth the effort to try to express your selection strategy in terms
@@ -13881,7 +13833,7 @@ Selector
 .
  Another way for re-using existing
 \family typewriter
-Selector
+ Selector
 \family default
  implementation is by composition.
 \end_layout
@@ -14118,23 +14070,23 @@ reference "lis:Elite-selector"
 
  shows how an
 \emph on
-elitist
+ elitist
 \emph default
  selector could be implemented by using the existing
 \family typewriter
-Trun\SpecialChar softhyphen
+ Trun\SpecialChar softhyphen
 cation
 \family default
 - and
 \family typewriter
-Tour\SpecialChar softhyphen
+ Tour\SpecialChar softhyphen
 nament\SpecialChar softhyphen
 Selector
 \family default
 .
  With
 \emph on
-elitist
+ elitist
 \emph default
  selection, the quality of the best solution in each generation monotonically
  increases over time.
@@ -14146,7 +14098,7 @@ key "Baluja95removingthe"
 
  Although this is not necessary, since the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 /
 \family typewriter
@@ -14177,7 +14129,7 @@ For implementing a new alterer class it is necessary to implement the
  interface.
  You might do this if your new
 \family typewriter
-Gene
+ Gene
 \family default
  type needs a special kind of alterer not available in the
 \family sans
@@ -14329,15 +14281,15 @@ height "1pt"
 \family sans
 To maximize the range of application of an
 \family typewriter
-Alterer
+ Alterer
 \family sans
 , it is recommended that they can handle
 \family typewriter
-Genotypes
+ Genotypes
 \family sans
  and
 \family typewriter
-Chromosomes
+ Chromosomes
 \family sans
  with variable length.
 \end_layout
@@ -14378,7 +14330,7 @@ During the developing phase of an application which uses the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -14386,12 +14338,12 @@ Jenetics
  Such data can help to optimize the parametrization of the evolution Engine.
  A good starting point is to use the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  class in the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine
 \family default
@@ -14405,21 +14357,21 @@ reference "lis:EvolutionStatistics-usage"
 ).
  If the data in the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  class doesn't fit your needs, you simply have to write your own statistics
  class.
  It is not possible to derive from the existing
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Statistics
 \family default
  class.
  This is not a real restriction, since you still can use the class by delegation.
  Just implement the Java
 \family typewriter
-Consumer<\SpecialChar softhyphen
+ Consumer<\SpecialChar softhyphen
 Evolution\SpecialChar softhyphen
 Result<G, C>\SpecialChar softhyphen
 >
@@ -14444,16 +14396,16 @@ Engine
 \begin_layout Standard
 The evolution
 \family typewriter
-Engine
+ Engine
 \family default
  itself can't be extended, but it is still possible to create an
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  without using the
 \family typewriter
-Engine
+ Engine
 \family default
  class.
 \begin_inset Foot
@@ -14483,16 +14435,16 @@ Function
 
  Because the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  has no direct dependency to the
 \family typewriter
-Engine
+ Engine
 \family default
 , it is possible to use an different, special evolution
 \family typewriter
-Function
+ Function
 \family default
 .
 \end_layout
@@ -14722,11 +14674,11 @@ reference "lis:Special-evolution-engine"
 
  shows a
 \emph on
-complete
+ complete
 \emph default
  implementation stub for using an own special evolution
 \family typewriter
-Function
+ Function
 \family default
 .
 \end_layout
@@ -14769,7 +14721,7 @@ Whenever possible, the encoding should not be able to represent infeasible
  solutions.
  If a genotype can represent an infeasible solution, care must be taken
  in the fitness function to give partial credit to the genotype for its
-
+ 
 \begin_inset Quotes ald
 \end_inset
 
@@ -14780,7 +14732,7 @@ good
  genetic material while sufficiently penalizing it for being infeasible.
  Implementing a specialized
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 , which won't create invalid encodings can be a solution to this problem.
  In general, it is much more desirable to design a representation that can
@@ -14811,13 +14763,13 @@ Some of the encodings represented in the following sections has been implemented
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
 , using the
 \family typewriter
-Codec
+ Codec
 \family default
 
 \begin_inset Foot
@@ -14838,7 +14790,7 @@ reference "subsec:Codec"
 
  interface, and are available through static factory methods of the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 codecs
@@ -14925,12 +14877,12 @@ It is quite easy to encode a real function.
  Only the minimum and maximum value of the function domain must be defined.
  The
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
  of length 1 is then wrapped into a
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
 \end_layout
@@ -14965,11 +14917,11 @@ Genotype.of(
 Decoding the double value from the Genotype is also straight forward.
  Just get the first gene from the first chromosome, with the
 \family typewriter
-getGene()
+ getGene()
 \family default
  method, and convert it to a
 \family typewriter
-double
+ double
 \family default
 .
 \end_layout
@@ -15003,11 +14955,11 @@ static double toDouble(final Genotype<DoubleGene> gt) {
 \begin_layout Standard
 When the
 \family typewriter
-Genotype
+ Genotype
 \family default
  only contains
 \emph on
-scalar
+ scalar
 \emph default
  chromosomes
 \begin_inset Foot
@@ -15061,25 +15013,25 @@ Scalar genotype
 
 , it should be clear, that it can't be altered by every
 \family typewriter
-Alterer
+ Alterer
 \family default
 .
  That means, that none of the
 \family typewriter
-Crossover
+ Crossover
 \family default
  alterers will be able to create modified
 \family typewriter
-Genotype
+ Genotype
 \family default
 s.
  For
 \emph on
-scalars
+ scalars
 \emph default
  the appropriate alterers would be the
 \family typewriter
-MeanAlterer
+ MeanAlterer
 \family default
 ,
 \family typewriter
@@ -15087,7 +15039,7 @@ GaussianAlterer
 \family default
  and
 \family typewriter
-Mutator
+ Mutator
 \family default
 .
 \end_layout
@@ -15128,19 +15080,17 @@ height "1pt"
 \family sans
 \emph on
 Scalar
-\emph default
-
 \family typewriter
-Chromosome
+\emph default
+ Chromosome
 \family sans
-s and/\SpecialChar softhyphen
-or
+s and/or 
 \family typewriter
 Genotype
 \family sans
 s can only be altered by
 \family typewriter
-MeanAlterer
+ MeanAlterer
 \family sans
 ,
 \family typewriter
@@ -15148,12 +15098,12 @@ GaussianAlterer
 \family sans
  and
 \family typewriter
-Mutator
+ Mutator
 \family sans
  classes.
  Other alterers are allowed, but will have no effect on the
 \family typewriter
-Chromosome
+ Chromosome
 \family sans
 s.
 \end_layout
@@ -15211,7 +15161,7 @@ key "MathWorld_Weisstein"
 
  For the
 \emph on
-first
+ first
 \emph default
  encoding we expect that all variables,
 \begin_inset Formula $x_{i}$
@@ -15220,12 +15170,12 @@ first
 , have the same minimum and maximum value.
  In this case we can simply create a
 \family typewriter
-Genotype
+ Genotype
 \family default
  with a
 \family typewriter
 \emph on
-Numeric
+ Numeric
 \emph default
 \SpecialChar softhyphen
 Chromosome
@@ -15266,21 +15216,21 @@ Genotype.of(
 \begin_layout Standard
 The decoding of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  requires a cast of the first
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  to a
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
 .
  With a call to the
 \family typewriter
-DoubleChromosome.\SpecialChar softhyphen
+ DoubleChromosome.\SpecialChar softhyphen
 toArray()
 \family default
  method we return the variables
@@ -15289,7 +15239,7 @@ toArray()
 
  as
 \family typewriter
-double[]
+ double[]
 \family default
  array.
 \end_layout
@@ -15323,12 +15273,12 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 \begin_layout Standard
 With the
 \emph on
-first
+ first
 \emph default
  encoding you have the possibility to use all available alterers, including
  all
 \family typewriter
-Crossover
+ Crossover
 \family default
  alterer classes.
 \end_layout
@@ -15336,11 +15286,11 @@ Crossover
 \begin_layout Standard
 The
 \emph on
-second
+ second
 \emph default
  encoding
 \emph on
-must
+ must
 \emph default
  be used if the minimum and maximum value of the variables
 \begin_inset Formula $x_{i}$
@@ -15358,7 +15308,7 @@ must
  is represented by a
 \family typewriter
 \emph on
-Numeric
+ Numeric
 \emph default
 \SpecialChar softhyphen
 Chromosome
@@ -15366,7 +15316,7 @@ Chromosome
  with length one.
  The final
 \family typewriter
-Genotype
+ Genotype
 \family default
  will consist of
 \begin_inset Formula $n$
@@ -15423,21 +15373,21 @@ Genotype.of(
 \begin_layout Standard
 With the help of the new Java Stream API, the decoding of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  can be done in a view lines.
  The
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
  stream, which is created from the chromosome
 \family typewriter
-Seq
+ Seq
 \family default
 , is first mapped to
 \family typewriter
-double
+ double
 \family default
  values and then collected into an array.
 \end_layout
@@ -15482,7 +15432,7 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 As already mentioned, with the use of scalar chromosomes we can only use
  the
 \family typewriter
-MeanAlterer
+ MeanAlterer
 \family default
 ,
 \family typewriter
@@ -15490,7 +15440,7 @@ GaussianAlterer
 \family default
  or
 \family typewriter
-Mutator
+ Mutator
 \family default
  alterer class.
 \end_layout
@@ -15498,34 +15448,34 @@ Mutator
 \begin_layout Standard
 If there are performance issues in converting the
 \family typewriter
-Genotype
+ Genotype
 \family default
  into a
 \family typewriter
-double[]
+ double[]
 \family default
  array, or any other numeric array, you can access the
 \family typewriter
-Gene
+ Gene
 \family default
 s directly via the
 \family typewriter
-Genotype\SpecialChar softhyphen
+ Genotype\SpecialChar softhyphen
 .get(i, j)
 \family default
  method and than convert it to the desired numeric value, by calling
 \family typewriter
-int\SpecialChar softhyphen
+ int\SpecialChar softhyphen
 Value()
 \family default
 ,
 \family typewriter
-long\SpecialChar softhyphen
+ long\SpecialChar softhyphen
 Value()
 \family default
  or
 \family typewriter
-double\SpecialChar softhyphen
+ double\SpecialChar softhyphen
 Value()
 \family default
 .
@@ -15638,29 +15588,29 @@ The decoding of the vectors is quite easy with the help of the Java Stream
  API.
  In the first
 \family typewriter
-map
+ map
 \family default
  we have to cast the
 \family typewriter
-Chromosome<DoubleGene>
+ Chromosome<DoubleGene>
 \family default
  object to the actual
 \family typewriter
-DoubleChromosome
+ DoubleChromosome
 \family default
 .
  The second
 \family typewriter
-map
+ map
 \family default
  then converts each
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
- to an
+ to a
 \family typewriter
-double[]
+ double[]
 \family default
  array, which is collected to an
 \begin_inset Formula $2$
@@ -15668,7 +15618,7 @@ double[]
 
 -dimensional
 \family typewriter
-dou\SpecialChar softhyphen
+ dou\SpecialChar softhyphen
 ble\SpecialChar softhyphen
 [
 \emph on
@@ -15726,7 +15676,7 @@ For the special case of
 
 , the decoding of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  can be simplified to the decoding we introduced for scalar functions in
  section
@@ -15878,7 +15828,7 @@ https://en.wikipedia.org/wiki/Transformation_matrix
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 A=\left(\begin{array}{ccc}
 a_{11} & a_{12} & a_{13}\\
@@ -15891,11 +15841,11 @@ a_{21} & a_{22} & a_{23}\\
 
  A simple representation can be done by creating a
 \family typewriter
-Genotype
+ Genotype
 \family default
  which contains two
 \family typewriter
-DoubleChromosome
+ DoubleChromosome
 \family default
 s with a length of
 \begin_inset Formula $3$
@@ -15937,23 +15887,22 @@ Genotype.of(
 
 \begin_layout Standard
 The drawback with this kind of encoding is, that we will create a lot of
-
 \emph on
-invalid
+ invalid
 \emph default
  (non-affine transformation matrices) during the evolution process, which
  must be detected and discarded.
  It is also difficult to find the right parameters for the
 \emph on
-min
+ min
 \emph default
  and
 \emph on
-max
+ max
 \emph default
  values of the
 \family typewriter
-DoubleChromosome
+ DoubleChromosome
 \family default
 s.
 \end_layout
@@ -16124,27 +16073,27 @@ Genotype.of(
 \begin_layout Standard
 This encoding ensures that no invalid
 \family typewriter
-Genotype
+ Genotype
 \family default
  will be created during the evolution process, since the crossover will
  be only performed on the same kind of chromosome (same chromosome index).
  To convert the
 \family typewriter
-Genotype
+ Genotype
 \family default
  back to the transformation matrix
 \begin_inset Formula $A$
 \end_inset
 
 , the following equations can be used:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{eqnarray}
 a_{11} & = & s_{x}\cos\theta+k_{x}s_{y}\sin\theta\nonumber \\
 a_{12} & = & s_{y}k_{x}\cos\theta-s_{x}\sin\theta\nonumber \\
 a_{13} & = & t_{x}\nonumber \\
 a_{21} & = & k_{y}s_{x}\cos\theta+s_{y}\sin\theta\label{eq:Matrix parameters}\\
 a_{22} & = & s_{y}\cos\theta-s_{x}k_{y}\sin\theta\nonumber \\
-a_{23} & = & t_{y}\nonumber
+a_{23} & = & t_{y}\nonumber 
 \end{eqnarray}
 
 \end_inset
@@ -16154,7 +16103,7 @@ This corresponds to an transformation order of
 \end_inset
 
 :
-\begin_inset Formula
+\begin_inset Formula 
 \[
 \left(\begin{array}{ccc}
 1 & 0 & t_{x}\\
@@ -16179,7 +16128,7 @@ s_{x} & 0 & 0\\
 
 In Java code, the conversion from the
 \family typewriter
-Genotype
+ Genotype
 \family default
  to the transformation matrix, will look like this:
 \end_layout
@@ -16307,21 +16256,21 @@ static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 For the introduced encoding all kind of alterers can be used.
  Since we have one scalar
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Chromosome
 \family default
 , the rotation angle
 \begin_inset Formula $\theta$
 \end_inset
 
-, it is recommended also to add an
+, it is recommended also to add a
 \family typewriter
-Mean\SpecialChar softhyphen
+ Mean\SpecialChar softhyphen
 Alterer
 \family default
  or
 \family typewriter
-Gaussian\SpecialChar softhyphen
+ Gaussian\SpecialChar softhyphen
 Alterer
 \family default
  to the list of alterers.
@@ -16537,14 +16486,14 @@ s of length
 
  can be easily checked by calling
 \family typewriter
-gt\SpecialChar softhyphen
+ gt\SpecialChar softhyphen
 .get(i-1, j-1)\SpecialChar softhyphen
 .booleanValue()
 \family default
 .
  For extracting the whole matrix as
 \family typewriter
-int[]
+ int[]
 \family default
  array, the following code can be used.
 \end_layout
@@ -16739,7 +16688,7 @@ Weighted graph and adjacency matrix
 \begin_layout Standard
 The following code snippet shows how the
 \family typewriter
-Genotype
+ Genotype
 \family default
  of the matrix is created.
 \end_layout
@@ -16783,14 +16732,14 @@ final Genotype<DoubleGene> gt = Genotype
 \begin_layout Standard
 For accessing the single matrix elements, you can simply call
 \family typewriter
-Genotype\SpecialChar softhyphen
+ Genotype\SpecialChar softhyphen
 .get(i, j)\SpecialChar softhyphen
 .doubleValue()
 \family default
 .
- If the interaction with another library requires an
+ If the interaction with another library requires a
 \family typewriter
-double\SpecialChar softhyphen
+ double\SpecialChar softhyphen
 [][]
 \family default
  array, the following code can be used.
@@ -16846,11 +16795,11 @@ name "subsec:Codec"
 \begin_layout Standard
 The
 \family typewriter
-Codec
+ Codec
 \family default
  interface—located in the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine
 \family default
@@ -16860,16 +16809,16 @@ Function
 \family default
 , which should be maximized/minimized, and the
 \family typewriter
-Genotype
+ Genotype
 \family default
  representation, which can be understand by the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
  With the
 \family typewriter
-Codec
+ Codec
 \family default
  interface it is possible to implement the encodings of section
 \begin_inset CommandInset ref
@@ -16879,35 +16828,34 @@ reference "subsec:Encoding"
 \end_inset
 
  in a more formalized way.
-
 \end_layout
 
 \begin_layout Standard
 Normally, the
 \family typewriter
-Engine
+ Engine
 \family default
  expects a fitness function which takes a
 \family typewriter
-Genotype
+ Genotype
 \family default
  as input.
  This
 \family typewriter
-Genotype
+ Genotype
 \family default
  has then to be
 \emph on
-transformed
+ transformed
 \emph default
  into an object of the problem domain.
  The usage
 \family typewriter
-Codec
+ Codec
 \family default
  interface allows a tighter coupling of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  definition and the transformation code.
 \begin_inset Foot
@@ -16995,37 +16943,37 @@ reference "lis:Codec-interface"
 
  shows the
 \family typewriter
-Codec
+ Codec
 \family default
  interface.
  The
 \family typewriter
-encoding()
+ encoding()
 \family default
  method returns the
 \family typewriter
-Genotype
+ Genotype
 \family default
  factory, which is used by the
 \family typewriter
-Engine
+ Engine
 \family default
  for creating new
 \family typewriter
-Genotypes
+ Genotypes
 \family default
 .
  The decoder
 \family typewriter
-Function
+ Function
 \family default
 , which is returned by the
 \family typewriter
-decoder()
+ decoder()
 \family default
  method, transforms the
 \family typewriter
-Genotype
+ Genotype
 \family default
  to the argument type of the fitness
 \family typewriter
@@ -17034,15 +16982,15 @@ Function
 .
  Without the
 \family typewriter
-Codec
+ Codec
 \family default
  interface, the implementation of the fitness Function is
 \emph on
-polluted
+ polluted
 \emph default
  with code, which transforms the
 \family typewriter
-Genotype
+ Genotype
 \family default
  into the argument type of the actual fitness
 \family typewriter
@@ -17086,21 +17034,21 @@ static double eval(final Genotype<DoubleGene> gt) {
 
 The
 \family typewriter
-Codec
+ Codec
 \family default
  for the example above is quite simple and is shown below.
  It is not necessary to implement the
 \family typewriter
-Codec
+ Codec
 \family default
  interface, instead you can use the
 \family typewriter
-Codec.\SpecialChar softhyphen
+ Codec.\SpecialChar softhyphen
 of
 \family default
  factory method for creating new
 \family typewriter
-Codec
+ Codec
 \family default
  instances.
 \end_layout
@@ -17138,20 +17086,20 @@ final Codec<Double, DoubleGene> codec = Codec.of(
 
 \end_inset
 
-When using an
+When using a
 \family typewriter
-Codec
+ Codec
 \family default
  instance, the fitness
 \family typewriter
-Function
+ Function
 \family default
  solely contains code from your actual problem domain—no dependencies to
  classes of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -17198,7 +17146,7 @@ Jenetics
  comes with a set of standard encodings, which are created via static factory
  methods of the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 codecs
@@ -17248,12 +17196,12 @@ reference "lis:Codec-factory-method-ofScalar"
 
  shows the implementation of the
 \family typewriter
-codecs\SpecialChar softhyphen
+ codecs\SpecialChar softhyphen
 .ofScalar
 \family default
  factory method—for
 \family typewriter
-Integer
+ Integer
 \family default
  scalars.
 \end_layout
@@ -17326,27 +17274,25 @@ name "lis:Codec-factory-method-ofScalar"
 \begin_layout Standard
 The usage of the
 \family typewriter
-Codec
+ Codec
 \family default
 , created by this factory method, simplifies the implementation of the fitness
-
 \family typewriter
 Function
 \family default
  and the creation of the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
  For scalar types, the saving, in complexity and lines of code, is not that
  big, but using the factory method is still quite handy.
-
 \end_layout
 
 \begin_layout Standard
 The following listing demonstrates the interaction between
 \family typewriter
-Codec
+ Codec
 \family default
 , fitness
 \family typewriter
@@ -17354,7 +17300,7 @@ Function
 \family default
  and evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
 \end_layout
@@ -17471,11 +17417,11 @@ reference "lis:Codec-factory-method-ofVector"
 
 , the
 \family typewriter
-ofVector
+ ofVector
 \family default
  factory method returns a
 \family typewriter
-Codec
+ Codec
 \family default
  for an
 \family typewriter
@@ -17484,19 +17430,19 @@ int[]
  array.
  The
 \family typewriter
-domain
+ domain
 \family default
  parameter defines the allowed range of the
 \family typewriter
-int
+ int
 \family default
  values and the
 \family typewriter
-length
+ length
 \family default
  defines the length of the encoded
 \family typewriter
-int
+ int
 \family default
  array.
 \end_layout
@@ -17594,25 +17540,23 @@ name "lis:Codec-factory-method-ofVector"
 \begin_layout Standard
 The usage example of the
 \emph on
-vector
-\emph default
-
+ vector
 \family typewriter
-Codec
+\emph default
+ Codec
 \family default
  is almost the same as for the
 \emph on
-scalar
-\emph default
-
+ scalar
 \family typewriter
-Codec
+\emph default
+ Codec
 \family default
 .
  As additional parameter, we need to define the length of the desired array
  and we define our fitness function with an
 \family typewriter
-int[]
+ int[]
 \family default
  array.
 \end_layout
@@ -17733,11 +17677,11 @@ Codec!Subset
 There are currently two kinds of subset codecs you can choose from: finding
  subsets with
 \emph on
-variable
+ variable
 \emph default
  size and with
 \emph on
-fixed
+ fixed
 \emph default
  size.
 \end_layout
@@ -17749,7 +17693,7 @@ Variable-sized subsets
 \begin_layout Standard
 A Codec for
 \emph on
-variable-sized
+ variable-sized
 \emph default
  subsets can be easily implemented with the use of a BitChromosome, as shown
  in listing
@@ -17840,11 +17784,10 @@ name "lis:Codec-factory-method-ofSubSet"
 \begin_layout Standard
 The following usage example of
 \emph on
-subset
-\emph default
-
+ subset
 \family typewriter
-Codec
+\emph default
+ Codec
 \family default
  shows a simplified version of the Knapsack problem (see section
 \begin_inset CommandInset ref
@@ -17856,7 +17799,7 @@ reference "subsec:0/1-Knapsack-example"
 ).
  We try to find a subset, from the given basic
 \family typewriter
-SET
+ SET
 \family default
 , where the sum of the values is as big as possible, but smaller or equal
  than
@@ -17893,7 +17836,6 @@ class Main {
 \end_layout
 
 \begin_layout Plain Layout
-
 
 \end_layout
 
@@ -18005,7 +17947,7 @@ key "JSSv068c01"
 \begin_layout Standard
 The second kind of subset codec allows you to find the
 \emph on
-best
+ best
 \emph default
  subset of a given, fixed size.
  A classical usage for this encoding is the Subset sum problem
@@ -18222,7 +18164,6 @@ Codec!Permutation
 This kind of codec can be used for problems where optimal solution depends
  on the order of the input elements.
  A classical example for such problems is the Knapsack problem (chapter
-
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Traveling-salesman-example"
@@ -18336,11 +18277,7 @@ reference "lis:Codec-factory-method-ofPermutation"
 \family typewriter
  java\SpecialChar softhyphen
 .awt\SpecialChar softhyphen
-.geom
-\family default
-
-\family typewriter
-Point
+.geom Point
 \family default
 s for representing the city locations.
 \end_layout
@@ -18523,15 +18460,14 @@ Composite codec
 \begin_layout Standard
 The
 \emph on
-composite
-\emph default
-
+ composite
 \family typewriter
-Codec
+\emph default
+ Codec
 \family default
  factory method allows to combine two or more
 \family typewriter
-Codec
+ Codec
 \family default
 s into one.
  Listing
@@ -18544,7 +18480,7 @@ reference "lis:Composite-Codec-factory"
  shows the method signature of the factory method, which is implemented
  directly in the
 \family typewriter
-Codec
+ Codec
 \family default
  interface.
 \end_layout
@@ -18604,18 +18540,17 @@ name "lis:Composite-Codec-factory"
 
 As you can see from the method definition, the combining
 \family typewriter
-Codecs
+ Codecs
 \family default
  and the combined
 \family typewriter
-Codec
+ Codec
 \family default
  have the same
 \family typewriter
-Gene
+ Gene
 \family default
  type.
-
 \end_layout
 
 \begin_layout Standard
@@ -18654,15 +18589,15 @@ height "1pt"
 \family sans
 Only
 \family typewriter
-Codec
+ Codec
 \family sans
 s which the same
 \family typewriter
-Gene
+ Gene
 \family sans
  type can be composed by the combining factory methods of the
 \family typewriter
-Codec
+ Codec
 \family sans
  class.
 \end_layout
@@ -18687,12 +18622,12 @@ height "1pt"
 \begin_layout Standard
 The following listing shows a full example which uses a combined
 \family typewriter
-Codec
+ Codec
 \family default
 .
  It uses the subset
 \family typewriter
-Codec
+ Codec
 \family default
 , introduced in section
 \begin_inset CommandInset ref
@@ -18703,10 +18638,9 @@ reference "subsec:Subset-codec"
 
 , and combines it into a
 \family typewriter
-Tuple
+ Tuple
 \family default
  of subsets.
-
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -18943,9 +18877,8 @@ ISeq<Codec<?, G>>,\SpecialChar softhyphen
 .
  The example above shows how to use the general combining function.
  It is just a little bit more verbose and requires explicit casts for the
-
 \emph on
-sub-codec
+ sub-codec
 \emph default
  types.
 \end_layout
@@ -19038,11 +18971,11 @@ Problem
 \begin_layout Standard
 The
 \family typewriter
-Problem
+ Problem
 \family default
  interface is a further abstraction level, which allows to
 \emph on
-bind
+ bind
 \emph default
  the problem encoding and the fitness function into one class.
 \end_layout
@@ -19128,37 +19061,36 @@ reference "lis:Problem-interface"
 
  shows the
 \family typewriter
-Problem
+ Problem
 \family default
  interface.
  The generic type
 \family typewriter
-T
+ T
 \family default
  represents the
 \emph on
-native
+ native
 \emph default
  argument type of the fitness function and
 \family typewriter
-C
+ C
 \family default
  the
 \family typewriter
-Comparable
+ Comparable
 \family default
  result of the fitness function.
-
 \family typewriter
 G
 \family default
  is the
 \family typewriter
-Gene
+ Gene
 \family default
  type, which is used by the evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
 \end_layout
@@ -19301,16 +19233,16 @@ final Engine<BitGene, Integer> engine = Engine
 \begin_layout Standard
 The listing above shows how a new
 \family typewriter
-Engine
+ Engine
 \family default
  is created by using a predefined
 \family typewriter
-Problem
+ Problem
 \family default
  instance.
  This allows the complete decoupling of problem and
 \family typewriter
-Engine
+ Engine
 \family default
  definition.
 \end_layout
@@ -19340,11 +19272,11 @@ Validation
 A given problem should usually encoded in a way, that it is not possible
  for the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  to create
 \emph on
-invalid
+ invalid
 \emph default
  individuals (
 \family typewriter
@@ -19352,7 +19284,6 @@ Genotypes
 \family default
 ).
  Some possible encodings for common data-structures are described in section
-
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Encoding"
@@ -19362,11 +19293,11 @@ reference "subsec:Encoding"
 .
  The
 \family typewriter
-Engine
+ Engine
 \family default
  creates new individuals in the
 \emph on
-altering
+ altering
 \emph default
  step, by rearranging (or creating new)
 \family typewriter
@@ -19374,36 +19305,36 @@ Genes
 \family default
  within a
 \family typewriter
-Chromosome
+ Chromosome
 \family default
 .
  Since a
 \family typewriter
-Genotype
+ Genotype
 \family default
  is treated as
 \emph on
-valid
+ valid
 \emph default
  if every single
 \family typewriter
-Gene
+ Gene
 \family default
  in every
 \family typewriter
-Chromosome
+ Chromosome
 \family default
  is
 \emph on
-valid
+ valid
 \emph default
 , the validity property of the
 \family typewriter
-Gene
+ Gene
 \family default
 s determines the validity of the whole
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
 \end_layout
@@ -19411,26 +19342,26 @@ Genotype
 \begin_layout Standard
 The
 \family typewriter
-Engine
+ Engine
 \family default
  tries to create only valid individuals when creating the initial
 \family typewriter
-Population
+ Population
 \family default
  and when it replaces
 \family typewriter
-Genotype
+ Genotype
 \family default
 s which has been
 \emph on
-destroyed
+ destroyed
 \emph default
  by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
  To guarantee the termination of the
 \family typewriter
-Genotype
+ Genotype
 \family default
  creation, the Engine is parameterized with the maximal number of retries
  (
@@ -19464,21 +19395,19 @@ reference "subsubsec:Engine"
 
 \begin_layout Standard
 If the described validation mechanism doesn't fulfill your needs, you can
-
 \emph on
-override
+ override
 \emph default
  the validation mechanism by creating the
 \family typewriter
-Engine
+ Engine
 \family default
  with an external
 \family typewriter
-Genotype
+ Genotype
 \family default
-
 \emph on
-validator
+ validator
 \emph default
 .
 \end_layout
@@ -19554,7 +19483,7 @@ Having the possibility to replace the default validation check is a nice
 \begin_layout Enumerate
 Creating an explicit
 \family typewriter
-Genotype
+ Genotype
 \family default
  factory and
 \end_layout
@@ -19562,7 +19491,7 @@ Genotype
 \begin_layout Enumerate
 implementing new
 \family typewriter
-Gene
+ Gene
 \family default
 /
 \family typewriter
@@ -19586,11 +19515,10 @@ Genotype
 \begin_layout Standard
 The usual mechanism for defining an encoding is to create a
 \family typewriter
-Genotype
+ Genotype
 \family default
-
 \emph on
-prototype
+ prototype
 \emph default
 
 \begin_inset Foot
@@ -19615,29 +19543,29 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 .
  Since the
 \family typewriter
-Genotype
+ Genotype
 \family default
  implements the
 \family typewriter
-Factory
+ Factory
 \family default
  interface, an prototype instance can easily passed to the
 \family typewriter
-Engine\SpecialChar softhyphen
+ Engine\SpecialChar softhyphen
 .builder
 \family default
  method.
  For a more advanced
 \family typewriter
-Genotype
+ Genotype
 \family default
  creation, you
 \emph on
-only
+ only
 \emph default
  have to create an explicit
 \family typewriter
-Genotype
+ Genotype
 \family default
  factory.
 \end_layout
@@ -19701,12 +19629,12 @@ final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
 \begin_layout Standard
 With this method you can avoid that the
 \family typewriter
-Engine
+ Engine
 \family default
  creates invalid individuals in the first place, but it is still possible
  that the alterer step will destroy your
 \family typewriter
-Genotype
+ Genotype
 \family default
 s.
 \end_layout
@@ -19728,7 +19656,7 @@ Alterer
 \begin_layout Standard
 Creating your own
 \family typewriter
-Gene
+ Gene
 \family default
 ,
 \family typewriter
@@ -19736,12 +19664,12 @@ Chromosome
 \family default
  and
 \family typewriter
-Alter\SpecialChar softhyphen
+ Alter\SpecialChar softhyphen
 er
 \family default
  classes is the most heavy-wighted possibility for solving the
 \emph on
-validity
+ validity
 \emph default
  problem.
  Refer to section
@@ -19782,28 +19710,27 @@ Termination is the criterion by which the evolution stream decides whether
  or truncating the evolution stream, respectively.
  The
 \family typewriter
-EvolutionStream
+ EvolutionStream
 \family default
  of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  library offers an additional method for limiting the evolution.
  With the
 \family typewriter
-limit(Predicate<EvolutionResult<G,C>>)
+ limit(Predicate<EvolutionResult<G,C>>)
 \family default
  method it is possible to use more advanced termination strategies.
  If the predicate, given to the
 \family typewriter
-limit
+ limit
 \family default
  function, returns false, the evolution stream is truncated.
-
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
@@ -19816,7 +19743,7 @@ Stream\SpecialChar softhyphen
 All termination strategies described in the following sub-sections are part
  of the library and can be created by factory methods of the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .engine\SpecialChar softhyphen
 .limit
@@ -19900,16 +19827,16 @@ height "1pt"
 \family sans
 The predicate given to the
 \family typewriter
-EvolutionStream.limit
+ EvolutionStream.limit
 \family sans
  function must return
 \emph on
-false
+ false
 \emph default
  for truncating the evolution stream.
  If it returns
 \emph on
-true
+ true
 \emph default
 , the evolution is continued.
 \end_layout
@@ -20028,7 +19955,7 @@ Mutator<>(0.03)
 \family default
  and
 \family typewriter
-SinglePointCrossover<>(0.125)
+ SinglePointCrossover<>(0.125)
 \end_layout
 
 \end_inset
@@ -20107,14 +20034,14 @@ reference "tab:Knapsack-evolution-parameters"
 Some of the implemented termination strategy needs to maintain an internal
  state.
  This strategies can't be re-used in different evolution streams.
- To be on the safe side, it is recommended to always create an
+ To be on the safe side, it is recommended to always create a
 \family typewriter
-Predicate
+ Predicate
 \family default
  instance for each stream.
  Calling
 \family typewriter
-Stream\SpecialChar softhyphen
+ Stream\SpecialChar softhyphen
 .limit\SpecialChar softhyphen
 (limit\SpecialChar softhyphen
 .by
@@ -20156,17 +20083,17 @@ Fixed generation
 The simplest way for terminating the evolution process, is to define a maximal
  number of generations on the
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
 .
  It just uses the existing
 \family typewriter
-limit
+ limit
 \family default
  method of the Java
 \family typewriter
-Stream
+ Stream
 \family default
  interface.
 \end_layout
@@ -20252,7 +20179,7 @@ reference "fig:Fixed-generation-diagram"
  shows the best fitness values of the used Knapsack problem after a given
  number of generations, whereas the candle-stick points represents the
 \emph on
-min
+ min
 \emph default
 ,
 \emph on
@@ -20276,7 +20203,7 @@ median
 \emph default
  and
 \emph on
-max
+ max
 \emph default
  fitness after
 \begin_inset Formula $250$
@@ -20285,14 +20212,14 @@ max
  repetitions per generation.
  The solid line shows for the
 \emph on
-mean
+ mean
 \emph default
  of the best fitness values.
  For a small increase of the fitness value, the needed generations grows
  exponentially.
  This is especially the case when the fitness is approaching to its
 \emph on
-maximal
+ maximal
 \emph default
  value.
 \end_layout
@@ -20324,7 +20251,7 @@ Steady fitness
 \begin_layout Standard
 The
 \emph on
-steady fitness
+ steady fitness
 \emph default
  strategy truncates the evolution stream if its best fitness hasn't changed
  after a given number of generations.
@@ -20516,7 +20443,7 @@ reference "lis:Steady-fitness-limit"
 
  shows the implementation of the
 \family typewriter
-limit\SpecialChar softhyphen
+ limit\SpecialChar softhyphen
 .byStea\SpecialChar softhyphen
 dy\SpecialChar softhyphen
 Fit\SpecialChar softhyphen
@@ -20524,7 +20451,7 @@ ness(int)
 \family default
  in the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .engine
 \family default
@@ -20555,13 +20482,13 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 The steady fitness terminator can be created by the
 \family typewriter
-by\SpecialChar softhyphen
+ by\SpecialChar softhyphen
 Steady\SpecialChar softhyphen
 Fitness
 \family default
  factory method of the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 limit
@@ -20625,13 +20552,12 @@ reference "fig:Steady-fitness-diagram"
  The variation of the total generation is quite big, as shown by the candle-stic
 ks.
  Though the variation can be quite big—the termination test has been repeated
-
 \begin_inset Formula $250$
 \end_inset
 
  times for each data point—, the tests showed that the
 \emph on
-steady fitness
+ steady fitness
 \emph default
  termination strategy always terminated, at least for the given test setup.
  The lower diagram give an overview of the fitness progression.
@@ -20694,7 +20620,7 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 In the code example above, the
 \family typewriter
-by\SpecialChar softhyphen
+ by\SpecialChar softhyphen
 Execution\SpecialChar softhyphen
 Time(\SpecialChar softhyphen
 Duration\SpecialChar softhyphen
@@ -20711,12 +20637,11 @@ ration, Clock)
 \family default
 , lets you define the
 \family typewriter
-java.\SpecialChar softhyphen
+ java.\SpecialChar softhyphen
 time.\SpecialChar softhyphen
 Clock
 \family default
 , which is used for measure the execution time.
-
 \family sans
 \series bold
 \shape smallcaps
@@ -20726,7 +20651,7 @@ Jenetics
 \shape default
  uses the nano precision clock
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
@@ -20862,7 +20787,6 @@ When limiting the evolution stream by a fitness threshold, you have to have
  a knowledge about the expected maximal fitness.
  If there is no such knowledge, it is advisable to add an additional fixed
  sized generation limit as safety net.
-
 \end_layout
 
 \begin_layout Standard
@@ -20918,20 +20842,20 @@ reference "fig:Fitness-threshold-diagram"
  And it will definitely not terminate if the fitness threshold is higher
  than the
 \emph on
-global
+ global
 \emph default
  maximum of the fitness function.
  It will be a
 \emph on
-perfect
+ perfect
 \emph default
  strategy if you can define some
 \emph on
-good enough
+ good enough
 \emph default
  fitness value, which can be
 \emph on
-easily
+ easily
 \emph default
  achieved.
 \end_layout
@@ -21045,7 +20969,7 @@ reference "lis:General-fitness-convergence"
 
  shows the factory method which creates the
 \emph on
-generic
+ generic
 \emph default
  fitness convergence predicate.
  This method allows to define the evolution termination according to the
@@ -21134,7 +21058,7 @@ https://en.wikipedia.org/wiki/Moving_average
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \sigma_{F}(N)=\frac{1}{N}\sum_{i=0}^{N-1}F_{[G-i]}\label{eq:fitness-convergence-mean}
 \end{equation}
@@ -21159,7 +21083,7 @@ where
 
  the current generation.
  If the condition
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \frac{\left|\sigma_{F}(N_{S})-\sigma_{F}(N_{L})\right|}{\delta}<\epsilon\label{eq:fitness-convergence-term}
 \end{equation}
@@ -21172,7 +21096,7 @@ is fulfilled, the evolution stream is truncated.
 \end_inset
 
  is defined as follows:
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
 \max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \sigma_{F}(N_{x})\neq0\\
@@ -21348,7 +21272,6 @@ reference "fig:Fitness-convergence-diagram-50-150"
 \end_inset
 
  parameters.
-
 \end_layout
 
 \begin_layout Subsection
@@ -21401,16 +21324,16 @@ Evolution!performance
 \begin_layout Standard
 This section contains an empirical
 \emph on
-proof
+ proof
 \emph default
 , that
 \emph on
-evolutionary
+ evolutionary
 \emph default
  selectors deliver significantly better fitness results than a random search.
  The
 \family typewriter
-Monte\SpecialChar softhyphen
+ Monte\SpecialChar softhyphen
 Carlo\SpecialChar softhyphen
 Selector
 \begin_inset Index idx
@@ -21475,11 +21398,11 @@ reference "fig:Selector-performance-Knapsack"
 
  shows the
 \emph on
-evolution
+ evolution
 \emph default
  performance of the
 \family typewriter
-Selec\SpecialChar softhyphen
+ Selec\SpecialChar softhyphen
 tor
 \family default
 
@@ -21513,22 +21436,22 @@ reference "subsec:Termination"
 .
  The lower blue line shows the (mean) fitness values of the
 \emph on
-Knapsack
+ Knapsack
 \emph default
  problem when using the
 \family typewriter
-Monte\SpecialChar softhyphen
+ Monte\SpecialChar softhyphen
 Carlo\SpecialChar softhyphen
 Selector
 \family default
  for selecting the survivors and offspring population.
  It can be easily seen, that the performance of the
 \emph on
-real
+ real
 \emph default
  evolutionary
 \family typewriter
-Selector
+ Selector
 \family default
 s is much better than a random search.
 \end_layout
@@ -21577,7 +21500,7 @@ key "FEDR:FEDR19750860506"
 \emph default
  from the field of
 \emph on
-Evolutionary Computation
+ Evolutionary Computation
 \emph default
 .
  ES uses truncation selection
@@ -21617,7 +21540,7 @@ reference "par:Mutator"
  for changing the next generation.
  This section describes how to configure the evolution
 \family typewriter
-Engine
+ Engine
 \family default
  of the library for the
 \begin_inset Formula $\left(\mu,\lambda\right)$
@@ -21826,13 +21749,13 @@ reference "lis:mu-lambda-Engine-configuration"
  the final population.
  Step three is configured by setting the offspring selector to the
 \family typewriter
-Truncation\SpecialChar softhyphen
+ Truncation\SpecialChar softhyphen
 Selector
 \family default
 .
  Additionally, the
 \family typewriter
-Truncation\SpecialChar softhyphen
+ Truncation\SpecialChar softhyphen
 Selector
 \family default
  is parameterized with
@@ -21842,7 +21765,7 @@ Selector
 .
  This lets the
 \family typewriter
-Truncation\SpecialChar softhyphen
+ Truncation\SpecialChar softhyphen
 Selector
 \family default
  only select the
@@ -21919,11 +21842,7 @@ reference "lis:mu-lambda-Engine-configuration"
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
--ES
-\emph on
-
-\emph default
-must be set
+-ESmust be set
 \emph on
 indirectly
 \emph default
@@ -22041,7 +21960,7 @@ Jenetics
  to implement an increasing population size.
  Besides this restriction, the
 \family typewriter
-Engine
+ Engine
 \family default
  configuration for the
 \begin_inset Formula $\left(\mu+\lambda\right)$
@@ -22133,7 +22052,7 @@ Since the selected
 
  parents are part of the next generation, the
 \family typewriter
-survivors\SpecialChar softhyphen
+ survivors\SpecialChar softhyphen
 Size
 \family default
  property must be set to
@@ -22143,13 +22062,13 @@ Size
 .
  This also requires to set the survivors selector to the
 \family typewriter
-Truncation\SpecialChar softhyphen
+ Truncation\SpecialChar softhyphen
 Selector
 \family default
 .
  With the
 \family typewriter
-selector\SpecialChar softhyphen
+ selector\SpecialChar softhyphen
 (Selector)
 \family default
  method, both selectors, the selector for the survivors and for the offspring,
@@ -22161,21 +22080,13 @@ Because the best parents are also part of the next generation, the
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
--ES
-\emph on
-
-\emph default
-may be more exploitative than the
+-ES may be more exploitative than the
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
--ES.
-
-\emph on
-
-\emph default
-This has the risk, that very fit parents can defeat other individuals over
- and over again, which leads to a prematurely convergence to a local optimum.
+-ES.This has the risk, that very fit parents can defeat other individuals
+ over and over again, which leads to a prematurely convergence to a local
+ optimum.
 \end_layout
 
 \begin_layout Chapter
@@ -22201,22 +22112,21 @@ This section contains internal implementation details which doesn't fit
  purpose.
  This classes resides below the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 internal
 \family default
  package.
  Though they are
 \series bold
-not
+ not
 \series default
  part of the official API, they are packed into the delivered jar and can
  be used accordingly.
-
 \emph on
 Be aware that all classes below the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 internal
 \family default
@@ -22258,7 +22168,7 @@ Jenetics
 \shape default
  uses the
 \family typewriter
-dieharder
+ dieharder
 \family default
 
 \begin_inset Foot
@@ -22284,10 +22194,9 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
 
  (command line) tool for testing the
 \emph on
-randomness
+ randomness
 \emph default
  of the used PRNGs.
-
 \family typewriter
 dieharder
 \family default
@@ -22295,12 +22204,12 @@ dieharder
  It is intended to test generators, not files of possibly random numbers.
  Since
 \family typewriter
-dieharder
+ dieharder
 \family default
  needs a huge amount of random data, for testing the quality of a RNG, it
  is usually advisable to pipe the random numbers to the
 \family typewriter
-dieharder
+ dieharder
 \family default
  process:
 \end_layout
@@ -22313,16 +22222,16 @@ $ cat /dev/urandom | dieharder -g 200 -a
 The example above demonstrates how to stream a raw binary stream of bits
  to the
 \family typewriter
-stdin
+ stdin
 \family default
  (raw) interface of
 \family typewriter
-dieharder
+ dieharder
 \family default
 .
  With the
 \family typewriter
-Die\SpecialChar softhyphen
+ Die\SpecialChar softhyphen
 Harder
 \family default
 
@@ -22337,21 +22246,21 @@ Dieharder
 
  class, which is part of the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
 util
 \family default
  package, it is easily possible to test PRNGs extending the
 \family typewriter
-java.\SpecialChar softhyphen
+ java.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
 Random
 \family default
  class.
  The only requirement is, that the PRNG must be
 \emph on
-default
+ default
 \emph default
 -constructible and part of the classpath.
 \end_layout
@@ -22376,7 +22285,7 @@ $ java -cp org.jenetics-@__version__@.jar
 Calling the command above will create an instance of the given random engine
  and stream the random data (bytes) to the raw interface of
 \family typewriter
-dieharder
+ dieharder
 \family default
  process.
 \end_layout
@@ -22416,7 +22325,7 @@ footnotesize}
 
 In the listing above, a part of the created
 \family typewriter
-dieharder
+ dieharder
 \family default
  report is shown.
  For testing the
@@ -22437,7 +22346,7 @@ LCG64ShiftRandom
 \family default
  class, which is part of the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 util
 \family default
@@ -22470,7 +22379,7 @@ reference "tab:LCG64ShiftRandom-quality"
 
  shows the summary of the
 \family typewriter
-dieharder
+ dieharder
 \family default
  tests.
  The full report is part of the source file of the
@@ -22655,7 +22564,7 @@ reference "subsec:Randomness"
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -22695,21 +22604,21 @@ Before applying this method throughout the whole library, I decided to perform
  some statistical tests.
  For this purpose I treated the
 \family typewriter
-seed()
+ seed()
 \family default
  method itself as PRNG and analyzed the created long values with the
 \family typewriter
-Die\SpecialChar softhyphen
+ Die\SpecialChar softhyphen
 Harder class
 \family default
 .
  The
 \family typewriter
-seed()
+ seed()
 \family default
  method has been wrapped into the
 \family typewriter
-org.\SpecialChar softhyphen
+ org.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
 util.\SpecialChar softhyphen
@@ -22720,7 +22629,7 @@ Random
  class.
  Assuming that the
 \family typewriter
-dieharder
+ dieharder
 \family default
  tool is in the search path, calling
 \end_layout
@@ -22744,7 +22653,7 @@ $ java -cp org.jenetics-@__version__@.jar
 \begin_layout Standard
 will perform the statistical tests for the nano time
 \emph on
-random engine
+ random engine
 \emph default
 .
  The statistical quality is rather bad: every single test failed.
@@ -22757,7 +22666,7 @@ reference "tab:Nano-time-seeding"
 
  shows the summary of the
 \family typewriter
-dieharder
+ dieharder
 \family default
  report.
 \begin_inset Foot
@@ -22768,7 +22677,6 @@ The detailed test report can be found in the source of the Nano\SpecialChar soft
 Time\SpecialChar softhyphen
 Random
  class.
-
 \begin_inset Flex URL
 status collapsed
 
@@ -22892,7 +22800,6 @@ Nano time seeding quality
 
 \begin_layout Standard
 An alternative source of entropy, for generating seed values, would be the
-
 \family typewriter
 /dev/random
 \family default
@@ -22905,7 +22812,7 @@ An alternative source of entropy, for generating seed values, would be the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -22915,12 +22822,12 @@ Jenetics
 \begin_layout Standard
 The next attempt tries to fetch the seeds from the JVM, via the
 \family typewriter
-Object.\SpecialChar softhyphen
+ Object.\SpecialChar softhyphen
 hashCode()
 \family default
  method.
  Since the hash code of an Object is available for every operating system
- and most likely
+ and most likely 
 \begin_inset Quotes ald
 \end_inset
 
@@ -22961,7 +22868,7 @@ public static long seed() {
 
 This seed method has been wrapped into the
 \family typewriter
-Object\SpecialChar softhyphen
+ Object\SpecialChar softhyphen
 Hash\SpecialChar softhyphen
 Random
 \family default
@@ -22994,7 +22901,7 @@ reference "tab:Object-hash-seeding"
 
  shows the summary of the
 \family typewriter
-dieharder
+ dieharder
 \family default
  report
 \begin_inset Foot
@@ -23128,13 +23035,12 @@ Object hash seeding quality
 After additional experimentation, a combination of the nano time seed and
  the object hash seeding seems to be the
 \emph on
-right
+ right
 \emph default
  solution.
  The rational behind this was, that the PRNG seed shouldn't rely on a single
-
 \emph on
-source
+ source
 \emph default
  of entropy.
 \end_layout
@@ -23250,7 +23156,7 @@ reference "lis:Random-seeding"
  shows how the nano time seed is mixed with the object seed.
  The
 \family typewriter
-mix
+ mix
 \family default
  method was inspired by the mixing step of the
 \family typewriter
@@ -23448,24 +23354,23 @@ Combined random seeding quality
 
 \begin_layout Standard
 The statistical performance of this seeding is better, according to the
-
 \family typewriter
-die\SpecialChar softhyphen
+ die\SpecialChar softhyphen
 harder
 \family default
  test suite, than some of the real random engines, including the default
  Java
 \family typewriter
-Random
+ Random
 \family default
  engine.
  Using the proposed
 \family typewriter
-seed()
+ seed()
 \family default
  method is in any case preferable to the simple
 \family typewriter
-System.\SpecialChar softhyphen
+ System.\SpecialChar softhyphen
 nano\SpecialChar softhyphen
 Time()
 \family default
@@ -23503,7 +23408,7 @@ The
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -23519,7 +23424,7 @@ reference "tab:Jenetics-modules"
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -23724,7 +23629,7 @@ With this module split the code is easier to maintain and doesn't force
  the user to use parts of the library he or she isn't using, which keep
  the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .base
 \family default
@@ -23733,7 +23638,7 @@ org\SpecialChar softhyphen
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -23757,16 +23662,16 @@ Modules!org.jenetics.ext
 \begin_layout Standard
 The
 \family typewriter
-org.jenetics.ext
+ org.jenetics.ext
 \family default
  module implements additional
 \emph on
-non
+ non
 \emph default
 -standard genes and evolutionary operations.
  It also contains
 \emph on
-data structures
+ data structures
 \emph default
  which are used by this additional genes and operations.
 \end_layout
@@ -23792,7 +23697,7 @@ Tree
 \begin_layout Standard
 The
 \family typewriter
-Tree
+ Tree
 \family default
  interface defines a general tree data type, where each tree node can have
  an arbitrary number of children.
@@ -23872,7 +23777,7 @@ reference "lis:Tree-interface"
 
  shows the
 \family typewriter
-Tree
+ Tree
 \family default
  interface with its basic abstract tree methods.
  All other needed tree methods, e.g.
@@ -23880,15 +23785,15 @@ Tree
  are derived from this four abstract tree methods.
  A
 \emph on
-mutable
+ mutable
 \emph default
  default implementation of the
 \family typewriter
-Tree
+ Tree
 \family default
  interface is given by the
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Node
 \family default
  class.
@@ -23935,12 +23840,12 @@ Example tree
 \begin_layout Standard
 To illustrate the usage of the
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Node
 \family default
  class, we will create a
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Node
 \family default
  instance from the tree shown in figure
@@ -23957,7 +23862,6 @@ reference "fig:Example-tree"
 
  nodes with a maximal depth of three and a varying child count from one
  to three.
-
 \end_layout
 
 \begin_layout Standard
@@ -24048,18 +23952,18 @@ reference "lis:Example-TreeNode"
 
  shows the
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Node
 \family default
  representation of the given example tree.
  New children are added by using the
 \family typewriter
-attach
+ attach
 \family default
  method.
  For full
 \family typewriter
-Tree
+ Tree
 \family default
  method list have a look at the Javadoc documentation.
 \end_layout
@@ -24088,17 +23992,17 @@ FlatTree
 \begin_layout Standard
 The main purpose for the
 \family typewriter
-Tree
+ Tree
 \family default
  data type in the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .ext
 \family default
  module is to support hierarchical
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Gene
 \family default
 s, which are needed for genetic programming (see section
@@ -24146,12 +24050,12 @@ https://en.wikipedia.org/wiki/Binary_tree##Arrays
  to be stored for a bijective mapping between tree and array.
  The
 \family typewriter
-Flat\SpecialChar softhyphen
+ Flat\SpecialChar softhyphen
 Tree
 \family default
  interface extends the Tree node with a
 \family typewriter
-child\SpecialChar softhyphen
+ child\SpecialChar softhyphen
 Off\SpecialChar softhyphen
 set()
 \family default
@@ -24289,7 +24193,7 @@ name "fig:Example-FlatTree"
 
 Example
 \family typewriter
-FlatTree
+ FlatTree
 \end_layout
 
 \end_inset
@@ -24362,7 +24266,6 @@ The code snippet above shows how to flatten a given integer tree and convert
  it back to a regular tree.
  The first element of the flattened tree node sequence is always the root
  node.
-
 \end_layout
 
 \begin_layout Standard
@@ -24401,15 +24304,15 @@ height "1pt"
 \family sans
 Since the
 \family typewriter
-TreeGene
+ TreeGene
 \family sans
  and the
 \family typewriter
-ProgramGene
+ ProgramGene
 \family sans
  are implementing the
 \family typewriter
-FlatTree
+ FlatTree
 \family sans
  interface, it is helpful to know and understand the used tree to array
  mapping.
@@ -24453,32 +24356,32 @@ BigIntegerGene
 \begin_layout Standard
 The
 \family typewriter
-BigIntegerGene
+ BigIntegerGene
 \family default
  implements the
 \family typewriter
-NumericGene
+ NumericGene
 \family default
  interface and can be used when the range of the existing
 \family typewriter
-Long\SpecialChar softhyphen
+ Long\SpecialChar softhyphen
 Gene
 \family default
  or
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Gene
 \family default
  is not enough.
  Its allele type is a
 \family typewriter
-Big\SpecialChar softhyphen
+ Big\SpecialChar softhyphen
 Integer
 \family default
 , which can store arbitrary-precision integers.
  There also exists a corresponding
 \family typewriter
-Big\SpecialChar softhyphen
+ Big\SpecialChar softhyphen
 Integer\SpecialChar softhyphen
 Chromosome
 \family default
@@ -24502,22 +24405,22 @@ TreeGene
 \begin_layout Standard
 The
 \family typewriter
-TreeGene
+ TreeGene
 \family default
  interface extends the
 \family typewriter
-Flat\SpecialChar softhyphen
+ Flat\SpecialChar softhyphen
 Tree
 \family default
  interface and serves as basis for the
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Gene
 \family default
 , used for genetic programming.
  Its tree nodes are stored in the corresponding
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Chromosome
 \family default
 .
@@ -24576,7 +24479,7 @@ Binary\SpecialChar softhyphen
 Crossover performs the simulated binary crossover (SBX)
  on
 \family typewriter
-Numeric\SpecialChar softhyphen
+ Numeric\SpecialChar softhyphen
 Chromosome
 \family default
 s such that each position is either crossed contracted or expanded with
@@ -24610,11 +24513,11 @@ Single-node crossover
 \begin_layout Standard
 The
 \family typewriter
-SingleNodeCrossover
+ SingleNodeCrossover
 \family default
  class works on
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
 some
 \family default
@@ -24820,11 +24723,11 @@ https://en.wikipedia.org/wiki/Weasel_program
  is thought experiment from Richard Dawkins, in which he tries to illustrate
  the function of genetic
 \emph on
-mutation
+ mutation
 \emph default
  and
 \emph on
-selection
+ selection
 \emph default
 .
 \begin_inset Foot
@@ -24883,7 +24786,7 @@ The search space of the 28 character long target string is
 
  different
 \emph on
-sentences
+ sentences
 \emph default
  per second, it would take about
 \begin_inset Formula $10^{26}$
@@ -24983,7 +24886,7 @@ key "dawkins1986"
 \end_layout
 
 \begin_layout Standard
-If you want to write a Weasel program with the
+If you want to write a Weasel program with th 
 \family sans
 \series bold
 \shape smallcaps
@@ -24993,7 +24896,7 @@ Jenetics
 \shape default
  library, you need to use the special
 \family typewriter
-Weasel\SpecialChar softhyphen
+ Weasel\SpecialChar softhyphen
 Selector
 \begin_inset Index idx
 status collapsed
@@ -25008,7 +24911,7 @@ WeaselSelector
 \family default
  and
 \family typewriter
-Weasel\SpecialChar softhyphen
+ Weasel\SpecialChar softhyphen
 Mutator
 \family default
 
@@ -25231,14 +25134,14 @@ reference "lis:Weasel-program"
 
  shows how-to implement the
 \family typewriter
-Weasel\SpecialChar softhyphen
+ Weasel\SpecialChar softhyphen
 Program
 \family default
  with
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -25247,7 +25150,7 @@ Jenetics
 n is created.
  The third step is done by the
 \family typewriter
-Weasel\SpecialChar softhyphen
+ Weasel\SpecialChar softhyphen
 Mutator
 \family default
 , with mutation probability of 0.05.
@@ -25255,7 +25158,7 @@ Mutator
 raction of one.
  The evolution stream is limited by the
 \family typewriter
-limit\SpecialChar softhyphen
+ limit\SpecialChar softhyphen
 .by\SpecialChar softhyphen
 Fitness\SpecialChar softhyphen
 Threshold
@@ -25267,7 +25170,7 @@ Threshold
 .
  In the current example this value is set to
 \family typewriter
-TARGET\SpecialChar softhyphen
+ TARGET\SpecialChar softhyphen
 .length()
 \family default
  - 1 = 27.
@@ -25384,7 +25287,7 @@ https://en.wikipedia.org/wiki/Genetic_programming
 
  The
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .prog
 \family default
@@ -25392,25 +25295,25 @@ org\SpecialChar softhyphen
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  library doing GP.
  It introduces a
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Gene
 \family default
  and
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
  pair, which serves as the main data-structure for genetic programs.
  A
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Gene
 \family default
  is essentially a tree (AST
@@ -25439,7 +25342,7 @@ Op
 \family default
 ) stored in a
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
 .
@@ -25478,18 +25381,18 @@ Genetic programming!Operations
 When creating own genetic programs, it is not necessary to derive own classes
  from the
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Gene
 \family default
  or
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
 .
  The intended extension point is the
 \family typewriter
-Op
+ Op
 \family default
  interface.
 \end_layout
@@ -25611,7 +25514,7 @@ Op
 \begin_layout Standard
 The generic type of the
 \family typewriter
-Op
+ Op
 \family default
  interface (see listing
 \begin_inset CommandInset ref
@@ -25623,7 +25526,7 @@ reference "lis:GP-Op-interface"
 ) enforces the data-type constraints for the created program tree and makes
  the implementation a
 \emph on
-strongly typed
+ strongly typed
 \emph default
  GP.
  Using the
@@ -25658,13 +25561,13 @@ final Op<String> concat = Op.of("+", 2, v -> v[0] + v[1]);
 \begin_layout Standard
 A new
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
  is created with the operations suitable for our problem.
  When creating a new
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
 , we must distinguish two different kind of operations:
@@ -25681,7 +25584,7 @@ Non-terminal
  must be equal to the arity of the operation of the parent node.
  Non-terminal operations will be abbreviated to
 \emph on
-operations
+ operations
 \emph default
 .
 \end_layout
@@ -25694,7 +25597,7 @@ Terminal
  operations have an arity of zero and from the leaves of the program tree.
  Terminal operations will be abbreviated to
 \emph on
-terminals
+ terminals
 \emph default
 .
 \end_layout
@@ -25702,7 +25605,7 @@ terminals
 \begin_layout Standard
 The
 \family typewriter
-org.jenetics.prog
+ org.jenetics.prog
 \family default
  module comes with three predefined terminal operations:
 \family typewriter
@@ -25714,7 +25617,7 @@ Const
 \family default
  and
 \family typewriter
-Ephemeral\SpecialChar softhyphen
+ Ephemeral\SpecialChar softhyphen
 Const
 \family default
  classes.
@@ -25729,7 +25632,7 @@ Var
 \begin_layout Standard
 The
 \family typewriter
-Var
+ Var
 \begin_inset Index idx
 status collapsed
 
@@ -25779,7 +25682,7 @@ final ISeq<Op<Double>> terminals = ISeq.of(x, y, z);
 \begin_layout Standard
 The
 \emph on
-terminal
+ terminal
 \emph default
  operations defined in the listing above can be used for defining a program
  which takes a
@@ -25813,12 +25716,12 @@ terminal
 .
  If you have again a look at the
 \family typewriter
-apply
+ apply
 \family default
  method of the operation interface, you can see that this method takes an
  object array of type
 \family typewriter
-T
+ T
 \family default
 .
  The variable
@@ -25842,7 +25745,7 @@ Const
 \begin_layout Standard
 The
 \family typewriter
-Const
+ Const
 \begin_inset Index idx
 status collapsed
 
@@ -25935,17 +25838,17 @@ Program creation
 \begin_layout Standard
 The
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
  comes with some factory methods, which lets you easily create program trees
  with a given depth and a given set of
 \emph on
-operations
+ operations
 \emph default
  and
 \emph on
-terminals
+ terminals
 \emph default
 .
 \end_layout
@@ -25989,7 +25892,7 @@ final ProgramChromosome<Double> program = ProgramChromosome
 \begin_layout Standard
 The code snippet above will create a
 \emph on
-perfect
+ perfect
 \emph default
  program tree
 \begin_inset Foot
@@ -26053,17 +25956,17 @@ height "1pt"
 \family sans
 The created program tree is
 \emph on
-perfect
+ perfect
 \emph default
 , which means that all leaf nodes have the same
 \emph on
-depth
+ depth
 \emph default
 .
  If new trees needs to be created during evolution, they will be created
  with the
 \emph on
-depth
+ depth
 \emph default
 ,
 \emph on
@@ -26071,11 +25974,11 @@ operations
 \emph default
  and
 \emph on
-terminals
+ terminals
 \emph default
  defined by the
 \emph on
-template
+ template
 \emph default
  program tree.
 \end_layout
@@ -26100,7 +26003,7 @@ height "1pt"
 \begin_layout Standard
 The evolution
 \family typewriter
-Engine
+ Engine
 \family default
  used for solving GP problems is created the same way as for normal GA problems.
 \end_layout
@@ -26168,34 +26071,33 @@ Crossover
 \family default
 , for a
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Gene
 \family default
  guarantees that the program tree after the
 \emph on
-alter
+ alter
 \emph default
  operation is still valid.
  It obeys the tree structure of the gene.
  General alterers, not written for
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Gene
 \family default
  of
 \family typewriter
-Tree\SpecialChar softhyphen
+ Tree\SpecialChar softhyphen
 Gene
 \family default
  classes, will most likely destroy the tree property of the altered chromosome.
  There are essentially two possibility for handling invalid tree chromosomes:
-
 \end_layout
 
 \begin_layout Enumerate
 Marking the chromosome as
 \emph on
-invalid
+ invalid
 \emph default
 .
  This possibility is easier to achieve, but would also to lead to a large
@@ -26209,14 +26111,14 @@ Trying to repair the invalid chromosome.
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  library has chosen.
  The repair process reuses the operations in a
 \family typewriter
-Program\SpecialChar softhyphen
+ Program\SpecialChar softhyphen
 Chromosome
 \family default
  and rebuilds the tree property by using the operation arity.
@@ -26260,17 +26162,14 @@ height "1pt"
 \series bold
 \shape smallcaps
 Jenetics
-\family default
 \series default
 \shape default
-
-\family sans
-allows the usage of arbitrary Alterer implementations.
+ allows the usage of arbitrary Alterer implementations.
  Even alterers not implemented for Program\SpecialChar softhyphen
 Genes.
  Genes
 \emph on
-destroyed
+ destroyed
 \emph default
  by such alterer are repaired.
 \end_layout
@@ -26299,41 +26198,41 @@ XML marshalling
 \begin_layout Standard
 The
 \family typewriter
-org.jenetics.xml
+ org.jenetics.xml
 \family default
  module allows to write and read chromosomes and genotypes to and from XML.
  Since the existing JAXB marshaling is part of the deprecated
 \family typewriter
-javax.xml.bind
+ javax.xml.bind
 \family default
  module the
 \family typewriter
-org.jenetics.xml
+ org.jenetics.xml
 \family default
  module is now the recommended for XML marshalling of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  classes.
  The XML marshalling, implemented in this module, is based on the Java
 \family typewriter
-XML\SpecialChar softhyphen
+ XML\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
 Writer
 \family default
  and
 \family typewriter
-XML\SpecialChar softhyphen
+ XML\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
 Reader
 \family default
  classes of the
 \family typewriter
-java.xml
+ java.xml
 \family default
  module.
 \end_layout
@@ -26409,7 +26308,6 @@ public interface Writer<T> {
 
 \begin_layout Plain Layout
 
-
 \end_layout
 
 \begin_layout Plain Layout
@@ -26424,7 +26322,6 @@ public interface Writer<T> {
 \end_layout
 
 \begin_layout Plain Layout
-
 
 \end_layout
 
@@ -26474,18 +26371,18 @@ Writer
 \begin_layout Standard
 Together with the static
 \family typewriter
-Writer
+ Writer
 \family default
  factory method, it is possible to define arbitrary writers through composition.
  There is no need for implementing the
 \family typewriter
-Writer
+ Writer
 \family default
  interface.
  A simple example will show you how to create (compose) a Writer class for
  the
 \family typewriter
-Integer\SpecialChar softhyphen
+ Integer\SpecialChar softhyphen
 Chromosome
 \family default
 .
@@ -26603,7 +26500,7 @@ XML reader
 Reading and writing XML files uses the same concepts.
  For reading XML there is an abstract
 \family typewriter
-Reader
+ Reader
 \family default
  class, which can be easily composed.
  The main method of the Reader class can be seen in listing
@@ -26676,7 +26573,6 @@ When creating a XML
 Reader
 \family default
 , the structure of the XML must be defined in a similar way as for the XML
-
 \family typewriter
 Writer
 \family default
@@ -26685,11 +26581,11 @@ Writer
  from the extracted XML data, is needed.
  A
 \family typewriter
-Reader
+ Reader
 \family default
 , which will read the XML representation of an
 \family typewriter
-Integer\SpecialChar softhyphen
+ Integer\SpecialChar softhyphen
 Chromosome
 \family default
  can be seen in the following code snippet below.
@@ -26825,7 +26721,7 @@ Another important aspect when doing marshalling, is the space needed for
  the marshaled objects and the time needed for doing the marshalling.
  For the performance tests a genotype with a varying
 \emph on
-chromosome count
+ chromosome count
 \emph default
  is used.
  The used genotype template can be seen in the code snippet below.
@@ -27191,13 +27087,12 @@ Marshaled object size
 
 \begin_layout Standard
 Using the Java serialization will create the smallest files and the XML
-
 \family typewriter
 Writer
 \family default
  of the
 \family typewriter
-org\SpecialChar softhyphen
+ org\SpecialChar softhyphen
 .jenetics\SpecialChar softhyphen
 .xml
 \family default
@@ -27221,7 +27116,6 @@ reference "fig:Genotype-write-performance"
 Writer
 \family default
  is the slowest one, but still comparable to the JAXB method.
-
 \end_layout
 
 \begin_layout Standard
@@ -27264,7 +27158,6 @@ Genotype write performance
 
 \begin_layout Standard
 For reading the serialized genotypes, we will see similar results (see diagram
-
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Genotype-read-performance"
@@ -27322,7 +27215,7 @@ PRNG
 \begin_layout Standard
 The
 \family typewriter
-prngine
+ prngine
 \family default
 
 \begin_inset Foot
@@ -27388,14 +27281,13 @@ https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  GA library, but it has no dependency to it.
  All PRNG implementations of this library extends the Java Random class,
  which makes it easily usable in other projects.
-
 \emph on
 The implemented PRNGs are not cryptographically strong RNGs.
 
@@ -27410,8 +27302,8 @@ KISS32Random
 \family default
 : Implementation of an simple PRNG as proposed in
 \emph on
-Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicatio
-ns
+ Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicati
+ons
 \emph default
  (JKISS32, page 3) David Jones, UCL Bioinformatics Group.
 \begin_inset CommandInset citation
@@ -27430,8 +27322,8 @@ KISS64Random
 \family default
 : Implementation of an simple PRNG as proposed in
 \emph on
-Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicatio
-ns
+ Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicati
+ons
 \emph default
  (JKISS64, page 10) David Jones, UCL Bioinformatics Group.
 \begin_inset CommandInset citation
@@ -27508,7 +27400,6 @@ https://en.wikipedia.org/wiki/Mersenne_Twister
 MT19937_64Random
 \family default
 : This is a 64-bit version of Mersenne Twister pseudo random number generator.
-
 \end_layout
 
 \begin_layout Itemize
@@ -27553,7 +27444,6 @@ XOR64ShiftRandom
  In just three XORs and three shifts (generally fast operations) it produces
  a full period of 264 - 1 on 64 bits.
  (The missing value is zero, which perpetuates itself and must be avoided.)
-
 \end_layout
 
 \begin_layout Standard
@@ -27568,7 +27458,7 @@ reference "tab:Dieharder-results"
  shows the statistical performance of the implemented PRNGs, including the
  Java
 \family typewriter
-Random
+ Random
 \family default
  implementation.
  Beside the
@@ -27577,7 +27467,7 @@ XOR32ShiftRandom
 \family default
  class, the
 \family typewriter
-j.u.Random
+ j.u.Random
 \family default
  implementation has the poorest performance, concerning its statistical
  performance.
@@ -28000,7 +27890,6 @@ status collapsed
 Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
  Runtime Environment (build 1.8.0_102-b14)—Java HotSpot(TM) 64-Bit Server
  VM (build 25.102-b14, mixed mode)—, using the JHM micro-benchmark library.
-
 \end_layout
 
 \end_inset
@@ -28015,12 +27904,12 @@ reference "tab:PRNG-creation-speed"
  shows the PRN creation speed for all implemented generators.
  The slowest random engine is the
 \family typewriter
-j.u.Random
+ j.u.Random
 \family default
  class, which is caused by the synchronized implementations.
  When the only the creation speed counts, the
 \family typewriter
-j.u.c.\SpecialChar softhyphen
+ j.u.c.\SpecialChar softhyphen
 Thread\SpecialChar softhyphen
 Local\SpecialChar softhyphen
 Random
@@ -28694,7 +28583,7 @@ In the classic genetic algorithm the problem is a maximization problem and
 .
  The fitness of a
 \family typewriter
-Genotype
+ Genotype
 \family default
  is proportional to the number of ones.
 \end_layout
@@ -28718,7 +28607,7 @@ lstinputlisting{../java/OnesCounting.java}
 \begin_layout Standard
 The genotype in this example consists of one
 \family typewriter
-Bit\SpecialChar softhyphen
+ Bit\SpecialChar softhyphen
 Chromosome
 \family default
  with a ones probability of 0.15.
@@ -28796,7 +28685,7 @@ footnotesize}
 The given example will print the overall timing statistics onto the console.
  In the
 \emph on
-Evolution statistics
+ Evolution statistics
 \emph default
  section you can see that it actually takes 15 generations to fulfill the
  termination criteria—finding no better result after 7 consecutive generations.
@@ -28835,7 +28724,7 @@ Real function
 
 \begin_layout Standard
 In this example we try to find the minimum value of the function
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 f(x)=\cos\left(\frac{1}{2}+\sin\left(x\right)\right)\cdot\cos\left(x\right).\label{eq:Example-real-function}
 \end{equation}
@@ -28982,7 +28871,7 @@ footnotesize}
 The GA will generated an console output like above.
  The
 \emph on
-exact
+ exact
 \emph default
  result of the function–for the given range–will be
 \begin_inset Formula $3.389,125,782,8907,939...$
@@ -29044,7 +28933,7 @@ https://en.wikipedia.org/wiki/Rastrigin_function
 \end_inset
 
  is often used to test the optimization performance of genetic algorithm.
-\begin_inset Formula
+\begin_inset Formula 
 \begin{equation}
 f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\right)\right).\label{eq:Rastrigin-function}
 \end{equation}
@@ -29120,7 +29009,7 @@ Rastrigin function
 
 The following listing shows the
 \family typewriter
-Engine
+ Engine
 \family default
  setup for solving the Rastrigin function, which is very similar to the
  setup for the real-function in section
@@ -29133,19 +29022,19 @@ reference "subsec:Real-function-example"
 .
  Beside the different fitness function, the
 \family typewriter
-Codec
+ Codec
 \family default
  for
 \family typewriter
-double
+ double
 \family default
  vectors is used, instead of the
 \family typewriter
-double
+ double
 \family default
  scalar
 \family typewriter
-Codec
+ Codec
 \family default
 .
 \end_layout
@@ -29171,13 +29060,13 @@ The console output of the program shows, that
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  finds the
 \emph on
-optimal
+ optimal
 \emph default
  solution after
 \begin_inset Formula $38$
@@ -29676,7 +29565,7 @@ Open
 
  button it is possible to load other images for
 \emph on
-polygonization
+ polygonization
 \emph default
 .
  The
@@ -29689,7 +29578,7 @@ Save
 
  button allows to store
 \emph on
-polygonized
+ polygonized
 \emph default
  images in PNG format to disk.
  At the button of the UI, you can change some of the GA parameters of the
@@ -29711,7 +29600,7 @@ Tournament
 
 size The example uses a
 \family typewriter
-Tournament\SpecialChar softhyphen
+ Tournament\SpecialChar softhyphen
 Selector
 \family default
  for selecting the offspring population.
@@ -29726,7 +29615,7 @@ Mutation
 
 rate The probability that a polygon
 \emph on
-component
+ component
 \emph default
  (color or vertex position) is altered.
 \end_layout
@@ -29738,7 +29627,7 @@ Mutation
 
 magnitude In case a polygon
 \emph on
-component
+ component
 \emph default
  is going to be mutated, its value will be randomly modified in the uniform
  range of
@@ -29787,12 +29676,12 @@ size To improve the processing speed, the fitness of a given polygon set
 \begin_layout Standard
 It is also possible to run and configure the
 \emph on
-Evolving Images
+ Evolving Images
 \emph default
  example from the command line.
  This allows to do long running evolution
 \emph on
-experiments
+ experiments
 \emph default
  and save polygon images every
 \begin_inset Formula $n$
@@ -29815,7 +29704,7 @@ $ ./jrun org.jenetics.example.image.EvolvingImages evolve
 \begin_layout LyX-Code
         --engine-properties
 \emph on
-engine.properties
+ engine.properties
 \emph default
 
 \backslash
@@ -29825,7 +29714,7 @@ engine.properties
 \begin_layout LyX-Code
         --input-image
 \emph on
-monalisa.png
+ monalisa.png
 \emph default
 
 \backslash
@@ -29835,7 +29724,7 @@ monalisa.png
 \begin_layout LyX-Code
         --output-dir
 \emph on
-evolving-images
+ evolving-images
 \emph default
 
 \backslash
@@ -30163,7 +30052,7 @@ name "fig:Evolving-Mona-Lisa"
 
 Evolving
 \emph on
-Mona Lisa
+ Mona Lisa
 \begin_inset Index idx
 status collapsed
 
@@ -30200,7 +30089,7 @@ reference "fig:Evolving-Mona-Lisa"
  They where created with the command line version of the program using the
  default
 \family typewriter
-engine\SpecialChar softhyphen
+ engine\SpecialChar softhyphen
 .properties
 \family default
  file (listing
@@ -30263,7 +30152,7 @@ The following example shows how to solve the GP problem with
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -30399,7 +30288,6 @@ For building the
 \series default
 \shape default
  library from source, download the most recent, stable package version from
-
 \begin_inset Flex URL
 status collapsed
 
@@ -30626,7 +30514,7 @@ jenetics.ext
 \series default
 : This module contains additional
 \emph on
-non
+ non
 \emph default
 -standard GA operations and data types.
 \end_layout
@@ -30641,12 +30529,12 @@ jenetics.prog
 : The modules contains classes which allows to do genetic programming (GP).
  It seamlessly works with the existing
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  and evolution
 \family typewriter
-Engine
+ Engine
 \family default
 .
 \end_layout
@@ -30662,7 +30550,7 @@ jenetics.xml
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -31381,13 +31269,13 @@ The whole
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
  package can also be downloaded from the
 \emph on
-Maven Central
+ Maven Central
 \emph default
  repository
 \begin_inset Flex URL
@@ -31408,7 +31296,7 @@ http://repo.maven.apache.org/maven2
 \family typewriter
 pom.xml
 \family default
-snippet for Maven
+ snippet for Maven
 \end_layout
 
 \begin_layout LyX-Code
