@@ -112,6 +112,36 @@ public final class random {
 		return result;
 	}
 
+	public static int nextInt2(
+		final Random random,
+		final int origin, final int bound
+	) {
+		if (origin >= bound) {
+			throw new IllegalArgumentException(format(
+				"origin >= bound: %d >= %d", origin, bound
+			));
+		}
+
+		final int value;
+
+		if (origin < bound) {
+			int n = bound - origin;
+			if (n > 0) {
+				value = random.nextInt(n) + origin;
+			} else {
+				int r;
+				do {
+					r = random.nextInt();
+				} while (r < origin || r >= bound);
+				value = r;
+			}
+		} else {
+			value = random.nextInt();
+		}
+
+		return value;
+	}
+
 	/**
 	 * Returns a pseudo-random, uniformly distributed int value between min
 	 * and max (min and max included).
