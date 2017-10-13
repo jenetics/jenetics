@@ -47,7 +47,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.9
+ * @version 4.0
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -75,6 +75,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= size()).
 	 */
+	@Override
 	public default T apply(final int index) {
 		return get(index);
 	}
@@ -107,6 +108,17 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 	/**
+	 * Returns {@code true} if this sequence contains at least one element.
+	 *
+	 * @since 4.0
+	 *
+	 * @return {@code true} if this sequence contains at least one element
+	 */
+	public default boolean nonEmpty() {
+		return !isEmpty();
+	}
+
+	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
@@ -132,6 +144,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		return valid;
 	}
 
+	@Override
 	public default Iterator<T> iterator() {
 		return asList().iterator();
 	}
