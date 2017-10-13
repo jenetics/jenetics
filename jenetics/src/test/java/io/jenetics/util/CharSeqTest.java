@@ -30,6 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.math.random;
+import io.jenetics.prngine.PRNG;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -139,7 +140,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	private static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < chars.length; ++i) {
-			chars[i] = (char) io.jenetics.internal.math.random.nextInt(random, 'a', 'k');
+			chars[i] = (char)PRNG.nextInt('a', 'k', random);
 		}
 
 		return new String(chars);

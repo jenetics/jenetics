@@ -37,6 +37,7 @@ import io.jenetics.util.IntRange;
  * @since 1.4
  * @version 3.0
  */
+@Deprecated
 public final class random {
 	private random() {require.noInstance();}
 
@@ -88,6 +89,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
+	@De
 	public static int nextInt(
 		final Random random,
 		final int min, final int max

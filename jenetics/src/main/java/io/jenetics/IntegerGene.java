@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextInt;
+import static java.lang.String.format;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
@@ -166,6 +166,44 @@ public final class IntegerGene
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
 		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
+	 *
+	 * @param random the random engine to use for calculating the random int
+	 *        value
+	 * @param min lower bound for generated integer
+	 * @param max upper bound for generated integer
+	 * @return a random integer greater than or equal to {@code min} and
+	 *         less than or equal to {@code max}
+	 * @throws IllegalArgumentException if {@code min > max}
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	static int nextInt(
+		final Random random,
+		final int min, final int max
+	) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"Min >= max: %d >= %d", min, max
+			));
+		}
+
+		final int diff = max - min + 1;
+		int result = 0;
+
+		if (diff <= 0) {
+			do {
+				result = random.nextInt();
+			} while (result < min || result > max);
+		} else {
+			result = random.nextInt(diff) + min;
+		}
+
+		return result;
 	}
 
 }
