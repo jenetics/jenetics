@@ -23,6 +23,7 @@ import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Hash;
@@ -102,7 +103,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
 		return chromosomes.stream()
-			.mapToInt(c -> c.length())
+			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
 			.sum();
 	}
 
