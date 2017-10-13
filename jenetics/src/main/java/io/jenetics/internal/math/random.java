@@ -37,14 +37,15 @@ import io.jenetics.util.IntRange;
  * @since 1.4
  * @version 3.0
  */
-@Deprecated
 public final class random {
 	private random() {require.noInstance();}
 
+	@Deprecated
 	public static byte nextByte(final Random random) {
 		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);
 	}
 
+	@Deprecated
 	public static char nextCharacter(final Random random) {
 		char c = '\0';
 		do {
@@ -54,6 +55,7 @@ public final class random {
 		return c;
 	}
 
+	@Deprecated
 	public static short nextShort(final Random random) {
 		return (short)nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE);
 	}
@@ -71,6 +73,7 @@ public final class random {
 	 *         less than or equal to {@code max}
 	 * @throws NullPointerException if one of the parameters is {@code null}.
 	 */
+	@Deprecated
 	public static int nextInt(final Random random, final IntRange range) {
 		return nextInt(random, range.getMin(), range.getMax());
 	}
@@ -89,7 +92,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	@De
+	@Deprecated
 	public static int nextInt(
 		final Random random,
 		final int min, final int max
@@ -114,6 +117,7 @@ public final class random {
 		return result;
 	}
 
+	@Deprecated
 	public static int nextInt2(
 		final Random random,
 		final int origin, final int bound
@@ -158,6 +162,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
+	@Deprecated
 	public static long nextLong(
 		final Random random,
 		final long min, final long max
@@ -199,6 +204,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
+	@Deprecated
 	public static long nextLong(final Random random, final long n) {
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
@@ -228,6 +234,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
+	@Deprecated
 	public static float nextFloat(
 		final Random random,
 		final float min, final float max
@@ -261,6 +268,7 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
+	@Deprecated
 	public static double nextDouble(
 		final Random random,
 		final double min, final double max
@@ -282,6 +290,7 @@ public final class random {
 		return value;
 	}
 
+	@Deprecated
 	public static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
@@ -291,6 +300,7 @@ public final class random {
 		return new String(chars);
 	}
 
+	@Deprecated
 	public static String nextString(final Random random) {
 		return nextString(random, nextInt(random, 5, 20));
 	}
@@ -299,18 +309,22 @@ public final class random {
 	 * Conversion methods used by the 'Random' engine from the JDK.
 	 */
 
+	@Deprecated
 	public static float toFloat(final int a) {
 		return (a >>> 8)/(float)(1 << 24);
 	}
 
+	@Deprecated
 	public static float toFloat(final long a) {
 		return (int)(a >>> 40)/(float)(1 << 24);
 	}
 
+	@Deprecated
 	public static double toDouble(final long a) {
 		return (((a >>> 38) << 27) + ((int)a >>> 5))/(double)(1L << 53);
 	}
 
+	@Deprecated
 	public static double toDouble(final int a, final int b) {
 		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
 	}
@@ -319,18 +333,22 @@ public final class random {
 	 * Conversion methods used by the Apache Commons BitStreamGenerator.
 	 */
 
+	@Deprecated
 	public static float toFloat2(final int a) {
 		return (a >>> 9)*0x1.0p-23f;
 	}
 
+	@Deprecated
 	public static float toFloat2(final long a) {
 		return (int)(a >>> 41)*0x1.0p-23f;
 	}
 
+	@Deprecated
 	public static double toDouble2(final long a) {
 		return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
 	}
 
+	@Deprecated
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 	}

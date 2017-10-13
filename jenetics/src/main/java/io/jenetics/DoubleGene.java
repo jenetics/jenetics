@@ -19,7 +19,8 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextDouble;
+import static java.lang.Math.nextDown;
+import static java.lang.String.format;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
@@ -170,6 +171,39 @@ public final class DoubleGene
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
 		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed double value between
+	 * min (inclusively) and max (exclusively).
+	 *
+	 * @param random the random engine used for creating the random number.
+	 * @param min lower bound for generated double value (inclusively)
+	 * @param max upper bound for generated double value (exclusively)
+	 * @return a random double greater than or equal to {@code min} and less
+	 *         than to {@code max}
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	static double nextDouble(
+		final Random random,
+		final double min, final double max
+	) {
+		if (min >= max) {
+			throw new IllegalArgumentException(format(
+				"min >= max: %f >= %f.", min, max
+			));
+		}
+
+		double value = random.nextDouble();
+		if (min < max) {
+			value = value*(max - min) + min;
+			if (value >= max) {
+				value = nextDown(value);
+			}
+		}
+
+		return value;
 	}
 
 }
