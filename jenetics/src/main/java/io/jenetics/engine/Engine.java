@@ -767,7 +767,7 @@ public final class Engine<
 	 * public static void main(final String[] args) throws IOException {
 	 *     // Result of the first evolution run.
 	 *     final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
-	 *         .limit(limit.bySteadyFitness(10))
+	 *         .limit(Limits.bySteadyFitness(10))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
 	 *     // Save the result of the first run into a file.
@@ -778,7 +778,7 @@ public final class Engine<
 	 *     \@SuppressWarnings("unchecked")
 	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
 	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
-	 *         .limit(limit.bySteadyFitness(20))
+	 *         .limit(Limits.bySteadyFitness(20))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
 	 *     System.out.println(result.getBestPhenotype());
