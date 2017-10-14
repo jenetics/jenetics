@@ -28,7 +28,6 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.require;
-import io.jenetics.util.IntRange;
 
 /**
  * Some random helper functions.
@@ -41,20 +40,20 @@ public final class random {
 	private random() {require.noInstance();}
 
 	public static byte nextByte(final Random random) {
-		return (byte)nextInt2(random, Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
+		return (byte) nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
 	public static char nextCharacter(final Random random) {
 		char c = '\0';
 		do {
-			c = (char)nextInt2(random, Character.MIN_VALUE, Character.MAX_VALUE + 1);
+			c = (char) nextInt(random, Character.MIN_VALUE, Character.MAX_VALUE + 1);
 		} while (!Character.isLetterOrDigit(c));
 
 		return c;
 	}
 
 	public static short nextShort(final Random random) {
-		return (short)nextInt2(random, Short.MIN_VALUE, Short.MAX_VALUE + 1);
+		return (short) nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE + 1);
 	}
 
 	/**
@@ -69,7 +68,7 @@ public final class random {
 	 *         less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code origin >= bound}
 	 */
-	public static int nextInt2(
+	public static int nextInt(
 		final Random random,
 		final int origin, final int bound
 	) {
@@ -247,7 +246,7 @@ public final class random {
 	}
 
 	public static String nextString(final Random random) {
-		return nextString(random, nextInt2(random, 5, 20));
+		return nextString(random, nextInt(random, 5, 20));
 	}
 
 	/*
