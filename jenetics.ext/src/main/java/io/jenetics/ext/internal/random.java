@@ -39,9 +39,9 @@ public class random {
 	 * (inclusive) and the specified value (exclusive), drawn from the given
 	 * random number generator's sequence.
 	 *
-	 * @param random the random engine used for creating the random number.
 	 * @param n the bound on the random number to be returned. Must be
 	 *        positive.
+	 * @param random the random engine used for creating the random number.
 	 * @return the next pseudo-random, uniformly distributed int value
 	 *         between 0 (inclusive) and n (exclusive) from the given random
 	 *         number generator's sequence
@@ -49,7 +49,7 @@ public class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	public static long nextLong(final Random random, final long n) {
+	public static long nextLong(final long n, final Random random) {
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
 				"n is smaller than one: %d", n
@@ -71,9 +71,9 @@ public class random {
 	 * (inclusive) and the specified value (exclusive), drawn from the given
 	 * random number generator's sequence.
 	 *
-	 * @param random the random engine used for creating the random number.
 	 * @param n the bound on the random number to be returned. Must be
 	 *        positive.
+	 * @param random the random engine used for creating the random number.
 	 * @return the next pseudo-random, uniformly distributed int value
 	 *         between 0 (inclusive) and n (exclusive) from the given random
 	 *         number generator's sequence
@@ -82,8 +82,8 @@ public class random {
 	 *         engine of the maximal value {@code n} is {@code null}.
 	 */
 	public static BigInteger nextBigInteger(
-		final Random random,
-		final BigInteger n
+		final BigInteger n,
+		final Random random
 	) {
 		if (n.compareTo(BigInteger.ONE) < 0) {
 			throw new IllegalArgumentException(format(
@@ -95,7 +95,7 @@ public class random {
 		if (n.bitLength() <= Integer.SIZE - 1) {
 			result = BigInteger.valueOf(random.nextInt(n.intValue()));
 		} else if (n.bitLength() <= Long.SIZE - 1) {
-			result = BigInteger.valueOf(nextLong(random, n.longValue()));
+			result = BigInteger.valueOf(nextLong(n.longValue(), random));
 		} else {
 			do {
 				result = new BigInteger(n.bitLength(), random).mod(n);
@@ -109,10 +109,10 @@ public class random {
 	 * Returns a pseudo-random, uniformly distributed int value between min
 	 * and max (min and max included).
 	 *
-	 * @param random the random engine to use for calculating the random
-	 *        long value
 	 * @param min lower bound for generated long integer (inclusively)
 	 * @param max upper bound for generated long integer (inclusively)
+	 * @param random the random engine to use for calculating the random
+	 *        long value
 	 * @return a random long integer greater than or equal to {@code min}
 	 *         and less than or equal to {@code max}
 	 * @throws IllegalArgumentException if {@code min >= max}
@@ -120,8 +120,9 @@ public class random {
 	 *         are {@code null}.
 	 */
 	public static BigInteger nextBigInteger(
-		final Random random,
-		final BigInteger min, final BigInteger max
+		final BigInteger min,
+		final BigInteger max,
+		final Random random
 	) {
 		if (min.compareTo(max) >= 0) {
 			throw new IllegalArgumentException(format(
@@ -130,7 +131,7 @@ public class random {
 		}
 
 		final BigInteger n = max.subtract(min).add(BigInteger.ONE);
-		return nextBigInteger(random, n).add(min);
+		return nextBigInteger(n, random).add(min);
 	}
 
 	public static BigInteger nextBigInteger(final Random random) {
