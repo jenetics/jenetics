@@ -269,6 +269,7 @@ public final class random {
 		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
 	}
 
+
 	/*
 	 * Conversion methods used by the Apache Commons BitStreamGenerator.
 	 */
