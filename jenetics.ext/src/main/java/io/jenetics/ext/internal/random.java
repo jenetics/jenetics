@@ -20,7 +20,6 @@
 package io.jenetics.ext.internal;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.random.nextLong;
 
 import java.math.BigInteger;
 import java.util.Random;
@@ -35,6 +34,37 @@ import io.jenetics.internal.util.require;
 public class random {
 	private random() {require.noInstance();}
 
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between 0
+	 * (inclusive) and the specified value (exclusive), drawn from the given
+	 * random number generator's sequence.
+	 *
+	 * @param random the random engine used for creating the random number.
+	 * @param n the bound on the random number to be returned. Must be
+	 *        positive.
+	 * @return the next pseudo-random, uniformly distributed int value
+	 *         between 0 (inclusive) and n (exclusive) from the given random
+	 *         number generator's sequence
+	 * @throws IllegalArgumentException if n is smaller than 1.
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	public static long nextLong(final Random random, final long n) {
+		if (n <= 0) {
+			throw new IllegalArgumentException(format(
+				"n is smaller than one: %d", n
+			));
+		}
+
+		long bits;
+		long result;
+		do {
+			bits = random.nextLong() & 0x7fffffffffffffffL;
+			result = bits%n;
+		} while (bits - result + (n - 1) < 0);
+
+		return result;
+	}
 
 	/**
 	 * Returns a pseudo-random, uniformly distributed int value between 0

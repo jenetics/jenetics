@@ -40,7 +40,7 @@ public class randomTest {
 		final int max = 10_000;
 
 		for (int i = 0; i < 100_000; ++i) {
-			final int n = random.nextInt(rnd, min, max);
+			final int n = random.nextInt(min, max, rnd);
 			Assert.assertTrue(n >= min, format("n < min: %d < %d", n, min));
 			Assert.assertTrue(n < max, format("n  max: %d >= %d", n, max));
 		}

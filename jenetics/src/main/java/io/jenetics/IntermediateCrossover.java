@@ -122,8 +122,8 @@ public class IntermediateCrossover<
 
 			double t, s;
 			do {
-				final double a = nextDouble(random, -_p, 1 + _p);
-				final double b = nextDouble(random, -_p, 1 + _p);
+				final double a = nextDouble(-_p, 1 + _p, random);
+				final double b = nextDouble(-_p, 1 + _p, random);
 
 				t = a*vi + (1 - a)*wi;
 				s = b*wi + (1 - b)*vi;

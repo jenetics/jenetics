@@ -122,7 +122,7 @@ public final class DoubleGene
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(getRandom(), min, max), min, max);
+		return of(nextDouble(min, max, getRandom()), min, max);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextDouble(range.getMin(), range.getMax(), getRandom()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -151,7 +151,7 @@ public final class DoubleGene
 		final Random r = getRandom();
 
 		return MSeq.<DoubleGene>ofLength(length)
-			.fill(() -> new DoubleGene(nextDouble(r, min, max), minimum, maximum))
+			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
 			.toISeq();
 	}
 
@@ -163,7 +163,7 @@ public final class DoubleGene
 	@Override
 	public DoubleGene newInstance() {
 		return new DoubleGene(
-			nextDouble(getRandom(), _min, _max), _min, _max
+			nextDouble(_min, _max, getRandom()), _min, _max
 		);
 	}
 
