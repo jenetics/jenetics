@@ -84,7 +84,7 @@ public class SerializationTest {
 
 
 	private static String nextString(final Random rand, final int length) {
-		return Stream.generate(() -> random.nextCharacter(rand))
+		return Stream.generate(() -> random.nextChar(rand))
 			.limit(length)
 			.map(Objects::toString)
 			.collect(Collectors.joining());

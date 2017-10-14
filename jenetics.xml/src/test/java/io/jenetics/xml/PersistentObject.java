@@ -22,7 +22,7 @@ package io.jenetics.xml;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.random.nextByte;
-import static io.jenetics.internal.math.random.nextCharacter;
+import static io.jenetics.internal.math.random.nextChar;
 import static io.jenetics.internal.math.random.nextShort;
 import static io.jenetics.internal.math.random.nextString;
 import static io.jenetics.util.RandomRegistry.using;
@@ -276,7 +276,7 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Character> nextEnumGeneCharacter() {
-		return EnumGene.of(ISeq.of(() -> nextCharacter(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextChar(random()), 5));
 	}
 
 	public static EnumGene<Short> nextEnumGeneShort() {
@@ -352,7 +352,7 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<Character> nextCharacterPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.of(() -> nextCharacter(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextChar(random()), 15));
 	}
 
 	public static PermutationChromosome<String> nextStringPermutationChromosome() {

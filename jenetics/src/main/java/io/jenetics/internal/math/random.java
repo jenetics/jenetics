@@ -43,10 +43,14 @@ public final class random {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
 	}
 
-	public static char nextCharacter(final Random random) {
+	public static char nextChar(final Random random) {
 		char c = '\0';
 		do {
-			c = (char) nextInt(Character.MIN_VALUE, Character.MAX_VALUE + 1, random);
+			c = (char)nextInt(
+				Character.MIN_VALUE,
+				Character.MAX_VALUE + 1,
+				random
+			);
 		} while (!Character.isLetterOrDigit(c));
 
 		return c;
@@ -170,7 +174,7 @@ public final class random {
 	public static String nextString(final int length, final Random random) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
-			chars[i] = nextCharacter(random);
+			chars[i] = nextChar(random);
 		}
 
 		return new String(chars);
@@ -253,8 +257,8 @@ public final class random {
 					.filter(i -> random.nextInt() < P);
 	}
 
-	private static
-	boolean equals(final double a, final double b, final double delta) {
+	private static boolean
+	equals(final double a, final double b, final double delta) {
 		return abs(a - b) <= delta;
 	}
 
