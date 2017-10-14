@@ -471,7 +471,7 @@ public class PersistentObject<T> {
 	}
 
 	private static void write() throws IOException, XMLStreamException {
-		final File baseDir = new File("io.jenetics.xml/src/test/resources/serialization");
+		final File baseDir = new File("jenetics.xml/src/test/resources/serialization");
 		if (!baseDir.isDirectory() && !baseDir.mkdirs()) {
 			throw new IOException("Error while creating directory " + baseDir);
 		}
