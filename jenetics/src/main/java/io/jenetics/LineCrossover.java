@@ -109,8 +109,8 @@ public class LineCrossover<
 		final double min = v.get(0).getMin().doubleValue();
 		final double max = v.get(0).getMax().doubleValue();
 
-		final double a = nextDouble(random, -_p, 1 + _p);
-		final double b = nextDouble(random, -_p, 1 + _p);
+		final double a = nextDouble(-_p, 1 + _p, random);
+		final double b = nextDouble(-_p, 1 + _p, random);
 
 		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
