@@ -40,84 +40,35 @@ import io.jenetics.util.IntRange;
 public final class random {
 	private random() {require.noInstance();}
 
-	@Deprecated
 	public static byte nextByte(final Random random) {
-		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);
+		return (byte)nextInt2(random, Byte.MIN_VALUE, Byte.MAX_VALUE + 1);
 	}
 
-	@Deprecated
 	public static char nextCharacter(final Random random) {
 		char c = '\0';
 		do {
-			c = (char)nextInt(random, Character.MIN_VALUE, Character.MAX_VALUE);
+			c = (char)nextInt2(random, Character.MIN_VALUE, Character.MAX_VALUE + 1);
 		} while (!Character.isLetterOrDigit(c));
 
 		return c;
 	}
 
-	@Deprecated
 	public static short nextShort(final Random random) {
-		return (short)nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE);
+		return (short)nextInt2(random, Short.MIN_VALUE, Short.MAX_VALUE + 1);
 	}
 
 	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min and
-	 * max (min and max included).
+	 * Returns a pseudo-random, uniformly distributed int value between origin
+	 * (included) and bound (excluded).
 	 *
-	 * @since 3.9
-	 *
-	 * @param random the random engine to use for calculating the random int
-	 *        value
-	 * @param range the int range
+	 * @param random the random engine to use for calculating the random
+	 *        int value
+	 * @param origin the origin (inclusive) of each random value
+	 * @param bound the bound (exclusive) of each random value
 	 * @return a random integer greater than or equal to {@code min} and
 	 *         less than or equal to {@code max}
-	 * @throws NullPointerException if one of the parameters is {@code null}.
+	 * @throws IllegalArgumentException if {@code origin >= bound}
 	 */
-	@Deprecated
-	public static int nextInt(final Random random, final IntRange range) {
-		return nextInt(random, range.getMin(), range.getMax());
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min and
-	 * max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random int
-	 *        value
-	 * @param min lower bound for generated integer
-	 * @param max upper bound for generated integer
-	 * @return a random integer greater than or equal to {@code min} and
-	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min > max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	@Deprecated
-	public static int nextInt(
-		final Random random,
-		final int min, final int max
-	) {
-		if (min > max) {
-			throw new IllegalArgumentException(format(
-				"Min >= max: %d >= %d", min, max
-			));
-		}
-
-		final int diff = max - min + 1;
-		int result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = random.nextInt();
-			} while (result < min || result > max);
-		} else {
-			result = random.nextInt(diff) + min;
-		}
-
-		return result;
-	}
-
-	@Deprecated
 	public static int nextInt2(
 		final Random random,
 		final int origin, final int bound
@@ -162,7 +113,6 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	@Deprecated
 	public static long nextLong(
 		final Random random,
 		final long min, final long max
@@ -204,7 +154,6 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	@Deprecated
 	public static long nextLong(final Random random, final long n) {
 		if (n <= 0) {
 			throw new IllegalArgumentException(format(
@@ -234,7 +183,6 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	@Deprecated
 	public static float nextFloat(
 		final Random random,
 		final float min, final float max
@@ -268,7 +216,6 @@ public final class random {
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
-	@Deprecated
 	public static double nextDouble(
 		final Random random,
 		final double min, final double max
@@ -290,7 +237,6 @@ public final class random {
 		return value;
 	}
 
-	@Deprecated
 	public static String nextString(final Random random, final int length) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
@@ -300,31 +246,26 @@ public final class random {
 		return new String(chars);
 	}
 
-	@Deprecated
 	public static String nextString(final Random random) {
-		return nextString(random, nextInt(random, 5, 20));
+		return nextString(random, nextInt2(random, 5, 20));
 	}
 
 	/*
 	 * Conversion methods used by the 'Random' engine from the JDK.
 	 */
 
-	@Deprecated
 	public static float toFloat(final int a) {
 		return (a >>> 8)/(float)(1 << 24);
 	}
 
-	@Deprecated
 	public static float toFloat(final long a) {
 		return (int)(a >>> 40)/(float)(1 << 24);
 	}
 
-	@Deprecated
 	public static double toDouble(final long a) {
 		return (((a >>> 38) << 27) + ((int)a >>> 5))/(double)(1L << 53);
 	}
 
-	@Deprecated
 	public static double toDouble(final int a, final int b) {
 		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
 	}
@@ -333,22 +274,18 @@ public final class random {
 	 * Conversion methods used by the Apache Commons BitStreamGenerator.
 	 */
 
-	@Deprecated
 	public static float toFloat2(final int a) {
 		return (a >>> 9)*0x1.0p-23f;
 	}
 
-	@Deprecated
 	public static float toFloat2(final long a) {
 		return (int)(a >>> 41)*0x1.0p-23f;
 	}
 
-	@Deprecated
 	public static double toDouble2(final long a) {
 		return (a & 0xFFFFFFFFFFFFFL)*0x1.0p-52d;
 	}
 
-	@Deprecated
 	public static double toDouble2(final int a, final int b) {
 		return (((long)(a >>> 6) << 26) | (b >>> 6))*0x1.0p-52d;
 	}
