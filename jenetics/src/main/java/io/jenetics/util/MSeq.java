@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -102,7 +103,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 */
 	public default MSeq<T> setAll(final T[] values) {
-		for (int i = 0, n = length(); i < n && i < values.length; ++i) {
+		for (int i = 0, n = min(length(), values.length); i < n; ++i) {
 			set(i, values[i]);
 		}
 		return this;
