@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public final class TreeNode<T>
 
 	private T _value;
 	private TreeNode<T> _parent;
-	private final List<TreeNode<T>> _children = new ArrayList<>();
+	private List<TreeNode<T>> _children;
 
 	/**
 	 * Create a new tree node with no parent and children, but with the given
@@ -118,12 +119,18 @@ public final class TreeNode<T>
 	 */
 	@Override
 	public TreeNode<T> getChild(final int index) {
+		if (_children == null) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Child index is out of bounds: %s", index
+			));
+		}
+
 		return _children.get(index);
 	}
 
 	@Override
 	public int childCount() {
-		return _children.size();
+		return _children != null ? _children.size() : 0;
 	}
 
 	/**
@@ -168,6 +175,9 @@ public final class TreeNode<T>
 		}
 
 		child.setParent(this);
+		if (_children == null) {
+			_children = new ArrayList<>(2);
+		}
 		_children.add(index, child);
 
 		TreeNode<T> parent = this;
@@ -189,6 +199,12 @@ public final class TreeNode<T>
 	 *         bounds
 	 */
 	public TreeNode<T> remove(final int index) {
+		if (_children == null) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Child index is out of bounds: %s", index
+			));
+		}
+
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
 
