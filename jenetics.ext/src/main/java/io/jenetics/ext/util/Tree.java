@@ -183,6 +183,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return (int)breadthFirstStream().count();
 	}
 
+
 	/* *************************************************************************
 	 * Query operations
 	 **************************************************************************/
@@ -256,7 +257,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 				node2 = node;
 			}
 
-			while (diff > 0) {
+			while (diff > 0 && node1 != null) {
 				node1 = node1.getParent().orElse(null);
 				--diff;
 			}
@@ -269,7 +270,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 					? node1.getParent().orElse(null)
 					: null;
 				node2 = node2.getParent().orElse(null);
-			} while (node1 != null && ancestor == null);
+			} while (node1 != null && node2 != null && ancestor == null);
 		}
 
 		return Optional.ofNullable(ancestor);

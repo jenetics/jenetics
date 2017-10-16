@@ -103,7 +103,7 @@ class SeqList<T>
 	public Object[] toArray() {
 		final Object[] array = new Object[size()];
 		for (int i = size(); --i >= 0;) {
-			array[i] = this.seq.get(i);
+			array[i] = seq.get(i);
 		}
 		return array;
 	}
@@ -116,14 +116,14 @@ class SeqList<T>
 				array.getClass().getComponentType(), size()
 			);
 			for (int i = size(); --i >= 0;) {
-				copy[i] = (E) this.seq.get(i);
+				copy[i] = (E)seq.get(i);
 			}
 
 			return copy;
 		}
 
 		for (int i = size(); --i >= 0;) {
-			array[i] = (E) this.seq.get(i);
+			array[i] = (E)seq.get(i);
 		}
 		return array;
 	}
