@@ -68,6 +68,7 @@ public interface BoundedGene<
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
+	@Override
 	public G newInstance(final A value);
 
 }
