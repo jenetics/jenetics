@@ -34,7 +34,7 @@ final class PolygonMutator<C extends Comparable<? super C>>
 	private final float _rate;
 	private final float _magnitude;
 
-	public PolygonMutator(final float rate, final float magnitude) {
+	PolygonMutator(final float rate, final float magnitude) {
 		super(1.0);
 		_rate = rate;
 		_magnitude = magnitude;
