@@ -29,10 +29,10 @@ import java.util.function.Function;
 /**
  * Represents the result pair of one of the four {@code Mutator.mutate} calls.
  *
- * @see #mutate(Phenotype, long, double, Random)
- * @see #mutate(Genotype, double, Random)
- * @see #mutate(Chromosome, double, Random)
- * @see #mutate(Gene, Random)
+ * @see Mutator#mutate(Phenotype, long, double, Random)
+ * @see Mutator#mutate(Genotype, double, Random)
+ * @see Mutator#mutate(Chromosome, double, Random)
+ * @see Mutator#mutate(Gene, Random)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
