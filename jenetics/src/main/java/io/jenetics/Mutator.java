@@ -109,7 +109,7 @@ public class Mutator<
 	 * @see #mutate(Gene, Random)
 	 */
 	@Override
-	public AlterResult<G, C> alter(
+	public AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
@@ -124,7 +124,7 @@ public class Mutator<
 				? mutate(pt, generation, p, random)
 				: MutationResult.of(pt));
 
-		return AlterResult.of(
+		return AltererResult.of(
 			result.map(MutationResult::getResult).asISeq(),
 			result.stream().mapToInt(MutationResult::getMutations).sum()
 		);

@@ -46,7 +46,7 @@ public abstract class MutatorTester extends AltererTester {
 			newDoubleGenePopulation(ngenes, nchromosomes, npopulation);
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
-		final AlterResult<DoubleGene, Double> result = mutator.alter(p1, 1);
+		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		int mutations = result.getAlterations();
 		int difference = diff(p1, result.getPopulation());

@@ -2,7 +2,7 @@ package io.jenetics.ext;
 
 import java.util.Random;
 
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -59,13 +59,13 @@ public class WeaselMutator<
 	}
 
 	@Override
-	public AlterResult<G, C>
+	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
 		final Random random = RandomRegistry.getRandom();
 		final Seq<MutationResult<Phenotype<G, C>>> result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
-		return AlterResult.of(
+		return AltererResult.of(
 			result.map(MutationResult::getResult).asISeq(),
 			result.stream().mapToInt(MutationResult::getMutations).sum()
 		);

@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
@@ -273,7 +273,7 @@ public final class Engine<
 			);
 
 		// Altering the offspring population.
-		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
+		final CompletableFuture<TimedResult<AltererResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
 				_alterer.alter(p.result, start.getGeneration()),
 				_clock
