@@ -119,14 +119,14 @@ public class Mutator<
 		final double p = pow(_probability, 1.0/3.0);
 		final int P = probability.toInt(p);
 
-		final Seq<MutationResult<Phenotype<G, C>>> result = population
+		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> random.nextInt() < P
 				? mutate(pt, generation, p, random)
-				: MutationResult.of(pt));
+				: MutatorResult.of(pt));
 
 		return AltererResult.of(
-			result.map(MutationResult::getResult).asISeq(),
-			result.stream().mapToInt(MutationResult::getMutations).sum()
+			result.map(MutatorResult::getResult).asISeq(),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
 	}
 
@@ -143,7 +143,7 @@ public class Mutator<
 	 * @param random the random engine used for the phenotype mutation
 	 * @return the mutation result
 	 */
-	protected MutationResult<Phenotype<G, C>> mutate(
+	protected MutatorResult<Phenotype<G, C>> mutate(
 		final Phenotype<G, C> phenotype,
 		final long generation,
 		final double p,
@@ -164,20 +164,20 @@ public class Mutator<
 	 * @param random the random engine used for the genotype mutation
 	 * @return the mutation result
 	 */
-	protected MutationResult<Genotype<G>> mutate(
+	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
 		final Random random
 	) {
 		final int P = probability.toInt(p);
-		final ISeq<MutationResult<Chromosome<G>>> result = genotype.toSeq()
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
 			.map(gt -> random.nextInt() < P
 				? mutate(gt, p, random)
-				: MutationResult.of(gt));
+				: MutatorResult.of(gt));
 
-		return MutationResult.of(
-			Genotype.of(result.map(MutationResult::getResult)),
-			result.stream().mapToInt(MutationResult::getMutations).sum()
+		return MutatorResult.of(
+			Genotype.of(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
 	}
 
@@ -191,20 +191,20 @@ public class Mutator<
 	 * @param random the random engine used for the genotype mutation
 	 * @return the mutation result
 	 */
-	protected MutationResult<Chromosome<G>> mutate(
+	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
 		final Random random
 	) {
 		final int P = probability.toInt(p);
-		final ISeq<MutationResult<G>> result = chromosome.toSeq()
+		final ISeq<MutatorResult<G>> result = chromosome.toSeq()
 			.map(gene -> random.nextInt() < P
-				? MutationResult.of(mutate(gene, random), 1)
-				: MutationResult.of(gene));
+				? MutatorResult.of(mutate(gene, random), 1)
+				: MutatorResult.of(gene));
 
-		return MutationResult.of(
-			chromosome.newInstance(result.map(MutationResult::getResult)),
-			result.stream().mapToInt(MutationResult::getMutations).sum()
+		return MutatorResult.of(
+			chromosome.newInstance(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
 	}
 

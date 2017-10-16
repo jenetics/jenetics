@@ -19,7 +19,7 @@ package io.jenetics.example.image;
 import java.util.Random;
 
 import io.jenetics.Chromosome;
-import io.jenetics.MutationResult;
+import io.jenetics.MutatorResult;
 import io.jenetics.Mutator;
 
 /**
@@ -41,12 +41,12 @@ final class PolygonMutator<C extends Comparable<? super C>>
 	}
 
 	@Override
-	protected MutationResult<Chromosome<PolygonGene>> mutate(
+	protected MutatorResult<Chromosome<PolygonGene>> mutate(
 		final Chromosome<PolygonGene> chromosome,
 		final double p,
 		final Random random
 	) {
-		return MutationResult.of(
+		return MutatorResult.of(
 			chromosome.newInstance(chromosome.toSeq().map(this::mutate)),
 			chromosome.length()
 		);

@@ -37,14 +37,14 @@ import java.util.function.Function;
  * @version 4.0
  * @since 4.0
  */
-public final class MutationResult<T> implements Serializable {
+public final class MutatorResult<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private final T _result;
 	private final int _mutations;
 
-	private MutationResult(final T result, final int mutations) {
+	private MutatorResult(final T result, final int mutations) {
 		_result = requireNonNull(result);
 		_mutations = mutations;
 	}
@@ -57,7 +57,7 @@ public final class MutationResult<T> implements Serializable {
 	 * @return a new mapped mutation result
 	 * @throws NullPointerException if the given {@code mapper} is {@code null}
 	 */
-	public <B> MutationResult<B> map(
+	public <B> MutatorResult<B> map(
 		final Function<? super T, ? extends B> mapper
 	) {
 		requireNonNull(mapper);
@@ -91,8 +91,8 @@ public final class MutationResult<T> implements Serializable {
 	 * @return a new mutation result
 	 * @throws NullPointerException if the given mutation result is {@code null}
 	 */
-	public static <T> MutationResult<T> of(final T result, final int mutations) {
-		return new MutationResult<>(result, mutations);
+	public static <T> MutatorResult<T> of(final T result, final int mutations) {
+		return new MutatorResult<>(result, mutations);
 	}
 
 	/**
@@ -104,8 +104,8 @@ public final class MutationResult<T> implements Serializable {
 	 * @return a new mutation result
 	 * @throws NullPointerException if the given mutation result is {@code null}
 	 */
-	public static <T> MutationResult<T> of(final T result) {
-		return new MutationResult<>(result, 0);
+	public static <T> MutatorResult<T> of(final T result) {
+		return new MutatorResult<>(result, 0);
 	}
 
 }

@@ -70,23 +70,23 @@ public class SwapMutator<
 	 * mutation.
 	 */
 	@Override
-	protected MutationResult<Chromosome<G>> mutate(
+	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
 		final Random random
 	) {
-		final MutationResult<Chromosome<G>> result;
+		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
 			final MSeq<G> genes = chromosome.toSeq().copy();
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();
-			result = MutationResult.of(
+			result = MutatorResult.of(
 				chromosome.newInstance(genes.toISeq()),
 				mutations
 			);
 		} else {
-			result = MutationResult.of(chromosome);
+			result = MutatorResult.of(chromosome);
 		}
 
 		return result;

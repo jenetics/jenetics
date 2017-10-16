@@ -6,7 +6,7 @@ import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.MutationResult;
+import io.jenetics.MutatorResult;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
@@ -62,27 +62,27 @@ public class WeaselMutator<
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
 		final Random random = RandomRegistry.getRandom();
-		final Seq<MutationResult<Phenotype<G, C>>> result = population
+		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
 		return AltererResult.of(
-			result.map(MutationResult::getResult).asISeq(),
-			result.stream().mapToInt(MutationResult::getMutations).sum()
+			result.map(MutatorResult::getResult).asISeq(),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
 	}
 
 	@Override
-	protected MutationResult<Genotype<G>> mutate(
+	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
 		final Random random
 	) {
-		final ISeq<MutationResult<Chromosome<G>>> result = genotype.toSeq()
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
 			.map(gt -> mutate(gt, p, random));
 
-		return MutationResult.of(
-			Genotype.of(result.map(MutationResult::getResult)),
-			result.stream().mapToInt(MutationResult::getMutations).sum()
+		return MutatorResult.of(
+			Genotype.of(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
 	}
 
