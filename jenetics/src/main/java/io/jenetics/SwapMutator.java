@@ -75,12 +75,21 @@ public class SwapMutator<
 		final double p,
 		final Random random
 	) {
-		final MSeq<G> genes = chromosome.toSeq().copy();
-		final int mutations = (int)indexes(random, genes.length(), p)
-			.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-			.count();
+		final MutationResult<Chromosome<G>> result;
+		if (chromosome.length() > 1) {
+			final MSeq<G> genes = chromosome.toSeq().copy();
+			final int mutations = (int)indexes(random, genes.length(), p)
+				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
+				.count();
+			result = MutationResult.of(
+				chromosome.newInstance(genes.toISeq()),
+				mutations
+			);
+		} else {
+			result = MutationResult.of(chromosome);
+		}
 
-		return MutationResult.of(chromosome.newInstance(genes.toISeq()), mutations);
+		return result;
 	}
 
 	@Override
