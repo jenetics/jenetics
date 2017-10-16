@@ -1,15 +1,20 @@
 package io.jenetics.ext;
 
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.AlterResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.MutationResult;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.internal.math.probability;
 import io.jenetics.internal.util.IntRef;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
 /**
@@ -60,6 +65,17 @@ public class WeaselMutator<
 	@Override
 	public AlterResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
+		final Random random = RandomRegistry.getRandom();
+		final Seq<MutationResult<Phenotype<G, C>>> result = population
+			.map(pt -> mutate(pt, generation, _probability, random));
+
+		return AlterResult.of(
+			result.map(MutationResult::getResult).asISeq(),
+			result.stream().mapToInt(MutationResult::getMutations).sum()
+		);
+
+
+		/*
 		final IntRef alterations = new IntRef(0);
 
 		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
@@ -73,19 +89,72 @@ public class WeaselMutator<
 		}
 
 		return AlterResult.of(pop.toISeq(), alterations.value);
+		*/
 	}
 
-	private Genotype<G> mutate(
+	@Override
+	protected MutationResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
-		final IntRef alterations
+		final double p,
+		final Random random
 	) {
+		final ISeq<MutationResult<Chromosome<G>>> result = genotype.toSeq()
+			.map(gt -> mutate(gt, p, random));
+
+		return MutationResult.of(
+			Genotype.of(result.map(MutationResult::getResult)),
+			result.stream().mapToInt(MutationResult::getMutations).sum()
+		);
+
+		/*
+		indexes(RandomRegistry.getRandom(), genotype.length(), p)
+			.mapToObj(i -> mutate2(genotype.toSeq(), i, p))
+			.collect(ISeq.toISeq());
+
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
-		alterations.value += IntStream.range(0, chromosomes.size())
-			.map(i -> mutate(chromosomes, i, _probability))
-			.sum();
+		alterations.value +=
+			indexes(RandomRegistry.getRandom(), genotype.length(), p)
+				.map(i -> mutate(chromosomes, i, p))
+				.sum();
 
-		return Genotype.of(chromosomes);
+		return genotype.newInstance(chromosomes.toISeq());
+		*/
+		//return null;
 	}
+
+	/*
+		final Seq<MutationResult<Phenotype<G, C>>> result = population
+			.map(pt -> random.nextInt() < P
+				? mutate(pt, generation, p, random)
+				: MutationResult.of(pt));
+
+		return AlterResult.of(
+			result.map(MutationResult::getResult).asISeq(),
+			result.stream().mapToInt(MutationResult::getMutations).sum()
+		);
+
+	 */
+
+//	private Genotype<G> mutate(
+//		final Genotype<G> genotype,
+//		final IntRef alterations
+//	) {
+//		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
+//
+//		alterations.value += IntStream.range(0, chromosomes.size())
+//			.map(i -> mutate(chromosomes, i, _probability))
+//			.sum();
+//
+//		return Genotype.of(chromosomes);
+//	}
+
+	/*
+protected MutationResult<Genotype<G>> mutate(
+		final Genotype<G> genotype,
+		final double p,
+		final Random random
+	)
+	 */
 
 }

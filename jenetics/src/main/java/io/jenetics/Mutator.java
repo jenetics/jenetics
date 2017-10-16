@@ -167,7 +167,7 @@ public class Mutator<
 			.map(gt -> pt.newInstance(gt, generation));
 	}
 
-	private MutationResult<Genotype<G>> mutate(
+	protected MutationResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
 		final Random random
