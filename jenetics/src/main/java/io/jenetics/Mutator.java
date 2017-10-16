@@ -97,10 +97,16 @@ public class Mutator<
 	}
 
 	/**
-	 * Concrete implementation of the alter method.
+	 * Concrete implementation of the alter method. It uses the following
+	 * mutation methods: {@link #mutate(Phenotype, long, double, Random)},
+	 * {@link #mutate(Genotype, double, Random)},
+	 * {@link #mutate(Chromosome, double, Random)}, {@link #mutate(Gene, Random)},
+	 * in this specific order.
 	 *
-	 * //@see #mutate(MSeq, int, double)
-	 * //@see #mutate(MSeq, double)
+	 * @see #mutate(Phenotype, long, double, Random)
+	 * @see #mutate(Genotype, double, Random)
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
 	 */
 	@Override
 	public AlterResult<G, C> alter(
@@ -124,16 +130,40 @@ public class Mutator<
 		);
 	}
 
+	/**
+	 * Mutates the given phenotype.
+	 *
+	 * @see #mutate(Genotype, double, Random)
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
+	 *
+	 * @param phenotype the phenotype to mutate
+	 * @param generation the actual generation
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the phenotype mutation
+	 * @return the mutation result
+	 */
 	protected MutationResult<Phenotype<G, C>> mutate(
-		final Phenotype<G, C> pt,
+		final Phenotype<G, C> phenotype,
 		final long generation,
 		final double p,
 		final Random random
 	) {
-		return mutate(pt.getGenotype(), p, random)
-			.map(gt -> pt.newInstance(gt, generation));
+		return mutate(phenotype.getGenotype(), p, random)
+			.map(gt -> phenotype.newInstance(gt, generation));
 	}
 
+	/**
+	 * Mutates the given genotype.
+	 *
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
+	 *
+	 * @param genotype the genotype to mutate
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
+	 */
 	protected MutationResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
@@ -151,6 +181,16 @@ public class Mutator<
 		);
 	}
 
+	/**
+	 * Mutates the given chromosome.
+	 *
+	 * @see #mutate(Gene, Random)
+	 *
+	 * @param chromosome the chromosome to mutate
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
+	 */
 	protected MutationResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
 		final double p,
@@ -168,50 +208,16 @@ public class Mutator<
 		);
 	}
 
+	/**
+	 * Mutates the given gene.
+	 *
+	 * @param gene the gene to mutate
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
+	 */
 	protected G mutate(final G gene, final Random random) {
 		return gene.newInstance();
 	}
-
-//	/**
-//	 * Mutates the chromosome with the given index {@code i}. This method calls
-//	 * the {@link #mutate(MSeq, double)} method fo the genes stored in
-//	 * chromosome {@code i}.
-//	 *
-//	 * @see #mutate(MSeq, double)
-//	 *
-//	 * @param c the chromosome sequence
-//	 * @param i the index of the chromosome to mutate
-//	 * @param p the mutation probability
-//	 * @return the number of mutated genes
-//	 */
-//	protected int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
-//		final Chromosome<G> chromosome = c.get(i);
-//		final MSeq<G> genes = chromosome.toSeq().copy();
-//
-//		final int mutations = mutate(genes, p);
-//		if (mutations > 0) {
-//			c.set(i, chromosome.newInstance(genes.toISeq()));
-//		}
-//		return mutations;
-//	}
-
-//	/**
-//	 * <p>
-//	 * Template method which gives an (re)implementation of the mutation class
-//	 * the possibility to perform its own mutation operation, based on a
-//	 * writable gene array and the gene mutation probability <i>p</i>.
-//	 *
-//	 * @see #mutate(MSeq, int, double)
-//	 *
-//	 * @param genes the genes to mutate.
-//	 * @param p the gene mutation probability.
-//	 * @return the number of performed mutations
-//	 */
-//	protected int mutate(final MSeq<G> genes, final double p) {
-//		return (int)indexes(RandomRegistry.getRandom(), genes.length(), p)
-//			.peek(i -> genes.set(i, genes.get(i).newInstance()))
-//			.count();
-//	}
 
 	@Override
 	public int hashCode() {
