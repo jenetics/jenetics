@@ -28,14 +28,14 @@ import java.io.Serializable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MutateResult<T> implements Serializable {
+public final class MutationResult<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private final T _result;
 	private final int _mutations;
 
-	private MutateResult(final T result, final int mutations) {
+	private MutationResult(final T result, final int mutations) {
 		_result = requireNonNull(result);
 		_mutations = mutations;
 	}
@@ -48,8 +48,8 @@ public final class MutateResult<T> implements Serializable {
 		return _mutations;
 	}
 
-	public static <T> MutateResult<T> of(final T result, final int mutations) {
-		return new MutateResult<>(result, mutations);
+	public static <T> MutationResult<T> of(final T result, final int mutations) {
+		return new MutationResult<>(result, mutations);
 	}
 
 }
