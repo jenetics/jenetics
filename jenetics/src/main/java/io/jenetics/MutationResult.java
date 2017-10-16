@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,6 +39,10 @@ public final class MutationResult<T> implements Serializable {
 	private MutationResult(final T result, final int mutations) {
 		_result = requireNonNull(result);
 		_mutations = mutations;
+	}
+
+	public <B> MutationResult<B> map(final Function<? super T, ? extends B> mapper) {
+		return of(mapper.apply(_result), _mutations);
 	}
 
 	public T getResult() {

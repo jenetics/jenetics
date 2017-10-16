@@ -27,7 +27,6 @@ import java.util.Random;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * The {@code SwapMutation} changes the order of genes in a chromosome, with the
@@ -71,14 +70,17 @@ public class SwapMutator<
 	 * mutation.
 	 */
 	@Override
-	protected int mutate(final MSeq<G> genes, final double p) {
-		final Random random = RandomRegistry.getRandom();
+	protected MutationResult<Chromosome<G>> mutate(
+		final Chromosome<G> chromosome,
+		final double p,
+		final Random random
+	) {
+		final MSeq<G> genes = chromosome.toSeq().copy();
+		final int mutations = (int)indexes(random, genes.length(), p)
+			.peek(i -> genes.swap(i, random.nextInt(genes.length())))
+			.count();
 
-		return genes.length() > 1
-			? (int)indexes(random, genes.length(), p)
-				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-				.count()
-			: 0;
+		return MutationResult.of(chromosome.newInstance(genes.toISeq()), mutations);
 	}
 
 	@Override
