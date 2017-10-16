@@ -23,9 +23,13 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.random.indexes;
 
+import java.util.Random;
+
+import io.jenetics.internal.math.probability;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.IntRef;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -108,10 +112,37 @@ public class Mutator<
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
+		final Random random = RandomRegistry.getRandom();
 		final double p = pow(_probability, 1.0/3.0);
-		final IntRef alterations = new IntRef(0);
-		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+		final int P = probability.toInt(p);
+		//final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 
+		final Seq<MutationResult<Phenotype<G, C>>> result = population
+			.map(pt -> random.nextInt() < P
+				? mutate(pt, p, random)
+				: MutationResult.of(pt));
+
+		return AlterResult.of(
+			result.map(MutationResult::getResult).asISeq(),
+			result.stream().mapToInt(MutationResult::getMutations).sum()
+		);
+
+		/*
+		final int alterations = indexes(RandomRegistry.getRandom(), pop.size(), p).map(i -> {
+			final Phenotype<G, C> pt = pop.get(i);
+
+			final Genotype<G> gt = pt.getGenotype();
+			final MutationResult<Genotype<G>> mgt = mutate(gt, p);
+
+			final Phenotype<G, C> mpt = pt.newInstance(mgt.getResult(), generation);
+			pop.set(i, mpt);
+			return mgt.getMutations();
+		}).sum();
+
+		return AlterResult.of(pop.toISeq(), alterations);
+		*/
+
+		/*
 		indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
 			final Phenotype<G, C> pt = pop.get(i);
 
@@ -123,13 +154,26 @@ public class Mutator<
 		});
 
 		return AlterResult.of(pop.toISeq(), alterations.value);
+		*/
 	}
 
-	private Genotype<G> mutate(
-		final Genotype<G> genotype,
+	private MutationResult<Phenotype<G, C>> mutate(
+		final Phenotype<G, C> pt,
 		final double p,
-		final IntRef alterations
+		final Random random
 	) {
+		return null;
+	}
+
+	private MutationResult<Genotype<G>> mutate(
+		final Genotype<G> genotype,
+		final double p
+	) {
+		/*
+		indexes(RandomRegistry.getRandom(), genotype.length(), p)
+			.mapToObj(i -> mutate2(genotype.toSeq(), i, p))
+			.collect(ISeq.toISeq());
+
 		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
 
 		alterations.value +=
@@ -138,6 +182,17 @@ public class Mutator<
 				.sum();
 
 		return genotype.newInstance(chromosomes.toISeq());
+		*/
+		return null;
+	}
+
+	protected MutationResult<Chromosome<G>> mutate2(
+		final Seq<Chromosome<G>> c,
+		final int i,
+		final double p
+	) {
+
+		return null;
 	}
 
 	/**

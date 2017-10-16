@@ -52,4 +52,8 @@ public final class MutationResult<T> implements Serializable {
 		return new MutationResult<>(result, mutations);
 	}
 
+	public static <T> MutationResult<T> of(final T result) {
+		return new MutationResult<>(result, 0);
+	}
+
 }
