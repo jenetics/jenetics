@@ -51,8 +51,7 @@ import io.jenetics.util.Seq;
 public interface Alterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	/**
 	 * The default alter probability: 0.2
