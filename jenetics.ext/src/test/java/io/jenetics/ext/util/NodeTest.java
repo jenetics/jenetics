@@ -45,14 +45,14 @@ public class NodeTest {
 				.attach(8)
 				.attach(9));
 
-		System.out.println(tree);
+		//System.out.println(tree);
 		//final FlatTreeNode<Integer> flat = FlatTreeNode.of(tree);
 		//System.out.println(flat);
 		//System.out.println(Tree.toString(flat));
-		System.out.println(Trees.toCompactString(tree));
-		System.out.println(Trees.toDottyString("number_tree", tree));
-		System.out.println(tree.depth());
-		System.out.println(Trees.toLispString(tree));
+		//System.out.println(Trees.toCompactString(tree));
+		//System.out.println(Trees.toDottyString("number_tree", tree));
+		//System.out.println(tree.depth());
+		//System.out.println(Trees.toLispString(tree));
 	}
 
 	@Test
