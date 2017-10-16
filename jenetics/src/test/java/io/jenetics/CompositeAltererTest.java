@@ -51,7 +51,7 @@ public class CompositeAltererTest {
 			population(ngenes, nchromosomes, npopulation);
 
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
-		final AlterResult<DoubleGene, Double> result = mutator.alter(p1, 1);
+		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		Assert.assertEquals(
 			result.getAlterations(),

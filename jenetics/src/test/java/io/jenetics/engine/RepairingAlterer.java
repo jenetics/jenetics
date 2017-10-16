@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -52,11 +52,11 @@ public final class RepairingAlterer<
 	}
 
 	@Override
-	public AlterResult<G, C> alter(
+	public AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		final AlterResult<G, C> result = _adoptee.alter(population, generation);
+		final AltererResult<G, C> result = _adoptee.alter(population, generation);
 
 		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 		for (int i = 0, n = pop.size(); i < n; ++i) {
@@ -64,7 +64,7 @@ public final class RepairingAlterer<
 				pop.set(i, repair(pop.get(i)));
 			}
 		}
-		return AlterResult.of(pop.toISeq(), result.getAlterations());
+		return AltererResult.of(pop.toISeq(), result.getAlterations());
 	}
 
 	private Phenotype<G, C> repair(final Phenotype<G, C> pt) {

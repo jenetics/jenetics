@@ -37,7 +37,7 @@ import io.jenetics.util.Seq;
  * @version 4.0
  * @since 4.0
  */
-public final class AlterResult<
+public final class AltererResult<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -48,7 +48,7 @@ public final class AlterResult<
 	private final ISeq<Phenotype<G, C>> _population;
 	private final int _alterations;
 
-	private AlterResult(
+	private AltererResult(
 		final ISeq<Phenotype<G, C>> population,
 		final int alterations
 	) {
@@ -90,9 +90,9 @@ public final class AlterResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AlterResult<?, ?> &&
-			_alterations == ((AlterResult)obj)._alterations &&
-			_population.equals(((AlterResult)obj)._population);
+		return obj instanceof AltererResult<?, ?> &&
+			_alterations == ((AltererResult)obj)._alterations &&
+			_population.equals(((AltererResult)obj)._population);
 	}
 
 	@Override
@@ -113,11 +113,11 @@ public final class AlterResult<
 	 *         negative
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AlterResult<G, C> of(
+	AltererResult<G, C> of(
 		final ISeq<Phenotype<G, C>> population,
 		final int alterations
 	) {
-		return new AlterResult<>(population, alterations);
+		return new AltererResult<>(population, alterations);
 	}
 
 	/**
@@ -130,8 +130,8 @@ public final class AlterResult<
 	 * @throws NullPointerException if the given population is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AlterResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
-		return new AlterResult<>(population, 0);
+	AltererResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
+		return new AltererResult<>(population, 0);
 	}
 
 }
