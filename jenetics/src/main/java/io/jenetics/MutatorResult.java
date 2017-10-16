@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -106,6 +107,26 @@ public final class MutatorResult<T> implements Serializable {
 	 */
 	public static <T> MutatorResult<T> of(final T result) {
 		return new MutatorResult<>(result, 0);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 37*_result.hashCode() + 31;
+		hash += 37*_mutations + 31;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof MutatorResult<?> &&
+			((MutatorResult)obj)._result.equals(_result) &&
+			((MutatorResult)obj)._mutations == _mutations;
+	}
+
+	@Override
+	public String toString() {
+		return format("MutatorResult[%s, %s]", _result, _mutations);
 	}
 
 }
