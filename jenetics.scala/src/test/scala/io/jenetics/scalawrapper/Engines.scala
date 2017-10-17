@@ -63,6 +63,16 @@ object Engines {
 		.selector(new TournamentSelector())
 		.build()
 
+	val e4 = EngineBuilder[BitGene, Int, java.lang.Integer](
+		(gt: Genotype[BitGene]) =>
+			gt.chromosome.to[BitChromosome].bitCount(),
+		BitChromosome.of(20, 0.15))
+		.alterers(
+			new Mutator(),
+			new SwapMutator())
+		.selector(new TournamentSelector())
+		.build()
+
 
 	val c1 = Codecs(
 		Genotype.of(BitChromosome.of(20, 0.15)),
