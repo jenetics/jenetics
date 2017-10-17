@@ -522,7 +522,7 @@ public final class Readers {
 
 			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
 				xml.next();
-				return reader(alleleReader).read(xml);
+				return PermutationChromosome.<A>reader(alleleReader).read(xml);
 			}
 		}
 

@@ -89,7 +89,8 @@ public final class XML {
 	{
 		requireNonNull(input);
 
-		final XMLInputFactory factory = XMLInputFactory.newFactory();
+		final XMLInputFactory factory = XMLInputFactory
+			.newFactory(XMLInputFactory.class.getName(), null);
 		return new XMLReaderProxy(
 			factory.createXMLStreamReader(input, "UTF-8"));
 	}
