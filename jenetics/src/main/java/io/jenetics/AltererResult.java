@@ -54,7 +54,7 @@ public final class AltererResult<
 	) {
 		if (alterations < 0) {
 			throw new IllegalArgumentException(
-				"Alterations is negative: " + alterations
+				"Alterations must not be negative: " + alterations
 			);
 		}
 
