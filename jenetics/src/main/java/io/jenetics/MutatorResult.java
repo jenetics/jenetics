@@ -46,6 +46,12 @@ public final class MutatorResult<T> implements Serializable {
 	private final int _mutations;
 
 	private MutatorResult(final T result, final int mutations) {
+		if (mutations < 0) {
+			throw new IllegalArgumentException(
+				"Mutations must not be negative: " + mutations
+			);
+		}
+
 		_result = requireNonNull(result);
 		_mutations = mutations;
 	}
@@ -90,6 +96,8 @@ public final class MutatorResult<T> implements Serializable {
 	 * @param mutations the number of mutations
 	 * @param <T> the mutation result type
 	 * @return a new mutation result
+	 * @throws IllegalArgumentException if the given {@code mutations} is
+	 *         negative
 	 * @throws NullPointerException if the given mutation result is {@code null}
 	 */
 	public static <T> MutatorResult<T> of(final T result, final int mutations) {
