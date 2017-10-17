@@ -361,7 +361,7 @@ public class CodecsTest {
 //		final DoubleRange kxr = DoubleRange.of(0, 10);
 //		final DoubleRange kyr = DoubleRange.of(0, 15);
 //
-//		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
+//		final Codec<AffineTransform, DoubleGene> codec = Codecs.ofAffineTransform(
 //			sxr, syr, txr, tyr, thr, kxr, kyr
 //		);
 //

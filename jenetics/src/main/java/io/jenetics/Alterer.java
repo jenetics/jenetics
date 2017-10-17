@@ -51,8 +51,7 @@ import io.jenetics.util.Seq;
 public interface Alterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	/**
 	 * The default alter probability: 0.2
@@ -72,7 +71,7 @@ public interface Alterer<
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public AlterResult<G, C> alter(
+	public AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	);
@@ -112,7 +111,7 @@ public interface Alterer<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
-			? (p, g) -> AlterResult.of(ISeq.of(p))
+			? (p, g) -> AltererResult.of(p.asISeq())
 			: alterers.length == 1
 				? alterers[0]
 				: new CompositeAlterer<>(ISeq.of(alterers));

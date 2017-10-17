@@ -22,6 +22,8 @@ package io.jenetics;
 /**
  * Base interface for numeric genes.
  *
+ * @see NumericChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 3.0

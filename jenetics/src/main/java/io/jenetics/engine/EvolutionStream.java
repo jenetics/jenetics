@@ -113,7 +113,7 @@ public interface EvolutionStream<
 	 *     public static void main(final String[] args) {
 	 *         final Genotype<DoubleGene> best = EvolutionStream
 	 *             .of(() -> start(50, 0), SpecialEngine::evolve)
-	 *             .limit(limit.bySteadyFitness(10))
+	 *             .limit(Limits.bySteadyFitness(10))
 	 *             .limit(1000)
 	 *             .collect(EvolutionResult.toBestGenotype());
 	 *

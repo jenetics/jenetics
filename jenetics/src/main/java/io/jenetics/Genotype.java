@@ -23,6 +23,7 @@ import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Hash;
@@ -102,7 +103,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
 		return chromosomes.stream()
-			.mapToInt(c -> c.length())
+			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
 			.sum();
 	}
 
@@ -170,6 +171,22 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	public G get(final int chromosomeIndex, final int geneIndex) {
 		return getChromosome(chromosomeIndex).getGene(geneIndex);
+	}
+
+	/**
+	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * returned chromosome is not null.
+	 *
+	 * @see #getChromosome(int)
+	 * @since 4.0
+	 *
+	 * @param chromosomeIndex Chromosome index.
+	 * @return The Chromosome.
+	 * @throws IndexOutOfBoundsException if
+	 *         {@code (index < 0 || index >= _length)}.
+	 */
+	public Chromosome<G> get(final int chromosomeIndex) {
+		return getChromosome(chromosomeIndex);
 	}
 
 	public ISeq<Chromosome<G>> toSeq() {

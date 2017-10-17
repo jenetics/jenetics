@@ -145,7 +145,7 @@ public final class BigIntegerGene
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(
-				random.nextBigInteger(r, minimum, maximum), minimum, maximum))
+				random.nextBigInteger(minimum, maximum, r), minimum, maximum))
 			.toISeq();
 	}
 
@@ -180,7 +180,7 @@ public final class BigIntegerGene
 	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
-			random.nextBigInteger(RandomRegistry.getRandom(), min, max),
+			random.nextBigInteger(min, max, RandomRegistry.getRandom()),
 			min,
 			max
 		);

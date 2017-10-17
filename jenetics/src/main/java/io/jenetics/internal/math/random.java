@@ -28,7 +28,6 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.require;
-import io.jenetics.util.IntRange;
 
 /**
  * Some random helper functions.
@@ -41,164 +40,85 @@ public final class random {
 	private random() {require.noInstance();}
 
 	public static byte nextByte(final Random random) {
-		return (byte)nextInt(random, Byte.MIN_VALUE, Byte.MAX_VALUE);
+		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
 	}
 
-	public static char nextCharacter(final Random random) {
+	public static char nextChar(final Random random) {
 		char c = '\0';
 		do {
-			c = (char)nextInt(random, Character.MIN_VALUE, Character.MAX_VALUE);
+			c = (char)nextInt(
+				Character.MIN_VALUE,
+				Character.MAX_VALUE + 1,
+				random
+			);
 		} while (!Character.isLetterOrDigit(c));
 
 		return c;
 	}
 
 	public static short nextShort(final Random random) {
-		return (short)nextInt(random, Short.MIN_VALUE, Short.MAX_VALUE);
+		return (short) nextInt(Short.MIN_VALUE, Short.MAX_VALUE + 1, random);
 	}
 
 	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min and
-	 * max (min and max included).
+	 * Returns a pseudo-random, uniformly distributed int value between origin
+	 * (included) and bound (excluded).
 	 *
-	 * @since 3.9
-	 *
-	 * @param random the random engine to use for calculating the random int
-	 *        value
-	 * @param range the int range
+	 * @param origin the origin (inclusive) of each random value
+	 * @param bound the bound (exclusive) of each random value
+	 * @param random the random engine to use for calculating the random
+	 *        int value
 	 * @return a random integer greater than or equal to {@code min} and
 	 *         less than or equal to {@code max}
-	 * @throws NullPointerException if one of the parameters is {@code null}.
-	 */
-	public static int nextInt(final Random random, final IntRange range) {
-		return nextInt(random, range.getMin(), range.getMax());
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min and
-	 * max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random int
-	 *        value
-	 * @param min lower bound for generated integer
-	 * @param max upper bound for generated integer
-	 * @return a random integer greater than or equal to {@code min} and
-	 *         less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min > max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
+	 * @throws IllegalArgumentException if {@code origin >= bound}
 	 */
 	public static int nextInt(
-		final Random random,
-		final int min, final int max
+		final int origin,
+		final int bound,
+		final Random random
 	) {
-		if (min > max) {
+		if (origin >= bound) {
 			throw new IllegalArgumentException(format(
-				"Min >= max: %d >= %d", min, max
+				"origin >= bound: %d >= %d", origin, bound
 			));
 		}
 
-		final int diff = max - min + 1;
-		int result = 0;
+		final int value;
 
-		if (diff <= 0) {
-			do {
-				result = random.nextInt();
-			} while (result < min || result > max);
+		if (origin < bound) {
+			int n = bound - origin;
+			if (n > 0) {
+				value = random.nextInt(n) + origin;
+			} else {
+				int r;
+				do {
+					r = random.nextInt();
+				} while (r < origin || r >= bound);
+				value = r;
+			}
 		} else {
-			result = random.nextInt(diff) + min;
+			value = random.nextInt();
 		}
 
-		return result;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between min
-	 * and max (min and max included).
-	 *
-	 * @param random the random engine to use for calculating the random
-	 *        long value
-	 * @param min lower bound for generated long integer
-	 * @param max upper bound for generated long integer
-	 * @return a random long integer greater than or equal to {@code min}
-	 *         and less than or equal to {@code max}
-	 * @throws IllegalArgumentException if {@code min > max}
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	public static long nextLong(
-		final Random random,
-		final long min, final long max
-	) {
-		if (min > max) {
-			throw new IllegalArgumentException(format(
-				"min >= max: %d >= %d.", min, max
-			));
-		}
-
-		final long diff = (max - min) + 1;
-		long result = 0;
-
-		if (diff <= 0) {
-			do {
-				result = random.nextLong();
-			} while (result < min || result > max);
-		} else if (diff < Integer.MAX_VALUE) {
-			result = random.nextInt((int)diff) + min;
-		} else {
-			result = nextLong(random, diff) + min;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Returns a pseudo-random, uniformly distributed int value between 0
-	 * (inclusive) and the specified value (exclusive), drawn from the given
-	 * random number generator's sequence.
-	 *
-	 * @param random the random engine used for creating the random number.
-	 * @param n the bound on the random number to be returned. Must be
-	 *        positive.
-	 * @return the next pseudo-random, uniformly distributed int value
-	 *         between 0 (inclusive) and n (exclusive) from the given random
-	 *         number generator's sequence
-	 * @throws IllegalArgumentException if n is smaller than 1.
-	 * @throws NullPointerException if the given {@code random}
-	 *         engine is {@code null}.
-	 */
-	public static long nextLong(final Random random, final long n) {
-		if (n <= 0) {
-			throw new IllegalArgumentException(format(
-				"n is smaller than one: %d", n
-			));
-		}
-
-		long bits;
-		long result;
-		do {
-			bits = random.nextLong() & 0x7fffffffffffffffL;
-			result = bits%n;
-		} while (bits - result + (n - 1) < 0);
-
-		return result;
+		return value;
 	}
 
 	/**
 	 * Returns a pseudo-random, uniformly distributed double value between
 	 * min (inclusively) and max (exclusively).
 	 *
-	 * @param random the random engine used for creating the random number.
 	 * @param min lower bound for generated float value (inclusively)
 	 * @param max upper bound for generated float value (exclusively)
+	 * @param random the random engine used for creating the random number.
 	 * @return a random float greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
 	public static float nextFloat(
-		final Random random,
-		final float min, final float max
+		final float min,
+		final float max,
+		final Random random
 	) {
 		if (min >= max) {
 			throw new IllegalArgumentException(format(
@@ -221,17 +141,18 @@ public final class random {
 	 * Returns a pseudo-random, uniformly distributed double value between
 	 * min (inclusively) and max (exclusively).
 	 *
-	 * @param random the random engine used for creating the random number.
 	 * @param min lower bound for generated double value (inclusively)
 	 * @param max upper bound for generated double value (exclusively)
+	 * @param random the random engine used for creating the random number.
 	 * @return a random double greater than or equal to {@code min} and less
 	 *         than to {@code max}
 	 * @throws NullPointerException if the given {@code random}
 	 *         engine is {@code null}.
 	 */
 	public static double nextDouble(
-		final Random random,
-		final double min, final double max
+		final double min,
+		final double max,
+		final Random random
 	) {
 		if (min >= max) {
 			throw new IllegalArgumentException(format(
@@ -250,17 +171,17 @@ public final class random {
 		return value;
 	}
 
-	public static String nextString(final Random random, final int length) {
+	public static String nextString(final int length, final Random random) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
-			chars[i] = nextCharacter(random);
+			chars[i] = nextChar(random);
 		}
 
 		return new String(chars);
 	}
 
 	public static String nextString(final Random random) {
-		return nextString(random, nextInt(random, 5, 20));
+		return nextString(nextInt(5, 20, random), random);
 	}
 
 	/*
@@ -282,6 +203,7 @@ public final class random {
 	public static double toDouble(final int a, final int b) {
 		return (((long)(a >>> 6) << 27) + (b >>> 5))/(double)(1L << 53);
 	}
+
 
 	/*
 	 * Conversion methods used by the Apache Commons BitStreamGenerator.
@@ -335,8 +257,8 @@ public final class random {
 					.filter(i -> random.nextInt() < P);
 	}
 
-	private static
-	boolean equals(final double a, final double b, final double delta) {
+	private static boolean
+	equals(final double a, final double b, final double delta) {
 		return abs(a - b) <= delta;
 	}
 

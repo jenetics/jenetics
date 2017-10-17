@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
@@ -273,7 +273,7 @@ public final class Engine<
 			);
 
 		// Altering the offspring population.
-		final CompletableFuture<TimedResult<AlterResult<G, C>>> alteredOffspring =
+		final CompletableFuture<TimedResult<AltererResult<G, C>>> alteredOffspring =
 			_executor.thenApply(offspring, p ->
 				_alterer.alter(p.result, start.getGeneration()),
 				_clock
@@ -755,7 +755,7 @@ public final class Engine<
 	 * private static final Problem<Double, DoubleGene, Double>
 	 * PROBLEM = Problem.of(
 	 *     x -> cos(0.5 + sin(x))*cos(x),
-	 *     codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+	 *     Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
 	 * );
 	 *
 	 * private static final Engine<DoubleGene, Double>
@@ -767,7 +767,7 @@ public final class Engine<
 	 * public static void main(final String[] args) throws IOException {
 	 *     // Result of the first evolution run.
 	 *     final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
-	 *         .limit(limit.bySteadyFitness(10))
+	 *         .limit(Limits.bySteadyFitness(10))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
 	 *     // Save the result of the first run into a file.
@@ -778,7 +778,7 @@ public final class Engine<
 	 *     \@SuppressWarnings("unchecked")
 	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
 	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
-	 *         .limit(limit.bySteadyFitness(20))
+	 *         .limit(Limits.bySteadyFitness(20))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
 	 *     System.out.println(result.getBestPhenotype());

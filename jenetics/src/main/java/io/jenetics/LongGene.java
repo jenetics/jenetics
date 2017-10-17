@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextLong;
+import static java.lang.String.format;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
@@ -39,6 +39,8 @@ import io.jenetics.util.Mean;
  * reference equality ({@code ==}), identity hash code, or synchronization) on
  * instances of {@code LongGene} may have unpredictable results and should
  * be avoided.
+ *
+ * @see LongChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
@@ -164,6 +166,78 @@ public final class LongGene
 	@Override
 	public LongGene mean(final LongGene that) {
 		return new LongGene(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between min
+	 * and max (min and max included).
+	 *
+	 * @param random the random engine to use for calculating the random
+	 *        long value
+	 * @param min lower bound for generated long integer
+	 * @param max upper bound for generated long integer
+	 * @return a random long integer greater than or equal to {@code min}
+	 *         and less than or equal to {@code max}
+	 * @throws IllegalArgumentException if {@code min > max}
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	static long nextLong(
+		final Random random,
+		final long min, final long max
+	) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"min >= max: %d >= %d.", min, max
+			));
+		}
+
+		final long diff = (max - min) + 1;
+		long result = 0;
+
+		if (diff <= 0) {
+			do {
+				result = random.nextLong();
+			} while (result < min || result > max);
+		} else if (diff < Integer.MAX_VALUE) {
+			result = random.nextInt((int)diff) + min;
+		} else {
+			result = nextLong(random, diff) + min;
+		}
+
+		return result;
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between 0
+	 * (inclusive) and the specified value (exclusive), drawn from the given
+	 * random number generator's sequence.
+	 *
+	 * @param random the random engine used for creating the random number.
+	 * @param n the bound on the random number to be returned. Must be
+	 *        positive.
+	 * @return the next pseudo-random, uniformly distributed int value
+	 *         between 0 (inclusive) and n (exclusive) from the given random
+	 *         number generator's sequence
+	 * @throws IllegalArgumentException if n is smaller than 1.
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	static long nextLong(final Random random, final long n) {
+		if (n <= 0) {
+			throw new IllegalArgumentException(format(
+				"n is smaller than one: %d", n
+			));
+		}
+
+		long bits;
+		long result;
+		do {
+			bits = random.nextLong() & 0x7fffffffffffffffL;
+			result = bits%n;
+		} while (bits - result + (n - 1) < 0);
+
+		return result;
 	}
 
 }

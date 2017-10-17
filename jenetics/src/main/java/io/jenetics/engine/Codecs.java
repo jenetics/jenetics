@@ -116,7 +116,7 @@ public final class Codecs {
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} objects.
 	 * <pre>{@code
-	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = codecs.of(
+	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
 	 *         final byte[] data = new byte[100];
@@ -355,7 +355,7 @@ public final class Codecs {
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} object arrays.
 	 * <pre>{@code
-	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = codecs.of(
+	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
 	 *         final byte[] data = new byte[100];

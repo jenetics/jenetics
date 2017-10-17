@@ -34,6 +34,8 @@ import io.jenetics.util.MSeq;
 /**
  * Numeric chromosome implementation which holds 64 bit integer numbers.
  *
+ * @see LongGene
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 4.0

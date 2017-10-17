@@ -17,40 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.internal.math;
+
+import static java.lang.String.format;
+
+import java.util.Random;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
- * Chromosome interface for {@code BoundedGene}s.
- *
- * @see BoundedGene
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
- * @since 1.6
  */
-public interface BoundedChromosome<
-	A extends Comparable<? super A>,
-	G extends BoundedGene<A, G>
->
-	extends Chromosome<G>
-{
+public class randomTest {
 
-	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMin() {
-		return getGene().getMin();
-	}
+	@Test
+	public void intRange() {
+		final Random rnd = new LCG64ShiftRandom();
+		final int min = 10;
+		final int max = 10_000;
 
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 */
-	public default A getMax() {
-		return getGene().getMax();
+		for (int i = 0; i < 100_000; ++i) {
+			final int n = random.nextInt(min, max, rnd);
+			Assert.assertTrue(n >= min, format("n < min: %d < %d", n, min));
+			Assert.assertTrue(n < max, format("n  max: %d >= %d", n, max));
+		}
 	}
 
 }

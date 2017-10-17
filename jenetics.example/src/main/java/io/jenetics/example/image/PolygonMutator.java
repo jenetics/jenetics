@@ -16,10 +16,11 @@
  */
 package io.jenetics.example.image;
 
-import java.util.ListIterator;
+import java.util.Random;
 
+import io.jenetics.Chromosome;
+import io.jenetics.MutatorResult;
 import io.jenetics.Mutator;
-import io.jenetics.util.MSeq;
 
 /**
  * Polygon mutator class.
@@ -33,25 +34,26 @@ final class PolygonMutator<C extends Comparable<? super C>>
 	private final float _rate;
 	private final float _magnitude;
 
-	public PolygonMutator(final float rate, final float magnitude) {
+	PolygonMutator(final float rate, final float magnitude) {
 		super(1.0);
 		_rate = rate;
 		_magnitude = magnitude;
 	}
 
 	@Override
-	protected int mutate(final MSeq<PolygonGene> genes, final double p) {
-		final ListIterator<PolygonGene> it = genes.listIterator();
+	protected MutatorResult<Chromosome<PolygonGene>> mutate(
+		final Chromosome<PolygonGene> chromosome,
+		final double p,
+		final Random random
+	) {
+		return MutatorResult.of(
+			chromosome.newInstance(chromosome.toSeq().map(this::mutate)),
+			chromosome.length()
+		);
+	}
 
-		while (it.hasNext()) {
-			final PolygonGene gene = it.next();
-			final PolygonGene mutated = gene.newInstance(
-				gene.getAllele().mutate(_rate, _magnitude)
-			);
-			it.set(mutated);
-		}
-
-		return genes.size();
+	private PolygonGene mutate(final PolygonGene gene) {
+		return gene.newInstance(gene.getAllele().mutate(_rate, _magnitude));
 	}
 
 }

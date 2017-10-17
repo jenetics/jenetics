@@ -50,7 +50,7 @@ import io.jenetics.util.ISeq;
  *         final Engine<DoubleGene, Double> engine = Engine
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.
- *             .build(RealFunction::eval, codecs.ofScalar(DoubleRange.of(0, 2*PI)))
+ *             .build(RealFunction::eval, Codecs.ofScalar(DoubleRange.of(0, 2*PI)))
  *             .build();
  *         ...
  *     }

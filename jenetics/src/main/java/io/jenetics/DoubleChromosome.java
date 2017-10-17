@@ -34,6 +34,8 @@ import io.jenetics.util.MSeq;
 /**
  * Numeric chromosome implementation which holds 64 bit floating point numbers.
  *
+ * @see DoubleGene
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 4.0

@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -102,7 +103,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 */
 	public default MSeq<T> setAll(final T[] values) {
-		for (int i = 0, n = length(); i < n && i < values.length; ++i) {
+		for (int i = 0, n = min(length(), values.length); i < n; ++i) {
 			set(i, values[i]);
 		}
 		return this;
@@ -539,7 +540,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return an new {@code MSeq} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> MSeq<T> of(final Seq<T> values) {
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> of(final Seq<? extends T> values) {
 		return values instanceof MSeq<?>
 			? ((MSeq<T>)values).copy()
 			: MSeq.<T>ofLength(values.length()).setAll(values);
