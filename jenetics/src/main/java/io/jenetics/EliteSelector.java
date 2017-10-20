@@ -33,7 +33,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
- * @since 3.4
+ * @since 4.0
  */
 public class EliteSelector<
 	G extends Gene<?, G>,
