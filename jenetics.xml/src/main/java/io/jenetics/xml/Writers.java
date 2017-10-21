@@ -35,7 +35,6 @@ import io.jenetics.BoundedGene;
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
-import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
@@ -950,7 +949,7 @@ public final class Writers {
 			return elem(
 				ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::getNumberOfGenes),
+				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
 				elems(writer).map(gt -> cast(gt.toSeq()))
 			);
 		}

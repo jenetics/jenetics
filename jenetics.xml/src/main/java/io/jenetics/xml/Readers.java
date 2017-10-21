@@ -591,10 +591,10 @@ public final class Readers {
 						length, genotype.length()
 					));
 				}
-				if (ngenes != genotype.getNumberOfGenes()) {
+				if (ngenes != genotype.geneCount()) {
 					throw new IllegalArgumentException(format(
 						"Expected %d genes, but read %d.",
-						ngenes, genotype.getNumberOfGenes()
+						ngenes, genotype.geneCount()
 					));
 				}
 
