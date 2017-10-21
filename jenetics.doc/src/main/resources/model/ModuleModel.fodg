@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" xmlns:config="urn:oasis:names:tc:opendocument:xmlns:config:1.0" xmlns:ooo="http://openoffice.org/2004/office" xmlns:ooow="http://openoffice.org/2004/writer" xmlns:oooc="http://openoffice.org/2004/calc" xmlns:dom="http://www.w3.org/2001/xml-events" xmlns:xforms="http://www.w3.org/2002/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:smil="urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xmlns:rpt="http://openoffice.org/2005/report" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:grddl="http://www.w3.org/2003/g/data-view#" xmlns:officeooo="http://openoffice.org/2009/office" xmlns:tableooo="http://openoffice.org/2009/table" xmlns:drawooo="http://openoffice.org/2010/draw" xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" xmlns:css3t="http://www.w3.org/TR/css3-text/" office:version="1.2" office:mimetype="application/vnd.oasis.opendocument.graphics">
- <office:meta><meta:creation-date>2014-11-17T19:39:57.106139972</meta:creation-date><dc:date>2017-10-21T23:55:32.837521733</dc:date><meta:editing-duration>PT57M1S</meta:editing-duration><meta:editing-cycles>20</meta:editing-cycles><meta:generator>LibreOffice/5.4.1.2$Linux_X86_64 LibreOffice_project/40m0$Build-2</meta:generator><meta:document-statistic meta:object-count="8"/></office:meta>
+ <office:meta><meta:creation-date>2014-11-17T19:39:57.106139972</meta:creation-date><dc:date>2017-10-22T00:07:18.728689819</dc:date><meta:editing-duration>PT1H3M20S</meta:editing-duration><meta:editing-cycles>22</meta:editing-cycles><meta:generator>LibreOffice/5.4.1.2$Linux_X86_64 LibreOffice_project/40m0$Build-2</meta:generator><meta:document-statistic meta:object-count="9"/></office:meta>
  <office:settings>
   <config:config-item-set config:name="ooo:view-settings">
    <config:config-item config:name="VisibleAreaTop" config:type="int">843</config:config-item>
@@ -82,7 +82,7 @@
    <config:config-item config:name="PrintQuality" config:type="int">0</config:config-item>
    <config:config-item config:name="PrinterIndependentLayout" config:type="string">low-resolution</config:config-item>
    <config:config-item config:name="PrinterName" config:type="string">Generic Printer</config:config-item>
-   <config:config-item config:name="PrinterSetup" config:type="base64Binary">kQH+/0dlbmVyaWMgUHJpbnRlcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU0dFTlBSVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAMAsgAAAAAAAAAEAAhSAAAEdAAASm9iRGF0YSAxCnByaW50ZXI9R2VuZXJpYyBQcmludGVyCm9yaWVudGF0aW9uPVBvcnRyYWl0CmNvcGllcz0xCm1hcmdpbmRhanVzdG1lbnQ9MCwwLDAsMApjb2xvcmRlcHRoPTI0CnBzbGV2ZWw9MApwZGZkZXZpY2U9MApjb2xvcmRldmljZT0wClBQRENvbnRleERhdGEKUGFnZVNpemU6QTQARHVwbGV4Ok5vbmUAABIAQ09NUEFUX0RVUExFWF9NT0RFDwBEdXBsZXhNb2RlOjpPZmY=</config:config-item>
+   <config:config-item config:name="PrinterSetup" config:type="base64Binary">kQH+/0dlbmVyaWMgUHJpbnRlcgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU0dFTlBSVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWAAMAsgAAAAAAAAAEAAhSAAAEdAAASm9iRGF0YSAxCnByaW50ZXI9R2VuZXJpYyBQcmludGVyCm9yaWVudGF0aW9uPVBvcnRyYWl0CmNvcGllcz0xCm1hcmdpbmRhanVzdG1lbnQ9MCwwLDAsMApjb2xvcmRlcHRoPTI0CnBzbGV2ZWw9MApwZGZkZXZpY2U9MApjb2xvcmRldmljZT0wClBQRENvbnRleERhdGEKRHVwbGV4Ok5vbmUAUGFnZVNpemU6QTQAABIAQ09NUEFUX0RVUExFWF9NT0RFDwBEdXBsZXhNb2RlOjpPZmY=</config:config-item>
    <config:config-item config:name="SaveVersionOnClose" config:type="boolean">false</config:config-item>
    <config:config-item config:name="ScaleDenominator" config:type="int">1</config:config-item>
    <config:config-item config:name="ScaleNumerator" config:type="int">1</config:config-item>
@@ -238,12 +238,9 @@
    <style:graphic-properties svg:stroke-color="#3465a4" draw:stroke-linejoin="none" svg:stroke-linecap="round" draw:fill="solid" draw:fill-color="#99ccff" draw:textarea-horizontal-align="justify" draw:textarea-vertical-align="middle" draw:auto-grow-height="false" fo:min-height="1.02cm" fo:min-width="4.58cm" draw:shadow-offset-x="0.203cm" draw:shadow-offset-y="0.203cm"/>
   </style:style>
   <style:style style:name="gr2" style:family="graphic" style:parent-style-name="standard">
-   <style:graphic-properties draw:fill="solid" draw:fill-color="#99ccff" draw:textarea-horizontal-align="justify" draw:textarea-vertical-align="middle" draw:auto-grow-height="false" fo:min-height="1.02cm" fo:min-width="4.707cm" draw:shadow-offset-x="0.203cm" draw:shadow-offset-y="0.203cm"/>
-  </style:style>
-  <style:style style:name="gr3" style:family="graphic" style:parent-style-name="standard">
    <style:graphic-properties draw:fill="solid" draw:fill-color="#99ccff" draw:textarea-horizontal-align="justify" draw:textarea-vertical-align="middle" draw:auto-grow-height="false" fo:min-height="1.02cm" fo:min-width="4.58cm" draw:shadow-offset-x="0.203cm" draw:shadow-offset-y="0.203cm"/>
   </style:style>
-  <style:style style:name="gr4" style:family="graphic" style:parent-style-name="objectwithoutfill">
+  <style:style style:name="gr3" style:family="graphic" style:parent-style-name="objectwithoutfill">
    <style:graphic-properties draw:marker-end="Arrow" draw:marker-end-width="0.3cm" draw:fill="none" draw:textarea-vertical-align="middle"/>
   </style:style>
   <style:style style:name="P1" style:family="paragraph">
@@ -322,34 +319,38 @@
  <office:body>
   <office:drawing>
    <draw:page draw:name="page1" draw:style-name="dp2" draw:master-page-name="Default">
-    <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" xml:id="id3" draw:id="id3" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="4.81cm" svg:y="2.27cm">
+    <draw:custom-shape draw:style-name="gr1" draw:text-style-name="P2" xml:id="id3" draw:id="id3" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="2.27cm" svg:y="2.397cm">
      <text:p text:style-name="P1"><text:span text:style-name="T1">io.jenetics.prog</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
-    <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P3" xml:id="id2" draw:id="id2" draw:layer="layout" svg:width="5.207cm" svg:height="1.27cm" svg:x="4.71cm" svg:y="7.15cm">
+    <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P2" xml:id="id2" draw:id="id2" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="2.27cm" svg:y="6.35cm">
      <text:p text:style-name="P1"><text:span text:style-name="T1">io.jenetics.base</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
-    <draw:custom-shape draw:style-name="gr3" draw:text-style-name="P3" xml:id="id4" draw:id="id4" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="7.985cm" svg:y="4.61cm">
+    <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P3" xml:id="id4" draw:id="id4" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="8.62cm" svg:y="4.302cm">
      <text:p text:style-name="P1"><text:span text:style-name="T1">io.jenetics.xml</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
-    <draw:custom-shape draw:style-name="gr3" draw:text-style-name="P3" xml:id="id1" draw:id="id1" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="1.635cm" svg:y="4.61cm">
+    <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P3" xml:id="id1" draw:id="id1" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="2.27cm" svg:y="4.31cm">
      <text:p text:style-name="P1"><text:span text:style-name="T1">io.jenetics.ext</text:span></text:p>
      <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
     </draw:custom-shape>
-    <draw:connector draw:style-name="gr4" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="4.175cm" svg:y1="5.88cm" svg:x2="4.71cm" svg:y2="7.785cm" draw:start-shape="id1" draw:start-glue-point="2" draw:end-shape="id2" draw:end-glue-point="3" svg:d="M4175 5880c0 1270 178 1905 535 1905" svg:viewBox="0 0 536 1906">
+    <draw:connector draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" draw:line-skew="-0.392cm" svg:x1="2.27cm" svg:y1="4.945cm" svg:x2="2.27cm" svg:y2="6.985cm" draw:start-shape="id1" draw:start-glue-point="3" draw:end-shape="id2" draw:end-glue-point="3" svg:d="M2270 4945c-1339 0-1339 2040 0 2040" svg:viewBox="0 0 1005 2041">
      <text:p/>
     </draw:connector>
-    <draw:connector draw:style-name="gr4" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="7.35cm" svg:y1="3.54cm" svg:x2="7.313cm" svg:y2="7.15cm" draw:start-shape="id3" draw:start-glue-point="2" draw:end-shape="id2" draw:end-glue-point="0" svg:d="M7350 3540c0 2707-37 903-37 3610" svg:viewBox="0 0 38 3611">
+    <draw:connector draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" draw:line-skew="-0.265cm" svg:x1="2.27cm" svg:y1="3.032cm" svg:x2="2.27cm" svg:y2="6.985cm" draw:start-shape="id3" draw:start-glue-point="3" draw:end-shape="id2" draw:end-glue-point="3" svg:d="M2270 3032c-1149 0-1149 3953 0 3953" svg:viewBox="0 0 863 3954">
      <text:p/>
     </draw:connector>
-    <draw:connector draw:style-name="gr4" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="7.35cm" svg:y1="3.54cm" svg:x2="4.175cm" svg:y2="4.61cm" draw:start-shape="id3" draw:start-glue-point="2" draw:end-shape="id1" svg:d="M7350 3540c0 802-3175 268-3175 1070" svg:viewBox="0 0 3176 1071">
+    <draw:connector draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="7.35cm" svg:y1="3.032cm" svg:x2="7.35cm" svg:y2="4.945cm" draw:start-shape="id3" draw:start-glue-point="1" draw:end-shape="id1" draw:end-glue-point="1" svg:d="M7350 3032c751 0 751 1913 0 1913" svg:viewBox="0 0 564 1914">
      <text:p/>
     </draw:connector>
-    <draw:connector draw:style-name="gr4" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="10.525cm" svg:y1="5.88cm" svg:x2="9.917cm" svg:y2="7.785cm" draw:start-shape="id4" draw:start-glue-point="2" draw:end-shape="id2" draw:end-glue-point="1" svg:d="M10525 5880c0 1270-202 1905-608 1905" svg:viewBox="0 0 609 1906">
+    <draw:connector draw:style-name="gr3" draw:text-style-name="P4" draw:layer="layout" draw:type="curve" svg:x1="8.62cm" svg:y1="4.937cm" svg:x2="7.35cm" svg:y2="6.985cm" draw:start-shape="id4" draw:end-shape="id2" draw:end-glue-point="1" svg:d="M8620 4937c-952 0-318 2048-1270 2048" svg:viewBox="0 0 1271 2049">
      <text:p/>
     </draw:connector>
+    <draw:custom-shape draw:style-name="gr2" draw:text-style-name="P2" draw:layer="layout" svg:width="5.08cm" svg:height="1.27cm" svg:x="8.62cm" svg:y="6.35cm">
+     <text:p text:style-name="P1"><text:span text:style-name="T1">io.jenetics.prngine</text:span></text:p>
+     <draw:enhanced-geometry svg:viewBox="0 0 21600 21600" draw:type="rectangle" draw:enhanced-path="M 0 0 L 21600 0 21600 21600 0 21600 0 0 Z N"/>
+    </draw:custom-shape>
    </draw:page>
   </office:drawing>
  </office:body>

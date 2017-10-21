@@ -22852,6 +22852,59 @@ With this module split the code is easier to maintain and doesn't force
 \series default
 \shape default
  modules will be described in this chapter.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Module-graph"
+
+\end_inset
+
+ shows the dependency graph of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ modules.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/model/ModuleModel.eps
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Module-graph"
+
+\end_inset
+
+Module graph
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
