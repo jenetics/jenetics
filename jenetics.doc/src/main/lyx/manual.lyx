@@ -14964,7 +14964,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-,
+, 
 \begin_inset Foot
 status collapsed
 
@@ -15010,7 +15010,7 @@ https://en.wikipedia.org/wiki/Homogeneous_coordinates
 \begin_inset Formula $\mathbb{R}^{2}$
 \end_inset
 
-, we can define the matrix
+, we can define the matrix 
 \begin_inset Formula $A$
 \end_inset
 
@@ -15054,7 +15054,7 @@ a_{21} & a_{22} & a_{23}\\
 \family typewriter
  DoubleChromosome
 \family default
-s with a length of
+s with a length of 
 \begin_inset Formula $3$
 \end_inset
 
@@ -15196,7 +15196,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_layout Standard
 This parameters can then be represented by the following
 \family typewriter
-Genotype
+ Genotype
 \family default
 .
 \end_layout
@@ -15288,11 +15288,18 @@ This encoding ensures that no invalid
 \family typewriter
  Genotype
 \family default
- back to the transformation matrix
+ back to the transformation matrix 
 \begin_inset Formula $A$
 \end_inset
 
-, the following equations can be used:
+, the following equations can be used 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "hughes2014computer"
+
+\end_inset
+
+:
 \begin_inset Formula 
 \begin{eqnarray}
 a_{11} & = & s_{x}\cos\theta+k_{x}s_{y}\sin\theta\nonumber \\
@@ -16200,7 +16207,7 @@ Function
 \family default
  into the argument type of the actual fitness
 \family typewriter
-Function
+ Function
 \family default
 .
 \end_layout
@@ -16354,7 +16361,7 @@ Jenetics
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
-codecs
+Codecs
 \family default
  class.
  The following sub-sections shows some of the implementation of this methods.
@@ -16613,7 +16620,7 @@ Codec!Vector
 \end_layout
 
 \begin_layout Standard
-In the listing
+In the listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofVector"
@@ -16994,7 +17001,7 @@ The following usage example of
 \emph default
  Codec
 \family default
- shows a simplified version of the Knapsack problem (see section
+ shows a simplified version of the Knapsack problem (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:0/1-Knapsack-example"
@@ -17369,6 +17376,7 @@ Codec!Permutation
 This kind of codec can be used for problems where optimal solution depends
  on the order of the input elements.
  A classical example for such problems is the Knapsack problem (chapter
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Traveling-salesman-example"
@@ -17460,7 +17468,7 @@ name "lis:Codec-factory-method-ofPermutation"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofPermutation"
@@ -17471,7 +17479,7 @@ reference "lis:Codec-factory-method-ofPermutation"
  given alleles influences the value of the fitness function.
  An alternate formulation of the traveling salesman problem is shown in
  the following listing.
- It uses the permutation codec in listing
+ It uses the permutation codec in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofPermutation"
@@ -17675,7 +17683,7 @@ The
  Codec
 \family default
 s into one.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Composite-Codec-factory"
@@ -17726,7 +17734,7 @@ Composite
 \family typewriter
 Codec
 \family default
- factory method
+ factory method 
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Composite-Codec-factory"
@@ -17834,7 +17842,7 @@ The following listing shows a full example which uses a combined
 \family typewriter
  Codec
 \family default
-, introduced in section
+, introduced in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Subset-codec"
@@ -18236,7 +18244,7 @@ public interface Problem<
 \family typewriter
 Problem
 \family default
- interface
+ interface 
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Problem-interface"
@@ -18257,7 +18265,7 @@ name "lis:Problem-interface"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Problem-interface"
@@ -18489,6 +18497,7 @@ Genotypes
 \family default
 ).
  Some possible encodings for common data-structures are described in section
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Encoding"
@@ -18877,7 +18886,7 @@ er
  validity
 \emph default
  problem.
- Refer to section
+ Refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Extending-Jenetics"
@@ -18936,8 +18945,9 @@ Termination is the criterion by which the evolution stream decides whether
  limit
 \family default
  function, returns false, the evolution stream is truncated.
+
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
 .limit(r -> true)
 \family default
@@ -18950,7 +18960,7 @@ All termination strategies described in the following sub-sections are part
 \family typewriter
  io.jenetics\SpecialChar softhyphen
 .engine\SpecialChar softhyphen
-.limit
+.Limits
 \family default
  class.
  The termination strategies where tested by solving the Knapsack problem
@@ -18976,7 +18986,7 @@ https://github.com/jenetics/jenetics/blob/master/io.jenetics.tool/src/main/java/
 
 \end_inset
 
- (see section
+ (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:0/1-Knapsack-example"
@@ -19220,7 +19230,7 @@ Knapsack evolution parameters
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Knapsack-evolution-parameters"
@@ -19638,7 +19648,7 @@ Steady fitness
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Steady-fitness-limit"
@@ -19742,7 +19752,7 @@ Steady fitness termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Steady-fitness-diagram"
@@ -19904,7 +19914,7 @@ Execution time termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Execution-time-diagram"
@@ -20031,7 +20041,7 @@ Fitness threshold termination
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-threshold-diagram"
@@ -20095,14 +20105,11 @@ In this termination strategy, the evolution stops when the fitness is deemed
  When the best smoothed fitness of the long filter is less than a specified
  percentage away from the best smoothed fitness from the short filter, the
  fitness is deemed as converged.
-\end_layout
-
-\begin_layout Standard
 
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -20163,7 +20170,7 @@ General fitness convergence
 
 \end_inset
 
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:General-fitness-convergence"
@@ -20229,7 +20236,7 @@ Mean fitness convergence
 
 \end_inset
 
-The second factory method (shown in listing
+The second factory method (shown in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Mean-fitness-convergence"
@@ -20268,19 +20275,19 @@ https://en.wikipedia.org/wiki/Moving_average
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $N$
 \end_inset
 
- is the length of the filter,
+ is the length of the filter, 
 \begin_inset Formula $F_{[i]}$
 \end_inset
 
- the fitness value at generation
+ the fitness value at generation 
 \begin_inset Formula $i$
 \end_inset
 
- and
+ and 
 \begin_inset Formula $G$
 \end_inset
 
@@ -20395,7 +20402,7 @@ Fitness convergence termination:
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-convergence-diagram-10-30"
@@ -20458,7 +20465,7 @@ Fitness convergence termination:
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Fitness-convergence-diagram-50-150"
@@ -20557,7 +20564,7 @@ Monte Carlo selector
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -20592,7 +20599,7 @@ Selector-performance (Knapsack)
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Selector-performance-Knapsack"
@@ -20629,7 +20636,7 @@ Selector
 
 \end_inset
 
- used by the examples in section
+ used by the examples in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Termination"
@@ -20932,7 +20939,7 @@ name "lis:mu-lambda-Engine-configuration"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:mu-lambda-Engine-configuration"
@@ -21148,14 +21155,10 @@ key "Luke2013Metaheuristics"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -21276,10 +21279,7 @@ Selector
 \family default
  method, both selectors, the selector for the survivors and for the offspring,
  can be set.
-\end_layout
-
-\begin_layout Standard
-Because the best parents are also part of the next generation, the 
+ Because the best parents are also part of the next generation, the 
 \begin_inset Formula $\left(\mu+\lambda\right)$
 \end_inset
 
@@ -21399,8 +21399,9 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
  randomness
 \emph default
  of the used PRNGs.
+
 \family typewriter
-dieharder
+ dieharder
 \family default
  is a random number generator (RNG) testing suite.
  It is intended to test generators, not files of possibly random numbers.
@@ -21448,9 +21449,8 @@ Dieharder
 
  class, which is part of the
 \family typewriter
- io.jenetics.\SpecialChar softhyphen
-internal.\SpecialChar softhyphen
-util
+ io.jenetics-.prngine.\SpecialChar softhyphen
+internal
 \family default
  package, it is easily possible to test PRNGs extending the
 \family typewriter
@@ -21467,13 +21467,13 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics-@__version__@.jar
+$ java -cp io.jenetics.prngine-1.0.1.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.DieHarder
+      io.jenetics.prngine.internal.DieHarder 
 \backslash
 
 \end_layout
@@ -21531,7 +21531,7 @@ In the listing above, a part of the created
  report is shown.
  For testing the
 \family typewriter
-LCG64\SpecialChar softhyphen
+ LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
 Random
 \begin_inset Index idx
@@ -21548,29 +21548,29 @@ LCG64ShiftRandom
  class, which is part of the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
-util
+prngine
 \family default
- package, the following command can be called:
+ module, the following command can be called:
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics-@__version__@.jar
+$ java -cp io.jenetics.prngine-1.0.1.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.DieHarder
+      io.jenetics.prngine.internal.DieHarder 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.util.LCG64ShiftRandom -a
+      io.jenetics.prngine.LCG64ShiftRandom -a
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:LCG64ShiftRandom-quality"
@@ -21819,8 +21819,8 @@ Harder class
  method has been wrapped into the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
+prngine.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 Random
@@ -21834,19 +21834,19 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics-@__version__@.jar
+$ java -cp io.jenetics.prngine-1.0.1.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.DieHarder
+      io.jenetics.prngine.internal.DieHarder 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.NanoTimeRandom -a
+      io.jenetics.prngine.internal.NanoTimeRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -21856,7 +21856,7 @@ will perform the statistical tests for the nano time
 \emph default
 .
  The statistical quality is rather bad: every single test failed.
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Nano-time-seeding"
@@ -22075,23 +22075,23 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics-@__version__@.jar
+$ java -cp io.jenetics.prngine-1.0.1.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.DieHarder
+      io.jenetics.prngine.internal.DieHarder 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.ObjectHashRandom -a
+      io.jenetics.prngine.internal.ObjectHashRandom -a
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Object-hash-seeding"
@@ -22132,7 +22132,7 @@ etics/internal/util/ObjectHashRandom.java
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
@@ -22345,7 +22345,7 @@ Random seeding
 
 \end_inset
 
- The code in listing
+ The code in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Random-seeding"
@@ -22392,7 +22392,7 @@ https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
 
  random engine, which has been reimplemented in the
 \family typewriter
-LCG64\SpecialChar softhyphen
+ LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
 Random
 \family default
@@ -22401,19 +22401,19 @@ Random
 \end_layout
 
 \begin_layout LyX-Code
-$ java -cp io.jenetics-@__version__@.jar
+$ java -cp io.jenetics.prngine-1.0.1.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.DieHarder
+      io.jenetics.prngine.internal.DieHarder 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-      io.jenetics.internal.util.SeedRandom -a
+      io.jenetics.prngine.internal.SeedRandom -a
 \end_layout
 
 \begin_layout Standard
@@ -22439,7 +22439,7 @@ etics/internal/util/SeedRandom.java
 
 \end_inset
 
-, which is shown in table
+, which is shown in table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Combined-random-seeding"
@@ -22611,8 +22611,9 @@ The
 \family default
 \series default
 \shape default
- library has been split up into several modules.
- It currently consists of the modules shown in table
+ library has been split up into several modules, which allows to keep the
+ base EA module as small as possible.
+ It currently consists of the modules shown in table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Jenetics-modules"
@@ -22870,7 +22871,7 @@ io.jenetics.ext
 \family default
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Modules!io.jenetics.ext
@@ -22990,7 +22991,7 @@ Tree
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Tree-interface"
@@ -23070,7 +23071,7 @@ Node
  Tree\SpecialChar softhyphen
 Node
 \family default
- instance from the tree shown in figure
+ instance from the tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Example-tree"
@@ -23165,7 +23166,7 @@ TreeNode
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Example-TreeNode"
@@ -23226,7 +23227,7 @@ The main purpose for the
  Tree\SpecialChar softhyphen
 Gene
 \family default
-s, which are needed for genetic programming (see section
+s, which are needed for genetic programming (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Genetic-programming"
@@ -23428,14 +23429,14 @@ Example
 \end_layout
 
 \begin_layout Standard
-Figure
+Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Example-FlatTree"
 
 \end_inset
 
- illustrates the flattened example tree shown in figure
+ illustrates the flattened example tree shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Example-tree"
@@ -23646,7 +23647,7 @@ Chromosome
 \family default
 .
  How the tree hierarchy is flattened and mapped to an array is described
- in section
+ in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Flat-tree"
@@ -23707,7 +23708,7 @@ s such that each position is either crossed contracted or expanded with
  a certain probability.
  The probability distribution is designed such that the children will lie
  closer to their parents as is the case with the single point binary crossover.
- It is implemented as described in
+ It is implemented as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb99self-adaptivegenetic"
@@ -23744,7 +23745,7 @@ some
 \family default
 s.
  It swaps two, randomly chosen, nodes from two tree chromosomes.
- Figure
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Single-node-crossover"
@@ -23752,11 +23753,11 @@ reference "fig:Single-node-crossover"
 \end_inset
 
  shows how the single-node crossover works.
- In this example node
+ In this example node 
 \begin_inset Formula $3$
 \end_inset
 
- of the first tree is swapped with node
+ of the first tree is swapped with node 
 \begin_inset Formula $h$
 \end_inset
 
@@ -24030,7 +24031,7 @@ Start with a random string of 28 characters.
 \end_layout
 
 \begin_layout Enumerate
-Make
+Make 
 \begin_inset Formula $n$
 \end_inset
 
@@ -24346,7 +24347,7 @@ name "lis:Weasel-program"
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Weasel-program"
@@ -24434,7 +24435,7 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-The (shortened) output of the Weasel program (listing
+The (shortened) output of the Weasel program (listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Weasel-program"
@@ -24750,7 +24751,7 @@ The generic type of the
 \family typewriter
  Op
 \family default
- interface (see listing
+ interface (see listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:GP-Op-interface"
@@ -25495,7 +25496,7 @@ The main entry point for writing XML files is the typed XML
 Writer
 \family default
  interface.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:XML-Writer-interface"
@@ -25751,7 +25752,7 @@ Reading and writing XML files uses the same concepts.
  Reader
 \family default
  class, which can be easily composed.
- The main method of the Reader class can be seen in listing
+ The main method of the Reader class can be seen in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:XML-Reader-class"
@@ -26007,7 +26008,7 @@ final Genotype<DoubleGene> genotype = Genotype.of(
 \end_layout
 
 \begin_layout Standard
-Table
+Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Marshaled-object-size"
@@ -26015,7 +26016,18 @@ reference "tab:Marshaled-object-size"
 \end_inset
 
  shows the required space of the marshaled genotypes for different marshalling
- methods: (a) Java serialization, (b) JAXB serialization and (c) XML
+ methods: (a) Java serialization, (b) JAXB
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The JAXB marshalling has been removed in version 4.0.
+ It is still part of the table for comparison with the new XML marshalling.
+\end_layout
+
+\end_inset
+
+ serialization and (c) XML
 \family typewriter
 Writer
 \family default
@@ -26349,7 +26361,7 @@ Writer
 
  the size of the JAXB serialized genotypes.
  The size of the marshaled also influences the write performance.
- As you can see in diagram
+ As you can see in diagram 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Genotype-write-performance"
@@ -26405,6 +26417,7 @@ Genotype write performance
 
 \begin_layout Standard
 For reading the serialized genotypes, we will see similar results (see diagram
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Genotype-read-performance"
@@ -26716,7 +26729,7 @@ XOR64ShiftRandom
 
 \begin_layout Standard
 All implemented PRNGs has been tested with the dieharder test suite.
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:Dieharder-results"
@@ -27162,7 +27175,7 @@ Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
 
 \end_inset
 
- Table
+ Table 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "tab:PRNG-creation-speed"
@@ -28208,7 +28221,7 @@ f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\
 
 \end_inset
 
-As the plot in figure
+As the plot in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Rastrigin-function"
@@ -28280,7 +28293,7 @@ The following listing shows the
  Engine
 \family default
  setup for solving the Rastrigin function, which is very similar to the
- setup for the real-function in section
+ setup for the real-function in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Real-function-example"
@@ -28561,16 +28574,16 @@ https://en.wikipedia.org/wiki/Travelling_salesman_problem
  is one of the classical problems in computational mathematics and it is
  the most notorious NP-complete problem.
  The goal is to find the shortest distance, or the path, with the least
- costs, between
+ costs, between 
 \begin_inset Formula $N$
 \end_inset
 
  different cities.
- Testing all possible path for
+ Testing all possible path for 
 \begin_inset Formula $N$
 \end_inset
 
- cities would lead to
+ cities would lead to 
 \begin_inset Formula $N!$
 \end_inset
 
@@ -29018,7 +29031,7 @@ $ ./jrun io.jenetics.example.image.EvolvingImages evolve
 \begin_layout Standard
 Every command line argument has proper default values, so that it is possible
  to start it without parameters.
- Listing
+ Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Default-engine.properties"
@@ -29346,7 +29359,7 @@ Mona Lisa
 \end_layout
 
 \begin_layout Standard
-The images in figure
+The images in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Evolving-Mona-Lisa"
@@ -29360,7 +29373,7 @@ reference "fig:Evolving-Mona-Lisa"
  engine\SpecialChar softhyphen
 .properties
 \family default
- file (listing
+ file (listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Default-engine.properties"
@@ -29452,7 +29465,7 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-One output of a GP run is shown is shown in figure
+One output of a GP run is shown is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Symbolic-regression-polynomial"
@@ -29556,6 +29569,7 @@ For building the
 \series default
 \shape default
  library from source, download the most recent, stable package version from
+ 
 \begin_inset Flex URL
 status collapsed
 
@@ -29566,7 +29580,7 @@ https://sourceforge.net/projects/jenetics/files/latest/download
 
 \end_inset
 
- or
+ or 
 \begin_inset Flex URL
 status collapsed
 
@@ -29749,7 +29763,7 @@ gradlew
 \end_layout
 
 \begin_layout Paragraph
-Published modules
+Published projects
 \end_layout
 
 \begin_layout Itemize
@@ -29768,7 +29782,7 @@ jenetics
 \series default
 \shape default
 \emph on
- core
+ base
 \emph default
 -module.
 \end_layout
@@ -29837,7 +29851,7 @@ prngine
 \end_layout
 
 \begin_layout Paragraph
-Non-published modules
+Non-published projects
 \end_layout
 
 \begin_layout Itemize
@@ -29849,7 +29863,7 @@ jenetics.example
 \series default
 : This project contains example code for the
 \emph on
- ore
+ base
 \emph default
 -module.
 \end_layout
@@ -30038,57 +30052,6 @@ $ ./gradlew jar
 if you don't have the the Gradle build system installed—calling the the
  Gradle wrapper script will download all needed files and trigger the build
  task afterwards.
-\end_layout
-
-\begin_layout Paragraph
-IDE integration
-\end_layout
-
-\begin_layout Standard
-Gradle has tasks which creates the project file for Eclipse
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.eclipse.org/"
-target "http://www.eclipse.org/"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- and IntelliJ IDEA
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset CommandInset href
-LatexCommand href
-name "http://www.jetbrains.com/idea/"
-target "http://www.jetbrains.com/idea/"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-.
- Call
-\end_layout
-
-\begin_layout LyX-Code
-$ ./gradlew <eclipse|idea>
-\end_layout
-
-\begin_layout Standard
-for creating the project files for Eclipse or IntelliJ, respectively.
 \end_layout
 
 \begin_layout Paragraph
@@ -30454,7 +30417,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.0.2
+: 4.2.1
 \end_layout
 
 \begin_layout Itemize
@@ -30491,7 +30454,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.0.2-bin.zip
+http://services.gradle.org/distributions/gradle-4.2.1-bin.zip
 \end_layout
 
 \end_inset
@@ -30545,7 +30508,7 @@ The whole
 \emph on
  Maven Central
 \emph default
- repository
+ repository 
 \begin_inset Flex URL
 status collapsed
 
