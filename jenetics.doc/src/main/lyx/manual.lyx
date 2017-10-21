@@ -9136,7 +9136,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    CODEC = codecs.ofPermutation(POINTS);
+    CODEC = Codecs.ofPermutation(POINTS);
 \end_layout
 
 \begin_layout Plain Layout
@@ -10634,29 +10634,6 @@ Random
  block splitting
 \emph default
  as parallelization strategy.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The 
-\family typewriter
-LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
-Random
-\family default
- PRNG is part of the io.jenetics.prngine module (see section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "sec:io.jenetics.prngine"
-
-\end_inset
-
-).
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Paragraph
@@ -10956,6 +10933,37 @@ LCG64ShiftRandom
 \begin_inset CommandInset label
 LatexCommand label
 name "par:LCG64ShiftRandom"
+
+\end_inset
+
+
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\family typewriter
+LCG64\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
+\family default
+ PRNG is part of the 
+\family typewriter
+io.\SpecialChar softhyphen
+jenetics.\SpecialChar softhyphen
+prngine
+\family default
+ module (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:io.jenetics.prngine"
+
+\end_inset
+
+).
+\end_layout
 
 \end_inset
 
@@ -11323,12 +11331,6 @@ Genotype
 
 \family typewriter
 Phenotype
-\end_layout
-
-\begin_layout Itemize
-
-\family typewriter
-Population
 \end_layout
 
 \begin_layout Standard
@@ -12163,7 +12165,7 @@ double
 \family default
 -,
 \family typewriter
-int
+ int
 \family default
 - and
 \family typewriter
@@ -13845,7 +13847,7 @@ public final class SpecialEngine {
 
 \begin_layout Plain Layout
 
-            .limit(limit.bySteadyFitness(10))
+            .limit(Limits.bySteadyFitness(10))
 \end_layout
 
 \begin_layout Plain Layout
@@ -16426,7 +16428,7 @@ reference "lis:Codec-factory-method-ofScalar"
 
  shows the implementation of the
 \family typewriter
- codecs\SpecialChar softhyphen
+ Codecs\SpecialChar softhyphen
 .ofScalar
 \family default
  factory method—for
@@ -17341,7 +17343,7 @@ public class SubsetSum
 
 \begin_layout Plain Layout
 
-        return codecs.ofSubSet(_basicSet, _size);
+        return Codecs.ofSubSet(_basicSet, _size);
 \end_layout
 
 \begin_layout Plain Layout
@@ -17549,7 +17551,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    CODEC = codecs.ofPermutation(POINTS);
+    CODEC = Codecs.ofPermutation(POINTS);
 \end_layout
 
 \begin_layout Plain Layout
@@ -18000,12 +18002,12 @@ class Main {
 
 \begin_layout Plain Layout
 
-                codecs.ofSubSet(SET),
+                Codecs.ofSubSet(SET),
 \end_layout
 
 \begin_layout Plain Layout
 
-                codecs.ofSubSet(SET),
+                Codecs.ofSubSet(SET),
 \end_layout
 
 \begin_layout Plain Layout
@@ -18131,17 +18133,17 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \begin_layout Plain Layout
 
-        codecs.ofScalar(LongRange.of(0, 100)),
+        Codecs.ofScalar(LongRange.of(0, 100)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        codecs.ofScalar(LongRange.of(0, 1000)),
+        Codecs.ofScalar(LongRange.of(0, 1000)),
 \end_layout
 
 \begin_layout Plain Layout
 
-        codecs.ofScalar(LongRange.of(0, 10000))),
+        Codecs.ofScalar(LongRange.of(0, 10000))),
 \end_layout
 
 \begin_layout Plain Layout
@@ -19272,7 +19274,7 @@ Some of the implemented termination strategy needs to maintain an internal
 \family typewriter
  Stream\SpecialChar softhyphen
 .limit\SpecialChar softhyphen
-(limit\SpecialChar softhyphen
+(Limits\SpecialChar softhyphen
 .by
 \emph on
 \SpecialChar softhyphen
@@ -19672,7 +19674,7 @@ reference "lis:Steady-fitness-limit"
 
  shows the implementation of the
 \family typewriter
- limit\SpecialChar softhyphen
+ Limits\SpecialChar softhyphen
 .byStea\SpecialChar softhyphen
 dy\SpecialChar softhyphen
 Fit\SpecialChar softhyphen
@@ -19703,7 +19705,7 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Plain Layout
 
-    .limit(limit.bySteadyFitness(15));
+    .limit(Limits.bySteadyFitness(15));
 \end_layout
 
 \end_inset
@@ -19841,7 +19843,7 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Plain Layout
 
-    .limit(limit.byExecutionTime(Duration.ofMillis(500));
+    .limit(Limits.byExecutionTime(Duration.ofMillis(500));
 \end_layout
 
 \end_inset
@@ -20001,7 +20003,7 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Plain Layout
 
-    .limit(limit.byFitnessThreshold(10.5)
+    .limit(Limits.byFitnessThreshold(10.5)
 \end_layout
 
 \begin_layout Plain Layout
@@ -20352,7 +20354,7 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Plain Layout
 
-    .limit(limit.byFitnessConvergence(10, 30, 10E-4);
+    .limit(Limits.byFitnessConvergence(10, 30, 10E-4);
 \end_layout
 
 \end_inset
@@ -24404,7 +24406,7 @@ Mutator
 raction of one.
  The evolution stream is limited by the
 \family typewriter
- limit\SpecialChar softhyphen
+ Limits\SpecialChar softhyphen
 .by\SpecialChar softhyphen
 Fitness\SpecialChar softhyphen
 Threshold
@@ -25229,7 +25231,7 @@ The created program tree is
 \emph default
 ,
 \emph on
-operations
+ operations
 \emph default
  and
 \emph on
