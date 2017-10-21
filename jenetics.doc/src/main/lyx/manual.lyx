@@ -1813,7 +1813,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/model/EngineModel.eps
 	width 85text%
-	BoundingBox 0bp 0bp 432bp 72bp
 
 \end_inset
 
@@ -1920,7 +1919,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/model/PackageModel.eps
 	width 60text%
-	BoundingBox 0bp 0bp 288bp 137bp
 
 \end_inset
 
@@ -2314,7 +2312,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/model/DomainModel.eps
 	width 85text%
-	BoundingBox 0bp 0bp 432bp 180bp
 
 \end_inset
 
@@ -2917,7 +2914,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/Genotype.eps
 	width 90text%
-	BoundingBox 0bp 0bp 402bp 183bp
 
 \end_inset
 
@@ -3203,7 +3199,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/RowMajorGenotype.eps
 	width 65text%
-	BoundingBox 0bp 0bp 279bp 93bp
 
 \end_inset
 
@@ -3484,7 +3479,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/ColumnMajorGenotype.eps
 	width 23text%
-	BoundingBox 0bp 0bp 105bp 163bp
 
 \end_inset
 
@@ -3757,7 +3751,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/ScalarGenotype.eps
 	width 23text%
-	BoundingBox 0bp 0bp 107bp 93bp
 
 \end_inset
 
