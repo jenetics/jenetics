@@ -348,7 +348,7 @@ FRANZ WILHELMSTÖTTER
 \noun default
 VERSION
 \family default
-@__minor_version__@
+ @__minor_version__@
 \family sans
 \size large
 \noun on
@@ -700,7 +700,7 @@ Stream
  This chapter describes the design concepts and its implementation.
  It also gives some basic examples and best practice tips.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The classes described in this chapter reside in the
@@ -917,6 +917,7 @@ height "1pt"
 
 \begin_layout Standard
 To give you a first impression of the library usage, lets start with a simple
+ 
 \begin_inset Quotes ald
 \end_inset
 
@@ -1254,9 +1255,9 @@ reference "subsubsec:Domain-classes-Genotype"
 \begin_layout Enumerate
 Once this is done, the fitness function, which should be maximized, can
  be defined.
- Utilizing the new language features introduced in Java 8, we simply write
- a private static method, which takes the genotype we defined and calculate
- it's fitness value.
+ Utilizing language features introduced in Java 8, we simply write a private
+ static method, which takes the genotype we defined and calculate it's fitness
+ value.
  If we want to use the optimized bit-counting method,
 \family typewriter
  bitCount()
@@ -1409,10 +1410,11 @@ As the example shows,
 \begin_layout Standard
 There are many other GA implementations out there and they may slightly
  differ in the order of the single execution steps.
+
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -2018,12 +2020,13 @@ io.jenetics.engine
 \end_inset
 
 g.
+
 \family typewriter
-Engine
+ Engine
 \family default
 ,
 \family typewriter
-Evolution\SpecialChar softhyphen
+ Evolution\SpecialChar softhyphen
 Stream
 \family default
  or
@@ -2055,7 +2058,7 @@ io.jenetics.stat
 \begin_inset space ~
 \end_inset
 
-g.
+g .
 \family typewriter
 Double\SpecialChar softhyphen
 Summary\SpecialChar softhyphen
@@ -2090,7 +2093,7 @@ Seq
 \family default
 ,
 \family typewriter
-ISeq
+ ISeq
 \family default
  and
 \family typewriter
@@ -2118,11 +2121,7 @@ Registry
 \family typewriter
  Genotype
 \family default
-s and whole
-\family typewriter
- Population
-\family default
-s.
+s and whole populations.
 \end_layout
 
 \begin_layout Section
@@ -2400,11 +2399,11 @@ s.
 \family typewriter
  Phenotype, which
 \family default
- are collected into a
+ are collected into a population
 \family typewriter
- Population
+ 
 \family default
-.
+Seq.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2470,7 +2469,7 @@ Gene
 \family default
  implementations are final and immutable.
  In fact, they are all value-based classes and fulfill the properties which
- are described in the Java 8 API documentation
+ are described in the Java API documentation
 \begin_inset CommandInset citation
 LatexCommand cite
 key "OracleJDKValueBasedClasses"
@@ -3020,10 +3019,8 @@ s of a
 s, which can be accessed via the
 \family typewriter
  Genotype\SpecialChar softhyphen
-.get\SpecialChar softhyphen
-Number\SpecialChar softhyphen
-Of\SpecialChar softhyphen
-Genes()
+.gene\SpecialChar softhyphen
+Count()
 \family default
  method:
 \begin_inset Formula 
@@ -3254,7 +3251,7 @@ reference "fig:Row-major-genotype-vector"
 \family typewriter
  Genotype
 \family default
- vector of length
+ vector of length 
 \begin_inset Formula $n$
 \end_inset
 
@@ -3262,7 +3259,7 @@ reference "fig:Row-major-genotype-vector"
 \family typewriter
  Chromosome
 \family default
- of length
+ of length 
 \begin_inset Formula $n$
 \end_inset
 
@@ -4108,36 +4105,6 @@ Durations
 s from the population.
 \end_layout
 
-\begin_layout Subsubsection
-Population
-\begin_inset CommandInset label
-LatexCommand label
-name "subsubsec:Domain-classes-Population"
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Population
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The end of the class hierarchy of the domain model is the population, which
- is actually a sequence of
-\family typewriter
- Phenotype
-\family default
- objects.
-\end_layout
-
 \begin_layout Subsection
 Operation classes
 \begin_inset CommandInset label
@@ -4523,7 +4490,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 
 \end_inset
 
- the best individual from a random sample of
+ the best individual from a random sample of 
 \begin_inset Formula $s$
 \end_inset
 
@@ -4534,14 +4501,14 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 .
  The samples are drawn with replacement.
  An individual will win a tournament only if the fitness is greater than
- the fitness of the other
+ the fitness of the other 
 \begin_inset Formula $s-1$
 \end_inset
 
  competitors.
  Note that the worst individual never survives, and the best individual
  wins in all the tournaments it participates.
- The selection pressure can be varied by changing the tournament size
+ The selection pressure can be varied by changing the tournament size 
 \begin_inset Formula $s$
 \end_inset
 
@@ -4969,7 +4936,7 @@ where
 \begin_inset Formula $c$
 \end_inset
 
- must within the range
+ must within the range 
 \begin_inset Formula $\left[0\ldots1\right)$
 \end_inset
 
@@ -4979,7 +4946,7 @@ where
 \end_inset
 
  increases the probability of the best individual to be selected.
- If
+ If 
 \begin_inset Formula $c$
 \end_inset
 
@@ -5021,7 +4988,7 @@ P(i)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $b$
 \end_inset
 
@@ -5047,7 +5014,7 @@ Positive values of
 \end_inset
 
  decreases it.
- If
+ If 
 \begin_inset Formula $b$
 \end_inset
 
@@ -5089,7 +5056,7 @@ key "back1996evolutionary"
 
  (SUS) is a method for selecting individuals according to some given probability
  in a way that minimizes the chance of fluctuations.
- It can be viewed as a type of roulette game where we now have
+ It can be viewed as a type of roulette game where we now have 
 \begin_inset Formula $p$
 \end_inset
 
@@ -5179,8 +5146,52 @@ Elite selector
 \end_layout
 
 \begin_layout Standard
-The EliteSelector always selects the best individual and guarantees that
- it is part of the next generation.
+The 
+\family typewriter
+EliteSelector
+\family default
+ always selects the best individual and guarantees that it is part of the
+ next generation.
+\end_layout
+
+\begin_layout Standard
+Elitism involves copying a small proportion of the fittest candidates, unchanged
+, into the next generation.
+ This can sometimes have a dramatic impact on performance by ensuring that
+ the EA does not waste time re-discovering previously discarded partial
+ solutions.
+ Candidate solutions that are preserved unchanged through elitism remain
+ eligible for selection as parents when breeding the remainder of the next
+ generation.
+\end_layout
+
+\begin_layout Standard
+Elitism concept has different meanings for metaheuristic and particular
+ for GA.
+ In general, elitism is related with memory: "remember the best solution
+ found" (kind of greedying).
+ In the most traditional way, for evolutionary algorithms (GA, EA, DE...),
+ elitism implies the best solution found is used for to build next generation.
+ Particularly, for GA it means keeping the best individual found intact
+ for next generation.
+ In GA, there is something like a proof for multiobjective optimization
+ (villalobos, coello and hernandez, 2005) that linked convergence and elitism
+ which is a kind of cool stuff.
+ 
+\end_layout
+
+\begin_layout Standard
+The problem with elitism is that it causes the GA to converge on local maxima
+ instead of the global maximum, so pure elitism is just a race to the nearest
+ local maximum and you'll get little improvement from there.
+ You can fix this in a few ways, two of which are (a) mutate the elite randomly,
+ i.e.
+ introduce entropy (b) go with second or third decile alleles/chromosomes
+ also randomly.
+ This is a standard problem in search algorithms if you want to check the
+ literature.
+ Local maxima are a real problem for recursive optimization in general -
+ how do you ever know you're on the highest hill, even in a finite space?
 \end_layout
 
 \begin_layout Subsubsection
@@ -6290,6 +6301,9 @@ reference "fig:Partially-matched-crossover"
  a
 \emph default
 )).
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -6349,6 +6363,10 @@ Crossover!Partially-matched crossover
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 After performing the crossover we–normally–got two invalid chromosomes (figure
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -6361,12 +6379,12 @@ reference "fig:Partially-matched-crossover"
  b
 \emph default
 )).
- Chromosome
+ Chromosome 
 \begin_inset Formula $1$
 \end_inset
 
  contains the value 6 twice and misses the value 3.
- On the other side chromosome
+ On the other side chromosome 
 \begin_inset Formula $2$
 \end_inset
 
@@ -6407,7 +6425,7 @@ reference "fig:Partially-matched-crossover"
 
 
 \emph on
-c
+ c
 \emph default
 ) shows the repaired chromosome.
 \end_layout
@@ -6427,7 +6445,7 @@ Crossover!Uniform crossover
 \end_layout
 
 \begin_layout Standard
-In uniform crossover, the genes at index
+In uniform crossover, the genes at index 
 \begin_inset Formula $i$
 \end_inset
 
