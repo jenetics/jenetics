@@ -23374,6 +23374,8 @@ Artifact
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics.base
 \end_layout
 
@@ -23383,6 +23385,8 @@ io.jenetics.base
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics:jenetics:@__version__@
 \end_layout
 
@@ -23394,6 +23398,8 @@ io.jenetics:jenetics:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics.ext
 \end_layout
 
@@ -23403,6 +23409,8 @@ io.jenetics.ext
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics:jenetics.ext:@__version__@
 \end_layout
 
@@ -23414,6 +23422,8 @@ io.jenetics:jenetics.ext:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics.prog
 \end_layout
 
@@ -23423,6 +23433,8 @@ io.jenetics.prog
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics:jenetics.prog:@__version__@
 \end_layout
 
@@ -23434,6 +23446,8 @@ io.jenetics:jenetics.prog:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics.xml
 \end_layout
 
@@ -23443,6 +23457,8 @@ io.jenetics.xml
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics:jenetics.xml:@__version__@
 \end_layout
 
@@ -23454,6 +23470,8 @@ io.jenetics:jenetics.xml:@__version__@
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics.prngine
 \end_layout
 
@@ -23463,6 +23481,8 @@ io.jenetics.prngine
 \begin_inset Text
 
 \begin_layout Plain Layout
+
+\family typewriter
 io.jenetics:prngine:1.0.1
 \end_layout
 
@@ -23528,7 +23548,11 @@ With this module split the code is easier to maintain and doesn't force
 \end_layout
 
 \begin_layout Section
-Extensions
+
+\family typewriter
+io.jenetics.ext
+\family default
+
 \begin_inset Index idx
 status collapsed
 
@@ -25109,7 +25133,7 @@ reference "lis:Weasel-program"
 \end_layout
 
 \begin_layout Section
-Genetic programming
+io.jenetics.prog
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Genetic-programming"
@@ -25142,7 +25166,7 @@ GP
 \begin_layout Standard
 In artificial intelligence,
 \emph on
-genetic programming
+ genetic programming
 \emph default
  (GP) is a technique whereby computer programs are encoded as a set of genes
  that are then modified (evolved) using an evolutionary algorithm (often
@@ -26072,7 +26096,9 @@ height "1pt"
 \end_layout
 
 \begin_layout Section
-XML marshalling
+
+\family typewriter
+io.jenetics.xml
 \end_layout
 
 \begin_layout Standard
@@ -27088,7 +27114,9 @@ Genotype read performance
 \end_layout
 
 \begin_layout Section
-PRNG
+
+\family typewriter
+io.jenetics.prngine
 \end_layout
 
 \begin_layout Standard
