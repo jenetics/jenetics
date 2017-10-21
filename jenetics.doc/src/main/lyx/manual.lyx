@@ -10634,6 +10634,29 @@ Random
  block splitting
 \emph default
  as parallelization strategy.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\family typewriter
+LCG64\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
+\family default
+ PRNG is part of the io.jenetics.prngine module (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:io.jenetics.prngine"
+
+\end_inset
+
+).
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -11142,351 +11165,6 @@ jump2
 .
 \end_layout
 
-\begin_layout Paragraph
-Runtime performance
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-PRNG!Performance
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Table
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:PRNG-performance"
-
-\end_inset
-
- shows the random number generation speed for the different PRNG implementations.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
- Runtime Environment (build 1.8.0_102-b14)—Java HotSpot(TM) 64-Bit Server
- VM (build 25.102-b14, mixed mode)—, using the JHM micro-benchmark library.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="5">
-<features tabularvalignment="middle">
-<column alignment="left" valignment="top" width="0pt">
-<column alignment="right" valignment="top" width="0pt">
-<column alignment="right" valignment="top" width="0pt">
-<column alignment="right" valignment="top" width="0pt">
-<column alignment="right" valignment="top" width="0pt">
-<row>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-int
-\family default
-/s
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-long
-\family default
-/s
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-float
-\family default
-/s
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-double
-\family default
-/s
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-Random
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $87\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $43\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $86\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $42\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-ThreadLocalRandom
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $255\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $253\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $208\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $208\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\family typewriter
-LCG64ShiftRandom
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $237\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $241\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $176\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="right" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-\begin_inset Formula $178\cdot10^{6}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:PRNG-performance"
-
-\end_inset
-
-Performance of various PRNG implementations.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-
-The default PRNG used by the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- has the best runtime performance behavior (for generating
-\family typewriter
- int
-\family default
- values).
-\end_layout
-
 \begin_layout Subsection
 Serialization
 \begin_inset Index idx
@@ -11687,17 +11365,7 @@ Stream
 \family typewriter
  io.jenetics.util
 \family default
- package, supports native Java serialization and JAXB
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-JAXB
-\end_layout
-
-\end_inset
-
- XML serialization.
+ package, supports native Java serialization.
 \end_layout
 
 \begin_layout Standard
@@ -11737,12 +11405,12 @@ EvolutionResult<DoubleGene, Double> result = stream
 
 \begin_layout Plain Layout
 
-final File file = new File("population.xml");
+final File file = new File("population.obj");
 \end_layout
 
 \begin_layout Plain Layout
 
-IO.jaxb.write(result.getPopulation(), file);
+IO.object.write(result.getPopulation(), file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -11761,7 +11429,7 @@ Population<DoubleGene, Double> population =
 
 \begin_layout Plain Layout
 
-    (Population<DoubleGene, Double>)IO.jaxb.read(file);
+    (Population<DoubleGene, Double>)IO.object.read(file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -11777,333 +11445,6 @@ EvolutionStream<DoubleGene, Double> stream = Engine
 \begin_layout Plain Layout
 
     .stream(population, 1);
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The following listing shows the XML serialization of a
-\family typewriter
- Population
-\family default
- which consists of
-\family typewriter
- Genotype
-\family default
-s as shown in figure
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Genotype-structure"
-
-\end_inset
-
- on page
-\begin_inset CommandInset ref
-LatexCommand pageref
-reference "subsubsec:Domain-classes-Genotype"
-
-\end_inset
-
-; only the first
-\family typewriter
- Phenotype
-\family default
- is shown.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-fontsize{6.8}{8}
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting[language=XML]{../resources/code/population.xml}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-When serializing a whole population the fitness function and fitness scaler
- are not part of the serialized XML file.
- If an
-\family typewriter
- Evolution\SpecialChar softhyphen
-Stream
-\family default
- is initialized with a previously serialized
-\family typewriter
- Population
-\family default
-, the
-\family typewriter
- Engine
-\family default
-'s current fitness function and fitness scaler are used for
-\emph on
- re
-\emph default
--calculating the fitness values.
-\end_layout
-
-\begin_layout Standard
-The
-\family typewriter
- IO
-\family default
- class can also be used for serializing own JAXB
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-JAXB
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Serialization!JAXB
-\end_layout
-
-\end_inset
-
- annotated classes.
- Listing
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:DataClassJAXB-serialization"
-
-\end_inset
-
- shows how an user-defined JAXB class can be marshaled with the
-\family typewriter
- IO
-\family default
- helper class.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-@XmlRootElement(name = "data-class")
-\end_layout
-
-\begin_layout Plain Layout
-
-@XmlType(name = "DataClass")
-\end_layout
-
-\begin_layout Plain Layout
-
-@XmlAccessorType(XmlAccessType.FIELD)
-\end_layout
-
-\begin_layout Plain Layout
-
-public class DataClass {
-\end_layout
-
-\begin_layout Plain Layout
-
-    @XmlAttribute public String name;
-\end_layout
-
-\begin_layout Plain Layout
-
-    @XmlValue public String value;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    public DataClass(final String name, final String value) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        this.name = name;
-\end_layout
-
-\begin_layout Plain Layout
-
-        this.value = value;
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Default constructor needed by JAXB.
-\end_layout
-
-\begin_layout Plain Layout
-
-    public DataClass() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(final String[] args) throws Exception {
-\end_layout
-
-\begin_layout Plain Layout
-
-        // Registering the class before serialization.
-\end_layout
-
-\begin_layout Plain Layout
-
-        IO.JAXB.register(DataClass.class);
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-        final DataClass data =
-\end_layout
-
-\begin_layout Plain Layout
-
-            new DataClass("some name", "some value");
-\end_layout
-
-\begin_layout Plain Layout
-
-        IO.jaxb.write(data, System.out);
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\family typewriter
-\emph on
-DataClass
-\family default
-\emph default
- JAXB serialization
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:DataClassJAXB-serialization"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The output of the marshaled
-\family typewriter
- DataClass
-\family default
- looks like expected.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-fontsize{6.8}{8}
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting[language=XML]{../resources/code/DataClass.xml}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
 \end_layout
 
 \end_inset
@@ -23554,7 +22895,7 @@ io.jenetics.ext
 \family default
 
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Modules!io.jenetics.ext
@@ -25133,7 +24474,11 @@ reference "lis:Weasel-program"
 \end_layout
 
 \begin_layout Section
+
+\family typewriter
 io.jenetics.prog
+\family default
+
 \begin_inset CommandInset label
 LatexCommand label
 name "sec:Genetic-programming"
@@ -25156,6 +24501,16 @@ status collapsed
 
 \begin_layout Plain Layout
 GP
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modules!io.jenetics.prog
 \end_layout
 
 \end_inset
@@ -26099,6 +25454,18 @@ height "1pt"
 
 \family typewriter
 io.jenetics.xml
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modules!io.jenetics.xml
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -27117,6 +26484,25 @@ Genotype read performance
 
 \family typewriter
 io.jenetics.prngine
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:io.jenetics.prngine"
+
+\end_inset
+
+
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modules!io.jenetics.prngine
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -27133,7 +26519,7 @@ This module is not part of the
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
@@ -27142,7 +26528,7 @@ Jenetics
 \family sans
 \series bold
 \shape smallcaps
-Jenetics
+ Jenetics
 \family default
 \series default
 \shape default
