@@ -5150,48 +5150,22 @@ The
 \family typewriter
 EliteSelector
 \family default
- always selects the best individual and guarantees that it is part of the
- next generation.
-\end_layout
-
-\begin_layout Standard
-Elitism involves copying a small proportion of the fittest candidates, unchanged
-, into the next generation.
- This can sometimes have a dramatic impact on performance by ensuring that
- the EA does not waste time re-discovering previously discarded partial
- solutions.
- Candidate solutions that are preserved unchanged through elitism remain
- eligible for selection as parents when breeding the remainder of the next
- generation.
-\end_layout
-
-\begin_layout Standard
-Elitism concept has different meanings for metaheuristic and particular
- for GA.
- In general, elitism is related with memory: "remember the best solution
- found" (kind of greedying).
- In the most traditional way, for evolutionary algorithms (GA, EA, DE...),
- elitism implies the best solution found is used for to build next generation.
- Particularly, for GA it means keeping the best individual found intact
- for next generation.
- In GA, there is something like a proof for multiobjective optimization
- (villalobos, coello and hernandez, 2005) that linked convergence and elitism
- which is a kind of cool stuff.
- 
-\end_layout
-
-\begin_layout Standard
-The problem with elitism is that it causes the GA to converge on local maxima
- instead of the global maximum, so pure elitism is just a race to the nearest
- local maximum and you'll get little improvement from there.
- You can fix this in a few ways, two of which are (a) mutate the elite randomly,
- i.e.
- introduce entropy (b) go with second or third decile alleles/chromosomes
- also randomly.
- This is a standard problem in search algorithms if you want to check the
- literature.
- Local maxima are a real problem for recursive optimization in general -
- how do you ever know you're on the highest hill, even in a finite space?
+ copies a small proportion of the fittest candidates, without changes, into
+ the next generation.
+ This may have a dramatic impact on performance by ensuring that the GA
+ doesn't waste time re-discovering previously refused partial solutions.
+ Individuals that are preserved through elitism remain eligible for selection
+ as parents of the next generation.
+ Elitism is also related with memory: 
+\emph on
+remember the best solution found so far
+\emph default
+.
+ A problem with elitism is that it may causes the GA to converge to a 
+\emph on
+local
+\emph default
+ optimum, so pure elitism is a race to the nearest local optimum.
 \end_layout
 
 \begin_layout Subsubsection
@@ -6314,9 +6288,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.eps
 	width 50text%
-	BoundingBox 0bp 0bp 330bp 241bp
 	clip
-	rotateOrigin leftTop
 
 \end_inset
 
@@ -6363,10 +6335,6 @@ Crossover!Partially-matched crossover
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 After performing the crossover we–normally–got two invalid chromosomes (figure
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -6478,7 +6446,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/UniformCrossover.eps
 	width 33text%
-	BoundingBox 0bp 0bp 227bp 156bp
 	clip
 
 \end_inset
