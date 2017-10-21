@@ -31,6 +31,15 @@ import io.jenetics.util.Seq;
 /**
  * The {@code EliteSelector} guarantees the survival of the best individual(s)
  *
+ * <pre>{@code
+ * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
+ *     // Number of best individuals preserved for next generation: elites
+ *     3,
+ *     // Selector used for selecting rest of population.
+ *     new RouletteWheelSelector<>()
+ * );
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 4.0
