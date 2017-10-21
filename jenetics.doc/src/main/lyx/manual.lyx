@@ -8613,7 +8613,7 @@ public final class EvolutionResult<
 
 \begin_layout Plain Layout
 
-    Population<G,C> getPopulation();
+    ISeq<Phenotype<G, C>> getPopulation();
 \end_layout
 
 \begin_layout Plain Layout
@@ -9865,7 +9865,7 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \end_layout
 
 \begin_layout LyX-Code
-        com.foo.bar.MyJeneticsApp
+       com.foo.bar.MyJeneticsApp
 \end_layout
 
 \begin_layout Standard
@@ -12876,10 +12876,7 @@ Codec
  LocalDate
 \family default
  alleles.
-\end_layout
-
-\begin_layout Standard
-The convenient usage of the
+ The convenient usage of the
 \family typewriter
  Any\SpecialChar softhyphen
 Chromosome
@@ -13139,17 +13136,17 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-    @Override
+	@Override
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Population<G, C> select(
+    public ISeq<Phenotype<G, C>> select(
 \end_layout
 
 \begin_layout Plain Layout
 
-        final Population<G, C> population,
+        final Seq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -13169,66 +13166,57 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-        return population.isEmpty() || count <= 0
+        ISeq<Phenotype<G, C>> result;
 \end_layout
 
 \begin_layout Plain Layout
 
-            ? new Population<>(0)
+        if (population.isEmpty() || count <= 0) {
 \end_layout
 
 \begin_layout Plain Layout
 
-            : append(
+            result = ISeq.empty();
 \end_layout
 
 \begin_layout Plain Layout
 
-                _elite.select(population, 1, opt),
+        } else {
 \end_layout
 
 \begin_layout Plain Layout
 
-                _rest.select(population, max(0, count - 1), opt));
+            final int ec = min(count, _eliteCount);
 \end_layout
 
 \begin_layout Plain Layout
 
-    }
+            result = _elite.select(population, ec, opt);
 \end_layout
 
 \begin_layout Plain Layout
 
+            result = result.append(
 \end_layout
 
 \begin_layout Plain Layout
 
-    private Population<G, C> append(
+                _rest.select(population, max(0, count - ec), opt)
 \end_layout
 
 \begin_layout Plain Layout
 
-        final Population<G, C> p1,
+            );
 \end_layout
 
 \begin_layout Plain Layout
 
-        final Population<G, C> p2
+        }
 \end_layout
 
 \begin_layout Plain Layout
 
-    ) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        p1.addAll(p2);
-\end_layout
-
-\begin_layout Plain Layout
-
-        return p1;
+        return result;
 \end_layout
 
 \begin_layout Plain Layout
@@ -13282,7 +13270,7 @@ Elitism
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Elite-selector"
@@ -13567,7 +13555,7 @@ Statistics
  io.jenetics.\SpecialChar softhyphen
 engine
 \family default
- package (see listing
+ package (see listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:EvolutionStatistics-usage"
@@ -13740,7 +13728,7 @@ public final class SpecialEngine {
 
 \begin_layout Plain Layout
 
-        final Population<DoubleGene, Double> population = GTF
+        final ISeq<Phenotype<DoubleGene, Double>> population = GTF
 \end_layout
 
 \begin_layout Plain Layout
@@ -13765,7 +13753,7 @@ public final class SpecialEngine {
 
 \begin_layout Plain Layout
 
-            .collect(Population.toPopulation());
+            .collect(ISeq.toISeq());
 \end_layout
 
 \begin_layout Plain Layout
@@ -13885,7 +13873,7 @@ Special evolution engine
 \end_layout
 
 \begin_layout Standard
-Listing
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Special-evolution-engine"
