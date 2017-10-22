@@ -29,7 +29,14 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
- * The {@code EliteSelector} guarantees the survival of the best individual(s)
+ * The {@code EliteSelector} copies a small proportion of the fittest candidates,
+ * without changes, into the next generation. This may have a dramatic impact on
+ * performance by ensuring that the GA doesn't waste time re-discovering
+ * previously refused partial solutions. Individuals that are preserved through
+ * elitism remain eligible for selection as parents of the next generation.
+ * Elitism is also related with memory: remember the best solution found so far.
+ * A problem with elitism is that it may causes the GA to converge to a local
+ * optimum, so pure elitism is a race to the nearest local optimum.
  *
  * <pre>{@code
  * final Selector<DoubleGene, Double> selector = new EliteSelector<>(
