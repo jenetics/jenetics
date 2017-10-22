@@ -50,8 +50,8 @@ public class DoubleChromosome
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Create a new {@code DoubleChromosome} from the given {@code genes} and
-	 * the allowed length range of the chromosome.
+	 * Create a new chromosome from the given {@code genes} and the allowed
+	 * length range of the chromosome.
 	 *
 	 * @since 4.0
 	 *
@@ -82,7 +82,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new random {@code DoubleChromosome}.
+	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
 	 *
@@ -175,7 +175,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new random {@code DoubleChromosome}.
+	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
 	 *
@@ -217,7 +217,7 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new random {@code DoubleChromosome}.
+	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
 	 *
