@@ -310,6 +310,7 @@ public class IntegerChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
+		out.writeObject(lengthRange());
 		out.writeInt(_min);
 		out.writeInt(_max);
 
@@ -324,6 +325,7 @@ public class IntegerChromosome
 		in.defaultReadObject();
 
 		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_lengthRange", in.readObject());
 		reflect.setField(this, "_min", in.readInt());
 		reflect.setField(this, "_max", in.readInt());
 

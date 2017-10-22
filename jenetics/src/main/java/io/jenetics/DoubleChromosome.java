@@ -309,6 +309,7 @@ public class DoubleChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
+		out.writeObject(lengthRange());
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 
@@ -323,6 +324,7 @@ public class DoubleChromosome
 		in.defaultReadObject();
 
 		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_lengthRange", in.readObject());
 		reflect.setField(this, "_min", in.readDouble());
 		reflect.setField(this, "_max", in.readDouble());
 
