@@ -14249,7 +14249,7 @@ s.
 \family default
 ,
 \family typewriter
-GaussianAlterer
+ GaussianAlterer
 \family default
  and
 \family typewriter
@@ -14308,7 +14308,7 @@ s can only be altered by
 \family sans
 ,
 \family typewriter
-GaussianAlterer
+ GaussianAlterer
 \family sans
  and
 \family typewriter
@@ -15131,7 +15131,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $s_{x}$
 \end_inset
 
- – the scale factor in
+ – the scale factor in 
 \begin_inset Formula $x$
 \end_inset
 
@@ -15142,7 +15142,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $s_{y}$
 \end_inset
 
- – the scale factor in
+ – the scale factor in 
 \begin_inset Formula $y$
 \end_inset
 
@@ -15153,7 +15153,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $t_{x}$
 \end_inset
 
- – the offset in
+ – the offset in 
 \begin_inset Formula $x$
 \end_inset
 
@@ -15164,7 +15164,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $t_{y}$
 \end_inset
 
- – the offset in
+ – the offset in 
 \begin_inset Formula $y$
 \end_inset
 
@@ -15182,7 +15182,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $k_{x}$
 \end_inset
 
- – shearing parallel to
+ – shearing parallel to 
 \begin_inset Formula $x$
 \end_inset
 
@@ -15193,7 +15193,7 @@ A better approach will be to encode the transformation parameters instead
 \begin_inset Formula $k_{y}$
 \end_inset
 
- – shearing parallel to
+ – shearing parallel to 
 \begin_inset Formula $y$
 \end_inset
 
