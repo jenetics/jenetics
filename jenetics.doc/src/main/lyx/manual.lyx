@@ -838,7 +838,7 @@ This manual is not an introduction or a tutorial for genetic and/or evolutionary
  algorithms in general.
  It is assumed that the reader has a knowledge about the structure and the
  functionality of genetic algorithms.
- Good introductions to GAs can be found in
+ Good introductions to GAs can be found in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
@@ -11423,7 +11423,7 @@ Population<DoubleGene, Double> population =
 
 \begin_layout Plain Layout
 
-    (Population<DoubleGene, Double>)IO.object.read(file);
+    (ISeq<Phenotype<G, C>>)IO.object.read(file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -12497,7 +12497,7 @@ Registry
 .
  With the optional validation function,
 \family typewriter
-isValid
+ isValid
 \family default
 , it is possible to reject
 \family typewriter
@@ -16731,7 +16731,7 @@ Codec
 \family default
  factory method:
 \family typewriter
-ofVector
+ ofVector
 \family default
 
 \begin_inset CommandInset label
@@ -18298,8 +18298,9 @@ reference "lis:Problem-interface"
  Comparable
 \family default
  result of the fitness function.
+
 \family typewriter
-G
+ G
 \family default
  is the
 \family typewriter
@@ -20447,7 +20448,7 @@ name "fig:Fitness-convergence-diagram-50-150"
 
 \end_inset
 
-Fitness convergence termination:
+Fitness convergence termination: 
 \begin_inset Formula $N_{S}=50$
 \end_inset
 
@@ -20920,7 +20921,7 @@ final Engine<DoubleGene, Double> engine =
 
 
 \family typewriter
-Engine
+ Engine
 \family default
  configuration
 \begin_inset CommandInset label
@@ -21990,11 +21991,11 @@ Nano time seeding quality
 \begin_layout Standard
 An alternative source of entropy, for generating seed values, would be the
 \family typewriter
-/dev/random
+ /dev/random
 \family default
  or
 \family typewriter
-/dev/urandom
+ /dev/urandom
 \family default
  file.
  But this approach is not portable, which was a prerequisite for the
@@ -23046,7 +23047,11 @@ reference "lis:Tree-interface"
  Tree
 \family default
  interface with its basic abstract tree methods.
- All other needed tree methods, e.g.
+ All other needed tree methods, e.
+\begin_inset space ~
+\end_inset
+
+g.
  for node traversal and search, are implemented with default methods, which
  are derived from this four abstract tree methods.
  A
@@ -23279,7 +23284,7 @@ reference "sec:Genetic-programming"
 
 ).
  Since the chromosome type is essentially an array, a mapping from the hierarchi
-cal tree structure to a
+cal tree structure to a 
 \begin_inset Formula $1$
 \end_inset
 
