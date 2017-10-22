@@ -36,6 +36,8 @@ import io.jenetics.util.Verifiable;
  * {@code Chromosome} must contains at least one {@code Gene}.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
+ * @see Genotype
+ * @see Gene
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0

@@ -57,6 +57,9 @@ import io.jenetics.util.Verifiable;
  * the figure above. In this example the {@link DoubleGene} has been chosen as
  * gene type.
  *
+ * @see Chromosome
+ * @see Phenotype
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0
