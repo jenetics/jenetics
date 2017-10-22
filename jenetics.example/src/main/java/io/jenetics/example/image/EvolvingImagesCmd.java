@@ -51,7 +51,7 @@ import io.jenetics.Phenotype;
 final class EvolvingImagesCmd {
 
 	private static final String DEFAULT_IMAGE =
-		"org/jenetics/example/image/monalisa.png";
+		"io/jenetics/example/image/monalisa.png";
 	private static final String DEFAULT_OUTPUT_DIR = "evolving-image";
 	private static final int DEFAULT_GENERATIONS = 10_000;
 	private static final int DEFAULT_IMAGE_GENERATION = 100;
