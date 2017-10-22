@@ -11418,7 +11418,7 @@ IO.object.write(result.getPopulation(), file);
 
 \begin_layout Plain Layout
 
-Population<DoubleGene, Double> population =
+ISeq<Phenotype<G, C>> population =
 \end_layout
 
 \begin_layout Plain Layout
@@ -28469,7 +28469,7 @@ status collapsed
 \end_layout
 
 \begin_layout Standard
-In the knapsack problem
+In the Knapsack problem
 \begin_inset Foot
 status collapsed
 
