@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.Random;
 
 import io.jenetics.internal.math.random;
-import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -144,33 +143,13 @@ public final class DoubleGene
 	static ISeq<DoubleGene> seq(
 		final Double minimum,
 		final Double maximum,
-		final IntRange length
+		final IntRange lengthRange
 	) {
-		require.positive(length.getMin());
-		require.positive(length.getMax());
-		require.positive(length.size());
-
 		final double min = minimum;
 		final double max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<DoubleGene>ofLength(random.nextInt(length, r))
-			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
-			.toISeq();
-	}
-
-	static ISeq<DoubleGene> seq(
-		final Double minimum,
-		final Double maximum,
-		final int length
-	) {
-		require.positive(length);
-
-		final double min = minimum;
-		final double max = maximum;
-		final Random r = getRandom();
-
-		return MSeq.<DoubleGene>ofLength(length)
+		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
 			.toISeq();
 	}
