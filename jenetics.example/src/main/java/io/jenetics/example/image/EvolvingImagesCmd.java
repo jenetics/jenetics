@@ -268,7 +268,7 @@ final class EvolvingImagesCmd {
 	private static void log(final Object pattern, final Object... args) {
 		final LocalDateTime now = LocalDateTime.now();
 		final String tss = now.toLocalDate().toString() + ' ' +
-			now.toLocalTime().toString();
+			now.toLocalTime();
 
 		final String p = format("%s - ", tss) + pattern;
 		System.out.println(format(p, args));
