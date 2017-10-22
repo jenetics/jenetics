@@ -24988,7 +24988,7 @@ The
 \begin_inset Formula $0$
 \end_inset
 
-,
+, 
 \begin_inset Formula $1$
 \end_inset
 
@@ -27823,10 +27823,7 @@ This section contains some coding examples which should give you a feeling
  library.
  The given examples are complete, in the sense that they will compile and
  run and produce the given example output.
-\end_layout
-
-\begin_layout Standard
-Running the examples delivered with the
+ Running the examples delivered with the
 \family sans
 \series bold
 \shape smallcaps
@@ -27842,7 +27839,7 @@ Running the examples delivered with the
 \end_layout
 
 \begin_layout LyX-Code
-$ ./run-examples.sh
+$ ./jenetics.example/src/main/scripts/run-examples.sh
 \end_layout
 
 \begin_layout Standard
