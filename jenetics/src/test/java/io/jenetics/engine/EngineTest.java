@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.String.format;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -283,6 +284,54 @@ public class EngineTest {
 			{new ForkJoinPool(1)},
 			{new ForkJoinPool(10)}
 		};
+	}
+
+	// https://github.com/jenetics/jenetics/issues/234
+	@Test
+	public void constantPopulationForZeroSurvivors() {
+		final int populationSize = 20;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.survivorsSize(0)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(100)
+			.peek(r -> {
+				if (r.getPopulation().size() != populationSize) {
+					throw new AssertionError(format(
+						"Expected population size %d, but got %d.",
+						populationSize, r.getPopulation().size()
+					));
+				}
+			})
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	// https://github.com/jenetics/jenetics/issues/234
+	@Test
+	public void constantPopulationForZeroOffspring() {
+		final int populationSize = 20;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.offspringSize(0)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(100)
+			.peek(r -> {
+				if (r.getPopulation().size() != populationSize) {
+					throw new AssertionError(format(
+						"Expected population size %d, but got %d.",
+						populationSize, r.getPopulation().size()
+					));
+				}
+			})
+			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
 }
