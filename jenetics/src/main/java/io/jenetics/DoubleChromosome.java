@@ -19,16 +19,22 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.util.RandomRegistry.getRandom;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import io.jenetics.internal.math.random;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
+import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
@@ -48,6 +54,24 @@ public class DoubleChromosome
 {
 	private static final long serialVersionUID = 1L;
 
+	private final IntRange _lengthRange;
+
+	protected DoubleChromosome(
+		final ISeq<DoubleGene> genes,
+		final IntRange lengthRange
+	) {
+		super(genes);
+		_lengthRange = checkLengthRange(lengthRange);
+	}
+
+	private static IntRange checkLengthRange(final IntRange lengthRange) {
+		requireNonNull(lengthRange);
+		require.positive(lengthRange.getMin());
+		require.positive(lengthRange.getMax());
+		require.positive(lengthRange.size());
+		return lengthRange;
+	}
+
 	/**
 	 * Create a new chromosome from the given genes array.
 	 *
@@ -56,7 +80,25 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
 	protected DoubleChromosome(final ISeq<DoubleGene> genes) {
-		super(genes);
+		this(genes, IntRange.of(genes.size(), genes.size() + 1));
+	}
+
+	/**
+	 * Create a new random {@code DoubleChromosome}.
+	 *
+	 * @param min the min value of the {@link DoubleGene}s (inclusively).
+	 * @param max the max value of the {@link DoubleGene}s (exclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length is smaller than one
+	 */
+	public DoubleChromosome(
+		final Double min,
+		final Double max,
+		final IntRange lengthRange
+	) {
+		this(DoubleGene.seq(min, max, random.nextInt(lengthRange, getRandom())));
+		_valid = true;
 	}
 
 	/**
