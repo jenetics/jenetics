@@ -27,25 +27,35 @@ import static java.lang.String.format;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.Alterer;
+import io.jenetics.BoltzmannSelector;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
+import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
+import io.jenetics.LongChromosome;
 import io.jenetics.Mutator;
 import io.jenetics.Optimize;
 import io.jenetics.RouletteWheelSelector;
+import io.jenetics.Selector;
+import io.jenetics.SwapMutator;
+import io.jenetics.TournamentSelector;
+import io.jenetics.TruncationSelector;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
@@ -227,6 +237,88 @@ public class EngineTest {
 			"Total generation must be bigger than 1000: " +
 			result.getTotalGenerations()
 		);
+	}
+
+	@Test
+	public void variableDoubleSum() {
+		final Problem<int[], IntegerGene, Integer> problem = Problem.of(
+			array -> IntStream.of(array).sum(),
+			Codec.of(
+				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
+				gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+			)
+		);
+		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
+			.alterers(
+				new Mutator<>(),
+				new SwapMutator<>())
+			.selector(new TournamentSelector<>())
+			.minimizing()
+			.build();
+
+		final int[] result = problem.codec().decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(result.length < 50, "result length: " + result.length);
+		//System.out.println(result.length);
+		//System.out.println(Arrays.toString(result));
+	}
+
+	@Test(dataProvider = "engineParams")
+	public <G extends Gene<?, G>> void variableLengthChromosomes(
+		final Genotype<G> gtf,
+		final Alterer<G, Double> alterer,
+		final Selector<G, Double> selector
+	) {
+		final Random random = new Random(123);
+		final Engine<G, Double> engine = Engine
+			.builder(gt -> random.nextDouble(), gtf)
+			.alterers(alterer)
+			.selector(selector)
+			.build();
+
+		final EvolutionResult<G, Double> result = engine.stream()
+			.limit(50)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@DataProvider(name = "engineParams")
+	public Object[][] engineParams() {
+		return new Object[][] {
+			{
+				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				new SwapMutator<>(),
+				new TruncationSelector<>()
+			},
+			{
+				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new BoltzmannSelector<>()
+			}
+		};
 	}
 
 	// https://github.com/jenetics/jenetics/issues/47

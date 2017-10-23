@@ -28,6 +28,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.require;
+import io.jenetics.util.IntRange;
 
 /**
  * Some random helper functions.
@@ -101,6 +102,23 @@ public final class random {
 		}
 
 		return value;
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between origin
+	 * (included) and bound (excluded).
+	 *
+	 * @param range the allowed integer range
+	 * @param random the random engine to use for calculating the random
+	 *        int value
+	 * @return a random integer greater than or equal to {@code min} and
+	 *         less than or equal to {@code max}
+	 * @throws IllegalArgumentException if {@code range.getMin() >= range.getMax()}
+	 */
+	public static int nextInt(final IntRange range, final Random random) {
+		return range.size() == 1
+			? range.getMin()
+			: nextInt(range.getMin(), range.getMax(), random);
 	}
 
 	/**

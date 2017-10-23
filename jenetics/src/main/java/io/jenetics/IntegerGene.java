@@ -25,7 +25,7 @@ import static io.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.random;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -138,15 +138,13 @@ public final class IntegerGene
 	static ISeq<IntegerGene> seq(
 		final Integer minimum,
 		final Integer maximum,
-		final int length
+		final IntRange lengthRange
 	) {
-		require.positive(length);
-
 		final int min = minimum;
 		final int max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<IntegerGene>ofLength(length)
+		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
 			.toISeq();
 	}
