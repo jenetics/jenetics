@@ -71,17 +71,6 @@ public class LongChromosome
 	}
 
 	/**
-	 * Create a new chromosome from the given genes array.
-	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
-	 */
-	protected LongChromosome(final ISeq<LongGene> genes) {
-		this(genes, IntRange.of(genes.size()));
-	}
-
-	/**
 	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
@@ -97,7 +86,7 @@ public class LongChromosome
 		final Long max,
 		final IntRange lengthRange
 	) {
-		this(LongGene.seq(min, max, lengthRange));
+		this(LongGene.seq(min, max, lengthRange), lengthRange);
 		_valid = true;
 	}
 
@@ -173,7 +162,7 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(ISeq.of(genes));
+		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
 	/**
