@@ -402,19 +402,6 @@ public final class Engine<
 		return phenotype;
 	}
 
-	// Alters the given population. The altering is done in place.
-	/*
-	private AlterResult<G, C> alter(
-		final MSeq<Phenotype<G, C>> population,
-		final long generation
-	) {
-		return new AlterResult<G, C>(
-			population,
-			_alterer.alter(population, generation)
-		);
-	}
-	*/
-
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {

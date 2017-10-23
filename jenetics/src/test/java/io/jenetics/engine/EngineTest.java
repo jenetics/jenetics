@@ -221,6 +221,24 @@ public class EngineTest {
 	}
 
 	@Test
+	public void toUniquePopulation() {
+		final int populationSize = 100;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.genotypeValidator(pt -> false)
+			.populationSize(populationSize)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(10)
+			.map(EvolutionResult.toUniquePopulation())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getPopulation().size(), populationSize);
+	}
+
+	@Test
 	public void parallelStream() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
