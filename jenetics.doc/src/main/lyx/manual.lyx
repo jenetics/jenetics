@@ -8445,12 +8445,13 @@ Stream
 \end_inset
 
 g.
+
 \family typewriter
-limit
+ limit
 \family sans
 ,
 \family typewriter
-peek
+ peek
 \family sans
 , ...) are executed in the thread context of the created
 \family typewriter
@@ -9428,7 +9429,7 @@ name "sec:Nuts-and-bolts"
 
 \end_inset
 
-
+ 
 \end_layout
 
 \begin_layout Subsection
