@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
@@ -53,7 +54,7 @@ import io.jenetics.Optimize;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.Selector;
 import io.jenetics.SwapMutator;
-import io.jenetics.SwapMutatorTest;
+import io.jenetics.TournamentSelector;
 import io.jenetics.TruncationSelector;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
@@ -236,6 +237,34 @@ public class EngineTest {
 			"Total generation must be bigger than 1000: " +
 			result.getTotalGenerations()
 		);
+	}
+
+	@Test
+	public void variableDoubleSum() {
+		final Problem<int[], IntegerGene, Integer> problem = Problem.of(
+			array -> IntStream.of(array).sum(),
+			Codec.of(
+				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
+				gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+			)
+		);
+		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
+			.alterers(
+				new Mutator<>(),
+				new SwapMutator<>())
+			.selector(new TournamentSelector<>())
+			.minimizing()
+			.build();
+
+		final int[] result = problem.codec().decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(result.length < 50, "result length: " + result.length);
+		//System.out.println(result.length);
+		//System.out.println(Arrays.toString(result));
 	}
 
 	@Test(dataProvider = "engineParams")
