@@ -9903,25 +9903,25 @@ Concurrency!maxSurplusQueuedTaskCount
 \end_layout
 
 \begin_layout LyX-Code
-$ java -Dio.jenetics.concurrency.splitThreshold=1
+$ java -Dio.jenetics.concurrency.splitThreshold=1 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-       -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2
+    -Dio.jenetics.concurrency.maxSurplusQueuedTaskCount=2 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-       -cp jenetics-@__version__@.jar:app.jar
+    -cp jenetics-@__version__@.jar:app.jar 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-       com.foo.bar.MyJeneticsApp
+    com.foo.bar.MyJeneticsApp
 \end_layout
 
 \begin_layout Standard
@@ -26673,12 +26673,12 @@ The implemented PRNGs are not cryptographically strong RNGs.
  The io.jenetics.prngine module consists of the following PRNG implementations:
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 KISS32Random
 \family default
-: Implementation of an simple PRNG as proposed in
+ Implementation of an simple PRNG as proposed in
 \emph on
  Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicati
 ons
@@ -26693,12 +26693,12 @@ key "GoodPRNGPractice"
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 KISS64Random
 \family default
-: Implementation of an simple PRNG as proposed in
+ Implementation of an simple PRNG as proposed in
 \emph on
  Good Practice in (Pseudo) Random Number Generation for Bioinformatics Applicati
 ons
@@ -26713,12 +26713,12 @@ key "GoodPRNGPractice"
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 LCG64ShiftRandom
 \family default
-: This class implements a linear congruential PRNG with additional bit-shift
+ This class implements a linear congruential PRNG with additional bit-shift
  transition.
  It is a port of the trng::lcg64_shift PRNG class of the TRNG library created
  by Heiko Bauke.
@@ -26744,12 +26744,12 @@ https://github.com/jenetics/trng4
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 MT19937_32Random
 \family default
-: This is a 32-bit version of Mersenne Twister pseudo random number generator.
+ This is a 32-bit version of Mersenne Twister pseudo random number generator.
 \begin_inset Foot
 status collapsed
 
@@ -26772,23 +26772,27 @@ https://en.wikipedia.org/wiki/Mersenne_Twister
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 MT19937_64Random
 \family default
-: This is a 64-bit version of Mersenne Twister pseudo random number generator.
+ This is a 64-bit version of Mersenne Twister pseudo random number generator.
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 XOR32ShiftRandom
 \family default
-: This generator was discovered and characterized by George Marsaglia [Xorshift
+ This generator was discovered and characterized by George Marsaglia [Xorshift
  RNGs].
  In just three XORs and three shifts (generally fast operations) it produces
- a full period of 232 - 1 on 32 bits.
+ a full period of 
+\begin_inset Formula $2^{32}-1$
+\end_inset
+
+ on 32 bits.
  (The missing value is zero, which perpetuates itself and must be avoided.)
 \begin_inset Foot
 status collapsed
@@ -26812,20 +26816,28 @@ http://digitalcommons.wayne.edu/jmasm/vol2/iss1/2/
 
 \end_layout
 
-\begin_layout Itemize
+\begin_layout Description
 
 \family typewriter
 XOR64ShiftRandom
 \family default
-: This generator was discovered and characterized by George Marsaglia [Xorshift
+ This generator was discovered and characterized by George Marsaglia [Xorshift
  RNGs].
  In just three XORs and three shifts (generally fast operations) it produces
- a full period of 264 - 1 on 64 bits.
+ a full period of 
+\begin_inset Formula $2^{64}-1$
+\end_inset
+
+ on 64 bits.
  (The missing value is zero, which perpetuates itself and must be avoided.)
 \end_layout
 
 \begin_layout Standard
-All implemented PRNGs has been tested with the dieharder test suite.
+All implemented PRNGs has been tested with the 
+\family typewriter
+dieharder
+\family default
+ test suite.
  Table 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -26841,7 +26853,9 @@ reference "tab:Dieharder-results"
  implementation.
  Beside the
 \family typewriter
- XOR32ShiftRandom
+ XOR32\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
 \family default
  class, the
 \family typewriter
