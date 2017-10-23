@@ -179,6 +179,19 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	}
 
 	/**
+	 * Swap the elements at the same position.
+	 *
+	 * @param index the index of swapped element.
+	 * @param other the other array to swap the elements with.
+	 * @throws IndexOutOfBoundsException if {@code index < 0 || index >= this.length() || index >= other.length()}.
+	 */
+	default void swap(int index, MSeq<T> other) {
+		final T temp = get(index);
+		set(index, other.get(index));
+		other.set(index, temp);
+	}
+
+	/**
 	 * Randomize the {@code array} using the {@link Random} object currently
 	 * registered in the {@link RandomRegistry} class. The used shuffling
 	 * algorithm is from D. Knuth TAOCP, Seminumerical Algorithms, Third edition,
