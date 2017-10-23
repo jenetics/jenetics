@@ -47,7 +47,7 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed

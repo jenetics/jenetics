@@ -21,7 +21,10 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Equality.eq;
 
+import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -55,19 +58,10 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		final IntRange lengthRange
 	) {
 		super(genes);
-		_lengthRange = checkLengthRange(lengthRange);
-		if (genes.size() < lengthRange.getMin() ||
-			genes.size() >= lengthRange.getMax())
-		{
-			throw new IllegalArgumentException(format(
-				"Number of genes (%d) not within the allowed range: %s",
-				genes.size(),
-				lengthRange
-			));
-		}
+		_lengthRange = checkLengthRange(lengthRange, genes.size());
 	}
 
-	static IntRange checkLengthRange(final IntRange lengthRange) {
+	static IntRange checkLengthRange(final IntRange lengthRange, final int length) {
 		requireNonNull(lengthRange);
 		if (lengthRange.getMin() <= 0) {
 			throw new IllegalArgumentException(format(
@@ -84,6 +78,15 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 				"Maximal length must be positive: %d", lengthRange.size()
 			));
 		}
+		if (length < lengthRange.getMin() ||
+			length >= lengthRange.getMax())
+		{
+			throw new IllegalArgumentException(format(
+				"Number of genes (%d) not within the allowed range: %s",
+				length,
+				lengthRange
+			));
+		}
 
 		return lengthRange;
 	}
@@ -98,4 +101,18 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		return _lengthRange;
 	}
 
+	@Override
+	public int hashCode() {
+		return Hash.of(getClass())
+			.and(super.hashCode())
+			.and(_lengthRange).value();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return Equality.of(this, obj).test(cc ->
+			super.equals(obj) &&
+				eq(_lengthRange, cc._lengthRange)
+		);
+	}
 }
