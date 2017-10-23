@@ -33,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -224,14 +225,26 @@ public class EngineTest {
 	public void toUniquePopulation() {
 		final int populationSize = 100;
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+		final Engine<IntegerGene, Integer> engine = Engine
+			.builder(a -> a.getGene().getAllele(), IntegerChromosome.of(0, 10))
 			.populationSize(populationSize)
-			.mapping(EvolutionResult.toUniquePopulation())
+			.mapping(EvolutionResult.toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))))
 			.build();
 
-		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
 			.limit(10)
+			.peek(r -> {
+				if (r.getGenotypes().stream().collect(Collectors.toSet()).size() !=
+					populationSize)
+				{
+					throw new AssertionError(format(
+						"Expected unique population size %d, but got %d.",
+						populationSize,
+						r.getGenotypes().stream().collect(Collectors.toSet()).size()
+					));
+				}
+			})
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(result.getPopulation().size(), populationSize);
