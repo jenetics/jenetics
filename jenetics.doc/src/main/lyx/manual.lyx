@@ -2249,6 +2249,16 @@ Domain classes
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -8045,6 +8055,45 @@ individualCreationRetries
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Description
+mapper This property lets you define an mapper, which transforms the final
+ 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ object after every generation.
+ One usage of the mapper is to remove duplicate individuals from the population.
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population!unique
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionResult!mapper
+\end_layout
+
+\end_inset
+
+ The 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Unique\SpecialChar softhyphen
+Population()
+\family default
+ method provides such a de-duplication mapper.
 \end_layout
 
 \begin_layout Subsubsection
