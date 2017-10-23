@@ -25,9 +25,11 @@ import static io.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.Random;
 
+import io.jenetics.internal.math.random;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -246,10 +248,13 @@ public final class CharacterGene
 		return new CharacterGene(character, validCharacters);
 	}
 
-	static ISeq<CharacterGene> seq(final CharSeq chars, final int length) {
+	static ISeq<CharacterGene> seq(
+		final CharSeq chars,
+		final IntRange lengthRange
+	) {
 		final Random r = RandomRegistry.getRandom();
 
-		return MSeq.<CharacterGene>ofLength(length)
+		return MSeq.<CharacterGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
 			.toISeq();
 	}

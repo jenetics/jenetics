@@ -64,9 +64,7 @@ public final class MutatorResult<T> implements Serializable {
 	 * @return a new mapped mutation result
 	 * @throws NullPointerException if the given {@code mapper} is {@code null}
 	 */
-	public <B> MutatorResult<B> map(
-		final Function<? super T, ? extends B> mapper
-	) {
+	<B> MutatorResult<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 		return of(mapper.apply(_result), _mutations);
 	}

@@ -135,10 +135,10 @@ public final class EvolutionResult<
 	 *
 	 * @return the list of genotypes of this evolution result.
 	 */
-	public List<Genotype<G>> getGenotypes() {
+	public ISeq<Genotype<G>> getGenotypes() {
 		return _population.stream()
 			.map(Phenotype::getGenotype)
-			.collect(Collectors.toList());
+			.collect(ISeq.toISeq());
 	}
 
 	/**
