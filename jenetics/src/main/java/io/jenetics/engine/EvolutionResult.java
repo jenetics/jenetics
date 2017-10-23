@@ -506,6 +506,7 @@ public final class EvolutionResult<
 	 * }</pre>
 	 *
 	 * @since 4.0
+	 * @see Engine.Builder#mapping(UnaryOperator)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param maxRetries the maximal number of genotype creation tries
@@ -577,6 +578,7 @@ public final class EvolutionResult<
 	 * }</pre>
 	 *
 	 * @since 4.0
+	 * @see Engine.Builder#mapping(UnaryOperator)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param <G> the gene type
@@ -608,6 +610,7 @@ public final class EvolutionResult<
 	 * }</pre>
 	 *
 	 * @since 4.0
+	 * @see Engine.Builder#mapping(UnaryOperator)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type

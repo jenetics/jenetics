@@ -1470,6 +1470,9 @@ public final class Engine<
 		 * The result mapper, which allows to change the evolution result after
 		 * each generation.
 		 *
+		 * @since 4.0
+		 * @see EvolutionResult#toUniquePopulation()
+		 *
 		 * @param mapper the evolution result mapper
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if the given {@code resultMapper} is
