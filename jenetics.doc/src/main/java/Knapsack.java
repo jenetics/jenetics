@@ -1,22 +1,22 @@
-import static org.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static org.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import org.jenetics.BitGene;
-import org.jenetics.Mutator;
-import org.jenetics.Phenotype;
-import org.jenetics.RouletteWheelSelector;
-import org.jenetics.SinglePointCrossover;
-import org.jenetics.TournamentSelector;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionStatistics;
-import org.jenetics.engine.codecs;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.BitGene;
+import io.jenetics.Mutator;
+import io.jenetics.Phenotype;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 // The main class.
 public class Knapsack {
@@ -72,7 +72,7 @@ public class Knapsack {
 
 		// Configure and build the evolution engine.
 		final Engine<BitGene, Double> engine = Engine
-			.builder(fitness(kssize), codecs.ofSubSet(items))
+			.builder(fitness(kssize), Codecs.ofSubSet(items))
 			.populationSize(500)
 			.survivorsSelector(new TournamentSelector<>(5))
 			.offspringSelector(new RouletteWheelSelector<>())
