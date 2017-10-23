@@ -70,17 +70,6 @@ public class IntegerChromosome
 	}
 
 	/**
-	 * Create a new chromosome from the given genes array.
-	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
-	 */
-	protected IntegerChromosome(final ISeq<IntegerGene> genes) {
-		this(genes, IntRange.of(genes.size()));
-	}
-
-	/**
 	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
@@ -96,7 +85,7 @@ public class IntegerChromosome
 		final Integer max,
 		final IntRange lengthRange
 	) {
-		this(IntegerGene.seq(min, max, lengthRange));
+		this(IntegerGene.seq(min, max, lengthRange), lengthRange);
 		_valid = true;
 	}
 
@@ -175,7 +164,7 @@ public class IntegerChromosome
 	 *         empty.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
-		return new IntegerChromosome(ISeq.of(genes));
+		return new IntegerChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
 	/**
