@@ -181,11 +181,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Swap the elements at the same position.
 	 *
+	 * @since 4.0
+	 *
 	 * @param index the index of swapped element.
 	 * @param other the other array to swap the elements with.
-	 * @throws IndexOutOfBoundsException if {@code index < 0 || index >= this.length() || index >= other.length()}.
+	 * @throws IndexOutOfBoundsException if
+	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
+	 * @throws NullPointerException if the {@code other} sequence is {@code null}
 	 */
-	default void swap(int index, MSeq<T> other) {
+	default void swap(final int index, final MSeq<T> other) {
 		final T temp = get(index);
 		set(index, other.get(index));
 		other.set(index, temp);
