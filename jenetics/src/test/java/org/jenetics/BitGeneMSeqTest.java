@@ -59,6 +59,19 @@ public class BitGeneMSeqTest  {
 		}
 	}
 
+	@Test
+	public void swapSamePosition() {
+		MSeq<BitGene> seqWithFalse = newSeq(1);
+		seqWithFalse.set(0, BitGene.FALSE);
+		MSeq<BitGene> seqWithTrue = newSeq(1);
+		seqWithTrue.set(0, BitGene.TRUE);
+
+		seqWithFalse.swap(0, seqWithTrue);
+
+		Assert.assertTrue(seqWithFalse.get(0).booleanValue());
+		Assert.assertFalse(seqWithTrue.get(0).booleanValue());
+	}
+
 	@Test(dataProvider = "sequences")
 	public void swapIntIntMSeqInt(final MSeq<BitGene> seq) {
 		for (int start = 0; start < seq.length() - 3; ++start) {
