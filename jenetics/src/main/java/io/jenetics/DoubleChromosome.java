@@ -71,17 +71,6 @@ public class DoubleChromosome
 	}
 
 	/**
-	 * Create a new chromosome from the given genes array.
-	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
-	 */
-	protected DoubleChromosome(final ISeq<DoubleGene> genes) {
-		this(genes, IntRange.of(genes.size()));
-	}
-
-	/**
 	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
@@ -97,7 +86,7 @@ public class DoubleChromosome
 		final Double max,
 		final IntRange lengthRange
 	) {
-		this(DoubleGene.seq(min, max, lengthRange));
+		this(DoubleGene.seq(min, max, lengthRange), lengthRange);
 		_valid = true;
 	}
 
@@ -171,7 +160,7 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(ISeq.of(genes));
+		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
 	/**
