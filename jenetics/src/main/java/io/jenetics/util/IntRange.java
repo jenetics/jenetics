@@ -114,7 +114,8 @@ public final class IntRange implements Serializable {
 	}
 
 	/**
-	 * Return a new (half open) range, which contains only the given value.
+	 * Return a new (half open) range, which contains only the given value:
+	 * {@code [value, value + 1)}.
 	 *
 	 * @since 4.0
 	 *
