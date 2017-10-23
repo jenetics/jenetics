@@ -226,13 +226,12 @@ public class EngineTest {
 
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.genotypeValidator(pt -> false)
 			.populationSize(populationSize)
+			.mapping(EvolutionResult.toUniquePopulation())
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(10)
-			.map(EvolutionResult.toUniquePopulation())
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(result.getPopulation().size(), populationSize);

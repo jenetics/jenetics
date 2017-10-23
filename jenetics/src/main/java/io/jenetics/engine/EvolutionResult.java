@@ -497,10 +497,11 @@ public final class EvolutionResult<
 	 *
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
-	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem).build();
+	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	 *     .mapping(EvolutionResult.toUniquePopulation(problem.codec().encoding(), 100))
+	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
-	 *     .map(EvolutionResult.toUniquePopulation(problem.codec().encoding(), 100))
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
@@ -567,10 +568,11 @@ public final class EvolutionResult<
 	 *
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
-	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem).build();
+	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	 *     .mapping(EvolutionResult.toUniquePopulation(problem.codec().encoding()))
+	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
-	 *     .map(EvolutionResult.toUniquePopulation(problem.codec().encoding()))
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
@@ -597,10 +599,11 @@ public final class EvolutionResult<
 	 *
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
-	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem).build();
+	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	 *     .mapping(EvolutionResult.toUniquePopulation())
+	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
-	 *     .map(EvolutionResult.toUniquePopulation())
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *

@@ -32,11 +32,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
+import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -144,6 +145,7 @@ public final class Engine<
 
 	// Additional parameters.
 	private final int _individualCreationRetries;
+	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
 
 	/**
@@ -183,7 +185,8 @@ public final class Engine<
 		final long maximalPhenotypeAge,
 		final Executor executor,
 		final Clock clock,
-		final int individualCreationRetries
+		final int individualCreationRetries,
+		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
 		_fitnessFunction = requireNonNull(fitnessFunction);
 		_fitnessScaler = requireNonNull(fitnessScaler);
@@ -208,6 +211,7 @@ public final class Engine<
 			));
 		}
 		_individualCreationRetries = individualCreationRetries;
+		_mapper = requireNonNull(mapper);
 	}
 
 	/**
@@ -325,14 +329,16 @@ public final class Engine<
 			filteredOffspring.join().result.invalidCount +
 			filteredSurvivors.join().result.invalidCount;
 
-		return EvolutionResult.of(
-			_optimize,
-			result.result,
-			start.getGeneration(),
-			durations,
-			killCount,
-			invalidCount,
-			alteredOffspring.join().result.getAlterations()
+		return _mapper.apply(
+			EvolutionResult.of(
+				_optimize,
+				result.result,
+				start.getGeneration(),
+				durations,
+				killCount,
+				invalidCount,
+				alteredOffspring.join().result.getAlterations()
+			)
 		);
 	}
 
@@ -913,6 +919,29 @@ public final class Engine<
 	}
 
 
+	/**
+	 * Return the maximal number of attempt before the {@code Engine} gives
+	 * up creating a valid individual ({@code Phenotype}).
+	 *
+	 * @since 4.0
+	 *
+	 * @return the maximal number of {@code Phenotype} creation attempts
+	 */
+	public int getIndividualCreationRetries() {
+		return _individualCreationRetries;
+	}
+
+	/**
+	 * Return the evolution result mapper.
+	 *
+	 * @since 4.0
+	 *
+	 * @return the evolution result mapper
+	 */
+	public UnaryOperator<EvolutionResult<G, C>> getMapper() {
+		return _mapper;
+	}
+
 	/* *************************************************************************
 	 * Builder methods.
 	 **************************************************************************/
@@ -937,7 +966,8 @@ public final class Engine<
 			.phenotypeValidator(_validator)
 			.populationSize(getPopulationSize())
 			.survivorsSelector(_survivorsSelector)
-			.individualCreationRetries(_individualCreationRetries);
+			.individualCreationRetries(_individualCreationRetries)
+			.mapping(_mapper);
 	}
 
 	/**
@@ -1067,6 +1097,7 @@ public final class Engine<
 		private Clock _clock = NanoClock.systemUTC();
 
 		private int _individualCreationRetries = 10;
+		private UnaryOperator<EvolutionResult<G, C>> _mapper = r -> r;
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
@@ -1436,6 +1467,22 @@ public final class Engine<
 		}
 
 		/**
+		 * The result mapper, which allows to change the evolution result after
+		 * each generation.
+		 *
+		 * @param mapper the evolution result mapper
+		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the given {@code resultMapper} is
+		 *         {@code null}
+		 */
+		public Builder<G, C> mapping(
+			final UnaryOperator<EvolutionResult<G, C>> mapper
+		) {
+			_mapper = requireNonNull(mapper);
+			return this;
+		}
+
+		/**
 		 * Builds an new {@code Engine} instance from the set properties.
 		 *
 		 * @return an new {@code Engine} instance from the set properties
@@ -1455,7 +1502,8 @@ public final class Engine<
 				_maximalPhenotypeAge,
 				_executor,
 				_clock,
-				_individualCreationRetries
+				_individualCreationRetries,
+				_mapper
 			);
 		}
 
@@ -1612,6 +1660,17 @@ public final class Engine<
 		}
 
 		/**
+		 * Return the evolution result mapper.
+		 *
+		 * @since 4.0
+		 *
+		 * @return the evolution result mapper
+		 */
+		public UnaryOperator<EvolutionResult<G, C>> getMapper() {
+			return _mapper;
+		}
+
+		/**
 		 * Create a new builder, with the current configuration.
 		 *
 		 * @since 3.1
@@ -1632,7 +1691,8 @@ public final class Engine<
 				.optimize(_optimize)
 				.populationSize(_populationSize)
 				.survivorsSelector(_survivorsSelector)
-				.individualCreationRetries(_individualCreationRetries);
+				.individualCreationRetries(_individualCreationRetries)
+				.mapping(_mapper);
 		}
 
 	}
