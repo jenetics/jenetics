@@ -149,7 +149,7 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew compileTestJava Sin
+    $ ./gradlew compileTestJava
 
 you can start the example by calling
 
