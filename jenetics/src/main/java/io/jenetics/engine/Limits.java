@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import io.jenetics.NumericGene;
 import io.jenetics.internal.util.require;
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
@@ -369,5 +370,32 @@ public final class Limits {
 		);
 	}
 
+
+	public static <
+		N extends Number & Comparable<? super N>,
+		G extends NumericGene<N, G>
+	>
+	Predicate<EvolutionResult<G, ?>>
+	byGeneConvergence(
+		final Predicate<DoubleMoments> convergence,
+		final double convergenceRate
+	) {
+		return new GeneConvergenceLimit<>(convergence, convergenceRate);
+	}
+
+	public static <
+		N extends Number & Comparable<? super N>,
+		G extends NumericGene<N, G>
+		>
+	Predicate<EvolutionResult<G, ?>>
+	byGeneConvergence(
+		final double geneConvergence,
+		final double convergenceRate
+	) {
+		return byGeneConvergence(
+			s -> s.getMax() > s.getMean()*geneConvergence,
+			convergenceRate
+		);
+	}
 
 }
