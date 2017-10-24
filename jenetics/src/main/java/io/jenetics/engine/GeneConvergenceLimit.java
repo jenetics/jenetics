@@ -75,7 +75,7 @@ final class GeneConvergenceLimit<
 
 	private final ISeq<DoubleMoments>
 	statistics(final Seq<? extends Phenotype<G, ?>> population) {
-		final Map<Index, DoubleMomentStatistics> statistics = new HashMap<>();
+		final Map<Long, DoubleMomentStatistics> statistics = new HashMap<>();
 
 		for (Phenotype<G, ?> pt : population) {
 			final Genotype<G> gt = pt.getGenotype();
@@ -85,7 +85,7 @@ final class GeneConvergenceLimit<
 
 				for (int j = 0; j < ch.length(); ++j) {
 					statistics
-						.computeIfAbsent(new Index(i, j),
+						.computeIfAbsent(((long)i << 32) | (j & 0xffffffffL),
 							k -> new DoubleMomentStatistics())
 						.accept(ch.getGene(j).doubleValue());
 				}
@@ -95,38 +95,6 @@ final class GeneConvergenceLimit<
 		return statistics.values().stream()
 			.map(DoubleMomentStatistics::toDoubleMoments)
 			.collect(ISeq.toISeq());
-	}
-
-	/**
-	 * Index class representing the  index pair of chromosome index and gene
-	 * index.
-	 */
-	private static final class Index {
-		final int ci;
-		final int gi;
-
-		Index(final int ci, final int gi) {
-			this.ci = ci;
-			this.gi = gi;
-		}
-
-		@Override
-		public int hashCode() {
-			return ci^gi;
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof Index &&
-				((Index)obj).ci == ci &&
-				((Index)obj).gi == gi;
-		}
-
-		@Override
-		public String toString() {
-			return format("[%d, %d]", ci, gi);
-		}
-
 	}
 
 }
