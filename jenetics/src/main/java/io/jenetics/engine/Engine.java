@@ -1114,7 +1114,7 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 */
 		public Builder<G, C> fitnessFunction(
-			Function<? super Genotype<G>, ? extends C> function
+			final Function<? super Genotype<G>, ? extends C> function
 		) {
 			_fitnessFunction = requireNonNull(function);
 			return this;
