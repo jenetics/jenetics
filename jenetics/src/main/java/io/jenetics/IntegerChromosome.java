@@ -133,9 +133,7 @@ public class IntegerChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public int[] toArray(final int[] array) {
-		final int[] a = array.length >= length() ?
-			array : new int[length()];
-
+		final int[] a = array.length >= length() ? array : new int[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = intValue(i);
 		}

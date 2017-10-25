@@ -129,9 +129,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public double[] toArray(final double[] array) {
-		final double[] a = array.length >= length() ?
-			array : new double[length()];
-
+		final double[] a = array.length >= length() ? array : new double[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = doubleValue(i);
 		}
