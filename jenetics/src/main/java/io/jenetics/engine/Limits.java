@@ -385,7 +385,7 @@ public final class Limits {
 		final double convergenceRate
 	) {
 		return byGeneConvergence(
-			s -> s.getMax() > s.getMean()*geneConvergence,
+			s -> s.getMax()*geneConvergence <= s.getMean(),
 			convergenceRate
 		);
 	}

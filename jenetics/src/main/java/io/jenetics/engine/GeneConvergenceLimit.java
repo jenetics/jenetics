@@ -73,10 +73,10 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 
 		return stat.stream()
 			.filter(_convergence)
-			.count() < _convergenceRate*stat.size();
+			.count() <= _convergenceRate*stat.size();
 	}
 
-	private ISeq<DoubleMoments>
+	static <G extends NumericGene<?, G>> ISeq<DoubleMoments>
 	statistics(final Seq<? extends Phenotype<G, ?>> population) {
 		final Map<Long, DoubleMomentStatistics> statistics = new HashMap<>();
 
