@@ -26665,11 +26665,84 @@ https://de.wikipedia.org/wiki/Monte-Carlo-Simulation
  GA library, but it has no dependency to it.
  All PRNG implementations of this library extends the Java Random class,
  which makes it easily usable in other projects.
-\emph on
-The implemented PRNGs are not cryptographically strong RNGs.
 
-\emph default
- The io.jenetics.prngine module consists of the following PRNG implementations:
+\emph on
+ 
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The pseudo random number generators of the 
+\family typewriter
+io.\SpecialChar softhyphen
+jenetics.\SpecialChar softhyphen
+prngine
+\family sans
+ module are 
+\series bold
+not
+\series default
+ cryptographically strong PRNGs.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The
+\family typewriter
+ io.\SpecialChar softhyphen
+jenetics.\SpecialChar softhyphen
+prngine
+\family default
+ module consists of the following PRNG implementations:
 \end_layout
 
 \begin_layout Description
@@ -26689,7 +26762,11 @@ key "GoodPRNGPractice"
 
 \end_inset
 
+ The period of this PRNG is 
+\begin_inset Formula $\approx2.6\cdot10^{36}$
+\end_inset
 
+.
 \end_layout
 
 \begin_layout Description
@@ -26709,7 +26786,11 @@ key "GoodPRNGPractice"
 
 \end_inset
 
+ The PRNG has a period of 
+\begin_inset Formula $\approx1.8\cdot10^{75}$
+\end_inset
 
+.
 \end_layout
 
 \begin_layout Description
