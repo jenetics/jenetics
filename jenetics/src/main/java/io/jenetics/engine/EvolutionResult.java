@@ -506,7 +506,7 @@ public final class EvolutionResult<
 	 * }</pre>
 	 *
 	 * @since 4.0
-	 * @see Engine.Builder#mapping(UnaryOperator)
+	 * @see Engine.Builder#mapping(Function)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param maxRetries the maximal number of genotype creation tries
@@ -578,7 +578,7 @@ public final class EvolutionResult<
 	 * }</pre>
 	 *
 	 * @since 4.0
-	 * @see Engine.Builder#mapping(UnaryOperator)
+	 * @see Engine.Builder#mapping(Function)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param <G> the gene type
@@ -606,11 +606,51 @@ public final class EvolutionResult<
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
+	 *     .collect(EvolutionResult.toBestGenotype(5));
+	 * }</pre>
+	 *
+	 * @since 4.0
+	 * @see Engine.Builder#mapping(Function)
+	 *
+	 * @param maxRetries the maximal number of genotype creation tries
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return  a mapping function, which removes duplicate individuals from the
+	 *          population
+	 * @throws NullPointerException if the given genotype {@code factory} is
+	 *         {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	UnaryOperator<EvolutionResult<G, C>> toUniquePopulation(final int maxRetries) {
+		return result -> {
+			final Factory<Genotype<G>> factory = result
+				.getPopulation().get(0)
+				.getGenotype();
+
+			final UnaryOperator<EvolutionResult<G, C>> unifier =
+				toUniquePopulation(factory, maxRetries);
+
+			return unifier.apply(result);
+		};
+	}
+
+	/**
+	 * Return a mapping function, which removes duplicate individuals from the
+	 * population and replaces it with newly created one by the existing
+	 * genotype factory.
+	 *
+	 * <pre>{@code
+	 * final Problem<Double, DoubleGene, Integer> problem = ...;
+	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	 *     .mapping(EvolutionResult.toUniquePopulation())
+	 *     .build();
+	 * final Genotype<DoubleGene> best = engine.stream()
+	 *     .limit(100);
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
 	 * @since 4.0
-	 * @see Engine.Builder#mapping(UnaryOperator)
+	 * @see Engine.Builder#mapping(Function)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
