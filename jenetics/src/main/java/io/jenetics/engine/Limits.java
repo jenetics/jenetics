@@ -371,11 +371,7 @@ public final class Limits {
 	}
 
 
-	public static <
-		N extends Number & Comparable<? super N>,
-		G extends NumericGene<N, G>
-	>
-	Predicate<EvolutionResult<G, ?>>
+	public static <G extends NumericGene<?, G>> Predicate<EvolutionResult<G, ?>>
 	byGeneConvergence(
 		final Predicate<DoubleMoments> convergence,
 		final double convergenceRate
@@ -383,11 +379,7 @@ public final class Limits {
 		return new GeneConvergenceLimit<>(convergence, convergenceRate);
 	}
 
-	public static <
-		N extends Number & Comparable<? super N>,
-		G extends NumericGene<N, G>
-		>
-	Predicate<EvolutionResult<G, ?>>
+	public static <G extends NumericGene<?, G>> Predicate<EvolutionResult<G, ?>>
 	byGeneConvergence(
 		final double geneConvergence,
 		final double convergenceRate
