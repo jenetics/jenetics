@@ -18979,7 +18979,8 @@ Termination is the criterion by which the evolution stream decides whether
  or truncating the evolution stream, respectively.
  The
 \family typewriter
- EvolutionStream
+ Evolution\SpecialChar softhyphen
+Stream
 \family default
  of the
 \family sans
@@ -18992,7 +18993,10 @@ Termination is the criterion by which the evolution stream decides whether
  library offers an additional method for limiting the evolution.
  With the
 \family typewriter
- limit(Predicate<EvolutionResult<G,C>>)
+ limit(Predicate<\SpecialChar softhyphen
+Evolution\SpecialChar softhyphen
+Result<G,C>\SpecialChar softhyphen
+>)
 \family default
  method it is possible to use more advanced termination strategies.
  If the predicate, given to the
@@ -19295,7 +19299,7 @@ reference "tab:Knapsack-evolution-parameters"
  shows the evolution parameters used for the termination tests.
  To make the tests comparable, all test runs uses the same evolution parameters
  and the very same set of knapsack items.
- Each termination test was repeated 1000 times, which gives us enough data
+ Each termination test was repeated 1,000 times, which gives us enough data
  to draw the given candlestick diagrams.
 \end_layout
 
@@ -19758,7 +19762,7 @@ Fitness
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
-limit
+Limits
 \family default
  class.
  In the example above, the evolution stream is terminated after 
@@ -20551,25 +20555,18 @@ A termination method that stops the evolution when the population is deemed
  best fitness of the current population.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status open
-
-\begin_layout Subsubsection
+\begin_layout Subsection
 Gene convergence
 \end_layout
 
-\begin_layout Plain Layout
-A termination method that stops the evolution when a user-specified percentage
- of the genes that make up a chromosome are deemed as converged.
+\begin_layout Standard
+This termination strategy is different, in the sense that it takes the genes
+ or alleles, respectively, for terminating the evolution stream.
+ In the gene convergence termination method the evolution stops when a user-spec
+ified percentage of the genes, that make up a genotype, are deemed as converged.
  A gene is deemed as converged when the average value of that gene across
- all of the chromosomes in the current population is less than a user-specified
- percentage away from the maximum gene value across the chromosomes.
-\end_layout
-
-\end_inset
-
-
+ all of the genotypes in the current population is less than a user-specified
+ percentage away from the maximum gene value across the genotypes.
 \end_layout
 
 \begin_layout Section
@@ -21342,9 +21339,9 @@ Selector
 \begin_inset Formula $\left(\mu,\lambda\right)$
 \end_inset
 
--ES.This has the risk, that very fit parents can defeat other individuals
- over and over again, which leads to a prematurely convergence to a local
- optimum.
+-ES.
+ This has the risk, that very fit parents can defeat other individuals over
+ and over again, which leads to a prematurely convergence to a local optimum.
 \end_layout
 
 \begin_layout Chapter
@@ -21858,7 +21855,8 @@ Harder class
 \family default
  method has been wrapped into the
 \family typewriter
- io.jenetics.\SpecialChar softhyphen
+ io.\SpecialChar softhyphen
+jenetics.\SpecialChar softhyphen
 prngine.\SpecialChar softhyphen
 internal.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
