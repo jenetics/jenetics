@@ -38,7 +38,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 {
 	private static final long serialVersionUID = 1L;
 
-	protected final IntRange _lengthRange;
+	private final IntRange _lengthRange;
 
 	/**
 	 * Create a new {@code VariableChromosome} from the given {@code genes}
