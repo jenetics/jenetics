@@ -29814,7 +29814,7 @@ dir>
 \end_layout
 
 \begin_layout LyX-Code
-$ git clone https://github.com/jenetics/jenetics.git
+$ git clone https://github.com/jenetics/jenetics.git 
 \backslash
 
 \end_layout
