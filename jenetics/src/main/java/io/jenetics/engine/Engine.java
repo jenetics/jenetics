@@ -1479,9 +1479,12 @@ public final class Engine<
 		 *         {@code null}
 		 */
 		public Builder<G, C> mapping(
-			final UnaryOperator<EvolutionResult<G, C>> mapper
+			final Function<
+				? super EvolutionResult<G, C>,
+				EvolutionResult<G, C>
+			> mapper
 		) {
-			_mapper = requireNonNull(mapper);
+			_mapper = requireNonNull(mapper::apply);
 			return this;
 		}
 
