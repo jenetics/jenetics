@@ -428,7 +428,7 @@ public final class Limits {
 	 * @param <G> the gene type
 	 * @return a new gene convergence predicate
 	 * @throws IllegalArgumentException if the {@code convergedGeneRate} or
-	 *         {@code convergenceRate}is not within the range {@code [0, 1]}
+	 *         {@code convergenceRate} are not within the range {@code [0, 1]}
 	 */
 	public static <G extends NumericGene<?, G>> Predicate<EvolutionResult<G, ?>>
 	byGeneConvergence(
