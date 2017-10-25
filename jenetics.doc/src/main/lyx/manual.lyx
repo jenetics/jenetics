@@ -16518,7 +16518,7 @@ Codec
 \family default
  factory method:
 \family typewriter
-ofScalar
+ ofScalar
 \family default
 
 \begin_inset CommandInset label
@@ -17025,7 +17025,7 @@ Codec
 \family default
  factory method:
 \family typewriter
-ofSubSet
+ ofSubSet
 \family default
 
 \begin_inset CommandInset label
@@ -17499,7 +17499,7 @@ Codec
 \family default
  factory method:
 \family typewriter
-ofPermutation
+ ofPermutation
 \family default
 
 \begin_inset CommandInset label
@@ -18660,10 +18660,7 @@ reference "subsubsec:Engine"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-If the described validation mechanism doesn't fulfill your needs, you can
+ If the described validation mechanism doesn't fulfill your needs, you can
 \emph on
  override
 \emph default
@@ -20562,11 +20559,11 @@ Gene convergence
 \begin_layout Standard
 This termination strategy is different, in the sense that it takes the genes
  or alleles, respectively, for terminating the evolution stream.
- In the gene convergence termination method the evolution stops when a user-spec
-ified percentage of the genes, that make up a genotype, are deemed as converged.
- A gene is deemed as converged when the average value of that gene across
- all of the genotypes in the current population is less than a user-specified
- percentage away from the maximum gene value across the genotypes.
+ In the gene convergence termination method the evolution stops when a specified
+ percentage of the genes of a genotype are deemed as converged.
+ A gene is treated as converged when the average value of that gene across
+ all of the genotypes in the current population is less than a given percentage
+ away from the maximum allele value across the genotypes.
 \end_layout
 
 \begin_layout Section
@@ -21342,6 +21339,278 @@ Selector
 -ES.
  This has the risk, that very fit parents can defeat other individuals over
  and over again, which leads to a prematurely convergence to a local optimum.
+\end_layout
+
+\begin_layout Section
+Evolution interception
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!interception
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionResult!interception
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionResult!mapper
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Interception
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is created, it will continuously create 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+sult
+\family default
+ objects, one for every generation.
+ It is not possible to alter the results, although it is tempting to use
+ the 
+\family typewriter
+Stream.map
+\family default
+ method for this purpose.
+ The problem with the 
+\family typewriter
+map
+\family default
+ method is, that the altered 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+sult
+\family default
+ will not be fed back to the 
+\family typewriter
+Engine
+\family default
+ when evolving the next generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+private EvolutionResult<DoubleGene, Double> 
+\end_layout
+
+\begin_layout Plain Layout
+
+mapping(EvolutionResult<DoubleGene, Double> result) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DobuleGene> result = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(this::mapping)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Doing the 
+\family typewriter
+EvolutionResult
+\family default
+ mapping as shown in the code snippet above, will only change the results
+ for the operations after the mapper definition.
+ The evolution processing of the 
+\family typewriter
+Engine
+\family default
+ is 
+\emph on
+not
+\emph default
+ affected.
+ If we want to intercept the evolution process, the mapping must be defined
+ when the 
+\family typewriter
+Engine
+\family default
+ is created.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DobuleGene, Double> engine = Engine.build(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .mapping(this::mapping)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows the correct way for intercepting the evolution
+ stream.
+ The mapper given to the 
+\family typewriter
+Engine
+\family default
+ will change the stream of 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Results
+\family default
+ and the will also feed the altered result back to the evolution 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Paragraph
+Distinct population
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Unique population
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This kind of intercepting the evolution process is very flexible.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with one predefined stream interception method, which allows to remove
+ duplicate individuals from the resulting population.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DobuleGene, Double> engine = Engine.build(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .mapping(EvolutionResult.toUniquePopulation())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Despite the de-duplication, it is still possible to have duplicate individuals.
+ This will be the case when domain of the possible 
+\family typewriter
+Genotype
+\family default
+s is not big enough and the same individual is created by chance.
+ You can control the number of 
+\family typewriter
+Genotype
+\family default
+ creation retries using the 
+\family typewriter
+EvolutionResult\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Unique\SpecialChar softhyphen
+Population(\SpecialChar softhyphen
+int\SpecialChar softhyphen
+)
+\family default
+ method, which allows you to define the maximal number of retries if an
+ individual already exists.
 \end_layout
 
 \begin_layout Chapter
