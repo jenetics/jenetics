@@ -2073,9 +2073,10 @@ io.jenetics.stat
 \begin_inset space ~
 \end_inset
 
-g .
+g.
+
 \family typewriter
-Double\SpecialChar softhyphen
+ Double\SpecialChar softhyphen
 Summary\SpecialChar softhyphen
 Statistics
 \family default
@@ -10636,7 +10637,7 @@ The parallel nature of the GA implementation requires the creation of streams
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
-,
+, 
 \begin_inset Formula $p$
 \end_inset
 
@@ -17950,9 +17951,9 @@ static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 \begin_layout Plain Layout
 Composite
 \family typewriter
-Codec
+ Codec
 \family default
- factory method 
+ factory method
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:Composite-Codec-factory"
@@ -20601,11 +20602,11 @@ name "fig:Fitness-convergence-diagram-10-30"
 
 \end_inset
 
-Fitness convergence termination:
+Fitness convergence termination: 
 \begin_inset Formula $N_{S}=10$
 \end_inset
 
-,
+, 
 \begin_inset Formula $N_{L}=30$
 \end_inset
 
@@ -20668,7 +20669,7 @@ Fitness convergence termination:
 \begin_inset Formula $N_{S}=50$
 \end_inset
 
-,
+, 
 \begin_inset Formula $N_{L}=150$
 \end_inset
 
@@ -21443,7 +21444,7 @@ final Engine<DoubleGene, Double> engine =
 
 
 \family typewriter
-Engine
+ Engine
 \family default
  configuration
 \begin_inset CommandInset label
@@ -23692,7 +23693,7 @@ name "lis:Example-TreeNode"
 
 Example
 \family typewriter
-TreeNode
+ TreeNode
 \end_layout
 
 \end_inset
@@ -25271,7 +25272,7 @@ name "lis:GP-Op-interface"
 
 GP
 \family typewriter
-Op
+ Op
 \family default
  interface
 \end_layout
@@ -29736,7 +29737,7 @@ name "lis:Default-engine.properties"
 
 Default
 \family typewriter
-engine.properties
+ engine.properties
 \end_layout
 
 \end_inset
