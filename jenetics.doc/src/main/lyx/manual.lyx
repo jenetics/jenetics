@@ -52,7 +52,9 @@
 %\definecolor{covercolor}{RGB}{25,200,255}
 %\definecolor{covercolor}{RGB}{202,232,255}
 %\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
-\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
+
+%\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
+\definecolor{covercolor}{RGB}{13,126,168}
 
 \newunicodechar{Σ}{\lstsum}
 
