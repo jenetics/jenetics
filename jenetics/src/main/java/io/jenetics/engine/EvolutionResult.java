@@ -602,7 +602,7 @@ public final class EvolutionResult<
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	 *     .mapping(EvolutionResult.toUniquePopulation())
+	 *     .mapping(EvolutionResult.toUniquePopulation(10))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
