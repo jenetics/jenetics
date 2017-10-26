@@ -520,7 +520,7 @@ http://jenetics.io
 \align center
 
 \size footnotesize
-This work is licensed under a
+This work is licensed under a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
@@ -539,7 +539,7 @@ License
 \end_inset
 
  Attribution-ShareAlike 3.0 Austria License.
- To view a copy of this license, visit
+ To view a copy of this license, visit 
 \begin_inset Flex URL
 status collapsed
 
