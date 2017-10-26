@@ -1703,7 +1703,8 @@ Start
 
  the
 \family typewriter
- Evolution\SpecialChar softhyphen
+ Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
 Result
 \family default
  at the 
@@ -2104,7 +2105,8 @@ eq) which are used in the public interfaces of the
 \family default
  and
 \family typewriter
- Genotype
+ Geno\SpecialChar softhyphen
+type
 \family default
 .
  It also contains the
@@ -2118,7 +2120,8 @@ Registry
 \family default
  classes for serializing
 \family typewriter
- Genotype
+ Geno\SpecialChar softhyphen
+type
 \family default
 s and whole populations.
 \end_layout
@@ -2218,7 +2221,8 @@ classes This classes operates on the domain classes and includes the
  classes.
  They are also located in the
 \family typewriter
- io.jenetics
+ io.jen\SpecialChar softhyphen
+etics
 \family default
  package.
 \end_layout
@@ -2847,6 +2851,146 @@ s.
  Gene
 \family default
  sequence.
+\end_layout
+
+\begin_layout Standard
+Most of the 
+\family typewriter
+Chromosome
+\family default
+ implementations can be created with variable length.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ the 
+\family typewriter
+Integer\SpecialChar softhyphen
+Chromosome
+\family default
+ can be created with variable length, where the minimum value of the length
+ range is 
+\emph on
+included
+\emph default
+ and the maximum value of the length range is 
+\emph on
+excluded
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+IntegerChromosome chromosome = IntegerChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    0, 1_000, IntRange.of(5, 9)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The factory method of the 
+\family typewriter
+Integer\SpecialChar softhyphen
+Chromosome
+\family default
+ will now create chromosome instances with a length between 
+\begin_inset Formula $\left[range_{min},range_{max}\right)$
+\end_inset
+
+, equally distributed.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Chromosome-structure"
+
+\end_inset
+
+ shows the structure of a 
+\family typewriter
+Chromosome
+\family default
+ with variable length.
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome!variable length
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/Chromosome.eps
+	width 48text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Chromosome-structure"
+
+\end_inset
+
+
+\family typewriter
+Chromosome
+\family default
+ structure
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Chromosome
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -4738,7 +4882,7 @@ where
 \begin_inset Formula $k$
 \end_inset
 
- the number of individual
+ the number of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -4796,7 +4940,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is used to calculate the selection probability of individual
+ is used to calculate the selection probability of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -6951,7 +7095,9 @@ Function
 \family default
  as argument and returns, at least, a
 \family typewriter
- Comparable
+ Compar\SpecialChar softhyphen
+ab\SpecialChar softhyphen
+le
 \family default
  object as result—the fitness value.
  This allows the evolution
@@ -6965,7 +7111,8 @@ Function
 .
  Some selectors have stronger requirements to the fitness value than a
 \family typewriter
- Comparable
+ Compar\SpecialChar softhyphen
+able
 \family default
 , but this constraints is checked by the Java type system at compile time.
 \end_layout
@@ -8783,7 +8930,8 @@ Result
 \family default
  of a 
 \family typewriter
-Evolution\SpecialChar softhyphen
+Evolu\SpecialChar softhyphen
+tion\SpecialChar softhyphen
 Stream
 \family default
  according to the defined optimization strategy.
@@ -9826,7 +9974,8 @@ Concurrency!splitThreshold
 \family typewriter
  split\SpecialChar softhyphen
 Thre\SpecialChar softhyphen
-shold
+sh\SpecialChar softhyphen
+old
 \family default
 , the size of the evaluated sub-population is dynamically determined by
  the
@@ -18930,7 +19079,8 @@ Creating your own
 \family default
  and
 \family typewriter
- Alter\SpecialChar softhyphen
+ Alt\SpecialChar softhyphen
+er\SpecialChar softhyphen
 er
 \family default
  classes is the most heavy-wighted possibility for solving the
@@ -23454,7 +23604,7 @@ reference "fig:Example-tree"
 \end_inset
 
 .
- The example tree consists of
+ The example tree consists of 
 \begin_inset Formula $12$
 \end_inset
 
@@ -28142,7 +28292,11 @@ j.u.Random
 \begin_layout Plain Layout
 
 \family typewriter
-j.u.c.ThreadLocalRandom
+j.u.c.
+\shape italic
+TL
+\shape default
+Random
 \end_layout
 
 \end_inset
@@ -28201,7 +28355,7 @@ name "tab:PRNG-creation-speed"
 
 \end_inset
 
-PRNG creation speed
+PRNG speed
 \end_layout
 
 \end_inset
