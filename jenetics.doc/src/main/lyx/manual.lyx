@@ -23475,7 +23475,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public T getValue();
+    public V getValue();
 \end_layout
 
 \begin_layout Plain Layout
