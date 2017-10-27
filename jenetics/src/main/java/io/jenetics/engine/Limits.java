@@ -441,4 +441,20 @@ public final class Limits {
 		);
 	}
 
+    /**
+     * A termination method that stops the evolution when the fitness
+     * equals (comparator result is 0) the target fitness.
+     * If the fitness is null then evolution does not stop
+     *
+     * @since 4.0
+     *
+     * @param targetFitness when the fitness will reach this value the evolution will be stopped
+     * @param <N> the fitness type
+     * @return a new fitness convergence strategy
+     * @throws NullPointerException if the {@code targetFitness} is null
+     */
+    public static <N extends Number & Comparable<? super N>> Predicate<EvolutionResult<?, N>> byTargetFitness(N targetFitness) {
+        return new TargetFitnessLimit<>(targetFitness);
+    }
+
 }
