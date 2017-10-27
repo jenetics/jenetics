@@ -1,14 +1,18 @@
 # Jenetics
 
-![Build Status](https://img.shields.io/shippable/56b517d81895ca44747375cf.svg?label=master+build&successLabel=success)
+[![Build Status](https://travis-ci.org/jenetics/jenetics.svg?branch=master)](https://travis-ci.org/jenetics/jenetics)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.jenetics/jenetics/badge.svg)](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/io.jenetics/jenetics/badge.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics)
 
 **Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm** and **Genetic Programming** library, respectively, written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
+**Other languages**
+
+* [**Jenetics.Net**](https://github.com/rmeindl/jenetics.net): Experimental .NET Core port in C# of the base library. 
+
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/3.9/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-3.9.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.0.0.pdf)).
 
 
 ## Requirements
@@ -25,13 +29,13 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/3
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v3.9.0/jenetics-3.9.0.zip>
+* **Github**: <https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip>
 *  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `io.jenetics:jenetics:3.9.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
+*  **Maven**: `io.jenetics:jenetics:4.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v3.9.0/jenetics-3.9.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -43,12 +47,12 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 
 **Published projects**
 
-The follwing projects/modules are also published to Maven.
+The following projects/modules are also published to Maven.
 
-* **jenetics**: This project contains the source code and tests for the Jenetics core-module.
-* **jenetics.ext**: This module contains additional _non_-standard GA operations and data types.
-* **jenetics.prog**: The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
-* **jenetics.xml**: XML marshalling module for the _Jenetics_ base data structures.
+* **[jenetics](jenetics)**: This project contains the source code and tests for the Jenetics core-module.
+* **[jenetics.ext](jenetics.ext)**: This module contains additional _non_-standard GA operations and data types.
+* **[jenetics.prog](jenetics.prog)**: The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
+* **[jenetics.xml](jenteics,xml)**: XML marshalling module for the _Jenetics_ base data structures.
 
 **Non-published projects**
 
@@ -70,24 +74,6 @@ For building the library jar from the source call
     $ ./gradlew jar
 
 
-**IDE Integration**
-
-Gradle has tasks which creates the project file for Eclipse and IntelliJ IDEA. Call
-
-    $ ./gradlew [eclipse|idea]
-
-for creating the project files for Eclipse or IntelliJ, respectively. Whereas the latest version of [IntelliJ IDEA](https://www.jetbrains.com/idea/) has decent native Gradle support.
-
-The latest Eclipse version (4.4.2) has problems compiling some _valid_ lambda expressions; e.g. the `HelloWorld::eval` function in the example below. If you have such problems when trying to compile the library with Eclipse, you can fix this by adding an explicit cast to the method reference:
-
-```java
-Engine
-    .builder((Function<Genotype<BitGene>, Integer>)HelloWorld::eval, gtf)
-    .build();
-```
-
- Or you are using [IntelliJ](https://www.jetbrains.com/idea/download/) instead.
-
 ## Example
 
 ### Hello World (Ones counting)
@@ -95,12 +81,12 @@ Engine
 The minimum evolution Engine setup needs a genotype factory, `Factory<Genotype<?>>`, and a fitness `Function`. The `Genotype` implements the `Factory` interface and can therefore be used as prototype for creating the initial `Population` and for creating new random `Genotypes`.
 
 ```java
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.Genotype;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.util.Factory;
+import io.jenetics.BitChromosome;
+import io.jenetics.BitGene;
+import io.jenetics.Genotype;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.util.Factory;
 
 public class HelloWorld {
     // 2.) Definition of the fitness function.
@@ -147,18 +133,27 @@ In contrast to other GA implementations, the library uses the concept of an evol
 
 This example tries to approximate a given image by semitransparent polygons.  It comes with an Swing UI, where you can immediately start your own experiments. After compiling the sources with
 
-    $ ./gradlew compileTestJava Sin
+    $ ./gradlew compileTestJava
 
 you can start the example by calling
 
-    $ ./jrun org.jenetics.example.image.EvolvingImages
+    $ ./jrun io.jenetics.example.image.EvolvingImages
 
-![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/org.jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
+![Evolving images](https://raw.githubusercontent.com/jenetics/jenetics/master/jenetics.doc/src/main/resources/graphic/EvolvingImagesExampleScreenShot.png)
 
 The previous image shows the GUI after evolving the default image for about 4,000 generations. With the »Open« button it is possible to load other images for polygonization. The »Save« button allows to store polygonized images in PNG format to disk. At the button of the UI, you can change some of the GA parameters of the example.
 
+
+## Projects using Jenetics
+
+* <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
+* <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
+
 ## Citations
 
+* Michael Trotter, Guyue Liu, Timothy Wood. <a href="http://ieeexplore.ieee.org/abstract/document/8064120/">Into the Storm: Descrying Optimal Configurations Using Genetic Algorithms and Bayesian Optimization. </a> <em>2017 IEEE 2nd International Workshops on Foundations and Applications of Self* Systems (FAS*W).</em> Sep. 2017.
+* Cuadra P., Krawczyk L., Höttger R., Heisig P., Wolff C. <a href="https://link.springer.com/chapter/10.1007/978-3-319-67642-5_30">Automated Scheduling for Tightly-Coupled Embedded Multi-core Systems Using Hybrid Genetic Algorithms. </a> <em>Information and Software Technologies: 23rd International Conference, ICIST 2017, Druskininkai, Lithuania.</em> Communications in Computer and Information Science, vol 756. Springer, Cham, Sep. 2017
+* Abraão G. Nazário, Fábio R. A. Silva, Raimundo Teive, Leonardo Villa, Antônio Flávio, João Zico, Eire Fragoso, Ederson F. Souza. <a href="http://siaiap32.univali.br/seer/index.php/acotb/article/view/10579/5933">Automação Domótica Simulada Utilizando Algoritmo Genético Especializado na Redução do Consumo de Energia. </a> <em>Computer on the Beach 2017</em> pp. 180-189, March 2017.
 * Bandaru, S. and Deb, K. <a href="http://dx.doi.org/10.1201/9781315183176-12">Metaheuristic Techniques.</a> <em>Decision Sciences.</em> CRC Press, pp. 693-750, Nov. 2016.
 * Lyazid Toumi, Abdelouahab Moussaoui, and Ahmet Ugur. <a href="http://dx.doi.org/10.1145/2816839.2816876">EMeD-Part: An Efficient Methodology for Horizontal Partitioning in Data Warehouses.</a> <em>Proceedings of the International Conference on Intelligent Information Processing, Security and Advanced Communication.</em> Djallel Eddine Boubiche, Faouzi Hidoussi, and Homero Toral Cruz (Eds.). ACM, New York, NY, USA, Article 43, 7 pages, 2015.
 * Andreas Holzinger (Editor), Igo Jurisica (Editor). <a href="http://www.springer.com/computer/database+management+%26+information+retrieval/book/978-3-662-43967-8">Interactive Knowledge Discovery and Data Mining in Biomedical Informatics.</a> <em>Lecture Notes in Computer Science, Vol. 8401.</em> <a href="http://www.springer.com">Springer</a>, 2014.
@@ -194,6 +189,12 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### [4.0.0](https://github.com/jenetics/jenetics/releases/tag/v4.0.0)
+
+#### Improvements
+
+#### Bugs
 
 ### [3.9.0](https://github.com/jenetics/jenetics/releases/tag/v3.9.0)
 
