@@ -22,29 +22,41 @@ package io.jenetics.engine;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import static java.lang.String.format;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.Alterer;
+import io.jenetics.BoltzmannSelector;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
+import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
+import io.jenetics.LongChromosome;
 import io.jenetics.Mutator;
 import io.jenetics.Optimize;
 import io.jenetics.RouletteWheelSelector;
+import io.jenetics.Selector;
+import io.jenetics.SwapMutator;
+import io.jenetics.TournamentSelector;
+import io.jenetics.TruncationSelector;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
@@ -92,7 +104,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.
@@ -102,7 +114,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
-			.limit(limit.bySteadyFitness(10))
+			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -124,7 +136,7 @@ public class EngineTest {
 		// Problem definition.
 		final Problem<Double, DoubleGene, Double> problem = Problem.of(
 			x -> cos(0.5 + sin(x))*cos(x),
-			codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
 		);
 
 		// Define the GA engine.
@@ -134,7 +146,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> interimResult = engine.stream()
-			.limit(limit.bySteadyFitness(10))
+			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		engine.builder()
@@ -162,7 +174,7 @@ public class EngineTest {
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(limit.byFixedGeneration(generations))
+			.limit(Limits.byFixedGeneration(generations))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
@@ -210,6 +222,35 @@ public class EngineTest {
 	}
 
 	@Test
+	public void toUniquePopulation() {
+		final int populationSize = 100;
+
+		final Engine<IntegerGene, Integer> engine = Engine
+			.builder(a -> a.getGene().getAllele(), IntegerChromosome.of(0, 10))
+			.populationSize(populationSize)
+			.mapping(EvolutionResult.toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))))
+			.build();
+
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
+			.limit(10)
+			.peek(r -> {
+				if (r.getGenotypes().stream().collect(Collectors.toSet()).size() !=
+					populationSize)
+				{
+					throw new AssertionError(format(
+						"Expected unique population size %d, but got %d.",
+						populationSize,
+						r.getGenotypes().stream().collect(Collectors.toSet()).size()
+					));
+				}
+			})
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(result.getPopulation().size(), populationSize);
+	}
+
+	@Test
 	public void parallelStream() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
@@ -217,7 +258,7 @@ public class EngineTest {
 
 		final EvolutionResult<DoubleGene, Double> result = engine
 			.stream()
-			.limit(limit.byFixedGeneration(1000))
+			.limit(Limits.byFixedGeneration(1000))
 			.parallel()
 			.collect(EvolutionResult.toBestEvolutionResult());
 
@@ -226,6 +267,88 @@ public class EngineTest {
 			"Total generation must be bigger than 1000: " +
 			result.getTotalGenerations()
 		);
+	}
+
+	@Test
+	public void variableDoubleSum() {
+		final Problem<int[], IntegerGene, Integer> problem = Problem.of(
+			array -> IntStream.of(array).sum(),
+			Codec.of(
+				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
+				gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+			)
+		);
+		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
+			.alterers(
+				new Mutator<>(),
+				new SwapMutator<>())
+			.selector(new TournamentSelector<>())
+			.minimizing()
+			.build();
+
+		final int[] result = problem.codec().decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(result.length < 50, "result length: " + result.length);
+		//System.out.println(result.length);
+		//System.out.println(Arrays.toString(result));
+	}
+
+	@Test(dataProvider = "engineParams")
+	public <G extends Gene<?, G>> void variableLengthChromosomes(
+		final Genotype<G> gtf,
+		final Alterer<G, Double> alterer,
+		final Selector<G, Double> selector
+	) {
+		final Random random = new Random(123);
+		final Engine<G, Double> engine = Engine
+			.builder(gt -> random.nextDouble(), gtf)
+			.alterers(alterer)
+			.selector(selector)
+			.build();
+
+		final EvolutionResult<G, Double> result = engine.stream()
+			.limit(50)
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	@DataProvider(name = "engineParams")
+	public Object[][] engineParams() {
+		return new Object[][] {
+			{
+				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(DoubleChromosome.of(0, 1, IntRange.of(2, 10))),
+				new SwapMutator<>(),
+				new TruncationSelector<>()
+			},
+			{
+				Genotype.of(IntegerChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new RouletteWheelSelector<>()
+			},
+			{
+				Genotype.of(LongChromosome.of(0, 1, IntRange.of(2, 10))),
+				new Mutator<>(),
+				new BoltzmannSelector<>()
+			}
+		};
 	}
 
 	// https://github.com/jenetics/jenetics/issues/47
@@ -283,6 +406,54 @@ public class EngineTest {
 			{new ForkJoinPool(1)},
 			{new ForkJoinPool(10)}
 		};
+	}
+
+	// https://github.com/jenetics/jenetics/issues/234
+	@Test
+	public void constantPopulationForZeroSurvivors() {
+		final int populationSize = 20;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.survivorsSize(0)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(100)
+			.peek(r -> {
+				if (r.getPopulation().size() != populationSize) {
+					throw new AssertionError(format(
+						"Expected population size %d, but got %d.",
+						populationSize, r.getPopulation().size()
+					));
+				}
+			})
+			.collect(EvolutionResult.toBestEvolutionResult());
+	}
+
+	// https://github.com/jenetics/jenetics/issues/234
+	@Test
+	public void constantPopulationForZeroOffspring() {
+		final int populationSize = 20;
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.offspringSize(0)
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(100)
+			.peek(r -> {
+				if (r.getPopulation().size() != populationSize) {
+					throw new AssertionError(format(
+						"Expected population size %d, but got %d.",
+						populationSize, r.getPopulation().size()
+					));
+				}
+			})
+			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
 }

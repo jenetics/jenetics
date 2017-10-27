@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.base;
+import io.jenetics.internal.math.comb;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -115,7 +115,7 @@ public class PermutationChromosomeTest
 			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(comb.subset(100, 10))
 			.mapToObj(i -> EnumGene.of(i, alleles))
 			.collect(ISeq.toISeq());
 
@@ -130,7 +130,7 @@ public class PermutationChromosomeTest
 			.mapToObj(Integer::valueOf)
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(base.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(comb.subset(100, 10))
 			.mapToObj(i -> EnumGene.of(i%3, alleles))
 			.collect(ISeq.toISeq());
 

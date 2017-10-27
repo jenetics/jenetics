@@ -29,7 +29,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -91,7 +91,7 @@ public class Game {
 
 		final Player best = codec.decode(
 			engine.stream()
-				.limit(limit.bySteadyFitness(50))
+				.limit(Limits.bySteadyFitness(50))
 				.peek(er -> population.set(er.getPopulation()))
 				.collect(EvolutionResult.toBestGenotype())
 		);

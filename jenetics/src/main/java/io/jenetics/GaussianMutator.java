@@ -21,13 +21,10 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.math.base.clamp;
-import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
 import io.jenetics.internal.util.Hash;
-import io.jenetics.util.MSeq;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
@@ -63,15 +60,7 @@ public final class GaussianMutator<
 	}
 
 	@Override
-	protected int mutate(final MSeq<G> genes, final double p) {
-		final Random random = RandomRegistry.getRandom();
-
-		return (int)indexes(random, genes.length(), p)
-			.peek(i -> genes.set(i, mutate(genes.get(i), random)))
-			.count();
-	}
-
-	G mutate(final G gene, final Random random) {
+	protected G mutate(final G gene, final Random random) {
 		final double min = gene.getMin().doubleValue();
 		final double max = gene.getMax().doubleValue();
 		final double std = (max - min)*0.25;

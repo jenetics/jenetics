@@ -19,16 +19,19 @@
  */
 package io.jenetics;
 
+import static java.lang.String.format;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -68,6 +71,30 @@ public class IntegerChromosomeTest
 			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
 			assertUniformDistribution(histogram);
 		});
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void chromosomeLength(
+		final IntegerChromosome dc,
+		final IntRange length
+	) {
+		Assert.assertTrue(
+			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			format("Chromosome length %s not in range %s.", dc.length(), length)
+		);
+	}
+
+	@DataProvider(name = "chromosomes")
+	public Object[][] chromosomes() {
+		return new Object[][] {
+			{IntegerChromosome.of(0, 1000), IntRange.of(1)},
+			{IntegerChromosome.of(IntRange.of(0, 1000)), IntRange.of(1)},
+			{IntegerChromosome.of(0, 1000, 1), IntRange.of(1)},
+			{IntegerChromosome.of(0, 1000, 2), IntRange.of(2)},
+			{IntegerChromosome.of(0, 1000, 20), IntRange.of(20)},
+			{IntegerChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
+			{IntegerChromosome.of(IntRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
+		};
 	}
 
 }

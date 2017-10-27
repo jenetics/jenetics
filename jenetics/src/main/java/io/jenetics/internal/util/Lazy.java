@@ -19,6 +19,7 @@
  */
 package io.jenetics.internal.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -97,7 +98,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
     @Override
     public String toString() {
-        return Objects.toString(get());
+		return format("Lazy[%s]", _evaluated ? get() : "?");
     }
 
 	/**

@@ -169,7 +169,7 @@ class SetupPlugin extends JeneticsPlugin {
 			doLast {
 				project.copy {
 					from('src/main/java') {
-						include 'org/**/doc-files/*.*'
+						include 'io/**/doc-files/*.*'
 					}
 					includeEmptyDirs = false
 					into destinationDir.path

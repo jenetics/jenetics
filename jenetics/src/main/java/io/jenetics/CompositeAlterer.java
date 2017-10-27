@@ -71,18 +71,18 @@ final class CompositeAlterer<
 	}
 
 	@Override
-	public AlterResult<G, C> alter(
+	public AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		AlterResult<G, C> result = AlterResult.of(population.asISeq());
+		AltererResult<G, C> result = AltererResult.of(population.asISeq());
 		for (Alterer<G, C> alterer : _alterers) {
-			final AlterResult<G, C> as = alterer.alter(
+			final AltererResult<G, C> as = alterer.alter(
 				result.getPopulation(),
 				generation
 			);
 
-			result = AlterResult.of(
+			result = AltererResult.of(
 				as.getPopulation(),
 				as.getAlterations() + result.getAlterations()
 			);

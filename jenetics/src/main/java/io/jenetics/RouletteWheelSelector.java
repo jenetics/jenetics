@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.statistics.min;
+import static io.jenetics.stat.DoubleSummary.min;
 
 import java.util.Arrays;
 
@@ -62,7 +62,7 @@ public class RouletteWheelSelector<
 		final int count
 	) {
 		assert population != null : "Population must not be null. ";
-		assert !population.isEmpty() : "Population is empty.";
+		assert population.nonEmpty() : "Population is empty.";
 		assert count > 0 : "Population to select must be greater than zero. ";
 
 		// Copy the fitness values to probabilities arrays.

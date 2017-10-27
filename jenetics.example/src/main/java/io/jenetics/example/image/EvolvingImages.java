@@ -83,7 +83,7 @@ public final class EvolvingImages extends JFrame {
 	private void init() {
 		setIconImage(
 			Toolkit.getDefaultToolkit().getImage(getClass().getResource(
-				"/org/jenetics/example/image/monalisa.png"))
+				"/io/jenetics/example/image/monalisa.png"))
 		);
 
 		origImagePanel.add(_imagePanel);
@@ -104,7 +104,7 @@ public final class EvolvingImages extends JFrame {
 
 		try (InputStream in = getClass()
 			.getClassLoader()
-			.getResourceAsStream("org/jenetics/example/image/monalisa.png"))
+			.getResourceAsStream("io/jenetics/example/image/monalisa.png"))
 		{
 			update(ImageIO.read(in));
 		} catch (IOException e) {
@@ -471,7 +471,7 @@ public final class EvolvingImages extends JFrame {
 	}
 
 	private static Preferences appPref() {
-		return Preferences.userRoot().node("org/jenetics/example/image");
+		return Preferences.userRoot().node("io/jenetics/example/image");
 	}
 
 	private static void prefFlush() {

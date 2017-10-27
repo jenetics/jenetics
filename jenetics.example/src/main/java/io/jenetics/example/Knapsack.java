@@ -22,7 +22,7 @@ package io.jenetics.example;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -38,10 +38,10 @@ import io.jenetics.RouletteWheelSelector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
 import io.jenetics.example.Knapsack.Item;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -165,7 +165,7 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 	 * @throws NullPointerException if the {@code items} set is {@code null}
 	 */
 	public Knapsack(final ISeq<Item> items, final double knapsackSize) {
-		_codec = codecs.ofSubSet(items);
+		_codec = Codecs.ofSubSet(items);
 		_knapsackSize = knapsackSize;
 	}
 

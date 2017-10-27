@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
@@ -102,7 +103,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 */
 	public default MSeq<T> setAll(final T[] values) {
-		for (int i = 0, n = length(); i < n && i < values.length; ++i) {
+		for (int i = 0, n = min(length(), values.length); i < n; ++i) {
 			set(i, values[i]);
 		}
 		return this;
@@ -175,6 +176,23 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 				other.set(otherStart + i, temp);
 			}
 		}
+	}
+
+	/**
+	 * Swap the elements at the same position.
+	 *
+	 * @since 4.0
+	 *
+	 * @param index the index of swapped element.
+	 * @param other the other array to swap the elements with.
+	 * @throws IndexOutOfBoundsException if
+	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
+	 * @throws NullPointerException if the {@code other} sequence is {@code null}
+	 */
+	default void swap(final int index, final MSeq<T> other) {
+		final T temp = get(index);
+		set(index, other.get(index));
+		other.set(index, temp);
 	}
 
 	/**
@@ -539,7 +557,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return an new {@code MSeq} with the given values
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> MSeq<T> of(final Seq<T> values) {
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> of(final Seq<? extends T> values) {
 		return values instanceof MSeq<?>
 			? ((MSeq<T>)values).copy()
 			: MSeq.<T>ofLength(values.length()).setAll(values);

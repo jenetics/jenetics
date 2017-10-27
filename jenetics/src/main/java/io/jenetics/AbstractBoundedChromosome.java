@@ -26,6 +26,7 @@ import java.io.Serializable;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 
 /**
  * Abstract chromosome for {@code BoundedGene}s.
@@ -38,7 +39,7 @@ abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
 	G extends AbstractBoundedGene<A, G>
 >
-	extends AbstractChromosome<G>
+	extends VariableChromosome<G>
 	implements BoundedChromosome<A, G>, Serializable
 {
 
@@ -58,11 +59,18 @@ abstract class AbstractBoundedChromosome<
 	 * Create a new chromosome from the given genes array.
 	 *
 	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty or doesn't match with the allowed length range.
+	 * @throws IllegalArgumentException if the minimum or maximum of the range
+	 *         is smaller or equal zero
+	 * @throws IllegalArgumentException if the given range size is zero
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected AbstractBoundedChromosome(final ISeq<? extends G> genes) {
-		super(genes);
+	protected AbstractBoundedChromosome(
+		final ISeq<? extends G> genes,
+		final IntRange lengthRange
+	) {
+		super(genes, lengthRange);
 		_min = genes.get(0)._min;
 		_max = genes.get(0)._max;
 	}

@@ -49,7 +49,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		final Genotype<DoubleGene> gt = _factory.newInstance();
 
 		Assert.assertEquals(factory.length(), gt.length());
-		Assert.assertEquals(factory.getNumberOfGenes(), gt.getNumberOfGenes());
+		Assert.assertEquals(factory.geneCount(), gt.geneCount());
 		for (int i = 0; i < factory.length(); ++i) {
 			Assert.assertEquals(
 				factory.getChromosome(i).length(),
@@ -99,7 +99,7 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 			DoubleChromosome.of(0.0, 10.0, 9),
 			DoubleChromosome.of(0.1, 0.9, 5)
 		);
-		Assert.assertEquals(genotype.getNumberOfGenes(), 32);
+		Assert.assertEquals(genotype.geneCount(), 32);
     }
 
 	@Test

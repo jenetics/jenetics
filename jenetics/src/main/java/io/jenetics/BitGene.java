@@ -26,6 +26,8 @@ import io.jenetics.util.RandomRegistry;
 /**
  * Implementation of a BitGene.
  *
+ * @see BitChromosome
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

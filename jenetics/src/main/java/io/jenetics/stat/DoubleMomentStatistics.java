@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleConsumer;
@@ -68,7 +66,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 4.0
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -94,8 +92,8 @@ public class DoubleMomentStatistics
 	@Override
 	public void accept(final double value) {
 		super.accept(value);
-		_min = min(_min, value);
-		_max = max(_max, value);
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 		_sum.add(value);
 	}
 
@@ -110,8 +108,8 @@ public class DoubleMomentStatistics
 	 */
 	public DoubleMomentStatistics combine(final DoubleMomentStatistics other) {
 		super.combine(other);
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+		_min = Math.min(_min, other._min);
+		_max = Math.max(_max, other._max);
 		_sum.add(other._sum);
 
 		return this;

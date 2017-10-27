@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.base.subset;
+import static io.jenetics.internal.math.comb.subset;
 import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
@@ -94,11 +94,11 @@ public abstract class Recombinator<
 	}
 
 	@Override
-	public final AlterResult<G, C> alter(
+	public final AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		final AlterResult<G, C> result;
+		final AltererResult<G, C> result;
 		if (population.size() >= 2) {
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
@@ -116,9 +116,9 @@ public abstract class Recombinator<
 				.mapToInt(i -> recombine(pop, i, generation))
 				.sum();
 
-			result = AlterResult.of(pop.toISeq(), count);
+			result = AltererResult.of(pop.toISeq(), count);
 		} else {
-			result = AlterResult.of(population.asISeq());
+			result = AltererResult.of(population.asISeq());
 		}
 
 		return result;

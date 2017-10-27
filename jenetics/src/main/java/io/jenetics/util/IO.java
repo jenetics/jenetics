@@ -43,8 +43,7 @@ import java.nio.file.Path;
  * IO.object.write(result.getPopulation(), file);
  *
  * // Reading the population from disk.
- * Population<DoubleGene, Double> population =
- *     (Population<DoubleGene, Double>)IO.object.read(file);
+ * ISeq<Phenotype<G, C>> population = (ISeq<Phenotype<G, C>>)IO.object.read(file);
  * EvolutionStream<DoubleGene, Double> stream = Engine
  *     .build(ff, gtf)
  *     .stream(population, 1);

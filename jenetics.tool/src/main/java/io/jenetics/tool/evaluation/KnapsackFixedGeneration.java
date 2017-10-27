@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import io.jenetics.BitGene;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
@@ -64,7 +64,7 @@ public class KnapsackFixedGeneration {
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner<Long, BitGene, Double> runner = Runner.of(
 			generation -> KNAPSACK,
-			limit::byFixedGeneration,
+			Limits::byFixedGeneration,
 			TRIAL_METER,
 			Writer.text().map(Object::toString),
 			Reader.text().map(Long::parseLong),
