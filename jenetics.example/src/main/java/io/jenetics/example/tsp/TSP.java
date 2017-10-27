@@ -17,13 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package io.jenetics.example.tsp;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.jenetics.util.ISeq;
+import io.jenetics.util.ISeq;
 
 import io.jenetics.jpx.Point;
 
@@ -85,7 +85,7 @@ public class TSP extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        _mapPanel = new org.jenetics.example.tsp.MapPanel();
+        _mapPanel = new io.jenetics.example.tsp.MapPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +156,6 @@ public class TSP extends javax.swing.JFrame {
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.jenetics.example.tsp.MapPanel _mapPanel;
+    private io.jenetics.example.tsp.MapPanel _mapPanel;
     // End of variables declaration//GEN-END:variables
 }

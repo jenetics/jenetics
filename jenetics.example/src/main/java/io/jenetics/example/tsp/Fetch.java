@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package io.jenetics.example.tsp;
 
 import static java.lang.String.format;
 
@@ -31,12 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.jenetics.util.ISeq;
-
 import io.jenetics.jpx.Point;
+import io.jenetics.util.ISeq;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.at">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */

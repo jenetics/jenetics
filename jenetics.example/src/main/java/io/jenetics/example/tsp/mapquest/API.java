@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp.mapquest;
+package io.jenetics.example.tsp.mapquest;
 
 import static java.util.Objects.requireNonNull;
 

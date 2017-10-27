@@ -17,19 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package io.jenetics.example.tsp;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import org.jenetics.EnumGene;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Problem;
-import org.jenetics.util.ISeq;
-
+import io.jenetics.EnumGene;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Problem;
 import io.jenetics.jpx.Point;
 import io.jenetics.jpx.Route;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>

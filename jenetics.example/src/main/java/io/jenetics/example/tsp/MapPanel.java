@@ -17,13 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
  */
-package org.jenetics.example.tsp;
+package io.jenetics.example.tsp;
 
 import static java.util.Objects.requireNonNull;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import io.jenetics.jpx.Route;
 
