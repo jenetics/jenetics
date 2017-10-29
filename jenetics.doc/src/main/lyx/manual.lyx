@@ -659,11 +659,7 @@ some
 \family typewriter
  Phenotype
 \family default
-,
-\family typewriter
- Population
-\family default
- and fitness
+, population and fitness
 \family typewriter
  Function
 \family default
@@ -2311,11 +2307,6 @@ https://en.wikipedia.org/wiki/Value_object
  Phenotype
 \family default
  class.
- The only exception is the
-\family typewriter
- Population
-\family default
- class, where it is possible to add and/or remove elements after it's creation.
 \end_layout
 
 \begin_layout Standard
@@ -4410,11 +4401,7 @@ s.
 \family typewriter
  Gene
 \family sans
-- or
-\family typewriter
- Population
-\family sans
- selection is not supported by the library.
+- or population selection is not supported by the library.
 \end_layout
 
 \begin_layout Plain Layout
@@ -7108,10 +7095,7 @@ le
  Engine
 \family default
 , respectively the selection operators, to select the offspring- and survivor
-\family typewriter
- Population
-\family default
-.
+ population.
  Some selectors have stronger requirements to the fitness value than a
 \family typewriter
  Compar\SpecialChar softhyphen
@@ -7685,12 +7669,9 @@ evolve
 Result
 \family default
  object.
- This object contains the evolved
-\family typewriter
- Population
-\family default
- plus additional information like execution duration of the several evolution
- sub-steps and information about the killed and as invalid marked individuals.
+ This object contains the evolved population plus additional information
+ like execution duration of the several evolution sub-steps and information
+ about the killed and as invalid marked individuals.
  With the
 \family typewriter
  stream
@@ -7763,11 +7744,7 @@ alterers
 \family typewriter
  Alterer
 \family default
-s which are applied to the offspring
-\family typewriter
- Population
-\family default
-, in the defined order.
+s which are applied to the offspring population, in the defined order.
  The default value of this property is set to
 \family typewriter
  Single\SpecialChar softhyphen
@@ -8025,11 +8002,7 @@ offspringSelector
 \family typewriter
  Selector
 \family default
- used for selecting the offspring
-\family typewriter
- Population
-\family default
-.
+ used for selecting the offspring population.
  The default values is set to
 \family typewriter
  Tournament\SpecialChar softhyphen
@@ -8104,21 +8077,13 @@ type\SpecialChar softhyphen
 \family typewriter
 populationSize
 \family default
- Defines the number of individuals of a
-\family typewriter
- Population
-\family default
-.
+ Defines the number of individuals of a population.
  The evolution
 \family typewriter
  Engine
 \family default
  keeps the number of individuals constant.
- That means, the
-\family typewriter
- Population
-\family default
- of the
+ That means, the population of the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Result
@@ -8158,11 +8123,7 @@ survivorsSelector
 \family typewriter
  Selector
 \family default
- used for selecting the survivors
-\family typewriter
- Population
-\family default
-.
+ used for selecting the survivors population.
  The default values is set to
 \family typewriter
  Tournament\SpecialChar softhyphen
@@ -13162,12 +13123,12 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
-    public Population<G, C> select(
+    public ISeq<Phenotype<G, C>> select(
 \end_layout
 
 \begin_layout Plain Layout
 
-        Population<G, C> population,
+        Seq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -13593,12 +13554,12 @@ public interface Alterer<
 
 \begin_layout Plain Layout
 
-    public int alter(
+    public AltererResult<G, C> alter(
 \end_layout
 
 \begin_layout Plain Layout
 
-        Population<G, C> population,
+        Seq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -13645,16 +13606,7 @@ The first parameter of the
 \family typewriter
  alter
 \family default
- method is the
-\family typewriter
- Population
-\family default
- which has to be altered.
- Since the the
-\family typewriter
- Population
-\family default
- class is mutable, the altering is performed in place.
+ method is the population which has to be altered.
  The second parameter is the
 \family typewriter
  generation
@@ -18765,10 +18717,7 @@ The
 \family typewriter
  Engine
 \family default
- tries to create only valid individuals when creating the initial
-\family typewriter
- Population
-\family default
+ tries to create only valid individuals when creating the initial population
  and when it replaces
 \family typewriter
  Genotype
