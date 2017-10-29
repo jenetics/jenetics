@@ -10222,13 +10222,13 @@ VALUE
 \end_layout
 
 \begin_layout LyX-Code
-$ java -Dio.jenetics.concurrency.maxBatchSize=3
+$ java -Dio.jenetics.concurrency.maxBatchSize=3 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    -cp jenetics-@__version__@.jar:app.jar
+    -cp jenetics-@__version__@.jar:app.jar 
 \backslash
 
 \end_layout
