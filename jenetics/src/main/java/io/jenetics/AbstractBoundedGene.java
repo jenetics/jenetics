@@ -20,12 +20,9 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
-
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
+import java.util.Objects;
 
 /**
  * Base class for genes where the alleles are bound by a minimum and a maximum
@@ -103,19 +100,19 @@ abstract class AbstractBoundedGene<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_value)
-			.and(_min)
-			.and(_max).value();
+		int hash = 17;
+		hash += 31*Objects.hashCode(_value) +37;
+		hash += 31*Objects.hashCode(_min) +37;
+		hash += 31*Objects.hashCode(_min) +37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(gene ->
-			eq(_value, gene._value) &&
-			eq(_min, gene._min) &&
-			eq(_max, gene._max)
-		);
+		return obj != null && obj.getClass() == getClass() &&
+			Objects.equals(((AbstractBoundedGene)obj)._value, _value) &&
+			Objects.equals(((AbstractBoundedGene)obj)._min, _min) &&
+			Objects.equals(((AbstractBoundedGene)obj)._max, _max);
 	}
 
 	@Override
