@@ -6,6 +6,18 @@
 \origin unavailable
 \textclass book
 \begin_preamble
+\usepackage{transparent}
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+{\transparent{0.7} \includegraphics[width=\paperwidth,height=\paperheight,%
+keepaspectratio]{title_pic.jpg}}%
+\vfill
+}}}
+
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
 
@@ -187,6 +199,15 @@ pagecolor{covercolor}
 
 \begin_layout Plain Layout
 
+%% 
+\backslash
+AddToShipoutPicture*{
+\backslash
+BackgroundPic}
+\end_layout
+
+\begin_layout Plain Layout
+
 
 \backslash
 begin{adjustwidth*}{-4.5cm}{-4.5cm}
@@ -270,11 +291,11 @@ height "10pt"
 \family sans
 \size huge
 \color black
-LIBRARY USER'S MANUAL
+LIBRARY USER'S MANUAL @__minor_version__@
 \size large
 \noun on
 \color inherit
-
+ 
 \begin_inset space \hspace{}
 \length 1.5cm
 \end_inset
@@ -294,7 +315,7 @@ LIBRARY USER'S MANUAL
 \begin_inset Graphics
 	filename ../resources/graphic/title.png
 	lyxscale 15
-	height 47pheight%
+	height 48pheight%
 
 \end_inset
 
@@ -306,54 +327,23 @@ LIBRARY USER'S MANUAL
 \end_layout
 
 \begin_layout Standard
-\align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0page%"
-width "100page%"
-height "2pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace 0.2cm
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \align right
 
 \family sans
-\size large
-\noun on
-\begin_inset space \hspace{}
-\length 2.5cm
-\end_inset
-
-
-\size default
-\noun default
-FRANZ WILHELMSTÖTTER
 \series bold
 \noun on
-
 \begin_inset space \hfill{}
 \end_inset
 
 
 \series default
+\size huge
 \noun default
-VERSION
-\family default
- @__minor_version__@
-\family sans
+\color black
+Franz Wilhelmstötter
 \size large
 \noun on
+\color inherit
 
 \begin_inset space \hspace{}
 \length 1.5cm
