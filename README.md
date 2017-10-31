@@ -194,7 +194,35 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Improvements
 
+* [#28](https://github.com/jenetics/jenetics/issues/28): Immutable population class. The original `Population` class has been replaced by `Seq<Phenotype<G, C>>`. This points to a more _functional_ implementation of the library.
+* [#119](https://github.com/jenetics/jenetics/issues/119): `Chromosome` implementations are now fully immutable. This is an internal change only.
+* [#121](https://github.com/jenetics/jenetics/issues/121): `Mutator` class is easier now to extend. It has been extended with additional `mutate` methods which serves as extension points for onw `Mutator` implementations.
+* [#123](https://github.com/jenetics/jenetics/issues/123): `Chromosome` with variable number of genes: Most chromosomes can now be created with a variable number of genes. `DoubleChromosome.of(0.0, 1.0, IntRange.of(5, 16))`.
+* [#172](https://github.com/jenetics/jenetics/issues/172): [`io.jenetics.prngine`](https://github.com/jenetics/prngine) library replaces the existing PRNG implementations in the `io.jenetics.base` module.
+* [#175](https://github.com/jenetics/jenetics/issues/175): Align random int range generation with `io.jenetics.prngine` library. This is an internal change only. 
+* [#180](https://github.com/jenetics/jenetics/issues/180): Change library namespace from `org.jenetics` to `io.jenetics`. This is the **most** invasive change of this release. Users have to adopt the imports in all their code.
+* [#183](https://github.com/jenetics/jenetics/issues/183): Change copyright email address to ...@gmail.com
+* [#200](https://github.com/jenetics/jenetics/issues/200): Implementation of gene convergence termination: _A termination method that stops the evolution when a user-specified percentage of the genes that make up a `Genotype` are deemed as converged. A gene is deemed as converged when the average value of that gene across all of the genotypes in the current population is less than a user-specified percentage away from the maximum gene value across the genotypes._
+* [#253](https://github.com/jenetics/jenetics/issues/253): Removal of deprecated code and classes: mainly `JAXB` marshalling and the `LCG64ShiftRandom` class.
+* [#260](https://github.com/jenetics/jenetics/issues/260): Clean room implementation of internal `subset` function. This method was a port from the [C++ source](https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html) written by John Burkardt. The original source has been published under the LGPL licence, which is not compatible to tha Apache 2 licence. To avoid legal issues, the affected method has been reimplemented using the [Clean Room](http://wiki.c2.com/?CleanRoomImplementation) method, based on the original book, [Combinatorial Algorithms for Computers and Calculators](https://www.math.upenn.edu/%7Ewilf/website/CombinatorialAlgorithms.pdf), by Albert Nijenhuis and Herbert Wilf. The `io.jenetics.internal.math.comb.subset` method is now fully compatible with the Apache 2 licence.
+* [#262](https://github.com/jenetics/jenetics/issues/262): Filter for duplicate individuals: It is now possible to intercept the stream of `EvolutionResult`s of the evolution `Engine`:
+```java
+final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	.mapping(EvolutionResult.toUniquePopulation())
+	.build();
+```
+* [#264](https://github.com/jenetics/jenetics/issues/264): Upgrade Gradle to version 4.3.
+* [#266](https://github.com/jenetics/jenetics/issues/266): The `Seq` serialization should be more robust in the case of implementation changes.
+* [#268](https://github.com/jenetics/jenetics/issues/269): Implementation of an [`EliteSelector`](https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)).
+* [#269](https://github.com/jenetics/jenetics/issues/269): Cleanup of internal, mathematical helper functions.
+* [#272](https://github.com/jenetics/jenetics/issues/272): Obey Java naming convention. Two helper classes have been renamed to obey the Java naming conventions. `codecs` -> `Codecs` and `limits` -> `Limits`.
+* [#279](https://github.com/jenetics/jenetics/issues/279): Additional `MSeq.swap` method.
+
 #### Bugs
+
+* [#247](https://github.com/jenetics/jenetics/issues/247): Fix the classpath of the `jrun` helper script.
+* [#256](https://github.com/jenetics/jenetics/issues/256): Buggy type signature of `AnyChromosome.of` method.
+
 
 ### [3.9.0](https://github.com/jenetics/jenetics/releases/tag/v3.9.0)
 
