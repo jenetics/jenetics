@@ -883,7 +883,7 @@ key "Koza:2008:IGP:1388969.1389057"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2187,9 +2187,10 @@ classes This classes form the domain model of the evolutionary algorithm
  Chromosome
 \family default
 .
- They are located in the
+ They are directly located in the
 \family typewriter
- io.jenetics
+ io.jen\SpecialChar softhyphen
+etics
 \family default
  package.
 \end_layout
@@ -4839,7 +4840,7 @@ where
 
 .
  It is not necessary to sort the population.
- The selection probability of an individual
+ The selection probability of an individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -13224,7 +13225,7 @@ status open
 
 \begin_layout Plain Layout
 
-public class ElitistSelector<
+public class EliteSelector<
 \end_layout
 
 \begin_layout Plain Layout
@@ -13282,7 +13283,7 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-    public ElitistSelector() {
+    public EliteSelector() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -13396,12 +13397,22 @@ name "lis:Elite-selector"
 
 \end_inset
 
-Elitist selector
+Elite selector
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Selector!Elitist
+Elite selector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!Elite
 \end_layout
 
 \end_inset
@@ -13439,7 +13450,7 @@ reference "lis:Elite-selector"
 
  shows how an
 \emph on
- elitist
+ elite
 \emph default
  selector could be implemented by using the existing
 \family typewriter
@@ -13455,7 +13466,7 @@ Selector
 .
  With
 \emph on
- elitist
+ elite
 \emph default
  selection, the quality of the best solution in each generation monotonically
  increases over time.
@@ -13771,7 +13782,7 @@ Stream
 status collapsed
 
 \begin_layout Plain Layout
-Also refer to section
+Also refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:EvolutionStream"
@@ -14865,7 +14876,7 @@ A function
 \begin_inset Formula $f\left(X_{1},...,X_{n}\right)$
 \end_inset
 
-, of one to
+, of one to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -23337,6 +23348,16 @@ io.jenetics.ext
 status collapsed
 
 \begin_layout Plain Layout
+io.jenetics.ext
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 Modules!io.jenetics.ext
 \end_layout
 
@@ -24953,6 +24974,16 @@ GP
 status collapsed
 
 \begin_layout Plain Layout
+io.jenetics.prog
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 Modules!io.jenetics.prog
 \end_layout
 
@@ -25898,6 +25929,16 @@ height "1pt"
 \family typewriter
 io.jenetics.xml
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+io.jenetics.xml
+\end_layout
+
+\end_inset
+
 
 \begin_inset Index idx
 status collapsed
@@ -26947,6 +26988,16 @@ name "sec:io.jenetics.prngine"
 
 
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+io.jenetics.prngine
+\end_layout
+
+\end_inset
+
 
 \begin_inset Index idx
 status collapsed
@@ -30411,6 +30462,28 @@ prngine
 \series default
 : PRNGine is a pseudo-random number generator library for sequential and
  parallel Monte Carlo simulations.
+ Since this library has no dependencies to one of the other projects, it
+ has its own repository
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ with independent versioning.
 \end_layout
 
 \begin_layout Paragraph
