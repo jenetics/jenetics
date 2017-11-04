@@ -28,11 +28,6 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 *  **TestNG 6.11**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
-## Download
-* **Github**: <https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip>
-*  **Sourceforge**:  <https://sourceforge.net/projects/jenetics/files/latest/download>
-*  **Maven**: `io.jenetics:jenetics:4.0.0` on [Maven Central](http://search.maven.org/#search|ga|1|a%3A%22jenetics%22)
-
 ## Build Jenetics
 
 For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
