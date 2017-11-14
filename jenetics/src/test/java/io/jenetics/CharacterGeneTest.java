@@ -26,6 +26,9 @@ import static org.testng.Assert.assertTrue;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
 import java.util.Random;
 
 import org.testng.Assert;
@@ -43,6 +46,13 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	@Override
 	protected Factory<CharacterGene> factory() {
 		return CharacterGene::of;
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(CharacterGene.class)
+			.suppress(Warning.NULL_FIELDS)
+			.verify();
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)

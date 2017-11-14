@@ -56,9 +56,6 @@ abstract class AbstractBoundedGene<
 	 */
 	final A _value;
 
-	// Holds the valid state of the gene.
-	private final boolean _valid;
-
 	/**
 	 * Create new {@code BoundedGene}.
 	 *
@@ -75,7 +72,6 @@ abstract class AbstractBoundedGene<
 		_min = requireNonNull(min, "Min value not be null.");
 		_max = requireNonNull(max, "Max value must not be null.");
 		_value = requireNonNull(value, "Gene value must not be null.");
-		_valid = _value.compareTo(min) >= 0 && _value.compareTo(max) <= 0;
 	}
 
 	@Override
@@ -95,21 +91,21 @@ abstract class AbstractBoundedGene<
 
 	@Override
 	public boolean isValid() {
-		return _valid;
+		return _value.compareTo(_min) >= 0 && _value.compareTo(_max) <= 0;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += 31*Objects.hashCode(_value) +37;
-		hash += 31*Objects.hashCode(_min) +37;
-		hash += 31*Objects.hashCode(_min) +37;
+		hash += 31*Objects.hashCode(_value) + 37;
+		hash += 31*Objects.hashCode(_min) + 37;
+		hash += 31*Objects.hashCode(_max) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj != null && obj.getClass() == getClass() &&
+		return obj instanceof AbstractBoundedGene<?, ?> &&
 			Objects.equals(((AbstractBoundedGene)obj)._value, _value) &&
 			Objects.equals(((AbstractBoundedGene)obj)._min, _min) &&
 			Objects.equals(((AbstractBoundedGene)obj)._max, _max);

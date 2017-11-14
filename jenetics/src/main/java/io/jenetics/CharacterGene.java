@@ -65,12 +65,10 @@ public final class CharacterGene
 
 	private final Character _character;
 	private final CharSeq _validCharacters;
-	private final Boolean _valid;
 
 	private CharacterGene(final CharSeq chars, final int index) {
 		_character = chars.get(index);
 		_validCharacters = chars;
-		_valid = true;
 	}
 
 	/**
@@ -84,12 +82,11 @@ public final class CharacterGene
 	CharacterGene(final Character character, final CharSeq validChars) {
 		_character = requireNonNull(character);
 		_validCharacters = requireNonNull(validChars);
-		_valid = _validCharacters.contains(_character);
 	}
 
 	@Override
 	public boolean isValid() {
-		return _valid;
+		return _validCharacters.contains(_character);
 	}
 
 	@Override
