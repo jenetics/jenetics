@@ -97,9 +97,9 @@ abstract class AbstractBoundedGene<
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += 31*Objects.hashCode(_value) +37;
-		hash += 31*Objects.hashCode(_min) +37;
-		hash += 31*Objects.hashCode(_max) +37;
+		hash += 31*Objects.hashCode(_value) + 37;
+		hash += 31*Objects.hashCode(_min) + 37;
+		hash += 31*Objects.hashCode(_max) + 37;
 		return hash;
 	}
 
