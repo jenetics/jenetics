@@ -231,7 +231,7 @@ status open
 
 
 \backslash
-fontsize{100pt}{100pt}
+fontsize{140pt}{140pt}
 \end_layout
 
 \begin_layout Plain Layout
@@ -242,15 +242,19 @@ textsf{
 \backslash
 textbf{
 \backslash
-textsc{J}}}
+textsc{
 \backslash
-fontsize{85pt}{85pt}
+textcolor{white}{J}}}}
+\backslash
+fontsize{95pt}{95pt}
 \backslash
 textsf{
 \backslash
 textbf{
 \backslash
-textsc{ENETICS}}}
+textsc{
+\backslash
+textcolor{white}{ENETICS}}}}
 \end_layout
 
 \end_inset
@@ -266,19 +270,6 @@ textsc{ENETICS}}}
 \end_layout
 
 \begin_layout Standard
-\align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0page%"
-width "100page%"
-height "3pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset VSpace 1.5cm
 \end_inset
 
@@ -286,23 +277,18 @@ height "3pt"
 \end_layout
 
 \begin_layout Standard
-\align right
+\align center
 
 \family sans
 \series bold
-\size huge
-\color black
+\size giant
+\color white
 LIBRARY USER'S MANUAL @__minor_version__@
 \series default
 \size large
 \noun on
 \color inherit
  
-\begin_inset space \hspace{}
-\length 1.5cm
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -326,14 +312,14 @@ LIBRARY USER'S MANUAL @__minor_version__@
 \series default
 \size huge
 \noun default
-\color black
+\color white
 Franz Wilhelmstötter
 \size large
 \noun on
 \color inherit
 
 \begin_inset space \hspace{}
-\length 1.5cm
+\length 2.5cm
 \end_inset
 
 
