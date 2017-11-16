@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  *
  */
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
  * @version 3.9
  */
@@ -43,11 +43,11 @@ dependencies {
 }
 
 jar.manifest.instruction('Export-Package',
-	'org.jenetics.prog',
-	'org.jenetics.prog.ops'
+	'io.jenetics.prog',
+	'io.jenetics.prog.op'
 )
 
-jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
 	options {
