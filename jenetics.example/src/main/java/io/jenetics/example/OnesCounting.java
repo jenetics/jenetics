@@ -36,7 +36,9 @@ public class OnesCounting {
 
 	// This method calculates the fitness for a given genotype.
 	private static Integer count(final Genotype<BitGene> gt) {
-		return ((BitChromosome)gt.getChromosome()).bitCount();
+		return gt.getChromosome()
+			.as(BitChromosome.class)
+			.bitCount();
 	}
 
 	public static void main(String[] args) {
