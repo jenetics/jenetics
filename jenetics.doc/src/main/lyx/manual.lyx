@@ -21982,7 +21982,7 @@ Random
 \family default
  class.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -21990,8 +21990,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
-etics/util/LCG64ShiftRandom.java
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/LCG64ShiftRandom.java
 \end_layout
 
 \end_inset
