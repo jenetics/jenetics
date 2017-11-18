@@ -4006,7 +4006,7 @@ The
 \family default
  and the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which is used to (lazily) calculate the
 \family typewriter
@@ -4019,7 +4019,7 @@ status collapsed
 \begin_layout Plain Layout
 Since the fitness
 \family typewriter
-Function
+ Function
 \family default
  is shared by all
 \family typewriter
@@ -4027,7 +4027,7 @@ Function
 \family default
 s, calls to the fitness
 \family typewriter
-Function
+ Function
 \family default
  must be idempotent.
  See section 
@@ -7040,7 +7040,7 @@ Fitness function
 \begin_layout Standard
 The fitness
 \family typewriter
-Function
+ Function
 \family default
  is also an important part when modeling an genetic algorithm.
  It takes a
@@ -7134,7 +7134,7 @@ height "1pt"
 \begin_layout Standard
 The following example shows the simplest possible fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  This
@@ -7280,7 +7280,7 @@ Fitness scaler
 \begin_layout Standard
 The fitness value, calculated by the fitness
 \family typewriter
-Function
+ Function
 \family default
 , is treated as the
 \shape italic
@@ -7683,7 +7683,7 @@ As already shown in previous examples, the
  class.
  Only the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the
 \family typewriter
@@ -7783,7 +7783,7 @@ fitnessFunction
 \family default
  This property defines the fitness
 \family typewriter
-Function
+ Function
 \family default
  used by the evolution
 \family typewriter
@@ -7983,12 +7983,12 @@ optimize
 \family default
  With this property it is possible to define whether the fitness
 \family typewriter
-Function
+ Function
 \family default
  should be maximized of minimized.
  By default, the fitness
 \family typewriter
-Function
+ Function
 \family default
  is maximized.
 \end_layout
@@ -16153,7 +16153,7 @@ engine
 \family default
  package—narrows the gap between the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which should be maximized/minimized, and the
 \family typewriter
@@ -16325,7 +16325,7 @@ reference "lis:Codec-interface"
 \family default
  to the argument type of the fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  Without the
@@ -16625,7 +16625,7 @@ The usage of the
 \family default
 , created by this factory method, simplifies the implementation of the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the creation of the evolution
 \family typewriter
@@ -16640,7 +16640,7 @@ Function
 \family default
 , fitness
 \family typewriter
-Function
+ Function
 \family default
  and evolution
 \family typewriter
