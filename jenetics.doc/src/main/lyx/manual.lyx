@@ -17073,7 +17073,12 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-        gt -> ((BitChromosome)gt.getChromosome()).ones()
+        gt -> gt.getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(BitChromosome.class).ones()
 \end_layout
 
 \begin_layout Plain Layout
