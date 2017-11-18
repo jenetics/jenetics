@@ -73,7 +73,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @param index index of the element to return.
 	 * @return the value at the given {@code index}.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= size()).
+	 *         {@code index < 0 || index >= size()}.
 	 */
 	@Override
 	public default T apply(final int index) {

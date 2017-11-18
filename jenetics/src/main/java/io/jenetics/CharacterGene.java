@@ -20,13 +20,12 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.internal.math.random;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -66,12 +65,10 @@ public final class CharacterGene
 
 	private final Character _character;
 	private final CharSeq _validCharacters;
-	private final Boolean _valid;
 
 	private CharacterGene(final CharSeq chars, final int index) {
 		_character = chars.get(index);
 		_validCharacters = chars;
-		_valid = true;
 	}
 
 	/**
@@ -85,12 +82,11 @@ public final class CharacterGene
 	CharacterGene(final Character character, final CharSeq validChars) {
 		_character = requireNonNull(character);
 		_validCharacters = requireNonNull(validChars);
-		_valid = _validCharacters.contains(_character);
 	}
 
 	@Override
 	public boolean isValid() {
-		return _valid;
+		return _validCharacters.contains(_character);
 	}
 
 	@Override
@@ -143,16 +139,17 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_character)
-			.and(_validCharacters).value();
+		int hash = 17;
+		hash += 31*_character.hashCode() + 37;
+		hash += 31*_validCharacters.hashCode() + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof CharacterGene &&
-			eq(((CharacterGene)obj)._character, _character) &&
-			eq(((CharacterGene)obj)._validCharacters, _validCharacters);
+			Objects.equals(((CharacterGene)obj)._character, _character) &&
+			Objects.equals(((CharacterGene)obj)._validCharacters, _validCharacters);
 	}
 
 	@Override

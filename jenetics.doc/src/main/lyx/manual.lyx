@@ -6,6 +6,18 @@
 \origin unavailable
 \textclass book
 \begin_preamble
+\usepackage{transparent}
+\usepackage{eso-pic}
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+{\transparent{0.9} \includegraphics[width=\paperwidth,height=\paperheight,%
+keepaspectratio]{../resources/graphic/manual-title.jpg}}%
+\vfill
+}}}
+
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
 
@@ -180,9 +192,18 @@ status open
 
 \begin_layout Plain Layout
 
-
+%
 \backslash
 pagecolor{covercolor}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+AddToShipoutPicture*{
+\backslash
+BackgroundPic}
 \end_layout
 
 \begin_layout Plain Layout
@@ -210,7 +231,7 @@ status open
 
 
 \backslash
-fontsize{100pt}{100pt}
+fontsize{140pt}{140pt}
 \end_layout
 
 \begin_layout Plain Layout
@@ -221,15 +242,19 @@ textsf{
 \backslash
 textbf{
 \backslash
-textsc{J}}}
+textsc{
 \backslash
-fontsize{85pt}{85pt}
+textcolor{white}{J}}}}
+\backslash
+fontsize{95pt}{95pt}
 \backslash
 textsf{
 \backslash
 textbf{
 \backslash
-textsc{ENETICS}}}
+textsc{
+\backslash
+textcolor{white}{ENETICS}}}}
 \end_layout
 
 \end_inset
@@ -245,81 +270,30 @@ textsc{ENETICS}}}
 \end_layout
 
 \begin_layout Standard
+\begin_inset VSpace 1.5cm
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0page%"
-width "100page%"
-height "10pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace 0.3cm
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align right
 
 \family sans
-\size huge
-\color black
-LIBRARY USER'S MANUAL
+\series bold
+\size giant
+\color white
+LIBRARY USER'S MANUAL @__minor_version__@
+\series default
 \size large
 \noun on
 \color inherit
-
-\begin_inset space \hspace{}
-\length 1.5cm
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace vfill
-\end_inset
-
-
+ 
 \end_layout
 
 \begin_layout Standard
 \align center
-\begin_inset Graphics
-	filename ../resources/graphic/title.png
-	lyxscale 15
-	height 47pheight%
-
-\end_inset
-
-
 \begin_inset VSpace vfill
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0page%"
-width "100page%"
-height "2pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace 0.2cm
 \end_inset
 
 
@@ -329,34 +303,23 @@ height "2pt"
 \align right
 
 \family sans
-\size large
-\noun on
-\begin_inset space \hspace{}
-\length 2.5cm
-\end_inset
-
-
-\size default
-\noun default
-FRANZ WILHELMSTÖTTER
 \series bold
 \noun on
-
 \begin_inset space \hfill{}
 \end_inset
 
 
 \series default
+\size huge
 \noun default
-VERSION
-\family default
- @__minor_version__@
-\family sans
+\color white
+Franz Wilhelmstötter
 \size large
 \noun on
+\color inherit
 
 \begin_inset space \hspace{}
-\length 1.5cm
+\length 2.5cm
 \end_inset
 
 
@@ -659,11 +622,7 @@ some
 \family typewriter
  Phenotype
 \family default
-,
-\family typewriter
- Population
-\family default
- and fitness
+, population and fitness
 \family typewriter
  Function
 \family default
@@ -897,7 +856,7 @@ key "Koza:2008:IGP:1388969.1389057"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Plain Layout
@@ -2201,9 +2160,10 @@ classes This classes form the domain model of the evolutionary algorithm
  Chromosome
 \family default
 .
- They are located in the
+ They are directly located in the
 \family typewriter
- io.jenetics
+ io.jen\SpecialChar softhyphen
+etics
 \family default
  package.
 \end_layout
@@ -2311,11 +2271,6 @@ https://en.wikipedia.org/wiki/Value_object
  Phenotype
 \family default
  class.
- The only exception is the
-\family typewriter
- Population
-\family default
- class, where it is possible to add and/or remove elements after it's creation.
 \end_layout
 
 \begin_layout Standard
@@ -4410,11 +4365,7 @@ s.
 \family typewriter
  Gene
 \family sans
-- or
-\family typewriter
- Population
-\family sans
- selection is not supported by the library.
+- or population selection is not supported by the library.
 \end_layout
 
 \begin_layout Plain Layout
@@ -4862,7 +4813,7 @@ where
 
 .
  It is not necessary to sort the population.
- The selection probability of an individual
+ The selection probability of an individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -7108,10 +7059,7 @@ le
  Engine
 \family default
 , respectively the selection operators, to select the offspring- and survivor
-\family typewriter
- Population
-\family default
-.
+ population.
  Some selectors have stronger requirements to the fitness value than a
 \family typewriter
  Compar\SpecialChar softhyphen
@@ -7685,12 +7633,9 @@ evolve
 Result
 \family default
  object.
- This object contains the evolved
-\family typewriter
- Population
-\family default
- plus additional information like execution duration of the several evolution
- sub-steps and information about the killed and as invalid marked individuals.
+ This object contains the evolved population plus additional information
+ like execution duration of the several evolution sub-steps and information
+ about the killed and as invalid marked individuals.
  With the
 \family typewriter
  stream
@@ -7763,11 +7708,7 @@ alterers
 \family typewriter
  Alterer
 \family default
-s which are applied to the offspring
-\family typewriter
- Population
-\family default
-, in the defined order.
+s which are applied to the offspring population, in the defined order.
  The default value of this property is set to
 \family typewriter
  Single\SpecialChar softhyphen
@@ -8025,11 +7966,7 @@ offspringSelector
 \family typewriter
  Selector
 \family default
- used for selecting the offspring
-\family typewriter
- Population
-\family default
-.
+ used for selecting the offspring population.
  The default values is set to
 \family typewriter
  Tournament\SpecialChar softhyphen
@@ -8104,21 +8041,13 @@ type\SpecialChar softhyphen
 \family typewriter
 populationSize
 \family default
- Defines the number of individuals of a
-\family typewriter
- Population
-\family default
-.
+ Defines the number of individuals of a population.
  The evolution
 \family typewriter
  Engine
 \family default
  keeps the number of individuals constant.
- That means, the
-\family typewriter
- Population
-\family default
- of the
+ That means, the population of the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Result
@@ -8158,11 +8087,7 @@ survivorsSelector
 \family typewriter
  Selector
 \family default
- used for selecting the survivors
-\family typewriter
- Population
-\family default
-.
+ used for selecting the survivors population.
  The default values is set to
 \family typewriter
  Tournament\SpecialChar softhyphen
@@ -10261,13 +10186,13 @@ VALUE
 \end_layout
 
 \begin_layout LyX-Code
-$ java -Dio.jenetics.concurrency.maxBatchSize=3
+$ java -Dio.jenetics.concurrency.maxBatchSize=3 
 \backslash
 
 \end_layout
 
 \begin_layout LyX-Code
-    -cp jenetics-@__version__@.jar:app.jar
+    -cp jenetics-@__version__@.jar:app.jar 
 \backslash
 
 \end_layout
@@ -13162,12 +13087,12 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
-    public Population<G, C> select(
+    public ISeq<Phenotype<G, C>> select(
 \end_layout
 
 \begin_layout Plain Layout
 
-        Population<G, C> population,
+        Seq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -13273,7 +13198,7 @@ status open
 
 \begin_layout Plain Layout
 
-public class ElitistSelector<
+public class EliteSelector<
 \end_layout
 
 \begin_layout Plain Layout
@@ -13331,7 +13256,7 @@ public class ElitistSelector<
 
 \begin_layout Plain Layout
 
-    public ElitistSelector() {
+    public EliteSelector() {
 \end_layout
 
 \begin_layout Plain Layout
@@ -13445,12 +13370,22 @@ name "lis:Elite-selector"
 
 \end_inset
 
-Elitist selector
+Elite selector
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Selector!Elitist
+Elite selector
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Selector!Elite
 \end_layout
 
 \end_inset
@@ -13488,7 +13423,7 @@ reference "lis:Elite-selector"
 
  shows how an
 \emph on
- elitist
+ elite
 \emph default
  selector could be implemented by using the existing
 \family typewriter
@@ -13504,7 +13439,7 @@ Selector
 .
  With
 \emph on
- elitist
+ elite
 \emph default
  selection, the quality of the best solution in each generation monotonically
  increases over time.
@@ -13593,12 +13528,12 @@ public interface Alterer<
 
 \begin_layout Plain Layout
 
-    public int alter(
+    public AltererResult<G, C> alter(
 \end_layout
 
 \begin_layout Plain Layout
 
-        Population<G, C> population,
+        Seq<Phenotype<G, C>> population,
 \end_layout
 
 \begin_layout Plain Layout
@@ -13645,16 +13580,7 @@ The first parameter of the
 \family typewriter
  alter
 \family default
- method is the
-\family typewriter
- Population
-\family default
- which has to be altered.
- Since the the
-\family typewriter
- Population
-\family default
- class is mutable, the altering is performed in place.
+ method is the population which has to be altered.
  The second parameter is the
 \family typewriter
  generation
@@ -13829,7 +13755,7 @@ Stream
 status collapsed
 
 \begin_layout Plain Layout
-Also refer to section
+Also refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:EvolutionStream"
@@ -14923,7 +14849,7 @@ A function
 \begin_inset Formula $f\left(X_{1},...,X_{n}\right)$
 \end_inset
 
-, of one to
+, of one to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -18765,10 +18691,7 @@ The
 \family typewriter
  Engine
 \family default
- tries to create only valid individuals when creating the initial
-\family typewriter
- Population
-\family default
+ tries to create only valid individuals when creating the initial population
  and when it replaces
 \family typewriter
  Genotype
@@ -23398,6 +23321,16 @@ io.jenetics.ext
 status collapsed
 
 \begin_layout Plain Layout
+io.jenetics.ext
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 Modules!io.jenetics.ext
 \end_layout
 
@@ -25014,6 +24947,16 @@ GP
 status collapsed
 
 \begin_layout Plain Layout
+io.jenetics.prog
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
 Modules!io.jenetics.prog
 \end_layout
 
@@ -25383,7 +25326,7 @@ The
  Ephemeral\SpecialChar softhyphen
 Const
 \family default
- classes.
+.
 \end_layout
 
 \begin_layout Paragraph
@@ -25959,6 +25902,16 @@ height "1pt"
 \family typewriter
 io.jenetics.xml
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+io.jenetics.xml
+\end_layout
+
+\end_inset
+
 
 \begin_inset Index idx
 status collapsed
@@ -27008,6 +26961,16 @@ name "sec:io.jenetics.prngine"
 
 
 \family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+io.jenetics.prngine
+\end_layout
+
+\end_inset
+
 
 \begin_inset Index idx
 status collapsed
@@ -30472,6 +30435,28 @@ prngine
 \series default
 : PRNGine is a pseudo-random number generator library for sequential and
  parallel Monte Carlo simulations.
+ Since this library has no dependencies to one of the other projects, it
+ has its own repository
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ with independent versioning.
 \end_layout
 
 \begin_layout Paragraph

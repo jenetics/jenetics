@@ -19,8 +19,12 @@
  */
 package io.jenetics.prog.op;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 /**
  * Operation interface. An operation is a function which maps some argument type
@@ -111,6 +115,48 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 		final Function<T[], T> function
 	) {
 		return new Operation<>(name, arity, function);
+	}
+
+	/**
+	 * Create a new operation with the given name and unary operation. The
+	 * returned {@code Op} will have arity one.
+	 *
+	 * @since 4.0
+	 *
+	 * @param name the name of the returned operation
+	 * @param function the used function of the operation
+	 * @param <T> the operation type
+	 * @return a new operation with the given name and unary operation
+	 * @throws NullPointerException if the given {@code name} or {@code function}
+	 *         is {@code null}
+	 */
+	public static <T> Op<T> of(
+		final String name,
+		final UnaryOperator<T> function
+	) {
+		requireNonNull(function);
+		return of(name, 1, v -> function.apply(v[0]));
+	}
+
+	/**
+	 * Create a new operation with the given name and binary operation. The
+	 * returned {@code Op} will have arity two.
+	 *
+	 * @since 4.0
+	 *
+	 * @param name the name of the returned operation
+	 * @param function the used function of the operation
+	 * @param <T> the operation type
+	 * @return a new operation with the given name and unary operation
+	 * @throws NullPointerException if the given {@code name} or {@code function}
+	 *         is {@code null}
+	 */
+	public static <T> Op<T> of(
+		final String name,
+		final BinaryOperator<T> function
+	) {
+		requireNonNull(function);
+		return of(name, 2, v -> function.apply(v[0], v[1]));
 	}
 
 }

@@ -23,6 +23,8 @@ import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -40,6 +42,11 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	private final Factory<IntegerGene> _factory = IntegerGene.of(0, Integer.MAX_VALUE);
 	@Override protected Factory<IntegerGene> factory() {
 		return _factory;
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(IntegerGene.class).verify();
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)

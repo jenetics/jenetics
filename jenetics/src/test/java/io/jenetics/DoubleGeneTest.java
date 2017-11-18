@@ -25,6 +25,8 @@ import static org.testng.Assert.assertTrue;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -42,6 +44,11 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 	@Override
 	protected Factory<DoubleGene> factory() {
 		return () -> DoubleGene.of(0, Double.MAX_VALUE);
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(DoubleGene.class).verify();
 	}
 
 	@Test(invocationCount = 20, successPercentage = 95)

@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.collection.Empty.EmptyMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
@@ -405,7 +406,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY = Empty.MSEQ;
+	public static final MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code MSeq}.

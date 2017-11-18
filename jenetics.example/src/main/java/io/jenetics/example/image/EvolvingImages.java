@@ -42,6 +42,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import io.jenetics.Genotype;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.prngine.MT19937_64Random;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * This example shows a more advanced use of a genetic algorithm: approximate a
@@ -487,6 +489,8 @@ public final class EvolvingImages extends JFrame {
 	 * @param args the command line arguments
 	 */
 	public static void main(final String args[]) {
+		RandomRegistry.setRandom(new MT19937_64Random.ThreadLocal());
+
 		// Start command line version if the right parameters are given.
 		if (new EvolvingImagesCmd(args).run()) return;
 

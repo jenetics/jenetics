@@ -21,6 +21,9 @@ package io.jenetics;
 
 import static io.jenetics.util.factories.Int;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -47,6 +50,13 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 	@Override
 	protected Factory<EnumGene<Integer>> factory() {
 		return _factory;
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(EnumGene.class)
+			.suppress(Warning.NULL_FIELDS)
+			.verify();
 	}
 
 	@Test
