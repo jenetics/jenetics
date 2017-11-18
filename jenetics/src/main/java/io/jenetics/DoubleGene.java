@@ -25,9 +25,10 @@ import static io.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.random;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 
@@ -39,6 +40,8 @@ import io.jenetics.util.Mean;
  * reference equality ({@code ==}), identity hash code, or synchronization) on
  * instances of {@code DoubleGene} may have unpredictable results and should
  * be avoided.
+ *
+ * @see DoubleChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
@@ -120,7 +123,7 @@ public final class DoubleGene
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(getRandom(), min, max), min, max);
+		return of(nextDouble(min, max, getRandom()), min, max);
 	}
 
 	/**
@@ -134,22 +137,20 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextDouble(range.getMin(), range.getMax(), getRandom()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
 		final Double minimum,
 		final Double maximum,
-		final int length
+		final IntRange lengthRange
 	) {
-		require.positive(length);
-
 		final double min = minimum;
 		final double max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<DoubleGene>ofLength(length)
-			.fill(() -> new DoubleGene(nextDouble(r, min, max), minimum, maximum))
+		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
+			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
 			.toISeq();
 	}
 
@@ -161,7 +162,7 @@ public final class DoubleGene
 	@Override
 	public DoubleGene newInstance() {
 		return new DoubleGene(
-			nextDouble(getRandom(), _min, _max), _min, _max
+			nextDouble(_min, _max, getRandom()), _min, _max
 		);
 	}
 

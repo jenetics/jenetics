@@ -342,9 +342,10 @@ public class Quantile implements DoubleConsumer {
 		final double q1,
 		final double q2
 	) {
-		double result = q1 +
-					((mp - m0)*(q2 - q1)/(m2 - m1) +
-					(m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+		double result =
+			q1 +
+			((mp - m0)*(q2 - q1)/(m2 - m1) +
+			(m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
 
 		if (result > q2) {
 			result = q1 + (q2 - q1)/(m2 - m1);
@@ -362,9 +363,10 @@ public class Quantile implements DoubleConsumer {
 		final double q1,
 		final double q2
 	) {
-		double result = q1 -
-					((mm - m0)*(q2 - q1)/(m2 - m1) +
-					(m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+		double result =
+			q1 -
+			((mm - m0)*(q2 - q1)/(m2 - m1) +
+			(m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
 
 		if (q0 > result) {
 			result = q1 + (q0 - q1)/(m0 - m1);

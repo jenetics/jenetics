@@ -42,11 +42,11 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class codecsTest {
+public class CodecsTest {
 
 	@Test(dataProvider = "intScalarData")
 	public void ofIntScalar(final IntRange domain) {
-		final Codec<Integer, IntegerGene> codec = codecs.ofScalar(domain);
+		final Codec<Integer, IntegerGene> codec = Codecs.ofScalar(domain);
 
 		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -72,7 +72,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "longScalarData")
 	public void ofLongScalar(final LongRange domain) {
-		final Codec<Long, LongGene> codec = codecs.ofScalar(domain);
+		final Codec<Long, LongGene> codec = Codecs.ofScalar(domain);
 
 		final Genotype<LongGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -98,7 +98,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "doubleScalarData")
 	public void ofDoubleScalar(final DoubleRange domain) {
-		final Codec<Double, DoubleGene> codec = codecs.ofScalar(domain);
+		final Codec<Double, DoubleGene> codec = Codecs.ofScalar(domain);
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -124,7 +124,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "intVectorData")
 	public void ofIntVector(final IntRange domain, final int length) {
-		final Codec<int[], IntegerGene> codec = codecs.ofVector(domain, length);
+		final Codec<int[], IntegerGene> codec = Codecs.ofVector(domain, length);
 
 		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -157,7 +157,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "longVectorData")
 	public void ofLongVector(final LongRange domain, final int length) {
-		final Codec<long[], LongGene> codec = codecs.ofVector(domain, length);
+		final Codec<long[], LongGene> codec = Codecs.ofVector(domain, length);
 
 		final Genotype<LongGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -190,7 +190,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "doubleVectorData")
 	public void ofDoubleVector(final DoubleRange domain, final int length) {
-		final Codec<double[], DoubleGene> codec = codecs.ofVector(domain, length);
+		final Codec<double[], DoubleGene> codec = Codecs.ofVector(domain, length);
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), 1);
@@ -224,7 +224,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "intVectorDataVector")
 	public void ofIntVectorVector(final IntRange[] domain) {
-		final Codec<int[], IntegerGene> codec = codecs.ofVector(domain);
+		final Codec<int[], IntegerGene> codec = Codecs.ofVector(domain);
 
 		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), domain.length);
@@ -261,7 +261,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "longVectorDataVector")
 	public void ofLongVectorVector(final LongRange[] domain) {
-		final Codec<long[], LongGene> codec = codecs.ofVector(domain);
+		final Codec<long[], LongGene> codec = Codecs.ofVector(domain);
 
 		final Genotype<LongGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), domain.length);
@@ -298,7 +298,7 @@ public class codecsTest {
 
 	@Test(dataProvider = "doubleVectorDataVector")
 	public void ofDoubleVectorVector(final DoubleRange[] domain) {
-		final Codec<double[], DoubleGene> codec = codecs.ofVector(domain);
+		final Codec<double[], DoubleGene> codec = Codecs.ofVector(domain);
 
 		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
 		Assert.assertEquals(gt.length(), domain.length);
@@ -335,7 +335,7 @@ public class codecsTest {
 
 	@Test
 	public void ofPermutation() {
-		final Codec<ISeq<String>, EnumGene<String>> codec = codecs
+		final Codec<ISeq<String>, EnumGene<String>> codec = Codecs
 			.ofPermutation(ISeq.of("foo", "bar", "zoo"));
 
 		final Genotype<EnumGene<String>> gt = codec.encoding().newInstance();
@@ -361,7 +361,7 @@ public class codecsTest {
 //		final DoubleRange kxr = DoubleRange.of(0, 10);
 //		final DoubleRange kyr = DoubleRange.of(0, 15);
 //
-//		final Codec<AffineTransform, DoubleGene> codec = codecs.ofAffineTransform(
+//		final Codec<AffineTransform, DoubleGene> codec = Codecs.ofAffineTransform(
 //			sxr, syr, txr, tyr, thr, kxr, kyr
 //		);
 //
@@ -396,7 +396,7 @@ public class codecsTest {
 
 	@Test
 	public void ofAnyScalar() {
-		final Codec<Integer, AnyGene<Integer>> codec = codecs.ofScalar(
+		final Codec<Integer, AnyGene<Integer>> codec = Codecs.ofScalar(
 			() -> RandomRegistry.getRandom().nextInt(1000),
 			i -> i < 100
 		);
@@ -413,7 +413,7 @@ public class codecsTest {
 
 	@Test
 	public void ofAnyScalar2() {
-		final Codec<Integer, AnyGene<Integer>> codec = codecs.ofScalar(
+		final Codec<Integer, AnyGene<Integer>> codec = Codecs.ofScalar(
 			() -> RandomRegistry.getRandom().nextInt(1000)
 		);
 
@@ -431,7 +431,7 @@ public class codecsTest {
 	public void ofAnyVector() {
 		final int length = 23;
 		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
-			codecs.ofVector(
+			Codecs.ofVector(
 				() -> RandomRegistry.getRandom().nextInt(1000),
 				(Predicate<Integer>) i -> i < 100,
 				length
@@ -458,7 +458,7 @@ public class codecsTest {
 
 	@Test
 	public void ofSubSet() {
-		final Codec<ISeq<String>, EnumGene<String>> codec = codecs.ofSubSet(
+		final Codec<ISeq<String>, EnumGene<String>> codec = Codecs.ofSubSet(
 			ISeq.of("1", "2", "3", "4", "5"), 3
 		);
 

@@ -522,7 +522,7 @@ public final class Readers {
 
 			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
 				xml.next();
-				return reader(alleleReader).read(xml);
+				return PermutationChromosome.<A>reader(alleleReader).read(xml);
 			}
 		}
 
@@ -591,10 +591,10 @@ public final class Readers {
 						length, genotype.length()
 					));
 				}
-				if (ngenes != genotype.getNumberOfGenes()) {
+				if (ngenes != genotype.geneCount()) {
 					throw new IllegalArgumentException(format(
 						"Expected %d genes, but read %d.",
-						ngenes, genotype.getNumberOfGenes()
+						ngenes, genotype.geneCount()
 					));
 				}
 

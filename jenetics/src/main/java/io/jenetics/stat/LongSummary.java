@@ -19,6 +19,7 @@
  */
 package io.jenetics.stat;
 
+import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
@@ -215,6 +216,93 @@ public final class LongSummary implements Serializable {
 			(a, b) -> {a.combine(b); return a;},
 			LongSummary::of
 		);
+	}
+
+
+	/* *************************************************************************
+	 * Some static helper methods.
+	 **************************************************************************/
+
+	/**
+	 * Return the minimum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the minimum value or {@link Long#MAX_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long min(final long[] values) {
+		long min = Long.MAX_VALUE;
+		if (values.length > 0) {
+			min = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] < min) {
+					min = values[i];
+				}
+			}
+		}
+
+		return min;
+	}
+
+	/**
+	 * Return the maximum value of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the array.
+	 * @return the maximum value or {@link Long#MIN_VALUE} if the given array is
+	 *         empty.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long max(final long[] values) {
+		long max = Long.MIN_VALUE;
+		if (values.length > 0) {
+			max = values[0];
+
+			for (int i = 0; i < values.length; ++i) {
+				if (values[i] > max) {
+					max = values[i];
+				}
+			}
+		}
+
+		return max;
+	}
+
+	/**
+	 * Return the sum of the given double array.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to sum up.
+	 * @return the sum of the given {@code values}.
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static long sum(final long[] values) {
+		long sum = 0;
+		for (int i = values.length; --i >= 0;) {
+			sum += values[i];
+		}
+		return sum;
+	}
+
+	/**
+	 * Returns a double describing the arithmetic mean of the values, or
+	 * {@link Double#NaN} if the {@code values} array is empty.
+	 *
+	 * @since 4.0
+	 *
+	 * @param values the values to calculate the mean of
+	 * @return the arithmetic mean of the given {@code values} or
+	 *         {@link Double#NaN} if the {@code values} array is empty
+	 * @throws NullPointerException if the given array is {@code null}.
+	 */
+	public static double mean(final long[] values) {
+		return values.length > 0 ? (double)sum(values)/values.length : NaN;
 	}
 
 }

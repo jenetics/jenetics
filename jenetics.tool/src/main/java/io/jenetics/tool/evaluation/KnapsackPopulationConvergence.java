@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import io.jenetics.BitGene;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.internal.util.Args;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
@@ -69,7 +69,7 @@ public class KnapsackPopulationConvergence {
 
 		final Runner<Double, BitGene, Double> runner = Runner.of(
 			fitness -> KNAPSACK,
-			limit::byPopulationConvergence,
+			Limits::byPopulationConvergence,
 			TRIAL_METER,
 			Writer.text().map(Object::toString),
 			Reader.text().map(Double::parseDouble),

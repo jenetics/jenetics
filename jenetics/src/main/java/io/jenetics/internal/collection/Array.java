@@ -22,10 +22,16 @@ package io.jenetics.internal.collection;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+
+import io.jenetics.internal.collection.Array.Store.Ref;
+import io.jenetics.internal.util.reflect;
 
 /**
  * Array implementation class. This class manages the actual array (store) and
@@ -39,7 +45,7 @@ import java.util.Iterator;
 public final class Array<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final Store.Ref<T> _store;
+	private transient final Store.Ref<T> _store;
 	private final int _start;
 	private final int _length;
 
@@ -221,10 +227,8 @@ public final class Array<T> implements Serializable {
 		if (values instanceof Collection<?>) {
 			size = ((Collection<?>)values).size();
 		} else {
-			final Iterator<?> it = values.iterator();
-			while (it.hasNext()) {
+			for (Object value : values) {
 				++size;
-				it.next();
 			}
 		}
 
@@ -333,6 +337,33 @@ public final class Array<T> implements Serializable {
 		return new Array<T>(ObjectStore.ofLength(length));
 	}
 
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		final Store<T> store = _start == 0
+			? _store._value
+			: _store._value.copy(_start, _start + _length);
+
+		out.writeBoolean(_store._sealed);
+		out.writeObject(store);
+	}
+
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final boolean sealed = in.readBoolean();
+		@SuppressWarnings("unchecked")
+		final Store<T> store = (Store<T>) in.readObject();
+		final Store.Ref<T> ref = new Ref<>(store, sealed);
+
+		reflect.setField(this, "_start", 0);
+		reflect.setField(this, "_length", store.length());
+		reflect.setField(this, "_store", ref);
+	}
 
 	/**
 	 * Minimal interface for accessing an underlying array structure.
@@ -430,9 +461,7 @@ public final class Array<T> implements Serializable {
 		 * @version 3.4
 		 * @since 3.4
 		 */
-		public static final class Ref<T> implements Store<T>, Serializable {
-			private static final long serialVersionUID = 1L;
-
+		public static final class Ref<T> implements Store<T> {
 			private Store<T> _value;
 			private boolean _sealed;
 

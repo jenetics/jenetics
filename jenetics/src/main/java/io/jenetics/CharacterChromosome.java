@@ -35,10 +35,13 @@ import io.jenetics.internal.util.IntRef;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
  * CharacterChromosome which represents character sequences.
+ *
+ * @see CharacterGene
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -46,12 +49,12 @@ import io.jenetics.util.MSeq;
  */
 public class CharacterChromosome
 	extends
-		AbstractChromosome<CharacterGene>
+		VariableChromosome<CharacterGene>
 	implements
 		CharSequence,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private transient CharSeq _validCharacters;
 
@@ -60,13 +63,19 @@ public class CharacterChromosome
 	 * array is copied, so changes to the given genes array doesn't effect the
 	 * genes of this chromosome.
 	 *
+	 * @since 4.0
+	 *
 	 * @param genes the genes that form the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
 	 * @throws NullPointerException if the given gene array is {@code null}.
 	 * @throws IllegalArgumentException if the length of the gene array is
 	 *         smaller than one.
 	 */
-	protected CharacterChromosome(final ISeq<CharacterGene> genes) {
-		super(genes);
+	protected CharacterChromosome(
+		final ISeq<CharacterGene> genes,
+		final IntRange lengthRange
+	) {
+		super(genes, lengthRange);
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
 
@@ -74,16 +83,43 @@ public class CharacterChromosome
 	 * Create a new chromosome with the {@code validCharacters} char set as
 	 * valid characters.
 	 *
+	 * @since 4.0
+	 *
 	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the new chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
 	 * @throws NullPointerException if the {@code validCharacters} is
 	 *         {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
 	 */
-	public CharacterChromosome(final CharSeq validCharacters, final int length) {
-		this(CharacterGene.seq(validCharacters, length));
+	public CharacterChromosome(
+		final CharSeq validCharacters,
+		final IntRange lengthRange
+	) {
+		this(CharacterGene.seq(validCharacters, lengthRange), lengthRange);
 		_valid = true;
+	}
+
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the length of the chromosome.
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 */
+	public CharacterChromosome(
+		final CharSeq validCharacters,
+		final int length
+	) {
+		this(validCharacters, IntRange.of(length));
 	}
 
 	@Override
@@ -93,7 +129,7 @@ public class CharacterChromosome
 
 	@Override
 	public CharacterChromosome subSequence(final int start, final int end) {
-		return new CharacterChromosome(_genes.subSeq(start, end));
+		return new CharacterChromosome(_genes.subSeq(start, end), lengthRange());
 	}
 
 	/**
@@ -101,7 +137,7 @@ public class CharacterChromosome
 	 */
 	@Override
 	public CharacterChromosome newInstance(final ISeq<CharacterGene> genes) {
-		return new CharacterChromosome(genes);
+		return new CharacterChromosome(genes, lengthRange());
 	}
 
 	/**
@@ -109,7 +145,7 @@ public class CharacterChromosome
 	 */
 	@Override
 	public CharacterChromosome newInstance() {
-		return new CharacterChromosome(_validCharacters, length());
+		return new CharacterChromosome(_validCharacters, lengthRange());
 	}
 
 	@Override
@@ -171,6 +207,21 @@ public class CharacterChromosome
 		return toArray(new char[length()]);
 	}
 
+	/**
+	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
+	 * char set as valid characters.
+	 *
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code CharacterChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the {@code length} is smaller than
+	 *         one.
+	 */
+	public static CharacterChromosome of(final IntRange lengthRange) {
+		return new CharacterChromosome(
+			CharacterGene.seq(DEFAULT_CHARACTERS, lengthRange),
+			lengthRange
+		);
+	}
 
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
@@ -183,7 +234,8 @@ public class CharacterChromosome
 	 */
 	public static CharacterChromosome of(final int length) {
 		return new CharacterChromosome(
-			CharacterGene.seq(DEFAULT_CHARACTERS, length)
+			CharacterGene.seq(DEFAULT_CHARACTERS, IntRange.of(length)),
+			IntRange.of(length)
 		);
 	}
 
@@ -209,7 +261,7 @@ public class CharacterChromosome
 				.fill(geneFactory)
 				.toISeq();
 
-		return new CharacterChromosome(genes);
+		return new CharacterChromosome(genes, IntRange.of(alleles.length()));
 	}
 
 	/**

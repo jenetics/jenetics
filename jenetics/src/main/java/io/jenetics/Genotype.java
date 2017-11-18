@@ -23,6 +23,7 @@ import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import io.jenetics.internal.util.Hash;
@@ -55,6 +56,9 @@ import io.jenetics.util.Verifiable;
  * The code snippet above creates a genotype with the same structure as shown in
  * the figure above. In this example the {@link DoubleGene} has been chosen as
  * gene type.
+ *
+ * @see Chromosome
+ * @see Phenotype
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -102,7 +106,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
 		return chromosomes.stream()
-			.mapToInt(c -> c.length())
+			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
 			.sum();
 	}
 
@@ -172,6 +176,22 @@ public final class Genotype<G extends Gene<?, G>>
 		return getChromosome(chromosomeIndex).getGene(geneIndex);
 	}
 
+	/**
+	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * returned chromosome is not null.
+	 *
+	 * @see #getChromosome(int)
+	 * @since 4.0
+	 *
+	 * @param chromosomeIndex Chromosome index.
+	 * @return The Chromosome.
+	 * @throws IndexOutOfBoundsException if
+	 *         {@code (index < 0 || index >= _length)}.
+	 */
+	public Chromosome<G> get(final int chromosomeIndex) {
+		return getChromosome(chromosomeIndex);
+	}
+
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
 	}
@@ -208,7 +228,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 *
 	 * @return Return the number of genes this genotype consists of.
 	 */
-	public int getNumberOfGenes() {
+	public int geneCount() {
 		return _ngenes;
 	}
 

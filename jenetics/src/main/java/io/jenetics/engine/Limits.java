@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import io.jenetics.NumericGene;
 import io.jenetics.internal.util.require;
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
@@ -45,8 +46,8 @@ import io.jenetics.util.NanoClock;
  * @since 3.0
  * @version 3.7
  */
-public final class limit {
-	private limit() {require.noInstance();}
+public final class Limits {
+	private Limits() {require.noInstance();}
 
 	/**
 	 * Return a predicate, which will truncate the evolution stream after the
@@ -369,5 +370,75 @@ public final class limit {
 		);
 	}
 
+	/**
+	 * A termination method that stops the evolution when a user-specified
+	 * percentage of the genes ({@code convergedGeneRage}) that make up a
+	 * {@code Genotype} are deemed as converged. A gene is deemed as converged,
+	 * if the {@code geneConvergence} {@code Predicate<DoubleMoments>} for this
+	 * gene returns {@code true}.
+	 *
+	 * @since 4.0
+	 * @see #byGeneConvergence(double, double)
+	 *
+	 * @param geneConvergence predicate which defines when a gene is deemed as
+	 *        converged, by using the statistics of this gene over all genotypes
+	 *        of the population
+	 * @param convergedGeneRate the percentage of genes which must be converged
+	 *        for truncating the evolution stream
+	 * @param <G> the gene type
+	 * @return a new gene convergence predicate
+	 * @throws NullPointerException if the given gene convergence predicate is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code convergedGeneRate} is not
+	 *         within the range {@code [0, 1]}
+	 */
+	public static <G extends NumericGene<?, G>> Predicate<EvolutionResult<G, ?>>
+	byGeneConvergence(
+		final Predicate<DoubleMoments> geneConvergence,
+		final double convergedGeneRate
+	) {
+		return new GeneConvergenceLimit<>(geneConvergence, convergedGeneRate);
+	}
+
+	/**
+	 * A termination method that stops the evolution when a user-specified
+	 * percentage of the genes ({@code convergedGeneRage}) that make up a
+	 * {@code Genotype} are deemed as converged. A gene is deemed as converged
+	 * when the average value of that gene across all of the genotypes in the
+	 * current population is less than a user-specified percentage
+	 * ({@code convergenceRate}) away from the maximum gene value across the
+	 * genotypes.
+	 * <p>
+	 * This method is equivalent the following code snippet:
+	 * <pre>{@code
+	 * final Predicate<EvolutionResult<DoubleGene, ?>> limit =
+	 *     byGeneConvergence(
+	 *         stat -> stat.getMax()*convergenceRate <= stat.getMean(),
+	 *         convergedGeneRate
+	 *     );
+	 * }</pre>
+	 *
+	 * @since 4.0
+	 * @see #byGeneConvergence(Predicate, double)
+	 *
+	 * @param convergenceRate the relative distance of the average gene value
+	 *        to its maximum value
+	 * @param convergedGeneRate the percentage of genes which must be converged
+	 *        for truncating the evolution stream
+	 * @param <G> the gene type
+	 * @return a new gene convergence predicate
+	 * @throws IllegalArgumentException if the {@code convergedGeneRate} or
+	 *         {@code convergenceRate} are not within the range {@code [0, 1]}
+	 */
+	public static <G extends NumericGene<?, G>> Predicate<EvolutionResult<G, ?>>
+	byGeneConvergence(
+		final double convergenceRate,
+		final double convergedGeneRate
+	) {
+		return byGeneConvergence(
+			stat -> stat.getMax()*convergenceRate <= stat.getMean(),
+			convergedGeneRate
+		);
+	}
 
 }

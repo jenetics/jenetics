@@ -19,13 +19,13 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextInt;
+import static java.lang.String.format;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.random;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -39,6 +39,8 @@ import io.jenetics.util.Mean;
  * reference equality ({@code ==}), identity hash code, or synchronization) on
  * instances of {@code IntegerGene} may have unpredictable results and should
  * be avoided.
+ *
+ * @see IntegerChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
@@ -136,15 +138,13 @@ public final class IntegerGene
 	static ISeq<IntegerGene> seq(
 		final Integer minimum,
 		final Integer maximum,
-		final int length
+		final IntRange lengthRange
 	) {
-		require.positive(length);
-
 		final int min = minimum;
 		final int max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<IntegerGene>ofLength(length)
+		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
 			.toISeq();
 	}
@@ -164,6 +164,44 @@ public final class IntegerGene
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
 		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between min and
+	 * max (min and max included).
+	 *
+	 * @param random the random engine to use for calculating the random int
+	 *        value
+	 * @param min lower bound for generated integer
+	 * @param max upper bound for generated integer
+	 * @return a random integer greater than or equal to {@code min} and
+	 *         less than or equal to {@code max}
+	 * @throws IllegalArgumentException if {@code min > max}
+	 * @throws NullPointerException if the given {@code random}
+	 *         engine is {@code null}.
+	 */
+	static int nextInt(
+		final Random random,
+		final int min, final int max
+	) {
+		if (min > max) {
+			throw new IllegalArgumentException(format(
+				"Min >= max: %d >= %d", min, max
+			));
+		}
+
+		final int diff = max - min + 1;
+		int result = 0;
+
+		if (diff <= 0) {
+			do {
+				result = random.nextInt();
+			} while (result < min || result > max);
+		} else {
+			result = random.nextInt(diff) + min;
+		}
+
+		return result;
 	}
 
 }

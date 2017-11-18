@@ -23,7 +23,7 @@ import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import java.util.stream.IntStream;
 
@@ -32,9 +32,9 @@ import io.jenetics.Optimize;
 import io.jenetics.PartiallyMatchedCrossover;
 import io.jenetics.Phenotype;
 import io.jenetics.SwapMutator;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
-import io.jenetics.engine.codecs;
 
 public class TravelingSalesman {
 
@@ -73,7 +73,7 @@ public class TravelingSalesman {
 		final Engine<EnumGene<Integer>, Double> engine = Engine
 			.builder(
 				TravelingSalesman::dist,
-				codecs.ofPermutation(STOPS))
+				Codecs.ofPermutation(STOPS))
 			.optimize(Optimize.MINIMUM)
 			.maximalPhenotypeAge(11)
 			.populationSize(500)

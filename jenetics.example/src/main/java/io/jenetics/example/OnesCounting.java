@@ -20,7 +20,7 @@
 package io.jenetics.example;
 
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.limit.bySteadyFitness;
+import static io.jenetics.engine.Limits.bySteadyFitness;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;

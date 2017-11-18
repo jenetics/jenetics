@@ -56,9 +56,9 @@ import io.jenetics.util.LongRange;
  * @since 3.2
  * @version 3.4
  */
-public final class codecs {
+public final class Codecs {
 
-	private codecs() {require.noInstance();}
+	private Codecs() {require.noInstance();}
 
 	/**
 	 * Return a scalar {@code Codec} for the given range.
@@ -116,7 +116,7 @@ public final class codecs {
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} objects.
 	 * <pre>{@code
-	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = codecs.of(
+	 * final Codec<BigInteger, AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
 	 *         final byte[] data = new byte[100];
@@ -355,7 +355,7 @@ public final class codecs {
 	 * The following example shows a codec which creates and verifies
 	 * {@code BigInteger} object arrays.
 	 * <pre>{@code
-	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = codecs.of(
+	 * final Codec<BigInteger[], AnyGene<BigInteger>> codec = Codecs.of(
 	 *     // Create new random 'BigInteger' object.
 	 *     () -> {
 	 *         final byte[] data = new byte[100];

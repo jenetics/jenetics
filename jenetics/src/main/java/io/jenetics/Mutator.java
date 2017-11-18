@@ -21,12 +21,13 @@ package io.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.random.indexes;
 
+import java.util.Random;
+
+import io.jenetics.internal.math.probability;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.IntRef;
-import io.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
@@ -96,89 +97,126 @@ public class Mutator<
 	}
 
 	/**
-	 * Concrete implementation of the alter method.
+	 * Concrete implementation of the alter method. It uses the following
+	 * mutation methods: {@link #mutate(Phenotype, long, double, Random)},
+	 * {@link #mutate(Genotype, double, Random)},
+	 * {@link #mutate(Chromosome, double, Random)}, {@link #mutate(Gene, Random)},
+	 * in this specific order.
 	 *
-	 * @see #mutate(MSeq, int, double)
-	 * @see #mutate(MSeq, double)
+	 * @see #mutate(Phenotype, long, double, Random)
+	 * @see #mutate(Genotype, double, Random)
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
 	 */
 	@Override
-	public AlterResult<G, C> alter(
+	public AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
+		final Random random = RandomRegistry.getRandom();
 		final double p = pow(_probability, 1.0/3.0);
-		final IntRef alterations = new IntRef(0);
-		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
+		final int P = probability.toInt(p);
 
-		indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
-			final Phenotype<G, C> pt = pop.get(i);
+		final Seq<MutatorResult<Phenotype<G, C>>> result = population
+			.map(pt -> random.nextInt() < P
+				? mutate(pt, generation, p, random)
+				: MutatorResult.of(pt));
 
-			final Genotype<G> gt = pt.getGenotype();
-			final Genotype<G> mgt = mutate(gt, p, alterations);
-
-			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
-			pop.set(i, mpt);
-		});
-
-		return AlterResult.of(pop.toISeq(), alterations.value);
+		return AltererResult.of(
+			result.map(MutatorResult::getResult).asISeq(),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
+		);
 	}
 
-	private Genotype<G> mutate(
+	/**
+	 * Mutates the given phenotype.
+	 *
+	 * @see #mutate(Genotype, double, Random)
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
+	 *
+	 * @param phenotype the phenotype to mutate
+	 * @param generation the actual generation
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the phenotype mutation
+	 * @return the mutation result
+	 */
+	protected MutatorResult<Phenotype<G, C>> mutate(
+		final Phenotype<G, C> phenotype,
+		final long generation,
+		final double p,
+		final Random random
+	) {
+		return mutate(phenotype.getGenotype(), p, random)
+			.map(gt -> phenotype.newInstance(gt, generation));
+	}
+
+	/**
+	 * Mutates the given genotype.
+	 *
+	 * @see #mutate(Chromosome, double, Random)
+	 * @see #mutate(Gene, Random)
+	 *
+	 * @param genotype the genotype to mutate
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
+	 */
+	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
 		final double p,
-		final IntRef alterations
+		final Random random
 	) {
-		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
+		final int P = probability.toInt(p);
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
+			.map(gt -> random.nextInt() < P
+				? mutate(gt, p, random)
+				: MutatorResult.of(gt));
 
-		alterations.value +=
-			indexes(RandomRegistry.getRandom(), genotype.length(), p)
-				.map(i -> mutate(chromosomes, i, p))
-				.sum();
-
-		return genotype.newInstance(chromosomes.toISeq());
+		return MutatorResult.of(
+			Genotype.of(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
+		);
 	}
 
 	/**
-	 * Mutates the chromosome with the given index {@code i}. This method calls
-	 * the {@link #mutate(MSeq, double)} method fo the genes stored in
-	 * chromosome {@code i}.
+	 * Mutates the given chromosome.
 	 *
-	 * @see #mutate(MSeq, double)
+	 * @see #mutate(Gene, Random)
 	 *
-	 * @param c the chromosome sequence
-	 * @param i the index of the chromosome to mutate
-	 * @param p the mutation probability
-	 * @return the number of mutated genes
+	 * @param chromosome the chromosome to mutate
+	 * @param p the mutation probability for the underlying genetic objects
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
 	 */
-	protected int mutate(final MSeq<Chromosome<G>> c, final int i, final double p) {
-		final Chromosome<G> chromosome = c.get(i);
-		final MSeq<G> genes = chromosome.toSeq().copy();
+	protected MutatorResult<Chromosome<G>> mutate(
+		final Chromosome<G> chromosome,
+		final double p,
+		final Random random
+	) {
+		final int P = probability.toInt(p);
+		final ISeq<MutatorResult<G>> result = chromosome.toSeq()
+			.map(gene -> random.nextInt() < P
+				? MutatorResult.of(mutate(gene, random), 1)
+				: MutatorResult.of(gene));
 
-		final int mutations = mutate(genes, p);
-		if (mutations > 0) {
-			c.set(i, chromosome.newInstance(genes.toISeq()));
-		}
-		return mutations;
+		return MutatorResult.of(
+			chromosome.newInstance(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
+		);
 	}
 
 	/**
-	 * <p>
-	 * Template method which gives an (re)implementation of the mutation class
-	 * the possibility to perform its own mutation operation, based on a
-	 * writable gene array and the gene mutation probability <i>p</i>.
+	 * Mutates the given gene.
 	 *
-	 * @see #mutate(MSeq, int, double)
-	 *
-	 * @param genes the genes to mutate.
-	 * @param p the gene mutation probability.
-	 * @return the number of performed mutations
+	 * @param gene the gene to mutate
+	 * @param random the random engine used for the genotype mutation
+	 * @return the mutation result
 	 */
-	protected int mutate(final MSeq<G> genes, final double p) {
-		return (int)indexes(RandomRegistry.getRandom(), genes.length(), p)
-			.peek(i -> genes.set(i, genes.get(i).newInstance()))
-			.count();
+	protected G mutate(final G gene, final Random random) {
+		return gene.newInstance();
 	}
 
 	@Override

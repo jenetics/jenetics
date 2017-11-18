@@ -20,12 +20,15 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import io.jenetics.internal.math.random;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
@@ -55,6 +58,8 @@ import io.jenetics.util.MSeq;
  * supporting custom allele types without explicit implementation of the
  * {@code Gene} interface. But the {@code AnyGene} can only be used for a subset
  * of the existing alterers.
+ *
+ * @see AnyChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.3
@@ -197,11 +202,11 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	// Create gene sequence.
 	static <A> ISeq<AnyGene<A>> seq(
-		final int length,
+		final IntRange lengthRange,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return MSeq.<AnyGene<A>>ofLength(length)
+		return MSeq.<AnyGene<A>>ofLength(random.nextInt(lengthRange, getRandom()))
 			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}

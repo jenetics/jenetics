@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -246,6 +248,84 @@ public class EvolutionResultTest
 
 		return EvolutionResult
 			.of(opt, pop.toISeq(), 0, 0, EvolutionDurations.ZERO, 0, 0, 0);
+	}
+
+	@Test
+	public void toUniquePopulation() {
+		final ISeq<Genotype<IntegerGene>> genotypes =
+			Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE)).instances()
+				.limit(10)
+				.collect(ISeq.toISeq());
+
+		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
+		Assert.assertSame(
+			EvolutionResult.<IntegerGene, Integer>toUniquePopulation().apply(result),
+			result
+		);
+	}
+
+	private EvolutionResult<IntegerGene, Integer>
+	result(final ISeq<Genotype<IntegerGene>> genotypes) {
+		return EvolutionResult.of(
+			Optimize.MAXIMUM,
+			genotypes.map(gt -> Phenotype.of(gt, 1, Genotype::length)),
+			8,
+			2,
+			EvolutionDurations.ZERO,
+			3,
+			4,
+			5
+		);
+	}
+
+	@Test
+	public void toUniquePopulation2() {
+		final ISeq<Genotype<IntegerGene>> genotypes =
+			Genotype.of(IntegerChromosome.of(0, 10)).instances()
+				.limit(100)
+				.collect(ISeq.toISeq());
+
+		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
+			unifier = EvolutionResult.toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE)));
+
+		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+
+		Assert.assertNotEquals(unified, result);
+		Assert.assertEquals(
+			unified.getGenotypes().stream().collect(Collectors.toSet()).size(),
+			unified.getPopulation().size()
+		);
+		Assert.assertEquals(
+			result.getPopulation().size(),
+			unified.getPopulation().size()
+		);
+	}
+
+	@Test
+	public void toUniquePopulation3() {
+		final ISeq<Genotype<IntegerGene>> genotypes =
+			Genotype.of(IntegerChromosome.of(0, 10)).instances()
+				.limit(100)
+				.collect(ISeq.toISeq());
+
+		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
+			unifier = EvolutionResult.toUniquePopulation(
+			Genotype.of(IntegerChromosome.of(0, 10)));
+
+		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+
+		Assert.assertNotEquals(unified, result);
+		Assert.assertTrue(
+			unified.getGenotypes().stream().collect(Collectors.toSet()).size() <
+			unified.getPopulation().size()
+		);
+		Assert.assertEquals(
+			result.getPopulation().size(),
+			unified.getPopulation().size()
+		);
 	}
 
 }

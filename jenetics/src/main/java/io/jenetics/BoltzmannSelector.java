@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.arithmetic.normalize;
+import static io.jenetics.internal.math.base.normalize;
 
 import java.io.Serializable;
 import java.util.Arrays;

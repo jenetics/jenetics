@@ -24,9 +24,9 @@ import java.util.Random;
 
 import io.jenetics.AnyGene;
 import io.jenetics.Phenotype;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.codecs;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -45,7 +45,7 @@ public class Squares {
 
 	public static void main(final String[] args) {
 		final Engine<AnyGene<Dimension>, Double> engine = Engine
-			.builder(Squares::area, codecs.ofScalar(Squares::nextDimension))
+			.builder(Squares::area, Codecs.ofScalar(Squares::nextDimension))
 			.build();
 
 		final Phenotype<AnyGene<Dimension>, Double> pt = engine.stream()

@@ -19,16 +19,20 @@
  */
 package io.jenetics;
 
+import static java.lang.String.format;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -68,6 +72,30 @@ public class DoubleChromosomeTest
 			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
 			assertUniformDistribution(histogram);
 		});
+	}
+
+	@Test(dataProvider = "chromosomes")
+	public void chromosomeLength(
+		final DoubleChromosome dc,
+		final IntRange length
+	) {
+		Assert.assertTrue(
+			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			format("Chromosome length %s not in range %s.", dc.length(), length)
+		);
+	}
+
+	@DataProvider(name = "chromosomes")
+	public Object[][] chromosomes() {
+		return new Object[][] {
+			{DoubleChromosome.of(0, 1), IntRange.of(1)},
+			{DoubleChromosome.of(DoubleRange.of(0, 1)), IntRange.of(1)},
+			{DoubleChromosome.of(0, 1, 1), IntRange.of(1)},
+			{DoubleChromosome.of(0, 1, 2), IntRange.of(2)},
+			{DoubleChromosome.of(0, 1, 20), IntRange.of(20)},
+			{DoubleChromosome.of(0, 1, IntRange.of(2, 10)), IntRange.of(2, 10)},
+			{DoubleChromosome.of(DoubleRange.of(0, 1), IntRange.of(2, 10)), IntRange.of(2, 10)}
+		};
 	}
 
 }

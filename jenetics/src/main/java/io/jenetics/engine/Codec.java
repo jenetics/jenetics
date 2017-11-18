@@ -50,7 +50,7 @@ import io.jenetics.util.ISeq;
  *         final Engine<DoubleGene, Double> engine = Engine
  *              // Create an Engine.Builder with the "pure" fitness function
  *              // and the appropriate Codec.
- *             .build(RealFunction::eval, codecs.ofScalar(DoubleRange.of(0, 2*PI)))
+ *             .build(RealFunction::eval, Codecs.ofScalar(DoubleRange.of(0, 2*PI)))
  *             .build();
  *         ...
  *     }
@@ -69,7 +69,7 @@ import io.jenetics.util.ISeq;
  * Calling the {@link Codec#of(Factory, Function)} method is the usual way for
  * creating new {@code Codec} instances.
  *
- * @see codecs
+ * @see Codecs
  * @see Engine
  * @see Engine.Builder
  *
@@ -129,6 +129,25 @@ public interface Codec<T, G extends Gene<?, G>> {
 		return decoder().apply(gt);
 	}
 
+	/**
+	 * Create a new {@code Codec} with the mapped result type.
+	 *
+	 * @since 4.0
+	 *
+	 * @param mapper the mapper function
+	 * @param <B> the new argument type of the given problem
+	 * @return a new {@code Codec} with the mapped result type
+	 * @throws NullPointerException if the mapper is {@code null}.
+	 */
+	public default <B>
+	Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
+		requireNonNull(mapper);
+
+		return Codec.of(
+			encoding(),
+			gt -> mapper.apply(decode(gt))
+		);
+	}
 
 	/**
 	 * Create a new {@code Codec} object with the given {@code encoding} and

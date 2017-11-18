@@ -28,7 +28,7 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 import io.jenetics.AbstractAlterer;
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
@@ -60,7 +60,7 @@ public class DynamicGenotype {
 
 	private static double fitness(final Genotype<DoubleGene> gt) {
 		// Calculate fitness from "dynamic" Genotype.
-		System.out.println("Gene count: " + gt.getNumberOfGenes());
+		System.out.println("Gene count: " + gt.geneCount());
 		return 0;
 	}
 
@@ -76,7 +76,7 @@ public class DynamicGenotype {
 		}
 
 		@Override
-		public AlterResult<G, C> alter(
+		public AltererResult<G, C> alter(
 			final Seq<Phenotype<G, C>> population,
 			final long generation
 		) {
@@ -94,7 +94,7 @@ public class DynamicGenotype {
 				pop.set(i, mpt);
 			});
 
-			return AlterResult.of(pop.toISeq(), alterations.value);
+			return AltererResult.of(pop.toISeq(), alterations.value);
 		}
 
 		private Genotype<G> mutate(

@@ -40,17 +40,15 @@ import io.jenetics.util.MSeq;
  * Contains static {@code Seq} definitions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 4.0
  * @since 3.4
  */
 public final class Empty {
-
 	private Empty() {require.noInstance();}
 
-	/**
-	 * Empty {@code MSeq} implementation.
-	 */
-	public static final MSeq<Object> MSEQ = new MSeq<Object>() {
+	public static enum EmptyMSeq implements MSeq<Object> {
+
+		INSTANCE;
 
 		@Override
 		public void set(final int index, final Object value) {
@@ -135,7 +133,7 @@ public final class Empty {
 
 		@Override
 		public ISeq<Object> toISeq() {
-			return ISEQ;
+			return EmptyISeq.INSTANCE;
 		}
 
 		@Override
@@ -181,10 +179,10 @@ public final class Empty {
 	};
 
 
-	/**
-	 * Empty {@code ISeq} implementation.
-	 */
-	public static final ISeq<Object> ISEQ = new ISeq<Object>() {
+
+	public static enum EmptyISeq implements ISeq<Object> {
+
+		INSTANCE;
 
 		@Override
 		public Iterator<Object> iterator() {
@@ -259,7 +257,7 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> copy() {
-			return MSEQ;
+			return EmptyMSeq.INSTANCE;
 		}
 
 		@Override
@@ -281,12 +279,12 @@ public final class Empty {
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {
-		return (MSeq<T>)MSEQ;
+		return (MSeq<T>)EmptyMSeq.INSTANCE;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> iseq() {
-		return (ISeq<T>)ISEQ;
+		return (ISeq<T>)EmptyISeq.INSTANCE;
 	}
 
 }

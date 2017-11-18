@@ -145,10 +145,10 @@ public class CompositeCodecTest {
 	public void encoding() {
 		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
 			ISeq.of(
-				codecs.ofScalar(DoubleRange.of(0, 1)),
-				codecs.ofVector(DoubleRange.of(10, 100), 3),
-				codecs.ofScalar(DoubleRange.of(2, 3)),
-				codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+				Codecs.ofScalar(DoubleRange.of(0, 1)),
+				Codecs.ofVector(DoubleRange.of(10, 100), 3),
+				Codecs.ofScalar(DoubleRange.of(2, 3)),
+				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
 			),
 			values -> {
 				final Double v1 = (Double)values[0];

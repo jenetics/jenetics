@@ -29,11 +29,11 @@ import io.jenetics.Mutator;
 import io.jenetics.PartiallyMatchedCrossover;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
-import io.jenetics.engine.codecs;
-import io.jenetics.engine.limit;
+import io.jenetics.engine.Limits;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 
@@ -65,7 +65,7 @@ public class SubsetSum
 
 	@Override
 	public Codec<ISeq<Integer>, EnumGene<Integer>> codec() {
-		return codecs.ofSubSet(_basicSet, _size);
+		return Codecs.ofSubSet(_basicSet, _size);
 	}
 
 	public static SubsetSum of(final int n, final int k, final Random random) {
@@ -91,7 +91,7 @@ public class SubsetSum
 			.build();
 
 		final Phenotype<EnumGene<Integer>, Integer> result = engine.stream()
-			.limit(limit.bySteadyFitness(55))
+			.limit(Limits.bySteadyFitness(55))
 			.collect(EvolutionResult.toBestPhenotype());
 
 		System.out.print(result);

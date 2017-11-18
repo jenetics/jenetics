@@ -1,15 +1,16 @@
 package io.jenetics.ext;
 
-import java.util.stream.IntStream;
+import java.util.Random;
 
-import io.jenetics.AlterResult;
+import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.MutatorResult;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.IntRef;
-import io.jenetics.util.MSeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
 /**
@@ -58,34 +59,31 @@ public class WeaselMutator<
 	}
 
 	@Override
-	public AlterResult<G, C>
+	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final IntRef alterations = new IntRef(0);
+		final Random random = RandomRegistry.getRandom();
+		final Seq<MutatorResult<Phenotype<G, C>>> result = population
+			.map(pt -> mutate(pt, generation, _probability, random));
 
-		final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
-		for (int i = 0; i < pop.size(); ++i) {
-			final Phenotype<G, C> pt = pop.get(i);
-
-			final Genotype<G> gt = pt.getGenotype();
-			final Genotype<G> mgt = mutate(gt, alterations);
-			final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
-			pop.set(i, mpt);
-		}
-
-		return AlterResult.of(pop.toISeq(), alterations.value);
+		return AltererResult.of(
+			result.map(MutatorResult::getResult).asISeq(),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
+		);
 	}
 
-	private Genotype<G> mutate(
+	@Override
+	protected MutatorResult<Genotype<G>> mutate(
 		final Genotype<G> genotype,
-		final IntRef alterations
+		final double p,
+		final Random random
 	) {
-		final MSeq<Chromosome<G>> chromosomes = genotype.toSeq().copy();
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
+			.map(gt -> mutate(gt, p, random));
 
-		alterations.value += IntStream.range(0, chromosomes.size())
-			.map(i -> mutate(chromosomes, i, _probability))
-			.sum();
-
-		return Genotype.of(chromosomes);
+		return MutatorResult.of(
+			Genotype.of(result.map(MutatorResult::getResult)),
+			result.stream().mapToInt(MutatorResult::getMutations).sum()
+		);
 	}
 
 }

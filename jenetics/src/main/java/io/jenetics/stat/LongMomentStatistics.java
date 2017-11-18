@@ -19,8 +19,6 @@
  */
 package io.jenetics.stat;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.IntConsumer;
@@ -91,8 +89,8 @@ public class LongMomentStatistics
 	@Override
 	public void accept(final long value) {
 		super.accept(value);
-		_min = min(_min, value);
-		_max = max(_max, value);
+		_min = Math.min(_min, value);
+		_max = Math.max(_max, value);
 		_sum += value;
 	}
 
@@ -117,8 +115,8 @@ public class LongMomentStatistics
 	 */
 	public LongMomentStatistics combine(final LongMomentStatistics other) {
 		super.combine(other);
-		_min = min(_min, other._min);
-		_max = max(_max, other._max);
+		_min = Math.min(_min, other._min);
+		_max = Math.max(_max, other._max);
 		_sum += other._sum;
 
 		return this;
