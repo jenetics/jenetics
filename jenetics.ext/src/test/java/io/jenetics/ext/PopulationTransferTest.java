@@ -21,6 +21,8 @@ package io.jenetics.ext;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
+import io.jenetics.Mutator;
+import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStream;
@@ -35,24 +37,60 @@ public class PopulationTransferTest {
 
 	public static void main(final String[] args) {
 		final Problem<Double, DoubleGene, Double> problem = null;
-		final PopulationTransfer<DoubleGene, Double> transfer = new PopulationTransfer<>();
+		//final PopulationTransfer<DoubleGene, Double> transfer = new PopulationTransfer<>();
 
-		final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)
-			.mapping(transfer.connect())
+		final SerialPopulationTransfer<DoubleGene, Double>
+			serial = new SerialPopulationTransfer<>();
+
+		final Engine.Builder<DoubleGene, Double> builder = Engine.builder(problem)
+			.minimizing()
+			.selector(new RouletteWheelSelector<>());
+
+		final Engine<DoubleGene, Double> engine1 = builder
+			.mapping(serial)
 			.build();
 
-		final Engine<DoubleGene, Double> engine2 = Engine.builder(problem)
-			.mapping(transfer.connect())
+		final Engine<DoubleGene, Double> engine2 = builder
+			.mapping(serial)
 			.build();
 
-		final Engine<DoubleGene, Double> engine3 = Engine.builder(problem)
-			.mapping(transfer.connect())
+		final Engine<DoubleGene, Double> engine3 = builder
 			.build();
 
-		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream.weave(
-			engine1.stream().limit(10),
-			engine2.stream().limit(50),
-			engine3.stream().limit(100)
+//		final EvolutionStream<DoubleGene, Double> stream1 =
+//			EvolutionConcat.serial()
+//				.append(engine1, Limits.bySteadyFitness(10))
+//				.append(engine2, Limits.bySteadyFitness(10))
+//				.append(engine3, Limits.bySteadyFitness(10))
+//				.stream();
+//
+//		serial
+//			.using(engine1, Limits.bySteadyFitness(10))
+//			.using(engine2, Limits.bySteadyFitness(10))
+//			.using(engine3, Limits.bySteadyFitness(10))
+//			.stream();
+
+		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream.join(
+			builder
+				.alterers(new Mutator<>(0.5))
+				.mapping(serial).build()
+				.stream(serial)
+				.limit(Limits.bySteadyFitness(10))
+				.peek(serial),
+
+			builder
+				.alterers(new Mutator<>(0.2))
+				.mapping(serial).build()
+				.stream(serial)
+				.limit(Limits.bySteadyFitness(10)),
+
+			builder
+				.alterers(new Mutator<>(0.1))
+				.mapping(serial).build()
+				.stream(serial)
+				.limit(Limits.bySteadyFitness(10)),
+
+			engine3.stream(serial)
 		);
 
 		final Genotype<DoubleGene> best = stream
