@@ -142,4 +142,11 @@ public interface EvolutionStream<
 		return new EvolutionStreamImpl<>(start, evolution);
 	}
 
+
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> weave(final Stream<EvolutionResult<G, C>>... streams) {
+		return null;
+	}
+
 }
