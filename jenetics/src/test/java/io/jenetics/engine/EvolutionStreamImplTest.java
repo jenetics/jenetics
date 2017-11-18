@@ -19,8 +19,10 @@
  */
 package io.jenetics.engine;
 
+import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -102,6 +104,26 @@ public class EvolutionStreamImplTest {
 		public boolean test(final Object o) {
 			return _limit > ++_count;
 		}
+	}
+
+	@Test
+	public void spliterator() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(
+				gt -> gt.getGene().getAllele(),
+				DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionStream<DoubleGene, Double> stream = engine.stream()
+			.limit(Limits.byFixedGeneration(10));
+
+		final Spliterator<EvolutionResult<DoubleGene, Double>>
+			spliterator = stream.spliterator();
+
+		final long count = StreamSupport.stream(spliterator, false)
+			.count();
+
+		Assert.assertEquals(count, 10);
 	}
 
 }
