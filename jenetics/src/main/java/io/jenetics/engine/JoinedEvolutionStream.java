@@ -20,10 +20,10 @@
 package io.jenetics.engine;
 
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.util.JoinedSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

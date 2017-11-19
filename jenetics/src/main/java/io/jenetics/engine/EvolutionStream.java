@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.util.JoinedSpliterator;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a

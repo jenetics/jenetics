@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

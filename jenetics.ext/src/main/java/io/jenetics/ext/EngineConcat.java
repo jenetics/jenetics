@@ -21,7 +21,6 @@ package io.jenetics.ext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
@@ -33,7 +32,7 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.JoinedSpliterator;
+import io.jenetics.internal.util.JoinedSpliterator;
 import io.jenetics.util.ISeq;
 
 /**

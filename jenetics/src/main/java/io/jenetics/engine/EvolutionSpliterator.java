@@ -20,7 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.engine.LimitSpliterator.and;
+import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -29,6 +29,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

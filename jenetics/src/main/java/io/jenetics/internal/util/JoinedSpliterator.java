@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.util;
 
-import static io.jenetics.engine.LimitSpliterator.TRUE;
-import static io.jenetics.engine.LimitSpliterator.and;
+import static io.jenetics.internal.util.LimitSpliterator.TRUE;
+import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.ArrayList;
 import java.util.Deque;

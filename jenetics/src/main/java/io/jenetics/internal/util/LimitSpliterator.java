@@ -17,38 +17,48 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Spliterator;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.StreamSupport;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-abstract class LimitEvolutionStream<T, S extends LimitEvolutionStream<T, S>>
-	extends StreamProxy<T>
-{
+public interface LimitSpliterator<T> extends Spliterator<T> {
 
-	private final Supplier<S> _creator;
-	private final LimitSpliterator<T> _spliterator;
+	public static final Predicate<?> TRUE = a -> true;
 
-	LimitEvolutionStream(
-		final Supplier<S> creator,
-		final LimitSpliterator<T> spliterator,
-		final boolean parallel
-	) {
-		super(StreamSupport.stream(spliterator, parallel));
-		_creator = requireNonNull(creator);
-		_spliterator = spliterator;
+	@SuppressWarnings("unchecked")
+	public static <T> Predicate<T> TRUE() {
+		return (Predicate<T>)TRUE;
 	}
 
-	public S limit(final Predicate<? super T> proceed) {
-		return null;// new LimitEvolutionStream<>(_spliterator.limit(proceed), isParallel());
+	public LimitSpliterator<T> limit(final Predicate<? super T> proceed);
+
+	public static <T> Predicate<? super T> and(
+		final Predicate<? super T> a,
+		final Predicate<? super T> b
+	) {
+		requireNonNull(a);
+		requireNonNull(b);
+
+		final Predicate<? super T> result;
+		if (a == TRUE && b == TRUE) {
+			result = TRUE();
+		} else if (a == TRUE) {
+			result = b;
+		} else if (b == TRUE) {
+			result = a;
+		} else {
+			result = r -> a.test(r) & b.test(r);
+		}
+
+		return result;
 	}
 
 }
