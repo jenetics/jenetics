@@ -1,0 +1,125 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.engine;
+
+import static io.jenetics.engine.LimitSpliterator.TRUE;
+import static io.jenetics.engine.LimitSpliterator.and;
+
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+class JoinedSpliterator<T> implements LimitSpliterator<T> {
+
+	private final Predicate<? super T> _proceed;
+	private final Deque<Spliterator<T>> _spliterators;
+
+	JoinedSpliterator(
+		final Predicate<? super T> proceed,
+		final List<Spliterator<T>> spliterators
+	) {
+		_proceed = proceed;
+		_spliterators = new LinkedList<>(spliterators);
+	}
+
+	JoinedSpliterator(final List<Spliterator<T>> spliterators) {
+		this(TRUE(), spliterators);
+	}
+
+	@Override
+	public boolean tryAdvance(final Consumer<? super T> action) {
+		if (!_spliterators.isEmpty()) {
+			final Spliterator<T> spliterator = _spliterators.peek();
+			final AtomicBoolean proceed = new AtomicBoolean();
+
+			final boolean advance = spliterator.tryAdvance(t -> {
+				action.accept(t);
+				proceed.set(_proceed.test(t));
+			}) && proceed.get();
+
+			if (!advance) {
+				_spliterators.removeFirst();
+				return !_spliterators.isEmpty();
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Spliterator<T> trySplit() {
+		final List<Spliterator<T>> split = _spliterators.stream()
+			.map(Spliterator::trySplit)
+			.collect(Collectors.toList());
+
+		return Stream.of(split).noneMatch(Objects::isNull)
+			? new JoinedSpliterator<>(_proceed, split)
+			: null;
+	}
+
+	@Override
+	public JoinedSpliterator<T> limit(final Predicate<? super T> proceed) {
+		return new JoinedSpliterator<>(
+			and(_proceed, proceed),
+			new ArrayList<>(_spliterators)
+		);
+	}
+
+	@Override
+	public long estimateSize() {
+		return hasMaxValueSize()
+			? Long.MAX_VALUE
+			: _spliterators.stream()
+				.mapToLong(Spliterator::estimateSize)
+				.min()
+				.orElse(1L)*_spliterators.size();
+	}
+
+	private boolean hasMaxValueSize() {
+		return _spliterators.stream()
+			.mapToLong(Spliterator::estimateSize)
+			.anyMatch(l -> l == Long.MAX_VALUE);
+	}
+
+	@Override
+	public int characteristics() {
+		return _spliterators.stream()
+			.mapToInt(Spliterator::characteristics)
+			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2)
+			& ~Spliterator.SORTED;
+	}
+
+}
