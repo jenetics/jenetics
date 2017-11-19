@@ -29,18 +29,18 @@ import java.util.function.Predicate;
  * @version !__version__!
  * @since !__version__!
  */
-interface LimitSpliterator<T> extends Spliterator<T> {
+public interface LimitSpliterator<T> extends Spliterator<T> {
 
-	static final Predicate<?> TRUE = a -> true;
+	public static final Predicate<?> TRUE = a -> true;
 
 	@SuppressWarnings("unchecked")
-	static <T> Predicate<T> TRUE() {
+	public static <T> Predicate<T> TRUE() {
 		return (Predicate<T>)TRUE;
 	}
 
-	LimitSpliterator<T> limit(final Predicate<? super T> proceed);
+	public LimitSpliterator<T> limit(final Predicate<? super T> proceed);
 
-	static <T> Predicate<? super T> and(
+	public static <T> Predicate<? super T> and(
 		final Predicate<? super T> a,
 		final Predicate<? super T> b
 	) {
