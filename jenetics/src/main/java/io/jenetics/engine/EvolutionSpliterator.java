@@ -36,7 +36,7 @@ import io.jenetics.internal.util.LimitSpliterator;
  * @since 3.0
  * @version !__version__!
  */
-final class EvolutionSpliterator<
+public final class EvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -70,7 +70,7 @@ final class EvolutionSpliterator<
 		this(start, evolution, proceed, Long.MAX_VALUE);
 	}
 
-	EvolutionSpliterator(
+	public EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {

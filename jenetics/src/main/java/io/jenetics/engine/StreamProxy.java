@@ -47,11 +47,11 @@ import java.util.stream.Stream;
  * @since 3.0
  * @version 3.0
  */
-abstract class StreamProxy<T> implements Stream<T> {
+public abstract class StreamProxy<T> implements Stream<T> {
 
 	private final Stream<T> _self;
 
-	StreamProxy(final Stream<T> self) {
+	protected StreamProxy(final Stream<T> self) {
 		_self = requireNonNull(self);
 	}
 
