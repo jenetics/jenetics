@@ -42,7 +42,7 @@ public final class EvolutionStreamImpl<
 
 	private final LimitSpliterator<EvolutionResult<G, C>> _spliterator;
 
-	EvolutionStreamImpl(
+	public EvolutionStreamImpl(
 		final LimitSpliterator<EvolutionResult<G, C>> spliterator,
 		final boolean parallel
 	) {
@@ -50,7 +50,7 @@ public final class EvolutionStreamImpl<
 		_spliterator = spliterator;
 	}
 
-	EvolutionStreamImpl(
+	public EvolutionStreamImpl(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
