@@ -57,12 +57,13 @@ public class PopulationTransferTest {
 		final Engine<DoubleGene, Double> engine3 = builder
 			.build();
 
-//		final EvolutionStream<DoubleGene, Double> stream1 =
-//			EvolutionConcat.serial()
-//				.append(engine1, Limits.bySteadyFitness(10))
-//				.append(engine2, Limits.bySteadyFitness(10))
-//				.append(engine3, Limits.bySteadyFitness(10))
-//				.stream();
+		final EvolutionStream<DoubleGene, Double> stream1 =
+			EngineConcat.<DoubleGene, Double>serial()
+				.append(engine1, Limits.bySteadyFitness(10))
+				.append(engine2, Limits.bySteadyFitness(10))
+				.append(engine3, Limits.bySteadyFitness(10))
+				.append(engine3, Limits.infinite())
+				.stream();
 //
 //		serial
 //			.using(engine1, Limits.bySteadyFitness(10))
