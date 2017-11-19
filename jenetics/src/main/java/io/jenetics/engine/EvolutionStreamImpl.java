@@ -32,7 +32,7 @@ import io.jenetics.internal.util.LimitSpliterator;
  * @since 3.0
  * @version !__version__!
  */
-final class EvolutionStreamImpl<
+public final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
