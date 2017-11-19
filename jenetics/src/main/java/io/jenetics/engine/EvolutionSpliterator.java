@@ -32,16 +32,16 @@ import io.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.9
+ * @version !__version__!
  */
 final class EvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Spliterator<EvolutionResult<G, C>>
+	implements LimitSpliterator<EvolutionResult<G, C>>
 {
 
-	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Supplier<EvolutionStart<G, C>> _start;
 	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
 	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
@@ -49,30 +49,37 @@ final class EvolutionSpliterator<
 	private EvolutionStart<G, C> _next = null;
 
 	private EvolutionSpliterator(
-		final Supplier<EvolutionStart<G, C>> initial,
+		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed,
 		final long estimate
 	) {
 		_evolution = requireNonNull(evolution);
-		_initial = requireNonNull(initial);
+		_start = requireNonNull(start);
 		_proceed = requireNonNull(proceed);
 		_estimate = estimate;
 	}
 
-	EvolutionSpliterator(
-		final Supplier<EvolutionStart<G, C>> initial,
+	private EvolutionSpliterator(
+		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		this(initial, evolution, proceed, Long.MAX_VALUE);
+		this(start, evolution, proceed, Long.MAX_VALUE);
+	}
+
+	EvolutionSpliterator(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+	) {
+		this(start, evolution, LimitSpliterator.TRUE(), Long.MAX_VALUE);
 	}
 
 	@Override
 	public boolean
 	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
 		if (_next == null) {
-			_next = _initial.get();
+			_next = _start.get();
 		}
 
 		final EvolutionResult<G, C> result = _evolution.apply(_next);
@@ -86,8 +93,18 @@ final class EvolutionSpliterator<
 	public Spliterator<EvolutionResult<G, C>> trySplit() {
 		return _estimate > 0
 			? new EvolutionSpliterator<>(
-				_initial, _evolution, _proceed, _estimate >>>= 1)
+			_start, _evolution, _proceed, _estimate >>>= 1)
 			: null;
+	}
+
+	@Override
+	public LimitSpliterator<EvolutionResult<G, C>>
+	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
+		final Predicate<? super EvolutionResult<G, C>> prcd = _proceed == TRUE
+			? proceed
+			: r -> proceed.test(r) & _proceed.test(r);
+
+		return new EvolutionSpliterator<>(_start, _evolution, prcd);
 	}
 
 	@Override

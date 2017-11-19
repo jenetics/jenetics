@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
@@ -32,7 +31,7 @@ import io.jenetics.Gene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -42,59 +41,26 @@ final class EvolutionStreamImpl<
 	implements EvolutionStream<G, C>
 {
 
-	private final Supplier<EvolutionStart<G, C>> _start;
-	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
-	private final Predicate<? super EvolutionResult<G, C>> _proceed;
+	private final LimitSpliterator<EvolutionResult<G, C>> _spliterator;
 
 	private EvolutionStreamImpl(
-		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Stream<EvolutionResult<G, C>> stream,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final LimitSpliterator<EvolutionResult<G, C>> spliterator
 	) {
-		super(stream);
-		_evolution = requireNonNull(evolution);
-		_start = requireNonNull(start);
-		_proceed = requireNonNull(proceed);
+		super(StreamSupport.stream(spliterator, false));
+		_spliterator = spliterator;
 	}
 
 	EvolutionStreamImpl(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
-		this(
-			start, evolution,
-			StreamSupport.stream(
-				new EvolutionSpliterator<>(start, evolution, TRUE()),
-				false
-			),
-			TRUE()
-		);
+		this(new EvolutionSpliterator<>(start, evolution));
 	}
 
 	@Override
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		final Predicate<? super EvolutionResult<G, C>> prcd = _proceed == TRUE
-			? proceed
-			: r -> proceed.test(r) & _proceed.test(r);
-
-		return new EvolutionStreamImpl<>(
-			_start,
-			_evolution,
-			StreamSupport.stream(
-				new EvolutionSpliterator<>(_start, _evolution, prcd),
-				false
-			),
-			prcd
-		);
-	}
-
-	private static final Predicate<?> TRUE = a -> true;
-
-	@SuppressWarnings("unchecked")
-	private static <T> Predicate<T> TRUE() {
-		return (Predicate<T>)TRUE;
+		return new EvolutionStreamImpl<>(_spliterator.limit(proceed));
 	}
 
 }
