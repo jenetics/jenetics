@@ -32,6 +32,7 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.internal.util.JoinedSpliterator;
 import io.jenetics.util.ISeq;
 
@@ -80,10 +81,10 @@ public class EngineConcat<
 				.map(BaseStream::spliterator)
 				.collect(Collectors.toList());
 
-		final JoinedSpliterator<EvolutionResult<G, C>> spliterator =
-			new JoinedSpliterator<>(spliterators);
-
-		return null;
+		return new EvolutionStreamImpl<G, C>(
+			new JoinedSpliterator<>(spliterators),
+			false
+		);
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
