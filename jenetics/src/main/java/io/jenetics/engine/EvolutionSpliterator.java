@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.engine.LimitSpliterator.and;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
@@ -93,18 +94,16 @@ final class EvolutionSpliterator<
 	public Spliterator<EvolutionResult<G, C>> trySplit() {
 		return _estimate > 0
 			? new EvolutionSpliterator<>(
-			_start, _evolution, _proceed, _estimate >>>= 1)
+				_start, _evolution, _proceed, _estimate >>>= 1)
 			: null;
 	}
 
 	@Override
 	public LimitSpliterator<EvolutionResult<G, C>>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		final Predicate<? super EvolutionResult<G, C>> prcd = _proceed == TRUE
-			? proceed
-			: r -> proceed.test(r) & _proceed.test(r);
-
-		return new EvolutionSpliterator<>(_start, _evolution, prcd);
+		return new EvolutionSpliterator<>(
+			_start, _evolution, and(_proceed, proceed)
+		);
 	}
 
 	@Override

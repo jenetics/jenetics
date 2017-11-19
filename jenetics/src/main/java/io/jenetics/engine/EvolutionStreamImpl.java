@@ -41,10 +41,11 @@ final class EvolutionStreamImpl<
 
 	private final LimitSpliterator<EvolutionResult<G, C>> _spliterator;
 
-	private EvolutionStreamImpl(
-		final LimitSpliterator<EvolutionResult<G, C>> spliterator
+	EvolutionStreamImpl(
+		final LimitSpliterator<EvolutionResult<G, C>> spliterator,
+		final boolean parallel
 	) {
-		super(StreamSupport.stream(spliterator, false));
+		super(StreamSupport.stream(spliterator, parallel));
 		_spliterator = spliterator;
 	}
 
@@ -52,13 +53,13 @@ final class EvolutionStreamImpl<
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
-		this(new EvolutionSpliterator<>(start, evolution));
+		this(new EvolutionSpliterator<>(start, evolution), false);
 	}
 
 	@Override
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		return new EvolutionStreamImpl<>(_spliterator.limit(proceed));
+		return new EvolutionStreamImpl<>(_spliterator.limit(proceed), isParallel());
 	}
 
 }

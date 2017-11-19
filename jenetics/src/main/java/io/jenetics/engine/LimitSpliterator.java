@@ -19,6 +19,8 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Spliterator;
 import java.util.function.Predicate;
 
@@ -37,5 +39,26 @@ interface LimitSpliterator<T> extends Spliterator<T> {
 	}
 
 	LimitSpliterator<T> limit(final Predicate<? super T> proceed);
+
+	static <T> Predicate<? super T> and(
+		final Predicate<? super T> a,
+		final Predicate<? super T> b
+	) {
+		requireNonNull(a);
+		requireNonNull(b);
+
+		final Predicate<? super T> result;
+		if (a == TRUE && b == TRUE) {
+			result = TRUE();
+		} else if (a == TRUE) {
+			result = b;
+		} else if (b == TRUE) {
+			result = a;
+		} else {
+			result = r -> a.test(r) & b.test(r);
+		}
+
+		return result;
+	}
 
 }
