@@ -19,12 +19,22 @@
  */
 package io.jenetics.ext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
+import java.util.stream.BaseStream;
+import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.JoinedSpliterator;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,21 +46,50 @@ public class EngineConcat<
 	C extends Comparable<? super C>
 > {
 
+	private static class Pair<A, B> {
+		final A _1;
+		final B _2;
+		private Pair(final A a, final B b) {
+			_1 = a;
+			_2 = b;
+		}
+		static <A, B> Pair<A, B> of(final A a, final B b) {
+			return new Pair<>(a, b);
+		}
+	}
+
+	private final List<Pair<Engine<G, C>, Predicate<? super EvolutionResult<G, C>>>>
+	_engines = new ArrayList<>();
 
 	public EngineConcat<G, C> append(
 		final Engine<G, C> engine,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
+		_engines.add(Pair.of(engine, proceed));
 		return this;
 	}
 
 	public EvolutionStream<G, C> stream() {
+		final AtomicReference<EvolutionStart<G, C>> start =
+			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
+
+		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
+			_engines.stream()
+				.map(p -> p._1.stream(start::get)
+					.limit(p._2)
+					.peek(r -> start.set(r.next())))
+				.map(BaseStream::spliterator)
+				.collect(Collectors.toList());
+
+		final JoinedSpliterator<EvolutionResult<G, C>> spliterator =
+			new JoinedSpliterator<>(spliterators);
+
 		return null;
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineConcat<G, C> serial() {
-		return null;
+		return new EngineConcat<>();
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>

@@ -19,9 +19,12 @@
  */
 package io.jenetics.engine;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.BaseStream;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
@@ -35,7 +38,7 @@ import io.jenetics.Gene;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -146,7 +149,19 @@ public interface EvolutionStream<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C>
 	join(final Stream<EvolutionResult<G, C>>... streams) {
-		return null;
+		Stream.of(streams).forEach(Objects::requireNonNull);
+
+		final JoinedSpliterator<EvolutionResult<G, C>> spliterator =
+			new JoinedSpliterator<>(
+				Stream.of(streams)
+					.map(BaseStream::spliterator)
+					.collect(Collectors.toList())
+			);
+
+		return new EvolutionStreamImpl<G, C>(
+			spliterator,
+			Stream.of(streams).anyMatch(Stream::isParallel)
+		);
 	}
 
 	@SafeVarargs

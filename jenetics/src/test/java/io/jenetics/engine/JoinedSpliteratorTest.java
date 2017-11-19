@@ -101,4 +101,19 @@ public class JoinedSpliteratorTest {
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5});
 	}
 
+	@Test
+	public void join6() {
+		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).limit(1).spliterator();
+		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
+		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
+
+		final int[] array = StreamSupport
+			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.mapToInt(Integer::intValue)
+			.limit(5)
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 4, 5, 6, 7});
+	}
+
 }
