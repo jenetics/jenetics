@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.internal.util.JoinedSpliterator;
 
 /**

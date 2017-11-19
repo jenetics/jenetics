@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.Optimize;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.util.ISeq;
 
 /**

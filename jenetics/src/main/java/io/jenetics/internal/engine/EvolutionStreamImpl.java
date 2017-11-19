@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -25,6 +25,9 @@ import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
 import io.jenetics.internal.util.LimitSpliterator;
 import io.jenetics.internal.util.StreamProxy;
 

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.LimitSpliterator.and;
@@ -29,6 +29,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.internal.util.LimitSpliterator;
 
 /**
