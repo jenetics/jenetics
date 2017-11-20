@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass book
+\textclass extbook
 \begin_preamble
 \usepackage{transparent}
 \usepackage{eso-pic}
@@ -49,6 +49,10 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{newunicodechar}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
