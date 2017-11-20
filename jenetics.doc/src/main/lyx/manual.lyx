@@ -18072,17 +18072,27 @@ class Main {
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum() -
+                   .mapToInt(Integer::intValue)
 \end_layout
 
 \begin_layout Plain Layout
 
-            args.second.stream()
+                   .sum() -
 \end_layout
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum();
+               args.second.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .mapToInt(Integer::intValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .sum();
 \end_layout
 
 \begin_layout Plain Layout
