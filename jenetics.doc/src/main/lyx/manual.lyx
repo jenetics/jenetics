@@ -13,8 +13,9 @@
 \parbox[b][\paperheight]{\paperwidth}{%
 \vfill
 \centering
-{\transparent{0.9} \includegraphics[width=\paperwidth,height=\paperheight,%
-keepaspectratio]{../resources/graphic/manual-title.jpg}}%
+{\transparent{0.9} 
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]
+{../resources/graphic/manual-title.jpg}}
 \vfill
 }}}
 
@@ -169,6 +170,9 @@ tabs-within-sections
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
+\bullet 1 0 9 -1
+\bullet 2 0 10 -1
+\bullet 3 0 0 -1
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -22210,7 +22214,8 @@ Harder class
  io.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 prngine.\SpecialChar softhyphen
-internal.\SpecialChar softhyphen
+inter\SpecialChar softhyphen
+nal.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 Random
