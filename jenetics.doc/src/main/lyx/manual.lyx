@@ -20,10 +20,8 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
-
  % set fonts for nicer pdf view
  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
-
 \fi % end if pdflatex is used
 
 \renewcommand\part{%
@@ -44,7 +42,6 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \makeatother
 
 \usepackage{listings}
-%\usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{url}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -57,15 +54,8 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{keyword}{rgb}{0.5,0,0.5}
-%\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-%\definecolor{covercolor}{RGB}{220,220,220}
-%\definecolor{covercolor}{RGB}{25,200,255}
-%\definecolor{covercolor}{RGB}{202,232,255}
-%\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
-
-%\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
 \definecolor{covercolor}{RGB}{13,126,168}
 
 \newunicodechar{Σ}{\lstsum}
@@ -84,12 +74,10 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
   showtabs=false,
   frame=single,
   frameshape={}{nny}{nny}{},
-  %framexleftmargin=8pt,
   tabsize=4,
   captionpos=b,
   breaklines=true,
   breakatwhitespace=false,
-  %title=\lstname,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{keyword}\bfseries,
   commentstyle=\color{dkgreen},
