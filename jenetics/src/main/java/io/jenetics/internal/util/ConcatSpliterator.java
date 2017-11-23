@@ -19,6 +19,7 @@
  */
 package io.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.LimitSpliterator.TRUE;
 import static io.jenetics.internal.util.LimitSpliterator.and;
 
@@ -35,6 +36,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * This {@code Spliterator} takes a list of other spliterators which are
+ * concatenated and a limiting predicate.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -44,11 +48,19 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 	private final Predicate<? super T> _proceed;
 	private final Deque<Spliterator<T>> _spliterators;
 
+	/**
+	 * Create a new concatenating spliterator with the given arguments.
+	 *
+	 * @param proceed the limiting predicate
+	 * @param spliterators the spliterators which are concatenated
+	 * @throws NullPointerException if one of the arguments are {@code null}
+	 */
 	public ConcatSpliterator(
 		final Predicate<? super T> proceed,
 		final List<Spliterator<T>> spliterators
 	) {
-		_proceed = proceed;
+		_proceed = requireNonNull(proceed);
+		spliterators.forEach(Objects::requireNonNull);
 		_spliterators = new LinkedList<>(spliterators);
 	}
 
@@ -100,18 +112,16 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public long estimateSize() {
-		return hasMaxValueSize()
+		final boolean maxValueSized = _spliterators.stream()
+			.mapToLong(Spliterator::estimateSize)
+			.anyMatch(l -> l == Long.MAX_VALUE);
+
+		return maxValueSized
 			? Long.MAX_VALUE
 			: _spliterators.stream()
 				.mapToLong(Spliterator::estimateSize)
 				.min()
 				.orElse(1L)*_spliterators.size();
-	}
-
-	private boolean hasMaxValueSize() {
-		return _spliterators.stream()
-			.mapToLong(Spliterator::estimateSize)
-			.anyMatch(l -> l == Long.MAX_VALUE);
 	}
 
 	@Override
