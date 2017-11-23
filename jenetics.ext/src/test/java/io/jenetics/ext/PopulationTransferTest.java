@@ -71,7 +71,7 @@ public class PopulationTransferTest {
 //			.using(engine3, Limits.bySteadyFitness(10))
 //			.stream();
 
-		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream.join(
+		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream.concat(
 			builder
 				.alterers(new Mutator<>(0.5))
 				.mapping(serial).build()

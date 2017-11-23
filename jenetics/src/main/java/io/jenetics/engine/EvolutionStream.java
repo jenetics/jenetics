@@ -167,7 +167,7 @@ public interface EvolutionStream<
 	concat(final Stream<EvolutionResult<G, C>>... streams) {
 		Stream.of(streams).forEach(Objects::requireNonNull);
 		if (streams.length == 0) {
-			throw new IllegalArgumentException("Streams array is empty");
+			throw new IllegalArgumentException("Streams array is empty.");
 		}
 
 		final JoinedSpliterator<EvolutionResult<G, C>> spliterator =
@@ -177,7 +177,7 @@ public interface EvolutionStream<
 					.collect(Collectors.toList())
 			);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			spliterator,
 			Stream.of(streams).anyMatch(Stream::isParallel)
 		);
