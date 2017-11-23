@@ -33,7 +33,7 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.internal.util.JoinedSpliterator;
+import io.jenetics.internal.util.ConcatSpliterator;
 import io.jenetics.util.ISeq;
 
 /**
@@ -82,7 +82,7 @@ public class EngineConcat<
 				.collect(Collectors.toList());
 
 		return new EvolutionStreamImpl<G, C>(
-			new JoinedSpliterator<>(spliterators),
+			new ConcatSpliterator<>(spliterators),
 			false
 		);
 	}

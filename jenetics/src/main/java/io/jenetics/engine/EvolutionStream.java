@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 
 import io.jenetics.Gene;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.internal.util.JoinedSpliterator;
+import io.jenetics.internal.util.ConcatSpliterator;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
@@ -170,8 +170,8 @@ public interface EvolutionStream<
 			throw new IllegalArgumentException("Streams array is empty.");
 		}
 
-		final JoinedSpliterator<EvolutionResult<G, C>> spliterator =
-			new JoinedSpliterator<>(
+		final ConcatSpliterator<EvolutionResult<G, C>> spliterator =
+			new ConcatSpliterator<>(
 				Stream.of(streams)
 					.map(BaseStream::spliterator)
 					.collect(Collectors.toList())

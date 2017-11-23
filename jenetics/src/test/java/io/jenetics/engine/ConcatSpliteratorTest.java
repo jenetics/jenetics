@@ -27,19 +27,19 @@ import java.util.stream.StreamSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.JoinedSpliterator;
+import io.jenetics.internal.util.ConcatSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class JoinedSpliteratorTest {
+public class ConcatSpliteratorTest {
 
 	@Test
 	public void join1() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -52,7 +52,7 @@ public class JoinedSpliteratorTest {
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -66,7 +66,7 @@ public class JoinedSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 
@@ -80,7 +80,7 @@ public class JoinedSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(2)
 			.toArray();
@@ -95,7 +95,7 @@ public class JoinedSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(5)
 			.toArray();
@@ -110,7 +110,7 @@ public class JoinedSpliteratorTest {
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new JoinedSpliterator<>(Arrays.asList(s1, s2, s3)), false)
+			.stream(new ConcatSpliterator<>(Arrays.asList(s1, s2, s3)), false)
 			.mapToInt(Integer::intValue)
 			.limit(5)
 			.toArray();

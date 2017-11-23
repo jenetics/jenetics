@@ -39,12 +39,12 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public class JoinedSpliterator<T> implements LimitSpliterator<T> {
+public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 	private final Predicate<? super T> _proceed;
 	private final Deque<Spliterator<T>> _spliterators;
 
-	public JoinedSpliterator(
+	public ConcatSpliterator(
 		final Predicate<? super T> proceed,
 		final List<Spliterator<T>> spliterators
 	) {
@@ -52,7 +52,7 @@ public class JoinedSpliterator<T> implements LimitSpliterator<T> {
 		_spliterators = new LinkedList<>(spliterators);
 	}
 
-	public JoinedSpliterator(final List<Spliterator<T>> spliterators) {
+	public ConcatSpliterator(final List<Spliterator<T>> spliterators) {
 		this(TRUE(), spliterators);
 	}
 
@@ -86,13 +86,13 @@ public class JoinedSpliterator<T> implements LimitSpliterator<T> {
 			.collect(Collectors.toList());
 
 		return Stream.of(split).noneMatch(Objects::isNull)
-			? new JoinedSpliterator<>(_proceed, split)
+			? new ConcatSpliterator<>(_proceed, split)
 			: null;
 	}
 
 	@Override
-	public JoinedSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new JoinedSpliterator<>(
+	public ConcatSpliterator<T> limit(final Predicate<? super T> proceed) {
+		return new ConcatSpliterator<>(
 			and(_proceed, proceed),
 			new ArrayList<>(_spliterators)
 		);
