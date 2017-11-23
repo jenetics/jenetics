@@ -25,19 +25,42 @@ import java.util.Spliterator;
 import java.util.function.Predicate;
 
 /**
+ * Extends the {@link Spliterator} interface by an additional
+ * {@link #limit(Predicate)} method which takes a predicate for limiting the
+ * stream.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public interface LimitSpliterator<T> extends Spliterator<T> {
 
-	public static final Predicate<?> TRUE = a -> true;
+	/**
+	 * This predicate returns always {@code true}.
+	 */
+	public static final Predicate<Object> TRUE = a -> true;
 
+	/**
+	 * Return a <em>true</em> predicate for the type {@code T}.
+	 *
+	 * @param <T> the predicate parameter type
+	 * @return a predicate which always returns {@code true}
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Predicate<T> TRUE() {
 		return (Predicate<T>)TRUE;
 	}
 
+	/**
+	 * Returns, if this stream is ordered, a stream consisting of the longest
+	 * prefix of elements taken from this stream that match the given predicate.
+	 * Otherwise returns, if this stream is unordered, a stream consisting of a
+	 * subset of elements taken from this stream that match the given predicate.
+	 *
+	 * @param proceed a non-interfering, stateless predicate to apply to elements
+	 *        to determine the longest prefix of elements
+	 * @return the new evolution stream
+	 */
 	public LimitSpliterator<T> limit(final Predicate<? super T> proceed);
 
 	public static <T> Predicate<? super T> and(
