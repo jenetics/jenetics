@@ -37,14 +37,14 @@ final class EngineLimit<
 	C extends Comparable<? super C>
 > {
 
-	final EvolutionStreamable<G, C> _streamable;
+	final EvolutionStreamable<G, C> streamable;
 	final Predicate<? super EvolutionResult<G, C>> proceed;
 
 	private EngineLimit(
 		final EvolutionStreamable<G, C> streamable,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		this._streamable = requireNonNull(streamable);
+		this.streamable = requireNonNull(streamable);
 		this.proceed = requireNonNull(proceed);
 	}
 

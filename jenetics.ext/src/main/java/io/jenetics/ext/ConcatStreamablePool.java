@@ -51,9 +51,11 @@ final class ConcatStreamablePool<
 
 		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
 			_streamables.stream()
-				.map(p -> p._streamable.stream(start::get)
+				.map(p -> p.streamable.stream(start::get)
 					.limit(p.proceed)
-					.peek(r -> start.set(r.next())))
+					.peek(r -> start.set(r.next()))
+					.peek(r -> System.out.println("@ " + start.get().getPopulation()))
+				)
 				.map(BaseStream::spliterator)
 				.collect(Collectors.toList());
 

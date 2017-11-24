@@ -19,11 +19,15 @@
  */
 package io.jenetics.ext;
 
+import java.util.function.Supplier;
+
 import org.testng.annotations.Test;
 
-import io.jenetics.DoubleGene;
+import io.jenetics.IntegerGene;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.Limits;
+import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -32,15 +36,39 @@ public class ConcatStreamablePoolTest {
 
 	@Test
 	public void concat() {
-		/*
-		final EvolutionStream<DoubleGene, Double> stream1 =
-			EnginePool.<DoubleGene, Double>concat()
-				.add(engine1, Limits.bySteadyFitness(10))
-				.add(engine2, Limits.bySteadyFitness(10))
-				.add(engine3, Limits.bySteadyFitness(10))
-				.add(engine3, Limits.infinite())
+		final EvolutionStream<IntegerGene, Integer> stream =
+			EvolutionStreamablePool.<IntegerGene, Integer>concat()
+				.add(streamable(3))
+				.add(streamable(3))
+				.add(streamable(3))
 				.stream();
-				*/
+
+		stream
+			.map(r -> r.getGenotypes())
+			.forEach(System.out::println);
+	}
+
+	private EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
+		return new EvolutionStreamable<IntegerGene, Integer>() {
+			@Override
+			public EvolutionStream<IntegerGene, Integer> stream() {
+				return null;
+			}
+
+			@Override
+			public EvolutionStream<IntegerGene, Integer>
+			stream(final Supplier<EvolutionStart<IntegerGene, Integer>> start) {
+				final int begin = start.get().getPopulation().isEmpty()
+					? 1
+					: start.get().getPopulation()
+						.get(0).getGenotype().getGene().intValue();
+				final int end = begin + size;
+
+				return EvolutionStreams.stream(
+					IntRange.of(begin, end).stream().boxed()
+				);
+			}
+		};
 	}
 
 }
