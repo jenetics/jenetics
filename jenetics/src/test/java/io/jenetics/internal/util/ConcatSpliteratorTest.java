@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 public class ConcatSpliteratorTest {
 
 	@Test
-	public void join1() {
+	public void concat1() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 
 		final int[] array = StreamSupport
@@ -45,7 +45,7 @@ public class ConcatSpliteratorTest {
 	}
 
 	@Test
-	public void join2() {
+	public void concat2() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 
@@ -58,7 +58,7 @@ public class ConcatSpliteratorTest {
 	}
 
 	@Test
-	public void join3() {
+	public void concat3() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
@@ -72,7 +72,7 @@ public class ConcatSpliteratorTest {
 	}
 
 	@Test
-	public void join4() {
+	public void concat4() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
@@ -87,7 +87,7 @@ public class ConcatSpliteratorTest {
 	}
 
 	@Test
-	public void join5() {
+	public void concat5() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();
@@ -102,7 +102,7 @@ public class ConcatSpliteratorTest {
 	}
 
 	@Test
-	public void join6() {
+	public void concat6() {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).limit(1).spliterator();
 		final Spliterator<Integer> s2 = Stream.of(4, 5, 6).spliterator();
 		final Spliterator<Integer> s3 = Stream.of(7, 8, 9).spliterator();

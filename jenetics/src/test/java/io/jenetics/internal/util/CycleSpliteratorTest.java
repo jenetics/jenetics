@@ -25,7 +25,10 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -33,16 +36,64 @@ import org.testng.annotations.Test;
 public class CycleSpliteratorTest {
 
 	@Test
-	public void cycle() {
+	public void cycle1() {
 		final Supplier<Spliterator<Integer>> s1 = () -> Stream.of(1, 2, 3).spliterator();
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
 		final CycleSpliterator<Integer> s = new CycleSpliterator<>(Arrays.asList(s1, s2, s3));
-		StreamSupport.stream(s, false)
-			.limit(15)
-			.forEach(System.out::println);
+		final int[] array = StreamSupport.stream(s, false)
+			.limit(10)
+			.mapToInt(Integer::intValue)
+			.toArray();
 
+		Assert.assertEquals(array, new int[]{
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1
+		});
+	}
+
+	@Test
+	public void cycle2() {
+		final Supplier<Spliterator<Integer>> s1 = () -> Stream.of(1, 2, 3).spliterator();
+		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
+		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
+
+		final CycleSpliterator<Integer> s = new CycleSpliterator<>(Arrays.asList(s1, s2, s3));
+		final int[] array = StreamSupport.stream(s, false)
+			.limit(35)
+			.mapToInt(Integer::intValue)
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7, 8
+		});
+	}
+
+	@Test
+	public void cycle3() {
+		final Supplier<Spliterator<Integer>> s1 = () -> Stream.of(1, 2, 3).spliterator();
+		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
+		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
+
+		final CycleSpliterator<Integer> s = new CycleSpliterator<>(
+			Limits.byFixedGeneration(34),
+			Arrays.asList(s1, s2, s3)
+		);
+		final int[] array = StreamSupport.stream(s, false)
+			.limit(100)
+			.mapToInt(Integer::intValue)
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7, 8, 9,
+			1, 2, 3, 4, 5, 6, 7
+		});
 	}
 
 }

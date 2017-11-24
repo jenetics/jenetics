@@ -67,15 +67,17 @@ public class CycleSpliterator<T> implements LimitSpliterator<T> {
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		final AtomicBoolean proceed = new AtomicBoolean();
+		final AtomicBoolean proceed = new AtomicBoolean(true);
 		final boolean advance = spliterator().tryAdvance(t -> {
-			action.accept(t);
 			proceed.set(_proceed.test(t));
+			action.accept(t);
 		});
 
 		if (!advance) {
 			_concat = null;
 		}
+
+		//System.out.println(proceed + ":" + advance);
 
 		return proceed.get();
 	}
@@ -98,7 +100,6 @@ public class CycleSpliterator<T> implements LimitSpliterator<T> {
 	private ConcatSpliterator<T> spliterator() {
 		if (_concat == null) {
 			_concat = new ConcatSpliterator<T>(
-				_proceed,
 				_spliterators.stream()
 					.map(Supplier::get)
 					.collect(Collectors.toList())

@@ -73,11 +73,11 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 		if (!_spliterators.isEmpty()) {
 			final Spliterator<T> spliterator = _spliterators.peek();
-			final AtomicBoolean proceed = new AtomicBoolean();
+			final AtomicBoolean proceed = new AtomicBoolean(true);
 
 			final boolean advance = spliterator.tryAdvance(t -> {
-				action.accept(t);
 				proceed.set(_proceed.test(t));
+				action.accept(t);
 			}) && proceed.get();
 
 			if (!advance) {
