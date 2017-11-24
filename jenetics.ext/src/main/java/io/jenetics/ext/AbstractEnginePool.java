@@ -36,7 +36,7 @@ abstract class AbstractEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements EnginePool<G, C>
+	implements EvolutionStreamablePool<G, C>
 {
 
 	protected final List<EngineLimit<G, C>> _engines = new ArrayList<>();
@@ -45,7 +45,7 @@ abstract class AbstractEnginePool<
 	}
 
 	@Override
-	public EnginePool<G, C> add(
+	public EvolutionStreamablePool<G, C> add(
 		final Engine<G, C> engine,
 		Predicate<? super EvolutionResult<G, C>> proceed
 	) {
