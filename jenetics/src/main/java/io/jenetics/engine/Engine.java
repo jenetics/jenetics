@@ -606,30 +606,6 @@ public final class Engine<
 		);
 	}
 
-	/**
-	 * Create a new <b>infinite</b> evolution stream with the given initial
-	 * population. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @param population the initial individuals used for the evolution stream.
-	 *        Missing individuals are created and individuals not needed are
-	 *        skipped.
-	 * @return a new evolution stream.
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}.
-	 */
-	public EvolutionStream<G, C> stream(final ISeq<Phenotype<G, C>> population) {
-		requireNonNull(population);
-
-		return EvolutionStream.of(
-			evolutionStart(() -> EvolutionStart.of(population, 1)),
-			this::evolve
-		);
-	}
-
 	private Supplier<EvolutionStart<G, C>>
 	evolutionStart(final Supplier<EvolutionStart<G, C>> start) {
 		return () -> {
@@ -687,38 +663,6 @@ public final class Engine<
 	}
 
 	/**
-	 * Create a new <b>infinite</b> evolution stream with the given initial
-	 * population. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @param population the initial individuals used for the evolution stream.
-	 *        Missing individuals are created and individuals not needed are
-	 *        skipped.
-	 * @param generation the generation the stream starts from; must be greater
-	 *        than zero.
-	 * @return a new evolution stream.
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is
-	 *         smaller then one
-	 */
-	public EvolutionStream<G, C> stream(
-		final ISeq<Phenotype<G, C>> population,
-		final long generation
-	) {
-		requireNonNull(population);
-		require.positive(generation);
-
-		return EvolutionStream.of(
-			evolutionStart(() -> EvolutionStart.of(population, generation)),
-			this::evolve
-		);
-	}
-
-	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given evolution
 	 * start. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -736,12 +680,6 @@ public final class Engine<
 	public Iterator<EvolutionResult<G, C>>
 	iterator(final EvolutionStart<G, C> start) {
 		return iterator(start.getPopulation(), start.getGeneration());
-	}
-
-	@Override
-	public EvolutionStream<G, C>
-	stream(final EvolutionStart<G, C> start) {
-		return stream(start.getPopulation(), start.getGeneration());
 	}
 
 	/**
@@ -786,60 +724,6 @@ public final class Engine<
 	public Iterator<EvolutionResult<G, C>>
 	iterator(final EvolutionResult<G, C> result) {
 		return iterator(result.getPopulation(), result.getTotalGenerations());
-	}
-
-	/**
-	 * Create a new {@code EvolutionStream} starting with a previously evolved
-	 * {@link EvolutionResult}. The stream is initialized with the population
-	 * of the given {@code result} and its total generation
-	 * {@link EvolutionResult#getTotalGenerations()}.
-	 *
-	 * <pre>{@code
-	 * private static final Problem<Double, DoubleGene, Double>
-	 * PROBLEM = Problem.of(
-	 *     x -> cos(0.5 + sin(x))*cos(x),
-	 *     Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
-	 * );
-	 *
-	 * private static final Engine<DoubleGene, Double>
-	 * ENGINE = Engine.builder(PROBLEM)
-	 *     .optimize(Optimize.MINIMUM)
-	 *     .offspringSelector(new RouletteWheelSelector<>())
-	 *     .build();
-	 *
-	 * public static void main(final String[] args) throws IOException {
-	 *     // Result of the first evolution run.
-	 *     final EvolutionResult<DoubleGene, Double> rescue = ENGINE.stream()
-	 *         .limit(Limits.bySteadyFitness(10))
-	 *         .collect(EvolutionResult.toBestEvolutionResult());
-	 *
-	 *     // Save the result of the first run into a file.
-	 *     final Path path = Paths.get("result.bin");
-	 *     IO.object.write(rescue, path);
-	 *
-	 *     // Load the previous result and continue evolution.
-	 *     \@SuppressWarnings("unchecked")
-	 *     final EvolutionResult<DoubleGene, Double> result = ENGINE
-	 *         .stream((EvolutionResult<DoubleGene, Double>)IO.object.read(path))
-	 *         .limit(Limits.bySteadyFitness(20))
-	 *         .collect(EvolutionResult.toBestEvolutionResult());
-	 *
-	 *     System.out.println(result.getBestPhenotype());
-	 * }
-	 * }</pre>
-	 *
-	 * The example above shows how to save an {@link EvolutionResult} from a
-	 * first run, save it to disk and continue the evolution.
-	 *
-	 * @since 3.7
-	 *
-	 * @param result the previously evolved {@code EvolutionResult}
-	 * @return a new evolution stream, which continues a previous one
-	 * @throws NullPointerException if the given evolution {@code result} is
-	 *         {@code null}
-	 */
-	public EvolutionStream<G, C> stream(final EvolutionResult<G, C> result) {
-		return stream(result.getPopulation(), result.getTotalGenerations());
 	}
 
 
