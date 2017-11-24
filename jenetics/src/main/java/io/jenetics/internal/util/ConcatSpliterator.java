@@ -24,6 +24,7 @@ import static io.jenetics.internal.util.LimitSpliterator.TRUE;
 import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,14 +58,14 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 	 */
 	public ConcatSpliterator(
 		final Predicate<? super T> proceed,
-		final List<Spliterator<T>> spliterators
+		final Collection<Spliterator<T>> spliterators
 	) {
 		_proceed = requireNonNull(proceed);
 		spliterators.forEach(Objects::requireNonNull);
 		_spliterators = new LinkedList<>(spliterators);
 	}
 
-	public ConcatSpliterator(final List<Spliterator<T>> spliterators) {
+	public ConcatSpliterator(final Collection<Spliterator<T>> spliterators) {
 		this(TRUE(), spliterators);
 	}
 
@@ -104,10 +105,7 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public ConcatSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new ConcatSpliterator<>(
-			and(_proceed, proceed),
-			new ArrayList<>(_spliterators)
-		);
+		return new ConcatSpliterator<>(and(_proceed, proceed), _spliterators);
 	}
 
 	@Override
