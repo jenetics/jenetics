@@ -24,8 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStreamable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,22 +37,22 @@ final class EngineLimit<
 	C extends Comparable<? super C>
 > {
 
-	final Engine<G, C> engine;
+	final EvolutionStreamable<G, C> _streamable;
 	final Predicate<? super EvolutionResult<G, C>> proceed;
 
 	private EngineLimit(
-		final Engine<G, C> engine,
+		final EvolutionStreamable<G, C> streamable,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		this.engine = requireNonNull(engine);
+		this._streamable = requireNonNull(streamable);
 		this.proceed = requireNonNull(proceed);
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineLimit<G, C> of(
-		final Engine<G, C> engine,
+		final EvolutionStreamable<G, C> streamable,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		return new EngineLimit<>(engine, proceed);
+		return new EngineLimit<>(streamable, proceed);
 	}
 }

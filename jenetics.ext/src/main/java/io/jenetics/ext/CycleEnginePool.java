@@ -51,7 +51,7 @@ final class CycleEnginePool<
 			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
 
 		final List<Supplier<Spliterator<EvolutionResult<G, C>>>> spliterators =
-			_engines.stream()
+			_streamables.stream()
 				.map(engine -> toSpliterator(engine, start))
 				.collect(Collectors.toList());
 
@@ -65,7 +65,7 @@ final class CycleEnginePool<
 		final EngineLimit<G, C> engine,
 		final AtomicReference<EvolutionStart<G, C>> start
 	) {
-		return () -> engine.engine.stream(start::get)
+		return () -> engine._streamable.stream(start::get)
 			.limit(engine.proceed)
 			.peek(result -> start.set(result.next()))
 			.spliterator();

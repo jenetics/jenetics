@@ -50,8 +50,8 @@ final class ConcatEnginePool<
 			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
 
 		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
-			_engines.stream()
-				.map(p -> p.engine.stream(start::get)
+			_streamables.stream()
+				.map(p -> p._streamable.stream(start::get)
 					.limit(p.proceed)
 					.peek(r -> start.set(r.next())))
 				.map(BaseStream::spliterator)

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStreamable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,17 +39,17 @@ abstract class AbstractEnginePool<
 	implements EvolutionStreamablePool<G, C>
 {
 
-	protected final List<EngineLimit<G, C>> _engines = new ArrayList<>();
+	protected final List<EngineLimit<G, C>> _streamables = new ArrayList<>();
 
 	protected AbstractEnginePool() {
 	}
 
 	@Override
 	public EvolutionStreamablePool<G, C> add(
-		final Engine<G, C> engine,
+		final EvolutionStreamable<G, C> streamable,
 		Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		_engines.add(EngineLimit.of(engine, proceed));
+		_streamables.add(EngineLimit.of(streamable, proceed));
 		return this;
 	}
 
