@@ -42,7 +42,7 @@ final class ConcatEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractEnginePool<G, C>
+	extends AbstractStreamablePool<G, C>
 {
 
 	public EvolutionStream<G, C> stream() {

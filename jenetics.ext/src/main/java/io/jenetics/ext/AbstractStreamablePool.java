@@ -32,7 +32,7 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-abstract class AbstractEnginePool<
+abstract class AbstractStreamablePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -41,7 +41,7 @@ abstract class AbstractEnginePool<
 
 	protected final List<EngineLimit<G, C>> _streamables = new ArrayList<>();
 
-	protected AbstractEnginePool() {
+	protected AbstractStreamablePool() {
 	}
 
 	@Override
