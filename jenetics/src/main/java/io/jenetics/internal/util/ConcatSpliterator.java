@@ -23,7 +23,6 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.LimitSpliterator.TRUE;
 import static io.jenetics.internal.util.LimitSpliterator.and;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -34,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This {@code Spliterator} takes a list of other spliterators which are
@@ -71,6 +69,8 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
+		requireNonNull(action);
+
 		if (!_spliterators.isEmpty()) {
 			final Spliterator<T> spliterator = _spliterators.peek();
 			final AtomicBoolean proceed = new AtomicBoolean();
