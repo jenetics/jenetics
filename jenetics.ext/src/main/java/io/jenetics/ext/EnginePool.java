@@ -22,9 +22,9 @@ package io.jenetics.ext;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 
 /**
@@ -38,19 +38,19 @@ public interface EnginePool<
 > {
 
 	public EnginePool<G, C> add(
-		final Engine<G, C> engine,
+		final EvolutionStreamable<G, C> streamable,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	);
 
 	public default EnginePool<G, C> add(
-		final Engine<G, C> engine,
+		final EvolutionStreamable<G, C> engine,
 		final long generations
 	) {
 		return add(engine, Limits.byFixedGeneration(generations));
 	}
 
-	public default EnginePool<G, C> add(final Engine<G, C> engine) {
-		return add(engine, result -> true);
+	public default EnginePool<G, C> add(final EvolutionStreamable<G, C> streamable) {
+		return add(streamable, result -> true);
 	}
 
 	public EvolutionStream<G, C> stream();
