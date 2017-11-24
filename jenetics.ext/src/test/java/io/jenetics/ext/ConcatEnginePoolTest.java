@@ -19,10 +19,28 @@
  */
 package io.jenetics.ext;
 
+import org.testng.annotations.Test;
+
+import io.jenetics.DoubleGene;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.Limits;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class ConcatEnginePoolTest {
+
+	@Test
+	public void concat() {
+		/*
+		final EvolutionStream<DoubleGene, Double> stream1 =
+			EnginePool.<DoubleGene, Double>concat()
+				.add(engine1, Limits.bySteadyFitness(10))
+				.add(engine2, Limits.bySteadyFitness(10))
+				.add(engine3, Limits.bySteadyFitness(10))
+				.add(engine3, Limits.infinite())
+				.stream();
+				*/
+	}
+
 }

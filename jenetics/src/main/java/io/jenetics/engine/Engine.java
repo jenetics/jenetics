@@ -116,13 +116,15 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.0
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Function<EvolutionStart<G, C>, EvolutionResult<G, C>>
+	implements
+		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
+		EvolutionStreamable<G, C>
 {
 
 	// Problem definition.
@@ -436,12 +438,7 @@ public final class Engine<
 		);
 	}
 
-	/**
-	 * Create a new <b>infinite</b> evolution stream with a newly created
-	 * population.
-	 *
-	 * @return a new evolution stream.
-	 */
+	@Override
 	public EvolutionStream<G, C> stream() {
 		return EvolutionStream.of(this::evolutionStart, this::evolve);
 	}
@@ -741,21 +738,7 @@ public final class Engine<
 		return iterator(start.getPopulation(), start.getGeneration());
 	}
 
-	/**
-	 * Create a new <b>infinite</b> evolution stream with the given evolution
-	 * start. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param start the data the evolution stream starts with
-	 * @return a new <b>infinite</b> evolution iterator
-	 * @throws java.lang.NullPointerException if the given evolution
-	 *         {@code start} is {@code null}.
-	 */
+	@Override
 	public EvolutionStream<G, C>
 	stream(final EvolutionStart<G, C> start) {
 		return stream(start.getPopulation(), start.getGeneration());
@@ -781,21 +764,7 @@ public final class Engine<
 		return new EvolutionIterator<>(evolutionStart(start), this::evolve);
 	}
 
-	/**
-	 * Create a new <b>infinite</b> evolution stream with the given evolution
-	 * start. If an empty {@code Population} is given, the engines genotype
-	 * factory is used for creating the population. The given population might
-	 * be the result of an other engine and this method allows to start the
-	 * evolution with the outcome of an different engine. The fitness function
-	 * and the fitness scaler are replaced by the one defined for this engine.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param start the data the evolution stream starts with
-	 * @return a new <b>infinite</b> evolution iterator
-	 * @throws java.lang.NullPointerException if the given evolution
-	 *         {@code start} is {@code null}.
-	 */
+	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
 		return EvolutionStream.of(evolutionStart(start), this::evolve);
