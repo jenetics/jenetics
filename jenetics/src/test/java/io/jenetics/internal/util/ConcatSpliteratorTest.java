@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.util;
 
 import java.util.Arrays;
 import java.util.Spliterator;
@@ -26,8 +26,6 @@ import java.util.stream.StreamSupport;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import io.jenetics.internal.util.ConcatSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
