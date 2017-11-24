@@ -19,45 +19,38 @@
  */
 package io.jenetics.ext;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface EnginePool<
+abstract class AbstractEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements EnginePool<G, C>
+{
 
+	protected final List<EngineLimit<G, C>> _engines = new ArrayList<>();
+
+	protected AbstractEnginePool() {
+	}
+
+	@Override
 	public EnginePool<G, C> add(
 		final Engine<G, C> engine,
-		final Predicate<? super EvolutionResult<G, C>> proceed
-	);
-
-	public default EnginePool<G, C> add(
-		final Engine<G, C> engine,
-		final long generations
+		Predicate<? super EvolutionResult<G, C>> proceed
 	) {
-		return add(engine, Limits.byFixedGeneration(generations));
-	}
-
-	public default EnginePool<G, C> add(final Engine<G, C> engine) {
-		return add(engine, result -> true);
-	}
-
-	public EvolutionStream<G, C> stream();
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EnginePool<G, C> concat() {
-		return new ConcatEnginePool<>();
+		_engines.add(EngineLimit.of(engine, proceed));
+		return this;
 	}
 
 }
