@@ -98,7 +98,7 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 			.map(Spliterator::trySplit)
 			.collect(Collectors.toList());
 
-		return Stream.of(split).noneMatch(Objects::isNull)
+		return split.stream().noneMatch(Objects::isNull)
 			? new ConcatSpliterator<>(_proceed, split)
 			: null;
 	}
