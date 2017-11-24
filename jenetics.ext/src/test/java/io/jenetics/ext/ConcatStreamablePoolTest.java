@@ -28,7 +28,7 @@ import io.jenetics.engine.Limits;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcatEnginePoolTest {
+public class ConcatStreamablePoolTest {
 
 	@Test
 	public void concat() {

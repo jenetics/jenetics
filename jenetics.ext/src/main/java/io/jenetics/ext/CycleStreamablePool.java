@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-final class CycleEnginePool<
+final class CycleStreamablePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >

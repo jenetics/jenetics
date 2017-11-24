@@ -58,12 +58,12 @@ public interface EvolutionStreamablePool<
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStreamablePool<G, C> concat() {
-		return new ConcatEnginePool<>();
+		return new ConcatStreamablePool<>();
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStreamablePool<G, C> cycle() {
-		return new CycleEnginePool<>();
+		return new CycleStreamablePool<>();
 	}
 
 }
