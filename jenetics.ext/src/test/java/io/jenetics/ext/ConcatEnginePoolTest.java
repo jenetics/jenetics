@@ -19,43 +19,10 @@
  */
 package io.jenetics.ext;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
-
-import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class SerialPopulationTransfer<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	implements
-		Supplier<EvolutionStart<G, C>>,
-		UnaryOperator<EvolutionResult<G, C>>,
-		Consumer<EvolutionResult<G, C>>
-{
-
-	public SerialPopulationTransfer() {
-	}
-
-	@Override
-	public EvolutionStart<G, C> get() {
-		return null;
-	}
-
-	@Override
-	public EvolutionResult<G, C> apply(EvolutionResult<G, C> gcEvolutionResult) {
-		return null;
-	}
-
-	@Override
-	public void accept(EvolutionResult<G, C> gcEvolutionResult) {
-	}
+public class ConcatEnginePoolTest {
 }
