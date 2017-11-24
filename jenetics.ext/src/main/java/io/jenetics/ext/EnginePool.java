@@ -60,4 +60,9 @@ public interface EnginePool<
 		return new ConcatEnginePool<>();
 	}
 
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EnginePool<G, C> cycle() {
+		return new CycleEnginePool<>();
+	}
+
 }
