@@ -42,7 +42,7 @@ final class CycleEvolutionPool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractStreamablePool<G, C>
+	extends AbstractEvolutionPool<G, C>
 {
 
 	@Override
