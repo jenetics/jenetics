@@ -36,14 +36,6 @@ public interface EvolutionStreamable<
 > {
 
 	/**
-	 * Create a new <b>infinite</b> evolution stream with a newly created
-	 * population.
-	 *
-	 * @return a new evolution stream.
-	 */
-	public EvolutionStream<G, C> stream();
-
-	/**
 	 * Create a new <b>infinite</b> evolution stream with the given evolution
 	 * start. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -63,6 +55,16 @@ public interface EvolutionStreamable<
 	/* *************************************************************************
 	 * Default interface methods.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new <b>infinite</b> evolution stream with a newly created
+	 * population.
+	 *
+	 * @return a new evolution stream.
+	 */
+	public default EvolutionStream<G, C> stream() {
+		return stream(EvolutionStart.of(ISeq.empty(), 1));
+	}
 
 	/**
 	 * Create a new <b>infinite</b> evolution stream with the given evolution

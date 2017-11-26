@@ -39,16 +39,6 @@ public interface EvolutionIterable<
 {
 
 	/**
-	 * Create a new <b>infinite</b> evolution iterator with a newly created
-	 * population. This is an alternative way for evolution. It lets the user
-	 * start, stop and resume the evolution process whenever desired.
-	 *
-	 * @return a new <b>infinite</b> evolution iterator
-	 */
-	@Override
-	public Iterator<EvolutionResult<G, C>> iterator();
-
-	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given evolution
 	 * start. If an empty {@code Population} is given, the engines genotype
 	 * factory is used for creating the population. The given population might
@@ -68,6 +58,18 @@ public interface EvolutionIterable<
 	/* *************************************************************************
 	 * Default interface methods.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new <b>infinite</b> evolution iterator with a newly created
+	 * population. This is an alternative way for evolution. It lets the user
+	 * start, stop and resume the evolution process whenever desired.
+	 *
+	 * @return a new <b>infinite</b> evolution iterator
+	 */
+	@Override
+	public default Iterator<EvolutionResult<G, C>> iterator() {
+		return iterator(EvolutionStart.of(ISeq.empty(), 1));
+	}
 
 	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given evolution

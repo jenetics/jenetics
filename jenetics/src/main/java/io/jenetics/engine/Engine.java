@@ -425,30 +425,6 @@ public final class Engine<
 	 * Evolution Stream/Iterator creation.
 	 **************************************************************************/
 
-	@Override
-	public Iterator<EvolutionResult<G, C>> iterator() {
-		return new EvolutionIterator<>(
-			this::evolutionStart,
-			this::evolve
-		);
-	}
-
-	@Override
-	public EvolutionStream<G, C> stream() {
-		return EvolutionStream.of(this::evolutionStart, this::evolve);
-	}
-
-	private EvolutionStart<G, C> evolutionStart() {
-		final int generation = 1;
-		final int size = _offspringCount + _survivorsCount;
-
-		final ISeq<Phenotype<G, C>> population = MSeq.<Phenotype<G, C>>ofLength(size)
-			.fill(() -> newPhenotype(generation))
-			.toISeq();
-
-		return EvolutionStart.of(population, generation);
-	}
-
 	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given initial
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
