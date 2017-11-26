@@ -53,8 +53,7 @@ final class ConcatEvolutionPool<
 			_streamables.stream()
 				.map(p -> p.streamable.stream(start::get)
 					.limit(p.proceed)
-					.peek(r -> start.set(r.next()))
-				)
+					.peek(r -> start.set(r.next())))
 				.map(BaseStream::spliterator)
 				.collect(Collectors.toList());
 

@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -29,6 +30,7 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,7 +38,50 @@ import io.jenetics.engine.EvolutionStreamable;
 public class ConcatEvolutionPoolTest {
 
 	@Test
-	public void concat() {
+	public void concat1() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			EvolutionPool.<IntegerGene, Integer>concat()
+				.add(streamable(1))
+				.stream();
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1});
+	}
+
+	@Test
+	public void concat2() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			EvolutionPool.<IntegerGene, Integer>concat()
+				.add(streamable(5))
+				.stream();
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5});
+	}
+
+	@Test
+	public void concat3() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			EvolutionPool.<IntegerGene, Integer>concat()
+				.add(streamable(5))
+				.stream()
+				.limit(Limits.byFixedGeneration(3));
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 2, 3});
+	}
+
+	@Test
+	public void concat4() {
 		final EvolutionStream<IntegerGene, Integer> stream =
 			EvolutionPool.<IntegerGene, Integer>concat()
 				.add(streamable(3))
@@ -49,6 +94,25 @@ public class ConcatEvolutionPoolTest {
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
+	}
+
+	@Test
+	public void concat5() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			EvolutionPool.<IntegerGene, Integer>concat()
+				.add(streamable(3))
+				.add(streamable(4))
+				.add(streamable(5))
+				.add(streamable(15))
+				.add(streamable(15))
+				.stream()
+				.limit(Limits.byFixedGeneration(15));
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
 	}
 
 	private EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {

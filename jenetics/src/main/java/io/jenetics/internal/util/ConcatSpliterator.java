@@ -78,7 +78,11 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 			final boolean advance = spliterator.tryAdvance(t -> {
 				proceed.set(_proceed.test(t));
 				action.accept(t);
-			}) && proceed.get();
+			});
+
+			if (!proceed.get()) {
+				return false;
+			}
 
 			if (!advance) {
 				_spliterators.removeFirst();
