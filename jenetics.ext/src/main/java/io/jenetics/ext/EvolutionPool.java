@@ -32,24 +32,24 @@ import io.jenetics.engine.Limits;
  * @version !__version__!
  * @since !__version__!
  */
-public interface EvolutionStreamablePool<
+public interface EvolutionPool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
 
-	public EvolutionStreamablePool<G, C> add(
+	public EvolutionPool<G, C> add(
 		final EvolutionStreamable<G, C> streamable,
 		final Predicate<? super EvolutionResult<G, C>> proceed
 	);
 
-	public default EvolutionStreamablePool<G, C> add(
+	public default EvolutionPool<G, C> add(
 		final EvolutionStreamable<G, C> engine,
 		final long generations
 	) {
 		return add(engine, Limits.byFixedGeneration(generations));
 	}
 
-	public default EvolutionStreamablePool<G, C>
+	public default EvolutionPool<G, C>
 	add(final EvolutionStreamable<G, C> streamable) {
 		return add(streamable, result -> true);
 	}
@@ -57,13 +57,13 @@ public interface EvolutionStreamablePool<
 	public EvolutionStream<G, C> stream();
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStreamablePool<G, C> concat() {
-		return new ConcatStreamablePool<>();
+	EvolutionPool<G, C> concat() {
+		return new ConcatEvolutionPool<>();
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStreamablePool<G, C> cycle() {
-		return new CycleStreamablePool<>();
+	EvolutionPool<G, C> cycle() {
+		return new CycleEvolutionPool<>();
 	}
 
 }

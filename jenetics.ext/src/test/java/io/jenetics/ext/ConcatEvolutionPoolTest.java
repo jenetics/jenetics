@@ -33,12 +33,12 @@ import io.jenetics.engine.EvolutionStreamable;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcatStreamablePoolTest {
+public class ConcatEvolutionPoolTest {
 
 	@Test
 	public void concat() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionStreamablePool.<IntegerGene, Integer>concat()
+			EvolutionPool.<IntegerGene, Integer>concat()
 				.add(streamable(3))
 				.add(streamable(4))
 				.add(streamable(5))

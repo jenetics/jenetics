@@ -22,7 +22,7 @@ package io.jenetics.ext;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.BaseStream;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
@@ -30,7 +30,7 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.internal.util.ConcatSpliterator;
+import io.jenetics.internal.util.CycleSpliterator;
 import io.jenetics.util.ISeq;
 
 /**
@@ -38,30 +38,37 @@ import io.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-final class ConcatStreamablePool<
+final class CycleEvolutionPool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends AbstractStreamablePool<G, C>
 {
 
+	@Override
 	public EvolutionStream<G, C> stream() {
 		final AtomicReference<EvolutionStart<G, C>> start =
 			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
 
-		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
+		final List<Supplier<Spliterator<EvolutionResult<G, C>>>> spliterators =
 			_streamables.stream()
-				.map(p -> p.streamable.stream(start::get)
-					.limit(p.proceed)
-					.peek(r -> start.set(r.next()))
-				)
-				.map(BaseStream::spliterator)
+				.map(engine -> toSpliterator(engine, start))
 				.collect(Collectors.toList());
 
 		return new EvolutionStreamImpl<G, C>(
-			new ConcatSpliterator<>(spliterators),
+			new CycleSpliterator<>(spliterators),
 			false
 		);
+	}
+
+	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
+		final EngineLimit<G, C> engine,
+		final AtomicReference<EvolutionStart<G, C>> start
+	) {
+		return () -> engine.streamable.stream(start::get)
+			.limit(engine.proceed)
+			.peek(result -> start.set(result.next()))
+			.spliterator();
 	}
 
 }

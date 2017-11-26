@@ -36,7 +36,7 @@ abstract class AbstractStreamablePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements EvolutionStreamablePool<G, C>
+	implements EvolutionPool<G, C>
 {
 
 	protected final List<EngineLimit<G, C>> _streamables = new ArrayList<>();
@@ -45,7 +45,7 @@ abstract class AbstractStreamablePool<
 	}
 
 	@Override
-	public EvolutionStreamablePool<G, C> add(
+	public EvolutionPool<G, C> add(
 		final EvolutionStreamable<G, C> streamable,
 		Predicate<? super EvolutionResult<G, C>> proceed
 	) {
