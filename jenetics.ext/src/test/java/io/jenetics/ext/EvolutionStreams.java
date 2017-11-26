@@ -45,7 +45,7 @@ public class EvolutionStreams {
 				.spliterator()
 		);
 
-		return new EvolutionStreamImpl<IntegerGene, Integer>(spliterator, false);
+		return new EvolutionStreamImpl<>(spliterator, false);
 	}
 
 	private static EvolutionResult<IntegerGene, Integer> result(final int value) {

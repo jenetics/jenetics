@@ -19,49 +19,32 @@
  */
 package io.jenetics.ext;
 
-import java.util.List;
-import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.BaseStream;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.internal.util.ConcatSpliterator;
-import io.jenetics.util.ISeq;
+import io.jenetics.internal.util.StreamProxy;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-final class ConcatStreamablePool<
+public class EvolutionStreamAdapter<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractStreamablePool<G, C>
+	extends StreamProxy<EvolutionResult<G, C>>
+	implements EvolutionStream<G, C>
 {
 
-	public EvolutionStream<G, C> stream() {
-		final AtomicReference<EvolutionStart<G, C>> start =
-			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
-
-		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
-			_streamables.stream()
-				.map(p -> p.streamable.stream(start::get)
-					.limit(p.proceed)
-					.peek(r -> start.set(r.next()))
-				)
-				.map(BaseStream::spliterator)
-				.collect(Collectors.toList());
-
-		return new EvolutionStreamImpl<G, C>(
-			new ConcatSpliterator<>(spliterators),
-			false
-		);
+	public EvolutionStreamAdapter(final Stream<EvolutionResult<G, C>> self) {
+		super(self);
 	}
 
+	@Override
+	public EvolutionStream<G, C>
+	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
+		throw new UnsupportedOperationException();
+	}
 }
