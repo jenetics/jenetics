@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -115,7 +114,7 @@ public class ConcatEvolutionPoolTest {
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
 	}
 
-	private EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
+	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
 		return new EvolutionStreamable<IntegerGene, Integer>() {
 			@Override
 			public EvolutionStream<IntegerGene, Integer> stream() {

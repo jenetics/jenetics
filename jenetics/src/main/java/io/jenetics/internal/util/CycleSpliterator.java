@@ -77,8 +77,6 @@ public class CycleSpliterator<T> implements LimitSpliterator<T> {
 			_concat = null;
 		}
 
-		//System.out.println(proceed + ":" + advance);
-
 		return proceed.get();
 	}
 

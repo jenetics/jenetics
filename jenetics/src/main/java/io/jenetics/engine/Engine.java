@@ -124,8 +124,8 @@ public final class Engine<
 >
 	implements
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
-		EvolutionIterable<G, C>,
-		EvolutionStreamable<G, C>
+		EvolutionStreamable<G, C>,
+		EvolutionIterable<G, C>
 {
 
 	// Problem definition.
