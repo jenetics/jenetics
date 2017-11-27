@@ -244,7 +244,19 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	public EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _generation + 1);
+		return EvolutionStart.of(_population, _totalGenerations + 1);
+	}
+
+	/**
+	 * Return the current evolution result object as an {@code EvolutionStart}
+	 * object with the current population and current total generation.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the current result as evolution start
+	 */
+	public EvolutionStart<G, C> toEvolutionStart() {
+		return EvolutionStart.of(_population, _totalGenerations);
 	}
 
 	/**
