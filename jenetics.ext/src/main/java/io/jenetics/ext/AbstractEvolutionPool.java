@@ -21,14 +21,12 @@ package io.jenetics.ext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,7 +47,7 @@ abstract class AbstractEvolutionPool<
 
 	@Override
 	public EvolutionPool<G, C> add(
-		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
+		final EvolutionStreamable<G, C> streamable,
 		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
 		_streamables.add(EngineLimit.of(streamable, proceed));
