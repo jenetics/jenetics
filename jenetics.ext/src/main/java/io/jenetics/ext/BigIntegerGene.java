@@ -27,13 +27,14 @@ import java.math.BigInteger;
 import java.util.Random;
 
 import io.jenetics.NumericGene;
-import io.jenetics.ext.internal.random;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.internal.random;
 
 /**
  * Numeric chromosome implementation which holds an arbitrary sized integer

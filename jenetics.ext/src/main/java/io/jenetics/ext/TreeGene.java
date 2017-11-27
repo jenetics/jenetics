@@ -20,6 +20,7 @@
 package io.jenetics.ext;
 
 import io.jenetics.Gene;
+
 import io.jenetics.ext.util.FlatTree;
 
 /**

@@ -23,10 +23,11 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
 import io.jenetics.ext.util.TreeTestBase;
-import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

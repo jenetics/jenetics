@@ -30,6 +30,7 @@ import io.jenetics.internal.util.Args;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
+
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

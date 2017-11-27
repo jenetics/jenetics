@@ -38,6 +38,7 @@ import io.jenetics.Genotype;
 import io.jenetics.IntegerChromosome;
 import io.jenetics.LongChromosome;
 import io.jenetics.PermutationChromosome;
+
 import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Reader;
