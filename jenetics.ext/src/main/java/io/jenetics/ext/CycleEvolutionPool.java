@@ -29,8 +29,8 @@ import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.ext.internal.CycleSpliterator;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.internal.util.CycleSpliterator;
 import io.jenetics.util.ISeq;
 
 /**

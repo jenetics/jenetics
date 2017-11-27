@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.ext.internal;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.LimitSpliterator.TRUE;
@@ -33,6 +33,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * This {@code Spliterator} takes a list of other spliterators which are
