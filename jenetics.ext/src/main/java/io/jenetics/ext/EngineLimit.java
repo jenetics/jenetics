@@ -42,11 +42,11 @@ final class EngineLimit<
 > {
 
 	final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable;
-	final Predicate<? super EvolutionResult<G, C>> proceed;
+	final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed;
 
 	private EngineLimit(
 		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
 		this.streamable = requireNonNull(streamable);
 		this.proceed = requireNonNull(proceed);
@@ -55,7 +55,7 @@ final class EngineLimit<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineLimit<G, C> of(
 		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
 		return new EngineLimit<>(streamable, proceed);
 	}

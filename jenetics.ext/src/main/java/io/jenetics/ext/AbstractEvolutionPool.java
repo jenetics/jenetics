@@ -50,7 +50,7 @@ abstract class AbstractEvolutionPool<
 	@Override
 	public EvolutionPool<G, C> add(
 		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
 		_streamables.add(EngineLimit.of(streamable, proceed));
 		return this;

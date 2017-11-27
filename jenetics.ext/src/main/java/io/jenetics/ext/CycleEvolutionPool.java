@@ -66,8 +66,8 @@ final class CycleEvolutionPool<
 		final AtomicReference<EvolutionStart<G, C>> start
 	) {
 		return () -> engine.streamable.apply(start::get)
-			.limit(engine.proceed)
-			.peek(result -> start.set(result.next()))
+			.limit(engine.proceed.get())
+			.peek(result -> start.set(result.toEvolutionStart()))
 			.spliterator();
 	}
 

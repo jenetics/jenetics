@@ -42,19 +42,19 @@ public interface EvolutionPool<
 
 	public EvolutionPool<G, C> add(
 		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	);
 
 	public default EvolutionPool<G, C> add(
 		final Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>> streamable,
 		final long generations
 	) {
-		return add(streamable, Limits.byFixedGeneration(generations));
+		return add(streamable, () -> Limits.byFixedGeneration(generations));
 	}
 
 	public default EvolutionPool<G, C> add(
 		final EvolutionStreamable<G, C> streamable,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
 		return add(
 			(Function<Supplier<EvolutionStart<G, C>>, EvolutionStream<G, C>>)
@@ -67,12 +67,12 @@ public interface EvolutionPool<
 		final EvolutionStreamable<G, C> engine,
 		final long generations
 	) {
-		return add(engine, Limits.byFixedGeneration(generations));
+		return add(engine, () -> Limits.byFixedGeneration(generations));
 	}
 
 	public default EvolutionPool<G, C>
 	add(final EvolutionStreamable<G, C> streamable) {
-		return add(streamable, result -> true);
+		return add(streamable, () -> result -> true);
 	}
 
 	public EvolutionStream<G, C> stream();
