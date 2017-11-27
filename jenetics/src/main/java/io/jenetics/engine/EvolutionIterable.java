@@ -27,6 +27,11 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
 
 /**
+ * This interface defines the capability of creating <b>infinite</b> evolution
+ * iterators.
+ *
+ * @see EvolutionStreamable
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

@@ -26,6 +26,12 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
 
 /**
+ * This interface defines the capability of creating {@link EvolutionStream}s
+ * from a given {@link EvolutionStart} object. It also decouples the engine's
+ * capability from the capability to create evolution streams.
+ *
+ * @see EvolutionIterable
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -58,12 +64,16 @@ public interface EvolutionStreamable<
 
 	/**
 	 * Create a new <b>infinite</b> evolution stream with a newly created
-	 * population.
+	 * population. This method is a shortcut for
+	 * <pre>{@code
+	 * final EvolutionStream<G, C> stream = streamable
+	 *     .stream(() -> EvolutionStart.of(ISeq.empty(), 1));
+	 * }</pre>
 	 *
 	 * @return a new evolution stream.
 	 */
 	public default EvolutionStream<G, C> stream() {
-		return stream(EvolutionStart.of(ISeq.empty(), 1));
+		return stream(() -> EvolutionStart.of(ISeq.empty(), 1));
 	}
 
 	/**
