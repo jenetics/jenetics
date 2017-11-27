@@ -19,11 +19,7 @@
  */
 package io.jenetics.engine;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;

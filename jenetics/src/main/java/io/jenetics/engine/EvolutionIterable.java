@@ -19,15 +19,12 @@
  */
 package io.jenetics.engine;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Iterator;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 
 /**
