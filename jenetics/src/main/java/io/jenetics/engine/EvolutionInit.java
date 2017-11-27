@@ -30,6 +30,14 @@ import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 
 /**
+ * Represents the initialization value of an evolution stream/iterator.
+ *
+ * @see EvolutionStart
+ * @see EvolutionStreamable#stream(EvolutionInit)
+ * @see EvolutionIterable#iterator(EvolutionInit)
+ *
+ * @param <G> the gene type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
