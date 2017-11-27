@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass book
+\textclass extbook
 \begin_preamble
 \usepackage{transparent}
 \usepackage{eso-pic}
@@ -13,17 +13,16 @@
 \parbox[b][\paperheight]{\paperwidth}{%
 \vfill
 \centering
-{\transparent{0.9} \includegraphics[width=\paperwidth,height=\paperheight,%
-keepaspectratio]{../resources/graphic/manual-title.jpg}}%
+{\transparent{0.9} 
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]
+{../resources/graphic/manual-title.jpg}}
 \vfill
 }}}
 
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
-
  % set fonts for nicer pdf view
  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
-
 \fi % end if pdflatex is used
 
 \renewcommand\part{%
@@ -44,7 +43,6 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \makeatother
 
 \usepackage{listings}
-%\usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{url}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -52,20 +50,17 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{newunicodechar}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{keyword}{rgb}{0.5,0,0.5}
-%\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-%\definecolor{covercolor}{RGB}{220,220,220}
-%\definecolor{covercolor}{RGB}{25,200,255}
-%\definecolor{covercolor}{RGB}{202,232,255}
-%\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
-
-%\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
 \definecolor{covercolor}{RGB}{13,126,168}
 
 \newunicodechar{Σ}{\lstsum}
@@ -84,12 +79,10 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
   showtabs=false,
   frame=single,
   frameshape={}{nny}{nny}{},
-  %framexleftmargin=8pt,
   tabsize=4,
   captionpos=b,
   breaklines=true,
   breakatwhitespace=false,
-  %title=\lstname,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{keyword}\bfseries,
   commentstyle=\color{dkgreen},
@@ -177,6 +170,9 @@ tabs-within-sections
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
+\bullet 1 0 9 -1
+\bullet 2 0 10 -1
+\bullet 3 0 0 -1
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -4006,7 +4002,7 @@ The
 \family default
  and the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which is used to (lazily) calculate the
 \family typewriter
@@ -4019,7 +4015,7 @@ status collapsed
 \begin_layout Plain Layout
 Since the fitness
 \family typewriter
-Function
+ Function
 \family default
  is shared by all
 \family typewriter
@@ -4027,7 +4023,7 @@ Function
 \family default
 s, calls to the fitness
 \family typewriter
-Function
+ Function
 \family default
  must be idempotent.
  See section 
@@ -7040,7 +7036,7 @@ Fitness function
 \begin_layout Standard
 The fitness
 \family typewriter
-Function
+ Function
 \family default
  is also an important part when modeling an genetic algorithm.
  It takes a
@@ -7134,7 +7130,7 @@ height "1pt"
 \begin_layout Standard
 The following example shows the simplest possible fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  This
@@ -7280,7 +7276,7 @@ Fitness scaler
 \begin_layout Standard
 The fitness value, calculated by the fitness
 \family typewriter
-Function
+ Function
 \family default
 , is treated as the
 \shape italic
@@ -7683,7 +7679,7 @@ As already shown in previous examples, the
  class.
  Only the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the
 \family typewriter
@@ -7783,7 +7779,7 @@ fitnessFunction
 \family default
  This property defines the fitness
 \family typewriter
-Function
+ Function
 \family default
  used by the evolution
 \family typewriter
@@ -7983,12 +7979,12 @@ optimize
 \family default
  With this property it is possible to define whether the fitness
 \family typewriter
-Function
+ Function
 \family default
  should be maximized of minimized.
  By default, the fitness
 \family typewriter
-Function
+ Function
 \family default
  is maximized.
 \end_layout
@@ -16153,7 +16149,7 @@ engine
 \family default
  package—narrows the gap between the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which should be maximized/minimized, and the
 \family typewriter
@@ -16325,7 +16321,7 @@ reference "lis:Codec-interface"
 \family default
  to the argument type of the fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  Without the
@@ -16625,7 +16621,7 @@ The usage of the
 \family default
 , created by this factory method, simplifies the implementation of the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the creation of the evolution
 \family typewriter
@@ -16640,7 +16636,7 @@ Function
 \family default
 , fitness
 \family typewriter
-Function
+ Function
 \family default
  and evolution
 \family typewriter
@@ -17073,7 +17069,12 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-        gt -> ((BitChromosome)gt.getChromosome()).ones()
+        gt -> gt.getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(BitChromosome.class).ones()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18071,17 +18072,27 @@ class Main {
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum() -
+                   .mapToInt(Integer::intValue)
 \end_layout
 
 \begin_layout Plain Layout
 
-            args.second.stream()
+                   .sum() -
 \end_layout
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum();
+               args.second.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .mapToInt(Integer::intValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .sum();
 \end_layout
 
 \begin_layout Plain Layout
@@ -21982,7 +21993,7 @@ Random
 \family default
  class.
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -21990,8 +22001,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/io.jenetics/src/main/java/org/jen
-etics/util/LCG64ShiftRandom.java
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/LCG64ShiftRandom.java
 \end_layout
 
 \end_inset
@@ -22213,7 +22224,8 @@ Harder class
  io.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 prngine.\SpecialChar softhyphen
-internal.\SpecialChar softhyphen
+inter\SpecialChar softhyphen
+nal.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 Random
