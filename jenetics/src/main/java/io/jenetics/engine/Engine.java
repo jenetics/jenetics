@@ -357,14 +357,16 @@ public final class Engine<
 	}
 
 	// Selects the survivors population. A new population object is returned.
-	private ISeq<Phenotype<G, C>> selectSurvivors(final ISeq<Phenotype<G, C>> population) {
+	private ISeq<Phenotype<G, C>>
+	selectSurvivors(final ISeq<Phenotype<G, C>> population) {
 		return _survivorsCount > 0
 			?_survivorsSelector.select(population, _survivorsCount, _optimize)
 			: ISeq.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
-	private ISeq<Phenotype<G, C>> selectOffspring(final ISeq<Phenotype<G, C>> population) {
+	private ISeq<Phenotype<G, C>>
+	selectOffspring(final ISeq<Phenotype<G, C>> population) {
 		return _offspringCount > 0
 			? _offspringSelector.select(population, _offspringCount, _optimize)
 			: ISeq.empty();
@@ -412,7 +414,8 @@ public final class Engine<
 	}
 
 	// Evaluates the fitness function of the give population concurrently.
-	private ISeq<Phenotype<G, C>> evaluate(final ISeq<Phenotype<G, C>> population) {
+	private ISeq<Phenotype<G, C>>
+	evaluate(final ISeq<Phenotype<G, C>> population) {
 		try (Concurrency c = Concurrency.with(_executor.get())) {
 			c.execute(population);
 		}
@@ -472,10 +475,10 @@ public final class Engine<
 				pt.getFitnessScaler() == _fitnessScaler
 				? pt
 				: pt.newInstance(
-				pt.getGeneration(),
-				_fitnessFunction,
-				_fitnessScaler
-			);
+					pt.getGeneration(),
+					_fitnessFunction,
+					_fitnessScaler
+				);
 	}
 
 	private Supplier<EvolutionStart<G, C>>
