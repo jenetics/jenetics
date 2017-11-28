@@ -19,17 +19,12 @@
  */
 package io.jenetics.ext;
 
-import java.util.function.Function;
 import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
-import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,27 +36,7 @@ public interface EvolutionPool<
 	C extends Comparable<? super C>
 > {
 
-	public EvolutionPool<G, C> add(
-		final EvolutionStreamable<G, C> streamable,
-		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
-	);
-
-	public default EvolutionPool<G, C>
-	add(final Function<EvolutionResult<G, C>, LimitedEvolutionStream<G, C>> f) {
-		return this;
-	}
-
-	public default EvolutionPool<G, C> add(
-		final EvolutionStreamable<G, C> engine,
-		final long generations
-	) {
-		return add(engine, () -> Limits.byFixedGeneration(generations));
-	}
-
-	public default EvolutionPool<G, C>
-	add(final EvolutionStreamable<G, C> streamable) {
-		return add(streamable, () -> result -> true);
-	}
+	public EvolutionPool<G, C> add(final EvolutionStreamable<G, C> streamable);
 
 	public EvolutionStream<G, C> stream();
 

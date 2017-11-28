@@ -40,17 +40,14 @@ abstract class AbstractEvolutionPool<
 	implements EvolutionPool<G, C>
 {
 
-	protected final List<EngineLimit<G, C>> _streamables = new ArrayList<>();
+	protected final List<EvolutionStreamable<G, C>> _streamables = new ArrayList<>();
 
 	protected AbstractEvolutionPool() {
 	}
 
 	@Override
-	public EvolutionPool<G, C> add(
-		final EvolutionStreamable<G, C> streamable,
-		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
-	) {
-		_streamables.add(EngineLimit.of(streamable, proceed));
+	public EvolutionPool<G, C> add(final EvolutionStreamable<G, C> streamable) {
+		_streamables.add(streamable);
 		return this;
 	}
 

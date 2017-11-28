@@ -73,9 +73,9 @@ public class EvolutionPoolTest {
 	public void concat1() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>concat()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result =
@@ -93,9 +93,9 @@ public class EvolutionPoolTest {
 	public void concat2() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>concat()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result =
@@ -113,9 +113,9 @@ public class EvolutionPoolTest {
 	public void concat3() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>concat()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result =
@@ -133,9 +133,9 @@ public class EvolutionPoolTest {
 	public void cycle1() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>cycle()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result = pool.stream()
@@ -151,9 +151,9 @@ public class EvolutionPoolTest {
 	public void cycle2() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>cycle()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result = pool.stream()
@@ -170,9 +170,9 @@ public class EvolutionPoolTest {
 	public void cycle3() {
 		final EvolutionPool<DoubleGene, Double> pool =
 			EvolutionPool.<DoubleGene, Double>cycle()
-				.add(_engine1, () -> Limits.byFixedGeneration(10))
-				.add(_engine2, () -> Limits.byFixedGeneration(10))
-				.add(_engine3, () -> Limits.byFixedGeneration(10));
+				.add(_engine1.limit(10))
+				.add(_engine2.limit(10))
+				.add(_engine3.limit(10));
 
 		final AtomicLong count = new AtomicLong(0);
 		final EvolutionResult<DoubleGene, Double> result = pool.stream()

@@ -29,6 +29,7 @@ import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.util.ISeq;
 
@@ -63,11 +64,10 @@ final class CycleEvolutionPool<
 	}
 
 	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
-		final EngineLimit<G, C> engine,
+		final EvolutionStreamable<G, C> engine,
 		final AtomicReference<EvolutionStart<G, C>> start
 	) {
-		return () -> engine.engine.stream(start::get)
-			.limit(engine.proceed.get())
+		return () -> engine.stream(start::get)
 			.peek(result -> start.set(result.toEvolutionStart()))
 			.spliterator();
 	}
