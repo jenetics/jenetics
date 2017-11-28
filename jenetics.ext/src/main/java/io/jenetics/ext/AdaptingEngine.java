@@ -19,13 +19,21 @@
  */
 package io.jenetics.ext;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Spliterator;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
+
+import io.jenetics.ext.internal.GeneratedSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,15 +47,54 @@ public class AdaptingEngine<
 	implements EvolutionStreamable<G, C>
 {
 
+
+	private final
+	Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> _engine;
+
+	public AdaptingEngine(
+		final Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> engine
+	) {
+		_engine = requireNonNull(engine);
+	}
+
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return null;
+		return new EvolutionStreamImpl<G, C>(
+			new GeneratedSpliterator<>(result -> generate(start, result)),
+			false
+		);
+	}
+
+	private Spliterator<EvolutionResult<G, C>>
+	generate(
+		final Supplier<EvolutionStart<G, C>> start,
+		final EvolutionResult<G, C> result
+	) {
+		final EvolutionStart<G, C> es = result == null
+			? start.get()
+			: result.toEvolutionStart();
+
+		return _engine.apply(result).stream(es).spliterator();
 	}
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return null;
+		return new EvolutionStreamImpl<G, C>(
+			new GeneratedSpliterator<>(result -> generate(init, result)),
+			false
+		);
+	}
+
+	private Spliterator<EvolutionResult<G, C>>
+	generate(
+		final EvolutionInit<G> init,
+		final EvolutionResult<G, C> result
+	) {
+		return result == null
+			? _engine.apply(null).stream(init).spliterator()
+			: _engine.apply(result)
+				.stream(result.toEvolutionStart()).spliterator();
 	}
 
 }
