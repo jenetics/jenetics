@@ -47,12 +47,11 @@ public class AdaptingEngine<
 	implements EvolutionStreamable<G, C>
 {
 
-
 	private final
-	Function<EvolutionResult<G, C>, ? extends EngineLimit<G, C>> _engine;
+	Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> _engine;
 
 	public AdaptingEngine(
-		final Function<EvolutionResult<G, C>, ? extends EngineLimit<G, C>> engine
+		final Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> engine
 	) {
 		_engine = requireNonNull(engine);
 	}
@@ -75,11 +74,8 @@ public class AdaptingEngine<
 			? start.get()
 			: result.toEvolutionStart();
 
-		final EngineLimit<G, C> engine = _engine.apply(result);
-
-		return engine.engine
+		return _engine.apply(result)
 			.stream(es)
-			.limit(engine.proceed.get())
 			.spliterator();
 	}
 
@@ -96,17 +92,12 @@ public class AdaptingEngine<
 		final EvolutionInit<G> init,
 		final EvolutionResult<G, C> result
 	) {
-
-		final EngineLimit<G, C> engine = _engine.apply(result);
-
 		return result == null
-			? engine.engine
+			? _engine.apply(null)
 				.stream(init)
-				.limit(engine.proceed.get())
 				.spliterator()
-			: engine.engine
+			: _engine.apply(result)
 				.stream(result.toEvolutionStart())
-				.limit(engine.proceed.get())
 				.spliterator();
 	}
 

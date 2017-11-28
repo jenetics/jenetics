@@ -19,6 +19,9 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
@@ -231,10 +234,7 @@ public interface EvolutionStreamable<
 		final Iterable<Genotype<G>> genotypes,
 		final long generation
 	) {
-		return stream(EvolutionInit.of(
-			ISeq.of(genotypes),
-			generation
-		));
+		return stream(EvolutionInit.of(ISeq.of(genotypes), generation));
 	}
 
 	/**
@@ -252,6 +252,48 @@ public interface EvolutionStreamable<
 	public default EvolutionStream<G, C>
 	stream(final Iterable<Genotype<G>> genotypes) {
 		return stream(genotypes, 1);
+	}
+
+	/**
+	 * Return a new {@code EvolutionStreamable} instance where all created
+	 * {@code EvolutionStream}s are limited by the given predicate. Since some
+	 * predicates has to maintain internal state, a predicate {@code Supplier}
+	 * must be given instead a plain limiting predicate.
+	 *
+	 * @param proceed the limiting predicate supplier.
+	 * @return a new evolution streamable object
+	 * @throws NullPointerException if the give {@code predicate} is {@code null}
+	 */
+	public default EvolutionStreamable<G, C>
+	limit(final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed) {
+		requireNonNull(proceed);
+
+			return new EvolutionStreamable<G, C>() {
+			@Override
+			public EvolutionStream<G, C>
+			stream(final Supplier<EvolutionStart<G, C>> start) {
+				return EvolutionStreamable.this.stream(start).limit(proceed.get());
+			}
+
+			@Override
+			public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+				return EvolutionStreamable.this.stream(init).limit(proceed.get());
+			}
+		};
+	}
+
+	/**
+	 * Return a new {@code EvolutionStreamable} instance where all created
+	 * {@code EvolutionStream}s are limited to the given number of generations.
+	 *
+	 * @param generations the number of generations after the created evolution
+	 *        streams are truncated
+	 * @return a new evolution streamable object
+	 * @throws IllegalArgumentException if the given {@code generations} is
+	 *         smaller than zero.
+	 */
+	public default EvolutionStreamable<G, C> limit(final long generations) {
+		return limit(() -> Limits.byFixedGeneration(generations));
 	}
 
 }
