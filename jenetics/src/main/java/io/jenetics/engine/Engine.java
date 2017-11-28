@@ -117,6 +117,7 @@ import io.jenetics.util.Seq;
  * @since 3.0
  * @version !__version__!
  */
+@SuppressWarnings("deprecation")
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
@@ -427,12 +428,14 @@ public final class Engine<
 	 * Evolution Stream/Iterator creation.
 	 **************************************************************************/
 
+	@Deprecated
 	@Override
 	public Iterator<EvolutionResult<G, C>>
 	iterator(final Supplier<EvolutionStart<G, C>> start) {
 		return new EvolutionIterator<>(evolutionStart(start), this::evolve);
 	}
 
+	@Deprecated
 	@Override
 	public Iterator<EvolutionResult<G, C>> iterator(final EvolutionInit<G> init) {
 		return iterator(evolutionStart(init));

@@ -37,12 +37,11 @@ import io.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public interface EvolutionIterable<
+@Deprecated
+interface EvolutionIterable<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-	extends Iterable<EvolutionResult<G, C>>
-{
+>  {
 
 	/**
 	 * Create a new <b>infinite</b> evolution iterator with the given evolution
@@ -57,6 +56,7 @@ public interface EvolutionIterable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
+	@Deprecated
 	public Iterator<EvolutionResult<G, C>>
 	iterator(final Supplier<EvolutionStart<G, C>> start);
 
@@ -73,6 +73,7 @@ public interface EvolutionIterable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
+	@Deprecated
 	public Iterator<EvolutionResult<G, C>> iterator(final EvolutionInit<G> init);
 
 	/* *************************************************************************
@@ -86,7 +87,7 @@ public interface EvolutionIterable<
 	 *
 	 * @return a new <b>infinite</b> evolution iterator
 	 */
-	@Override
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>> iterator() {
 		return iterator(EvolutionStart.of(ISeq.empty(), 1));
 	}
@@ -104,6 +105,7 @@ public interface EvolutionIterable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>>
 	iterator(final EvolutionStart<G, C> start) {
 		return iterator(() -> start);
@@ -120,6 +122,7 @@ public interface EvolutionIterable<
 	 * @throws NullPointerException if the given evolution {@code result} is
 	 *         {@code null}
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>>
 	iterator(final EvolutionResult<G, C> result) {
 		return iterator(EvolutionStart.of(
@@ -147,6 +150,7 @@ public interface EvolutionIterable<
 	 * @throws IllegalArgumentException if the given {@code generation} is smaller
 	 *        then one
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>> iterator(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
@@ -169,6 +173,7 @@ public interface EvolutionIterable<
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}.
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>>
 	iterator(final ISeq<Phenotype<G, C>> population) {
 		return iterator(EvolutionStart.of(population, 1));
@@ -190,6 +195,7 @@ public interface EvolutionIterable<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>> iterator(
 		final Iterable<Genotype<G>> genotypes,
 		final long generation
@@ -212,6 +218,7 @@ public interface EvolutionIterable<
 	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
 	 *         {@code null}.
 	 */
+	@Deprecated
 	public default Iterator<EvolutionResult<G, C>>
 	iterator(final Iterable<Genotype<G>> genotypes) {
 		return iterator(genotypes, 1);
