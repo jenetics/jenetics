@@ -36,7 +36,7 @@ import io.jenetics.internal.util.LimitSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public class GeneratedSpliterator<T> implements LimitSpliterator<T> {
+public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 
 	private final Predicate<? super T> _proceed;
 	private final Function<? super T, ? extends Spliterator<T>> _spliterator;
@@ -44,7 +44,7 @@ public class GeneratedSpliterator<T> implements LimitSpliterator<T> {
 	private Spliterator<T> _current;
 	private T _element;
 
-	public GeneratedSpliterator(
+	public GeneratorSpliterator(
 		final Predicate<? super T> proceed,
 		final Function<? super T, ? extends Spliterator<T>> spliterator
 	) {
@@ -52,13 +52,13 @@ public class GeneratedSpliterator<T> implements LimitSpliterator<T> {
 		_spliterator = requireNonNull(spliterator);
 	}
 
-	public GeneratedSpliterator(final Function<? super T, ? extends Spliterator<T>> spliterator) {
+	public GeneratorSpliterator(final Function<? super T, ? extends Spliterator<T>> spliterator) {
 		this(TRUE(), spliterator);
 	}
 
 	@Override
-	public GeneratedSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new GeneratedSpliterator<>(and(_proceed, proceed), _spliterator);
+	public GeneratorSpliterator<T> limit(final Predicate<? super T> proceed) {
+		return new GeneratorSpliterator<>(and(_proceed, proceed), _spliterator);
 	}
 
 	@Override

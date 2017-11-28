@@ -33,7 +33,7 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 
-import io.jenetics.ext.internal.GeneratedSpliterator;
+import io.jenetics.ext.internal.GeneratorSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -61,7 +61,7 @@ public class AdaptingEngine<
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
 		return new EvolutionStreamImpl<G, C>(
-			new GeneratedSpliterator<>(result -> generate(start, result)),
+			new GeneratorSpliterator<>(result -> generate(start, result)),
 			false
 		);
 	}
@@ -81,7 +81,7 @@ public class AdaptingEngine<
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
 		return new EvolutionStreamImpl<G, C>(
-			new GeneratedSpliterator<>(result -> generate(init, result)),
+			new GeneratorSpliterator<>(result -> generate(init, result)),
 			false
 		);
 	}
