@@ -33,27 +33,27 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-final class EngineLimit<
+public final class EngineLimit<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
 
-	final EvolutionStreamable<G, C> streamable;
+	final EvolutionStreamable<G, C> engine;
 	final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed;
 
 	private EngineLimit(
-		final EvolutionStreamable<G, C> streamable,
+		final EvolutionStreamable<G, C> engine,
 		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
-		this.streamable = requireNonNull(streamable);
+		this.engine = requireNonNull(engine);
 		this.proceed = requireNonNull(proceed);
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EngineLimit<G, C> of(
-		final EvolutionStreamable<G, C> streamable,
+		final EvolutionStreamable<G, C> engine,
 		final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed
 	) {
-		return new EngineLimit<>(streamable, proceed);
+		return new EngineLimit<>(engine, proceed);
 	}
 }
