@@ -39,26 +39,28 @@ import io.jenetics.internal.util.LimitSpliterator;
 public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 
 	private final Predicate<? super T> _proceed;
-	private final Function<? super T, ? extends Spliterator<T>> _spliterator;
+	private final Function<? super T, ? extends Spliterator<T>> _generator;
 
 	private Spliterator<T> _current;
 	private T _element;
 
 	public GeneratorSpliterator(
 		final Predicate<? super T> proceed,
-		final Function<? super T, ? extends Spliterator<T>> spliterator
+		final Function<? super T, ? extends Spliterator<T>> generator
 	) {
 		_proceed = requireNonNull(proceed);
-		_spliterator = requireNonNull(spliterator);
+		_generator = requireNonNull(generator);
 	}
 
-	public GeneratorSpliterator(final Function<? super T, ? extends Spliterator<T>> spliterator) {
-		this(TRUE(), spliterator);
+	public GeneratorSpliterator(
+		final Function<? super T, ? extends Spliterator<T>> generator
+	) {
+		this(TRUE(), generator);
 	}
 
 	@Override
 	public GeneratorSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new GeneratorSpliterator<>(and(_proceed, proceed), _spliterator);
+		return new GeneratorSpliterator<>(and(_proceed, proceed), _generator);
 	}
 
 	@Override
@@ -67,8 +69,8 @@ public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 
 		final AtomicBoolean proceed = new AtomicBoolean(true);
 		final boolean advance = spliterator().tryAdvance(t -> {
-			proceed.set(_proceed.test(t));
 			action.accept(t);
+			proceed.set(_proceed.test(t));
 			_element = t;
 		});
 
@@ -85,17 +87,17 @@ public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public long estimateSize() {
-		return spliterator().estimateSize();
+		return Long.MAX_VALUE;
 	}
 
 	@Override
 	public int characteristics() {
-		return spliterator().characteristics();
+		return 0;
 	}
 
 	private Spliterator<T> spliterator() {
 		if (_current == null) {
-			_current = _spliterator.apply(_element);
+			_current = _generator.apply(_element);
 		}
 
 		return _current;
