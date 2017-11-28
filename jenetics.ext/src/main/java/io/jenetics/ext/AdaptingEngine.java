@@ -32,7 +32,7 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-public class DynamicEngine<
+public class AdaptingEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
