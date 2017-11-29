@@ -34,7 +34,7 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 
-import io.jenetics.ext.internal.CycleSpliterator;
+import io.jenetics.ext.internal.CyclicSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -61,7 +61,7 @@ public final class CycleEnginePool<
 			new AtomicReference<>(null);
 
 		return new EvolutionStreamImpl<G, C>(
-			new CycleSpliterator<>(
+			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
 					.collect(Collectors.toList())
@@ -93,7 +93,7 @@ public final class CycleEnginePool<
 			new AtomicReference<>(null);
 
 		return new EvolutionStreamImpl<G, C>(
-			new CycleSpliterator<>(
+			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, init, other))
 					.collect(Collectors.toList())

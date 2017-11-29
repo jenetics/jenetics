@@ -33,7 +33,7 @@ import io.jenetics.engine.Limits;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CycleSpliteratorTest {
+public class CyclicSpliteratorTest {
 
 	@Test
 	public void cycle1() {
@@ -41,7 +41,7 @@ public class CycleSpliteratorTest {
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
-		final CycleSpliterator<Integer> s = new CycleSpliterator<>(Arrays.asList(s1, s2, s3));
+		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(Arrays.asList(s1, s2, s3));
 		final int[] array = StreamSupport.stream(s, false)
 			.limit(10)
 			.mapToInt(Integer::intValue)
@@ -59,7 +59,7 @@ public class CycleSpliteratorTest {
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
-		final CycleSpliterator<Integer> s = new CycleSpliterator<>(Arrays.asList(s1, s2, s3));
+		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(Arrays.asList(s1, s2, s3));
 		final int[] array = StreamSupport.stream(s, false)
 			.limit(35)
 			.mapToInt(Integer::intValue)
@@ -79,7 +79,7 @@ public class CycleSpliteratorTest {
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
-		final CycleSpliterator<Integer> s = new CycleSpliterator<>(
+		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(
 			Limits.byFixedGeneration(34),
 			Arrays.asList(s1, s2, s3)
 		);

@@ -40,14 +40,14 @@ import io.jenetics.internal.util.LimitSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public class CycleSpliterator<T> implements LimitSpliterator<T> {
+public class CyclicSpliterator<T> implements LimitSpliterator<T> {
 
 	private final Predicate<? super T> _proceed;
 	private final List<Supplier<Spliterator<T>>> _spliterators;
 
 	private ConcatSpliterator<T> _concat = null;
 
-	public CycleSpliterator(
+	public CyclicSpliterator(
 		final Predicate<? super T> proceed,
 		final List<Supplier<Spliterator<T>>> spliterators
 	) {
@@ -56,13 +56,13 @@ public class CycleSpliterator<T> implements LimitSpliterator<T> {
 		_spliterators = new ArrayList<>(spliterators);
 	}
 
-	public CycleSpliterator(final List<Supplier<Spliterator<T>>> spliterators) {
+	public CyclicSpliterator(final List<Supplier<Spliterator<T>>> spliterators) {
 		this(TRUE(), spliterators);
 	}
 
 	@Override
 	public LimitSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new CycleSpliterator<>(and(_proceed, proceed), _spliterators);
+		return new CyclicSpliterator<>(and(_proceed, proceed), _spliterators);
 	}
 
 	@Override
