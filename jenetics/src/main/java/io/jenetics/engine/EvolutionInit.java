@@ -34,7 +34,7 @@ import io.jenetics.util.ISeq;
  *
  * @see EvolutionStart
  * @see EvolutionStreamable#stream(EvolutionInit)
- * @see EvolutionIterable#iterator(EvolutionInit)
+ * @see Engine#iterator(EvolutionInit)
  *
  * @param <G> the gene type
  *

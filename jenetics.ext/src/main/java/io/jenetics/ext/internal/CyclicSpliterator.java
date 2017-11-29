@@ -88,17 +88,17 @@ public class CyclicSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public Spliterator<T> trySplit() {
-		return null;
+		return new CyclicSpliterator<>(_proceed, _spliterators);
 	}
 
 	@Override
 	public long estimateSize() {
-		return spliterator().estimateSize();
+		return Long.MAX_VALUE;
 	}
 
 	@Override
 	public int characteristics() {
-		return spliterator().characteristics();
+		return Spliterator.ORDERED;
 	}
 
 	private ConcatSpliterator<T> spliterator() {

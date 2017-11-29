@@ -82,7 +82,7 @@ public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 	}
 	@Override
 	public Spliterator<T> trySplit() {
-		return null;
+		return new GeneratorSpliterator<>(_proceed, _generator);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public int characteristics() {
-		return 0;
+		return Spliterator.ORDERED;
 	}
 
 	private Spliterator<T> spliterator() {
