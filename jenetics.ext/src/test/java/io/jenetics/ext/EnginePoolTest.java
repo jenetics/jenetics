@@ -40,7 +40,7 @@ import io.jenetics.util.DoubleRange;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class EvolutionPoolTest {
+public class EnginePoolTest {
 
 	private static final Problem<double[], DoubleGene, Double> PROBLEM =
 		Problem.of(
