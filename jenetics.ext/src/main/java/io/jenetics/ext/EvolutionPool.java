@@ -47,10 +47,12 @@ public interface EvolutionPool<
 	}
 	*/
 
+	/*
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionPool<G, C> cycle() {
 		return new CycleEvolutionPool<>();
 	}
+	*/
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> parallel(final IntFunction<EvolutionStart<G, C>> start) {

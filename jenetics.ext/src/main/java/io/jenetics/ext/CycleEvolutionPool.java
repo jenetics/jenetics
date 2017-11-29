@@ -26,12 +26,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.internal.CycleSpliterator;
 
@@ -40,35 +40,74 @@ import io.jenetics.ext.internal.CycleSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-final class CycleEvolutionPool<
+public final class CycleEvolutionPool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractEvolutionPool<G, C>
+	extends EnginePool<G, C>
 {
 
-	@Override
-	public EvolutionStream<G, C> stream() {
-		final AtomicReference<EvolutionStart<G, C>> start =
-			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
+	public CycleEvolutionPool(
+		final List<? extends EvolutionStreamable<G, C>> engines
+	) {
+		super(engines);
+	}
 
-		final List<Supplier<Spliterator<EvolutionResult<G, C>>>> spliterators =
-			_streamables.stream()
-				.map(engine -> toSpliterator(engine, start))
-				.collect(Collectors.toList());
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		final AtomicReference<EvolutionStart<G, C>> other =
+			new AtomicReference<>(null);
 
 		return new EvolutionStreamImpl<G, C>(
-			new CycleSpliterator<>(spliterators),
+			new CycleSpliterator<>(
+				_engines.stream()
+					.map(engine -> toSpliterator(engine, start, other))
+					.collect(Collectors.toList())
+			),
 			false
 		);
 	}
 
 	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
 		final EvolutionStreamable<G, C> engine,
-		final AtomicReference<EvolutionStart<G, C>> start
+		final Supplier<EvolutionStart<G, C>> start,
+		final AtomicReference<EvolutionStart<G, C>> other
 	) {
-		return () -> engine.stream(start::get)
-			.peek(result -> start.set(result.toEvolutionStart()))
+		return () -> engine.stream(() -> start(start, other))
+			.peek(result -> other.set(result.toEvolutionStart()))
+			.spliterator();
+	}
+
+	private EvolutionStart<G, C> start(
+		final Supplier<EvolutionStart<G, C>> first,
+		final AtomicReference<EvolutionStart<G, C>> other
+	) {
+		return other.get() != null ? other.get() : first.get();
+	}
+
+	@Override
+	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		final AtomicReference<EvolutionStart<G, C>> other =
+			new AtomicReference<>(null);
+
+		return new EvolutionStreamImpl<G, C>(
+			new CycleSpliterator<>(
+				_engines.stream()
+					.map(engine -> toSpliterator(engine, init, other))
+					.collect(Collectors.toList())
+			),
+			false
+		);
+	}
+
+	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
+		final EvolutionStreamable<G, C> engine,
+		final EvolutionInit<G> init,
+		final AtomicReference<EvolutionStart<G, C>> other
+	) {
+		return () -> engine.stream(init)
+			.peek(result -> other.set(result.toEvolutionStart()))
 			.spliterator();
 	}
 
