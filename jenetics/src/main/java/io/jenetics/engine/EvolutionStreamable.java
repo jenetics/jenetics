@@ -32,7 +32,8 @@ import io.jenetics.util.ISeq;
 /**
  * This interface defines the capability of creating {@link EvolutionStream}s
  * from a given {@link EvolutionStart} object. It also decouples the engine's
- * capability from the capability to create evolution streams.
+ * capability from the capability to create evolution streams. The purpose of
+ * this interface is similar to the {@link Iterable} interface.
  *
  * @see EvolutionIterable
  *

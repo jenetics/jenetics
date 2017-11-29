@@ -33,6 +33,8 @@ import io.jenetics.util.ISeq;
  *
  * @see EvolutionStreamable
  *
+ * @deprecated Marked for removal in the next major version.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -51,6 +53,7 @@ interface EvolutionIterable<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param start the data the evolution stream starts with
 	 * @return a new <b>infinite</b> evolution iterator
 	 * @throws java.lang.NullPointerException if the given evolution
@@ -68,6 +71,7 @@ interface EvolutionIterable<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param init the data the evolution iterator is initialized with
 	 * @return a new <b>infinite</b> evolution stream
 	 * @throws java.lang.NullPointerException if the given evolution
@@ -85,6 +89,7 @@ interface EvolutionIterable<
 	 * population. This is an alternative way for evolution. It lets the user
 	 * start, stop and resume the evolution process whenever desired.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @return a new <b>infinite</b> evolution iterator
 	 */
 	@Deprecated
@@ -100,6 +105,7 @@ interface EvolutionIterable<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param start the data the evolution stream starts with
 	 * @return a new <b>infinite</b> evolution iterator
 	 * @throws java.lang.NullPointerException if the given evolution
@@ -117,6 +123,7 @@ interface EvolutionIterable<
 	 * with the population of the given {@code result} and its total generation
 	 * {@link EvolutionResult#getTotalGenerations()}.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param result the previously evolved {@code EvolutionResult}
 	 * @return a new evolution stream, which continues a previous one
 	 * @throws NullPointerException if the given evolution {@code result} is
@@ -139,6 +146,7 @@ interface EvolutionIterable<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param population the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
@@ -166,6 +174,7 @@ interface EvolutionIterable<
 	 * evolution with the outcome of an different engine. The fitness function
 	 * and the fitness scaler are replaced by the one defined for this engine.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param population the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
@@ -184,6 +193,7 @@ interface EvolutionIterable<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param genotypes the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
@@ -211,6 +221,7 @@ interface EvolutionIterable<
 	 * individuals. If an empty {@code Iterable} is given, the engines genotype
 	 * factory is used for creating the population.
 	 *
+	 * @deprecated Marked for removal in the next major version.
 	 * @param genotypes the initial individuals used for the evolution iterator.
 	 *        Missing individuals are created and individuals not needed are
 	 *        skipped.
