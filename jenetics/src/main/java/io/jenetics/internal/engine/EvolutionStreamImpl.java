@@ -19,6 +19,7 @@
  */
 package io.jenetics.internal.engine;
 
+import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -44,10 +45,10 @@ public final class EvolutionStreamImpl<
 	implements EvolutionStream<G, C>
 {
 
-	private final LimitSpliterator<EvolutionResult<G, C>> _spliterator;
+	private final Spliterator<EvolutionResult<G, C>> _spliterator;
 
 	public EvolutionStreamImpl(
-		final LimitSpliterator<EvolutionResult<G, C>> spliterator,
+		final Spliterator<EvolutionResult<G, C>> spliterator,
 		final boolean parallel
 	) {
 		super(StreamSupport.stream(spliterator, parallel));
@@ -64,7 +65,10 @@ public final class EvolutionStreamImpl<
 	@Override
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		return new EvolutionStreamImpl<>(_spliterator.limit(proceed), isParallel());
+		return new EvolutionStreamImpl<>(
+			LimitSpliterator.of(_spliterator, proceed),
+			isParallel()
+		);
 	}
 
 }

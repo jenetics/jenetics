@@ -87,7 +87,7 @@ public final class Limits {
 			private final AtomicLong _current = new AtomicLong();
 			@Override
 			public boolean test(final Object o) {
-				return _current.incrementAndGet() < generation;
+				return _current.incrementAndGet() <= generation;
 			}
 		};
 	}

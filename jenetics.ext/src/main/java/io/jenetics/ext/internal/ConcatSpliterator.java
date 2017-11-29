@@ -20,8 +20,6 @@
 package io.jenetics.ext.internal;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.LimitSpliterator.TRUE;
-import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.Collection;
 import java.util.Deque;
@@ -29,12 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * This {@code Spliterator} takes a list of other spliterators which are
@@ -44,29 +38,18 @@ import io.jenetics.internal.util.LimitSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public class ConcatSpliterator<T> implements LimitSpliterator<T> {
+public class ConcatSpliterator<T> implements Spliterator<T> {
 
-	private final Predicate<? super T> _proceed;
 	private final Deque<Spliterator<T>> _spliterators;
 
 	/**
 	 * Create a new concatenating spliterator with the given arguments.
 	 *
-	 * @param proceed the limiting predicate
 	 * @param spliterators the spliterators which are concatenated
 	 * @throws NullPointerException if one of the arguments are {@code null}
 	 */
-	public ConcatSpliterator(
-		final Predicate<? super T> proceed,
-		final Collection<Spliterator<T>> spliterators
-	) {
-		_proceed = requireNonNull(proceed);
-		spliterators.forEach(Objects::requireNonNull);
-		_spliterators = new LinkedList<>(spliterators);
-	}
-
 	public ConcatSpliterator(final Collection<Spliterator<T>> spliterators) {
-		this(TRUE(), spliterators);
+		_spliterators = new LinkedList<>(spliterators);
 	}
 
 	@Override
@@ -75,17 +58,8 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 
 		if (!_spliterators.isEmpty()) {
 			final Spliterator<T> spliterator = _spliterators.peek();
-			final AtomicBoolean proceed = new AtomicBoolean(true);
 
-			final boolean advance = spliterator.tryAdvance(t -> {
-				proceed.set(_proceed.test(t));
-				action.accept(t);
-			});
-
-			if (!proceed.get()) {
-				return false;
-			}
-
+			final boolean advance = spliterator.tryAdvance(action::accept);
 			if (!advance) {
 				_spliterators.removeFirst();
 				return !_spliterators.isEmpty();
@@ -105,13 +79,8 @@ public class ConcatSpliterator<T> implements LimitSpliterator<T> {
 			.collect(Collectors.toList());
 
 		return split.stream().noneMatch(Objects::isNull)
-			? new ConcatSpliterator<>(_proceed, split)
+			? new ConcatSpliterator<>(split)
 			: null;
-	}
-
-	@Override
-	public ConcatSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new ConcatSpliterator<>(and(_proceed, proceed), _spliterators);
 	}
 
 	@Override

@@ -20,69 +20,47 @@
 package io.jenetics.ext.internal;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.LimitSpliterator.TRUE;
-import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
-
-import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class GeneratorSpliterator<T> implements LimitSpliterator<T> {
+public class GeneratorSpliterator<T> implements Spliterator<T> {
 
-	private final Predicate<? super T> _proceed;
 	private final Function<? super T, ? extends Spliterator<T>> _generator;
 
 	private Spliterator<T> _current;
 	private T _element;
 
 	public GeneratorSpliterator(
-		final Predicate<? super T> proceed,
 		final Function<? super T, ? extends Spliterator<T>> generator
 	) {
-		_proceed = requireNonNull(proceed);
 		_generator = requireNonNull(generator);
-	}
-
-	public GeneratorSpliterator(
-		final Function<? super T, ? extends Spliterator<T>> generator
-	) {
-		this(TRUE(), generator);
-	}
-
-	@Override
-	public GeneratorSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new GeneratorSpliterator<>(and(_proceed, proceed), _generator);
 	}
 
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		final AtomicBoolean proceed = new AtomicBoolean(true);
-		final boolean advance = spliterator().tryAdvance(t -> {
-			action.accept(t);
-			proceed.set(_proceed.test(t));
-			_element = t;
+		final boolean advance = spliterator().tryAdvance(element -> {
+			action.accept(element);
+			_element = element;
 		});
 
 		if (!advance) {
 			_current = null;
 		}
 
-		return proceed.get();
+		return true;
 	}
 	@Override
 	public Spliterator<T> trySplit() {
-		return new GeneratorSpliterator<>(_proceed, _generator);
+		return new GeneratorSpliterator<>(_generator);
 	}
 
 	@Override

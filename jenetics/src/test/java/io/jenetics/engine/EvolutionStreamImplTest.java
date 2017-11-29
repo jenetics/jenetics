@@ -70,8 +70,8 @@ public class EvolutionStreamImplTest {
 			.peek(r -> count.incrementAndGet())
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(count.get(), 1L);
-		Assert.assertEquals(result.getTotalGenerations(), 1L);
+		Assert.assertEquals(count.get(), 0L);
+		Assert.assertNull(result);
 	}
 
 	@Test
@@ -102,7 +102,7 @@ public class EvolutionStreamImplTest {
 
 		@Override
 		public boolean test(final Object o) {
-			return _limit > ++_count;
+			return _limit >= ++_count;
 		}
 	}
 

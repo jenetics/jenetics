@@ -62,8 +62,8 @@ public class ExecutionTimeLimitTest {
 			.limit(Limits.byExecutionTime(duration, clock))
 			.forEach(s -> count.incrementAndGet());
 
-		Assert.assertEquals(count.get(), millis + 1);
-		Assert.assertEquals(clock.count, count.get());
+		Assert.assertEquals(count.get(), millis.intValue());
+		Assert.assertEquals(clock.count, count.get() + 1);
 	}
 
 	private static EvolutionStream<DoubleGene, Double> stream() {

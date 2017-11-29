@@ -39,13 +39,12 @@ public class EvolutionStreams {
 
 	public static EvolutionStream<IntegerGene, Integer>
 	stream(final Stream<Integer> stream) {
-		final EvoLimitSpliterator spliterator = new EvoLimitSpliterator(
+		return new EvolutionStreamImpl<>(
 			stream
 				.map(EvolutionStreams::result)
-				.spliterator()
+				.spliterator(),
+			false
 		);
-
-		return new EvolutionStreamImpl<>(spliterator, false);
 	}
 
 	public static EvolutionResult<IntegerGene, Integer> result(final int value) {

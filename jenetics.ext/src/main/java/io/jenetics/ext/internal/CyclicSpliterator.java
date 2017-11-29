@@ -20,8 +20,6 @@
 package io.jenetics.ext.internal;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.LimitSpliterator.TRUE;
-import static io.jenetics.internal.util.LimitSpliterator.and;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,40 +27,23 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import io.jenetics.internal.util.LimitSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class CyclicSpliterator<T> implements LimitSpliterator<T> {
+public class CyclicSpliterator<T> implements Spliterator<T> {
 
-	private final Predicate<? super T> _proceed;
 	private final List<Supplier<Spliterator<T>>> _spliterators;
 
 	private ConcatSpliterator<T> _concat = null;
 
-	public CyclicSpliterator(
-		final Predicate<? super T> proceed,
-		final List<Supplier<Spliterator<T>>> spliterators
-	) {
-		_proceed = requireNonNull(proceed);
+	public CyclicSpliterator(final List<Supplier<Spliterator<T>>> spliterators) {
 		spliterators.forEach(Objects::requireNonNull);
 		_spliterators = new ArrayList<>(spliterators);
-	}
-
-	public CyclicSpliterator(final List<Supplier<Spliterator<T>>> spliterators) {
-		this(TRUE(), spliterators);
-	}
-
-	@Override
-	public LimitSpliterator<T> limit(final Predicate<? super T> proceed) {
-		return new CyclicSpliterator<>(and(_proceed, proceed), _spliterators);
 	}
 
 	@Override
@@ -74,12 +55,7 @@ public class CyclicSpliterator<T> implements LimitSpliterator<T> {
 		}
 
 		final AtomicBoolean proceed = new AtomicBoolean(true);
-		final boolean advance = spliterator().tryAdvance(t -> {
-			proceed.set(_proceed.test(t));
-			action.accept(t);
-		});
-
-		if (!advance) {
+		if (!spliterator().tryAdvance(action::accept)) {
 			_concat = null;
 		}
 
@@ -88,7 +64,7 @@ public class CyclicSpliterator<T> implements LimitSpliterator<T> {
 
 	@Override
 	public Spliterator<T> trySplit() {
-		return new CyclicSpliterator<>(_proceed, _spliterators);
+		return new CyclicSpliterator<>(_spliterators);
 	}
 
 	@Override

@@ -49,41 +49,4 @@ public class GeneratorSpliteratorTest {
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	}
 
-	@Test
-	public void generator2() {
-		final Spliterator<Integer> spliterator =
-			new GeneratorSpliterator<>(
-				i -> i < 9,
-				i -> {
-					final int s = i == null ? 0 : i;
-					return Stream.of(s + 1, s + 2, s + 3).spliterator();
-				}
-			);
-
-		final int[] array = StreamSupport.stream(spliterator, false)
-			.mapToInt(Integer::intValue)
-			.toArray();
-
-		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-	}
-
-	@Test
-	public void generator3() {
-		final Spliterator<Integer> spliterator =
-			new GeneratorSpliterator<>(
-				i -> i < 19,
-				i -> {
-					final int s = i == null ? 0 : i;
-					return Stream.of(s + 1, s + 2, s + 3).spliterator();
-				}
-			);
-
-		final int[] array = StreamSupport.stream(spliterator, false)
-			.mapToInt(Integer::intValue)
-			.limit(9)
-			.toArray();
-
-		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-	}
-
 }

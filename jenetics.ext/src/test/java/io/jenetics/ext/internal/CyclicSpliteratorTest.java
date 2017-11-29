@@ -73,27 +73,4 @@ public class CyclicSpliteratorTest {
 		});
 	}
 
-	@Test
-	public void cycle3() {
-		final Supplier<Spliterator<Integer>> s1 = () -> Stream.of(1, 2, 3).spliterator();
-		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
-		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
-
-		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(
-			Limits.byFixedGeneration(34),
-			Arrays.asList(s1, s2, s3)
-		);
-		final int[] array = StreamSupport.stream(s, false)
-			.limit(100)
-			.mapToInt(Integer::intValue)
-			.toArray();
-
-		Assert.assertEquals(array, new int[]{
-			1, 2, 3, 4, 5, 6, 7, 8, 9,
-			1, 2, 3, 4, 5, 6, 7, 8, 9,
-			1, 2, 3, 4, 5, 6, 7, 8, 9,
-			1, 2, 3, 4, 5, 6, 7
-		});
-	}
-
 }

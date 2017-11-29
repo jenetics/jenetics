@@ -21,67 +21,74 @@ package io.jenetics.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Extends the {@link Spliterator} interface by an additional
- * {@link #limit(Predicate)} method which takes a predicate for limiting the
- * stream.
+ * Extends the {@link Spliterator} interface by an additional {@code proceed}
+ * predicate.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface LimitSpliterator<T> extends Spliterator<T> {
+public final class LimitSpliterator<T> implements Spliterator<T> {
 
-	/**
-	 * This predicate returns always {@code true}.
-	 */
-	public static final Predicate<Object> TRUE = a -> true;
+	private final Spliterator<T> _spliterator;
+	private final Predicate<? super T> _proceed;
 
-	/**
-	 * Return a <em>true</em> predicate for the type {@code T}.
-	 *
-	 * @param <T> the predicate parameter type
-	 * @return a predicate which always returns {@code true}
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> Predicate<T> TRUE() {
-		return (Predicate<T>)TRUE;
+	private boolean _interrupted = false;
+
+	private LimitSpliterator(
+		final Spliterator<T> spliterator,
+		final Predicate<? super T> proceed
+	) {
+		_spliterator = requireNonNull(spliterator);
+		_proceed = requireNonNull(proceed);
 	}
 
-	/**
-	 * Returns, if this stream is ordered, a stream consisting of the longest
-	 * prefix of elements taken from this stream that match the given predicate.
-	 * Otherwise returns, if this stream is unordered, a stream consisting of a
-	 * subset of elements taken from this stream that match the given predicate.
-	 *
-	 * @param proceed a non-interfering, stateless predicate to apply to elements
-	 *        to determine the longest prefix of elements
-	 * @return the new evolution stream
-	 */
-	public LimitSpliterator<T> limit(final Predicate<? super T> proceed);
+	@Override
+	public boolean tryAdvance(Consumer<? super T> action) {
+		boolean hasNext = _spliterator.tryAdvance(element -> {
+			if (_proceed.test(element)) {
+				action.accept(element);
+			} else {
+				_interrupted = true;
+			}
+		});
 
-	public static <T> Predicate<? super T> and(
-		final Predicate<? super T> a,
-		final Predicate<? super T> b
+		return hasNext && !_interrupted;
+	}
+
+	@Override
+	public Spliterator<T> trySplit() {
+		final Spliterator<T> split = _spliterator.trySplit();
+		return split == null ? null : new LimitSpliterator<>(split, _proceed);
+	}
+
+	@Override
+	public long estimateSize() {
+		return 0;
+	}
+
+	@Override
+	public int characteristics() {
+		return _spliterator.characteristics() &~SIZED & ~SUBSIZED;
+	}
+
+	@Override
+	public Comparator<? super T> getComparator() {
+		return _spliterator.getComparator();
+	}
+
+
+	public static <T> LimitSpliterator<T> of(
+		final Spliterator<T> spliterator,
+		final Predicate<? super T> proceed
 	) {
-		requireNonNull(a);
-		requireNonNull(b);
-
-		final Predicate<? super T> result;
-		if (a == TRUE && b == TRUE) {
-			result = TRUE();
-		} else if (a == TRUE) {
-			result = b;
-		} else if (b == TRUE) {
-			result = a;
-		} else {
-			result = r -> a.test(r) & b.test(r);
-		}
-
-		return result;
+		return new LimitSpliterator<T>(spliterator, proceed);
 	}
 
 }
