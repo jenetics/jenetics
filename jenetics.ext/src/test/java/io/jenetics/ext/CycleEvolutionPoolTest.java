@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext;
 
-import static io.jenetics.ext.ConcatEvolutionPoolTest.streamable;
+import static io.jenetics.ext.ConcatEnginePoolTest.streamable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

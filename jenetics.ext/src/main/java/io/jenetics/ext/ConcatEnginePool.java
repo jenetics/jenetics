@@ -22,13 +22,16 @@ package io.jenetics.ext;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.BaseStream;
 import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.util.ISeq;
 
@@ -39,21 +42,28 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-final class ConcatEvolutionPool<
+public final class ConcatEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	extends AbstractEvolutionPool<G, C>
+	extends EnginePool<G, C>
 {
 
-	public EvolutionStream<G, C> stream() {
-		final AtomicReference<EvolutionStart<G, C>> start =
-			new AtomicReference<>(EvolutionStart.of(ISeq.empty(), 1));
+	public ConcatEnginePool(final List<? extends EvolutionStreamable<G, C>> pool) {
+		super(pool);
+	}
+
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		final AtomicReference<EvolutionStart<G, C>> other =
+			new AtomicReference<>(null);
 
 		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
-			_streamables.stream()
-				.map(engine -> engine.stream(start::get)
-					.peek(result -> start.set(result.toEvolutionStart())))
+			_pool.stream()
+				.map(engine -> engine
+					.stream(() -> start(start, other))
+					.peek(result -> other.set(result.toEvolutionStart())))
 				.map(BaseStream::spliterator)
 				.collect(Collectors.toList());
 
@@ -61,6 +71,18 @@ final class ConcatEvolutionPool<
 			new ConcatSpliterator<>(spliterators),
 			false
 		);
+	}
+
+	private EvolutionStart<G, C> start(
+		final Supplier<EvolutionStart<G, C>> first,
+		final AtomicReference<EvolutionStart<G, C>> other
+	) {
+		return other.get() != null ? other.get() : first.get();
+	}
+
+	@Override
+	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		return null;
 	}
 
 }

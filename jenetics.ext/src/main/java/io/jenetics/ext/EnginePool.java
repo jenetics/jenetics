@@ -19,11 +19,11 @@
  */
 package io.jenetics.ext;
 
-import java.util.function.IntFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 
 /**
@@ -31,28 +31,18 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-public interface EvolutionPool<
+public abstract class EnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements EvolutionStreamable<G, C>
+{
 
-	public EvolutionPool<G, C> add(final EvolutionStreamable<G, C> streamable);
+	protected final List<? extends EvolutionStreamable<G, C>> _pool;
 
-	public EvolutionStream<G, C> stream();
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionPool<G, C> concat() {
-		return new ConcatEnginePool<>();
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionPool<G, C> cycle() {
-		return new CycleEvolutionPool<>();
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> parallel(final IntFunction<EvolutionStart<G, C>> start) {
-		return null;
+	protected EnginePool(final List<? extends EvolutionStreamable<G, C>> pool) {
+		pool.forEach(Objects::requireNonNull);
+		_pool = new ArrayList<>(pool);
 	}
 
 }

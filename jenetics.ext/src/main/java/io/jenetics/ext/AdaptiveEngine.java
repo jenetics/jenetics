@@ -40,7 +40,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public class AdaptiveEngine<
+public final class AdaptiveEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
