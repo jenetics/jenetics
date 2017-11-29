@@ -40,7 +40,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public class AdaptingEngine<
+public class AdaptiveEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -50,7 +50,7 @@ public class AdaptingEngine<
 	private final
 	Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> _engine;
 
-	public AdaptingEngine(
+	public AdaptiveEngine(
 		final Function<
 			EvolutionResult<G, C>,
 			? extends EvolutionStreamable<G, C>
