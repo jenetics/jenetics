@@ -31,12 +31,12 @@ import io.jenetics.engine.Limits;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CycleEnginePoolTest {
+public class CyclicEnginePoolTest {
 
 	@Test
 	public void cycle0() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CycleEnginePool.<IntegerGene, Integer>of()
+			CyclicEnginePool.<IntegerGene, Integer>of()
 				.stream();
 
 		final int[] array = stream
@@ -49,7 +49,7 @@ public class CycleEnginePoolTest {
 	@Test
 	public void cycle1() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CycleEnginePool.of(
+			CyclicEnginePool.of(
 				streamable(2),
 				streamable(2),
 				streamable(2)
@@ -66,7 +66,7 @@ public class CycleEnginePoolTest {
 	@Test
 	public void cycle2() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CycleEnginePool.of(
+			CyclicEnginePool.of(
 				streamable(2),
 				streamable(2)
 			)
@@ -83,7 +83,7 @@ public class CycleEnginePoolTest {
 	@Test
 	public void cycle3() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CycleEnginePool.of(
+			CyclicEnginePool.of(
 				streamable(2),
 				streamable(2)
 			)

@@ -41,14 +41,14 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class CycleEnginePool<
+public final class CyclicEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends EnginePool<G, C>
 {
 
-	public CycleEnginePool(
+	public CyclicEnginePool(
 		final List<? extends EvolutionStreamable<G, C>> engines
 	) {
 		super(engines);
@@ -114,8 +114,8 @@ public final class CycleEnginePool<
 
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	CycleEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
-		return new CycleEnginePool<>(Arrays.asList(engines));
+	CyclicEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
+		return new CyclicEnginePool<>(Arrays.asList(engines));
 	}
 
 }
