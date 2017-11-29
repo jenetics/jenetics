@@ -48,7 +48,7 @@ public class EvolutionStreams {
 		return new EvolutionStreamImpl<>(spliterator, false);
 	}
 
-	private static EvolutionResult<IntegerGene, Integer> result(final int value) {
+	public static EvolutionResult<IntegerGene, Integer> result(final int value) {
 		final Genotype<IntegerGene> genotype = Genotype.of(
 			IntegerChromosome.of(
 				IntegerGene.of(value, 0, Integer.MAX_VALUE)

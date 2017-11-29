@@ -26,11 +26,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.IntegerGene;
+import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -60,6 +62,41 @@ public class ConcatEnginePoolTest {
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1});
+	}
+
+	@Test
+	public void concat1a() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			ConcatEnginePool.of(streamable(1))
+				.stream(() -> EvolutionStreams.result(5).toEvolutionStart());
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{6});
+	}
+
+	@Test
+	public void concat1b() {
+		EvolutionInit<IntegerGene> init = EvolutionInit.of(
+			EvolutionStreams.result(5)
+				.toEvolutionStart()
+				.getPopulation().stream()
+				.map(Phenotype::getGenotype)
+				.collect(ISeq.toISeq()),
+			1
+		);
+
+		final EvolutionStream<IntegerGene, Integer> stream =
+			ConcatEnginePool.of(streamable(1))
+				.stream(init);
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{6});
 	}
 
 	@Test
@@ -154,7 +191,21 @@ public class ConcatEnginePoolTest {
 			@Override
 			public EvolutionStream<IntegerGene, Integer>
 			stream(final EvolutionInit<IntegerGene> init) {
-				throw new UnsupportedOperationException();
+				return EvolutionStreams.stream(
+					Stream.generate(new Supplier<Integer>() {
+						Integer value = null;
+
+						@Override
+						public Integer get() {
+							if (value == null) {
+								value  = init.getPopulation().get(0).getGene().intValue();
+							}
+							value += 1;
+
+							return value;
+						}
+					}).limit(size)
+				);
 			}
 		};
 	}
