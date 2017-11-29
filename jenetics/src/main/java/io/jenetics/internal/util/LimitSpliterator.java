@@ -51,7 +51,7 @@ public final class LimitSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public boolean tryAdvance(Consumer<? super T> action) {
-		boolean hasNext = _spliterator.tryAdvance(element -> {
+		final boolean hasNext = _spliterator.tryAdvance(element -> {
 			if (_proceed.test(element)) {
 				action.accept(element);
 			} else {
@@ -75,7 +75,7 @@ public final class LimitSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public int characteristics() {
-		return _spliterator.characteristics() &~SIZED & ~SUBSIZED;
+		return _spliterator.characteristics() & ~SIZED & ~SUBSIZED;
 	}
 
 	@Override

@@ -54,21 +54,19 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
-		requireNonNull(action);
-
+		boolean advance = true;
 		if (!_spliterators.isEmpty()) {
 			final Spliterator<T> spliterator = _spliterators.peek();
 
-			final boolean advance = spliterator.tryAdvance(action::accept);
-			if (!advance) {
+			if (!spliterator.tryAdvance(action::accept)) {
 				_spliterators.removeFirst();
-				return !_spliterators.isEmpty();
+				advance = !_spliterators.isEmpty();
 			}
-
-			return true;
 		} else {
-			return false;
+			advance = false;
 		}
+
+		return advance;
 	}
 
 	@SuppressWarnings("unchecked")

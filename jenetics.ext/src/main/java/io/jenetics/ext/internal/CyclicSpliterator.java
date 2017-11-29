@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -48,18 +47,16 @@ public class CyclicSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public boolean tryAdvance(final Consumer<? super T> action) {
-		requireNonNull(action);
-
+		boolean advance = true;
 		if (_spliterators.isEmpty()) {
-			return false;
+			advance = false;
+		} else {
+			if (!spliterator().tryAdvance(action::accept)) {
+				_concat = null;
+			}
 		}
 
-		final AtomicBoolean proceed = new AtomicBoolean(true);
-		if (!spliterator().tryAdvance(action::accept)) {
-			_concat = null;
-		}
-
-		return proceed.get();
+		return advance;
 	}
 
 	@Override
