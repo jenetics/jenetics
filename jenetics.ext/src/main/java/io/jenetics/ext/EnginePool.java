@@ -38,11 +38,11 @@ public abstract class EnginePool<
 	implements EvolutionStreamable<G, C>
 {
 
-	protected final List<? extends EvolutionStreamable<G, C>> _pool;
+	protected final List<? extends EvolutionStreamable<G, C>> _engines;
 
-	protected EnginePool(final List<? extends EvolutionStreamable<G, C>> pool) {
-		pool.forEach(Objects::requireNonNull);
-		_pool = new ArrayList<>(pool);
+	protected EnginePool(final List<? extends EvolutionStreamable<G, C>> engines) {
+		engines.forEach(Objects::requireNonNull);
+		_engines = new ArrayList<>(engines);
 	}
 
 }

@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,7 +34,6 @@ import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.internal.ConcatSpliterator;
 
@@ -49,8 +49,10 @@ public final class ConcatEnginePool<
 	extends EnginePool<G, C>
 {
 
-	public ConcatEnginePool(final List<? extends EvolutionStreamable<G, C>> pool) {
-		super(pool);
+	public ConcatEnginePool(
+		final List<? extends EvolutionStreamable<G, C>> engines
+	) {
+		super(engines);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public final class ConcatEnginePool<
 			new AtomicReference<>(null);
 
 		final List<Spliterator<EvolutionResult<G, C>>> spliterators =
-			_pool.stream()
+			_engines.stream()
 				.map(engine -> engine
 					.stream(() -> start(start, other))
 					.peek(result -> other.set(result.toEvolutionStart())))
@@ -84,5 +86,13 @@ public final class ConcatEnginePool<
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
 		return null;
 	}
+
+
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	ConcatEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
+		return new ConcatEnginePool<>(Arrays.asList(engines));
+	}
+
 
 }

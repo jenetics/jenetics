@@ -40,10 +40,12 @@ public interface EvolutionPool<
 
 	public EvolutionStream<G, C> stream();
 
+	/*
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionPool<G, C> concat() {
 		return new ConcatEnginePool<>();
 	}
+	*/
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionPool<G, C> cycle() {

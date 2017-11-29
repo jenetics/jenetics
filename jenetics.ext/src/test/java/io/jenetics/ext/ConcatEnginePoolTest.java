@@ -38,10 +38,21 @@ import io.jenetics.engine.Limits;
 public class ConcatEnginePoolTest {
 
 	@Test
+	public void concat0() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			ConcatEnginePool.<IntegerGene, Integer>of().stream();
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{});
+	}
+
+	@Test
 	public void concat1() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>concat()
-				.add(streamable(1))
+			ConcatEnginePool.of(streamable(1))
 				.stream();
 
 		final int[] array = stream
@@ -54,8 +65,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat2() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>concat()
-				.add(streamable(5))
+			ConcatEnginePool.of(streamable(5))
 				.stream();
 
 		final int[] array = stream
@@ -68,8 +78,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat3() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>concat()
-				.add(streamable(5))
+			ConcatEnginePool.of(streamable(5))
 				.stream()
 				.limit(Limits.byFixedGeneration(3));
 
@@ -83,11 +92,12 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat4() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>concat()
-				.add(streamable(3))
-				.add(streamable(4))
-				.add(streamable(5))
-				.stream();
+			ConcatEnginePool.of(
+				streamable(3),
+				streamable(4),
+				streamable(5)
+			)
+			.stream();
 
 		final int[] array = stream
 			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
@@ -99,14 +109,15 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat5() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>concat()
-				.add(streamable(3))
-				.add(streamable(4))
-				.add(streamable(5))
-				.add(streamable(15))
-				.add(streamable(15))
-				.stream()
-				.limit(Limits.byFixedGeneration(15));
+			ConcatEnginePool.of(
+				streamable(3),
+				streamable(4),
+				streamable(5),
+				streamable(15),
+				streamable(15)
+			)
+			.stream()
+			.limit(Limits.byFixedGeneration(15));
 
 		final int[] array = stream
 			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
