@@ -51,7 +51,10 @@ public class AdaptingEngine<
 	Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> _engine;
 
 	public AdaptingEngine(
-		final Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> engine
+		final Function<
+			EvolutionResult<G, C>,
+			? extends EvolutionStreamable<G, C>
+		> engine
 	) {
 		_engine = requireNonNull(engine);
 	}
