@@ -23,4 +23,4 @@
  * @version !__version__!
  * @since !__version__!
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext.util;
