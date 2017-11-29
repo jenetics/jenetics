@@ -116,7 +116,7 @@ public final class EvolutionSpliterator<
 
 	@Override
 	public int characteristics() {
-		return NONNULL | IMMUTABLE;
+		return NONNULL | IMMUTABLE | ORDERED;
 	}
 
 }
