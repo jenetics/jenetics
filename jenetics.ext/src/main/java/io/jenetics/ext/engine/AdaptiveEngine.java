@@ -47,14 +47,14 @@ public final class AdaptiveEngine<
 	implements EvolutionStreamable<G, C>
 {
 
-	private final
-	Function<EvolutionResult<G, C>, ? extends EvolutionStreamable<G, C>> _engine;
+	private final Function<
+		? super EvolutionResult<G, C>,
+		? extends EvolutionStreamable<G, C>> _engine;
 
 	public AdaptiveEngine(
 		final Function<
-			EvolutionResult<G, C>,
-			? extends EvolutionStreamable<G, C>
-		> engine
+			? super EvolutionResult<G, C>,
+			? extends EvolutionStreamable<G, C>> engine
 	) {
 		_engine = requireNonNull(engine);
 	}
