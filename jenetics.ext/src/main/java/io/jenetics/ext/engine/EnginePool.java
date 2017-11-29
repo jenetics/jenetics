@@ -31,16 +31,16 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-public abstract class EnginePool<
+abstract class EnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements EvolutionStreamable<G, C>
 {
 
-	protected final List<? extends EvolutionStreamable<G, C>> _engines;
+	final List<? extends EvolutionStreamable<G, C>> _engines;
 
-	protected EnginePool(final List<? extends EvolutionStreamable<G, C>> engines) {
+	EnginePool(final List<? extends EvolutionStreamable<G, C>> engines) {
 		engines.forEach(Objects::requireNonNull);
 		_engines = new ArrayList<>(engines);
 	}
