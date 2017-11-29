@@ -17,9 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.engine;
 
-import static io.jenetics.ext.ConcatEnginePoolTest.streamable;
+import static io.jenetics.ext.engine.ConcatEnginePoolTest.streamable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,8 +27,6 @@ import org.testng.annotations.Test;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
-
-import io.jenetics.ext.engine.CyclicEnginePool;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.engine;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -34,6 +34,7 @@ import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.EvolutionStreams;
 import io.jenetics.ext.engine.ConcatEnginePool;
 
 /**
