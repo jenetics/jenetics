@@ -31,6 +31,7 @@ import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.internal.math.DoubleAdder;
@@ -41,148 +42,154 @@ import io.jenetics.util.DoubleRange;
  */
 public class EvolutionPoolTest {
 
-//	private static final Problem<double[], DoubleGene, Double> PROBLEM =
-//		Problem.of(
-//			DoubleAdder::sum,
-//			Codecs.ofVector(DoubleRange.of(0, 10), 5)
-//		);
-//
-//	private final Engine.Builder<DoubleGene, Double> _builder = Engine.builder(PROBLEM)
-//		.maximizing()
-//		.selector(new RouletteWheelSelector<>())
-//		.alterers(
-//			new Mutator<>(0.2),
-//			new MeanAlterer<>()
-//		);
-//
-//	private final Engine<DoubleGene, Double> _engine1 = _builder.build();
-//
-//	private final Engine<DoubleGene, Double> _engine2 = _builder
-//		.alterers(
-//			new Mutator<>(0.1),
-//			new MeanAlterer<>())
-//		.build();
-//
-//	private final Engine<DoubleGene, Double> _engine3 = _builder
-//		.alterers(
-//			new Mutator<>(0.01),
-//			new MeanAlterer<>())
-//		.build();
-//
-//	@Test
-//	public void concat1() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>concat()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result =
-//			pool.stream()
-//				.limit(Limits.byFixedGeneration(40))
-//				.limit(100)
-//				.peek(r -> count.incrementAndGet())
-//				.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 30);
-//		Assert.assertEquals(result.getTotalGenerations(), 30);
-//	}
-//
-//	@Test
-//	public void concat2() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>concat()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result =
-//			pool.stream()
-//				.limit(Limits.byFixedGeneration(15))
-//				.limit(100)
-//				.peek(r -> count.incrementAndGet())
-//				.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 15);
-//		Assert.assertEquals(result.getTotalGenerations(), 15);
-//	}
-//
-//	@Test
-//	public void concat3() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>concat()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result =
-//			pool.stream()
-//				.limit(Limits.byFixedGeneration(15))
-//				.limit(9)
-//				.peek(r -> count.incrementAndGet())
-//				.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 9);
-//		Assert.assertEquals(result.getTotalGenerations(), 9);
-//	}
-//
-//	@Test
-//	public void cycle1() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>cycle()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result = pool.stream()
-//			.limit(100)
-//			.peek(r -> count.incrementAndGet())
-//			.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 100);
-//		Assert.assertEquals(result.getTotalGenerations(), 100);
-//	}
-//
-//	@Test
-//	public void cycle2() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>cycle()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result = pool.stream()
-//			.limit(Limits.byFixedGeneration(50))
-//			.limit(100)
-//			.peek(r -> count.incrementAndGet())
-//			.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 50);
-//		Assert.assertEquals(result.getTotalGenerations(), 50);
-//	}
-//
-//	@Test
-//	public void cycle3() {
-//		final EvolutionPool<DoubleGene, Double> pool =
-//			EvolutionPool.<DoubleGene, Double>cycle()
-//				.add(_engine1.limit(10))
-//				.add(_engine2.limit(10))
-//				.add(_engine3.limit(10));
-//
-//		final AtomicLong count = new AtomicLong(0);
-//		final EvolutionResult<DoubleGene, Double> result = pool.stream()
-//			.limit(Limits.byFixedGeneration(50))
-//			.limit(15)
-//			.peek(r -> count.incrementAndGet())
-//			.collect(EvolutionResult.toBestEvolutionResult());
-//
-//		Assert.assertEquals(count.intValue(), 15);
-//		Assert.assertEquals(result.getTotalGenerations(), 15);
-//	}
+	private static final Problem<double[], DoubleGene, Double> PROBLEM =
+		Problem.of(
+			DoubleAdder::sum,
+			Codecs.ofVector(DoubleRange.of(0, 10), 5)
+		);
+
+	private final Engine.Builder<DoubleGene, Double> _builder = Engine.builder(PROBLEM)
+		.maximizing()
+		.selector(new RouletteWheelSelector<>())
+		.alterers(
+			new Mutator<>(0.2),
+			new MeanAlterer<>()
+		);
+
+	private final Engine<DoubleGene, Double> _engine1 = _builder.build();
+
+	private final Engine<DoubleGene, Double> _engine2 = _builder
+		.alterers(
+			new Mutator<>(0.1),
+			new MeanAlterer<>())
+		.build();
+
+	private final Engine<DoubleGene, Double> _engine3 = _builder
+		.alterers(
+			new Mutator<>(0.01),
+			new MeanAlterer<>())
+		.build();
+
+	@Test
+	public void concat1() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			ConcatEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result =
+			engine.stream()
+				.limit(Limits.byFixedGeneration(40))
+				.limit(100)
+				.peek(r -> count.incrementAndGet())
+				.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 30);
+		Assert.assertEquals(result.getTotalGenerations(), 30);
+	}
+
+	@Test
+	public void concat2() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			ConcatEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result =
+			engine.stream()
+				.limit(Limits.byFixedGeneration(15))
+				.limit(100)
+				.peek(r -> count.incrementAndGet())
+				.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 15);
+		Assert.assertEquals(result.getTotalGenerations(), 15);
+	}
+
+	@Test
+	public void concat3() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			ConcatEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result =
+			engine.stream()
+				.limit(Limits.byFixedGeneration(15))
+				.limit(9)
+				.peek(r -> count.incrementAndGet())
+				.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 9);
+		Assert.assertEquals(result.getTotalGenerations(), 9);
+	}
+
+	@Test
+	public void cycle1() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			CyclicEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(100)
+			.peek(r -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 100);
+		Assert.assertEquals(result.getTotalGenerations(), 100);
+	}
+
+	@Test
+	public void cycle2() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			CyclicEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byFixedGeneration(50))
+			.limit(100)
+			.peek(r -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 50);
+		Assert.assertEquals(result.getTotalGenerations(), 50);
+	}
+
+	@Test
+	public void cycle3() {
+		final EvolutionStreamable<DoubleGene, Double> engine =
+			CyclicEnginePool.of(
+				_engine1.limit(10),
+				_engine2.limit(10),
+				_engine3.limit(10)
+			);
+
+		final AtomicLong count = new AtomicLong(0);
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byFixedGeneration(50))
+			.limit(15)
+			.peek(r -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.intValue(), 15);
+		Assert.assertEquals(result.getTotalGenerations(), 15);
+	}
 
 }
