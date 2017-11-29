@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
@@ -109,6 +110,12 @@ public final class CycleEnginePool<
 		return () -> engine.stream(init)
 			.peek(result -> other.set(result.toEvolutionStart()))
 			.spliterator();
+	}
+
+	@SafeVarargs
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	CycleEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
+		return new CycleEnginePool<>(Arrays.asList(engines));
 	}
 
 }

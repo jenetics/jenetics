@@ -69,6 +69,10 @@ public class CycleSpliterator<T> implements LimitSpliterator<T> {
 	public boolean tryAdvance(final Consumer<? super T> action) {
 		requireNonNull(action);
 
+		if (_spliterators.isEmpty()) {
+			return false;
+		}
+
 		final AtomicBoolean proceed = new AtomicBoolean(true);
 		final boolean advance = spliterator().tryAdvance(t -> {
 			proceed.set(_proceed.test(t));

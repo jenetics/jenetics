@@ -34,13 +34,27 @@ import io.jenetics.engine.Limits;
 public class CycleEnginePoolTest {
 
 	@Test
+	public void cycle0() {
+		final EvolutionStream<IntegerGene, Integer> stream =
+			CycleEnginePool.<IntegerGene, Integer>of()
+				.stream();
+
+		final int[] array = stream
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{});
+	}
+
+	@Test
 	public void cycle1() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>cycle()
-				.add(streamable(2))
-				.add(streamable(2))
-				.add(streamable(2))
-				.stream();
+			CycleEnginePool.of(
+				streamable(2),
+				streamable(2),
+				streamable(2)
+			)
+			.stream();
 
 		final int[] array = stream.limit(12)
 			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
@@ -52,10 +66,11 @@ public class CycleEnginePoolTest {
 	@Test
 	public void cycle2() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>cycle()
-				.add(streamable(2))
-				.add(streamable(2))
-				.stream();
+			CycleEnginePool.of(
+				streamable(2),
+				streamable(2)
+			)
+			.stream();
 
 		final int[] array = stream
 			.limit(Limits.byFixedGeneration(12))
@@ -68,10 +83,11 @@ public class CycleEnginePoolTest {
 	@Test
 	public void cycle3() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			EvolutionPool.<IntegerGene, Integer>cycle()
-				.add(streamable(2))
-				.add(streamable(2))
-				.stream();
+			CycleEnginePool.of(
+				streamable(2),
+				streamable(2)
+			)
+			.stream();
 
 		final int[] array = stream
 			.limit(Limits.byFixedGeneration(12))
