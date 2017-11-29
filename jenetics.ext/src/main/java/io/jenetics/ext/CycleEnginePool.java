@@ -40,14 +40,14 @@ import io.jenetics.ext.internal.CycleSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class CycleEvolutionPool<
+public final class CycleEnginePool<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends EnginePool<G, C>
 {
 
-	public CycleEvolutionPool(
+	public CycleEnginePool(
 		final List<? extends EvolutionStreamable<G, C>> engines
 	) {
 		super(engines);
