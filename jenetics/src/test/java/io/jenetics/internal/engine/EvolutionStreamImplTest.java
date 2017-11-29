@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicLong;
@@ -29,6 +29,10 @@ import org.testng.annotations.Test;
 
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
