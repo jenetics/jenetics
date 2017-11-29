@@ -28,6 +28,8 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
 
+import io.jenetics.ext.engine.CyclicEnginePool;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

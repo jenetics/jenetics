@@ -37,6 +37,9 @@ import io.jenetics.engine.Problem;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 
+import io.jenetics.ext.engine.ConcatEnginePool;
+import io.jenetics.ext.engine.CyclicEnginePool;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

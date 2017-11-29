@@ -34,6 +34,8 @@ import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.engine.ConcatEnginePool;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
