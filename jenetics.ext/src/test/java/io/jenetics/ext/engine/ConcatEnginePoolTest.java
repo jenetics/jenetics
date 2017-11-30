@@ -25,17 +25,27 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
+import io.jenetics.MeanAlterer;
+import io.jenetics.MonteCarloSelector;
+import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.EvolutionStreams;
-import io.jenetics.ext.engine.ConcatEnginePool;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -211,6 +221,38 @@ public class ConcatEnginePoolTest {
 				);
 			}
 		};
+	}
+
+
+	public static void main(final String[] args) {
+		final Problem<double[], DoubleGene, Double> problem = Problem.of(
+			v -> Math.sin(v[0])*Math.cos(v[1]),
+			Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+		);
+
+		final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)
+			.minimizing()
+			.alterers(new Mutator<>(0.2))
+			.selector(new MonteCarloSelector<>())
+			.build();
+
+		final Engine<DoubleGene, Double> engine2 = Engine.builder(problem)
+			.minimizing()
+			.alterers(
+				new Mutator<>(0.1),
+				new MeanAlterer<>())
+			.selector(new RouletteWheelSelector<>())
+			.build();
+
+		final Genotype<DoubleGene> result =
+			ConcatEnginePool.of(
+				engine1.limit(50),
+				engine2.limit(() -> Limits.bySteadyFitness(30)))
+			.stream()
+				.collect(EvolutionResult.toBestGenotype());
+
+		System.out.println(result + ": " +
+				problem.fitness().apply(problem.codec().decode(result)));
 	}
 
 }

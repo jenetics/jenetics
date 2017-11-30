@@ -21,12 +21,25 @@ package io.jenetics.ext.engine;
 
 import static io.jenetics.ext.engine.ConcatEnginePoolTest.streamable;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
+import io.jenetics.MeanAlterer;
+import io.jenetics.MonteCarloSelector;
+import io.jenetics.Mutator;
+import io.jenetics.RouletteWheelSelector;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -96,6 +109,38 @@ public class CyclicEnginePoolTest {
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+	}
+
+	public static void main(final String[] args) {
+		final Problem<double[], DoubleGene, Double> problem = Problem.of(
+			v -> Math.sin(v[0])*Math.cos(v[1]),
+			Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+		);
+
+		final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)
+			.minimizing()
+			.alterers(new Mutator<>(0.2))
+			.selector(new MonteCarloSelector<>())
+			.build();
+
+		final Engine<DoubleGene, Double> engine2 = Engine.builder(problem)
+			.minimizing()
+			.alterers(
+				new Mutator<>(0.1),
+				new MeanAlterer<>())
+			.selector(new RouletteWheelSelector<>())
+			.build();
+
+		final Genotype<DoubleGene> result =
+			CyclicEnginePool.of(
+				engine1.limit(50),
+				engine2.limit(() -> Limits.bySteadyFitness(30)))
+			.stream()
+			.limit(Limits.bySteadyFitness(1000))
+			.collect(EvolutionResult.toBestGenotype());
+
+		System.out.println(result + ": " +
+			problem.fitness().apply(problem.codec().decode(result)));
 	}
 
 }
