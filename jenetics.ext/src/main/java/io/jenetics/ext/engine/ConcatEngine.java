@@ -98,7 +98,7 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * engines, it is no longer necessary to limit your final evolution stream, but
  * your are still able to do so.
  *
- * @see CyclicEnginePool
+ * @see CyclicEngine
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

@@ -42,12 +42,12 @@ import io.jenetics.util.DoubleRange;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class CyclicEnginePoolTest {
+public class CyclicEngineTest {
 
 	@Test
 	public void cycle0() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CyclicEnginePool.<IntegerGene, Integer>of()
+			CyclicEngine.<IntegerGene, Integer>of()
 				.stream();
 
 		final int[] array = stream
@@ -60,7 +60,7 @@ public class CyclicEnginePoolTest {
 	@Test
 	public void cycle1() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				streamable(2),
 				streamable(2),
 				streamable(2)
@@ -77,7 +77,7 @@ public class CyclicEnginePoolTest {
 	@Test
 	public void cycle2() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				streamable(2),
 				streamable(2)
 			)
@@ -94,7 +94,7 @@ public class CyclicEnginePoolTest {
 	@Test
 	public void cycle3() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				streamable(2),
 				streamable(2)
 			)
@@ -130,7 +130,7 @@ public class CyclicEnginePoolTest {
 			.build();
 
 		final Genotype<DoubleGene> result =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				engine1.limit(50),
 				engine2.limit(() -> Limits.bySteadyFitness(30)))
 			.stream()

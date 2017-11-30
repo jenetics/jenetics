@@ -37,7 +37,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.ext.internal.CyclicSpliterator;
 
 /**
- * The {@code CyclicEnginePool} lets you concatenate two (or more) evolution
+ * The {@code CyclicEngine} lets you concatenate two (or more) evolution
  * {@link io.jenetics.engine.Engine}, with different configurations, and let it
  * use as <em>one</em> engine {@link EvolutionStreamable}. If the last evolution
  * stream terminates, it's <em>final</em> result is fed back to first engine.
@@ -55,7 +55,7 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  *                              Result
  * }</pre>
  *
- * The {@code CyclicEnginePools} allows to do an broad search-fine search-cycle
+ * The {@code CyclicEngine} allows to do an broad search-fine search-cycle
  * as long as you want.
  *
  * <pre>{@code
@@ -79,7 +79,7 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  *      .build();
  *
  *  final Genotype<DoubleGene> result =
- *      CyclicEnginePool.of(
+ *      CyclicEngine.of(
  *          engine1.limit(50),
  *          engine2.limit(() -> Limits.bySteadyFitness(30)))
  *      .stream()
@@ -99,14 +99,14 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class CyclicEnginePool<
+public final class CyclicEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends EnginePool<G, C>
 {
 
-	public CyclicEnginePool(
+	public CyclicEngine(
 		final List<? extends EvolutionStreamable<G, C>> engines
 	) {
 		super(engines);
@@ -172,8 +172,8 @@ public final class CyclicEnginePool<
 
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	CyclicEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
-		return new CyclicEnginePool<>(Arrays.asList(engines));
+	CyclicEngine<G, C> of(final EvolutionStreamable<G, C>... engines) {
+		return new CyclicEngine<>(Arrays.asList(engines));
 	}
 
 }

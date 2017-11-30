@@ -136,7 +136,7 @@ public class EnginePoolTest {
 	@Test
 	public void cycle1() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)
@@ -155,7 +155,7 @@ public class EnginePoolTest {
 	@Test
 	public void cycle2() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)
@@ -175,7 +175,7 @@ public class EnginePoolTest {
 	@Test
 	public void cycle3() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			CyclicEnginePool.of(
+			CyclicEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)
