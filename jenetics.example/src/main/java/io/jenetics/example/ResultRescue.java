@@ -33,8 +33,8 @@ import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Problem;
 import io.jenetics.engine.Limits;
+import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IO;
 

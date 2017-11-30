@@ -23,8 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
+import io.jenetics.AltererResult;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;

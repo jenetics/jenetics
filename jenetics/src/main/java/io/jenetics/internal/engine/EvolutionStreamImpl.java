@@ -17,24 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
-import static java.util.Objects.requireNonNull;
-
+import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.internal.util.LimitSpliterator;
+import io.jenetics.internal.util.StreamProxy;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
-final class EvolutionStreamImpl<
+public final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -42,59 +45,30 @@ final class EvolutionStreamImpl<
 	implements EvolutionStream<G, C>
 {
 
-	private final Supplier<EvolutionStart<G, C>> _start;
-	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
-	private final Predicate<? super EvolutionResult<G, C>> _proceed;
+	private final Spliterator<EvolutionResult<G, C>> _spliterator;
 
-	private EvolutionStreamImpl(
-		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Stream<EvolutionResult<G, C>> stream,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+	public EvolutionStreamImpl(
+		final Spliterator<EvolutionResult<G, C>> spliterator,
+		final boolean parallel
 	) {
-		super(stream);
-		_evolution = requireNonNull(evolution);
-		_start = requireNonNull(start);
-		_proceed = requireNonNull(proceed);
+		super(StreamSupport.stream(spliterator, parallel));
+		_spliterator = spliterator;
 	}
 
-	EvolutionStreamImpl(
+	public EvolutionStreamImpl(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
-		this(
-			start, evolution,
-			StreamSupport.stream(
-				new EvolutionSpliterator<>(start, evolution, TRUE()),
-				false
-			),
-			TRUE()
-		);
+		this(new EvolutionSpliterator<>(start, evolution), false);
 	}
 
 	@Override
 	public EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed) {
-		final Predicate<? super EvolutionResult<G, C>> prcd = _proceed == TRUE
-			? proceed
-			: r -> proceed.test(r) & _proceed.test(r);
-
 		return new EvolutionStreamImpl<>(
-			_start,
-			_evolution,
-			StreamSupport.stream(
-				new EvolutionSpliterator<>(_start, _evolution, prcd),
-				false
-			),
-			prcd
+			LimitSpliterator.of(_spliterator, proceed),
+			isParallel()
 		);
-	}
-
-	private static final Predicate<?> TRUE = a -> true;
-
-	@SuppressWarnings("unchecked")
-	private static <T> Predicate<T> TRUE() {
-		return (Predicate<T>)TRUE;
 	}
 
 }

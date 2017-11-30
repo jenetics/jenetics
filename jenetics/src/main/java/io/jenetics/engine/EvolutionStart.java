@@ -33,6 +33,9 @@ import io.jenetics.util.ISeq;
  * Represents a state of the GA at the start of an evolution step.
  *
  * @see EvolutionResult
+ * @see EvolutionInit
+ * @see EvolutionStreamable#stream(EvolutionStart)
+ * @see EvolutionIterable#iterator(EvolutionStart)
  *
  * @param <G> the gene type
  * @param <C> the fitness type
