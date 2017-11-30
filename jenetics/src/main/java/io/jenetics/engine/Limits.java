@@ -52,7 +52,7 @@ public final class Limits {
 	/**
 	 * Return a predicate which always return {@code true}.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @return a predicate which always return {@code true}
 	 */

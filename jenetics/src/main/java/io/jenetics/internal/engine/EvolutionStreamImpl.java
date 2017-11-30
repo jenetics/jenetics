@@ -35,7 +35,7 @@ import io.jenetics.internal.util.StreamProxy;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.1
  */
 public final class EvolutionStreamImpl<
 	G extends Gene<?, G>,

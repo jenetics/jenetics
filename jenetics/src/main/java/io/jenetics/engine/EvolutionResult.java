@@ -239,7 +239,7 @@ public final class EvolutionResult<
 	 * Return the next evolution start object with the current population and
 	 * the incremented generation.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @return the next evolution start object
 	 */
@@ -251,7 +251,7 @@ public final class EvolutionResult<
 	 * Return the current evolution result object as an {@code EvolutionStart}
 	 * object with the current population and current total generation.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @return the current result as evolution start
 	 */

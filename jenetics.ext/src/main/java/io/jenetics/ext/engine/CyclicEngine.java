@@ -100,8 +100,8 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 public final class CyclicEngine<
 	G extends Gene<?, G>,

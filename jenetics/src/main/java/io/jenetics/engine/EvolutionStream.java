@@ -37,7 +37,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,

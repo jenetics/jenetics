@@ -45,7 +45,7 @@ import java.util.stream.Stream;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.1
  */
 public abstract class StreamProxy<T> implements Stream<T> {
 
