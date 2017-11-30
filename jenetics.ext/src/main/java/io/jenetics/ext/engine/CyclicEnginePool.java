@@ -37,6 +37,64 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.ext.internal.CyclicSpliterator;
 
 /**
+ * The {@code CyclicEnginePool} lets you concatenate two (or more) evolution
+ * {@link io.jenetics.engine.Engine}, with different configurations, and let it
+ * use as <em>one</em> engine {@link EvolutionStreamable}. If the last evolution
+ * stream terminates, it's <em>final</em> result is fed back to first engine.
+ *
+ * <pre> {@code
+ *                  +----------+               +----------+
+ *                  |       ES |               |       ES |
+ *          +------------+     |       +------------+     |
+ *  (Start) |            |-----+ Start |            |-----+
+ * ---+---->|  Engine 1  |------------>|  Engine 2  | --------+
+ *    ^     |            | Result      |            |         |
+ *    |     +------------+             +------------+         |
+ *    |                                                       |
+ *    +------------------------------<------------------------+
+ *                              Result
+ * }</pre>
+ *
+ * The {@code CyclicEnginePools} allows to do an broad search-fine search-cycle
+ * as long as you want.
+ *
+ * <pre>{@code
+ *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
+ *      v -> Math.sin(v[0])*Math.cos(v[1]),
+ *      Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+ *  );
+ *
+ *  final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)
+ *      .minimizing()
+ *      .alterers(new Mutator<>(0.2))
+ *      .selector(new MonteCarloSelector<>())
+ *      .build();
+ *
+ *  final Engine<DoubleGene, Double> engine2 = Engine.builder(problem)
+ *      .minimizing()
+ *      .alterers(
+ *          new Mutator<>(0.1),
+ *          new MeanAlterer<>())
+ *      .selector(new RouletteWheelSelector<>())
+ *      .build();
+ *
+ *  final Genotype<DoubleGene> result =
+ *      CyclicEnginePool.of(
+ *          engine1.limit(50),
+ *          engine2.limit(() -> Limits.bySteadyFitness(30)))
+ *      .stream()
+ *      .limit(Limits.bySteadyFitness(1000))
+ *      .collect(EvolutionResult.toBestGenotype());
+ *
+ *  System.out.println(result + ": " +
+ *      problem.fitness().apply(problem.codec().decode(result)));
+ * }</pre>
+ *
+ * When using a {@code CyclicEnginePool}, you have to limit the final evolution
+ * stream, additionally to the defined limits on the used partial engines.
+ *
+ * @see ConcatEnginePool
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
