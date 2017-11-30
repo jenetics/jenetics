@@ -239,10 +239,24 @@ public final class EvolutionResult<
 	 * Return the next evolution start object with the current population and
 	 * the incremented generation.
 	 *
+	 * @since 4.1
+	 *
 	 * @return the next evolution start object
 	 */
-	EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _generation + 1);
+	public EvolutionStart<G, C> next() {
+		return EvolutionStart.of(_population, _totalGenerations + 1);
+	}
+
+	/**
+	 * Return the current evolution result object as an {@code EvolutionStart}
+	 * object with the current population and current total generation.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the current result as evolution start
+	 */
+	public EvolutionStart<G, C> toEvolutionStart() {
+		return EvolutionStart.of(_population, _totalGenerations);
 	}
 
 	/**

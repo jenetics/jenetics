@@ -25,8 +25,9 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 
-import io.jenetics.ext.util.Tree;
 import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.util.Tree;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface..

@@ -50,6 +50,17 @@ public final class Limits {
 	private Limits() {require.noInstance();}
 
 	/**
+	 * Return a predicate which always return {@code true}.
+	 *
+	 * @since 4.1
+	 *
+	 * @return a predicate which always return {@code true}
+	 */
+	public static Predicate<Object> infinite() {
+		return result -> true;
+	}
+
+	/**
 	 * Return a predicate, which will truncate the evolution stream after the
 	 * given number of generations. The returned predicate behaves like a call
 	 * of the {@link java.util.stream.Stream#limit(long)} and exists for
@@ -76,7 +87,7 @@ public final class Limits {
 			private final AtomicLong _current = new AtomicLong();
 			@Override
 			public boolean test(final Object o) {
-				return _current.incrementAndGet() < generation;
+				return _current.incrementAndGet() <= generation;
 			}
 		};
 	}

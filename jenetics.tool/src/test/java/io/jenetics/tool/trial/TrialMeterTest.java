@@ -24,6 +24,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
+
 import io.jenetics.xml.stream.Writer;
 
 /**

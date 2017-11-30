@@ -21,9 +21,10 @@ package io.jenetics.ext;
 
 import java.util.Random;
 
-import io.jenetics.ext.util.TreeNode;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.
