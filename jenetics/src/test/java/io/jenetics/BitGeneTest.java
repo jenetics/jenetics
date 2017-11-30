@@ -22,6 +22,8 @@ package io.jenetics;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import org.testng.annotations.Test;
 
 import io.jenetics.util.Factory;
@@ -35,6 +37,11 @@ public class BitGeneTest extends GeneTester<BitGene> {
 	@Override
 	protected Factory<BitGene> factory() {
 		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(BitGene.class).verify();
 	}
 
 	@Test

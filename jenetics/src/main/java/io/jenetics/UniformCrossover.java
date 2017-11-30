@@ -113,18 +113,8 @@ public class UniformCrossover<
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
 		return (int)indexes(RandomRegistry.getRandom(), length, _swapProbability)
-			.peek(i -> swap(i, that, other))
+			.peek(i -> that.swap(i, other))
 			.count();
-	}
-
-	private static <T> void swap(
-		final int index,
-		final MSeq<T> that,
-		final MSeq<T> other
-	) {
-		final T temp = that.get(index);
-		that.set(index, other.get(index));
-		other.set(index, temp);
 	}
 
 }

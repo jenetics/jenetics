@@ -130,9 +130,7 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public long[] toArray(final long[] array) {
-		final long[] a = array.length >= length() ?
-			array : new long[length()];
-
+		final long[] a = array.length >= length() ? array : new long[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = longValue(i);
 		}

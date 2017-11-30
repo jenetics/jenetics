@@ -38,6 +38,7 @@ import java.util.stream.Stream;
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.collection.Empty.EmptyMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
@@ -176,6 +177,23 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 				other.set(otherStart + i, temp);
 			}
 		}
+	}
+
+	/**
+	 * Swap the elements at the same position.
+	 *
+	 * @since 4.0
+	 *
+	 * @param index the index of swapped element.
+	 * @param other the other array to swap the elements with.
+	 * @throws IndexOutOfBoundsException if
+	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
+	 * @throws NullPointerException if the {@code other} sequence is {@code null}
+	 */
+	default void swap(final int index, final MSeq<T> other) {
+		final T temp = get(index);
+		set(index, other.get(index));
+		other.set(index, temp);
 	}
 
 	/**
@@ -388,7 +406,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY = Empty.MSEQ;
+	public static final MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code MSeq}.
