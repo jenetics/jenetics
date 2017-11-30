@@ -39,7 +39,7 @@ public final class LimitSpliterator<T> implements Spliterator<T> {
 	private final Spliterator<T> _spliterator;
 	private final Predicate<? super T> _proceed;
 
-	private boolean _interrupted = false;
+	private boolean _limited = false;
 
 	private LimitSpliterator(
 		final Spliterator<T> spliterator,
@@ -55,11 +55,11 @@ public final class LimitSpliterator<T> implements Spliterator<T> {
 			if (_proceed.test(element)) {
 				action.accept(element);
 			} else {
-				_interrupted = true;
+				_limited = true;
 			}
 		});
 
-		return hasNext && !_interrupted;
+		return hasNext && !_limited;
 	}
 
 	@Override
