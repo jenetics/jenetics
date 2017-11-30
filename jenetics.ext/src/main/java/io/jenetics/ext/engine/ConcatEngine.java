@@ -36,7 +36,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.ext.internal.ConcatSpliterator;
 
 /**
- * The {@code ConcatEnginePool} lets you concatenate two (or more) evolution
+ * The {@code ConcatEngine} lets you concatenate two (or more) evolution
  * {@link io.jenetics.engine.Engine}, with different configurations, and let it
  * use as <em>one</em> engine {@link EvolutionStreamable}.
  *
@@ -79,7 +79,7 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  *      .build();
  *
  *  final Genotype<DoubleGene> result =
- *      ConcatEnginePool.of(
+ *      ConcatEngine.of(
  *          engine1.limit(50),
  *          engine2.limit(() -> Limits.bySteadyFitness(30)))
  *      .stream()
@@ -104,14 +104,14 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ConcatEnginePool<
+public final class ConcatEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends EnginePool<G, C>
 {
 
-	public ConcatEnginePool(
+	public ConcatEngine(
 		final List<? extends EvolutionStreamable<G, C>> engines
 	) {
 		super(engines);
@@ -163,8 +163,8 @@ public final class ConcatEnginePool<
 
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	ConcatEnginePool<G, C> of(final EvolutionStreamable<G, C>... engines) {
-		return new ConcatEnginePool<>(Arrays.asList(engines));
+	ConcatEngine<G, C> of(final EvolutionStreamable<G, C>... engines) {
+		return new ConcatEngine<>(Arrays.asList(engines));
 	}
 
 

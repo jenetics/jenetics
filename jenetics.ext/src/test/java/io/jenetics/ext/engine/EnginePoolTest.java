@@ -37,9 +37,6 @@ import io.jenetics.engine.Problem;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.util.DoubleRange;
 
-import io.jenetics.ext.engine.ConcatEnginePool;
-import io.jenetics.ext.engine.CyclicEnginePool;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -76,7 +73,7 @@ public class EnginePoolTest {
 	@Test
 	public void concat1() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)
@@ -97,7 +94,7 @@ public class EnginePoolTest {
 	@Test
 	public void concat2() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)
@@ -118,7 +115,7 @@ public class EnginePoolTest {
 	@Test
 	public void concat3() {
 		final EvolutionStreamable<DoubleGene, Double> engine =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				_engine1.limit(10),
 				_engine2.limit(10),
 				_engine3.limit(10)

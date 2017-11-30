@@ -50,12 +50,12 @@ import io.jenetics.ext.EvolutionStreams;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConcatEnginePoolTest {
+public class ConcatEngineTest {
 
 	@Test
 	public void concat0() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.<IntegerGene, Integer>of().stream();
+			ConcatEngine.<IntegerGene, Integer>of().stream();
 
 		final int[] array = stream
 			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
@@ -67,7 +67,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat1() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(streamable(1))
+			ConcatEngine.of(streamable(1))
 				.stream();
 
 		final int[] array = stream
@@ -80,7 +80,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat1a() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(streamable(1))
+			ConcatEngine.of(streamable(1))
 				.stream(() -> EvolutionStreams.result(5).toEvolutionStart());
 
 		final int[] array = stream
@@ -102,7 +102,7 @@ public class ConcatEnginePoolTest {
 		);
 
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(streamable(1))
+			ConcatEngine.of(streamable(1))
 				.stream(init);
 
 		final int[] array = stream
@@ -115,7 +115,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat2() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(streamable(5))
+			ConcatEngine.of(streamable(5))
 				.stream();
 
 		final int[] array = stream
@@ -128,7 +128,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat3() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(streamable(5))
+			ConcatEngine.of(streamable(5))
 				.stream()
 				.limit(Limits.byFixedGeneration(3));
 
@@ -142,7 +142,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat4() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				streamable(3),
 				streamable(4),
 				streamable(5)
@@ -159,7 +159,7 @@ public class ConcatEnginePoolTest {
 	@Test
 	public void concat5() {
 		final EvolutionStream<IntegerGene, Integer> stream =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				streamable(3),
 				streamable(4),
 				streamable(5),
@@ -245,7 +245,7 @@ public class ConcatEnginePoolTest {
 			.build();
 
 		final Genotype<DoubleGene> result =
-			ConcatEnginePool.of(
+			ConcatEngine.of(
 				engine1.limit(50),
 				engine2.limit(() -> Limits.bySteadyFitness(30)))
 			.stream()

@@ -93,7 +93,7 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.
  *
- * @see ConcatEnginePool
+ * @see ConcatEngine
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
