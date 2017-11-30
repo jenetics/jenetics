@@ -70,7 +70,6 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  *      return var(result) < 0.2
  *          ? builder
  *              .alterers(new Mutator<>(0.5))
- *              .selector(new MonteCarloSelector<>())
  *              .build()
  *              .limit(5)
  *          : builder
