@@ -96,6 +96,9 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * @see AdaptiveEngine
  * @see ConcatEngine
  *
+ * @param <G> the gene type
+ * @param <C> the fitness type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -107,6 +110,14 @@ public final class CyclicEngine<
 	extends EnginePool<G, C>
 {
 
+	/**
+	 * Create a new cycling evolution engine with the given list of
+	 * {@code engines}.
+	 *
+	 * @param engines the evolution engines which are part of the cycling engine
+	 * @throws NullPointerException if the {@code engines} or one of it's
+	 *         elements is {@code null}
+	 */
 	public CyclicEngine(
 		final List<? extends EvolutionStreamable<G, C>> engines
 	) {
@@ -171,6 +182,17 @@ public final class CyclicEngine<
 			.spliterator();
 	}
 
+	/**
+	 * Create a new cycling evolution engine with the given array of
+	 * {@code engines}.
+	 *
+	 * @param engines the evolution engines which are part of the cycling engine
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a new concatenating evolution engine
+	 * @throws NullPointerException if the {@code engines} or one of it's
+	 *         elements is {@code null}
+	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	CyclicEngine<G, C> of(final EvolutionStreamable<G, C>... engines) {
