@@ -35,7 +35,7 @@ import io.jenetics.util.ISeq;
  * capability from the capability to create evolution streams. The purpose of
  * this interface is similar to the {@link Iterable} interface.
  *
- * @see EvolutionIterable
+ * @see EvolutionStream
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

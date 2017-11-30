@@ -33,6 +33,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @see java.util.stream.Stream
  * @see Engine
+ * @see EvolutionStreamable
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0

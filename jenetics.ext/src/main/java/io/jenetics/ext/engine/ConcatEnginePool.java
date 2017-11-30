@@ -36,6 +36,68 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.ext.internal.ConcatSpliterator;
 
 /**
+ * The {@code ConcatEnginePool} lets you concatenate two (or more) evolution
+ * {@link io.jenetics.engine.Engine}, with different configurations, and let it
+ * use as <em>one</em> engine {@link EvolutionStreamable}.
+ *
+ * <pre> {@code
+ *                  +----------+               +----------+
+ *                  |       ES |               |       ES |
+ *          +-------+----+     |       +-------+----+     |
+ *  (Start) |            +-----+ Start |            +-----+
+ *   ------>|  Engine 1  |------------>|  Engine 2  |----------->
+ *          |            | Result      |            |      Result
+ *          +------------+             +------------+
+ * }</pre>
+ *
+ * The sketch above shows how the engine concatenation works. In this example,
+ * the evolution stream of the first engine is evaluated until it terminates.
+ * The result of the first stream is then used as start input of the second
+ * evolution stream, which then delivers the final result.
+ * <p>
+ * Concatenating evolution engines might be useful, if you want to explore your
+ * search space with random search first and then start the <em>real</em> GA
+ * search.
+ * <pre>{@code
+ *  final Problem<double[], DoubleGene, Double> problem = Problem.of(
+ *      v -> Math.sin(v[0])*Math.cos(v[1]),
+ *      Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+ *  );
+ *
+ *  final Engine<DoubleGene, Double> engine1 = Engine.builder(problem)
+ *      .minimizing()
+ *      .alterers(new Mutator<>(0.2))
+ *      .selector(new MonteCarloSelector<>())
+ *      .build();
+ *
+ *  final Engine<DoubleGene, Double> engine2 = Engine.builder(problem)
+ *      .minimizing()
+ *      .alterers(
+ *          new Mutator<>(0.1),
+ *          new MeanAlterer<>())
+ *      .selector(new RouletteWheelSelector<>())
+ *      .build();
+ *
+ *  final Genotype<DoubleGene> result =
+ *      ConcatEnginePool.of(
+ *          engine1.limit(50),
+ *          engine2.limit(() -> Limits.bySteadyFitness(30)))
+ *      .stream()
+ *          .collect(EvolutionResult.toBestGenotype());
+ *
+ *  System.out.println(result + ": " +
+ *          problem.fitness().apply(problem.codec().decode(result)));
+ * }</pre>
+ *
+ * An essential part, when concatenating evolution engines, is to make sure your
+ * your engines are creating <em>limited</em> evolution streams. This is what
+ * the {@link EvolutionStreamable#limit(Supplier)} and
+ * {@link EvolutionStreamable#limit(long)} methods are for. Limiting an engine
+ * means, that this engine will surely create only streams, which are limited
+ * with the predicate/generation given to the engine. If you have limited your
+ * engines, it is no longer necessary to limit your final evolution stream, but
+ * your are still able to do so.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
