@@ -17,37 +17,50 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext;
 
-import java.util.function.Supplier;
+import java.util.Objects;
+import java.util.function.Function;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionInit;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.Genotype;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class MOEngine<
+public class WeightedSum<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
 >
-	implements EvolutionStreamable<G, N>
+	implements Function<Genotype<G>, N>
 {
+	private final ISeq<Function<? super Genotype<G>, ? extends N>> _finesses;
 
-	@Override
-	public EvolutionStream<G, N>
-	stream(final Supplier<EvolutionStart<G, N>> start) {
-		return null;
+	public WeightedSum(
+		final ISeq<Function<? super Genotype<G>, ? extends N>> finesses,
+		final double[] weights
+	) {
+		finesses.forEach(Objects::requireNonNull);
+		_finesses = finesses;
 	}
 
 	@Override
-	public EvolutionStream<G, N> stream(final EvolutionInit<G> init) {
+	public N apply(final Genotype<G> chromosomes) {
 		return null;
+	}
+
+	public int arity() {
+		return _finesses.size();
+	}
+
+	@SafeVarargs
+	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
+	WeightedSum<G, N>
+	of(final Function<? super Genotype<G>, ? extends N>... finesses) {
+		return new WeightedSum<>(ISeq.of(finesses), null);
 	}
 
 }
