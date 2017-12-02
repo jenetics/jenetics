@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -100,7 +101,7 @@ public class ParetoSetTest {
 
 		@Override
 		public String toString() {
-			return format("Point[%f, %f: %f]", x, y, Math.sqrt(x*x + y*y));
+			return format("[%f, %f: %f]", x, y, Math.sqrt(x*x + y*y));
 		}
 
 		static Point of(final double x, final double y) {
@@ -108,35 +109,65 @@ public class ParetoSetTest {
 		}
 	}
 
-	static ISeq<Point> points() {
+	static ISeq<Point> points(final int count) {
 		final Random random = new Random(123);
 
-		return random.doubles(5)
+		return random.doubles(count)
 			.mapToObj(x -> Point.of(x, sqrt(1 - x*x)))
 			.collect(ISeq.toISeq());
 	}
 
-	static ISeq<Point> cpoints() {
+	static ISeq<Point> cpoints(final int count) {
 		final Random random = new Random(123);
 
-		return random.doubles(7)
+		return random.doubles()
 			.mapToObj(x -> Point.of(x, random.nextDouble()))
 			.filter(p -> p.x*p.x + p.y*p.y < 0.9)
+			.limit(count)
 			.collect(ISeq.toISeq());
 	}
 
 	@Test
+	public void compareTo() {
+		final ISeq<Point> outline = cpoints(1000);
+
+		for (Point p : outline) {
+			Assert.assertTrue(p.compareTo(p) == 0);
+			Assert.assertTrue(p.compareTo(Point.of(0, 0)) > 0);
+			Assert.assertTrue(p.compareTo(Point.of(1, 1)) < 0);
+
+			Assert.assertTrue(Point.of(0, 0).compareTo(p) < 0);
+			Assert.assertTrue(Point.of(1, 1).compareTo(p) > 0);
+
+			for (Point p2 : outline) {
+				if (p.compareTo(p2) == 0) {
+					Assert.assertTrue(p2.compareTo(p) == 0);
+				}
+				if (p.compareTo(p2) < 0) {
+					Assert.assertTrue(p2.compareTo(p) > 0);
+				}
+				if (p.compareTo(p2) > 0) {
+					Assert.assertTrue(p2.compareTo(p) < 0);
+				}
+			}
+		}
+	}
+
+	@Test
+	public void sort() {
+		final Seq<Point> points = cpoints(6).copy().append(points(3).copy()).sort();
+		System.out.println(points);
+	}
+
+	@Test
 	public void set() {
-		final ISeq<Point> outline = points();
-		final ISeq<Point> cpoints = cpoints();
-		final ISeq<Point> pareto = ParetoSet.pareto(points().append(cpoints).asList());
+		final ISeq<Point> outline = points(3);
+		final ISeq<Point> cpoints = cpoints(2);
+		final ISeq<Point> all = cpoints.append(outline).append(cpoints);
 
-		System.out.println(outline);
-		System.out.println(pareto);
-		System.out.println(cpoints);
+		final ISeq<Point> pareto = ParetoSet.pareto(all);
 
-		System.out.println(cpoints().length());
-		System.out.println(pareto.length());
+		System.out.println(all);
 
 		Assert.assertEquals(
 			new HashSet<>(pareto.asList()),

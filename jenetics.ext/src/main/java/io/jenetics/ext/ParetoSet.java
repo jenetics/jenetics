@@ -21,17 +21,21 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -62,29 +66,57 @@ public class ParetoSet<G extends Gene<?, G>, T> {
 	}
 
 
-	static  <C extends Comparable<? super C>> ISeq<C>
-	pareto(final Collection<C> elements) {
-		Collection<C> set = elements;
-		Iterator<C> it = set.iterator();
+	static  <C extends Comparable<? super C>> List<C>
+	Pareto(final List<C> population) {
+		// find non-dominated that aren't part of previous front
+		final List<C> notDominated = new ArrayList<C>();
 
-		while (it.hasNext()) {
-			final List<C> pareto = pareto(it.next(), set);
+		for (C s1 : population) { // determine if s1 is dominated
+			boolean dominated = false;
 
-			if (pareto.size() < set.size()) {
-				it = pareto.iterator();
+			for (C s2 : population) {
+				if (s1.compareTo(s2) == 0) {
+				//if (doesDominate(s1, s2)) {
+					dominated = true;
+					break;
+				}
 			}
-			set = pareto;
+
+			if (!dominated) {
+				notDominated.add(s1);
+			}
 		}
 
-		return ISeq.of(set);
+		return notDominated;
 	}
 
-	static  <C extends Comparable<? super C>> List<C>
-	pareto(final C point, final Collection<C> elements) {
+	static  <C extends Comparable<? super C>> ISeq<C>
+	pareto(final Seq<C> elements) {
+		Seq<C> pareto = MSeq.of(elements).sort(Comparator.reverseOrder());
+		System.out.println("U: " + elements);
+		System.out.println("S: " + pareto);
+
+		Iterator<C> it = pareto.iterator();
+		while (it.hasNext()) {
+			final Seq<C> pareto0 = pareto0(it.next(), pareto);
+
+			if (pareto0.size() < pareto.size()) {
+				it = pareto0.iterator();
+			}
+			pareto = pareto0;
+		}
+
+		return pareto.asISeq();
+	}
+
+	static  <C extends Comparable<? super C>> Seq<C>
+	pareto0(final C point, final Seq<C> elements) {
 		return elements.stream()
 			.filter(pt -> point.compareTo(pt) <= 0)
-			.collect(Collectors.toList());
+			.collect(Seq.toSeq());
 	}
+
+
 
 	static  <G extends Gene<?, G>, T> ISeq<Phenotype<G, MOF<T>>>
 	merge(final ISeq<Phenotype<G, MOF<T>>> a, final ISeq<Phenotype<G, MOF<T>>> b) {
