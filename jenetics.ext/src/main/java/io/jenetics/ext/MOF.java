@@ -21,6 +21,7 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -31,7 +32,9 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MOF<T> implements Comparable<MOF<T>> {
+public final class MOF<T> implements Comparable<MOF<T>>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final T[] _fitness;
 	private final Comparator<? super T> _comparator;
