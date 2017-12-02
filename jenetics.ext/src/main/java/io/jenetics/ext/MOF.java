@@ -19,6 +19,10 @@
  */
 package io.jenetics.ext;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Comparator;
+
 /**
  * Multi objective fitness value.
  *
@@ -30,9 +34,45 @@ public class MOF<T> implements Comparable<MOF<T>> {
 
 
 
+
 	@Override
 	public int compareTo(final MOF<T> o) {
 		return 0;
+	}
+
+	public static <T> int
+	compare(final T[] a, final T[] b, final Comparator<? super T> comparator) {
+		requireNonNull(comparator);
+		if (a.length != b.length) {
+			throw new IllegalArgumentException();
+		}
+
+		boolean adom = false;
+		boolean bdom = false;
+
+		for (int i = 0; i < a.length; ++i) {
+			final int cmp = comparator.compare(a[i], b[i]);
+
+			if (cmp > 0) {
+				adom = true;
+				if (bdom) {
+					return 0;
+				}
+			} else if (cmp < 0) {
+				bdom = true;
+				if (adom) {
+					return 0;
+				}
+			}
+		}
+
+		if (adom == bdom) {
+			return 0;
+		} else if (adom) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 }
