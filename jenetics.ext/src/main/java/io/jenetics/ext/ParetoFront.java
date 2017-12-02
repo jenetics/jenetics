@@ -35,16 +35,16 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public class ParetoSet<G extends Gene<?, G>, T> {
+public class ParetoFront<G extends Gene<?, G>, T> {
 
 	final ISeq<Phenotype<G, MOF<T>>> _elements;
 
-	public ParetoSet(final ISeq<Phenotype<G, MOF<T>>> elements) {
+	public ParetoFront(final ISeq<Phenotype<G, MOF<T>>> elements) {
 		_elements = requireNonNull(elements);
 	}
 
 	public static <G extends Gene<?, G>, T>
-	Collector<EvolutionResult<G, MOF<T>>, ?, ParetoSet<G, T>>
+	Collector<EvolutionResult<G, MOF<T>>, ?, ParetoFront<G, T>>
 	toParetoSet() {
 		return null;
 		/*

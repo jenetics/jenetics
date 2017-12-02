@@ -36,7 +36,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ParetoSetTest {
+public class ParetoFrontTest {
 
 	static final class Point implements Comparable<Point> {
 		final double x;
@@ -152,7 +152,7 @@ public class ParetoSetTest {
 	@Test(dataProvider = "paretoFronts")
 	public void pareto(final ISeq<Point> elements, final ISeq<Point> front) {
 		Assert.assertEquals(
-			new HashSet<>(ParetoSet.pareto(elements).asList()),
+			new HashSet<>(ParetoFront.pareto(elements).asList()),
 			new HashSet<>(front.asList())
 		);
 	}
