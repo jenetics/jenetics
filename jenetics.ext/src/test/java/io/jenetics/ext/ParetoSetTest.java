@@ -25,13 +25,13 @@ import static java.lang.String.format;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.stream.Stream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.Seq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -109,17 +109,13 @@ public class ParetoSetTest {
 		}
 	}
 
-	static ISeq<Point> points(final int count) {
-		final Random random = new Random(123);
-
+	static ISeq<Point> frontPoints(final int count, final Random random) {
 		return random.doubles(count)
 			.mapToObj(x -> Point.of(x, sqrt(1 - x*x)))
 			.collect(ISeq.toISeq());
 	}
 
-	static ISeq<Point> cpoints(final int count) {
-		final Random random = new Random(123);
-
+	static ISeq<Point> circlePoints(final int count, final Random random) {
 		return random.doubles()
 			.mapToObj(x -> Point.of(x, random.nextDouble()))
 			.filter(p -> p.x*p.x + p.y*p.y < 0.9)
@@ -128,8 +124,8 @@ public class ParetoSetTest {
 	}
 
 	@Test
-	public void compareTo() {
-		final ISeq<Point> outline = cpoints(1000);
+	public void compareToPoint() {
+		final ISeq<Point> outline = circlePoints(1000, new Random(234));
 
 		for (Point p : outline) {
 			Assert.assertTrue(p.compareTo(p) == 0);
@@ -153,26 +149,44 @@ public class ParetoSetTest {
 		}
 	}
 
-	@Test
-	public void sort() {
-		final Seq<Point> points = cpoints(6).copy().append(points(3).copy()).sort();
-		System.out.println(points);
-	}
-
-	@Test
-	public void set() {
-		final ISeq<Point> outline = points(3);
-		final ISeq<Point> cpoints = cpoints(2);
-		final ISeq<Point> all = cpoints.append(outline).append(cpoints);
-
-		final ISeq<Point> pareto = ParetoSet.pareto(all);
-
-		System.out.println(all);
-
+	@Test(dataProvider = "paretoFronts")
+	public void pareto(final ISeq<Point> elements, final ISeq<Point> front) {
 		Assert.assertEquals(
-			new HashSet<>(pareto.asList()),
-			new HashSet<>(outline.asList())
+			new HashSet<>(ParetoSet.pareto(elements).asList()),
+			new HashSet<>(front.asList())
 		);
 	}
+
+	@DataProvider(name = "paretoFronts")
+	public Object[][] paretoFronts() {
+		return new Object[][] {
+			points(0, 10, 10, false),
+			points(0, 10, 10, true),
+			points(10, 10, 10, false),
+			points(10, 10, 10, true),
+			points(100, 50, 100, true),
+			points(500, 100, 600, false),
+			points(500, 100, 600, true)
+		};
+	}
+
+	private static Object[] points(
+		final int fp1,
+		final int cp,
+		final int fp2,
+		final boolean shuffle
+	) {
+		final Random random = RandomRegistry.getRandom();
+
+		final ISeq<Point> fpoints1 = frontPoints(fp1, random);
+		final ISeq<Point> cpoints = circlePoints(cp, random);
+		final ISeq<Point> fpoints2 = frontPoints(fp2, random);
+		final ISeq<Point> all = fpoints1.append(cpoints).append(fpoints2);
+
+		return shuffle
+			? new Object[]{all.copy().shuffle(random).toISeq(), fpoints1.append(fpoints2)}
+			: new Object[]{all, fpoints1.append(fpoints2)};
+	}
+
 
 }
