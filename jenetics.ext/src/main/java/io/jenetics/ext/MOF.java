@@ -21,6 +21,7 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -30,14 +31,43 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public class MOF<T> implements Comparable<MOF<T>> {
+public final class MOF<T> implements Comparable<MOF<T>> {
 
+	private final T[] _fitness;
+	private final Comparator<? super T> _comparator;
 
+	private MOF(final T[] fitness, final Comparator<? super T> comparator) {
+		_fitness = requireNonNull(fitness);
+		_comparator = requireNonNull(comparator);
+	}
 
+	public int arity() {
+		return _fitness.length;
+	}
+
+	public T get(final int index) {
+		return _fitness[index];
+	}
 
 	@Override
 	public int compareTo(final MOF<T> o) {
-		return 0;
+		return compare(_fitness, o._fitness, _comparator);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_fitness);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj instanceof MOF<?> &&
+			Arrays.equals(((MOF)obj)._fitness, _fitness);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(_fitness);
 	}
 
 	public static <T> int
@@ -73,6 +103,16 @@ public class MOF<T> implements Comparable<MOF<T>> {
 		} else {
 			return -1;
 		}
+	}
+
+	public static <T> MOF<T>
+	of(final T[] fitness, final Comparator<? super T> comparator) {
+		return new MOF<>(fitness, comparator);
+	}
+
+	public static <T extends Comparable<? super T>> MOF<T>
+	of(final T[] fitness) {
+		return new MOF<>(fitness, Comparator.naturalOrder());
 	}
 
 }
