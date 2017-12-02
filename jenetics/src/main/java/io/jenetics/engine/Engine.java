@@ -472,7 +472,7 @@ public final class Engine<
 		};
 	}
 
-	public Phenotype<G, C> toFixedPhenotype(final Phenotype<G, C> pt) {
+	private Phenotype<G, C> toFixedPhenotype(final Phenotype<G, C> pt) {
 		return
 			pt.getFitnessFunction() == _fitnessFunction &&
 				pt.getFitnessScaler() == _fitnessScaler
