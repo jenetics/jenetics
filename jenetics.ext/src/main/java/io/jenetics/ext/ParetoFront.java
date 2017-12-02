@@ -28,7 +28,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -65,11 +64,11 @@ public class ParetoFront<G extends Gene<?, G>, T> {
 	 * IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
 	 * pp. 257-271, 1999.
 	 */
-	static  <C extends Comparable<? super C>> ISeq<C>
-	pareto(final Seq<C> elements) {
+	public static <C extends Comparable<? super C>> ISeq<C>
+	frontOf(final Iterable<C> elements) {
 		final MSeq<C> front = MSeq.of(elements);
 
-		int n = elements.size();
+		int n = front.size();
 		int i = 0;
 		while (i < n) {
 			int j = i + 1;

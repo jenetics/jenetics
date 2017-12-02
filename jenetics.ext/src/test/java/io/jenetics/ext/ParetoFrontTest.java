@@ -150,9 +150,9 @@ public class ParetoFrontTest {
 	}
 
 	@Test(dataProvider = "paretoFronts")
-	public void pareto(final ISeq<Point> elements, final ISeq<Point> front) {
+	public void frontOf(final ISeq<Point> elements, final ISeq<Point> front) {
 		Assert.assertEquals(
-			new HashSet<>(ParetoFront.pareto(elements).asList()),
+			new HashSet<>(ParetoFront.frontOf(elements).asList()),
 			new HashSet<>(front.asList())
 		);
 	}
@@ -176,7 +176,7 @@ public class ParetoFrontTest {
 		final int fp2,
 		final boolean shuffle
 	) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = new Random(123);
 
 		final ISeq<Point> fpoints1 = frontPoints(fp1, random);
 		final ISeq<Point> cpoints = circlePoints(cp, random);
