@@ -42,9 +42,9 @@ public class ParetoFront<G extends Gene<?, G>, T> {
 		_elements = requireNonNull(elements);
 	}
 
-	public static <G extends Gene<?, G>, T>
-	Collector<EvolutionResult<G, MOF<T>>, ?, ParetoFront<G, T>>
-	toParetoSet() {
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Collector<EvolutionResult<G, C>, ?, ISeq<Phenotype<G, C>>>
+	toParetoSet(final int maxElements) {
 		return null;
 		/*
 		return Collector.of(
@@ -65,7 +65,7 @@ public class ParetoFront<G extends Gene<?, G>, T> {
 	 * pp. 257-271, 1999.
 	 */
 	public static <C extends Comparable<? super C>> ISeq<C>
-	frontOf(final Iterable<C> elements) {
+	frontOf(final Iterable<? extends C> elements) {
 		final MSeq<C> front = MSeq.of(elements);
 
 		int n = front.size();
@@ -74,21 +74,26 @@ public class ParetoFront<G extends Gene<?, G>, T> {
 			int j = i + 1;
 			while (j < n) {
 				if (front.get(i).compareTo(front.get(j)) > 0) {
-					n--;
+					--n;
 					front.swap(j, n);
 				} else if (front.get(j).compareTo(front.get(i)) > 0) {
-					n--;
+					--n;
 					front.swap(i, n);
-					i--;
+					--i;
 					break;
 				} else {
-					j++;
+					++j;
 				}
 			}
-			i++;
+			++i;
 		}
 
 		return front.subSeq(0, n).copy().toISeq();
+	}
+
+	public static <C extends Comparable<? super C>> int[]
+	ranks(final ISeq<C> elements) {
+		return null;
 	}
 
 	static  <G extends Gene<?, G>, T> ISeq<Phenotype<G, MOF<T>>>
