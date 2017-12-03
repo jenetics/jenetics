@@ -21,6 +21,7 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
@@ -34,12 +35,9 @@ import io.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class Pareto<G extends Gene<?, G>, T> {
+public final class Pareto {
 
-	final ISeq<Phenotype<G, MOF<T>>> _elements;
-
-	public Pareto(final ISeq<Phenotype<G, MOF<T>>> elements) {
-		_elements = requireNonNull(elements);
+	private Pareto() {
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -99,6 +97,55 @@ public class Pareto<G extends Gene<?, G>, T> {
 	static  <G extends Gene<?, G>, T> ISeq<Phenotype<G, MOF<T>>>
 	merge(final ISeq<Phenotype<G, MOF<T>>> a, final ISeq<Phenotype<G, MOF<T>>> b) {
 		return ISeq.empty();
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param comparator the element comparator which is used for calculating
+	 *        the dominance
+	 * @param <T> the element type of vector <b>u</b> and <b>v</b>
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static <T> int
+	dominates(final T[] u, final T[] v, final Comparator<? super T> comparator) {
+		requireNonNull(comparator);
+		if (u.length != v.length) {
+			throw new IllegalArgumentException();
+		}
+
+		boolean adom = false;
+		boolean bdom = false;
+
+		for (int i = 0; i < u.length; ++i) {
+			final int cmp = comparator.compare(u[i], v[i]);
+
+			if (cmp > 0) {
+				adom = true;
+				if (bdom) {
+					return 0;
+				}
+			} else if (cmp < 0) {
+				bdom = true;
+				if (adom) {
+					return 0;
+				}
+			}
+		}
+
+		if (adom == bdom) {
+			return 0;
+		} else if (adom) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 }
