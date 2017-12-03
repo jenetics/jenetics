@@ -34,11 +34,11 @@ import io.jenetics.util.MSeq;
  * @version !__version__!
  * @since !__version__!
  */
-public class ParetoFront<G extends Gene<?, G>, T> {
+public class Pareto<G extends Gene<?, G>, T> {
 
 	final ISeq<Phenotype<G, MOF<T>>> _elements;
 
-	public ParetoFront(final ISeq<Phenotype<G, MOF<T>>> elements) {
+	public Pareto(final ISeq<Phenotype<G, MOF<T>>> elements) {
 		_elements = requireNonNull(elements);
 	}
 

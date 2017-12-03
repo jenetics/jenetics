@@ -31,12 +31,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ParetoFrontTest {
+public class ParetoTest {
 
 	static final class Point implements Comparable<Point> {
 		final double x;
@@ -152,7 +151,7 @@ public class ParetoFrontTest {
 	@Test(dataProvider = "paretoFronts")
 	public void frontOf(final ISeq<Point> elements, final ISeq<Point> front) {
 		Assert.assertEquals(
-			new HashSet<>(ParetoFront.frontOf(elements).asList()),
+			new HashSet<>(Pareto.frontOf(elements).asList()),
 			new HashSet<>(front.asList())
 		);
 	}
