@@ -55,26 +55,60 @@ public final class Pareto {
 		);*/
 	}
 
-
-	/*
-	 * Reference: E. Zitzler and L. Thiele
-	 * Multiobjective Evolutionary Algorithms: A Comparative Case Study and the Strength Pareto Approach,
-	 * IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
-	 * pp. 257-271, 1999.
+	/**
+	 * Return the elements, from the given input {@code set}, which are part of
+	 * the pareto front. The {@link Comparable} interface defines the dominance
+	 * measure of the elements, used for calculating the pareto front.
+	 * <p>
+	 *  <b>Reference:</b><em>
+	 *      E. Zitzler and L. Thiele,
+	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
+	 *      and the Strength Pareto Approach,
+	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
+	 *      pp. 257-271, 1999.</em>
+	 *
+	 * @param set the input set
+	 * @param <C> the element type
+	 * @return the elements which are part of the pareto set
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C extends Comparable<? super C>> ISeq<C>
-	frontOf(final Iterable<? extends C> elements) {
-		final MSeq<C> front = MSeq.of(elements);
+	front(final Iterable<? extends C> set) {
+		return front(set, Comparator.naturalOrder());
+	}
+
+	/**
+	 * Return the elements, from the given input {@code set}, which are part of
+	 * the pareto front.
+	 * <p>
+	 *  <b>Reference:</b><em>
+	 *      E. Zitzler and L. Thiele,
+	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
+	 *      and the Strength Pareto Approach,
+	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
+	 *      pp. 257-271, 1999.</em>
+	 *
+	 * @param set the input set
+	 * @param dominance the dominance comparator used
+	 * @param <T> the element type
+	 * @return the elements which are part of the pareto set
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> ISeq<T> front(
+		final Iterable<? extends T> set,
+		final Comparator<? super T> dominance
+	) {
+		final MSeq<T> front = MSeq.of(set);
 
 		int n = front.size();
 		int i = 0;
 		while (i < n) {
 			int j = i + 1;
 			while (j < n) {
-				if (front.get(i).compareTo(front.get(j)) > 0) {
+				if (dominance.compare(front.get(i), front.get(j)) > 0) {
 					--n;
 					front.swap(j, n);
-				} else if (front.get(j).compareTo(front.get(i)) > 0) {
+				} else if (dominance.compare(front.get(j), front.get(i)) > 0) {
 					--n;
 					front.swap(i, n);
 					--i;
@@ -120,28 +154,28 @@ public final class Pareto {
 			throw new IllegalArgumentException();
 		}
 
-		boolean adom = false;
-		boolean bdom = false;
+		boolean udominated = false;
+		boolean vdominated = false;
 
 		for (int i = 0; i < u.length; ++i) {
 			final int cmp = comparator.compare(u[i], v[i]);
 
 			if (cmp > 0) {
-				adom = true;
-				if (bdom) {
+				udominated = true;
+				if (vdominated) {
 					return 0;
 				}
 			} else if (cmp < 0) {
-				bdom = true;
-				if (adom) {
+				vdominated = true;
+				if (udominated) {
 					return 0;
 				}
 			}
 		}
 
-		if (adom == bdom) {
+		if (udominated == vdominated) {
 			return 0;
-		} else if (adom) {
+		} else if (udominated) {
 			return 1;
 		} else {
 			return -1;

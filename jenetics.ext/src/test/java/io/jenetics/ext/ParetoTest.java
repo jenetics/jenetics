@@ -151,7 +151,7 @@ public class ParetoTest {
 	@Test(dataProvider = "paretoFronts")
 	public void frontOf(final ISeq<Point> elements, final ISeq<Point> front) {
 		Assert.assertEquals(
-			new HashSet<>(Pareto.frontOf(elements).asList()),
+			new HashSet<>(Pareto.front(elements).asList()),
 			new HashSet<>(front.asList())
 		);
 	}
