@@ -21,7 +21,9 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
@@ -29,6 +31,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -123,10 +126,146 @@ public final class Pareto {
 		return front.subSeq(0, n).copy().toISeq();
 	}
 
-	public static <C extends Comparable<? super C>> int[]
-	ranks(final ISeq<C> elements) {
-		return null;
+	public static <C extends Comparable<? super C>>
+	int[] ranks(final Seq<? extends C> population) {
+		return ranks(population, Comparator.naturalOrder());
 	}
+
+	public static <T> int[] ranks(
+		final Seq<? extends T> population,
+		final Comparator<? super T> comparator
+	) {
+		final int n = population.size();
+
+		final int[] ranks = new int[n];
+
+		// Pre-compute the dominance relations
+		final int[][] dominanceChecks = new int[n][n];
+
+		for (int i = 0; i < n; i++) {
+			final T si = population.get(i);
+
+			for (int j = i + 1; j < n; j++) {
+				if (i != j) {
+					final T sj = population.get(j);
+
+					dominanceChecks[i][j] = comparator.compare(si, sj);
+					dominanceChecks[j][i] = -dominanceChecks[i][j];
+				}
+			}
+		}
+
+		// compute for each solution s_i the solutions s_j that it dominates
+		// and the number of times it is dominated
+		int[] dominatedCounts = new int[n];
+		List<List<Integer>> dominatesList = new ArrayList<>();
+		List<Integer> currentFront = new ArrayList<>();
+
+
+		for (int i = 0; i < n; i++) {
+			List<Integer> dominates = new ArrayList<>();
+			int dominatedCount = 0;
+
+			for (int j = 0; j < n; j++) {
+				if (i != j) {
+					if (dominanceChecks[i][j] < 0) {
+						dominates.add(j);
+					} else if (dominanceChecks[j][i] < 0) {
+						dominatedCount += 1;
+					}
+				}
+			}
+
+			if (dominatedCount == 0) {
+				currentFront.add(i);
+			}
+
+			dominatesList.add(dominates);
+			dominatedCounts[i] = dominatedCount;
+		}
+
+		// assign ranks
+		int rank = 0;
+
+		while (!currentFront.isEmpty()) {
+			List<Integer> nextFront = new ArrayList<>();
+			List<T> solutionsInFront = new ArrayList<>();
+
+			for (int i = 0; i < currentFront.size(); i++) {
+				final T element = population.get(currentFront.get(i));
+				//Solution solution = population.get(currentFront.get(i));
+				//solution.setAttribute(RANK_ATTRIBUTE, rank);
+
+				ranks[currentFront.get(i)] = rank;
+
+				// update the dominated counts as compute next front
+				for (Integer j : dominatesList.get(currentFront.get(i))) {
+					dominatedCounts[j] -= 1;
+
+					if (dominatedCounts[j] == 0) {
+						nextFront.add(j);
+					}
+				}
+
+				solutionsInFront.add(element);
+			}
+
+			//updateCrowdingDistance(solutionsInFront);
+
+			rank += 1;
+			currentFront = nextFront;
+		}
+
+		return ranks;
+	}
+
+	/*
+	public static <T> List<List<T>> fastNonDominatedSort(
+		final Seq<? extends T> P,
+		final Comparator<? super T> dominance
+	) {
+		final List<List<T>> fronts = new ArrayList<>();
+		fronts.add(new ArrayList<>());
+
+		final List<List<T>> dominated = new ArrayList<>();
+
+		for (int i = 0; i < P.size(); ++i) {
+			final T p = P.get(i);
+
+			dominated.add(new ArrayList<>());
+			int np = 0;
+
+			for (int j = 0; j < P.size(); ++j) {
+				final T q = P.get(j);
+
+				if (dominance.compare(p, q) > 0) {
+					dominated.get(i).add(q);
+				} else if (dominance.compare(q, p) > 0) {
+					++np;
+				}
+			}
+
+			if (np == 0) {
+				fronts.get(0).add(p);
+			}
+		}
+
+		int current = 0;
+		do {
+			final List<T> front = new ArrayList<>();
+
+			for (int i = 0; i < fronts.get(current).size(); ++i) {
+				final T p = fronts.get(current).get(i);
+
+				for (int j = 0; i < dominated.get(0) )
+			}
+
+		} while (current < fronts.size());
+
+		return fronts;
+	}
+	*/
+
 
 	static  <G extends Gene<?, G>, T> ISeq<Phenotype<G, MOF<T>>>
 	merge(final ISeq<Phenotype<G, MOF<T>>> a, final ISeq<Phenotype<G, MOF<T>>> b) {

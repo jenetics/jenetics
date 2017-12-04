@@ -188,4 +188,15 @@ public class ParetoTest {
 	}
 
 
+	@Test
+	public void ranks() {
+		final Random random = new Random(123);
+		final ISeq<Point> fpoints = frontPoints(7, random);
+		final ISeq<Point> cpoints = circlePoints(3, random);
+
+		System.out.println(Arrays.toString(NSGA.ranks(fpoints)));
+		System.out.println(Arrays.toString(NSGA.ranks(fpoints.append(cpoints).append(fpoints))));
+		System.out.println(fpoints.append(cpoints));
+	}
+
 }
