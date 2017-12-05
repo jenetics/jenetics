@@ -25,19 +25,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collector;
 
-import io.jenetics.Gene;
-import io.jenetics.Phenotype;
-import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 import io.jenetics.ext.util.ComponentComparator;
-import io.jenetics.ext.util.ParetoSet;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -49,91 +42,9 @@ public final class Pareto {
 	private Pareto() {
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<EvolutionResult<G, C>, ?, ISeq<Phenotype<G, C>>>
-	toParetoSet(
-		final IntRange capacity,
-		final Comparator<? super Phenotype<G, C>> dominance,
-		final Function<? super List<Phenotype<G, C>>, double[]> distance
-	) {
-		return Collector.of(
-			() -> new ParetoSet<>(capacity, dominance, distance),
-			(set, result) -> {
-				if (set.isEmpty()) set.addAll(result.getPopulation());
-				else set.add(result.getBestPhenotype());
-			},
-			ParetoSet::merge,
-			ParetoSet::toISeq
-		);
-	}
-
-	/**
-	 * Return the elements, from the given input {@code set}, which are part of
-	 * the pareto front. The {@link Comparable} interface defines the dominance
-	 * measure of the elements, used for calculating the pareto front.
-	 * <p>
-	 *  <b>Reference:</b><em>
-	 *      E. Zitzler and L. Thiele,
-	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
-	 *      and the Strength Pareto Approach,
-	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
-	 *      pp. 257-271, 1999.</em>
-	 *
-	 * @param set the input set
-	 * @param <C> the element type
-	 * @return the elements which are part of the pareto set
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <C extends Comparable<? super C>> ISeq<C>
-	front(final Iterable<? extends C> set) {
-		return front(set, Comparator.naturalOrder());
-	}
-
-	/**
-	 * Return the elements, from the given input {@code set}, which are part of
-	 * the pareto front.
-	 * <p>
-	 *  <b>Reference:</b><em>
-	 *      E. Zitzler and L. Thiele,
-	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
-	 *      and the Strength Pareto Approach,
-	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
-	 *      pp. 257-271, 1999.</em>
-	 *
-	 * @param set the input set
-	 * @param dominance the dominance comparator used
-	 * @param <T> the element type
-	 * @return the elements which are part of the pareto set
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T> ISeq<T> front(
-		final Iterable<? extends T> set,
-		final Comparator<? super T> dominance
-	) {
-		final MSeq<T> front = MSeq.of(set);
-
-		int n = front.size();
-		int i = 0;
-		while (i < n) {
-			int j = i + 1;
-			while (j < n) {
-				if (dominance.compare(front.get(i), front.get(j)) > 0) {
-					--n;
-					front.swap(j, n);
-				} else if (dominance.compare(front.get(j), front.get(i)) > 0) {
-					--n;
-					front.swap(i, n);
-					--i;
-					break;
-				} else {
-					++j;
-				}
-			}
-			++i;
-		}
-
-		return front.subSeq(0, n).copy().toISeq();
-	}
+	/* *************************************************************************
+	 * 'ranks'
+	 * ************************************************************************/
 
 	public static <C extends Comparable<? super C>>
 	int[] ranks(final Seq<? extends C> population) {
@@ -226,6 +137,78 @@ public final class Pareto {
 		}
 
 		return ranks;
+	}
+
+	/* *************************************************************************
+	 * 'front'
+	 * ************************************************************************/
+
+	/**
+	 * Return the elements, from the given input {@code set}, which are part of
+	 * the pareto front. The {@link Comparable} interface defines the dominance
+	 * measure of the elements, used for calculating the pareto front.
+	 * <p>
+	 *  <b>Reference:</b><em>
+	 *      E. Zitzler and L. Thiele,
+	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
+	 *      and the Strength Pareto Approach,
+	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
+	 *      pp. 257-271, 1999.</em>
+	 *
+	 * @param set the input set
+	 * @param <C> the element type
+	 * @return the elements which are part of the pareto set
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>> ISeq<C>
+	front(final Iterable<? extends C> set) {
+		return front(set, Comparator.naturalOrder());
+	}
+
+	/**
+	 * Return the elements, from the given input {@code set}, which are part of
+	 * the pareto front.
+	 * <p>
+	 *  <b>Reference:</b><em>
+	 *      E. Zitzler and L. Thiele,
+	 *      Multiobjective Evolutionary Algorithms: A Comparative Case Study
+	 *      and the Strength Pareto Approach,
+	 *      IEEE Transactions on Evolutionary Computation, vol. 3, no. 4,
+	 *      pp. 257-271, 1999.</em>
+	 *
+	 * @param set the input set
+	 * @param dominance the dominance comparator used
+	 * @param <T> the element type
+	 * @return the elements which are part of the pareto set
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> ISeq<T> front(
+		final Iterable<? extends T> set,
+		final Comparator<? super T> dominance
+	) {
+		final MSeq<T> front = MSeq.of(set);
+
+		int n = front.size();
+		int i = 0;
+		while (i < n) {
+			int j = i + 1;
+			while (j < n) {
+				if (dominance.compare(front.get(i), front.get(j)) > 0) {
+					--n;
+					front.swap(j, n);
+				} else if (dominance.compare(front.get(j), front.get(i)) > 0) {
+					--n;
+					front.swap(i, n);
+					--i;
+					break;
+				} else {
+					++j;
+				}
+			}
+			++i;
+		}
+
+		return front.subSeq(0, n).copy().toISeq();
 	}
 
 

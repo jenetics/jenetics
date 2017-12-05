@@ -46,7 +46,7 @@ public interface ComponentComparator<V> {
 	 * @throws NullPointerException if either {@code a} or {@code b} is
 	 *        {@code null}
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index < 0 || index >= length(a)  || index >= length(b))
+	 *         {@code (index < 0 || index >= length(a)  || index >= length(b))}
 	 */
 	public int compare(final V u, final V v, final int index);
 

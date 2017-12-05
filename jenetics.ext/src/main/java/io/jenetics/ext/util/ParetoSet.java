@@ -26,10 +26,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collector;
 
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IntRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,20 +37,12 @@ import io.jenetics.util.IntRange;
  */
 public final class ParetoSet<T> {
 
-	private final IntRange _capacity;
 	private final Comparator<? super T> _dominance;
-	private final Function<? super List<T>, double[]> _distances;
 
 	private final List<T> _population = new ArrayList<>();
 
-	public ParetoSet(
-		final IntRange capacity,
-		final Comparator<? super T> dominance,
-		final Function<? super List<T>, double[]> distances
-	) {
-		_capacity = capacity;
+	public ParetoSet(final Comparator<? super T> dominance) {
 		_dominance = requireNonNull(dominance);
-		_distances = requireNonNull(distances);
 	}
 
 	public void add(final T element) {
@@ -66,18 +57,6 @@ public final class ParetoSet<T> {
 			} else if (cmp > 0 || element.equals(existing)) {
 				return;
 			}
-		}
-
-		if (_population.size() >= _capacity.getMax()) {
-			final double[] distances = _distances.apply(_population);
-			final int[] indexes = IndexSorter.sort(distances);
-
-			final List<T> sorted = new ArrayList<>(_population.size());
-			for (int i = 0; i < indexes.length - 1; ++i) {
-				sorted.add(_population.get(indexes[i]));
-			}
-			_population.clear();
-			_population.addAll(sorted);
 		}
 
 		_population.add(element);
@@ -98,6 +77,20 @@ public final class ParetoSet<T> {
 
 	public ISeq<T> toISeq() {
 		return ISeq.of(_population);
+	}
+
+
+	public static <A, B>
+	Collector<A, ?, ParetoSet<B>>
+	toParetoSet(
+		final Function<? super A, ? extends B> mapper,
+		final Comparator<? super B> dominance
+	) {
+		return Collector.of(
+			() -> new ParetoSet<>(dominance),
+			(set, result) -> set.add(mapper.apply(result)),
+			ParetoSet::merge
+		);
 	}
 
 }
