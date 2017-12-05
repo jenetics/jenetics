@@ -21,7 +21,9 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +37,7 @@ import io.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ParetoSet<T> {
+public final class ParetoSet<T> extends AbstractSet<T> {
 
 	private final Comparator<? super T> _dominance;
 
@@ -45,7 +47,8 @@ public final class ParetoSet<T> {
 		_dominance = requireNonNull(dominance);
 	}
 
-	public void add(final T element) {
+	@Override
+	public boolean add(final T element) {
 		final Iterator<T> iterator = _population.iterator();
 
 		while (iterator.hasNext()) {
@@ -55,22 +58,36 @@ public final class ParetoSet<T> {
 			if (cmp < 0) {
 				iterator.remove();
 			} else if (cmp > 0 || element.equals(existing)) {
-				return;
+				return true;
 			}
 		}
 
 		_population.add(element);
+		return true;
 	}
 
-	public void addAll(final Iterable<? extends T> elements) {
+	@Override
+	public boolean addAll(final Collection<? extends T> elements) {
 		elements.forEach(this::add);
+		return true;
 	}
 
 	public ParetoSet<T> merge(final ParetoSet<T> elements) {
-		elements._population.forEach(this::add);
+		addAll(elements);
 		return this;
 	}
 
+	@Override
+	public Iterator<T> iterator() {
+		return _population.iterator();
+	}
+
+	@Override
+	public int size() {
+		return _population.size();
+	}
+
+	@Override
 	public boolean isEmpty() {
 		return _population.isEmpty();
 	}
@@ -79,6 +96,16 @@ public final class ParetoSet<T> {
 		return ISeq.of(_population);
 	}
 
+
+	public static <T>
+	Collector<T, ?, ParetoSet<T>>
+	toParetoSet(final Comparator<? super T> dominance) {
+		return Collector.of(
+			() -> new ParetoSet<>(dominance),
+			ParetoSet::add,
+			ParetoSet::merge
+		);
+	}
 
 	public static <A, B>
 	Collector<A, ?, ParetoSet<B>>
@@ -89,6 +116,19 @@ public final class ParetoSet<T> {
 		return Collector.of(
 			() -> new ParetoSet<>(dominance),
 			(set, result) -> set.add(mapper.apply(result)),
+			ParetoSet::merge
+		);
+	}
+
+	public static <A, B>
+	Collector<A, ?, ParetoSet<B>>
+	toFlattenedParetoSet(
+		final Function<? super A, ? extends Collection<B>> mapper,
+		final Comparator<? super B> dominance
+	) {
+		return Collector.of(
+			() -> new ParetoSet<>(dominance),
+			(set, result) -> set.addAll(mapper.apply(result)),
 			ParetoSet::merge
 		);
 	}
