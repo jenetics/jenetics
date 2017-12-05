@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.util;
 
 import static java.lang.Math.sqrt;
 import static java.lang.String.format;
@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.NSGA;
 import io.jenetics.ext.util.Pareto;
 import io.jenetics.ext.util.Point2;
 
