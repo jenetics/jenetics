@@ -20,6 +20,7 @@
 package io.jenetics.ext.internal;
 
 import static java.lang.String.format;
+import static java.lang.System.arraycopy;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -138,7 +139,7 @@ public final class IntList {
 		rangeCheckForAdd(index);
 
 		ensureCapacity(_size + 1);
-		System.arraycopy(
+		arraycopy(
 			_data, index,
 			_data, index + 1,
 			_size - index
@@ -158,7 +159,7 @@ public final class IntList {
 	public boolean addAll(final int[] elements) {
 		final int count = elements.length;
 		ensureCapacity(_size + count);
-		System.arraycopy(elements, 0, _data, _size, count);
+		arraycopy(elements, 0, _data, _size, count);
 		_size += count;
 
 		return count != 0;
@@ -184,10 +185,10 @@ public final class IntList {
 
 		final int moved = _size - index;
 		if (moved > 0) {
-			System.arraycopy(_data, index, _data, index + count, moved);
+			arraycopy(_data, index, _data, index + count, moved);
 		}
 
-		System.arraycopy(elements, 0, _data, index, count);
+		arraycopy(elements, 0, _data, index, count);
 		_size += count;
 		return count != 0;
 	}
@@ -224,6 +225,20 @@ public final class IntList {
 		return _size;
 	}
 
+	/**
+	 * Return {@code true} if the list is empty.
+	 *
+	 * @return {@code true} if the list is empty, {@code false} otherwise
+	 */
+	public boolean isEmpty() {
+		return _size == 0;
+	}
+
+	/**
+	 * Return the current elements as int array.
+	 *
+	 * @return the current elements as int array
+	 */
 	public int[] toArray() {
 		return Arrays.copyOf(_data, _size);
 	}

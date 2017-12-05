@@ -128,7 +128,12 @@ public class ParetoTest {
 		final ISeq<Point2> cpoints = circlePoints(3, random);
 
 		System.out.println(Arrays.toString(NSGA.ranks(fpoints, Point2::domination)));
+		System.out.println(Arrays.toString(Pareto.ranks(fpoints, Point2::domination)));
+		System.out.println();
+
 		System.out.println(Arrays.toString(NSGA.ranks(fpoints.append(cpoints), Point2::domination)));
+		System.out.println(Arrays.toString(Pareto.ranks(fpoints.append(cpoints), Point2::domination)));
+		System.out.println();
 		System.out.println(Pareto.front(fpoints, Point2::domination));
 	}
 
