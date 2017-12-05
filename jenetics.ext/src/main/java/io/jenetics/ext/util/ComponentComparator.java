@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.Comparator;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -27,6 +29,10 @@ package io.jenetics.ext.util;
 @FunctionalInterface
 public interface ComponentComparator<T> {
 
-	public int compare(final int index, final T a, final T b);
+	public int compare(final T a, final T b, final int index);
+
+	public default Comparator<T> curry(final int index) {
+		return (a, b) -> compare(a, b, index);
+	}
 
 }

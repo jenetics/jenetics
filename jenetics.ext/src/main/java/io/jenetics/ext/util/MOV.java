@@ -22,7 +22,6 @@ package io.jenetics.ext.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.Seq;
@@ -109,7 +108,7 @@ public interface MOV<T> extends ComponentComparable<T> {
 				sorter.sort(
 					front,
 					IndexSorter.init(indexes),
-					(a, b) -> comparator.compare(objective, a, b)
+					(a, b) -> comparator.compare(a, b, objective)
 				);
 
 				distances[indexes[0]] = Double.POSITIVE_INFINITY;

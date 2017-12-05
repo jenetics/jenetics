@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
+
+import io.jenetics.ext.util.ComponentComparator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -224,57 +227,26 @@ public final class Pareto {
 		return ranks;
 	}
 
-	/*
-	public static <T> List<List<T>> fastNonDominatedSort(
-		final Seq<? extends T> P,
-		final Comparator<? super T> dominance
-	) {
-		final List<List<T>> fronts = new ArrayList<>();
-		fronts.add(new ArrayList<>());
 
-		final List<List<T>> dominated = new ArrayList<>();
+	/* *************************************************************************
+	 * 'dominates'
+	 * ************************************************************************/
 
-		for (int i = 0; i < P.size(); ++i) {
-			final T p = P.get(i);
-
-			dominated.add(new ArrayList<>());
-			int np = 0;
-
-			for (int j = 0; j < P.size(); ++j) {
-				final T q = P.get(j);
-
-				if (dominance.compare(p, q) > 0) {
-					dominated.get(i).add(q);
-				} else if (dominance.compare(q, p) > 0) {
-					++np;
-				}
-			}
-
-			if (np == 0) {
-				fronts.get(0).add(p);
-			}
-		}
-
-		int current = 0;
-		do {
-			final List<T> front = new ArrayList<>();
-
-			for (int i = 0; i < fronts.get(current).size(); ++i) {
-				final T p = fronts.get(current).get(i);
-
-				for (int j = 0; i < dominated.get(0) )
-			}
-
-		} while (current < fronts.size());
-
-		return fronts;
-	}
-	*/
-
-
-	static  <G extends Gene<?, G>, T> ISeq<Phenotype<G, MOF<T>>>
-	merge(final ISeq<Phenotype<G, MOF<T>>> a, final ISeq<Phenotype<G, MOF<T>>> b) {
-		return ISeq.empty();
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param <C> the element type of vector <b>u</b> and <b>v</b>
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static <C extends Comparable<? super C>> int
+	dominates(final C[] u, final C[] v) {
+		return dominates(u, v, Comparator.naturalOrder());
 	}
 
 	/**
@@ -294,15 +266,95 @@ public final class Pareto {
 	public static <T> int
 	dominates(final T[] u, final T[] v, final Comparator<? super T> comparator) {
 		requireNonNull(comparator);
-		if (u.length != v.length) {
-			throw new IllegalArgumentException();
+		checkLength(u.length, v.length);
+
+		return dominates(
+			u, v, u.length,
+			(a, b, i) -> comparator.compare(a[i], b[i])
+		);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominates(final int[] u, final int[] v) {
+		checkLength(u.length, v.length);
+
+		return dominates(
+			u, v, u.length,
+			(a, b, i) -> Integer.compare(a[i], b[i])
+		);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominates(final long[] u, final long[] v) {
+		checkLength(u.length, v.length);
+
+		return dominates(
+			u, v, u.length,
+			(a, b, i) -> Long.compare(a[i], b[i])
+		);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominates(final double[] u, final double[] v) {
+		checkLength(u.length, v.length);
+
+		return dominates(
+			u, v, u.length,
+			(a, b, i) -> Double.compare(a[i], b[i])
+		);
+	}
+
+	private static void checkLength(final int i, final int j) {
+		if (i != j) {
+			throw new IllegalArgumentException(format(
+				"Length are not equals: %d != %d.", i, j
+			));
 		}
+	}
+
+	private static <T> int dominates(
+		final T u,
+		final T v,
+		final int length,
+		final ComponentComparator<? super T> comparator
+	) {
+		requireNonNull(comparator);
 
 		boolean udominated = false;
 		boolean vdominated = false;
 
-		for (int i = 0; i < u.length; ++i) {
-			final int cmp = comparator.compare(u[i], v[i]);
+		for (int i = 0; i < length; ++i) {
+			final int cmp = comparator.compare(u, v, i);
 
 			if (cmp > 0) {
 				udominated = true;

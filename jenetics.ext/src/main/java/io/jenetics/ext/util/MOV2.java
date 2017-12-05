@@ -26,6 +26,6 @@ package io.jenetics.ext.util;
  */
 public interface MOV2<C extends Comparable<? super C>> {
 
-	
+
 
 }
