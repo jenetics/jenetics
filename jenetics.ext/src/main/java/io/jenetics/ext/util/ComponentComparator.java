@@ -22,16 +22,42 @@ package io.jenetics.ext.util;
 import java.util.Comparator;
 
 /**
+ * Defines the order of the components of a given type {@code T}.
+ *
+ * @param <V> the vector type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 @FunctionalInterface
-public interface ComponentComparator<T> {
+public interface ComponentComparator<V> {
 
-	public int compare(final T a, final T b, final int index);
+	/**
+	 * Compares the components of {@code a} and {@code b} at the given
+	 * {@code index}.
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param index the vector index
+	 * @return a negative integer, zero, or a positive integer as the
+	 *         first argument is less than, equal to, or greater than the
+	 *         second.
+	 * @throws NullPointerException if either {@code a} or {@code b} is
+	 *        {@code null}
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         (index < 0 || index >= length(a)  || index >= length(b))
+	 */
+	public int compare(final V u, final V v, final int index);
 
-	public default Comparator<T> curry(final int index) {
+	/**
+	 * Return a comparator which takes the component at the give {@code index}
+	 * for comparison two objects of type {@code T}.
+	 *
+	 * @param index the component index
+	 * @return the component comparator for the given {@code index}
+	 */
+	public default Comparator<V> curry(final int index) {
 		return (a, b) -> compare(a, b, index);
 	}
 
