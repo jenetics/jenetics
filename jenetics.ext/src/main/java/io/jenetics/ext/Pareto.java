@@ -37,6 +37,7 @@ import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 import io.jenetics.ext.util.ComponentComparator;
+import io.jenetics.ext.util.ParetoSet;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
