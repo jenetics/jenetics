@@ -149,6 +149,7 @@ final class InsertionSorter extends IndexSorter {
 		return indexes;
 	}
 
+	/*
 	<T> int[] sort(final T[] array, final int[] indexes) {
 		for (int i = 1, n = array.length; i < n; ++i) {
 			int j = i;
@@ -164,5 +165,6 @@ final class InsertionSorter extends IndexSorter {
 
 		return indexes;
 	}
+	*/
 
 }
