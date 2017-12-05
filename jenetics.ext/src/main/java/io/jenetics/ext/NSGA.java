@@ -36,10 +36,11 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class NSGA {
+public interface NSGA<T> {
 
-	private NSGA() {
-	}
+	public Comparable<? super T> dominance();
+
+
 
 	public static <C extends Comparable<? super C>>
 	int[] ranks(final Seq<? extends C> population) {

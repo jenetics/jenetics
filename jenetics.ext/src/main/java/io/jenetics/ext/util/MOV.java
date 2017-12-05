@@ -28,20 +28,43 @@ import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.Seq;
 
 /**
+ * Defines the needed methods for a multi-objective fitness value.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> {
+public interface MOV<T> extends ComponentComparable<T> {
 
+	/**
+	 * Return the underlying data structure.
+	 *
+	 * @return the underlying data structure
+	 */
 	public T value();
 
-	public int dimension();
+	/**
+	 * Return the number of objectives.
+	 *
+	 * @return the number of objectives
+	 */
+	public int size();
 
+	/**
+	 *
+	 * @param index
+	 * @param other
+	 * @return
+	 */
 	public default int compareTo(final int index, final T other) {
 		return 0;
 	}
 
+	/**
+	 *
+	 * @param other
+	 * @return
+	 */
 	public int domination(final T other);
 
 	public default boolean dominates(final T other) {
@@ -59,6 +82,12 @@ public interface MOV<T> {
 
 	default int[] distances(final Seq<T> population) {
 		return null;
+	}
+
+	public static <T> double[] crowdingDistances(final Seq<? extends MOV<T>> front) {
+		final double[] distances = new double[front.size()];
+
+		return distances;
 	}
 
 	public static <T> double[] crowdingDistances(
@@ -115,7 +144,7 @@ final class DoubleMOV implements MOV<double[]> {
 	}
 
 	@Override
-	public int dimension() {
+	public int size() {
 		return _value.length;
 	}
 
