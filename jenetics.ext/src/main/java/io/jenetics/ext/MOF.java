@@ -25,6 +25,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import io.jenetics.internal.util.IndexSorter;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
+
 /**
  * Multi objective fitness value.
  *
@@ -50,6 +54,41 @@ public final class MOF<T> implements Comparable<MOF<T>>, Serializable {
 
 	public T get(final int index) {
 		return _fitness[index];
+	}
+
+	public int[] distances(final Seq<MOF<T>> population) {
+		final MSeq<MOF<T>> pop = population.asMSeq();
+		final int[] distances = new int[population.size()];
+
+		for (int i = 0; i < arity(); ++i) {
+			final int dim = i;
+
+			pop.sort((a, b) -> _comparator.compare(a.get(dim), b.get(dim)));
+
+			for (int j = 0; j < population.size(); ++j) {
+
+			}
+		}
+
+		return distances;
+	}
+
+	private int[] minmax(final Seq<MOF<T>> population, final int dim) {
+		final int[] mm = new int[]{0, 0};
+		for (int i = 0; i < population.size(); ++i) {
+			final MOF<T> mof = population.get(i);
+
+			int cmp = _comparator.compare(population.get(mm[0]).get(dim), mof.get(dim));
+			if (cmp >= 0) {
+				mm[0] = i;
+			}
+			cmp = _comparator.compare(population.get(mm[1]).get(dim), mof.get(dim));
+			if (cmp <= 0) {
+				mm[1] = i;
+			}
+		}
+
+		return mm;
 	}
 
 	@Override

@@ -149,4 +149,20 @@ final class InsertionSorter extends IndexSorter {
 		return indexes;
 	}
 
+	<T> int[] sort(final T[] array, final int[] indexes) {
+		for (int i = 1, n = array.length; i < n; ++i) {
+			int j = i;
+			while (j > 0) {
+				if (array[indexes[j - 1]] < array[indexes[j]]) {
+					swap(indexes, j - 1, j);
+				} else {
+					break;
+				}
+				--j;
+			}
+		}
+
+		return indexes;
+	}
+
 }

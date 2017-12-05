@@ -24,12 +24,14 @@ import static java.util.Objects.requireNonNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
@@ -45,17 +47,20 @@ public final class Pareto {
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, ISeq<Phenotype<G, C>>>
-	toParetoSet(final int maxElements) {
-		return null;
-		/*
+	toParetoSet(
+		final IntRange capacity,
+		final Comparator<? super Phenotype<G, C>> dominance,
+		final Function<? super List<Phenotype<G, C>>, double[]> distance
+	) {
 		return Collector.of(
-			MinMax::<EvolutionResult<G, C>>of,
-			MinMax::accept,
-			MinMax::combine,
-			mm -> mm.getMax() != null
-				? mm.getMax().withTotalGenerations(mm.getCount())
-				: null
-		);*/
+			() -> new ParetoSet<>(capacity, dominance, distance),
+			(set, result) -> {
+				if (set.isEmpty()) set.addAll(result.getPopulation());
+				else set.add(result.getBestPhenotype());
+			},
+			ParetoSet::merge,
+			ParetoSet::toISeq
+		);
 	}
 
 	/**

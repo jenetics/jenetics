@@ -21,17 +21,26 @@ package io.jenetics.ext;
 
 import java.util.Comparator;
 
+import io.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> {
+public interface MOV<T> extends Comparable<MOV<T>> {
 
 	public T value();
 
-	public Comparator<T> domination();
+	public int domination(final T other);
 
-	public Comparator<T>
+	public default boolean dominates(final T other) {
+		return domination(other) > 0;
+	}
+
+	default int[] distances(final Seq<T> population) {
+
+		return null;
+	}
 
 }
