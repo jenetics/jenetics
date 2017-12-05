@@ -19,17 +19,16 @@
  */
 package io.jenetics.ext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
+
+import io.jenetics.ext.util.Pareto;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

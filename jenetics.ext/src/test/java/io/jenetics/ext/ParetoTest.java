@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.util.Pareto;
 import io.jenetics.ext.util.Point2;
 
 /**
