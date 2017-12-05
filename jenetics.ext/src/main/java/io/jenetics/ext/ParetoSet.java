@@ -44,7 +44,7 @@ public final class ParetoSet<T> {
 
 	private final List<T> _population = new ArrayList<>();
 
-	ParetoSet(
+	public ParetoSet(
 		final IntRange capacity,
 		final Comparator<? super T> dominance,
 		final Function<? super List<T>, double[]> distances
@@ -54,7 +54,7 @@ public final class ParetoSet<T> {
 		_distances = requireNonNull(distances);
 	}
 
-	void add(final T element) {
+	public void add(final T element) {
 		final Iterator<T> iterator = _population.iterator();
 
 		while (iterator.hasNext()) {
@@ -83,20 +83,20 @@ public final class ParetoSet<T> {
 		_population.add(element);
 	}
 
-	void addAll(final Iterable<? extends T> elements) {
+	public void addAll(final Iterable<? extends T> elements) {
 		elements.forEach(this::add);
 	}
 
-	ParetoSet<T> merge(final ParetoSet<T> elements) {
+	public ParetoSet<T> merge(final ParetoSet<T> elements) {
 		elements._population.forEach(this::add);
 		return this;
 	}
 
-	boolean isEmpty() {
+	public boolean isEmpty() {
 		return _population.isEmpty();
 	}
 
-	ISeq<T> toISeq() {
+	public ISeq<T> toISeq() {
 		return ISeq.of(_population);
 	}
 
