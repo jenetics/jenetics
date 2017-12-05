@@ -163,6 +163,18 @@ public abstract class IndexSorter {
 	 * ************************************************************************/
 
 	/**
+	 * Return an {@code IndexSorter} suitable for the given array length.
+	 *
+	 * @param length the array length
+	 * @return the suitable {@code IndexSorter}
+	 */
+	public static IndexSorter sorter(final int length) {
+		return length < INSERTION_SORT_THRESHOLD
+			? InsertionSorter.INSTANCE
+			: HeapSorter.INSTANCE;
+	}
+
+	/**
 	 * Sorting the given {@code array} by changing the given {@code indexes}.
 	 * The order of the original {@code array} stays unchanged.
 	 *
