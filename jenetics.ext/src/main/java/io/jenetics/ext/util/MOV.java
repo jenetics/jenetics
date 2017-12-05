@@ -19,6 +19,10 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Comparator;
+
 import io.jenetics.util.Seq;
 
 /**
@@ -26,9 +30,15 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> extends Comparable<MOV<T>> {
+public interface MOV<T> {
 
 	public T value();
+
+	public int dimension();
+
+	public default int compareTo(final int index, final T other) {
+		return 0;
+	}
 
 	public int domination(final T other);
 
@@ -36,9 +46,53 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 		return domination(other) > 0;
 	}
 
+	public default boolean dominated(final T other) {
+		return domination(other) < 0;
+	}
+
+	default int rank(final Seq<T> population) {
+		domination(population.get(0));
+		return 0;
+	}
+
 	default int[] distances(final Seq<T> population) {
+		return null;
+	}
+
+	public static <T> double[] crowdingDistances(
+		final Seq<? extends T> front,
+		final ComponentComparator<? super T> comparator
+	) {
 
 		return null;
 	}
 
+	public static MOV<double[]> of(final double[] value) {
+		return new DoubleMOV(value);
+	}
+
+}
+
+final class DoubleMOV implements MOV<double[]> {
+
+	private final double[] _value;
+
+	DoubleMOV(final double[] value) {
+		_value = requireNonNull(value);
+	}
+
+	@Override
+	public double[] value() {
+		return _value;
+	}
+
+	@Override
+	public int dimension() {
+		return _value.length;
+	}
+
+	@Override
+	public int domination(final double[] other) {
+		return 0;
+	}
 }
