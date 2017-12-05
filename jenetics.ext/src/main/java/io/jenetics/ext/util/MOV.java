@@ -21,8 +21,10 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
+import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -61,10 +63,36 @@ public interface MOV<T> {
 
 	public static <T> double[] crowdingDistances(
 		final Seq<? extends T> front,
+		final int dimensions,
 		final ComponentComparator<? super T> comparator
 	) {
+		final double[] distances = new double[front.size()];
 
-		return null;
+		if (distances.length < 3) {
+			Arrays.fill(distances, Double.POSITIVE_INFINITY);
+		} else {
+			Arrays.fill(distances, 0);
+			final IndexSorter sorter = IndexSorter.sorter(front.size());
+			final int[] indexes = new int[front.size()];
+
+			for (int i = 0; i < dimensions; ++i) {
+				final int objective = i;
+				sorter.sort(
+					front,
+					IndexSorter.init(indexes),
+					(a, b) -> comparator.compare(objective, a, b)
+				);
+
+				distances[indexes[0]] = Double.POSITIVE_INFINITY;
+				distances[indexes[indexes.length - 1]] = Double.POSITIVE_INFINITY;
+
+				for (int j = 1; j < indexes.length - 1; ++j) {
+					distances[indexes[j]] += 1;
+				}
+			}
+		}
+
+		return distances;
 	}
 
 	public static MOV<double[]> of(final double[] value) {
