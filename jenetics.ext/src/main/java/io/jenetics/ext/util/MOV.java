@@ -17,9 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
-
-import java.util.Comparator;
+package io.jenetics.ext.util;
 
 import io.jenetics.util.Seq;
 
