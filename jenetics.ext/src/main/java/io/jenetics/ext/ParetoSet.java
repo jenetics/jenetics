@@ -36,7 +36,7 @@ import io.jenetics.util.IntRange;
  * @version !__version__!
  * @since !__version__!
  */
-final class ParetoSet<T> {
+public final class ParetoSet<T> {
 
 	private final IntRange _capacity;
 	private final Comparator<? super T> _dominance;
