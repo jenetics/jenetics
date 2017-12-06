@@ -52,7 +52,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 *
 	 * @return the comparator for comparing the elements of this MO vector
 	 */
-	public ComponentComparator<T> comparator();
+	public ElementComparator<T> comparator();
 
 	/**
 	 * Return the comparator which defines the (Pareto) dominance measure.
@@ -242,7 +242,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 			}
 
 			@Override
-			public ComponentComparator<T[]> comparator() {
+			public ElementComparator<T[]> comparator() {
 				return (u, v, i) -> comparator.compare(u[i], v[i]);
 			}
 
@@ -275,7 +275,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 			}
 
 			@Override
-			public ComponentComparator<int[]> comparator() {
+			public ElementComparator<int[]> comparator() {
 				return (u, v, i) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
@@ -316,7 +316,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 			}
 
 			@Override
-			public ComponentComparator<long[]> comparator() {
+			public ElementComparator<long[]> comparator() {
 				return (u, v, i) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
@@ -357,7 +357,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 			}
 
 			@Override
-			public ComponentComparator<double[]> comparator() {
+			public ElementComparator<double[]> comparator() {
 				return (u, v, i) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(

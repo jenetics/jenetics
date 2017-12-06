@@ -31,7 +31,7 @@ import java.util.Comparator;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface ComponentComparator<V> {
+public interface ElementComparator<V> {
 
 	/**
 	 * Compares the components of {@code a} and {@code b} at the given

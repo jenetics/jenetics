@@ -368,7 +368,7 @@ public final class Pareto {
 		final T u,
 		final T v,
 		final int length,
-		final ComponentComparator<? super T> comparator
+		final ElementComparator<? super T> comparator
 	) {
 		boolean udominated = false;
 		boolean vdominated = false;

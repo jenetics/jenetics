@@ -68,7 +68,7 @@ public final class Point2 implements MOV<Point2> {
 	}
 
 	@Override
-	public ComponentComparator<Point2> comparator() {
+	public ElementComparator<Point2> comparator() {
 		return (u, v, i) -> {
 			if (i < 0 || i > 1) {
 				throw new IndexOutOfBoundsException(format(
