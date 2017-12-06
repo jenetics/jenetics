@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 
@@ -63,7 +64,7 @@ public final class Point2 implements Vec<Point2> {
 	}
 
 	@Override
-	public int size() {
+	public int length() {
 		return 2;
 	}
 
@@ -84,38 +85,43 @@ public final class Point2 implements Vec<Point2> {
 
 	@Override
 	public Comparator<Point2> dominance() {
-		return (u, v) -> {
-			boolean adom = false;
-			boolean bdom = false;
+		return Point2::dominance;
+	}
 
-			int cmp = Double.compare(u._x, v._x);
-			if (cmp > 0) {
-				adom = true;
-			} else if (cmp < 0) {
-				bdom = true;
-			}
+	@Override
+	public int dominance(final Point2 other) {
+		requireNonNull(other);
 
-			cmp = Double.compare(u._y, v._y);
-			if (cmp > 0) {
-				adom = true;
-				if (bdom) {
-					return 0;
-				}
-			} else if (cmp < 0) {
-				bdom = true;
-				if (adom) {
-					return 0;
-				}
-			}
+		boolean adom = false;
+		boolean bdom = false;
 
-			if (adom == bdom) {
+		int cmp = Double.compare(_x, other._x);
+		if (cmp > 0) {
+			adom = true;
+		} else if (cmp < 0) {
+			bdom = true;
+		}
+
+		cmp = Double.compare(_y, other._y);
+		if (cmp > 0) {
+			adom = true;
+			if (bdom) {
 				return 0;
-			} else if (adom) {
-				return 1;
-			} else {
-				return -1;
 			}
-		};
+		} else if (cmp < 0) {
+			bdom = true;
+			if (adom) {
+				return 0;
+			}
+		}
+
+		if (adom == bdom) {
+			return 0;
+		} else if (adom) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 	@Override

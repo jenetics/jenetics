@@ -47,7 +47,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *
 	 * @return the number of vector elements
 	 */
-	public int size();
+	public int length();
 
 	/**
 	 * Return the comparator for comparing the elements of this MO vector.
@@ -254,7 +254,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			}
 
 			@Override
-			public int size() {
+			public int length() {
 				return array.length;
 			}
 		};
@@ -281,7 +281,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", size(), i
+							"Index out of bounds [0, %d): %d", length(), i
 						));
 					}
 
@@ -295,7 +295,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			}
 
 			@Override
-			public int size() {
+			public int length() {
 				return array.length;
 			}
 		};
@@ -322,7 +322,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", size(), i
+							"Index out of bounds [0, %d): %d", length(), i
 						));
 					}
 
@@ -336,7 +336,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			}
 
 			@Override
-			public int size() {
+			public int length() {
 				return array.length;
 			}
 		};
@@ -363,7 +363,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", size(), i
+							"Index out of bounds [0, %d): %d", length(), i
 						));
 					}
 
@@ -377,7 +377,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			}
 
 			@Override
-			public int size() {
+			public int length() {
 				return array.length;
 			}
 		};
