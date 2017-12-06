@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collector;
 
 import io.jenetics.util.ISeq;
@@ -117,43 +116,42 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		return _population.isEmpty();
 	}
 
+	/**
+	 * Return the elements of {@code this} pareto-front as {@link ISeq}.
+	 *
+	 * @return the elements of {@code this} pareto-front as {@link ISeq}
+	 */
 	public ISeq<T> toISeq() {
 		return ISeq.of(_population);
 	}
 
+	/**
+	 * Return a pareto-front collector. The natural order of the elements is
+	 * used as pareto-dominance order.
+	 *
+	 * @param <C> the element type
+	 * @return a new pareto-front collector
+	 */
+	public static <C extends Comparable<? super C>>
+	Collector<C, ?, ParetoFront<C>> toParetoFront() {
+		return toParetoFront(Comparator.naturalOrder());
+	}
 
-	public static <T>
-	Collector<T, ?, ParetoFront<T>>
-	toParetoSet(final Comparator<? super T> dominance) {
+	/**
+	 * Return a pareto-front collector with the given pareto {@code dominance}
+	 * measure.
+	 *
+	 * @param dominance the pareto dominance comparator
+	 * @param <T> the element type
+	 * @return a new pareto-front collector
+	 * @throws NullPointerException if the given {@code dominance} collector is
+	 *         {@code null}
+	 */
+	public static <T> Collector<T, ?, ParetoFront<T>>
+	toParetoFront(final Comparator<? super T> dominance) {
 		return Collector.of(
 			() -> new ParetoFront<>(dominance),
 			ParetoFront::add,
-			ParetoFront::merge
-		);
-	}
-
-	public static <A, B>
-	Collector<A, ?, ParetoFront<B>>
-	toParetoSet(
-		final Function<? super A, ? extends B> mapper,
-		final Comparator<? super B> dominance
-	) {
-		return Collector.of(
-			() -> new ParetoFront<>(dominance),
-			(set, result) -> set.add(mapper.apply(result)),
-			ParetoFront::merge
-		);
-	}
-
-	public static <A, B>
-	Collector<A, ?, ParetoFront<B>>
-	toFlattenedParetoSet(
-		final Function<? super A, ? extends Collection<B>> mapper,
-		final Comparator<? super B> dominance
-	) {
-		return Collector.of(
-			() -> new ParetoFront<>(dominance),
-			(set, result) -> set.addAll(mapper.apply(result)),
 			ParetoFront::merge
 		);
 	}
