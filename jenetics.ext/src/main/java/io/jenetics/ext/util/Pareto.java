@@ -248,7 +248,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @see MOV#dominance(Comparable[], Comparable[])
+	 * @see Vec#dominance(Comparable[], Comparable[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -267,7 +267,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @see MOV#dominance(Object[], Object[], Comparator)
+	 * @see Vec#dominance(Object[], Object[], Comparator)
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -294,7 +294,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @see MOV#dominance(int[], int[])
+	 * @see Vec#dominance(int[], int[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -316,7 +316,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @see MOV#dominance(long[], long[])
+	 * @see Vec#dominance(long[], long[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -338,7 +338,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @see MOV#dominance(double[], double[])
+	 * @see Vec#dominance(double[], double[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector

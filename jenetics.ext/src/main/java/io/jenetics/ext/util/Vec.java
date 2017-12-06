@@ -31,7 +31,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> extends Comparable<MOV<T>> {
+public interface Vec<T> extends Comparable<Vec<T>> {
 
 	/**
 	 * Return the underlying data structure.
@@ -104,7 +104,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
 	@Override
-	public default int compareTo(final MOV<T> other) {
+	public default int compareTo(final Vec<T> other) {
 		return dominance(other.value());
 	}
 
@@ -215,7 +215,7 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @return the given array wrapped into a {@code MOV} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <C extends Comparable<? super C>> MOV<C[]> of(final C[] array) {
+	public static <C extends Comparable<? super C>> Vec<C[]> of(final C[] array) {
 		return of(array, Comparator.naturalOrder());
 	}
 
@@ -228,14 +228,14 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @return the given array wrapped into a {@code MOV} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> MOV<T[]> of(
+	public static <T> Vec<T[]> of(
 		final T[] array,
 		final Comparator<? super T> comparator
 	) {
 		requireNonNull(array);
 		requireNonNull(comparator);
 
-		return new MOV<T[]>() {
+		return new Vec<T[]>() {
 			@Override
 			public T[] value() {
 				return array;
@@ -265,10 +265,10 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @return the given array wrapped into a {@code MOV} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static MOV<int[]> of(final int[] array) {
+	public static Vec<int[]> of(final int[] array) {
 		requireNonNull(array);
 
-		return new MOV<int[]>() {
+		return new Vec<int[]>() {
 			@Override
 			public int[] value() {
 				return array;
@@ -306,10 +306,10 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @return the given array wrapped into a {@code MOV} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static MOV<long[]> of(final long[] array) {
+	public static Vec<long[]> of(final long[] array) {
 		requireNonNull(array);
 
-		return new MOV<long[]>() {
+		return new Vec<long[]>() {
 			@Override
 			public long[] value() {
 				return array;
@@ -347,10 +347,10 @@ public interface MOV<T> extends Comparable<MOV<T>> {
 	 * @return the given array wrapped into a {@code MOV} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static MOV<double[]> of(final double[] array) {
+	public static Vec<double[]> of(final double[] array) {
 		requireNonNull(array);
 
-		return new MOV<double[]>() {
+		return new Vec<double[]>() {
 			@Override
 			public double[] value() {
 				return array;

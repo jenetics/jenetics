@@ -30,7 +30,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Point2 implements MOV<Point2> {
+public final class Point2 implements Vec<Point2> {
 	private final double _x;
 	private final double _y;
 
