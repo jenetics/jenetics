@@ -121,7 +121,7 @@ public final class IntList {
 	 * @param element element to be appended to this list
 	 */
 	public void add(final int element) {
-		ensureCapacity(_size + 1);
+		checkSize(_size + 1);
 		_data[_size++] = element;
 	}
 
@@ -138,7 +138,7 @@ public final class IntList {
 	public void add(final int index, final int element) {
 		rangeCheckForAdd(index);
 
-		ensureCapacity(_size + 1);
+		checkSize(_size + 1);
 		arraycopy(
 			_data, index,
 			_data, index + 1,
@@ -158,7 +158,7 @@ public final class IntList {
 	 */
 	public boolean addAll(final int[] elements) {
 		final int count = elements.length;
-		ensureCapacity(_size + count);
+		checkSize(_size + count);
 		arraycopy(elements, 0, _data, _size, count);
 		_size += count;
 
@@ -181,7 +181,7 @@ public final class IntList {
 		rangeCheckForAdd(index);
 
 		final int count = elements.length;
-		ensureCapacity(_size + count);
+		checkSize(_size + count);
 
 		final int moved = _size - index;
 		if (moved > 0) {
@@ -243,11 +243,11 @@ public final class IntList {
 		return Arrays.copyOf(_data, _size);
 	}
 
-	private void ensureCapacity(int minCapacity) {
-		ensureExplicitCapacity(calculateCapacity(_data, minCapacity));
+	private void checkSize(int minCapacity) {
+		checkExplicitSize(capacity(_data, minCapacity));
 	}
 
-	private void ensureExplicitCapacity(int minCapacity) {
+	private void checkExplicitSize(int minCapacity) {
 		_modCount++;
 		if (minCapacity - _data.length > 0) {
 			grow(minCapacity);
@@ -268,25 +268,25 @@ public final class IntList {
 			));
 	}
 
-	private static int calculateCapacity(int[] elementData, int minCapacity) {
+	private static int capacity(final int[] elementData, final int minCapacity) {
 		if (elementData == DEFAULT_EMPTY_DATA) {
 			return Math.max(DEFAULT_CAPACITY, minCapacity);
 		}
 		return minCapacity;
 	}
 
-	private void grow(final int minCapacity) {
-		final int oldCapacity = _data.length;
+	private void grow(final int size) {
+		final int oldSize = _data.length;
 
-		int newCapacity = oldCapacity + (oldCapacity >> 1);
-		if (newCapacity - minCapacity < 0) {
-			newCapacity = minCapacity;
+		int newSize = oldSize + (oldSize >> 1);
+		if (newSize - size < 0) {
+			newSize = size;
 		}
-		if (newCapacity - MAX_SIZE > 0) {
-			newCapacity = hugeCapacity(minCapacity);
+		if (newSize - MAX_SIZE > 0) {
+			newSize = hugeCapacity(size);
 		}
 
-		_data = Arrays.copyOf(_data, newCapacity);
+		_data = Arrays.copyOf(_data, newSize);
 	}
 
 	private static int hugeCapacity(final int minCapacity) {
