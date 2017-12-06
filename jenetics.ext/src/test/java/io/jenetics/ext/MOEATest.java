@@ -22,15 +22,10 @@ package io.jenetics.ext;
 import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 
-import java.util.Comparator;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.stream.Collector;
 
 import io.jenetics.DoubleGene;
-import io.jenetics.Genotype;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.TournamentSelector;
@@ -40,7 +35,6 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 
-import io.jenetics.ext.util.ParetoSet;
 import io.jenetics.ext.util.Point2;
 
 /**

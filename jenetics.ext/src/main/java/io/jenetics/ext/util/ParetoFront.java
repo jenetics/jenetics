@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  * @version !__version__!
  * @since !__version__!
  */
-public final class ParetoSet<T> extends AbstractSet<T> {
+public final class ParetoFront<T> extends AbstractSet<T> {
 
 	private final Comparator<? super T> _dominance;
 	private final List<T> _population = new ArrayList<>();
@@ -57,7 +57,7 @@ public final class ParetoSet<T> extends AbstractSet<T> {
 	 * @throws NullPointerException if the given {@code dominance} measure is
 	 *         {@code null}
 	 */
-	public ParetoSet(final Comparator<? super T> dominance) {
+	public ParetoFront(final Comparator<? super T> dominance) {
 		_dominance = requireNonNull(dominance);
 	}
 
@@ -97,7 +97,7 @@ public final class ParetoSet<T> extends AbstractSet<T> {
 	 * @return {@code this} pareto-set
 	 * @throws NullPointerException if the given parameter is {@code null}
 	 */
-	public ParetoSet<T> merge(final ParetoSet<? extends T> elements) {
+	public ParetoFront<T> merge(final ParetoFront<? extends T> elements) {
 		addAll(elements);
 		return this;
 	}
@@ -123,38 +123,38 @@ public final class ParetoSet<T> extends AbstractSet<T> {
 
 
 	public static <T>
-	Collector<T, ?, ParetoSet<T>>
+	Collector<T, ?, ParetoFront<T>>
 	toParetoSet(final Comparator<? super T> dominance) {
 		return Collector.of(
-			() -> new ParetoSet<>(dominance),
-			ParetoSet::add,
-			ParetoSet::merge
+			() -> new ParetoFront<>(dominance),
+			ParetoFront::add,
+			ParetoFront::merge
 		);
 	}
 
 	public static <A, B>
-	Collector<A, ?, ParetoSet<B>>
+	Collector<A, ?, ParetoFront<B>>
 	toParetoSet(
 		final Function<? super A, ? extends B> mapper,
 		final Comparator<? super B> dominance
 	) {
 		return Collector.of(
-			() -> new ParetoSet<>(dominance),
+			() -> new ParetoFront<>(dominance),
 			(set, result) -> set.add(mapper.apply(result)),
-			ParetoSet::merge
+			ParetoFront::merge
 		);
 	}
 
 	public static <A, B>
-	Collector<A, ?, ParetoSet<B>>
+	Collector<A, ?, ParetoFront<B>>
 	toFlattenedParetoSet(
 		final Function<? super A, ? extends Collection<B>> mapper,
 		final Comparator<? super B> dominance
 	) {
 		return Collector.of(
-			() -> new ParetoSet<>(dominance),
+			() -> new ParetoFront<>(dominance),
 			(set, result) -> set.addAll(mapper.apply(result)),
-			ParetoSet::merge
+			ParetoFront::merge
 		);
 	}
 

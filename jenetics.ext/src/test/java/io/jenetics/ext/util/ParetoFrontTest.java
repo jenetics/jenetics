@@ -32,14 +32,14 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ParetoSetTest {
+public class ParetoFrontTest {
 
 	@Test
 	public void add() {
 		final Random random = new Random(96969);
 
 		final List<Point2> elements = new ArrayList<>();
-		final ParetoSet<Point2> set = new ParetoSet<>(Point2::dominance);
+		final ParetoFront<Point2> set = new ParetoFront<>(Point2::dominance);
 
 		for (int i = 0; i < 500; ++i) {
 			final Point2 point = Point2.of(random.nextDouble(), random.nextDouble());
@@ -56,7 +56,7 @@ public class ParetoSetTest {
 	@Test
 	public void addAll() {
 		final Random random = new Random(96969);
-		final ParetoSet<Point2> set = new ParetoSet<>(Point2::dominance);
+		final ParetoFront<Point2> set = new ParetoFront<>(Point2::dominance);
 
 		final List<Point2> elements = IntStream.range(0, 500)
 			.mapToObj(i -> Point2.of(random.nextDouble(), random.nextDouble()))
