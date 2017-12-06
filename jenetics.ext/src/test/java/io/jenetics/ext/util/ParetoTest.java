@@ -32,8 +32,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.NSGA;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -125,11 +123,9 @@ public class ParetoTest {
 		final ISeq<Point2> fpoints = frontPoints(5, random);
 		final ISeq<Point2> cpoints = circlePoints(3, random);
 
-		System.out.println(Arrays.toString(NSGA.ranks(fpoints, Point2::dominance)));
 		System.out.println(Arrays.toString(Pareto.ranks(fpoints, Point2::dominance)));
 		System.out.println();
 
-		System.out.println(Arrays.toString(NSGA.ranks(fpoints.append(cpoints), Point2::dominance)));
 		System.out.println(Arrays.toString(Pareto.ranks(fpoints.append(cpoints), Point2::dominance)));
 		System.out.println();
 		System.out.println(Pareto.front(fpoints, Point2::dominance));

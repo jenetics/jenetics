@@ -33,6 +33,9 @@ import io.jenetics.util.Seq;
 import io.jenetics.ext.internal.IntList;
 
 /**
+ * This class contains static methods concerning <em>Pareto</em>- front and
+ * dominance calculations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -238,12 +241,14 @@ public final class Pareto {
 
 
 	/* *************************************************************************
-	 * 'dominates'
+	 * Common 'dominance' methods.
 	 * ************************************************************************/
 
 	/**
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see MOV#dominance(Comparable[], Comparable[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -261,6 +266,8 @@ public final class Pareto {
 	/**
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see MOV#dominance(Object[], Object[], Comparator)
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
@@ -287,6 +294,8 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
+	 * @see MOV#dominance(int[], int[])
+	 *
 	 * @param u the first vector
 	 * @param v the second vector
 	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
@@ -307,6 +316,8 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
+	 * @see MOV#dominance(long[], long[])
+	 *
 	 * @param u the first vector
 	 * @param v the second vector
 	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
@@ -326,6 +337,8 @@ public final class Pareto {
 	/**
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see MOV#dominance(double[], double[])
 	 *
 	 * @param u the first vector
 	 * @param v the second vector

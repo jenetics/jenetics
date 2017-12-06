@@ -103,6 +103,101 @@ public interface MOV<T> extends ComponentComparable<T>, Comparable<MOV<T>> {
 	}
 
 	/* *************************************************************************
+	 * Common 'dominance' methods.
+	 * ************************************************************************/
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see Pareto#dominance(Comparable[], Comparable[])
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param <C> the element type of vector <b>u</b> and <b>v</b>
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static <C extends Comparable<? super C>> int
+	dominance(final C[] u, final C[] v) {
+		return dominance(u, v, Comparator.naturalOrder());
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see Pareto#dominance(Object[], Object[], Comparator)
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param comparator the element comparator which is used for calculating
+	 *        the dominance
+	 * @param <T> the element type of vector <b>u</b> and <b>v</b>
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static <T> int
+	dominance(final T[] u, final T[] v, final Comparator<? super T> comparator) {
+		return Pareto.dominance(u, v, comparator);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see Pareto#dominance(int[], int[])
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominance(final int[] u, final int[] v) {
+		return Pareto.dominance(u, v);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see Pareto#dominance(long[], long[])
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominance(final long[] u, final long[] v) {
+		return Pareto.dominance(u, v);
+	}
+
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @see Pareto#dominance(double[], double[])
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code u.length != v.length}
+	 */
+	public static int dominance(final double[] u, final double[] v) {
+		return Pareto.dominance(u, v);
+	}
+
+	/* *************************************************************************
 	 * Static factory functions for wrapping ordinary arrays.
 	 * ************************************************************************/
 

@@ -19,12 +19,13 @@
  */
 package io.jenetics.ext;
 
+import static io.jenetics.ext.util.Pareto.front;
+
 import java.util.Comparator;
-import java.util.function.Function;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
-import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
 
@@ -38,12 +39,15 @@ import io.jenetics.ext.util.ParetoFront;
 public class ParetoSet {
 
 	public static<G extends Gene<?, G>, C extends Comparable<? super C>>
-	Collector<EvolutionResult<G, C>, ?, ISeq<Genotype<G>>>
+	Collector<EvolutionResult<G, C>, ?, ISeq<Phenotype<G, C>>>
 	toParetoSet(final Comparator<? super C> dominance) {
 		return Collector.of(
-			() -> new ParetoFront<>(dominance),
-			(set, result) -> set.add(mapper.apply(result)),
-			ParetoFront::merge
+			() -> new ParetoFront<Phenotype<G, C>>(
+				(a, b) -> dominance.compare(a.getFitness(), b.getFitness())
+			),
+			(set, result) -> set.addAll(front(result.getPopulation()).asList()),
+			ParetoFront::merge,
+			ParetoFront::toISeq
 		);
 	}
 

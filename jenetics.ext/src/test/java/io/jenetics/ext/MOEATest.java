@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext;
 
-import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -28,12 +27,14 @@ import java.util.Random;
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
+import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Point2;
 
@@ -53,8 +54,6 @@ public class MOEATest {
 	);
 
 	public static void main(final String[] args) {
-
-
 		final Engine<DoubleGene, Point2> engine = Engine.builder(problem)
 			.alterers(
 				new Mutator<>(0.1),
@@ -62,38 +61,11 @@ public class MOEATest {
 			.selector(new TournamentSelector<>(2))
 			.build();
 
-		/*
-		final ParetoSet<Point2> result = engine.stream()
-			.limit(1000)
-			.collect(ParetoSet.toParetoSet(
-				EvolutionResult::getBestFitness, Point2::dominance));
-		*/
+		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()
+			.limit(Limits.byFixedGeneration(50))
+			.collect(ParetoSet.toParetoSet(Point2::dominance));
 
-		/*
-		final ParetoSet<double[]> gt = engine.stream()
-			.limit(1000)
-			.collect(ParetoSet.toParetoSet(
-				MOEATest::ff,
-				(double[] a, double[] b) -> f(a).dominance(f(b))));
-		*/
-		//result.forEach(r -> System.out.println(r.x() + "\t" + r.y()));
+		result.forEach(r -> System.out.println(r.getFitness().x() + "\t" + r.getFitness().y()));
 	}
-
-	static double[] ff(final EvolutionResult<DoubleGene, Point2> er) {
-		return problem.codec().decode(er.getBestPhenotype().getGenotype());
-	}
-
-	/*
-	public static
-	Collector<EvolutionResult<DoubleGene, Point2>, ?, ParetoSet<Genotype<DoubleGene>>>
-	toParetoSet() {
-		return Collector.of(
-			() -> new ParetoSet<>(Comparator.comparing(EvolutionResult::getBestPhenotype)),
-			(set, result) -> set.add(result),
-			ParetoSet::merge,
-			set -> set.
-		);
-	}
-	*/
 
 }
