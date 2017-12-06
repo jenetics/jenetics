@@ -72,15 +72,15 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * Compares the {@code this} vector with the {@code other} at the given
 	 * component {@code index}.
 	 *
-	 * @param other the other vector
 	 * @param index the component index
+	 * @param other the other vector
 	 * @return a negative integer, zero, or a positive integer as
 	 *        {@code this[index]} is less than, equal to, or greater than
 	 *        {@code other[index]}
 	 * @throws NullPointerException if the {@code other} object is {@code null}
 	 */
-	public default int compareTo(final T other, final int index) {
-		return comparator().compare(data(), other, index);
+	public default int compareTo(final int index, final T other) {
+		return comparator().compare(index, data(), other);
 	}
 
 	/**
@@ -245,7 +245,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<T[]> comparator() {
-				return (u, v, i) -> comparator.compare(u[i], v[i]);
+				return (i, u, v) -> comparator.compare(u[i], v[i]);
 			}
 
 			@Override
@@ -278,7 +278,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<int[]> comparator() {
-				return (u, v, i) -> {
+				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
 							"Index out of bounds [0, %d): %d", size(), i
@@ -319,7 +319,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<long[]> comparator() {
-				return (u, v, i) -> {
+				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
 							"Index out of bounds [0, %d): %d", size(), i
@@ -360,7 +360,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<double[]> comparator() {
-				return (u, v, i) -> {
+				return (i, u, v) -> {
 					if (i < 0 || i > 1) {
 						throw new IndexOutOfBoundsException(format(
 							"Index out of bounds [0, %d): %d", size(), i

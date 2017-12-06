@@ -286,7 +286,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(a, b, i) -> comparator.compare(a[i], b[i])
+			(i, a, b) -> comparator.compare(a[i], b[i])
 		);
 	}
 
@@ -308,7 +308,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(a, b, i) -> Integer.compare(a[i], b[i])
+			(i, a, b) -> Integer.compare(a[i], b[i])
 		);
 	}
 
@@ -330,7 +330,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(a, b, i) -> Long.compare(a[i], b[i])
+			(i, a, b) -> Long.compare(a[i], b[i])
 		);
 	}
 
@@ -352,7 +352,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(a, b, i) -> Double.compare(a[i], b[i])
+			(i, a, b) -> Double.compare(a[i], b[i])
 		);
 	}
 
@@ -374,7 +374,7 @@ public final class Pareto {
 		boolean vdominated = false;
 
 		for (int i = 0; i < length; ++i) {
-			final int cmp = comparator.compare(u, v, i);
+			final int cmp = comparator.compare(i, u, v);
 
 			if (cmp > 0) {
 				udominated = true;

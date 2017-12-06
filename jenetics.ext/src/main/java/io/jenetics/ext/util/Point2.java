@@ -69,7 +69,7 @@ public final class Point2 implements Vec<Point2> {
 
 	@Override
 	public ElementComparator<Point2> comparator() {
-		return (u, v, i) -> {
+		return (i, u, v) -> {
 			if (i < 0 || i > 1) {
 				throw new IndexOutOfBoundsException(format(
 					"Index out of bounds [0, 2): %d", i
