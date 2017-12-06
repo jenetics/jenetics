@@ -210,11 +210,11 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * ************************************************************************/
 
 	/**
-	 * Wraps the given array into a {@code MOV} object.
+	 * Wraps the given array into a {@code Vec} object.
 	 *
 	 * @param array the wrapped array
 	 * @param <C> the array element type
-	 * @return the given array wrapped into a {@code MOV} object.
+	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C extends Comparable<? super C>> Vec<C[]> of(final C[] array) {
@@ -222,12 +222,12 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	}
 
 	/**
-	 * Wraps the given array into a {@code MOV} object.
+	 * Wraps the given array into a {@code Vec} object.
 	 *
 	 * @param array the wrapped array
 	 * @param comparator the (natural order) comparator of the array elements
 	 * @param <T> the array element type
-	 * @return the given array wrapped into a {@code MOV} object.
+	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> Vec<T[]> of(
@@ -250,7 +250,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public Comparator<T[]> dominance() {
-				return (u, v) -> Pareto.dominance(u, v, comparator);
+				return (u, v) -> Vec.dominance(u, v, comparator);
 			}
 
 			@Override
@@ -261,10 +261,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	}
 
 	/**
-	 * Wraps the given array into a {@code MOV} object.
+	 * Wraps the given array into a {@code Vec} object.
 	 *
 	 * @param array the wrapped array
-	 * @return the given array wrapped into a {@code MOV} object.
+	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<int[]> of(final int[] array) {
@@ -291,7 +291,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public Comparator<int[]> dominance() {
-				return Pareto::dominance;
+				return Vec::dominance;
 			}
 
 			@Override
@@ -302,10 +302,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	}
 
 	/**
-	 * Wraps the given array into a {@code MOV} object.
+	 * Wraps the given array into a {@code Vec} object.
 	 *
 	 * @param array the wrapped array
-	 * @return the given array wrapped into a {@code MOV} object.
+	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<long[]> of(final long[] array) {
@@ -332,7 +332,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public Comparator<long[]> dominance() {
-				return Pareto::dominance;
+				return Vec::dominance;
 			}
 
 			@Override
@@ -343,10 +343,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	}
 
 	/**
-	 * Wraps the given array into a {@code MOV} object.
+	 * Wraps the given array into a {@code Vec} object.
 	 *
 	 * @param array the wrapped array
-	 * @return the given array wrapped into a {@code MOV} object.
+	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<double[]> of(final double[] array) {
@@ -373,7 +373,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public Comparator<double[]> dominance() {
-				return Pareto::dominance;
+				return Vec::dominance;
 			}
 
 			@Override
