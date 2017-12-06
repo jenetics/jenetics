@@ -74,33 +74,33 @@ public interface NSGA<T> {
 	}
 
 	/*
-	public static <T> double[] crowdingDistance(final Seq<? extends T> front) {
-		final int n = front.size();
-		final double[] distances = new double[n];
+	public static <T> double[] crowdingDistances(
+		final Seq<? extends T> front,
+		final int dimensions,
+		final ComponentComparator<? super T> comparator
+	) {
+		final double[] distances = new double[front.size()];
 
-		if (n < 3) {
+		if (distances.length < 3) {
 			Arrays.fill(distances, Double.POSITIVE_INFINITY);
 		} else {
-			int numberOfObjectives = front.get(0).getNumberOfObjectives();
+			Arrays.fill(distances, 0);
+			final IndexSorter sorter = IndexSorter.sorter(front.size());
+			final int[] indexes = new int[front.size()];
 
-			for (int i = 0; i < numberOfObjectives; i++) {
-				front.sort(new ObjectiveComparator(i));
+			for (int i = 0; i < dimensions; ++i) {
+				final int objective = i;
+				sorter.sort(
+					front,
+					IndexSorter.init(indexes),
+					(a, b) -> comparator.compare(a, b, objective)
+				);
 
-				double minObjective = front.get(0).getObjective(i);
-				double maxObjective = front.get(n - 1).getObjective(i);
+				distances[indexes[0]] = Double.POSITIVE_INFINITY;
+				distances[indexes[indexes.length - 1]] = Double.POSITIVE_INFINITY;
 
-				front.get(0).setAttribute(CROWDING_ATTRIBUTE,
-					Double.POSITIVE_INFINITY);
-				front.get(n - 1).setAttribute(CROWDING_ATTRIBUTE,
-					Double.POSITIVE_INFINITY);
-
-				for (int j = 1; j < n - 1; j++) {
-					double distance = (Double)front.get(j).getAttribute(CROWDING_ATTRIBUTE);
-					distance += (front.get(j + 1).getObjective(i) -
-						front.get(j - 1).getObjective(i))
-						/ (maxObjective - minObjective);
-
-					front.get(j).setAttribute(CROWDING_ATTRIBUTE, distance);
+				for (int j = 1; j < indexes.length - 1; ++j) {
+					distances[indexes[j]] += 1;
 				}
 			}
 		}

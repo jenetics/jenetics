@@ -19,12 +19,10 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
-
-import io.jenetics.internal.util.IndexSorter;
-import io.jenetics.util.Seq;
+import java.util.Comparator;
 
 /**
  * Defines the needed methods for a multi-objective fitness value.
@@ -33,7 +31,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> extends ComponentComparable<T> {
+public interface MOV<T> extends ComponentComparable<T>, Comparable<MOV<T>> {
 
 	/**
 	 * Return the underlying data structure.
@@ -43,112 +41,243 @@ public interface MOV<T> extends ComponentComparable<T> {
 	public T value();
 
 	/**
-	 * Return the number of objectives.
+	 * Return the comparator for comparing the elements of this MO vector.
 	 *
-	 * @return the number of objectives
+	 * @return the comparator for comparing the elements of this MO vector
 	 */
-	public int size();
+	public ComponentComparator<T> comparator();
 
 	/**
+	 * Return the comparator which defines the (Pareto) dominance measure.
 	 *
-	 * @param index
-	 * @param other
-	 * @return
+	 * @return the comparator which defines the (Pareto) dominance measure
 	 */
-	public default int compareTo(final int index, final T other) {
-		return 0;
+	public Comparator<T> dominance();
+
+
+	/* *************************************************************************
+	 * Default methods derived from the methods above.
+	 * ************************************************************************/
+
+	/**
+	 * Compares the {@code this} vector with the {@code other} at the given
+	 * component {@code index}.
+	 *
+	 * @param other the other vector
+	 * @param index the component index
+	 * @return a negative integer, zero, or a positive integer as
+	 *        {@code this[index]} is less than, equal to, or greater than
+	 *        {@code other[index]}
+	 * @throws NullPointerException if the {@code other} object is {@code null}
+	 */
+	@Override
+	public default int compareTo(final T other, final int index) {
+		return comparator().compare(value(), other, index);
 	}
 
 	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 * <b>Pareto Dominance</b></a> of vector {@code value()} and {@code other}.
 	 *
-	 * @param other
-	 * @return
+	 * @param other the other vector
+	 * @return {@code 1} if <b>value()</b> ≻ <b>other</b>, {@code -1} if
+	 *         <b>other</b> ≻ <b>value()</b> and {@code 0} otherwise
+	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
-	public int dominance(final T other);
-
-	public default boolean dominates(final T other) {
-		return dominance(other) > 0;
+	public default int dominance(final T other) {
+		return dominance().compare(value(), other);
 	}
 
-	public default boolean dominated(final T other) {
-		return dominance(other) < 0;
+	/**
+	 * The default implementation uses the {@link #dominance(Object)} function
+	 * for defining a <b>partial</b> order of two vectors.
+	 *
+	 * @param other the other vector
+	 * @return {@code 1} if <b>value()</b> ≻ <b>other</b>, {@code -1} if
+	 *         <b>other</b> ≻ <b>value()</b> and {@code 0} otherwise
+	 * @throws NullPointerException if the {@code other} vector is {@code null}
+	 */
+	@Override
+	public default int compareTo(final MOV<T> other) {
+		return dominance(other.value());
 	}
 
-	default int rank(final Seq<T> population) {
-		dominance(population.get(0));
-		return 0;
+	/* *************************************************************************
+	 * Static factory functions for wrapping ordinary arrays.
+	 * ************************************************************************/
+
+	/**
+	 * Wraps the given array into a {@code MOV} object.
+	 *
+	 * @param array the wrapped array
+	 * @param <C> the array element type
+	 * @return the given array wrapped into a {@code MOV} object.
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>> MOV<C[]> of(final C[] array) {
+		return of(array, Comparator.naturalOrder());
 	}
 
-	default int[] distances(final Seq<T> population) {
-		return null;
-	}
-
-	public static <T> double[] crowdingDistances(final Seq<? extends MOV<T>> front) {
-		final double[] distances = new double[front.size()];
-
-		return distances;
-	}
-
-	public static <T> double[] crowdingDistances(
-		final Seq<? extends T> front,
-		final int dimensions,
-		final ComponentComparator<? super T> comparator
+	/**
+	 * Wraps the given array into a {@code MOV} object.
+	 *
+	 * @param array the wrapped array
+	 * @param comparator the (natural order) comparator of the array elements
+	 * @param <T> the array element type
+	 * @return the given array wrapped into a {@code MOV} object.
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T> MOV<T[]> of(
+		final T[] array,
+		final Comparator<? super T> comparator
 	) {
-		final double[] distances = new double[front.size()];
+		requireNonNull(array);
+		requireNonNull(comparator);
 
-		if (distances.length < 3) {
-			Arrays.fill(distances, Double.POSITIVE_INFINITY);
-		} else {
-			Arrays.fill(distances, 0);
-			final IndexSorter sorter = IndexSorter.sorter(front.size());
-			final int[] indexes = new int[front.size()];
-
-			for (int i = 0; i < dimensions; ++i) {
-				final int objective = i;
-				sorter.sort(
-					front,
-					IndexSorter.init(indexes),
-					(a, b) -> comparator.compare(a, b, objective)
-				);
-
-				distances[indexes[0]] = Double.POSITIVE_INFINITY;
-				distances[indexes[indexes.length - 1]] = Double.POSITIVE_INFINITY;
-
-				for (int j = 1; j < indexes.length - 1; ++j) {
-					distances[indexes[j]] += 1;
-				}
+		return new MOV<T[]>() {
+			@Override
+			public T[] value() {
+				return array;
 			}
-		}
 
-		return distances;
+			@Override
+			public ComponentComparator<T[]> comparator() {
+				return (u, v, i) -> comparator.compare(u[i], v[i]);
+			}
+
+			@Override
+			public Comparator<T[]> dominance() {
+				return (u, v) -> Pareto.dominance(u, v, comparator);
+			}
+
+			@Override
+			public int size() {
+				return array.length;
+			}
+		};
 	}
 
-	public static MOV<double[]> of(final double[] value) {
-		return new DoubleMOV(value);
+	/**
+	 * Wraps the given array into a {@code MOV} object.
+	 *
+	 * @param array the wrapped array
+	 * @return the given array wrapped into a {@code MOV} object.
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public static MOV<int[]> of(final int[] array) {
+		requireNonNull(array);
+
+		return new MOV<int[]>() {
+			@Override
+			public int[] value() {
+				return array;
+			}
+
+			@Override
+			public ComponentComparator<int[]> comparator() {
+				return (u, v, i) -> {
+					if (i < 0 || i > 1) {
+						throw new IndexOutOfBoundsException(format(
+							"Index out of bounds [0, %d): %d", size(), i
+						));
+					}
+
+					return Integer.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public Comparator<int[]> dominance() {
+				return Pareto::dominance;
+			}
+
+			@Override
+			public int size() {
+				return array.length;
+			}
+		};
 	}
 
-}
+	/**
+	 * Wraps the given array into a {@code MOV} object.
+	 *
+	 * @param array the wrapped array
+	 * @return the given array wrapped into a {@code MOV} object.
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public static MOV<long[]> of(final long[] array) {
+		requireNonNull(array);
 
-final class DoubleMOV implements MOV<double[]> {
+		return new MOV<long[]>() {
+			@Override
+			public long[] value() {
+				return array;
+			}
 
-	private final double[] _value;
+			@Override
+			public ComponentComparator<long[]> comparator() {
+				return (u, v, i) -> {
+					if (i < 0 || i > 1) {
+						throw new IndexOutOfBoundsException(format(
+							"Index out of bounds [0, %d): %d", size(), i
+						));
+					}
 
-	DoubleMOV(final double[] value) {
-		_value = requireNonNull(value);
+					return Long.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public Comparator<long[]> dominance() {
+				return Pareto::dominance;
+			}
+
+			@Override
+			public int size() {
+				return array.length;
+			}
+		};
 	}
 
-	@Override
-	public double[] value() {
-		return _value;
+	/**
+	 * Wraps the given array into a {@code MOV} object.
+	 *
+	 * @param array the wrapped array
+	 * @return the given array wrapped into a {@code MOV} object.
+	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 */
+	public static MOV<double[]> of(final double[] array) {
+		requireNonNull(array);
+
+		return new MOV<double[]>() {
+			@Override
+			public double[] value() {
+				return array;
+			}
+
+			@Override
+			public ComponentComparator<double[]> comparator() {
+				return (u, v, i) -> {
+					if (i < 0 || i > 1) {
+						throw new IndexOutOfBoundsException(format(
+							"Index out of bounds [0, %d): %d", size(), i
+						));
+					}
+
+					return Double.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public Comparator<double[]> dominance() {
+				return Pareto::dominance;
+			}
+
+			@Override
+			public int size() {
+				return array.length;
+			}
+		};
 	}
 
-	@Override
-	public int size() {
-		return _value.length;
-	}
-
-	@Override
-	public int dominance(final double[] other) {
-		return 0;
-	}
 }

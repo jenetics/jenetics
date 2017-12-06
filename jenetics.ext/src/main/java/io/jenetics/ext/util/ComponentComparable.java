@@ -33,8 +33,24 @@ package io.jenetics.ext.util;
  */
 public interface ComponentComparable<T> {
 
+	/**
+	 * Return the number of components.
+	 *
+	 * @return the number of components
+	 */
 	public int size();
 
-	public int compareTo(final int index, final T other);
+	/**
+	 * Compares the {@code this} vector with the {@code other} at the given
+	 * component {@code index}.
+	 *
+	 * @param other the other vector
+	 * @param index the component index
+	 * @return a negative integer, zero, or a positive integer as
+	 *        {@code this[index]} is less than, equal to, or greater than
+	 *        {@code other[index]}
+	 * @throws NullPointerException if the {@code other} object is {@code null}
+	 */
+	public int compareTo(final T other, final int index);
 
 }
