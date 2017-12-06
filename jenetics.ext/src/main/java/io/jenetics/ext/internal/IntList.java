@@ -39,8 +39,8 @@ public final class IntList {
 
 	private static final int MAX_SIZE = Integer.MAX_VALUE - 8;
 	private static final int DEFAULT_CAPACITY = 10;
-	private static final int[] EMPTY_DATA = {};
-	private static final int[] DEFAULT_EMPTY_DATA = {};
+	private static final int[] EMPTY_ARRAY = {};
+	private static final int[] DEFAULT_EMPTY_ARRAY = {};
 
 	private int[] _data;
 	private int _size;
@@ -49,18 +49,18 @@ public final class IntList {
 	/**
 	 * Constructs an empty list with the specified initial capacity.
 	 *
-	 * @param  initialCapacity  the initial capacity of the list
+	 * @param  capacity  the initial capacity of the list
 	 * @throws IllegalArgumentException if the specified initial capacity
 	 *         is negative
 	 */
-	public IntList(int initialCapacity) {
-		if (initialCapacity > 0) {
-			_data = new int[initialCapacity];
-		} else if (initialCapacity == 0) {
-			_data = EMPTY_DATA;
+	public IntList(int capacity) {
+		if (capacity > 0) {
+			_data = new int[capacity];
+		} else if (capacity == 0) {
+			_data = EMPTY_ARRAY;
 		} else {
 			throw new IllegalArgumentException(
-				"Illegal Capacity: "+ initialCapacity
+				"Illegal Capacity: "+ capacity
 			);
 		}
 	}
@@ -69,7 +69,7 @@ public final class IntList {
 	 * Constructs an empty list with an initial capacity of ten.
 	 */
 	public IntList() {
-		_data = DEFAULT_EMPTY_DATA;
+		_data = DEFAULT_EMPTY_ARRAY;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class IntList {
 	 * @param element element to be appended to this list
 	 */
 	public void add(final int element) {
-		checkSize(_size + 1);
+		ensureSize(_size + 1);
 		_data[_size++] = element;
 	}
 
@@ -136,9 +136,9 @@ public final class IntList {
 	 *         {@code (index < 0 || index > size())}
 	 */
 	public void add(final int index, final int element) {
-		rangeCheckForAdd(index);
+		addRangeCheck(index);
 
-		checkSize(_size + 1);
+		ensureSize(_size + 1);
 		arraycopy(
 			_data, index,
 			_data, index + 1,
@@ -158,7 +158,7 @@ public final class IntList {
 	 */
 	public boolean addAll(final int[] elements) {
 		final int count = elements.length;
-		checkSize(_size + count);
+		ensureSize(_size + count);
 		arraycopy(elements, 0, _data, _size, count);
 		_size += count;
 
@@ -178,10 +178,10 @@ public final class IntList {
 	 * @throws NullPointerException if the specified array is null
 	 */
 	public boolean addAll(final int index, final int[] elements) {
-		rangeCheckForAdd(index);
+		addRangeCheck(index);
 
 		final int count = elements.length;
-		checkSize(_size + count);
+		ensureSize(_size + count);
 
 		final int moved = _size - index;
 		if (moved > 0) {
@@ -211,7 +211,7 @@ public final class IntList {
 		_modCount++;
 		if (_size < _data.length) {
 			_data = _size == 0
-				? EMPTY_DATA
+				? EMPTY_ARRAY
 				: Arrays.copyOf(_data, _size);
 		}
 	}
@@ -243,14 +243,14 @@ public final class IntList {
 		return Arrays.copyOf(_data, _size);
 	}
 
-	private void checkSize(int minCapacity) {
-		checkExplicitSize(capacity(_data, minCapacity));
+	private void ensureSize(int size) {
+		ensureExplicitSize(capacity(_data, size));
 	}
 
-	private void checkExplicitSize(int minCapacity) {
+	private void ensureExplicitSize(int size) {
 		_modCount++;
-		if (minCapacity - _data.length > 0) {
-			grow(minCapacity);
+		if (size - _data.length > 0) {
+			grow(size);
 		}
 	}
 
@@ -261,18 +261,18 @@ public final class IntList {
 			));
 	}
 
-	private void rangeCheckForAdd(int index) {
+	private void addRangeCheck(int index) {
 		if (index > _size || index < 0)
 			throw new IndexOutOfBoundsException(format(
 				"Index: %d, Size: %d", index, _size
 			));
 	}
 
-	private static int capacity(final int[] elementData, final int minCapacity) {
-		if (elementData == DEFAULT_EMPTY_DATA) {
-			return Math.max(DEFAULT_CAPACITY, minCapacity);
+	private static int capacity(final int[] data, final int capacity) {
+		if (data == DEFAULT_EMPTY_ARRAY) {
+			return Math.max(DEFAULT_CAPACITY, capacity);
 		}
-		return minCapacity;
+		return capacity;
 	}
 
 	private void grow(final int size) {
