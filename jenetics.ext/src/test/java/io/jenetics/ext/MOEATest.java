@@ -36,6 +36,7 @@ import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.engine.ParetoSet;
 import io.jenetics.ext.util.Point2;
 
 /**
