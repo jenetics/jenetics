@@ -19,6 +19,10 @@
  */
 package io.jenetics.ext;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Comparator;
+
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
@@ -38,13 +42,22 @@ public class NSGA2Selector<
 	implements Selector<G, C>
 {
 
+	private final Comparator<? super C> _dominance;
+
+	public NSGA2Selector(final Comparator<? super C> dominance) {
+		_dominance = requireNonNull(dominance);
+	}
+
+	public NSGA2Selector() {
+		this(Comparator.naturalOrder());
+	}
+
 	@Override
 	public ISeq<Phenotype<G, C>> select(
 		final Seq<Phenotype<G, C>> population,
-		final int count, final Optimize opt
+		final int count,
+		final Optimize opt
 	) {
-
-
 		return null;
 	}
 
