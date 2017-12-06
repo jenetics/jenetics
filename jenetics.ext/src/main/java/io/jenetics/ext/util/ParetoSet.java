@@ -27,12 +27,20 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collector;
 
 import io.jenetics.util.ISeq;
 
 /**
+ * This class only contains non-dominate (Pareto-optimal) elements according to
+ * a given <em>dominance</em> measure. Like a {@link Set}, it only contains no
+ * duplicate entries. Unlike the usual set implementation, the iteration order
+ * is deterministic.
+ * <p>
+ * Inserting a new element has a time complexity of {@code O(n)}.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -40,25 +48,34 @@ import io.jenetics.util.ISeq;
 public final class ParetoSet<T> extends AbstractSet<T> {
 
 	private final Comparator<? super T> _dominance;
-
 	private final List<T> _population = new ArrayList<>();
 
+	/**
+	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
+	 *
+	 * @param dominance the <em>Pareto</em> dominance measure
+	 * @throws NullPointerException if the given {@code dominance} measure is
+	 *         {@code null}
+	 */
 	public ParetoSet(final Comparator<? super T> dominance) {
 		_dominance = requireNonNull(dominance);
 	}
 
 	@Override
 	public boolean add(final T element) {
-		final Iterator<T> iterator = _population.iterator();
+		requireNonNull(element);
 
+		boolean updated = false;
+		final Iterator<T> iterator = _population.iterator();
 		while (iterator.hasNext()) {
 			final T existing = iterator.next();
 
 			int cmp = _dominance.compare(element, existing);
-			if (cmp < 0) {
+			if (cmp > 0) {
 				iterator.remove();
-			} else if (cmp > 0 || element.equals(existing)) {
-				return true;
+				updated = true;
+			} else if (cmp < 0 || element.equals(existing)) {
+				return updated;
 			}
 		}
 
@@ -68,11 +85,19 @@ public final class ParetoSet<T> extends AbstractSet<T> {
 
 	@Override
 	public boolean addAll(final Collection<? extends T> elements) {
-		elements.forEach(this::add);
-		return true;
+		return elements.stream()
+			.mapToInt(e -> add(e) ? 1 : 0)
+			.sum() > 0;
 	}
 
-	public ParetoSet<T> merge(final ParetoSet<T> elements) {
+	/**
+	 * Add the all {@code elements} to {@code this} pareto-set.
+	 *
+	 * @param elements the elements to add
+	 * @return {@code this} pareto-set
+	 * @throws NullPointerException if the given parameter is {@code null}
+	 */
+	public ParetoSet<T> merge(final ParetoSet<? extends T> elements) {
 		addAll(elements);
 		return this;
 	}
