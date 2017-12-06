@@ -31,7 +31,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public interface MOV<T> extends ComponentComparable<T>, Comparable<MOV<T>> {
+public interface MOV<T> extends Comparable<MOV<T>> {
 
 	/**
 	 * Return the underlying data structure.
@@ -39,6 +39,13 @@ public interface MOV<T> extends ComponentComparable<T>, Comparable<MOV<T>> {
 	 * @return the underlying data structure
 	 */
 	public T value();
+
+	/**
+	 * Return the number of vector elements.
+	 *
+	 * @return the number of vector elements
+	 */
+	public int size();
 
 	/**
 	 * Return the comparator for comparing the elements of this MO vector.
@@ -70,7 +77,6 @@ public interface MOV<T> extends ComponentComparable<T>, Comparable<MOV<T>> {
 	 *        {@code other[index]}
 	 * @throws NullPointerException if the {@code other} object is {@code null}
 	 */
-	@Override
 	public default int compareTo(final T other, final int index) {
 		return comparator().compare(value(), other, index);
 	}
