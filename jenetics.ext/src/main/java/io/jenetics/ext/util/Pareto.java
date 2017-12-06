@@ -357,8 +357,6 @@ public final class Pareto {
 		final int length,
 		final ComponentComparator<? super T> comparator
 	) {
-		requireNonNull(comparator);
-
 		boolean udominated = false;
 		boolean vdominated = false;
 
