@@ -254,8 +254,8 @@ public final class Pareto {
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
 	public static <C extends Comparable<? super C>> int
-	dominates(final C[] u, final C[] v) {
-		return dominates(u, v, Comparator.naturalOrder());
+	dominance(final C[] u, final C[] v) {
+		return dominance(u, v, Comparator.naturalOrder());
 	}
 
 	/**
@@ -273,11 +273,11 @@ public final class Pareto {
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
 	public static <T> int
-	dominates(final T[] u, final T[] v, final Comparator<? super T> comparator) {
+	dominance(final T[] u, final T[] v, final Comparator<? super T> comparator) {
 		requireNonNull(comparator);
 		checkLength(u.length, v.length);
 
-		return dominates(
+		return dominance(
 			u, v, u.length,
 			(a, b, i) -> comparator.compare(a[i], b[i])
 		);
@@ -294,10 +294,10 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominates(final int[] u, final int[] v) {
+	public static int dominance(final int[] u, final int[] v) {
 		checkLength(u.length, v.length);
 
-		return dominates(
+		return dominance(
 			u, v, u.length,
 			(a, b, i) -> Integer.compare(a[i], b[i])
 		);
@@ -314,10 +314,10 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominates(final long[] u, final long[] v) {
+	public static int dominance(final long[] u, final long[] v) {
 		checkLength(u.length, v.length);
 
-		return dominates(
+		return dominance(
 			u, v, u.length,
 			(a, b, i) -> Long.compare(a[i], b[i])
 		);
@@ -334,10 +334,10 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominates(final double[] u, final double[] v) {
+	public static int dominance(final double[] u, final double[] v) {
 		checkLength(u.length, v.length);
 
-		return dominates(
+		return dominance(
 			u, v, u.length,
 			(a, b, i) -> Double.compare(a[i], b[i])
 		);
@@ -351,7 +351,7 @@ public final class Pareto {
 		}
 	}
 
-	private static <T> int dominates(
+	private static <T> int dominance(
 		final T u,
 		final T v,
 		final int length,
