@@ -33,8 +33,6 @@ import org.testng.annotations.Test;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.NSGA;
-import io.jenetics.ext.util.Pareto;
-import io.jenetics.ext.util.Point2;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -60,22 +58,22 @@ public class ParetoTest {
 		final ISeq<Point2> outline = circlePoints(1000, new Random(234));
 
 		for (Point2 p : outline) {
-			Assert.assertTrue(p.domination(p) == 0);
-			Assert.assertTrue(p.domination(Point2.of(0, 0)) > 0);
-			Assert.assertTrue(p.domination(Point2.of(1, 1)) < 0);
+			Assert.assertTrue(p.dominance(p) == 0);
+			Assert.assertTrue(p.dominance(Point2.of(0, 0)) > 0);
+			Assert.assertTrue(p.dominance(Point2.of(1, 1)) < 0);
 
-			Assert.assertTrue(Point2.of(0, 0).domination(p) < 0);
-			Assert.assertTrue(Point2.of(1, 1).domination(p) > 0);
+			Assert.assertTrue(Point2.of(0, 0).dominance(p) < 0);
+			Assert.assertTrue(Point2.of(1, 1).dominance(p) > 0);
 
 			for (Point2 p2 : outline) {
-				if (p.domination(p2) == 0) {
-					Assert.assertTrue(p2.domination(p) == 0);
+				if (p.dominance(p2) == 0) {
+					Assert.assertTrue(p2.dominance(p) == 0);
 				}
-				if (p.domination(p2) < 0) {
-					Assert.assertTrue(p2.domination(p) > 0);
+				if (p.dominance(p2) < 0) {
+					Assert.assertTrue(p2.dominance(p) > 0);
 				}
-				if (p.domination(p2) > 0) {
-					Assert.assertTrue(p2.domination(p) < 0);
+				if (p.dominance(p2) > 0) {
+					Assert.assertTrue(p2.dominance(p) < 0);
 				}
 			}
 		}
@@ -84,7 +82,7 @@ public class ParetoTest {
 	@Test(dataProvider = "paretoFronts")
 	public void frontOf(final ISeq<Point2> elements, final ISeq<Point2> front) {
 		Assert.assertEquals(
-			new HashSet<>(Pareto.front(elements, Point2::domination).asList()),
+			new HashSet<>(Pareto.front(elements, Point2::dominance).asList()),
 			new HashSet<>(front.asList())
 		);
 	}
@@ -127,14 +125,14 @@ public class ParetoTest {
 		final ISeq<Point2> fpoints = frontPoints(5, random);
 		final ISeq<Point2> cpoints = circlePoints(3, random);
 
-		System.out.println(Arrays.toString(NSGA.ranks(fpoints, Point2::domination)));
-		System.out.println(Arrays.toString(Pareto.ranks(fpoints, Point2::domination)));
+		System.out.println(Arrays.toString(NSGA.ranks(fpoints, Point2::dominance)));
+		System.out.println(Arrays.toString(Pareto.ranks(fpoints, Point2::dominance)));
 		System.out.println();
 
-		System.out.println(Arrays.toString(NSGA.ranks(fpoints.append(cpoints), Point2::domination)));
-		System.out.println(Arrays.toString(Pareto.ranks(fpoints.append(cpoints), Point2::domination)));
+		System.out.println(Arrays.toString(NSGA.ranks(fpoints.append(cpoints), Point2::dominance)));
+		System.out.println(Arrays.toString(Pareto.ranks(fpoints.append(cpoints), Point2::dominance)));
 		System.out.println();
-		System.out.println(Pareto.front(fpoints, Point2::domination));
+		System.out.println(Pareto.front(fpoints, Point2::dominance));
 	}
 
 }

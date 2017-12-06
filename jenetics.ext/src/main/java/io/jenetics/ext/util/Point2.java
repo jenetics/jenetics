@@ -54,7 +54,7 @@ public final class Point2 implements MOV<Point2> {
 	}
 
 	@Override
-	public int domination(final Point2 other) {
+	public int dominance(final Point2 other) {
 		boolean adom = false;
 		boolean bdom = false;
 

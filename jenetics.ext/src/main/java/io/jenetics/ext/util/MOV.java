@@ -64,18 +64,18 @@ public interface MOV<T> extends ComponentComparable<T> {
 	 * @param other
 	 * @return
 	 */
-	public int domination(final T other);
+	public int dominance(final T other);
 
 	public default boolean dominates(final T other) {
-		return domination(other) > 0;
+		return dominance(other) > 0;
 	}
 
 	public default boolean dominated(final T other) {
-		return domination(other) < 0;
+		return dominance(other) < 0;
 	}
 
 	default int rank(final Seq<T> population) {
-		domination(population.get(0));
+		dominance(population.get(0));
 		return 0;
 	}
 
@@ -148,7 +148,7 @@ final class DoubleMOV implements MOV<double[]> {
 	}
 
 	@Override
-	public int domination(final double[] other) {
+	public int dominance(final double[] other) {
 		return 0;
 	}
 }
