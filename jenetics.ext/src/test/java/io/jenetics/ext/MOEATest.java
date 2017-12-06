@@ -36,7 +36,7 @@ import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.engine.ParetoSet;
+import io.jenetics.ext.engine.MOEA;
 import io.jenetics.ext.util.Point2;
 
 /**
@@ -64,7 +64,7 @@ public class MOEATest {
 
 		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
-			.collect(ParetoSet.toParetoSet(Point2::dominance));
+			.collect(MOEA.toParetoSet(Point2::dominance));
 
 		result.forEach(r -> System.out.println(r.getFitness().x() + "\t" + r.getFitness().y()));
 	}

@@ -36,7 +36,10 @@ import io.jenetics.ext.util.ParetoFront;
  * @version !__version__!
  * @since !__version__!
  */
-public class ParetoSet {
+public final class MOEA {
+
+	private MOEA() {
+	}
 
 	public static<G extends Gene<?, G>, C extends Comparable<? super C>>
 	Collector<EvolutionResult<G, C>, ?, ISeq<Phenotype<G, C>>>
