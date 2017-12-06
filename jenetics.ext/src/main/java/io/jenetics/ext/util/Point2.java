@@ -58,7 +58,7 @@ public final class Point2 implements Vec<Point2> {
 	}
 
 	@Override
-	public Point2 value() {
+	public Point2 data() {
 		return this;
 	}
 

@@ -27,6 +27,8 @@ import java.util.Comparator;
 /**
  * Defines the needed methods for a multi-objective fitness value.
  *
+ * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -38,7 +40,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *
 	 * @return the underlying data structure
 	 */
-	public T value();
+	public T data();
 
 	/**
 	 * Return the number of vector elements.
@@ -78,7 +80,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the {@code other} object is {@code null}
 	 */
 	public default int compareTo(final T other, final int index) {
-		return comparator().compare(value(), other, index);
+		return comparator().compare(data(), other, index);
 	}
 
 	/**
@@ -91,7 +93,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
 	public default int dominance(final T other) {
-		return dominance().compare(value(), other);
+		return dominance().compare(data(), other);
 	}
 
 	/**
@@ -105,7 +107,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 */
 	@Override
 	public default int compareTo(final Vec<T> other) {
-		return dominance(other.value());
+		return dominance(other.data());
 	}
 
 	/* *************************************************************************
@@ -237,7 +239,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 		return new Vec<T[]>() {
 			@Override
-			public T[] value() {
+			public T[] data() {
 				return array;
 			}
 
@@ -270,7 +272,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 		return new Vec<int[]>() {
 			@Override
-			public int[] value() {
+			public int[] data() {
 				return array;
 			}
 
@@ -311,7 +313,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 		return new Vec<long[]>() {
 			@Override
-			public long[] value() {
+			public long[] data() {
 				return array;
 			}
 
@@ -352,7 +354,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 		return new Vec<double[]>() {
 			@Override
-			public double[] value() {
+			public double[] data() {
 				return array;
 			}
 
