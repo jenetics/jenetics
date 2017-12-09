@@ -23,9 +23,11 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
@@ -45,9 +47,71 @@ public final class Pareto {
 	private Pareto() {
 	}
 
+	/**
+	 * The crowding distance value of a solution provides an estimate of the
+	 * density of solutions surrounding that solution. The <em>crowding
+	 * distance</em> value of a particular solution is the average distance of
+	 * its two neighboring solutions.
+	 *
+	 * @param set the point set used for calculating the <em>crowding distance</em>
+	 * @param comparator the comparator which defines the (total) order of the
+	 *        vector elements of {@code T}
+	 * @param distance the distance of two vector elements
+	 * @param dim the dimension of vector type {@code T}
+	 * @param <T> the vector type
+	 * @return the crowded distances fo the {@code set} points
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if {@code dim < 2}
+	 */
+	public static <T> double[] crowdingDistance(
+		final Seq<? extends T> set,
+		final ElementComparator<? super T> comparator,
+		final ElementDistance<? super T> distance,
+		final int dim
+	) {
+		requireNonNull(set);
+		requireNonNull(comparator);
+		requireNonNull(distance);
+		if (dim < 2) {
+			throw new IllegalArgumentException(format(
+				"Dim is smaller than two: %d", dim
+			));
+		}
 
-	public static <T> double[] crowdingDistance(final Seq<? extends T> set) {
-		return null;
+		final double[] result = new double[set.size()];
+		if (set.size() < 3) {
+			Arrays.fill(result, Double.POSITIVE_INFINITY);
+		} else {
+			final int[] indexes = new int[set.size()];
+			final IndexSorter sorter = IndexSorter.sorter(set.size());
+
+			for (int m = 0; m < dim; ++m) {
+				sorter.sort(set, IndexSorter.init(indexes), comparator.ofIndex(m));
+
+				result[indexes[0]] = Double.POSITIVE_INFINITY;
+				result[indexes[set.size() - 1]] = Double.POSITIVE_INFINITY;
+
+				final T max = set.get(indexes[0]);
+				final T min = set.get(indexes[set.size() - 1]);
+				final double dm = distance.distance(m, max, min);
+
+				if (Double.compare(dm, 0) == 0) {
+					Arrays.fill(result, 0.0);
+				} else {
+					for (int i = 1; i < set.size() - 1; ++i) {
+						final double d = distance.distance(
+							m,
+							set.get(indexes[i - 1]),
+							set.get(indexes[i + 1])
+						);
+
+						result[indexes[i]] += d/dm;
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	/* *************************************************************************

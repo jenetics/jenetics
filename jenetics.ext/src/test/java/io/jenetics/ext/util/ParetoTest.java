@@ -131,4 +131,23 @@ public class ParetoTest {
 		System.out.println(Pareto.front(fpoints, Point2::dominance));
 	}
 
+	@Test
+	public void crowdedDistance() {
+		final Random random = new Random(123);
+		final ISeq<Point2> cpoints = circlePoints(10, random);
+		System.out.println(cpoints);
+
+		final double[] dist = Pareto.crowdingDistance(
+			cpoints,
+			(i, u, v) -> i == 0
+				? Double.compare(u.x(), v.x())
+				: Double.compare(u.y(), v.y()),
+			(i, u, v) -> i == 0 ? u.x() - v.x() : u.y() - v.y(),
+			2
+		);
+
+		System.out.println(Arrays.toString(dist));
+
+	}
+
 }

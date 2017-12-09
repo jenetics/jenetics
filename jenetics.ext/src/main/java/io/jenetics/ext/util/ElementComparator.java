@@ -57,7 +57,7 @@ public interface ElementComparator<V> {
 	 * @param index the component index
 	 * @return the component comparator for the given {@code index}
 	 */
-	public default Comparator<V> curry(final int index) {
+	public default Comparator<V> ofIndex(final int index) {
 		return (a, b) -> compare(index, a, b);
 	}
 
