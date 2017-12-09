@@ -45,6 +45,11 @@ public final class Pareto {
 	private Pareto() {
 	}
 
+
+	public static <T> double[] crowdingDistance(final Seq<? extends T> set) {
+		return null;
+	}
+
 	/* *************************************************************************
 	 * 'ranks'
 	 * ************************************************************************/
