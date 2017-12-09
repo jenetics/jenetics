@@ -19,7 +19,18 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.function.ToDoubleBiFunction;
+
 /**
+ * Defines the distance of two elements of a given <em>vector</em> type {@code V}.
+ * The following example creates an {@code ElementDistance} function for a
+ * {@code double[] array}:
+ * <pre>{@code
+ * final ElementDistance<double[]> dist = (i, u, v) -> u[i] - v[i];
+ * }</pre>
+ *
+ * @param <V> the vector type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -27,6 +38,28 @@ package io.jenetics.ext.util;
 @FunctionalInterface
 public interface ElementDistance<V> {
 
+	/**
+	 * Calculates the distance of two vector elements at the given {@code index}.
+	 * E.g.
+	 * <pre>{@code
+	 * final ElementDistance<double[]> dist = (i, u, v) -> u[i] - v[i];
+	 * }</pre>
+	 *
+	 * @param index the vector index
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @return the distance of the two element vectors
+	 */
 	public double distance(final int index, final V u, final V v);
+
+	/**
+	 * Return a function which calculates the distance of two vector elements.
+	 *
+	 * @param index the vector index
+	 * @return a function which calculates the distance of two vector elements
+	 */
+	public default ToDoubleBiFunction<V, V> ofIndex(final int index) {
+		return (u, v) -> distance(index, u, v);
+	}
 
 }

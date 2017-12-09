@@ -22,7 +22,13 @@ package io.jenetics.ext.util;
 import java.util.Comparator;
 
 /**
- * Defines the order of the components of a given type {@code T}.
+ * Defines the order of two elements of a given <em>vector</em> type {@code V}.
+ * The following example creates an {@code ElementComparator} function for a
+ * {@code double[] array}:
+ * <pre>{@code
+ * final ElementComparator<double[]> comp =
+ *     (i, u, v) -> Double.compare(u[i], v[i]);
+ * }</pre>
  *
  * @param <V> the vector type
  *
@@ -35,7 +41,11 @@ public interface ElementComparator<V> {
 
 	/**
 	 * Compares the components of {@code a} and {@code b} at the given
-	 * {@code index}.
+	 * {@code index}. E.g.
+	 * <pre>{@code
+	 * final ElementComparator<double[]> comp =
+	 *     (i, u, v) -> Double.compare(u[i], v[i]);
+	 * }</pre>
 	 *
 	 * @param index the vector index
 	 * @param u the first vector
