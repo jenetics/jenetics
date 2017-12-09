@@ -21,6 +21,8 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 /**
  * Represents the program variables. The {@code Var} operation is a termination
  * operation, which just returns the value with the defined index of the input
@@ -52,7 +54,7 @@ import static java.util.Objects.requireNonNull;
  * @version 3.9
  * @since 3.9
  */
-public final class Var<T> implements Op<T> {
+public final class Var<T> implements Op<T>, Serializable {
 
 	private final String _name;
 	private final int _index;

@@ -19,6 +19,9 @@
  */
 package io.jenetics.prog;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -31,6 +34,8 @@ import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 import io.jenetics.prog.op.Var;
+
+import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
 
 /**
@@ -145,6 +150,21 @@ public class ProgramChromosomeTest {
 
 		System.out.println(tree);
 		System.out.println(Tree.toCompactString(tree));
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final TreeNode<Op<Double>> tree = Program.of(
+			6,
+			OPERATIONS,
+			TERMINALS
+		);
+		final ProgramChromosome<Double> chromosome =
+			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
+
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IO.object.write(chromosome, out);
+
 	}
 
 }

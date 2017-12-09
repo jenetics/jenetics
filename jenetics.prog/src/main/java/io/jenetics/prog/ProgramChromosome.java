@@ -22,6 +22,7 @@ package io.jenetics.prog;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.function.Predicate;
 
 import io.jenetics.ext.AbstractTreeChromosome;
@@ -256,7 +257,7 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(program, ProgramChromosome::isSuperValid, operations, terminals);
+		return of(program, (Predicate<? super ProgramChromosome<A>> & Serializable)ProgramChromosome::isSuperValid, operations, terminals);
 	}
 
 	/**
