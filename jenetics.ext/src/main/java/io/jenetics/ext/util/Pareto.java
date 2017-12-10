@@ -57,6 +57,7 @@ public final class Pareto {
 	 * @param <T> the vector type
 	 * @return the crowded distances fo the {@code set} points
 	 * @throws NullPointerException if the input {@code set} is {@code null}
+	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
 	 */
 	public static <T> double[] crowdingDistance(final Seq<? extends Vec<T>> set) {
 		return set.isEmpty()
@@ -151,12 +152,11 @@ public final class Pareto {
 	 *      APRIL 2002.</em>
 	 *
 	 * @param set the input set
-	 * @param <C> the element type
+	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <C extends Comparable<? super C>>
-	int[] ranks(final Seq<? extends C> set) {
-		return ranks(set, Comparator.naturalOrder());
+	public static <T> int[] ranks(final Seq<? extends Vec<T>> set) {
+		return ranks(set, Vec::dominance);
 	}
 
 	/**
@@ -272,13 +272,12 @@ public final class Pareto {
 	 *      pp. 257-271, 1999.</em>
 	 *
 	 * @param set the input set
-	 * @param <C> the element type
+	 * @param <T> the element type
 	 * @return the elements which are part of the pareto set
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <C extends Comparable<? super C>> ISeq<C>
-	front(final Iterable<? extends C> set) {
-		return front(set, Comparator.naturalOrder());
+	public static <T> ISeq<Vec<T>> front(final Iterable<? extends Vec<T>> set) {
+		return front(set, Vec::dominance);
 	}
 
 	/**
