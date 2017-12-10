@@ -71,15 +71,18 @@ public final class Point2 implements Vec<Point2> {
 	@Override
 	public ElementComparator<Point2> comparator() {
 		return (i, u, v) -> {
-			if (i < 0 || i > 1) {
-				throw new IndexOutOfBoundsException(format(
-					"Index out of bounds [0, 2): %d", i
-				));
-			}
-
+			Vecs.checkIndex(i, 2);
 			return i == 0
 				? Double.compare(u._x, v._x)
 				: Double.compare(u._y, v._y);
+		};
+	}
+
+	@Override
+	public ElementDistance<Point2> distance() {
+		return (i, u, v) -> {
+			Vecs.checkIndex(i, 2);
+			return i == 0 ? u.x() - v.x() : u.y() - v.y();
 		};
 	}
 

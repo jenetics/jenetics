@@ -19,8 +19,8 @@
  */
 package io.jenetics.ext.util;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Comparator;
 
@@ -57,6 +57,15 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	public ElementComparator<T> comparator();
 
 	/**
+	 * Return a function which calculates the element distance of a vector at a
+	 * given element index.
+	 *
+	 * @return a function which calculates the element distance of a vector at a
+	 *         given element index
+	 */
+	public ElementDistance<T> distance();
+
+	/**
 	 * Return the comparator which defines the (Pareto) dominance measure.
 	 *
 	 * @return the comparator which defines the (Pareto) dominance measure
@@ -78,9 +87,26 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *        {@code this[index]} is less than, equal to, or greater than
 	 *        {@code other[index]}
 	 * @throws NullPointerException if the {@code other} object is {@code null}
+	 * @throws IllegalArgumentException if the {@code index} is out of the valid
+	 *         range {@code [0, length())}
 	 */
-	public default int compareTo(final int index, final T other) {
-		return comparator().compare(index, data(), other);
+	public default int compareTo(final int index, final Vec<T> other) {
+		return comparator().compare(index, data(), other.data());
+	}
+
+	/**
+	 * Calculates the distance between two vector elements at the given
+	 * {@code index}.
+	 *
+	 * @param index the vector element index
+	 * @param other the second vector
+	 * @return the distance between two vector elements
+	 * @throws NullPointerException if the {@code other} vector is {@code null}
+	 * @throws IllegalArgumentException if the {@code index} is out of the valid
+	 *         range {@code [0, length())}
+	 */
+	public default double distance(final int index, final Vec<T> other) {
+		return distance().distance(index, data(), other.data());
 	}
 
 	/**
@@ -92,12 +118,12 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *         <b>other</b> ≻ <b>value()</b> and {@code 0} otherwise
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
-	public default int dominance(final T other) {
-		return dominance().compare(data(), other);
+	public default int dominance(final Vec<T> other) {
+		return dominance().compare(data(), other.data());
 	}
 
 	/**
-	 * The default implementation uses the {@link #dominance(Object)} function
+	 * The default implementation uses the {@link #dominance(Vec)} function
 	 * for defining a <b>partial</b> order of two vectors.
 	 *
 	 * @param other the other vector
@@ -107,7 +133,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 */
 	@Override
 	public default int compareTo(final Vec<T> other) {
-		return dominance(other.data());
+		return dominance(other);
 	}
 
 	/* *************************************************************************
@@ -218,7 +244,20 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C extends Comparable<? super C>> Vec<C[]> of(final C[] array) {
-		return of(array, Comparator.naturalOrder());
+		return of(
+			array,
+			(i, u, v) -> {
+				Vecs.checkIndex(i, array.length);
+				return clamp(u[i].compareTo(v[i]), -1, 1);
+			}
+		);
+	}
+
+	public static <C extends Comparable<? super C>> Vec<C[]> of(
+		final C[] array,
+		final ElementDistance<C[]> distance
+	) {
+		return of(array, Comparator.naturalOrder(), distance);
 	}
 
 	/**
@@ -226,13 +265,15 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *
 	 * @param array the wrapped array
 	 * @param comparator the (natural order) comparator of the array elements
+	 * @param distance the distance function between two vector elements
 	 * @param <T> the array element type
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> Vec<T[]> of(
 		final T[] array,
-		final Comparator<? super T> comparator
+		final Comparator<? super T> comparator,
+		final ElementDistance<T[]> distance
 	) {
 		requireNonNull(array);
 		requireNonNull(comparator);
@@ -245,7 +286,15 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<T[]> comparator() {
-				return (i, u, v) -> comparator.compare(u[i], v[i]);
+				return (i, u, v) -> {
+					Vecs.checkIndex(i, array.length);
+					return comparator.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public ElementDistance<T[]> distance() {
+				return distance;
 			}
 
 			@Override
@@ -279,13 +328,16 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			@Override
 			public ElementComparator<int[]> comparator() {
 				return (i, u, v) -> {
-					if (i < 0 || i > 1) {
-						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", length(), i
-						));
-					}
-
+					Vecs.checkIndex(i, array.length);
 					return Integer.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public ElementDistance<int[]> distance() {
+				return (i, u, v) -> {
+					Vecs.checkIndex(i, array.length);
+					return u[i] - v[i];
 				};
 			}
 
@@ -320,13 +372,16 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			@Override
 			public ElementComparator<long[]> comparator() {
 				return (i, u, v) -> {
-					if (i < 0 || i > 1) {
-						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", length(), i
-						));
-					}
-
+					Vecs.checkIndex(i, array.length);
 					return Long.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public ElementDistance<long[]> distance() {
+				return (i, u, v) -> {
+					Vecs.checkIndex(i, array.length);
+					return u[i] - v[i];
 				};
 			}
 
@@ -361,13 +416,16 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			@Override
 			public ElementComparator<double[]> comparator() {
 				return (i, u, v) -> {
-					if (i < 0 || i > 1) {
-						throw new IndexOutOfBoundsException(format(
-							"Index out of bounds [0, %d): %d", length(), i
-						));
-					}
-
+					Vecs.checkIndex(i, array.length);
 					return Double.compare(u[i], v[i]);
+				};
+			}
+
+			@Override
+			public ElementDistance<double[]> distance() {
+				return (i, u, v) -> {
+					Vecs.checkIndex(i, array.length);
+					return u[i] - v[i];
 				};
 			}
 

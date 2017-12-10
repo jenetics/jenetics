@@ -47,6 +47,19 @@ public final class Pareto {
 	private Pareto() {
 	}
 
+	public static <T> double[] crowdingDistance(final Seq<? extends Vec<T>> set) {
+		if (set.isEmpty()) {
+			return new double[0];
+		}
+
+		return crowdingDistance(
+			set,
+			(i, u, v) -> u.compareTo(i, v),
+			(i, u, v) -> u.distance(i, v),
+			set.get(0).length()
+		);
+	}
+
 	/**
 	 * The crowding distance value of a solution provides an estimate of the
 	 * density of solutions surrounding that solution. The <em>crowding
