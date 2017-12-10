@@ -92,8 +92,9 @@ public final class Point2 implements Vec<Point2> {
 	}
 
 	@Override
-	public int dominance(final Point2 other) {
-		requireNonNull(other);
+	public int dominance(final Vec<Point2> point) {
+		requireNonNull(point);
+		final Point2 other = point.data();
 
 		boolean adom = false;
 		boolean bdom = false;
