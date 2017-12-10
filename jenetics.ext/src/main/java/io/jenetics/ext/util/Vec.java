@@ -81,8 +81,8 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * Compares the {@code this} vector with the {@code other} at the given
 	 * component {@code index}.
 	 *
-	 * @param index the component index
 	 * @param other the other vector
+	 * @param index the component index
 	 * @return a negative integer, zero, or a positive integer as
 	 *        {@code this[index]} is less than, equal to, or greater than
 	 *        {@code other[index]}
@@ -90,23 +90,23 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code index} is out of the valid
 	 *         range {@code [0, length())}
 	 */
-	public default int compareTo(final int index, final Vec<T> other) {
-		return comparator().compare(index, data(), other.data());
+	public default int compareTo(final Vec<T> other, final int index) {
+		return comparator().compare(data(), other.data(), index);
 	}
 
 	/**
 	 * Calculates the distance between two vector elements at the given
 	 * {@code index}.
 	 *
-	 * @param index the vector element index
 	 * @param other the second vector
+	 * @param index the vector element index
 	 * @return the distance between two vector elements
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 * @throws IllegalArgumentException if the {@code index} is out of the valid
 	 *         range {@code [0, length())}
 	 */
-	public default double distance(final int index, final Vec<T> other) {
-		return distance().distance(index, data(), other.data());
+	public default double distance(final Vec<T> other, final int index) {
+		return distance().distance(data(), other.data(), index);
 	}
 
 	/**
@@ -246,7 +246,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	public static <C extends Comparable<? super C>> Vec<C[]> of(final C[] array) {
 		return of(
 			array,
-			(i, u, v) -> {
+			(u, v, i) -> {
 				Vecs.checkIndex(i, array.length);
 				return clamp(u[i].compareTo(v[i]), -1, 1);
 			}
@@ -286,7 +286,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<T[]> comparator() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return comparator.compare(u[i], v[i]);
 				};
@@ -327,7 +327,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<int[]> comparator() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return Integer.compare(u[i], v[i]);
 				};
@@ -335,7 +335,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementDistance<int[]> distance() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return u[i] - v[i];
 				};
@@ -371,7 +371,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<long[]> comparator() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return Long.compare(u[i], v[i]);
 				};
@@ -379,7 +379,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementDistance<long[]> distance() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return u[i] - v[i];
 				};
@@ -415,7 +415,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<double[]> comparator() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return Double.compare(u[i], v[i]);
 				};
@@ -423,7 +423,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementDistance<double[]> distance() {
-				return (i, u, v) -> {
+				return (u, v, i) -> {
 					Vecs.checkIndex(i, array.length);
 					return u[i] - v[i];
 				};

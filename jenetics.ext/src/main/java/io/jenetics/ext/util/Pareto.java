@@ -63,8 +63,8 @@ public final class Pareto {
 			? new double[0]
 			: crowdingDistance(
 				set,
-				(i, u, v) -> u.compareTo(i, v),
-				(i, u, v) -> u.distance(i, v),
+				Vec::compareTo,
+				Vec::distance,
 				set.get(0).length());
 	}
 
@@ -114,16 +114,14 @@ public final class Pareto {
 
 				final T max = set.get(indexes[0]);
 				final T min = set.get(indexes[set.size() - 1]);
-				final double dm = distance.distance(m, max, min);
+				final double dm = distance.distance(max, min, m);
 
 				if (Double.compare(dm, 0) == 0) {
 					Arrays.fill(result, 0.0);
 				} else {
 					for (int i = 1; i < set.size() - 1; ++i) {
 						final double d = distance.distance(
-							m,
-							set.get(indexes[i - 1]),
-							set.get(indexes[i + 1])
+							set.get(indexes[i - 1]), set.get(indexes[i + 1]), m
 						);
 
 						result[indexes[i]] += d/dm;
@@ -376,7 +374,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(i, a, b) -> comparator.compare(a[i], b[i])
+			(a, b, i) -> comparator.compare(a[i], b[i])
 		);
 	}
 
@@ -398,7 +396,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(i, a, b) -> Integer.compare(a[i], b[i])
+			(a, b, i) -> Integer.compare(a[i], b[i])
 		);
 	}
 
@@ -420,7 +418,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(i, a, b) -> Long.compare(a[i], b[i])
+			(a, b, i) -> Long.compare(a[i], b[i])
 		);
 	}
 
@@ -442,7 +440,7 @@ public final class Pareto {
 
 		return dominance(
 			u, v, u.length,
-			(i, a, b) -> Double.compare(a[i], b[i])
+			(a, b, i) -> Double.compare(a[i], b[i])
 		);
 	}
 
@@ -464,7 +462,7 @@ public final class Pareto {
 		boolean vdominated = false;
 
 		for (int i = 0; i < length; ++i) {
-			final int cmp = comparator.compare(i, u, v);
+			final int cmp = comparator.compare(u, v, i);
 
 			if (cmp > 0) {
 				udominated = true;

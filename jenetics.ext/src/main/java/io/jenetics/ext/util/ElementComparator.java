@@ -27,7 +27,7 @@ import java.util.Comparator;
  * {@code double[] array}:
  * <pre>{@code
  * final ElementComparator<double[]> comp =
- *     (i, u, v) -> Double.compare(u[i], v[i]);
+ *     (u, v, i) -> Double.compare(u[i], v[i]);
  * }</pre>
  *
  * @param <V> the vector type
@@ -44,12 +44,12 @@ public interface ElementComparator<V> {
 	 * {@code index}. E.g.
 	 * <pre>{@code
 	 * final ElementComparator<double[]> comp =
-	 *     (i, u, v) -> Double.compare(u[i], v[i]);
+	 *     (u, v, i) -> Double.compare(u[i], v[i]);
 	 * }</pre>
 	 *
-	 * @param index the vector index
 	 * @param u the first vector
 	 * @param v the second vector
+	 * @param index the vector index
 	 * @return a negative integer, zero, or a positive integer as the
 	 *         first argument is less than, equal to, or greater than the
 	 *         second.
@@ -58,7 +58,7 @@ public interface ElementComparator<V> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0 || index >= length(a)  || index >= length(b))}
 	 */
-	public int compare(final int index, final V u, final V v);
+	public int compare(final V u, final V v, final int index);
 
 	/**
 	 * Return a comparator which takes the component at the give {@code index}
@@ -68,7 +68,7 @@ public interface ElementComparator<V> {
 	 * @return the component comparator for the given {@code index}
 	 */
 	public default Comparator<V> ofIndex(final int index) {
-		return (a, b) -> compare(index, a, b);
+		return (a, b) -> compare(a, b, index);
 	}
 
 }

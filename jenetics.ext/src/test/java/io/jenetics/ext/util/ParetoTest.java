@@ -139,10 +139,10 @@ public class ParetoTest {
 
 		final double[] dist = Pareto.crowdingDistance(
 			cpoints,
-			(i, u, v) -> i == 0
+			(u, v, i) -> i == 0
 				? Double.compare(u.x(), v.x())
 				: Double.compare(u.y(), v.y()),
-			(i, u, v) -> i == 0 ? u.x() - v.x() : u.y() - v.y(),
+			(u, v, i) -> i == 0 ? u.x() - v.x() : u.y() - v.y(),
 			2
 		);
 
