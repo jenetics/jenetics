@@ -48,7 +48,7 @@ public final class MOEA {
 			() -> new ParetoFront<Phenotype<G, C>>(
 				(a, b) -> dominance.compare(a.getFitness(), b.getFitness())
 			),
-			(set, result) -> set.addAll(front(result.getPopulation()).asList()),
+			(set, result) -> set.addAll(front(result.getPopulation(), Phenotype::compareTo).asList()),
 			ParetoFront::merge,
 			ParetoFront::toISeq
 		);
