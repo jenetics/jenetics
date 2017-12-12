@@ -19,14 +19,31 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.Math.min;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.comb.subset;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
+import io.jenetics.ext.util.ElementComparator;
+import io.jenetics.ext.util.ElementDistance;
+import io.jenetics.ext.util.Pareto;
+
 /**
+ * Unique fitness based tournament selection.
+ *
  * The last front selection procedure takes two arguments: a front F and the
  * number of solutions to select k. The algorithm starts by sorting the unique
  * fitnesses associated with the members of F in descending order of crowding
@@ -59,12 +76,76 @@ public class UFTournamentSelector<
 >
 	implements Selector<G, C>
 {
+	private final Comparator<Phenotype<G, C>> _dominance;
+	private final ElementComparator<Phenotype<G, C>> _comparator;
+	private final ElementDistance<Phenotype<G, C>> _distance;
+	private final int _dim;
+
+	public UFTournamentSelector(
+		final Comparator<? super C> dominance,
+		final ElementComparator<? super C> comparator,
+		final ElementDistance<? super C> distance,
+		final int dim
+	) {
+		requireNonNull(dominance);
+		requireNonNull(comparator);
+		requireNonNull(distance);
+
+		_dominance = (a, b) ->
+			dominance.compare(a.getFitness(), b.getFitness());
+		_comparator = (a, b, i) ->
+			comparator.compare(a.getFitness(), b.getFitness(), i);
+		_distance = (a, b, i) ->
+			distance.distance(a.getFitness(), b.getFitness(), i);
+		_dim = dim;
+	}
+
 	@Override
 	public ISeq<Phenotype<G, C>> select(
 		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt
 	) {
-		return null;
+		final Random random = RandomRegistry.getRandom();
+
+		final int[] rank = Pareto.ranks(population, _dominance);
+		final double[] dist = Pareto.crowdingDistance(
+			population, _comparator, _distance, _dim
+		);
+
+		final List<Phenotype<G, C>> S = new ArrayList<>();
+
+		while (S.size() < count) {
+			final int k = min(2*count - S.size(), population.size());
+			final int[] G = subset(population.size(), k);
+
+			int p = 0;
+			for (int j = 0; j < G.length; j += 2) {
+				if (cco(G[j], G[j + 1], rank, dist)) {
+					p = G[j];
+				} else if (cco(G[j + 1], G[j], rank, dist)) {
+					p = G[j + 1];
+				} else {
+					p = subset(new int[]{G[j], G[j + 1]}, 1)[0];
+				}
+
+				final C fitness = population.get(p).getFitness();
+				final List<Phenotype<G, C>> list = population.stream()
+					.filter(pt -> pt.getFitness().equals(fitness))
+					.collect(Collectors.toList());
+
+				S.add(list.get(random.nextInt(list.size())));
+			}
+		}
+
+		return ISeq.of(S);
 	}
+
+	private boolean cco(
+		final int i, final int j,
+		final int[] rank, final double[] dist
+	) {
+		return rank[i] < rank[j] || (rank[i] == rank[j] && dist[i] > dist[j]);
+	}
+
 }

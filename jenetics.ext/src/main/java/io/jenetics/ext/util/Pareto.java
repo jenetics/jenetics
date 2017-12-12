@@ -43,9 +43,20 @@ import io.jenetics.ext.internal.IntList;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Pareto {
+public final class Pareto<T> {
 
-	private Pareto() {
+	private final ISeq<T> _front;
+	private int[] _rank;
+	private double[] _distance;
+
+	public Pareto(
+		final ISeq<T> front,
+		final int[] rank,
+		final double[] distance
+	) {
+		_front = requireNonNull(front);
+		_rank = requireNonNull(rank);
+		_distance = requireNonNull(distance);
 	}
 
 	/**

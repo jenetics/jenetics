@@ -84,6 +84,19 @@ public final class comb {
 		return sub;
 	}
 
+	public static int[] subset(final int[] set, final int k) {
+		return subset(set, k, RandomRegistry.getRandom());
+	}
+
+	public static int[] subset(final int[] set, final int k, final Random random) {
+		final int[] sub = subset(set.length, new int[k], random);
+		for (int i = 0; i < k; ++i) {
+			sub[i] = set[sub[i]];
+		}
+
+		return sub;
+	}
+
 	/**
 	 * <p>
 	 * Selects a random subset of size {@code sub.length} from a set of size
@@ -98,8 +111,8 @@ public final class comb {
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
 	 */
-	public static void subset(final int n, final int sub[]) {
-		subset(n, sub, RandomRegistry.getRandom());
+	public static int[] subset(final int n, final int[] sub) {
+		return subset(n, sub, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -129,7 +142,7 @@ public final class comb {
 	 *         {@code a.length == 0} or {@code n*a.length} will cause an
 	 *         integer overflow.
 	 */
-	public static int[] subset(final int n, final int a[], final Random random) {
+	public static int[] subset(final int n, final int[] a, final Random random) {
 		requireNonNull(random, "Random");
 		requireNonNull(a, "Sub set array");
 
