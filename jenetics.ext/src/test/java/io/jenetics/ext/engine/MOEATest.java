@@ -17,8 +17,9 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.engine;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -29,14 +30,15 @@ import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
+import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 
-import io.jenetics.ext.engine.MOEA;
 import io.jenetics.ext.util.Point2;
 
 /**
@@ -44,31 +46,27 @@ import io.jenetics.ext.util.Point2;
  */
 public class MOEATest {
 
-	static final Random random = new Random();
-	static Point2 f(final double[] x) {
-		return Point2.of(sin(x[0])*x[1], cos(x[0])*x[1]);
-	}
-
-	static final Problem<double[], DoubleGene, Point2> problem = Problem.of(
-		MOEATest::f,
-		Codecs.ofVector(DoubleRange.of(0, 1), 2)
+	private static final Problem<double[], DoubleGene, Point2> PROBLEM = Problem.of(
+		v -> Point2.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
+		Codecs.ofVector(
+			DoubleRange.of(0, 1),
+			DoubleRange.of(0, 2*PI)
+		)
 	);
 
 	public static void main(final String[] args) {
-		final Engine<DoubleGene, Point2> engine = Engine.builder(problem)
+		final Engine<DoubleGene, Point2> engine = Engine.builder(PROBLEM)
 			.alterers(
 				new Mutator<>(0.1),
 				new MeanAlterer<>())
 			.selector(new TournamentSelector<>(2))
 			.build();
 
-		/*
 		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
-			.collect(MOEA.toParetoSet(Point2::dominance));
+			.collect(MOEA.toParetoSet(IntRange.of(30, 50)));
 
-		result.forEach(r -> System.out.println(r.getFitness().x() + "\t" + r.getFitness().y()));
-		*/
+		result.forEach(r -> System.out.println(r.getFitness().x() + ", " + r.getFitness().y()));
 	}
 
 }
