@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
@@ -79,25 +80,23 @@ public class UFTournamentSelector<
 	private final Comparator<Phenotype<G, C>> _dominance;
 	private final ElementComparator<Phenotype<G, C>> _comparator;
 	private final ElementDistance<Phenotype<G, C>> _distance;
-	private final int _dim;
+	private final ToIntFunction<Phenotype<G, C>> _dimension;
 
 	public UFTournamentSelector(
 		final Comparator<? super C> dominance,
 		final ElementComparator<? super C> comparator,
 		final ElementDistance<? super C> distance,
-		final int dim
+		final ToIntFunction<? super C> dimension
 	) {
 		requireNonNull(dominance);
 		requireNonNull(comparator);
 		requireNonNull(distance);
+		requireNonNull(dimension);
 
-		_dominance = (a, b) ->
-			dominance.compare(a.getFitness(), b.getFitness());
-		_comparator = (a, b, i) ->
-			comparator.compare(a.getFitness(), b.getFitness(), i);
-		_distance = (a, b, i) ->
-			distance.distance(a.getFitness(), b.getFitness(), i);
-		_dim = dim;
+		_dominance = (a, b) -> dominance.compare(a.getFitness(), b.getFitness());
+		_comparator = comparator.map(Phenotype::getFitness);
+		_distance = distance.map(Phenotype::getFitness);
+		_dimension = v -> dimension.applyAsInt(v.getFitness());
 	}
 
 	@Override
@@ -110,7 +109,7 @@ public class UFTournamentSelector<
 
 		final int[] rank = Pareto.ranks(population, _dominance);
 		final double[] dist = Pareto.crowdingDistance(
-			population, _comparator, _distance, _dim
+			population, _comparator, _distance, _dimension
 		);
 
 		final List<Phenotype<G, C>> S = new ArrayList<>();

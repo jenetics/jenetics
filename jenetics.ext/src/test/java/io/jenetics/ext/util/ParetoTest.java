@@ -143,11 +143,12 @@ public class ParetoTest {
 				? Double.compare(u.x(), v.x())
 				: Double.compare(u.y(), v.y()),
 			(u, v, i) -> i == 0 ? u.x() - v.x() : u.y() - v.y(),
-			2
+			Point2::length
 		);
 
 		System.out.println(Arrays.toString(dist));
-
+		Arrays.sort(dist);
+		System.out.println(Arrays.toString(dist));
 	}
 
 }

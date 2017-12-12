@@ -62,11 +62,13 @@ public class MOEATest {
 			.selector(new TournamentSelector<>(2))
 			.build();
 
+		/*
 		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
 			.collect(MOEA.toParetoSet(Point2::dominance));
 
 		result.forEach(r -> System.out.println(r.getFitness().x() + "\t" + r.getFitness().y()));
+		*/
 	}
 
 }

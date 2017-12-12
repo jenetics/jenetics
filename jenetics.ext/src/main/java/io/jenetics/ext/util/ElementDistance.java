@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.function.Function;
 import java.util.function.ToDoubleBiFunction;
 
 /**
@@ -51,6 +52,11 @@ public interface ElementDistance<V> {
 	 * @return the distance of the two element vectors
 	 */
 	public double distance(final V u, final V v, final int index);
+
+	public default <T> ElementDistance<T>
+	map(final Function<? super T, ? extends V> mapper) {
+		return (u, v, i) -> distance(mapper.apply(u), mapper.apply(v), i);
+	}
 
 	/**
 	 * Return a function which calculates the distance of two vector elements.

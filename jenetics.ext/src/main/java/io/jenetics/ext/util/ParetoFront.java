@@ -28,9 +28,13 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
+import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.internal.SeqView;
 
 /**
  * This class only contains non-dominate (Pareto-optimal) elements according to
@@ -98,6 +102,34 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 */
 	public ParetoFront<T> merge(final ParetoFront<? extends T> elements) {
 		addAll(elements);
+		return this;
+	}
+
+	public ParetoFront<T> shrink(
+		final int size,
+		final ElementComparator<? super T> comparator,
+		final ElementDistance<? super T> distance,
+		final ToIntFunction<? super T> dimension
+	) {
+		if (size() > size) {
+			final double[] distances = Pareto.crowdingDistance(
+				SeqView.of(_population),
+				comparator,
+				distance,
+				dimension
+			);
+
+			final int[] idx = IndexSorter.sort(distances);
+
+			final List<T> list = new ArrayList<>(size);
+			for (int i = 0; i < size; ++i) {
+				list.add(_population.get(idx[i]));
+			}
+
+			_population.clear();
+			_population.addAll(list);
+		}
+
 		return this;
 	}
 

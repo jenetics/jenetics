@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.ToIntFunction;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
@@ -78,7 +79,7 @@ public final class Pareto<T> {
 				set,
 				Vec::compareTo,
 				Vec::distance,
-				set.get(0).length());
+				Vec::length);
 	}
 
 	/**
@@ -91,26 +92,20 @@ public final class Pareto<T> {
 	 * @param comparator the comparator which defines the (total) order of the
 	 *        vector elements of {@code T}
 	 * @param distance the distance of two vector elements
-	 * @param dim the dimension of vector type {@code T}
+	 * @param dimension the dimension of vector type {@code T}
 	 * @param <T> the vector type
 	 * @return the crowded distances fo the {@code set} points
 	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @throws IllegalArgumentException if {@code dim < 2}
 	 */
 	public static <T> double[] crowdingDistance(
 		final Seq<? extends T> set,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
-		final int dim
+		final ToIntFunction<? super T> dimension
 	) {
 		requireNonNull(set);
 		requireNonNull(comparator);
 		requireNonNull(distance);
-		if (dim < 2) {
-			throw new IllegalArgumentException(format(
-				"Dim is smaller than two: %d", dim
-			));
-		}
 
 		final double[] result = new double[set.size()];
 		if (set.size() < 3) {
@@ -119,7 +114,7 @@ public final class Pareto<T> {
 			final int[] idx = new int[set.size()];
 			final IndexSorter sorter = IndexSorter.sorter(set.size());
 
-			for (int m = 0; m < dim; ++m) {
+			for (int m = 0; m < dimension.applyAsInt(set.get(0)); ++m) {
 				sorter.sort(set, init(idx), comparator.ofIndex(m));
 
 				result[idx[0]] = Double.POSITIVE_INFINITY;

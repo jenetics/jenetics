@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import java.util.Comparator;
+import java.util.function.Function;
 
 /**
  * Defines the order of two elements of a given <em>vector</em> type {@code V}.
@@ -59,6 +60,11 @@ public interface ElementComparator<V> {
 	 *         {@code (index < 0 || index >= length(a)  || index >= length(b))}
 	 */
 	public int compare(final V u, final V v, final int index);
+
+	public default <T> ElementComparator<T>
+	map(final Function<? super T, ? extends V> mapper) {
+		return (u, v, i) -> compare(mapper.apply(u), mapper.apply(v), i);
+	}
 
 	/**
 	 * Return a comparator which takes the component at the give {@code index}
