@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
 

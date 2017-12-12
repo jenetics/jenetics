@@ -23,14 +23,10 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import java.util.Random;
-
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
-import io.jenetics.TournamentSelector;
-import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.Limits;
@@ -39,8 +35,9 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
-import io.jenetics.ext.UFTournamentSelector;
-import io.jenetics.ext.util.Point2;
+import io.jenetics.ext.moea.MOEA;
+import io.jenetics.ext.moea.UFTournamentSelector;
+import io.jenetics.ext.moea.Point2;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

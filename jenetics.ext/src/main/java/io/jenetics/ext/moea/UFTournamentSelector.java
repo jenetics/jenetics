@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.moea;
 
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
@@ -37,11 +37,6 @@ import io.jenetics.Selector;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
-
-import io.jenetics.ext.util.ElementComparator;
-import io.jenetics.ext.util.ElementDistance;
-import io.jenetics.ext.util.Pareto;
-import io.jenetics.ext.util.Vec;
 
 /**
  * Unique fitness based tournament selection.

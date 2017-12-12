@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.moea;
 
 import java.util.function.Function;
 import java.util.function.ToDoubleBiFunction;

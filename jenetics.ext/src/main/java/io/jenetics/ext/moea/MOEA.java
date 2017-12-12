@@ -17,10 +17,10 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.ext.util.Pareto.front;
+import static io.jenetics.ext.moea.Pareto.front;
 
 import java.util.Comparator;
 import java.util.function.ToIntFunction;
@@ -32,11 +32,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
-
-import io.jenetics.ext.util.ElementComparator;
-import io.jenetics.ext.util.ElementDistance;
-import io.jenetics.ext.util.ParetoFront;
-import io.jenetics.ext.util.Vec;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -29,6 +29,10 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.ext.moea.Pareto;
+import io.jenetics.ext.moea.ParetoFront;
+import io.jenetics.ext.moea.Point2;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
