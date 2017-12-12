@@ -84,10 +84,35 @@ public final class comb {
 		return sub;
 	}
 
+	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the subset array
+	 */
 	public static int[] subset(final int[] set, final int k) {
 		return subset(set, k, RandomRegistry.getRandom());
 	}
 
+	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @param random the random number generator used
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the subset array
+	 */
 	public static int[] subset(final int[] set, final int k, final Random random) {
 		final int[] sub = subset(set.length, new int[k], random);
 		for (int i = 0; i < k; ++i) {
