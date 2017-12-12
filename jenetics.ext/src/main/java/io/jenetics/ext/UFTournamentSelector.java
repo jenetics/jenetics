@@ -41,6 +41,7 @@ import io.jenetics.util.Seq;
 import io.jenetics.ext.util.ElementComparator;
 import io.jenetics.ext.util.ElementDistance;
 import io.jenetics.ext.util.Pareto;
+import io.jenetics.ext.util.Vec;
 
 /**
  * Unique fitness based tournament selection.
@@ -116,16 +117,16 @@ public class UFTournamentSelector<
 
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
-			final int[] G = subset(population.size(), k);
+			final int[] G = subset(population.size(), k, random);
 
 			int p = 0;
-			for (int j = 0; j < G.length; j += 2) {
+			for (int j = 0; j < G.length - 1; j += 2) {
 				if (cco(G[j], G[j + 1], rank, dist)) {
 					p = G[j];
 				} else if (cco(G[j + 1], G[j], rank, dist)) {
 					p = G[j + 1];
 				} else {
-					p = subset(new int[]{G[j], G[j + 1]}, 1)[0];
+					p = subset(new int[]{G[j], G[j + 1]}, 1, random)[0];
 				}
 
 				final C fitness = population.get(p).getFitness();
@@ -145,6 +146,16 @@ public class UFTournamentSelector<
 		final int[] rank, final double[] dist
 	) {
 		return rank[i] < rank[j] || (rank[i] == rank[j] && dist[i] > dist[j]);
+	}
+
+	public static <G extends Gene<?, G>, T, V extends Vec<T>>
+	UFTournamentSelector<G, V> of() {
+		return new UFTournamentSelector<>(
+			Vec<T>::dominance,
+			Vec<T>::compareTo,
+			Vec<T>::distance,
+			Vec<T>::length
+		);
 	}
 
 }
