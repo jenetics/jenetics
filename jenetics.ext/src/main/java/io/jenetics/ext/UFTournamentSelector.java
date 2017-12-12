@@ -48,7 +48,7 @@ import io.jenetics.ext.util.Pareto;
  * The last front selection procedure takes two arguments: a front F and the
  * number of solutions to select k. The algorithm starts by sorting the unique
  * fitnesses associated with the members of F in descending order of crowding
- * distance (>dist) and stores the result in a list F (line 2). It then proceeds
+ * distance (dist) and stores the result in a list F (line 2). It then proceeds
  * to fill the initially empty set of solutions S by cycling over the sorted
  * unique fitnesses F. For each fitness, the algorithm first selects each
  * individual sharing this fitness and puts the result in set T (line 6). If
