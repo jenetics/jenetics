@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext.moea;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
