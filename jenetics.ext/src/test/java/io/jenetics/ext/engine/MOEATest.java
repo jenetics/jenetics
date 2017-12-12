@@ -39,6 +39,7 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
+import io.jenetics.ext.UFTournamentSelector;
 import io.jenetics.ext.util.Point2;
 
 /**
@@ -59,7 +60,8 @@ public class MOEATest {
 			.alterers(
 				new Mutator<>(0.1),
 				new MeanAlterer<>())
-			.selector(new TournamentSelector<>(2))
+			//.selector(new TournamentSelector<>(2))
+			.selector(UFTournamentSelector.of())
 			.build();
 
 		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()

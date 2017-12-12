@@ -60,11 +60,18 @@ public final class Pareto<T> {
 		_distance = requireNonNull(distance);
 	}
 
+
+	/* *************************************************************************
+	 * Crowding distance methods.
+	 * ************************************************************************/
+
 	/**
 	 * The crowding distance value of a solution provides an estimate of the
 	 * density of solutions surrounding that solution. The <em>crowding
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
+	 *
+	 * @see #crowdingDistance(Seq, ElementComparator, ElementDistance, ToIntFunction)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param <T> the vector type
@@ -73,13 +80,12 @@ public final class Pareto<T> {
 	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
 	 */
 	public static <T> double[] crowdingDistance(final Seq<? extends Vec<T>> set) {
-		return set.isEmpty()
-			? new double[0]
-			: crowdingDistance(
-				set,
-				Vec::compareTo,
-				Vec::distance,
-				Vec::length);
+		return crowdingDistance(
+			set,
+			Vec::compareTo,
+			Vec::distance,
+			Vec::length
+		);
 	}
 
 	/**
@@ -87,6 +93,8 @@ public final class Pareto<T> {
 	 * density of solutions surrounding that solution. The <em>crowding
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
+	 *
+	 * @see #crowdingDistance(Seq)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param comparator the comparator which defines the (total) order of the
@@ -142,7 +150,7 @@ public final class Pareto<T> {
 	}
 
 	/* *************************************************************************
-	 * 'ranks'
+	 * Pareto ranks methods.
 	 * ************************************************************************/
 
 	/**

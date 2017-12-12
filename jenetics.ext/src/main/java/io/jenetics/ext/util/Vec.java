@@ -25,7 +25,10 @@ import static io.jenetics.internal.math.base.clamp;
 import java.util.Comparator;
 
 /**
- * Defines the needed methods for a multi-objective fitness value.
+ * The {@code Vec} interface represents the fitness result of a multi-objective
+ * fitness function. It also defines a set of static factory methods which
+ * allows you to create {@code Vec} instance from a given {@code int[]},
+ * {@code long[]} or {@code double[]} array.
  *
  * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
  *
