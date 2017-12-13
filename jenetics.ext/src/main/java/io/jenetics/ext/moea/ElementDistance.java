@@ -53,6 +53,13 @@ public interface ElementDistance<V> {
 	 */
 	public double distance(final V u, final V v, final int index);
 
+	/**
+	 * Return an element distance function for the mapped type {@code T}.
+	 *
+	 * @param mapper the mapper function
+	 * @param <T> the new distance type
+	 * @return an element distance function for the mapped type {@code T}
+	 */
 	public default <T> ElementDistance<T>
 	map(final Function<? super T, ? extends V> mapper) {
 		return (u, v, i) -> distance(mapper.apply(u), mapper.apply(v), i);

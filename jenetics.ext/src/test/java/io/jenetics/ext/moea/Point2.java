@@ -28,8 +28,6 @@ import java.util.Comparator;
  * Represents a 2-dimensional point.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public final class Point2 implements Vec<Point2> {
 	private final double _x;

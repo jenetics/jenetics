@@ -105,12 +105,30 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		return this;
 	}
 
-	public ParetoFront<T> shrink(
+	/**
+	 * Trims {@code this} pareto front to the given size. The front elements are
+	 * sorted according its crowding distance and the elements which have smaller
+	 * distance to its neighbors are removed first.
+	 *
+	 * @param size the number of front elements after the trim. If
+	 *        {@code size() <= size}, nothing is trimmed.
+	 * @param comparator the element comparator used for calculating the
+	 *        crowded distance
+	 * @param distance the element distance measure
+	 * @param dimension the number of vector elements of {@code T}
+	 * @return {@code this} trimmed pareto front
+	 * @throws NullPointerException if one of the objects is {@code null}
+	 */
+	public ParetoFront<T> trim(
 		final int size,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
 		final ToIntFunction<? super T> dimension
 	) {
+		requireNonNull(comparator);
+		requireNonNull(distance);
+		requireNonNull(dimension);
+
 		if (size() > size) {
 			final double[] distances = Pareto.crowdingDistance(
 				SeqView.of(_population),

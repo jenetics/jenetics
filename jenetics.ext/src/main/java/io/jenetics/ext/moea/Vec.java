@@ -31,7 +31,22 @@ import java.util.Comparator;
  * allows you to create {@code Vec} instance from a given {@code int[]},
  * {@code long[]} or {@code double[]} array.
  *
+ * <pre>{@code
+ * final Vec<double[]> point2D = Vec.of(0.1, 5.4);
+ * final Vec<int[]> point3D = Vec.of(1, 2, 3);
+ * }</pre>
+ *
+ * <b>Implementation note:</b>
+ * Although the {@code Vec} interface extends the {@link Comparable} interface,
+ * it violates its <em>general</em> general contract. It <em>only</em>
+ * implements the pareto <em>dominance</em> relation, which defines a partial
+ * order. So, if you try to sort a list of {@code Vec} objects might lead
+ * to an exception (thrown by the sorting method) at runtime.
+ *
  * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+ *     Pareto efficiency</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -340,7 +355,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static Vec<int[]> of(final int[] array) {
+	public static Vec<int[]> of(final int... array) {
 		return new ArrayVec<int[]>(
 			array,
 			array.length,
@@ -374,7 +389,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static Vec<long[]> of(final long[] array) {
+	public static Vec<long[]> of(final long... array) {
 		return new ArrayVec<long[]>(
 			array,
 			array.length,
@@ -408,7 +423,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
-	public static Vec<double[]> of(final double[] array) {
+	public static Vec<double[]> of(final double... array) {
 		return new ArrayVec<double[]>(
 			array,
 			array.length,

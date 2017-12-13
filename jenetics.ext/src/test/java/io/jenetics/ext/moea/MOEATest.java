@@ -27,6 +27,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.Limits;
@@ -35,37 +36,35 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
-import io.jenetics.ext.moea.MOEA;
-import io.jenetics.ext.moea.UFTournamentSelector;
-import io.jenetics.ext.moea.Point2;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MOEATest {
 
-	private static final Problem<double[], DoubleGene, Point2> PROBLEM = Problem.of(
-		v -> Point2.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
-		Codecs.ofVector(
-			DoubleRange.of(0, 1),
-			DoubleRange.of(0, 2*PI)
-		)
-	);
-
 	public static void main(final String[] args) {
-		final Engine<DoubleGene, Point2> engine = Engine.builder(PROBLEM)
+		final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
+			v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
+			Codecs.ofVector(
+				DoubleRange.of(0, 1),
+				DoubleRange.of(0, 2*PI)
+			)
+		);
+
+		final Engine<DoubleGene, Vec<double[]>> engine = Engine.builder(problem)
 			.alterers(
 				new Mutator<>(0.1),
 				new MeanAlterer<>())
-			//.selector(new TournamentSelector<>(2))
-			.selector(UFTournamentSelector.of())
+			.offspringSelector(new TournamentSelector<>(2))
+			.survivorsSelector(UFTournamentSelector.of())
 			.build();
 
-		final ISeq<Phenotype<DoubleGene, Point2>> result = engine.stream()
+		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
 			.collect(MOEA.toParetoSet(IntRange.of(30, 50)));
 
-		result.forEach(r -> System.out.println(r.getFitness().x() + ", " + r.getFitness().y()));
+		result.forEach(r -> System.out.println(
+			r.getFitness().data()[0] + ", " +
+				r.getFitness().data()[1]));
 	}
 
 }
