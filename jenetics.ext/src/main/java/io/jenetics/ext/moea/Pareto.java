@@ -276,7 +276,7 @@ public final class Pareto {
 	 * @return the elements which are part of the pareto set
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> ISeq<Vec<T>> front(final Iterable<? extends Vec<T>> set) {
+	public static <T> ISeq<Vec<T>> front(final Seq<? extends Vec<T>> set) {
 		return front(set, Vec::dominance);
 	}
 
@@ -298,7 +298,7 @@ public final class Pareto {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> ISeq<T> front(
-		final Iterable<? extends T> set,
+		final Seq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {
 		final MSeq<T> front = MSeq.of(set);
