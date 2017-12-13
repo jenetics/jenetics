@@ -61,6 +61,24 @@ public interface ElementComparator<V> {
 	 */
 	public int compare(final V u, final V v, final int index);
 
+	/**
+	 * Returns a comparator that imposes the reverse ordering of this
+	 * comparator.
+	 *
+	 * @return a comparator that imposes the reverse ordering of this
+	 *         comparator.
+	 */
+	public default ElementComparator<V> reversed() {
+		return (u, v, i) -> compare(v, u, i);
+	}
+
+	/**
+	 * Return an element comparator for the mapped type {@code T}.
+	 *
+	 * @param mapper the mapper function
+	 * @param <T> the new comparator type
+	 * @return an element comparator for the mapped type {@code T}
+	 */
 	public default <T> ElementComparator<T>
 	map(final Function<? super T, ? extends V> mapper) {
 		return (u, v, i) -> compare(mapper.apply(u), mapper.apply(v), i);

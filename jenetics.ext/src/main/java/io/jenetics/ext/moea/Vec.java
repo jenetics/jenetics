@@ -22,6 +22,7 @@ package io.jenetics.ext.moea;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.base.clamp;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -309,6 +310,24 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			public int length() {
 				return array.length;
 			}
+
+			@Override
+			public int hashCode() {
+				return Arrays.hashCode(array);
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public boolean equals(final Object obj) {
+				return obj instanceof Vec<?> &&
+					((Vec)obj).data().getClass().equals(data().getClass()) &&
+					Arrays.equals(((Vec<T[]>)obj).data(), data());
+			}
+
+			@Override
+			public String toString() {
+				return Arrays.toString(array);
+			}
 		};
 	}
 
@@ -320,38 +339,28 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<int[]> of(final int[] array) {
-		requireNonNull(array);
-
-		return new Vec<int[]>() {
+		return new ArrayVec<int[]>(
+			array,
+			array.length,
+			Vec::dominance,
+			(u, v, i) -> Integer.compare(u[i], v[i]),
+			(u, v, i) -> u[i] - v[i]
+		) {
 			@Override
-			public int[] data() {
-				return array;
+			public int hashCode() {
+				return Arrays.hashCode(array);
 			}
 
 			@Override
-			public ElementComparator<int[]> comparator() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return Integer.compare(u[i], v[i]);
-				};
+			public boolean equals(final Object obj) {
+				return obj instanceof Vec<?> &&
+					((Vec)obj).data().getClass().equals(data().getClass()) &&
+					Arrays.equals((int[])((Vec)obj).data(), data());
 			}
 
 			@Override
-			public ElementDistance<int[]> distance() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return u[i] - v[i];
-				};
-			}
-
-			@Override
-			public Comparator<int[]> dominance() {
-				return Vec::dominance;
-			}
-
-			@Override
-			public int length() {
-				return array.length;
+			public String toString() {
+				return Arrays.toString(array);
 			}
 		};
 	}
@@ -364,38 +373,28 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<long[]> of(final long[] array) {
-		requireNonNull(array);
-
-		return new Vec<long[]>() {
+		return new ArrayVec<long[]>(
+			array,
+			array.length,
+			Vec::dominance,
+			(u, v, i) -> Long.compare(u[i], v[i]),
+			(u, v, i) -> u[i] - v[i]
+		) {
 			@Override
-			public long[] data() {
-				return array;
+			public int hashCode() {
+				return Arrays.hashCode(array);
 			}
 
 			@Override
-			public ElementComparator<long[]> comparator() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return Long.compare(u[i], v[i]);
-				};
+			public boolean equals(final Object obj) {
+				return obj instanceof Vec<?> &&
+					((Vec)obj).data().getClass().equals(data().getClass()) &&
+					Arrays.equals((long[])((Vec)obj).data(), data());
 			}
 
 			@Override
-			public ElementDistance<long[]> distance() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return u[i] - v[i];
-				};
-			}
-
-			@Override
-			public Comparator<long[]> dominance() {
-				return Vec::dominance;
-			}
-
-			@Override
-			public int length() {
-				return array.length;
+			public String toString() {
+				return Arrays.toString(array);
 			}
 		};
 	}
@@ -408,38 +407,28 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<double[]> of(final double[] array) {
-		requireNonNull(array);
-
-		return new Vec<double[]>() {
+		return new ArrayVec<double[]>(
+			array,
+			array.length,
+			Vec::dominance,
+			(u, v, i) -> Double.compare(u[i], v[i]),
+			(u, v, i) -> u[i] - v[i]
+		) {
 			@Override
-			public double[] data() {
-				return array;
+			public int hashCode() {
+				return Arrays.hashCode(array);
 			}
 
 			@Override
-			public ElementComparator<double[]> comparator() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return Double.compare(u[i], v[i]);
-				};
+			public boolean equals(final Object obj) {
+				return obj instanceof Vec<?> &&
+					((Vec)obj).data().getClass().equals(data().getClass()) &&
+					Arrays.equals((double[])((Vec)obj).data(), data());
 			}
 
 			@Override
-			public ElementDistance<double[]> distance() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return u[i] - v[i];
-				};
-			}
-
-			@Override
-			public Comparator<double[]> dominance() {
-				return Vec::dominance;
-			}
-
-			@Override
-			public int length() {
-				return array.length;
+			public String toString() {
+				return Arrays.toString(array);
 			}
 		};
 	}

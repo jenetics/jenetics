@@ -108,13 +108,19 @@ public class UFTournamentSelector<
 	) {
 		final Random random = RandomRegistry.getRandom();
 
-		final int[] rank = Pareto.rank(population, _dominance);
+		final int[] rank = Pareto.rank(
+			population,
+			opt == Optimize.MAXIMUM ? _dominance : _dominance.reversed()
+		);
+
 		final double[] dist = Pareto.crowdingDistance(
-			population, _comparator, _distance, _dimension
+			population,
+			opt == Optimize.MAXIMUM ? _comparator : _comparator.reversed(),
+			_distance,
+			_dimension
 		);
 
 		final List<Phenotype<G, C>> S = new ArrayList<>();
-
 		while (S.size() < count) {
 			final int k = min(2*count - S.size(), population.size());
 			final int[] G = subset(population.size(), k, random);
@@ -126,19 +132,18 @@ public class UFTournamentSelector<
 				} else if (cco(G[j + 1], G[j], rank, dist)) {
 					p = G[j + 1];
 				} else {
-					p = subset(new int[]{G[j], G[j + 1]}, 1, random)[0];
+					p = random.nextBoolean() ? G[j] : G[j + 1];
 				}
 
 				final C fitness = population.get(p).getFitness();
 				final List<Phenotype<G, C>> list = population.stream()
 					.filter(pt -> pt.getFitness().equals(fitness))
 					.collect(Collectors.toList());
-
 				S.add(list.get(random.nextInt(list.size())));
 			}
 		}
 
-		return ISeq.of(S);
+		return ISeq.of(S.subList(0, count));
 	}
 
 	private static boolean cco(

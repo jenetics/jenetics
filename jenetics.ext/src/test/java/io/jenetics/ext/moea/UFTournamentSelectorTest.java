@@ -19,8 +19,85 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.jenetics.DoubleGene;
+import io.jenetics.Optimize;
+import io.jenetics.Phenotype;
+import io.jenetics.Selector;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class UFTournamentSelectorTest {
+
+	private static final Problem<double[], DoubleGene, Vec<double[]>> PROBLEM = Problem.of(
+		v -> Vec.of(new double[]{v[0]*cos(v[1]), v[0]*sin(v[1])}),
+		Codecs.ofVector(
+			DoubleRange.of(0, 1),
+			DoubleRange.of(0, 2*PI)
+		)
+	);
+
+	@Test
+	public void select() {
+		final Selector<DoubleGene, Vec<double[]>> selector =
+			UFTournamentSelector.of();
+			//new TournamentSelector<>(10);
+
+		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> population =
+			Stream.generate(this::phenotype)
+				.limit(500)
+				.collect(ISeq.toISeq());
+
+		final ISeq<Vec<double[]>> populationFront = Pareto.front(
+			population.stream()
+				.map(Phenotype::getFitness)
+				.collect(Collectors.toList())
+		);
+
+		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> selected =
+			selector.select(population, 100, Optimize.MAXIMUM);
+
+		Assert.assertEquals(
+			selected.stream()
+				.map(Phenotype::getFitness)
+				.collect(Collectors.toSet())
+				.size(),
+			selected.size()
+		);
+
+		final ISeq<Vec<double[]>> selectedFront = Pareto.front(
+			selected.stream()
+				.map(Phenotype::getFitness)
+				.collect(Collectors.toList())
+		);
+
+		Assert.assertTrue(
+			populationFront.size()/(double)population.size() <
+				selectedFront.size()/(double)selected.size()
+		);
+
+	}
+
+	private Phenotype<DoubleGene, Vec<double[]>> phenotype() {
+		return Phenotype.of(
+			PROBLEM.codec().encoding().newInstance(),
+			1L,
+			gt -> PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
+		);
+	}
+
 }

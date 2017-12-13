@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.maxBy;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -113,7 +112,8 @@ public class TournamentSelector<
 		final int N = population.size();
 		return Stream.generate(() -> population.get(random.nextInt(N)))
 			.limit(sampleSize)
-			.collect(maxBy(opt.ascending())).get();
+			.max(opt.ascending())
+			.orElseThrow(IllegalStateException::new);
 	}
 
 	@Override
