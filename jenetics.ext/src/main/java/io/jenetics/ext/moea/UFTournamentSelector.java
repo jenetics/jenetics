@@ -40,19 +40,13 @@ import io.jenetics.util.Seq;
 
 /**
  * Unique fitness based tournament selection.
- *
- * The last front selection procedure takes two arguments: a front F and the
- * number of solutions to select k. The algorithm starts by sorting the unique
- * fitnesses associated with the members of F in descending order of crowding
- * distance (dist) and stores the result in a list F (line 2). It then proceeds
- * to fill the initially empty set of solutions S by cycling over the sorted
- * unique fitnesses F. For each fitness, the algorithm first selects each
- * individual sharing this fitness and puts the result in set T (line 6). If
- * the resulting set is not empty, the procedure randomly picks one solution
- * from T, adds it to set S and finally removes it from the front F so that
- * individuals can be picked only once (lines 8 to 10). When all k solutions
- * have been selected, the loop stops and set S is returned (line 14).
- *
+ * <p>
+ * <em>The selection of unique fitnesses lifts the selection bias towards
+ * over-represented fitnesses by reducing multiple solutions sharing the same
+ * fitness to a single point in the objective space. It is therefore no longer
+ * required to assign a crowding distance of zero to individual of equal fitness
+ * as the selection operator correctly enforces diversity preservation by
+ * picking unique points in the objective space.</em>
  * <p>
  *  <b>Reference:</b><em>
  *      Félix-Antoine Fortin and Marc Parizeau. 2013. Revisiting the NSGA-II
@@ -78,6 +72,17 @@ public class UFTournamentSelector<
 	private final ElementDistance<Phenotype<G, C>> _distance;
 	private final ToIntFunction<Phenotype<G, C>> _dimension;
 
+	/**
+	 * Creates a new {@code UFTournamentSelector} with the functions needed for
+	 * handling the multi-objective result type {@code C}.
+	 *
+	 * @see #of()
+	 *
+	 * @param dominance the pareto dominance comparator
+	 * @param comparator the vector element comparator
+	 * @param distance the vector element distance
+	 * @param dimension the dimensionality of vector type {@code C}
+	 */
 	public UFTournamentSelector(
 		final Comparator<? super C> dominance,
 		final ElementComparator<? super C> comparator,
@@ -103,7 +108,7 @@ public class UFTournamentSelector<
 	) {
 		final Random random = RandomRegistry.getRandom();
 
-		final int[] rank = Pareto.ranks(population, _dominance);
+		final int[] rank = Pareto.rank(population, _dominance);
 		final double[] dist = Pareto.crowdingDistance(
 			population, _comparator, _distance, _dimension
 		);
@@ -136,13 +141,21 @@ public class UFTournamentSelector<
 		return ISeq.of(S);
 	}
 
-	private boolean cco(
+	private static boolean cco(
 		final int i, final int j,
 		final int[] rank, final double[] dist
 	) {
 		return rank[i] < rank[j] || (rank[i] == rank[j] && dist[i] > dist[j]);
 	}
 
+	/**
+	 * Return a new selector for the given result type {@code V}.
+	 *
+	 * @param <G> the gene type
+	 * @param <T> the array type, e.g. {@code double[]}
+	 * @param <V> the multi object result type vector
+	 * @return a new selector for the given result type {@code V}
+	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	UFTournamentSelector<G, V> of() {
 		return new UFTournamentSelector<>(

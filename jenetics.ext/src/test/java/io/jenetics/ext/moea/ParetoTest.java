@@ -32,9 +32,6 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.moea.Pareto;
-import io.jenetics.ext.moea.Point2;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -121,15 +118,15 @@ public class ParetoTest {
 
 
 	@Test
-	public void ranks() {
+	public void rank() {
 		final Random random = new Random(123);
 		final ISeq<Point2> fpoints = frontPoints(5, random);
 		final ISeq<Point2> cpoints = circlePoints(3, random);
 
-		System.out.println(Arrays.toString(Pareto.ranks(fpoints, Point2::dominance)));
+		System.out.println(Arrays.toString(Pareto.rank(fpoints, Point2::dominance)));
 		System.out.println();
 
-		System.out.println(Arrays.toString(Pareto.ranks(fpoints.append(cpoints), Point2::dominance)));
+		System.out.println(Arrays.toString(Pareto.rank(fpoints.append(cpoints), Point2::dominance)));
 		System.out.println();
 		System.out.println(Pareto.front(fpoints, Point2::dominance));
 	}

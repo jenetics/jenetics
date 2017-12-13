@@ -44,22 +44,7 @@ import io.jenetics.ext.internal.IntList;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Pareto<T> {
-
-	private final ISeq<T> _front;
-	private int[] _rank;
-	private double[] _distance;
-
-	public Pareto(
-		final ISeq<T> front,
-		final int[] rank,
-		final double[] distance
-	) {
-		_front = requireNonNull(front);
-		_rank = requireNonNull(rank);
-		_distance = requireNonNull(distance);
-	}
-
+public final class Pareto {
 
 	/* *************************************************************************
 	 * Crowding distance methods.
@@ -170,8 +155,8 @@ public final class Pareto<T> {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] ranks(final Seq<? extends Vec<T>> set) {
-		return ranks(set, Vec::dominance);
+	public static <T> int[] rank(final Seq<? extends Vec<T>> set) {
+		return rank(set, Vec::dominance);
 	}
 
 	/**
@@ -191,7 +176,7 @@ public final class Pareto<T> {
 	 * @param <T> the element type
 	 * @return the <em>non-domination</em> rank of the given input {@code set}
 	 */
-	public static <T> int[] ranks(
+	public static <T> int[] rank(
 		final Seq<? extends T> set,
 		final Comparator<? super T> dominance
 	) {
