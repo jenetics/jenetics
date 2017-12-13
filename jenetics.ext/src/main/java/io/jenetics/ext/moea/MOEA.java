@@ -25,10 +25,10 @@ import static io.jenetics.ext.moea.Pareto.front;
 
 import java.util.Comparator;
 import java.util.function.ToIntFunction;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 
 import io.jenetics.Gene;
+import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
@@ -162,33 +162,90 @@ public final class MOEA {
 			));
 		}
 
-		final UnaryOperator<ParetoFront<Phenotype<G, C>>> shrink = set -> {
-			if (set.size() > size.getMax()) {
-				set.trim(
-					size.getMin(),
-					comparator.map(Phenotype::getFitness),
-					distance.map(Phenotype::getFitness),
-					v -> dimension.applyAsInt(v.getFitness())
+		return Collector.of(
+			() -> new Front<G, C>(
+				size, dominance, comparator, distance, dimension
+			),
+			Front::add,
+			Front::merge,
+			Front::toISeq
+		);
+	}
+
+	private static final class Front<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+
+		final IntRange _size;
+		final Comparator<? super C> _dominance;
+		final ElementComparator<? super C> _comparator;
+		final ElementDistance<? super C> _distance;
+		final ToIntFunction<? super C> _dimension;
+
+		private Optimize _optimize;
+		private ParetoFront<Phenotype<G, C>> _front;
+
+		Front(
+			final IntRange size,
+			final Comparator<? super C> dominance,
+			final ElementComparator<? super C> comparator,
+			final ElementDistance<? super C> distance,
+			final ToIntFunction<? super C> dimension
+		) {
+			_size = size;
+			_dominance = dominance;
+			_comparator = comparator;
+			_distance = distance;
+			_dimension = dimension;
+		}
+
+		void add(final EvolutionResult<G, C> result) {
+			if (_front == null) {
+				_optimize = result.getOptimize();
+				_front = new ParetoFront<>((a, b) ->
+					_optimize == Optimize.MAXIMUM
+						? _dominance.compare(a.getFitness(), b.getFitness())
+						: _dominance.compare(b.getFitness(), a.getFitness())
 				);
 			}
-			return set;
-		};
 
-		return Collector.of(
-			() -> new ParetoFront<Phenotype<G, C>>(
-				(a, b) -> dominance.compare(a.getFitness(), b.getFitness())
-			),
-			(set, result) -> {
-				final ISeq<Phenotype<G, C>> front = front(
-					result.getPopulation(),
-					Phenotype::compareTo
+			final ISeq<Phenotype<G, C>> front = front(
+				result.getPopulation(),
+				(a, b) -> _optimize == Optimize.MAXIMUM
+					? _dominance.compare(a.getFitness(), b.getFitness())
+					: _dominance.compare(b.getFitness(), a.getFitness())
+			);
+			_front.addAll(front.asList());
+			trim();
+		}
+
+		private void trim() {
+			assert _front != null;
+			assert _optimize != null;
+
+			if (_front.size() > _size.getMax()) {
+				_front.trim(
+					_size.getMin(),
+					(a, b, i) -> _optimize == Optimize.MAXIMUM
+						? _comparator.compare(a.getFitness(), b.getFitness(), i)
+						: _comparator.compare(b.getFitness(), a.getFitness(), i),
+					_distance.map(Phenotype::getFitness),
+					v -> _dimension.applyAsInt(v.getFitness())
 				);
-				set.addAll(front.asList());
-				shrink.apply(set);
-			},
-			(a, b) -> shrink.apply(a.merge(b)),
-			ParetoFront::toISeq
-		);
+			}
+		}
+
+		Front<G, C> merge(final Front<G, C> front) {
+			_front.merge(front._front);
+			trim();
+			return this;
+		}
+
+		ISeq<Phenotype<G, C>> toISeq() {
+			return _front != null ? _front.toISeq() : ISeq.empty();
+		}
+
 	}
 
 }

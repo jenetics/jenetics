@@ -65,7 +65,7 @@ public class UFTournamentSelectorTest {
 		final ISeq<Vec<double[]>> populationFront = Pareto.front(
 			population.stream()
 				.map(Phenotype::getFitness)
-				.collect(Collectors.toList())
+				.collect(ISeq.toISeq())
 		);
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> selected =
@@ -82,7 +82,7 @@ public class UFTournamentSelectorTest {
 		final ISeq<Vec<double[]>> selectedFront = Pareto.front(
 			selected.stream()
 				.map(Phenotype::getFitness)
-				.collect(Collectors.toList())
+				.collect(ISeq.toISeq())
 		);
 
 		Assert.assertTrue(

@@ -29,9 +29,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.moea.Pareto;
-import io.jenetics.ext.moea.ParetoFront;
-import io.jenetics.ext.moea.Point2;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -52,7 +50,7 @@ public class ParetoFrontTest {
 
 			Assert.assertEquals(
 				new HashSet<>(set),
-				new HashSet<>(Pareto.front(elements, Point2::dominance).asList())
+				new HashSet<>(Pareto.front(ISeq.of(elements), Point2::dominance).asList())
 			);
 		}
 	}
@@ -70,7 +68,7 @@ public class ParetoFrontTest {
 
 		Assert.assertEquals(
 			new HashSet<>(set),
-			new HashSet<>(Pareto.front(elements, Point2::dominance).asList())
+			new HashSet<>(Pareto.front(ISeq.of(elements), Point2::dominance).asList())
 		);
 	}
 
