@@ -49,8 +49,8 @@ import java.util.Comparator;
  *     Pareto efficiency</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 public interface Vec<T> extends Comparable<Vec<T>> {
 

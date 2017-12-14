@@ -33,8 +33,8 @@ import java.util.function.ToDoubleBiFunction;
  * @param <V> the vector type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 @FunctionalInterface
 public interface ElementDistance<V> {

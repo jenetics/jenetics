@@ -45,8 +45,8 @@ import io.jenetics.ext.internal.SeqView;
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 public final class ParetoFront<T> extends AbstractSet<T> {
 
