@@ -62,7 +62,7 @@ public class MOEATest {
 				new Mutator<>(0.1),
 				new MeanAlterer<>())
 			.offspringSelector(new TournamentSelector<>(2))
-			.survivorsSelector(UFTournamentSelector.of())
+			.survivorsSelector(UFTournamentSelector.vec())
 			.minimizing()
 			.build();
 

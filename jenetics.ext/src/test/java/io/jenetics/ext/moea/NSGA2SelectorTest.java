@@ -53,7 +53,7 @@ public class NSGA2SelectorTest {
 	@Test
 	public void select() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
-			NSGA2Selector.of();
+			NSGA2Selector.vec();
 		//new TournamentSelector<>(10);
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> population =

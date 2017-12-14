@@ -22,9 +22,9 @@ package io.jenetics.ext.moea;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.IndexSorter.init;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Random;
+import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
@@ -34,7 +34,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 
 /**
@@ -69,7 +68,7 @@ public class NSGA2Selector<
 	 * Creates a new {@code NSGA2Selector} with the functions needed for
 	 * handling the multi-objective result type {@code C}.
 	 *
-	 * @see #of()
+	 * @see #vec()
 	 *
 	 * @param dominance the pareto dominance comparator
 	 * @param comparator the vector element comparator
@@ -99,8 +98,6 @@ public class NSGA2Selector<
 		final int count,
 		final Optimize opt
 	) {
-		final Random random = RandomRegistry.getRandom();
-
 		final CrowdedComparator<Phenotype<G, C>> cc = new CrowdedComparator<>(
 			population,
 			opt,
@@ -117,12 +114,15 @@ public class NSGA2Selector<
 			cc
 		);
 
-		System.out.println(Arrays.toString(idx));
+		final List<Phenotype<G, C>> result = new ArrayList<>();
+		while (result.size() < count) {
+			IntStream.of(idx)
+				.limit(count - result.size())
+				.mapToObj(population)
+				.forEach(result::add);
+		}
 
-		return IntStream.of(idx)
-			.limit(count)
-			.mapToObj(population)
-			.collect(ISeq.toISeq());
+		return ISeq.of(result);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class NSGA2Selector<
 	 * @return a new selector for the given result type {@code V}
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
-	NSGA2Selector<G, V> of() {
+	NSGA2Selector<G, V> vec() {
 		return new NSGA2Selector<>(
 			Vec<T>::dominance,
 			Vec<T>::compareTo,
