@@ -128,10 +128,29 @@ public abstract class IndexSorter {
 	 * @param array the array to sort
 	 * @param indexes the index lookup array -
 	 *        &forall; i &isin; [0, N): index[i] = i
+	 * @param comparator the comparator used for comparing two int values
 	 * @return the given {@code indexes} which is now "sorted"
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public abstract int[] sort(final int[] array, final int[] indexes);
+	public abstract int[] sort(
+		final int[] array,
+		final int[] indexes,
+		final IntComparator comparator
+	);
+
+	/**
+	 * Sorting the given {@code array} by changing the given {@code indexes}.
+	 * The order of the original {@code array} stays unchanged.
+	 *
+	 * @param array the array to sort
+	 * @param indexes the index lookup array -
+	 *        &forall; i &isin; [0, N): index[i] = i
+	 * @return the given {@code indexes} which is now "sorted"
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public int[] sort(final int[] array, final int[] indexes) {
+		return sort(array, indexes, Integer::compare);
+	}
 
 	/**
 	 * Sorting the given {@code array} by changing the given {@code indexes}.
@@ -408,16 +427,20 @@ final class HeapSorter extends IndexSorter {
 	}
 
 	@Override
-	public int[] sort(final int[] array, final int[] indexes) {
+	public int[] sort(
+		final int[] array,
+		final int[] indexes,
+		final IntComparator comparator
+	) {
 		// Heapify
 		for (int k = array.length/2; k >= 0; --k) {
-			sink(array, indexes, k, array.length);
+			sink(array, indexes, comparator, k, array.length);
 		}
 
 		// Sort down.
 		for (int i = array.length; --i >= 1;) {
 			swap(indexes, 0, i);
-			sink(array, indexes, 0, i);
+			sink(array, indexes, comparator, 0, i);
 		}
 
 		return indexes;
@@ -426,14 +449,21 @@ final class HeapSorter extends IndexSorter {
 	private static void sink(
 		final int[] array,
 		final int[] indexes,
+		final IntComparator comparator,
 		final int start,
 		final int end
 	) {
 		int m = start;
 		while (2*m < end) {
 			int j = 2*m;
-			if (j < end - 1 && array[indexes[j]] > array[indexes[j + 1]]) ++j;
-			if (array[indexes[m]] <= array[indexes[j]]) break;
+			if (j < end - 1 &&
+				comparator.compare(array[indexes[j]], array[indexes[j + 1]]) > 0)
+			{
+				++j;
+			}
+			if (comparator.compare(array[indexes[m]], array[indexes[j]]) <= 0) {
+				break;
+			}
 			swap(indexes, m, j);
 			m = j;
 		}
@@ -555,11 +585,15 @@ final class InsertionSorter extends IndexSorter {
 	}
 
 	@Override
-	public int[] sort(final int[] array, final int[] indexes) {
+	public int[] sort(
+		final int[] array,
+		final int[] indexes,
+		final IntComparator comparator
+	) {
 		for (int i = 1, n = array.length; i < n; ++i) {
 			int j = i;
 			while (j > 0) {
-				if (array[indexes[j - 1]] < array[indexes[j]]) {
+				if (comparator.compare(array[indexes[j - 1]], array[indexes[j]]) < 0) {
 					swap(indexes, j - 1, j);
 				} else {
 					break;

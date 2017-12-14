@@ -108,14 +108,11 @@ public class UFTournamentSelector<
 	) {
 		final Random random = RandomRegistry.getRandom();
 
-		final int[] rank = Pareto.rank(
+		final CrowdedComparator<Phenotype<G, C>> cc = new CrowdedComparator<>(
 			population,
-			opt == Optimize.MAXIMUM ? _dominance : _dominance.reversed()
-		);
-
-		final double[] dist = Pareto.crowdingDistance(
-			population,
-			opt == Optimize.MAXIMUM ? _comparator : _comparator.reversed(),
+			opt,
+			_dominance,
+			_comparator,
 			_distance,
 			_dimension
 		);
@@ -127,9 +124,10 @@ public class UFTournamentSelector<
 
 			int p = 0;
 			for (int j = 0; j < G.length - 1; j += 2) {
-				if (cco(G[j], G[j + 1], rank, dist)) {
+				final int cmp = cc.compare(G[j], G[j + 1]);
+				if (cmp > 0) {
 					p = G[j];
-				} else if (cco(G[j + 1], G[j], rank, dist)) {
+				} else if (cmp < 0) {
 					p = G[j + 1];
 				} else {
 					p = random.nextBoolean() ? G[j] : G[j + 1];
@@ -144,13 +142,6 @@ public class UFTournamentSelector<
 		}
 
 		return ISeq.of(S.subList(0, count));
-	}
-
-	private static boolean cco(
-		final int i, final int j,
-		final int[] rank, final double[] dist
-	) {
-		return rank[i] < rank[j] || (rank[i] == rank[j] && dist[i] > dist[j]);
 	}
 
 	/**
