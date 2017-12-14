@@ -45,7 +45,7 @@ import io.jenetics.ext.moea.Vec;
  * @version 4.1
  * @since 4.1
  */
-public class CirclePoint {
+public class CirclePoints {
 
 	static final Problem<double[], DoubleGene, Vec<double[]>> PROBLEM = Problem.of(
 		v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
