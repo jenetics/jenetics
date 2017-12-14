@@ -24374,6 +24374,48 @@ Single-node crossover
 \end_layout
 
 \begin_layout Subsection
+Multi-objective optimization
+\end_layout
+
+\begin_layout Standard
+Multi-objective optimization (also known as multi-objective programming,
+ vector optimization, multicriteria optimization, multiattribute optimization
+ or Pareto optimization) is an area of multiple criteria decision making,
+ that is concerned with mathematical optimization problems involving more
+ than one objective function to be optimized simultaneously.
+ Multi-objective optimization has been applied in many fields of science,
+ including engineering, economics and logistics where optimal decisions
+ need to be taken in the presence of trade-offs between two or more conflicting
+ objectives.
+ Minimizing cost while maximizing comfort while buying a car, and maximizing
+ performance whilst minimizing fuel consumption and emission of pollutants
+ of a vehicle are examples of multi-objective optimization problems involving
+ two and three objectives, respectively.
+ In practical problems, there can be more than three objectives.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb:2002:FEM:2221359.2221582"
+
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
 Weasel program
 \begin_inset CommandInset label
 LatexCommand label

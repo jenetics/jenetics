@@ -25,6 +25,7 @@ import static java.lang.Math.sin;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -32,6 +33,8 @@ import java.util.stream.Stream;
 import io.jenetics.DoubleGene;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Problem;
+import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
@@ -53,7 +56,13 @@ public class CirclePoint {
 	);
 
 	public static void main(final String[] args) throws IOException {
-		final Random random = new Random();
+		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
+			"Jenetics/jenetics.tool/src/main/resources/io/jenetics/tool/moea";
+
+		final Path data = Paths.get(base, "circle_points.dat");
+		final Path output = Paths.get(base, "circle_points.svg");
+
+		final Random random = new LCG64ShiftRandom();
 
 		final ISeq<Vec<double[]>> points = Stream.generate(() -> point(random))
 			.limit(1000)
@@ -68,10 +77,9 @@ public class CirclePoint {
 			out.append("\n");
 		});
 
-		Files.write(
-			Paths.get("./jenetics.tool/src/main/results/io/jenetics/tool/moea/circle_points.dat"),
-			out.toString().getBytes()
-		);
+		Files.write(data, out.toString().getBytes());
+		final Gnuplot gnuplot = new Gnuplot(Paths.get(base, "circle_points.gp"));
+		gnuplot.create(data, output);
 	}
 
 	private static Vec<double[]> point(final Random random) {
