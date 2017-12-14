@@ -24426,7 +24426,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_points.svg
 	lyxscale 80
-	width 70text%
+	width 60text%
 
 \end_inset
 
@@ -24464,7 +24464,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_max_front.svg
 	lyxscale 80
-	width 70text%
+	width 60text%
 
 \end_inset
 
@@ -24502,7 +24502,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_min_front.svg
 	lyxscale 80
-	width 70text%
+	width 60text%
 
 \end_inset
 
