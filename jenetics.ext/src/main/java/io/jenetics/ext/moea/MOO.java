@@ -57,7 +57,7 @@ import io.jenetics.util.IntRange;
  *
  *  final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
  *      .limit(Limits.byFixedGeneration(50))
- *      .collect(MOEA.toParetoSet());
+ *      .collect(MOO.toParetoSet());
  * }</pre>
  *
  *
@@ -65,9 +65,9 @@ import io.jenetics.util.IntRange;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MOEA {
+public final class MOO {
 
-	private MOEA() {
+	private MOO() {
 	}
 
 	/**
