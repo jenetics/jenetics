@@ -1,0 +1,215 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.ext.moea;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collector;
+
+import io.jenetics.internal.util.IndexSorter;
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.internal.SeqView;
+
+/**
+ * This class only contains non-dominate (Pareto-optimal) elements according to
+ * a given <em>dominance</em> measure. Like a {@link Set}, it only contains no
+ * duplicate entries. Unlike the usual set implementation, the iteration order
+ * is deterministic.
+ * <p>
+ * Inserting a new element has a time complexity of {@code O(n)}.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+public final class ParetoFront<T> extends AbstractSet<T> {
+
+	private final Comparator<? super T> _dominance;
+	private final List<T> _population = new ArrayList<>();
+
+	/**
+	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
+	 *
+	 * @param dominance the <em>Pareto</em> dominance measure
+	 * @throws NullPointerException if the given {@code dominance} measure is
+	 *         {@code null}
+	 */
+	public ParetoFront(final Comparator<? super T> dominance) {
+		_dominance = requireNonNull(dominance);
+	}
+
+	@Override
+	public boolean add(final T element) {
+		requireNonNull(element);
+
+		boolean updated = false;
+		final Iterator<T> iterator = _population.iterator();
+		while (iterator.hasNext()) {
+			final T existing = iterator.next();
+
+			int cmp = _dominance.compare(element, existing);
+			if (cmp > 0) {
+				iterator.remove();
+				updated = true;
+			} else if (cmp < 0 || element.equals(existing)) {
+				return updated;
+			}
+		}
+
+		_population.add(element);
+		return true;
+	}
+
+	@Override
+	public boolean addAll(final Collection<? extends T> elements) {
+		return elements.stream()
+			.mapToInt(e -> add(e) ? 1 : 0)
+			.sum() > 0;
+	}
+
+	/**
+	 * Add the all {@code elements} to {@code this} pareto-set.
+	 *
+	 * @param elements the elements to add
+	 * @return {@code this} pareto-set
+	 * @throws NullPointerException if the given parameter is {@code null}
+	 */
+	public ParetoFront<T> merge(final ParetoFront<? extends T> elements) {
+		addAll(elements);
+		return this;
+	}
+
+	/**
+	 * Trims {@code this} pareto front to the given size. The front elements are
+	 * sorted according its crowding distance and the elements which have smaller
+	 * distance to its neighbors are removed first.
+	 *
+	 * <pre>{@code
+	 * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
+	 * front.trim(10, Vec::compare, Vec::distance, Vec::length);
+	 * }</pre>
+	 * The example above reduces the given front to 10 elements.
+	 *
+	 * @param size the number of front elements after the trim. If
+	 *        {@code size() <= size}, nothing is trimmed.
+	 * @param comparator the element comparator used for calculating the
+	 *        crowded distance
+	 * @param distance the element distance measure
+	 * @param dimension the number of vector elements of {@code T}
+	 * @return {@code this} trimmed pareto front
+	 * @throws NullPointerException if one of the objects is {@code null}
+	 */
+	public ParetoFront<T> trim(
+		final int size,
+		final ElementComparator<? super T> comparator,
+		final ElementDistance<? super T> distance,
+		final ToIntFunction<? super T> dimension
+	) {
+		requireNonNull(comparator);
+		requireNonNull(distance);
+		requireNonNull(dimension);
+
+		if (size() > size) {
+			final double[] distances = Pareto.crowdingDistance(
+				SeqView.of(_population),
+				comparator,
+				distance,
+				dimension
+			);
+
+			final int[] idx = IndexSorter.sort(distances);
+
+			final List<T> list = new ArrayList<>(size);
+			for (int i = 0; i < size; ++i) {
+				list.add(_population.get(idx[i]));
+			}
+
+			_population.clear();
+			_population.addAll(list);
+		}
+
+		return this;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return _population.iterator();
+	}
+
+	@Override
+	public int size() {
+		return _population.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return _population.isEmpty();
+	}
+
+	/**
+	 * Return the elements of {@code this} pareto-front as {@link ISeq}.
+	 *
+	 * @return the elements of {@code this} pareto-front as {@link ISeq}
+	 */
+	public ISeq<T> toISeq() {
+		return ISeq.of(_population);
+	}
+
+	/**
+	 * Return a pareto-front collector. The natural order of the elements is
+	 * used as pareto-dominance order.
+	 *
+	 * @param <C> the element type
+	 * @return a new pareto-front collector
+	 */
+	public static <C extends Comparable<? super C>>
+	Collector<C, ?, ParetoFront<C>> toParetoFront() {
+		return toParetoFront(Comparator.naturalOrder());
+	}
+
+	/**
+	 * Return a pareto-front collector with the given pareto {@code dominance}
+	 * measure.
+	 *
+	 * @param dominance the pareto dominance comparator
+	 * @param <T> the element type
+	 * @return a new pareto-front collector
+	 * @throws NullPointerException if the given {@code dominance} collector is
+	 *         {@code null}
+	 */
+	public static <T> Collector<T, ?, ParetoFront<T>>
+	toParetoFront(final Comparator<? super T> dominance) {
+		return Collector.of(
+			() -> new ParetoFront<>(dominance),
+			ParetoFront::add,
+			ParetoFront::merge
+		);
+	}
+
+}

@@ -17,49 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.internal.util;
+
 /**
+ * Comparator for int values.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 3.9
+ * @version !__version__!
+ * @since !__version__!
  */
+@FunctionalInterface
+public interface IntComparator {
 
-apply plugin: 'packaging'
+	/**
+	 * Compares its two arguments for order. Returns a negative integer, zero,
+	 * or a positive integer as the first argument is less than, equal to, or
+	 * greater than the second.
+	 *
+	 * @param i the first integer
+	 * @param j the second integer
+	 * @return a negative integer, zero, or a positive integer as the first
+	 *         argument is less than, equal to, or greater than the second
+	 */
+	public int compare(final int i, final int j);
 
-repositories {
-	mavenCentral()
-	jcenter()
 }
-
-dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
-	compile project(':jenetics.xml')
-	compile Include.PRNGine
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.tool',
-	'io.jenetics.tool.evaluation',
-	'io.jenetics.tool.problem',
-	'io.jenetics.tool.trial'
-)
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
-
-javadoc {
-	options {
-		links 'http://jenetics.io/javadoc/jenetics'
-	}
-}
-
-packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = true
-}
-
-

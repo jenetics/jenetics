@@ -17,49 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+package io.jenetics.ext.moea;
+
+import static java.lang.String.format;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 3.9
+ * @version !__version__!
+ * @since !__version__!
  */
-
-apply plugin: 'packaging'
-
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
-dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
-	compile project(':jenetics.xml')
-	compile Include.PRNGine
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.tool',
-	'io.jenetics.tool.evaluation',
-	'io.jenetics.tool.problem',
-	'io.jenetics.tool.trial'
-)
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
-
-javadoc {
-	options {
-		links 'http://jenetics.io/javadoc/jenetics'
+final class Vecs {
+	private Vecs() {
 	}
+
+	static void checkIndex(final int index, final int length) {
+		if (index < 0 || index >= length ) {
+			throw new IndexOutOfBoundsException(format(
+				"Index out of bounds [0, %d): %d", length, index
+			));
+		}
+	}
+
 }
-
-packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = true
-}
-
-

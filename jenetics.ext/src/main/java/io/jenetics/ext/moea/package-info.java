@@ -17,49 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
+
 /**
+ * This package contains class which allows to do multi-object optimization with
+ * Jenetics.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 3.4
- * @version 3.9
+ * @version !__version__!
+ * @since !__version__!
  */
-
-apply plugin: 'packaging'
-
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
-dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
-	compile project(':jenetics.xml')
-	compile Include.PRNGine
-
-	testCompile Include.TestNG
-}
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.tool',
-	'io.jenetics.tool.evaluation',
-	'io.jenetics.tool.problem',
-	'io.jenetics.tool.trial'
-)
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
-
-javadoc {
-	options {
-		links 'http://jenetics.io/javadoc/jenetics'
-	}
-}
-
-packaging {
-	name = 'Jenetics Tools'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.sourceforge.net'
-	jarjar = false
-	javadoc = true
-}
-
-
+package io.jenetics.ext.moea;
