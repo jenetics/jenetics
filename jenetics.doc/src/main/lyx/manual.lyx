@@ -7513,7 +7513,17 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    implements Function<EvolutionStart<G,C>, EvolutionResult<G,C>>
+    implements Function<EvolutionStart<G,C>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionResult<G,C>>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionStreamable<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -8165,6 +8175,46 @@ Unique\SpecialChar softhyphen
 Population()
 \family default
  method provides such a de-duplication mapper.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+EvolutionStream
+\family default
+s created by the Engine class are unlimited.
+ Such streams must be limited by calling the available 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.limit
+\family default
+ methods.
+ Alternatively, the Engine instance itself can be limited with the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.limit
+\family default
+ methods.
+ Such limited Engines no long creates infinite 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s, they are truncated by the limit predicate defined by the 
+\family typewriter
+Engine
+\family default
+.
+ This feature is needed when you are concatenating evolution Engines (see
+ section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:ConcatEngine"
+
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Subsubsection
@@ -24413,6 +24463,13 @@ key "CoelloCoello2007"
 \end_inset
 
 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Konak2006"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24426,7 +24483,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_points.svg
 	lyxscale 80
-	width 60text%
+	width 53text%
 
 \end_inset
 
@@ -24436,7 +24493,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:MOO-circle-points"
+name "fig:Circle-points"
 
 \end_inset
 
@@ -24464,7 +24521,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_max_front.svg
 	lyxscale 80
-	width 60text%
+	width 53text%
 
 \end_inset
 
@@ -24474,11 +24531,11 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:MOO-circle-points-1"
+name "fig:Maximizing-Pareto-front"
 
 \end_inset
 
-Circle points
+Maximizing Pareto front
 \end_layout
 
 \end_inset
@@ -24502,7 +24559,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/circle_min_front.svg
 	lyxscale 80
-	width 60text%
+	width 53text%
 
 \end_inset
 
@@ -24512,11 +24569,11 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:MOO-circle-points-2"
+name "fig:Minimizing-Pareto-front"
 
 \end_inset
 
-Circle points
+Minimizing Pareto front
 \end_layout
 
 \end_inset
@@ -24527,6 +24584,365 @@ Circle points
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Adaptive 
+\family typewriter
+EvolutionStream
+\end_layout
+
+\begin_layout Standard
+The current design of 
+\family typewriter
+Engine
+\family default
+ allows to created multiple independent evolution streams from one 
+\family typewriter
+Engine
+\family default
+ instance.
+ One drawback of this approach is, that the evolution stream runs with the
+ same evolution parameters until the stream is truncated.
+ It is not possible to change the stream's 
+\family typewriter
+Engine
+\family default
+ configuration during the evolution process.
+ The 
+\family typewriter
+io.jenetics.ext
+\family default
+ module contains additional classes, which allows to run the evolution stream
+ with different configuration.
+ The additional 
+\family typewriter
+Engine
+\family default
+ classes are
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+ConcatEngine
+\family default
+,
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+CyclicEngine
+\family default
+ and
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+AdaptiveEngine.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+ConcatEngine
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:ConcatEngine"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ConcatEngine
+\family default
+ class allows to create more than one 
+\family typewriter
+Engine
+\family default
+s, with different configurations, and combine it into one 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ (
+\family typewriter
+Engine
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ConcatEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Engine-concatenation"
+
+\end_inset
+
+
+\family typewriter
+Engine
+\family default
+ concatenation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Engine-concatenation"
+
+\end_inset
+
+ shows how the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ of two concatenated 
+\family typewriter
+Engine
+\family default
+s works.
+ You can create the first partial 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ with an optional start value.
+ If the first 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ stops, it's final 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ is used as start value of the second evolution stream, created by the second
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ It is important that the evolution 
+\family typewriter
+Engine
+\family default
+s used for concatenation are limited.
+ Otherwise the created 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ will only use the first 
+\family typewriter
+Engine
+\family default
+, since it is not limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The concatenated evolution Engines must be limited (by calling 
+\family typewriter
+Engine.limit
+\family sans
+), otherwise only the first 
+\family typewriter
+Engine
+\family sans
+ is used executing the resulting EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code sample shows how to create an 
+\family typewriter
+EvolutionStream
+\family default
+ from two concatenate 
+\family typewriter
+Engine
+\family default
+s.
+ As you can see, the two 
+\family typewriter
+Engine
+\family default
+s are limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine1 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine2 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcatEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(30)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A practical use case for the 
+\family typewriter
+Engine
+\family default
+ concatenation is, when you want to do a broader exploration of the search
+ space at the beginning and narrow it with the following 
+\family typewriter
+Engine
+\family default
+s.
+ In such a setup, the first 
+\family typewriter
+Engine
+\family default
+ would be configured with a 
+\family typewriter
+Mutator
+\family default
+ with a relatively big mutation probability.
+ The mutation probabilities of the following 
+\family typewriter
+Engine
+\family default
+s would then be gradually reduced.
+\end_layout
+
+\begin_layout Subsubsection
+CyclicEngine
+\end_layout
+
+\begin_layout Subsubsection
+AdaptiveEngine
 \end_layout
 
 \begin_layout Subsection
