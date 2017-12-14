@@ -49,7 +49,7 @@ public class VecTest {
 
 
 		for (int i = 0; i < d1.length; ++i) {
-			Assert.assertEquals(Double.compare(d1[i], d2[i]), v1.compareTo(v2, i));
+			Assert.assertEquals(Double.compare(d1[i], d2[i]), v1.compare(v2, i));
 		}
 	}
 

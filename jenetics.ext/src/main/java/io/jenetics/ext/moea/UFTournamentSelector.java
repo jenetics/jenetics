@@ -156,7 +156,7 @@ public class UFTournamentSelector<
 	UFTournamentSelector<G, V> vec() {
 		return new UFTournamentSelector<>(
 			Vec<T>::dominance,
-			Vec<T>::compareTo,
+			Vec<T>::compare,
 			Vec<T>::distance,
 			Vec<T>::length
 		);

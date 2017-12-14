@@ -111,7 +111,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code index} is out of the valid
 	 *         range {@code [0, length())}
 	 */
-	public default int compareTo(final Vec<T> other, final int index) {
+	public default int compare(final Vec<T> other, final int index) {
 		return comparator().compare(data(), other.data(), index);
 	}
 

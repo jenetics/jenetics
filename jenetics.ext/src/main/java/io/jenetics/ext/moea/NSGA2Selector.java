@@ -137,7 +137,7 @@ public class NSGA2Selector<
 	NSGA2Selector<G, V> vec() {
 		return new NSGA2Selector<>(
 			Vec<T>::dominance,
-			Vec<T>::compareTo,
+			Vec<T>::compare,
 			Vec<T>::distance,
 			Vec<T>::length
 		);

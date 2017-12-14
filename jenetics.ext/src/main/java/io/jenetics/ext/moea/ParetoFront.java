@@ -110,6 +110,12 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * sorted according its crowding distance and the elements which have smaller
 	 * distance to its neighbors are removed first.
 	 *
+	 * <pre>{@code
+	 * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
+	 * front.trim(10, Vec::compare, Vec::distance, Vec::length);
+	 * }</pre>
+	 * The example above reduces the given front to 10 elements.
+	 *
 	 * @param size the number of front elements after the trim. If
 	 *        {@code size() <= size}, nothing is trimmed.
 	 * @param comparator the element comparator used for calculating the

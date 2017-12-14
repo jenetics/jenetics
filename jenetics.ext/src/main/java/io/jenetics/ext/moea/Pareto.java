@@ -67,7 +67,7 @@ public final class Pareto {
 	public static <T> double[] crowdingDistance(final Seq<? extends Vec<T>> set) {
 		return crowdingDistance(
 			set,
-			Vec::compareTo,
+			Vec::compare,
 			Vec::distance,
 			Vec::length
 		);

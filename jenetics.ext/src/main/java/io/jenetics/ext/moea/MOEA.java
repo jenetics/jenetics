@@ -111,7 +111,7 @@ public final class MOEA {
 		return toParetoSet(
 			size,
 			Vec<T>::dominance,
-			Vec<T>::compareTo,
+			Vec<T>::compare,
 			Vec<T>::distance,
 			Vec<T>::length
 		);
