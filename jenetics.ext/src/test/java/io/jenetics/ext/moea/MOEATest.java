@@ -23,6 +23,12 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
@@ -41,7 +47,8 @@ import io.jenetics.util.IntRange;
  */
 public class MOEATest {
 
-	public static void main(final String[] args) {
+	@Test
+	public void collect() {
 		final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
 			v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
 			Codecs.ofVector(
@@ -56,11 +63,28 @@ public class MOEATest {
 				new MeanAlterer<>())
 			.offspringSelector(new TournamentSelector<>(2))
 			.survivorsSelector(UFTournamentSelector.of())
+			.minimizing()
 			.build();
+
+		final List<Phenotype<DoubleGene, Vec<double[]>>> pop = new ArrayList<>();
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
+			.peek(er -> pop.addAll(er.getPopulation().asList()))
 			.collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+
+		Assert.assertTrue(result.size() >= 30);
+		Assert.assertTrue(result.size() <= 50);
+
+		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> front =
+			Pareto.front(
+				ISeq.of(pop),
+				(a, b) -> b.getFitness().compareTo(a.getFitness())
+			);
+
+		for (Phenotype<DoubleGene, Vec<double[]>> pt : result) {
+			Assert.assertTrue(front.contains(pt));
+		}
 
 		result.forEach(r -> System.out.println(
 			r.getFitness().data()[0] + ", " +

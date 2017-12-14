@@ -19,10 +19,9 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.lang.Math.sqrt;
-import static java.lang.String.format;
+import static io.jenetics.ext.moea.Point2.circle;
+import static io.jenetics.ext.moea.Point2.front;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -37,23 +36,9 @@ import io.jenetics.util.ISeq;
  */
 public class ParetoTest {
 
-	static ISeq<Point2> frontPoints(final int count, final Random random) {
-		return random.doubles(count)
-			.mapToObj(x -> Point2.of(x, sqrt(1 - x*x)))
-			.collect(ISeq.toISeq());
-	}
-
-	static ISeq<Point2> circlePoints(final int count, final Random random) {
-		return random.doubles()
-			.mapToObj(x -> Point2.of(x, random.nextDouble()))
-			.filter(p -> p.x()*p.x() + p.y()*p.y() < 0.9)
-			.limit(count)
-			.collect(ISeq.toISeq());
-	}
-
 	@Test
 	public void compareToPoint() {
-		final ISeq<Point2> outline = circlePoints(1000, new Random(234));
+		final ISeq<Point2> outline = circle(1000, new Random(234));
 
 		for (Point2 p : outline) {
 			Assert.assertTrue(p.dominance(p) == 0);
@@ -106,9 +91,9 @@ public class ParetoTest {
 	) {
 		final Random random = new Random(123);
 
-		final ISeq<Point2> fpoints1 = frontPoints(fp1, random);
-		final ISeq<Point2> cpoints = circlePoints(cp, random);
-		final ISeq<Point2> fpoints2 = frontPoints(fp2, random);
+		final ISeq<Point2> fpoints1 = front(fp1, random);
+		final ISeq<Point2> cpoints = circle(cp, random);
+		final ISeq<Point2> fpoints2 = front(fp2, random);
 		final ISeq<Point2> all = fpoints1.append(cpoints).append(fpoints2);
 
 		return shuffle
@@ -120,22 +105,24 @@ public class ParetoTest {
 	@Test
 	public void rank() {
 		final Random random = new Random(123);
-		final ISeq<Point2> fpoints = frontPoints(5, random);
-		final ISeq<Point2> cpoints = circlePoints(3, random);
+		final ISeq<Point2> fpoints = front(5, random);
+		final ISeq<Point2> cpoints = circle(3, random);
 
-		System.out.println(Arrays.toString(Pareto.rank(fpoints, Point2::dominance)));
-		System.out.println();
+		Assert.assertEquals(
+			Pareto.rank(fpoints, Point2::dominance),
+			new int[]{0, 0, 0, 0, 0}
+		);
 
-		System.out.println(Arrays.toString(Pareto.rank(fpoints.append(cpoints), Point2::dominance)));
-		System.out.println();
-		System.out.println(Pareto.front(fpoints, Point2::dominance));
+		Assert.assertEquals(
+			Pareto.rank(fpoints.append(cpoints), Point2::dominance),
+			new int[]{0, 0, 0, 0, 0, 1, 2, 1}
+		);
 	}
 
 	@Test
 	public void crowdedDistance() {
 		final Random random = new Random(123);
-		final ISeq<Point2> cpoints = circlePoints(10, random);
-		System.out.println(cpoints);
+		final ISeq<Point2> cpoints = circle(6, random);
 
 		final double[] dist = Pareto.crowdingDistance(
 			cpoints,
@@ -146,9 +133,14 @@ public class ParetoTest {
 			Point2::length
 		);
 
-		System.out.println(Arrays.toString(dist));
-		Arrays.sort(dist);
-		System.out.println(Arrays.toString(dist));
+		Assert.assertEquals(
+			dist,
+			new double[]{
+				Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
+				Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY,
+				1.3951870515321534, 0.844891356584359
+			}
+		);
 	}
 
 }

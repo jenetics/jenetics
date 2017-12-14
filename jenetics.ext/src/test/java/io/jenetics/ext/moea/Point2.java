@@ -19,10 +19,14 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.lang.Math.sqrt;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
+import java.util.Random;
+
+import io.jenetics.util.ISeq;
 
 /**
  * Represents a 2-dimensional point.
@@ -157,4 +161,18 @@ public final class Point2 implements Vec<Point2> {
 		return new Point2(x, y);
 	}
 
+
+	static ISeq<Point2> front(final int count, final Random random) {
+		return random.doubles(count)
+			.mapToObj(x -> Point2.of(x, sqrt(1 - x*x)))
+			.collect(ISeq.toISeq());
+	}
+
+	static ISeq<Point2> circle(final int count, final Random random) {
+		return random.doubles()
+			.mapToObj(x -> Point2.of(x, random.nextDouble()))
+			.filter(p -> p.x()*p.x() + p.y()*p.y() < 0.9)
+			.limit(count)
+			.collect(ISeq.toISeq());
+	}
 }
