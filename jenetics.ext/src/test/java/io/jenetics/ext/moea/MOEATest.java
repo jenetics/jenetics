@@ -45,7 +45,7 @@ import io.jenetics.util.IntRange;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class MOOTest {
+public class MOEATest {
 
 	@Test
 	public void collect() {
@@ -71,7 +71,7 @@ public class MOOTest {
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
 			.limit(Limits.byFixedGeneration(50))
 			.peek(er -> pop.addAll(er.getPopulation().asList()))
-			.collect(MOO.toParetoSet(IntRange.of(30, 50)));
+			.collect(MOEA.toParetoSet(IntRange.of(30, 50)));
 
 		Assert.assertTrue(result.size() >= 30);
 		Assert.assertTrue(result.size() <= 50);
