@@ -24512,6 +24512,23 @@ Single-node crossover
 
 \begin_layout Subsection
 Multi-objective optimization
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Multi-objective-optimization"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Multi-objective optimization
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24546,8 +24563,15 @@ key "CoelloCoello2007"
 \end_inset
 
 .
- The algorithms implemented by Jenetics are based in therms of Pareto optimality
- as described in 
+ The algorithms implemented by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ are based in therms of Pareto optimality as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
@@ -24573,6 +24597,23 @@ key "Konak2006"
 
 \begin_layout Subsubsection
 Pareto efficiency
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Pareto-efficiency"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Pareto efficiency
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24592,7 +24633,18 @@ optimal
 \begin_layout Definition*
 
 \series bold
-(Pareto efficiency):
+(Pareto efficiency 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\series bold
+):
 \series default
  A solution 
 \begin_inset Formula $\mathbf{x}$
@@ -24612,13 +24664,6 @@ optimal
 
 .
  
-\begin_inset CommandInset citation
-LatexCommand cite
-key "CoelloCoello2007"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -24637,7 +24682,28 @@ The definition says that
 \begin_layout Definition*
 
 \series bold
-(Pareto dominance):
+(Pareto dominance
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Pareto dominance
+\end_layout
+
+\end_inset
+
+ 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\series bold
+):
 \series default
  A vector 
 \begin_inset Formula $\mathbf{u}=\left(u_{1},...,u_{k}\right)$
@@ -24672,14 +24738,6 @@ dominate
 \end_inset
 
 .
- 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "CoelloCoello2007"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -24858,6 +24916,39 @@ Minimizing Pareto front
 
 \begin_layout Subsubsection
 Implementation
+\end_layout
+
+\begin_layout Standard
+The Engine implementation was originally designed for solving single-objective
+ problems.
+ This drives the design decision to force the return value of the fitness
+ function to be Comparable.
+ If the result type of the fitness function is a vector, it is no longer
+ clear how to make the results comparable.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ chooses to use the Pareto dominance relation (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Pareto-efficiency"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+The io.jenetics.ext.moea package contains the classes needed for multi-objective
+ optimization.
+ The Vec interface defines all methods needed for the existing Engine to
+ to the multi-object optimization.
 \end_layout
 
 \begin_layout Subsection
