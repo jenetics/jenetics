@@ -177,6 +177,8 @@ public final class AdaptiveEngine<
 	 * function.
 	 *
 	 * @param engine the engine generating function used for adapting the engines.
+	 *       <b>Be aware, that the {@code EvolutionResult} for the first created
+	 *       {@code Engine} is {@code null}.</b>
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @return a new adaptive evolution engine

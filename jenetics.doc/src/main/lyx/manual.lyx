@@ -25209,6 +25209,332 @@ outer
 AdaptiveEngine
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+AdaptiveEngine
+\family default
+ is the most flexible method for creating 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s.
+ Instead of defining a fixed set 
+\family typewriter
+Engine
+\family default
+s, which then creates the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+, you define a function which creates an 
+\family typewriter
+Engine
+\family default
+, depending on last 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+sult
+\family default
+ of the previous 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ You can see the evolution flow of the 
+\family typewriter
+Adaptive\SpecialChar softhyphen
+Engine
+\family default
+ in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Adaptive-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/AdaptiveEngine.eps
+	width 75text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adaptive-Engine"
+
+\end_inset
+
+Adaptive 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the implementation perspective, the 
+\family typewriter
+AdaptiveEngine
+\family default
+ requires a little bit more code.
+ The additional flexibility isn't for free, as you can see in the code example
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Problem<double[], DoubleGene, Double> problem = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Engine.Builder template.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> bld = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+        AdaptiveEngine.<DoubleGene, Double>of(r -> engine(r, bld))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static EvolutionStreamable<DoubleGene, Double> engine(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final EvolutionResult<DoubleGene, Double> result,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> builder
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return var(result) < 0.2
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(new Mutator<>(0.75))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(5)
+\end_layout
+
+\begin_layout Plain Layout
+
+        : builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+                new Mutator<>(0.05),
+\end_layout
+
+\begin_layout Plain Layout
+
+                new MeanAlterer<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .selector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(25));
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static double var(final EvolutionResult<DoubleGene, Double> er) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return er != null
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? er.getPopulation().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(Phenotype::getFitness)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toDoubleMoments(Double::doubleValue))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .getVariance()
+\end_layout
+
+\begin_layout Plain Layout
+
+        : 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example tries to broaden the search, once the variance of the population's
+ fitness values are below a given threshold.
+ When implementing the 
+\family typewriter
+Engine
+\family default
+ creation function, you have to be aware, that the 
+\family typewriter
+EvolutionResult
+\family default
+ for the first Engine is 
+\family typewriter
+null
+\family default
+.
+\end_layout
+
 \begin_layout Subsection
 Weasel program
 \begin_inset CommandInset label

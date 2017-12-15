@@ -116,12 +116,12 @@ public class AdaptiveEngineTest {
 		final Engine.Builder<DoubleGene, Double> builder
 	) {
 		return var(result) < 0.2
-			? builder
+			? builder.copy()
 				.alterers(new Mutator<>(0.5))
 				.selector(new MonteCarloSelector<>())
 				.build()
 				.limit(5)
-			: builder
+			: builder.copy()
 				.alterers(
 					new Mutator<>(0.05),
 					new MeanAlterer<>())
