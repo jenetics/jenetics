@@ -8196,7 +8196,7 @@ Engine\SpecialChar softhyphen
 .limit
 \family default
  methods.
- Such limited Engines no long creates infinite 
+ This limited Engines no long creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -8215,6 +8215,91 @@ reference "subsec:ConcatEngine"
 \end_inset
 
 ).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final EvolutionStreamable<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(() -> Limits.bySteadyFitness(10));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As shown in the example code above, one important difference between the
+ 
+\family typewriter
+Engine\SpecialChar softhyphen
+.limit
+\family default
+ and the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.limit
+\family default
+ method is, that the limit me\SpecialChar softhyphen
+thod of the 
+\family typewriter
+Engine
+\family default
+ takes a limiting 
+\family typewriter
+Predicate
+\family default
+ 
+\family typewriter
+Supplier
+\family default
+ instead of the the 
+\family typewriter
+Predicate
+\family default
+ itself.
+ The reason for this is that some 
+\family typewriter
+Predicate
+\family default
+s has to maintain internal state to work properly.
+ This means, every time the 
+\family typewriter
+Engine
+\family default
+ creates a new stream, it must also create a new limiting 
+\family typewriter
+Predicate
+\family default
+.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -24263,7 +24348,9 @@ The
  class works on
 \family typewriter
  Tree\SpecialChar softhyphen
-Chromo\SpecialChar softhyphen
+Ch\SpecialChar softhyphen
+ro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
 some
 \family default
 s.
@@ -24938,10 +25025,187 @@ s would then be gradually reduced.
 \end_layout
 
 \begin_layout Subsubsection
+
+\family typewriter
 CyclicEngine
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+CyclicEngine
+\family default
+ is similar to the 
+\family typewriter
+ConcatEngine
+\family default
+.
+ Where the 
+\family typewriter
+Concat\SpecialChar softhyphen
+Engine
+\family default
+ stops the evolution, when the stream of the last engine terminates, the
+ 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ continues with a new stream from the first 
+\family typewriter
+Engine
+\family default
+.
+ The evolution flow of the 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Cyclic-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/CyclicEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Cyclic-Engine"
+
+\end_inset
+
+Cyclic 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the 
+\family typewriter
+CyclicEngine
+\family default
+ creates unlimited streams, although the participating 
+\family typewriter
+Engine
+\family default
+s are all creating limited streams, the resulting 
+\family typewriter
+EvolutionStream
+\family default
+ 
+\emph on
+must
+\emph default
+ be limited as well.
+ The code snippet below shows the creation and execution of a 
+\emph on
+cyclic
+\emph default
+ 
+\family typewriter
+EvolutionStream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    CyclingEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(15)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The reason for using a cyclic 
+\family typewriter
+EvolutionStream
+\family default
+ is similar to the reason for using a concatenated 
+\family typewriter
+EvolutionStream
+\family default
+.
+ It allows you to do a broad search, followed by a narrowed exploration.
+ This cycle is then repeated until the limiting predicate of the 
+\emph on
+outer
+\emph default
+ stream terminates the evolution process.
+\end_layout
+
 \begin_layout Subsubsection
+
+\family typewriter
 AdaptiveEngine
 \end_layout
 
