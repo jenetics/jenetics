@@ -24515,34 +24515,103 @@ Multi-objective optimization
 \end_layout
 
 \begin_layout Standard
-Multi-objective optimization (also known as multi-objective programming,
- vector optimization, multicriteria optimization, multiattribute optimization
- or Pareto optimization) is an area of multiple criteria decision making,
- that is concerned with mathematical optimization problems involving more
- than one objective function to be optimized simultaneously.
- Multi-objective optimization has been applied in many fields of science,
- including engineering, economics and logistics where optimal decisions
- need to be taken in the presence of trade-offs between two or more conflicting
- objectives.
- Minimizing cost while maximizing comfort while buying a car, and maximizing
- performance whilst minimizing fuel consumption and emission of pollutants
- of a vehicle are examples of multi-objective optimization problems involving
- two and three objectives, respectively.
- In practical problems, there can be more than three objectives.
+A Multi-objective Optimization Problem (MOP) can be defined as the problem
+ of finding
+\end_layout
+
+\begin_layout Quote
+a vector of decision variables which satisfies constraints and optimizes
+ a vector function whose elements represent the objective functions.
+ These functions form a mathematical description of performance criteria
+ which are usually in conflict with each other.
+ Hence, the term “optimize” means finding such a solution which would give
+ the values of all the objective functions acceptable to the decision maker.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Osyczka1985"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are several ways for solving multiobjective problems.
+ An excellent theoretical foundation is given in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+.
+ The algorithms implemented by Jenetics are based in therms of Pareto optimality
+ as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
 
 \end_inset
 
-
+, 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
 
 \end_inset
 
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Konak2006"
 
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Pareto efficiency
+\end_layout
+
+\begin_layout Standard
+In contrast to single-objective optimization, where usually only one optimal
+ solution exits, the multi-objective optimization creates a set of 
+\emph on
+optimal
+\emph default
+ solutions.
+ The 
+\emph on
+optimal
+\emph default
+ solutions are also known as the Pareto front or Pareto set.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Pareto efficiency):
+\series default
+ A solution 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is said to be Pareto optimal iff there is no 
+\begin_inset Formula $\mathbf{x}'$
+\end_inset
+
+ for which 
+\begin_inset Formula $\mathbf{v}=\left(f_{1}\left(\mathbf{x}'\right),...,f_{k}\left(\mathbf{x}'\right)\right)$
+\end_inset
+
+ dominates 
+\begin_inset Formula $\mathbf{u}=\left(f_{1}\left(\mathbf{x}\right),...,f_{k}\left(\mathbf{x}\right)\right)$
+\end_inset
+
+.
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
@@ -24550,13 +24619,88 @@ key "CoelloCoello2007"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The definition says that 
+\begin_inset Formula $\mathbf{x}^{*}$
+\end_inset
+
+ is Pareto optimal if there exists no feasible vector 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ which would decrease some criterion without causing a simultaneous increase
+ in at least one other criterion.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Pareto dominance):
+\series default
+ A vector 
+\begin_inset Formula $\mathbf{u}=\left(u_{1},...,u_{k}\right)$
+\end_inset
+
+ is said to 
+\series bold
+dominate
+\series default
+ another vector 
+\begin_inset Formula $\mathbf{v}=\left(v_{1},...,v_{k}\right)$
+\end_inset
+
+ (denoted by 
+\begin_inset Formula $\mathbf{u}\succeq\mathbf{v}$
+\end_inset
+
+) iff 
+\begin_inset Formula $\mathbf{u}$
+\end_inset
+
+ is partially less than 
+\begin_inset Formula $\boldsymbol{v}$
+\end_inset
+
+, i.e., 
+\begin_inset Formula $\forall i\in\left\{ 1,...,k\right\} $
+\end_inset
+
+, 
+\begin_inset Formula $u_{i}\geq v_{i}\land\exists i\in\left\{ 1,...,k\right\} :\,u_{i}>v_{i}$
+\end_inset
+
+.
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Konak2006"
+key "CoelloCoello2007"
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+After this two basic definitions, lets have a look at a simple example.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Circle-points"
+
+\end_inset
+
+ shows some points of a two-dimensional solution space.
+ For simplicity, the points will all lie within a circle with radius 
+\begin_inset Formula $1$
+\end_inset
+
+ and center point of 
+\begin_inset Formula $\left(1,1\right)$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -24598,6 +24742,26 @@ Circle points
 \end_layout
 
 \begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Maximizing-Pareto-front"
+
+\end_inset
+
+ shows the Pareto front of a maximization problem.
+ This means we are searching for solutions tries to maximize the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinate at the same time.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -24636,6 +24800,25 @@ Maximizing Pareto front
 \end_layout
 
 \begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Minimizing-Pareto-front"
+
+\end_inset
+
+ shows the Pareto front if we try to minimize the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinate at the same time.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -24671,6 +24854,10 @@ Minimizing Pareto front
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Implementation
 \end_layout
 
 \begin_layout Subsection
