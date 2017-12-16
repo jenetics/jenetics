@@ -125,7 +125,7 @@ public final class MOEA {
 	 * @see #toParetoSet(IntRange)
 	 *
 	 * @param size the allowed size range of the returned pareto set. If the
-	 *        size of the pareto set is bigger than {@code size.getMax()},
+	 *        size of the pareto set is bigger than {@code size.getMax() - 1},
 	 *        during the collection, it is reduced to {@code size.getMin()}.
 	 *        Pareto set elements which are close to each other are removed firsts.
 	 * @param dominance the pareto dominance measure of the fitness result type
@@ -223,7 +223,7 @@ public final class MOEA {
 			assert _front != null;
 			assert _optimize != null;
 
-			if (_front.size() > _size.getMax()) {
+			if (_front.size() >= _size.getMax() - 1) {
 				_front.trim(
 					_size.getMin(),
 					(a, b, i) -> _optimize == Optimize.MAXIMUM
