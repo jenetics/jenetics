@@ -134,7 +134,7 @@ public class AdaptiveEngineTest {
 		return result != null
 			? result.getPopulation().stream()
 				.map(Phenotype::getFitness)
-				.collect(DoubleMoments.toDoubleMoments(Double::doubleValue))
+				.collect(DoubleMoments.toDoubleMoments())
 				.getVariance()
 			: 0.0;
 	}

@@ -32,7 +32,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 4.1
  */
 public final class LongMoments implements Serializable {
 
@@ -254,6 +254,25 @@ public final class LongMoments implements Serializable {
 			statistics.getSkewness(),
 			statistics.getKurtosis()
 		);
+	}
+
+	/**
+	 * Return a {@code Collector} which returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * <pre>{@code
+	 * final Stream<Long> stream = ...
+	 * final LongMoments moments = stream.collect(toLongMoments()));
+	 * }</pre>
+	 *
+	 * @since 4.1
+	 *
+	 * @param <N> the type of the input elements
+	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 */
+	public static <N extends Number> Collector<N, ?, LongMoments>
+	toLongMoments() {
+		return toLongMoments(Number::longValue);
 	}
 
 	/**

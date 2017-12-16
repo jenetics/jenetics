@@ -25772,7 +25772,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-            .collect(toDoubleMoments(Double::doubleValue))
+            .collect(toDoubleMoments())
 \end_layout
 
 \begin_layout Plain Layout
