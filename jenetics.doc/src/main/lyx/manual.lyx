@@ -24596,7 +24596,7 @@ key "Konak2006"
 \end_layout
 
 \begin_layout Subsubsection
-Pareto efficiency
+Pareto efficiency 
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:Pareto-efficiency"
@@ -24682,7 +24682,7 @@ The definition says that
 \begin_layout Definition*
 
 \series bold
-(Pareto dominance
+(Pareto dominance 
 \begin_inset Index idx
 status collapsed
 
@@ -24692,7 +24692,7 @@ Pareto dominance
 
 \end_inset
 
- 
+
 \series default
 
 \begin_inset CommandInset citation
@@ -24919,10 +24919,21 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The Engine implementation was originally designed for solving single-objective
- problems.
+The original design of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library focused on solving single-objective problems.
  This drives the design decision to force the return value of the fitness
- function to be Comparable.
+ function to be 
+\family typewriter
+Comparable
+\family default
+.
  If the result type of the fitness function is a vector, it is no longer
  clear how to make the results comparable.
  
@@ -24941,14 +24952,494 @@ reference "subsec:Pareto-efficiency"
 \end_inset
 
 ).
- 
+ The Pareto dominance relation, 
+\begin_inset Formula $\succ$
+\end_inset
+
+, defines a strict partial order, which means 
+\begin_inset Formula $\succ$
+\end_inset
+
+ is
+\end_layout
+
+\begin_layout Enumerate
+irreflexive: 
+\begin_inset Formula $\mathbf{u}\nsucc\mathbf{u}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Enumerate
+transitive: 
+\begin_inset Formula $\mathbf{u}\succ\mathbf{v}\land\mathbf{v}\succ\mathbf{w}\Rightarrow\mathbf{u}\succ\mathbf{w}$
+\end_inset
+
+ and
+\end_layout
+
+\begin_layout Enumerate
+asymmetric: 
+\begin_inset Formula $\mathbf{u}\succ\mathbf{v}\Rightarrow\mathbf{v}\nsucc\mathbf{u}$
+\end_inset
+
+ .
 \end_layout
 
 \begin_layout Standard
-The io.jenetics.ext.moea package contains the classes needed for multi-objective
- optimization.
- The Vec interface defines all methods needed for the existing Engine to
- to the multi-object optimization.
+The 
+\family typewriter
+io.jenetics.ext.moea
+\family default
+ package contains the classes needed for doing multi-objective optimization.
+ One of the central types is the 
+\family typewriter
+Vec
+\family default
+ interface, which allows you wrap a vector of any element type into a 
+\family typewriter
+Comparable
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Vec<T> extends Comparable<Vec<T>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T data();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int length();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElementComparator<T> comparator();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElementDistance<T> distance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Comparator<T> dominance();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Vec-interface"
+
+\end_inset
+
+
+\family typewriter
+Vec
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Vec-interface"
+
+\end_inset
+
+ shows the necessary methods of the 
+\family typewriter
+Vec
+\family default
+ interface.
+ This methods are sufficient to do all the optimization calculations.
+ The 
+\family typewriter
+data()
+\family default
+ method returns the underlying vector type, like 
+\family typewriter
+double[]
+\family default
+ or
+\family typewriter
+ int[]
+\family default
+.
+ With the 
+\family typewriter
+ElementComparator
+\family default
+, which is returned by the 
+\family typewriter
+comparator()
+\family default
+ method, it is possible to compare single elements of the vector type 
+\family typewriter
+T
+\family default
+.
+ This is similar to the 
+\family typewriter
+ElementDistance
+\family default
+ function, returned by the 
+\family typewriter
+distance()
+\family default
+ method, which calculates the distance of two vector elements.
+ The last method, 
+\family typewriter
+dominance()
+\family default
+, returns the Pareto dominance comparator, 
+\begin_inset Formula $\succ$
+\end_inset
+
+.
+ Since it is quite a bothersome to implement all this needed methods, the
+ 
+\family typewriter
+Vec
+\family default
+ interface comes with a set of factory methods, which allows to create 
+\family typewriter
+Vec
+\family default
+ instance for some primitive array types.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Vec<int[]> ivec = Vec.of(new int[]{1, 2, 3});
+\end_layout
+
+\begin_layout Plain Layout
+
+final Vec<long[]> lvec = Vec.of(new long[]{1, 2, 3});
+\end_layout
+
+\begin_layout Plain Layout
+
+final Vec<double[]> dvec = Vec.of(new double[]{1, 2, 3});
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reason, the primitive arrays are not copied, when the 
+\family typewriter
+Vec
+\family default
+ instance is created.
+ This lets you, theoretically, change the value of a created 
+\family typewriter
+Vec
+\family default
+ instance, which will lead to unexpected results.
+\end_layout
+
+\begin_layout Standard
+The second difference to the single-objective setup is the 
+\family typewriter
+EvolutionResult
+\family default
+ collector.
+ In the single-objective case, we will only get one 
+\emph on
+best
+\emph default
+ result, which is different in the multi-object optimization.
+ As we have seen in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Pareto-efficiency"
+
+\end_inset
+
+, we no longer have only one result, we have a set of Pareto optimal solutions.
+ There is a predefined collector in the 
+\family typewriter
+io.jenetics.ext.moea
+\family default
+ package, 
+\family typewriter
+MOEA\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Pareto\SpecialChar softhyphen
+Set(\SpecialChar softhyphen
+Int\SpecialChar softhyphen
+Range\SpecialChar softhyphen
+)
+\family default
+, which collects the Pareto optimal 
+\family typewriter
+Pheno\SpecialChar softhyphen
+types
+\family default
+ into an 
+\family typewriter
+ISeq
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ISeq<Phenotype<DoubleGene, Vec<double[]>>> paretoSet = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since there exists a potential infinite number of Pareto optimal solutions,
+ you have to define desired number set elements.
+ This is done with an 
+\family typewriter
+IntRange
+\family default
+ object, where you can specify the minimal and maximal set size.
+ The example above will return a Pareto size which size in the range of
+ 
+\begin_inset Formula $\left[30,50\right)$
+\end_inset
+
+.
+ For reducing the Pareto set size, the distance between two vector elements
+ is taken into account.
+ Points which lie very close to each other are removed.
+ This leads to a result, where the Pareto optimal solutions are, more or
+ less, evenly distributed over the whole Pareto front.
+ The 
+\emph on
+crowding-distance
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The crowding distance value of a solution provides an estimate of the density
+ of solutions surrounding that solution.
+ The crowding distance value of a particular solution is the average distance
+ of its two neighboring solutions.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.igi-global.com/dictionary/crowding-distance/42740
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\emph default
+ measure is used for calculating the proximity of two points and it is described
+ in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Till now we have described the multi-objective result type (
+\family typewriter
+Vec
+\family default
+) and the final collecting of the Pareto optimal solution.
+ So lets create a simple multi-objective problem and an appropriate 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Problem<double[], DoubleGene, Vec<double[]>> problem = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Problem.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        v -> Vec.of(v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+        Codecs.ofVector(
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleRange.of(0, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleRange.of(0, 2*PI)
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Vec<double[]>> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .offspringSelector(new TournamentSelector<>(4))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSelector(UFTournamentSelector.vec())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fitness function in the example problem above will create 2D-points
+ which will all lies within a circle with a center of 
+\begin_inset Formula $\left(1,1\right)$
+\end_inset
+
+.
+ In figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Maximizing-Pareto-front"
+
+\end_inset
+
+ you can see how the resulting solution will look like.
+ There is almost no difference in creating an evolution Engine for single-
+ or multi-objective optimization.
+ You only have to take care to choose the right Selector.
+ Not all Selectors will work for multi-objective optimization.
+\end_layout
+
+\begin_layout Itemize
+AD
 \end_layout
 
 \begin_layout Subsection
