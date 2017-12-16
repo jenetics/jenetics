@@ -86,9 +86,11 @@ public class MOEATest {
 			Assert.assertTrue(front.contains(pt));
 		}
 
+		/*
 		result.forEach(r -> System.out.println(
 			r.getFitness().data()[0] + ", " +
 				r.getFitness().data()[1]));
+		*/
 	}
 
 }
