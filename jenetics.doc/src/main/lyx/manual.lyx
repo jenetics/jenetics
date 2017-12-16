@@ -24915,7 +24915,7 @@ Minimizing Pareto front
 \end_layout
 
 \begin_layout Subsubsection
-Implementation
+Multi-objective classes
 \end_layout
 
 \begin_layout Standard
@@ -25435,11 +25435,92 @@ reference "fig:Maximizing-Pareto-front"
  There is almost no difference in creating an evolution Engine for single-
  or multi-objective optimization.
  You only have to take care to choose the right Selector.
- Not all Selectors will work for multi-objective optimization.
+ Not all 
+\family typewriter
+Selector
+\family default
+s will work for multi-objective optimization.
+ This include all 
+\family typewriter
+Selector
+\family default
+s which needs a 
+\family typewriter
+Number
+\family default
+ fitness type and where the population needs to be sorted
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since the 
+\begin_inset Formula $\succ$
+\end_inset
+
+ relation doesn't define a total order, sorting the population will lead
+ to an 
+\family typewriter
+Illegal\SpecialChar softhyphen
+Argument\SpecialChar softhyphen
+Exception
+\family default
+ at runtime.
 \end_layout
 
-\begin_layout Itemize
-AD
+\end_inset
+
+.
+ The Selector which works fine in a multi-objective setup is the 
+\family typewriter
+TournamentSelector
+\family default
+.
+ Additionally you can use one of the special MO selectors: 
+\family typewriter
+NSGA2Selector
+\family default
+ and 
+\family typewriter
+UFTournamentSelector
+\family default
+.
+\end_layout
+
+\begin_layout Paragraph
+NSGA2 selector
+\end_layout
+
+\begin_layout Standard
+This selector selects the first elements of the population, which has been
+ sorted by the Crowded-comparison operator, as described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb:2002:FEM:2221359.2221582"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+Unique fitness tournament selector
+\end_layout
+
+\begin_layout Standard
+The selection of unique fitnesses lifts the selection bias towards over-represen
+ted fitnesses by reducing multiple solutions sharing the same fitness to
+ a single point in the objective space.
+ It is therefore no longer required to assign a crowding distance of zero
+ to individual of equal fitness as the selection operator correctly enforces
+ diversity preservation by picking unique points in the objective space.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
