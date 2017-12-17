@@ -25151,17 +25151,17 @@ status open
 
 \begin_layout Plain Layout
 
-final Vec<int[]> ivec = Vec.of(new int[]{1, 2, 3});
+final Vec<int[]> ivec = Vec.of(1, 2, 3);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Vec<long[]> lvec = Vec.of(new long[]{1, 2, 3});
+final Vec<long[]> lvec = Vec.of(1L, 2L, 3L);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Vec<double[]> dvec = Vec.of(new double[]{1, 2, 3});
+final Vec<double[]> dvec = Vec.of(1.0, 2.0, 3.0);
 \end_layout
 
 \end_inset
