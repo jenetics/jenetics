@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.IndexSorter.init;
@@ -102,27 +103,27 @@ public final class Pareto {
 
 		final double[] result = new double[set.size()];
 		if (set.size() < 3) {
-			Arrays.fill(result, Double.POSITIVE_INFINITY);
+			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
 			final int[] idx = new int[set.size()];
 			final IndexSorter sorter = IndexSorter.sorter(set.size());
 
-			for (int m = 0; m < dimension.applyAsInt(set.get(0)); ++m) {
+			for (int m = 0, dim = dimension.applyAsInt(set.get(0)); m < dim; ++m) {
 				sorter.sort(set, init(idx), comparator.ofIndex(m));
 
-				result[idx[0]] = Double.POSITIVE_INFINITY;
-				result[idx[set.size() - 1]] = Double.POSITIVE_INFINITY;
+				result[idx[0]] = POSITIVE_INFINITY;
+				result[idx[set.size() - 1]] = POSITIVE_INFINITY;
 
 				final T max = set.get(idx[0]);
 				final T min = set.get(idx[set.size() - 1]);
 				final double dm = distance.distance(max, min, m);
 
-				if (Double.compare(dm, 0) == 0) {
-					Arrays.fill(result, 0.0);
-				} else {
-					for (int i = 1; i < set.size() - 1; ++i) {
+				if (Double.compare(dm, 0) > 0) {
+					for (int i = 1, n = set.size() - 1; i < n; ++i) {
 						final double d = distance.distance(
-							set.get(idx[i - 1]), set.get(idx[i + 1]), m
+							set.get(idx[i - 1]),
+							set.get(idx[i + 1]),
+							m
 						);
 
 						result[idx[i]] += d/dm;
