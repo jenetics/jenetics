@@ -32129,6 +32129,119 @@ Symbolic regression polynomial
 
 \end_layout
 
+\begin_layout Section
+DTLZ1
+\end_layout
+
+\begin_layout Standard
+Deb, Thiele, Laumanns and Zitzler 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb2001"
+
+\end_inset
+
+ have proposed a set of generational MOPs for testing and comparing MOEAs.
+ This suite of benchmarks attempts to define generic MOEA test problems
+ that are scalable to a user defined number of objectives.
+ Because of the last names of its creators, this test suite is known as
+ DTLZ (Deb-Thiele-Laumanns-Zitzler).
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first us this test problems is DTLZ1.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+f_{1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\left(1+g\left(x_{3}\right)\right)\\
+f_{2}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}\left(1-x_{2}\right)\left(1+g\left(x_{3}\right)\right)\\
+f_{3}\left(\mathbf{x}\right) & = & \frac{1}{2}\left(1-x_{1}\right)\left(1+g\left(x_{3}\right)\right)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $g\left(x\right)=100\left[\left|x\right|+\left(x-\frac{1}{2}\right)^{2}-\cos\left(20\pi\left(x-\frac{1}{2}\right)\right)\right]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/DTLZ1.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+asdfasdf
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/dtlz1.svg
+	lyxscale 70
+	width 70col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Pareto-front-DTLZ1"
+
+\end_inset
+
+Pareto front DTLZ1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Chapter
 Build
 \begin_inset Index idx
