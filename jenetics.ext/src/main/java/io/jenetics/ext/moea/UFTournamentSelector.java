@@ -123,7 +123,7 @@ public class UFTournamentSelector<
 			final int[] G = subset(population.size(), k, random);
 
 			int p = 0;
-			for (int j = 0; j < G.length - 1; j += 2) {
+			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = cc.compare(G[j], G[j + 1]);
 				if (cmp > 0) {
 					p = G[j];
@@ -137,11 +137,12 @@ public class UFTournamentSelector<
 				final List<Phenotype<G, C>> list = population.stream()
 					.filter(pt -> pt.getFitness().equals(fitness))
 					.collect(Collectors.toList());
+
 				S.add(list.get(random.nextInt(list.size())));
 			}
 		}
 
-		return ISeq.of(S.subList(0, count));
+		return ISeq.of(S);
 	}
 
 	/**

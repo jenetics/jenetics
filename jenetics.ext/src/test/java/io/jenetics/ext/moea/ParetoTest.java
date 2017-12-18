@@ -146,7 +146,6 @@ public class ParetoTest {
 			.append(rank3)
 			.append(rank4);
 
-
 		final int[] rank = Pareto.rank(points, (u, v) -> v.dominance(u));
 		Assert.assertEquals(
 			IntStream.range(0, points.size())
