@@ -32,6 +32,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.SwapMutator;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
@@ -55,6 +56,7 @@ public class DTLZ1Diagram {
 
 	private static final int VARIABLES = 7;
 	private static final int OBJECTIVES = 3;
+	private static final int K = VARIABLES - OBJECTIVES + 1;
 
 	private static final
 	Problem<double[], DoubleGene, Vec<double[]>>
@@ -64,13 +66,11 @@ public class DTLZ1Diagram {
 	);
 
 	private static Vec<double[]> f(final double[] x) {
-		final int k = VARIABLES - OBJECTIVES + 1;
-
 		double g = 0.0;
-		for (int i = VARIABLES - k; i < VARIABLES; i++) {
+		for (int i = VARIABLES - K; i < VARIABLES; i++) {
 			g += pow(x[i] - 0.5, 2.0) - cos(20.0*PI*(x[i] - 0.5));
 		}
-		g = 100.0*(k + g);
+		g = 100.0*(K + g);
 
 		final double[] f = new double[OBJECTIVES];
 		for (int i = 0; i < OBJECTIVES; ++i) {
@@ -98,16 +98,17 @@ public class DTLZ1Diagram {
 				.alterers(
 					new Mutator<>(0.1),
 					new MeanAlterer<>())
-				//.selector(UFTournamentSelector.vec())
-				.selector(NSGA2Selector.vec())
-				//.selector(new TournamentSelector<>())
+				//.offspringSelector(NSGA2Selector.vec())
+				.selector(new TournamentSelector<>(5))
 				.minimizing()
 				.build();
 
 		final ISeq<Vec<double[]>> front = engine.stream()
-			.limit(500_000)
-			.collect(MOEA.toParetoSet(IntRange.of(750, 800)))
+			.limit(1_000_000)
+			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
 			.map(Phenotype::getFitness);
+
+		System.out.println(front.size());
 
 		final StringBuilder out = new StringBuilder();
 		front.forEach(p -> {
