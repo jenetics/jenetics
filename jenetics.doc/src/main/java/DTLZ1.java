@@ -6,6 +6,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
+import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.Problem;
@@ -14,28 +15,25 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 import io.jenetics.ext.moea.MOEA;
-import io.jenetics.ext.moea.UFTournamentSelector;
 import io.jenetics.ext.moea.Vec;
 
 public class DTLZ1 {
-	private static final int VARIABLES = 7;
+	private static final int VARIABLES = 4;
 	private static final int OBJECTIVES = 3;
+	private static final int K = VARIABLES - OBJECTIVES + 1;
 
-	private static final
-	Problem<double[], DoubleGene, Vec<double[]>>
+	static final Problem<double[], DoubleGene, Vec<double[]>>
 		PROBLEM = Problem.of(
-			DTLZ1::f,
-			Codecs.ofVector(DoubleRange.of(0, 1.0), VARIABLES)
-		);
+		DTLZ1::f,
+		Codecs.ofVector(DoubleRange.of(0, 1.0), VARIABLES)
+	);
 
-	private static Vec<double[]> f(final double[] x) {
-		final int k = VARIABLES - OBJECTIVES + 1;
-
+	static Vec<double[]> f(final double[] x) {
 		double g = 0.0;
-		for (int i = VARIABLES - k; i < VARIABLES; i++) {
+		for (int i = VARIABLES - K; i < VARIABLES; i++) {
 			g += pow(x[i] - 0.5, 2.0) - cos(20.0*PI*(x[i] - 0.5));
 		}
-		g = 100.0*(k + g);
+		g = 100.0*(K + g);
 
 		final double[] f = new double[OBJECTIVES];
 		for (int i = 0; i < OBJECTIVES; ++i) {
@@ -51,19 +49,19 @@ public class DTLZ1 {
 		return Vec.of(f);
 	}
 
-	public static void main(final String[] args) {
-		final Engine<DoubleGene, Vec<double[]>> engine =
-			Engine.builder(PROBLEM)
-				.alterers(
-					new Mutator<>(0.1),
-					new MeanAlterer<>())
-				.selector(UFTournamentSelector.vec())
-				.minimizing()
-				.build();
+	static final Engine<DoubleGene, Vec<double[]>> ENGINE =
+		Engine.builder(PROBLEM)
+			.alterers(
+				new Mutator<>(0.1),
+				new MeanAlterer<>())
+			.selector(new TournamentSelector<>(5))
+			.minimizing()
+			.build();
 
-		final ISeq<Vec<double[]>> front = engine.stream()
-			.limit(4000)
-			.collect(MOEA.toParetoSet(IntRange.of(750, 800)))
+	public static void main(final String[] args) {
+		final ISeq<Vec<double[]>> front = ENGINE.stream()
+			.limit(100_000)
+			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
 			.map(Phenotype::getFitness);
 	}
 
