@@ -24529,6 +24529,16 @@ Multi-objective optimization
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MOO
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -24541,8 +24551,16 @@ a vector of decision variables which satisfies constraints and optimizes
  a vector function whose elements represent the objective functions.
  These functions form a mathematical description of performance criteria
  which are usually in conflict with each other.
- Hence, the term “optimize” means finding such a solution which would give
- the values of all the objective functions acceptable to the decision maker.
+ Hence, the term 
+\begin_inset Quotes ald
+\end_inset
+
+optimize
+\begin_inset Quotes ard
+\end_inset
+
+ means finding such a solution which would give the values of all the objective
+ functions acceptable to the decision maker.
  
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -24734,7 +24752,7 @@ dominate
 \end_inset
 
 , 
-\begin_inset Formula $u_{i}\geq v_{i}\land\exists i\in\left\{ 1,...,k\right\} :\,u_{i}>v_{i}$
+\begin_inset Formula $u_{i}\geq v_{i}\land\exists i\in\left\{ 1,...,k\right\} :\,\,u_{i}>v_{i}$
 \end_inset
 
 .
@@ -24915,7 +24933,7 @@ Minimizing Pareto front
 \end_layout
 
 \begin_layout Subsubsection
-Multi-objective classes
+Implementing classes
 \end_layout
 
 \begin_layout Standard
@@ -25058,6 +25076,16 @@ name "lis:Vec-interface"
 
 
 \family typewriter
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Vec
+\end_layout
+
+\end_inset
+
 Vec
 \family default
  interface
@@ -25488,15 +25516,64 @@ UFTournamentSelector
 
 \begin_layout Paragraph
 NSGA2 selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+NSGA2 selector
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 This selector selects the first elements of the population, which has been
- sorted by the Crowded-comparison operator, as described in 
+ sorted by the Crowded-comparison operator (equation 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "eq:crowding-distance"
+
+\end_inset
+
+), 
+\begin_inset Formula $\underset{n}{\succ}$
+\end_inset
+
+, as described in 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
 
+\end_inset
+
+
+\family typewriter
+
+\begin_inset Formula 
+\begin{eqnarray}
+i\underset{n}{\succ}j & \mathsf{if} & \left(i_{rank}<j_{rank}\right)\lor\left(\left(i_{rank}=j_{rank}\right)\land i_{dist}>j_{dist}\right),\label{eq:crowding-distance}
+\end{eqnarray}
+
+\end_inset
+
+
+\family default
+where 
+\begin_inset Formula $i_{rank}$
+\end_inset
+
+ denotes the non-domination rank of individual 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $i_{dist}$
+\end_inset
+
+ the crowding distance of individual 
+\begin_inset Formula $i$
 \end_inset
 
 .
@@ -25504,6 +25581,16 @@ key "Deb:2002:FEM:2221359.2221582"
 
 \begin_layout Paragraph
 Unique fitness tournament selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Unique fitness tournament selector
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25523,10 +25610,95 @@ key "Fortin2013"
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Since the MOO classes are an extensions to the evolution 
+\family typewriter
+Engine
+\family sans
+, the implementation doesn't exactly follow an established algorithm, like
+ NSGA2 or SPEA2.
+ The results and performance, described in the relevant papers, are therefore
+ not directly comparable.
+ See listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Genetic-algorithm"
+
+\end_inset
+
+ for comparing the 
+\series bold
+\shape smallcaps
+Jenetics
+\series default
+\shape default
+ evolution flavor.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Adaptive 
 \family typewriter
 EvolutionStream
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Adaptive EvolutionStream
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25588,6 +25760,18 @@ ConcatEngine
 \begin_inset CommandInset label
 LatexCommand label
 name "subsec:ConcatEngine"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ConcatEngine
+\end_layout
 
 \end_inset
 
@@ -25878,6 +26062,16 @@ s would then be gradually reduced.
 
 \family typewriter
 CyclicEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CyclicEngine
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -26057,6 +26251,16 @@ outer
 
 \family typewriter
 AdaptiveEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AdaptiveEngine
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32018,6 +32222,36 @@ $ ./jrun io.jenetics.example.image.EvolvingImages evolve
 
 \begin_layout Section
 Symbolic regression
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Symbolic regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+GP
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32131,6 +32365,16 @@ Symbolic regression polynomial
 
 \begin_layout Section
 DTLZ1
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+DTLZ1
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
