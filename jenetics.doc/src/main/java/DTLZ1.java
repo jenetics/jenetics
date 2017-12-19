@@ -3,7 +3,6 @@ import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 
 import io.jenetics.DoubleGene;
-import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
@@ -14,7 +13,9 @@ import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
+import io.jenetics.ext.SimulatedBinaryCrossover;
 import io.jenetics.ext.moea.MOEA;
+import io.jenetics.ext.moea.NSGA2Selector;
 import io.jenetics.ext.moea.Vec;
 
 public class DTLZ1 {
@@ -23,7 +24,7 @@ public class DTLZ1 {
 	private static final int K = VARIABLES - OBJECTIVES + 1;
 
 	static final Problem<double[], DoubleGene, Vec<double[]>>
-		PROBLEM = Problem.of(
+	PROBLEM = Problem.of(
 		DTLZ1::f,
 		Codecs.ofVector(DoubleRange.of(0, 1.0), VARIABLES)
 	);
@@ -51,16 +52,18 @@ public class DTLZ1 {
 
 	static final Engine<DoubleGene, Vec<double[]>> ENGINE =
 		Engine.builder(PROBLEM)
+			.populationSize(100)
 			.alterers(
-				new Mutator<>(0.1),
-				new MeanAlterer<>())
-			.selector(new TournamentSelector<>(5))
+				new SimulatedBinaryCrossover<>(1),
+				new Mutator<>(1.0/VARIABLES))
+			.offspringSelector(new TournamentSelector<>(5))
+			.survivorsSelector(NSGA2Selector.vec())
 			.minimizing()
 			.build();
 
 	public static void main(final String[] args) {
 		final ISeq<Vec<double[]>> front = ENGINE.stream()
-			.limit(100_000)
+			.limit(2500)
 			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
 			.map(Phenotype::getFitness);
 	}

@@ -46,7 +46,7 @@ public class DTLZ1Diagram {
 		final Path output = Paths.get(base, "dtlz1.svg");
 
 		final ISeq<Vec<double[]>> front = DTLZ1.ENGINE.stream()
-			.limit(100_000)
+			.limit(2500)
 			.collect(MOEA.toParetoSet(IntRange.of(1000, 1100)))
 			.map(Phenotype::getFitness);
 

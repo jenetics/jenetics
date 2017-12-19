@@ -32099,7 +32099,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 90col%
+	width 75col%
 
 \end_inset
 
@@ -32134,14 +32134,8 @@ DTLZ1
 \end_layout
 
 \begin_layout Standard
-Deb, Thiele, Laumanns and Zitzler 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Deb2001"
-
-\end_inset
-
- have proposed a set of generational MOPs for testing and comparing MOEAs.
+Deb, Thiele, Laumanns and Zitzler have proposed a set of generational MOPs
+ for testing and comparing MOEAs.
  This suite of benchmarks attempts to define generic MOEA test problems
  that are scalable to a user defined number of objectives.
  Because of the last names of its creators, this test suite is known as
@@ -32157,15 +32151,29 @@ key "CoelloCoello2007"
 \end_layout
 
 \begin_layout Standard
-The first us this test problems is DTLZ1.
+DTLZ1 is an 
+\begin_inset Formula $M$
+\end_inset
+
+-objective problem with linear Pareto-optimal front: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb2001"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-f_{1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\left(1+g\left(x_{3}\right)\right)\\
-f_{2}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}\left(1-x_{2}\right)\left(1+g\left(x_{3}\right)\right)\\
-f_{3}\left(\mathbf{x}\right) & = & \frac{1}{2}\left(1-x_{1}\right)\left(1+g\left(x_{3}\right)\right)
+f_{1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots x_{M-1}\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+f_{2}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots\left(1-x_{M-1}\right)\left(1+g\left(\boldsymbol{x}_{M}\right)\right),\\
+ & \vdots\\
+f_{M-1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}\left(1-x_{2}\right)\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+f_{M}\left(\mathbf{x}\right) & = & \frac{1}{2}\left(1-x_{1}\right)\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+ &  & \forall i\in\left[1,..n\right]:\,\,0\leq x_{i}\leq1
 \end{eqnarray*}
 
 \end_inset
@@ -32174,11 +32182,48 @@ f_{3}\left(\mathbf{x}\right) & = & \frac{1}{2}\left(1-x_{1}\right)\left(1+g\left
 \end_layout
 
 \begin_layout Standard
-where 
-\begin_inset Formula $g\left(x\right)=100\left[\left|x\right|+\left(x-\frac{1}{2}\right)^{2}-\cos\left(20\pi\left(x-\frac{1}{2}\right)\right)\right]$
+The functional 
+\begin_inset Formula $g\left(\mathbf{x}_{M}\right)$
+\end_inset
+
+ requires 
+\begin_inset Formula $\left|\mathbf{x}_{M}\right|=k$
+\end_inset
+
+ variables and must take any function with 
+\begin_inset Formula $g\geq0$
 \end_inset
 
 .
+ Typically 
+\begin_inset Formula $g$
+\end_inset
+
+ is defined as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+g\left(\mathbf{x}_{M}\right)=100\left[\left|\mathbf{x}_{M}\right|+\left(x-\frac{1}{2}\right)^{2}-\cos\left(20\pi\left(x-\frac{1}{2}\right)\right)\right].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the above problem, the total number of variables is 
+\begin_inset Formula $n=M+k-1$
+\end_inset
+
+.
+ The search space contains 
+\begin_inset Formula $11^{k}-1$
+\end_inset
+
+ local Pareto-optimal fronts, each of which can attract an MOEA.
 \end_layout
 
 \begin_layout Standard
@@ -32198,7 +32243,23 @@ lstinputlisting{../java/DTLZ1.java}
 \end_layout
 
 \begin_layout Standard
-asdfasdf
+The listing above shows the encoding of the DTLZ1 problem with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Pareto-front-DTLZ1"
+
+\end_inset
+
+ shows the output DTLZ1 optimization.
 \end_layout
 
 \begin_layout Standard
