@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -67,6 +68,22 @@ final class Operation<T> implements Op<T>, Serializable {
 	@Override
 	public T apply(final T[] doubles) {
 		return _function.apply(doubles);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*Objects.hashCode(_name) + 37;
+		hash += 31*Integer.hashCode(_arity) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Operation<?> &&
+			Objects.equals(((Operation) obj)._name, _name) &&
+			((Operation) obj)._arity == _arity;
 	}
 
 	@Override

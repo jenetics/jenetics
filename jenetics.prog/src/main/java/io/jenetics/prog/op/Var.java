@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Represents the program variables. The {@code Var} operation is a termination
@@ -110,15 +111,16 @@ public final class Var<T> implements Op<T>, Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += 31*_name.hashCode() + 37;
+		hash += 31*Objects.hashCode(_name) + 37;
 		hash += 31*_index + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Var<?> &&
-			((Var)obj)._name.equals(_name) &&
+		return obj == this ||
+			obj instanceof Var<?> &&
+			Objects.equals(((Var)obj)._name, _name) &&
 			((Var)obj)._index == _index;
 	}
 
