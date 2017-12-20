@@ -34,7 +34,7 @@ import io.jenetics.ext.util.Tree;
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>

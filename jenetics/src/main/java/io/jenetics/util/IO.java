@@ -91,7 +91,7 @@ public abstract class IO {
 	/**
 	 * Serializes the given {@code object} to a {@code byte[]} array.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @param object the object to serialize.
 	 * @throws NullPointerException if one of the object is {@code null}.
@@ -163,7 +163,7 @@ public abstract class IO {
 	 * Creates a, previously serialized, object from the given {@code byte[]}
 	 * array.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @param bytes the serialized object.
 	 * @return the de-serialized object.

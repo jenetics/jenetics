@@ -27,7 +27,7 @@ import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 3.9
  */
 final class Operation<T> implements Op<T>, Serializable {
