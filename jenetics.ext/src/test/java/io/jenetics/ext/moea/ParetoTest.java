@@ -39,9 +39,9 @@ import io.jenetics.util.ISeq;
  */
 public class ParetoTest {
 
-	@Test
+	@Test(invocationCount = 20)
 	public void frontMax() {
-		final Random random = new Random(123123);
+		final Random random = new Random();
 		final ISeq<Vec<double[]>> rank0 = frontMax(20, 50, random);
 		final ISeq<Vec<double[]>> rank1 = frontMax(15, 50, random);
 		final ISeq<Vec<double[]>> rank2 = frontMax(10, 50, random);
@@ -52,10 +52,11 @@ public class ParetoTest {
 			.append(rank1)
 			.append(rank2)
 			.append(rank3)
-			.append(rank4);
+			.append(rank4)
+			.copy().shuffle().toISeq();
 
 		final ISeq<Vec<double[]>> front = Pareto.front(points);
-		Assert.assertEquals(front, rank0);
+		Assert.assertEquals(new HashSet<>(front.asList()), new HashSet<>(rank0.asList()));
 	}
 
 	@Test

@@ -155,6 +155,7 @@ public final class MOEA {
 		requireNonNull(size);
 		requireNonNull(dominance);
 		requireNonNull(distance);
+
 		if (size.getMin() < 1) {
 			throw new IllegalArgumentException(format(
 				"Minimal pareto set size must be greater than zero: %d",
@@ -202,37 +203,45 @@ public final class MOEA {
 		void add(final EvolutionResult<G, C> result) {
 			if (_front == null) {
 				_optimize = result.getOptimize();
-				_front = new ParetoFront<>((a, b) ->
-					_optimize == Optimize.MAXIMUM
-						? _dominance.compare(a.getFitness(), b.getFitness())
-						: _dominance.compare(b.getFitness(), a.getFitness())
-				);
+				_front = new ParetoFront<>(this::dominance);
 			}
 
 			final ISeq<Phenotype<G, C>> front = front(
 				result.getPopulation(),
-				(a, b) -> _optimize == Optimize.MAXIMUM
-					? _dominance.compare(a.getFitness(), b.getFitness())
-					: _dominance.compare(b.getFitness(), a.getFitness())
+				this::dominance
 			);
 			_front.addAll(front.asList());
 			trim();
+		}
+
+		private int dominance(final Phenotype<G, C> a, final Phenotype<G, C> b) {
+			return _optimize == Optimize.MAXIMUM
+				? _dominance.compare(a.getFitness(), b.getFitness())
+				: _dominance.compare(b.getFitness(), a.getFitness());
 		}
 
 		private void trim() {
 			assert _front != null;
 			assert _optimize != null;
 
-			if (_front.size() >= _size.getMax() - 1) {
+			if (_front.size() > _size.getMax() - 1) {
 				_front.trim(
 					_size.getMin(),
-					(a, b, i) -> _optimize == Optimize.MAXIMUM
-						? _comparator.compare(a.getFitness(), b.getFitness(), i)
-						: _comparator.compare(b.getFitness(), a.getFitness(), i),
+					this::compare,
 					_distance.map(Phenotype::getFitness),
 					v -> _dimension.applyAsInt(v.getFitness())
 				);
 			}
+		}
+
+		private int compare(
+			final Phenotype<G, C> a,
+			final Phenotype<G, C> b,
+			final int i
+		) {
+			return _optimize == Optimize.MAXIMUM
+				? _comparator.compare(a.getFitness(), b.getFitness(), i)
+				: _comparator.compare(b.getFitness(), a.getFitness(), i);
 		}
 
 		Front<G, C> merge(final Front<G, C> front) {

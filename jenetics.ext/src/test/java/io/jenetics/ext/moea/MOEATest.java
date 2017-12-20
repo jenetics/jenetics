@@ -24,7 +24,11 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,7 +40,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -47,7 +50,7 @@ import io.jenetics.util.IntRange;
  */
 public class MOEATest {
 
-	@Test
+	@Test(invocationCount = 5)
 	public void collect() {
 		final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
 			v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),
@@ -66,31 +69,29 @@ public class MOEATest {
 			.minimizing()
 			.build();
 
-		final List<Phenotype<DoubleGene, Vec<double[]>>> pop = new ArrayList<>();
+		final List<Vec<double[]>> pop = new ArrayList<>();
 
-		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
-			.limit(Limits.byFixedGeneration(50))
-			.peek(er -> pop.addAll(er.getPopulation().asList()))
-			.collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+		final ISeq<Vec<double[]>> result = engine.stream()
+			.limit(100)
+			.peek(er -> pop.addAll(er.getPopulation()
+				.map(Phenotype::getFitness).asList()))
+			.collect(MOEA.toParetoSet(IntRange.of(20, 25)))
+			.map(Phenotype::getFitness);
 
-		Assert.assertTrue(result.size() >= 30);
-		Assert.assertTrue(result.size() <= 50);
+		Assert.assertTrue(result.size() >= 10, "Expected >= 10, got " + result.size());
+		Assert.assertTrue(result.size() <= 50, "Expected <= 50, got " + result.size());
 
-		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> front =
-			Pareto.front(
-				ISeq.of(pop),
-				(a, b) -> b.getFitness().compareTo(a.getFitness())
-			);
+		final Set<Vec<double[]>> front = new HashSet<>(
+			Pareto
+				.front(ISeq.of(pop), Comparator.reverseOrder())
+				.asList()
+		);
 
-		for (Phenotype<DoubleGene, Vec<double[]>> pt : result) {
-			Assert.assertTrue(front.contains(pt));
-		}
+		final Set<Vec<double[]>> missing = result.stream()
+			.filter(r -> !front.contains(r))
+			.collect(Collectors.toSet());
 
-		/*
-		result.forEach(r -> System.out.println(
-			r.getFitness().data()[0] + ", " +
-				r.getFitness().data()[1]));
-		*/
+		Assert.assertTrue(missing.size() < 10, "Expected < 10, got " + missing.size());
 	}
 
 }

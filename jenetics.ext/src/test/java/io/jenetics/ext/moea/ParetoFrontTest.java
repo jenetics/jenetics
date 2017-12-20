@@ -19,10 +19,15 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,45 +36,102 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.internal.SeqView;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ParetoFrontTest {
 
-	@Test
+	@Test(invocationCount = 10)
 	public void add() {
-		final Random random = new Random(96969);
+		final Random random = new Random();
 
-		final List<Point2> elements = new ArrayList<>();
-		final ParetoFront<Point2> set = new ParetoFront<>(Point2::dominance);
+		final List<Vec<double[]>> elements = new ArrayList<>();
+		final ParetoFront<Vec<double[]>> set = new ParetoFront<>(Vec::dominance);
 
 		for (int i = 0; i < 500; ++i) {
-			final Point2 point = Point2.of(random.nextDouble(), random.nextDouble());
+			final Vec<double[]> point = circle(random);
 			elements.add(point);
 			set.add(point);
 
 			Assert.assertEquals(
 				new HashSet<>(set),
-				new HashSet<>(Pareto.front(ISeq.of(elements), Point2::dominance).asList())
+				new HashSet<>(Pareto.front(ISeq.of(elements)).asList())
 			);
 		}
 	}
 
-	@Test
-	public void addAll() {
-		final Random random = new Random(96969);
-		final ParetoFront<Point2> set = new ParetoFront<>(Point2::dominance);
+	@Test(invocationCount = 10)
+	public void addReverse() {
+		final Random random = new Random();
 
-		final List<Point2> elements = IntStream.range(0, 500)
-			.mapToObj(i -> Point2.of(random.nextDouble(), random.nextDouble()))
+		final List<Vec<double[]>> elements = new ArrayList<>();
+		final ParetoFront<Vec<double[]>> set = new ParetoFront<>((a, b) -> b.dominance(a));
+
+		for (int i = 0; i < 500; ++i) {
+			final Vec<double[]> point = circle(random);
+			elements.add(point);
+			set.add(point);
+
+			Assert.assertEquals(
+				new HashSet<>(set),
+				new HashSet<>(Pareto.front(ISeq.of(elements), (a, b) -> b.dominance(a)).asList())
+			);
+		}
+	}
+
+	@Test(invocationCount = 10)
+	public void addAll() {
+		final Random random = new Random();
+		final ParetoFront<Vec<double[]>> set = new ParetoFront<>(Vec::dominance);
+
+		final List<Vec<double[]>> elements = IntStream.range(0, 500)
+			.mapToObj(i -> circle(random))
 			.collect(Collectors.toList());
 
 		set.addAll(elements);
 
 		Assert.assertEquals(
 			new HashSet<>(set),
-			new HashSet<>(Pareto.front(ISeq.of(elements), Point2::dominance).asList())
+			new HashSet<>(Pareto.front(ISeq.of(elements)).asList())
 		);
+	}
+
+	@Test
+	public void trim() {
+		final Random random = new Random();
+		final ParetoFront<Vec<double[]>> set = new ParetoFront<>(Vec::dominance);
+
+		final List<Vec<double[]>> elements = IntStream.range(0, 100_000)
+			.mapToObj(i -> circle(random))
+			.collect(Collectors.toList());
+
+		set.addAll(elements);
+
+		final Set<Vec<double[]>> front = new HashSet<>(
+			Pareto.front(SeqView.of(elements)).asList()
+		);
+
+		Assert.assertEquals(new HashSet<>(set), front);
+
+		final int trimmedSize = set.size()/2;
+		Assert.assertTrue(trimmedSize > 0);
+
+		set.trim(trimmedSize, Vec::compare, Vec::distance, Vec::length);
+		Assert.assertEquals(set.size(), trimmedSize);
+
+		final List<Vec<double[]>> missing = set.stream()
+			.filter(v -> !front.contains(v))
+			.collect(Collectors.toList());
+
+		System.out.println(missing);
+	}
+
+	private static Vec<double[]> circle(final Random random) {
+		final double r = random.nextDouble();
+		final double a = random.nextDouble()*2*PI;
+		return Vec.of(r*sin(a), r*cos(a));
 	}
 
 }

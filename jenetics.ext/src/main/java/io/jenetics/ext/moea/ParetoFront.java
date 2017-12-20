@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
@@ -88,9 +90,10 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 	@Override
 	public boolean addAll(final Collection<? extends T> elements) {
-		return elements.stream()
+		final int sum = elements.stream()
 			.mapToInt(e -> add(e) ? 1 : 0)
-			.sum() > 0;
+			.sum();
+		return sum > 0;
 	}
 
 	/**
@@ -143,12 +146,10 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 				dimension
 			);
 
-			final int[] idx = IndexSorter.sort(distances);
-
-			final List<T> list = new ArrayList<>(size);
-			for (int i = 0; i < size; ++i) {
-				list.add(_population.get(idx[i]));
-			}
+			final List<T> list = IntStream.of(IndexSorter.sort(distances))
+				.limit(size)
+				.mapToObj(_population::get)
+				.collect(Collectors.toList());
 
 			_population.clear();
 			_population.addAll(list);

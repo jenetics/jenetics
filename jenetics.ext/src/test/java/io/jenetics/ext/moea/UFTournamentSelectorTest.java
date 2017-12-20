@@ -76,7 +76,7 @@ public class UFTournamentSelectorTest {
 			.mapToDouble(NSGA2SelectorTest::dist)
 			.sum()/selected.size();
 
-		Assert.assertTrue(mean > 0.2, format("Expect mean > 0.2: %s", mean));
+		Assert.assertTrue(mean > 0.18, format("Expect mean > 0.18: %s", mean));
 
 		Assert.assertEquals(
 			selected.stream()
@@ -105,7 +105,7 @@ public class UFTournamentSelectorTest {
 			.mapToDouble(NSGA2SelectorTest::dist)
 			.sum()/selected.size();
 
-		Assert.assertTrue(mean < -0.2, format("Expect mean < -0.2: %s", mean));
+		Assert.assertTrue(mean < -0.18, format("Expect mean < -0.18: %s", mean));
 
 		Assert.assertEquals(
 			selected.stream()
