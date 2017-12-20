@@ -94,9 +94,6 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 */
 	public Comparator<T> dominance();
 
-	@Override
-	public boolean equals(final Object obj);
-
 	/* *************************************************************************
 	 * Default methods derived from the methods above.
 	 * ************************************************************************/

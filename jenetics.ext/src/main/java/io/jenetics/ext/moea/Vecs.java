@@ -134,7 +134,7 @@ final class Vecs {
 		public boolean equals(final Object obj) {
 			return obj == this ||
 				obj instanceof IntVec &&
-				Arrays.equals(((IntVec) obj)._data, _data);
+				Arrays.equals(((IntVec)obj)._data, _data);
 		}
 
 		@Override
@@ -187,7 +187,7 @@ final class Vecs {
 		public boolean equals(final Object obj) {
 			return obj == this ||
 				obj instanceof LongVec &&
-				Arrays.equals(((LongVec) obj)._data, _data);
+				Arrays.equals(((LongVec)obj)._data, _data);
 		}
 
 		@Override
@@ -240,7 +240,7 @@ final class Vecs {
 		public boolean equals(final Object obj) {
 			return obj == this ||
 				obj instanceof DoubleVec &&
-				Arrays.equals(((DoubleVec) obj)._data, _data);
+				Arrays.equals(((DoubleVec)obj)._data, _data);
 		}
 
 		@Override
