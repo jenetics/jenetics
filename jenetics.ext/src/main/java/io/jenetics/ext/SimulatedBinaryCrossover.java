@@ -139,6 +139,7 @@ public class SimulatedBinaryCrossover<
 	@Override
 	public int hashCode() {
 		int hash = 17;
+		hash += 31*SimulatedBinaryCrossover.class.hashCode() + 37;
 		hash += 31*Double.hashCode(_probability) + 37;
 		hash += 31*Double.hashCode(_contiguity) + 37;
 		return hash;

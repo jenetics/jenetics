@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.String.format;
+
 import java.util.Random;
 
 import io.jenetics.util.ISeq;
@@ -121,4 +123,26 @@ public class SingleNodeCrossover<
 
 		return changed;
 	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*SingleNodeCrossover.class.hashCode() + 37;
+		hash += 31*Double.hashCode(_probability) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof SingleNodeCrossover &&
+			Double.compare(
+				((SingleNodeCrossover) obj)._probability, _probability) == 0;
+	}
+
+	@Override
+	public String toString() {
+		return format("SingleNodeCrossover[%f]", _probability);
+	}
+
 }

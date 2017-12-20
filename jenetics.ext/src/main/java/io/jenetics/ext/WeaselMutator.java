@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.String.format;
+
 import java.util.Random;
 
 import io.jenetics.AltererResult;
@@ -103,6 +105,27 @@ public class WeaselMutator<
 			Genotype.of(result.map(MutatorResult::getResult)),
 			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*WeaselMutator.class.hashCode() + 37;
+		hash += 31*Double.hashCode(_probability) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof WeaselMutator &&
+			Double.compare(
+				((WeaselMutator) obj)._probability, _probability) == 0;
+	}
+
+	@Override
+	public String toString() {
+		return format("WeaselMutator[%f]", _probability);
 	}
 
 }

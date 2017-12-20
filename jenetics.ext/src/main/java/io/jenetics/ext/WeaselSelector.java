@@ -88,4 +88,20 @@ public class WeaselSelector<
 		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(count);
 		return result.fill(minMax::getMax).toISeq();
 	}
+
+	@Override
+	public int hashCode() {
+		return WeaselMutator.class.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this || obj instanceof WeaselMutator;
+	}
+
+	@Override
+	public String toString() {
+		return "WeaselSelector";
+	}
+
 }
