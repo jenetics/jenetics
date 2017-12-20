@@ -72,20 +72,14 @@ public final class Point2 implements Vec<Point2> {
 
 	@Override
 	public ElementComparator<Point2> comparator() {
-		return (u, v, i) -> {
-			Vecs.checkIndex(i, 2);
-			return i == 0
-				? Double.compare(u._x, v._x)
-				: Double.compare(u._y, v._y);
-		};
+		return (u, v, i) -> i == 0
+			? Double.compare(u._x, v._x)
+			: Double.compare(u._y, v._y);
 	}
 
 	@Override
 	public ElementDistance<Point2> distance() {
-		return (u, v, i) -> {
-			Vecs.checkIndex(i, 2);
-			return i == 0 ? u.x() - v.x() : u.y() - v.y();
-		};
+		return (u, v, i) -> i == 0 ? u.x() - v.x() : u.y() - v.y();
 	}
 
 	@Override

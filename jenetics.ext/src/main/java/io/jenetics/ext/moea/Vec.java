@@ -264,13 +264,11 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <C extends Comparable<? super C>> Vec<C[]> of(final C[] array) {
+	public static <C extends Comparable<? super C>>
+	Vec<C[]> of(final C[] array) {
 		return of(
 			array,
-			(u, v, i) -> {
-				Vecs.checkIndex(i, array.length);
-				return clamp(u[i].compareTo(v[i]), -1, 1);
-			}
+			(u, v, i) -> clamp(u[i].compareTo(v[i]), -1, 1)
 		);
 	}
 
@@ -307,10 +305,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public ElementComparator<T[]> comparator() {
-				return (u, v, i) -> {
-					Vecs.checkIndex(i, array.length);
-					return comparator.compare(u[i], v[i]);
-				};
+				return (u, v, i) -> comparator.compare(u[i], v[i]);
 			}
 
 			@Override
