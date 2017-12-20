@@ -35,10 +35,12 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public final class Const<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final T _const;
