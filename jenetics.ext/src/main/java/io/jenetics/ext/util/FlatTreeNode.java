@@ -21,6 +21,7 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -39,7 +40,11 @@ import io.jenetics.util.MSeq;
  * @version 3.9
  * @since 3.9
  */
-public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
+public final class FlatTreeNode<T>
+	implements
+		FlatTree<T, FlatTreeNode<T>>,
+		Serializable
+{
 
 	private final int _index;
 	private final MSeq<T> _nodes;
