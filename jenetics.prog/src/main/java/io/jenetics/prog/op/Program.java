@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.Random;
 
@@ -39,10 +40,12 @@ import io.jenetics.ext.util.TreeNode;
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
-public class Program<T> implements Op<T> {
+public class Program<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final int _arity;
