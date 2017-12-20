@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 
 import java.io.Serializable;
@@ -82,7 +81,7 @@ public final class DoubleRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (int)(doubleToLongBits(_min) + 31*doubleToLongBits(_max));
+		return (int)(Double.hashCode(_min) + 31*Double.hashCode(_max));
 	}
 
 	@Override

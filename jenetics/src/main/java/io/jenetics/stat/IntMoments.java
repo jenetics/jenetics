@@ -172,16 +172,17 @@ public final class IntMoments implements Serializable {
 		hash += 33*_sum + 37;
 		hash += 33*_min + 37;
 		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		hash += 33*Double.doubleToLongBits(_variance) + 37;
-		hash += 33*Double.doubleToLongBits(_skewness) + 37;
-		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
+		hash += 33*Double.hashCode(_variance) + 37;
+		hash += 33*Double.hashCode(_skewness) + 37;
+		hash += 33*Double.hashCode(_kurtosis) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntMoments &&
+		return obj == this ||
+			obj instanceof IntMoments &&
 			_count == ((IntMoments)obj)._count &&
 			_sum == ((IntMoments)obj)._sum &&
 			_min == ((IntMoments)obj)._min &&

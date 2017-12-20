@@ -172,16 +172,17 @@ public final class LongMoments implements Serializable {
 		hash += 33*_sum + 37;
 		hash += 33*_min + 37;
 		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		hash += 33*Double.doubleToLongBits(_variance) + 37;
-		hash += 33*Double.doubleToLongBits(_skewness) + 37;
-		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
+		hash += 33*Double.hashCode(_variance) + 37;
+		hash += 33*Double.hashCode(_skewness) + 37;
+		hash += 33*Double.hashCode(_kurtosis) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LongMoments &&
+		return obj == this ||
+			obj instanceof LongMoments &&
 			_count == ((LongMoments)obj)._count &&
 			_sum == ((LongMoments)obj)._sum &&
 			_min == ((LongMoments)obj)._min &&
@@ -195,7 +196,7 @@ public final class LongMoments implements Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
+			"LongMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);

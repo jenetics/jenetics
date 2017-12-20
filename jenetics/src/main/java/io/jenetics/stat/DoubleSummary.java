@@ -124,16 +124,17 @@ public final class DoubleSummary implements Serializable {
 	public int hashCode() {
 		int hash = 17;
 		hash += 33*_count + 37;
-		hash += 33*Double.doubleToLongBits(_sum) + 37;
-		hash += 33*Double.doubleToLongBits(_min) + 37;
-		hash += 33*Double.doubleToLongBits(_max) + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.hashCode(_sum) + 37;
+		hash += 33*Double.hashCode(_min) + 37;
+		hash += 33*Double.hashCode(_max) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof DoubleSummary &&
+		return obj == this ||
+			obj instanceof DoubleSummary &&
 			_count == ((DoubleSummary)obj)._count &&
 			Double.compare(_sum, ((DoubleSummary)obj)._sum) == 0 &&
 			Double.compare(_min, ((DoubleSummary)obj)._min) == 0 &&

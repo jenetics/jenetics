@@ -169,19 +169,20 @@ public final class DoubleMoments implements Serializable {
 	public int hashCode() {
 		int hash = 17;
 		hash += 33*_count + 37;
-		hash += 33*Double.doubleToLongBits(_sum) + 37;
-		hash += 33*Double.doubleToLongBits(_min) + 37;
-		hash += 33*Double.doubleToLongBits(_max) + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		hash += 33*Double.doubleToLongBits(_variance) + 37;
-		hash += 33*Double.doubleToLongBits(_skewness) + 37;
-		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
+		hash += 33*Double.hashCode(_sum) + 37;
+		hash += 33*Double.hashCode(_min) + 37;
+		hash += 33*Double.hashCode(_max) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
+		hash += 33*Double.hashCode(_variance) + 37;
+		hash += 33*Double.hashCode(_skewness) + 37;
+		hash += 33*Double.hashCode(_kurtosis) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof DoubleMoments &&
+		return obj == this ||
+			obj instanceof DoubleMoments &&
 			_count == ((DoubleMoments)obj)._count &&
 			Double.compare(_sum, ((DoubleMoments)obj)._sum) == 0 &&
 			Double.compare(_min, ((DoubleMoments)obj)._min) == 0 &&
@@ -195,7 +196,7 @@ public final class DoubleMoments implements Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
+			"DoubleMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);

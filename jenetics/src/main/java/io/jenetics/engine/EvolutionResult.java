@@ -302,7 +302,8 @@ public final class EvolutionResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionResult<?, ?> &&
+		return obj == this ||
+			obj instanceof EvolutionResult<?, ?> &&
 			Objects.equals(_optimize,
 				((EvolutionResult<?, ?>)obj)._optimize) &&
 			Objects.equals(_population,

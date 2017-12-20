@@ -17,44 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.engine;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import java.util.Random;
-
 import org.testng.annotations.Test;
-
-import io.jenetics.util.Factory;
-import io.jenetics.util.ObjectTester;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class LongMomentsTest extends ObjectTester<LongMoments> {
-
-	@Override
-	protected Factory<LongMoments> factory() {
-		return () -> {
-			final Random random = RandomRegistry.getRandom();
-			return LongMoments.of(
-				random.nextLong(),
-				random.nextLong(),
-				random.nextLong(),
-				random.nextLong(),
-				random.nextDouble(),
-				random.nextDouble(),
-				random.nextDouble(),
-				random.nextDouble()
-			);
-		};
-	}
+public class EvolutionInitTest {
 
 	@Test
 	public void equalsVerifier() {
-		EqualsVerifier.forClass(LongMoments.class).verify();
+		EqualsVerifier.forClass(EvolutionInit.class).verify();
 	}
 
 }
