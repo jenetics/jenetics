@@ -19,11 +19,14 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.base.clamp;
 
-import java.util.Arrays;
 import java.util.Comparator;
+
+import io.jenetics.ext.moea.Vecs.DoubleVec;
+import io.jenetics.ext.moea.Vecs.IntVec;
+import io.jenetics.ext.moea.Vecs.LongVec;
+import io.jenetics.ext.moea.Vecs.ObjectVec;
 
 /**
  * The {@code Vec} interface represents the fitness result of a multi-objective
@@ -294,54 +297,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		final Comparator<? super T> comparator,
 		final ElementDistance<T[]> distance
 	) {
-		requireNonNull(array);
-		requireNonNull(comparator);
-
-		return new Vec<T[]>() {
-			@Override
-			public T[] data() {
-				return array;
-			}
-
-			@Override
-			public ElementComparator<T[]> comparator() {
-				return (u, v, i) -> comparator.compare(u[i], v[i]);
-			}
-
-			@Override
-			public ElementDistance<T[]> distance() {
-				return distance;
-			}
-
-			@Override
-			public Comparator<T[]> dominance() {
-				return (u, v) -> Vec.dominance(u, v, comparator);
-			}
-
-			@Override
-			public int length() {
-				return array.length;
-			}
-
-			@Override
-			public int hashCode() {
-				return Arrays.hashCode(array);
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Vec<?> &&
-					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals(((Vec<T[]>)obj).data(), data());
-			}
-
-			@Override
-			public String toString() {
-				return Arrays.toString(array);
-			}
-		};
+		return new ObjectVec<>(array, comparator, distance);
 	}
 
 	/**
@@ -352,31 +308,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<int[]> of(final int... array) {
-		return new ArrayVec<int[]>(
-			array,
-			array.length,
-			Vec::dominance,
-			(u, v, i) -> Integer.compare(u[i], v[i]),
-			(u, v, i) -> u[i] - v[i]
-		) {
-			@Override
-			public int hashCode() {
-				return Arrays.hashCode(array);
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Vec<?> &&
-					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((int[])((Vec)obj).data(), data());
-			}
-
-			@Override
-			public String toString() {
-				return Arrays.toString(array);
-			}
-		};
+		return new IntVec(array);
 	}
 
 	/**
@@ -387,31 +319,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<long[]> of(final long... array) {
-		return new ArrayVec<long[]>(
-			array,
-			array.length,
-			Vec::dominance,
-			(u, v, i) -> Long.compare(u[i], v[i]),
-			(u, v, i) -> u[i] - v[i]
-		) {
-			@Override
-			public int hashCode() {
-				return Arrays.hashCode(array);
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Vec<?> &&
-					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((long[])((Vec)obj).data(), data());
-			}
-
-			@Override
-			public String toString() {
-				return Arrays.toString(array);
-			}
-		};
+		return new LongVec(array);
 	}
 
 	/**
@@ -422,31 +330,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public static Vec<double[]> of(final double... array) {
-		return new ArrayVec<double[]>(
-			array,
-			array.length,
-			Vec::dominance,
-			(u, v, i) -> Double.compare(u[i], v[i]),
-			(u, v, i) -> u[i] - v[i]
-		) {
-			@Override
-			public int hashCode() {
-				return Arrays.hashCode(array);
-			}
-
-			@Override
-			public boolean equals(final Object obj) {
-				return obj == this ||
-					obj instanceof Vec<?> &&
-					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((double[])((Vec)obj).data(), data());
-			}
-
-			@Override
-			public String toString() {
-				return Arrays.toString(array);
-			}
-		};
+		return new DoubleVec(array);
 	}
 
 }

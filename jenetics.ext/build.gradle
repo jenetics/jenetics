@@ -45,6 +45,7 @@ dependencies {
 
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+	testCompile Include.EqualsVerifier
 	testCompile project(':jenetics').sourceSets.test.output
 }
 
