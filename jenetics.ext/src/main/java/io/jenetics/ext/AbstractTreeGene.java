@@ -22,6 +22,7 @@ package io.jenetics.ext;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,12 +34,14 @@ import io.jenetics.ext.util.Tree;
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
-	implements TreeGene<A, G>
+	implements TreeGene<A, G>, Serializable
 {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The allele of the tree-gene.
@@ -198,7 +201,8 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AbstractTreeGene<?, ?> &&
+		return obj == this ||
+			obj instanceof AbstractTreeGene<?, ?> &&
 			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
 			((AbstractTreeGene)obj)._childOffset == _childOffset &&
 			((AbstractTreeGene)obj)._childCount == _childCount;
