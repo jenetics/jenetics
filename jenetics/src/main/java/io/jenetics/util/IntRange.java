@@ -132,10 +132,11 @@ public final class IntRange implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		return other instanceof IntRange &&
-			_min == ((IntRange)other)._min &&
-			_max == ((IntRange)other)._max;
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IntRange &&
+			_min == ((IntRange)obj)._min &&
+			_max == ((IntRange)obj)._max;
 	}
 
 	@Override
