@@ -25,13 +25,15 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.function.Predicate;
 
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.AbstractTreeChromosome;
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
+
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
-import io.jenetics.util.ISeq;
 
 /**
  * Holds the nodes of the operation tree.

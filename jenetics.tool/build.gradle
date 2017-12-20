@@ -32,6 +32,7 @@ repositories {
 
 dependencies {
 	compile project(':jenetics')
+	compile project(':jenetics.ext')
 	compile project(':jenetics.xml')
 	compile Include.PRNGine
 

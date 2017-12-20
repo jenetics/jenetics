@@ -17,76 +17,71 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.9
+ * @version 4.1
  */
-final class EvolutionSpliterator<
+public final class EvolutionSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements Spliterator<EvolutionResult<G, C>>
 {
 
-	private final Supplier<EvolutionStart<G, C>> _initial;
+	private final Supplier<EvolutionStart<G, C>> _start;
 	private final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> _evolution;
-	private final Predicate<? super EvolutionResult<G, C>> _proceed;
 
 	private long _estimate;
 	private EvolutionStart<G, C> _next = null;
 
 	private EvolutionSpliterator(
-		final Supplier<EvolutionStart<G, C>> initial,
+		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Predicate<? super EvolutionResult<G, C>> proceed,
 		final long estimate
 	) {
 		_evolution = requireNonNull(evolution);
-		_initial = requireNonNull(initial);
-		_proceed = requireNonNull(proceed);
+		_start = requireNonNull(start);
 		_estimate = estimate;
 	}
 
-	EvolutionSpliterator(
-		final Supplier<EvolutionStart<G, C>> initial,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution,
-		final Predicate<? super EvolutionResult<G, C>> proceed
+	public EvolutionSpliterator(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
 	) {
-		this(initial, evolution, proceed, Long.MAX_VALUE);
+		this(start, evolution, Long.MAX_VALUE);
 	}
 
 	@Override
 	public boolean
 	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
 		if (_next == null) {
-			_next = _initial.get();
+			_next = _start.get();
 		}
 
 		final EvolutionResult<G, C> result = _evolution.apply(_next);
 		action.accept(result);
 		_next = result.next();
-
-		return _proceed.test(result);
+		return true;
 	}
 
 	@Override
 	public Spliterator<EvolutionResult<G, C>> trySplit() {
 		return _estimate > 0
-			? new EvolutionSpliterator<>(
-				_initial, _evolution, _proceed, _estimate >>>= 1)
+			? new EvolutionSpliterator<>(_start, _evolution, _estimate >>>= 1)
 			: null;
 	}
 
@@ -97,7 +92,7 @@ final class EvolutionSpliterator<
 
 	@Override
 	public int characteristics() {
-		return NONNULL | IMMUTABLE;
+		return NONNULL | IMMUTABLE | ORDERED;
 	}
 
 }

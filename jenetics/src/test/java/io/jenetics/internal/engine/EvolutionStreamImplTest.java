@@ -17,16 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.engine;
+package io.jenetics.internal.engine;
 
+import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.Limits;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -68,8 +74,8 @@ public class EvolutionStreamImplTest {
 			.peek(r -> count.incrementAndGet())
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(count.get(), 1L);
-		Assert.assertEquals(result.getTotalGenerations(), 1L);
+		Assert.assertEquals(count.get(), 0L);
+		Assert.assertNull(result);
 	}
 
 	@Test
@@ -100,8 +106,28 @@ public class EvolutionStreamImplTest {
 
 		@Override
 		public boolean test(final Object o) {
-			return _limit > ++_count;
+			return _limit >= ++_count;
 		}
+	}
+
+	@Test
+	public void spliterator() {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(
+				gt -> gt.getGene().getAllele(),
+				DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionStream<DoubleGene, Double> stream = engine.stream()
+			.limit(Limits.byFixedGeneration(10));
+
+		final Spliterator<EvolutionResult<DoubleGene, Double>>
+			spliterator = stream.spliterator();
+
+		final long count = StreamSupport.stream(spliterator, false)
+			.count();
+
+		Assert.assertEquals(count, 10);
 	}
 
 }

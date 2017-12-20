@@ -19,8 +19,8 @@ package io.jenetics.example.image;
 import java.util.Random;
 
 import io.jenetics.Chromosome;
-import io.jenetics.MutatorResult;
 import io.jenetics.Mutator;
+import io.jenetics.MutatorResult;
 
 /**
  * Polygon mutator class.

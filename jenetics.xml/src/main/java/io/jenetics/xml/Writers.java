@@ -37,6 +37,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
+
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;

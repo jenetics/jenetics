@@ -98,7 +98,7 @@ public class StochasticUniversalSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/StochasticUniversalSelector";
+			"/io/jenetics/selector/distribution/StochasticUniversalSelector";
 
 		return Arrays.stream(Optimize.values())
 			.map(opt -> {

@@ -32,7 +32,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 4.1
  */
 public final class DoubleMoments implements Serializable {
 
@@ -254,6 +254,25 @@ public final class DoubleMoments implements Serializable {
 			statistics.getSkewness(),
 			statistics.getKurtosis()
 		);
+	}
+
+	/**
+	 * Return a {@code Collector} which returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * <pre>{@code
+	 * final Stream<Double> stream = ...
+	 * final DoubleMoments moments = stream.collect(toDoubleMoments()));
+	 * }</pre>
+	 *
+	 * @since 4.1
+	 *
+	 * @param <N> the type of the input elements
+	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 */
+	public static <N extends Number> Collector<N, ?, DoubleMoments>
+	toDoubleMoments() {
+		return toDoubleMoments(Number::doubleValue);
 	}
 
 	/**

@@ -29,14 +29,16 @@ import io.jenetics.Mutator;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.Tree;
+
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
