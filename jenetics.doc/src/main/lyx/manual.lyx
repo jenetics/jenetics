@@ -24511,6 +24511,1459 @@ Single-node crossover
 \end_layout
 
 \begin_layout Subsection
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Weasel-program"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Weasel program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Weasel program
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Weasel_program
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is thought experiment from Richard Dawkins, in which he tries to illustrate
+ the function of genetic
+\emph on
+ mutation
+\emph default
+ and
+\emph on
+ selection
+\emph default
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The classes are located in the
+\family typewriter
+ io.jenetics.ext
+\family default
+ module.
+\end_layout
+
+\end_inset
+
+ For this reason he chooses the well known example of typewriting monkeys.
+\end_layout
+
+\begin_layout Quote
+I don't know who it was first pointed out that, given enough time, a monkey
+ bashing away at random on a typewriter could produce all the works of Shakespea
+re.
+ The operative phrase is, of course, given enough time.
+ Let us limit the task facing our monkey somewhat.
+ Suppose that he has to produce, not the complete works of Shakespeare but
+ just the short sentence
+\begin_inset Quotes ald
+\end_inset
+
+Methinks it is like a weasel
+\begin_inset Quotes ard
+\end_inset
+
+, and we shall make it relatively easy by giving him a typewriter with a
+ restricted keyboard, one with just the 26 (uppercase) letters, and a space
+ bar.
+ How long will he take to write this one little sentence?
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The search space of the 28 character long target string is 
+\begin_inset Formula $27^{28}\approx10^{40}$
+\end_inset
+
+.
+ If the monkey writes 
+\begin_inset Formula $1,000,000$
+\end_inset
+
+ different
+\emph on
+ sentences
+\emph default
+ per second, it would take about 
+\begin_inset Formula $10^{26}$
+\end_inset
+
+ years (in average) writing the correct one.
+ Although Dawkins did not provide the source code for his program, a 
+\begin_inset Quotes ald
+\end_inset
+
+Weasel
+\begin_inset Quotes ard
+\end_inset
+
+ style algorithm could run as follows:
+\end_layout
+
+\begin_layout Enumerate
+Start with a random string of 28 characters.
+\end_layout
+
+\begin_layout Enumerate
+Make 
+\begin_inset Formula $n$
+\end_inset
+
+ copies of the string (reproduce).
+\end_layout
+
+\begin_layout Enumerate
+Mutate the characters with an mutation probability of 5%.
+\end_layout
+
+\begin_layout Enumerate
+Compare each new string with the target string 
+\begin_inset Quotes ald
+\end_inset
+
+METHINKS IT IS LIKE A WEASEL
+\begin_inset Quotes ard
+\end_inset
+
+, and give each a score (the number of letters in the string that are correct
+ and in the correct position).
+\end_layout
+
+\begin_layout Enumerate
+If any of the new strings has a perfect score (
+\begin_inset Formula $28$
+\end_inset
+
+), halt.
+ Otherwise, take the highest scoring string, and go to step 2.
+\end_layout
+
+\begin_layout Standard
+Richard Dawkins was also very careful to point out the limitations of this
+ simulation:
+\end_layout
+
+\begin_layout Quote
+Although the monkey/Shakespeare model is useful for explaining the distinction
+ between single-step selection and cumulative selection, it is misleading
+ in important ways.
+ One of these is that, in each generation of selective 
+\begin_inset Quotes ald
+\end_inset
+
+breeding
+\begin_inset Quotes ard
+\end_inset
+
+, the mutant 
+\begin_inset Quotes ald
+\end_inset
+
+progeny
+\begin_inset Quotes ard
+\end_inset
+
+ phrases were judged according to the criterion of resemblance to a distant
+ ideal target, the phrase METHINKS IT IS LIKE A WEASEL.
+ Life isn't like that.
+ Evolution has no long-term goal.
+ There is no long-distance target, no final perfection to serve as a criterion
+ for selection, although human vanity cherishes the absurd notion that our
+ species is the final goal of evolution.
+ In real life, the criterion for selection is always short-term, either
+ simple survival or, more generally, reproductive success.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "dawkins1986"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you want to write a Weasel program with th 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, you need to use the special
+\family typewriter
+ Weasel\SpecialChar softhyphen
+Selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselSelector
+\end_layout
+
+\end_inset
+
+
+\family default
+ and
+\family typewriter
+ Weasel\SpecialChar softhyphen
+Mutator
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+WeaselMutator
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class WeaselProgram {
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static final String TARGET =
+\end_layout
+
+\begin_layout Plain Layout
+
+        "METHINKS IT IS LIKE A WEASEL";
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	private static int score(final Genotype<CharacterGene> gt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSequence source =
+\end_layout
+
+\begin_layout Plain Layout
+
+            (CharSequence)gt.getChromosome();
+\end_layout
+
+\begin_layout Plain Layout
+
+		return IntStream.range(0, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.sum();
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		final CharSeq chars = CharSeq.of("A-Z ");
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+			new CharacterChromosome(chars, TARGET.length())
+\end_layout
+
+\begin_layout Plain Layout
+
+		);
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Engine<CharacterGene, Integer> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+			.builder(WeaselProgram::score, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.populationSize(150)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.selector(new WeaselSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+			.offspringFraction(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+			.alterers(new WeaselMutator<>(0.05))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.build();
+\end_layout
+
+\begin_layout Plain Layout
+
+		final Phenotype<CharacterGene, Integer> result = engine
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+			.limit(byFitnessThreshold(TARGET.length() - 1))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.peek(r -> System.out.println(
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getTotalGenerations() + ": " +
+\end_layout
+
+\begin_layout Plain Layout
+
+				r.getBestPhenotype()))
+\end_layout
+
+\begin_layout Plain Layout
+
+			.collect(toBestPhenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+		System.out.println(result);
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Weasel program
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Weasel-program"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+ shows how-to implement the
+\family typewriter
+ Weasel\SpecialChar softhyphen
+Program
+\family default
+ with
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+.
+ Step (1) and (2) of the algorithm is done implicitly when the initial populatio
+n is created.
+ The third step is done by the
+\family typewriter
+ Weasel\SpecialChar softhyphen
+Mutator
+\family default
+, with mutation probability of 0.05.
+ Step (4) is done by the WeaselSelector together with the configured offspring-f
+raction of one.
+ The evolution stream is limited by the
+\family typewriter
+ Limits\SpecialChar softhyphen
+.by\SpecialChar softhyphen
+Fitness\SpecialChar softhyphen
+Threshold
+\family default
+, which is set to 
+\begin_inset Formula $score_{max}-1$
+\end_inset
+
+.
+ In the current example this value is set to
+\family typewriter
+ TARGET\SpecialChar softhyphen
+.length()
+\family default
+ - 1 = 27.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+scriptsize
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/WeaselProgram.out}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The (shortened) output of the Weasel program (listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Weasel-program"
+
+\end_inset
+
+) shows, that the optimal solution is reached in generation 
+\begin_inset Formula $46$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Adaptive 
+\family typewriter
+EvolutionStream
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Adaptive EvolutionStream
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The current design of 
+\family typewriter
+Engine
+\family default
+ allows to created multiple independent evolution streams from one 
+\family typewriter
+Engine
+\family default
+ instance.
+ One drawback of this approach is, that the evolution stream runs with the
+ same evolution parameters until the stream is truncated.
+ It is not possible to change the stream's 
+\family typewriter
+Engine
+\family default
+ configuration during the evolution process.
+ The 
+\family typewriter
+io.jenetics.ext
+\family default
+ module contains additional classes, which allows to run the evolution stream
+ with different configuration.
+ The additional 
+\family typewriter
+Engine
+\family default
+ classes are
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+ConcatEngine
+\family default
+,
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+CyclicEngine
+\family default
+ and
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+AdaptiveEngine.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+ConcatEngine
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:ConcatEngine"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ConcatEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ConcatEngine
+\family default
+ class allows to create more than one 
+\family typewriter
+Engine
+\family default
+s, with different configurations, and combine it into one 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ (
+\family typewriter
+Engine
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ConcatEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Engine-concatenation"
+
+\end_inset
+
+
+\family typewriter
+Engine
+\family default
+ concatenation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Engine-concatenation"
+
+\end_inset
+
+ shows how the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ of two concatenated 
+\family typewriter
+Engine
+\family default
+s works.
+ You can create the first partial 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ with an optional start value.
+ If the first 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ stops, it's final 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ is used as start value of the second evolution stream, created by the second
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ It is important that the evolution 
+\family typewriter
+Engine
+\family default
+s used for concatenation are limited.
+ Otherwise the created 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ will only use the first 
+\family typewriter
+Engine
+\family default
+, since it is not limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The concatenated evolution Engines must be limited (by calling 
+\family typewriter
+Engine.limit
+\family sans
+), otherwise only the first 
+\family typewriter
+Engine
+\family sans
+ is used executing the resulting EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code sample shows how to create an 
+\family typewriter
+EvolutionStream
+\family default
+ from two concatenate 
+\family typewriter
+Engine
+\family default
+s.
+ As you can see, the two 
+\family typewriter
+Engine
+\family default
+s are limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine1 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine2 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcatEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(30)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A practical use case for the 
+\family typewriter
+Engine
+\family default
+ concatenation is, when you want to do a broader exploration of the search
+ space at the beginning and narrow it with the following 
+\family typewriter
+Engine
+\family default
+s.
+ In such a setup, the first 
+\family typewriter
+Engine
+\family default
+ would be configured with a 
+\family typewriter
+Mutator
+\family default
+ with a relatively big mutation probability.
+ The mutation probabilities of the following 
+\family typewriter
+Engine
+\family default
+s would then be gradually reduced.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+CyclicEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CyclicEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+CyclicEngine
+\family default
+ is similar to the 
+\family typewriter
+ConcatEngine
+\family default
+.
+ Where the 
+\family typewriter
+Concat\SpecialChar softhyphen
+Engine
+\family default
+ stops the evolution, when the stream of the last engine terminates, the
+ 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ continues with a new stream from the first 
+\family typewriter
+Engine
+\family default
+.
+ The evolution flow of the 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Cyclic-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/CyclicEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Cyclic-Engine"
+
+\end_inset
+
+Cyclic 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the 
+\family typewriter
+CyclicEngine
+\family default
+ creates unlimited streams, although the participating 
+\family typewriter
+Engine
+\family default
+s are all creating limited streams, the resulting 
+\family typewriter
+EvolutionStream
+\family default
+ 
+\emph on
+must
+\emph default
+ be limited as well.
+ The code snippet below shows the creation and execution of a 
+\emph on
+cyclic
+\emph default
+ 
+\family typewriter
+EvolutionStream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    CyclingEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(15)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The reason for using a cyclic 
+\family typewriter
+EvolutionStream
+\family default
+ is similar to the reason for using a concatenated 
+\family typewriter
+EvolutionStream
+\family default
+.
+ It allows you to do a broad search, followed by a narrowed exploration.
+ This cycle is then repeated until the limiting predicate of the 
+\emph on
+outer
+\emph default
+ stream terminates the evolution process.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+AdaptiveEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AdaptiveEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+AdaptiveEngine
+\family default
+ is the most flexible method for creating 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s.
+ Instead of defining a fixed set 
+\family typewriter
+Engine
+\family default
+s, which then creates the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+, you define a function which creates an 
+\family typewriter
+Engine
+\family default
+, depending on last 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+sult
+\family default
+ of the previous 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ You can see the evolution flow of the 
+\family typewriter
+Adaptive\SpecialChar softhyphen
+Engine
+\family default
+ in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Adaptive-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/AdaptiveEngine.eps
+	width 75text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adaptive-Engine"
+
+\end_inset
+
+Adaptive 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the implementation perspective, the 
+\family typewriter
+AdaptiveEngine
+\family default
+ requires a little bit more code.
+ The additional flexibility isn't for free, as you can see in the code example
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Problem<double[], DoubleGene, Double> problem = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Engine.Builder template.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> bld = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+        AdaptiveEngine.<DoubleGene, Double>of(r -> engine(r, bld))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static EvolutionStreamable<DoubleGene, Double> engine(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final EvolutionResult<DoubleGene, Double> result,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> builder
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return var(result) < 0.2
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(new Mutator<>(0.75))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(5)
+\end_layout
+
+\begin_layout Plain Layout
+
+        : builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+                new Mutator<>(0.05),
+\end_layout
+
+\begin_layout Plain Layout
+
+                new MeanAlterer<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .selector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(25));
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static double var(final EvolutionResult<DoubleGene, Double> er) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return er != null
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? er.getPopulation().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(Phenotype::getFitness)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toDoubleMoments())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .getVariance()
+\end_layout
+
+\begin_layout Plain Layout
+
+        : 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example tries to broaden the search, once the variance of the population's
+ fitness values are below a given threshold.
+ When implementing the 
+\family typewriter
+Engine
+\family default
+ creation function, you have to be aware, that the 
+\family typewriter
+EvolutionResult
+\family default
+ for the first Engine is 
+\family typewriter
+null
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
 Multi-objective optimization
 \begin_inset CommandInset label
 LatexCommand label
@@ -25683,1459 +27136,6 @@ height "1pt"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Subsection
-Adaptive 
-\family typewriter
-EvolutionStream
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Adaptive EvolutionStream
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The current design of 
-\family typewriter
-Engine
-\family default
- allows to created multiple independent evolution streams from one 
-\family typewriter
-Engine
-\family default
- instance.
- One drawback of this approach is, that the evolution stream runs with the
- same evolution parameters until the stream is truncated.
- It is not possible to change the stream's 
-\family typewriter
-Engine
-\family default
- configuration during the evolution process.
- The 
-\family typewriter
-io.jenetics.ext
-\family default
- module contains additional classes, which allows to run the evolution stream
- with different configuration.
- The additional 
-\family typewriter
-Engine
-\family default
- classes are
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-ConcatEngine
-\family default
-,
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-CyclicEngine
-\family default
- and
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-AdaptiveEngine.
-\end_layout
-
-\begin_layout Subsubsection
-
-\family typewriter
-ConcatEngine
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:ConcatEngine"
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-
-\family typewriter
-ConcatEngine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-ConcatEngine
-\family default
- class allows to create more than one 
-\family typewriter
-Engine
-\family default
-s, with different configurations, and combine it into one 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Streamable
-\family default
- (
-\family typewriter
-Engine
-\family default
-).
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/ConcatEngine.eps
-	width 95text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Engine-concatenation"
-
-\end_inset
-
-
-\family typewriter
-Engine
-\family default
- concatenation
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Engine-concatenation"
-
-\end_inset
-
- shows how the 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
- of two concatenated 
-\family typewriter
-Engine
-\family default
-s works.
- You can create the first partial 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
- with an optional start value.
- If the first 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
- stops, it's final 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Result
-\family default
- is used as start value of the second evolution stream, created by the second
- evolution 
-\family typewriter
-Engine
-\family default
-.
- It is important that the evolution 
-\family typewriter
-Engine
-\family default
-s used for concatenation are limited.
- Otherwise the created 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
- will only use the first 
-\family typewriter
-Engine
-\family default
-, since it is not limited.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Shaded
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "90col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\family sans
-The concatenated evolution Engines must be limited (by calling 
-\family typewriter
-Engine.limit
-\family sans
-), otherwise only the first 
-\family typewriter
-Engine
-\family sans
- is used executing the resulting EvolutionStream.
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The following code sample shows how to create an 
-\family typewriter
-EvolutionStream
-\family default
- from two concatenate 
-\family typewriter
-Engine
-\family default
-s.
- As you can see, the two 
-\family typewriter
-Engine
-\family default
-s are limited.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine1 = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine2 = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-final Genotype<DoubleGene> result =
-\end_layout
-
-\begin_layout Plain Layout
-
-    ConcatEngine.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-        engine1.limit(50),
-\end_layout
-
-\begin_layout Plain Layout
-
-        engine2.limit(() -> Limits.bySteadyFitness(30)))
-\end_layout
-
-\begin_layout Plain Layout
-
-    .stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-        .collect(EvolutionResult.toBestGenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-A practical use case for the 
-\family typewriter
-Engine
-\family default
- concatenation is, when you want to do a broader exploration of the search
- space at the beginning and narrow it with the following 
-\family typewriter
-Engine
-\family default
-s.
- In such a setup, the first 
-\family typewriter
-Engine
-\family default
- would be configured with a 
-\family typewriter
-Mutator
-\family default
- with a relatively big mutation probability.
- The mutation probabilities of the following 
-\family typewriter
-Engine
-\family default
-s would then be gradually reduced.
-\end_layout
-
-\begin_layout Subsubsection
-
-\family typewriter
-CyclicEngine
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-CyclicEngine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-CyclicEngine
-\family default
- is similar to the 
-\family typewriter
-ConcatEngine
-\family default
-.
- Where the 
-\family typewriter
-Concat\SpecialChar softhyphen
-Engine
-\family default
- stops the evolution, when the stream of the last engine terminates, the
- 
-\family typewriter
-Cyclic\SpecialChar softhyphen
-Engine
-\family default
- continues with a new stream from the first 
-\family typewriter
-Engine
-\family default
-.
- The evolution flow of the 
-\family typewriter
-Cyclic\SpecialChar softhyphen
-Engine
-\family default
- is shown in figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Cyclic-Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/CyclicEngine.eps
-	width 95text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Cyclic-Engine"
-
-\end_inset
-
-Cyclic 
-\family typewriter
-Engine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Since the 
-\family typewriter
-CyclicEngine
-\family default
- creates unlimited streams, although the participating 
-\family typewriter
-Engine
-\family default
-s are all creating limited streams, the resulting 
-\family typewriter
-EvolutionStream
-\family default
- 
-\emph on
-must
-\emph default
- be limited as well.
- The code snippet below shows the creation and execution of a 
-\emph on
-cyclic
-\emph default
- 
-\family typewriter
-EvolutionStream
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Genotype<DoubleGene> result =
-\end_layout
-
-\begin_layout Plain Layout
-
-    CyclingEngine.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-        engine1.limit(50),
-\end_layout
-
-\begin_layout Plain Layout
-
-        engine2.limit(() -> Limits.bySteadyFitness(15)))
-\end_layout
-
-\begin_layout Plain Layout
-
-    .stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-        .limit(Limits.bySteadyFitness(50))
-\end_layout
-
-\begin_layout Plain Layout
-
-        .collect(EvolutionResult.toBestGenotype());
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The reason for using a cyclic 
-\family typewriter
-EvolutionStream
-\family default
- is similar to the reason for using a concatenated 
-\family typewriter
-EvolutionStream
-\family default
-.
- It allows you to do a broad search, followed by a narrowed exploration.
- This cycle is then repeated until the limiting predicate of the 
-\emph on
-outer
-\emph default
- stream terminates the evolution process.
-\end_layout
-
-\begin_layout Subsubsection
-
-\family typewriter
-AdaptiveEngine
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-AdaptiveEngine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-AdaptiveEngine
-\family default
- is the most flexible method for creating 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-s.
- Instead of defining a fixed set 
-\family typewriter
-Engine
-\family default
-s, which then creates the 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-, you define a function which creates an 
-\family typewriter
-Engine
-\family default
-, depending on last 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Re\SpecialChar softhyphen
-sult
-\family default
- of the previous 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-.
- You can see the evolution flow of the 
-\family typewriter
-Adaptive\SpecialChar softhyphen
-Engine
-\family default
- in figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Adaptive-Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/AdaptiveEngine.eps
-	width 75text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Adaptive-Engine"
-
-\end_inset
-
-Adaptive 
-\family typewriter
-Engine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-From the implementation perspective, the 
-\family typewriter
-AdaptiveEngine
-\family default
- requires a little bit more code.
- The additional flexibility isn't for free, as you can see in the code example
- below.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Problem<double[], DoubleGene, Double> problem = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Engine.Builder template.
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Engine.Builder<DoubleGene, Double> bld = Engine
-\end_layout
-
-\begin_layout Plain Layout
-
-        .builder(problem)
-\end_layout
-
-\begin_layout Plain Layout
-
-        .minimizing();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Genotype<DoubleGene> result =
-\end_layout
-
-\begin_layout Plain Layout
-
-        AdaptiveEngine.<DoubleGene, Double>of(r -> engine(r, bld))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(Limits.bySteadyFitness(50))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .collect(EvolutionResult.toBestGenotype());
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-static EvolutionStreamable<DoubleGene, Double> engine(
-\end_layout
-
-\begin_layout Plain Layout
-
-    final EvolutionResult<DoubleGene, Double> result,
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Engine.Builder<DoubleGene, Double> builder
-\end_layout
-
-\begin_layout Plain Layout
-
-) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return var(result) < 0.2
-\end_layout
-
-\begin_layout Plain Layout
-
-        ? builder.copy()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .alterers(new Mutator<>(0.75))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(5)
-\end_layout
-
-\begin_layout Plain Layout
-
-        : builder.copy()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .alterers(
-\end_layout
-
-\begin_layout Plain Layout
-
-                new Mutator<>(0.05),
-\end_layout
-
-\begin_layout Plain Layout
-
-                new MeanAlterer<>())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .selector(new RouletteWheelSelector<>())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(Limits.bySteadyFitness(25));
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-static double var(final EvolutionResult<DoubleGene, Double> er) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return er != null
-\end_layout
-
-\begin_layout Plain Layout
-
-        ? er.getPopulation().stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .map(Phenotype::getFitness)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .collect(toDoubleMoments())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .getVariance()
-\end_layout
-
-\begin_layout Plain Layout
-
-        : 0.0;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The example tries to broaden the search, once the variance of the population's
- fitness values are below a given threshold.
- When implementing the 
-\family typewriter
-Engine
-\family default
- creation function, you have to be aware, that the 
-\family typewriter
-EvolutionResult
-\family default
- for the first Engine is 
-\family typewriter
-null
-\family default
-.
-\end_layout
-
-\begin_layout Subsection
-Weasel program
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Weasel-program"
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Weasel program
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The Weasel program
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Weasel_program
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- is thought experiment from Richard Dawkins, in which he tries to illustrate
- the function of genetic
-\emph on
- mutation
-\emph default
- and
-\emph on
- selection
-\emph default
-.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The classes are located in the
-\family typewriter
- io.jenetics.ext
-\family default
- module.
-\end_layout
-
-\end_inset
-
- For this reason he chooses the well known example of typewriting monkeys.
-\end_layout
-
-\begin_layout Quote
-I don't know who it was first pointed out that, given enough time, a monkey
- bashing away at random on a typewriter could produce all the works of Shakespea
-re.
- The operative phrase is, of course, given enough time.
- Let us limit the task facing our monkey somewhat.
- Suppose that he has to produce, not the complete works of Shakespeare but
- just the short sentence
-\begin_inset Quotes ald
-\end_inset
-
-Methinks it is like a weasel
-\begin_inset Quotes ard
-\end_inset
-
-, and we shall make it relatively easy by giving him a typewriter with a
- restricted keyboard, one with just the 26 (uppercase) letters, and a space
- bar.
- How long will he take to write this one little sentence?
-\begin_inset CommandInset citation
-LatexCommand cite
-key "dawkins1986"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The search space of the 28 character long target string is 
-\begin_inset Formula $27^{28}\approx10^{40}$
-\end_inset
-
-.
- If the monkey writes 
-\begin_inset Formula $1,000,000$
-\end_inset
-
- different
-\emph on
- sentences
-\emph default
- per second, it would take about 
-\begin_inset Formula $10^{26}$
-\end_inset
-
- years (in average) writing the correct one.
- Although Dawkins did not provide the source code for his program, a 
-\begin_inset Quotes ald
-\end_inset
-
-Weasel
-\begin_inset Quotes ard
-\end_inset
-
- style algorithm could run as follows:
-\end_layout
-
-\begin_layout Enumerate
-Start with a random string of 28 characters.
-\end_layout
-
-\begin_layout Enumerate
-Make 
-\begin_inset Formula $n$
-\end_inset
-
- copies of the string (reproduce).
-\end_layout
-
-\begin_layout Enumerate
-Mutate the characters with an mutation probability of 5%.
-\end_layout
-
-\begin_layout Enumerate
-Compare each new string with the target string 
-\begin_inset Quotes ald
-\end_inset
-
-METHINKS IT IS LIKE A WEASEL
-\begin_inset Quotes ard
-\end_inset
-
-, and give each a score (the number of letters in the string that are correct
- and in the correct position).
-\end_layout
-
-\begin_layout Enumerate
-If any of the new strings has a perfect score (
-\begin_inset Formula $28$
-\end_inset
-
-), halt.
- Otherwise, take the highest scoring string, and go to step 2.
-\end_layout
-
-\begin_layout Standard
-Richard Dawkins was also very careful to point out the limitations of this
- simulation:
-\end_layout
-
-\begin_layout Quote
-Although the monkey/Shakespeare model is useful for explaining the distinction
- between single-step selection and cumulative selection, it is misleading
- in important ways.
- One of these is that, in each generation of selective 
-\begin_inset Quotes ald
-\end_inset
-
-breeding
-\begin_inset Quotes ard
-\end_inset
-
-, the mutant 
-\begin_inset Quotes ald
-\end_inset
-
-progeny
-\begin_inset Quotes ard
-\end_inset
-
- phrases were judged according to the criterion of resemblance to a distant
- ideal target, the phrase METHINKS IT IS LIKE A WEASEL.
- Life isn't like that.
- Evolution has no long-term goal.
- There is no long-distance target, no final perfection to serve as a criterion
- for selection, although human vanity cherishes the absurd notion that our
- species is the final goal of evolution.
- In real life, the criterion for selection is always short-term, either
- simple survival or, more generally, reproductive success.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "dawkins1986"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-If you want to write a Weasel program with th 
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- library, you need to use the special
-\family typewriter
- Weasel\SpecialChar softhyphen
-Selector
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-WeaselSelector
-\end_layout
-
-\end_inset
-
-
-\family default
- and
-\family typewriter
- Weasel\SpecialChar softhyphen
-Mutator
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-WeaselMutator
-\end_layout
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public class WeaselProgram {
-\end_layout
-
-\begin_layout Plain Layout
-
-	private static final String TARGET =
-\end_layout
-
-\begin_layout Plain Layout
-
-        "METHINKS IT IS LIKE A WEASEL";
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	private static int score(final Genotype<CharacterGene> gt) {
-\end_layout
-
-\begin_layout Plain Layout
-
-		final CharSequence source =
-\end_layout
-
-\begin_layout Plain Layout
-
-            (CharSequence)gt.getChromosome();
-\end_layout
-
-\begin_layout Plain Layout
-
-		return IntStream.range(0, TARGET.length())
-\end_layout
-
-\begin_layout Plain Layout
-
-			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
-\end_layout
-
-\begin_layout Plain Layout
-
-			.sum();
-\end_layout
-
-\begin_layout Plain Layout
-
-	}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-	public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-		final CharSeq chars = CharSeq.of("A-Z ");
-\end_layout
-
-\begin_layout Plain Layout
-
-		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-\end_layout
-
-\begin_layout Plain Layout
-
-			new CharacterChromosome(chars, TARGET.length())
-\end_layout
-
-\begin_layout Plain Layout
-
-		);
-\end_layout
-
-\begin_layout Plain Layout
-
-		final Engine<CharacterGene, Integer> engine = Engine
-\end_layout
-
-\begin_layout Plain Layout
-
-			.builder(WeaselProgram::score, gtf)
-\end_layout
-
-\begin_layout Plain Layout
-
-			.populationSize(150)
-\end_layout
-
-\begin_layout Plain Layout
-
-			.selector(new WeaselSelector<>())
-\end_layout
-
-\begin_layout Plain Layout
-
-			.offspringFraction(1)
-\end_layout
-
-\begin_layout Plain Layout
-
-			.alterers(new WeaselMutator<>(0.05))
-\end_layout
-
-\begin_layout Plain Layout
-
-			.build();
-\end_layout
-
-\begin_layout Plain Layout
-
-		final Phenotype<CharacterGene, Integer> result = engine
-\end_layout
-
-\begin_layout Plain Layout
-
-            .stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-			.limit(byFitnessThreshold(TARGET.length() - 1))
-\end_layout
-
-\begin_layout Plain Layout
-
-			.peek(r -> System.out.println(
-\end_layout
-
-\begin_layout Plain Layout
-
-				r.getTotalGenerations() + ": " +
-\end_layout
-
-\begin_layout Plain Layout
-
-				r.getBestPhenotype()))
-\end_layout
-
-\begin_layout Plain Layout
-
-			.collect(toBestPhenotype());
-\end_layout
-
-\begin_layout Plain Layout
-
-		System.out.println(result);
-\end_layout
-
-\begin_layout Plain Layout
-
-	}
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-
-\family typewriter
-Weasel program
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Weasel-program"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Weasel-program"
-
-\end_inset
-
- shows how-to implement the
-\family typewriter
- Weasel\SpecialChar softhyphen
-Program
-\family default
- with
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
-.
- Step (1) and (2) of the algorithm is done implicitly when the initial populatio
-n is created.
- The third step is done by the
-\family typewriter
- Weasel\SpecialChar softhyphen
-Mutator
-\family default
-, with mutation probability of 0.05.
- Step (4) is done by the WeaselSelector together with the configured offspring-f
-raction of one.
- The evolution stream is limited by the
-\family typewriter
- Limits\SpecialChar softhyphen
-.by\SpecialChar softhyphen
-Fitness\SpecialChar softhyphen
-Threshold
-\family default
-, which is set to 
-\begin_inset Formula $score_{max}-1$
-\end_inset
-
-.
- In the current example this value is set to
-\family typewriter
- TARGET\SpecialChar softhyphen
-.length()
-\family default
- - 1 = 27.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-scriptsize
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/WeaselProgram.out}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The (shortened) output of the Weasel program (listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Weasel-program"
-
-\end_inset
-
-) shows, that the optimal solution is reached in generation 
-\begin_inset Formula $46$
-\end_inset
-
-.
 \end_layout
 
 \begin_layout Section
