@@ -108,7 +108,7 @@ public final class Pareto {
 			final int[] idx = new int[set.size()];
 			final IndexSorter sorter = IndexSorter.sorter(set.size());
 
-			for (int m = 0, dim = dimension.applyAsInt(set.get(0)); m < dim; ++m) {
+			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
 				sorter.sort(set, init(idx), comparator.ofIndex(m));
 
 				result[idx[0]] = POSITIVE_INFINITY;
@@ -120,13 +120,13 @@ public final class Pareto {
 
 				if (Double.compare(dm, 0) > 0) {
 					for (int i = 1, n = set.size() - 1; i < n; ++i) {
-						final double d = distance.distance(
+						final double dist = distance.distance(
 							set.get(idx[i - 1]),
 							set.get(idx[i + 1]),
 							m
 						);
 
-						result[idx[i]] += d/dm;
+						result[idx[i]] += dist/dm;
 					}
 				}
 			}
