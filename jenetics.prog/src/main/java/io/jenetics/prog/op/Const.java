@@ -75,7 +75,8 @@ public final class Const<T> implements Op<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Const<?> &&
+		return obj == this ||
+			obj instanceof Const<?> &&
 			Objects.equals(((Const)obj)._name, _name) &&
 			Objects.equals(((Const)obj)._const, _const);
 	}

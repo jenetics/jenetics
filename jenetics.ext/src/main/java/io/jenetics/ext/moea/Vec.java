@@ -336,11 +336,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 			@SuppressWarnings("unchecked")
 			@Override
 			public boolean equals(final Object obj) {
-				return obj == this || (
+				return obj == this ||
 					obj instanceof Vec<?> &&
 					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals(((Vec<T[]>)obj).data(), data())
-				);
+					Arrays.equals(((Vec<T[]>)obj).data(), data());
 			}
 
 			@Override
@@ -372,11 +371,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public boolean equals(final Object obj) {
-				return obj == this || (
+				return obj == this ||
 					obj instanceof Vec<?> &&
 					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((int[])((Vec)obj).data(), data())
-				);
+					Arrays.equals((int[])((Vec)obj).data(), data());
 			}
 
 			@Override
@@ -408,11 +406,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public boolean equals(final Object obj) {
-				return obj == this || (
+				return obj == this ||
 					obj instanceof Vec<?> &&
 					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((long[])((Vec)obj).data(), data())
-				);
+					Arrays.equals((long[])((Vec)obj).data(), data());
 			}
 
 			@Override
@@ -444,11 +441,10 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 			@Override
 			public boolean equals(final Object obj) {
-				return obj == this || (
+				return obj == this ||
 					obj instanceof Vec<?> &&
 					((Vec)obj).data().getClass().equals(data().getClass()) &&
-					Arrays.equals((double[])((Vec)obj).data(), data())
-				);
+					Arrays.equals((double[])((Vec)obj).data(), data());
 			}
 
 			@Override
