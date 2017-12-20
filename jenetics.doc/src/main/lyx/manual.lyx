@@ -23641,7 +23641,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/ExampleTree.svg
 	lyxscale 80
-	width 70text%
+	width 67text%
 
 \end_inset
 
@@ -24304,10 +24304,13 @@ Crossover!Simulated binary crossover
 \end_layout
 
 \begin_layout Standard
-The Simulated\SpecialChar softhyphen
+The 
+\family typewriter
+Simulated\SpecialChar softhyphen
 Binary\SpecialChar softhyphen
-Crossover performs the simulated binary crossover (SBX)
- on
+Crossover
+\family default
+ performs the simulated binary crossover (SBX) on
 \family typewriter
  Numeric\SpecialChar softhyphen
 Chromosome
@@ -27940,6 +27943,22 @@ The evolution
  Engine
 \family default
  used for solving GP problems is created the same way as for normal GA problems.
+ Also the execution of the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ stays the same.
+ The first 
+\family typewriter
+Gene
+\family default
+ of the collected final 
+\family typewriter
+Genotype
+\family default
+ represents the evolved program, which can be used to calculate function
+ values from arbitrary arguments.
 \end_layout
 
 \begin_layout Standard
@@ -27983,13 +28002,49 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
     .build();
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(300)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+final double result = program.eval(3.4);
+\end_layout
+
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-For a complete GP example have a look at the examples chapter.
+For a complete GP example have a look at the examples in chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -32248,6 +32303,13 @@ status collapsed
 \begin_layout Plain Layout
 Genetic programming
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Symbolic-regression"
 
 \end_inset
 
