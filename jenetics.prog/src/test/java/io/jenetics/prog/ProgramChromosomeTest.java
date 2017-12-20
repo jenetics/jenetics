@@ -19,13 +19,13 @@
  */
 package io.jenetics.prog;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.FlatTreeNode;
@@ -38,15 +38,12 @@ import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 import io.jenetics.prog.op.Var;
 
-import io.jenetics.util.IO;
-import io.jenetics.util.ISeq;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ProgramChromosomeTest {
 
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
 		MathOp.SUB,
 		MathOp.MUL,
@@ -56,7 +53,7 @@ public class ProgramChromosomeTest {
 		MathOp.COS
 	);
 
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
@@ -162,12 +159,11 @@ public class ProgramChromosomeTest {
 			OPERATIONS,
 			TERMINALS
 		);
-		final ProgramChromosome<Double> chromosome =
+		final ProgramChromosome<Double> object =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		IO.object.write(chromosome, out);
-
+		final byte[] data = IO.object.toByteArray(object);
+		Assert.assertEquals(IO.object.fromByteArray(data), object);
 	}
 
 }
