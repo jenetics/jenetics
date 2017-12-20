@@ -20,12 +20,10 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
-
-import io.jenetics.internal.util.Hash;
 
 /**
  * Implements an exponential fitness scaling, whereby all fitness values are
@@ -92,18 +90,20 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_a)
-			.and(_b)
-			.and(_c).value();
+		int hash = 17;
+		hash += 31*Double.hashCode(_a) + 37;
+		hash += 31*Double.hashCode(_b) + 37;
+		hash += 31*Double.hashCode(_c) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof ExponentialScaler &&
-			eq(((ExponentialScaler)obj)._a, _a) &&
-			eq(((ExponentialScaler)obj)._b, _b) &&
-			eq(((ExponentialScaler)obj)._c, _c);
+		return obj == this ||
+			obj instanceof ExponentialScaler &&
+			Objects.equals(((ExponentialScaler) obj)._a, _a) &&
+			Objects.equals(((ExponentialScaler)obj)._b, _b) &&
+			Objects.equals(((ExponentialScaler)obj)._c, _c);
 	}
 
 	@Override

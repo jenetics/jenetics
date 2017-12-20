@@ -22,6 +22,8 @@ package io.jenetics;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
+import java.util.Objects;
+
 import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
@@ -118,8 +120,9 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof ExponentialRankSelector &&
-			eq(((ExponentialRankSelector)obj)._c, _c);
+		return obj == this ||
+			obj instanceof ExponentialRankSelector &&
+			Objects.equals(((ExponentialRankSelector) obj)._c, _c);
 	}
 
 	@Override

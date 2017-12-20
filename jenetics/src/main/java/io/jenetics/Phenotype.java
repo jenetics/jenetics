@@ -226,7 +226,8 @@ public final class Phenotype<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phenotype<?, ?> &&
+		return obj == this ||
+			obj instanceof Phenotype<?, ?> &&
 			Objects.equals(getFitness(), ((Phenotype<?, ?>) obj).getFitness()) &&
 			Objects.equals(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
 			Objects.equals(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&
