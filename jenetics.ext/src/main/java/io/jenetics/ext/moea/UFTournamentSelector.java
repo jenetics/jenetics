@@ -122,9 +122,9 @@ public class UFTournamentSelector<
 			final int k = min(2*count - S.size(), population.size());
 			final int[] G = subset(population.size(), k, random);
 
-			int p = 0;
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
 				final int cmp = cc.compare(G[j], G[j + 1]);
+				final int p;
 				if (cmp > 0) {
 					p = G[j];
 				} else if (cmp < 0) {
