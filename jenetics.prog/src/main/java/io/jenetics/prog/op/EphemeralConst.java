@@ -22,6 +22,7 @@ package io.jenetics.prog.op;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -40,10 +41,12 @@ import io.jenetics.internal.util.Lazy;
  * }</pre>
  *
  *  @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
-public final class EphemeralConst<T> implements Op<T> {
+public final class EphemeralConst<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final Supplier<T> _supplier;

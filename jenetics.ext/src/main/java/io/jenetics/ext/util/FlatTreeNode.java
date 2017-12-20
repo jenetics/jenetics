@@ -21,6 +21,7 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -36,10 +37,15 @@ import io.jenetics.util.MSeq;
  * Default implementation of the {@link FlatTree} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
-public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
+public final class FlatTreeNode<T>
+	implements
+		FlatTree<T, FlatTreeNode<T>>,
+		Serializable
+{
+	private static final long serialVersionUID = 1L;
 
 	private final int _index;
 	private final MSeq<T> _nodes;

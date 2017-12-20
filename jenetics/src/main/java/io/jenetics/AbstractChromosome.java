@@ -126,7 +126,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	@Override
 	public String toString() {
-		return _genes.toString();
+		return Objects.toString(_genes);
 	}
 
 }
