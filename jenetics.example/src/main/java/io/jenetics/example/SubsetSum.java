@@ -32,8 +32,8 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Problem;
 import io.jenetics.engine.Limits;
+import io.jenetics.engine.Problem;
 import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 

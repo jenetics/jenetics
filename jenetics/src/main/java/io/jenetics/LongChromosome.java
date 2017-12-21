@@ -28,6 +28,7 @@ import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
 
@@ -46,11 +47,47 @@ public class LongChromosome
 		NumericChromosome<Long, LongGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
+	/**
+	 * Create a new chromosome from the given {@code genes} and the allowed
+	 * length range of the chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param genes the genes that form the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 */
+	protected LongChromosome(
+		final ISeq<LongGene> genes,
+		final IntRange lengthRange
+	) {
+		super(genes, lengthRange);
+	}
 
-	protected LongChromosome(final ISeq<LongGene> genes) {
-		super(genes);
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (inclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length is smaller than one
+	 */
+	public LongChromosome(
+		final Long min,
+		final Long max,
+		final IntRange lengthRange
+	) {
+		this(LongGene.seq(min, max, lengthRange), lengthRange);
+		_valid = true;
 	}
 
 	/**
@@ -64,8 +101,7 @@ public class LongChromosome
 	 *         one.
 	 */
 	public LongChromosome(final Long min, final Long max, final int length) {
-		this(LongGene.seq(min, max, length));
-		_valid = true;
+		this(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -94,9 +130,7 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public long[] toArray(final long[] array) {
-		final long[] a = array.length >= length() ?
-			array : new long[length()];
-
+		final long[] a = array.length >= length() ? array : new long[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = longValue(i);
 		}
@@ -126,7 +160,31 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
 	 */
 	public static LongChromosome of(final LongGene... genes) {
-		return new LongChromosome(ISeq.of(genes));
+		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link LongGene}s (inclusively).
+	 * @param max the max value of the {@link LongGene}s (inclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code IntegerChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static LongChromosome of(
+		final long min,
+		final long max,
+		final IntRange lengthRange
+	) {
+		return new LongChromosome(min, max, lengthRange);
 	}
 
 	/**
@@ -145,6 +203,28 @@ public class LongChromosome
 		final int length
 	) {
 		return new LongChromosome(min, max, length);
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code LongChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static LongChromosome of(
+		final LongRange range,
+		final IntRange lengthRange
+	) {
+		return new LongChromosome(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -189,12 +269,12 @@ public class LongChromosome
 
 	@Override
 	public LongChromosome newInstance(final ISeq<LongGene> genes) {
-		return new LongChromosome(genes);
+		return new LongChromosome(genes, lengthRange());
 	}
 
 	@Override
 	public LongChromosome newInstance() {
-		return new LongChromosome(_min, _max, length());
+		return new LongChromosome(_min, _max, lengthRange());
 	}
 
 	@Override
@@ -217,6 +297,7 @@ public class LongChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
+		out.writeObject(lengthRange());
 		out.writeLong(_min);
 		out.writeLong(_max);
 
@@ -231,6 +312,7 @@ public class LongChromosome
 		in.defaultReadObject();
 
 		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_lengthRange", in.readObject());
 		reflect.setField(this, "_min", in.readLong());
 		reflect.setField(this, "_max", in.readLong());
 

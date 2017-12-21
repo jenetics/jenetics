@@ -22,7 +22,6 @@ package io.jenetics.internal.collection;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -47,13 +46,9 @@ import io.jenetics.util.MSeq;
 public final class Empty {
 	private Empty() {require.noInstance();}
 
-	/**
-	 * Empty {@code MSeq} implementation.
-	 */
-	public static final MSeq<Object> MSEQ = new EmptyMSeq();
+	public static enum EmptyMSeq implements MSeq<Object> {
 
-	private static final class EmptyMSeq implements MSeq<Object>, Serializable {
-		private static final long serialVersionUID = 1L;
+		INSTANCE;
 
 		@Override
 		public void set(final int index, final Object value) {
@@ -138,7 +133,7 @@ public final class Empty {
 
 		@Override
 		public ISeq<Object> toISeq() {
-			return ISEQ;
+			return EmptyISeq.INSTANCE;
 		}
 
 		@Override
@@ -166,26 +161,12 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-		@Override
-		public int hashCode() {
-			return getClass().hashCode();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof EmptyMSeq;
-		}
-
 	}
 
 
-	/**
-	 * Empty {@code ISeq} implementation.
-	 */
-	public static final ISeq<Object> ISEQ = new EmptyISeq();
+	public static enum EmptyISeq implements ISeq<Object> {
 
-	private static final class EmptyISeq implements ISeq<Object>, Serializable {
-		private static final long serialVersionUID = 1L;
+		INSTANCE;
 
 		@Override
 		public Iterator<Object> iterator() {
@@ -260,29 +241,19 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> copy() {
-			return MSEQ;
-		}
-
-		@Override
-		public int hashCode() {
-			return getClass().hashCode();
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof EmptyISeq;
+			return EmptyMSeq.INSTANCE;
 		}
 
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {
-		return (MSeq<T>)MSEQ;
+		return (MSeq<T>)EmptyMSeq.INSTANCE;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> iseq() {
-		return (ISeq<T>)ISEQ;
+		return (ISeq<T>)EmptyISeq.INSTANCE;
 	}
 
 }

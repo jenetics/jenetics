@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
+import io.jenetics.Genotype;
 
 /**
  * This interface describes a <i>problem</i> which can be solved by the GA
@@ -54,7 +55,7 @@ import io.jenetics.Gene;
  * @param <C> the result type of the fitness function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 4.1
  * @since 3.4
  */
 public interface Problem<
@@ -78,6 +79,30 @@ public interface Problem<
 	 * @return the engine codec
 	 */
 	public Codec<T, G> codec();
+
+	/**
+	 * Returns the fitness value for the given argument.
+	 *
+	 * @since 4.1
+	 *
+	 * @param arg the argument of the fitness function
+	 * @return the fitness value
+	 */
+	public default C fitness(final T arg) {
+		return fitness().apply(arg);
+	}
+
+	/**
+	 * Returns the fitness value for the given argument.
+	 *
+	 * @since 4.1
+	 *
+	 * @param gt the argument of the fitness function
+	 * @return the fitness value
+	 */
+	public default C fitness(final Genotype<G> gt) {
+		return fitness(codec().decode(gt));
+	}
 
 	/**
 	 * Return a new optimization <i>problem</i> with the given parameters.

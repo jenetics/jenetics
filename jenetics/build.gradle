@@ -41,6 +41,7 @@ repositories {
 dependencies {
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+	testCompile Include.EqualsVerifier
 	testCompile Include.PRNGine
 
 	jmh Include.PRNGine
@@ -54,6 +55,8 @@ jar.manifest.instruction('Export-Package',
 )
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
+
+test.dependsOn(compileJmhJava)
 
 packaging {
 	name = 'Jenetics'

@@ -19,14 +19,10 @@
 #    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
 #
 
-SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+BASE_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)/../../../../"
 
-VERSION="@__version__@"
-CLS_PATH="${SCRIPT_DIR}/../lib/jenetics-${VERSION}.jar"
-CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/jenetics.example-${VERSION}.jar":.
-
-java -cp $CLS_PATH org.jenetics.example.Knapsack
-java -cp $CLS_PATH org.jenetics.example.OnesCounting
-java -cp $CLS_PATH org.jenetics.example.RealFunction
-java -cp $CLS_PATH org.jenetics.example.StringGenerator
-java -cp $CLS_PATH org.jenetics.example.TravelingSalesman
+${BASE_DIR}/jrun io.jenetics.example.Knapsack
+${BASE_DIR}/jrun io.jenetics.example.OnesCounting
+${BASE_DIR}/jrun io.jenetics.example.RealFunction
+${BASE_DIR}/jrun io.jenetics.example.StringGenerator
+${BASE_DIR}/jrun io.jenetics.example.TravelingSalesman

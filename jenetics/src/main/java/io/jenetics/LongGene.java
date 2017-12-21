@@ -25,8 +25,9 @@ import static io.jenetics.util.RandomRegistry.getRandom;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.random;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -138,15 +139,13 @@ public final class LongGene
 	static ISeq<LongGene> seq(
 		final Long minimum,
 		final Long maximum,
-		final int length
+		final IntRange lengthRange
 	) {
-		require.positive(length);
-
 		final long min = minimum;
 		final long max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<LongGene>ofLength(length)
+		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
 			.toISeq();
 	}

@@ -46,17 +46,47 @@ public class IntegerChromosome
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
-	 * Create a new chromosome from the given genes array.
+	 * Create a new chromosome from the given {@code genes} and the allowed
+	 * length range of the chromosome.
 	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 * @since 4.0
+	 *
+	 * @param genes the genes that form the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
 	 */
-	protected IntegerChromosome(final ISeq<IntegerGene> genes) {
-		super(genes);
+	protected IntegerChromosome(
+		final ISeq<IntegerGene> genes,
+		final IntRange lengthRange
+	) {
+		super(genes, lengthRange);
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link IntegerGene}s (inclusively).
+	 * @param max the max value of the {@link IntegerGene}s (inclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length is smaller than one
+	 */
+	public IntegerChromosome(
+		final Integer min,
+		final Integer max,
+		final IntRange lengthRange
+	) {
+		this(IntegerGene.seq(min, max, lengthRange), lengthRange);
+		_valid = true;
 	}
 
 	/**
@@ -74,8 +104,7 @@ public class IntegerChromosome
 		final Integer max,
 		final int length
 	) {
-		this(IntegerGene.seq(min, max, length));
-		_valid = true;
+		this(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -104,9 +133,7 @@ public class IntegerChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public int[] toArray(final int[] array) {
-		final int[] a = array.length >= length() ?
-			array : new int[length()];
-
+		final int[] a = array.length >= length() ? array : new int[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = intValue(i);
 		}
@@ -135,7 +162,31 @@ public class IntegerChromosome
 	 *         empty.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
-		return new IntegerChromosome(ISeq.of(genes));
+		return new IntegerChromosome(ISeq.of(genes), IntRange.of(genes.length));
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link IntegerGene}s (inclusively).
+	 * @param max the max value of the {@link IntegerGene}s (inclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code IntegerChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static IntegerChromosome of(
+		final int min,
+		final int max,
+		final IntRange lengthRange
+	) {
+		return new IntegerChromosome(min, max, lengthRange);
 	}
 
 	/**
@@ -153,6 +204,28 @@ public class IntegerChromosome
 		final int length
 	) {
 		return new IntegerChromosome(min, max, length);
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code IntegerChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static IntegerChromosome of(
+		final IntRange range,
+		final IntRange lengthRange
+	) {
+		return new IntegerChromosome(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -196,12 +269,12 @@ public class IntegerChromosome
 
 	@Override
 	public IntegerChromosome newInstance(final ISeq<IntegerGene> genes) {
-		return new IntegerChromosome(genes);
+		return new IntegerChromosome(genes, lengthRange());
 	}
 
 	@Override
 	public IntegerChromosome newInstance() {
-		return new IntegerChromosome(_min, _max, length());
+		return new IntegerChromosome(_min, _max, lengthRange());
 	}
 
 	@Override
@@ -224,6 +297,7 @@ public class IntegerChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
+		out.writeObject(lengthRange());
 		out.writeInt(_min);
 		out.writeInt(_max);
 
@@ -238,6 +312,7 @@ public class IntegerChromosome
 		in.defaultReadObject();
 
 		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_lengthRange", in.readObject());
 		reflect.setField(this, "_min", in.readInt());
 		reflect.setField(this, "_max", in.readInt());
 

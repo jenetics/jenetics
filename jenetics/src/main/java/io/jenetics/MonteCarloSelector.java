@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -84,12 +82,12 @@ public final class MonteCarloSelector<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).value();
+		return getClass().hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.ofType(this, obj);
+		return obj == this || obj instanceof MonteCarloSelector;
 	}
 
 	@Override

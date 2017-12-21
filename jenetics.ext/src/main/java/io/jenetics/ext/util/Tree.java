@@ -821,15 +821,11 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static int hashCode(final Tree<?, ?> tree) {
-		int hash = 0;
-		if (tree != null) {
-			hash = 17;
-			for (Tree<?, ?> node : tree) {
-				hash += 31*Objects.hashCode(node.getValue()) + 37;
-			}
-		}
-
-		return hash;
+		return tree != null
+			? tree.breadthFirstStream()
+				.mapToInt(node -> 31*Objects.hashCode(node.getValue()) + 37)
+				.sum() + 17
+			: 0;
 	}
 
 	/**

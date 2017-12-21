@@ -102,16 +102,30 @@ public final class LongRange implements Serializable {
 		return new LongRange(min, max);
 	}
 
+	/**
+	 * Return a new (half open) range, which contains only the given value:
+	 * {@code [value, value + 1)}.
+	 *
+	 * @since 4.0
+	 *
+	 * @param value the value of the created (half open) integer range
+	 * @return a new (half open) range, which contains only the given value
+	 */
+	public static LongRange of(final long value) {
+		return of(value, value + 1);
+	}
+
 	@Override
 	public int hashCode() {
 		return (int)(_min + 31*_max);
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		return other instanceof LongRange &&
-			_min == ((LongRange)other)._min &&
-			_max == ((LongRange)other)._max;
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof LongRange &&
+			_min == ((LongRange)obj)._min &&
+			_max == ((LongRange)obj)._max;
 	}
 
 	@Override

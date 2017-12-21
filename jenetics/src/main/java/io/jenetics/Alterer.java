@@ -19,6 +19,8 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
+
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -95,7 +97,7 @@ public interface Alterer<
 	 * @return the new composed alterer
 	 */
 	public default Alterer<G, C> andThen(final Alterer<G, C> after) {
-		return of(this, after);
+		return of(this, requireNonNull(after));
 	}
 
 	/**

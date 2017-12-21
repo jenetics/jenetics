@@ -60,7 +60,7 @@ public class DynamicGenotype {
 
 	private static double fitness(final Genotype<DoubleGene> gt) {
 		// Calculate fitness from "dynamic" Genotype.
-		System.out.println("Gene count: " + gt.getNumberOfGenes());
+		System.out.println("Gene count: " + gt.geneCount());
 		return 0;
 	}
 

@@ -19,8 +19,6 @@
  */
 package io.jenetics.xml;
 
-import java.util.List;
-
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.Genotype;
@@ -28,6 +26,7 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -51,9 +50,9 @@ public class Usage {
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final List<Genotype<BitGene>> genotypes = result.getGenotypes();
+		final ISeq<Genotype<BitGene>> genotypes = result.getGenotypes();
 
-		Writers.write(System.out, genotypes, Writers.BitChromosome.writer());
+		Writers.write(System.out, genotypes.asList(), Writers.BitChromosome.writer());
 		Readers.read(System.in, Readers.BitChromosome.reader());
 
 		engine.stream(genotypes);

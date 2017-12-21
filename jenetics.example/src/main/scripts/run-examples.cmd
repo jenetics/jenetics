@@ -20,8 +20,8 @@ set VERSION="@__version__@"
 set CLS_PATH=../lib/jenetics-%VERSION%.jar
 set CLS_PATH=%CLS_PATH%;../lib/jenetics.example-%VERSION%.jar;.
 
-java -cp %CLS_PATH% org.jenetics.example.Knapsack
-java -cp %CLS_PATH% org.jenetics.example.OnesCounting
-java -cp %CLS_PATH% org.jenetics.example.RealFunction
-java -cp %CLS_PATH% org.jenetics.example.StringGenerator
-java -cp %CLS_PATH% org.jenetics.example.TravelingSalesman
+java -cp %CLS_PATH% io.jenetics.example.Knapsack
+java -cp %CLS_PATH% io.jenetics.example.OnesCounting
+java -cp %CLS_PATH% io.jenetics.example.RealFunction
+java -cp %CLS_PATH% io.jenetics.example.StringGenerator
+java -cp %CLS_PATH% io.jenetics.example.TravelingSalesman

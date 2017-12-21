@@ -201,7 +201,8 @@ public final class EvolutionDurations
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionDurations &&
+		return obj == this ||
+			obj instanceof EvolutionDurations &&
 			Objects.equals(_offspringSelectionDuration,
 				((EvolutionDurations)obj)._offspringSelectionDuration) &&
 			Objects.equals(_survivorsSelectionDuration,

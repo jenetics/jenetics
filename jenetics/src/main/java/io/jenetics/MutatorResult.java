@@ -23,6 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -64,9 +65,7 @@ public final class MutatorResult<T> implements Serializable {
 	 * @return a new mapped mutation result
 	 * @throws NullPointerException if the given {@code mapper} is {@code null}
 	 */
-	public <B> MutatorResult<B> map(
-		final Function<? super T, ? extends B> mapper
-	) {
+	<B> MutatorResult<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 		return of(mapper.apply(_result), _mutations);
 	}
@@ -120,15 +119,16 @@ public final class MutatorResult<T> implements Serializable {
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += 37*_result.hashCode() + 31;
+		hash += 37*Objects.hashCode(_result) + 31;
 		hash += 37*_mutations + 31;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof MutatorResult<?> &&
-			((MutatorResult)obj)._result.equals(_result) &&
+		return obj == this ||
+			obj instanceof MutatorResult<?> &&
+			Objects.equals(((MutatorResult)obj)._result, _result) &&
 			((MutatorResult)obj)._mutations == _mutations;
 	}
 

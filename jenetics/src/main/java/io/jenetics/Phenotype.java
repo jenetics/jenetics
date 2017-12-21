@@ -50,6 +50,8 @@ import io.jenetics.util.Verifiable;
  * easily possible to perform the fitness function evaluation concurrently, by
  * putting it into an {@link java.util.concurrent.ExecutorService}.
  *
+ * @see Genotype
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0
@@ -224,7 +226,8 @@ public final class Phenotype<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phenotype<?, ?> &&
+		return obj == this ||
+			obj instanceof Phenotype<?, ?> &&
 			Objects.equals(getFitness(), ((Phenotype<?, ?>) obj).getFitness()) &&
 			Objects.equals(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
 			Objects.equals(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&

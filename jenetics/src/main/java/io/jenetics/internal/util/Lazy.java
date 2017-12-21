@@ -89,11 +89,9 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
     @Override
     public boolean equals(final Object obj) {
-		if (this == obj) return true;
-		if (!(obj instanceof Lazy<?>)) return false;
-
-		final Lazy<?> lazy = (Lazy<?>)obj;
-        return Objects.equals(get(), lazy.get());
+		return obj == this ||
+			obj instanceof Lazy<?> &&
+			Objects.equals(((Lazy<?>)obj).get(), get());
     }
 
     @Override

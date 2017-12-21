@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.collection.Empty.EmptyISeq;
 import io.jenetics.internal.util.require;
 
 /**
@@ -91,7 +92,7 @@ public interface ISeq<T>
 	 *
 	 * @since 3.3
 	 */
-	public static final ISeq<?> EMPTY = Empty.ISEQ;
+	public static final ISeq<?> EMPTY = EmptyISeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code ISeq}.

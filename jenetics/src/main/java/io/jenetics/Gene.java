@@ -31,6 +31,7 @@ import io.jenetics.util.Verifiable;
  * as <a href="https://en.wikipedia.org/wiki/Value_object">value objects</a>.
  *
  * @see <a href="https://en.wikipedia.org/wiki/Value_object">Value object</a>
+ * @see Chromosome
  *
  * @param <A> the <a href="http://en.wikipedia.org/wiki/Allele">Allele</a> type
  *         of this gene.

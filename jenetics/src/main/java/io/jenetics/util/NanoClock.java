@@ -27,8 +27,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-import io.jenetics.internal.util.Equality;
-
 /**
  * Clock implementation with <i>nano</i> second precision.
  *
@@ -42,6 +40,7 @@ public final class NanoClock extends Clock implements Serializable {
 
 	private static final long EPOCH_NANOS = System.currentTimeMillis()*1_000_000;
 	private static final long NANO_START = System.nanoTime();
+	private static final long OFFSET_NANOS = EPOCH_NANOS - NANO_START;
 
 	private static final NanoClock UTC_INSTANCE = new NanoClock(ZoneOffset.UTC);
 
@@ -82,7 +81,7 @@ public final class NanoClock extends Clock implements Serializable {
 	 * @return the nanosecond-based instant, measured from 1970-01-01T00:00Z (UTC)
 	 */
 	public long nanos() {
-		return System.nanoTime() - NANO_START + EPOCH_NANOS;
+		return System.nanoTime() + OFFSET_NANOS;
 	}
 
 	@Override
@@ -97,9 +96,10 @@ public final class NanoClock extends Clock implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return Equality.of(this, obj)
-			.test(clock -> _zone.equals(clock._zone));
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof NanoClock &&
+			((NanoClock)obj)._zone.equals(_zone);
 	}
 
 	@Override

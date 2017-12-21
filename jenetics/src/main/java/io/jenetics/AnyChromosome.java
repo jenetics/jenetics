@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 
 /**
  * {@code Chromosome} implementation, which allows to create genes without
@@ -77,10 +78,10 @@ import io.jenetics.util.ISeq;
  * @see AnyGene
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 4.0
  * @since 3.3
  */
-public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
+public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
@@ -94,6 +95,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 * the {@code alleleSeqValidator} return {@code true}.
 	 *
 	 * @param genes the genes that form the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome
 	 * @param supplier the allele-supplier which is used for creating new,
 	 *        random alleles
 	 * @param alleleValidator the validator used for validating the created gene.
@@ -102,16 +104,19 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 *        chromosome. This predicate is used in the
 	 *        {@link AnyChromosome#isValid()} method.
 	 * @throws NullPointerException if the given arguments is {@code null}
-	 * @throws IllegalArgumentException if the length of the gene array is
-	 *         smaller than one.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
 	 */
 	protected AnyChromosome(
 		final ISeq<AnyGene<A>> genes,
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> alleleValidator,
-		final Predicate<? super ISeq<A>> alleleSeqValidator
+		final Predicate<? super ISeq<A>> alleleSeqValidator,
+		final IntRange lengthRange
 	) {
-		super(genes);
+		super(genes, lengthRange);
 		_supplier = requireNonNull(supplier);
 		_alleleValidator = requireNonNull(alleleValidator);
 		_alleleSeqValidator = requireNonNull(alleleSeqValidator);
@@ -140,19 +145,53 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 			genes,
 			_supplier,
 			_alleleValidator,
-			_alleleSeqValidator
+			_alleleSeqValidator,
+			lengthRange()
 		);
 	}
 
 	@Override
 	public Chromosome<AnyGene<A>> newInstance() {
-		return of(_supplier, _alleleValidator, _alleleSeqValidator, length());
+		return of(_supplier, _alleleValidator, _alleleSeqValidator, lengthRange());
 	}
 
 
 	/* *************************************************************************
 	 *  Static factory methods.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters.
+	 *
+	 * @since 4.0
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param alleleValidator the validator used for validating the created gene.
+	 *        This predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param alleleSeqValidator the validator used for validating the created
+	 *        chromosome. This predicate is used in the
+	 *        {@link AnyChromosome#isValid()} method.
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the given arguments is {@code null}
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> alleleValidator,
+		final Predicate<? super ISeq<A>> alleleSeqValidator,
+		final IntRange lengthRange
+	) {
+		return new AnyChromosome<>(
+			AnyGene.seq(lengthRange, supplier, alleleValidator),
+			supplier,
+			alleleValidator,
+			alleleSeqValidator,
+			lengthRange
+		);
+	}
 
 	/**
 	 * Create a new chromosome of type {@code A} with the given parameters.
@@ -165,7 +204,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 * @param alleleSeqValidator the validator used for validating the created
 	 *        chromosome. This predicate is used in the
 	 *        {@link AnyChromosome#isValid()} method.
-	 * @param length the length of the created chromosome
+	 * @param length the length of the chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the given arguments is {@code null}
 	 * @throws IllegalArgumentException if chromosome length is smaller than one.
@@ -176,12 +215,31 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Predicate<? super ISeq<A>> alleleSeqValidator,
 		final int length
 	) {
-		return new AnyChromosome<>(
-			AnyGene.seq(length, supplier, alleleValidator),
-			supplier,
-			alleleValidator,
-			alleleSeqValidator
-		);
+		return of(supplier, alleleValidator, alleleSeqValidator, IntRange.of(length));
+	}
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters.
+	 *
+	 * @since 4.0
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param validator the validator used for validating the created gene. This
+	 *        predicate is used in the {@link AnyGene#isValid()} method.
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} or {@code validator}
+	 *         is {@code null}
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier,
+		final Predicate<? super A> validator,
+		final IntRange lengthRange
+	) {
+		return of(supplier, validator, Equality.<ISeq<A>>True(), lengthRange);
 	}
 
 	/**
@@ -192,7 +250,7 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 	 *        random alleles
 	 * @param validator the validator used for validating the created gene. This
 	 *        predicate is used in the {@link AnyGene#isValid()} method.
-	 * @param length the length of the created chromosome
+	 * @param length the length of the chromosome
 	 * @return a new chromosome of allele type {@code A}
 	 * @throws NullPointerException if the {@code supplier} or {@code validator}
 	 *         is {@code null}
@@ -224,6 +282,28 @@ public class AnyChromosome<A> extends AbstractChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator
 	) {
 		return of(supplier, validator, 1);
+	}
+
+	/**
+	 * Create a new chromosome of type {@code A} with the given parameters. The
+	 * {@code validator} predicate of the generated gene will always return
+	 * {@code true}.
+	 *
+	 * @since 4.0
+	 *
+	 * @param <A> the allele type
+	 * @param supplier the allele-supplier which is used for creating new,
+	 *        random alleles
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @return a new chromosome of allele type {@code A}
+	 * @throws NullPointerException if the {@code supplier} is {@code null}
+	 * @throws IllegalArgumentException if chromosome length is smaller than one.
+	 */
+	public static <A> AnyChromosome<A> of(
+		final Supplier<? extends A> supplier,
+		final IntRange lengthRange
+	) {
+		return of(supplier, Equality.TRUE, lengthRange);
 	}
 
 	/**

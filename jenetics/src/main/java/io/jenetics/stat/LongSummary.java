@@ -125,13 +125,14 @@ public final class LongSummary implements Serializable {
 		hash += 33*_sum + 37;
 		hash += 33*_min + 37;
 		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LongSummary &&
+		return obj == this ||
+			obj instanceof LongSummary &&
 			_count == ((LongSummary)obj)._count &&
 			_sum == ((LongSummary)obj)._sum &&
 			_min == ((LongSummary)obj)._min &&

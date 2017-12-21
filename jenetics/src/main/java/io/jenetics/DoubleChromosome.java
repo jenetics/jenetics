@@ -29,6 +29,7 @@ import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 
 /**
@@ -46,17 +47,48 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
-	 * Create a new chromosome from the given genes array.
+	 * Create a new chromosome from the given {@code genes} and the allowed
+	 * length range of the chromosome.
 	 *
-	 * @param genes the genes of the new chromosome.
-	 * @throws IllegalArgumentException if the gene sequence is empty
-	 * @throws NullPointerException if the {@code genes} are {@code null}.
+	 * @since 4.0
+	 *
+	 * @param genes the genes that form the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
 	 */
-	protected DoubleChromosome(final ISeq<DoubleGene> genes) {
-		super(genes);
+	protected DoubleChromosome(
+		final ISeq<DoubleGene> genes,
+		final IntRange lengthRange
+	) {
+		super(genes, lengthRange);
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link DoubleGene}s (inclusively).
+	 * @param max the max value of the {@link DoubleGene}s (exclusively).
+	 * @param lengthRange the allowed length range of the chromosome. The start
+	 *        of the range is inclusively and the range end exclusively
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the length is smaller than one
+	 */
+	public DoubleChromosome(
+		final Double min,
+		final Double max,
+		final IntRange lengthRange
+	) {
+		this(DoubleGene.seq(min, max, lengthRange), lengthRange);
+		_valid = true;
 	}
 
 	/**
@@ -69,8 +101,7 @@ public class DoubleChromosome
 	 * @throws IllegalArgumentException if the length is smaller than one
 	 */
 	public DoubleChromosome(final Double min,final Double max,final int length) {
-		this(DoubleGene.seq(min, max, length));
-		_valid = true;
+		this(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -99,9 +130,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public double[] toArray(final double[] array) {
-		final double[] a = array.length >= length() ?
-			array : new double[length()];
-
+		final double[] a = array.length >= length() ? array : new double[length()];
 		for (int i = length(); --i >= 0;) {
 			a[i] = doubleValue(i);
 		}
@@ -130,7 +159,31 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(ISeq.of(genes));
+		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param min the min value of the {@link DoubleGene}s (inclusively).
+	 * @param max the max value of the {@link DoubleGene}s (exclusively).
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code DoubleChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static DoubleChromosome of(
+		final double min,
+		final double max,
+		final IntRange lengthRange
+	) {
+		return new DoubleChromosome(min, max, lengthRange);
 	}
 
 	/**
@@ -145,10 +198,32 @@ public class DoubleChromosome
 	 */
 	public static DoubleChromosome of(
 		final double min,
-		double max,
+		final double max,
 		final int length
 	) {
 		return new DoubleChromosome(min, max, length);
+	}
+
+	/**
+	 * Create a new random chromosome.
+	 *
+	 * @since 4.0
+	 *
+	 * @param range the integer range of the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code DoubleChromosome} with the given parameter
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 * @throws NullPointerException if the given {@code lengthRange} is
+	 *         {@code null}
+	 */
+	public static DoubleChromosome of(
+		final DoubleRange range,
+		final IntRange lengthRange
+	) {
+		return new DoubleChromosome(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -193,12 +268,12 @@ public class DoubleChromosome
 
 	@Override
 	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
-		return new DoubleChromosome(genes);
+		return new DoubleChromosome(genes, lengthRange());
 	}
 
 	@Override
 	public DoubleChromosome newInstance() {
-		return new DoubleChromosome(_min, _max, length());
+		return new DoubleChromosome(_min, _max, lengthRange());
 	}
 
 	@Override
@@ -222,6 +297,7 @@ public class DoubleChromosome
 		out.defaultWriteObject();
 
 		out.writeInt(length());
+		out.writeObject(lengthRange());
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 
@@ -236,6 +312,7 @@ public class DoubleChromosome
 		in.defaultReadObject();
 
 		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_lengthRange", in.readObject());
 		reflect.setField(this, "_min", in.readDouble());
 		reflect.setField(this, "_max", in.readDouble());
 

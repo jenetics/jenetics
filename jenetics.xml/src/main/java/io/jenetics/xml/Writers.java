@@ -33,7 +33,11 @@ import javax.xml.stream.XMLStreamException;
 
 import io.jenetics.BoundedGene;
 import io.jenetics.Chromosome;
+import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
+import io.jenetics.IntegerGene;
+import io.jenetics.LongGene;
+
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
@@ -349,7 +353,11 @@ public final class Writers {
 		writer(final Writer<? super Integer> alleleWriter) {
 			requireNonNull(alleleWriter);
 
-			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
+			return BoundedChromosome.<
+				Integer,
+				IntegerGene,
+				io.jenetics.IntegerChromosome
+			>writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -464,7 +472,11 @@ public final class Writers {
 		 */
 		public static Writer<io.jenetics.LongChromosome>
 		writer(final Writer<? super Long> alleleWriter) {
-			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
+			return BoundedChromosome.<
+				Long,
+				LongGene,
+				io.jenetics.LongChromosome
+			>writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -580,7 +592,11 @@ public final class Writers {
 		 */
 		public static Writer<io.jenetics.DoubleChromosome>
 		writer(final Writer<? super Double> alleleWriter) {
-			return BoundedChromosome.writer(ROOT_NAME, alleleWriter);
+			return BoundedChromosome.<
+				Double,
+				DoubleGene,
+				io.jenetics.DoubleChromosome
+			>writer(ROOT_NAME, alleleWriter);
 		}
 
 		/**
@@ -697,11 +713,12 @@ public final class Writers {
 		 */
 		public static <A> Writer<io.jenetics.PermutationChromosome<A>>
 		writer(final Writer<? super A> alleleWriter) {
-			return elem(ROOT_NAME,
+			return Writer.<io.jenetics.PermutationChromosome<A>>elem(
+				ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.PermutationChromosome::length),
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
-					elems(ALLELE_NAME, alleleWriter)
+					Writer.<A>elems(ALLELE_NAME, alleleWriter)
 						.map(ch -> ch.getValidAlleles())
 				),
 				elem(ORDER_NAME, text())
@@ -933,7 +950,7 @@ public final class Writers {
 			return elem(
 				ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::getNumberOfGenes),
+				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
 				elems(writer).map(gt -> cast(gt.toSeq()))
 			);
 		}

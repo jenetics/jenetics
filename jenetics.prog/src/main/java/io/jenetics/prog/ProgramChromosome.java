@@ -22,15 +22,23 @@ package io.jenetics.prog;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.function.Predicate;
+
+import io.jenetics.internal.util.reflect;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 import io.jenetics.ext.AbstractTreeChromosome;
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
+
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
-import io.jenetics.util.ISeq;
 
 /**
  * Holds the nodes of the operation tree.
@@ -49,7 +57,7 @@ import io.jenetics.util.ISeq;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
 public class ProgramChromosome<A>
@@ -256,7 +264,12 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(program, ProgramChromosome::isSuperValid, operations, terminals);
+		return of(
+			program,
+			(Predicate<? super ProgramChromosome<A>> & Serializable)ProgramChromosome::isSuperValid,
+			operations,
+			terminals
+		);
 	}
 
 	/**
@@ -317,7 +330,12 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(depth, ProgramChromosome::isSuperValid, operations, terminals);
+		return of(
+			depth,
+			(Predicate<? super ProgramChromosome<A>> & Serializable)ProgramChromosome::isSuperValid,
+			operations,
+			terminals
+		);
 	}
 
 	/**
@@ -370,6 +388,45 @@ public class ProgramChromosome<A>
 		final ISeq<? extends Op<A>> terminals
 	) {
 		return of(genes, ProgramChromosome::isSuperValid, operations, terminals);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+
+		out.writeInt(length());
+		out.writeObject(_operations);
+		out.writeObject(_terminals);
+
+		for (ProgramGene<A> gene : _genes) {
+			out.writeObject(gene.getAllele());
+			out.writeInt(gene.childOffset());
+		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+
+		final MSeq<ProgramGene> genes = MSeq.ofLength(in.readInt());
+		reflect.setField(this, "_operations", in.readObject());
+		reflect.setField(this, "_terminals", in.readObject());
+
+		for (int i = 0; i < genes.length(); ++i) {
+			final Op op = (Op)in.readObject();
+			final int childOffset = in.readInt();
+			genes.set(i, new ProgramGene(op, childOffset, _operations, _terminals));
+		}
+
+		reflect.setField(this, "_genes", genes.toISeq());
 	}
 
 }

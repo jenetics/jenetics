@@ -129,6 +129,25 @@ public interface Codec<T, G extends Gene<?, G>> {
 		return decoder().apply(gt);
 	}
 
+	/**
+	 * Create a new {@code Codec} with the mapped result type.
+	 *
+	 * @since 4.0
+	 *
+	 * @param mapper the mapper function
+	 * @param <B> the new argument type of the given problem
+	 * @return a new {@code Codec} with the mapped result type
+	 * @throws NullPointerException if the mapper is {@code null}.
+	 */
+	public default <B>
+	Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
+		requireNonNull(mapper);
+
+		return Codec.of(
+			encoding(),
+			gt -> mapper.apply(decode(gt))
+		);
+	}
 
 	/**
 	 * Create a new {@code Codec} object with the given {@code encoding} and
