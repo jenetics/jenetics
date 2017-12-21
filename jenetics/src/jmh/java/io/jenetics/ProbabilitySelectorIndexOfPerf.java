@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static io.jenetics.ProbabilitySelector.incremental;
-import static io.jenetics.internal.math.arithmetic.normalize;
+import static io.jenetics.internal.math.base.normalize;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
