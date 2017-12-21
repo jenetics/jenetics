@@ -70,7 +70,7 @@ packaging {
 
 modifyPom {
 	project {
-		name 'jenetics.ext'
+		name 'jenetics.scala'
 		description 'Jenetics Scala Wrapper'
 		url jenetics.url
 		inceptionYear '2017'
