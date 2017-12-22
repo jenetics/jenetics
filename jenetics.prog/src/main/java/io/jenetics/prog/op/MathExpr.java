@@ -42,7 +42,7 @@ import io.jenetics.ext.util.Tree;
  * @version !__version__!
  * @since !__version__!
  */
-public final class MathOpExpr implements Function<double[], Double> {
+public final class MathExpr implements Function<double[], Double> {
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
@@ -55,7 +55,7 @@ public final class MathOpExpr implements Function<double[], Double> {
 	 *         which means there is at least one node where the operation arity
 	 *         and the node child count differ.
 	 */
-	public MathOpExpr(final Tree<? extends Op<Double>, ?> tree) {
+	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
 		Program.check(tree);
 		_tree = tree;
 	}
@@ -197,8 +197,8 @@ public final class MathOpExpr implements Function<double[], Double> {
 	 * @param expression the expression string
 	 * @return the tree representation of the given {@code expression}
 	 */
-	public static MathOpExpr parse(final String expression) {
-		return new MathOpExpr(Parser.parse(expression));
+	public static MathExpr parse(final String expression) {
+		return new MathExpr(Parser.parse(expression));
 	}
 
 	/**

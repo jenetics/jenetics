@@ -33,7 +33,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class MathOpExprTest {
+public class MathExprTest {
 
 	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(MathOp.values());
 
@@ -50,15 +50,15 @@ public class MathOpExprTest {
 	@Test
 	public void eval() {
 		final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
-		final MathOpExpr tree = MathOpExpr.parse(expr);
+		final MathExpr tree = MathExpr.parse(expr);
 		assert tree.toString().equals(expr);
 
-		final MathOpExpr e = MathOpExpr.parse("2*z + 3*x - y");
-		final double result = MathOpExpr.eval("2*z + 3*x - y", 3, 2, 1);
+		final MathExpr e = MathExpr.parse("2*z + 3*x - y");
+		final double result = MathExpr.eval("2*z + 3*x - y", 3, 2, 1);
 		assert result == 9.0;
 		System.out.println(result);
 
-		final double e2 = MathOpExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6").eval(4.32);
+		final double e2 = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6").eval(4.32);
 		assert e2 == 31.170600453465315;
 		System.out.println(e2);
 
@@ -68,8 +68,8 @@ public class MathOpExprTest {
 
 	@Test(dataProvider = "ast")
 	public void toStringAndParse(final Tree<? extends Op<Double>, ?> tree) {
-		final String expression = new MathOpExpr(tree).toString();
-		final MathOpExpr expr = MathOpExpr.parse(expression);
+		final String expression = new MathExpr(tree).toString();
+		final MathExpr expr = MathExpr.parse(expression);
 		Assert.assertEquals(expr.toString(), expression);
 		//Assert.assertEquals(expr.tree(), tree);
 	}
