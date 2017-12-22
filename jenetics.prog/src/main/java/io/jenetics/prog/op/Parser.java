@@ -46,15 +46,21 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class Parser {
 
-	static final class TokenInfo {
+	/**
+	 * Contains the token regex and the token kind;
+	 */
+	static final class TokenDesc {
 		final Pattern regex;
-		final int token;
-		TokenInfo(final Pattern regex, final int token) {
+		final int type;
+		TokenDesc(final Pattern regex, final int type) {
 			this.regex = regex;
-			this.token = token;
+			this.type = type;
 		}
 	}
 
+	/**
+	 * Represents expression token.
+	 */
 	static final class Token {
 		static final int EPSILON = 0;
 		static final int PLUS = 1;
@@ -69,7 +75,6 @@ final class Parser {
 		static final int NUMBER = 10;
 		static final int VARIABLE = 11;
 		static final int COMMA = 12;
-
 
 		final int token;
 		final String sequence;
@@ -88,12 +93,9 @@ final class Parser {
 	}
 
 	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * The math expression tokenizer.
 	 */
 	static final class Tokenizer {
-
 		static final Tokenizer MATH_OP = new Tokenizer();
 		static {
 			MATH_OP.add("\\+", Token.PLUS);
@@ -115,13 +117,13 @@ final class Parser {
 			MATH_OP.add("[a-zA-Z]\\w*", Token.VARIABLE);
 		}
 
-		private final Deque<TokenInfo> _infos = new LinkedList<>();
+		private final Deque<TokenDesc> _infos = new LinkedList<>();
 
 		private Tokenizer() {
 		}
 
 		private void add(String regex, int token) {
-			_infos.add(new TokenInfo(Pattern.compile("^(" + regex+")"), token));
+			_infos.add(new TokenDesc(Pattern.compile("^(" + regex+")"), token));
 		}
 
 		public Deque<Token> tokenize(final String expression) {
@@ -132,12 +134,12 @@ final class Parser {
 			while (!string.isEmpty()) {
 				final int remaining = string.length();
 				boolean match = false;
-				for (TokenInfo info : _infos) {
+				for (TokenDesc info : _infos) {
 					final Matcher m = info.regex.matcher(string);
 					if (m.find()) {
 						final String tok = m.group().trim();
 						string = m.replaceFirst("").trim();
-						tokens.add(new Token(info.token, tok, totalLength - remaining));
+						tokens.add(new Token(info.type, tok, totalLength - remaining));
 
 						match = true;
 						break;
@@ -153,64 +155,27 @@ final class Parser {
 
 			return tokens;
 		}
-
-	}
-
-	/**
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
-	 */
-	final class ParserException extends RuntimeException {
-		private Token token = null;
-
-		ParserException(final String message)
-		{
-			super(message);
-		}
-
-		ParserException(final String message, final Token token) {
-			super(message);
-			this.token = token;
-		}
-
-		Token getToken() {
-			return token;
-		}
-
-		public String getMessage() {
-			String msg = super.getMessage();
-			if (token != null) {
-				msg = msg.replace("%s", token.sequence);
-			}
-			return msg;
-		}
-
 	}
 
 	private static final Op<Double> LIST_OP = Const.of(Double.NaN);
 
 	private final Deque<Token> _tokens;
-	private Token _lookahead;
+	private Token _next;
 
 	private Parser(final Deque<Token> tokens) {
 		_tokens = requireNonNull(tokens);
-		_lookahead = _tokens.getFirst();
+		_next = _tokens.getFirst();
 	}
 
 	static TreeNode<Op<Double>> parse(final String expr) {
-		try {
-			return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
-		} catch (ParserException e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
+		return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
 	}
 
 	private TreeNode<Op<Double>> parse() {
 		final TreeNode<Op<Double>> expr = expression();
-		if (_lookahead.token != Token.EPSILON) {
-			throw new ParserException(format(
-				"Unexpected symbol '%s' found.", _lookahead
+		if (_next.token != Token.EPSILON) {
+			throw new IllegalArgumentException(format(
+				"Unexpected symbol '%s' found.", _next
 			));
 		}
 
@@ -250,7 +215,7 @@ final class Parser {
 	private TreeNode<Op<Double>> sumOp(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
-		if (_lookahead.token == Token.PLUS) {
+		if (_next.token == Token.PLUS) {
 			final TreeNode<Op<Double>> add = TreeNode
 				.<Op<Double>>of(MathOp.ADD)
 				.attach(expr);
@@ -258,7 +223,7 @@ final class Parser {
 			nextToken();
 			add.attach(term());
 			result = sumOp(add);
-		} else if (_lookahead.token == Token.MINUS) {
+		} else if (_next.token == Token.MINUS) {
 			final TreeNode<Op<Double>> sub = TreeNode
 				.<Op<Double>>of(MathOp.SUB)
 				.attach(expr);
@@ -272,12 +237,12 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> signedTerm() {
-		if (_lookahead.token == Token.MINUS) {
+		if (_next.token == Token.MINUS) {
 			nextToken();
 			return TreeNode
 				.<Op<Double>>of(MathOp.NEG)
 				.attach(term());
-		} else if (_lookahead.token == Token.PLUS) {
+		} else if (_next.token == Token.PLUS) {
 			nextToken();
 		}
 
@@ -291,7 +256,7 @@ final class Parser {
 	private TreeNode<Op<Double>> termOp(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
-		if (_lookahead.token == Token.MUL) {
+		if (_next.token == Token.MUL) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.MUL)
 				.attach(expr);
@@ -299,7 +264,7 @@ final class Parser {
 			nextToken();
 			prod.attach(signedFactor());
 			result = termOp(prod);
-		} else if (_lookahead.token == Token.DIV) {
+		} else if (_next.token == Token.DIV) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.DIV)
 				.attach(expr);
@@ -307,7 +272,7 @@ final class Parser {
 			nextToken();
 			prod.attach(signedFactor());
 			result = termOp(prod);
-		} else if (_lookahead.token == Token.MOD) {
+		} else if (_next.token == Token.MOD) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.MOD)
 				.attach(expr);
@@ -315,7 +280,7 @@ final class Parser {
 			nextToken();
 			prod.attach(signedFactor());
 			result = termOp(prod);
-		} else if (_lookahead.token == Token.COMMA) {
+		} else if (_next.token == Token.COMMA) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.of(LIST_OP)
 				.attach(expr);
@@ -329,12 +294,12 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> signedFactor() {
-		if (_lookahead.token == Token.MINUS) {
+		if (_next.token == Token.MINUS) {
 			nextToken();
 			return TreeNode
 				.<Op<Double>>of(MathOp.NEG)
 				.attach(factor());
-		} else if (_lookahead.token == Token.PLUS) {
+		} else if (_next.token == Token.PLUS) {
 			nextToken();
 		}
 
@@ -348,7 +313,7 @@ final class Parser {
 	private TreeNode<Op<Double>> factorOp(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
-		if (_lookahead.token == Token.POWER) {
+		if (_next.token == Token.POWER) {
 			nextToken();
 
 			result = TreeNode.<Op<Double>>of(MathOp.POW)
@@ -360,22 +325,21 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> argument() {
-		if (_lookahead.token == Token.FUNCTION) {
-			final Op<Double> function = ofName(_lookahead.sequence)
-				.orElseThrow(() -> new ParserException(format(
-					"Unexpected Function '%s' found", _lookahead.sequence)));
+		if (_next.token == Token.FUNCTION) {
+			final Op<Double> function = ofName(_next.sequence)
+				.orElseThrow(() -> new IllegalArgumentException(format(
+					"Unknown function '%s' found", _next.sequence)));
 
 			nextToken();
-			final TreeNode<Op<Double>> f = TreeNode.of(function);
-			for (TreeNode<Op<Double>> node : list(argument(), new ArrayList<>())) {
-				f.attach(node);
-			}
-			return f;
-		} else if (_lookahead.token == Token.OPEN_BRACKET) {
+			final TreeNode<Op<Double>> node = TreeNode.of(function);
+			list(argument(), new ArrayList<>()).forEach(node::attach);
+			return node;
+		} else if (_next.token == Token.OPEN_BRACKET) {
 			nextToken();
 			final TreeNode<Op<Double>> expr = expression();
-			if (_lookahead.token != Token.CLOSE_BRACKET) {
-				throw new ParserException("Closing brackets expected", _lookahead);
+			if (_next.token != Token.CLOSE_BRACKET) {
+				throw new IllegalArgumentException(format(
+					"Closing brackets expected: %s", _next));
 			}
 
 			nextToken();
@@ -406,9 +370,9 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> value() {
-		final String value = _lookahead.sequence;
+		final String value = _next.sequence;
 
-		if (_lookahead.token == Token.NUMBER) {
+		if (_next.token == Token.NUMBER) {
 			final TreeNode<Op<Double>> node =
 				TreeNode.of(Const.of(Double.valueOf(value)));
 
@@ -416,24 +380,24 @@ final class Parser {
 			return node;
 		}
 
-		if (_lookahead.token == Token.VARIABLE) {
+		if (_next.token == Token.VARIABLE) {
 			final TreeNode<Op<Double>> node = TreeNode.of(Var.of(value, 0));
 			nextToken();
 			return node;
 		}
 
-		if (_lookahead.token == Token.EPSILON) {
-			throw new ParserException("Unexpected end of input.");
+		if (_next.token == Token.EPSILON) {
+			throw new IllegalArgumentException("Unexpected end of input.");
 		} else {
-			throw new ParserException(format(
-				"Unexpected symbol '%s' found.", _lookahead
+			throw new IllegalArgumentException(format(
+				"Unexpected symbol '%s' found.", _next
 			));
 		}
 	}
 
 	private void nextToken() {
 		_tokens.pop();
-		_lookahead = _tokens.isEmpty()
+		_next = _tokens.isEmpty()
 			? new Token(Token.EPSILON, "", -1)
 			: _tokens.getFirst();
 	}
