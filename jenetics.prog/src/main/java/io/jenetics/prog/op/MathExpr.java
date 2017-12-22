@@ -56,7 +56,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		Program.check(tree);
+		//Program.check(tree);
 		_tree = tree;
 	}
 
@@ -142,21 +142,13 @@ public final class MathExpr implements Function<double[], Double> {
 		} else if (op == MathOp.SUB) {
 			infix(" - ", tree, out);
 		}  else if (op == MathOp.MUL) {
-			toString(tree.getChild(0), out);
-			out.append("*");
-			toString(tree.getChild(1), out);
+			infix("*", tree, out);
 		} else if (op == MathOp.DIV) {
-			toString(tree.getChild(0), out);
-			out.append("/");
-			toString(tree.getChild(1), out);
+			infix("/", tree, out);
 		}  else if (op == MathOp.MOD) {
-			toString(tree.getChild(0), out);
-			out.append("%");
-			toString(tree.getChild(1), out);
+			infix("%", tree, out);
 		} else if (op == MathOp.POW) {
-			toString(tree.getChild(0), out);
-			out.append("^");
-			toString(tree.getChild(1), out);
+			infix("^", tree, out);
 		} else {
 			out.append(op);
 			if (!tree.isLeaf()) {
@@ -181,7 +173,7 @@ public final class MathExpr implements Function<double[], Double> {
 		final boolean first = out.length() == 0;
 		if (!first) out.append("(");
 		toString(tree.getChild(0), out);
-		out.append(" + ");
+		out.append(op);
 		toString(tree.getChild(1), out);
 		if (!first) out.append(")");
 	}

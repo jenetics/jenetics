@@ -19,6 +19,10 @@
  */
 package io.jenetics.prog.op;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+
 import java.util.stream.Stream;
 
 import org.testng.Assert;
@@ -28,7 +32,6 @@ import org.testng.annotations.Test;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,27 +51,57 @@ public class MathExprTest {
 	);
 
 	@Test
-	public void eval() {
-		final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
-		final MathExpr tree = MathExpr.parse(expr);
-		assert tree.toString().equals(expr);
+	public void parse() {
+		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
+		//System.out.println(expr);
+		//System.out.println(expr.tree());
+	}
 
-		final MathExpr e = MathExpr.parse("2*z + 3*x - y");
-		final double result = MathExpr.eval("2*z + 3*x - y", 3, 2, 1);
-		assert result == 9.0;
-		System.out.println(result);
+	@Test(dataProvider = "functionData")
+	public void eval(final String expression, final F3 f, final double[] x) {
+		Assert.assertEquals(
+			MathExpr.eval(expression, x),
+			f.apply(x[0], x[1], x[2])
+		);
 
-		final double e2 = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6").eval(4.32);
-		assert e2 == 31.170600453465315;
-		System.out.println(e2);
+		Assert.assertEquals(
+			MathExpr.eval(MathExpr.parse(expression).toString(), x),
+			f.apply(x[0], x[1], x[2])
+		);
+	}
 
-		final TreeNode<Op<Double>> tree1 = Program.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
-		System.out.println(tree1);
+	@DataProvider(name = "functionData")
+	public Object[][] functionData() {
+		return new Object[][] {
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, x)", (F3)MathExprTest::f1, new double[]{1, 2, 3}},
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, x)", (F3)MathExprTest::f1, new double[]{1.5, 65, 13}},
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, x)", (F3)MathExprTest::f1, new double[]{10, 0, 53}},
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, x)", (F3)MathExprTest::f1, new double[]{11, 23, 39}},
+
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(z*x + y, x))", (F3)MathExprTest::f2, new double[]{1.5, 2.6, 3.9}},
+			{"x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))", (F3)MathExprTest::f3, new double[]{1.5, 2.6, 3.9}}
+		};
+	}
+
+	private static double f1(final double x, final double y, final double z) {
+		return x*x + sin(z) - cos(x)*y*pow(z*x + y, x);
+	}
+
+	private static double f2(final double x, final double y, final double z) {
+		return x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(z*x + y, x));
+	}
+
+	private static double f3(final double x, final double y, final double z) {
+		return x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x));
+	}
+
+	static interface F3 {
+		double apply(final double x, final double y, final double z);
 	}
 
 	@Test(dataProvider = "ast")
 	public void toStringAndParse(final Tree<? extends Op<Double>, ?> tree) {
-		final String expression = new MathExpr(tree).toString();
+		final String expression = MathExpr.parse(new MathExpr(tree).toString()).toString();
 		final MathExpr expr = MathExpr.parse(expression);
 		Assert.assertEquals(expr.toString(), expression);
 	}
@@ -80,5 +113,4 @@ public class MathExprTest {
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
-
 }

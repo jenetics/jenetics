@@ -276,14 +276,6 @@ final class Parser {
 			nextToken();
 			prod.attach(signedFactor());
 			result = termOp(prod);
-		} else if (_next.token == Token.COMMA) {
-			final TreeNode<Op<Double>> prod = TreeNode
-				.of(LIST_OP)
-				.attach(expr);
-
-			nextToken();
-			prod.attach(term());
-			result = termOp(prod);
 		}
 
 		return result;
@@ -330,9 +322,37 @@ final class Parser {
 			final TreeNode<Op<Double>> node = TreeNode.of(function);
 			list(argument(), new ArrayList<>()).forEach(node::attach);
 			return node;
-		} else if (_next.token == Token.OPEN_BRACKET) {
+		} else if (_next.token == Token.COMMA) {
 			nextToken();
-			final TreeNode<Op<Double>> expr = expression();
+			TreeNode<Op<Double>> expr = expression();
+			if (_next.token == Token.COMMA) {
+				expr = TreeNode
+					.of(LIST_OP)
+					.attach(expr)
+					.attach(argument());
+
+				return expr;
+			}
+
+			if (_next.token != Token.CLOSE_BRACKET) {
+				throw new IllegalArgumentException(format(
+					"Closing brackets expected: %s", _next));
+			}
+
+			nextToken();
+			return expr;
+		}  else if (_next.token == Token.OPEN_BRACKET) {
+			nextToken();
+			TreeNode<Op<Double>> expr = expression();
+
+			if (_next.token == Token.COMMA) {
+				expr = TreeNode
+					.of(LIST_OP)
+					.attach(expr)
+					.attach(argument());
+
+				return expr;
+			}
 			if (_next.token != Token.CLOSE_BRACKET) {
 				throw new IllegalArgumentException(format(
 					"Closing brackets expected: %s", _next));
