@@ -19,18 +19,66 @@
  */
 package io.jenetics.prog.op;
 
+import java.util.stream.Stream;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.util.Tree;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathOpExprTest {
 
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.DIV,
+		MathOp.EXP,
+		MathOp.SIN,
+		MathOp.COS,
+		MathOp.MIN,
+		MathOp.MAX,
+		MathOp.ABS,
+		MathOp.POW
+	);
+
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+		Var.of("u", 0),
+		Var.of("v", 1),
+		Var.of("w", 2),
+		Var.of("x", 3),
+		Var.of("y", 4),
+		Var.of("z", 5),
+		Const.of(1.0)
+	);
+
 	@Test
 	public void eval() {
-		System.out.println(
-			MathOpExpr.eval("5+6*x", 0.5)
-		);
+		final MathOpExpr expr = MathOpExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x)/4)/6");
+		System.out.println(expr.apply(0.5));
+
+		System.out.println(expr);
+	}
+
+	@Test(dataProvider = "ast")
+	public void toStringAndParse(final Tree<? extends Op<Double>, ?> tree) {
+		final String expression = new MathOpExpr(tree).toString();
+		final MathOpExpr expr = MathOpExpr.parse(expression);
+		Assert.assertEquals(expr.toString(), expression);
+	}
+
+	@DataProvider(name = "ast")
+	public Object[][] ast() {
+		return Stream.generate(() -> Program.of(7, OPERATIONS, TERMINALS))
+			.limit(100)
+			.map(p -> new Object[]{p})
+			.toArray(Object[][]::new);
 	}
 
 }

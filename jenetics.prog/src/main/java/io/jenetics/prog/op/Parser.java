@@ -72,7 +72,7 @@ final class Parser {
 		final TreeNode<Op<Double>> expr = expression();
 		if (_lookahead.token != Token.EPSILON) {
 			throw new ParserException(format(
-				"Unexpected symbol %s found.", _lookahead
+				"Unexpected symbol '%s' found.", _lookahead
 			));
 		}
 
@@ -183,7 +183,7 @@ final class Parser {
 				.attach(expr);
 
 			nextToken();
-			prod.attach(signedFactor());
+			prod.attach(term());
 			result = termOp(prod);
 		}
 
@@ -274,6 +274,9 @@ final class Parser {
 		if (_lookahead.token == Token.NUMBER) {
 			final TreeNode<Op<Double>> node =
 				TreeNode.of(Const.of(Double.valueOf(value)));
+			if (Double.isNaN(((Const<Double>)node.getValue()).value())) {
+				System.out.println(value);
+			}
 
 			nextToken();
 			return node;
@@ -289,7 +292,7 @@ final class Parser {
 			throw new ParserException("Unexpected end of input.");
 		} else {
 			throw new ParserException(format(
-				"Unexpected symbol %s found.", _lookahead
+				"Unexpected symbol '%s' found.", _lookahead
 			));
 		}
 	}
@@ -386,10 +389,10 @@ final class Tokenizer {
 		String string = expression.trim();
 		final int totalLength = string.length();
 		while (!string.isEmpty()) {
-			int remaining = string.length();
+			final int remaining = string.length();
 			boolean match = false;
 			for (TokenInfo info : _infos) {
-				Matcher m = info.regex.matcher(string);
+				final Matcher m = info.regex.matcher(string);
 				if (m.find()) {
 					final String tok = m.group().trim();
 					string = m.replaceFirst("").trim();

@@ -22,24 +22,21 @@ package io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class MathOpExpr implements Function<Double[], Double> {
+public final class MathOpExpr implements Function<double[], Double> {
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 	private final ISeq<Var<Double>> _vars;
@@ -59,18 +56,72 @@ public final class MathOpExpr implements Function<Double[], Double> {
 		return _vars;
 	}
 
-	public Tree<? extends Op<Double>, ?> getTree() {
+	public Tree<? extends Op<Double>, ?> tree() {
 		return _tree;
 	}
 
+	@Override
 	public Double apply(final double... args) {
-		final Double[] a = DoubleStream.of(args).boxed().toArray(Double[]::new);
-		return Program.eval(_tree, a);
+		return Program.eval(
+			_tree,
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
 	}
 
 	@Override
-	public Double apply(final Double... args) {
-		return Program.eval(_tree, args);
+	public String toString() {
+		return toString(_tree, new StringBuilder());
+	}
+
+	private static String toString(
+		final Tree<? extends Op<Double>, ?> tree,
+		final StringBuilder out
+	) {
+		final Op<Double> op = tree.getValue();
+		if (op == MathOp.ADD) {
+			out.append("(");
+			toString(tree.getChild(0), out);
+			out.append(" + ");
+			toString(tree.getChild(1), out);
+			out.append(")");
+		} else if (op == MathOp.SUB) {
+			out.append("(");
+			toString(tree.getChild(0), out);
+			out.append(" - ");
+			toString(tree.getChild(1), out);
+			out.append(")");
+		}  else if (op == MathOp.MUL) {
+			toString(tree.getChild(0), out);
+			out.append("*");
+			toString(tree.getChild(1), out);
+		} else if (op == MathOp.DIV) {
+			toString(tree.getChild(0), out);
+			out.append("/");
+			toString(tree.getChild(1), out);
+		}  else if (op == MathOp.MOD) {
+			toString(tree.getChild(0), out);
+			out.append("%");
+			toString(tree.getChild(1), out);
+		} else if (op == MathOp.POW) {
+			toString(tree.getChild(0), out);
+			out.append("^");
+			toString(tree.getChild(1), out);
+		} else {
+			out.append(tree.getValue());
+			if (!tree.isLeaf()) {
+				out.append("(");
+				toString(tree.getChild(0), out);
+				for (int i = 1; i < tree.childCount(); ++i) {
+					out.append(",");
+					toString(tree.getChild(i), out);
+				}
+				out.append(")");
+			}
+		}
+
+		return out.toString();
 	}
 
 	/**
