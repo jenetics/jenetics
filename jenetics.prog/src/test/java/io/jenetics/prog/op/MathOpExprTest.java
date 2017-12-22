@@ -28,25 +28,14 @@ import org.testng.annotations.Test;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathOpExprTest {
 
-	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL,
-		MathOp.DIV,
-		MathOp.EXP,
-		MathOp.SIN,
-		MathOp.COS,
-		MathOp.MIN,
-		MathOp.MAX,
-		MathOp.ABS,
-		MathOp.POW
-	);
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(MathOp.values());
 
 	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("u", 0),
@@ -60,10 +49,21 @@ public class MathOpExprTest {
 
 	@Test
 	public void eval() {
-		final MathOpExpr expr = MathOpExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x)/4)/6");
-		System.out.println(expr.apply(0.5));
+		final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
+		final MathOpExpr tree = MathOpExpr.parse(expr);
+		assert tree.toString().equals(expr);
 
-		System.out.println(expr);
+		final MathOpExpr e = MathOpExpr.parse("2*z + 3*x - y");
+		final double result = MathOpExpr.eval("2*z + 3*x - y", 3, 2, 1);
+		assert result == 9.0;
+		System.out.println(result);
+
+		final double e2 = MathOpExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6").eval(4.32);
+		assert e2 == 31.170600453465315;
+		System.out.println(e2);
+
+		final TreeNode<Op<Double>> tree1 = Program.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
+		System.out.println(tree1);
 	}
 
 	@Test(dataProvider = "ast")
@@ -71,11 +71,12 @@ public class MathOpExprTest {
 		final String expression = new MathOpExpr(tree).toString();
 		final MathOpExpr expr = MathOpExpr.parse(expression);
 		Assert.assertEquals(expr.toString(), expression);
+		//Assert.assertEquals(expr.tree(), tree);
 	}
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(7, OPERATIONS, TERMINALS))
+		return Stream.generate(() -> Program.of(4, OPERATIONS, TERMINALS))
 			.limit(100)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
