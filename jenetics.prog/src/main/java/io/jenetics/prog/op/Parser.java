@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -184,24 +183,21 @@ final class Parser {
 
 	private static TreeNode<Op<Double>>
 	addVarIndex(final TreeNode<Op<Double>> tree) {
-		final SortedSet<Var<Double>> vars = tree.stream()
+		final SortedSet<String> vars = tree.stream()
 			.filter(node -> node.getValue() instanceof Var<?>)
-			.map(node -> (Var<Double>)node.getValue())
-			.collect(Collectors.toCollection(() ->
-				new TreeSet<>(Comparator.comparing(Var::name))));
+			.map(node -> node.getValue().name())
+			.collect(Collectors.toCollection(TreeSet::new));
 
 		int nextIndex = 0;
 		final Map<String, Integer> indexes = new HashMap<>();
+		for (String name : vars) {
+			indexes.put(name, nextIndex++);
+		}
 
 		for (TreeNode<Op<Double>> node : tree) {
 			final Op<Double> op = node.getValue();
 			if (op instanceof Var<?>) {
-				if (!indexes.containsKey(node.getValue().name())) {
-					indexes.put(node.getValue().name(), nextIndex++);
-				}
-
-				final Var<Double> var = Var.of(op.name(), indexes.get(op.name()));
-				node.setValue(var);
+				node.setValue(Var.of(op.name(), indexes.get(op.name())));
 			}
 		}
 
