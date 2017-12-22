@@ -50,8 +50,6 @@ final class Parser {
 
 	private static final Op<Double> LIST_OP = Const.of(Double.NaN);
 
-	private final Map<String, Integer> _variables = new HashMap<>();
-
 	private final Deque<Token> _tokens;
 	private Token _lookahead;
 
@@ -232,7 +230,6 @@ final class Parser {
 			for (TreeNode<Op<Double>> node : list(argument(), new ArrayList<>())) {
 				f.attach(node);
 			}
-			//return TreeNode.of(function).attach(argument());
 			return f;
 		} else if (_lookahead.token == Token.OPEN_BRACKET) {
 			nextToken();
@@ -274,9 +271,6 @@ final class Parser {
 		if (_lookahead.token == Token.NUMBER) {
 			final TreeNode<Op<Double>> node =
 				TreeNode.of(Const.of(Double.valueOf(value)));
-			if (Double.isNaN(((Const<Double>)node.getValue()).value())) {
-				System.out.println(value);
-			}
 
 			nextToken();
 			return node;

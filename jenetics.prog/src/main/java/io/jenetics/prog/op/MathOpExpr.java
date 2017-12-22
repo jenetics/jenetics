@@ -19,8 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -39,21 +37,20 @@ import io.jenetics.ext.util.Tree;
 public final class MathOpExpr implements Function<double[], Double> {
 
 	private final Tree<? extends Op<Double>, ?> _tree;
-	private final ISeq<Var<Double>> _vars;
 
 	public MathOpExpr(final Tree<? extends Op<Double>, ?> tree) {
-		_tree = requireNonNull(tree);
-		_vars = ISeq.of(
-			tree.stream()
+		Program.check(tree);
+		_tree = tree;
+	}
+
+	public ISeq<Var<Double>> vars() {
+		return ISeq.of(
+			_tree.stream()
 				.filter(node -> node.getValue() instanceof Var<?>)
 				.map(node -> (Var<Double>)node.getValue())
 				.collect(Collectors.toCollection(() ->
 					new TreeSet<>(Comparator.comparing(Var::name))))
 		);
-	}
-
-	public ISeq<Var<Double>> vars() {
-		return _vars;
 	}
 
 	public Tree<? extends Op<Double>, ?> tree() {
