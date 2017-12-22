@@ -71,13 +71,12 @@ public class MathExprTest {
 		final String expression = new MathExpr(tree).toString();
 		final MathExpr expr = MathExpr.parse(expression);
 		Assert.assertEquals(expr.toString(), expression);
-		//Assert.assertEquals(expr.tree(), tree);
 	}
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(4, OPERATIONS, TERMINALS))
-			.limit(100)
+		return Stream.generate(() -> Program.of(8, OPERATIONS, TERMINALS))
+			.limit(50)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
