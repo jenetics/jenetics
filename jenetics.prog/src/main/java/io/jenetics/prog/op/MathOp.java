@@ -43,7 +43,9 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -361,10 +363,34 @@ public enum MathOp implements Op<Double> {
 	}
 
 
+	public static Optional<MathOp> ofName(final String name) {
+		return Stream.of(values())
+			.filter(op -> op.name().equalsIgnoreCase(name))
+			.findFirst();
+	}
+
+	public TreeNode<Op<Double>> parse(final String expression) {
+		return null;
+	}
 
 	public static TreeNode<Op<Double>>
 	prune(final Tree<? extends Op<Double>, ?> tree) {
 		return null;
+	}
+
+	static TreeNode<Op<Double>> simplify(final TreeNode<Op<Double>> node) {
+		final Op<Double> op = node.getValue();
+
+		if (op == MathOp.ADD) {
+			if (node.getChild(0).getValue() instanceof Const<?> && node.getChild(1).getValue()  instanceof Const<?>) {
+				final double a = ((Const<Double>)node.getChild(0).getValue()).value();
+				final double b = ((Const<Double>)node.getChild(1).getValue()).value();
+				node.removeAllChildren();
+				node.setValue(Const.of(a + b));
+			}
+		}
+
+		return node;
 	}
 
 }
