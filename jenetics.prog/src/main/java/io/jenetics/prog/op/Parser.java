@@ -39,14 +39,154 @@ import java.util.stream.Stream;
 
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.op.Tokenizer.Token;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 final class Parser {
+
+	static final class TokenInfo {
+		final Pattern regex;
+		final int token;
+		TokenInfo(final Pattern regex, final int token) {
+			this.regex = regex;
+			this.token = token;
+		}
+	}
+
+	static final class Token {
+		static final int EPSILON = 0;
+		static final int PLUS = 1;
+		static final int MINUS = 2;
+		static final int MUL = 3;
+		static final int DIV = 4;
+		static final int MOD = 5;
+		static final int POWER = 6;
+		static final int FUNCTION = 7;
+		static final int OPEN_BRACKET = 8;
+		static final int CLOSE_BRACKET = 9;
+		static final int NUMBER = 10;
+		static final int VARIABLE = 11;
+		static final int COMMA = 12;
+
+
+		final int token;
+		final String sequence;
+		final int pos;
+
+		Token(final int token, final String sequence, final int pos) {
+			this.token = token;
+			this.sequence = sequence;
+			this.pos = pos;
+		}
+
+		@Override
+		public String toString() {
+			return format("[%s, %s, %s]", token, sequence, pos);
+		}
+	}
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	static final class Tokenizer {
+
+		static final Tokenizer MATH_OP = new Tokenizer();
+		static {
+			MATH_OP.add("\\+", Token.PLUS);
+			MATH_OP.add("-", Token.MINUS);
+			MATH_OP.add("\\*", Token.MUL);
+			MATH_OP.add("/", Token.DIV);
+			MATH_OP.add("%", Token.MOD);
+			MATH_OP.add("\\^", Token.POWER);
+			MATH_OP.add("\\,", Token.COMMA);
+
+			final String functions = Stream.of(MathOp.values())
+				.map(MathOp::toString)
+				.collect(Collectors.joining("|"));
+			MATH_OP.add("(" + functions + ")(?!\\w)", Token.FUNCTION);
+
+			MATH_OP.add("\\(", Token.OPEN_BRACKET);
+			MATH_OP.add("\\)", Token.CLOSE_BRACKET);
+			MATH_OP.add("(?:\\d+\\.?|\\.\\d)\\d*(?:[Ee][-+]?\\d+)?", Token.NUMBER);
+			MATH_OP.add("[a-zA-Z]\\w*", Token.VARIABLE);
+		}
+
+		private final Deque<TokenInfo> _infos = new LinkedList<>();
+
+		private Tokenizer() {
+		}
+
+		private void add(String regex, int token) {
+			_infos.add(new TokenInfo(Pattern.compile("^(" + regex+")"), token));
+		}
+
+		public Deque<Token> tokenize(final String expression) {
+			final Deque<Token> tokens = new LinkedList<>();
+
+			String string = expression.trim();
+			final int totalLength = string.length();
+			while (!string.isEmpty()) {
+				final int remaining = string.length();
+				boolean match = false;
+				for (TokenInfo info : _infos) {
+					final Matcher m = info.regex.matcher(string);
+					if (m.find()) {
+						final String tok = m.group().trim();
+						string = m.replaceFirst("").trim();
+						tokens.add(new Token(info.token, tok, totalLength - remaining));
+
+						match = true;
+						break;
+					}
+				}
+
+				if (!match) {
+					throw new IllegalArgumentException(
+						"Unexpected character in input: " + string
+					);
+				}
+			}
+
+			return tokens;
+		}
+
+	}
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	final class ParserException extends RuntimeException {
+		private Token token = null;
+
+		ParserException(final String message)
+		{
+			super(message);
+		}
+
+		ParserException(final String message, final Token token) {
+			super(message);
+			this.token = token;
+		}
+
+		Token getToken() {
+			return token;
+		}
+
+		public String getMessage() {
+			String msg = super.getMessage();
+			if (token != null) {
+				msg = msg.replace("%s", token.sequence);
+			}
+			return msg;
+		}
+
+	}
 
 	private static final Op<Double> LIST_OP = Const.of(Double.NaN);
 
@@ -297,146 +437,4 @@ final class Parser {
 			? new Token(Token.EPSILON, "", -1)
 			: _tokens.getFirst();
 	}
-}
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
- */
-final class Tokenizer {
-
-	static final class TokenInfo {
-		final Pattern regex;
-		final int token;
-		TokenInfo(final Pattern regex, final int token) {
-			this.regex = regex;
-			this.token = token;
-		}
-	}
-
-	static final class Token {
-		static final int EPSILON = 0;
-		static final int PLUS = 1;
-		static final int MINUS = 2;
-		static final int MUL = 3;
-		static final int DIV = 4;
-		static final int MOD = 5;
-		static final int POWER = 6;
-		static final int FUNCTION = 7;
-		static final int OPEN_BRACKET = 8;
-		static final int CLOSE_BRACKET = 9;
-		static final int NUMBER = 10;
-		static final int VARIABLE = 11;
-		static final int COMMA = 12;
-
-
-		final int token;
-		final String sequence;
-		final int pos;
-
-		Token(final int token, final String sequence, final int pos) {
-			this.token = token;
-			this.sequence = sequence;
-			this.pos = pos;
-		}
-
-		@Override
-		public String toString() {
-			return format("[%s, %s, %s]", token, sequence, pos);
-		}
-	}
-
-	static final Tokenizer MATH_OP = new Tokenizer();
-	static {
-		MATH_OP.add("\\+", Token.PLUS);
-		MATH_OP.add("-", Token.MINUS);
-		MATH_OP.add("\\*", Token.MUL);
-		MATH_OP.add("/", Token.DIV);
-		MATH_OP.add("%", Token.MOD);
-		MATH_OP.add("\\^", Token.POWER);
-		MATH_OP.add("\\,", Token.COMMA);
-
-		final String functions = Stream.of(MathOp.values())
-			.map(MathOp::toString)
-			.collect(Collectors.joining("|"));
-		MATH_OP.add("(" + functions + ")(?!\\w)", Token.FUNCTION);
-
-		MATH_OP.add("\\(", Token.OPEN_BRACKET);
-		MATH_OP.add("\\)", Token.CLOSE_BRACKET);
-		MATH_OP.add("(?:\\d+\\.?|\\.\\d)\\d*(?:[Ee][-+]?\\d+)?", Token.NUMBER);
-		MATH_OP.add("[a-zA-Z]\\w*", Token.VARIABLE);
-	}
-
-	private final Deque<TokenInfo> _infos = new LinkedList<>();
-
-	private Tokenizer() {
-	}
-
-	private void add(String regex, int token) {
-		_infos.add(new TokenInfo(Pattern.compile("^(" + regex+")"), token));
-	}
-
-	public Deque<Token> tokenize(final String expression) {
-		final Deque<Token> tokens = new LinkedList<>();
-
-		String string = expression.trim();
-		final int totalLength = string.length();
-		while (!string.isEmpty()) {
-			final int remaining = string.length();
-			boolean match = false;
-			for (TokenInfo info : _infos) {
-				final Matcher m = info.regex.matcher(string);
-				if (m.find()) {
-					final String tok = m.group().trim();
-					string = m.replaceFirst("").trim();
-					tokens.add(new Token(info.token, tok, totalLength - remaining));
-
-					match = true;
-					break;
-				}
-			}
-
-			if (!match) {
-				throw new IllegalArgumentException(
-					"Unexpected character in input: " + string
-				);
-			}
-		}
-
-		return tokens;
-	}
-
-}
-
-/**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
- */
-final class ParserException extends RuntimeException {
-	private Token token = null;
-
-	ParserException(final String message)
-	{
-		super(message);
-	}
-
-	ParserException(final String message, final Token token) {
-		super(message);
-		this.token = token;
-	}
-
-	Token getToken() {
-		return token;
-	}
-
-	public String getMessage() {
-		String msg = super.getMessage();
-		if (token != null) {
-			msg = msg.replace("%s", token.sequence);
-		}
-		return msg;
-	}
-
 }
