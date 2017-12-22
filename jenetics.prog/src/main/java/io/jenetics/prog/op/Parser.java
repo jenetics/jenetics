@@ -22,12 +22,20 @@ package io.jenetics.prog.op;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.jenetics.ext.util.TreeNode;
 
@@ -40,6 +48,8 @@ import io.jenetics.prog.op.Tokenizer.Token;
  */
 final class Parser {
 
+	private static final Op<Double> LIST_OP = Const.of(Double.NaN);
+
 	private final Map<String, Integer> _variables = new HashMap<>();
 
 	private final Deque<Token> _tokens;
@@ -50,8 +60,12 @@ final class Parser {
 		_lookahead = _tokens.getFirst();
 	}
 
-	public static TreeNode<Op<Double>> parse(final String expr) {
-		return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
+	static TreeNode<Op<Double>> parse(final String expr) {
+		try {
+			return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
+		} catch (ParserException e) {
+			throw new IllegalArgumentException(e.getMessage());
+		}
 	}
 
 	private TreeNode<Op<Double>> parse() {
@@ -62,7 +76,33 @@ final class Parser {
 			));
 		}
 
-		return expr;
+		return addVarIndex(expr);
+	}
+
+	private static TreeNode<Op<Double>>
+	addVarIndex(final TreeNode<Op<Double>> tree) {
+		final SortedSet<Var<Double>> vars = tree.stream()
+			.filter(node -> node.getValue() instanceof Var<?>)
+			.map(node -> (Var<Double>)node.getValue())
+			.collect(Collectors.toCollection(() ->
+				new TreeSet<>(Comparator.comparing(Var::name))));
+
+		int nextIndex = 0;
+		final Map<String, Integer> indexes = new HashMap<>();
+
+		for (TreeNode<Op<Double>> node : tree) {
+			final Op<Double> op = node.getValue();
+			if (op instanceof Var<?>) {
+				if (!indexes.containsKey(node.getValue().name())) {
+					indexes.put(node.getValue().name(), nextIndex++);
+				}
+
+				final Var<Double> var = Var.of(op.name(), indexes.get(op.name()));
+				node.setValue(var);
+			}
+		}
+
+		return tree;
 	}
 
 	private TreeNode<Op<Double>> expression() {
@@ -129,6 +169,22 @@ final class Parser {
 			nextToken();
 			prod.attach(signedFactor());
 			result = termOp(prod);
+		} else if (_lookahead.token == Token.MOD) {
+			final TreeNode<Op<Double>> prod = TreeNode
+				.<Op<Double>>of(MathOp.MOD)
+				.attach(expr);
+
+			nextToken();
+			prod.attach(signedFactor());
+			result = termOp(prod);
+		} else if (_lookahead.token == Token.COMMA) {
+			final TreeNode<Op<Double>> prod = TreeNode
+				.of(LIST_OP)
+				.attach(expr);
+
+			nextToken();
+			prod.attach(signedFactor());
+			result = termOp(prod);
 		}
 
 		return result;
@@ -167,12 +223,17 @@ final class Parser {
 
 	private TreeNode<Op<Double>> argument() {
 		if (_lookahead.token == Token.FUNCTION) {
-			final Op<Double> function = MathOp.ofName(_lookahead.sequence)
+			final Op<Double> function = ofName(_lookahead.sequence)
 				.orElseThrow(() -> new ParserException(format(
 					"Unexpected Function '%s' found", _lookahead.sequence)));
 
 			nextToken();
-			return TreeNode.of(function).attach(argument());
+			final TreeNode<Op<Double>> f = TreeNode.of(function);
+			for (TreeNode<Op<Double>> node : list(argument(), new ArrayList<>())) {
+				f.attach(node);
+			}
+			//return TreeNode.of(function).attach(argument());
+			return f;
 		} else if (_lookahead.token == Token.OPEN_BRACKET) {
 			nextToken();
 			final TreeNode<Op<Double>> expr = expression();
@@ -185,6 +246,26 @@ final class Parser {
 		}
 
 		return value();
+	}
+
+	private static Optional<MathOp> ofName(final String name) {
+		return Stream.of(MathOp.values())
+			.filter(op -> op.name().equalsIgnoreCase(name))
+			.findFirst();
+	}
+
+	private static List<TreeNode<Op<Double>>> list(
+		final TreeNode<Op<Double>> tree,
+		final List<TreeNode<Op<Double>>> list
+	) {
+		if (tree.getValue() == LIST_OP) {
+			for (int i = 0; i < tree.childCount(); ++i) {
+				list(tree.getChild(i), list);
+			}
+		} else {
+			list.add(tree);
+		}
+		return list;
 	}
 
 	private TreeNode<Op<Double>> value() {
@@ -243,12 +324,14 @@ final class Tokenizer {
 		static final int MINUS = 2;
 		static final int MUL = 3;
 		static final int DIV = 4;
-		static final int POWER = 5;
-		static final int FUNCTION = 6;
-		static final int OPEN_BRACKET = 7;
-		static final int CLOSE_BRACKET = 8;
-		static final int NUMBER = 9;
-		static final int VARIABLE = 10;
+		static final int MOD = 5;
+		static final int POWER = 6;
+		static final int FUNCTION = 7;
+		static final int OPEN_BRACKET = 8;
+		static final int CLOSE_BRACKET = 9;
+		static final int NUMBER = 10;
+		static final int VARIABLE = 11;
+		static final int COMMA = 12;
 
 
 		final int token;
@@ -273,10 +356,14 @@ final class Tokenizer {
 		MATH_OP.add("-", Token.MINUS);
 		MATH_OP.add("\\*", Token.MUL);
 		MATH_OP.add("/", Token.DIV);
+		MATH_OP.add("%", Token.MOD);
 		MATH_OP.add("\\^", Token.POWER);
+		MATH_OP.add("\\,", Token.COMMA);
 
-		String funcs = "sin|cos|tan|asin|acos|atan|sqrt|exp|ln|log|log2|abs";
-		MATH_OP.add("(" + funcs + ")(?!\\w)", Token.FUNCTION);
+		final String functions = Stream.of(MathOp.values())
+			.map(MathOp::toString)
+			.collect(Collectors.joining("|"));
+		MATH_OP.add("(" + functions + ")(?!\\w)", Token.FUNCTION);
 
 		MATH_OP.add("\\(", Token.OPEN_BRACKET);
 		MATH_OP.add("\\)", Token.CLOSE_BRACKET);
@@ -321,6 +408,38 @@ final class Tokenizer {
 		}
 
 		return tokens;
+	}
+
+}
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
+final class ParserException extends RuntimeException {
+	private Token token = null;
+
+	ParserException(final String message)
+	{
+		super(message);
+	}
+
+	ParserException(final String message, final Token token) {
+		super(message);
+		this.token = token;
+	}
+
+	Token getToken() {
+		return token;
+	}
+
+	public String getMessage() {
+		String msg = super.getMessage();
+		if (token != null) {
+			msg = msg.replace("%s", token.sequence);
+		}
+		return msg;
 	}
 
 }

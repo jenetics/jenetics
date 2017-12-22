@@ -43,9 +43,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -362,15 +360,14 @@ public enum MathOp implements Op<Double> {
 		return _name;
 	}
 
-
-	public static Optional<MathOp> ofName(final String name) {
-		return Stream.of(values())
-			.filter(op -> op.name().equalsIgnoreCase(name))
-			.findFirst();
-	}
-
-	public TreeNode<Op<Double>> parse(final String expression) {
-		return null;
+	/**
+	 * Parses the given {@code expression} into a AST tree.
+	 *
+	 * @param expression the expression string
+	 * @return the tree representation of the given {@code expression}
+	 */
+	public static TreeNode<Op<Double>> parse(final String expression) {
+		return Parser.parse(expression);
 	}
 
 	public static TreeNode<Op<Double>>

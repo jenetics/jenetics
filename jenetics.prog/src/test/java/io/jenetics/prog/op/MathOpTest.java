@@ -30,8 +30,7 @@ public class MathOpTest {
 
 	@Test
 	public void parse() {
-		final String prog = "5 + 4*(6 - 4) + sin(x)*cos(y)";
-
+		MathOp.parse("5 + 4");
 
 	}
 
