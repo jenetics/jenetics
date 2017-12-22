@@ -45,6 +45,9 @@ import static java.lang.Math.tanh;
 
 import java.util.function.Function;
 
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
+
 /**
  * This class contains operations for performing basic numeric operations.
  *
@@ -355,6 +358,13 @@ public enum MathOp implements Op<Double> {
 	@Override
 	public String toString() {
 		return _name;
+	}
+
+
+
+	public static TreeNode<Op<Double>>
+	prune(final Tree<? extends Op<Double>, ?> tree) {
+		return null;
 	}
 
 }
