@@ -129,7 +129,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 */
 	@Override
 	public String toString() {
-		return toString(_tree, new StringBuilder());
+		return toString(_tree);
 	}
 
 	private static String toString(
@@ -190,6 +190,24 @@ public final class MathExpr implements Function<double[], Double> {
 	/* *************************************************************************
 	 * Static helper methods.
 	 * ************************************************************************/
+
+	/**
+	 * Return the string representation of the given {@code tree} object. The
+	 * string returned by this method can be parsed again and will result in the
+	 * same expression object.
+	 * <pre>{@code
+	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
+	 *  final MathExpr tree = MathExpr.parse(expr);
+	 *  assert MathExpr.toString(tree.tree()).equals(expr);
+	 * }</pre>
+	 *
+	 * @param tree the tree object to convert to a string
+	 * @return a new expression string
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
+		return toString(tree, new StringBuilder());
+	}
 
 	/**
 	 * Parses the given {@code expression} into a AST tree.

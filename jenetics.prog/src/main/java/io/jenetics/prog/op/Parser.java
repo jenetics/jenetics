@@ -356,9 +356,7 @@ final class Parser {
 		final List<TreeNode<Op<Double>>> list
 	) {
 		if (tree.getValue() == LIST_OP) {
-			for (int i = 0; i < tree.childCount(); ++i) {
-				list(tree.getChild(i), list);
-			}
+			tree.childStream().forEach(child -> list(child, list));
 		} else {
 			list.add(tree);
 		}
