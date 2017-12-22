@@ -21,20 +21,16 @@ package io.jenetics.prog.op;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.TreeNode;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class MathOpTest {
+public class MathOpExprTest {
 
 	@Test
-	public void simplify() {
-		final TreeNode<Op<Double>> tree = TreeNode.<Op<Double>>of(MathOp.ADD)
-			.attach(Const.of(3.0), Const.of(4.0));
-
-		System.out.println(tree);
-		System.out.println(MathOp.simplify(tree));
+	public void eval() {
+		System.out.println(
+			MathOpExpr.eval("5+6*x", 0.5)
+		);
 	}
 
 }

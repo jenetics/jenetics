@@ -360,16 +360,6 @@ public enum MathOp implements Op<Double> {
 		return _name;
 	}
 
-	/**
-	 * Parses the given {@code expression} into a AST tree.
-	 *
-	 * @param expression the expression string
-	 * @return the tree representation of the given {@code expression}
-	 */
-	public static TreeNode<Op<Double>> parse(final String expression) {
-		return Parser.parse(expression);
-	}
-
 	public static TreeNode<Op<Double>>
 	prune(final Tree<? extends Op<Double>, ?> tree) {
 		return null;
