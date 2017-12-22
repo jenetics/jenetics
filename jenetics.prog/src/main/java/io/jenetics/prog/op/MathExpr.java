@@ -33,7 +33,7 @@ import io.jenetics.ext.util.Tree;
  * This class allows you to create a tree from an expression string.
  *
  * <pre>{@code
- * final MathOpExpr expr = MathOpExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
+ * final MathExpr expr = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
  * final double result = expr.eval(4.32);
  * assert result == 31.170600453465315;
  * }</pre>
@@ -47,7 +47,7 @@ public final class MathExpr implements Function<double[], Double> {
 	private final Tree<? extends Op<Double>, ?> _tree;
 
 	/**
-	 * Create a new {@code MathOpExpr} object from the given operation tree.
+	 * Create a new {@code MathExpr} object from the given operation tree.
 	 *
 	 * @param tree the underlying operation tree
 	 * @throws NullPointerException if the given {@code program} is {@code null}
@@ -99,7 +99,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 * explicitly create a wrapper array.
 	 *
 	 * <pre>{@code
-	 *  final double result = MathOpExpr.parse("2*z + 3*x - y").eval(3, 2, 1);
+	 *  final double result = MathExpr.parse("2*z + 3*x - y").eval(3, 2, 1);
 	 *  assert result == 9.0;
 	 * }</pre>
 	 *
@@ -116,12 +116,12 @@ public final class MathExpr implements Function<double[], Double> {
 	}
 
 	/**
-	 * Return the string representation of this {@code MathOpExpr} object. The
+	 * Return the string representation of this {@code MathExpr} object. The
 	 * string returned by this method can be parsed again and will result in the
 	 * same expression object.
 	 * <pre>{@code
 	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
-	 *  final MathOpExpr tree = MathOpExpr.parse(expr);
+	 *  final MathExpr tree = MathExpr.parse(expr);
 	 *  assert tree.toString().equals(expr);
 	 * }</pre>
 	 *
@@ -205,7 +205,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 * Evaluates the given {@code expression} with the given arguments.
 	 *
 	 * <pre>{@code
-	 *  final double result = MathOpExpr.eval("2*z + 3*x - y", 3, 2, 1);
+	 *  final double result = MathExpr.eval("2*z + 3*x - y", 3, 2, 1);
 	 *  assert result == 9.0;
 	 * }</pre>
 	 *
