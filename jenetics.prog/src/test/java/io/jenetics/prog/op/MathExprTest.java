@@ -21,7 +21,7 @@ package io.jenetics.prog.op;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.pow;
-import static java.lang.Math.*;
+import static java.lang.Math.sin;
 
 import java.util.Random;
 import java.util.stream.Stream;
@@ -33,7 +33,6 @@ import org.testng.annotations.Test;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -58,6 +57,8 @@ public class MathExprTest {
 
 	@Test
 	public void parse() {
+		System.out.println(MathExpr.parse("pow(2 + 3, x - x)"));
+		System.out.println(MathExpr.parse("pow(2 + 3, x - x)").tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
 		//System.out.println(expr.tree());
@@ -142,9 +143,22 @@ public class MathExprTest {
 			{"x-x", "0.0"},
 			{"sin(pow(x, y)) - sin(pow(x, y))", "0.0"},
 
+			// MUL_ZERO
+			{"tan(x)*0", "0.0"},
+			{"0*pow(x, x)", "0.0"},
+			{"y*(pow(x, 0) - 1)", "0.0"},
+			{"(pow(x, 0) - 1)*sin(43)", "0.0"},
+			{"cos(z)*sin(0)", "0.0"},
+
+			// POW_ZERO
+			{"pow(x*y, 0)", "1.0"},
+			{"pow(sin(x*y)*cos(z), 0)", "1.0"},
+			{"pow(sin(x*y)*cos(k), x - x)", "1.0"},
+
 			// Constant
 			{"4.0 + 4.0 + (x*(5.0 + 13.0))", "8.0 + (x*18.0)"},
-			{"sin(0)", "0"}
+			{"sin(0)", "0"},
+			{"sin(x - x)", "0"}
 		};
 	}
 

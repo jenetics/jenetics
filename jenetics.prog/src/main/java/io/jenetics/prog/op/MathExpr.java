@@ -19,13 +19,10 @@
  */
 package io.jenetics.prog.op;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -171,13 +168,17 @@ public final class MathExpr implements Function<double[], Double> {
 		} else {
 			out.append(op);
 			if (!tree.isLeaf()) {
-				/*if (tree.childCount() == 1)*/ out.append("(");
+				final boolean brackets =
+					op.arity() > 1 ||
+					tree.getChild(0).isLeaf();
+
+				if (brackets) out.append("(");
 				toString(tree.getChild(0), out);
 				for (int i = 1; i < tree.childCount(); ++i) {
 					out.append(", ");
 					toString(tree.getChild(i), out);
 				}
-				/*if (tree.childCount() == 1)*/ out.append(")");
+				if (brackets) out.append(")");
 			}
 		}
 
@@ -189,12 +190,11 @@ public final class MathExpr implements Function<double[], Double> {
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
-		final boolean first = out.length() == 0;
-		if (!first) out.append("(");
+		if (!tree.isRoot()) out.append("(");
 		toString(tree.getChild(0), out);
 		out.append(op);
 		toString(tree.getChild(1), out);
-		if (!first) out.append(")");
+		if (!tree.isRoot()) out.append(")");
 	}
 
 	public MathExpr simplify() {

@@ -31,6 +31,19 @@ import io.jenetics.ext.util.TreeNode;
  */
 enum Simplifier {
 
+	X_SUB_X {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.SUB &&
+				node.getChild(0).equals(node.getChild(1));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			node.removeAllChildren();
+			node.setValue(Const.of(0.0));
+		}
+	},
+
 	X_DIV_X {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
@@ -44,16 +57,35 @@ enum Simplifier {
 		}
 	},
 
-	X_SUB_X {
+	MUL_ZERO {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.SUB &&
-				node.getChild(0).equals(node.getChild(1));
+			return node.getValue() == MathOp.MUL &&
+				node.childCount() == 2 &&
+				(node.getChild(0).getValue() instanceof Const &&
+				((Const<Double>)node.getChild(0).getValue()).value().equals(0.0) ||
+				node.getChild(1).getValue() instanceof Const &&
+				((Const<Double>)node.getChild(1).getValue()).value().equals(0.0));
 		}
 		@Override
 		public void simplify(final TreeNode<Op<Double>> node) {
 			node.removeAllChildren();
 			node.setValue(Const.of(0.0));
+		}
+	},
+
+	POW_ZERO {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.POW &&
+				node.childCount() == 2 &&
+				node.getChild(1).getValue() instanceof Const &&
+				((Const<Double>)node.getChild(1).getValue()).value().equals(0.0);
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			node.removeAllChildren();
+			node.setValue(Const.of(1.0));
 		}
 	},
 
@@ -78,23 +110,21 @@ enum Simplifier {
 		}
 	};
 
-	static TreeNode<Op<Double>>
-	prune(final TreeNode<Op<Double>> node) {
+	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> node) {
+		while (_prune(node));
+		return node;
+	}
+
+	private static boolean
+	_prune(final TreeNode<Op<Double>> node) {
 		final Optional<Simplifier> simplifier= Stream.of(values())
 			.filter(s -> s.matches(node))
 			.findFirst();
 
 		simplifier.ifPresent(s -> s.simplify(node));
-
-		//if (simplifier.isPresent()) {
-		//	simplifier.get().simplify(node);
-		//} else {
-		for (int i = 0, n = node.childCount(); i < n; ++i) {
-			prune(node.getChild(i));
-		}
-		//}
-
-		return node;
+		return simplifier.isPresent() | node.childStream()
+			.mapToInt(child -> _prune(child) ? 1 : 0)
+			.sum() > 0;
 	}
 
 	abstract boolean matches(final TreeNode<Op<Double>> node);
