@@ -43,6 +43,9 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import io.jenetics.ext.util.Tree;
@@ -365,15 +368,21 @@ public enum MathOp implements Op<Double> {
 		return null;
 	}
 
-	static TreeNode<Op<Double>> simplify(final TreeNode<Op<Double>> node) {
-		final Op<Double> op = node.getValue();
+	static List<Simplifier> SIMPLIFIERS = new ArrayList<>();
+	static {
+		SIMPLIFIERS.add(Simplifier.CONSTANT);
+	}
 
-		if (op == MathOp.ADD) {
-			if (node.getChild(0).getValue() instanceof Const<?> && node.getChild(1).getValue()  instanceof Const<?>) {
-				final double a = ((Const<Double>)node.getChild(0).getValue()).value();
-				final double b = ((Const<Double>)node.getChild(1).getValue()).value();
-				node.removeAllChildren();
-				node.setValue(Const.of(a + b));
+	static TreeNode<Op<Double>> simplify(final TreeNode<Op<Double>> node) {
+		final Optional<Simplifier> simplifier= SIMPLIFIERS.stream()
+			.filter(s -> s.matches(node))
+			.findFirst();
+
+		if (simplifier.isPresent()) {
+			simplifier.get().simplify(node);
+		} else {
+			for (int i = 0, n = node.childCount(); i < n; ++i) {
+				simplify(node.getChild(i));
 			}
 		}
 
