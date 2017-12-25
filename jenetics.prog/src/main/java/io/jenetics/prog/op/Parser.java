@@ -87,7 +87,7 @@ final class Parser {
 
 		@Override
 		public String toString() {
-			return format("[%s, %s, %s]", token, sequence, pos);
+			return format("['%s', %s]", sequence, pos);
 		}
 	}
 
@@ -174,7 +174,7 @@ final class Parser {
 		final TreeNode<Op<Double>> expr = expression();
 		if (_next.token != Token.EPSILON) {
 			throw new IllegalArgumentException(format(
-				"Unexpected symbol '%s' found.", _next
+				"Unexpected symbol %s found.", _next
 			));
 		}
 
@@ -404,7 +404,7 @@ final class Parser {
 			throw new IllegalArgumentException("Unexpected end of input.");
 		} else {
 			throw new IllegalArgumentException(format(
-				"Unexpected symbol '%s' found.", _next
+				"Unexpected symbol %s found.", _next
 			));
 		}
 	}
