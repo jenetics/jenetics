@@ -205,10 +205,10 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> expression() {
-		return sumOp(signedTerm());
+		return sumPrecedenceOp(signedTerm());
 	}
 
-	private TreeNode<Op<Double>> sumOp(final TreeNode<Op<Double>> expr) {
+	private TreeNode<Op<Double>> sumPrecedenceOp(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
 		if (_next.token == Token.PLUS) {
@@ -218,7 +218,7 @@ final class Parser {
 
 			nextToken();
 			add.attach(term());
-			result = sumOp(add);
+			result = sumPrecedenceOp(add);
 		} else if (_next.token == Token.MINUS) {
 			final TreeNode<Op<Double>> sub = TreeNode
 				.<Op<Double>>of(MathOp.SUB)
@@ -226,7 +226,7 @@ final class Parser {
 
 			nextToken();
 			sub.attach(term());
-			result = sumOp(sub);
+			result = sumPrecedenceOp(sub);
 		}
 
 		return result;
@@ -246,10 +246,10 @@ final class Parser {
 	}
 
 	private TreeNode<Op<Double>> term() {
-		return termOp(factor());
+		return multPrecedenceOp(factor());
 	}
 
-	private TreeNode<Op<Double>> termOp(final TreeNode<Op<Double>> expr) {
+	private TreeNode<Op<Double>> multPrecedenceOp(final TreeNode<Op<Double>> expr) {
 		TreeNode<Op<Double>> result = expr;
 
 		if (_next.token == Token.MUL) {
@@ -259,7 +259,7 @@ final class Parser {
 
 			nextToken();
 			prod.attach(signedFactor());
-			result = termOp(prod);
+			result = multPrecedenceOp(prod);
 		} else if (_next.token == Token.DIV) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.DIV)
@@ -267,7 +267,7 @@ final class Parser {
 
 			nextToken();
 			prod.attach(signedFactor());
-			result = termOp(prod);
+			result = multPrecedenceOp(prod);
 		} else if (_next.token == Token.MOD) {
 			final TreeNode<Op<Double>> prod = TreeNode
 				.<Op<Double>>of(MathOp.MOD)
@@ -275,7 +275,7 @@ final class Parser {
 
 			nextToken();
 			prod.attach(signedFactor());
-			result = termOp(prod);
+			result = multPrecedenceOp(prod);
 		}
 
 		return result;
