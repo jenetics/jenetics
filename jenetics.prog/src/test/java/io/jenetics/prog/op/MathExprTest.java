@@ -123,13 +123,29 @@ public class MathExprTest {
 	}
 
 
-	@Test
-	public void simplify() {
-		final MathExpr expr = MathExpr.parse("4+4+x*(5 + 13)");
+	@Test(dataProvider = "simplifiedExpressions")
+	public void simplify(final String expr, final String simplified) {
+		Assert.assertEquals(
+			MathExpr.parse(expr).simplify(),
+			MathExpr.parse(simplified)
+		);
+	}
 
-		System.out.println(expr.tree());
-		final TreeNode<Op<Double>> simple = MathExpr.simplify((TreeNode<Op<Double>>)expr.tree());
-		System.out.println(simple);
+	@DataProvider(name = "simplifiedExpressions")
+	public Object[][] simplifiedExpressions() {
+		return new Object[][] {
+			// X_DIV_X
+			{"x/x", "1.0"},
+			{"sin(pow(x, y))/sin(pow(x, y))", "1.0"},
+
+			// X_SUB_X
+			{"x-x", "0.0"},
+			{"sin(pow(x, y)) - sin(pow(x, y))", "0.0"},
+
+			// Constant
+			{"4.0 + 4.0 + (x*(5.0 + 13.0))", "8.0 + (x*18.0)"},
+			{"sin(0)", "0"}
+		};
 	}
 
 }

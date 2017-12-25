@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -131,6 +132,18 @@ public final class MathExpr implements Function<double[], Double> {
 		return apply(args);
 	}
 
+	@Override
+	public int hashCode() {
+		return _tree.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof MathExpr &&
+			Objects.equals(((MathExpr) obj)._tree, _tree);
+	}
+
 	/**
 	 * Return the string representation of this {@code MathExpr} object. The
 	 * string returned by this method can be parsed again and will result in the
@@ -184,6 +197,9 @@ public final class MathExpr implements Function<double[], Double> {
 		if (!first) out.append(")");
 	}
 
+	public MathExpr simplify() {
+		return new MathExpr(simplify(_tree));
+	}
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -237,31 +253,9 @@ public final class MathExpr implements Function<double[], Double> {
 		return parse(expression).apply(args);
 	}
 
-	static List<Simplifier> SIMPLIFIERS = new ArrayList<>();
-	static {
-		SIMPLIFIERS.add(Simplifier.CONSTANT);
-	}
-
 	public static TreeNode<Op<Double>>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
-		@SuppressWarnings("unchecked")
-		final TreeNode<Op<Double>> node = tree instanceof TreeNode<?>
-			? (TreeNode<Op<Double>>)tree
-			: TreeNode.ofTree(tree);
-
-		final Optional<Simplifier> simplifier= SIMPLIFIERS.stream()
-			.filter(s -> s.matches(node))
-			.findFirst();
-
-		if (simplifier.isPresent()) {
-			simplifier.get().simplify(node);
-		} else {
-			for (int i = 0, n = node.childCount(); i < n; ++i) {
-				simplify(node.getChild(i));
-			}
-		}
-
-		return node;
+		return Simplifier.prune(TreeNode.ofTree(tree));
 	}
 
 }

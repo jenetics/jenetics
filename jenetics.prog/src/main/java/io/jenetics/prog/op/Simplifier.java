@@ -19,6 +19,9 @@
  */
 package io.jenetics.prog.op;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -26,15 +29,41 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-interface Simplifier {
+enum Simplifier {
 
-	static final Simplifier CONSTANT = new Simplifier() {
+	X_DIV_X {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.DIV &&
+				node.getChild(0).equals(node.getChild(1));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			node.removeAllChildren();
+			node.setValue(Const.of(1.0));
+		}
+	},
+
+	X_SUB_X {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.SUB &&
+				node.getChild(0).equals(node.getChild(1));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			node.removeAllChildren();
+			node.setValue(Const.of(0.0));
+		}
+	},
+
+	CONST_EXPR {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
 			return
 				node.getValue() instanceof MathOp &&
-				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Const<?>);
+					node.childStream()
+						.allMatch(child -> child.getValue() instanceof Const<?>);
 		}
 
 		@Override
@@ -49,9 +78,27 @@ interface Simplifier {
 		}
 	};
 
-	boolean matches(final TreeNode<Op<Double>> node);
+	static TreeNode<Op<Double>>
+	prune(final TreeNode<Op<Double>> node) {
+		final Optional<Simplifier> simplifier= Stream.of(values())
+			.filter(s -> s.matches(node))
+			.findFirst();
 
-	public void simplify(final TreeNode<Op<Double>> node);
+		simplifier.ifPresent(s -> s.simplify(node));
 
+		//if (simplifier.isPresent()) {
+		//	simplifier.get().simplify(node);
+		//} else {
+		for (int i = 0, n = node.childCount(); i < n; ++i) {
+			prune(node.getChild(i));
+		}
+		//}
+
+		return node;
+	}
+
+	abstract boolean matches(final TreeNode<Op<Double>> node);
+
+	abstract public void simplify(final TreeNode<Op<Double>> node);
 
 }
