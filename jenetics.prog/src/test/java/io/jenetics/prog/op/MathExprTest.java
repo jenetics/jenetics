@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -120,4 +121,15 @@ public class MathExprTest {
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
+
+
+	@Test
+	public void simplify() {
+		final MathExpr expr = MathExpr.parse("4+4+x*(5 + 13)");
+
+		System.out.println(expr.tree());
+		final TreeNode<Op<Double>> simple = MathExpr.simplify((TreeNode<Op<Double>>)expr.tree());
+		System.out.println(simple);
+	}
+
 }

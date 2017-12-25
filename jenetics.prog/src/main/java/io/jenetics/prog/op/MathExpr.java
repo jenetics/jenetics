@@ -19,9 +19,12 @@
  */
 package io.jenetics.prog.op;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,6 +33,7 @@ import java.util.stream.DoubleStream;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class allows you to create a tree from an expression string.
@@ -231,6 +235,33 @@ public final class MathExpr implements Function<double[], Double> {
 	 */
 	public static double eval(final String expression, final double... args) {
 		return parse(expression).apply(args);
+	}
+
+	static List<Simplifier> SIMPLIFIERS = new ArrayList<>();
+	static {
+		SIMPLIFIERS.add(Simplifier.CONSTANT);
+	}
+
+	public static TreeNode<Op<Double>>
+	simplify(final Tree<? extends Op<Double>, ?> tree) {
+		@SuppressWarnings("unchecked")
+		final TreeNode<Op<Double>> node = tree instanceof TreeNode<?>
+			? (TreeNode<Op<Double>>)tree
+			: TreeNode.ofTree(tree);
+
+		final Optional<Simplifier> simplifier= SIMPLIFIERS.stream()
+			.filter(s -> s.matches(node))
+			.findFirst();
+
+		if (simplifier.isPresent()) {
+			simplifier.get().simplify(node);
+		} else {
+			for (int i = 0, n = node.childCount(); i < n; ++i) {
+				simplify(node.getChild(i));
+			}
+		}
+
+		return node;
 	}
 
 }

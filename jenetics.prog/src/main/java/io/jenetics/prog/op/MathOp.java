@@ -363,30 +363,4 @@ public enum MathOp implements Op<Double> {
 		return _name;
 	}
 
-	public static TreeNode<Op<Double>>
-	prune(final Tree<? extends Op<Double>, ?> tree) {
-		return null;
-	}
-
-	static List<Simplifier> SIMPLIFIERS = new ArrayList<>();
-	static {
-		SIMPLIFIERS.add(Simplifier.CONSTANT);
-	}
-
-	static TreeNode<Op<Double>> simplify(final TreeNode<Op<Double>> node) {
-		final Optional<Simplifier> simplifier= SIMPLIFIERS.stream()
-			.filter(s -> s.matches(node))
-			.findFirst();
-
-		if (simplifier.isPresent()) {
-			simplifier.get().simplify(node);
-		} else {
-			for (int i = 0, n = node.childCount(); i < n; ++i) {
-				simplify(node.getChild(i));
-			}
-		}
-
-		return node;
-	}
-
 }

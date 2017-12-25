@@ -34,7 +34,7 @@ public class MathOpTest {
 			.attach(Const.of(3.0), Const.of(4.0));
 
 		System.out.println(tree);
-		System.out.println(MathOp.simplify(tree));
+		System.out.println(MathExpr.simplify(tree));
 	}
 
 }
