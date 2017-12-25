@@ -21,8 +21,9 @@ package io.jenetics.prog.op;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.pow;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
+import java.util.Random;
 import java.util.stream.Stream;
 
 import org.testng.Assert;
@@ -37,6 +38,10 @@ import io.jenetics.ext.util.Tree;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathExprTest {
+	/*
+	{
+		signum(abs(min((max((log10(sqr(y))*min(asin(y), cos(y))), asin(asin(min(1.0, x))))%((sin(rint(w))/(max(y, x)%sinh(1.0)))^(tanh(asin(y))%((z + u) - sin(y))))), sqr(sqr(abs(max(tan(x), cosh(v))))))));
+	}*/
 
 	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(MathOp.values());
 
@@ -101,15 +106,17 @@ public class MathExprTest {
 
 	@Test(dataProvider = "ast")
 	public void toStringAndParse(final Tree<? extends Op<Double>, ?> tree) {
-		final String expression = MathExpr.parse(new MathExpr(tree).toString()).toString();
+		final String expression = new MathExpr(tree).toString();
 		final MathExpr expr = MathExpr.parse(expression);
+
+		Assert.assertEquals(expr.tree(), tree);
 		Assert.assertEquals(expr.toString(), expression);
 	}
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(8, OPERATIONS, TERMINALS))
-			.limit(50)
+		return Stream.generate(() -> Program.of(9, OPERATIONS, TERMINALS, new Random(125)))
+			.limit(100)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}

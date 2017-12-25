@@ -20,6 +20,8 @@
 package io.jenetics.prog.op;
 
 import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -44,6 +46,16 @@ import io.jenetics.ext.util.Tree;
  */
 public final class MathExpr implements Function<double[], Double> {
 
+	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
+	static {
+		INFIX_OPS.put(MathOp.ADD, " + ");
+		INFIX_OPS.put(MathOp.SUB, " - ");
+		INFIX_OPS.put(MathOp.MUL, "*");
+		INFIX_OPS.put(MathOp.DIV, "/");
+		INFIX_OPS.put(MathOp.MOD, "%");
+		INFIX_OPS.put(MathOp.POW, "^");
+	}
+
 	private final Tree<? extends Op<Double>, ?> _tree;
 
 	/**
@@ -56,7 +68,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		//Program.check(tree);
+		Program.check(tree);
 		_tree = tree;
 	}
 
@@ -137,28 +149,18 @@ public final class MathExpr implements Function<double[], Double> {
 		final StringBuilder out
 	) {
 		final Op<Double> op = tree.getValue();
-		if (op == MathOp.ADD) {
-			infix(" + ", tree, out);
-		} else if (op == MathOp.SUB) {
-			infix(" - ", tree, out);
-		}  else if (op == MathOp.MUL) {
-			infix("*", tree, out);
-		} else if (op == MathOp.DIV) {
-			infix("/", tree, out);
-		}  else if (op == MathOp.MOD) {
-			infix("%", tree, out);
-		} else if (op == MathOp.POW) {
-			infix("^", tree, out);
+		if (INFIX_OPS.containsKey(op)) {
+			infix(INFIX_OPS.get(op), tree, out);
 		} else {
 			out.append(op);
 			if (!tree.isLeaf()) {
-				out.append("(");
+				/*if (tree.childCount() == 1)*/ out.append("(");
 				toString(tree.getChild(0), out);
 				for (int i = 1; i < tree.childCount(); ++i) {
 					out.append(", ");
 					toString(tree.getChild(i), out);
 				}
-				out.append(")");
+				/*if (tree.childCount() == 1)*/ out.append(")");
 			}
 		}
 
