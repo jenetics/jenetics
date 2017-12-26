@@ -33,18 +33,18 @@ import io.jenetics.prog.op.Op;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreePruneAlterer<
+public class MathTreePruneAlterer<
 	G extends TreeGene<Op<Double>, G>,
 	C extends Comparable<? super C>
 >
 	extends TreeMutator<Op<Double>, G, C>
 {
 
-	public TreePruneAlterer() {
+	public MathTreePruneAlterer() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
-	public TreePruneAlterer(double probability) {
+	public MathTreePruneAlterer(double probability) {
 		super(probability);
 	}
 

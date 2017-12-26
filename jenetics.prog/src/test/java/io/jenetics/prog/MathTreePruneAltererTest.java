@@ -37,7 +37,7 @@ import io.jenetics.prog.op.Var;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreePruneAltererTest {
+public class MathTreePruneAltererTest {
 
 	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
@@ -59,8 +59,8 @@ public class TreePruneAltererTest {
 
 	@Test(invocationCount = 10)
 	public void prune() {
-		final TreePruneAlterer<ProgramGene<Double>, Double> alterer =
-			new TreePruneAlterer<>(1);
+		final MathTreePruneAlterer<ProgramGene<Double>, Double> alterer =
+			new MathTreePruneAlterer<>(1);
 
 		final Genotype<ProgramGene<Double>> gt = Genotype.of(
 			ProgramChromosome.of(10, OPERATIONS, TERMINALS)
