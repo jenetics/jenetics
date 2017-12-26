@@ -57,8 +57,7 @@ public class MathExprTest {
 
 	@Test
 	public void parse() {
-		System.out.println(MathExpr.parse("pow(2 + 3, x - x)"));
-		System.out.println(MathExpr.parse("pow(2 + 3, x - x)").tree());
+		System.out.println(MathExpr.parse("sin(x)^2 + cos(x)^2").tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
 		//System.out.println(expr.tree());
@@ -148,6 +147,7 @@ public class MathExprTest {
 			{"0*pow(x, x)", "0.0"},
 			{"y*(pow(x, 0) - 1)", "0.0"},
 			{"(pow(x, 0) - 1)*sin(43)", "0.0"},
+			{"(pow(x, 0) - 1)*sin(y)", "0.0"},
 			{"cos(z)*sin(0)", "0.0"},
 
 			// POW_ZERO
