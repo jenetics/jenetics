@@ -71,8 +71,8 @@ public class MathExprTest {
 	}
 
 	@Test
-	public void specialEval() {
-		String expr = "(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + " +
+	public void specialEval1() {
+		final String expr = "(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + " +
 			"(((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - ((((8.0 + 4.0)" +
 			" - (x + x))*((x - x)*(6.0 - 9.0)))*(((x - 7.0) - (6.0 - x))*((2.0*x) " +
 			"+ (x + 8.0)))))";
@@ -82,8 +82,19 @@ public class MathExprTest {
 			MathExpr.eval(expr, arg),
 			MathExpr.eval("(-1.0 + (x + x))", arg)
 		);
+	}
 
-		System.out.println(StrictMath.sin(Math.PI/2.0));
+	@Test
+	public void specialEval2() {
+		final String expr = "5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6";
+		Assert.assertEquals(
+			MathExpr.eval(expr, 4.32),
+			31.170600453465315
+		);
+		Assert.assertEquals(
+			MathExpr.eval(expr, 4.32),
+			5.0 + 6*4.32 + pow(sin(4.32), 34) + (1 + sin(4.32*5)/4.0)/6.0
+		);
 	}
 
 	@Test(dataProvider = "functionData")
@@ -140,7 +151,7 @@ public class MathExprTest {
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
 		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, new Random(125)))
-			.limit(7)
+			.limit(10)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
