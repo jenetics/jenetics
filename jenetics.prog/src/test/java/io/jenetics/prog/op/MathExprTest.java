@@ -86,6 +86,14 @@ public class MathExprTest {
 
 	@Test
 	public void specialEval2() {
+		Assert.assertEquals(
+			MathExpr.eval("2*z + 3*x - y", 3, 2, 1),
+			9.0
+		);
+	}
+
+	@Test
+	public void specialEval3() {
 		final String expr = "5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6";
 		Assert.assertEquals(
 			MathExpr.eval(expr, 4.32),
