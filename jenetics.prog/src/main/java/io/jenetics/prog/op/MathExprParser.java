@@ -43,7 +43,7 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-final class Parser {
+final class MathExprParser {
 
 	static final Map<String, Const<Double>> CONST = new HashMap<>();
 	static {
@@ -167,7 +167,7 @@ final class Parser {
 	private final Deque<Token> _tokens;
 	private Token _next;
 
-	private Parser(final Deque<Token> tokens) {
+	private MathExprParser(final Deque<Token> tokens) {
 		_tokens = requireNonNull(tokens);
 		_next = _tokens.getFirst();
 	}
@@ -178,7 +178,7 @@ final class Parser {
 				"Expression string is empty: " + expr
 			);
 		}
-		return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
+		return new MathExprParser(Tokenizer.MATH_OP.tokenize(expr)).parse();
 	}
 
 	private TreeNode<Op<Double>> parse() {

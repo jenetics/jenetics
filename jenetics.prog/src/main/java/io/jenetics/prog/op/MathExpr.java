@@ -326,7 +326,7 @@ public final class MathExpr
 	 *         can't be parsed.
 	 */
 	public static TreeNode<Op<Double>> parseTree(final String expression) {
-		return Parser.parse(expression);
+		return MathExprParser.parse(expression);
 	}
 
 	/**
