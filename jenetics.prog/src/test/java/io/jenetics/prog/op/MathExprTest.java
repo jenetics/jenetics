@@ -20,7 +20,6 @@
 package io.jenetics.prog.op;
 
 import static java.lang.Math.cos;
-import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 
@@ -74,11 +73,28 @@ public class MathExprTest {
 			28.0
 		);
 
+		//System.out.println(MathExpr.parse("sin(x) - y - 0 + tan(z)"));
 		//System.out.println(MathExpr.parse("max(x - x, abs(y))").tree());
 		//System.out.println(MathExpr.parse("4.0 + 4.0 + (x*(5.0 + 13.0))").simplify().tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
 		//System.out.println(expr.tree());
+	}
+
+	@Test
+	public void specialEval() {
+		String expr = "(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + " +
+			"(((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - ((((8.0 + 4.0)" +
+			" - (x + x))*((x - x)*(6.0 - 9.0)))*(((x - 7.0) - (6.0 - x))*((2.0*x) " +
+			"+ (x + 8.0)))))";
+
+		final double arg = new Random().nextDouble();
+		Assert.assertEquals(
+			MathExpr.eval(expr, arg),
+			MathExpr.eval("(-1.0 + (x + x))", arg)
+		);
+
+		System.out.println(StrictMath.sin(Math.PI/2.0));
 	}
 
 	@Test(dataProvider = "functionData")
@@ -159,6 +175,20 @@ public class MathExprTest {
 			{"x-x", "0.0"},
 			{"sin(pow(x, y)) - sin(pow(x, y))", "0.0"},
 
+			// X_ADD_X
+			{"x+x", "2*x"},
+			{"sin(x)*tan(y) + sin(x)*tan(y)", "2*(sin(x)*tan(y))"},
+
+			// SUB_ZERO
+			{"x - 0", "x"},
+			{"sin(x) - y - 0 + tan(z) - 0", "sin(x) - y + tan(z)"},
+
+			// ADD_ZERO
+			{"x + 0", "x"},
+			{"0 + x", "x"},
+			{"0 + x + 0", "x"},
+			{"sin(x) - y + 0 + tan(z) + 0", "sin(x) - y + tan(z)"},
+
 			// MUL_ZERO
 			{"tan(x)*0", "0.0"},
 			{"0*pow(x, x)", "0.0"},
@@ -167,17 +197,37 @@ public class MathExprTest {
 			{"(pow(x, 0) - 1)*sin(y)", "0.0"},
 			{"cos(z)*sin(0)", "0.0"},
 
+			// MUL_ONE
+			{"x * 1", "x"},
+			{"1 * x", "x"},
+			{"1 * x * 1", "x"},
+			{"sin(x) - y * 1 + tan(z) + 0", "sin(x) - y + tan(z)"},
+
+			// X_MUL_X
+			{"x*x", "x^2"},
+			{"(sin(x)*tan(y))*(sin(x)*tan(y))", "(sin(x)*tan(y))^2"},
+
 			// POW_ZERO
 			{"pow(x*y, 0)", "1.0"},
 			{"pow(sin(x*y)*cos(z), 0)", "1.0"},
 			{"pow(sin(x*y)*cos(k), x - x)", "1.0"},
+			{"pow(sin(x*y)*cos(k), sin(x - x*1 - 0 + 0)/1 + 0 - sin(0)) + 1", "2.0"},
+
+			// POW_ONE
+			{"pow(x*y, 1)", "x*y"},
+			{"pow(sin(x*y)*cos(z), 1)", "sin(x*y)*cos(z)"},
+			{"pow(sin(x*y)*cos(k), x/x)", "sin(x*y)*cos(k)"},
 
 			// Constant
 			{"4.0 + 4.0 + x*(5.0 + 13.0)", "8.0 + (x*18.0)"},
 			{"sin(0)", "0"},
-			{"sin(x - x)", "0"},
-			{"((x - 0.0)*((((9.0 - 8.0) + (1.0 + x)) - ((x*0.0) - (1.0 - x))) - (0.0 + (x - 0.0))))", "x"}
+			{"sin(PI/2)", "1"},
+			{"sin(x - x)", "0"}
+			//{"(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + (((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - ((((8.0 + 4.0) - (x + x))*((x - x)*(6.0 - 9.0)))*(((x - 7.0) - (6.0 - x))*((2.0*x) + (x + 8.0)))))", "x"}
+			//,{"((((7.0 + (4.0 - 6.0))*((x*x) + (0.0 - 0.0))) - (((x + x) - (9.0 - 9.0)) + x))*(x + 0.0))", "x"}
 		};
+
+		// ((0.0 + (((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - 0.0)
 	}
 
 	@Test(dataProvider = "ast")
@@ -196,7 +246,6 @@ public class MathExprTest {
 			);
 		}
 	}
-
 
 	@Test(dataProvider = "ast")
 	public void serialize(final Tree<? extends Op<Double>, ?> tree) throws IOException {

@@ -27,6 +27,8 @@ import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
 
 /**
+ * Prunes a given mathematical tree with the given alterer probability.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

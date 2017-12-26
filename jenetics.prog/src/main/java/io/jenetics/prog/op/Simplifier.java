@@ -24,7 +24,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -49,6 +53,62 @@ enum Simplifier {
 		}
 	},
 
+	X_ADD_X {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.ADD &&
+				node.getChild(0).equals(node.getChild(1));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(MathOp.MUL);
+			node.attach(Const.of(2.0));
+			node.attach(sub);
+		}
+	},
+
+	SUB_ZERO {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.SUB &&
+				equals(node, 1, 0.0);
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(sub.getValue());
+			sub.childStream()
+				.collect(ISeq.toISeq())
+				.forEach(node::attach);
+		}
+	},
+
+	ADD_ZERO {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.ADD &&
+				(equals(node, 0, 0.0) ||
+				equals(node, 1, 0.0));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = equals(node, 0, 0.0)
+				? node.getChild(1)
+				: node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(sub.getValue());
+			sub.childStream()
+				.collect(ISeq.toISeq())
+				.forEach(node::attach);
+		}
+	},
+
 	X_DIV_X {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
@@ -62,6 +122,7 @@ enum Simplifier {
 		}
 	},
 
+	/*
 	GON {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
@@ -79,16 +140,15 @@ enum Simplifier {
 			node.setValue(Const.of(1.0));
 		}
 	},
+	*/
 
 	MUL_ZERO {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
 			return node.getValue() == MathOp.MUL &&
 				node.childCount() == 2 &&
-				(node.getChild(0).getValue() instanceof Const &&
-				((Const<Double>)node.getChild(0).getValue()).value().equals(0.0) ||
-				node.getChild(1).getValue() instanceof Const &&
-				((Const<Double>)node.getChild(1).getValue()).value().equals(0.0));
+				(equals(node, 0, 0.0) ||
+				equals(node, 1, 0.0));
 		}
 		@Override
 		public void simplify(final TreeNode<Op<Double>> node) {
@@ -97,13 +157,50 @@ enum Simplifier {
 		}
 	},
 
+	MUL_ONE {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.MUL &&
+				(equals(node, 0, 1.0) ||
+				equals(node, 1, 1.0));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = equals(node, 0, 1.0)
+				? node.getChild(1)
+				: node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(sub.getValue());
+			sub.childStream()
+				.collect(ISeq.toISeq())
+				.forEach(node::attach);
+		}
+	},
+
+	X_MUL_X {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.MUL &&
+				node.getChild(0).equals(node.getChild(1));
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(MathOp.POW);
+			node.attach(sub);
+			node.attach(Const.of(2.0));
+		}
+	},
+
 	POW_ZERO {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
 			return node.getValue() == MathOp.POW &&
 				node.childCount() == 2 &&
-				node.getChild(1).getValue() instanceof Const &&
-				((Const<Double>)node.getChild(1).getValue()).value().equals(0.0);
+				equals(node, 1, 0.0);
 		}
 		@Override
 		public void simplify(final TreeNode<Op<Double>> node) {
@@ -112,13 +209,32 @@ enum Simplifier {
 		}
 	},
 
+	POW_ONE {
+		@Override
+		public boolean matches(final TreeNode<Op<Double>> node) {
+			return node.getValue() == MathOp.POW &&
+				node.childCount() == 2 &&
+				equals(node, 1, 1.0);
+		}
+		@Override
+		public void simplify(final TreeNode<Op<Double>> node) {
+			final TreeNode<Op<Double>> sub = node.getChild(0);
+
+			node.removeAllChildren();
+			node.setValue(sub.getValue());
+			sub.childStream()
+				.collect(ISeq.toISeq())
+				.forEach(node::attach);
+		}
+	},
+
 	CONST_EXPR {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
 			return
 				node.getValue() instanceof MathOp &&
-					node.childStream()
-						.allMatch(child -> child.getValue() instanceof Const<?>);
+				node.childStream()
+					.allMatch(child -> child.getValue() instanceof Const<?>);
 		}
 
 		@Override
@@ -202,6 +318,15 @@ enum Simplifier {
 
 	abstract public void simplify(final TreeNode<Op<Double>> node);
 
+
+	static boolean equals(
+		final Tree<? extends Op<Double>, ?> node,
+		final int index,
+		final double value
+	) {
+		return node.getChild(index).getValue() instanceof Const<?> &&
+			((Const)node.getChild(index).getValue()).value().equals(value);
+	}
 
 	private static final class Template {
 		private final TreeNode<Op<Double>> _template;

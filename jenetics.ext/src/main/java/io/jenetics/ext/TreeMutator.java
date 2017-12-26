@@ -33,6 +33,8 @@ import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
 
 /**
+ * Abstract class for mutating tree chromosomes.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -95,6 +97,11 @@ public abstract class TreeMutator<
 		);
 	}
 
+	/**
+	 * This method does the actual mutating, in place.
+	 *
+	 * @param tree the mutable tree to mutate
+	 */
 	protected abstract void mutate(final TreeNode<A> tree);
 
 }

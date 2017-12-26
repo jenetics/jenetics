@@ -19,40 +19,68 @@
  */
 package io.jenetics.prog;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.Mutator;
-import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
+import io.jenetics.AltererResult;
+import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
-import io.jenetics.ext.SingleNodeCrossover;
-import io.jenetics.ext.util.Tree;
-
+import io.jenetics.prog.op.Const;
 import io.jenetics.prog.op.MathExpr;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Var;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class TreePruneAltererTest {
 
-	@Test
-	public void prune() {
-		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(Example::error, Example.CODEC)
-			.minimizing()
-			.alterers(
-				new SingleNodeCrossover<>(),
-				new Mutator<>(),
-				new TreePruneAlterer<>(0.7))
-			.build();
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.MOD,
+		MathOp.DIV,
+		MathOp.POW
+	);
 
-		final ProgramGene<Double> program = engine.stream()
-			.limit(3500)
-			.collect(EvolutionResult.toBestGenotype())
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+		Var.of("x", 0),
+		Var.of("y", 1),
+		Var.of("z", 2),
+		Const.of(1.0),
+		Const.of(2.0),
+		Const.of(10.0)
+	);
+
+	@Test(invocationCount = 10)
+	public void prune() {
+		final TreePruneAlterer<ProgramGene<Double>, Double> alterer =
+			new TreePruneAlterer<>(1);
+
+		final Genotype<ProgramGene<Double>> gt = Genotype.of(
+			ProgramChromosome.of(10, OPERATIONS, TERMINALS)
+		);
+
+		final Phenotype<ProgramGene<Double>, Double> pt =
+			Phenotype.of(gt, 1, a -> 1.0);
+
+		final AltererResult<ProgramGene<Double>, Double> result =
+			alterer.alter(Seq.of(pt), 1);
+
+		final ProgramGene<Double> program = result
+			.getPopulation().get(0)
+			.getGenotype()
 			.getGene();
 
-		System.out.println(new MathExpr(program));
-		System.out.println(new MathExpr(program).simplify());
+
+		final MathExpr exp1 = new MathExpr(gt.getGene()).simplify();
+		final MathExpr exp2 = new MathExpr(program);
+		Assert.assertEquals(exp2, exp1);
 	}
 
 }

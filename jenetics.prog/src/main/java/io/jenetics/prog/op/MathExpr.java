@@ -244,15 +244,13 @@ public final class MathExpr
 		out.writeUTF(toString());
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
 		in.defaultReadObject();
-		final Tree<? extends Op<Double>, ?> tree = parseTree(in.readUTF());
-
-		reflect.setField(this, "_tree", tree);
+		reflect.setField(this, "_tree", parseTree(in.readUTF()));
 	}
+
 
 	/* *************************************************************************
 	 * Static helper methods.

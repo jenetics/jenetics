@@ -45,6 +45,12 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class Parser {
 
+	static final Map<String, Const<Double>> CONST = new HashMap<>();
+	static {
+		CONST.put("PI", MathOp.PI);
+		CONST.put("π",  MathOp.PI);
+	}
+
 	/**
 	 * Contains the token regex and the token kind;
 	 */
@@ -400,7 +406,10 @@ final class Parser {
 		}
 
 		if (_next.token == Token.VARIABLE) {
-			final TreeNode<Op<Double>> node = TreeNode.of(Var.of(value, 0));
+			final TreeNode<Op<Double>> node = CONST.containsKey(value)
+				? TreeNode.of(CONST.get(value))
+				: TreeNode.of(Var.of(value, 0));
+
 			nextToken();
 			return node;
 		}
