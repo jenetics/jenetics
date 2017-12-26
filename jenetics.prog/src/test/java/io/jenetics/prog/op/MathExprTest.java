@@ -23,6 +23,7 @@ import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -30,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
@@ -173,6 +175,13 @@ public class MathExprTest {
 			{"sin(0)", "0"},
 			{"sin(x - x)", "0"}
 		};
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final MathExpr object = MathExpr.parse("pow(sin(x*y)*cos(k), x - x)");
+		final byte[] data = IO.object.toByteArray(object);
+		Assert.assertEquals(IO.object.fromByteArray(data), object);
 	}
 
 }

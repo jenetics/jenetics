@@ -21,6 +21,10 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
@@ -30,13 +34,16 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class allows you to create a tree from an expression string.
+ * This class allows you to create a tree from an expression string. The
+ * expression string may only contain functions/operations defined in
+ * {@link MathOp}.
  *
  * <pre>{@code
  * final MathExpr expr = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
@@ -48,11 +55,17 @@ import io.jenetics.ext.util.TreeNode;
  * assert 28.0 == MathExpr.eval("3*4*x + y", 2, 4);
  * }</pre>
  *
+ * @see MathOp
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class MathExpr implements Function<Double[], Double> {
+public final class MathExpr
+	implements
+		Function<Double[], Double>,
+		Serializable
+{
 
 	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
 	static {
@@ -207,6 +220,27 @@ public final class MathExpr implements Function<Double[], Double> {
 		return new MathExpr(simplify(_tree));
 	}
 
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private void writeObject(final ObjectOutputStream out)
+		throws IOException
+	{
+		out.defaultWriteObject();
+		out.writeUTF(toString());
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private void readObject(final ObjectInputStream in)
+		throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		final Tree<? extends Op<Double>, ?> tree = parseTree(in.readUTF());
+
+		reflect.setField(this, "_tree", tree);
+	}
 
 	/* *************************************************************************
 	 * Static helper methods.
