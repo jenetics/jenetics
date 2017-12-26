@@ -187,9 +187,7 @@ public final class MathExpr
 		} else {
 			out.append(op);
 			if (!tree.isLeaf()) {
-				final boolean brackets =
-					op.arity() > 1 ||
-					tree.getChild(0).isLeaf();
+				final boolean brackets = true;
 
 				if (brackets) out.append("(");
 				toString(tree.getChild(0), out);
@@ -209,11 +207,13 @@ public final class MathExpr
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
-		if (!tree.isRoot()) out.append("(");
+		final boolean brackets = true;
+
+		if (brackets) out.append("(");
 		toString(tree.getChild(0), out);
 		out.append(op);
 		toString(tree.getChild(1), out);
-		if (!tree.isRoot()) out.append(")");
+		if (brackets) out.append(")");
 	}
 
 	/**

@@ -20,6 +20,7 @@
 package io.jenetics.prog.op;
 
 import static java.lang.Math.cos;
+import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 import io.jenetics.ext.util.Tree;
 
@@ -72,6 +74,7 @@ public class MathExprTest {
 			28.0
 		);
 
+		//System.out.println(MathExpr.parse("max(x - x, abs(y))").tree());
 		//System.out.println(MathExpr.parse("4.0 + 4.0 + (x*(5.0 + 13.0))").simplify().tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
@@ -131,12 +134,11 @@ public class MathExprTest {
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(9, OPERATIONS, TERMINALS, new Random(125)))
-			.limit(100)
+		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, new Random(125)))
+			.limit(7)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
-
 
 	@Test(dataProvider = "simplifiedExpressions")
 	public void simplify(final String expr, final String simplified) {
@@ -177,9 +179,27 @@ public class MathExprTest {
 		};
 	}
 
-	@Test
-	public void serialize() throws IOException {
-		final MathExpr object = MathExpr.parse("pow(sin(x*y)*cos(k), x - x)");
+	@Test(dataProvider = "ast")
+	public void evalSimplified(final Tree<? extends Op<Double>, ?> tree) {
+		final MathExpr expr = new MathExpr(tree);
+		final Seq<Var<Double>> vars = expr.vars();
+		final double[] args = new Random().doubles(vars.size()).toArray();
+		final double value = expr.eval(args);
+
+		final MathExpr simplified = expr.simplify();
+
+		if (!expr.equals(simplified)) {
+			Assert.assertEquals(
+				simplified.eval(args),
+				expr.eval(args)
+			);
+		}
+	}
+
+
+	@Test(dataProvider = "ast")
+	public void serialize(final Tree<? extends Op<Double>, ?> tree) throws IOException {
+		final MathExpr object = new MathExpr(tree);
 		final byte[] data = IO.object.toByteArray(object);
 		Assert.assertEquals(IO.object.fromByteArray(data), object);
 	}
