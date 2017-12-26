@@ -226,7 +226,7 @@ public final class MathExpr
 	 * }</pre>
 	 * The simplified expression will be look like this: {@code 8.0 + (x*18.0)}.
 	 *
-	 * @return the simplified tree
+	 * @return a new simplified math expression
 	 */
 	public MathExpr simplify() {
 		return new MathExpr(simplify(_tree));
@@ -368,7 +368,7 @@ public final class MathExpr
 	 * }</pre>
 	 *
 	 * @param tree the math tree to simplify
-	 * @return the simplified tree
+	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static TreeNode<Op<Double>>
