@@ -55,6 +55,17 @@ public final class Const<T> implements Op<T>, Serializable {
 		return _const;
 	}
 
+	/**
+	 * Return the constant value.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the constant value
+	 */
+	public T value() {
+		return _const;
+	}
+
 	@Override
 	public String name() {
 		return _name;
