@@ -72,7 +72,7 @@ public class MathExprTest {
 			28.0
 		);
 
-		//System.out.println(MathExpr.parse("sin(x)^2 + cos(x)^2").tree());
+		//System.out.println(MathExpr.parse("4.0 + 4.0 + (x*(5.0 + 13.0))").simplify().tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
 		//System.out.println(expr.tree());
@@ -171,7 +171,7 @@ public class MathExprTest {
 			{"pow(sin(x*y)*cos(k), x - x)", "1.0"},
 
 			// Constant
-			{"4.0 + 4.0 + (x*(5.0 + 13.0))", "8.0 + (x*18.0)"},
+			{"4.0 + 4.0 + x*(5.0 + 13.0)", "8.0 + (x*18.0)"},
 			{"sin(0)", "0"},
 			{"sin(x - x)", "0"}
 		};

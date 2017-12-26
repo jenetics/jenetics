@@ -216,6 +216,18 @@ public final class MathExpr
 		if (!tree.isRoot()) out.append(")");
 	}
 
+	/**
+	 * Tries to simplify {@code this} math expression.
+	 *
+	 * <pre>{@code
+	 * final MathExpr expr = MathExpr.parse("4.0 + 4.0 + x*(5.0 + 13.0)");
+	 * final MathExpr simplified = expr.simplify()
+	 * System.out.println(simplified);
+	 * }</pre>
+	 * The simplified expression will be look like this: {@code 8.0 + (x*18.0)}.
+	 *
+	 * @return the simplified tree
+	 */
 	public MathExpr simplify() {
 		return new MathExpr(simplify(_tree));
 	}
@@ -339,6 +351,27 @@ public final class MathExpr
 		return parse(expression).eval(args);
 	}
 
+	/**
+	 * Tries to simplify the given math tree.
+	 *
+	 * <pre>{@code
+	 * final Tree<? extends Op<Double>, ?> tree =
+	 *     MathExpr.parseTree("4.0 + 4.0 + x*(5.0 + 13.0)");
+	 * final Tree<? extends Op<Double>, ?> simplified = MathExpr.simplify(tree)
+	 * System.out.println(simplified);
+	 * }</pre>
+	 * The simplified tree will be look like this:
+	 * <pre> {@code
+	 *  add
+	 *  ├── 8.0
+	 *  └── mul
+	 *      ├── x
+	 *      └── 18.0
+	 * }</pre>
+	 *
+	 * @param tree the math tree to simplify
+	 * @return the simplified tree
+	 */
 	public static TreeNode<Op<Double>>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return Simplifier.prune(TreeNode.ofTree(tree));
