@@ -41,7 +41,7 @@ import io.jenetics.ext.util.TreeNode;
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 3.9
  */
 public class Program<T> implements Op<T>, Serializable {
@@ -88,7 +88,7 @@ public class Program<T> implements Op<T>, Serializable {
 	/**
 	 * Return the underlying expression tree.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @return the underlying expression tree
 	 */
@@ -242,7 +242,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * Create a new, random program from the given (non) terminal operations
 	 * with the desired depth. The created program tree is a <em>full</em> tree.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @param name the program name
 	 * @param depth the desired depth of the program tree
@@ -294,7 +294,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * operations with the desired depth. The created program tree is a
 	 * <em>full</em> tree.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @param depth the desired depth of the program tree
 	 * @param operations the list of <em>non</em>-terminal operations

@@ -58,7 +58,7 @@ public final class Const<T> implements Op<T>, Serializable {
 	/**
 	 * Return the constant value.
 	 *
-	 * @since !__version__!
+	 * @since 4.1
 	 *
 	 * @return the constant value
 	 */

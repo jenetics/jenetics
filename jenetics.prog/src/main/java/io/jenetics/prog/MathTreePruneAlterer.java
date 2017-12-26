@@ -30,8 +30,8 @@ import io.jenetics.prog.op.Op;
  * Prunes a given mathematical tree with the given alterer probability.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 public class MathTreePruneAlterer<
 	G extends TreeGene<Op<Double>, G>,
