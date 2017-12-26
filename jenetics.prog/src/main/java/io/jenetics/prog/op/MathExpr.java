@@ -122,6 +122,10 @@ public final class MathExpr
 		return TreeNode.ofTree(_tree);
 	}
 
+	/**
+	 * @see #eval(double...)
+	 * @see #eval(String, double...)
+	 */
 	@Override
 	public Double apply(final Double[] args) {
 		return Program.eval(_tree, args);
@@ -137,6 +141,7 @@ public final class MathExpr
 	 * }</pre>
 	 *
 	 * @see #apply(Double[])
+	 * @see #eval(String, double...)
 	 *
 	 * @param args the function arguments
 	 * @return the evaluated value
@@ -225,6 +230,9 @@ public final class MathExpr
 	 * System.out.println(simplified);
 	 * }</pre>
 	 * The simplified expression will be look like this: {@code 8.0 + (x*18.0)}.
+	 *
+	 * @see #prune(TreeNode)
+	 * @see #simplify(Tree)
 	 *
 	 * @return a new simplified math expression
 	 */
@@ -337,6 +345,9 @@ public final class MathExpr
 	 *  assert result == 9.0;
 	 * }</pre>
 	 *
+	 * @see #apply(Double[])
+	 * @see #eval(double...)
+	 *
 	 * @param expression the expression to evaluate
 	 * @param args the expression arguments, in alphabetical order
 	 * @return the evaluation result
@@ -367,6 +378,9 @@ public final class MathExpr
 	 *      └── 18.0
 	 * }</pre>
 	 *
+	 * @see #prune(TreeNode)
+	 * @see #simplify()
+	 *
 	 * @param tree the math tree to simplify
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
@@ -380,6 +394,7 @@ public final class MathExpr
 	 * Tries to simplify the given math tree in place.
 	 *
 	 * @see #simplify(Tree)
+	 * @see #simplify()
 	 *
 	 * @param tree the math tree to simplify
 	 * @throws NullPointerException if the given {@code tree} is {@code null}

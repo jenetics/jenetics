@@ -39,6 +39,8 @@ import java.util.stream.Stream;
 import io.jenetics.ext.util.TreeNode;
 
 /**
+ * Simple parser for mathematical expressions.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
