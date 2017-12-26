@@ -19,36 +19,40 @@
  */
 package io.jenetics.prog;
 
-import io.jenetics.ext.TreeGene;
-import io.jenetics.ext.TreeMutator;
-import io.jenetics.ext.util.TreeNode;
+import org.testng.annotations.Test;
+
+import io.jenetics.Mutator;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+
+import io.jenetics.ext.SingleNodeCrossover;
+import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.MathExpr;
-import io.jenetics.prog.op.Op;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class TreePruneAlterer<
-	G extends TreeGene<Op<Double>, G>,
-	C extends Comparable<? super C>
->
-	extends TreeMutator<Op<Double>, G, C>
-{
+public class TreePruneAltererTest {
 
-	public TreePruneAlterer() {
-		this(DEFAULT_ALTER_PROBABILITY);
-	}
+	@Test
+	public void prune() {
+		final Engine<ProgramGene<Double>, Double> engine = Engine
+			.builder(Example::error, Example.CODEC)
+			.minimizing()
+			.alterers(
+				new SingleNodeCrossover<>(),
+				new Mutator<>(),
+				new TreePruneAlterer<>(0.7))
+			.build();
 
-	public TreePruneAlterer(double probability) {
-		super(probability);
-	}
+		final ProgramGene<Double> program = engine.stream()
+			.limit(3500)
+			.collect(EvolutionResult.toBestGenotype())
+			.getGene();
 
-	@Override
-	protected void mutate(final TreeNode<Op<Double>> tree) {
-		MathExpr.prune(tree);
+		System.out.println(new MathExpr(program));
+		System.out.println(new MathExpr(program).simplify());
 	}
 
 }

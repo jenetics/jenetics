@@ -85,6 +85,17 @@ public class Program<T> implements Op<T>, Serializable {
 		return _arity;
 	}
 
+	/**
+	 * Return the underlying expression tree.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the underlying expression tree
+	 */
+	public Tree<? extends Op<T>, ?> tree() {
+		return TreeNode.ofTree(_tree);
+	}
+
 	@Override
 	public T apply(final T[] args) {
 		if (args.length < arity()) {

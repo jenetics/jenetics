@@ -167,6 +167,11 @@ final class Parser {
 	}
 
 	static TreeNode<Op<Double>> parse(final String expr) {
+		if (expr.trim().isEmpty()) {
+			throw new IllegalArgumentException(
+				"Expression string is empty: " + expr
+			);
+		}
 		return new Parser(Tokenizer.MATH_OP.tokenize(expr)).parse();
 	}
 

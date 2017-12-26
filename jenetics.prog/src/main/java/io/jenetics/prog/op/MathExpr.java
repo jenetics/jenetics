@@ -371,10 +371,23 @@ public final class MathExpr
 	 *
 	 * @param tree the math tree to simplify
 	 * @return the simplified tree
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static TreeNode<Op<Double>>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return Simplifier.prune(TreeNode.ofTree(tree));
+	}
+
+	/**
+	 * Tries to simplify the given math tree in place.
+	 *
+	 * @see #simplify(Tree)
+	 *
+	 * @param tree the math tree to simplify
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static void prune(final TreeNode<Op<Double>> tree) {
+		Simplifier.prune(tree);
 	}
 
 }
