@@ -260,7 +260,7 @@ public final class MathExpr
 	 * @return a new expression string
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	static String toString(final Tree<? extends Op<Double>, ?> tree) {
+	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
 		return toString(tree, new StringBuilder());
 	}
 
@@ -339,7 +339,7 @@ public final class MathExpr
 		return parse(expression).eval(args);
 	}
 
-	static TreeNode<Op<Double>>
+	public static TreeNode<Op<Double>>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return Simplifier.prune(TreeNode.ofTree(tree));
 	}
