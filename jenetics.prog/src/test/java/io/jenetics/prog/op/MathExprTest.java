@@ -41,10 +41,6 @@ import io.jenetics.ext.util.Tree;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathExprTest {
-	/*
-	{
-		signum(abs(min((max((log10(sqr(y))*min(asin(y), cos(y))), asin(asin(min(1.0, x))))%((sin(rint(w))/(max(y, x)%sinh(1.0)))^(tanh(asin(y))%((z + u) - sin(y))))), sqr(sqr(abs(max(tan(x), cosh(v))))))));
-	}*/
 
 	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(MathOp.values());
 
@@ -72,13 +68,6 @@ public class MathExprTest {
 			MathExpr.eval("3*4*x + y", 2, 4),
 			28.0
 		);
-
-		//System.out.println(MathExpr.parse("sin(x) - y - 0 + tan(z)"));
-		//System.out.println(MathExpr.parse("max(x - x, abs(y))").tree());
-		//System.out.println(MathExpr.parse("4.0 + 4.0 + (x*(5.0 + 13.0))").simplify().tree());
-		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
-		//System.out.println(expr);
-		//System.out.println(expr.tree());
 	}
 
 	@Test
@@ -222,12 +211,13 @@ public class MathExprTest {
 			{"4.0 + 4.0 + x*(5.0 + 13.0)", "8.0 + (x*18.0)"},
 			{"sin(0)", "0"},
 			{"sin(PI/2)", "1"},
-			{"sin(x - x)", "0"}
+			{"sin(π/2)", "1"},
+			{"sin(x - x)", "0"},
+			{"3*4*x", "12*x"}
 			//{"(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + (((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - ((((8.0 + 4.0) - (x + x))*((x - x)*(6.0 - 9.0)))*(((x - 7.0) - (6.0 - x))*((2.0*x) + (x + 8.0)))))", "x"}
 			//,{"((((7.0 + (4.0 - 6.0))*((x*x) + (0.0 - 0.0))) - (((x + x) - (9.0 - 9.0)) + x))*(x + 0.0))", "x"}
 		};
 
-		// ((0.0 + (((8.0 - 9.0) + (x + x)) + ((x - 6.0)*(5.0*0.0)))) - 0.0)
 	}
 
 	@Test(dataProvider = "ast")

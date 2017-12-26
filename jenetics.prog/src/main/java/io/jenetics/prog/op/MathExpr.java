@@ -41,9 +41,9 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * This class allows you to create a tree from an expression string. The
- * expression string may only contain functions/operations defined in
- * {@link MathOp}.
+ * This class allows you to create a math operation tree from an expression
+ * string. The expression string may only contain functions/operations defined
+ * in {@link MathOp}.
  *
  * <pre>{@code
  * final MathExpr expr = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");

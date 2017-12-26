@@ -119,7 +119,7 @@ final class Parser {
 			MATH_OP.add("\\(", Token.OPEN_BRACKET);
 			MATH_OP.add("\\)", Token.CLOSE_BRACKET);
 			MATH_OP.add("(?:\\d+\\.?|\\.\\d)\\d*(?:[Ee][-+]?\\d+)?", Token.NUMBER);
-			MATH_OP.add("[a-zA-Z]\\w*", Token.VARIABLE);
+			MATH_OP.add("[a-zA-Zπ]\\w*", Token.VARIABLE);
 		}
 
 		private final Deque<TokenDesc> _infos = new LinkedList<>();
