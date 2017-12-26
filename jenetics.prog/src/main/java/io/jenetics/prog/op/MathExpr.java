@@ -19,6 +19,8 @@
  */
 package io.jenetics.prog.op;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
@@ -40,13 +42,17 @@ import io.jenetics.ext.util.TreeNode;
  * final MathExpr expr = MathExpr.parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
  * final double result = expr.eval(4.32);
  * assert result == 31.170600453465315;
+ *
+ * assert 12.0 == MathExpr.eval("3*4");
+ * assert 24.0 == MathExpr.eval("3*4*x", 2);
+ * assert 28.0 == MathExpr.eval("3*4*x + y", 2, 4);
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class MathExpr implements Function<double[], Double> {
+public final class MathExpr implements Function<Double[], Double> {
 
 	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
 	static {
@@ -60,6 +66,11 @@ public final class MathExpr implements Function<double[], Double> {
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
+	// Primary constructor.
+	private MathExpr(final TreeNode<Op<Double>> tree) {
+		_tree = requireNonNull(tree);
+	}
+
 	/**
 	 * Create a new {@code MathExpr} object from the given operation tree.
 	 *
@@ -70,8 +81,8 @@ public final class MathExpr implements Function<double[], Double> {
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
+		this(TreeNode.ofTree(tree));
 		Program.check(tree);
-		_tree = tree;
 	}
 
 	/**
@@ -95,17 +106,12 @@ public final class MathExpr implements Function<double[], Double> {
 	 * @return the underlying expression tree
 	 */
 	public Tree<? extends Op<Double>, ?> tree() {
-		return _tree;
+		return TreeNode.ofTree(_tree);
 	}
 
 	@Override
-	public Double apply(final double[] args) {
-		return Program.eval(
-			_tree,
-			DoubleStream.of(args)
-				.boxed()
-				.toArray(Double[]::new)
-		);
+	public Double apply(final Double[] args) {
+		return Program.eval(_tree, args);
 	}
 
 	/**
@@ -117,7 +123,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 *  assert result == 9.0;
 	 * }</pre>
 	 *
-	 * @see #apply(double[])
+	 * @see #apply(Double[])
 	 *
 	 * @param args the function arguments
 	 * @return the evaluated value
@@ -126,7 +132,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		return apply(args);
+		return apply(DoubleStream.of(args).boxed().toArray(Double[]::new));
 	}
 
 	@Override
@@ -201,6 +207,7 @@ public final class MathExpr implements Function<double[], Double> {
 		return new MathExpr(simplify(_tree));
 	}
 
+
 	/* *************************************************************************
 	 * Static helper methods.
 	 * ************************************************************************/
@@ -219,7 +226,7 @@ public final class MathExpr implements Function<double[], Double> {
 	 * @return a new expression string
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
+	static String toString(final Tree<? extends Op<Double>, ?> tree) {
 		return toString(tree, new StringBuilder());
 	}
 
@@ -230,7 +237,52 @@ public final class MathExpr implements Function<double[], Double> {
 	 * @return the tree representation of the given {@code expression}
 	 */
 	public static MathExpr parse(final String expression) {
-		return new MathExpr(Parser.parse(expression));
+		final TreeNode<Op<Double>> tree = parseTree(expression);
+		Program.check(tree);
+		return new MathExpr(tree);
+	}
+
+	/**
+	 * Parses the given mathematical expression string and returns the
+	 * mathematical expression tree. The expression may contain all functions
+	 * defined in {@link MathOp}.
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = MathExpr
+	 *     .parseTree("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
+	 * }</pre>
+	 * The example above will lead to the following tree:
+	 * <pre> {@code
+	 *  add
+	 *  ├── add
+	 *  │   ├── add
+	 *  │   │   ├── 5.0
+	 *  │   │   └── mul
+	 *  │   │       ├── 6.0
+	 *  │   │       └── x
+	 *  │   └── pow
+	 *  │       ├── sin
+	 *  │       │   └── x
+	 *  │       └── 34.0
+	 *  └── div
+	 *      ├── add
+	 *      │   ├── 1.0
+	 *      │   └── div
+	 *      │       ├── sin
+	 *      │       │   └── mul
+	 *      │       │       ├── x
+	 *      │       │       └── 5.0
+	 *      │       └── 4.0
+	 *      └── 6.0
+	 * }</pre>
+	 *
+	 * @param expression the expression string
+	 * @return the parsed expression tree
+	 * @throws NullPointerException if the given {@code expression} is {@code null}
+	 * @throws IllegalArgumentException if the given expression is invalid or
+	 *         can't be parsed.
+	 */
+	public static TreeNode<Op<Double>> parseTree(final String expression) {
+		return Parser.parse(expression);
 	}
 
 	/**
@@ -250,10 +302,10 @@ public final class MathExpr implements Function<double[], Double> {
 	 *         and the node child count differ.
 	 */
 	public static double eval(final String expression, final double... args) {
-		return parse(expression).apply(args);
+		return parse(expression).eval(args);
 	}
 
-	public static TreeNode<Op<Double>>
+	static TreeNode<Op<Double>>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return Simplifier.prune(TreeNode.ofTree(tree));
 	}

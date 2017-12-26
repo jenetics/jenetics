@@ -129,7 +129,7 @@ public class Program<T> implements Op<T>, Serializable {
 			obj instanceof Program<?> &&
 			Objects.equals(((Program)obj)._name, _name) &&
 			((Program)obj)._arity == _arity &&
-			Objects.equals(((Program) obj)._tree, _tree);
+			Objects.equals(((Program)obj)._tree, _tree);
 	}
 
 	@Override
@@ -348,73 +348,6 @@ public class Program<T> implements Op<T>, Serializable {
 				tree.attach(TreeNode.of(term));
 			}
 		}
-	}
-
-	/**
-	 * Create a new program from the given expression string. The expression may
-	 * contain all functions defined in {@link MathOp}.
-	 * <pre>{@code
-	 * final Program prog = Program
-	 *     .parse("polynomial", "4*x^2 + 5*x - 4");
-	 * }</pre>
-	 *
-	 * @since !__version__!
-	 *
-	 * @param name the program name
-	 * @param expression the expression string
-	 * @return a new program tree
-	 * @throws NullPointerException if one of the given arguments is
-	 *        {@code null}
-	 * @throws IllegalArgumentException if the given expression is invalid or
-	 *         can't be parsed.
-	 */
-	public Program<Double> parse(final String name, final String expression) {
-		return new Program<>(name, parse(expression));
-	}
-
-	/**
-	 * Parses the given mathematical expression string and returns the
-	 * mathematical expression tree. The expression may contain all functions
-	 * defined in {@link MathOp}.
-	 * <pre>{@code
-	 * final TreeNode<Op<Double>> tree = Program
-	 *     .parse("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
-	 * }</pre>
-	 * The example above will lead to the following tree:
-	 * <pre> {@code
-	 *  add
-	 *  ├── add
-	 *  │   ├── add
-	 *  │   │   ├── 5.0
-	 *  │   │   └── mul
-	 *  │   │       ├── 6.0
-	 *  │   │       └── x
-	 *  │   └── pow
-	 *  │       ├── sin
-	 *  │       │   └── x
-	 *  │       └── 34.0
-	 *  └── div
-	 *      ├── add
-	 *      │   ├── 1.0
-	 *      │   └── div
-	 *      │       ├── sin
-	 *      │       │   └── mul
-	 *      │       │       ├── x
-	 *      │       │       └── 5.0
-	 *      │       └── 4.0
-	 *      └── 6.0
-	 * }</pre>
-	 *
-	 * @since !__version__!
-	 *
-	 * @param expression the expression string
-	 * @return the parsed expression tree
-	 * @throws NullPointerException if the given {@code expression} is {@code null}
-	 * @throws IllegalArgumentException if the given expression is invalid or
-	 *         can't be parsed.
-	 */
-	public static TreeNode<Op<Double>> parse(final String expression) {
-		return Parser.parse(expression);
 	}
 
 	/**

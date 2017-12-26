@@ -57,7 +57,20 @@ public class MathExprTest {
 
 	@Test
 	public void parse() {
-		System.out.println(MathExpr.parse("sin(x)^2 + cos(x)^2").tree());
+		Assert.assertEquals(
+			MathExpr.eval("3*4"),
+			12.0
+		);
+		Assert.assertEquals(
+			MathExpr.eval("3*4*x", 2),
+			24.0
+		);
+		Assert.assertEquals(
+			MathExpr.eval("3*4*x + y", 2, 4),
+			28.0
+		);
+
+		//System.out.println(MathExpr.parse("sin(x)^2 + cos(x)^2").tree());
 		//final MathExpr expr = MathExpr.parse("x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x))");
 		//System.out.println(expr);
 		//System.out.println(expr.tree());
