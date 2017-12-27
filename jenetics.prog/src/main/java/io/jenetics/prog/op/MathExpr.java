@@ -67,6 +67,8 @@ public final class MathExpr
 		Serializable
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
 	static {
 		INFIX_OPS.put(MathOp.ADD, " + ");
