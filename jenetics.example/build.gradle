@@ -30,6 +30,8 @@ apply plugin: 'packaging'
 
 dependencies {
 	compile project(':jenetics')
+	compile project(':jenetics.ext')
+	compile project(':jenetics.prog')
 	compile Include.PRNGine
 
 	testCompile Include.TestNG
