@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.engine;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -180,7 +179,7 @@ public class ConcatEngineTest {
 	}
 
 	@Test
-	public void concatLimit() {
+	public void concatInit() {
 		final Chromosome<IntegerGene> ch = IntegerChromosome.of(IntegerGene.of(5, 0, 1000));
 		final Genotype<IntegerGene> gt = Genotype.of(ch);
 		final EvolutionInit<IntegerGene> init = EvolutionInit.of(
@@ -190,17 +189,18 @@ public class ConcatEngineTest {
 
 		final EvolutionStream<IntegerGene, Integer> stream =
 			ConcatEngine.of(
-				streamable(3),
-				streamable(4),
-				streamable(5)
+				streamable(2),
+				streamable(2),
+				streamable(2),
+				streamable(32)
 			)
 			.stream(init);
 
 		final int[] array = stream
+			.limit(12)
 			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
 			.toArray();
 
-		System.out.println(Arrays.toString(array));
 		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17});
 	}
 
