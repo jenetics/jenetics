@@ -33,6 +33,7 @@ dependencies {
 	compile project(':jenetics.ext')
 	compile project(':jenetics.prog')
 	compile Include.PRNGine
+	compile 'io.reactivex.rxjava2:rxjava:2.1.8'
 
 	testCompile Include.TestNG
 }
