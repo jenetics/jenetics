@@ -47,6 +47,9 @@ import io.jenetics.ext.internal.IntList;
  */
 public final class Pareto {
 
+	private Pareto() {
+	}
+
 	/* *************************************************************************
 	 * Crowding distance methods.
 	 * ************************************************************************/
