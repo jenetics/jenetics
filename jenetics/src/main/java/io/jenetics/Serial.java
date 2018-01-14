@@ -19,10 +19,35 @@
  */
 package io.jenetics;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Serial {
+final class Serial implements Externalizable {
+
+
+	byte _type;
+	Object _object;
+
+	Serial(final byte type, final Object object) {
+		_type = type;
+		_object = object;
+	}
+
+	public Serial() {
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+	}
 }
