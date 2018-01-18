@@ -244,6 +244,20 @@ public final class MathExpr
 
 
 	/* *************************************************************************
+	 * Static helper methods.
+	 * ************************************************************************/
+
+	public static double eval(
+		final Tree<? extends Op<Double>, ?> tree,
+		final double... variables
+	) {
+		return Program.eval(
+			tree,
+			DoubleStream.of(variables).boxed().toArray(Double[]::new)
+		);
+	}
+
+	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
