@@ -506,7 +506,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://creativecommons.org/licenses/by-sa/3.0/at/
+http://creativecommons.org/licenses/by-sa/3.0/
 \end_layout
 
 \end_inset
@@ -27141,6 +27141,55 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Subsubsection
+Termination
+\end_layout
+
+\begin_layout Standard
+Most of the existing termination strategies, implemented in the 
+\family typewriter
+Limits
+\family default
+ class, presumes a 
+\emph on
+total
+\emph default
+ order of the fitness values.
+ This assumption holds for single-objective optimization problems, but not
+ for multi-objective problems.
+ Only termination strategies which doesn't rely on the total order of the
+ fitness value, can be safely used.
+ The following termination strategies can be used for multi-objective problems:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byFixedGeneration
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byExecutionTime
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byGeneConvergence
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+All other strategies doesn't have well defined termination behavior.
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
@@ -28178,6 +28227,148 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Program pruning
+\end_layout
+
+\begin_layout Standard
+When you are solving symbolic regression problems, the mathematical expression
+ trees, created during the evolution process, can become quite big.
+ From the diversity point of view, this might be not that bad, but it comes
+ with additional computation cost.
+ With the 
+\family typewriter
+Math\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Prune\SpecialChar softhyphen
+Alterer
+\family default
+ you are able to simplify some portion of the population in each generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(Main::error, program)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SingleNodeCrossover<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new MathTreePruneAlterer<>(0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the example above, half of the expression trees are simplified in each
+ generation.
+ If you want to prune the final result, you can do this with the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.simp\SpecialChar softhyphen
+li\SpecialChar softhyphen
+fy
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(3000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The algorithm used for pruning the expression tree, currently only uses
+ some basic mathematical identities, like 
+\begin_inset Formula $x+0=x$
+\end_inset
+
+, 
+\begin_inset Formula $x\cdot1=x$
+\end_inset
+
+ or 
+\begin_inset Formula $x\cdot0=0$
+\end_inset
+
+.
+ More advanced simplification algorithms may be implemented in the future.
 \end_layout
 
 \begin_layout Section
