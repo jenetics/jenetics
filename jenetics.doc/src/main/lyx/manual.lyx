@@ -27352,7 +27352,7 @@ When implementing the GP module, the emphasis was to not create a parallel
 \begin_layout Subsection
 Operations
 \begin_inset Index idx
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Genetic programming!Operations
@@ -27819,6 +27819,16 @@ final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 
 \begin_layout Subsection
 Program creation
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program creation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28098,6 +28108,16 @@ reference "sec:Symbolic-regression"
 
 \begin_layout Subsection
 Program repair
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program repair
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28231,6 +28251,16 @@ height "1pt"
 
 \begin_layout Subsection
 Program pruning
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program pruning
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
