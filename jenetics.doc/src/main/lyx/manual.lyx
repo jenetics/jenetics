@@ -20764,6 +20764,26 @@ reference "fig:Fitness-convergence-diagram-50-150"
 
 \begin_layout Subsection
 Population convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Population convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20776,6 +20796,26 @@ A termination method that stops the evolution when the population is deemed
 
 \begin_layout Subsection
 Gene convergence
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Termination!Gene convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25070,7 +25110,7 @@ Engine
 status collapsed
 
 \begin_layout Plain Layout
-Adaptive Engine
+Modifying Engine
 \end_layout
 
 \end_inset
@@ -25191,6 +25231,16 @@ EvolutionStreamable
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionStreamable
+\end_layout
 
 \end_inset
 
