@@ -9677,6 +9677,110 @@ The
  immutable and re-entrant.
 \end_layout
 
+\begin_layout Standard
+Since the number of individuals of one population, which determines the
+ number of fitness functions to be evaluated, is usually much higher then
+ the number of available CPU cores, the fitness evaluation is done in batches.
+ This reduces the evaluation overhead, for 
+\emph on
+lightweight
+\emph default
+ fitness functions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/EvaluationBatch.eps
+	width 60text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evaluation-batch"
+
+\end_inset
+
+Evaluation batch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Evaluation-batch"
+
+\end_inset
+
+ shows an example population with 
+\begin_inset Formula $12$
+\end_inset
+
+ individuals.
+ The evaluation of the phenotype's fitness functions are evaluated in batches
+ with three elements.
+ For this purpose, the individuals of one batch are wrapped into a 
+\family typewriter
+Runnable
+\family default
+ object.
+ The batch size is automatically adapted to the available number of CPU
+ cores.
+ It is assumed that the evaluation cost of one fitness function is quite
+ small.
+ If this assumption doesn't hold, you can configure the the maximal number
+ of batch elements with the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.maxBatchSize
+\family default
+ system property
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Concurrency-tweaks"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection
 Basic configuration
 \begin_inset Index idx
@@ -9954,6 +10058,13 @@ Such a configuration can be useful for performing reproducible (performance)
 
 \begin_layout Subsubsection
 Concurrency tweaks
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Concurrency-tweaks"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -20797,7 +20908,7 @@ A termination method that stops the evolution when the population is deemed
 \begin_layout Subsection
 Gene convergence
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Termination!Gene convergence
@@ -27553,7 +27664,7 @@ When implementing the GP module, the emphasis was to not create a parallel
 \begin_layout Subsection
 Operations
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!Operations
