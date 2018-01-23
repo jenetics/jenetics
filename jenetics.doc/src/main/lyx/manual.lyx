@@ -25063,14 +25063,14 @@ reference "lis:Weasel-program"
 \end_layout
 
 \begin_layout Subsection
-Adaptive 
+Modifying 
 \family typewriter
-EvolutionStream
+Engine
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Adaptive EvolutionStream
+Adaptive Engine
 \end_layout
 
 \end_inset
@@ -25083,7 +25083,8 @@ The current design of
 \family typewriter
 Engine
 \family default
- allows to created multiple independent evolution streams from one 
+ allows to created multiple independent evolution streams from a single
+ 
 \family typewriter
 Engine
 \family default
@@ -25095,17 +25096,167 @@ Engine
 Engine
 \family default
  configuration during the evolution process.
+ For this purpose, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ interface has been introduced.
+ It is similar to the Java 
+\family typewriter
+Iterable
+\family default
+ interface and abstracts the 
+\family typewriter
+EvolutionStream
+\family default
+ creation.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface EvolutionStreamable<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    stream(Supplier<EvolutionStart<G, C>> start);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C> stream(EvolutionInit<G> init);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStreamable<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    limit(Supplier<Predicate<? super EvolutionResult<G, C>>> p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStreamable
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+EvolutionStreamable
+\family default
+ interface.
+ The existing 
+\family typewriter
+stream
+\family default
+ methods take an initial value, which allows to 
+\emph on
+concatenate
+\emph default
+ different engines.
+ With the 
+\family typewriter
+limit
+\family default
+ method it is possible to limit the size of the created 
+\family typewriter
+EvolutionStream
+\family default
+ instances.
  The 
 \family typewriter
 io.jenetics.ext
 \family default
- module contains additional classes, which allows to run the evolution stream
- with different configuration.
- The additional 
+ module contains additional classes which allows to concatenate evolution
+ 
+\family typewriter
+Engines
+\family default
+ with different configurations, which will then create one varying 
+\family typewriter
+EvolutionStream
+\family default
+.
+ This additional 
 \family typewriter
 Engine
 \family default
- classes are
+ classes are:
 \end_layout
 
 \begin_layout Enumerate
