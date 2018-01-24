@@ -32,6 +32,9 @@ import java.util.stream.Collector;
  *
  * @see java.util.LongSummaryStatistics
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0

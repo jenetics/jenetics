@@ -33,6 +33,9 @@ import io.jenetics.util.Seq;
  *
  * @see Alterer
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 4.0
