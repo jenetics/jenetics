@@ -160,9 +160,9 @@ class SetupPlugin extends JeneticsPlugin {
 				//options.addStringOption('subpackages', 'io.jenetics')
                 //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
 				options.addStringOption('noqualifier', 'io.jenetics.internal.collection')
-				options.addStringOption('tag', 'apiNote:a:API Note:')
-				options.addStringOption('tag', 'implSpec:a:Implementation Requirements:')
-				options.addStringOption('tag', 'implNote:a:Implementation Note:')
+				options.tags = ["apiNote:a:API Note:",
+								"implSpec:a:Implementation Requirements:",
+								"implNote:a:Implementation Note:"]
 
 				group('Core API', ['io.jenetics', 'io.jenetics.engine'])
 				group('Utilities', ['io.jenetics.util', 'io.jenetics.stat'])
