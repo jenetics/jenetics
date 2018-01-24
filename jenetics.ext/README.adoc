@@ -1,6 +1,11 @@
 = Module: `io.jenetics.ext`
 
-This module contains additional genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `io.jenetics.base` module as small as possible.
+This module contains additional algorithms, genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `io.jenetics.base` module as small as possible.
+
+
+== Multi-objective optimization
+
+The `io.jenetics.ext.moea` package contains classes and data structures, which allows the optimization of multi-object problems.
 
 == Genes and chromosomes
 
