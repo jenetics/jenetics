@@ -12976,6 +12976,103 @@ s.
  Serializable
 \family default
  interface.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family sans
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.oracle.com/technetwork/articles/java/javaserial-1536170.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Just implementing the Serializable interface is sometimes not enough.
+ You might also need to implement the 
+\family typewriter
+readObject
+\family sans
+ and 
+\family typewriter
+writeObject
+\family sans
+ methods for a more concise serialization result.
+ Consider using the serialization proxy pattern, item 90, described in 
+\emph on
+Effective Java
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bloch2018"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
