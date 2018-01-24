@@ -42,13 +42,12 @@ import java.util.stream.Collector;
  *     );
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use on a
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use on a
  * parallel stream, because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}provides the
  * necessary partitioning, isolation, and merging of results for safe and
- * efficient parallel execution.</i>
+ * efficient parallel execution.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0

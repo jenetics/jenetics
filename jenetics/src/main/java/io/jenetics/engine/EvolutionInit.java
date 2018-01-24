@@ -38,6 +38,9 @@ import io.jenetics.util.ISeq;
  *
  * @param <G> the gene type
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1

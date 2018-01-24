@@ -48,13 +48,13 @@ import java.util.stream.Collector;
  *     .collect(toIntMomentStatistics(v -> v.intValue()));
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use
- * {@link #toIntMomentStatistics(ToIntFunction)}  on a parallel stream, because the parallel
- * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use
+ * {@link #toIntMomentStatistics(ToIntFunction)}  on a parallel stream, because
+ * the parallel implementation of
+ * {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
- * safe and efficient parallel execution.</i>
+ * safe and efficient parallel execution.
  *
  * @see java.util.IntSummaryStatistics
  * @see io.jenetics.stat.IntMoments
