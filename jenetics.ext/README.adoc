@@ -7,6 +7,10 @@ This module contains additional algorithms, genes and chromosomes which are some
 
 The `io.jenetics.ext.moea` package contains classes and data structures, which allows the optimization of multi-object problems.
 
+== Modifiable Engines
+
+The `io.jenetics.ext.engine` contains classes, which allows the creation of adapting evolution streams.
+
 == Genes and chromosomes
 
 * `BigIntegerGene`
