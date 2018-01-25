@@ -19,90 +19,114 @@
  */
 package io.jenetics.example;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.abs;
-import static java.lang.Math.sin;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.Limits.bySteadyFitness;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
+import io.jenetics.jpx.GPX;
+import io.jenetics.jpx.Length.Unit;
+import io.jenetics.jpx.WayPoint;
+
 import io.jenetics.EnumGene;
+import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.PartiallyMatchedCrossover;
 import io.jenetics.Phenotype;
 import io.jenetics.SwapMutator;
+import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
 
-public class TravelingSalesman {
+/**
+ * Implementation of the Traveling Salesman Problem. This example tries to find
+ * the shortest path, which visits all Austrian district capitals.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since 3.6
+ */
+public final class TravelingSalesman
+	implements Problem<ISeq<WayPoint>, EnumGene<WayPoint>, Double>
+{
 
-	// Problem initialization:
-	// Calculating the adjacence matrix of the "city" distances.
+	private final ISeq<WayPoint> _points;
 
-	private static final int STOPS = 20;
-	private static final double[][] ADJACENCE = matrix(STOPS);
-
-	private static double[][] matrix(int stops) {
-		final double radius = 10.0;
-		double[][] matrix = new double[stops][stops];
-
-		for (int i = 0; i < stops; ++i) {
-			for (int j = 0; j < stops; ++j) {
-				matrix[i][j] = chord(stops, abs(i - j), radius);
-			}
-		}
-		return matrix;
+	/**
+	 * Create a new TSP instance with the way-points we want to visit.
+	 *
+	 * @param points the way-points we want to visit
+	 * @throws NullPointerException if the given {@code points} seq is {@code null}
+	 */
+	public TravelingSalesman(final ISeq<WayPoint> points) {
+		_points = requireNonNull(points);
 	}
 
-	private static double chord(int stops, int i, double r) {
-		return 2.0*r*abs(sin(PI*i/stops));
+	@Override
+	public Codec<ISeq<WayPoint>, EnumGene<WayPoint>> codec() {
+		return Codecs.ofPermutation(_points);
 	}
 
-	// Calculate the path length of the current genotype.
-	private static double dist(final int[] path) {
-		// Calculate the path distance.
-		return IntStream.range(0, STOPS)
-			.mapToDouble(i ->
-				ADJACENCE[path[i]][path[(i + 1)%STOPS]])
+	@Override
+	public Function<ISeq<WayPoint>, Double> fitness() {
+		return way -> IntStream.range(0, way.length())
+			.mapToObj(i -> way.get(i).distance(way.get((i + 1)%way.size())))
+			.mapToDouble(distance -> distance.to(Unit.METER))
 			.sum();
 	}
 
-	public static void main(String[] args) {
-		final Engine<EnumGene<Integer>, Double> engine = Engine
-			.builder(
-				TravelingSalesman::dist,
-				Codecs.ofPermutation(STOPS))
+
+	public static void main(String[] args) throws IOException {
+		final TravelingSalesman tsm = new TravelingSalesman(districtCapitals());
+
+		final Engine<EnumGene<WayPoint>, Double> engine = Engine.builder(tsm)
 			.optimize(Optimize.MINIMUM)
-			.maximalPhenotypeAge(11)
-			.populationSize(500)
 			.alterers(
-				new SwapMutator<>(0.2),
-				new PartiallyMatchedCrossover<>(0.35))
+				new SwapMutator<>(0.05),
+				new PartiallyMatchedCrossover<>(0.075))
 			.build();
 
 		// Create evolution statistics consumer.
 		final EvolutionStatistics<Double, ?>
 			statistics = EvolutionStatistics.ofNumber();
 
-		final Phenotype<EnumGene<Integer>, Double> best =
-			engine.stream()
-			// Truncate the evolution stream after 7 "steady"
-			// generations.
-			.limit(bySteadyFitness(15))
-			// The evolution will stop after maximal 100
-			// generations.
-			.limit(250)
-			// Update the evaluation statistics after
-			// each generation
+		final Phenotype<EnumGene<WayPoint>, Double> best = engine.stream()
+			.limit(1_500_000)
 			.peek(statistics)
-			// Collect (reduce) the evolution stream to
-			// its best phenotype.
 			.collect(toBestPhenotype());
 
+		final ISeq<WayPoint> path = best.getGenotype()
+			.getChromosome().toSeq()
+			.map(Gene::getAllele);
+
+		final GPX gpx = GPX.builder()
+			.addTrack(track -> track
+				.name("track")
+				.addSegment(segment ->
+					segment.points(path.asList())))
+			.build();
+
+		final double km = tsm.fitness(best.getGenotype())/1_000.0;
+		GPX.write(gpx, format("/home/fwilhelm/out_%d.gpx", (int)km), "    ");
+		System.out.println("Length: " + km);
 		System.out.println(statistics);
-		System.out.println(best);
+	}
+
+	// Return the district capitals, we want to visit.
+	private static ISeq<WayPoint> districtCapitals() throws IOException {
+		final String capitals = "/io/jenetics/example/DistrictCapitals.gpx";
+		try (InputStream in = TravelingSalesman
+				.class.getResourceAsStream(capitals))
+		{
+			return ISeq.of(GPX.read(in).getWayPoints());
+		}
 	}
 
 }
