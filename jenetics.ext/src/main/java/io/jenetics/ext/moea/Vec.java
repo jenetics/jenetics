@@ -39,11 +39,11 @@ import io.jenetics.ext.moea.Vecs.ObjectVec;
  * final Vec<int[]> point3D = Vec.of(1, 2, 3);
  * }</pre>
  *
- * <b>Implementation note:</b>
+ * @implNote
  * Although the {@code Vec} interface extends the {@link Comparable} interface,
- * it violates its <em>general</em> general contract. It <em>only</em>
+ * it violates its <em>general</em> contract. It <em>only</em>
  * implements the pareto <em>dominance</em> relation, which defines a partial
- * order. So, if you try to sort a list of {@code Vec} objects might lead
+ * order. So, trying to sort a list of {@code Vec} objects, might lead
  * to an exception (thrown by the sorting method) at runtime.
  *
  * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
