@@ -20,16 +20,21 @@
 package io.jenetics.example;
 
 import static java.lang.String.format;
+import static java.lang.System.getProperty;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
+import static io.jenetics.jpx.Length.Unit.METER;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import io.jenetics.jpx.GPX;
-import io.jenetics.jpx.Length.Unit;
 import io.jenetics.jpx.WayPoint;
 
 import io.jenetics.EnumGene;
@@ -57,6 +62,10 @@ public final class TravelingSalesman
 	implements Problem<ISeq<WayPoint>, EnumGene<WayPoint>, Double>
 {
 
+	// Caching the distances.
+	private final Map<Entry<WayPoint, WayPoint>, Double>
+	_distances = new HashMap<>();
+
 	private final ISeq<WayPoint> _points;
 
 	/**
@@ -67,6 +76,20 @@ public final class TravelingSalesman
 	 */
 	public TravelingSalesman(final ISeq<WayPoint> points) {
 		_points = requireNonNull(points);
+
+		for (int i = 0; i < points.size(); ++i) {
+			final WayPoint a = points.get(i);
+
+			for (int j = i + 1; j < points.size(); ++j) {
+				final WayPoint b = points.get(j);
+
+				if (i != j) {
+					final double distance = a.distance(b).to(METER);
+					_distances.put(new SimpleImmutableEntry<>(a, b), distance);
+					_distances.put(new SimpleImmutableEntry<>(b, a), distance);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -77,11 +100,11 @@ public final class TravelingSalesman
 	@Override
 	public Function<ISeq<WayPoint>, Double> fitness() {
 		return way -> IntStream.range(0, way.length())
-			.mapToObj(i -> way.get(i).distance(way.get((i + 1)%way.size())))
-			.mapToDouble(distance -> distance.to(Unit.METER))
+			.mapToObj(i -> new SimpleImmutableEntry<>(
+				way.get(i), way.get((i + 1)%way.size())))
+			.mapToDouble(_distances::get)
 			.sum();
 	}
-
 
 	public static void main(String[] args) throws IOException {
 		final TravelingSalesman tsm = new TravelingSalesman(districtCapitals());
@@ -89,8 +112,8 @@ public final class TravelingSalesman
 		final Engine<EnumGene<WayPoint>, Double> engine = Engine.builder(tsm)
 			.optimize(Optimize.MINIMUM)
 			.alterers(
-				new SwapMutator<>(0.05),
-				new PartiallyMatchedCrossover<>(0.075))
+				new SwapMutator<>(0.15),
+				new PartiallyMatchedCrossover<>(0.15))
 			.build();
 
 		// Create evolution statistics consumer.
@@ -98,7 +121,7 @@ public final class TravelingSalesman
 			statistics = EvolutionStatistics.ofNumber();
 
 		final Phenotype<EnumGene<WayPoint>, Double> best = engine.stream()
-			.limit(1_500_000)
+			.limit(300_000_000)
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
@@ -108,13 +131,17 @@ public final class TravelingSalesman
 
 		final GPX gpx = GPX.builder()
 			.addTrack(track -> track
-				.name("track")
+				.name("Best Track")
 				.addSegment(segment ->
 					segment.points(path.asList())))
 			.build();
 
 		final double km = tsm.fitness(best.getGenotype())/1_000.0;
-		GPX.write(gpx, format("/home/fwilhelm/out_%d.gpx", (int)km), "    ");
+		GPX.write(
+			gpx,
+			format("%s/out_%d.gpx", getProperty("user.home"), (int)km),
+			"    "
+		);
 		System.out.println("Length: " + km);
 		System.out.println(statistics);
 	}
