@@ -132,8 +132,7 @@ public final class TravelingSalesman
 		final GPX gpx = GPX.builder()
 			.addTrack(track -> track
 				.name("Best Track")
-				.addSegment(segment ->
-					segment.points(path.asList())))
+				.addSegment(s -> s.points(path.asList())))
 			.build();
 
 		final double km = tsm.fitness(best.getGenotype())/1_000.0;
