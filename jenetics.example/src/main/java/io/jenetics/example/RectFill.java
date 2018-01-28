@@ -19,9 +19,11 @@
  */
 package io.jenetics.example;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.engine.Limits.byFixedGeneration;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import io.jenetics.AnyChromosome;
 import io.jenetics.AnyGene;
@@ -32,74 +34,85 @@ import io.jenetics.SwapMutator;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.example.RectFill.Rect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
-public class RectFill {
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 4.0
+ * @since 4.0
+ */
+public final class RectFill
+	implements Problem<ISeq<Rect>, AnyGene<Rect>, Double>
+{
 
 	private static final int MAX_RECT_COUNT = 100;
 
 	static final class Rect {
 		static final Rect EMPTY = new Rect(-1, -1, -1, -1);
+
 		final int x1, x2, y1, y2;
+
 		Rect(final int x1, final int x2, final int y1, final int y2) {
-			this.x1 = x1; this.x2 = x2; this.y1 = y1; this.y2 = y2;
+			this.x1 = Math.min(x1, x2);
+			this.x2 = Math.max(x1, x2);
+			this.y1 = Math.min(y1, y2);
+			this.y2 = Math.min(y1, y2);
 		}
 
-		static Rect newInstance() {
+		static Rect newInstance(final Rect bounds) {
 			final Random random = RandomRegistry.getRandom();
-			return random.nextBoolean()
-				? new Rect(
-					random.nextInt(100),
-					random.nextInt(100),
-					random.nextInt(100),
-					random.nextInt(100))
-				: EMPTY;
+			return new Rect(
+				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,
+				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,
+				random.nextInt(bounds.y2 - bounds.y1) + bounds.y1,
+				random.nextInt(bounds.y2 - bounds.y1) + bounds.y1
+			);
 		}
 	}
 
-	static boolean valid(final ISeq<? super Rect> objects) {
-		@SuppressWarnings("unchecked") // Issue: #256
-		final ISeq<Rect> seq = (ISeq<Rect>)objects;
-		return true;
+	private final Rect _outer;
+
+	public RectFill(final Rect outer) {
+		_outer = requireNonNull(outer);
 	}
 
-	static final Codec<ISeq<Rect>, AnyGene<Rect>> CODEC = Codec.of(
-		Genotype.of(AnyChromosome.<Rect>of(
-			Rect::newInstance,
-			a -> true,
-			RectFill::valid,
-			MAX_RECT_COUNT
-		)),
-		gt -> gt.getChromosome()
-				.stream()
-				.map(AnyGene::getAllele)
-				.filter(r -> r != Rect.EMPTY)
-				.collect(ISeq.toISeq())
-	);
-
-
-	static int fitness(final ISeq<Rect> rects) {
-		// Here comes your fitness function.
-		return rects.length();
+	@Override
+	public Function<ISeq<Rect>, Double> fitness() {
+		return null;
 	}
 
-	static boolean gtv(final Genotype<AnyGene<Rect>> gt) {
-		return true;
+	@Override
+	public Codec<ISeq<Rect>, AnyGene<Rect>> codec() {
+		return Codec.of(
+			Genotype.of(AnyChromosome.of(
+				() -> Rect.newInstance(_outer),
+				a -> true,
+				a -> true,
+				MAX_RECT_COUNT
+			)),
+			gt -> gt.getChromosome().stream()
+						.map(AnyGene::getAllele)
+						.filter(r -> r != Rect.EMPTY)
+						.collect(ISeq.toISeq())
+		);
 	}
 
 	public static void main(final String[] args) {
-		final Engine<AnyGene<Rect>, Integer> engine = Engine
-			.builder(RectFill::fitness, CODEC)
+		final RectFill problem = new RectFill(new Rect(0, 100, 0, 100));
+
+		final Engine<AnyGene<Rect>, Double> engine = Engine.builder(problem)
 			.individualCreationRetries(10)
-			.genotypeValidator(RectFill::gtv)
+			.genotypeValidator(gt -> true)
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
 				new SwapMutator<>(),
 				new SinglePointCrossover<>())
 			.build();
 
-		final ISeq<Rect> best = CODEC.decode(
+		final ISeq<Rect> best = problem.codec().decode(
 			engine.stream()
 				.limit(byFixedGeneration(10))
 				.collect(EvolutionResult.toBestGenotype())
