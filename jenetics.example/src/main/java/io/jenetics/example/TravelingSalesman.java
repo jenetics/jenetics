@@ -121,7 +121,7 @@ public final class TravelingSalesman
 			statistics = EvolutionStatistics.ofNumber();
 
 		final Phenotype<EnumGene<WayPoint>, Double> best = engine.stream()
-			.limit(300_000_000)
+			.limit(3_000_000)
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
