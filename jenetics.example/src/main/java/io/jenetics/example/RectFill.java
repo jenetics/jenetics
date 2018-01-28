@@ -41,7 +41,7 @@ import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version !__version__!
  * @since 4.0
  */
 public final class RectFill
