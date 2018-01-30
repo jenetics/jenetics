@@ -12,7 +12,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.0.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.1.0.pdf)).
 
 
 ## Requirements
@@ -25,12 +25,12 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 *  **Gradle 4.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.11**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 6.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.1.0/jenetics-4.1.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -188,6 +188,10 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 
 ## Release notes
+
+### [4.1.0](https://github.com/jenetics/jenetics/releases/tag/v4.1.0)
+
+#### Improvements
 
 ### [4.0.0](https://github.com/jenetics/jenetics/releases/tag/v4.0.0)
 
