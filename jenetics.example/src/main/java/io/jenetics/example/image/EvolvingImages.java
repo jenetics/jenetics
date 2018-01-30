@@ -62,7 +62,7 @@ import io.jenetics.util.RandomRegistry;
  * @see <a href="http://www.nihilogic.dk/labs/evolving-images/">
  *      Evolving Images with JavaScript and canvas (Nihilogic)</a>
  */
-public final class EvolvingImages extends JFrame {
+public class EvolvingImages extends JFrame {
 
 	// Additional Swing components.
 	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
