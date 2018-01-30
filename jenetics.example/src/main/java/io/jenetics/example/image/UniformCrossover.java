@@ -62,7 +62,7 @@ final class UniformCrossover<
 	*         valid range of {@code [0, 1]}.
 	*/
 	public UniformCrossover(final double probability) {
-	super(probability);
+		super(probability);
 	}
 
 	@Override
