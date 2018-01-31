@@ -42,7 +42,7 @@ import io.jenetics.util.RandomRegistry;
  * continue the evolution with the stored population.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 3.8
  */
 public class EvolutionResume {

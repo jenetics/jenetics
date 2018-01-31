@@ -55,7 +55,7 @@ import io.jenetics.util.ISeq;
  * the shortest path, which visits all Austrian district capitals.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 3.6
  */
 public final class TravelingSalesman
