@@ -288,6 +288,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param <T> the array element type
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static <T> Vec<T[]> of(
 		final T[] array,
@@ -303,6 +304,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<int[]> of(final int... array) {
 		return new IntVec(array);
@@ -314,6 +316,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<long[]> of(final long... array) {
 		return new LongVec(array);
@@ -325,6 +328,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<double[]> of(final double... array) {
 		return new DoubleVec(array);
