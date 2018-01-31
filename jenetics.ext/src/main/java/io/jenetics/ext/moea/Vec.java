@@ -39,6 +39,11 @@ import io.jenetics.ext.moea.Vecs.ObjectVec;
  * final Vec<int[]> point3D = Vec.of(1, 2, 3);
  * }</pre>
  *
+ * The underlying array is <em>just</em> wrapped and <em>not</em> copied. This
+ * means you can change the values of the {@code Vec} once it is created,
+ * <em>Not copying the underlying array is done for performance reason. Changing
+ * the {@code Vec} data is, of course, never a good idea.</em>
+ *
  * @implNote
  * Although the {@code Vec} interface extends the {@link Comparable} interface,
  * it violates its <em>general</em> contract. It <em>only</em>
@@ -46,7 +51,7 @@ import io.jenetics.ext.moea.Vecs.ObjectVec;
  * order. So, trying to sort a list of {@code Vec} objects, might lead
  * to an exception (thrown by the sorting method) at runtime.
  *
- * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
+ * @param <T> the underlying array type, like {@code int[]} or {@code double[]}
  *
  * @see <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
  *     Pareto efficiency</a>
