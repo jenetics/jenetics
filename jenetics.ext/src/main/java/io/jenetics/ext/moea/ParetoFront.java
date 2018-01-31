@@ -43,7 +43,8 @@ import io.jenetics.ext.internal.SeqView;
  * a given <em>dominance</em> measure. Like a {@link Set}, it only contains no
  * duplicate entries. Unlike the usual set implementation, the iteration order
  * is deterministic.
- * <p>
+ *
+ * @apiNote
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,6 +67,16 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		_dominance = requireNonNull(dominance);
 	}
 
+	/**
+	 * Inserts an {@code element} to this pareto front.
+	 *
+	 * @apiNote
+	 * Inserting a new element has a time complexity of {@code O(n)}.
+	 *
+	 * @param element the element to add
+	 * @return <tt>true</tt> if this set did not already contain the specified
+	 *         element
+	 */
 	@Override
 	public boolean add(final T element) {
 		requireNonNull(element);

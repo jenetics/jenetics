@@ -38,8 +38,8 @@ import io.jenetics.util.Seq;
 import io.jenetics.ext.internal.IntList;
 
 /**
- * This class contains static methods concerning <em>Pareto</em>- front and
- * dominance calculations.
+ * Low-level utility methods for doing pareto-optimal calculations. This methods
+ * are mostly for users who wants to extend the existing <em>MOEA</em> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
