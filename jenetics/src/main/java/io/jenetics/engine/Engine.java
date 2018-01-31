@@ -916,9 +916,9 @@ public final class Engine<
 			requireNonNull(first);
 			Stream.of(rest).forEach(Objects::requireNonNull);
 
-			_alterer = rest.length == 0 ?
-				first :
-				Alterer.of(rest).compose(first);
+			_alterer = rest.length == 0
+				? first
+				: Alterer.of(rest).compose(first);
 
 			return this;
 		}
