@@ -263,6 +263,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param <C> the array element type
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static <C extends Comparable<? super C>>
 	Vec<C[]> of(final C[] array) {
@@ -272,6 +273,16 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		);
 	}
 
+	/**
+	 * Wraps the given array into a {@code Vec} object.
+	 *
+	 * @param array the wrapped array
+	 * @param distance the array element distance measure
+	 * @param <C> the array element type
+	 * @return the given array wrapped into a {@code Vec} object.
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
+	 */
 	public static <C extends Comparable<? super C>> Vec<C[]> of(
 		final C[] array,
 		final ElementDistance<C[]> distance
