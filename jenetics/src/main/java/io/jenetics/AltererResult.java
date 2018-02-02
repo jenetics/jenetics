@@ -93,7 +93,8 @@ public final class AltererResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AltererResult<?, ?> &&
+		return obj == this ||
+			obj instanceof AltererResult<?, ?> &&
 			_alterations == ((AltererResult)obj)._alterations &&
 			_population.equals(((AltererResult)obj)._population);
 	}
