@@ -28808,6 +28808,62 @@ The algorithm used for pruning the expression tree, currently only uses
 
 .
  More advanced simplification algorithms may be implemented in the future.
+ The 
+\family typewriter
+MathExpr
+\family default
+ helper class can also be used for creating mathematical expression trees
+ from the 
+\family typewriter
+\emph on
+usual
+\family default
+\emph default
+ textual representation.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final MathExpr expr = MathExpr
+\end_layout
+
+\begin_layout Plain Layout
+
+    .parse("5*z + 6*x + sin(y)^3 + (1 + sin(z*5)/4)/6");
+\end_layout
+
+\begin_layout Plain Layout
+
+final double value = expr.eval(5.5, 4, 2.3);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The variables in an expression string are sorted alphabetically.
+ This means, that the expression is evaluated with 
+\begin_inset Formula $x=5.5$
+\end_inset
+
+, 
+\begin_inset Formula $y=4$
+\end_inset
+
+ and 
+\begin_inset Formula $z=2.3$
+\end_inset
+
+, which leads to a result value of 
+\begin_inset Formula $44.19673085074048$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -34281,7 +34337,7 @@ pom.xml
 \begin_layout LyX-Code
     <artifactId>
 \emph on
-module
+module-name
 \emph default
 </artifactId>
 \end_layout
@@ -34301,7 +34357,7 @@ Gradle
 \begin_layout LyX-Code
 'io.jenetics:
 \emph on
-module
+module-name
 \emph default
 :@__version__@'
 \end_layout
