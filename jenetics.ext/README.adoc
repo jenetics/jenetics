@@ -1,5 +1,7 @@
 = Module: `io.jenetics.ext`
 
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.ext.svg[Javadoc]
+
 This module contains additional algorithms, genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `io.jenetics.base` module as small as possible.
 
 

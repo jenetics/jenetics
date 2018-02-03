@@ -1,5 +1,7 @@
 = Module: `io.jenetics.xml`
 
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.xml.svg[Javadoc]
+
 The `io.jenetics.xml` module allows to write/read chromosomes and genotypes to/from XML. Since the `javax.xml.bind` module is marked as deprecated (and for removal), this module will replace the existing *JAXB* based XML marshalling.
 
 NOTE: The existing *JAXB* XML marshalling of the base classes are marked for removal.
