@@ -733,7 +733,17 @@ target "https://en.wikipedia.org/wiki/Genetic_programming"
 status collapsed
 
 \begin_layout Plain Layout
-If you are using Gradle, you can use the following dependency string:
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://mvnrepository.com/artifact/io.jenetics/jenetics
+\end_layout
+
+\end_inset
+
+: If you are using Gradle, you can use the following dependency string:
 \family typewriter
  
 \begin_inset Quotes ald
