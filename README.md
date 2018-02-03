@@ -45,7 +45,7 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 The following projects/modules are also published to Maven.
 
 * **[jenetics](jenetics)**: This project contains the source code and tests for the Jenetics core-module.
-* **[jenetics.ext](jenetics.ext)**: This module contains additional _non_-standard GA operations and data types.
+* **[jenetics.ext](jenetics.ext)**: This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA). 
 * **[jenetics.prog](jenetics.prog)**: The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
 * **[jenetics.xml](jenteics,xml)**: XML marshalling module for the _Jenetics_ base data structures.
 
