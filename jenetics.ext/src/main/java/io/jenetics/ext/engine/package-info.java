@@ -19,6 +19,9 @@
  */
 
 /**
+ * This package contains classes, which allows to concatenate evolution
+ * {@code Engine}s with different configurations.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1
