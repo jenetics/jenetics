@@ -1,4 +1,6 @@
 import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 import static java.lang.System.out;
 import static java.util.Objects.requireNonNull;
@@ -40,9 +42,7 @@ public class TravelingSalesman
 			.mapToDouble(index -> {
 				final double[] p1 = p.get(index);
 				final double[] p2 = p.get((index + 1)%p.size());
-				final double dx = p1[0] - p2[0];
-				final double dy = p1[1] - p2[1];
-				return Math.sqrt(dx*dx + dy*dy); })
+				return hypot(p1[0] - p2[0], p1[1] - p2[1]); })
 			.sum();
 	}
 
@@ -59,7 +59,7 @@ public class TravelingSalesman
 
 		for (int i = 0; i < stops; ++i) {
 			final double alpha = delta*i;
-			final double x = Math.cos(alpha)*radius + radius;
+			final double x = cos(alpha)*radius + radius;
 			final double y = sin(alpha)*radius + radius;
 			points.set(i, new double[]{x, y});
 		}
