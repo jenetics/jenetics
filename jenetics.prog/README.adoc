@@ -1,6 +1,6 @@
 = Module: `io.jenetics.prog`
 
-image::https://www.javadoc.io/badge/io.jenetics/jenetics.prog.svg[Javadoc]
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.prog.svg[Javadoc, link=http://www.javadoc.io/doc/io.jenetics/jenetics.prog]
 
 Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `io.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
 
