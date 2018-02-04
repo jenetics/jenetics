@@ -22386,7 +22386,7 @@ Random
 \family default
  class.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -33583,6 +33583,7 @@ jenetics.ext
  non
 \emph default
 -standard GA operations and data types.
+ It also contains classes for solving multi-objective problems (MOEA).
 \end_layout
 
 \begin_layout Itemize
@@ -34223,7 +34224,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.2.1
+: 4.5
 \end_layout
 
 \begin_layout Itemize
@@ -34260,7 +34261,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.2.1-bin.zip
+http://services.gradle.org/distributions/gradle-4.5-bin.zip
 \end_layout
 
 \end_inset
@@ -34402,9 +34403,9 @@ target "http://www.apache.org/licenses/LICENSE-2.0.html"
 
 \size footnotesize
 Copyright @__year__@ Franz Wilhelmstötter
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout LyX-Code
 
 \end_layout
 
