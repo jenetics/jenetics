@@ -29,9 +29,7 @@ public class TravelingSalesman
 
 	private final ISeq<double[]> _points;
 
-	/**
-	 * Create new TSP problem instance with given way points.
-	 */
+	 // Create new TSP problem instance with given way points.
 	public TravelingSalesman(ISeq<double[]> points) {
 		_points = requireNonNull(points);
 	}
@@ -53,10 +51,8 @@ public class TravelingSalesman
 		return Codecs.ofPermutation(_points);
 	}
 
-	/**
-	 * Create a new TSM example problem with the given number
-	 * of stops. All stops lie on a circle with the given radius.
-	 */
+	 // Create a new TSM example problem with the given number
+	 // of stops. All stops lie on a circle with the given radius.
 	public static TravelingSalesman of(int stops, double radius) {
 		final MSeq<double[]> points = MSeq.ofLength(stops);
 		final double delta = 2.0*PI/stops;
