@@ -39,9 +39,9 @@ public class TravelingSalesman
 	@Override
 	public Function<ISeq<double[]>, Double> fitness() {
 		return p -> IntStream.range(0, p.length())
-			.mapToDouble(index -> {
-				final double[] p1 = p.get(index);
-				final double[] p2 = p.get((index + 1)%p.size());
+			.mapToDouble(i -> {
+				final double[] p1 = p.get(i);
+				final double[] p2 = p.get((i + 1)%p.size());
 				return hypot(p1[0] - p2[0], p1[1] - p2[1]); })
 			.sum();
 	}
