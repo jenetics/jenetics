@@ -27,15 +27,11 @@ import static io.jenetics.jpx.Length.Unit.METER;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
-import java.util.stream.IntStream;
 
 import io.jenetics.jpx.GPX;
 import io.jenetics.jpx.WayPoint;
+import io.jenetics.jpx.geom.Geoid;
 
 import io.jenetics.EnumGene;
 import io.jenetics.Gene;
@@ -62,10 +58,6 @@ public final class TravelingSalesman
 	implements Problem<ISeq<WayPoint>, EnumGene<WayPoint>, Double>
 {
 
-	// Caching the distances.
-	private final Map<Entry<WayPoint, WayPoint>, Double>
-	_distances = new HashMap<>();
-
 	private final ISeq<WayPoint> _points;
 
 	/**
@@ -76,20 +68,6 @@ public final class TravelingSalesman
 	 */
 	public TravelingSalesman(final ISeq<WayPoint> points) {
 		_points = requireNonNull(points);
-
-		for (int i = 0; i < points.size(); ++i) {
-			final WayPoint a = points.get(i);
-
-			for (int j = i + 1; j < points.size(); ++j) {
-				final WayPoint b = points.get(j);
-
-				if (i != j) {
-					final double distance = a.distance(b).to(METER);
-					_distances.put(new SimpleImmutableEntry<>(a, b), distance);
-					_distances.put(new SimpleImmutableEntry<>(b, a), distance);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -99,11 +77,9 @@ public final class TravelingSalesman
 
 	@Override
 	public Function<ISeq<WayPoint>, Double> fitness() {
-		return way -> IntStream.range(0, way.length())
-			.mapToObj(i -> new SimpleImmutableEntry<>(
-				way.get(i), way.get((i + 1)%way.size())))
-			.mapToDouble(_distances::get)
-			.sum();
+		return way -> way.stream()
+			.collect(Geoid.DEFAULT.toTourLength())
+			.to(METER);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -121,7 +97,7 @@ public final class TravelingSalesman
 			statistics = EvolutionStatistics.ofNumber();
 
 		final Phenotype<EnumGene<WayPoint>, Double> best = engine.stream()
-			.limit(3_000_000)
+			.limit(3_000)
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
@@ -141,8 +117,8 @@ public final class TravelingSalesman
 			format("%s/out_%d.gpx", getProperty("user.home"), (int)km),
 			"    "
 		);
-		System.out.println("Length: " + km);
 		System.out.println(statistics);
+		System.out.println("Length: " + km);
 	}
 
 	// Return the district capitals, we want to visit.
