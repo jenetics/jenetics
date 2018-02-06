@@ -98,13 +98,12 @@ import io.jenetics.util.Seq;
  * class and can't be changed after creation. The actual <i>evolution</i> is
  * performed by the {@link EvolutionStream}, which is created by the
  * {@code Engine}.
- * <p>
- * <em>
- *     <b>This class is thread safe:</b>
+ *
+ * @implNote
+ *     This class is thread safe:
  *     No mutable state is maintained by the engine. Therefore it is save to
  *     create multiple evolution streams with one engine, which may be actually
  *     used in different threads.
- * </em>
  *
  * @see Engine.Builder
  * @see EvolutionStart
