@@ -85,7 +85,7 @@ public class UFTournamentSelector<
 	 * );
 	 * }</pre>
 	 *
-	 * @see #vec()
+	 * @see #ofVec()
 	 *
 	 * @param dominance the pareto dominance comparator
 	 * @param comparator the vector element comparator
@@ -172,7 +172,7 @@ public class UFTournamentSelector<
 	 * @return a new selector for the given result type {@code V}
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
-	UFTournamentSelector<G, V> vec() {
+	UFTournamentSelector<G, V> ofVec() {
 		return new UFTournamentSelector<>(
 			Vec<T>::dominance,
 			Vec<T>::compare,

@@ -77,7 +77,7 @@ public class NSGA2Selector<
 	 * );
 	 * }</pre>
 	 *
-	 * @see #vec()
+	 * @see #ofVec()
 	 *
 	 * @param dominance the pareto dominance comparator
 	 * @param comparator the vector element comparator
@@ -152,7 +152,7 @@ public class NSGA2Selector<
 	 * @return a new selector for the given result type {@code V}
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
-	NSGA2Selector<G, V> vec() {
+	NSGA2Selector<G, V> ofVec() {
 		return new NSGA2Selector<>(
 			Vec<T>::dominance,
 			Vec<T>::compare,
