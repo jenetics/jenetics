@@ -27307,7 +27307,7 @@ final Engine<DoubleGene, Vec<double[]>> engine =
 
 \begin_layout Plain Layout
 
-        .survivorsSelector(UFTournamentSelector.vec())
+        .survivorsSelector(UFTournamentSelector.ofVec())
 \end_layout
 
 \begin_layout Plain Layout
