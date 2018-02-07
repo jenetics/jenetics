@@ -82,7 +82,7 @@ public final class MathExpr
 	private final Tree<? extends Op<Double>, ?> _tree;
 
 	// Primary constructor.
-	private MathExpr(final TreeNode<Op<Double>> tree) {
+	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
 	}
 
@@ -96,7 +96,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(TreeNode.ofTree(tree));
+		this(TreeNode.ofTree(tree), true);
 		Program.check(tree);
 	}
 
@@ -291,9 +291,9 @@ public final class MathExpr
 	 * @return the tree representation of the given {@code expression}
 	 */
 	public static MathExpr parse(final String expression) {
-		final TreeNode<Op<Double>> tree = parseTree(expression);
+		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
-		return new MathExpr(tree);
+		return new MathExpr(tree, true);
 	}
 
 	/**
@@ -335,7 +335,8 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static TreeNode<Op<Double>> parseTree(final String expression) {
+	public static Tree<? extends Op<Double>, ?>
+	parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
