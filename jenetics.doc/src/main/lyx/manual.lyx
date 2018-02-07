@@ -27606,7 +27606,7 @@ Limits.byGeneConvergence
 \end_layout
 
 \begin_layout Standard
-All other strategies doesn't have well defined termination behavior.
+All other strategies doesn't have a well defined termination behavior.
 \end_layout
 
 \begin_layout Section
