@@ -43,6 +43,27 @@ import io.jenetics.ext.internal.SeqView;
  * a given <em>dominance</em> measure. Like a {@link Set}, it only contains no
  * duplicate entries. Unlike the usual set implementation, the iteration order
  * is deterministic.
+ * <p>
+ * You can create a new {@code ParetoFront} for {@link Vec} objects
+ * <pre>{@code
+ * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
+ * front.add(Vec.of(1.0, 2.0));
+ * front.add(Vec.of(1.1, 2.5));
+ * front.add(Vec.of(0.9, 2.1));
+ * front.add(Vec.of(0.0, 2.9));
+ * }</pre>
+ *
+ * or directly for {@code double[]} array objects
+ * <pre>{@code
+ * final ParetoFront<double[]> front = new ParetoFront<>(Pareto::dominance);
+ * front.add(new double[]{1.0, 2.0});
+ * front.add(new double[]{1.1, 2.5});
+ * front.add(new double[]{0.9, 2.1});
+ * front.add(new double[]{0.0, 2.9});
+ * }</pre>
+ *
+ * You only have to specify the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+ *     Pareto dominance/efficiency</a> measure.
  *
  * @apiNote
  * Inserting a new element has a time complexity of {@code O(n)}.
