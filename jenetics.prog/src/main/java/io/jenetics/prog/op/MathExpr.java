@@ -116,11 +116,11 @@ public final class MathExpr
 	}
 
 	/**
-	 * Return the underlying expression tree.
+	 * Return the math expression as operation tree.
 	 *
-	 * @return the underlying expression tree
+	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> tree() {
+	public Tree<? extends Op<Double>, ?> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -387,7 +387,7 @@ public final class MathExpr
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static TreeNode<Op<Double>>
+	public static Tree<? extends Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return MathExprSimplifier.prune(TreeNode.ofTree(tree));
 	}
