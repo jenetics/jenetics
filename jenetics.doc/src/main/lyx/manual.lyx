@@ -26812,7 +26812,15 @@ Implementing classes
 \end_layout
 
 \begin_layout Standard
-The original design of the 
+The classes, used for solving multi-objective problems, reside in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext\SpecialChar softhyphen
+.moea
+\family default
+ package.
+ Originally, the 
 \family sans
 \series bold
 \shape smallcaps
@@ -26820,7 +26828,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library focused on solving single-objective problems.
+ library focuses on solving single-objective problems.
  This drives the design decision to force the return value of the fitness
  function to be 
 \family typewriter
