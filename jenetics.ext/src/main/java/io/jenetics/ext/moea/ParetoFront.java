@@ -65,6 +65,8 @@ import io.jenetics.ext.internal.SeqView;
  * You only have to specify the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
  *     Pareto dominance/efficiency</a> measure.
  *
+ * @see Pareto
+ *
  * @apiNote
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
