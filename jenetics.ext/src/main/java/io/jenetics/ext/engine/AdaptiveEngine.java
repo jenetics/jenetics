@@ -40,7 +40,21 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * The {@code AdaptiveEngine} allows you to dynamically create engines with
  * different configurations, depending on the last {@link EvolutionResult} of
  * the previous evolution stream. It is therefore possible to increase the
- * mutation probability if the population is converging to fast.
+ * mutation probability if the population is converging to fast. The sketch
+ * below shows how the {@code AdaptiveEngine} is working.
+ *
+ * <pre> {@code
+ *                                           +----------+
+ *                                           |   ES[i]  |
+ *           +-------------------------------+------+   |
+ *           |                                      +---+
+ *   (Start) |  EvolutionResult[i-1] -> Engine[i]   |-----------+-->
+ *  -----+-->|           ^                          |  Result   |
+ *       ^   +-----------|--------------------------+           |
+ *       |               |                                      |
+ *       +---------------+--------------<-----------------------+
+ * }</pre>
+ *
  *
  * <pre>{@code
  *  public static void main(final String[] args) {
