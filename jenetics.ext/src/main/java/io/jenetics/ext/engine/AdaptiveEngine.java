@@ -21,7 +21,6 @@ package io.jenetics.ext.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
