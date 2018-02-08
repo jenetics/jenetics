@@ -38,7 +38,7 @@ final class Vecs {
 	}
 
 	private static void checkVecLength(final int length) {
-		if (length == 0) {
+		if (length <= 0) {
 			throw new IllegalArgumentException("Array length must greater zero.");
 		}
 	}
