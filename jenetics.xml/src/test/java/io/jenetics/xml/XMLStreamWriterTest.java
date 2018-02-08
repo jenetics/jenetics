@@ -28,8 +28,8 @@ import io.jenetics.IntegerGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.1
+ * @since 4.1
  */
 public class XMLStreamWriterTest {
 

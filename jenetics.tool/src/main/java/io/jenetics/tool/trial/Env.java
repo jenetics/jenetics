@@ -26,6 +26,7 @@ import static io.jenetics.xml.stream.Writer.text;
 import java.io.Serializable;
 
 import io.jenetics.internal.util.Hash;
+
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

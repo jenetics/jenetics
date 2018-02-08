@@ -59,6 +59,9 @@ import io.jenetics.util.Seq;
  * @param <G> the gene type
  * @param <C> the fitness type
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 4.0
@@ -239,10 +242,24 @@ public final class EvolutionResult<
 	 * Return the next evolution start object with the current population and
 	 * the incremented generation.
 	 *
+	 * @since 4.1
+	 *
 	 * @return the next evolution start object
 	 */
-	EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _generation + 1);
+	public EvolutionStart<G, C> next() {
+		return EvolutionStart.of(_population, _totalGenerations + 1);
+	}
+
+	/**
+	 * Return the current evolution result object as an {@code EvolutionStart}
+	 * object with the current population and current total generation.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the current result as evolution start
+	 */
+	public EvolutionStart<G, C> toEvolutionStart() {
+		return EvolutionStart.of(_population, _totalGenerations);
 	}
 
 	/**
@@ -288,7 +305,8 @@ public final class EvolutionResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionResult<?, ?> &&
+		return obj == this ||
+			obj instanceof EvolutionResult<?, ?> &&
 			Objects.equals(_optimize,
 				((EvolutionResult<?, ?>)obj)._optimize) &&
 			Objects.equals(_population,

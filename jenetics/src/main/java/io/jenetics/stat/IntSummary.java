@@ -32,6 +32,9 @@ import java.util.stream.Collector;
  *
  * @see java.util.IntSummaryStatistics
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
@@ -125,13 +128,14 @@ public final class IntSummary implements Serializable {
 		hash += 33*_sum + 37;
 		hash += 33*_min + 37;
 		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
+		hash += 33*Double.hashCode(_mean) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntSummary &&
+		return obj == this ||
+			obj instanceof IntSummary &&
 			_count == ((IntSummary)obj)._count &&
 			_sum == ((IntSummary)obj)._sum &&
 			_min == ((IntSummary)obj)._min &&

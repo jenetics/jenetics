@@ -43,6 +43,9 @@ import io.jenetics.util.RandomRegistry;
  *
  * @see CharacterChromosome
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0
@@ -140,14 +143,15 @@ public final class CharacterGene
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash += 31*_character.hashCode() + 37;
-		hash += 31*_validCharacters.hashCode() + 37;
+		hash += 31*Objects.hashCode(_character) + 37;
+		hash += 31*Objects.hashCode(_validCharacters) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof CharacterGene &&
+		return obj == this ||
+			obj instanceof CharacterGene &&
 			Objects.equals(((CharacterGene)obj)._character, _character) &&
 			Objects.equals(((CharacterGene)obj)._validCharacters, _validCharacters);
 	}

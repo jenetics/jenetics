@@ -52,18 +52,17 @@ import java.util.stream.Collector;
  *     );
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use on a
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use on a
  * parallel stream, because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}provides the
  * necessary partitioning, isolation, and merging of results for safe and
- * efficient parallel execution.</i>
+ * efficient parallel execution.
  * <br>
- * <i>Using this class in the {@code collect} method of an parallel stream can
+ * Using this class in the {@code collect} method of an parallel stream can
  * lead to an reduced accuracy of the quantile value. Since this implementation
  * is an estimation algorithm, combining the estimations will only work for
- * large streams ({@code size >> 1000}).</i>
+ * large streams ({@code size >> 1000}).
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *

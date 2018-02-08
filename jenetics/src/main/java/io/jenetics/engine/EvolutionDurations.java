@@ -28,6 +28,9 @@ import java.util.Objects;
 /**
  * This class contains timing information about one evolution step.
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0
@@ -201,7 +204,8 @@ public final class EvolutionDurations
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionDurations &&
+		return obj == this ||
+			obj instanceof EvolutionDurations &&
 			Objects.equals(_offspringSelectionDuration,
 				((EvolutionDurations)obj)._offspringSelectionDuration) &&
 			Objects.equals(_survivorsSelectionDuration,

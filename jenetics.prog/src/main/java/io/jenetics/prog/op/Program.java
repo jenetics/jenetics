@@ -22,14 +22,17 @@ package io.jenetics.prog.op;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.util.Objects;
 import java.util.Random;
+
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * This class composes a given operation tree to a new operation. which can
@@ -38,10 +41,12 @@ import io.jenetics.util.RandomRegistry;
  * @param <T> the argument type of the operation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-public class Program<T> implements Op<T> {
+public class Program<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final int _arity;
@@ -80,6 +85,17 @@ public class Program<T> implements Op<T> {
 		return _arity;
 	}
 
+	/**
+	 * Return the underlying expression tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the underlying expression tree
+	 */
+	public Tree<? extends Op<T>, ?> tree() {
+		return TreeNode.ofTree(_tree);
+	}
+
 	@Override
 	public T apply(final T[] args) {
 		if (args.length < arity()) {
@@ -107,6 +123,24 @@ public class Program<T> implements Op<T> {
 	@SafeVarargs
 	public final T eval(final T... args) {
 		return apply(args);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*Objects.hashCode(_name) + 37;
+		hash += 31*Integer.hashCode(_arity) + 37;
+		hash += 31*Objects.hashCode(_tree) + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Program<?> &&
+			Objects.equals(((Program)obj)._name, _name) &&
+			((Program)obj)._arity == _arity &&
+			Objects.equals(((Program)obj)._tree, _tree);
 	}
 
 	@Override
@@ -179,8 +213,63 @@ public class Program<T> implements Op<T> {
 	}
 
 	/**
-	 * Create a new program tree from the given (non) terminal operations with
-	 * the desired depth. The created program tree is a <em>full</em> tree.
+	 * Create a new, random program from the given (non) terminal operations
+	 * with the desired depth. The created program tree is a <em>full</em> tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @param name the program name
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param <A> the operational type
+	 * @return a new program
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
+	 */
+	public static <A> Program<A> of(
+		final String name,
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals
+	) {
+		return new Program<>(name, of(depth, operations, terminals));
+	}
+
+	/**
+	 * Create a new, random program from the given (non) terminal operations
+	 * with the desired depth. The created program tree is a <em>full</em> tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @param name the program name
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param random the random engine used for creating the program
+	 * @param <A> the operational type
+	 * @return a new program
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
+	 */
+	public static <A> Program<A> of(
+		final String name,
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		return new Program<>(name, of(depth, operations, terminals, random));
+	}
+
+	/**
+	 * Create a new, random program tree from the given (non) terminal
+	 * operations with the desired depth. The created program tree is a
+	 * <em>full</em> tree.
 	 *
 	 * @param depth the desired depth of the program tree
 	 * @param operations the list of <em>non</em>-terminal operations
@@ -196,6 +285,33 @@ public class Program<T> implements Op<T> {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
+	) {
+		return of(depth, operations, terminals, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Create a new, random program tree from the given (non) terminal
+	 * operations with the desired depth. The created program tree is a
+	 * <em>full</em> tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param random the random engine used for creating the program
+	 * @param <A> the operational type
+	 * @return a new program tree
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
+	 */
+	public static <A> TreeNode<Op<A>> of(
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
 	) {
 		if (depth < 0) {
 			throw new IllegalArgumentException(
@@ -214,7 +330,7 @@ public class Program<T> implements Op<T> {
 		}
 
 		final TreeNode<Op<A>> root = TreeNode.of();
-		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
+		fill(depth, root, operations, terminals, random);
 		return root;
 	}
 

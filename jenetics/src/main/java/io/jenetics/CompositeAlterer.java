@@ -108,7 +108,8 @@ final class CompositeAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof CompositeAlterer &&
+		return obj == this ||
+			obj instanceof CompositeAlterer &&
 			eq(((CompositeAlterer)obj)._alterers, _alterers);
 	}
 

@@ -29,10 +29,75 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class IndexSorterTest {
+
+	private static Seq<Integer> indexSort(final IndexSorter sorter, final Seq<Integer> values) {
+		final int[] indexes = sorter.sort(values, indexes(values.length()));
+
+		final MSeq<Integer> result = MSeq.ofLength(values.length());
+		for (int i = 0; i < result.length(); ++i) {
+			result.set(i, values.get(indexes[i]));
+		}
+		return result;
+	}
+
+	private static Integer[] indexSort(final IndexSorter sorter, final Integer[] values) {
+		final int[] indexes = sorter.sort(values, indexes(values.length));
+
+		final Integer[] result = new Integer[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = values[indexes[i]];
+		}
+		return result;
+	}
+
+	private static Integer[] arraySort(final Integer[] values) {
+		final Integer[] result = values.clone();
+		Arrays.sort(result);
+		revert(result);
+		return result;
+	}
+
+	private static int[] indexSort(final IndexSorter sorter, final int[] values) {
+		final int[] indexes = sorter.sort(values, indexes(values.length));
+
+		final int[] result = new int[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = values[indexes[i]];
+		}
+		return result;
+	}
+
+	private static int[] arraySort(final int[] values) {
+		final int[] result = values.clone();
+		Arrays.sort(result);
+		revert(result);
+		return result;
+	}
+
+	private static long[] indexSort(final IndexSorter sorter, final long[] values) {
+		final int[] indexes = sorter.sort(values, indexes(values.length));
+
+		final long[] result = new long[values.length];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = values[indexes[i]];
+		}
+		return result;
+	}
+
+	private static long[] arraySort(final long[] values) {
+		final long[] result = values.clone();
+		Arrays.sort(result);
+		revert(result);
+		return result;
+	}
 
     private static double[] indexSort(final IndexSorter sorter, final double[] values) {
         final int[] indexes = sorter.sort(values, indexes(values.length));
@@ -71,14 +136,50 @@ public class IndexSorterTest {
         };
     }
 
-    @Test(dataProvider = "sorters")
-    public void sortRandomValues(final IndexSorter sorter, final Integer size) {
-        final double[] values = new Random().doubles(size).toArray();
+	@Test(dataProvider = "sorters")
+	public void sortRandomSeqValues(final IndexSorter sorter, final Integer size) {
+		final Integer[] values = new Random().ints(size).boxed().toArray(Integer[]::new);
 
-        final double[] actual = indexSort(sorter, values);
-        final double[] expected = arraySort(values);
+		final Seq<Integer> actual = indexSort(sorter, ISeq.of(values));
+		final Integer[] expected = arraySort(values);
+		Assert.assertEquals(actual.toArray(new Integer[0]), expected);
+	}
+
+	@Test(dataProvider = "sorters")
+	public void sortRandomArrayValues(final IndexSorter sorter, final Integer size) {
+		final Integer[] values = new Random().ints(size).boxed().toArray(Integer[]::new);
+
+		final Integer[] actual = indexSort(sorter, values);
+		final Integer[] expected = arraySort(values);
+		Assert.assertEquals(actual, expected);
+	}
+
+    @Test(dataProvider = "sorters")
+    public void sortRandomIntValues(final IndexSorter sorter, final Integer size) {
+        final int[] values = new Random().ints(size).toArray();
+
+        final int[] actual = indexSort(sorter, values);
+        final int[] expected = arraySort(values);
         Assert.assertEquals(actual, expected);
     }
+
+	@Test(dataProvider = "sorters")
+	public void sortRandomLongValues(final IndexSorter sorter, final Integer size) {
+		final long[] values = new Random().longs(size).toArray();
+
+		final long[] actual = indexSort(sorter, values);
+		final long[] expected = arraySort(values);
+		Assert.assertEquals(actual, expected);
+	}
+
+	@Test(dataProvider = "sorters")
+	public void sortRandomValues(final IndexSorter sorter, final Integer size) {
+		final double[] values = new Random().doubles(size).toArray();
+
+		final double[] actual = indexSort(sorter, values);
+		final double[] expected = arraySort(values);
+		Assert.assertEquals(actual, expected);
+	}
 
 	@Test(dataProvider = "sorters")
 	public void sortAscSortedValues(final IndexSorter sorter, final Integer size) {

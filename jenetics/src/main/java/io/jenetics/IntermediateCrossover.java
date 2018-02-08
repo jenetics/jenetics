@@ -143,7 +143,9 @@ public class IntermediateCrossover<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntermediateCrossover && super.equals(obj);
+		return obj == this ||
+			obj instanceof IntermediateCrossover &&
+			super.equals(obj);
 	}
 
 	@Override

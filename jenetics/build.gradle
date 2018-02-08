@@ -62,6 +62,8 @@ jar.manifest.instruction('Export-Package',
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
 
+test.dependsOn(compileJmhJava)
+
 packaging {
 	name = 'Jenetics'
 	author = 'Franz Wilhelmstötter'

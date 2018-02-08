@@ -43,7 +43,13 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class contains operations for performing basic numeric operations.
@@ -172,7 +178,7 @@ public enum MathOp implements Op<Double> {
 	 * Returns the square value of a given double value.
 	 * <em>This operation has arity 1.</em>
 	 */
-	SQR("sql", 1, v -> v[0]*v[0]),
+	SQR("sqr", 1, v -> v[0]*v[0]),
 
 	/**
 	 * Returns the correctly rounded positive square root of a double value.

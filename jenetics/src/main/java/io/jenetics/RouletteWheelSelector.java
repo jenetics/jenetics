@@ -37,6 +37,7 @@ import io.jenetics.util.Seq;
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
  *          Wikipedia: Roulette wheel selection
  *      </a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
@@ -32,10 +33,11 @@ import io.jenetics.Gene;
  *
  * @see java.util.stream.Stream
  * @see Engine
+ * @see EvolutionStreamable
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version 4.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
