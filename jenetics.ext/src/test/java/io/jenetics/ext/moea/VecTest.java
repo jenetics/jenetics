@@ -31,7 +31,6 @@ public class VecTest {
 
 	@Test
 	public void length() {
-		Assert.assertEquals(Vec.of(new double[0]).length(), 0);
 		Assert.assertEquals(Vec.of(new double[1]).length(), 1);
 		Assert.assertEquals(Vec.of(new double[2]).length(), 2);
 		Assert.assertEquals(Vec.of(new double[5]).length(), 5);

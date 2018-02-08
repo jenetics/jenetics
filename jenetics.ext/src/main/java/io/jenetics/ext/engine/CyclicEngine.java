@@ -22,6 +22,7 @@ package io.jenetics.ext.engine;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -159,13 +160,14 @@ public final class CyclicEngine<
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		final AtomicBoolean first = new AtomicBoolean(true);
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
 		return new EvolutionStreamImpl<G, C>(
 			new CyclicSpliterator<>(
 				_engines.stream()
-					.map(engine -> toSpliterator(engine, init, other))
+					.map(engine -> toSpliterator(engine, init, other, first))
 					.collect(Collectors.toList())
 			),
 			false
@@ -175,11 +177,22 @@ public final class CyclicEngine<
 	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
 		final EvolutionStreamable<G, C> engine,
 		final EvolutionInit<G> init,
-		final AtomicReference<EvolutionStart<G, C>> other
+		final AtomicReference<EvolutionStart<G, C>> other,
+		final AtomicBoolean first
 	) {
-		return () -> engine.stream(init)
-			.peek(result -> other.set(result.toEvolutionStart()))
-			.spliterator();
+		return () -> {
+			if (first.get()) {
+				first.set(false);
+				return engine.stream(init)
+					.peek(result -> other.set(result.toEvolutionStart()))
+					.spliterator();
+			} else {
+				return engine.stream(other::get)
+					.peek(result -> other.set(result.toEvolutionStart()))
+					.spliterator();
+			}
+		};
+
 	}
 
 	/**

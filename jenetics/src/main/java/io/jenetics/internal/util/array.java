@@ -57,7 +57,7 @@ public final class array {
 		array[j] = temp;
 	}
 
-	public static <C extends Comparable<? super C>> C[] revert(final C[] array) {
+	public static <T> T[] revert(final T[] array) {
 		for (int i = 0, j = array.length - 1; i < j; ++i, --j) {
 			swap(array, i, j);
 		}

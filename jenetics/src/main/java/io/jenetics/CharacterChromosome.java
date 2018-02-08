@@ -43,6 +43,9 @@ import io.jenetics.util.MSeq;
  *
  * @see CharacterGene
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0

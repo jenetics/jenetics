@@ -82,7 +82,7 @@ public final class MathExpr
 	private final Tree<? extends Op<Double>, ?> _tree;
 
 	// Primary constructor.
-	private MathExpr(final TreeNode<Op<Double>> tree) {
+	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
 	}
 
@@ -96,7 +96,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(TreeNode.ofTree(tree));
+		this(TreeNode.ofTree(tree), true);
 		Program.check(tree);
 	}
 
@@ -116,11 +116,11 @@ public final class MathExpr
 	}
 
 	/**
-	 * Return the underlying expression tree.
+	 * Return the math expression as operation tree.
 	 *
-	 * @return the underlying expression tree
+	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> tree() {
+	public Tree<? extends Op<Double>, ?> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -305,9 +305,9 @@ public final class MathExpr
 	 * @return the tree representation of the given {@code expression}
 	 */
 	public static MathExpr parse(final String expression) {
-		final TreeNode<Op<Double>> tree = parseTree(expression);
+		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
-		return new MathExpr(tree);
+		return new MathExpr(tree, true);
 	}
 
 	/**
@@ -349,7 +349,8 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static TreeNode<Op<Double>> parseTree(final String expression) {
+	public static Tree<? extends Op<Double>, ?>
+	parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
@@ -401,7 +402,7 @@ public final class MathExpr
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static TreeNode<Op<Double>>
+	public static Tree<? extends Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return MathExprSimplifier.prune(TreeNode.ofTree(tree));
 	}

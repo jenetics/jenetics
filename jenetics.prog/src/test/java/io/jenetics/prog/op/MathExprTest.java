@@ -152,7 +152,7 @@ public class MathExprTest {
 		final String expression = new MathExpr(tree).toString();
 		final MathExpr expr = MathExpr.parse(expression);
 
-		Assert.assertEquals(expr.tree(), tree);
+		Assert.assertEquals(expr.toTree(), tree);
 		Assert.assertEquals(expr.toString(), expression);
 	}
 
