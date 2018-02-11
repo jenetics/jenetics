@@ -70,6 +70,26 @@ public class MathExprTest {
 		);
 	}
 
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void parseError1() {
+		MathExpr.parse("x~y");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void parseError2() {
+		MathExpr.parse("xy**g");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void evalError1() {
+		MathExpr.eval("x+y");
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void evalError2() {
+		MathExpr.eval("x+y", 2);
+	}
+
 	@Test
 	public void specialEval1() {
 		final String expr = "(((((x - x) + (1.0*x))*((8.0 - 8.0)*(9.0*x))) + " +

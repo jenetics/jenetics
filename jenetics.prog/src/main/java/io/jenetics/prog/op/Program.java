@@ -174,12 +174,23 @@ public class Program<T> implements Op<T>, Serializable {
 
 		final Op<T> op = tree.getValue();
 		return op.isTerminal()
-			? op.apply(variables)
-			: op.apply(
+			? eval(op, variables)
+			: eval(op,
 					tree.childStream()
 						.map(child -> eval(child, variables))
 						.toArray(size -> newArray(variables.getClass(), size))
 				);
+	}
+
+	@SafeVarargs
+	private static <T> T eval(final Op<T> op, final T... variables) {
+		if (op instanceof Var && ((Var) op).index() >= variables.length) {
+			throw new IllegalArgumentException(format(
+				"No value for variable '%s' given.", op
+			));
+		}
+
+		return op.apply(variables);
 	}
 
 	@SuppressWarnings("unchecked")
