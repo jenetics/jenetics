@@ -83,7 +83,8 @@ public final class TravelingSalesman
 	}
 
 	public static void main(String[] args) throws IOException {
-		final TravelingSalesman tsm = new TravelingSalesman(districtCapitals());
+		final TravelingSalesman tsm =
+			new TravelingSalesman(districtCapitals().subSeq(0, 10));
 
 		final Engine<EnumGene<WayPoint>, Double> engine = Engine.builder(tsm)
 			.optimize(Optimize.MINIMUM)
@@ -97,7 +98,7 @@ public final class TravelingSalesman
 			statistics = EvolutionStatistics.ofNumber();
 
 		final Phenotype<EnumGene<WayPoint>, Double> best = engine.stream()
-			.limit(3_000)
+			.limit(1_000)
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
