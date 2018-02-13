@@ -265,8 +265,7 @@ public final class MathExpr
 	}
 
 	static MathExpr read(final DataInput in) throws IOException {
-		final int length = in.readInt();
-		final byte[] data = new byte[length];
+		final byte[] data = new byte[in.readInt()];
 		in.readFully(data);
 		return parse(new String(data, "UTF-8"));
 	}
