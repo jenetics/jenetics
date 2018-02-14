@@ -21,9 +21,11 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -34,7 +36,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
@@ -247,18 +248,26 @@ public final class MathExpr
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-		out.writeUTF(toString());
+	private Object writeReplace() {
+		return new Serial(Serial.MATH_EXPR, this);
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		in.defaultReadObject();
-		reflect.setField(this, "_tree", parseTree(in.readUTF()));
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		final byte[] data = toString().getBytes("UTF-8");
+		out.writeInt(data.length);
+		out.write(data);
+	}
+
+	static MathExpr read(final DataInput in) throws IOException {
+		final byte[] data = new byte[in.readInt()];
+		in.readFully(data);
+		return parse(new String(data, "UTF-8"));
 	}
 
 
