@@ -27,6 +27,9 @@ import java.util.stream.LongStream;
 /**
  * Long range class.
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.2
  * @since 3.2
@@ -121,10 +124,11 @@ public final class LongRange implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		return other instanceof LongRange &&
-			_min == ((LongRange)other)._min &&
-			_max == ((LongRange)other)._max;
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof LongRange &&
+			_min == ((LongRange)obj)._min &&
+			_max == ((LongRange)obj)._max;
 	}
 
 	@Override

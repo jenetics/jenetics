@@ -27,6 +27,9 @@ import java.util.stream.IntStream;
 /**
  * Integer range class.
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.2
  * @since 3.2
@@ -132,10 +135,11 @@ public final class IntRange implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		return other instanceof IntRange &&
-			_min == ((IntRange)other)._min &&
-			_max == ((IntRange)other)._max;
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IntRange &&
+			_min == ((IntRange)obj)._min &&
+			_max == ((IntRange)obj)._max;
 	}
 
 	@Override

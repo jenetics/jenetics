@@ -45,6 +45,7 @@ import io.jenetics.tool.trial.IO;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.SampleSummary;
 import io.jenetics.tool.trial.TrialMeter;
+
 import io.jenetics.xml.stream.Reader;
 
 /**

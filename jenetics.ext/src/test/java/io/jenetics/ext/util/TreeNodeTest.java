@@ -19,12 +19,15 @@
  */
 package io.jenetics.ext.util;
 
+import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.IO;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -106,6 +109,13 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final TreeNode<Integer> copy = tree.copy();
 
 		Assert.assertEquals(copy, tree);
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final TreeNode<Integer> tree = newTree(6, new Random());
+		final byte[] data = IO.object.toByteArray(tree);
+		Assert.assertEquals(IO.object.fromByteArray(data), tree);
 	}
 
 }

@@ -215,6 +215,10 @@ public final class TreeNode<T>
 
 		child.setParent(null);
 
+		if (_children.isEmpty()) {
+			_children = null;
+		}
+
 		return this;
 	}
 
@@ -246,7 +250,7 @@ public final class TreeNode<T>
 	 * @throws IllegalArgumentException if the given {@code child} is not a
 	 *         child of this node
 	 */
-	public void remove(final TreeNode<T> child) {
+	public void remove(final Tree<?, ?> child) {
 		requireNonNull(child);
 
 		if (!isChild(child)) {
@@ -261,8 +265,8 @@ public final class TreeNode<T>
 	 * nothing.
 	 */
 	public void removeAllChildren() {
-		for (int i = 0; i < childCount(); ++i) {
-			remove(i);
+		for (int i = 0, n = childCount(); i < n; ++i) {
+			remove(_children.size() - 1);
 		}
 	}
 
@@ -325,7 +329,8 @@ public final class TreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof TreeNode<?> &&
+		return obj == this ||
+			obj instanceof TreeNode<?> &&
 			Tree.equals(this, (TreeNode<?>)obj);
 	}
 

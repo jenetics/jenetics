@@ -73,7 +73,7 @@ public class TournamentSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/TournamentSelector";
+			"/io/jenetics/selector/distribution/TournamentSelector";
 
 		return Arrays.stream(Optimize.values())
 			.flatMap(opt -> {

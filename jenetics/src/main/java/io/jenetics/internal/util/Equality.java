@@ -62,10 +62,11 @@ public final class Equality {
 	public static <T> Predicate<Predicate<T>>
 	of(final T self, final Object other) {
 		Objects.requireNonNull(self);
-		return self == other ?
-			p -> true :
-			other == null || self.getClass() != other.getClass() ?
-				p -> false : p -> p.test((T)other);
+		return self == other
+			? p -> true
+			: other == null || self.getClass() != other.getClass()
+				? p -> false
+				: p -> p.test((T)other);
 	}
 
 	/**
@@ -80,7 +81,8 @@ public final class Equality {
 	public static boolean ofType(final Object self, final Object other) {
 		Objects.requireNonNull(self);
 		return self == other ||
-			other != null && self.getClass() == other.getClass();
+			other != null &&
+			self.getClass() == other.getClass();
 	}
 
 	/**

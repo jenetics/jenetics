@@ -105,7 +105,8 @@ abstract class AbstractBoundedGene<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AbstractBoundedGene<?, ?> &&
+		return obj == this ||
+			obj instanceof AbstractBoundedGene<?, ?> &&
 			Objects.equals(((AbstractBoundedGene)obj)._value, _value) &&
 			Objects.equals(((AbstractBoundedGene)obj)._min, _min) &&
 			Objects.equals(((AbstractBoundedGene)obj)._max, _max);
