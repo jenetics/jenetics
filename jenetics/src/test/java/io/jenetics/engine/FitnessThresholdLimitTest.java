@@ -117,7 +117,8 @@ public class FitnessThresholdLimitTest {
 
 		final AtomicInteger count = new AtomicInteger();
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(Limits.byFitnessThreshold(0.3))
+			//.limit(Limits.byFitnessThreshold(0.3))
+			.limit(er -> false)
 			.peek(er -> count.incrementAndGet())
 			.collect(EvolutionResult.toBestEvolutionResult());
 
