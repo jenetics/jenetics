@@ -19,6 +19,9 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.engine.EvolutionResult.toBestEvolutionResult;
+
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -32,6 +35,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 /**
@@ -101,12 +105,35 @@ public class PopulationConvergenceLimitTest {
 
 		final EvolutionResult<BitGene, Integer> result = engine.stream()
 			.limit(Limits.byPopulationConvergence(0.015))
-			.collect(EvolutionResult.toBestEvolutionResult());
+			.collect(toBestEvolutionResult());
 
 		Assert.assertTrue(
 			result.getTotalGenerations() < 2901,
 			"Gen: " + result.getTotalGenerations()
 		);
+	}
+
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialPopulationConvergence() {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			d -> 1.0,
+			Codecs.ofScalar(DoubleRange.of(0, 1))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+		final AtomicInteger count = new AtomicInteger();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byPopulationConvergence(0.03))
+			.peek(er -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(count.get(), 1);
+		Assert.assertEquals(result.getTotalGenerations(), 1);
+		Assert.assertEquals(result.getGeneration(), 1);
 	}
 
 }

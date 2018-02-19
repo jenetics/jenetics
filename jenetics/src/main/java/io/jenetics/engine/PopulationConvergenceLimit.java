@@ -29,7 +29,7 @@ import io.jenetics.stat.DoubleMoments;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3,9
+ * @version !__version__!
  * @since 3.9
  */
 final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>
@@ -48,12 +48,14 @@ final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>
 		result.getPopulation()
 			.forEach(p -> fitness.accept(p.getFitness().doubleValue()));
 
-		return _proceed.test(
+		final boolean converged = _proceed.test(
 			result.getBestFitness() != null
 				? result.getBestFitness().doubleValue()
 				: Double.NaN,
 			DoubleMoments.of(fitness)
 		);
+
+		return converged || result.getTotalGenerations() <= 1;
 	}
 
 }
