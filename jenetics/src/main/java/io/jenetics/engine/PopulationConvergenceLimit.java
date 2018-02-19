@@ -48,14 +48,13 @@ final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>
 		result.getPopulation()
 			.forEach(p -> fitness.accept(p.getFitness().doubleValue()));
 
-		final boolean converged = _proceed.test(
-			result.getBestFitness() != null
-				? result.getBestFitness().doubleValue()
-				: Double.NaN,
-			DoubleMoments.of(fitness)
-		);
-
-		return converged || result.getTotalGenerations() <= 1;
+		return result.getTotalGenerations() <= 1 ||
+			_proceed.test(
+				result.getBestFitness() != null
+					? result.getBestFitness().doubleValue()
+					: Double.NaN,
+				DoubleMoments.of(fitness)
+			);
 	}
 
 }

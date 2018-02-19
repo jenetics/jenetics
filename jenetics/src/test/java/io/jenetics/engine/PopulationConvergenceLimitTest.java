@@ -49,7 +49,7 @@ public class PopulationConvergenceLimitTest {
 			Limits.byPopulationConvergence(0.015);
 
 		int g = 0;
-		while (l.test(result(10 + g, 100 + g, Optimize.MAXIMUM))) {
+		while (l.test(result(10 + g, 100 + g, g + 1, Optimize.MAXIMUM))) {
 			++g;
 		}
 
@@ -59,12 +59,13 @@ public class PopulationConvergenceLimitTest {
 	private static EvolutionResult<DoubleGene, Double> result(
 		final int min,
 		final int max,
+		final int generation,
 		final Optimize opt
 	) {
 		return EvolutionResult.of(
 			opt,
 			population(min, max),
-			1L,
+			generation,
 			EvolutionDurations.ZERO,
 			1,
 			1,

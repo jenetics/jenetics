@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 3.1
+ * @version !__version__!
  */
 final class FitnessThresholdLimit<C extends Comparable<? super C>>
 	implements Predicate<EvolutionResult<?, C>>
@@ -40,8 +40,9 @@ final class FitnessThresholdLimit<C extends Comparable<? super C>>
 
 	@Override
 	public boolean test(final EvolutionResult<?, C> result) {
-		return result.getOptimize()
-			.compare(_threshold, result.getBestFitness()) >= 0;
+		return result.getTotalGenerations() <= 1 ||
+			result.getOptimize()
+				.compare(_threshold, result.getBestFitness()) >= 0;
 	}
 
 }
