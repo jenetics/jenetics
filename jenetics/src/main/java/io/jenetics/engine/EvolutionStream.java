@@ -33,6 +33,13 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @implNote Collecting an <em>empty</em> {@code EvolutionStream} will return
  *           {@code null}.
+ * <pre>{@code
+ * final EvolutionResult<DoubleGene, Double> result = engine.stream()
+ *     .limit(0)
+ *     .collect(toBestEvolutionResult());
+ *
+ * assert result == null;
+ * }</pre>
  *
  * @see java.util.stream.Stream
  * @see Engine
