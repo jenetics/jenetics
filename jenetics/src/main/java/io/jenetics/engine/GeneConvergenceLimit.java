@@ -43,7 +43,7 @@ import io.jenetics.util.Seq;
  * away from the maximum gene value across the genotypes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.2
  * @since 4.0
  */
 final class GeneConvergenceLimit<G extends NumericGene<?, G>>

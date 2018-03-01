@@ -29,7 +29,7 @@ import io.jenetics.stat.DoubleMoments;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.2
  * @since 3.9
  */
 final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>

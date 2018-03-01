@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version !__version__!
+ * @version 4.2
  */
 final class FitnessThresholdLimit<C extends Comparable<? super C>>
 	implements Predicate<EvolutionResult<?, C>>
