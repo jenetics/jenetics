@@ -61,7 +61,7 @@ import io.jenetics.util.MSeq;
  *
  * @see AnyChromosome
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
