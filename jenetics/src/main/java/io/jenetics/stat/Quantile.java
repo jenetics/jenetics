@@ -58,7 +58,6 @@ import java.util.stream.Collector;
  * {@link java.util.stream.Stream#collect Stream.collect()} provides the
  * necessary partitioning, isolation, and merging of results for safe and
  * efficient parallel execution.
- * <br>
  * Using this class in the {@code collect} method of an parallel stream can
  * lead to an reduced accuracy of the quantile value. Since this implementation
  * is an estimation algorithm, combining the estimations will only work for
