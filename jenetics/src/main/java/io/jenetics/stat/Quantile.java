@@ -190,7 +190,7 @@ public class Quantile implements DoubleConsumer {
 	 *         of the {@code other} object differs from {@code this} one.
 	 */
 	public Quantile combine(final Quantile other) {
-		if (_quantile != other._quantile) {
+		if (Double.compare(_quantile, other._quantile) != 0) {
 			throw new IllegalArgumentException(format(
 				"Can't perform combine, the quantile are not equal: %s != %s",
 				_quantile, other._quantile
