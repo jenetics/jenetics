@@ -25,8 +25,10 @@ import java.util.stream.Stream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.Chromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.MonteCarloSelector;
@@ -174,6 +176,32 @@ public class ConcatEngineTest {
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
+	}
+
+	@Test
+	public void concatInit() {
+		final Chromosome<IntegerGene> ch = IntegerChromosome.of(IntegerGene.of(5, 0, 1000));
+		final Genotype<IntegerGene> gt = Genotype.of(ch);
+		final EvolutionInit<IntegerGene> init = EvolutionInit.of(
+			ISeq.<Genotype<IntegerGene>>of(gt),
+			1L
+		);
+
+		final EvolutionStream<IntegerGene, Integer> stream =
+			ConcatEngine.of(
+				streamable(2),
+				streamable(2),
+				streamable(2),
+				streamable(32)
+			)
+			.stream(init);
+
+		final int[] array = stream
+			.limit(12)
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17});
 	}
 
 	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {

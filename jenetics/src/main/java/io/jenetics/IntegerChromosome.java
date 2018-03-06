@@ -36,6 +36,9 @@ import io.jenetics.util.MSeq;
  *
  * @see IntegerGene
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
  * @version 4.0

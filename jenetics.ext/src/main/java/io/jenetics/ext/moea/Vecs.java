@@ -26,11 +26,22 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
+ * {@link Vec} implementations for basic array types.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1
  */
 final class Vecs {
+
+	private Vecs() {
+	}
+
+	private static void checkVecLength(final int length) {
+		if (length <= 0) {
+			throw new IllegalArgumentException("Array length must greater zero.");
+		}
+	}
 
 	static final class ObjectVec<T> implements Vec<T[]> {
 		private final T[] _data;
@@ -42,7 +53,8 @@ final class Vecs {
 			final Comparator<? super T> comparator,
 			final ElementDistance<T[]> distance
 		) {
-			_data = requireNonNull(data);
+			checkVecLength(data.length);
+			_data = data;
 			_comparator = requireNonNull(comparator);
 			_distance = requireNonNull(distance);
 		}
@@ -97,7 +109,8 @@ final class Vecs {
 		private final int[] _data;
 
 		IntVec(final int[] data) {
-			_data = requireNonNull(data);
+			checkVecLength(data.length);
+			_data = data;
 		}
 
 		@Override
@@ -150,7 +163,8 @@ final class Vecs {
 		private final long[] _data;
 
 		LongVec(final long[] data) {
-			_data = requireNonNull(data);
+			checkVecLength(data.length);
+			_data = data;
 		}
 
 		@Override
@@ -203,7 +217,8 @@ final class Vecs {
 		private final double[] _data;
 
 		DoubleVec(final double[] data) {
-			_data = requireNonNull(data);
+			checkVecLength(data.length);
+			_data = data;
 		}
 
 		@Override

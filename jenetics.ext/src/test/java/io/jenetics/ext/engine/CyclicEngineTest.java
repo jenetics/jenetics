@@ -24,8 +24,10 @@ import static io.jenetics.ext.engine.ConcatEngineTest.streamable;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.Chromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.MonteCarloSelector;
@@ -33,11 +35,13 @@ import io.jenetics.Mutator;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -108,6 +112,31 @@ public class CyclicEngineTest {
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	}
+
+	@Test
+	public void cycleInit() {
+		final Chromosome<IntegerGene> ch = IntegerChromosome.of(IntegerGene.of(5, 0, 1000));
+		final Genotype<IntegerGene> gt = Genotype.of(ch);
+		final EvolutionInit<IntegerGene> init = EvolutionInit.of(
+			ISeq.<Genotype<IntegerGene>>of(gt),
+			1L
+		);
+
+		final EvolutionStream<IntegerGene, Integer> stream =
+			CyclicEngine.of(
+				streamable(2),
+				streamable(2)
+			)
+				.stream(init);
+
+		final int[] array = stream
+			.limit(10)
+			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.toArray();
+
+		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
+	}
+
 
 	public static void main(final String[] args) {
 		final Problem<double[], DoubleGene, Double> problem = Problem.of(

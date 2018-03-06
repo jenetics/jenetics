@@ -19,8 +19,14 @@
  */
 package io.jenetics.ext.engine;
 
+import static java.util.Collections.singletonList;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.BaseStream;
@@ -28,6 +34,7 @@ import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
@@ -156,20 +163,52 @@ public final class ConcatEngine<
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		final AtomicReference<EvolutionStart<G, C>> start =
+		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
 		return new EvolutionStreamImpl<G, C>(
-			new ConcatSpliterator<>(
-				_engines.stream()
-					.map(engine -> engine
-						.stream(init)
-						.peek(result -> start.set(result.toEvolutionStart())))
-					.map(BaseStream::spliterator)
-					.collect(Collectors.toList())
-			),
+			new ConcatSpliterator<>(spliterators(init, other)),
 			false
 		);
+	}
+
+	private Collection<Spliterator<EvolutionResult<G, C>>> spliterators(
+		final EvolutionInit<G> init,
+		final AtomicReference<EvolutionStart<G, C>> other
+	) {
+		final Collection<Spliterator<EvolutionResult<G, C>>> result;
+		if (_engines.isEmpty()) {
+			result = Collections.emptyList();
+		} else if (_engines.size() == 1) {
+			result = singletonList(
+				_engines.get(0)
+					.stream(init)
+					.peek(er -> other.set(er.toEvolutionStart()))
+					.spliterator()
+			);
+		} else {
+			final List<Spliterator<EvolutionResult<G, C>>> concat =
+				new ArrayList<>();
+
+			concat.add(
+				_engines.get(0)
+					.stream(init)
+					.peek(er -> other.set(er.toEvolutionStart()))
+					.spliterator()
+			);
+			concat.addAll(
+				_engines.subList(1, _engines.size()).stream()
+					.map(engine -> engine
+						.stream(other::get)
+						.peek(er -> other.set(er.toEvolutionStart())))
+					.map(BaseStream::spliterator)
+					.collect(Collectors.toList())
+			);
+
+			result = concat;
+		}
+
+		return result;
 	}
 
 	/**

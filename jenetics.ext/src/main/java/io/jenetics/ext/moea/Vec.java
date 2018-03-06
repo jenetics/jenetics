@@ -39,14 +39,19 @@ import io.jenetics.ext.moea.Vecs.ObjectVec;
  * final Vec<int[]> point3D = Vec.of(1, 2, 3);
  * }</pre>
  *
- * <b>Implementation note:</b>
+ * The underlying array is <em>just</em> wrapped and <em>not</em> copied. This
+ * means you can change the values of the {@code Vec} once it is created,
+ * <em>Not copying the underlying array is done for performance reason. Changing
+ * the {@code Vec} data is, of course, never a good idea.</em>
+ *
+ * @implNote
  * Although the {@code Vec} interface extends the {@link Comparable} interface,
- * it violates its <em>general</em> general contract. It <em>only</em>
+ * it violates its <em>general</em> contract. It <em>only</em>
  * implements the pareto <em>dominance</em> relation, which defines a partial
- * order. So, if you try to sort a list of {@code Vec} objects might lead
+ * order. So, trying to sort a list of {@code Vec} objects, might lead
  * to an exception (thrown by the sorting method) at runtime.
  *
- * @param <T> the underlying data type, like {@code int[]} or {@code double[]}
+ * @param <T> the underlying array type, like {@code int[]} or {@code double[]}
  *
  * @see <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
  *     Pareto efficiency</a>
@@ -263,6 +268,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param <C> the array element type
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static <C extends Comparable<? super C>>
 	Vec<C[]> of(final C[] array) {
@@ -272,6 +278,16 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		);
 	}
 
+	/**
+	 * Wraps the given array into a {@code Vec} object.
+	 *
+	 * @param array the wrapped array
+	 * @param distance the array element distance measure
+	 * @param <C> the array element type
+	 * @return the given array wrapped into a {@code Vec} object.
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
+	 */
 	public static <C extends Comparable<? super C>> Vec<C[]> of(
 		final C[] array,
 		final ElementDistance<C[]> distance
@@ -288,6 +304,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param <T> the array element type
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static <T> Vec<T[]> of(
 		final T[] array,
@@ -303,6 +320,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<int[]> of(final int... array) {
 		return new IntVec(array);
@@ -314,6 +332,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<long[]> of(final long... array) {
 		return new LongVec(array);
@@ -325,6 +344,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @param array the wrapped array
 	 * @return the given array wrapped into a {@code Vec} object.
 	 * @throws NullPointerException if the given {@code array} is {@code null}
+	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<double[]> of(final double... array) {
 		return new DoubleVec(array);

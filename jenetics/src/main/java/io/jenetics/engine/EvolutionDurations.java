@@ -28,6 +28,9 @@ import java.util.Objects;
 /**
  * This class contains timing information about one evolution step.
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0

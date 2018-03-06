@@ -66,7 +66,8 @@ public interface ElementDistance<V> {
 	}
 
 	/**
-	 * Return a function which calculates the distance of two vector elements.
+	 * Return a function which calculates the distance of two vector elements at
+	 * a given {@code index}.
 	 *
 	 * @param index the vector index
 	 * @return a function which calculates the distance of two vector elements

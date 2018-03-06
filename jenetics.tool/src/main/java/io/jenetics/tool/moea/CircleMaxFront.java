@@ -73,7 +73,7 @@ public class CircleMaxFront {
 				new Mutator<>(0.1),
 				new MeanAlterer<>())
 			.offspringSelector(new TournamentSelector<>(3))
-			.survivorsSelector(UFTournamentSelector.vec())
+			.survivorsSelector(UFTournamentSelector.ofVec())
 			.build();
 
 		final ISeq<Phenotype<DoubleGene, Vec<double[]>>> front = engine.stream()

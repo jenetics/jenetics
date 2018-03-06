@@ -74,9 +74,18 @@ public class UFTournamentSelector<
 
 	/**
 	 * Creates a new {@code UFTournamentSelector} with the functions needed for
-	 * handling the multi-objective result type {@code C}.
+	 * handling the multi-objective result type {@code C}. For the {@link Vec}
+	 * classes, a selector is created like in the following example:
+	 * <pre>{@code
+	 * new UFTournamentSelector<>(
+	 *     Vec<T>::dominance,
+	 *     Vec<T>::compare,
+	 *     Vec<T>::distance,
+	 *     Vec<T>::length
+	 * );
+	 * }</pre>
 	 *
-	 * @see #vec()
+	 * @see #ofVec()
 	 *
 	 * @param dominance the pareto dominance comparator
 	 * @param comparator the vector element comparator
@@ -146,7 +155,16 @@ public class UFTournamentSelector<
 	}
 
 	/**
-	 * Return a new selector for the given result type {@code V}.
+	 * Return a new selector for the given result type {@code V}. This method is
+	 * a shortcut for
+	 * <pre>{@code
+	 * new UFTournamentSelector<>(
+	 *     Vec<T>::dominance,
+	 *     Vec<T>::compare,
+	 *     Vec<T>::distance,
+	 *     Vec<T>::length
+	 * );
+	 * }</pre>
 	 *
 	 * @param <G> the gene type
 	 * @param <T> the array type, e.g. {@code double[]}
@@ -154,7 +172,7 @@ public class UFTournamentSelector<
 	 * @return a new selector for the given result type {@code V}
 	 */
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
-	UFTournamentSelector<G, V> vec() {
+	UFTournamentSelector<G, V> ofVec() {
 		return new UFTournamentSelector<>(
 			Vec<T>::dominance,
 			Vec<T>::compare,

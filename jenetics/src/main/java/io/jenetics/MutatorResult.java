@@ -35,6 +35,9 @@ import java.util.function.Function;
  * @see Mutator#mutate(Chromosome, double, Random)
  * @see Mutator#mutate(Gene, Random)
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 4.0

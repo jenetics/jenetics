@@ -48,7 +48,7 @@ import io.jenetics.prog.op.Var;
 public class Example {
 
 	// Lookup table for 4*x^3 - 3*x^2 + x
-	private static final double[][] SAMPLES = new double[][] {
+	static final double[][] SAMPLES = new double[][] {
 		{-1.0, -8.0000},
 		{-0.9, -6.2460},
 		{-0.8, -4.7680},
@@ -73,24 +73,24 @@ public class Example {
 	};
 
 	// The function we want to determine.
-	private static double f(final double x) {
+	static double f(final double x) {
 		return 4*x*x*x - 3*x*x + x;
 	}
 
 	// Definition of the allowed operations.
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
 		MathOp.SUB,
 		MathOp.MUL
 	);
 
 	// Definition of the terminals.
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
 	);
 
-	private static double error(final ProgramGene<Double> program) {
+	static double error(final ProgramGene<Double> program) {
 		return Arrays.stream(SAMPLES)
 			.mapToDouble(sample ->
 				abs(sample[1] - program.eval(sample[0])) +
@@ -98,7 +98,7 @@ public class Example {
 			.sum();
 	}
 
-	private static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
+	static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
 		Codec.of(
 			Genotype.of(ProgramChromosome.of(
 				5,

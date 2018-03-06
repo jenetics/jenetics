@@ -85,6 +85,17 @@ public class Program<T> implements Op<T>, Serializable {
 		return _arity;
 	}
 
+	/**
+	 * Return the underlying expression tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the underlying expression tree
+	 */
+	public Tree<? extends Op<T>, ?> tree() {
+		return TreeNode.ofTree(_tree);
+	}
+
 	@Override
 	public T apply(final T[] args) {
 		if (args.length < arity()) {
@@ -129,7 +140,7 @@ public class Program<T> implements Op<T>, Serializable {
 			obj instanceof Program<?> &&
 			Objects.equals(((Program)obj)._name, _name) &&
 			((Program)obj)._arity == _arity &&
-			Objects.equals(((Program) obj)._tree, _tree);
+			Objects.equals(((Program)obj)._tree, _tree);
 	}
 
 	@Override
@@ -163,12 +174,23 @@ public class Program<T> implements Op<T>, Serializable {
 
 		final Op<T> op = tree.getValue();
 		return op.isTerminal()
-			? op.apply(variables)
-			: op.apply(
+			? eval(op, variables)
+			: eval(op,
 					tree.childStream()
 						.map(child -> eval(child, variables))
 						.toArray(size -> newArray(variables.getClass(), size))
 				);
+	}
+
+	@SafeVarargs
+	private static <T> T eval(final Op<T> op, final T... variables) {
+		if (op instanceof Var && ((Var) op).index() >= variables.length) {
+			throw new IllegalArgumentException(format(
+				"No value for variable '%s' given.", op
+			));
+		}
+
+		return op.apply(variables);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -202,8 +224,8 @@ public class Program<T> implements Op<T>, Serializable {
 	}
 
 	/**
-	 * Create a new program from the given (non) terminal operations with
-	 * the desired depth. The created program tree is a <em>full</em> tree.
+	 * Create a new, random program from the given (non) terminal operations
+	 * with the desired depth. The created program tree is a <em>full</em> tree.
 	 *
 	 * @since 4.1
 	 *
@@ -212,7 +234,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 * @param operations the list of <em>non</em>-terminal operations
 	 * @param terminals the list of terminal operations
 	 * @param <A> the operational type
-	 * @return a new program tree
+	 * @return a new program
 	 * @throws NullPointerException if one of the given operations is
 	 *        {@code null}
 	 * @throws IllegalArgumentException if the given tree depth is smaller than
@@ -228,8 +250,37 @@ public class Program<T> implements Op<T>, Serializable {
 	}
 
 	/**
-	 * Create a new program tree from the given (non) terminal operations with
-	 * the desired depth. The created program tree is a <em>full</em> tree.
+	 * Create a new, random program from the given (non) terminal operations
+	 * with the desired depth. The created program tree is a <em>full</em> tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @param name the program name
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param random the random engine used for creating the program
+	 * @param <A> the operational type
+	 * @return a new program
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
+	 */
+	public static <A> Program<A> of(
+		final String name,
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
+	) {
+		return new Program<>(name, of(depth, operations, terminals, random));
+	}
+
+	/**
+	 * Create a new, random program tree from the given (non) terminal
+	 * operations with the desired depth. The created program tree is a
+	 * <em>full</em> tree.
 	 *
 	 * @param depth the desired depth of the program tree
 	 * @param operations the list of <em>non</em>-terminal operations
@@ -245,6 +296,33 @@ public class Program<T> implements Op<T>, Serializable {
 		final int depth,
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
+	) {
+		return of(depth, operations, terminals, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Create a new, random program tree from the given (non) terminal
+	 * operations with the desired depth. The created program tree is a
+	 * <em>full</em> tree.
+	 *
+	 * @since 4.1
+	 *
+	 * @param depth the desired depth of the program tree
+	 * @param operations the list of <em>non</em>-terminal operations
+	 * @param terminals the list of terminal operations
+	 * @param random the random engine used for creating the program
+	 * @param <A> the operational type
+	 * @return a new program tree
+	 * @throws NullPointerException if one of the given operations is
+	 *        {@code null}
+	 * @throws IllegalArgumentException if the given tree depth is smaller than
+	 *         zero
+	 */
+	public static <A> TreeNode<Op<A>> of(
+		final int depth,
+		final ISeq<? extends Op<A>> operations,
+		final ISeq<? extends Op<A>> terminals,
+		final Random random
 	) {
 		if (depth < 0) {
 			throw new IllegalArgumentException(
@@ -263,7 +341,7 @@ public class Program<T> implements Op<T>, Serializable {
 		}
 
 		final TreeNode<Op<A>> root = TreeNode.of();
-		fill(depth, root, operations, terminals, RandomRegistry.getRandom());
+		fill(depth, root, operations, terminals, random);
 		return root;
 	}
 

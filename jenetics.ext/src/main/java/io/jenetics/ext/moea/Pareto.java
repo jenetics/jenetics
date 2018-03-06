@@ -38,14 +38,17 @@ import io.jenetics.util.Seq;
 import io.jenetics.ext.internal.IntList;
 
 /**
- * This class contains static methods concerning <em>Pareto</em>- front and
- * dominance calculations.
+ * Low-level utility methods for doing pareto-optimal calculations. This methods
+ * are mostly for users who wants to extend the existing <em>MOEA</em> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1
  */
 public final class Pareto {
+
+	private Pareto() {
+	}
 
 	/* *************************************************************************
 	 * Crowding distance methods.
@@ -373,7 +376,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> comparator.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> comparator.compare(a[i], b[i])
 		);
 	}
 
@@ -394,7 +397,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Integer.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Integer.compare(a[i], b[i])
 		);
 	}
 
@@ -415,7 +418,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Long.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Long.compare(a[i], b[i])
 		);
 	}
 
@@ -436,7 +439,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Double.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Double.compare(a[i], b[i])
 		);
 	}
 
@@ -451,8 +454,8 @@ public final class Pareto {
 	private static <T> int dominance(
 		final T u,
 		final T v,
-		final ElementComparator<? super T> comparator,
-		final int dimension
+		final int dimension,
+		final ElementComparator<? super T> comparator
 	) {
 		boolean udominated = false;
 		boolean vdominated = false;
