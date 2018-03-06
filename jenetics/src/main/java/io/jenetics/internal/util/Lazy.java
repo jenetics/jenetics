@@ -135,8 +135,9 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
+		final Object value = get();
 		out.defaultWriteObject();
-		out.writeObject(get());
+		out.writeObject(value);
 	}
 
 	@SuppressWarnings("unchecked")

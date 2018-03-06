@@ -149,7 +149,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final MinMax<C> other) {
-		return Objects.equals(_min, other._min) &&
+		return this == other ||
+			Objects.equals(_min, other._min) &&
 			Objects.equals(_max, other._max);
 	}
 

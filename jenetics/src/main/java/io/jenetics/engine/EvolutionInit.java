@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  *
  * @param <G> the gene type
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

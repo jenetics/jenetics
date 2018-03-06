@@ -59,7 +59,7 @@ import io.jenetics.util.Seq;
  * @param <G> the gene type
  * @param <C> the fitness type
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
