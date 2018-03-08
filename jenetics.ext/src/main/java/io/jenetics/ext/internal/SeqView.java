@@ -31,7 +31,7 @@ import io.jenetics.util.Seq;
  * @version 4.1
  * @since 4.1
  */
-public class SeqView<T> implements Seq<T> {
+public final class SeqView<T> implements Seq<T> {
 
 	private final List<T> _list;
 
