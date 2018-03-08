@@ -133,6 +133,9 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	/**
 	 * Add the all {@code elements} to {@code this} pareto-set.
 	 *
+	 * @apiNote
+	 * Merging two pareto fronts has a time complexity of {@code O(n*m)}.
+	 *
 	 * @param elements the elements to add
 	 * @return {@code this} pareto-set
 	 * @throws NullPointerException if the given parameter is {@code null}
