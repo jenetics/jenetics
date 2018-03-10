@@ -267,20 +267,20 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evaluatedPopulation = evaluate(start.getPopulation());
+		final ISeq<Phenotype<G, C>> evalPop = evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
-				selectOffspring(evaluatedPopulation),
+				selectOffspring(evalPop),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(evaluatedPopulation),
+				selectSurvivors(evalPop),
 				_clock
 			);
 
@@ -420,42 +420,30 @@ public final class Engine<
 
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>>
-	evaluate(final ISeq<Phenotype<G, C>> population) {
+	evaluate(final ISeq<Phenotype<G, C>> pop) {
 		if (_evaluator != null) {
-			final ISeq<Phenotype<G, C>> evaluated = population.stream()
-				.filter(Phenotype::isEvaluated)
-				.collect(ISeq.toISeq());
+			final ISeq<C> results = _evaluator.evaluate(
+				pop.stream()
+					.filter(pt -> !pt.isEvaluated())
+					.map(Phenotype::getGenotype)
+					.collect(ISeq.toISeq()),
+				_fitnessFunction
+			);
 
-			final ISeq<Genotype<G>> genotypes = population.stream()
-				.filter(pt -> !pt.isEvaluated())
-				.map(Phenotype::getGenotype)
-				.collect(ISeq.toISeq());
+			final MSeq<Phenotype<G, C>> evaluated = pop.copy();
+			for (int i = 0, j = 0; i < evaluated.length(); ++i) {
+				if (!pop.get(i).isEvaluated()) {
+					evaluated.set(i, pop.get(i).withFitness(results.get(j++)));
+				}
+			}
 
-			final ISeq<C> results = _evaluator.evaluate(genotypes, _fitnessFunction);
-
-			final ISeq<Phenotype<G, C>> pts = genotypes.stream()
-				.map(gt -> Phenotype.of(
-					gt,
-					1, // Fix to correct generation
-					_fitnessFunction,
-					_fitnessScaler))
-				.collect(ISeq.toISeq());
-
-			return evaluated.append(pts);
+			return evaluated.toISeq();
 		} else {
 			try (Concurrency c = Concurrency.with(_executor.get())) {
-				c.execute(population);
+				c.execute(pop);
 			}
-			return population;
+			return pop;
 		}
-	}
-
-	private //static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	ISeq<C> evaluate(
-		final ISeq<Genotype<G>> population,
-		final Function<? super Genotype<G>, ? extends C> function
-	) {
-		return null;
 	}
 
 

@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -87,6 +88,7 @@ public final class Phenotype<
 	 * @param generation the current generation of the generated phenotype.
 	 * @param function the fitness function of this phenotype.
 	 * @param scaler the fitness scaler.
+	 * @param rawFitness the known raw-fitness of the phenotype.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
@@ -95,7 +97,8 @@ public final class Phenotype<
 		final Genotype<G> genotype,
 		final long generation,
 		final Function<? super Genotype<G>, ? extends C> function,
-		final Function<? super C, ? extends C> scaler
+		final Function<? super C, ? extends C> scaler,
+		final C rawFitness
 	) {
 		_genotype = requireNonNull(genotype, "Genotype");
 		_function = requireNonNull(function, "Fitness function");
@@ -107,8 +110,13 @@ public final class Phenotype<
 		}
 		_generation = generation;
 
-		_rawFitness = Lazy.of(() -> _function.apply(_genotype));
-		_fitness = Lazy.of(() -> _scaler.apply(_rawFitness.get()));
+		if (rawFitness != null) {
+			_rawFitness = Lazy.ofValue(rawFitness);
+			_fitness = Lazy.ofValue(scaler.apply(rawFitness));
+		} else {
+			_rawFitness = Lazy.of(() -> _function.apply(_genotype));
+			_fitness = Lazy.of(() -> _scaler.apply(_rawFitness.get()));
+		}
 	}
 
 	/**
@@ -246,6 +254,17 @@ public final class Phenotype<
 		return _genotype + " --> " + getFitness();
 	}
 
+
+	public Phenotype<G, C> withFitness(final C fitness) {
+		return Phenotype.of(
+			_genotype,
+			_generation,
+			_function,
+			_scaler,
+			fitness
+		);
+	}
+
 	/**
 	 * Create a new {@code Phenotype} with a different {@code Genotype} but the
 	 * same {@code generation}, fitness {@code function} and fitness
@@ -372,7 +391,43 @@ public final class Phenotype<
 			genotype,
 			generation,
 			function,
-			scaler
+			scaler,
+			null
+		);
+	}
+
+	/**
+	 * Create a new phenotype from the given arguments. This factory method is
+	 * used when the fitness value of the phenotype has been calculated by a
+	 * different {@link io.jenetics.engine.Evaluator} strategy then the default
+	 * one.
+	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
+	 * @param genotype the genotype of this phenotype.
+	 * @param generation the current generation of the generated phenotype.
+	 * @param function the fitness function of this phenotype.
+	 * @param scaler the fitness scaler.
+	 * @param rawFitness the known raw-fitness of the phenotype.
+	 * @return a new phenotype object
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> of(
+		final Genotype<G> genotype,
+		final long generation,
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super C, ? extends C> scaler,
+		final C rawFitness
+	) {
+		return new Phenotype<>(
+			genotype,
+			generation,
+			function,
+			scaler,
+			requireNonNull(rawFitness)
 		);
 	}
 

@@ -24,6 +24,7 @@ import java.util.function.Function;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,7 +38,7 @@ public interface Evaluator<
 > {
 
 	public ISeq<C> evaluate(
-		final ISeq<Genotype<G>> population,
+		final Seq<Genotype<G>> population,
 		final Function<? super Genotype<G>, ? extends C> function
 	);
 

@@ -27,12 +27,13 @@ import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.BitGene;
+import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
 import io.jenetics.SinglePointCrossover;
-import io.jenetics.engine.BatchEval;
 import io.jenetics.engine.Engine;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -45,13 +46,12 @@ public class BatchEvalKnapsack {
 	public static void main(String[] args) throws IOException {
 		final Knapsack knapsack = Knapsack.of(15, new Random(123));
 
-		final Engine<BitGene, Double> engine = Engine
-			.builder(knapsack)
+		final Engine<BitGene, Double> engine = Engine.builder(knapsack)
 			.populationSize(500)
 			.alterers(
 				new Mutator<>(0.115),
 				new SinglePointCrossover<>(0.16))
-			.evaluator(new BatchEval<>())
+			.evaluator(BatchEvalKnapsack::batchEval)
 			.build();
 
 		final Phenotype<BitGene, Double> best = engine.stream()
@@ -59,6 +59,15 @@ public class BatchEvalKnapsack {
 			.collect(toBestPhenotype());
 
 		System.out.println(best);
+	}
+
+	// Not really batch eval. Just for testing.
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	ISeq<C> batchEval(
+		final Seq<Genotype<G>> genotypes,
+		final Function<? super Genotype<G>, ? extends C> function
+	) {
+		return genotypes.<C>map(function).asISeq();
 	}
 
 }
