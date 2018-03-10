@@ -133,6 +133,10 @@ public final class Phenotype<
 		return this;
 	}
 
+	public boolean isEvaluated() {
+		return _fitness.isEvaluated();
+	}
+
 	/**
 	 * This method simply calls the {@link #evaluate()} method. The purpose of
 	 * this method is to have a simple way for concurrent fitness calculation

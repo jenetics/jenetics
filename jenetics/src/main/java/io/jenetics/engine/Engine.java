@@ -145,6 +145,7 @@ public final class Engine<
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
 	private final Clock _clock;
+	private final Evaluator<G, C> _evaluator;
 
 	// Additional parameters.
 	private final int _individualCreationRetries;
@@ -168,6 +169,7 @@ public final class Engine<
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
 	 * @param clock the clock used for calculating the timing results
+	 * @param evaluator the population fitness evaluator
 	 * @param individualCreationRetries the maximal number of attempts for
 	 *        creating a valid individual.
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -188,6 +190,7 @@ public final class Engine<
 		final long maximalPhenotypeAge,
 		final Executor executor,
 		final Clock clock,
+		final Evaluator<G, C> evaluator,
 		final int individualCreationRetries,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
@@ -215,6 +218,7 @@ public final class Engine<
 		}
 		_individualCreationRetries = individualCreationRetries;
 		_mapper = requireNonNull(mapper);
+		_evaluator = evaluator != null ? evaluator : this::evaluate;
 	}
 
 	/**
@@ -262,7 +266,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		evaluate(start.getPopulation());
+		_evaluator.evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
@@ -310,7 +314,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> evaluate(pop), _clock)
+			.of(() -> {_evaluator.evaluate(pop); return pop;}, _clock)
 			.get();
 
 
@@ -661,6 +665,7 @@ public final class Engine<
 		return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 			.alterers(_alterer)
 			.clock(_clock)
+			.evaluator(_evaluator)
 			.executor(_executor.get())
 			.fitnessScaler(_fitnessScaler)
 			.maximalPhenotypeAge(_maximalPhenotypeAge)
@@ -799,6 +804,7 @@ public final class Engine<
 		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
+		private Evaluator<G, C> _evaluator;
 
 		private int _individualCreationRetries = 10;
 		private UnaryOperator<EvolutionResult<G, C>> _mapper = r -> r;
@@ -1147,6 +1153,11 @@ public final class Engine<
 			return this;
 		}
 
+		public Builder<G, C> evaluator(final Evaluator<G, C> evaluator) {
+			_evaluator = evaluator;
+			return this;
+		}
+
 		/**
 		 * The maximal number of attempt before the {@code Engine} gives up
 		 * creating a valid individual ({@code Phenotype}). <i>Default values is
@@ -1212,6 +1223,7 @@ public final class Engine<
 				_maximalPhenotypeAge,
 				_executor,
 				_clock,
+				_evaluator,
 				_individualCreationRetries,
 				_mapper
 			);
