@@ -19,15 +19,11 @@
  */
 package io.jenetics.engine;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -38,41 +34,18 @@ public class BatchEval<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evaluator<G, C>, Function<Genotype<G>, C>
+	implements Evaluator<G, C>
 {
 
-	private final Function<Seq<Genotype<G>>, Seq<C>> _fitness;
-
-	private final Map<Genotype<G>, C> _values = new HashMap<>();
-
-	public BatchEval(final Function<Seq<Genotype<G>>, Seq<C>> fitness) {
-		_fitness = fitness;
-	}
-
 	@Override
-	public void evaluate(final ISeq<Phenotype<G, C>> population) {
-		_values.clear();
-
-		final ISeq<Genotype<G>> pop = population.stream()
-			.filter(pt -> !pt.isEvaluated())
-			.map(Phenotype::getGenotype)
+	public ISeq<C> evaluate(
+		final ISeq<Genotype<G>> genotypes,
+		final Function<? super Genotype<G>, ? extends C> function
+	) {
+		// Not really batch eval. Just for testing.
+		return genotypes.stream()
+			.map(function)
 			.collect(ISeq.toISeq());
-
-		final Seq<C> results = _fitness.apply(pop);
-		assert results.length() == pop.length();
-
-		for (int i = 0; i < results.length(); ++i) {
-			_values.put(pop.get(i), results.get(i));
-		}
 	}
 
-	@Override
-	public C apply(final Genotype<G> gt) {
-		final C result = _values.get(gt);
-		if (result == null) {
-			throw new IllegalStateException();
-
-		}
-		return result;
-	}
 }

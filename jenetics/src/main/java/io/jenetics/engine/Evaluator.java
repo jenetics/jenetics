@@ -19,8 +19,10 @@
  */
 package io.jenetics.engine;
 
+import java.util.function.Function;
+
 import io.jenetics.Gene;
-import io.jenetics.Phenotype;
+import io.jenetics.Genotype;
 import io.jenetics.util.ISeq;
 
 /**
@@ -34,7 +36,10 @@ public interface Evaluator<
 	C extends Comparable<? super C>
 > {
 
-	public void evaluate(final ISeq<Phenotype<G, C>> population);
+	public ISeq<C> evaluate(
+		final ISeq<Genotype<G>> population,
+		final Function<? super Genotype<G>, ? extends C> function
+	);
 
 }
 

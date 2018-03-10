@@ -45,20 +45,13 @@ public class BatchEvalKnapsack {
 	public static void main(String[] args) throws IOException {
 		final Knapsack knapsack = Knapsack.of(15, new Random(123));
 
-		final Function<Seq<Genotype<BitGene>>, Seq<Double>> batchFunction =
-			batch -> batch
-				.map(knapsack.codec().decoder())
-				.map(knapsack.fitness());
-
-		final BatchEval<BitGene, Double> eval = new BatchEval<>(batchFunction);
-
 		final Engine<BitGene, Double> engine = Engine
-			.builder(eval, knapsack.codec().encoding())
+			.builder(knapsack)
 			.populationSize(500)
 			.alterers(
 				new Mutator<>(0.115),
 				new SinglePointCrossover<>(0.16))
-			.evaluator(eval)
+			.evaluator(new BatchEval<>())
 			.build();
 
 		final Phenotype<BitGene, Double> best = engine.stream()

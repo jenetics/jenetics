@@ -34,6 +34,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Alterer;
@@ -218,7 +219,7 @@ public final class Engine<
 		}
 		_individualCreationRetries = individualCreationRetries;
 		_mapper = requireNonNull(mapper);
-		_evaluator = evaluator != null ? evaluator : this::evaluate;
+		_evaluator = evaluator;
 	}
 
 	/**
@@ -266,20 +267,20 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		_evaluator.evaluate(start.getPopulation());
+		final ISeq<Phenotype<G, C>> evaluatedPopulation = evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.getPopulation()),
+				selectOffspring(evaluatedPopulation),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.getPopulation()),
+				selectSurvivors(evaluatedPopulation),
 				_clock
 			);
 
@@ -314,7 +315,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> {_evaluator.evaluate(pop); return pop;}, _clock)
+			.of(() -> evaluate(pop), _clock)
 			.get();
 
 
@@ -420,10 +421,41 @@ public final class Engine<
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>>
 	evaluate(final ISeq<Phenotype<G, C>> population) {
-		try (Concurrency c = Concurrency.with(_executor.get())) {
-			c.execute(population);
+		if (_evaluator != null) {
+			final ISeq<Phenotype<G, C>> evaluated = population.stream()
+				.filter(Phenotype::isEvaluated)
+				.collect(ISeq.toISeq());
+
+			final ISeq<Genotype<G>> genotypes = population.stream()
+				.filter(pt -> !pt.isEvaluated())
+				.map(Phenotype::getGenotype)
+				.collect(ISeq.toISeq());
+
+			final ISeq<C> results = _evaluator.evaluate(genotypes, _fitnessFunction);
+
+			final ISeq<Phenotype<G, C>> pts = genotypes.stream()
+				.map(gt -> Phenotype.of(
+					gt,
+					1, // Fix to correct generation
+					_fitnessFunction,
+					_fitnessScaler))
+				.collect(ISeq.toISeq());
+
+			return evaluated.append(pts);
+		} else {
+			try (Concurrency c = Concurrency.with(_executor.get())) {
+				c.execute(population);
+			}
+			return population;
 		}
-		return population;
+	}
+
+	private //static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	ISeq<C> evaluate(
+		final ISeq<Genotype<G>> population,
+		final Function<? super Genotype<G>, ? extends C> function
+	) {
+		return null;
 	}
 
 
