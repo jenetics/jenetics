@@ -421,29 +421,43 @@ public final class Engine<
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>>
 	evaluate(final ISeq<Phenotype<G, C>> pop) {
+		ISeq<Phenotype<G, C>> result = pop;
+
 		if (_evaluator != null) {
-			final ISeq<C> results = _evaluator.evaluate(
-				pop.stream()
-					.filter(pt -> !pt.isEvaluated())
-					.map(Phenotype::getGenotype)
-					.collect(ISeq.toISeq()),
-				_fitnessFunction
-			);
+			final ISeq<Genotype<G>> genotypes = pop.stream()
+				.filter(pt -> !pt.isEvaluated())
+				.map(Phenotype::getGenotype)
+				.collect(ISeq.toISeq());
 
-			final MSeq<Phenotype<G, C>> evaluated = pop.copy();
-			for (int i = 0, j = 0; i < evaluated.length(); ++i) {
-				if (!pop.get(i).isEvaluated()) {
-					evaluated.set(i, pop.get(i).withFitness(results.get(j++)));
+			if (!genotypes.isEmpty()) {
+				final ISeq<C> results = _evaluator.evaluate(
+					pop.stream()
+						.filter(pt -> !pt.isEvaluated())
+						.map(Phenotype::getGenotype)
+						.collect(ISeq.toISeq()),
+					_fitnessFunction
+				);
+
+				final MSeq<Phenotype<G, C>> evaluated = pop.copy();
+				for (int i = 0, j = 0; i < evaluated.length(); ++i) {
+					if (!pop.get(i).isEvaluated()) {
+						evaluated.set(i, pop.get(i).withFitness(results.get(j++)));
+					}
 				}
-			}
 
-			return evaluated.toISeq();
-		} else {
-			try (Concurrency c = Concurrency.with(_executor.get())) {
-				c.execute(pop);
+				result = evaluated.toISeq();
 			}
-			return pop;
+		} else {
+			final ISeq<Phenotype<G, C>> phenotypes = pop.stream()
+				.filter(pt -> !pt.isEvaluated())
+				.collect(ISeq.toISeq());
+
+			try (Concurrency c = Concurrency.with(_executor.get())) {
+				c.execute(phenotypes);
+			}
 		}
+
+		return result;
 	}
 
 
