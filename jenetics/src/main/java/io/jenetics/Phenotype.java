@@ -141,10 +141,6 @@ public final class Phenotype<
 		return this;
 	}
 
-	public boolean isEvaluated() {
-		return _fitness.isEvaluated();
-	}
-
 	/**
 	 * The fitness value of the <em>phenotype</em> is evaluated lazily. This
 	 * method allows to check whether the fitness value has already been

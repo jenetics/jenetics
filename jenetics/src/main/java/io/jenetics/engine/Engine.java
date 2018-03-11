@@ -448,14 +448,14 @@ public final class Engine<
 				result = evaluated.toISeq();
 			}
 		} else {
-			/*
 			final ISeq<Phenotype<G, C>> phenotypes = pop.stream()
 				.filter(pt -> !pt.isEvaluated())
 				.collect(ISeq.toISeq());
-				*/
 
-			try (Concurrency c = Concurrency.with(_executor.get())) {
-				c.execute(pop);
+			if (!phenotypes.isEmpty()) {
+				try (Concurrency c = Concurrency.with(_executor.get())) {
+					c.execute(phenotypes);
+				}
 			}
 		}
 
