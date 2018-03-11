@@ -69,7 +69,11 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 * @return {@code true} is the {@code Lazy} variable has been evaluated,
 	 *         {@code false} otherwise
 	 */
-	public synchronized boolean isEvaluated() {
+	public boolean isEvaluated() {
+		return _evaluated || _evaluated();
+	}
+
+	private synchronized boolean _evaluated() {
 		return _evaluated;
 	}
 
@@ -96,7 +100,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 
     @Override
     public String toString() {
-		return format("Lazy[%s]", _evaluated ? get() : "?");
+		return format("Lazy[%s]", isEvaluated() ? get() : "?");
     }
 
 	/**
