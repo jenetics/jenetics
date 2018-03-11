@@ -432,6 +432,14 @@ public final class Engine<
 				final ISeq<C> results = _evaluator
 					.evaluate(genotypes, _fitnessFunction);
 
+				if (genotypes.size() != results.size()) {
+					throw new IllegalStateException(format(
+						"Expected %d results, but got %d. " +
+						"Check your evaluator function.",
+						genotypes.size(), results.size()
+					));
+				}
+
 				final MSeq<Phenotype<G, C>> evaluated = pop.copy();
 				for (int i = 0, j = 0; i < evaluated.length(); ++i) {
 					if (!pop.get(i).isEvaluated()) {
@@ -511,7 +519,7 @@ public final class Engine<
 	private Phenotype<G, C> toFixedPhenotype(final Phenotype<G, C> pt) {
 		return
 			pt.getFitnessFunction() == _fitnessFunction &&
-				pt.getFitnessScaler() == _fitnessScaler
+			pt.getFitnessScaler() == _fitnessScaler
 				? pt
 				: pt.newInstance(
 					pt.getGeneration(),
@@ -1438,6 +1446,7 @@ public final class Engine<
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)
+				.evaluator(_evaluator)
 				.fitnessScaler(_fitnessScaler)
 				.maximalPhenotypeAge(_maximalPhenotypeAge)
 				.offspringFraction(_offspringFraction)
