@@ -416,8 +416,14 @@ public final class Engine<
 	// Evaluates the fitness function of the give population concurrently.
 	private ISeq<Phenotype<G, C>>
 	evaluate(final ISeq<Phenotype<G, C>> population) {
-		try (Concurrency c = Concurrency.with(_executor.get())) {
-			c.execute(population);
+		final ISeq<Phenotype<G, C>> pop = population.stream()
+			.filter(pt -> !pt.isEvaluated())
+			.collect(ISeq.toISeq());
+
+		if (!pop.isEmpty()) {
+			try (Concurrency c = Concurrency.with(_executor.get())) {
+				c.execute(population);
+			}
 		}
 		return population;
 	}
