@@ -34,7 +34,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Alterer;
@@ -429,19 +428,17 @@ public final class Engine<
 				.map(Phenotype::getGenotype)
 				.collect(ISeq.toISeq());
 
-			if (!genotypes.isEmpty()) {
-				final ISeq<C> results = _evaluator.evaluate(
-					pop.stream()
-						.filter(pt -> !pt.isEvaluated())
-						.map(Phenotype::getGenotype)
-						.collect(ISeq.toISeq()),
-					_fitnessFunction
-				);
+			if (genotypes.nonEmpty()) {
+				final ISeq<C> results = _evaluator
+					.evaluate(genotypes, _fitnessFunction);
 
 				final MSeq<Phenotype<G, C>> evaluated = pop.copy();
 				for (int i = 0, j = 0; i < evaluated.length(); ++i) {
 					if (!pop.get(i).isEvaluated()) {
-						evaluated.set(i, pop.get(i).withFitness(results.get(j++)));
+						evaluated.set(
+							i,
+							pop.get(i).withFitness(results.get(j++))
+						);
 					}
 				}
 
@@ -452,7 +449,7 @@ public final class Engine<
 				.filter(pt -> !pt.isEvaluated())
 				.collect(ISeq.toISeq());
 
-			if (!phenotypes.isEmpty()) {
+			if (phenotypes.nonEmpty()) {
 				try (Concurrency c = Concurrency.with(_executor.get())) {
 					c.execute(phenotypes);
 				}
@@ -460,18 +457,6 @@ public final class Engine<
 		}
 
 		return result;
-	}
-
-	private ISeq<C> eval(
-		final Seq<Genotype<G>> genotypes,
-		final Function<? super Genotype<G>, ? extends C> function
-	) {
-		/*
-		try (Concurrency c = Concurrency.with(_executor.get())) {
-			c.execute(phenotypes);
-		}
-		*/
-		return null;
 	}
 
 

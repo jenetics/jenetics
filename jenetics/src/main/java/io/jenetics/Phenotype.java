@@ -88,7 +88,7 @@ public final class Phenotype<
 	 * @param generation the current generation of the generated phenotype.
 	 * @param function the fitness function of this phenotype.
 	 * @param scaler the fitness scaler.
-	 * @param rawFitness the known raw-fitness of the phenotype.
+	 * @param rawFitness the known raw-fitness of the phenotype, maybe {@code null}
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
@@ -262,7 +262,16 @@ public final class Phenotype<
 		return _genotype + " --> " + getFitness();
 	}
 
-
+	/**
+	 * Return a new {@code Phenotype} object with the given <em>raw</em> fitness
+	 * value. The returned phenotype is automatically <em>evaluated</em>:
+	 * {@code isEvaluated() == true}
+	 *
+	 * @param fitness the phenotypes fitness value
+	 * @throws NullPointerException if the given {@code fitness} value is
+	 *         {@code null}
+	 * @return a new phenotype with the given fitness value
+	 */
 	public Phenotype<G, C> withFitness(final C fitness) {
 		return Phenotype.of(
 			_genotype,

@@ -110,7 +110,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			if (!runnables.isEmpty()) {
+			if (runnables.nonEmpty()) {
 				_tasks.add(_pool.submit(new RunnablesAction(runnables)));
 			}
 		}
@@ -144,7 +144,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			if (!runnables.isEmpty()) {
+			if (runnables.nonEmpty()) {
 				final int[] parts = partition(
 					runnables.size(),
 					max(
@@ -199,7 +199,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			if (!runnables.isEmpty()) {
+			if (runnables.nonEmpty()) {
 				final int[] parts = partition(
 					runnables.size(),
 					max(
