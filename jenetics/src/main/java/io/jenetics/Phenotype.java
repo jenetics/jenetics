@@ -146,6 +146,18 @@ public final class Phenotype<
 	}
 
 	/**
+	 * The fitness value of the <em>phenotype</em> is evaluated lazily. This
+	 * method allows to check whether the fitness value has already been
+	 * calculated or not.
+	 *
+	 * @return {@code true} is this phenotype has been evaluated, {@code false}
+	 *         otherwise
+	 */
+	public boolean isEvaluated() {
+		return _fitness.isEvaluated();
+	}
+
+	/**
 	 * This method simply calls the {@link #evaluate()} method. The purpose of
 	 * this method is to have a simple way for concurrent fitness calculation
 	 * for expensive fitness values.
