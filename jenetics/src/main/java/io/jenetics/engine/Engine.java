@@ -47,7 +47,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
-import io.jenetics.internal.util.Concurrency;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
@@ -144,8 +143,8 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
-	private final Clock _clock;
 	private final Evaluator<G, C> _evaluator;
+	private final Clock _clock;
 
 	// Additional parameters.
 	private final int _individualCreationRetries;
@@ -168,8 +167,8 @@ public final class Engine<
 	 * @param survivorsCount the number of the survivor individuals
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
-	 * @param clock the clock used for calculating the timing results
 	 * @param evaluator the population fitness evaluator
+	 * @param clock the clock used for calculating the timing results
 	 * @param individualCreationRetries the maximal number of attempts for
 	 *        creating a valid individual.
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -189,8 +188,8 @@ public final class Engine<
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
 		final Executor executor,
-		final Clock clock,
 		final Evaluator<G, C> evaluator,
+		final Clock clock,
 		final int individualCreationRetries,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
@@ -208,6 +207,7 @@ public final class Engine<
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
+		_evaluator = requireNonNull(evaluator);
 		_clock = requireNonNull(clock);
 
 		if (individualCreationRetries < 0) {
@@ -218,7 +218,6 @@ public final class Engine<
 		}
 		_individualCreationRetries = individualCreationRetries;
 		_mapper = requireNonNull(mapper);
-		_evaluator = evaluator;
 	}
 
 	/**
@@ -266,7 +265,8 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evalPop = evaluate(start.getPopulation());
+		final ISeq<Phenotype<G, C>> evalPop =
+			_evaluator.evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
@@ -314,7 +314,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> evaluate(pop), _clock)
+			.of(() -> _evaluator.evaluate(pop), _clock)
 			.get();
 
 
@@ -415,56 +415,6 @@ public final class Engine<
 				!_validator.test(phenotype));
 
 		return phenotype;
-	}
-
-	// Evaluates the fitness function of the give population concurrently.
-	private ISeq<Phenotype<G, C>>
-	evaluate(final ISeq<Phenotype<G, C>> pop) {
-		ISeq<Phenotype<G, C>> result = pop;
-
-		if (_evaluator != null) {
-			final ISeq<Genotype<G>> genotypes = pop.stream()
-				.filter(pt -> !pt.isEvaluated())
-				.map(Phenotype::getGenotype)
-				.collect(ISeq.toISeq());
-
-			if (genotypes.nonEmpty()) {
-				final ISeq<C> results = _evaluator
-					.evaluate(genotypes, _fitnessFunction);
-
-				if (genotypes.size() != results.size()) {
-					throw new IllegalStateException(format(
-						"Expected %d results, but got %d. " +
-						"Check your evaluator function.",
-						genotypes.size(), results.size()
-					));
-				}
-
-				final MSeq<Phenotype<G, C>> evaluated = pop.copy();
-				for (int i = 0, j = 0; i < evaluated.length(); ++i) {
-					if (!pop.get(i).isEvaluated()) {
-						evaluated.set(
-							i,
-							pop.get(i).withFitness(results.get(j++))
-						);
-					}
-				}
-
-				result = evaluated.toISeq();
-			}
-		} else {
-			final ISeq<Phenotype<G, C>> phenotypes = pop.stream()
-				.filter(pt -> !pt.isEvaluated())
-				.collect(ISeq.toISeq());
-
-			if (phenotypes.nonEmpty()) {
-				try (Concurrency c = Concurrency.with(_executor.get())) {
-					c.execute(phenotypes);
-				}
-			}
-		}
-
-		return result;
 	}
 
 
@@ -1195,7 +1145,12 @@ public final class Engine<
 		}
 
 		public Builder<G, C> evaluator(final Evaluator<G, C> evaluator) {
-			_evaluator = evaluator;
+			_evaluator = requireNonNull(evaluator);
+			return this;
+		}
+
+		public Builder<G, C> evaluator(final GenotypeEvaluator<G, C> evaluator) {
+			_evaluator = Evaluator.of(evaluator);
 			return this;
 		}
 
@@ -1263,8 +1218,10 @@ public final class Engine<
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
 				_executor,
+				_evaluator != null
+					? _evaluator
+					: new ConcurrentEvaluator<>(_executor),
 				_clock,
-				_evaluator,
 				_individualCreationRetries,
 				_mapper
 			);
