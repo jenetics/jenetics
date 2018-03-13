@@ -57,7 +57,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version !__version__!
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -144,6 +144,8 @@ public final class Phenotype<
 	 * The fitness value of the <em>phenotype</em> is evaluated lazily. This
 	 * method allows to check whether the fitness value has already been
 	 * calculated or not.
+	 *
+	 * @since !__version__!
 	 *
 	 * @return {@code true} is this phenotype has been evaluated, {@code false}
 	 *         otherwise
@@ -265,6 +267,8 @@ public final class Phenotype<
 	 * Return a new {@code Phenotype} object with the given <em>raw</em> fitness
 	 * value. The returned phenotype is automatically <em>evaluated</em>:
 	 * {@code isEvaluated() == true}
+	 *
+	 * @since !__version__!
 	 *
 	 * @param fitness the phenotypes fitness value
 	 * @throws NullPointerException if the given {@code fitness} value is
