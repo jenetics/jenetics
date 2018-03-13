@@ -30,6 +30,8 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
+ * Default phenotype evaluation strategy. It uses the configured {@}
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

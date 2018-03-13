@@ -761,17 +761,29 @@ public final class Engine<
 
 	/**
 	 * This interface allows to define different strategies for evaluating the
-	 * fitness functions of a given population. The implementer is free to do the
-	 * evaluation <em>in place</em>, or create new {@link Phenotype} instance and
-	 * return the newly created one. The following code snippet shows how to
-	 * evaluate the fitness values of the population serially:
+	 * fitness functions of a given population. <em>Normally</em>, there is no
+	 * need for <em>overriding</em> the default evaluation strategy, but it might
+	 * be necessary if you have performance problems and a <em>batched</em>
+	 * fitness evaluation would solve the problem.
+	 * <p>
+	 * The implementer is free to do the evaluation <em>in place</em>, or create
+	 * new {@link Phenotype} instance and return the newly created one. A simple
+	 * serial evaluator can easily implemented:
 	 *
 	 * <pre>{@code
-	 * ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	 * final Evaluator<G, C> evaluator = population -> {
 	 *     population.forEach(Phenotype::evaluate);
 	 *     return population.asISeq();
-	 * }
+	 * };
 	 * }</pre>
+	 *
+	 * @implSpec
+	 * The size of the returned, evaluated, phenotype sequence must be exactly
+	 * the size of the input phenotype sequence. It is allowed to return the
+	 * input sequence, after evaluation, as well a newly created one.
+	 *
+	 * @see GenotypeEvaluator
+	 * @see Engine.Builder#evaluator(Engine.Evaluator)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness result type
@@ -784,18 +796,10 @@ public final class Engine<
 	public static interface Evaluator<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
-		> {
+	> {
 
 		/**
-		 * Evaluates the fitness values of the given {@code population}. A simple
-		 * evaluation strategy would evaluate the population in a serial way:
-		 *
-		 * <pre>{@code
-		 * ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		 *     population.forEach(Phenotype::evaluate);
-		 *     return population.asISeq();
-		 * }
-		 * }</pre>
+		 * Evaluates the fitness values of the given {@code population}.
 		 *
 		 * @param population the population to evaluate
 		 * @return the evaluated population. Implementers are free to return the
@@ -809,9 +813,10 @@ public final class Engine<
 		 * @param evaluator the genotype evaluator
 		 * @param <G> the gene type
 		 * @param <C> the fitness result type
-		 * @return a <em>norma</em> phenotype evaluator from the given genotype
+		 * @return a <em>normal</em> phenotype evaluator from the given genotype
 		 *         evaluator
-		 * @throws NullPointerException if the given {@code evaluator} is {@code null}
+		 * @throws NullPointerException if the given {@code evaluator} is
+		 *         {@code null}
 		 */
 		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 		Evaluator<G, C> of(final GenotypeEvaluator<G, C> evaluator) {
@@ -857,6 +862,24 @@ public final class Engine<
 	}
 
 	/**
+	 * This interface gives a different possibility in evaluating the fitness
+	 * values of a population. Sometimes it is necessary (mostly for performance
+	 * reason) to calculate the fitness for the whole population at once. This
+	 * interface allows you to do so. A simple serial evaluator can easily
+	 * implemented:
+	 *
+	 * <pre>{@code
+	 * final GenotypeEvaluator<G, C> gte = (g, f) -> g.map(f).asISeq()
+	 * final Evaluator<G, C> evaluator = Evaluator.of(gte);
+	 * }</pre>
+	 *
+	 * @implSpec
+	 * The size of the returned result sequence must be exactly the size of the
+	 * input genotype sequence.
+	 *
+	 * @see Evaluator
+	 * @see Engine.Builder#evaluator(Engine.GenotypeEvaluator)
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version !__version__!
 	 * @since !__version__!
@@ -865,8 +888,19 @@ public final class Engine<
 	public static interface GenotypeEvaluator<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
-		> {
+	> {
 
+		/**
+		 * Calculate the fitness values for the given sequence of genotypes.
+		 *
+		 * @see Engine.Evaluator#of(Engine.GenotypeEvaluator)
+		 *
+		 * @param genotypes the genotypes to evaluate the fitness value for
+		 * @param function the fitness function
+		 * @return the fitness values for the given {@code genotypes} The length
+		 *         of the fitness result sequence must match with the size of
+		 *         the given {@code genotypes}.
+		 */
 		public ISeq<C> evaluate(
 			final Seq<Genotype<G>> genotypes,
 			final Function<? super Genotype<G>, ? extends C> function
@@ -1266,6 +1300,8 @@ public final class Engine<
 		 * By default, the population is evaluated concurrently using the
 		 * defined {@link Executor} implementation.
 		 *
+		 * @since !__version__!
+		 *
 		 * @param evaluator the population evaluation strategy
 		 * @return {@code this} builder, for command chaining
 		 */
@@ -1274,6 +1310,15 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * Setting the <em>genotype</em> evaluator used for evaluating the
+		 * fitness function of the population.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param evaluator the genotype evaluator
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> evaluator(final GenotypeEvaluator<G, C> evaluator) {
 			_evaluator = Evaluator.of(evaluator);
 			return this;
