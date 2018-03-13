@@ -1144,6 +1144,14 @@ public final class Engine<
 			return this;
 		}
 
+		/**
+		 * The phenotype evaluator allows to change the evaluation strategy.
+		 * By default, the population is evaluated concurrently using the
+		 * defined {@link Executor} implementation.
+		 *
+		 * @param evaluator the population evaluation strategy
+		 * @return {@code this} builder, for command chaining
+		 */
 		public Builder<G, C> evaluator(final Evaluator<G, C> evaluator) {
 			_evaluator = requireNonNull(evaluator);
 			return this;
