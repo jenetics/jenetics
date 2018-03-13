@@ -52,6 +52,9 @@ public class BatchEvalKnapsack {
 				new Mutator<>(0.115),
 				new SinglePointCrossover<>(0.16))
 			.evaluator(BatchEvalKnapsack::batchEval)
+			.evaluator(pop -> {
+				pop.forEach(Phenotype::evaluate);
+				return pop.asISeq(); })
 			.build();
 
 		final Phenotype<BitGene, Double> best = engine.stream()
