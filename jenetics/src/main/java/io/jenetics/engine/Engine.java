@@ -267,6 +267,15 @@ public final class Engine<
 		final Timer evaluateTimer = Timer.of(_clock).start();
 		final ISeq<Phenotype<G, C>> evalPop =
 			_evaluator.evaluate(start.getPopulation());
+
+		if (start.getPopulation().size() != evalPop.size()) {
+			throw new IllegalStateException(format(
+				"Expected %d individuals, but got %d. " +
+				"Check your evaluator function.",
+				start.getPopulation().size(), evalPop.size()
+			));
+		}
+
 		evaluateTimer.stop();
 
 		// Select the offspring population.
@@ -837,7 +846,7 @@ public final class Engine<
 					if (genotypes.size() != results.size()) {
 						throw new IllegalStateException(format(
 							"Expected %d results, but got %d. " +
-								"Check your evaluator function.",
+							"Check your evaluator function.",
 							genotypes.size(), results.size()
 						));
 					}
