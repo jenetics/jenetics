@@ -34,7 +34,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-public class ConcurrentEvaluator<
+final class ConcurrentEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -43,10 +43,9 @@ public class ConcurrentEvaluator<
 
 	private final Executor _executor;
 
-	public ConcurrentEvaluator(final Executor executor) {
+	ConcurrentEvaluator(final Executor executor) {
 		_executor = requireNonNull(executor);
 	}
-
 
 	@Override
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
