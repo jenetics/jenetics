@@ -29,7 +29,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Function;
 
-import io.jenetics.engine.GenotypeEvaluator;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.Verifiable;
@@ -416,8 +415,8 @@ public final class Phenotype<
 	/**
 	 * Create a new phenotype from the given arguments. This factory method is
 	 * used when the fitness value of the phenotype has been calculated by a
-	 * different {@link GenotypeEvaluator} strategy then the default
-	 * one.
+	 * different {@link io.jenetics.engine.Engine.GenotypeEvaluator} strategy
+	 * then the default one.
 	 *
 	 * @param <G> the gene type of the chromosome
 	 * @param <C> the fitness value type

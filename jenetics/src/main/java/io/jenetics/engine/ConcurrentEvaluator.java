@@ -38,7 +38,7 @@ final class ConcurrentEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evaluator<G, C>
+	implements Engine.Evaluator<G, C>
 {
 
 	private final Executor _executor;

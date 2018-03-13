@@ -758,6 +758,123 @@ public final class Engine<
 	 * Inner classes
 	 **************************************************************************/
 
+
+	/**
+	 * This interface allows to define different strategies for evaluating the
+	 * fitness functions of a given population. The implementer is free to do the
+	 * evaluation <em>in place</em>, or create new {@link Phenotype} instance and
+	 * return the newly created one. The following code snippet shows how to
+	 * evaluate the fitness values of the population serially:
+	 *
+	 * <pre>{@code
+	 * ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	 *     population.forEach(Phenotype::evaluate);
+	 *     return population.asISeq();
+	 * }
+	 * }</pre>
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface Evaluator<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		> {
+
+		/**
+		 * Evaluates the fitness values of the given {@code population}. A simple
+		 * evaluation strategy would evaluate the population in a serial way:
+		 *
+		 * <pre>{@code
+		 * ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+		 *     population.forEach(Phenotype::evaluate);
+		 *     return population.asISeq();
+		 * }
+		 * }</pre>
+		 *
+		 * @param population the population to evaluate
+		 * @return the evaluated population. Implementers are free to return the
+		 *         the input population or a newly created one.
+		 */
+		public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population);
+
+		/**
+		 * Create a new phenotype evaluator from a given genotype {@code evaluator}.
+		 *
+		 * @param evaluator the genotype evaluator
+		 * @param <G> the gene type
+		 * @param <C> the fitness result type
+		 * @return a <em>norma</em> phenotype evaluator from the given genotype
+		 *         evaluator
+		 * @throws NullPointerException if the given {@code evaluator} is {@code null}
+		 */
+		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+		Evaluator<G, C> of(final GenotypeEvaluator<G, C> evaluator) {
+			requireNonNull(evaluator);
+
+			return population -> {
+				final ISeq<Genotype<G>> genotypes = population.stream()
+					.filter(pt -> !pt.isEvaluated())
+					.map(Phenotype::getGenotype)
+					.collect(ISeq.toISeq());
+
+				if (genotypes.nonEmpty()) {
+					final ISeq<C> results = evaluator.evaluate(
+						genotypes,
+						population.get(0).getFitnessFunction()
+					);
+
+					if (genotypes.size() != results.size()) {
+						throw new IllegalStateException(format(
+							"Expected %d results, but got %d. " +
+								"Check your evaluator function.",
+							genotypes.size(), results.size()
+						));
+					}
+
+					final MSeq<Phenotype<G, C>> evaluated = population.asMSeq();
+					for (int i = 0, j = 0; i < evaluated.length(); ++i) {
+						if (!population.get(i).isEvaluated()) {
+							evaluated.set(
+								i,
+								population.get(i).withFitness(results.get(j++))
+							);
+						}
+					}
+
+					return evaluated.toISeq();
+				} else {
+					return population.asISeq();
+				}
+			};
+		}
+
+	}
+
+	/**
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface GenotypeEvaluator<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		> {
+
+		public ISeq<C> evaluate(
+			final Seq<Genotype<G>> genotypes,
+			final Function<? super Genotype<G>, ? extends C> function
+		);
+
+	}
+
+
 	/**
 	 * Builder class for building GA {@code Engine} instances.
 	 *
@@ -1425,4 +1542,5 @@ public final class Engine<
 		}
 
 	}
+
 }
