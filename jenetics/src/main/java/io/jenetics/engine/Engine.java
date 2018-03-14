@@ -791,6 +791,11 @@ public final class Engine<
 	 * the size of the input phenotype sequence. It is allowed to return the
 	 * input sequence, after evaluation, as well a newly created one.
 	 *
+	 * @apiNote
+	 * This interface is an <em>advanced</em> {@code Engine} configuration
+	 * feature, which should be only used when there is a performance gain from
+	 * implementing a different evaluation strategy.
+	 *
 	 * @see GenotypeEvaluator
 	 * @see Engine.Builder#evaluator(Engine.Evaluator)
 	 *
@@ -885,6 +890,11 @@ public final class Engine<
 	 * @implSpec
 	 * The size of the returned result sequence must be exactly the size of the
 	 * input genotype sequence.
+	 *
+	 * @apiNote
+	 * This interface is an <em>advanced</em> {@code Engine} configuration
+	 * feature, which should be only used when there is a performance gain from
+	 * implementing a different evaluation strategy.
 	 *
 	 * @see Evaluator
 	 * @see Engine.Builder#evaluator(Engine.GenotypeEvaluator)
@@ -1309,6 +1319,11 @@ public final class Engine<
 		 * By default, the population is evaluated concurrently using the
 		 * defined {@link Executor} implementation.
 		 *
+		 * @apiNote
+		 * This is an <em>advanced</em> {@code Engine} configuration feature,
+		 * which should be only used when there is a performance gain from
+		 * implementing a different evaluation strategy.
+		 *
 		 * @since !__version__!
 		 *
 		 * @param evaluator the population evaluation strategy
@@ -1322,6 +1337,11 @@ public final class Engine<
 		/**
 		 * Setting the <em>genotype</em> evaluator used for evaluating the
 		 * fitness function of the population.
+		 *
+		 * @apiNote
+		 * This is an <em>advanced</em> {@code Engine} configuration feature,
+		 * which should be only used when there is a performance gain from
+		 * implementing a different evaluation strategy.
 		 *
 		 * @since !__version__!
 		 *

@@ -30,7 +30,8 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
- * Default phenotype evaluation strategy. It uses the configured {@}
+ * Default phenotype evaluation strategy. It uses the configured {@link Executor}
+ * for the fitness evaluation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
