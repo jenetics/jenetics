@@ -5368,15 +5368,7 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
-
-\end_inset
-
-
+*
 \end_layout
 
 \begin_layout Standard
@@ -5655,15 +5647,7 @@ g.
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
-
-\end_inset
-
-
+*
 \end_layout
 
 \begin_layout Standard
