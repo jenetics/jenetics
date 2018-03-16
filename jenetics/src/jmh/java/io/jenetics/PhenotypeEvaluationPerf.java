@@ -47,8 +47,8 @@ import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.2
+ * @since 4.2
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)

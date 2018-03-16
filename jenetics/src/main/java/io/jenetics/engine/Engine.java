@@ -803,8 +803,8 @@ public final class Engine<
 	 * @param <C> the fitness result type
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 4.2
+	 * @since 4.2
 	 */
 	@FunctionalInterface
 	public static interface Evaluator<
@@ -900,8 +900,8 @@ public final class Engine<
 	 * @see Engine.Builder#evaluator(Engine.GenotypeEvaluator)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 4.2
+	 * @since 4.2
 	 */
 	@FunctionalInterface
 	public static interface GenotypeEvaluator<
@@ -1324,7 +1324,7 @@ public final class Engine<
 		 * which should be only used when there is a performance gain from
 		 * implementing a different evaluation strategy.
 		 *
-		 * @since !__version__!
+		 * @since 4.2
 		 *
 		 * @param evaluator the population evaluation strategy
 		 * @return {@code this} builder, for command chaining
@@ -1343,7 +1343,7 @@ public final class Engine<
 		 * which should be only used when there is a performance gain from
 		 * implementing a different evaluation strategy.
 		 *
-		 * @since !__version__!
+		 * @since 4.2
 		 *
 		 * @param evaluator the genotype evaluator
 		 * @return {@code this} builder, for command chaining
