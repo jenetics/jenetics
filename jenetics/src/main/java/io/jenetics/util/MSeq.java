@@ -559,9 +559,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Seq<? extends T> values) {
-		return values instanceof MSeq<?>
-			? ((MSeq<T>)values).copy()
-			: MSeq.<T>ofLength(values.length()).setAll(values);
+		final MSeq<T> result;
+		if (values instanceof MSeq<?>) {
+			result = ((MSeq<T>)values).copy();
+		} else if (values instanceof ISeq<?>) {
+			result = ((ISeq<T>)values).copy();
+		} else {
+			result = MSeq.<T>ofLength(values.length()).setAll(values);
+		}
+		return result;
 	}
 
 }

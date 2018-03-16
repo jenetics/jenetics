@@ -47,7 +47,6 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
-import io.jenetics.internal.util.Concurrency;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
@@ -144,6 +143,7 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
+	private final Evaluator<G, C> _evaluator;
 	private final Clock _clock;
 
 	// Additional parameters.
@@ -167,6 +167,7 @@ public final class Engine<
 	 * @param survivorsCount the number of the survivor individuals
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
+	 * @param evaluator the population fitness evaluator
 	 * @param clock the clock used for calculating the timing results
 	 * @param individualCreationRetries the maximal number of attempts for
 	 *        creating a valid individual.
@@ -187,6 +188,7 @@ public final class Engine<
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
 		final Executor executor,
+		final Evaluator<G, C> evaluator,
 		final Clock clock,
 		final int individualCreationRetries,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
@@ -205,6 +207,7 @@ public final class Engine<
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
+		_evaluator = requireNonNull(evaluator);
 		_clock = requireNonNull(clock);
 
 		if (individualCreationRetries < 0) {
@@ -262,20 +265,30 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		evaluate(start.getPopulation());
+		final ISeq<Phenotype<G, C>> evalPop =
+			_evaluator.evaluate(start.getPopulation());
+
+		if (start.getPopulation().size() != evalPop.size()) {
+			throw new IllegalStateException(format(
+				"Expected %d individuals, but got %d. " +
+				"Check your evaluator function.",
+				start.getPopulation().size(), evalPop.size()
+			));
+		}
+
 		evaluateTimer.stop();
 
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
-				selectOffspring(start.getPopulation()),
+				selectOffspring(evalPop),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(start.getPopulation()),
+				selectSurvivors(evalPop),
 				_clock
 			);
 
@@ -310,7 +323,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> evaluate(pop), _clock)
+			.of(() -> _evaluator.evaluate(pop), _clock)
 			.get();
 
 
@@ -413,21 +426,6 @@ public final class Engine<
 		return phenotype;
 	}
 
-	// Evaluates the fitness function of the give population concurrently.
-	private ISeq<Phenotype<G, C>>
-	evaluate(final ISeq<Phenotype<G, C>> population) {
-		final ISeq<Phenotype<G, C>> pop = population.stream()
-			.filter(pt -> !pt.isEvaluated())
-			.collect(ISeq.toISeq());
-
-		if (!pop.isEmpty()) {
-			try (Concurrency c = Concurrency.with(_executor.get())) {
-				c.execute(population);
-			}
-		}
-		return population;
-	}
-
 
 	/* *************************************************************************
 	 * Evolution Stream/Iterator creation.
@@ -480,7 +478,7 @@ public final class Engine<
 	private Phenotype<G, C> toFixedPhenotype(final Phenotype<G, C> pt) {
 		return
 			pt.getFitnessFunction() == _fitnessFunction &&
-				pt.getFitnessScaler() == _fitnessScaler
+			pt.getFitnessScaler() == _fitnessScaler
 				? pt
 				: pt.newInstance(
 					pt.getGeneration(),
@@ -667,6 +665,7 @@ public final class Engine<
 		return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
 			.alterers(_alterer)
 			.clock(_clock)
+			.evaluator(_evaluator)
 			.executor(_executor.get())
 			.fitnessScaler(_fitnessScaler)
 			.maximalPhenotypeAge(_maximalPhenotypeAge)
@@ -768,6 +767,167 @@ public final class Engine<
 	 * Inner classes
 	 **************************************************************************/
 
+
+	/**
+	 * This interface allows to define different strategies for evaluating the
+	 * fitness functions of a given population. <em>Normally</em>, there is no
+	 * need for <em>overriding</em> the default evaluation strategy, but it might
+	 * be necessary if you have performance problems and a <em>batched</em>
+	 * fitness evaluation would solve the problem.
+	 * <p>
+	 * The implementer is free to do the evaluation <em>in place</em>, or create
+	 * new {@link Phenotype} instance and return the newly created one. A simple
+	 * serial evaluator can easily implemented:
+	 *
+	 * <pre>{@code
+	 * final Evaluator<G, C> evaluator = population -> {
+	 *     population.forEach(Phenotype::evaluate);
+	 *     return population.asISeq();
+	 * };
+	 * }</pre>
+	 *
+	 * @implSpec
+	 * The size of the returned, evaluated, phenotype sequence must be exactly
+	 * the size of the input phenotype sequence. It is allowed to return the
+	 * input sequence, after evaluation, as well a newly created one.
+	 *
+	 * @apiNote
+	 * This interface is an <em>advanced</em> {@code Engine} configuration
+	 * feature, which should be only used when there is a performance gain from
+	 * implementing a different evaluation strategy.
+	 *
+	 * @see GenotypeEvaluator
+	 * @see Engine.Builder#evaluator(Engine.Evaluator)
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface Evaluator<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+
+		/**
+		 * Evaluates the fitness values of the given {@code population}.
+		 *
+		 * @param population the population to evaluate
+		 * @return the evaluated population. Implementers are free to return the
+		 *         the input population or a newly created one.
+		 */
+		public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population);
+
+		/**
+		 * Create a new phenotype evaluator from a given genotype {@code evaluator}.
+		 *
+		 * @param evaluator the genotype evaluator
+		 * @param <G> the gene type
+		 * @param <C> the fitness result type
+		 * @return a <em>normal</em> phenotype evaluator from the given genotype
+		 *         evaluator
+		 * @throws NullPointerException if the given {@code evaluator} is
+		 *         {@code null}
+		 */
+		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+		Evaluator<G, C> of(final GenotypeEvaluator<G, C> evaluator) {
+			requireNonNull(evaluator);
+
+			return population -> {
+				final ISeq<Genotype<G>> genotypes = population.stream()
+					.filter(pt -> !pt.isEvaluated())
+					.map(Phenotype::getGenotype)
+					.collect(ISeq.toISeq());
+
+				if (genotypes.nonEmpty()) {
+					final ISeq<C> results = evaluator.evaluate(
+						genotypes,
+						population.get(0).getFitnessFunction()
+					);
+
+					if (genotypes.size() != results.size()) {
+						throw new IllegalStateException(format(
+							"Expected %d results, but got %d. " +
+							"Check your evaluator function.",
+							genotypes.size(), results.size()
+						));
+					}
+
+					final MSeq<Phenotype<G, C>> evaluated = population.asMSeq();
+					for (int i = 0, j = 0; i < evaluated.length(); ++i) {
+						if (!population.get(i).isEvaluated()) {
+							evaluated.set(
+								i,
+								population.get(i).withFitness(results.get(j++))
+							);
+						}
+					}
+
+					return evaluated.toISeq();
+				} else {
+					return population.asISeq();
+				}
+			};
+		}
+
+	}
+
+	/**
+	 * This interface gives a different possibility in evaluating the fitness
+	 * values of a population. Sometimes it is necessary (mostly for performance
+	 * reason) to calculate the fitness for the whole population at once. This
+	 * interface allows you to do so. A simple serial evaluator can easily
+	 * implemented:
+	 *
+	 * <pre>{@code
+	 * final GenotypeEvaluator<G, C> gte = (g, f) -> g.map(f).asISeq()
+	 * final Evaluator<G, C> evaluator = Evaluator.of(gte);
+	 * }</pre>
+	 *
+	 * @implSpec
+	 * The size of the returned result sequence must be exactly the size of the
+	 * input genotype sequence.
+	 *
+	 * @apiNote
+	 * This interface is an <em>advanced</em> {@code Engine} configuration
+	 * feature, which should be only used when there is a performance gain from
+	 * implementing a different evaluation strategy.
+	 *
+	 * @see Evaluator
+	 * @see Engine.Builder#evaluator(Engine.GenotypeEvaluator)
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface GenotypeEvaluator<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+
+		/**
+		 * Calculate the fitness values for the given sequence of genotypes.
+		 *
+		 * @see Engine.Evaluator#of(Engine.GenotypeEvaluator)
+		 *
+		 * @param genotypes the genotypes to evaluate the fitness value for
+		 * @param function the fitness function
+		 * @return the fitness values for the given {@code genotypes} The length
+		 *         of the fitness result sequence must match with the size of
+		 *         the given {@code genotypes}.
+		 */
+		public ISeq<C> evaluate(
+			final Seq<Genotype<G>> genotypes,
+			final Function<? super Genotype<G>, ? extends C> function
+		);
+
+	}
+
+
 	/**
 	 * Builder class for building GA {@code Engine} instances.
 	 *
@@ -805,6 +965,7 @@ public final class Engine<
 		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
+		private Evaluator<G, C> _evaluator;
 
 		private int _individualCreationRetries = 10;
 		private UnaryOperator<EvolutionResult<G, C>> _mapper = r -> r;
@@ -1154,6 +1315,45 @@ public final class Engine<
 		}
 
 		/**
+		 * The phenotype evaluator allows to change the evaluation strategy.
+		 * By default, the population is evaluated concurrently using the
+		 * defined {@link Executor} implementation.
+		 *
+		 * @apiNote
+		 * This is an <em>advanced</em> {@code Engine} configuration feature,
+		 * which should be only used when there is a performance gain from
+		 * implementing a different evaluation strategy.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param evaluator the population evaluation strategy
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> evaluator(final Evaluator<G, C> evaluator) {
+			_evaluator = requireNonNull(evaluator);
+			return this;
+		}
+
+		/**
+		 * Setting the <em>genotype</em> evaluator used for evaluating the
+		 * fitness function of the population.
+		 *
+		 * @apiNote
+		 * This is an <em>advanced</em> {@code Engine} configuration feature,
+		 * which should be only used when there is a performance gain from
+		 * implementing a different evaluation strategy.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param evaluator the genotype evaluator
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> evaluator(final GenotypeEvaluator<G, C> evaluator) {
+			_evaluator = Evaluator.of(evaluator);
+			return this;
+		}
+
+		/**
 		 * The maximal number of attempt before the {@code Engine} gives up
 		 * creating a valid individual ({@code Phenotype}). <i>Default values is
 		 * set to {@code 10}.</i>
@@ -1217,6 +1417,9 @@ public final class Engine<
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
 				_executor,
+				_evaluator != null
+					? _evaluator
+					: new ConcurrentEvaluator<>(_executor),
 				_clock,
 				_individualCreationRetries,
 				_mapper
@@ -1399,6 +1602,7 @@ public final class Engine<
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)
+				.evaluator(_evaluator)
 				.fitnessScaler(_fitnessScaler)
 				.maximalPhenotypeAge(_maximalPhenotypeAge)
 				.offspringFraction(_offspringFraction)
@@ -1412,4 +1616,5 @@ public final class Engine<
 		}
 
 	}
+
 }

@@ -42,7 +42,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	private final transient Supplier<T> _supplier;
 
 	private T _value;
-	private volatile boolean _evaluated;
+	private transient volatile boolean _evaluated;
 
 	private Lazy(
 		final T value,
@@ -70,7 +70,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 *         {@code false} otherwise
 	 */
 	public boolean isEvaluated() {
-		return _evaluated || _evaluated();
+		return _supplier == null || _evaluated || _evaluated();
 	}
 
 	private synchronized boolean _evaluated() {
