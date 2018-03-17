@@ -53,7 +53,7 @@ final class CompositeAlterer<
 	 * @param alterers the alterers to combine.
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
-	public CompositeAlterer(final Seq<Alterer<G, C>> alterers) {
+	CompositeAlterer(final Seq<Alterer<G, C>> alterers) {
 		super(1.0);
 		_alterers = normalize(alterers);
 	}
@@ -97,7 +97,7 @@ final class CompositeAlterer<
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	public ISeq<Alterer<G, C>> getAlterers() {
+	ISeq<Alterer<G, C>> getAlterers() {
 		return _alterers;
 	}
 
@@ -133,7 +133,7 @@ final class CompositeAlterer<
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	CompositeAlterer<G, C> of(final Alterer<G, C>... alterers) {
 		return new CompositeAlterer<>(ISeq.of(alterers));
 	}
@@ -151,7 +151,7 @@ final class CompositeAlterer<
 	 * @return a new CompositeAlterer object.
 	 * @throws NullPointerException if one of the given alterer is {@code null}.
 	 */
-	public static <T extends Gene<?, T>, C extends Comparable<? super C>>
+	static <T extends Gene<?, T>, C extends Comparable<? super C>>
 	CompositeAlterer<T, C> join(
 		final Alterer<T, C> a1,
 		final Alterer<T, C> a2
