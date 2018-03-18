@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-	compile 'org.scala-lang:scala-library:2.12.3'
+	compile 'org.scala-lang:scala-library:2.12.4'
 	compile project(':jenetics')
 
 	compile 'org.scalatest:scalatest_2.12:3.0.1'
