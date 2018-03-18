@@ -20,14 +20,13 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Equality.eq;
 import static io.jenetics.util.ISeq.toISeq;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -103,14 +102,14 @@ final class CompositeAlterer<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_alterers).value();
+		return 17 + 31*_alterers.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof CompositeAlterer &&
-			eq(((CompositeAlterer)obj)._alterers, _alterers);
+			Objects.equals(((CompositeAlterer) obj)._alterers, _alterers);
 	}
 
 	@Override
