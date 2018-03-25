@@ -173,18 +173,6 @@ public class BitChromosome extends Number
 	/**
 	 * Return the value of the first gene of this chromosome.
 	 *
-	 * @since 2.0
-	 * @return the first value of this chromosome.
-	 * @deprecated Use {@link #booleanValue()} instead
-	 */
-	@Deprecated
-	public boolean get() {
-		return bit.get(_genes, 0);
-	}
-
-	/**
-	 * Return the value of the first gene of this chromosome.
-	 *
 	 * @since 4.2
 	 *
 	 * @return the first value of this chromosome.
@@ -198,22 +186,6 @@ public class BitChromosome extends Number
 		rangeCheck(index);
 		assert _genes != null;
 		return BitGene.of(bit.get(_genes, index));
-	}
-
-	/**
-	 * Return the value on the specified index.
-	 *
-	 * @since 2.0
-	 * @param index the gene index
-	 * @return the wanted gene value
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 1 || index &gt;= length()).
-	 * @deprecated Use {@link #booleanValue(int)} instead
-	 */
-	@Deprecated
-	public boolean get(final int index) {
-		rangeCheck(index);
-		return bit.get(_genes, index);
 	}
 
 	/**
