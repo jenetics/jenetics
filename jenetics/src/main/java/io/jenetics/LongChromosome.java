@@ -37,6 +37,9 @@ import io.jenetics.util.MSeq;
  *
  * @see LongGene
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 4.0

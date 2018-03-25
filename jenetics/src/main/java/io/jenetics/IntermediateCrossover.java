@@ -115,7 +115,6 @@ public class IntermediateCrossover<
 		final double min = v.get(0).getMin().doubleValue();
 		final double max = v.get(0).getMax().doubleValue();
 
-		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
 			final double vi = v.get(i).doubleValue();
 			final double wi = w.get(i).doubleValue();
@@ -143,7 +142,9 @@ public class IntermediateCrossover<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntermediateCrossover && super.equals(obj);
+		return obj == this ||
+			obj instanceof IntermediateCrossover &&
+			super.equals(obj);
 	}
 
 	@Override

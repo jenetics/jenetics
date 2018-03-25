@@ -44,12 +44,11 @@ import io.jenetics.internal.collection.ObjectStore;
 /**
  * Mutable, ordered, fixed sized sequence.
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * @implNote
+ * This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
  * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
  * respectively, must be protected by the same lock, when they are accessed
- * (get/set) by different threads.</i>
+ * (get/set) by different threads.
  *
  * @see ISeq
  *
@@ -560,9 +559,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Seq<? extends T> values) {
-		return values instanceof MSeq<?>
-			? ((MSeq<T>)values).copy()
-			: MSeq.<T>ofLength(values.length()).setAll(values);
+		final MSeq<T> result;
+		if (values instanceof MSeq<?>) {
+			result = ((MSeq<T>)values).copy();
+		} else if (values instanceof ISeq<?>) {
+			result = ((ISeq<T>)values).copy();
+		} else {
+			result = MSeq.<T>ofLength(values.length()).setAll(values);
+		}
+		return result;
 	}
 
 }

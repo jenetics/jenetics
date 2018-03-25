@@ -77,7 +77,9 @@ public final class GaussianMutator<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof GaussianMutator && super.equals(obj);
+		return obj == this ||
+			obj instanceof GaussianMutator &&
+			super.equals(obj);
 	}
 
 	@Override

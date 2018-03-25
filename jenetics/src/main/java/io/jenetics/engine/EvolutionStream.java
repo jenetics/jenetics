@@ -25,17 +25,29 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 
 /**
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
  * method for limiting the evolution by a given predicate.
  *
+ * @implNote Collecting an <em>empty</em> {@code EvolutionStream} will return
+ *           {@code null}.
+ * <pre>{@code
+ * final EvolutionResult<DoubleGene, Double> result = engine.stream()
+ *     .limit(0)
+ *     .collect(toBestEvolutionResult());
+ *
+ * assert result == null;
+ * }</pre>
+ *
  * @see java.util.stream.Stream
  * @see Engine
+ * @see EvolutionStreamable
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version 4.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -56,6 +68,17 @@ public interface EvolutionStream<
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
+	 * }</pre>
+	 *
+	 * <b>Note:</b>
+	 * The evolution result may be {@code null}, if your <em>truncation</em>
+	 * predicate returns {@code false} for the initial population.
+	 * <pre>{@code
+	 * final EvolutionResult<DoubleGene, Double> result = engine.stream()
+	 *     .limit(er -> false)
+	 *     .collect(toBestEvolutionResult());
+	 *
+	 * assert result == null;
 	 * }</pre>
 	 *
 	 * @see Limits

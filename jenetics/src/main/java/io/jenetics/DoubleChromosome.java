@@ -37,6 +37,9 @@ import io.jenetics.util.MSeq;
  *
  * @see DoubleGene
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
  * @version 4.0
@@ -77,7 +80,8 @@ public class DoubleChromosome
 	 *
 	 * @param min the min value of the {@link DoubleGene}s (inclusively).
 	 * @param max the max value of the {@link DoubleGene}s (exclusively).
-	 * @param lengthRange the allowed length range of the chromosome.
+	 * @param lengthRange the allowed length range of the chromosome. The start
+	 *        of the range is inclusively and the range end exclusively
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length is smaller than one
 	 */

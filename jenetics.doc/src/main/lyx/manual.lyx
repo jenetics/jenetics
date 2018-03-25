@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass book
+\textclass extbook
 \begin_preamble
 \usepackage{transparent}
 \usepackage{eso-pic}
@@ -13,17 +13,16 @@
 \parbox[b][\paperheight]{\paperwidth}{%
 \vfill
 \centering
-{\transparent{0.9} \includegraphics[width=\paperwidth,height=\paperheight,%
-keepaspectratio]{../resources/graphic/manual-title.jpg}}%
+{\transparent{0.9} 
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]
+{../resources/graphic/manual-title.jpg}}
 \vfill
 }}}
 
 \usepackage{ifpdf} % part of the hyperref bundle
 \ifpdf % if pdflatex is used
-
  % set fonts for nicer pdf view
  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}
-
 \fi % end if pdflatex is used
 
 \renewcommand\part{%
@@ -44,7 +43,6 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \makeatother
 
 \usepackage{listings}
-%\usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{url}
 \usepackage[usenames,dvipsnames]{xcolor}
@@ -52,20 +50,17 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{newunicodechar}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.3,0.3,0.3}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \definecolor{keyword}{rgb}{0.5,0,0.5}
-%\definecolor{background}{rgb}{0.96,0.96,0.96}
 \definecolor{background}{rgb}{0.8984,0.9492,1.0}
 \definecolor{white}{rgb}{1.0,1.0,1.0}
-%\definecolor{covercolor}{RGB}{220,220,220}
-%\definecolor{covercolor}{RGB}{25,200,255}
-%\definecolor{covercolor}{RGB}{202,232,255}
-%\definecolor{covercolor}{rgb}{0.00,0.27,0.40}
-
-%\definecolor{covercolor}{rgb}{0.34,0.55,0.66}
 \definecolor{covercolor}{RGB}{13,126,168}
 
 \newunicodechar{Σ}{\lstsum}
@@ -84,12 +79,10 @@ keepaspectratio]{../resources/graphic/manual-title.jpg}}%
   showtabs=false,
   frame=single,
   frameshape={}{nny}{nny}{},
-  %framexleftmargin=8pt,
   tabsize=4,
   captionpos=b,
   breaklines=true,
   breakatwhitespace=false,
-  %title=\lstname,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{keyword}\bfseries,
   commentstyle=\color{dkgreen},
@@ -177,6 +170,9 @@ tabs-within-sections
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
+\bullet 1 0 9 -1
+\bullet 2 0 10 -1
+\bullet 3 0 0 -1
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -489,7 +485,7 @@ This work is licensed under a
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
-target "http://creativecommons.org/licenses/by-sa/3.0/at/"
+target "http://creativecommons.org/licenses/by-sa/3.0/"
 
 \end_inset
 
@@ -503,14 +499,14 @@ License
 
 \end_inset
 
- Attribution-ShareAlike 3.0 Austria License.
+ Attribution-ShareAlike 3.0 License.
  To view a copy of this license, visit 
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
-http://creativecommons.org/licenses/by-sa/3.0/at/
+http://creativecommons.org/licenses/by-sa/3.0/
 \end_layout
 
 \end_inset
@@ -737,7 +733,17 @@ target "https://en.wikipedia.org/wiki/Genetic_programming"
 status collapsed
 
 \begin_layout Plain Layout
-If you are using Gradle, you can use the following dependency string:
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://mvnrepository.com/artifact/io.jenetics/jenetics
+\end_layout
+
+\end_inset
+
+: If you are using Gradle, you can use the following dependency string:
 \family typewriter
  
 \begin_inset Quotes ald
@@ -4006,7 +4012,7 @@ The
 \family default
  and the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which is used to (lazily) calculate the
 \family typewriter
@@ -4019,7 +4025,7 @@ status collapsed
 \begin_layout Plain Layout
 Since the fitness
 \family typewriter
-Function
+ Function
 \family default
  is shared by all
 \family typewriter
@@ -4027,7 +4033,7 @@ Function
 \family default
 s, calls to the fitness
 \family typewriter
-Function
+ Function
 \family default
  must be idempotent.
  See section 
@@ -5362,15 +5368,7 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
-
-\end_inset
-
-
+*
 \end_layout
 
 \begin_layout Standard
@@ -5649,15 +5647,7 @@ g.
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
-
-\end_inset
-
-
+*
 \end_layout
 
 \begin_layout Standard
@@ -7040,7 +7030,7 @@ Fitness function
 \begin_layout Standard
 The fitness
 \family typewriter
-Function
+ Function
 \family default
  is also an important part when modeling an genetic algorithm.
  It takes a
@@ -7134,7 +7124,7 @@ height "1pt"
 \begin_layout Standard
 The following example shows the simplest possible fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  This
@@ -7280,7 +7270,7 @@ Fitness scaler
 \begin_layout Standard
 The fitness value, calculated by the fitness
 \family typewriter
-Function
+ Function
 \family default
 , is treated as the
 \shape italic
@@ -7517,7 +7507,17 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    implements Function<EvolutionStart<G,C>, EvolutionResult<G,C>>
+    implements Function<EvolutionStart<G,C>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionResult<G,C>>, 
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionStreamable<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -7683,7 +7683,7 @@ As already shown in previous examples, the
  class.
  Only the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the
 \family typewriter
@@ -7783,7 +7783,7 @@ fitnessFunction
 \family default
  This property defines the fitness
 \family typewriter
-Function
+ Function
 \family default
  used by the evolution
 \family typewriter
@@ -7983,12 +7983,12 @@ optimize
 \family default
  With this property it is possible to define whether the fitness
 \family typewriter
-Function
+ Function
 \family default
  should be maximized of minimized.
  By default, the fitness
 \family typewriter
-Function
+ Function
 \family default
  is maximized.
 \end_layout
@@ -8169,6 +8169,131 @@ Unique\SpecialChar softhyphen
 Population()
 \family default
  method provides such a de-duplication mapper.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+EvolutionStream
+\family default
+s created by the Engine class are unlimited.
+ Such streams must be limited by calling the available 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.limit
+\family default
+ methods.
+ Alternatively, the Engine instance itself can be limited with the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.limit
+\family default
+ methods.
+ This limited Engines no long creates infinite 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s, they are truncated by the limit predicate defined by the 
+\family typewriter
+Engine
+\family default
+.
+ This feature is needed when you are concatenating evolution Engines (see
+ section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:ConcatEngine"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final EvolutionStreamable<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(() -> Limits.bySteadyFitness(10));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As shown in the example code above, one important difference between the
+ 
+\family typewriter
+Engine\SpecialChar softhyphen
+.limit
+\family default
+ and the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.limit
+\family default
+ method is, that the limit me\SpecialChar softhyphen
+thod of the 
+\family typewriter
+Engine
+\family default
+ takes a limiting 
+\family typewriter
+Predicate
+\family default
+ 
+\family typewriter
+Supplier
+\family default
+ instead of the the 
+\family typewriter
+Predicate
+\family default
+ itself.
+ The reason for this is that some 
+\family typewriter
+Predicate
+\family default
+s has to maintain internal state to work properly.
+ This means, every time the 
+\family typewriter
+Engine
+\family default
+ creates a new stream, it must also create a new limiting 
+\family typewriter
+Predicate
+\family default
+.
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -9546,6 +9671,110 @@ The
  immutable and re-entrant.
 \end_layout
 
+\begin_layout Standard
+Since the number of individuals of one population, which determines the
+ number of fitness functions to be evaluated, is usually much higher then
+ the number of available CPU cores, the fitness evaluation is done in batches.
+ This reduces the evaluation overhead, for 
+\emph on
+lightweight
+\emph default
+ fitness functions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/EvaluationBatch.eps
+	width 60text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evaluation-batch"
+
+\end_inset
+
+Evaluation batch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Evaluation-batch"
+
+\end_inset
+
+ shows an example population with 
+\begin_inset Formula $12$
+\end_inset
+
+ individuals.
+ The evaluation of the phenotype's fitness functions are evaluated in batches
+ with three elements.
+ For this purpose, the individuals of one batch are wrapped into a 
+\family typewriter
+Runnable
+\family default
+ object.
+ The batch size is automatically adapted to the available number of CPU
+ cores.
+ It is assumed that the evaluation cost of one fitness function is quite
+ small.
+ If this assumption doesn't hold, you can configure the the maximal number
+ of batch elements with the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.maxBatchSize
+\family default
+ system property
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Concurrency-tweaks"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection
 Basic configuration
 \begin_inset Index idx
@@ -9823,6 +10052,13 @@ Such a configuration can be useful for performing reproducible (performance)
 
 \begin_layout Subsubsection
 Concurrency tweaks
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Concurrency-tweaks"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12734,6 +12970,103 @@ s.
  Serializable
 \family default
  interface.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family sans
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.oracle.com/technetwork/articles/java/javaserial-1536170.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Just implementing the Serializable interface is sometimes not enough.
+ You might also need to implement the 
+\family typewriter
+readObject
+\family sans
+ and 
+\family typewriter
+writeObject
+\family sans
+ methods for a more concise serialization result.
+ Consider using the serialization proxy pattern, item 90, described in 
+\emph on
+Effective Java
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bloch2018"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -16153,7 +16486,7 @@ engine
 \family default
  package—narrows the gap between the fitness
 \family typewriter
-Function
+ Function
 \family default
 , which should be maximized/minimized, and the
 \family typewriter
@@ -16325,7 +16658,7 @@ reference "lis:Codec-interface"
 \family default
  to the argument type of the fitness
 \family typewriter
-Function
+ Function
 \family default
 .
  Without the
@@ -16625,7 +16958,7 @@ The usage of the
 \family default
 , created by this factory method, simplifies the implementation of the fitness
 \family typewriter
-Function
+ Function
 \family default
  and the creation of the evolution
 \family typewriter
@@ -16640,7 +16973,7 @@ Function
 \family default
 , fitness
 \family typewriter
-Function
+ Function
 \family default
  and evolution
 \family typewriter
@@ -17073,7 +17406,12 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-        gt -> ((BitChromosome)gt.getChromosome()).ones()
+        gt -> gt.getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(BitChromosome.class).ones()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18071,17 +18409,27 @@ class Main {
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum() -
+                   .mapToInt(Integer::intValue)
 \end_layout
 
 \begin_layout Plain Layout
 
-            args.second.stream()
+                   .sum() -
 \end_layout
 
 \begin_layout Plain Layout
 
-                .mapToInt(Integer::intValue).sum();
+               args.second.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .mapToInt(Integer::intValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+                   .sum();
 \end_layout
 
 \begin_layout Plain Layout
@@ -20618,6 +20966,26 @@ reference "fig:Fitness-convergence-diagram-50-150"
 
 \begin_layout Subsection
 Population convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Population convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20630,6 +20998,26 @@ A termination method that stops the evolution when the population is deemed
 
 \begin_layout Subsection
 Gene convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Gene convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -22213,7 +22601,8 @@ Harder class
  io.\SpecialChar softhyphen
 jenetics.\SpecialChar softhyphen
 prngine.\SpecialChar softhyphen
-internal.\SpecialChar softhyphen
+inter\SpecialChar softhyphen
+nal.\SpecialChar softhyphen
 Nano\SpecialChar softhyphen
 Time\SpecialChar softhyphen
 Random
@@ -23494,7 +23883,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/ExampleTree.svg
 	lyxscale 80
-	width 70text%
+	width 67text%
 
 \end_inset
 
@@ -24157,10 +24546,13 @@ Crossover!Simulated binary crossover
 \end_layout
 
 \begin_layout Standard
-The Simulated\SpecialChar softhyphen
+The 
+\family typewriter
+Simulated\SpecialChar softhyphen
 Binary\SpecialChar softhyphen
-Crossover performs the simulated binary crossover (SBX)
- on
+Crossover
+\family default
+ performs the simulated binary crossover (SBX) on
 \family typewriter
  Numeric\SpecialChar softhyphen
 Chromosome
@@ -24201,7 +24593,9 @@ The
  class works on
 \family typewriter
  Tree\SpecialChar softhyphen
-Chromo\SpecialChar softhyphen
+Ch\SpecialChar softhyphen
+ro\SpecialChar softhyphen
+mo\SpecialChar softhyphen
 some
 \family default
 s.
@@ -24910,6 +25304,2303 @@ reference "lis:Weasel-program"
 .
 \end_layout
 
+\begin_layout Subsection
+Modifying 
+\family typewriter
+Engine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Modifying Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The current design of 
+\family typewriter
+Engine
+\family default
+ allows to created multiple independent evolution streams from a single
+ 
+\family typewriter
+Engine
+\family default
+ instance.
+ One drawback of this approach is, that the evolution stream runs with the
+ same evolution parameters until the stream is truncated.
+ It is not possible to change the stream's 
+\family typewriter
+Engine
+\family default
+ configuration during the evolution process.
+ For this purpose, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ interface has been introduced.
+ It is similar to the Java 
+\family typewriter
+Iterable
+\family default
+ interface and abstracts the 
+\family typewriter
+EvolutionStream
+\family default
+ creation.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface EvolutionStreamable<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    stream(Supplier<EvolutionStart<G, C>> start);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C> stream(EvolutionInit<G> init);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStreamable<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    limit(Supplier<Predicate<? super EvolutionResult<G, C>>> p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStreamable
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionStreamable
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+EvolutionStreamable
+\family default
+ interface.
+ The existing 
+\family typewriter
+stream
+\family default
+ methods take an initial value, which allows to 
+\emph on
+concatenate
+\emph default
+ different engines.
+ With the 
+\family typewriter
+limit
+\family default
+ method it is possible to limit the size of the created 
+\family typewriter
+EvolutionStream
+\family default
+ instances.
+ The 
+\family typewriter
+io.jenetics.ext
+\family default
+ module contains additional classes which allows to concatenate evolution
+ 
+\family typewriter
+Engines
+\family default
+ with different configurations, which will then create one varying 
+\family typewriter
+EvolutionStream
+\family default
+.
+ This additional 
+\family typewriter
+Engine
+\family default
+ classes are:
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+ConcatEngine
+\family default
+,
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+CyclicEngine
+\family default
+ and
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+AdaptiveEngine.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+ConcatEngine
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:ConcatEngine"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+ConcatEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ConcatEngine
+\family default
+ class allows to create more than one 
+\family typewriter
+Engine
+\family default
+s, with different configurations, and combine it into one 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ (
+\family typewriter
+Engine
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/ConcatEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Engine-concatenation"
+
+\end_inset
+
+
+\family typewriter
+Engine
+\family default
+ concatenation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Engine-concatenation"
+
+\end_inset
+
+ shows how the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ of two concatenated 
+\family typewriter
+Engine
+\family default
+s works.
+ You can create the first partial 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ with an optional start value.
+ If the first 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ stops, it's final 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ is used as start value of the second evolution stream, created by the second
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ It is important that the evolution 
+\family typewriter
+Engine
+\family default
+s used for concatenation are limited.
+ Otherwise the created 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ will only use the first 
+\family typewriter
+Engine
+\family default
+, since it is not limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The concatenated evolution Engines must be limited (by calling 
+\family typewriter
+Engine.limit
+\family sans
+), otherwise only the first 
+\family typewriter
+Engine
+\family sans
+ is used executing the resulting EvolutionStream.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following code sample shows how to create an 
+\family typewriter
+EvolutionStream
+\family default
+ from two concatenate 
+\family typewriter
+Engine
+\family default
+s.
+ As you can see, the two 
+\family typewriter
+Engine
+\family default
+s are limited.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine1 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine2 = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    ConcatEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(30)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A practical use case for the 
+\family typewriter
+Engine
+\family default
+ concatenation is, when you want to do a broader exploration of the search
+ space at the beginning and narrow it with the following 
+\family typewriter
+Engine
+\family default
+s.
+ In such a setup, the first 
+\family typewriter
+Engine
+\family default
+ would be configured with a 
+\family typewriter
+Mutator
+\family default
+ with a relatively big mutation probability.
+ The mutation probabilities of the following 
+\family typewriter
+Engine
+\family default
+s would then be gradually reduced.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+CyclicEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+CyclicEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+CyclicEngine
+\family default
+ is similar to the 
+\family typewriter
+ConcatEngine
+\family default
+.
+ Where the 
+\family typewriter
+Concat\SpecialChar softhyphen
+Engine
+\family default
+ stops the evolution, when the stream of the last engine terminates, the
+ 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ continues with a new stream from the first 
+\family typewriter
+Engine
+\family default
+.
+ The evolution flow of the 
+\family typewriter
+Cyclic\SpecialChar softhyphen
+Engine
+\family default
+ is shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Cyclic-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/CyclicEngine.eps
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Cyclic-Engine"
+
+\end_inset
+
+Cyclic 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the 
+\family typewriter
+CyclicEngine
+\family default
+ creates unlimited streams, although the participating 
+\family typewriter
+Engine
+\family default
+s are all creating limited streams, the resulting 
+\family typewriter
+EvolutionStream
+\family default
+ 
+\emph on
+must
+\emph default
+ be limited as well.
+ The code snippet below shows the creation and execution of a 
+\emph on
+cyclic
+\emph default
+ 
+\family typewriter
+EvolutionStream
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    CyclingEngine.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine1.limit(50),
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine2.limit(() -> Limits.bySteadyFitness(15)))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The reason for using a cyclic 
+\family typewriter
+EvolutionStream
+\family default
+ is similar to the reason for using a concatenated 
+\family typewriter
+EvolutionStream
+\family default
+.
+ It allows you to do a broad search, followed by a narrowed exploration.
+ This cycle is then repeated until the limiting predicate of the 
+\emph on
+outer
+\emph default
+ stream terminates the evolution process.
+\end_layout
+
+\begin_layout Subsubsection
+
+\family typewriter
+AdaptiveEngine
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+AdaptiveEngine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+AdaptiveEngine
+\family default
+ is the most flexible method for creating 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s.
+ Instead of defining a fixed set 
+\family typewriter
+Engine
+\family default
+s, which then creates the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+, you define a function which creates an 
+\family typewriter
+Engine
+\family default
+, depending on last 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+sult
+\family default
+ of the previous 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ You can see the evolution flow of the 
+\family typewriter
+Adaptive\SpecialChar softhyphen
+Engine
+\family default
+ in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Adaptive-Engine"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/AdaptiveEngine.eps
+	width 75text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Adaptive-Engine"
+
+\end_inset
+
+Adaptive 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the implementation perspective, the 
+\family typewriter
+AdaptiveEngine
+\family default
+ requires a little bit more code.
+ The additional flexibility isn't for free, as you can see in the code example
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Problem<double[], DoubleGene, Double> problem = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Engine.Builder template.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> bld = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+        AdaptiveEngine.<DoubleGene, Double>of(r -> engine(r, bld))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static EvolutionStreamable<DoubleGene, Double> engine(
+\end_layout
+
+\begin_layout Plain Layout
+
+    final EvolutionResult<DoubleGene, Double> result,
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> builder
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return var(result) < 0.2
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(new Mutator<>(0.75))
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(5)
+\end_layout
+
+\begin_layout Plain Layout
+
+        : builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+                new Mutator<>(0.05),
+\end_layout
+
+\begin_layout Plain Layout
+
+                new MeanAlterer<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .selector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(Limits.bySteadyFitness(25));
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static double var(final EvolutionResult<DoubleGene, Double> er) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return er != null
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? er.getPopulation().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(Phenotype::getFitness)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toDoubleMoments())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .getVariance()
+\end_layout
+
+\begin_layout Plain Layout
+
+        : 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example tries to broaden the search, once the variance of the population's
+ fitness values are below a given threshold.
+ When implementing the 
+\family typewriter
+Engine
+\family default
+ creation function, you have to be aware, that the 
+\family typewriter
+EvolutionResult
+\family default
+ for the first Engine is 
+\family typewriter
+null
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Multi-objective optimization
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Multi-objective-optimization"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Multi-objective optimization
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MOO
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A Multi-objective Optimization Problem (MOP) can be defined as the problem
+ of finding
+\end_layout
+
+\begin_layout Quote
+a vector of decision variables which satisfies constraints and optimizes
+ a vector function whose elements represent the objective functions.
+ These functions form a mathematical description of performance criteria
+ which are usually in conflict with each other.
+ Hence, the term 
+\begin_inset Quotes ald
+\end_inset
+
+optimize
+\begin_inset Quotes ard
+\end_inset
+
+ means finding such a solution which would give the values of all the objective
+ functions acceptable to the decision maker.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Osyczka1985"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are several ways for solving multiobjective problems.
+ An excellent theoretical foundation is given in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+.
+ The algorithms implemented by 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ are based in therms of Pareto optimality as described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb:2002:FEM:2221359.2221582"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Konak2006"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Pareto efficiency 
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Pareto-efficiency"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Pareto efficiency
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In contrast to single-objective optimization, where usually only one optimal
+ solution exits, the multi-objective optimization creates a set of 
+\emph on
+optimal
+\emph default
+ solutions.
+ The 
+\emph on
+optimal
+\emph default
+ solutions are also known as the Pareto front or Pareto set.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Pareto efficiency 
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\series bold
+):
+\series default
+ A solution 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is said to be Pareto optimal iff there is no 
+\begin_inset Formula $\mathbf{x}'$
+\end_inset
+
+ for which 
+\begin_inset Formula $\mathbf{v}=\left(f_{1}\left(\mathbf{x}'\right),...,f_{k}\left(\mathbf{x}'\right)\right)$
+\end_inset
+
+ dominates 
+\begin_inset Formula $\mathbf{u}=\left(f_{1}\left(\mathbf{x}\right),...,f_{k}\left(\mathbf{x}\right)\right)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The definition says that 
+\begin_inset Formula $\mathbf{x}^{*}$
+\end_inset
+
+ is Pareto optimal if there exists no feasible vector 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ which would decrease some criterion without causing a simultaneous increase
+ in at least one other criterion.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Pareto dominance 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Pareto dominance
+\end_layout
+
+\end_inset
+
+
+\series default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\series bold
+):
+\series default
+ A vector 
+\begin_inset Formula $\mathbf{u}=\left(u_{1},...,u_{k}\right)$
+\end_inset
+
+ is said to 
+\series bold
+dominate
+\series default
+ another vector 
+\begin_inset Formula $\mathbf{v}=\left(v_{1},...,v_{k}\right)$
+\end_inset
+
+ (denoted by 
+\begin_inset Formula $\mathbf{u}\succeq\mathbf{v}$
+\end_inset
+
+) iff 
+\begin_inset Formula $\mathbf{u}$
+\end_inset
+
+ is partially less than 
+\begin_inset Formula $\boldsymbol{v}$
+\end_inset
+
+, i.e., 
+\begin_inset Formula $\forall i\in\left\{ 1,...,k\right\} $
+\end_inset
+
+, 
+\begin_inset Formula $u_{i}\geq v_{i}\land\exists i\in\left\{ 1,...,k\right\} :\,\,u_{i}>v_{i}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+After this two basic definitions, lets have a look at a simple example.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Circle-points"
+
+\end_inset
+
+ shows some points of a two-dimensional solution space.
+ For simplicity, the points will all lie within a circle with radius 
+\begin_inset Formula $1$
+\end_inset
+
+ and center point of 
+\begin_inset Formula $\left(1,1\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/circle_points.svg
+	lyxscale 80
+	width 53text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Circle-points"
+
+\end_inset
+
+Circle points
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Maximizing-Pareto-front"
+
+\end_inset
+
+ shows the Pareto front of a maximization problem.
+ This means we are searching for solutions tries to maximize the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinate at the same time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/circle_max_front.svg
+	lyxscale 80
+	width 53text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Maximizing-Pareto-front"
+
+\end_inset
+
+Maximizing Pareto front
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Minimizing-Pareto-front"
+
+\end_inset
+
+ shows the Pareto front if we try to minimize the 
+\begin_inset Formula $x$
+\end_inset
+
+ and 
+\begin_inset Formula $y$
+\end_inset
+
+ coordinate at the same time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/circle_min_front.svg
+	lyxscale 80
+	width 53text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Minimizing-Pareto-front"
+
+\end_inset
+
+Minimizing Pareto front
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Implementing classes
+\end_layout
+
+\begin_layout Standard
+The classes, used for solving multi-objective problems, reside in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext\SpecialChar softhyphen
+.moea
+\family default
+ package.
+ Originally, the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library focuses on solving single-objective problems.
+ This drives the design decision to force the return value of the fitness
+ function to be 
+\family typewriter
+Comparable
+\family default
+.
+ If the result type of the fitness function is a vector, it is no longer
+ clear how to make the results comparable.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ chooses to use the Pareto dominance relation (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Pareto-efficiency"
+
+\end_inset
+
+).
+ The Pareto dominance relation, 
+\begin_inset Formula $\succ$
+\end_inset
+
+, defines a strict partial order, which means 
+\begin_inset Formula $\succ$
+\end_inset
+
+ is
+\end_layout
+
+\begin_layout Enumerate
+irreflexive: 
+\begin_inset Formula $\mathbf{u}\nsucc\mathbf{u}$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Enumerate
+transitive: 
+\begin_inset Formula $\mathbf{u}\succ\mathbf{v}\land\mathbf{v}\succ\mathbf{w}\Rightarrow\mathbf{u}\succ\mathbf{w}$
+\end_inset
+
+ and
+\end_layout
+
+\begin_layout Enumerate
+asymmetric: 
+\begin_inset Formula $\mathbf{u}\succ\mathbf{v}\Rightarrow\mathbf{v}\nsucc\mathbf{u}$
+\end_inset
+
+ .
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+io.jenetics.ext.moea
+\family default
+ package contains the classes needed for doing multi-objective optimization.
+ One of the central types is the 
+\family typewriter
+Vec
+\family default
+ interface, which allows you wrap a vector of any element type into a 
+\family typewriter
+Comparable
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Vec<T> extends Comparable<Vec<T>> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T data();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int length();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElementComparator<T> comparator();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public ElementDistance<T> distance();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Comparator<T> dominance();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Vec-interface"
+
+\end_inset
+
+
+\family typewriter
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Vec
+\end_layout
+
+\end_inset
+
+Vec
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Vec-interface"
+
+\end_inset
+
+ shows the necessary methods of the 
+\family typewriter
+Vec
+\family default
+ interface.
+ This methods are sufficient to do all the optimization calculations.
+ The 
+\family typewriter
+data()
+\family default
+ method returns the underlying vector type, like 
+\family typewriter
+double[]
+\family default
+ or
+\family typewriter
+ int[]
+\family default
+.
+ With the 
+\family typewriter
+ElementComparator
+\family default
+, which is returned by the 
+\family typewriter
+comparator()
+\family default
+ method, it is possible to compare single elements of the vector type 
+\family typewriter
+T
+\family default
+.
+ This is similar to the 
+\family typewriter
+ElementDistance
+\family default
+ function, returned by the 
+\family typewriter
+distance()
+\family default
+ method, which calculates the distance of two vector elements.
+ The last method, 
+\family typewriter
+dominance()
+\family default
+, returns the Pareto dominance comparator, 
+\begin_inset Formula $\succ$
+\end_inset
+
+.
+ Since it is quite a bothersome to implement all this needed methods, the
+ 
+\family typewriter
+Vec
+\family default
+ interface comes with a set of factory methods, which allows to create 
+\family typewriter
+Vec
+\family default
+ instance for some primitive array types.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Vec<int[]> ivec = Vec.of(1, 2, 3);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Vec<long[]> lvec = Vec.of(1L, 2L, 3L);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Vec<double[]> dvec = Vec.of(1.0, 2.0, 3.0);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For efficiency reason, the primitive arrays are not copied, when the 
+\family typewriter
+Vec
+\family default
+ instance is created.
+ This lets you, theoretically, change the value of a created 
+\family typewriter
+Vec
+\family default
+ instance, which will lead to unexpected results.
+\end_layout
+
+\begin_layout Standard
+The second difference to the single-objective setup is the 
+\family typewriter
+EvolutionResult
+\family default
+ collector.
+ In the single-objective case, we will only get one 
+\emph on
+best
+\emph default
+ result, which is different in the multi-object optimization.
+ As we have seen in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Pareto-efficiency"
+
+\end_inset
+
+, we no longer have only one result, we have a set of Pareto optimal solutions.
+ There is a predefined collector in the 
+\family typewriter
+io.jenetics.ext.moea
+\family default
+ package, 
+\family typewriter
+MOEA\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Pareto\SpecialChar softhyphen
+Set(\SpecialChar softhyphen
+Int\SpecialChar softhyphen
+Range\SpecialChar softhyphen
+)
+\family default
+, which collects the Pareto optimal 
+\family typewriter
+Pheno\SpecialChar softhyphen
+types
+\family default
+ into an 
+\family typewriter
+ISeq
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ISeq<Phenotype<DoubleGene, Vec<double[]>>> paretoSet = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(MOEA.toParetoSet(IntRange.of(30, 50)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since there exists a potential infinite number of Pareto optimal solutions,
+ you have to define desired number set elements.
+ This is done with an 
+\family typewriter
+IntRange
+\family default
+ object, where you can specify the minimal and maximal set size.
+ The example above will return a Pareto size which size in the range of
+ 
+\begin_inset Formula $\left[30,50\right)$
+\end_inset
+
+.
+ For reducing the Pareto set size, the distance between two vector elements
+ is taken into account.
+ Points which lie very close to each other are removed.
+ This leads to a result, where the Pareto optimal solutions are, more or
+ less, evenly distributed over the whole Pareto front.
+ The 
+\emph on
+crowding-distance
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The crowding distance value of a solution provides an estimate of the density
+ of solutions surrounding that solution.
+ The crowding distance value of a particular solution is the average distance
+ of its two neighboring solutions.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.igi-global.com/dictionary/crowding-distance/42740
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\emph default
+ measure is used for calculating the proximity of two points and it is described
+ in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Till now we have described the multi-objective result type (
+\family typewriter
+Vec
+\family default
+) and the final collecting of the Pareto optimal solution.
+ So lets create a simple multi-objective problem and an appropriate 
+\family typewriter
+Engine
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Problem<double[], DoubleGene, Vec<double[]>> problem = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Problem.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        v -> Vec.of(v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+        Codecs.ofVector(
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleRange.of(0, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleRange.of(0, 2*PI)
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Vec<double[]>> engine = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .offspringSelector(new TournamentSelector<>(4))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .survivorsSelector(UFTournamentSelector.ofVec())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The fitness function in the example problem above will create 2D-points
+ which will all lies within a circle with a center of 
+\begin_inset Formula $\left(1,1\right)$
+\end_inset
+
+.
+ In figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Maximizing-Pareto-front"
+
+\end_inset
+
+ you can see how the resulting solution will look like.
+ There is almost no difference in creating an evolution Engine for single-
+ or multi-objective optimization.
+ You only have to take care to choose the right Selector.
+ Not all 
+\family typewriter
+Selector
+\family default
+s will work for multi-objective optimization.
+ This include all 
+\family typewriter
+Selector
+\family default
+s which needs a 
+\family typewriter
+Number
+\family default
+ fitness type and where the population needs to be sorted
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Since the 
+\begin_inset Formula $\succ$
+\end_inset
+
+ relation doesn't define a total order, sorting the population will lead
+ to an 
+\family typewriter
+Illegal\SpecialChar softhyphen
+Argument\SpecialChar softhyphen
+Exception
+\family default
+ at runtime.
+\end_layout
+
+\end_inset
+
+.
+ The Selector which works fine in a multi-objective setup is the 
+\family typewriter
+TournamentSelector
+\family default
+.
+ Additionally you can use one of the special MO selectors: 
+\family typewriter
+NSGA2Selector
+\family default
+ and 
+\family typewriter
+UFTournamentSelector
+\family default
+.
+\end_layout
+
+\begin_layout Paragraph
+NSGA2 selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+NSGA2 selector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This selector selects the first elements of the population, which has been
+ sorted by the Crowded-comparison operator (equation 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "eq:crowding-distance"
+
+\end_inset
+
+), 
+\begin_inset Formula $\underset{n}{\succ}$
+\end_inset
+
+, as described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb:2002:FEM:2221359.2221582"
+
+\end_inset
+
+
+\family typewriter
+
+\begin_inset Formula 
+\begin{eqnarray}
+i\underset{n}{\succ}j & \mathsf{if} & \left(i_{rank}<j_{rank}\right)\lor\left(\left(i_{rank}=j_{rank}\right)\land i_{dist}>j_{dist}\right),\label{eq:crowding-distance}
+\end{eqnarray}
+
+\end_inset
+
+
+\family default
+where 
+\begin_inset Formula $i_{rank}$
+\end_inset
+
+ denotes the non-domination rank of individual 
+\begin_inset Formula $i$
+\end_inset
+
+ and 
+\begin_inset Formula $i_{dist}$
+\end_inset
+
+ the crowding distance of individual 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Paragraph
+Unique fitness tournament selector
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Unique fitness tournament selector
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The selection of unique fitnesses lifts the selection bias towards over-represen
+ted fitnesses by reducing multiple solutions sharing the same fitness to
+ a single point in the objective space.
+ It is therefore no longer required to assign a crowding distance of zero
+ to individual of equal fitness as the selection operator correctly enforces
+ diversity preservation by picking unique points in the objective space.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fortin2013"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Since the MOO classes are an extensions to the existing evolution 
+\family typewriter
+Engine
+\family sans
+, the implementation doesn't exactly follow an established algorithm, like
+ NSGA2 or SPEA2.
+ The results and performance, described in the relevant papers, are therefore
+ not directly comparable.
+ See listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Genetic-algorithm"
+
+\end_inset
+
+ for comparing the 
+\series bold
+\shape smallcaps
+Jenetics
+\series default
+\shape default
+ evolution flavor.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Termination
+\end_layout
+
+\begin_layout Standard
+Most of the existing termination strategies, implemented in the 
+\family typewriter
+Limits
+\family default
+ class, presumes a 
+\emph on
+total
+\emph default
+ order of the fitness values.
+ This assumption holds for single-objective optimization problems, but not
+ for multi-objective problems.
+ Only termination strategies which doesn't rely on the total order of the
+ fitness value, can be safely used.
+ The following termination strategies can be used for multi-objective problems:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byFixedGeneration
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byExecutionTime
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byGeneConvergence
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+All other strategies doesn't have a well defined termination behavior.
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
@@ -25539,6 +28230,16 @@ final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 
 \begin_layout Subsection
 Program creation
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program creation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25712,6 +28413,22 @@ The evolution
  Engine
 \family default
  used for solving GP problems is created the same way as for normal GA problems.
+ Also the execution of the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ stays the same.
+ The first 
+\family typewriter
+Gene
+\family default
+ of the collected final 
+\family typewriter
+Genotype
+\family default
+ represents the evolved program, which can be used to calculate function
+ values from arbitrary arguments.
 \end_layout
 
 \begin_layout Standard
@@ -25755,17 +28472,63 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
     .build();
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(300)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+final double result = program.eval(3.4);
+\end_layout
+
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-For a complete GP example have a look at the examples chapter.
+For a complete GP example have a look at the examples in chapter 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
 Program repair
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program repair
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25895,6 +28658,214 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Program pruning
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program pruning
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you are solving symbolic regression problems, the mathematical expression
+ trees, created during the evolution process, can become quite big.
+ From the diversity point of view, this might be not that bad, but it comes
+ with additional computation cost.
+ With the 
+\family typewriter
+Math\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Prune\SpecialChar softhyphen
+Alterer
+\family default
+ you are able to simplify some portion of the population in each generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(Main::error, program)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SingleNodeCrossover<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new MathTreePruneAlterer<>(0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the example above, half of the expression trees are simplified in each
+ generation.
+ If you want to prune the final result, you can do this with the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.simp\SpecialChar softhyphen
+li\SpecialChar softhyphen
+fy
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(3000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The algorithm used for pruning the expression tree, currently only uses
+ some basic mathematical identities, like 
+\begin_inset Formula $x+0=x$
+\end_inset
+
+, 
+\begin_inset Formula $x\cdot1=x$
+\end_inset
+
+ or 
+\begin_inset Formula $x\cdot0=0$
+\end_inset
+
+.
+ More advanced simplification algorithms may be implemented in the future.
+ The 
+\family typewriter
+MathExpr
+\family default
+ helper class can also be used for creating mathematical expression trees
+ from the 
+\family typewriter
+\emph on
+usual
+\family default
+\emph default
+ textual representation.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final MathExpr expr = MathExpr
+\end_layout
+
+\begin_layout Plain Layout
+
+    .parse("5*z + 6*x + sin(y)^3 + (1 + sin(z*5)/4)/6");
+\end_layout
+
+\begin_layout Plain Layout
+
+final double value = expr.eval(5.5, 4, 2.3);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The variables in an expression string are sorted alphabetically.
+ This means, that the expression is evaluated with 
+\begin_inset Formula $x=5.5$
+\end_inset
+
+, 
+\begin_inset Formula $y=4$
+\end_inset
+
+ and 
+\begin_inset Formula $z=2.3$
+\end_inset
+
+, which leads to a result value of 
+\begin_inset Formula $44.19673085074048$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -29994,6 +32965,43 @@ $ ./jrun io.jenetics.example.image.EvolvingImages evolve
 
 \begin_layout Section
 Symbolic regression
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Symbolic regression
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+GP
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Symbolic-regression"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -30075,7 +33083,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 90col%
+	width 75col%
 
 \end_inset
 
@@ -30093,6 +33101,187 @@ name "fig:Symbolic-regression-polynomial"
 \end_inset
 
 Symbolic regression polynomial
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+DTLZ1
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+DTLZ1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Deb, Thiele, Laumanns and Zitzler have proposed a set of generational MOPs
+ for testing and comparing MOEAs.
+ This suite of benchmarks attempts to define generic MOEA test problems
+ that are scalable to a user defined number of objectives.
+ Because of the last names of its creators, this test suite is known as
+ DTLZ (Deb-Thiele-Laumanns-Zitzler).
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "CoelloCoello2007"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+DTLZ1 is an 
+\begin_inset Formula $M$
+\end_inset
+
+-objective problem with linear Pareto-optimal front: 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Deb2001"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+f_{1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots x_{M-1}\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+f_{2}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}x_{2}\cdots\left(1-x_{M-1}\right)\left(1+g\left(\boldsymbol{x}_{M}\right)\right),\\
+ & \vdots\\
+f_{M-1}\left(\mathbf{x}\right) & = & \frac{1}{2}x_{1}\left(1-x_{2}\right)\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+f_{M}\left(\mathbf{x}\right) & = & \frac{1}{2}\left(1-x_{1}\right)\left(1+g\left(\mathbf{x}_{M}\right)\right),\\
+ &  & \forall i\in\left[1,..n\right]:\,\,0\leq x_{i}\leq1
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The functional 
+\begin_inset Formula $g\left(\mathbf{x}_{M}\right)$
+\end_inset
+
+ requires 
+\begin_inset Formula $\left|\mathbf{x}_{M}\right|=k$
+\end_inset
+
+ variables and must take any function with 
+\begin_inset Formula $g\geq0$
+\end_inset
+
+.
+ Typically 
+\begin_inset Formula $g$
+\end_inset
+
+ is defined as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+g\left(\mathbf{x}_{M}\right)=100\left[\left|\mathbf{x}_{M}\right|+\left(x-\frac{1}{2}\right)^{2}-\cos\left(20\pi\left(x-\frac{1}{2}\right)\right)\right].
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the above problem, the total number of variables is 
+\begin_inset Formula $n=M+k-1$
+\end_inset
+
+.
+ The search space contains 
+\begin_inset Formula $11^{k}-1$
+\end_inset
+
+ local Pareto-optimal fronts, each of which can attract an MOEA.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../java/DTLZ1.java}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The listing above shows the encoding of the DTLZ1 problem with the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Pareto-front-DTLZ1"
+
+\end_inset
+
+ shows the output DTLZ1 optimization.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/dtlz1.svg
+	lyxscale 70
+	width 70col%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Pareto-front-DTLZ1"
+
+\end_inset
+
+Pareto front DTLZ1
 \end_layout
 
 \end_inset
@@ -30386,6 +33575,7 @@ jenetics.ext
  non
 \emph default
 -standard GA operations and data types.
+ It also contains classes for solving multi-objective problems (MOEA).
 \end_layout
 
 \begin_layout Itemize
@@ -30711,7 +33901,7 @@ Version
 \series default
 :
 \emph on
- 6.11
+ 6.13
 \end_layout
 
 \begin_layout Itemize
@@ -31026,7 +34216,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.2.1
+: 4.5
 \end_layout
 
 \begin_layout Itemize
@@ -31063,7 +34253,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.2.1-bin.zip
+http://services.gradle.org/distributions/gradle-4.5-bin.zip
 \end_layout
 
 \end_inset
@@ -31150,7 +34340,7 @@ pom.xml
 \begin_layout LyX-Code
     <artifactId>
 \emph on
-module
+module-name
 \emph default
 </artifactId>
 \end_layout
@@ -31170,7 +34360,7 @@ Gradle
 \begin_layout LyX-Code
 'io.jenetics:
 \emph on
-module
+module-name
 \emph default
 :@__version__@'
 \end_layout
@@ -31205,9 +34395,9 @@ target "http://www.apache.org/licenses/LICENSE-2.0.html"
 
 \size footnotesize
 Copyright @__year__@ Franz Wilhelmstötter
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout LyX-Code
 
 \end_layout
 

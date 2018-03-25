@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.String.format;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -124,14 +123,18 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_nminus).and(_nplus).value();
+		int hash = 17;
+		hash += 31*Double.hashCode(_nminus) + 37;
+		hash += 31*Double.hashCode(_nplus) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LinearRankSelector &&
-			eq(((LinearRankSelector)obj)._nminus, _nminus) &&
-			eq(((LinearRankSelector)obj)._nplus, _nplus);
+		return obj == this ||
+			obj instanceof LinearRankSelector &&
+			Double.compare(((LinearRankSelector) obj)._nminus, _nminus) == 0 &&
+			Double.compare(((LinearRankSelector)obj)._nplus, _nplus) == 0;
 	}
 
 	@Override

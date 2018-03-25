@@ -96,7 +96,7 @@ public class TruncationSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/TruncationSelector";
+			"/io/jenetics/selector/distribution/TruncationSelector";
 
 		return Arrays.stream(Optimize.values())
 			.map(opt -> {

@@ -115,7 +115,9 @@ public final class MeanAlterer<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof MeanAlterer && super.equals(obj);
+		return obj == this ||
+			obj instanceof MeanAlterer &&
+			super.equals(obj);
 	}
 
 	@Override

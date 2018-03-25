@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.4"
+	id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'
@@ -47,6 +47,14 @@ dependencies {
 	jmh Include.PRNGine
 }
 
+jmh {
+	//jmhVersion = '1.20'
+	//duplicateClassesStrategy = 'include'
+	warmupIterations = 5
+	iterations = 5
+	include = ['.*PhenotypeEvaluationPerf.*']
+}
+
 idea {
 	module{
 		scopes.COMPILE.plus += [configurations.jmh]
@@ -61,6 +69,8 @@ jar.manifest.instruction('Export-Package',
 )
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
+
+test.dependsOn(compileJmhJava)
 
 packaging {
 	name = 'Jenetics'

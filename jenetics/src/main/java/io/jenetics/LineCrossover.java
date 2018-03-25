@@ -137,7 +137,9 @@ public class LineCrossover<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LineCrossover && super.equals(obj);
+		return obj == this ||
+			obj instanceof LineCrossover &&
+			super.equals(obj);
 	}
 
 	@Override

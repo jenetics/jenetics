@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -35,6 +37,11 @@ public class LongRangeTest extends ObjectTester<LongRange> {
 			final Random random = RandomRegistry.getRandom();
 			return LongRange.of(random.nextInt(10), random.nextInt(1000) + 20);
 		};
+	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(LongRange.class).verify();
 	}
 
 }
