@@ -136,7 +136,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		final int ones = (int)c.ones().count();
 		assertEquals(ones, c.bitCount());
-		assertTrue(c.ones().allMatch(c::get));
+		assertTrue(c.ones().allMatch(c::booleanValue));
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		final int zeros = (int)c.zeros().count();
 		assertEquals(zeros, c.length() - c.bitCount());
-		assertTrue(c.zeros().noneMatch(c::get));
+		assertTrue(c.zeros().noneMatch(c::booleanValue));
 	}
 
 	@Test(invocationCount = 5)
