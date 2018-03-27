@@ -32,6 +32,7 @@ import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
+import io.jenetics.util.DoubleRange;
 
 import io.jenetics.ext.internal.GeneratorSpliterator;
 
@@ -204,6 +205,11 @@ public final class AdaptiveEngine<
 			? extends EvolutionStreamable<G, C>> engine
 	) {
 		return new AdaptiveEngine<>(engine);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AdaptiveEngine<G, C> ofFitnessVariance(final DoubleRange variance) {
+		return null;
 	}
 
 }
