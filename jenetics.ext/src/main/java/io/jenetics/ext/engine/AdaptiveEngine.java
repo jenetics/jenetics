@@ -22,10 +22,12 @@ package io.jenetics.ext.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
@@ -209,6 +211,14 @@ public final class AdaptiveEngine<
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	AdaptiveEngine<G, C> ofFitnessVariance(final DoubleRange variance) {
+		return null;
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	AdaptiveEngine<G, C> ofFitnessVariance(
+		final DoubleUnaryOperator varianceToMutationRate,
+		Engine<G, C> template
+	) {
 		return null;
 	}
 
