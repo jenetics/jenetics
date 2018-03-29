@@ -78,6 +78,7 @@ public interface EvolutionStreamable<
 	 */
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init);
 
+
 	/* *************************************************************************
 	 * Default interface methods.
 	 * ************************************************************************/
