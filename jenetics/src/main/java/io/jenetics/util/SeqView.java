@@ -17,25 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.collection;
+package io.jenetics.util;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Function;
-
-import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class SeqView<T> implements MSeq<T> {
+final class SeqView<T> implements MSeq<T> {
 
-
-
+	
 	@Override
 	public void set(int index, T value) {
 		Arrays.asList();
