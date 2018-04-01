@@ -500,6 +500,10 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		return mseq;
 	}
 
+	public static <T> MSeq<T> viewOf(final List<? extends T> list) {
+		return null;
+	}
+
 //	/**
 //	 * Create a new {@code MSeq} instance from the remaining elements of the
 //	 * given iterator.
