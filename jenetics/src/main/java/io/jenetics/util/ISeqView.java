@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.function.Function;
 
 /**
@@ -28,26 +26,15 @@ import java.util.function.Function;
  * @version !__version__!
  * @since !__version__!
  */
-final class MSeqView<T> implements MSeq<T> {
-
-
-	@Override
-	public void set(int index, T value) {
-		Arrays.asList();
-	}
+final class ISeqView<T> implements ISeq<T> {
 
 	@Override
-	public MSeq<T> sort(int start, int end, Comparator<? super T> comparator) {
+	public ISeq<T> subSeq(int start, int end) {
 		return null;
 	}
 
 	@Override
-	public MSeq<T> subSeq(int start, int end) {
-		return null;
-	}
-
-	@Override
-	public MSeq<T> subSeq(int start) {
+	public ISeq<T> subSeq(int start) {
 		return null;
 	}
 
@@ -62,22 +49,17 @@ final class MSeqView<T> implements MSeq<T> {
 	}
 
 	@Override
-	public <B> MSeq<B> map(Function<? super T, ? extends B> mapper) {
+	public <B> ISeq<B> map(Function<? super T, ? extends B> mapper) {
 		return null;
 	}
 
 	@Override
-	public MSeq<T> append(Iterable<? extends T> values) {
+	public ISeq<T> append(Iterable<? extends T> values) {
 		return null;
 	}
 
 	@Override
-	public MSeq<T> prepend(Iterable<? extends T> values) {
-		return null;
-	}
-
-	@Override
-	public ISeq<T> toISeq() {
+	public ISeq<T> prepend(Iterable<? extends T> values) {
 		return null;
 	}
 
