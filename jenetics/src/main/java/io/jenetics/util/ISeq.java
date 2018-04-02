@@ -22,6 +22,7 @@ package io.jenetics.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -38,7 +39,7 @@ import io.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.6
+ * @version !__version__!
  */
 public interface ISeq<T>
 	extends
@@ -155,6 +156,42 @@ public interface ISeq<T>
 			: values instanceof MSeq<?>
 				? ((MSeq<T>)values).toISeq()
 				: MSeq.<T>of(values).toISeq();
+	}
+
+	/**
+	 * Returns a mutable sequence backed by the specified list.  (Changes to
+	 * the returned sequence "write through" to the list.)  This method acts
+	 * as bridge between collection-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param list the list containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code list}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	public static <T> ISeq<T> viewOf(final List<? extends T> list) {
+		return list.isEmpty()
+			? empty()
+			: new ISeqView<>(list);
+	}
+
+	/**
+	 * Returns a fixed-size sequence backed by the specified array. (Changes to
+	 * the returned sequence "write through" to the array.)  This method acts
+	 * as bridge between array-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param array the array containing the sequence elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code array}
+	 * @throws NullPointerException if the given array is {@code null}
+	 */
+	public static <T> ISeq<T> viewOf(final T[] array) {
+		return array.length == 0
+			? empty()
+			: new ISeqView<>(Arrays.asList(array));
 	}
 
 //	/**

@@ -30,19 +30,19 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 @Test
-public class MSeqViewTest extends MSeqTestBase {
+public class ISeqViewTest extends ISeqTestBase {
 
 	@Override
-	protected MSeq<Integer> newSeq(final int length) {
+	protected ISeq<Integer> newSeq(final int length) {
 		final List<Integer> list = new ArrayList<>(length);
 		for (int i = 0; i < length; ++i) {
 			list.add(i);
 		}
-		return new MSeqView<>(list);
+		return new ISeqView<>(list);
 	}
 
 	@Test
-	public void writeThrough() {
+	public void readThrough() {
 		final int length = 100;
 		final Random random = new Random();
 		final List<Integer> list = new ArrayList<>(length);
@@ -50,7 +50,7 @@ public class MSeqViewTest extends MSeqTestBase {
 			list.add(random.nextInt());
 		}
 
-		final MSeqView<Integer> view = new MSeqView<>(list);
+		final ISeqView<Integer> view = new ISeqView<>(list);
 		for (int i = 0; i < length; ++i) {
 			Assert.assertEquals(view.get(i), list.get(i));
 		}
@@ -60,13 +60,6 @@ public class MSeqViewTest extends MSeqTestBase {
 		}
 		for (int i = 0; i < length; ++i) {
 			Assert.assertEquals(view.get(i), list.get(i));
-		}
-
-		for (int i = 0; i < length; ++i) {
-			view.set(i, random.nextInt());
-		}
-		for (int i = 0; i < length; ++i) {
-			Assert.assertEquals(list.get(i), view.get(i));
 		}
 	}
 

@@ -19,52 +19,73 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.List;
 import java.util.function.Function;
 
 /**
+ * ISeq view of an given list. The content is not copied on creation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 final class ISeqView<T> implements ISeq<T> {
 
-	@Override
-	public ISeq<T> subSeq(int start, int end) {
-		return null;
+	private final List<? extends T> _list;
+
+	ISeqView(final List<? extends T> list) {
+		_list = requireNonNull(list);
 	}
 
 	@Override
-	public ISeq<T> subSeq(int start) {
-		return null;
-	}
-
-	@Override
-	public T get(int index) {
-		return null;
+	public T get(final int index) {
+		return _list.get(index);
 	}
 
 	@Override
 	public int length() {
-		return 0;
+		return _list.size();
 	}
 
 	@Override
-	public <B> ISeq<B> map(Function<? super T, ? extends B> mapper) {
-		return null;
+	public ISeq<T> subSeq(final int start, final int end) {
+		return new ISeqView<>(_list.subList(start, end));
 	}
 
 	@Override
-	public ISeq<T> append(Iterable<? extends T> values) {
-		return null;
+	public ISeq<T> subSeq(final int start) {
+		return new ISeqView<>(_list.subList(start, _list.size()));
 	}
 
 	@Override
-	public ISeq<T> prepend(Iterable<? extends T> values) {
-		return null;
+	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
+		requireNonNull(mapper);
+
+		final MSeq<B> result = MSeq.ofLength(length());
+		for (int i = 0; i < length(); ++i) {
+			result.set(i, mapper.apply(get(i)));
+		}
+
+		return result.toISeq();
+	}
+
+	@Override
+	public ISeq<T> append(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return ISeq.<T>of(_list).append(values);
+	}
+
+	@Override
+	public ISeq<T> prepend(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return ISeq.<T>of(_list).prepend(values);
 	}
 
 	@Override
 	public MSeq<T> copy() {
-		return null;
+		return MSeq.of(_list);
 	}
+
 }

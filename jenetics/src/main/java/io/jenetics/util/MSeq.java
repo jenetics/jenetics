@@ -56,7 +56,7 @@ import io.jenetics.internal.collection.ObjectStore;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version !__version__!
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -507,6 +507,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * the returned sequence "write through" to the list.)  This method acts
 	 * as bridge between collection-based and sequence-based APIs.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param list the list containing the elements
 	 * @param <T> the element type
 	 * @return a sequence view of the given {@code list}
@@ -522,6 +524,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * Returns a fixed-size sequence backed by the specified array. (Changes to
 	 * the returned sequence "write through" to the array.)  This method acts
 	 * as bridge between array-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param array the array containing the sequence elements
 	 * @param <T> the element type

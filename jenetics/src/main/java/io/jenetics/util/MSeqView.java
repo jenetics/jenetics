@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
+ * MSeq view of an given list. The content is not copied on creation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
