@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.internal.collection.Array.checkIndex;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -322,9 +323,10 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int end
 	) {
 		requireNonNull(predicate, "Predicate");
+		checkIndex(start, end, length());
 
 		int index = -1;
-		for (int i = start, n = end; i < n && index == -1; ++i) {
+		for (int i = start; i < end && index == -1; ++i) {
 			if (predicate.test(get(i))) {
 				index = i;
 			}
@@ -438,6 +440,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int end
 	) {
 		requireNonNull(predicate, "Predicate");
+		checkIndex(start, end, length());
 
 		int index = -1;
 		for (int i = end; --i >= start && index == -1;) {
