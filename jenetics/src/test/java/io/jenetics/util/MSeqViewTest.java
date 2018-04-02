@@ -21,7 +21,9 @@ package io.jenetics.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -37,6 +39,35 @@ public class MSeqViewTest extends MSeqTestBase {
 			list.add(i);
 		}
 		return new MSeqView<>(list);
+	}
+
+	@Test
+	public void writeThrough() {
+		final int length = 100;
+		final Random random = new Random();
+		final List<Integer> list = new ArrayList<>(length);
+		for (int i = 0; i < length; ++i) {
+			list.add(random.nextInt());
+		}
+
+		final MSeqView<Integer> view = new MSeqView<>(list);
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(view.get(i), list.get(i));
+		}
+
+		for (int i = 0; i < length; ++i) {
+			list.set(i, random.nextInt());
+		}
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(view.get(i), list.get(i));
+		}
+
+		for (int i = 0; i < length; ++i) {
+			view.set(i, random.nextInt());
+		}
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(list.get(i), view.get(i));
+		}
 	}
 
 }
