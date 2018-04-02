@@ -502,42 +502,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		return mseq;
 	}
 
-	/**
-	 * Returns a mutable sequence backed by the specified list.  (Changes to
-	 * the returned sequence "write through" to the list.)  This method acts
-	 * as bridge between collection-based and sequence-based APIs.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param list the list containing the elements
-	 * @param <T> the element type
-	 * @return a sequence view of the given {@code list}
-	 * @throws NullPointerException if the given list is {@code null}
-	 */
-	public static <T> MSeq<T> viewOf(final List<T> list) {
-		return list.isEmpty()
-			? empty()
-			: new MSeqView<>(list);
-	}
-
-	/**
-	 * Returns a fixed-size sequence backed by the specified array. (Changes to
-	 * the returned sequence "write through" to the array.)  This method acts
-	 * as bridge between array-based and sequence-based APIs.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param array the array containing the sequence elements
-	 * @param <T> the element type
-	 * @return a sequence view of the given {@code array}
-	 * @throws NullPointerException if the given array is {@code null}
-	 */
-	public static <T> MSeq<T> viewOf(final T[] array) {
-		return array.length == 0
-			? empty()
-			: new MSeqView<>(Arrays.asList(array));
-	}
-
 //	/**
 //	 * Create a new {@code MSeq} instance from the remaining elements of the
 //	 * given iterator.
@@ -606,6 +570,42 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 			result = MSeq.<T>ofLength(values.length()).setAll(values);
 		}
 		return result;
+	}
+
+	/**
+	 * Returns a mutable sequence backed by the specified list.  (Changes to
+	 * the returned sequence "write through" to the list.)  This method acts
+	 * as bridge between collection-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param list the list containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code list}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	public static <T> MSeq<T> viewOf(final List<T> list) {
+		return list.isEmpty()
+			? empty()
+			: new MSeqView<>(list);
+	}
+
+	/**
+	 * Returns a fixed-size sequence backed by the specified array. (Changes to
+	 * the returned sequence "write through" to the array.)  This method acts
+	 * as bridge between array-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param array the array containing the sequence elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code array}
+	 * @throws NullPointerException if the given array is {@code null}
+	 */
+	public static <T> MSeq<T> viewOf(final T[] array) {
+		return array.length == 0
+			? empty()
+			: new MSeqView<>(Arrays.asList(array));
 	}
 
 }
