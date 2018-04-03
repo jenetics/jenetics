@@ -83,4 +83,14 @@ final class SeqView<T> implements Seq<T> {
 		return ISeq.<T>of(_list).prepend(values);
 	}
 
+	@Override
+	public Object[] toArray() {
+		return _list.toArray();
+	}
+
+	@Override
+	public <B> B[] toArray(final B[] array) {
+		return _list.toArray(array);
+	}
+
 }
