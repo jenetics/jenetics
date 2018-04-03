@@ -31,7 +31,7 @@ import java.util.function.Function;
  * @version !__version__!
  * @since !__version__!
  */
-final class ISeqView<T> implements ISeq<T> {
+final class ISeqView<T> implements Seq<T> {
 
 	private final List<? extends T> _list;
 
@@ -50,12 +50,12 @@ final class ISeqView<T> implements ISeq<T> {
 	}
 
 	@Override
-	public ISeq<T> subSeq(final int start, final int end) {
+	public Seq<T> subSeq(final int start, final int end) {
 		return new ISeqView<>(_list.subList(start, end));
 	}
 
 	@Override
-	public ISeq<T> subSeq(final int start) {
+	public Seq<T> subSeq(final int start) {
 		return new ISeqView<>(_list.subList(start, _list.size()));
 	}
 
@@ -81,11 +81,6 @@ final class ISeqView<T> implements ISeq<T> {
 	public ISeq<T> prepend(final Iterable<? extends T> values) {
 		requireNonNull(values);
 		return ISeq.<T>of(_list).prepend(values);
-	}
-
-	@Override
-	public MSeq<T> copy() {
-		return MSeq.of(_list);
 	}
 
 }
