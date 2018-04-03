@@ -39,6 +39,12 @@ final class SeqView<T> implements Seq<T> {
 		_list = requireNonNull(list);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> asList() {
+		return (List<T>)_list;
+	}
+
 	@Override
 	public T get(final int index) {
 		return _list.get(index);
