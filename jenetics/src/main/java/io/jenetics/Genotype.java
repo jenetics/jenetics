@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
