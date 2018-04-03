@@ -54,7 +54,7 @@ import io.jenetics.internal.collection.ObjectStore;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version !__version__!
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 

@@ -40,6 +40,8 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
+import io.jenetics.prngine.LCG64ShiftRandom;
+
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.CharacterChromosome;
@@ -53,7 +55,6 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 

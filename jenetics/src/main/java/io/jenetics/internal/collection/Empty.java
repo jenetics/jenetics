@@ -19,7 +19,6 @@
  */
 package io.jenetics.internal.collection;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;

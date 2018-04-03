@@ -38,7 +38,7 @@ import io.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.6
+ * @version !__version__!
  */
 public interface ISeq<T>
 	extends
