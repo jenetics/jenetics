@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -40,6 +41,7 @@ import io.jenetics.util.Seq;
 public abstract class ArraySeq<T>
 	implements
 		Seq<T>,
+		RandomAccess,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
