@@ -24,6 +24,7 @@ import static java.util.stream.Collectors.joining;
 import static io.jenetics.internal.collection.Array.checkIndex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -928,6 +929,43 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	static <T> Seq<T> of(Supplier<? extends T> supplier, final int length) {
 		return ISeq.of(supplier, length);
+	}
+
+
+	/**
+	 * Returns a mutable sequence backed by the specified list.  (Changes to
+	 * the returned sequence "write through" to the list.)  This method acts
+	 * as bridge between collection-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param list the list containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code list}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	public static <T> Seq<T> viewOf(final List<? extends T> list) {
+		return list.isEmpty()
+			? empty()
+			: new SeqView<>(list);
+	}
+
+	/**
+	 * Returns a fixed-size sequence backed by the specified array. (Changes to
+	 * the returned sequence "write through" to the array.)  This method acts
+	 * as bridge between array-based and sequence-based APIs.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param array the array containing the sequence elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code array}
+	 * @throws NullPointerException if the given array is {@code null}
+	 */
+	public static <T> Seq<T> viewOf(final T[] array) {
+		return array.length == 0
+			? empty()
+			: new SeqView<>(Arrays.asList(array));
 	}
 
 }

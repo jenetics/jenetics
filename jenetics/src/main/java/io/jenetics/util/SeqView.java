@@ -60,7 +60,7 @@ final class SeqView<T> implements Seq<T> {
 	}
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper) {
+	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
 		final MSeq<B> result = MSeq.ofLength(length());
@@ -72,13 +72,13 @@ final class SeqView<T> implements Seq<T> {
 	}
 
 	@Override
-	public ISeq<T> append(final Iterable<? extends T> values) {
+	public Seq<T> append(final Iterable<? extends T> values) {
 		requireNonNull(values);
 		return ISeq.<T>of(_list).append(values);
 	}
 
 	@Override
-	public ISeq<T> prepend(final Iterable<? extends T> values) {
+	public Seq<T> prepend(final Iterable<? extends T> values) {
 		requireNonNull(values);
 		return ISeq.<T>of(_list).prepend(values);
 	}
