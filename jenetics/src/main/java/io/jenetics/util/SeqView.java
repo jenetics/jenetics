@@ -31,11 +31,11 @@ import java.util.function.Function;
  * @version !__version__!
  * @since !__version__!
  */
-final class ISeqView<T> implements Seq<T> {
+final class SeqView<T> implements Seq<T> {
 
 	private final List<? extends T> _list;
 
-	ISeqView(final List<? extends T> list) {
+	SeqView(final List<? extends T> list) {
 		_list = requireNonNull(list);
 	}
 
@@ -51,12 +51,12 @@ final class ISeqView<T> implements Seq<T> {
 
 	@Override
 	public Seq<T> subSeq(final int start, final int end) {
-		return new ISeqView<>(_list.subList(start, end));
+		return new SeqView<>(_list.subList(start, end));
 	}
 
 	@Override
 	public Seq<T> subSeq(final int start) {
-		return new ISeqView<>(_list.subList(start, _list.size()));
+		return new SeqView<>(_list.subList(start, _list.size()));
 	}
 
 	@Override

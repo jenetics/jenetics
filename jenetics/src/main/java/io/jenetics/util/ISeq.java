@@ -217,7 +217,7 @@ public interface ISeq<T>
 	public static <T> ISeq<T> viewOf(final List<? extends T> list) {
 		return list.isEmpty()
 			? empty()
-			: new ISeqView<>(list);
+			: new SeqView<>(list);
 	}
 
 	/**
@@ -235,7 +235,7 @@ public interface ISeq<T>
 	public static <T> ISeq<T> viewOf(final T[] array) {
 		return array.length == 0
 			? empty()
-			: new ISeqView<>(Arrays.asList(array));
+			: new SeqView<>(Arrays.asList(array));
 	}
 
 	/**

@@ -30,15 +30,15 @@ import org.testng.annotations.Test;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 @Test
-public class ISeqViewTest extends ISeqTestBase {
+public class SeqViewTest extends SeqTestBase {
 
 	@Override
-	protected ISeq<Integer> newSeq(final int length) {
+	protected Seq<Integer> newSeq(final int length) {
 		final List<Integer> list = new ArrayList<>(length);
 		for (int i = 0; i < length; ++i) {
 			list.add(i);
 		}
-		return new ISeqView<>(list);
+		return new SeqView<>(list);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class ISeqViewTest extends ISeqTestBase {
 			list.add(random.nextInt());
 		}
 
-		final ISeqView<Integer> view = new ISeqView<>(list);
+		final SeqView<Integer> view = new SeqView<>(list);
 		for (int i = 0; i < length; ++i) {
 			Assert.assertEquals(view.get(i), list.get(i));
 		}
