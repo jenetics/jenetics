@@ -952,8 +952,8 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
 	/**
 	 * Returns a fixed-size sequence backed by the specified array. (Changes to
-	 * the given list are "write through" to the returned sequence.)  This
-	 * method acts as bridge between collection-based and sequence-based APIs.
+	 * the given array are "write through" to the returned sequence.)  This
+	 * method acts as bridge between array-based and sequence-based APIs.
 	 *
 	 * @since !__version__!
 	 *
