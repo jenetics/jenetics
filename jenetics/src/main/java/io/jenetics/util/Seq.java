@@ -49,7 +49,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.2
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -937,7 +937,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * list are "write through" to the returned sequence.)  This method acts
 	 * as bridge between collection-based and sequence-based APIs.
 	 *
-	 * @since !__version__!
+	 * @since 4.2
 	 *
 	 * @param list the list containing the elements
 	 * @param <T> the element type
@@ -955,7 +955,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * the given array are "write through" to the returned sequence.)  This
 	 * method acts as bridge between array-based and sequence-based APIs.
 	 *
-	 * @since !__version__!
+	 * @since 4.2
 	 *
 	 * @param array the array containing the sequence elements
 	 * @param <T> the element type
