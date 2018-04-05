@@ -87,7 +87,7 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 	public int hashCode() {
 		int hash = 17;
 		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_value.get()) + 37;
+		hash += 31*Objects.hashCode(_value) + 37;
 		return hash;
 	}
 
@@ -96,7 +96,7 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof EphemeralConst<?> &&
 			Objects.equals(((EphemeralConst)obj)._name, _name) &&
-			Objects.equals(((EphemeralConst)obj)._value.get(), _value.get());
+			Objects.equals(((EphemeralConst)obj)._value, _value);
 	}
 
 	@Override
