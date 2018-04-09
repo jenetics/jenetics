@@ -7779,6 +7779,34 @@ Pool()
 \begin_layout Description
 
 \family typewriter
+evaluator
+\family default
+ This property allows you to replace the evaluation strategy of the 
+\family typewriter
+Phenotype
+\family default
+'s fitness function.
+ Normally, each fitness value is evaluated concurrently, but independently
+ from each other.
+ In some configuration it is necessary, for performance reason, to evaluate
+ the fitness values of a population at once.
+ This is then performed by the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Evaluator
+\family default
+ or 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Genotype\SpecialChar softhyphen
+Evaluator
+\family default
+ interface.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 fitnessFunction
 \family default
  This property defines the fitness
@@ -8133,8 +8161,11 @@ individualCreationRetries
 \end_layout
 
 \begin_layout Description
-mapper This property lets you define an mapper, which transforms the final
- 
+
+\family typewriter
+mapper
+\family default
+ This property lets you define an mapper, which transforms the final 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Result
@@ -8176,7 +8207,11 @@ The
 \family typewriter
 EvolutionStream
 \family default
-s created by the Engine class are unlimited.
+s created by the 
+\family typewriter
+Engine
+\family default
+ class are unlimited.
  Such streams must be limited by calling the available 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -8184,13 +8219,21 @@ Stream\SpecialChar softhyphen
 .limit
 \family default
  methods.
- Alternatively, the Engine instance itself can be limited with the 
+ Alternatively, the 
+\family typewriter
+Engine
+\family default
+ instance itself can be limited with the 
 \family typewriter
 Engine\SpecialChar softhyphen
 .limit
 \family default
  methods.
- This limited Engines no long creates infinite 
+ This limited 
+\family typewriter
+Engine
+\family default
+s no long creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -8200,8 +8243,11 @@ s, they are truncated by the limit predicate defined by the
 Engine
 \family default
 .
- This feature is needed when you are concatenating evolution Engines (see
- section 
+ This feature is needed when you are concatenating evolution 
+\family typewriter
+Engine
+\family default
+s (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:ConcatEngine"
