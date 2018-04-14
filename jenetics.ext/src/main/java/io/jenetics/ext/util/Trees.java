@@ -61,7 +61,7 @@ final class Trees {
 	) {
 		final MSeq<T> path;
 		if (node == null) {
-			path = depth == 0 ? MSeq.empty() : MSeq.ofLength(depth);
+			path = MSeq.ofLength(depth);
 		} else {
 			path = pathToRoot(node.getParent().orElse(null), depth + 1);
 			path.set(path.length() - depth - 1, node);
