@@ -68,7 +68,6 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 		return advance;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Spliterator<T> trySplit() {
 		final List<Spliterator<T>> split = _spliterators.stream()
