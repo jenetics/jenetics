@@ -147,7 +147,7 @@ public class SimulatedBinaryCrossover<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimulatedBinaryCrossover<? ,?> &&
+			obj instanceof SimulatedBinaryCrossover &&
 			Double.compare(
 				((SimulatedBinaryCrossover)obj)._probability,
 				_probability) == 0 &&

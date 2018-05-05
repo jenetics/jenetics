@@ -114,7 +114,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 			final Selector<DoubleGene, Double> selector = selector();
 
-			if (!(selector instanceof MonteCarloSelector<?, ?>)) {
+			if (!(selector instanceof MonteCarloSelector)) {
 				final double monteCarloSelectionSum =
 					new MonteCarloSelector<DoubleGene, Double>()
 						.select(population, count, opt).stream()

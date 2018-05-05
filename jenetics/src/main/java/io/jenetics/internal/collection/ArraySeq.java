@@ -61,7 +61,7 @@ public abstract class ArraySeq<T>
 	@SuppressWarnings("unchecked")
 	final Array<T> __append(final Iterable<? extends T> values) {
 		requireNonNull(values);
-		return values instanceof ArraySeq<?>
+		return values instanceof ArraySeq
 			? array.append(((ArraySeq<T>)values).array)
 			: array.append(values);
 	}
@@ -69,7 +69,7 @@ public abstract class ArraySeq<T>
 	@SuppressWarnings("unchecked")
 	final Array<T> __prepend(final Iterable<? extends T> values) {
 		requireNonNull(values);
-		return values instanceof ArraySeq<?>
+		return values instanceof ArraySeq
 			? ((ArraySeq<T>)values).array.append(array)
 			: array.prepend(values);
 	}
@@ -179,11 +179,11 @@ public abstract class ArraySeq<T>
 		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof Seq<?>)) {
+		if (!(object instanceof Seq)) {
 			return false;
 		}
 
-		final Seq<?> seq = (Seq<?>)object;
+		final Seq<?> seq = (Seq)object;
 		return Seq.equals(this, seq);
 	}
 

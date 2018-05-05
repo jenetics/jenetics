@@ -224,7 +224,7 @@ public final class Array<T> implements Serializable {
 
 	private static int size(final Iterable<?> values) {
 		int size = 0;
-		if (values instanceof Collection<?>) {
+		if (values instanceof Collection) {
 			size = ((Collection<?>)values).size();
 		} else {
 			for (Object value : values) {

@@ -406,7 +406,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 	}
 
 	private static Object unwrap(final Object object) {
-		return object instanceof Optional<?>
+		return object instanceof Optional
 			? ((Optional<?>)object).orElse(null)
 			: object;
 	}

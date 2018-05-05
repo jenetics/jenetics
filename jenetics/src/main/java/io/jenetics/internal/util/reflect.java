@@ -111,7 +111,7 @@ public class reflect {
 	 *         a {@code Class}.
 	 */
 	public static Class<?> classOf(final Object value) {
-		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
+		return value instanceof Class ? (Class)value : value.getClass();
 	}
 
 	@SuppressWarnings("unchecked")

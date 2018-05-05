@@ -150,9 +150,9 @@ public interface ISeq<T>
 	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		return values instanceof ISeq<?>
+		return values instanceof ISeq
 			? (ISeq<T>)values
-			: values instanceof MSeq<?>
+			: values instanceof MSeq
 				? ((MSeq<T>)values).toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}

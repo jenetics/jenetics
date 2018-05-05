@@ -689,7 +689,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @return a {@code MSeq} with this values
 	 */
 	public default MSeq<T> asMSeq() {
-		return this instanceof MSeq<?> ? (MSeq<T>)this : MSeq.of(this);
+		return this instanceof MSeq ? (MSeq<T>)this : MSeq.of(this);
 	}
 
 	/**
@@ -701,7 +701,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @return a {@code ISeq} with this values
 	 */
 	public default ISeq<T> asISeq() {
-		return this instanceof ISeq<?> ? (ISeq<T>)this : ISeq.of(this);
+		return this instanceof ISeq ? (ISeq<T>)this : ISeq.of(this);
 	}
 
 	/**
@@ -813,7 +813,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		if (obj == seq) {
 			return true;
 		}
-		if (!(obj instanceof Seq<?>)) {
+		if (!(obj instanceof Seq)) {
 			return false;
 		}
 

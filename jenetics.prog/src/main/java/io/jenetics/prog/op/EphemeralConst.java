@@ -94,7 +94,7 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EphemeralConst<?> &&
+			obj instanceof EphemeralConst &&
 			Objects.equals(((EphemeralConst)obj)._name, _name) &&
 			Objects.equals(((EphemeralConst)obj)._value, _value);
 	}

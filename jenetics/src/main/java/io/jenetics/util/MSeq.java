@@ -476,13 +476,13 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
 		final MSeq<T> mseq;
-		if (values instanceof ISeq<?>) {
+		if (values instanceof ISeq) {
 			final ISeq<T> seq = (ISeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (values instanceof MSeq<?>) {
+		} else if (values instanceof MSeq) {
 			final MSeq<T> seq = (MSeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (values instanceof Collection<?>) {
+		} else if (values instanceof Collection) {
 			final Collection<T> collection = (Collection<T>)values;
 			mseq = collection.isEmpty()
 				? empty()
@@ -560,9 +560,9 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Seq<? extends T> values) {
 		final MSeq<T> result;
-		if (values instanceof MSeq<?>) {
+		if (values instanceof MSeq) {
 			result = ((MSeq<T>)values).copy();
-		} else if (values instanceof ISeq<?>) {
+		} else if (values instanceof ISeq) {
 			result = ((ISeq<T>)values).copy();
 		} else {
 			result = MSeq.<T>ofLength(values.length()).setAll(values);
