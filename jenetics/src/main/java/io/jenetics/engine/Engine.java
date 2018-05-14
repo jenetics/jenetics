@@ -813,7 +813,10 @@ public final class Engine<
 	> {
 
 		/**
-		 * Evaluates the fitness values of the given {@code population}.
+		 * Evaluates the fitness values of the given {@code population}. The
+		 * given {@code population} might contain already evaluated individuals.
+		 * It is the responsibility of the implementer to filter out already
+		 * evaluated individuals, if desired.
 		 *
 		 * @param population the population to evaluate
 		 * @return the evaluated population. Implementers are free to return the
@@ -823,6 +826,12 @@ public final class Engine<
 
 		/**
 		 * Create a new phenotype evaluator from a given genotype {@code evaluator}.
+		 *
+		 * @implNote
+		 * The returned {@link Evaluator} will only forward <em>un</em>-evaluated
+		 * individuals to the given genotype {@code evaluator}. This means, that
+		 * already evaluated individuals are filtered from the population, which
+		 * is then forwarded to the underlying genotype {@code evaluator}.
 		 *
 		 * @param evaluator the genotype evaluator
 		 * @param <G> the gene type
