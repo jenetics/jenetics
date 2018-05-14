@@ -794,7 +794,9 @@ public final class Engine<
 	 * @apiNote
 	 * This interface is an <em>advanced</em> {@code Engine} configuration
 	 * feature, which should be only used when there is a performance gain from
-	 * implementing a different evaluation strategy.
+	 * implementing a different evaluation strategy. Another use case is, when
+	 * the fitness value of an individual also depends on the current composition
+	 * of the population.
 	 *
 	 * @see GenotypeEvaluator
 	 * @see Engine.Builder#evaluator(Engine.Evaluator)
