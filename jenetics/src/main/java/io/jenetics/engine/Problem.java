@@ -81,6 +81,28 @@ public interface Problem<
 	public Codec<T, G> codec();
 
 	/**
+	 * Converts the given {@link Genotype} to the target type {@link T}. This is
+	 * a shortcut for
+	 * <pre>{@code
+	 * final Problem<SomeObject, DoubleGene, Double> problem = ...
+	 * final Genotype<DoubleGene> gt = problem.codec().encoding().newInstance();
+	 *
+	 * final SomeObject arg = problem.decode(gt);
+	 * }</pre>
+	 *
+	 * @since 4.2
+	 *
+	 * @see Codec#decode(Genotype)
+	 *
+	 * @param genotype the genotype to be converted
+	 * @return the converted genotype
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}
+	 */
+	public default T decode(final Genotype<G> genotype) {
+		return codec().decode(genotype);
+	}
+
+	/**
 	 * Returns the fitness value for the given argument.
 	 *
 	 * @since 4.1
