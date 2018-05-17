@@ -264,9 +264,8 @@ public final class Engine<
 		final Timer timer = Timer.of(_clock).start();
 
 		// Initial evaluation of the population.
-		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evalPop =
-			_evaluator.evaluate(start.getPopulation());
+		final var evaluateTimer = Timer.of(_clock).start();
+		final var evalPop = _evaluator.evaluate(start.getPopulation());
 
 		if (start.getPopulation().size() != evalPop.size()) {
 			throw new IllegalStateException(format(

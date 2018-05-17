@@ -21,6 +21,8 @@ package io.jenetics;
 
 import static io.jenetics.internal.util.Equality.eq;
 
+import java.util.Objects;
+
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
