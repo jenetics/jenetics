@@ -119,11 +119,11 @@ public interface Problem<
 	 *
 	 * @since 4.1
 	 *
-	 * @param gt the argument of the fitness function
+	 * @param genotype the argument of the fitness function
 	 * @return the fitness value
 	 */
-	public default C fitness(final Genotype<G> gt) {
-		return fitness(codec().decode(gt));
+	public default C fitness(final Genotype<G> genotype) {
+		return fitness(codec().decode(genotype));
 	}
 
 	/**
