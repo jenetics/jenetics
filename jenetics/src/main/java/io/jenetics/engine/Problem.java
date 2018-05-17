@@ -55,7 +55,7 @@ import io.jenetics.Genotype;
  * @param <C> the result type of the fitness function
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 4.2
  * @since 3.4
  */
 public interface Problem<
