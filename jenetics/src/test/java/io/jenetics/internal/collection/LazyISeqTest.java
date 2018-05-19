@@ -17,14 +17,15 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.internal.collection;
 
 import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.collection.LazyISeq;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.ISeqTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
