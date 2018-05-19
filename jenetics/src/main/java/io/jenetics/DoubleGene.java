@@ -22,9 +22,16 @@ package io.jenetics;
 import static io.jenetics.internal.math.random.nextDouble;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
+import io.jenetics.internal.Serial;
+import io.jenetics.internal.SerialIO;
 import io.jenetics.internal.math.random;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -172,6 +179,31 @@ public final class DoubleGene
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
 		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.DOUBLE_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	public void write(final DataOutput out) throws IOException {
+		out.writeDouble(_value);
+		out.writeDouble(_min);
+		out.writeDouble(_max);
+	}
+
+	public static DoubleGene read(final DataInput in) throws IOException {
+		return of(in.readDouble(), in.readDouble(), in.readDouble());
 	}
 
 }
