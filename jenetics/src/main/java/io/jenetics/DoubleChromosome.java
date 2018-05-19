@@ -20,13 +20,18 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.Random;
 
+import io.jenetics.internal.collection.LazyISeq;
+import io.jenetics.internal.math.random;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
@@ -91,6 +96,14 @@ public class DoubleChromosome
 		_lengthRange = VariableChromosome.checkLengthRange(lengthRange, values.length);
 	}
 
+	public DoubleChromosome(
+		final DoubleRange valueRange,
+		final IntRange lengthRange
+	) {
+		_valueRange = requireNonNull(valueRange);
+		_lengthRange = VariableChromosome.checkLengthRange(lengthRange, values.length);
+	}
+
 	/**
 	 * Create a new random chromosome.
 	 *
@@ -148,7 +161,23 @@ public class DoubleChromosome
 
 	@Override
 	public DoubleGene getGene(final int index) {
+		return geneAt(index);
+	}
+
+	public DoubleGene geneAt(final int index) {
 		return DoubleGene.of(doubleValue(index), _valueRange);
+	}
+
+	public DoubleGene gene() {
+		return geneAt(0);
+	}
+
+	public double alleleAt(final int index) {
+		return _values[index];
+	}
+
+	public double allele() {
+		return _values[0];
 	}
 
 	@Override
@@ -158,8 +187,10 @@ public class DoubleChromosome
 
 	@Override
 	public ISeq<DoubleGene> toSeq() {
-		return null;
+		return LazyISeq.of(this::geneAt, length());
 	}
+
+	private byte _valid = 0;
 
 	@Override
 	public boolean isValid() {
@@ -168,7 +199,7 @@ public class DoubleChromosome
 
 	@Override
 	public Iterator<DoubleGene> iterator() {
-		return null;
+		return toSeq().iterator();
 	}
 
 	@Override
@@ -238,6 +269,11 @@ public class DoubleChromosome
 	public double[] toArray() {
 		return _values.clone();
 	}
+
+
+	/* *************************************************************************
+	 *  Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new {@code DoubleChromosome} with the given genes.
@@ -373,6 +409,25 @@ public class DoubleChromosome
 	@Override
 	public boolean equals(final Object obj) {
 		return Equality.of(this, obj).test(super::equals);
+	}
+
+
+
+	private static double[] values(
+		final DoubleRange valueRange,
+		final IntRange lengthRange
+	) {
+		final Random r = getRandom();
+
+		final double min = valueRange.getMin();
+		final double max = valueRange.getMax();
+		final int length = random.nextInt(lengthRange, r);
+
+		final double[] values = new double[length];
+		for (int i = 0; i < length; ++i) {
+			values[i] = nextDouble(min, max, r);
+		}
+		return values;
 	}
 
 

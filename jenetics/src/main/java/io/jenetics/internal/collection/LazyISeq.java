@@ -112,7 +112,7 @@ public final class LazyISeq<T> implements ISeq<T> {
 		return mseq;
 	}
 
-	static <T> ISeq<T> of(final IntFunction<? extends T> values, final int length) {
+	public static <T> ISeq<T> of(final IntFunction<? extends T> values, final int length) {
 		return length == 0
 			? ISeq.empty()
 			: new LazyISeq<>(values, 0, length);
