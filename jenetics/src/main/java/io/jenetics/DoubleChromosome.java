@@ -19,11 +19,15 @@
  */
 package io.jenetics;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import io.jenetics.internal.SerialIO;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
@@ -42,7 +46,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -294,6 +298,38 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
+	private Object writeReplace() {
+		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		SerialIO.writeInt(length(), out);
+		SerialIO.writeInt(lengthRange().getMin(), out);
+		SerialIO.writeInt(lengthRange().getMax(), out);
+
+		out.writeDouble(_min);
+		out.writeDouble(_max);
+
+		for (int i = 0, n = length(); i < n; ++i) {
+			out.writeDouble(doubleValue(i));
+		}
+	}
+
+	static DoubleGene read(final DataInput in) throws IOException {
+		final int length = SerialIO.readInt(in);
+		final IntRange lengthRange = IntRange.of(SerialIO.readInt(in), SerialIO.readInt(in));
+
+		//return of(in.readDouble(), in.readDouble(), in.readDouble());
+		return null;
+	}
+
+
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
@@ -309,6 +345,7 @@ public class DoubleChromosome
 		}
 	}
 
+	/*
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
@@ -325,5 +362,6 @@ public class DoubleChromosome
 
 		reflect.setField(this, "_genes", genes.toISeq());
 	}
+	*/
 
 }

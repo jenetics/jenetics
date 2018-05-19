@@ -53,7 +53,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public final class DoubleGene
 	extends AbstractNumericGene<Double, DoubleGene>
@@ -194,13 +194,13 @@ public final class DoubleGene
 		throw new InvalidObjectException("Serialization proxy required.");
 	}
 
-	public void write(final DataOutput out) throws IOException {
+	void write(final DataOutput out) throws IOException {
 		out.writeDouble(_value);
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 	}
 
-	public static DoubleGene read(final DataInput in) throws IOException {
+	static DoubleGene read(final DataInput in) throws IOException {
 		return of(in.readDouble(), in.readDouble(), in.readDouble());
 	}
 
