@@ -30,8 +30,6 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.Serial;
-import io.jenetics.internal.SerialIO;
 import io.jenetics.internal.math.random;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;

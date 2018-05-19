@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal;
+package io.jenetics;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.io.ObjectOutput;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Serial implements Externalizable {
+final class Serial implements Externalizable {
 
 	public static final byte DOUBLE_GENE = 1;
 	public static final byte INTEGER_GENE = 2;
