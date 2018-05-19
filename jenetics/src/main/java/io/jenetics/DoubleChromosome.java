@@ -19,10 +19,13 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Iterator;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
@@ -42,35 +45,50 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public class DoubleChromosome
-	extends AbstractBoundedChromosome<Double, DoubleGene>
+	//extends AbstractBoundedChromosome<Double, DoubleGene>
 	implements
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
-	/**
-	 * Create a new chromosome from the given {@code genes} and the allowed
-	 * length range of the chromosome.
-	 *
-	 * @since 4.0
-	 *
-	 * @param genes the genes that form the chromosome.
-	 * @param lengthRange the allowed length range of the chromosome
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene sequence is
-	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
-	 *         range size is zero.
-	 */
+
+	private double[] _values;
+	private DoubleRange _valueRange;
+	private IntRange _lengthRange;
+
+//	/**
+//	 * Create a new chromosome from the given {@code genes} and the allowed
+//	 * length range of the chromosome.
+//	 *
+//	 * @since 4.0
+//	 *
+//	 * @param genes the genes that form the chromosome.
+//	 * @param lengthRange the allowed length range of the chromosome
+//	 * @throws NullPointerException if one of the arguments is {@code null}.
+//	 * @throws IllegalArgumentException if the length of the gene sequence is
+//	 *         empty, doesn't match with the allowed length range, the minimum
+//	 *         or maximum of the range is smaller or equal zero or the given
+//	 *         range size is zero.
+//	 */
+//	protected DoubleChromosome(
+//		final ISeq<DoubleGene> genes,
+//		final IntRange lengthRange
+//	) {
+//		super(genes, lengthRange);
+//	}
+
 	protected DoubleChromosome(
-		final ISeq<DoubleGene> genes,
+		final double[] values,
+		final DoubleRange valueRange,
 		final IntRange lengthRange
 	) {
-		super(genes, lengthRange);
+		_values = requireNonNull(values);
+		_valueRange = requireNonNull(valueRange);
+		_lengthRange = VariableChromosome.checkLengthRange(lengthRange, values.length);
 	}
 
 	/**
@@ -90,8 +108,8 @@ public class DoubleChromosome
 		final Double max,
 		final IntRange lengthRange
 	) {
-		this(DoubleGene.seq(min, max, lengthRange), lengthRange);
-		_valid = true;
+		//this(DoubleGene.seq(min, max, lengthRange), lengthRange);
+		//_valid = true;
 	}
 
 	/**
@@ -118,6 +136,71 @@ public class DoubleChromosome
 		this(min, max, 1);
 	}
 
+	@Override
+	public Double getMin() {
+		return _valueRange.getMin();
+	}
+
+	@Override
+	public Double getMax() {
+		return _valueRange.getMax();
+	}
+
+	@Override
+	public DoubleGene getGene(final int index) {
+		return DoubleGene.of(doubleValue(index), _valueRange);
+	}
+
+	@Override
+	public int length() {
+		return _values.length;
+	}
+
+	@Override
+	public ISeq<DoubleGene> toSeq() {
+		return null;
+	}
+
+	@Override
+	public boolean isValid() {
+		return false;
+	}
+
+	@Override
+	public Iterator<DoubleGene> iterator() {
+		return null;
+	}
+
+	@Override
+	public byte byteValue(final int index) {
+		return (byte)_values[index];
+	}
+
+	@Override
+	public short shortValue(final int index) {
+		return (short)_values[index];
+	}
+
+	@Override
+	public int intValue(final int index) {
+		return (int)_values[index];
+	}
+
+	@Override
+	public long longValue(final int index) {
+		return (long)_values[index];
+	}
+
+	@Override
+	public float floatValue(final int index) {
+		return (float)_values[index];
+	}
+
+	@Override
+	public double doubleValue(final int index) {
+		return _values[index];
+	}
+
 	/**
 	 * Returns an double array containing all of the elements in this chromosome
 	 * in proper sequence.  If the chromosome fits in the specified array, it is
@@ -133,9 +216,12 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public double[] toArray(final double[] array) {
-		final double[] a = array.length >= length() ? array : new double[length()];
-		for (int i = length(); --i >= 0;) {
-			a[i] = doubleValue(i);
+		final double[] a;
+		if (array.length >= length()) {
+			System.arraycopy(_values, 0, array, 0, length());
+			a = array;
+		} else {
+			a = _values.clone();
 		}
 
 		return a;
@@ -150,7 +236,7 @@ public class DoubleChromosome
 	 * @return an array containing the elements of this chromosome
 	 */
 	public double[] toArray() {
-		return toArray(new double[length()]);
+		return _values.clone();
 	}
 
 	/**
@@ -162,7 +248,7 @@ public class DoubleChromosome
 	 *         empty.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
-		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
+		return null;//new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
 	/**
@@ -186,7 +272,7 @@ public class DoubleChromosome
 		final double max,
 		final IntRange lengthRange
 	) {
-		return new DoubleChromosome(min, max, lengthRange);
+		return null;//new DoubleChromosome(min, max, lengthRange);
 	}
 
 	/**
@@ -204,7 +290,7 @@ public class DoubleChromosome
 		final double max,
 		final int length
 	) {
-		return new DoubleChromosome(min, max, length);
+		return null;//new DoubleChromosome(min, max, length);
 	}
 
 	/**
@@ -226,7 +312,7 @@ public class DoubleChromosome
 		final DoubleRange range,
 		final IntRange lengthRange
 	) {
-		return new DoubleChromosome(range.getMin(), range.getMax(), lengthRange);
+		return null;//new DoubleChromosome(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -242,7 +328,7 @@ public class DoubleChromosome
 	 *         one.
 	 */
 	public static DoubleChromosome of(final DoubleRange range, final int length) {
-		return new DoubleChromosome(range.getMin(), range.getMax(), length);
+		return null;//new DoubleChromosome(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -253,7 +339,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 */
 	public static DoubleChromosome of(final double min, final double max) {
-		return new DoubleChromosome(min, max);
+		return null;//new DoubleChromosome(min, max);
 	}
 
 	/**
@@ -266,17 +352,17 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleRange range) {
-		return new DoubleChromosome(range.getMin(), range.getMax());
+		return null;//new DoubleChromosome(range.getMin(), range.getMax());
 	}
 
 	@Override
 	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
-		return new DoubleChromosome(genes, lengthRange());
+		return null;// new DoubleChromosome(genes, lengthRange());
 	}
 
 	@Override
 	public DoubleChromosome newInstance() {
-		return new DoubleChromosome(_min, _max, lengthRange());
+		return null;//new DoubleChromosome(_min, _max, lengthRange());
 	}
 
 	@Override
@@ -294,36 +380,35 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeDouble(_min);
-		out.writeDouble(_max);
-
-		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.getAllele());
-		}
-	}
-
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readDouble());
-		reflect.setField(this, "_max", in.readDouble());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
-		}
-
-		reflect.setField(this, "_genes", genes.toISeq());
-	}
-
+//	private void writeObject(final ObjectOutputStream out)
+//		throws IOException
+//	{
+//		out.defaultWriteObject();
+//
+//		out.writeInt(length());
+//		out.writeObject(lengthRange());
+//		out.writeDouble(_min);
+//		out.writeDouble(_max);
+//
+//		for (DoubleGene gene : _genes) {
+//			out.writeDouble(gene.getAllele());
+//		}
+//	}
+//
+//	private void readObject(final ObjectInputStream in)
+//		throws IOException, ClassNotFoundException
+//	{
+//		in.defaultReadObject();
+//
+//		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
+//		reflect.setField(this, "_lengthRange", in.readObject());
+//		reflect.setField(this, "_min", in.readDouble());
+//		reflect.setField(this, "_max", in.readDouble());
+//
+//		for (int i = 0; i < genes.length(); ++i) {
+//			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
+//		}
+//
+//		reflect.setField(this, "_genes", genes.toISeq());
+//	}
 }

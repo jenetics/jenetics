@@ -61,7 +61,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		_lengthRange = checkLengthRange(lengthRange, genes.size());
 	}
 
-	static IntRange checkLengthRange(final IntRange lengthRange, final int length) {
+	public static IntRange checkLengthRange(final IntRange lengthRange, final int length) {
 		requireNonNull(lengthRange);
 		if (lengthRange.getMin() <= 0) {
 			throw new IllegalArgumentException(format(
