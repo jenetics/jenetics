@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -25,14 +25,15 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 
-import io.jenetics.internal.collection.Array;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class LazyISeq<T> implements ISeq<T> {
+public final class LazyISeq<T> implements ISeq<T> {
 
 	private final IntFunction<? extends T> _values;
 	private final int _start;
