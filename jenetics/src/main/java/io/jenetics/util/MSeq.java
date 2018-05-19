@@ -189,7 +189,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
 	 * @throws NullPointerException if the {@code other} sequence is {@code null}
 	 */
-	default void swap(final int index, final MSeq<T> other) {
+	public default void swap(final int index, final MSeq<T> other) {
 		final T temp = get(index);
 		set(index, other.get(index));
 		other.set(index, temp);
