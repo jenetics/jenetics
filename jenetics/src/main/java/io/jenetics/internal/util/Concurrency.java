@@ -110,7 +110,9 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			_tasks.add(_pool.submit(new RunnablesAction(runnables)));
+			if (runnables.nonEmpty()) {
+				_tasks.add(_pool.submit(new RunnablesAction(runnables)));
+			}
 		}
 
 		@Override
@@ -142,16 +144,18 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			final int[] parts = partition(
-				runnables.size(),
-				max(
-					(CORES + 1)*2,
-					(int)ceil(runnables.size()/(double)Env.maxBatchSize)
-				)
-			);
+			if (runnables.nonEmpty()) {
+				final int[] parts = partition(
+					runnables.size(),
+					max(
+						(CORES + 1)*2,
+						(int)ceil(runnables.size()/(double)Env.maxBatchSize)
+					)
+				);
 
-			for (int i = 0; i < parts.length - 1; ++i) {
-				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+				for (int i = 0; i < parts.length - 1; ++i) {
+					execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+				}
 			}
 		}
 
@@ -195,16 +199,18 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void execute(final Seq<? extends Runnable> runnables) {
-			final int[] parts = partition(
-				runnables.size(),
-				max(
-					(CORES + 1)*2,
-					(int)ceil(runnables.size()/(double)Env.maxBatchSize)
-				)
-			);
+			if (runnables.nonEmpty()) {
+				final int[] parts = partition(
+					runnables.size(),
+					max(
+						(CORES + 1)*2,
+						(int)ceil(runnables.size()/(double)Env.maxBatchSize)
+					)
+				);
 
-			for (int i = 0; i < parts.length - 1; ++i) {
-				execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+				for (int i = 0; i < parts.length - 1; ++i) {
+					execute(new RunnablesRunnable(runnables, parts[i], parts[i + 1]));
+				}
 			}
 		}
 

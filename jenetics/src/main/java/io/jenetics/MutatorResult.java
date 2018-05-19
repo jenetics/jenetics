@@ -35,6 +35,9 @@ import java.util.function.Function;
  * @see Mutator#mutate(Chromosome, double, Random)
  * @see Mutator#mutate(Gene, Random)
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 4.0
@@ -127,7 +130,7 @@ public final class MutatorResult<T> implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MutatorResult<?> &&
+			obj instanceof MutatorResult &&
 			Objects.equals(((MutatorResult)obj)._result, _result) &&
 			((MutatorResult)obj)._mutations == _mutations;
 	}

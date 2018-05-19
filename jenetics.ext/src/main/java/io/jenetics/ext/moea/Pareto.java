@@ -38,8 +38,8 @@ import io.jenetics.util.Seq;
 import io.jenetics.ext.internal.IntList;
 
 /**
- * This class contains static methods concerning <em>Pareto</em>- front and
- * dominance calculations.
+ * Low-level utility methods for doing pareto-optimal calculations. This methods
+ * are mostly for users who wants to extend the existing <em>MOEA</em> classes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -60,11 +60,16 @@ public final class Pareto {
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
 	 *
+	 * @apiNote
+	 * Calculating the crowding distance has a time complexity of
+	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
+	 * {@code n} the {@code set} size.
+	 *
 	 * @see #crowdingDistance(Seq, ElementComparator, ElementDistance, ToIntFunction)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param <T> the vector type
-	 * @return the crowded distances fo the {@code set} points
+	 * @return the crowded distances of the {@code set} points
 	 * @throws NullPointerException if the input {@code set} is {@code null}
 	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
 	 */
@@ -83,6 +88,11 @@ public final class Pareto {
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
 	 *
+	 * @apiNote
+	 * Calculating the crowding distance has a time complexity of
+	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
+	 * {@code n} the {@code set} size.
+	 *
 	 * @see #crowdingDistance(Seq)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
@@ -91,7 +101,7 @@ public final class Pareto {
 	 * @param distance the distance of two vector elements
 	 * @param dimension the dimension of vector type {@code T}
 	 * @param <T> the vector type
-	 * @return the crowded distances fo the {@code set} points
+	 * @return the crowded distances of the {@code set} points
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> double[] crowdingDistance(
@@ -147,6 +157,10 @@ public final class Pareto {
 	 * using the <em>natural</em> order of the elements as <em>dominance</em>
 	 * measure.
 	 *
+	 * @apiNote
+	 * Calculating the rank has a time complexity of {@code O(n^2}, where
+	 * {@code n} the {@code set} size.
+	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
 	 *      Kalyanmoy Deb, Associate Member, IEEE, Amrit Pratap,
@@ -166,6 +180,10 @@ public final class Pareto {
 	/**
 	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
 	 * using the given {@code dominance} comparator.
+	 *
+	 * @apiNote
+	 * Calculating the rank has a time complexity of {@code O(n^2}, where
+	 * {@code n} the {@code set} size.
 	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
@@ -376,7 +394,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> comparator.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> comparator.compare(a[i], b[i])
 		);
 	}
 
@@ -397,7 +415,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Integer.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Integer.compare(a[i], b[i])
 		);
 	}
 
@@ -418,7 +436,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Long.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Long.compare(a[i], b[i])
 		);
 	}
 
@@ -439,7 +457,7 @@ public final class Pareto {
 		checkLength(u.length, v.length);
 
 		return dominance(
-			u, v, (a, b, i) -> Double.compare(a[i], b[i]), u.length
+			u, v, u.length, (a, b, i) -> Double.compare(a[i], b[i])
 		);
 	}
 
@@ -454,8 +472,8 @@ public final class Pareto {
 	private static <T> int dominance(
 		final T u,
 		final T v,
-		final ElementComparator<? super T> comparator,
-		final int dimension
+		final int dimension,
+		final ElementComparator<? super T> comparator
 	) {
 		boolean udominated = false;
 		boolean vdominated = false;

@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.math.BigInteger;
 
 import org.testng.annotations.Test;
@@ -40,4 +42,10 @@ public class BigIntegerGeneTest
 	@Override protected Factory<BigIntegerGene> factory() {
 		return _factory;
 	}
+
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(BigIntegerGene.class).verify();
+	}
+
 }

@@ -160,7 +160,7 @@ public class EliteSelector<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EliteSelector<?, ?> &&
+			obj instanceof EliteSelector &&
 			((EliteSelector)obj)._eliteCount == _eliteCount &&
 			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
 	}

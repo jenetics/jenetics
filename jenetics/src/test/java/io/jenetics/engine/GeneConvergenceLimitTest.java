@@ -21,12 +21,15 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.prngine.Random32;
 
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleChromosome;
@@ -35,7 +38,9 @@ import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.stat.DoubleSummary;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -75,7 +80,7 @@ public class GeneConvergenceLimitTest {
 		return EvolutionResult.of(
 			Optimize.MAXIMUM,
 			pop,
-			1L,
+			3L,
 			EvolutionDurations.ZERO,
 			1,
 			1,
@@ -126,14 +131,34 @@ public class GeneConvergenceLimitTest {
 		Assert.assertTrue(
 			result.getTotalGenerations() < 10_000,
 			format(
-				"Total generations bigger than 10,000: ",
+				"Total generations bigger than 10,000: %s",
 				result.getTotalGenerations()
 			)
 		);
+	}
 
-		System.out.println(result.getTotalGenerations());
-		//System.out.println(result.getBestPhenotype());
-		//System.out.println(result.getBestPhenotype().getGeneration());
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialGeneConvergence() {
+		RandomRegistry.using(Random32.of(() -> 234), random -> {
+			final Problem<Double, DoubleGene, Double> problem = Problem.of(
+				d -> 1.0,
+				Codecs.ofScalar(DoubleRange.of(0, 1))
+			);
+
+			final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+			final AtomicInteger count = new AtomicInteger();
+			final EvolutionResult<DoubleGene, Double> result = engine.stream()
+				.limit(Limits.byGeneConvergence(0.03, 0.03))
+				.peek(er -> count.incrementAndGet())
+				.collect(EvolutionResult.toBestEvolutionResult());
+
+			Assert.assertNotNull(result);
+			Assert.assertEquals(count.get(), 1);
+			Assert.assertEquals(result.getTotalGenerations(), 1);
+			Assert.assertEquals(result.getGeneration(), 1);
+		});
 	}
 
 }

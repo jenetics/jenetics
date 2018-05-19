@@ -27,6 +27,9 @@ import java.util.stream.LongStream;
 /**
  * Long range class.
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.2
  * @since 3.2

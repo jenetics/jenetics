@@ -19,7 +19,6 @@
  */
 package io.jenetics.internal.collection;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Collections;
@@ -40,7 +39,7 @@ import io.jenetics.util.MSeq;
  * Contains static {@code Seq} definitions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 4.1
  * @since 3.4
  */
 public final class Empty {
@@ -61,17 +60,7 @@ public final class Empty {
 			final int end,
 			final Comparator<? super Object> comparator
 		) {
-			if (start > end) {
-				throw new ArrayIndexOutOfBoundsException(format(
-					"start[%d] > end[%d]", start, end
-				));
-			}
-			if (start < 0 || end > length()) {
-				throw new ArrayIndexOutOfBoundsException(format(
-					"Indexes (%d, %d) range: [%d..%d)", start, end, 0, length()
-				));
-			}
-
+			Array.checkIndex(start, end, length());
 			return this;
 		}
 
@@ -82,12 +71,14 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> subSeq(final int start, final int end) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			Array.checkIndex(start, end, length());
+			return this;
 		}
 
 		@Override
 		public MSeq<Object> subSeq(final int start) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			Array.checkIndex(start, 0, length());
+			return this;
 		}
 
 		@Override
@@ -175,12 +166,14 @@ public final class Empty {
 
 		@Override
 		public ISeq<Object> subSeq(final int start, final int end) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			Array.checkIndex(start, end, length());
+			return this;
 		}
 
 		@Override
 		public ISeq<Object> subSeq(final int start) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			Array.checkIndex(start, 0, length());
+			return this;
 		}
 
 		@Override

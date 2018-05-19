@@ -69,8 +69,8 @@ public class Program<T> implements Op<T>, Serializable {
 		_tree = requireNonNull(tree);
 		check(tree);
 		_arity = tree.breadthFirstStream()
-			.filter(t -> t.getValue() instanceof Var<?>)
-			.mapToInt(v -> ((Var<?>)v.getValue()).index() + 1)
+			.filter(t -> t.getValue() instanceof Var)
+			.mapToInt(v -> ((Var)v.getValue()).index() + 1)
 			.max()
 			.orElse(0);
 	}
@@ -137,7 +137,7 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program<?> &&
+			obj instanceof Program &&
 			Objects.equals(((Program)obj)._name, _name) &&
 			((Program)obj)._arity == _arity &&
 			Objects.equals(((Program)obj)._tree, _tree);
@@ -174,12 +174,23 @@ public class Program<T> implements Op<T>, Serializable {
 
 		final Op<T> op = tree.getValue();
 		return op.isTerminal()
-			? op.apply(variables)
-			: op.apply(
+			? eval(op, variables)
+			: eval(op,
 					tree.childStream()
 						.map(child -> eval(child, variables))
 						.toArray(size -> newArray(variables.getClass(), size))
 				);
+	}
+
+	@SafeVarargs
+	private static <T> T eval(final Op<T> op, final T... variables) {
+		if (op instanceof Var && ((Var) op).index() >= variables.length) {
+			throw new IllegalArgumentException(format(
+				"No value for variable '%s' given.", op
+			));
+		}
+
+		return op.apply(variables);
 	}
 
 	@SuppressWarnings("unchecked")

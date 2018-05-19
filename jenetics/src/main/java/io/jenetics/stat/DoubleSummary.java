@@ -34,6 +34,9 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @see java.util.DoubleSummaryStatistics
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 3.0

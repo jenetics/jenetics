@@ -31,6 +31,16 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  * The {@code EvolutionStream} class extends the Java {@link Stream} and adds a
  * method for limiting the evolution by a given predicate.
  *
+ * @implNote Collecting an <em>empty</em> {@code EvolutionStream} will return
+ *           {@code null}.
+ * <pre>{@code
+ * final EvolutionResult<DoubleGene, Double> result = engine.stream()
+ *     .limit(0)
+ *     .collect(toBestEvolutionResult());
+ *
+ * assert result == null;
+ * }</pre>
+ *
  * @see java.util.stream.Stream
  * @see Engine
  * @see EvolutionStreamable
@@ -58,6 +68,17 @@ public interface EvolutionStream<
 	 *      // The evolution will stop after maximal 100 generations.
 	 *     .limit(100)
 	 *     .collect(toBestPhenotype());
+	 * }</pre>
+	 *
+	 * <b>Note:</b>
+	 * The evolution result may be {@code null}, if your <em>truncation</em>
+	 * predicate returns {@code false} for the initial population.
+	 * <pre>{@code
+	 * final EvolutionResult<DoubleGene, Double> result = engine.stream()
+	 *     .limit(er -> false)
+	 *     .collect(toBestEvolutionResult());
+	 *
+	 * assert result == null;
 	 * }</pre>
 	 *
 	 * @see Limits
@@ -143,48 +164,5 @@ public interface EvolutionStream<
 	) {
 		return new EvolutionStreamImpl<>(start, evolution);
 	}
-
-//	/**
-//	 * Creates a lazily concatenated evolution stream whose evolution results
-//	 * are all the elements of the first evolution stream followed by all the
-//	 * elements of the second evolution stream.
-//	 *
-//	 * @param streams the evolution streams to concatenate
-//	 * @param <G> the gene type
-//	 * @param <C> the fitness result type
-//	 * @return the concatenated {@code EvolutionStream}
-//	 * @throws NullPointerException if the one of the {@code streams} is
-//	 *         {@code null}
-//	 * @throws IllegalArgumentException if the given {@code streams} array is
-//	 *         empty
-//	 */
-//	@SafeVarargs
-//	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-//	EvolutionStream<G, C>
-//	concat(final Stream<EvolutionResult<G, C>>... streams) {
-//		Stream.of(streams).forEach(Objects::requireNonNull);
-//		if (streams.length == 0) {
-//			throw new IllegalArgumentException("Streams array is empty.");
-//		}
-//
-//		final ConcatSpliterator<EvolutionResult<G, C>> spliterator =
-//			new ConcatSpliterator<>(
-//				Stream.of(streams)
-//					.map(BaseStream::spliterator)
-//					.collect(Collectors.toList())
-//			);
-//
-//		return new EvolutionStreamImpl<>(
-//			spliterator,
-//			Stream.of(streams).anyMatch(Stream::isParallel)
-//		);
-//	}
-//
-//	@SafeVarargs
-//	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-//	EvolutionStream<G, C>
-//	weave(final Stream<EvolutionResult<G, C>>... streams) {
-//		return null;
-//	}
 
 }

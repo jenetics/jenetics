@@ -19,10 +19,32 @@
  */
 package io.jenetics.internal.collection;
 
+import java.util.Comparator;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
- * @since 3.4
  */
-public class ObjectArrayProxyPerf {
+public class CharStoreTest {
+
+	@Test
+	public void sort() {
+		final char[]  array = "weoriAFQErqqöp".toCharArray();
+		final CharStore store = CharStore.of(array);
+		store.sort(0, array.length, null);
+
+		Assert.assertEquals(new String(array), "AEFQeiopqqrrwö");
+	}
+
+	@Test
+	public void sortWithComparator() {
+		final char[]  array = "weoriAFQErqqöp".toCharArray();
+		final CharStore store = CharStore.of(array);
+		store.sort(0, array.length, Comparator.reverseOrder());
+
+		Assert.assertEquals(new String(array), "öwrrqqpoieQFEA");
+	}
+
 }

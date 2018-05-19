@@ -28,6 +28,17 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 
+/**
+ * This example shows how to create a heterogeneous {@link Genotype} with
+ * different types of chromosomes. It is not possible to create such genotypes
+ * in a typesafe manner. The only possibility is to use rawtypes and suppress
+ * the warnings. You therefore have to cast to the correct chromosome type when
+ * using the raw genotype in the fitness function.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 3.6
+ * @since 3.6
+ */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class MixedGenotype {
 

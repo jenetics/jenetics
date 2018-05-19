@@ -199,7 +199,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
       <SubComponents>
-        <Component class="org.jenetics.example.image.EvolutionResultPanel" name="bestEvolutionResultPanel">
+        <Component class="io.jenetics.example.image.EvolutionResultPanel" name="bestEvolutionResultPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -213,7 +213,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="org.jenetics.example.image.EvolutionResultPanel" name="currentevolutionResultPanel">
+        <Component class="io.jenetics.example.image.EvolutionResultPanel" name="currentevolutionResultPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -227,7 +227,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="org.jenetics.example.image.EngineParamPanel" name="engineParamPanel">
+        <Component class="io.jenetics.example.image.EngineParamPanel" name="engineParamPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">

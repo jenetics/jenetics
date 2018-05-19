@@ -21,9 +21,11 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -34,7 +36,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
@@ -82,7 +83,7 @@ public final class MathExpr
 	private final Tree<? extends Op<Double>, ?> _tree;
 
 	// Primary constructor.
-	private MathExpr(final TreeNode<Op<Double>> tree) {
+	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
 	}
 
@@ -96,7 +97,7 @@ public final class MathExpr
 	 *         and the node child count differ.
 	 */
 	public MathExpr(final Tree<? extends Op<Double>, ?> tree) {
-		this(TreeNode.ofTree(tree));
+		this(TreeNode.ofTree(tree), true);
 		Program.check(tree);
 	}
 
@@ -108,7 +109,7 @@ public final class MathExpr
 	public ISeq<Var<Double>> vars() {
 		return ISeq.of(
 			_tree.stream()
-				.filter(node -> node.getValue() instanceof Var<?>)
+				.filter(node -> node.getValue() instanceof Var)
 				.map(node -> (Var<Double>)node.getValue())
 				.collect(Collectors.toCollection(() ->
 					new TreeSet<>(Comparator.comparing(Var::name))))
@@ -116,11 +117,11 @@ public final class MathExpr
 	}
 
 	/**
-	 * Return the underlying expression tree.
+	 * Return the math expression as operation tree.
 	 *
-	 * @return the underlying expression tree
+	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> tree() {
+	public Tree<? extends Op<Double>, ?> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -247,18 +248,26 @@ public final class MathExpr
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-		out.writeUTF(toString());
+	private Object writeReplace() {
+		return new Serial(Serial.MATH_EXPR, this);
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		in.defaultReadObject();
-		reflect.setField(this, "_tree", parseTree(in.readUTF()));
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		final byte[] data = toString().getBytes("UTF-8");
+		out.writeInt(data.length);
+		out.write(data);
+	}
+
+	static MathExpr read(final DataInput in) throws IOException {
+		final byte[] data = new byte[in.readInt()];
+		in.readFully(data);
+		return parse(new String(data, "UTF-8"));
 	}
 
 
@@ -291,9 +300,9 @@ public final class MathExpr
 	 * @return the tree representation of the given {@code expression}
 	 */
 	public static MathExpr parse(final String expression) {
-		final TreeNode<Op<Double>> tree = parseTree(expression);
+		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
 		Program.check(tree);
-		return new MathExpr(tree);
+		return new MathExpr(tree, true);
 	}
 
 	/**
@@ -335,7 +344,8 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static TreeNode<Op<Double>> parseTree(final String expression) {
+	public static Tree<? extends Op<Double>, ?>
+	parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
@@ -387,7 +397,7 @@ public final class MathExpr
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static TreeNode<Op<Double>>
+	public static Tree<? extends Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return MathExprSimplifier.prune(TreeNode.ofTree(tree));
 	}

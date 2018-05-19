@@ -57,7 +57,7 @@ public class DTLZ1 {
 				new SimulatedBinaryCrossover<>(1),
 				new Mutator<>(1.0/VARIABLES))
 			.offspringSelector(new TournamentSelector<>(5))
-			.survivorsSelector(NSGA2Selector.vec())
+			.survivorsSelector(NSGA2Selector.ofVec())
 			.minimizing()
 			.build();
 

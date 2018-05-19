@@ -35,8 +35,7 @@ import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.internal.SeqView;
+import io.jenetics.util.Seq;
 
 /**
  * This class only contains non-dominate (Pareto-optimal) elements according to
@@ -44,6 +43,30 @@ import io.jenetics.ext.internal.SeqView;
  * duplicate entries. Unlike the usual set implementation, the iteration order
  * is deterministic.
  * <p>
+ * You can create a new {@code ParetoFront} for {@link Vec} objects
+ * <pre>{@code
+ * final ParetoFront<Vec<double[]>> front = new ParetoFront<>(Vec::dominance);
+ * front.add(Vec.of(1.0, 2.0));
+ * front.add(Vec.of(1.1, 2.5));
+ * front.add(Vec.of(0.9, 2.1));
+ * front.add(Vec.of(0.0, 2.9));
+ * }</pre>
+ *
+ * or directly for {@code double[]} array objects
+ * <pre>{@code
+ * final ParetoFront<double[]> front = new ParetoFront<>(Pareto::dominance);
+ * front.add(new double[]{1.0, 2.0});
+ * front.add(new double[]{1.1, 2.5});
+ * front.add(new double[]{0.9, 2.1});
+ * front.add(new double[]{0.0, 2.9});
+ * }</pre>
+ *
+ * You only have to specify the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+ *     Pareto dominance/efficiency</a> measure.
+ *
+ * @see Pareto
+ *
+ * @apiNote
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -66,6 +89,16 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		_dominance = requireNonNull(dominance);
 	}
 
+	/**
+	 * Inserts an {@code element} to this pareto front.
+	 *
+	 * @apiNote
+	 * Inserting a new element has a time complexity of {@code O(n)}.
+	 *
+	 * @param element the element to add
+	 * @return <tt>true</tt> if this set did not already contain the specified
+	 *         element
+	 */
 	@Override
 	public boolean add(final T element) {
 		requireNonNull(element);
@@ -98,6 +131,9 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 	/**
 	 * Add the all {@code elements} to {@code this} pareto-set.
+	 *
+	 * @apiNote
+	 * Merging two pareto fronts has a time complexity of {@code O(n*m)}.
 	 *
 	 * @param elements the elements to add
 	 * @return {@code this} pareto-set
@@ -140,7 +176,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 		if (size() > size) {
 			final double[] distances = Pareto.crowdingDistance(
-				SeqView.of(_population),
+				Seq.viewOf(_population),
 				comparator,
 				distance,
 				dimension

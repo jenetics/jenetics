@@ -22,6 +22,12 @@ package io.jenetics;
 /**
  * Base interface for numeric genes.
  *
+ * @implSpec
+ * <em>Jenetics</em> requires that the individuals ({@link Genotype} and
+ * {@link Phenotype}) are not changed after they have been created. Therefore,
+ * all implementations of the {@code NumericGene} interface must also be
+ * <em>immutable</em>.
+ *
  * @see NumericChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

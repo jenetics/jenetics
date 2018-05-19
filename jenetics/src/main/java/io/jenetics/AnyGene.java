@@ -61,6 +61,9 @@ import io.jenetics.util.MSeq;
  *
  * @see AnyChromosome
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.3
  * @since 3.3
@@ -108,8 +111,8 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AnyGene<?> &&
-			Objects.equals(((AnyGene<?>)obj)._allele, _allele);
+		return obj instanceof AnyGene &&
+			Objects.equals(((AnyGene)obj)._allele, _allele);
 	}
 
 	@Override

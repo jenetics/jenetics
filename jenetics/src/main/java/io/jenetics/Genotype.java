@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -60,6 +59,9 @@ import io.jenetics.util.Verifiable;
  *
  * @see Chromosome
  * @see Phenotype
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -274,7 +276,7 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Genotype<?> &&
+			obj instanceof Genotype &&
 			eq(_chromosomes, ((Genotype<?>)obj)._chromosomes);
 	}
 

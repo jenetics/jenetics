@@ -42,7 +42,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	private final transient Supplier<T> _supplier;
 
 	private T _value;
-	private volatile boolean _evaluated;
+	private transient volatile boolean _evaluated;
 
 	private Lazy(
 		final T value,
@@ -69,7 +69,11 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 * @return {@code true} is the {@code Lazy} variable has been evaluated,
 	 *         {@code false} otherwise
 	 */
-	public synchronized boolean isEvaluated() {
+	public boolean isEvaluated() {
+		return _supplier == null || _evaluated || _evaluated();
+	}
+
+	private synchronized boolean _evaluated() {
 		return _evaluated;
 	}
 
@@ -90,13 +94,13 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
     @Override
     public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Lazy<?> &&
-			Objects.equals(((Lazy<?>)obj).get(), get());
+			obj instanceof Lazy &&
+			Objects.equals(((Lazy)obj).get(), get());
     }
 
     @Override
     public String toString() {
-		return format("Lazy[%s]", _evaluated ? get() : "?");
+		return format("Lazy[%s]", isEvaluated() ? get() : "?");
     }
 
 	/**
@@ -135,8 +139,9 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
+		final Object value = get();
 		out.defaultWriteObject();
-		out.writeObject(get());
+		out.writeObject(value);
 	}
 
 	@SuppressWarnings("unchecked")

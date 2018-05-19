@@ -485,7 +485,7 @@ This work is licensed under a
 \begin_inset CommandInset href
 LatexCommand href
 name "Creative Commons"
-target "http://creativecommons.org/licenses/by-sa/3.0/at/"
+target "http://creativecommons.org/licenses/by-sa/3.0/"
 
 \end_inset
 
@@ -499,14 +499,14 @@ License
 
 \end_inset
 
- Attribution-ShareAlike 3.0 Austria License.
+ Attribution-ShareAlike 3.0 License.
  To view a copy of this license, visit 
 \begin_inset Flex URL
 status collapsed
 
 \begin_layout Plain Layout
 
-http://creativecommons.org/licenses/by-sa/3.0/at/
+http://creativecommons.org/licenses/by-sa/3.0/
 \end_layout
 
 \end_inset
@@ -733,7 +733,17 @@ target "https://en.wikipedia.org/wiki/Genetic_programming"
 status collapsed
 
 \begin_layout Plain Layout
-If you are using Gradle, you can use the following dependency string:
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://mvnrepository.com/artifact/io.jenetics/jenetics
+\end_layout
+
+\end_inset
+
+: If you are using Gradle, you can use the following dependency string:
 \family typewriter
  
 \begin_inset Quotes ald
@@ -5358,11 +5368,10 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
 
 \end_inset
 
@@ -5645,11 +5654,10 @@ g.
 
 \begin_layout Standard
 \align center
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "75col%"
-height "1pt"
+\begin_inset Graphics
+	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	lyxscale 20
+	height 12pt
 
 \end_inset
 
@@ -7785,6 +7793,34 @@ Pool()
 \begin_layout Description
 
 \family typewriter
+evaluator
+\family default
+ This property allows you to replace the evaluation strategy of the 
+\family typewriter
+Phenotype
+\family default
+'s fitness function.
+ Normally, each fitness value is evaluated concurrently, but independently
+ from each other.
+ In some configuration it is necessary, for performance reason, to evaluate
+ the fitness values of a population at once.
+ This is then performed by the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Evaluator
+\family default
+ or 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Genotype\SpecialChar softhyphen
+Evaluator
+\family default
+ interface.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 fitnessFunction
 \family default
  This property defines the fitness
@@ -8139,8 +8175,11 @@ individualCreationRetries
 \end_layout
 
 \begin_layout Description
-mapper This property lets you define an mapper, which transforms the final
- 
+
+\family typewriter
+mapper
+\family default
+ This property lets you define an mapper, which transforms the final 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Result
@@ -8182,7 +8221,11 @@ The
 \family typewriter
 EvolutionStream
 \family default
-s created by the Engine class are unlimited.
+s created by the 
+\family typewriter
+Engine
+\family default
+ class are unlimited.
  Such streams must be limited by calling the available 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -8190,13 +8233,21 @@ Stream\SpecialChar softhyphen
 .limit
 \family default
  methods.
- Alternatively, the Engine instance itself can be limited with the 
+ Alternatively, the 
+\family typewriter
+Engine
+\family default
+ instance itself can be limited with the 
 \family typewriter
 Engine\SpecialChar softhyphen
 .limit
 \family default
  methods.
- This limited Engines no long creates infinite 
+ This limited 
+\family typewriter
+Engine
+\family default
+s no long creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -8206,8 +8257,11 @@ s, they are truncated by the limit predicate defined by the
 Engine
 \family default
 .
- This feature is needed when you are concatenating evolution Engines (see
- section 
+ This feature is needed when you are concatenating evolution 
+\family typewriter
+Engine
+\family default
+s (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:ConcatEngine"
@@ -9628,6 +9682,127 @@ live
  view on the evolution progress.
 \end_layout
 
+\begin_layout Subsubsection
+Engine.Evaluator
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Engine.Evaluator"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!Evaluator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This interface allows to define different strategies for evaluating the
+ fitness functions of a given population.
+ Usually, it is not necessary to override the default evaluation strategy.
+ It is helpful if you have performance problems when the fitness function
+ is evaluated 
+\emph on
+serially
+\emph default
+—or in small concurrent batches, as it is implemented by the default strategy.
+ In this case, the 
+\family typewriter
+Engine.Evaluator
+\family default
+ interface can be used to calculate the fitness function for a population
+ in one batch.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Evaluator<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ISeq<Phenotype<G, C>> evaluate(Seq<Phenotype<G, C>> pop);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Engine.Evaluator
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EngineEvaluator-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The implementer is free to do the evaluation in place, or create new Phenotype
+ instance and return the newly created one.
+ 
+\end_layout
+
+\begin_layout Standard
+A second use case for the 
+\family typewriter
+Evaluator
+\family default
+ interface is, when the fitness value also depends on the current composition
+ of the population.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ it is possible to normalize the population's fitness values.
+\end_layout
+
 \begin_layout Section
 Nuts and bolts
 \begin_inset CommandInset label
@@ -9675,6 +9850,110 @@ The
  shared by all phenotypes of a population.
  The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
+\end_layout
+
+\begin_layout Standard
+Since the number of individuals of one population, which determines the
+ number of fitness functions to be evaluated, is usually much higher then
+ the number of available CPU cores, the fitness evaluation is done in batches.
+ This reduces the evaluation overhead, for 
+\emph on
+lightweight
+\emph default
+ fitness functions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/EvaluationBatch.eps
+	width 60text%
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Evaluation-batch"
+
+\end_inset
+
+Evaluation batch
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Evaluation-batch"
+
+\end_inset
+
+ shows an example population with 
+\begin_inset Formula $12$
+\end_inset
+
+ individuals.
+ The evaluation of the phenotype's fitness functions are evaluated in batches
+ with three elements.
+ For this purpose, the individuals of one batch are wrapped into a 
+\family typewriter
+Runnable
+\family default
+ object.
+ The batch size is automatically adapted to the available number of CPU
+ cores.
+ It is assumed that the evaluation cost of one fitness function is quite
+ small.
+ If this assumption doesn't hold, you can configure the the maximal number
+ of batch elements with the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.concurrency\SpecialChar softhyphen
+.maxBatchSize
+\family default
+ system property
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Concurrency-tweaks"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -9954,6 +10233,13 @@ Such a configuration can be useful for performing reproducible (performance)
 
 \begin_layout Subsubsection
 Concurrency tweaks
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Concurrency-tweaks"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -12865,6 +13151,103 @@ s.
  Serializable
 \family default
  interface.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\family sans
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.oracle.com/technetwork/articles/java/javaserial-1536170.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Just implementing the Serializable interface is sometimes not enough.
+ You might also need to implement the 
+\family typewriter
+readObject
+\family sans
+ and 
+\family typewriter
+writeObject
+\family sans
+ methods for a more concise serialization result.
+ Consider using the serialization proxy pattern, item 90, described in 
+\emph on
+Effective Java
+\emph default
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bloch2018"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -19155,7 +19538,7 @@ Creating your own
 er\SpecialChar softhyphen
 er
 \family default
- classes is the most heavy-wighted possibility for solving the
+ classes is the most heavy-weighted possibility for solving the
 \emph on
  validity
 \emph default
@@ -20764,6 +21147,26 @@ reference "fig:Fitness-convergence-diagram-50-150"
 
 \begin_layout Subsection
 Population convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Population convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20776,6 +21179,26 @@ A termination method that stops the evolution when the population is deemed
 
 \begin_layout Subsection
 Gene convergence
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination!Gene convergence
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Gene convergence
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -22128,7 +22551,7 @@ Random
 \family default
  class.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -25063,14 +25486,14 @@ reference "lis:Weasel-program"
 \end_layout
 
 \begin_layout Subsection
-Adaptive 
+Modifying 
 \family typewriter
-EvolutionStream
+Engine
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Adaptive EvolutionStream
+Modifying Engine
 \end_layout
 
 \end_inset
@@ -25083,7 +25506,8 @@ The current design of
 \family typewriter
 Engine
 \family default
- allows to created multiple independent evolution streams from one 
+ allows to created multiple independent evolution streams from a single
+ 
 \family typewriter
 Engine
 \family default
@@ -25095,17 +25519,177 @@ Engine
 Engine
 \family default
  configuration during the evolution process.
+ For this purpose, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Streamable
+\family default
+ interface has been introduced.
+ It is similar to the Java 
+\family typewriter
+Iterable
+\family default
+ interface and abstracts the 
+\family typewriter
+EvolutionStream
+\family default
+ creation.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface EvolutionStreamable<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    stream(Supplier<EvolutionStart<G, C>> start);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStream<G, C> stream(EvolutionInit<G> init);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionStreamable<G, C>
+\end_layout
+
+\begin_layout Plain Layout
+
+    limit(Supplier<Predicate<? super EvolutionResult<G, C>>> p)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+EvolutionStreamable
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+EvolutionStreamable
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:EvolutionStreamable-interface"
+
+\end_inset
+
+ shows the main methods of the 
+\family typewriter
+EvolutionStreamable
+\family default
+ interface.
+ The existing 
+\family typewriter
+stream
+\family default
+ methods take an initial value, which allows to 
+\emph on
+concatenate
+\emph default
+ different engines.
+ With the 
+\family typewriter
+limit
+\family default
+ method it is possible to limit the size of the created 
+\family typewriter
+EvolutionStream
+\family default
+ instances.
  The 
 \family typewriter
 io.jenetics.ext
 \family default
- module contains additional classes, which allows to run the evolution stream
- with different configuration.
- The additional 
+ module contains additional classes which allows to concatenate evolution
+ 
+\family typewriter
+Engines
+\family default
+ with different configurations, which will then create one varying 
+\family typewriter
+EvolutionStream
+\family default
+.
+ This additional 
 \family typewriter
 Engine
 \family default
- classes are
+ classes are:
 \end_layout
 
 \begin_layout Enumerate
@@ -26393,7 +26977,15 @@ Implementing classes
 \end_layout
 
 \begin_layout Standard
-The original design of the 
+The classes, used for solving multi-objective problems, reside in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext\SpecialChar softhyphen
+.moea
+\family default
+ package.
+ Originally, the 
 \family sans
 \series bold
 \shape smallcaps
@@ -26401,7 +26993,7 @@ Jenetics
 \family default
 \series default
 \shape default
- library focused on solving single-objective problems.
+ library focuses on solving single-objective problems.
  This drives the design decision to force the return value of the fitness
  function to be 
 \family typewriter
@@ -26888,7 +27480,7 @@ final Engine<DoubleGene, Vec<double[]>> engine =
 
 \begin_layout Plain Layout
 
-        .survivorsSelector(UFTournamentSelector.vec())
+        .survivorsSelector(UFTournamentSelector.ofVec())
 \end_layout
 
 \begin_layout Plain Layout
@@ -27139,6 +27731,55 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Termination
+\end_layout
+
+\begin_layout Standard
+Most of the existing termination strategies, implemented in the 
+\family typewriter
+Limits
+\family default
+ class, presumes a 
+\emph on
+total
+\emph default
+ order of the fitness values.
+ This assumption holds for single-objective optimization problems, but not
+ for multi-objective problems.
+ Only termination strategies which doesn't rely on the total order of the
+ fitness value, can be safely used.
+ The following termination strategies can be used for multi-objective problems:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byFixedGeneration
+\family default
+,
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byExecutionTime
+\family default
+ and
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+Limits.byGeneConvergence
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+All other strategies doesn't have a well defined termination behavior.
 \end_layout
 
 \begin_layout Section
@@ -27770,6 +28411,16 @@ final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 
 \begin_layout Subsection
 Program creation
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program creation
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28049,6 +28700,16 @@ reference "sec:Symbolic-regression"
 
 \begin_layout Subsection
 Program repair
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program repair
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28178,6 +28839,214 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Program pruning
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Genetic programming!Program pruning
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you are solving symbolic regression problems, the mathematical expression
+ trees, created during the evolution process, can become quite big.
+ From the diversity point of view, this might be not that bad, but it comes
+ with additional computation cost.
+ With the 
+\family typewriter
+Math\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Prune\SpecialChar softhyphen
+Alterer
+\family default
+ you are able to simplify some portion of the population in each generation.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+    .builder(Main::error, program)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .minimizing()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+        new SingleNodeCrossover<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Mutator<>(),
+\end_layout
+
+\begin_layout Plain Layout
+
+        new MathTreePruneAlterer<>(0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the example above, half of the expression trees are simplified in each
+ generation.
+ If you want to prune the final result, you can do this with the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.simp\SpecialChar softhyphen
+li\SpecialChar softhyphen
+fy
+\family default
+ method.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(3000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(EvolutionResult.toBestGenotype())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .getGene();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The algorithm used for pruning the expression tree, currently only uses
+ some basic mathematical identities, like 
+\begin_inset Formula $x+0=x$
+\end_inset
+
+, 
+\begin_inset Formula $x\cdot1=x$
+\end_inset
+
+ or 
+\begin_inset Formula $x\cdot0=0$
+\end_inset
+
+.
+ More advanced simplification algorithms may be implemented in the future.
+ The 
+\family typewriter
+MathExpr
+\family default
+ helper class can also be used for creating mathematical expression trees
+ from the 
+\family typewriter
+\emph on
+usual
+\family default
+\emph default
+ textual representation.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final MathExpr expr = MathExpr
+\end_layout
+
+\begin_layout Plain Layout
+
+    .parse("5*z + 6*x + sin(y)^3 + (1 + sin(z*5)/4)/6");
+\end_layout
+
+\begin_layout Plain Layout
+
+final double value = expr.eval(5.5, 4, 2.3);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The variables in an expression string are sorted alphabetically.
+ This means, that the expression is evaluated with 
+\begin_inset Formula $x=5.5$
+\end_inset
+
+, 
+\begin_inset Formula $y=4$
+\end_inset
+
+ and 
+\begin_inset Formula $z=2.3$
+\end_inset
+
+, which leads to a result value of 
+\begin_inset Formula $44.19673085074048$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -32887,6 +33756,7 @@ jenetics.ext
  non
 \emph default
 -standard GA operations and data types.
+ It also contains classes for solving multi-objective problems (MOEA).
 \end_layout
 
 \begin_layout Itemize
@@ -33212,7 +34082,7 @@ Version
 \series default
 :
 \emph on
- 6.11
+ 6.13
 \end_layout
 
 \begin_layout Itemize
@@ -33527,7 +34397,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.2.1
+: 4.5
 \end_layout
 
 \begin_layout Itemize
@@ -33564,7 +34434,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.2.1-bin.zip
+http://services.gradle.org/distributions/gradle-4.5-bin.zip
 \end_layout
 
 \end_inset
@@ -33651,7 +34521,7 @@ pom.xml
 \begin_layout LyX-Code
     <artifactId>
 \emph on
-module
+module-name
 \emph default
 </artifactId>
 \end_layout
@@ -33671,7 +34541,7 @@ Gradle
 \begin_layout LyX-Code
 'io.jenetics:
 \emph on
-module
+module-name
 \emph default
 :@__version__@'
 \end_layout
@@ -33706,9 +34576,9 @@ target "http://www.apache.org/licenses/LICENSE-2.0.html"
 
 \size footnotesize
 Copyright @__year__@ Franz Wilhelmstötter
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout LyX-Code
 
 \end_layout
 
