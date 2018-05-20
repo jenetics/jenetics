@@ -20,13 +20,12 @@
 package io.jenetics;
 
 import java.util.Comparator;
-import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,7 +41,7 @@ final class DoubleGeneISeq implements ISeq<DoubleGene> {
 	private final int _start;
 	private final int _length;
 
-	DoubleGeneISeq(
+	private DoubleGeneISeq(
 		final double[] values,
 		final double min,
 		final double max,
@@ -68,7 +67,11 @@ final class DoubleGeneISeq implements ISeq<DoubleGene> {
 
 	@Override
 	public ISeq<DoubleGene> subSeq(final int start, final int end) {
-		return new DoubleGeneISeq(_values, _min, _max, start + _start, end + _start);
+		return new DoubleGeneISeq(
+			_values,
+			_min, _max,
+			start + _start, end + _start
+		);
 	}
 
 	@Override
@@ -77,8 +80,11 @@ final class DoubleGeneISeq implements ISeq<DoubleGene> {
 	}
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super DoubleGene, ? extends B> mapper) {
-		return copy().<B>map(mapper).toISeq();
+	public <B> ISeq<B>
+	map(final Function<? super DoubleGene, ? extends B> mapper) {
+		return stream()
+			.map(mapper)
+			.collect(ISeq.toISeq());
 	}
 
 	@Override
@@ -108,7 +114,22 @@ final class DoubleGeneISeq implements ISeq<DoubleGene> {
 		final double[] array = new double[_length];
 		System.arraycopy(_values, 0, array, 0, _length);
 
-		return new DoubleGeneMSeq(array, _min, _max, 0, _length);
+		return DoubleGeneMSeq.of(array, _min, _max);
+	}
+
+	@Override
+	public String toString() {
+		return toString("[", ",", "]");
+	}
+
+	@Override
+	public int hashCode() {
+		return Seq.hashCode(this);
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		return Seq.equals(this, object);
 	}
 
 	static double[] toArray(final Iterable<? extends DoubleGene> values) {
@@ -125,6 +146,14 @@ final class DoubleGeneISeq implements ISeq<DoubleGene> {
 
 		return array;
 	}
+
+	static DoubleGeneISeq of(
+		final double[] values,
+		final double min,
+		final double max
+	) {
+		return new DoubleGeneISeq(values, min, max, 0, values.length);
+	}
 }
 
 final class DoubleGeneMSeq implements MSeq<DoubleGene> {
@@ -136,7 +165,7 @@ final class DoubleGeneMSeq implements MSeq<DoubleGene> {
 	private final int _start;
 	private final int _length;
 
-	DoubleGeneMSeq(
+	private DoubleGeneMSeq(
 		final double[] values,
 		final double min,
 		final double max,
@@ -151,42 +180,56 @@ final class DoubleGeneMSeq implements MSeq<DoubleGene> {
 	}
 
 	@Override
-	public void set(final int index, DoubleGene value) {
-	}
-
-	@Override
-	public MSeq<DoubleGene> sort(final int start, final int end, final Comparator<? super DoubleGene> comparator) {
-		return null;
-	}
-
-	@Override
-	public MSeq<DoubleGene> subSeq(final int start, final int end) {
-		return null;
-	}
-
-	@Override
-	public MSeq<DoubleGene> subSeq(final int start) {
-		return null;
-	}
-
-	@Override
 	public DoubleGene get(final int index) {
-		return null;
+		return DoubleGene.of(_values[index], _min, _max);
+	}
+
+	@Override
+	public void set(final int index, final DoubleGene value) {
+		_values[index] = value.doubleValue();
 	}
 
 	@Override
 	public int length() {
-		return 0;
+		return _length;
 	}
 
 	@Override
-	public <B> MSeq<B> map(final Function<? super DoubleGene, ? extends B> mapper) {
+	public MSeq<DoubleGene> subSeq(final int start, final int end) {
+		return new DoubleGeneMSeq(
+			_values,
+			_min, _max,
+			start + _start, end + _start
+		);
+	}
+
+	@Override
+	public MSeq<DoubleGene> subSeq(final int start) {
+		return subSeq(start, _length);
+	}
+
+	@Override
+	public <B> MSeq<B>
+	map(final Function<? super DoubleGene, ? extends B> mapper) {
+		return stream()
+			.map(mapper)
+			.collect(MSeq.toMSeq());
+	}
+
+	@Override
+	public MSeq<DoubleGene> sort(
+		final int start,
+		final int end,
+		final Comparator<? super DoubleGene> comparator
+	) {
 		return null;
 	}
 
 	@Override
 	public void swap(final int i, final int j) {
-
+		final double temp = _values[i + _start];
+		_values[i + _start] = _values[j +_start];
+		_values[j + _start] = temp;
 	}
 
 	@Override
@@ -194,29 +237,91 @@ final class DoubleGeneMSeq implements MSeq<DoubleGene> {
 		final int start, final int end,
 		final MSeq<DoubleGene> other, final int otherStart
 	) {
+		if (other instanceof DoubleGeneMSeq) {
+			final DoubleGeneMSeq o = (DoubleGeneMSeq)other;
+
+			if (start < end) {
+				for (int i = end - start; --i >= 0;) {
+					final double temp = _values[i + _start];
+					_values[i + _start] = o._values[i + o._start];
+					o._values[i + o._start] = temp;
+				}
+			}
+		} else {
+			MSeq.super.swap(start, end, other, otherStart);
+		}
 	}
 
 	@Override
 	public void swap(final int index, final MSeq<DoubleGene> other) {
+		if (other instanceof DoubleGeneMSeq) {
+			final DoubleGeneMSeq o = (DoubleGeneMSeq)other;
+			final double temp = _values[index + _start];
+			_values[index + _start] = o._values[index + o._start];
+			o._values[index + o._start] = temp;
+		} else {
+			MSeq.super.swap(index, other);
+		}
 	}
 
 	@Override
 	public MSeq<DoubleGene> append(final Iterable<? extends DoubleGene> values) {
-		return null;
+		final double[] vals = DoubleGeneISeq.toArray(values);
+		final double[] array = new double[_length + vals.length];
+
+		System.arraycopy(_values, _start, array, 0, _length);
+		System.arraycopy(vals, 0, array, _length, vals.length);
+
+		return new DoubleGeneMSeq(array, _min, _max, 0, array.length);
 	}
 
 	@Override
 	public MSeq<DoubleGene> prepend(final Iterable<? extends DoubleGene> values) {
-		return null;
+		final double[] vals = DoubleGeneISeq.toArray(values);
+		final double[] array = new double[_length + vals.length];
+
+		System.arraycopy(vals, 0, array, 0, vals.length);
+		System.arraycopy(_values, _start, array, vals.length, _length);
+
+		return new DoubleGeneMSeq(array, _min, _max, 0, array.length);
 	}
 
 	@Override
 	public ISeq<DoubleGene> toISeq() {
-		return null;
+		final double[] array = new double[_length];
+		System.arraycopy(_values, 0, array, 0, _length);
+
+		return DoubleGeneISeq.of(array, _min, _max);
 	}
 
 	@Override
 	public MSeq<DoubleGene> copy() {
-		return null;
+		final double[] array = new double[_length];
+		System.arraycopy(_values, 0, array, 0, _length);
+
+		return DoubleGeneMSeq.of(array, _min, _max);
+	}
+
+	@Override
+	public String toString() {
+		return toString("[", ",", "]");
+	}
+
+	@Override
+	public int hashCode() {
+		return Seq.hashCode(this);
+	}
+
+	@Override
+	public boolean equals(final Object object) {
+		return Seq.equals(this, object);
+	}
+
+	static DoubleGeneMSeq of(
+		final double[] values,
+		final double min,
+		final double max
+	) {
+		return new DoubleGeneMSeq(values, min, max, 0, values.length);
 	}
 }

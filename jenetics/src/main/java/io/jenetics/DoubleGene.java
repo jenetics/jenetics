@@ -152,9 +152,12 @@ public final class DoubleGene
 		final double max = maximum;
 		final Random r = getRandom();
 
-		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
-			.toISeq();
+		final double[] values = new double[random.nextInt(lengthRange, r)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = nextDouble(min, max, r);
+		}
+
+		return DoubleGeneISeq.of(values, min, max);
 	}
 
 	@Override
