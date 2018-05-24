@@ -19,9 +19,29 @@
  */
 package io.jenetics.internal.util;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class reflectTest {
 
+	@Test
+	public void setField() {
+		final FinalFields fields = new FinalFields();
+		Assert.assertEquals(fields.foo, "foo");
+		Assert.assertEquals(fields.bar, "bar");
+
+		reflect.setField(fields, "foo", "bar");
+		reflect.setField(fields, "bar", "foo");
+		Assert.assertEquals(fields.foo, "bar");
+		Assert.assertEquals(fields.bar, "foo");
+	}
+
+}
+
+final class FinalFields {
+	public String foo = "foo";
+	public String bar = "bar";
 }
