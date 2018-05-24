@@ -76,22 +76,9 @@ public final class Genotype<G extends Gene<?, G>>
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
-	private final int _ngenes;
 
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
-
-	private Genotype(
-		final ISeq<? extends Chromosome<G>> chromosomes,
-		final int ngenes
-	) {
-		if (chromosomes.isEmpty()) {
-			throw new IllegalArgumentException("No chromosomes given.");
-		}
-
-		_chromosomes = ISeq.upcast(chromosomes);
-		_ngenes = ngenes;
-	}
 
 	/**
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
@@ -103,7 +90,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
-		this(chromosomes, ngenes(chromosomes));
+		if (chromosomes.isEmpty()) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
+
+		_chromosomes = ISeq.upcast(chromosomes);
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
@@ -233,7 +224,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return Return the number of genes this genotype consists of.
 	 */
 	public int geneCount() {
-		return _ngenes;
+		int count = 0;
+		for (int i = 0, n = _chromosomes.length(); i < n; ++i) {
+			count += _chromosomes.get(i).length();
+		}
+		return count;
 	}
 
 	/**
@@ -260,7 +255,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		return new Genotype<>(_chromosomes.map(Factory::newInstance), _ngenes);
+		return new Genotype<>(_chromosomes.map(Factory::newInstance));
 	}
 
 	@Override
