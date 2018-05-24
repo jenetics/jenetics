@@ -24,7 +24,6 @@ import static io.jenetics.internal.util.Equality.eq;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Factory;
@@ -108,9 +107,11 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		return chromosomes.stream()
-			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
-			.sum();
+		int count = 0;
+		for (int i = 0, n = chromosomes.length(); i < n; ++i) {
+			count += chromosomes.get(i).length();
+		}
+		return count;
 	}
 
 	/**
@@ -260,10 +261,6 @@ public final class Genotype<G extends Gene<?, G>>
 	@Override
 	public Genotype<G> newInstance() {
 		return new Genotype<>(_chromosomes.map(Factory::newInstance), _ngenes);
-	}
-
-	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
-		return new Genotype<>(chromosomes, _ngenes);
 	}
 
 	@Override

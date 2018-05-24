@@ -94,7 +94,7 @@ public final class MeanAlterer<
 
 		population.set(
 			individuals[0],
-			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
+			pt1.newInstance(Genotype.of(c1), generation)
 		);
 
 		return 1;
