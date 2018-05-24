@@ -19,37 +19,9 @@
  */
 package io.jenetics.internal.util;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class reflectTest {
-
-	@Test
-	public void innerClasses() {
-		reflect.innerClasses(reflectTest.class).forEach(System.out::println);
-		final long count = reflect.innerClasses(reflectTest.class)
-			.distinct()
-			.count();
-
-		Assert.assertEquals(count, 10);
-	}
-
-	private static final class _1 {
-		private static final class _2 {
-			private static final class _3 {}
-			private static final class _4 {}
-		}
-		private static final class _5 {}
-		public static final class _6 {}
-	}
-
-	private static final class _7 {
-		private static final class _8 {}
-		private static final class _9 {}
-		private static final class _10 {}
-	}
 
 }
