@@ -206,24 +206,6 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 * [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
 * [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
 
-### [4.1.0](https://github.com/jenetics/jenetics/releases/tag/v4.1.0)
-
-#### Improvements
-
-* [#223](https://github.com/jenetics/jenetics/issues/223): **Implementation of Multi-Objective Optimization.**
-* [#259](https://github.com/jenetics/jenetics/issues/259): Pruning GP program tree.
-* [#285](https://github.com/jenetics/jenetics/issues/285): Population exchange between different Engines.
-* [#294](https://github.com/jenetics/jenetics/issues/294): Cleanup of Jenetics examples.
-* [#295](https://github.com/jenetics/jenetics/issues/295): Upgrade Gradle version 4.5.
-* [#297](https://github.com/jenetics/jenetics/issues/297): Compile JMH test on test execution.
-* [#306](https://github.com/jenetics/jenetics/issues/306): Improve Javadoc on how to extend chromosomes.
-* [#307](https://github.com/jenetics/jenetics/issues/307): Enable @apiNote, @implSpec and @implNote Javadoc tag.
-
-#### Bugs
-
-* [#290](https://github.com/jenetics/jenetics/issues/290): User's manual fixes.
-* [#298](https://github.com/jenetics/jenetics/issues/298): Fix GP load/save of generated tree.
-
 
 _[All Release Notes](RELEASE_NOTES.md)_
 
