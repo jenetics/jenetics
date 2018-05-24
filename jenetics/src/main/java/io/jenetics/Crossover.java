@@ -96,7 +96,7 @@ public abstract class Crossover<
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(gt1.newInstance(c2.toISeq()), generation)
+			pt2.newInstance(gt2.newInstance(c2.toISeq()), generation)
 		);
 
 		return getOrder();
