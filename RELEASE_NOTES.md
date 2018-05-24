@@ -14,6 +14,7 @@
 * [#318](https://github.com/jenetics/jenetics/issues/318): NULL result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
 * [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
 * [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
+* [#345](https://github.com/jenetics/jenetics/issues/345): Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
 
 ### [4.1.0](https://github.com/jenetics/jenetics/releases/tag/v4.1.0)
 
