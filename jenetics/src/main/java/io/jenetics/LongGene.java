@@ -204,16 +204,30 @@ public final class LongGene
 			.toISeq();
 	}
 
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since !__version__!
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public LongGene newInstance(final long value) {
+		return new LongGene(value, _min, _max);
+	}
+
 	@Override
-	public LongGene newInstance(final Number number) {
-		return new LongGene(number.longValue(), _min, _max);
+	public LongGene newInstance(final Long value) {
+		return newInstance(value.longValue());
+	}
+
+	@Override
+	public LongGene newInstance(final Number value) {
+		return new LongGene(value.longValue(), _min, _max);
 	}
 
 	@Override
 	public LongGene newInstance() {
-		return new LongGene(
-			nextLong(getRandom(), _min, _max), _min, _max
-		);
+		return new LongGene(nextLong(getRandom(), _min, _max), _min, _max);
 	}
 
 	@Override
