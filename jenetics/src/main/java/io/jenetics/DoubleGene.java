@@ -207,9 +207,25 @@ public final class DoubleGene
 			.toISeq();
 	}
 
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since !__version__!
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public DoubleGene newInstance(final double value) {
+		return new DoubleGene(value, _min, _max);
+	}
+
 	@Override
-	public DoubleGene newInstance(final Number number) {
-		return new DoubleGene(number.doubleValue(), _min, _max);
+	public DoubleGene newInstance(final Double value) {
+		return newInstance(value.doubleValue());
+	}
+
+	@Override
+	public DoubleGene newInstance(final Number value) {
+		return newInstance(value.doubleValue());
 	}
 
 	@Override

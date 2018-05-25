@@ -222,7 +222,7 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance(final Number value) {
-		return new LongGene(value.longValue(), _min, _max);
+		return newInstance(value.longValue());
 	}
 
 	@Override

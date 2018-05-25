@@ -203,9 +203,25 @@ public final class IntegerGene
 			.toISeq();
 	}
 
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since !__version__!
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public IntegerGene newInstance(final int value) {
+		return new IntegerGene(value, _min, _max);
+	}
+
 	@Override
-	public IntegerGene newInstance(final Number number) {
-		return new IntegerGene(number.intValue(), _min, _max);
+	public IntegerGene newInstance(final Integer value) {
+		return newInstance(value.intValue());
+	}
+
+	@Override
+	public IntegerGene newInstance(final Number value) {
+		return newInstance(value.intValue());
 	}
 
 	@Override
