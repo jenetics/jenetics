@@ -19,14 +19,18 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.SerialIO.readInt;
+import static io.jenetics.internal.SerialIO.writeInt;
+
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -41,7 +45,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 4.0
+ * @version !__version__!
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
@@ -49,7 +53,7 @@ public class IntegerChromosome
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed
@@ -290,40 +294,45 @@ public class IntegerChromosome
 		return Equality.of(this, obj).test(super::equals);
 	}
 
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.defaultWriteObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeInt(_min);
-		out.writeInt(_max);
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
+		writeInt(_min, out);
+		writeInt(_max, out);
 
-		for (IntegerGene gene : _genes) {
-			out.writeInt(gene.getAllele());
+		for (int i = 0, n = length(); i < n; ++i) {
+			writeInt(intValue(i), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static IntegerChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final int min = readInt(in);
+		final int max = readInt(in);
 
-		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readInt());
-		reflect.setField(this, "_max", in.readInt());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, IntegerGene.of(in.readInt(), _min, _max));
+		final MSeq<IntegerGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, IntegerGene.of(readInt(in), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new IntegerChromosome(values.toISeq(), lengthRange);
 	}
 
 }

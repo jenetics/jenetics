@@ -19,14 +19,20 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.SerialIO.readInt;
+import static io.jenetics.internal.SerialIO.readLong;
+import static io.jenetics.internal.SerialIO.writeInt;
+import static io.jenetics.internal.SerialIO.writeLong;
+
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -50,7 +56,7 @@ public class LongChromosome
 		NumericChromosome<Long, LongGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed
@@ -290,40 +296,45 @@ public class LongChromosome
 		return Equality.of(this, obj).test(super::equals);
 	}
 
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.defaultWriteObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeLong(_min);
-		out.writeLong(_max);
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
+		writeLong(_min, out);
+		writeLong(_max, out);
 
-		for (LongGene gene : _genes) {
-			out.writeLong(gene.getAllele());
+		for (int i = 0, n = length(); i < n; ++i) {
+			writeLong(longValue(i), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static LongChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final long min = readLong(in);
+		final long max = readLong(in);
 
-		final MSeq<LongGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readLong());
-		reflect.setField(this, "_max", in.readLong());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, LongGene.of(in.readLong(), _min, _max));
+		final MSeq<LongGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, LongGene.of(readLong(in), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new LongChromosome(values.toISeq(), lengthRange);
 	}
 
 }
