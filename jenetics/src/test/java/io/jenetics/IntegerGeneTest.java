@@ -111,7 +111,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test
 	public void set() {
-		IntegerGene gene = new IntegerGene(5, 0, 10);
+		IntegerGene gene = IntegerGene.of(5, 0, 10);
 		Assert.assertEquals(gene.getAllele().intValue(), 5);
 		Assert.assertEquals(gene.getMin().intValue(), 0);
 		Assert.assertEquals(gene.getMax().intValue(), 10);

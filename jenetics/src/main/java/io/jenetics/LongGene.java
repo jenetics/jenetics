@@ -81,7 +81,7 @@ public final class LongGene
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	LongGene(final long value, final long min, final long max) {
+	private LongGene(final long value, final long min, final long max) {
 		_value = value;
 		_min = min;
 		_max = max;

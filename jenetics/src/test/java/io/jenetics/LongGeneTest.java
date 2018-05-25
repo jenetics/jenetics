@@ -103,7 +103,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test
 	public void set() {
-		LongGene gene = new LongGene(5L, 0L, 10L);
+		LongGene gene = LongGene.of(5L, 0L, 10L);
 		Assert.assertEquals(gene.getAllele().longValue(), 5L);
 		Assert.assertEquals(gene.getMin().longValue(), 0L);
 		Assert.assertEquals(gene.getMax().longValue(), 10L);
