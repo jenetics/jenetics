@@ -74,6 +74,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case DOUBLE_GENE: ((DoubleGene)_object).write(out); break;
 			case INTEGER_GENE: ((IntegerGene)_object).write(out); break;
+			case LONG_GENE: ((LongGene)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -85,6 +86,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case DOUBLE_GENE: _object = DoubleGene.read(in); break;
 			case INTEGER_GENE: _object = IntegerGene.read(in); break;
+			case LONG_GENE: _object = LongGene.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -93,4 +95,5 @@ final class Serial implements Externalizable {
 	private Object readResolve() {
 		return _object;
 	}
+
 }

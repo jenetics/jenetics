@@ -20,8 +20,15 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.SerialIO.readLong;
+import static io.jenetics.internal.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -48,10 +55,9 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public final class LongGene
-	extends AbstractNumericGene<Long, LongGene>
 	implements
 		NumericGene<Long, LongGene>,
 		Mean<LongGene>,
@@ -59,7 +65,11 @@ public final class LongGene
 		Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+
+	private final long _value;
+	private final long _min;
+	private final long _max;
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
@@ -70,15 +80,59 @@ public final class LongGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	LongGene(final Long value, final Long min, final Long max) {
-		super(value, min, max);
+	LongGene(final long value, final long min, final long max) {
+		_value = value;
+		_min = min;
+		_max = max;
+	}
+
+	@Override
+	public Long getAllele() {
+		return _value;
+	}
+
+	@Override
+	public Long getMin() {
+		return _min;
+	}
+
+	@Override
+	public Long getMax() {
+		return _max;
+	}
+
+	@Override
+	public boolean isValid() {
+		return _value >= _min && _value <= 0;
 	}
 
 	@Override
 	public int compareTo(final LongGene other) {
-		return _value.compareTo(other._value);
+		return Long.compare(_value, other._value);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*_value + 37;
+		hash += 31*_min + 37;
+		hash += 31*_max + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof LongGene &&
+			((LongGene)obj)._value == _value &&
+			((LongGene)obj)._min == _min &&
+			((LongGene)obj)._max == _max;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("[%s]", _value);
 	}
 
 	/**
@@ -140,16 +194,13 @@ public final class LongGene
 	}
 
 	static ISeq<LongGene> seq(
-		final Long minimum,
-		final Long maximum,
+		final long min,
+		final long max,
 		final IntRange lengthRange
 	) {
-		final long min = minimum;
-		final long max = maximum;
 		final Random r = getRandom();
-
 		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
+			.fill(() -> new LongGene(nextLong(r, min, max), min, max))
 			.toISeq();
 	}
 
@@ -240,6 +291,31 @@ public final class LongGene
 		} while (bits - result + (n - 1) < 0);
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLong(_value, out);
+		writeLong(_min, out);
+		writeLong(_max, out);
+	}
+
+	static LongGene read(final DataInput in) throws IOException {
+		return of(readLong(in), readLong(in), readLong(in));
 	}
 
 }
