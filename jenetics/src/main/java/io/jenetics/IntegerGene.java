@@ -20,8 +20,15 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.SerialIO.readInt;
+import static io.jenetics.internal.SerialIO.writeInt;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -47,10 +54,9 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 4.0
+ * @version !__version__!
  */
 public final class IntegerGene
-	extends AbstractNumericGene<Integer, IntegerGene>
 	implements
 		NumericGene<Integer, IntegerGene>,
 		Mean<IntegerGene>,
@@ -58,7 +64,11 @@ public final class IntegerGene
 		Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+
+	private final int _value;
+	private final int _min;
+	private final int _max;
 
 	/**
 	 * Create a new random {@code IntegerGene} with the given value and the
@@ -69,15 +79,60 @@ public final class IntegerGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	IntegerGene(final Integer value, final Integer min, final Integer max) {
-		super(value, min, max);
+	private IntegerGene(final int value, final int min, final int max) {
+		_value = value;
+		_min = min;
+		_max = max;
+	}
+
+	@Override
+	public Integer getAllele() {
+		return _value;
+	}
+
+	@Override
+	public Integer getMin() {
+		return _min;
+	}
+
+	@Override
+	public Integer getMax() {
+		return _max;
+	}
+
+	@Override
+	public boolean isValid() {
+		return Integer.compare(_value, _min) >= 0 &&
+			Integer.compare(_value, _max) <= 0;
 	}
 
 	@Override
 	public int compareTo(final IntegerGene other) {
-		return _value.compareTo(other._value);
+		return Integer.compare(_value, other._value);
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash += 31*_value + 37;
+		hash += 31*_min + 37;
+		hash += 31*_max + 37;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IntegerGene &&
+			((IntegerGene)obj)._value == _value &&
+			((IntegerGene)obj)._min == _min &&
+			((IntegerGene)obj)._max == _max;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("[%s]", _value);
 	}
 
 	/**
@@ -139,16 +194,13 @@ public final class IntegerGene
 	}
 
 	static ISeq<IntegerGene> seq(
-		final Integer minimum,
-		final Integer maximum,
+		final int min,
+		final int max,
 		final IntRange lengthRange
 	) {
-		final int min = minimum;
-		final int max = maximum;
 		final Random r = getRandom();
-
 		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new IntegerGene(nextInt(r, min, max), minimum, maximum))
+			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
 	}
 
@@ -159,14 +211,36 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance() {
-		return new IntegerGene(
-			nextInt(getRandom(), _min, _max), _min, _max
-		);
+		return new IntegerGene(nextInt(getRandom(), _min, _max), _min, _max);
 	}
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
 		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_value, out);
+		writeInt(_min, out);
+		writeInt(_max, out);
+	}
+
+	static IntegerGene read(final DataInput in) throws IOException {
+		return of(readInt(in), readInt(in), readInt(in));
 	}
 
 	/**
