@@ -103,7 +103,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean isValid() {
-		return _value >= _min && _value <= 0;
+		return _value >= _min && _value <= _max;
 	}
 
 	@Override

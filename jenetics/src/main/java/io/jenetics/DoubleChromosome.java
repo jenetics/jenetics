@@ -19,18 +19,18 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.SerialIO.readInt;
+import static io.jenetics.internal.SerialIO.writeInt;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import io.jenetics.internal.SerialIO;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -309,10 +309,9 @@ public class DoubleChromosome
 	}
 
 	void write(final DataOutput out) throws IOException {
-		SerialIO.writeInt(length(), out);
-		SerialIO.writeInt(lengthRange().getMin(), out);
-		SerialIO.writeInt(lengthRange().getMax(), out);
-
+		writeInt(length(), out);
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 
@@ -321,47 +320,18 @@ public class DoubleChromosome
 		}
 	}
 
-	static DoubleGene read(final DataInput in) throws IOException {
-		final int length = SerialIO.readInt(in);
-		final IntRange lengthRange = IntRange.of(SerialIO.readInt(in), SerialIO.readInt(in));
+	static DoubleChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final double min = in.readDouble();
+		final double max = in.readDouble();
 
-		//return of(in.readDouble(), in.readDouble(), in.readDouble());
-		return null;
-	}
-
-
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeDouble(_min);
-		out.writeDouble(_max);
-
-		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.getAllele());
-		}
-	}
-
-	/*
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
-
-		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readDouble());
-		reflect.setField(this, "_max", in.readDouble());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
+		final MSeq<DoubleGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, DoubleGene.of(in.readDouble(), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new DoubleChromosome(values.toISeq(), lengthRange);
 	}
-	*/
 
 }
