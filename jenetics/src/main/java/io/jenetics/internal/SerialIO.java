@@ -211,6 +211,21 @@ public final class SerialIO {
 		return elements;
 	}
 
+
+	public static void writeBytes(final byte[] bytes, final DataOutput out)
+		throws IOException
+	{
+		writeInt(bytes.length, out);
+		out.write(bytes);
+	}
+
+	public static byte[] readBytes(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final byte[] bytes = new byte[length];
+		in.readFully(bytes);
+		return bytes;
+	}
+
 	/**
 	 * Writes an int value to a series of bytes. The values are written using
 	 * <a href="http://lucene.apache.org/core/3_5_0/fileformats.html#VInt">variable-length</a>

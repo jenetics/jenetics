@@ -19,11 +19,17 @@
  */
 package io.jenetics.ext;
 
+import static io.jenetics.internal.SerialIO.readBytes;
+import static io.jenetics.internal.SerialIO.readInt;
+import static io.jenetics.internal.SerialIO.writeBytes;
+import static io.jenetics.internal.SerialIO.writeInt;
 import static io.jenetics.internal.util.Equality.eq;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 
@@ -32,7 +38,6 @@ import io.jenetics.DoubleGene;
 import io.jenetics.NumericChromosome;
 import io.jenetics.internal.util.Equality;
 import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -183,31 +188,38 @@ public class BigIntegerChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.BIG_INTEGER_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.writeInt(length());
-		out.writeObject(_min);
-		out.writeObject(_max);
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeBytes(_min.toByteArray(), out);
+		writeBytes(_max.toByteArray(), out);
 
 		for (BigIntegerGene gene : _genes) {
-			out.writeObject(gene.getAllele());
+			writeBytes(gene.getAllele().toByteArray(), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
-		_min = (BigInteger)in.readObject());
-		_max = (BigInteger)in.readObject());
+	static BigIntegerChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final BigInteger min = new BigInteger(readBytes(in));
+		final BigInteger max = new BigInteger(readBytes(in));
 
-		for (int i = 0; i < genes.length(); ++i) {
-			final BigInteger value = (BigInteger)in.readObject();
-			genes.set(i, BigIntegerGene.of(value, _min, _max));
+		final MSeq<BigIntegerGene> genes = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			final BigInteger value = new BigInteger(readBytes(in));
+			genes.set(i, BigIntegerGene.of(value, min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new BigIntegerChromosome(genes.toISeq());
 	}
 
 }
