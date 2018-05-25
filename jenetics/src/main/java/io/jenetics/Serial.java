@@ -39,6 +39,8 @@ final class Serial implements Externalizable {
 	static final byte DOUBLE_CHROMOSOME = 4;
 	static final byte INTEGER_CHROMOSOME = 5;
 	static final byte LONG_CHROMOSOME = 6;
+	static final byte CHARACTER_CHROMOSOME = 7;
+	static final byte PERMUTATION_CHROMOSOME = 8;
 
 
 	/**
@@ -78,13 +80,17 @@ final class Serial implements Externalizable {
 			case DOUBLE_CHROMOSOME: ((DoubleChromosome)_object).write(out); break;
 			case INTEGER_CHROMOSOME: ((IntegerChromosome)_object).write(out); break;
 			case LONG_CHROMOSOME: ((LongChromosome)_object).write(out); break;
+			case CHARACTER_CHROMOSOME: ((CharacterChromosome)_object).write(out); break;
+			case PERMUTATION_CHROMOSOME: ((PermutationChromosome)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
 	}
 
 	@Override
-	public void readExternal(final ObjectInput in) throws IOException {
+	public void readExternal(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
 		_type = in.readByte();
 		switch (_type) {
 			case DOUBLE_GENE: _object = DoubleGene.read(in); break;
@@ -93,6 +99,8 @@ final class Serial implements Externalizable {
 			case DOUBLE_CHROMOSOME: _object = DoubleChromosome.read(in); break;
 			case INTEGER_CHROMOSOME: _object = IntegerChromosome.read(in); break;
 			case LONG_CHROMOSOME: _object = LongChromosome.read(in); break;
+			case CHARACTER_CHROMOSOME: _object = CharacterChromosome.read(in); break;
+			case PERMUTATION_CHROMOSOME: _object = PermutationChromosome.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
