@@ -103,8 +103,7 @@ public final class IntegerGene
 
 	@Override
 	public boolean isValid() {
-		return Integer.compare(_value, _min) >= 0 &&
-			Integer.compare(_value, _max) <= 0;
+		return _value >= _min && _value <= 0;
 	}
 
 	@Override
@@ -219,30 +218,6 @@ public final class IntegerGene
 		return new IntegerGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-
-	private Object writeReplace() {
-		return new Serial(Serial.INTEGER_GENE, this);
-	}
-
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	void write(final DataOutput out) throws IOException {
-		writeInt(_value, out);
-		writeInt(_min, out);
-		writeInt(_max, out);
-	}
-
-	static IntegerGene read(final DataInput in) throws IOException {
-		return of(readInt(in), readInt(in), readInt(in));
-	}
-
 	/**
 	 * Returns a pseudo-random, uniformly distributed int value between min and
 	 * max (min and max included).
@@ -279,6 +254,31 @@ public final class IntegerGene
 		}
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_value, out);
+		writeInt(_min, out);
+		writeInt(_max, out);
+	}
+
+	static IntegerGene read(final DataInput in) throws IOException {
+		return of(readInt(in), readInt(in), readInt(in));
 	}
 
 }
