@@ -186,8 +186,6 @@ public class BigIntegerChromosome
 	private void writeObject(final ObjectOutputStream out)
 		throws IOException
 	{
-		out.defaultWriteObject();
-
 		out.writeInt(length());
 		out.writeObject(_min);
 		out.writeObject(_max);
@@ -200,11 +198,9 @@ public class BigIntegerChromosome
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-
 		final MSeq<BigIntegerGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_min", in.readObject());
-		reflect.setField(this, "_max", in.readObject());
+		_min = (BigInteger)in.readObject());
+		_max = (BigInteger)in.readObject());
 
 		for (int i = 0; i < genes.length(); ++i) {
 			final BigInteger value = (BigInteger)in.readObject();

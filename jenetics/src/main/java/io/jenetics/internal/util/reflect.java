@@ -46,21 +46,21 @@ public class reflect {
 	 * @throws IllegalArgumentException if no field with the given {@code name}
 	 *         can be found or it's not allowed to set the field
 	 */
-	public static void setField(
-		final Object target,
-		final String name,
-		final Object value
-	) {
-		final Field field = findField(target.getClass(), name)
-			.orElseThrow(() -> new IllegalArgumentException(name + " not found."));
-
-		try {
-			field.setAccessible(true);
-			field.set(target, value);
-		} catch (IllegalAccessException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+//	public static void setField(
+//		final Object target,
+//		final String name,
+//		final Object value
+//	) {
+//		final Field field = findField(target.getClass(), name)
+//			.orElseThrow(() -> new IllegalArgumentException(name + " not found."));
+//
+//		try {
+//			field.setAccessible(true);
+//			field.set(target, value);
+//		} catch (IllegalAccessException e) {
+//			throw new IllegalArgumentException(e);
+//		}
+//	}
 
 	private static Optional<Field> findField(
 		final Class<?> cls,
