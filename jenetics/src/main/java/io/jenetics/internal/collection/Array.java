@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import io.jenetics.internal.collection.Array.Store.Ref;
-//import io.jenetics.internal.util.reflect;
 
 /**
  * Array implementation class. This class manages the actual array (store) and
