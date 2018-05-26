@@ -20,8 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.SerialIO.readLong;
-import static io.jenetics.internal.SerialIO.writeLong;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.DataInput;

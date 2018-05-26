@@ -19,10 +19,10 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.SerialIO.readInt;
-import static io.jenetics.internal.SerialIO.readLong;
-import static io.jenetics.internal.SerialIO.writeInt;
-import static io.jenetics.internal.SerialIO.writeLong;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.DataInput;
 import java.io.DataOutput;

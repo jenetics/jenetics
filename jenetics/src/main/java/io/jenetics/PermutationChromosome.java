@@ -20,8 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.SerialIO.readInt;
-import static io.jenetics.internal.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.bit.getAndSet;
 
 import java.io.IOException;

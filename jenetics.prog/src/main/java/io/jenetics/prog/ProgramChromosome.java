@@ -21,8 +21,8 @@ package io.jenetics.prog;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.SerialIO.readInt;
-import static io.jenetics.internal.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;

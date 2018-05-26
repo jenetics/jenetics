@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal;
+package io.jenetics.internal.util;
 
 import java.io.DataInput;
 import java.io.DataOutput;
