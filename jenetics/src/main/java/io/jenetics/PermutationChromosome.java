@@ -113,7 +113,7 @@ public final class PermutationChromosome<T>
 {
 	private static final long serialVersionUID = 2L;
 
-	private ISeq<T> _validAlleles;
+	private final ISeq<T> _validAlleles;
 
 	// Private primary constructor.
 	private PermutationChromosome(
