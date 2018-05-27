@@ -20,19 +20,16 @@
 package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.math.random.nextASCIIString;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
 import io.jenetics.util.IO;
 import io.jenetics.util.MSeq;
 
@@ -49,7 +46,7 @@ public class SerializationTest {
 		for (int i = 0; i < 10; ++i) {
 			final Random random = new Random(i);
 			final MSeq<String> seq = MSeq.ofLength(i);
-			seq.fill(() -> nextString(random, 100));
+			seq.fill(() -> nextASCIIString(100, random));
 
 			String resource = format(RESOURCE_PATTERN, "MSeq", i);
 			try (InputStream in = getClass().getResourceAsStream(resource)) {
@@ -75,18 +72,11 @@ public class SerializationTest {
 		for (int i = 0; i < 10; ++i) {
 			final Random random = new Random(i);
 			final MSeq<String> seq = MSeq.ofLength(i);
-			seq.fill(() -> nextString(random, 100));
+			seq.fill(() -> nextASCIIString(100, random));
 
 			IO.object.write(seq, new File(baseDir, format("MSeq[%s].object", i)));
 			IO.object.write(seq.toISeq(), new File(baseDir, format("ISeq[%s].object", i)));
 		}
 	}
 
-
-	private static String nextString(final Random rand, final int length) {
-		return Stream.generate(() -> random.nextChar(rand))
-			.limit(length)
-			.map(Objects::toString)
-			.collect(Collectors.joining());
-	}
 }

@@ -189,17 +189,17 @@ public final class random {
 		return value;
 	}
 
-	public static String nextString(final int length, final Random random) {
+	public static String nextASCIIString(final int length, final Random random) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
-			chars[i] = nextChar(random);
+			chars[i] = (char)nextInt(32, 127, random);
 		}
 
 		return new String(chars);
 	}
 
-	public static String nextString(final Random random) {
-		return nextString(nextInt(5, 20, random), random);
+	public static String nextASCIIString(final Random random) {
+		return nextASCIIString(nextInt(5, 20, random), random);
 	}
 
 	/*
