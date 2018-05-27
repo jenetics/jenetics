@@ -84,7 +84,7 @@ public class LinearRankSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/LinearRankSelector";
+			"/io/jenetics/selector/distribution/LinearRankSelector";
 
 		return Arrays.stream(Optimize.values())
 			.flatMap(opt -> {

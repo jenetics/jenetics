@@ -50,14 +50,13 @@ import io.jenetics.internal.math.DoubleAdder;
  *     .collect(toDoubleMomentStatistics(v -> v.doubleValue()));
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use
  * {@link #toDoubleMomentStatistics(ToDoubleFunction)}  on a parallel stream,
  * because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
- * safe and efficient parallel execution.</i>
+ * safe and efficient parallel execution.
  *
  * @see java.util.DoubleSummaryStatistics
  * @see io.jenetics.stat.DoubleMoments
@@ -172,7 +171,8 @@ public class DoubleMomentStatistics
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final DoubleMomentStatistics other) {
-		return Double.compare(_min, other._min) == 0 &&
+		return this == other ||
+			Double.compare(_min, other._min) == 0 &&
 			Double.compare(_max, other._max) == 0 &&
 			_sum.sameState(other._sum) &&
 			super.sameState(other);

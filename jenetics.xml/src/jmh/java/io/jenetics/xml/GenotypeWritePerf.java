@@ -39,6 +39,7 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.util.IO;
+
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;

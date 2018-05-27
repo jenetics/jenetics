@@ -63,7 +63,7 @@ public abstract class NumericGeneTester<
 			} else if (gene1.getAllele().compareTo(gene2.getAllele()) < 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) < 0);
 			} else {
-				Assert.assertTrue(gene1.compareTo(gene2) == 0);
+				Assert.assertEquals(0, gene1.compareTo(gene2));
 			}
 		}
 	}

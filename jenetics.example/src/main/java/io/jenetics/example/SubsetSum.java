@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Random;
 import java.util.function.Function;
 
+import io.jenetics.prngine.LCG64ShiftRandom;
+
 import io.jenetics.EnumGene;
 import io.jenetics.Mutator;
 import io.jenetics.PartiallyMatchedCrossover;
@@ -32,9 +34,8 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.Problem;
 import io.jenetics.engine.Limits;
-import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 
 /**

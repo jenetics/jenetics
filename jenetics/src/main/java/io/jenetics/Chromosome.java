@@ -29,8 +29,8 @@ import io.jenetics.util.Verifiable;
  * A chromosome consists of one or more genes. It also provides a factory
  * method for creating new, random chromosome instances of the same type and the
  * same constraint.
- * <p>
- * <span class="simpleTagLabel">API Note: </span>
+ *
+ * @implSpec
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
  * and guarantee an efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.

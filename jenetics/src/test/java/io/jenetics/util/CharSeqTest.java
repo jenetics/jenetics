@@ -29,8 +29,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
 import io.jenetics.prngine.PRNG;
+
+import io.jenetics.internal.math.random;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,7 +42,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	protected Factory<CharSeq> factory() {
 		return () -> {
 			final Random r = RandomRegistry.getRandom();
-			return new CharSeq(random.nextString(r.nextInt(200) + 100, r));
+			return new CharSeq(random.nextASCIIString(r.nextInt(200) + 100, r));
 		};
 	}
 

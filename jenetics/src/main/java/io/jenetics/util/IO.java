@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -85,6 +87,21 @@ public abstract class IO {
 		}
 	};
 
+	/**
+	 * Serializes the given {@code object} to a {@code byte[]} array.
+	 *
+	 * @since 4.1
+	 *
+	 * @param object the object to serialize.
+	 * @throws NullPointerException if one of the object is {@code null}.
+	 * @throws IOException if the object could not be serialized.
+	 * @return the serialized {@code object} as {@code byte[]} array
+	 */
+	public byte[] toByteArray(final Object object) throws IOException {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		write(object, out);
+		return out.toByteArray();
+	}
 
 	/**
 	 * Write the (serializable) object to the given path.
@@ -140,6 +157,22 @@ public abstract class IO {
 	 */
 	public abstract void write(final Object object, final OutputStream out)
 		throws IOException;
+
+	/**
+	 * Creates a, previously serialized, object from the given {@code byte[]}
+	 * array.
+	 *
+	 * @since 4.1
+	 *
+	 * @param bytes the serialized object.
+	 * @return the de-serialized object.
+	 * @throws NullPointerException if the input {@code bytes} is {@code null}.
+	 * @throws IOException if the object could not be de-serialized.
+	 */
+	public Object fromByteArray(final byte[] bytes) throws IOException {
+		final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+		return read(in);
+	}
 
 	/**
 	 * Reads an object from the given file.

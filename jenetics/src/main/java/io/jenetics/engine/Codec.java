@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -122,15 +123,25 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @since 3.6
 	 *
-	 * @param gt the genotype to be converted
+	 * @param genotype the genotype to be converted
 	 * @return the converted genotype
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
-	public default T decode(final Genotype<G> gt) {
-		return decoder().apply(gt);
+	public default T decode(final Genotype<G> genotype) {
+		Objects.requireNonNull(genotype);
+		return decoder().apply(genotype);
 	}
 
 	/**
-	 * Create a new {@code Codec} with the mapped result type.
+	 * Create a new {@code Codec} with the mapped result type. The following
+	 * example creates a double codec who's values are not uniformly distributed
+	 * between {@code [0..1)}. Instead the values now follow an exponential
+	 * function.
+	 *
+	 * <pre>{@code
+	 *  final Codec<Double, DoubleGene> c = Codecs.ofScalar(DoubleRange.of(0, 1))
+	 *      .map(Math::exp);
+	 * }</pre>
 	 *
 	 * @since 4.0
 	 *

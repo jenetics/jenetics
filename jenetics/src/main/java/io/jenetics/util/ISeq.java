@@ -38,7 +38,7 @@ import io.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.6
+ * @version 4.2
  */
 public interface ISeq<T>
 	extends
@@ -215,9 +215,9 @@ public interface ISeq<T>
 	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
-		return values instanceof ISeq<?>
+		return values instanceof ISeq
 			? (ISeq<T>)values
-			: values instanceof MSeq<?>
+			: values instanceof MSeq
 				? ((MSeq<T>)values).toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}

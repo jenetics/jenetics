@@ -19,58 +19,64 @@
  */
 package io.jenetics.example;
 
-import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
-import static io.jenetics.engine.Limits.bySteadyFitness;
+import java.util.function.Function;
 
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.Genotype;
-import io.jenetics.Mutator;
-import io.jenetics.Phenotype;
-import io.jenetics.RouletteWheelSelector;
-import io.jenetics.SinglePointCrossover;
+import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionStatistics;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
 
-public class OnesCounting {
+/**
+ * Full Ones-Counting example.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 3.6
+ * @since 3.5
+ */
+public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 
-	// This method calculates the fitness for a given genotype.
-	private static Integer count(final Genotype<BitGene> gt) {
-		return ((BitChromosome)gt.getChromosome()).bitCount();
+	private final int _length;
+	private final double _onesProbability;
+
+	/**
+	 * Create a new Ones-Counting example with the given parameters.
+	 *
+	 * @param length the length of the ones-vector
+	 * @param onesProbability the probability of ones in the created vector
+	 */
+	public OnesCounting(final int length, final double onesProbability) {
+		_length = length;
+		_onesProbability = onesProbability;
 	}
 
-	public static void main(String[] args) {
-		// Configure and build the evolution engine.
-		final Engine<BitGene, Integer> engine = Engine
-			.builder(
-				OnesCounting::count,
-				BitChromosome.of(20, 0.15))
-			.populationSize(500)
-			.selector(new RouletteWheelSelector<>())
-			.alterers(
-				new Mutator<>(0.55),
-				new SinglePointCrossover<>(0.06))
-			.build();
-
-		// Create evolution statistics consumer.
-		final EvolutionStatistics<Integer, ?>
-			statistics = EvolutionStatistics.ofNumber();
-
-		final Phenotype<BitGene, Integer> best = engine.stream()
-			// Truncate the evolution stream after 7 "steady"
-			// generations.
-			.limit(bySteadyFitness(7))
-				// The evolution will stop after maximal 100
-				// generations.
-			.limit(100)
-				// Update the evaluation statistics after
-				// each generation
-			.peek(statistics)
-				// Collect (reduce) the evolution stream to
-				// its best phenotype.
-			.collect(toBestPhenotype());
-
-		System.out.println(statistics);
-		System.out.println(best);
+	@Override
+	public Function<ISeq<BitGene>, Integer> fitness() {
+		return genes -> (int)genes.stream().filter(BitGene::getBit).count();
 	}
+
+	@Override
+	public Codec<ISeq<BitGene>, BitGene> codec() {
+		return Codec.of(
+			Genotype.of(BitChromosome.of(_length, _onesProbability)),
+			gt -> gt.getChromosome().toSeq()
+		);
+	}
+
+	public static void main(final String[] args) {
+		final OnesCounting problem = new OnesCounting(15, 0.13);
+		final Engine<BitGene, Integer> engine = Engine.builder(problem).build();
+
+		final ISeq<BitGene> result = problem.codec().decoder().apply(
+			engine.stream()
+				.limit(10)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		System.out.println(result);
+	}
+
 }

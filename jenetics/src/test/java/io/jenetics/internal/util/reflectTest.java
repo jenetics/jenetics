@@ -28,28 +28,20 @@ import org.testng.annotations.Test;
 public class reflectTest {
 
 	@Test
-	public void innerClasses() {
-		reflect.innerClasses(reflectTest.class).forEach(System.out::println);
-		final long count = reflect.innerClasses(reflectTest.class)
-			.distinct()
-			.count();
+	public void setField() {
+		final FinalFields fields = new FinalFields();
+		Assert.assertEquals(fields.foo, "foo");
+		Assert.assertEquals(fields.bar, "bar");
 
-		Assert.assertEquals(count, 10);
+		reflect.setField(fields, "foo", "bar");
+		reflect.setField(fields, "bar", "foo");
+		Assert.assertEquals(fields.foo, "bar");
+		Assert.assertEquals(fields.bar, "foo");
 	}
 
-	private static final class _1 {
-		private static final class _2 {
-			private static final class _3 {}
-			private static final class _4 {}
-		}
-		private static final class _5 {}
-		public static final class _6 {}
-	}
+}
 
-	private static final class _7 {
-		private static final class _8 {}
-		private static final class _9 {}
-		private static final class _10 {}
-	}
-
+final class FinalFields {
+	public String foo = "foo";
+	public String bar = "bar";
 }

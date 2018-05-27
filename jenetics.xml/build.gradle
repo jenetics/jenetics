@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.4"
+	id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'
@@ -59,6 +59,8 @@ jar.manifest.instruction('Export-Package',
 )
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.xml')
+
+test.dependsOn(compileJmhJava)
 
 javadoc {
 	options {

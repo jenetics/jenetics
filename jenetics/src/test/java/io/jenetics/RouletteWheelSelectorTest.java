@@ -121,7 +121,7 @@ public class RouletteWheelSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/RouletteWheelSelector";
+			"/io/jenetics/selector/distribution/RouletteWheelSelector";
 
 		return Arrays.stream(Optimize.values())
 			.map(opt -> {

@@ -23,6 +23,12 @@ package io.jenetics;
  * Base interface for genes where the alleles are bound by a minimum and a
  * maximum value.
  *
+ * @implSpec
+ * <em>Jenetics</em> requires that the individuals ({@link Genotype} and
+ * {@link Phenotype}) are not changed after they have been created. Therefore,
+ * all implementations of the {@code BoundedGene} interface must also be
+ * <em>immutable</em>.
+ *
  * @see BoundedChromosome
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

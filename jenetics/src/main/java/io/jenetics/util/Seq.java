@@ -21,8 +21,10 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.internal.collection.Array.checkIndex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +49,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.2
  */
 public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 
@@ -322,9 +324,10 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int end
 	) {
 		requireNonNull(predicate, "Predicate");
+		checkIndex(start, end, length());
 
 		int index = -1;
-		for (int i = 0, n = length(); i < n && index == -1; ++i) {
+		for (int i = start; i < end && index == -1; ++i) {
 			if (predicate.test(get(i))) {
 				index = i;
 			}
@@ -438,9 +441,10 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		final int end
 	) {
 		requireNonNull(predicate, "Predicate");
+		checkIndex(start, end, length());
 
 		int index = -1;
-		for (int i = length(); --i >= 0 && index == -1;) {
+		for (int i = end; --i >= start && index == -1;) {
 			if (predicate.test(get(i))) {
 				index = i;
 			}
@@ -685,7 +689,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @return a {@code MSeq} with this values
 	 */
 	public default MSeq<T> asMSeq() {
-		return this instanceof MSeq<?> ? (MSeq<T>)this : MSeq.of(this);
+		return this instanceof MSeq ? (MSeq<T>)this : MSeq.of(this);
 	}
 
 	/**
@@ -697,7 +701,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @return a {@code ISeq} with this values
 	 */
 	public default ISeq<T> asISeq() {
-		return this instanceof ISeq<?> ? (ISeq<T>)this : ISeq.of(this);
+		return this instanceof ISeq ? (ISeq<T>)this : ISeq.of(this);
 	}
 
 	/**
@@ -809,7 +813,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		if (obj == seq) {
 			return true;
 		}
-		if (!(obj instanceof Seq<?>)) {
+		if (!(obj instanceof Seq)) {
 			return false;
 		}
 
@@ -990,6 +994,43 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 */
 	static <T> Seq<T> of(Supplier<? extends T> supplier, final int length) {
 		return ISeq.of(supplier, length);
+	}
+
+
+	/**
+	 * Returns a sequence backed by the specified list. (Changes to the given
+	 * list are "write through" to the returned sequence.)  This method acts
+	 * as bridge between collection-based and sequence-based APIs.
+	 *
+	 * @since 4.2
+	 *
+	 * @param list the list containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code list}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	public static <T> Seq<T> viewOf(final List<? extends T> list) {
+		return list.isEmpty()
+			? empty()
+			: new SeqView<>(list);
+	}
+
+	/**
+	 * Returns a fixed-size sequence backed by the specified array. (Changes to
+	 * the given array are "write through" to the returned sequence.)  This
+	 * method acts as bridge between array-based and sequence-based APIs.
+	 *
+	 * @since 4.2
+	 *
+	 * @param array the array containing the sequence elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code array}
+	 * @throws NullPointerException if the given array is {@code null}
+	 */
+	public static <T> Seq<T> viewOf(final T[] array) {
+		return array.length == 0
+			? empty()
+			: new SeqView<>(Arrays.asList(array));
 	}
 
 }

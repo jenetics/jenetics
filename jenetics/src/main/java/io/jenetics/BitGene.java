@@ -19,8 +19,6 @@
  */
 package io.jenetics;
 
-import java.io.Serializable;
-
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -35,8 +33,7 @@ import io.jenetics.util.RandomRegistry;
 public enum BitGene
 	implements
 		Gene<Boolean, BitGene>,
-		Comparable<BitGene>,
-		Serializable
+		Comparable<BitGene>
 {
 
 	FALSE(false),

@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -30,6 +31,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 /**
@@ -77,7 +79,7 @@ public class FitnessThresholdLimitTest {
 		return EvolutionResult.of(
 			opt,
 			population(min, max),
-			1L,
+			2L,
 			EvolutionDurations.ZERO,
 			1,
 			1,
@@ -101,6 +103,28 @@ public class FitnessThresholdLimitTest {
 			1,
 			a -> a.getGene().getAllele()
 		);
+	}
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialFitnessConvergence() {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			d -> 1.0,
+			Codecs.ofScalar(DoubleRange.of(0, 1))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+		final AtomicInteger count = new AtomicInteger();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byFitnessThreshold(0.3))
+			.peek(er -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(count.get(), 1);
+		Assert.assertEquals(result.getTotalGenerations(), 1);
+		Assert.assertEquals(result.getGeneration(), 1);
 	}
 
 }

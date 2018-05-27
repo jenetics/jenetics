@@ -58,7 +58,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> LongGene.of(min, max).getAllele())
-				.forEach(histogram::accept)
+				.forEach(histogram)
 		);
 
 		assertUniformDistribution(histogram);

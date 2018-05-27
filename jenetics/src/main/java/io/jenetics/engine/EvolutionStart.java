@@ -33,9 +33,15 @@ import io.jenetics.util.ISeq;
  * Represents a state of the GA at the start of an evolution step.
  *
  * @see EvolutionResult
+ * @see EvolutionInit
+ * @see EvolutionStreamable#stream(EvolutionStart)
+ * @see EvolutionIterable#iterator(EvolutionStart)
  *
  * @param <G> the gene type
  * @param <C> the fitness type
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
@@ -85,9 +91,10 @@ public final class EvolutionStart<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionStart<?, ?> &&
-			_generation == ((EvolutionStart<?, ?>)obj)._generation &&
-			Objects.equals(_population, ((EvolutionStart<?, ?>)obj)._population);
+		return obj == this ||
+			obj instanceof EvolutionStart &&
+			_generation == ((EvolutionStart)obj)._generation &&
+			Objects.equals(_population, ((EvolutionStart)obj)._population);
 	}
 
 	@Override

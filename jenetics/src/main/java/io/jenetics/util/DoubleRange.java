@@ -19,13 +19,15 @@
  */
 package io.jenetics.util;
 
-import static java.lang.Double.doubleToLongBits;
 import static java.lang.String.format;
 
 import java.io.Serializable;
 
 /**
  * Double range class.
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.2
@@ -106,14 +108,18 @@ public final class DoubleRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (int)(doubleToLongBits(_min) + 31*doubleToLongBits(_max));
+		int hash  = 17;
+		hash += 31*Double.hashCode(_max) + 37;
+		hash += 31*Double.hashCode(_min) + 37;
+		return hash;
 	}
 
 	@Override
-	public boolean equals(final Object other) {
-		return other instanceof DoubleRange &&
-			Double.compare(_min, ((DoubleRange)other)._min) == 0 &&
-			Double.compare(_max, ((DoubleRange)other)._max) == 0;
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof DoubleRange &&
+			Double.compare(_min, ((DoubleRange)obj)._min) == 0 &&
+			Double.compare(_max, ((DoubleRange)obj)._max) == 0;
 	}
 
 	@Override

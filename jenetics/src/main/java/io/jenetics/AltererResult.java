@@ -33,6 +33,9 @@ import io.jenetics.util.Seq;
  *
  * @see Alterer
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
  * @since 4.0
@@ -90,7 +93,8 @@ public final class AltererResult<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AltererResult<?, ?> &&
+		return obj == this ||
+			obj instanceof AltererResult &&
 			_alterations == ((AltererResult)obj)._alterations &&
 			_population.equals(((AltererResult)obj)._population);
 	}

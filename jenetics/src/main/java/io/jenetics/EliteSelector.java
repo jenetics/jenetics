@@ -24,6 +24,8 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
+
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
@@ -151,13 +153,14 @@ public class EliteSelector<
 	public int hashCode() {
 		int hash = 17;
 		hash += 31*_eliteCount + 37;
-		hash += 31*_nonEliteSelector.hashCode() + 37;
+		hash += 31*Objects.hashCode(_nonEliteSelector) + 37;
 		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EliteSelector<?, ?> &&
+		return obj == this ||
+			obj instanceof EliteSelector &&
 			((EliteSelector)obj)._eliteCount == _eliteCount &&
 			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
 	}

@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 /**
@@ -54,12 +55,17 @@ final class TreeNodeBreadthFirstIterator<V, T extends Tree<V, T>>
 
 	@Override
 	public boolean hasNext() {
-		return !_queue.isEmpty() && _queue.peek().hasNext();
+		final Iterator<T> peek = _queue.peek();
+		return peek != null && peek.hasNext();
 	}
 
 	@Override
 	public T next() {
 		final Iterator<T> it = _queue.peek();
+		if (it == null) {
+			throw new NoSuchElementException("No next element.");
+		}
+
 		final T node = it.next();
 		if (!it.hasNext()) {
 			_queue.poll();

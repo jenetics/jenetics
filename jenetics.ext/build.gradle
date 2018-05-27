@@ -25,7 +25,7 @@
  */
 
 plugins {
-    id "me.champeau.gradle.jmh" version "0.4.4"
+    id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'
@@ -45,6 +45,7 @@ dependencies {
 
 	testCompile Include.Apache.Commons.Math
 	testCompile Include.TestNG
+	testCompile Include.EqualsVerifier
 	testCompile project(':jenetics').sourceSets.test.output
 }
 
@@ -56,6 +57,8 @@ idea {
 
 jar.manifest.instruction('Export-Package',
 	'io.jenetics.ext',
+	'io.jenetics.ext.engine',
+	'io.jenetics.ext.moea',
 	'io.jenetics.ext.util'
 )
 

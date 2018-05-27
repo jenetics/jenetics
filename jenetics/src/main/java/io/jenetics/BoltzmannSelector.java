@@ -137,7 +137,8 @@ public final class BoltzmannSelector<
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof BoltzmannSelector &&
+		return obj == this ||
+			obj instanceof BoltzmannSelector &&
 			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 

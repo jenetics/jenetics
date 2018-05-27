@@ -24,7 +24,6 @@ import static java.util.stream.Stream.concat;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -162,4 +161,5 @@ public class reflect {
 			}
 		}
 	}
+
 }

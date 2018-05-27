@@ -123,8 +123,8 @@ public abstract class ObjectTester<T> extends Retry {
 	@Test
 	public void copyMethod() {
 		final Object that = factory().newInstance();
-		if (that instanceof Copyable<?>) {
-			final Object other = ((Copyable<?>)that).copy();
+		if (that instanceof Copyable) {
+			final Object other = ((Copyable)that).copy();
 			if (other.getClass() == that.getClass()) {
 				Assert.assertEquals(other, that);
 				Assert.assertNotSame(other, that);

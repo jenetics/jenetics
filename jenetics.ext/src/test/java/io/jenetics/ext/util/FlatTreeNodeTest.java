@@ -19,10 +19,13 @@
  */
 package io.jenetics.ext.util;
 
+import java.io.IOException;
 import java.util.Random;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.IO;
 import io.jenetics.util.ISeq;
 
 /**
@@ -93,6 +96,13 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 		System.out.println(tree.getChild(0).getChild(0).getParent().map(t -> t.getValue()));
 		System.out.println(tree.getChild(2).getChild(0).getChild(0).getParent().map(t -> t.getValue()));
 		*/
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final FlatTreeNode<Integer> tree = newTree(6, new Random());
+		final byte[] data = IO.object.toByteArray(tree);
+		Assert.assertEquals(IO.object.fromByteArray(data), tree);
 	}
 
 }
