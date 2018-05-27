@@ -52,7 +52,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
 			chromosome.toSeq().stream()
 				.map(g -> Long.valueOf(g.getAllele().toString()))
-				.forEach(histogram::accept);
+				.forEach(histogram);
 
 			final double[] expected = dist.uniform(histogram.length());
 			assertDistribution(histogram, expected);
