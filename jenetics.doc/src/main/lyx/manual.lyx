@@ -5369,7 +5369,7 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
@@ -5655,7 +5655,7 @@ g.
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
