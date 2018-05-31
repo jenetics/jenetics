@@ -54,7 +54,7 @@ import io.jenetics.util.RandomRegistry;
  * @see PermutationChromosome
  * @see PartiallyMatchedCrossover
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

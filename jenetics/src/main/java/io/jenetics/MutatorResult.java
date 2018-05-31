@@ -130,7 +130,7 @@ public final class MutatorResult<T> implements Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof MutatorResult<?> &&
+			obj instanceof MutatorResult &&
 			Objects.equals(((MutatorResult)obj)._result, _result) &&
 			((MutatorResult)obj)._mutations == _mutations;
 	}

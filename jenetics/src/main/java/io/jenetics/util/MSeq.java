@@ -44,18 +44,17 @@ import io.jenetics.internal.collection.ObjectStore;
 /**
  * Mutable, ordered, fixed sized sequence.
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * @implNote
+ * This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
  * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
  * respectively, must be protected by the same lock, when they are accessed
- * (get/set) by different threads.</i>
+ * (get/set) by different threads.
  *
  * @see ISeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version 4.2
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -477,13 +476,13 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
 		final MSeq<T> mseq;
-		if (values instanceof ISeq<?>) {
+		if (values instanceof ISeq) {
 			final ISeq<T> seq = (ISeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (values instanceof MSeq<?>) {
+		} else if (values instanceof MSeq) {
 			final MSeq<T> seq = (MSeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (values instanceof Collection<?>) {
+		} else if (values instanceof Collection) {
 			final Collection<T> collection = (Collection<T>)values;
 			mseq = collection.isEmpty()
 				? empty()
@@ -560,9 +559,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Seq<? extends T> values) {
-		return values instanceof MSeq<?>
-			? ((MSeq<T>)values).copy()
-			: MSeq.<T>ofLength(values.length()).setAll(values);
+		final MSeq<T> result;
+		if (values instanceof MSeq) {
+			result = ((MSeq<T>)values).copy();
+		} else if (values instanceof ISeq) {
+			result = ((ISeq<T>)values).copy();
+		} else {
+			result = MSeq.<T>ofLength(values.length()).setAll(values);
+		}
+		return result;
 	}
 
 }

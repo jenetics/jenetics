@@ -113,11 +113,9 @@ public final class TravelingSalesman
 			.build();
 
 		final double km = tsm.fitness(best.getGenotype())/1_000.0;
-		GPX.write(
-			gpx,
-			format("%s/out_%d.gpx", getProperty("user.home"), (int)km),
-			"    "
-		);
+		GPX.writer("    ")
+			.write(gpx, format("%s/out_%d.gpx", getProperty("user.home"), (int)km));
+
 		System.out.println(statistics);
 		System.out.println("Length: " + km);
 	}

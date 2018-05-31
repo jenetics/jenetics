@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.4"
+	id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'
@@ -45,6 +45,14 @@ dependencies {
 	testCompile Include.PRNGine
 
 	jmh Include.PRNGine
+}
+
+jmh {
+	//jmhVersion = '1.20'
+	//duplicateClassesStrategy = 'include'
+	warmupIterations = 5
+	iterations = 5
+	include = ['.*ThreadIDPerf.*']
 }
 
 idea {

@@ -17,26 +17,32 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal;
+package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.function.Function;
 
-import io.jenetics.util.Seq;
-
 /**
+ * ISeq view of an given list. The content is not copied on creation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
- * @since 4.1
+ * @version 4.2
+ * @since 4.2
  */
-public class SeqView<T> implements Seq<T> {
+final class SeqView<T> implements Seq<T> {
 
-	private final List<T> _list;
+	private final List<? extends T> _list;
 
-	private SeqView(final List<T> list) {
+	SeqView(final List<? extends T> list) {
 		_list = requireNonNull(list);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> asList() {
+		return (List<T>)_list;
 	}
 
 	@Override
@@ -50,32 +56,47 @@ public class SeqView<T> implements Seq<T> {
 	}
 
 	@Override
-	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Seq<T> append(final Iterable<? extends T> values) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Seq<T> prepend(final Iterable<? extends T> values) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public Seq<T> subSeq(final int start) {
-		return new SeqView<>(_list.subList(start, length()));
-	}
-
-	@Override
 	public Seq<T> subSeq(final int start, final int end) {
 		return new SeqView<>(_list.subList(start, end));
 	}
 
-	public static <T> Seq<T> of(final List<T> list) {
-		return new SeqView<>(list);
+	@Override
+	public Seq<T> subSeq(final int start) {
+		return new SeqView<>(_list.subList(start, _list.size()));
+	}
+
+	@Override
+	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper) {
+		requireNonNull(mapper);
+
+		final MSeq<B> result = MSeq.ofLength(length());
+		for (int i = 0; i < length(); ++i) {
+			result.set(i, mapper.apply(get(i)));
+		}
+
+		return result.toISeq();
+	}
+
+	@Override
+	public Seq<T> append(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return ISeq.<T>of(_list).append(values);
+	}
+
+	@Override
+	public Seq<T> prepend(final Iterable<? extends T> values) {
+		requireNonNull(values);
+		return ISeq.<T>of(_list).prepend(values);
+	}
+
+	@Override
+	public Object[] toArray() {
+		return _list.toArray();
+	}
+
+	@Override
+	public <B> B[] toArray(final B[] array) {
+		return _list.toArray(array);
 	}
 
 }

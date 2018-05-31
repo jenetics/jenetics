@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 /**
  * Preorder iterator of the tree.
@@ -52,12 +53,17 @@ final class TreeNodePreorderIterator<V, T extends Tree<V, T>>
 
 	@Override
 	public boolean hasNext() {
-		return !_deque.isEmpty() && _deque.peek().hasNext();
+		final Iterator<T> peek = _deque.peek();
+		return peek != null && peek.hasNext();
 	}
 
 	@Override
 	public T next() {
 		final Iterator<T> it = _deque.peek();
+		if (it == null) {
+			throw new NoSuchElementException("No next element.");
+		}
+
 		final T node = it.next();
 		if (!it.hasNext()) {
 			_deque.pop();

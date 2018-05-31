@@ -69,8 +69,8 @@ public class Program<T> implements Op<T>, Serializable {
 		_tree = requireNonNull(tree);
 		check(tree);
 		_arity = tree.breadthFirstStream()
-			.filter(t -> t.getValue() instanceof Var<?>)
-			.mapToInt(v -> ((Var<?>)v.getValue()).index() + 1)
+			.filter(t -> t.getValue() instanceof Var)
+			.mapToInt(v -> ((Var)v.getValue()).index() + 1)
 			.max()
 			.orElse(0);
 	}
@@ -137,7 +137,7 @@ public class Program<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Program<?> &&
+			obj instanceof Program &&
 			Objects.equals(((Program)obj)._name, _name) &&
 			((Program)obj)._arity == _arity &&
 			Objects.equals(((Program)obj)._tree, _tree);

@@ -67,6 +67,8 @@ import io.jenetics.util.IntRange;
  */
 public final class MOEA {
 
+	private static final IntRange DEFAULT_SET_RANGE = IntRange.of(75, 100);
+
 	private MOEA() {
 	}
 
@@ -85,7 +87,7 @@ public final class MOEA {
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	Collector<EvolutionResult<G, V>, ?, ISeq<Phenotype<G, V>>>
 	toParetoSet() {
-		return toParetoSet(IntRange.of(75, 100));
+		return toParetoSet(DEFAULT_SET_RANGE);
 	}
 
 	/**

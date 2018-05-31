@@ -19,8 +19,10 @@
  */
 package io.jenetics.ext.internal;
 
+import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.lang.System.arraycopy;
+import static java.util.Arrays.copyOf;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
@@ -212,7 +214,7 @@ public final class IntList {
 		if (_size < _data.length) {
 			_data = _size == 0
 				? EMPTY_ARRAY
-				: Arrays.copyOf(_data, _size);
+				: copyOf(_data, _size);
 		}
 	}
 
@@ -240,7 +242,7 @@ public final class IntList {
 	 * @return the current elements as int array
 	 */
 	public int[] toArray() {
-		return Arrays.copyOf(_data, _size);
+		return copyOf(_data, _size);
 	}
 
 	private void ensureSize(int size) {
@@ -270,7 +272,7 @@ public final class IntList {
 
 	private static int capacity(final int[] data, final int capacity) {
 		if (data == DEFAULT_EMPTY_ARRAY) {
-			return Math.max(DEFAULT_CAPACITY, capacity);
+			return max(DEFAULT_CAPACITY, capacity);
 		}
 		return capacity;
 	}
@@ -286,7 +288,7 @@ public final class IntList {
 			newSize = hugeCapacity(size);
 		}
 
-		_data = Arrays.copyOf(_data, newSize);
+		_data = copyOf(_data, newSize);
 	}
 
 	private static int hugeCapacity(final int minCapacity) {

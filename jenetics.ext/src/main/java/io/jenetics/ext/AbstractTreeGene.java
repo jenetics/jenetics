@@ -183,8 +183,8 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof AbstractTreeGene<?, ?> &&
-			Objects.equals(((AbstractTreeGene<?, ?>)other)._allele, _allele) &&
+		return other instanceof AbstractTreeGene &&
+			Objects.equals(((AbstractTreeGene)other)._allele, _allele) &&
 			((AbstractTreeGene)other)._genes == _genes &&
 			((AbstractTreeGene)other)._childOffset == _childOffset &&
 			((AbstractTreeGene)other)._childCount == _childCount;
@@ -202,8 +202,8 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AbstractTreeGene<?, ?> &&
-			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
+			obj instanceof AbstractTreeGene &&
+			Objects.equals(((AbstractTreeGene)obj)._allele, _allele) &&
 			((AbstractTreeGene)obj)._childOffset == _childOffset &&
 			((AbstractTreeGene)obj)._childCount == _childCount;
 	}

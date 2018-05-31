@@ -59,7 +59,7 @@ import io.jenetics.util.Seq;
  * @param <G> the gene type
  * @param <C> the fitness type
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -306,25 +306,25 @@ public final class EvolutionResult<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionResult<?, ?> &&
+			obj instanceof EvolutionResult &&
 			Objects.equals(_optimize,
-				((EvolutionResult<?, ?>)obj)._optimize) &&
+				((EvolutionResult)obj)._optimize) &&
 			Objects.equals(_population,
-				((EvolutionResult<?, ?>)obj)._population) &&
+				((EvolutionResult)obj)._population) &&
 			Objects.equals(_generation,
-				((EvolutionResult<?, ?>)obj)._generation) &&
+				((EvolutionResult)obj)._generation) &&
 			Objects.equals(_totalGenerations,
-				((EvolutionResult<?, ?>)obj)._totalGenerations) &&
+				((EvolutionResult)obj)._totalGenerations) &&
 			Objects.equals(_durations,
-				((EvolutionResult<?, ?>)obj)._durations) &&
+				((EvolutionResult)obj)._durations) &&
 			Objects.equals(_killCount,
-				((EvolutionResult<?, ?>)obj)._killCount) &&
+				((EvolutionResult)obj)._killCount) &&
 			Objects.equals(_invalidCount,
-				((EvolutionResult<?, ?>)obj)._invalidCount) &&
+				((EvolutionResult)obj)._invalidCount) &&
 			Objects.equals(_alterCount,
-				((EvolutionResult<?, ?>)obj)._alterCount) &&
+				((EvolutionResult)obj)._alterCount) &&
 			Objects.equals(getBestFitness(),
-				((EvolutionResult<?, ?>)obj).getBestFitness());
+				((EvolutionResult)obj).getBestFitness());
 	}
 
 

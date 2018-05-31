@@ -168,7 +168,8 @@ public class IntMomentStatistics
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final IntMomentStatistics other) {
-		return _min == other._min &&
+		return this == other ||
+			_min == other._min &&
 			_max == other._max &&
 			_sum == other._sum &&
 			super.sameState(other);
