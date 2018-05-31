@@ -20,7 +20,8 @@
 package io.jenetics;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotSame;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -86,9 +87,8 @@ public class GenotypeTest extends ObjectTester<Genotype<DoubleGene>> {
 		LongChromosome c2 = LongChromosome.of(0, 100, 10);
 		Genotype<LongGene> g1 = Genotype.of(c1, c2);
 		Genotype<LongGene> g2 = g1.newInstance();
-
-		assertFalse(g1 == g2);
-		assertFalse(g1.equals(g2));
+		assertNotSame(g1, g2);
+		assertNotEquals(g1, g2);
 	}
 
     @Test

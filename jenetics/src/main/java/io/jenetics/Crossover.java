@@ -92,11 +92,11 @@ public abstract class Crossover<
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
+			pt1.newInstance(Genotype.of(c1), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(gt1.newInstance(c2.toISeq()), generation)
+			pt2.newInstance(Genotype.of(c2), generation)
 		);
 
 		return getOrder();

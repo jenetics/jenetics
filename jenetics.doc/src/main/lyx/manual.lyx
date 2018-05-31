@@ -5369,7 +5369,7 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
@@ -5655,7 +5655,7 @@ g.
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
@@ -9680,6 +9680,127 @@ type
 live
 \emph default
  view on the evolution progress.
+\end_layout
+
+\begin_layout Subsubsection
+Engine.Evaluator
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Engine.Evaluator"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!Evaluator
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This interface allows to define different strategies for evaluating the
+ fitness functions of a given population.
+ Usually, it is not necessary to override the default evaluation strategy.
+ It is helpful if you have performance problems when the fitness function
+ is evaluated 
+\emph on
+serially
+\emph default
+—or in small concurrent batches, as it is implemented by the default strategy.
+ In this case, the 
+\family typewriter
+Engine.Evaluator
+\family default
+ interface can be used to calculate the fitness function for a population
+ in one batch.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Evaluator<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    ISeq<Phenotype<G, C>> evaluate(Seq<Phenotype<G, C>> pop);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Engine.Evaluator
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:EngineEvaluator-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The implementer is free to do the evaluation in place, or create new Phenotype
+ instance and return the newly created one.
+ 
+\end_layout
+
+\begin_layout Standard
+A second use case for the 
+\family typewriter
+Evaluator
+\family default
+ interface is, when the fitness value also depends on the current composition
+ of the population.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ it is possible to normalize the population's fitness values.
 \end_layout
 
 \begin_layout Section

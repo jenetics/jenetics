@@ -12,7 +12,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.1.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.2.0.pdf)).
 
 
 ## Requirements
@@ -30,7 +30,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.1.0/jenetics-4.1.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -147,7 +147,10 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
-* Stephan Pirnbaum. Die Evolution im Algorithmus - Teil 1: Grundlagen. <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 01/2018, pp 64–68, </em></a> Jan. 2018.
+
+* Stephan Pirnbaum. Die Evolution im Algorithmus - Teil 2: Multikriterielle Optimierung und Architekturerkennung. <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 03/2018, pp 66–69, </em></a> May 2018.
+* W. Geithner, Z. Andelkovic, S. Appel, O. Geithner, F. Herfurth, S. Reimann, G. Vorobjev, F. Wilhelmstötter. [Genetic Algorithms for Machine Optimization in the Fair Control System Environment.](http://ipac2018.vrws.de/papers/thpml028.pdf)<em> [The 9th International Particle Accelerator Conference (IPAC'18)](https://ipac18.org/welcome/), </em></a> May 2018.
+* Stephan Pirnbaum. [Die Evolution im Algorithmus - Teil 1: Grundlagen.](http://www.buschmais.de/wp-content/uploads/2018/02/Die-Evolution-im-Algorithmus_JS_01_18.pdf) <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 01/2018, pp 64–68, </em></a> Jan. 2018.
 * Alexander Felfernig, Rouven Walter, José A. Galindo, David Benavides, Seda Polat Erdeniz, Müslüm Atas, Stefan Reiterer. <a href="https://link.springer.com/article/10.1007/s10844-017-0492-1">Anytime diagnosis for reconfiguration. </a> <em>Journal of Intelligent Information Systems, pp 1–22, </em> Jan. 2018.
 * Bruce A. Johnson. <a href="https://link.springer.com/protocol/10.1007/978-1-4939-7386-6_13">From Raw Data to Protein Backbone Chemical Shifts Using NMRFx Processing and NMRViewJ Analysis. </a> <em>Protein NMR: Methods and Protocols, pp. 257--310, Springer New York, </em> Nov. 2017.
 * Cuadra P., Krawczyk L., Höttger R., Heisig P., Wolff C. <a href="https://link.springer.com/chapter/10.1007/978-3-319-67642-5_30">Automated Scheduling for Tightly-Coupled Embedded Multi-core Systems Using Hybrid Genetic Algorithms. </a> <em>Information and Software Technologies: 23rd International Conference, ICIST 2017, Druskininkai, Lithuania.</em> Communications in Computer and Information Science, vol 756. Springer, Cham, Sep. 2017.
@@ -190,23 +193,21 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-### [4.1.0](https://github.com/jenetics/jenetics/releases/tag/v4.1.0)
+### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
 
 #### Improvements
 
-* [#223](https://github.com/jenetics/jenetics/issues/223): **Implementation of Multi-Objective Optimization.**
-* [#259](https://github.com/jenetics/jenetics/issues/259): Pruning GP program tree.
-* [#285](https://github.com/jenetics/jenetics/issues/285): Population exchange between different Engines.
-* [#294](https://github.com/jenetics/jenetics/issues/294): Cleanup of Jenetics examples.
-* [#295](https://github.com/jenetics/jenetics/issues/295): Upgrade Gradle version 4.5.
-* [#297](https://github.com/jenetics/jenetics/issues/297): Compile JMH test on test execution.
-* [#306](https://github.com/jenetics/jenetics/issues/306): Improve Javadoc on how to extend chromosomes.
-* [#307](https://github.com/jenetics/jenetics/issues/307): Enable @apiNote, @implSpec and @implNote Javadoc tag.
+* [#325](https://github.com/jenetics/jenetics/issues/325): **Allow customization of fitness evaluation execution for bundling calculations**
+* [#327](https://github.com/jenetics/jenetics/issues/327): Improve CPU utilization during fitness evaluation.
+* [#335](https://github.com/jenetics/jenetics/issues/335): Seq view wrapper for List<T> and T[] types.
 
 #### Bugs
 
-* [#290](https://github.com/jenetics/jenetics/issues/290): User's manual fixes.
-* [#298](https://github.com/jenetics/jenetics/issues/298): Fix GP load/save of generated tree.
+* [#317](https://github.com/jenetics/jenetics/issues/317): Fix links of Javadoc images.
+* [#318](https://github.com/jenetics/jenetics/issues/318): `null` result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
+* [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
+* [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
+* [#345](https://github.com/jenetics/jenetics/issues/345): Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

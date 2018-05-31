@@ -58,7 +58,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> IntegerGene.of(min, max).getAllele())
-				.forEach(histogram::accept)
+				.forEach(histogram)
 		);
 
 		assertUniformDistribution(histogram);
