@@ -17,7 +17,11 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -25,23 +29,38 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class reflectTest {
+@Test
+public class SeqViewTest extends SeqTestBase {
 
-	@Test
-	public void setField() {
-		final FinalFields fields = new FinalFields();
-		Assert.assertEquals(fields.foo, "foo");
-		Assert.assertEquals(fields.bar, "bar");
-
-		reflect.setField(fields, "foo", "bar");
-		reflect.setField(fields, "bar", "foo");
-		Assert.assertEquals(fields.foo, "bar");
-		Assert.assertEquals(fields.bar, "foo");
+	@Override
+	protected Seq<Integer> newSeq(final int length) {
+		final List<Integer> list = new ArrayList<>(length);
+		for (int i = 0; i < length; ++i) {
+			list.add(i);
+		}
+		return new SeqView<>(list);
 	}
 
-}
+	@Test
+	public void readThrough() {
+		final int length = 100;
+		final Random random = new Random();
+		final List<Integer> list = new ArrayList<>(length);
+		for (int i = 0; i < length; ++i) {
+			list.add(random.nextInt());
+		}
 
-final class FinalFields {
-	public String foo = "foo";
-	public String bar = "bar";
+		final SeqView<Integer> view = new SeqView<>(list);
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(view.get(i), list.get(i));
+		}
+
+		for (int i = 0; i < length; ++i) {
+			list.set(i, random.nextInt());
+		}
+		for (int i = 0; i < length; ++i) {
+			Assert.assertEquals(view.get(i), list.get(i));
+		}
+	}
+
 }

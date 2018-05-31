@@ -35,8 +35,7 @@ import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.internal.SeqView;
+import io.jenetics.util.Seq;
 
 /**
  * This class only contains non-dominate (Pareto-optimal) elements according to
@@ -177,7 +176,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 		if (size() > size) {
 			final double[] distances = Pareto.crowdingDistance(
-				SeqView.of(_population),
+				Seq.viewOf(_population),
 				comparator,
 				distance,
 				dimension

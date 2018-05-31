@@ -25,7 +25,7 @@
  */
 
 plugins {
-    id "me.champeau.gradle.jmh" version "0.4.4"
+    id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'

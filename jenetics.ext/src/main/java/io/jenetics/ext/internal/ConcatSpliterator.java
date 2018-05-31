@@ -55,6 +55,7 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 		boolean advance = true;
 		if (!_spliterators.isEmpty()) {
 			final Spliterator<T> spliterator = _spliterators.peek();
+			assert spliterator != null;
 
 			if (!spliterator.tryAdvance(action::accept)) {
 				_spliterators.removeFirst();
@@ -67,7 +68,6 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 		return advance;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Spliterator<T> trySplit() {
 		final List<Spliterator<T>> split = _spliterators.stream()

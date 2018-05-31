@@ -48,7 +48,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 **************************************************************************/
 
 	/**
-	 * Return the value of the current {@code Tree} node. The value my be
+	 * Return the value of the current {@code Tree} node. The value may be
 	 * {@code null}.
 	 *
 	 * @return the value of the current {@code Tree} node

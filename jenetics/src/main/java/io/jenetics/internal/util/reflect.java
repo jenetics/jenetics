@@ -19,11 +19,7 @@
  */
 package io.jenetics.internal.util;
 
-import static java.util.Arrays.stream;
-import static java.util.stream.Stream.concat;
-
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -86,45 +82,6 @@ public class reflect {
 				.map(reflect::allClasses)
 				.orElse(Stream.empty())
 		);
-	}
-
-	/**
-	 * Return all declared classes of the given class, with arbitrary nested
-	 * level.
-	 *
-	 * @param cls the class for which the declared classes are retrieved.
-	 * @return all nested classes
-	 */
-	public static Stream<Class<?>> innerClasses(final Class<?> cls) {
-		return concat(
-			stream(cls.getDeclaredClasses()).flatMap(reflect::innerClasses),
-			stream(cls.getDeclaredClasses())
-		);
-	}
-
-	/**
-	 * Return the class of the given value or the value if it is already from
-	 * the type {@code Class}.
-	 *
-	 * @param value the value to get the class from.
-	 * @return the class from the given value, or {@code value} if it is already
-	 *         a {@code Class}.
-	 */
-	public static Class<?> classOf(final Object value) {
-		return value instanceof Class<?> ? (Class<?>)value : value.getClass();
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> Optional<T> newInstance(final Class<?> type) {
-		try {
-			return Optional.of((T)type.getConstructor().newInstance());
-		} catch (NoSuchMethodException |
-				InvocationTargetException |
-				InstantiationException |
-				IllegalAccessException e)
-		{
-			return Optional.empty();
-		}
 	}
 
 }

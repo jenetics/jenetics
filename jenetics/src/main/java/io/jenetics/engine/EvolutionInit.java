@@ -87,9 +87,9 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionInit<?> &&
-			_generation == ((EvolutionInit<?>)obj)._generation &&
-			Objects.equals(_population, ((EvolutionInit<?>)obj)._population);
+			obj instanceof EvolutionInit &&
+			_generation == ((EvolutionInit)obj)._generation &&
+			Objects.equals(_population, ((EvolutionInit)obj)._population);
 	}
 
 	@Override

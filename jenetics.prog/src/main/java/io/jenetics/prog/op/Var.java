@@ -119,7 +119,7 @@ public final class Var<T> implements Op<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Var<?> &&
+			obj instanceof Var &&
 			Objects.equals(((Var)obj)._name, _name) &&
 			((Var)obj)._index == _index;
 	}

@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -40,6 +41,7 @@ import io.jenetics.util.Seq;
 public abstract class ArraySeq<T>
 	implements
 		Seq<T>,
+		RandomAccess,
 		Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -59,7 +61,7 @@ public abstract class ArraySeq<T>
 	@SuppressWarnings("unchecked")
 	final Array<T> __append(final Iterable<? extends T> values) {
 		requireNonNull(values);
-		return values instanceof ArraySeq<?>
+		return values instanceof ArraySeq
 			? array.append(((ArraySeq<T>)values).array)
 			: array.append(values);
 	}
@@ -67,7 +69,7 @@ public abstract class ArraySeq<T>
 	@SuppressWarnings("unchecked")
 	final Array<T> __prepend(final Iterable<? extends T> values) {
 		requireNonNull(values);
-		return values instanceof ArraySeq<?>
+		return values instanceof ArraySeq
 			? ((ArraySeq<T>)values).array.append(array)
 			: array.prepend(values);
 	}
@@ -177,11 +179,11 @@ public abstract class ArraySeq<T>
 		if (object == this) {
 			return true;
 		}
-		if (!(object instanceof Seq<?>)) {
+		if (!(object instanceof Seq)) {
 			return false;
 		}
 
-		final Seq<?> seq = (Seq<?>)object;
+		final Seq<?> seq = (Seq)object;
 		return Seq.equals(this, seq);
 	}
 

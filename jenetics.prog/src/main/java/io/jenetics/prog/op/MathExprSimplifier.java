@@ -208,7 +208,7 @@ enum MathExprSimplifier {
 			return
 				node.getValue() instanceof MathOp &&
 				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Const<?>);
+					.allMatch(child -> child.getValue() instanceof Const);
 		}
 
 		@Override
@@ -249,7 +249,7 @@ enum MathExprSimplifier {
 		final int index,
 		final double value
 	) {
-		return node.getChild(index).getValue() instanceof Const<?> &&
+		return node.getChild(index).getValue() instanceof Const &&
 			((Const)node.getChild(index).getValue()).value().equals(value);
 	}
 

@@ -162,7 +162,7 @@ public class SeqTest {
 		Assert.assertEquals(array.length, 4);
 		Assert.assertEquals(array[0], mseq.get(0));
 		Assert.assertEquals(array[1], mseq.get(1));
-		Assert.assertEquals(array[2], null);
+		Assert.assertNull(array[2]);
 		Assert.assertEquals(array[3], "d");
 	}
 
@@ -174,7 +174,7 @@ public class SeqTest {
 		Assert.assertEquals(array.length, 4);
 		Assert.assertEquals(array[0], mseq.get(0));
 		Assert.assertEquals(array[1], mseq.get(1));
-		Assert.assertEquals(array[2], null);
+		Assert.assertNull(array[2]);
 		Assert.assertEquals(array[3], "d");
 	}
 

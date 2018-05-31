@@ -24,10 +24,10 @@ import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -112,18 +112,20 @@ public final class BigIntegerGene
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_value)
-			.and(_min)
-			.and(_max).value();
+		int hash = 17;
+		hash += 31*Objects.hashCode(_value) + 37;
+		hash += 31*Objects.hashCode(_min) + 37;
+		hash += 31*Objects.hashCode(_max) + 37;
+		return hash;
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof BigIntegerGene &&
-			((BigIntegerGene)obj)._value.equals(_value) &&
-			((BigIntegerGene)obj)._min.equals(_min) &&
-			((BigIntegerGene)obj)._max.equals(_max);
+		return obj == this ||
+			obj instanceof BigIntegerGene &&
+			Objects.equals(((BigIntegerGene)obj)._value, _value) &&
+			Objects.equals(((BigIntegerGene)obj)._min, _min) &&
+			Objects.equals(((BigIntegerGene)obj)._max, _max);
 	}
 
 	@Override

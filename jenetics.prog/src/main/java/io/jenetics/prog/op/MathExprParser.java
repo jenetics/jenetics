@@ -197,7 +197,7 @@ final class MathExprParser {
 	private static TreeNode<Op<Double>>
 	addVarIndex(final TreeNode<Op<Double>> tree) {
 		final SortedSet<String> vars = tree.stream()
-			.filter(node -> node.getValue() instanceof Var<?>)
+			.filter(node -> node.getValue() instanceof Var)
 			.map(node -> node.getValue().name())
 			.collect(Collectors.toCollection(TreeSet::new));
 
@@ -209,7 +209,7 @@ final class MathExprParser {
 
 		for (TreeNode<Op<Double>> node : tree) {
 			final Op<Double> op = node.getValue();
-			if (op instanceof Var<?>) {
+			if (op instanceof Var) {
 				node.setValue(Var.of(op.name(), indexes.get(op.name())));
 			}
 		}
