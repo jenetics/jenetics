@@ -64,7 +64,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		_decoder = requireNonNull(decoder);
 
 		final ISeq<Genotype<G>> genotypes = _codecs
-			.map(c -> c.encoding() instanceof Genotype<?>
+			.map(c -> c.encoding() instanceof Genotype
 				? (Genotype<G>)c.encoding()
 				: c.encoding().newInstance());
 

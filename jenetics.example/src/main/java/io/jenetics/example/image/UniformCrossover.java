@@ -61,7 +61,7 @@ final class UniformCrossover<
 	* @throws IllegalArgumentException if the {@code probability} is not in the
 	*         valid range of {@code [0, 1]}.
 	*/
-	public UniformCrossover(final double probability) {
+	UniformCrossover(final double probability) {
 		super(probability);
 	}
 

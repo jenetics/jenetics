@@ -17,35 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.internal.collection;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
+import java.util.Comparator;
 
-import java.math.BigInteger;
-
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import io.jenetics.NumericGeneTester;
-import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class BigIntegerGeneTest
-	extends NumericGeneTester<BigInteger, BigIntegerGene>
-{
+public class CharStoreTest {
 
-	private final BigIntegerGene _factory = BigIntegerGene
-		.of(BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE));
+	@Test
+	public void sort() {
+		final char[]  array = "weoriAFQErqqöp".toCharArray();
+		final CharStore store = CharStore.of(array);
+		store.sort(0, array.length, null);
 
-	@Override protected Factory<BigIntegerGene> factory() {
-		return _factory;
+		Assert.assertEquals(new String(array), "AEFQeiopqqrrwö");
 	}
 
 	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(BigIntegerGene.class).verify();
+	public void sortWithComparator() {
+		final char[]  array = "weoriAFQErqqöp".toCharArray();
+		final CharStore store = CharStore.of(array);
+		store.sort(0, array.length, Comparator.reverseOrder());
+
+		Assert.assertEquals(new String(array), "öwrrqqpoieQFEA");
 	}
 
 }

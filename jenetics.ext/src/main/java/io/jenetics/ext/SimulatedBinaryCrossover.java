@@ -24,7 +24,6 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.base.clamp;
 
-import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.Crossover;
@@ -148,7 +147,7 @@ public class SimulatedBinaryCrossover<
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof SimulatedBinaryCrossover<? ,?> &&
+			obj instanceof SimulatedBinaryCrossover &&
 			Double.compare(
 				((SimulatedBinaryCrossover)obj)._probability,
 				_probability) == 0 &&

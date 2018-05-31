@@ -300,12 +300,7 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
-		boolean carry = true;
-		for (int i = 0; i < data.length && carry; ++i) {
-			data[i] = (byte)(data[i] + 1);
-			carry = data[i] > 0xFF;
-		}
-
+		for (int i = 0; i < data.length && (data[i] += 1) == 0; ++i);
 		return data;
 	}
 
@@ -537,6 +532,15 @@ public final class bit {
 			((data[1] & 255) << 16) +
 			((data[2] & 255) << 8) +
 			(data[3] & 255);
+	}
+
+	public static byte[] toBytes(final int value) {
+		final byte[] bytes = new byte[4];
+		bytes[0] = (byte)(value >>> 24);
+		bytes[1] = (byte)(value >>> 16);
+		bytes[2] = (byte)(value >>>  8);
+		bytes[3] = (byte) value;
+		return bytes;
 	}
 
 	public static long toLong(final byte[] data) {

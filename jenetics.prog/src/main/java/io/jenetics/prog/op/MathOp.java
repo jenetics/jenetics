@@ -43,13 +43,7 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
-
-import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class contains operations for performing basic numeric operations.

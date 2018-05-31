@@ -28,8 +28,6 @@ import java.util.stream.StreamSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.engine.Limits;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */

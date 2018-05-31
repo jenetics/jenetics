@@ -73,7 +73,7 @@ public final class FlatTreeNode<T>
 	 */
 	@Override
 	public FlatTreeNode<T> getRoot() {
-		return node(0);
+		return nodeAt(0);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public final class FlatTreeNode<T>
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> node(final int index) {
+	private FlatTreeNode<T> nodeAt(final int index) {
 		return new FlatTreeNode<T>(
 			index,
 			_nodes,
@@ -148,7 +148,7 @@ public final class FlatTreeNode<T>
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
+		return IntStream.range(0, _nodes.size()).mapToObj(this::nodeAt);
 	}
 
 	/**
@@ -172,7 +172,8 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof FlatTreeNode<?> &&
+		return other == this ||
+			other instanceof FlatTreeNode &&
 			((FlatTreeNode)other)._index == _index &&
 			((FlatTreeNode)other)._nodes == _nodes;
 	}
@@ -189,7 +190,7 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FlatTreeNode<?> &&
+		return obj instanceof FlatTreeNode &&
 			((FlatTreeNode)obj)._index == _index &&
 			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
 			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
