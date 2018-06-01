@@ -4,7 +4,6 @@ jdk:
   - oraclejdk8
   - openjdk9
   - openjdk10
-  - openjdk11
 
 script:
   - travis_wait 20 ./gradlew check --info --stacktrace -PexcludeGroups=statistics
