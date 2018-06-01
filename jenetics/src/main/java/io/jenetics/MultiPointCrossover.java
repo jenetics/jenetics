@@ -21,12 +21,11 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -154,17 +153,16 @@ public class MultiPointCrossover<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.and(_n).value();
+		return hash(super.hashCode(), hash(_n));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(mpc ->
-			_n == mpc._n &&
-			super.equals(obj)
-		);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			_n == ((MultiPointCrossover)obj)._n &&
+			super.equals(obj);
 	}
 
 	@Override
@@ -174,9 +172,5 @@ public class MultiPointCrossover<
 			getClass().getSimpleName(), _probability, _n
 		);
 	}
-
-	//public static <G extends Gene<?, G>> MultiPointCrossover<G> zip() {
-	//	return new MultiPointCrossover<>(Integer.MAX_VALUE);
-	//}
 
 }

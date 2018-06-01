@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -96,11 +97,7 @@ abstract class AbstractBoundedGene<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_value) + 37;
-		hash += 31*Objects.hashCode(_min) + 37;
-		hash += 31*Objects.hashCode(_max) + 37;
-		return hash;
+		return hash(_value, hash(_min, hash(_max)));
 	}
 
 	@Override

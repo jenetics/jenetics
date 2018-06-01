@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import io.jenetics.util.Seq;
 
@@ -123,10 +124,7 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Double.hashCode(_nminus) + 37;
-		hash += 31*Double.hashCode(_nplus) + 37;
-		return hash;
+		return hash(_nminus, hash(_nplus));
 	}
 
 	@Override

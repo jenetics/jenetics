@@ -21,10 +21,10 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
+import java.util.Objects;
+
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -103,16 +103,16 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(super.hashCode())
-			.and(_lengthRange).value();
+		return hash(super.hashCode(), hash(_lengthRange));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(cc ->
-			super.equals(obj) &&
-				eq(_lengthRange, cc._lengthRange)
-		);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Objects.equals(_lengthRange, ((VariableChromosome)obj)._lengthRange) &&
+			super.equals(obj);
 	}
+
 }

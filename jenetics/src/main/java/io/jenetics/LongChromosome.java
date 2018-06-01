@@ -24,8 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -278,16 +276,6 @@ public class LongChromosome
 	@Override
 	public LongChromosome newInstance() {
 		return new LongChromosome(_min, _max, lengthRange());
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	/* *************************************************************************

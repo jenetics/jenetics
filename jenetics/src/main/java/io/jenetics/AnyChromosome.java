@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Predicates;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -128,8 +128,8 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 	@Override
 	public boolean isValid() {
 		Boolean valid =
-			(_alleleValidator == Equality.TRUE &&
-				_alleleSeqValidator == Equality.<ISeq<A>>True())
+			(_alleleValidator == Predicates.TRUE &&
+				_alleleSeqValidator == Predicates.<ISeq<A>>True())
 			? Boolean.TRUE
 			: _valid;
 
@@ -242,7 +242,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final IntRange lengthRange
 	) {
-		return of(supplier, validator, Equality.<ISeq<A>>True(), lengthRange);
+		return of(supplier, validator, Predicates.<ISeq<A>>True(), lengthRange);
 	}
 
 	/**
@@ -264,7 +264,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return of(supplier, validator, Equality.<ISeq<A>>True(), length);
+		return of(supplier, validator, Predicates.<ISeq<A>>True(), length);
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final IntRange lengthRange
 	) {
-		return of(supplier, Equality.TRUE, lengthRange);
+		return of(supplier, Predicates.TRUE, lengthRange);
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return of(supplier, Equality.TRUE, length);
+		return of(supplier, Predicates.TRUE, length);
 	}
 
 	/**
