@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -240,12 +241,11 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_generation + 37;
-		hash += 31*Objects.hashCode(getFitness()) + 37;
-		hash += 31*Objects.hashCode(getRawFitness()) + 37;
-		hash += 31*_genotype.hashCode() + 37;
-		return hash;
+		return
+			hash(_generation,
+			hash(getFitness(),
+			hash(getRawFitness(),
+			hash(_genotype))));
 	}
 
 	@Override

@@ -17,41 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.internal.util;
 
-import static io.jenetics.internal.util.Hashes.hash;
-
-import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
+ * Helper object for calculating object equality.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 3.0
+ * @version 3.0
  */
-class Tuple2<T1, T2> {
+public final class Predicates {
+	private Predicates() {}
 
-	final T1 _1;
-	final T2 _2;
+	public static final Predicate<Object> TRUE = a -> true;
 
-	public Tuple2(final T1 t1, final T2 t2) {
-		_1 = t1;
-		_2 = t2;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_1, hash(_2));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof  Tuple2 &&
-			Objects.equals(_1, ((Tuple2) obj)._1) &&
-			Objects.equals(_2, ((Tuple2) obj)._2);
-	}
-
-	@Override
-	public String toString() {
-		return "(" + _1 + ", " + _2 + ")";
+	/**
+	 * Return a predicate, which always return {@code true}.
+	 *
+	 * @param <T> the predicate type
+	 * @return a predicate, which always return {@code true}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Predicate<T> True() {
+		return (Predicate<T>)TRUE;
 	}
 
 }

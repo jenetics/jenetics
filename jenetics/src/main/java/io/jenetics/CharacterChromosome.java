@@ -20,17 +20,16 @@
 package io.jenetics;
 
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.CharSeq;
@@ -153,17 +152,16 @@ public class CharacterChromosome
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.and(_validCharacters).value();
+		return hash(super.hashCode(), hash(_validCharacters));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(cc ->
-			super.equals(obj) &&
-			eq(_validCharacters, cc._validCharacters)
-		);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Objects.equals(_validCharacters, ((CharacterChromosome)obj)._validCharacters) &&
+			super.equals(obj);
 	}
 
 	@Override
