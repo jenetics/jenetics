@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -179,13 +180,8 @@ public final class FlatTreeNode<T>
 	}
 
 	@Override
-	public int hashCode(){
-		int hash = 17;
-		hash += 31*_index + 37;
-		hash += 31*_nodes.hashCode() + 37;
-		hash += 31*Arrays.hashCode(_childCounts) + 37;
-		hash += 31*Arrays.hashCode(_childOffsets) + 37;
-		return hash;
+	public int hashCode() {
+		return hash(_index, hash(_nodes, hash(_childCounts, hash(_childOffsets))));
 	}
 
 	@Override
