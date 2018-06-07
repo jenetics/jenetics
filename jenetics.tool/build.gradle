@@ -20,7 +20,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.4
- * @version 3.9
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
@@ -35,9 +35,9 @@ dependencies {
 	compile project(':jenetics.example')
 	compile project(':jenetics.ext')
 	compile project(':jenetics.xml')
-	compile Include.PRNGine
+	compile property('include.PRNGine')
 
-	testCompile Include.TestNG
+	testCompile property('include.TestNG')
 }
 
 jar.manifest.instruction('Export-Package',

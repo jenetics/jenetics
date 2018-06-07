@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 3.9
+ * @version !__version__!
  */
 
 plugins {
@@ -39,8 +39,8 @@ repositories {
 dependencies {
 	compile project(':jenetics')
 
-	testCompile Include.TestNG
-	testCompile Include.PRNGine
+	testCompile property('include.TestNG')
+	testCompile property('include.PRNGine')
 }
 
 jmh {

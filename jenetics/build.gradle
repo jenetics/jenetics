@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version !__version__!
  */
 
 plugins {
@@ -39,12 +39,12 @@ repositories {
 }
 
 dependencies {
-	testCompile Include.Apache.Commons.Math
-	testCompile Include.TestNG
-	testCompile Include.EqualsVerifier
-	testCompile Include.PRNGine
+	testCompile property('include.ApacheCommonsMath')
+	testCompile property('include.TestNG')
+	testCompile property('include.EqualsVerifier')
+	testCompile property('include.PRNGine')
 
-	jmh Include.PRNGine
+	jmh property('include.PRNGine')
 }
 
 jmh {

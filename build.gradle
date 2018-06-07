@@ -30,10 +30,9 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version !__version__!
  */
 new PropertiesLoader(ext).load(file('project.properties'))
-new PropertiesLoader(ext).load(file('include.properties'))
 rootProject.version = Version.parse(jenetics.version)
 
 apply plugin: 'signing'

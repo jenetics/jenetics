@@ -24,7 +24,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 3.9
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
@@ -39,8 +39,8 @@ dependencies {
 	compile project(':jenetics')
 	compile project(':jenetics.ext')
 
-	testCompile Include.TestNG
-	testCompile Include.EqualsVerifier
+	testCompile property('include.TestNG')
+	testCompile property('include.EqualsVerifier')
 }
 
 jar.manifest.instruction('Export-Package',
