@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 3.9
+ * @version !__version__!
  */
 
 plugins {
@@ -39,8 +39,8 @@ repositories {
 dependencies {
 	compile project(':jenetics')
 
-	testCompile Include.TestNG
-	testCompile Include.PRNGine
+	testCompile property('include.TestNG')
+	testCompile property('include.PRNGine')
 }
 
 jmh {
@@ -69,9 +69,10 @@ javadoc {
 }
 
 packaging {
-	name = 'Jenetics XML marshalling'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.io'
+	name = property('jenetics.xml.Name')
+	author = property('jenetics.Author')
+	url = property('jenetics.Url')
+
 	jarjar = false
 	javadoc = true
 }
@@ -80,13 +81,13 @@ modifyPom {
 	project {
 		name 'jenetics.xml'
 		description 'Jenetics XML marshalling module'
-		url jenetics.url
+		url property('jenetics.Url')
 		inceptionYear '2017'
 
 		scm {
-			url jenetics.maven.scm.url
-			connection jenetics.maven.scm.connection
-			developerConnection jenetics.maven.scm.developer_connection
+			url property('jenetics.MavenScmUrl')
+			connection property('jenetics.MavenScmConnection')
+			developerConnection property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -99,9 +100,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id 'jenetics'
-				name 'Franz Wilhelmstötter'
-				email 'franz.wilhelmstoetter@gmail.com'
+				id property('jenetics.Id')
+				name property('jenetics.Author')
+				email property('jenetics.Email')
 			}
 		}
 	}
@@ -114,6 +115,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+	repository = property('build.MavenRepository')
+	snapshotRepository = property('build.MavenSnapshotRepository')
 }
