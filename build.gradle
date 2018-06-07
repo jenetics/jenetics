@@ -19,7 +19,6 @@
  */
 
 
-import io.jenetics.gradle.PropertiesLoader
 import io.jenetics.gradle.Version
 import io.jenetics.gradle.plugin.SetupPlugin
 
@@ -32,8 +31,7 @@ import java.time.format.DateTimeFormatter
  * @since 1.2
  * @version !__version__!
  */
-new PropertiesLoader(ext).load(file('project.properties'))
-rootProject.version = Version.parse(jenetics.version)
+rootProject.version = Version.parse(property('jenetics.version'))
 
 apply plugin: 'signing'
 apply plugin: 'packaging'
@@ -51,8 +49,8 @@ ext {
 }
 
 allprojects {
-	group = 'io.jenetics'
-	version = jenetics.version
+	group = property('jenetics.group')
+	version = property('jenetics.version')
 
 	repositories {
 		flatDir(dir: "${rootDir}/buildSrc/lib")
@@ -103,7 +101,7 @@ task zip(type: Zip) {
 	}
 
 	baseName = rootProject.name
-	version = jenetics.version
+	version = project.property('jenetics.version')
 
 	doLast {
 		def zip = file("${identifier}.zip")
