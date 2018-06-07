@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
  * @since 1.2
  * @version !__version__!
  */
-rootProject.version = Version.parse(property('jenetics.version'))
+rootProject.version = Version.parse(property('jenetics.Version'))
 
 apply plugin: 'signing'
 apply plugin: 'packaging'
@@ -49,8 +49,8 @@ ext {
 }
 
 allprojects {
-	group = property('jenetics.group')
-	version = property('jenetics.version')
+	group = property('jenetics.Group')
+	version = property('jenetics.Version')
 
 	repositories {
 		flatDir(dir: "${rootDir}/buildSrc/lib")
@@ -101,7 +101,7 @@ task zip(type: Zip) {
 	}
 
 	baseName = rootProject.name
-	version = project.property('jenetics.version')
+	version = project.property('jenetics.Version')
 
 	doLast {
 		def zip = file("${identifier}.zip")

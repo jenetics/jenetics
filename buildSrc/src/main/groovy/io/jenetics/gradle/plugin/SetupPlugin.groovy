@@ -94,18 +94,18 @@ class SetupPlugin extends JeneticsPlugin {
 				version = version
 				symbolicName = project.name
 				name = project.name
-				instruction 'Bundle-Vendor', project.property('jenetics.author')
-				instruction 'Bundle-Description', project.property('jenetics.description')
-				instruction 'Bundle-DocURL', project.property('jenetics.url')
+				instruction 'Bundle-Vendor', project.property('jenetics.Author')
+				instruction 'Bundle-Description', project.property('jenetics.Description')
+				instruction 'Bundle-DocURL', project.property('jenetics.Url')
 
 				attributes(
 					'Implementation-Title': project.name,
 					'Implementation-Version': project.version,
-					'Implementation-URL': project.property('jenetics.url'),
-					'Implementation-Vendor': project.property('jenetics.name'),
-					'ProjectName': project.property('jenetics.name'),
+					'Implementation-URL': project.property('jenetics.Url'),
+					'Implementation-Vendor': project.property('jenetics.Name'),
+					'ProjectName': project.property('jenetics.Name'),
 					'Version': project.version,
-					'Maintainer': project.property('jenetics.author')
+					'Maintainer': project.property('jenetics.Author')
 				)
 			}
 		}
