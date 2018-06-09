@@ -21,7 +21,6 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
- * @version !__version__!
  */
 module io.jenetics.base {
 	exports io.jenetics;
