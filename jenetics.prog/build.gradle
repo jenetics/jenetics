@@ -24,7 +24,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version !__version__!
+ * @version 4.3
  */
 
 apply plugin: 'packaging'

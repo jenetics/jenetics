@@ -26,7 +26,7 @@ import java.util.function.Predicate;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.3
  */
 public final class Predicates {
 	private Predicates() {}

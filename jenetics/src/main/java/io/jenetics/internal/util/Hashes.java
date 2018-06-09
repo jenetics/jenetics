@@ -26,8 +26,8 @@ import java.util.Objects;
  * Static methods for simple and efficient hash-code calculation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.3
+ * @since 4.3
  */
 public final class Hashes {
 
