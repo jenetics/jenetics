@@ -21,6 +21,7 @@ package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.DoubleSummaryStatistics;
@@ -125,13 +126,7 @@ public final class DoubleSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*Double.hashCode(_sum) + 37;
-		hash += 33*Double.hashCode(_min) + 37;
-		hash += 33*Double.hashCode(_max) + 37;
-		hash += 33*Double.hashCode(_mean) + 37;
-		return hash;
+		return hash(_count, hash(_sum, hash(_min, hash(_max, hash(_mean)))));
 	}
 
 	@Override

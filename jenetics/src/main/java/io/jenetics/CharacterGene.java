@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -142,10 +143,7 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_character) + 37;
-		hash += 31*Objects.hashCode(_validCharacters) + 37;
-		return hash;
+		return hash(_character, hash(_validCharacters));
 	}
 
 	@Override

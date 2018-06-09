@@ -21,12 +21,11 @@ package io.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Range;
 
 
@@ -162,19 +161,27 @@ public class LinearDistribution<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).
-				and(_domain).
-				and(_x1).and(_x2).
-				and(_y1).and(_y2).value();
+		return
+			hash(_domain,
+			hash(_d,
+			hash(_k,
+			hash(_x1,
+			hash(_x2,
+			hash(_y1,
+			hash(_y2)))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(dist ->
-			eq(_domain, dist._domain) &&
-			eq(_x1, dist._x1) && eq(_x2, dist._x2) &&
-			eq(_y1, dist._y1) && eq(_y2, dist._y2)
-		);
+		return obj == this ||
+			obj instanceof LinearDistribution &&
+			Objects.equals(_domain, ((LinearDistribution) obj)._domain) &&
+			Double.compare(_d, ((LinearDistribution) obj)._d) == 0 &&
+			Double.compare(_k, ((LinearDistribution) obj)._k) == 0 &&
+			Double.compare(_x1, ((LinearDistribution) obj)._x1) == 0 &&
+			Double.compare(_x2, ((LinearDistribution) obj)._x2) == 0 &&
+			Double.compare(_y1, ((LinearDistribution) obj)._y1) == 0 &&
+			Double.compare(_y2, ((LinearDistribution) obj)._y2) == 0;
 	}
 
 	@Override

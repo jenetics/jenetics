@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.ISeq.toISeq;
 
 import java.util.Objects;
@@ -102,7 +103,7 @@ final class CompositeAlterer<
 
 	@Override
 	public int hashCode() {
-		return 17 + 31*_alterers.hashCode();
+		return hash(_alterers);
 	}
 
 	@Override
