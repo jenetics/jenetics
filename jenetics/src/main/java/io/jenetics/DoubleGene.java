@@ -59,7 +59,7 @@ public final class DoubleGene
 		Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final double _value;
 	private final double _min;

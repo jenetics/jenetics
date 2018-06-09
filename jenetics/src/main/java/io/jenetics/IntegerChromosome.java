@@ -308,7 +308,7 @@ public class IntegerChromosome
 		reflect.setField(this, "_max", in.readInt());
 
 		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new IntegerGene(in.readInt(), _min, _max));
+			genes.set(i, IntegerGene.of(in.readInt(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
