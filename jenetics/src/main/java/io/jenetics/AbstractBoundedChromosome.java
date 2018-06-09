@@ -36,7 +36,7 @@ import io.jenetics.util.IntRange;
  */
 abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
-	G extends AbstractBoundedGene<A, G>
+	G extends BoundedGene<A, G>
 >
 	extends VariableChromosome<G>
 	implements BoundedChromosome<A, G>, Serializable
@@ -70,8 +70,8 @@ abstract class AbstractBoundedChromosome<
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_min = genes.get(0)._min;
-		_max = genes.get(0)._max;
+		_min = genes.get(0).getMin();
+		_max = genes.get(0).getMax();
 	}
 
 	@Override
