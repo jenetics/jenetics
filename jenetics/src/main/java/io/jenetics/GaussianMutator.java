@@ -70,11 +70,7 @@ public final class GaussianMutator<
 
 	@Override
 	public String toString() {
-		return format(
-			"%s[p=%f]",
-			getClass().getSimpleName(),
-			_probability
-		);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }
