@@ -19,7 +19,6 @@
  */
 
 
-import io.jenetics.gradle.PropertiesLoader
 import io.jenetics.gradle.Version
 import io.jenetics.gradle.plugin.SetupPlugin
 
@@ -30,17 +29,15 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version 4.3
  */
-new PropertiesLoader(ext).load(file('project.properties'))
-new PropertiesLoader(ext).load(file('include.properties'))
-rootProject.version = Version.parse(jenetics.version)
+rootProject.version = Version.parse(property('jenetics.Version'))
 
 apply plugin: 'signing'
 apply plugin: 'packaging'
 
 ext {
-    javaVersion = '1.9'
+	javaVersion = property('build.JavaVersion')
 
 	now = ZonedDateTime.now()
 	year = Year.now();
@@ -52,8 +49,8 @@ ext {
 }
 
 allprojects {
-	group = 'io.jenetics'
-	version = jenetics.version
+	group = property('jenetics.Group')
+	version = property('jenetics.Version')
 
 	repositories {
 		flatDir(dir: "${rootDir}/buildSrc/lib")
@@ -73,7 +70,7 @@ allprojects { Project prj ->
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.3'
+	gradleVersion = project.property('build.GradleVersion')
 }
 
 task alljavadoc(type: Javadoc) {
@@ -104,7 +101,7 @@ task zip(type: Zip) {
 	}
 
 	baseName = rootProject.name
-	version = jenetics.version
+	version = project.property('jenetics.Version')
 
 	doLast {
 		def zip = file("${identifier}.zip")

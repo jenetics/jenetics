@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -178,6 +179,35 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@Test(dataProvider = "generations")
+	public void engineGenerationLimit1(final Long generations) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine
+			.limit(() -> Limits.byFixedGeneration(generations))
+			.stream()
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+	}
+
+	@Test(dataProvider = "generations")
+	public void engineGenerationLimit2(final Long generations) {
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.build();
+
+		final EvolutionResult<DoubleGene, Double> result = engine
+			.limit(() -> Limits.byFixedGeneration(generations))
+			.limit(() -> Limits.byFixedGeneration(Math.min(generations, 5)))
+			.stream()
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(Math.min(generations, 5), result.getTotalGenerations());
 	}
 
 	@DataProvider(name = "generations")
@@ -406,6 +436,27 @@ public class EngineTest {
 			{new ForkJoinPool(1)},
 			{new ForkJoinPool(10)}
 		};
+	}
+
+	@Test
+	public void populationEvaluator() {
+		final int populationSize = 100;
+		final AtomicInteger count = new AtomicInteger();
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.evaluator((gt, ff) -> {
+				count.compareAndSet(0, gt.length());
+				return gt.stream().map(ff).collect(ISeq.toISeq());
+			})
+			.build();
+
+		engine.stream()
+			.limit(1)
+			.collect(EvolutionResult.toBestGenotype());
+
+		Assert.assertEquals(count.get(), populationSize);
 	}
 
 	// https://github.com/jenetics/jenetics/issues/234

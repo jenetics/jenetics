@@ -79,7 +79,7 @@ public class ExponentialRankSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/ExponentialRankSelector";
+			"/io/jenetics/selector/distribution/ExponentialRankSelector";
 
 		return Arrays.stream(Optimize.values())
 			.flatMap(opt -> {

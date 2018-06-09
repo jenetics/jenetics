@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -27,6 +28,9 @@ import java.util.Objects;
 
 /**
  * This class contains timing information about one evolution step.
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -188,20 +192,20 @@ public final class EvolutionDurations
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_offspringSelectionDuration) + 17;
-		hash += 31*Objects.hashCode(_survivorsSelectionDuration) + 17;
-		hash += 31*Objects.hashCode(_offspringAlterDuration) + 17;
-		hash += 31*Objects.hashCode(_offspringFilterDuration) + 17;
-		hash += 31*Objects.hashCode(_survivorFilterDuration) + 17;
-		hash += 31*Objects.hashCode(_evaluationDuration) + 17;
-		hash += 31*Objects.hashCode(_evolveDuration) + 17;
-		return hash;
+		return
+			hash(_offspringSelectionDuration,
+			hash(_survivorFilterDuration,
+			hash(_offspringAlterDuration,
+			hash(_offspringFilterDuration,
+			hash(_survivorsSelectionDuration,
+			hash(_evaluationDuration,
+			hash(_evolveDuration)))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionDurations &&
+		return obj == this ||
+			obj instanceof EvolutionDurations &&
 			Objects.equals(_offspringSelectionDuration,
 				((EvolutionDurations)obj)._offspringSelectionDuration) &&
 			Objects.equals(_survivorsSelectionDuration,

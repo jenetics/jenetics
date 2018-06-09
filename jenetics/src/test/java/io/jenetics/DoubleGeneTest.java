@@ -60,7 +60,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		using(new Random(12345), r -> {
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> DoubleGene.of(min, max).getAllele())
-				.forEach(histogram::accept);
+				.forEach(histogram);
 		});
 
 		assertUniformDistribution(histogram);
@@ -89,13 +89,13 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void doubleGeneIntegerIntegerInteger() {
-		DoubleGene gene = new DoubleGene(1.234, 0.345, 2.123);
+		DoubleGene gene = DoubleGene.of(1.234, 0.345, 2.123);
 		assertEquals(gene.getAllele(), 1.234);
 		assertEquals(gene.getMin(), 0.345);
 		assertEquals(gene.getMax(), 2.123);
 
 		try {
-			gene = new DoubleGene(0.1, 2.1, 4.1);
+			gene = DoubleGene.of(0.1, 2.1, 4.1);
 			assertFalse(gene.isValid());
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
@@ -111,7 +111,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void createNumber() {
-		DoubleGene gene = new DoubleGene(1.2345, -1234.1234, 1234.1234);
+		DoubleGene gene = DoubleGene.of(1.2345, -1234.1234, 1234.1234);
 		DoubleGene g2 = gene.newInstance(5.0);
 
 		assertEquals(g2.getAllele().intValue(), 5);
@@ -121,15 +121,15 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void createInvalidNumber() {
-		final DoubleGene gene = new DoubleGene(0.0, 1.0, 2.0);
+		final DoubleGene gene = DoubleGene.of(0.0, 1.0, 2.0);
 		Assert.assertFalse(gene.isValid());
 	}
 
 	@Test
 	public void getMinValue() {
-		DoubleGene g1 = new DoubleGene(3.1, 0.1, 5.1);
-		DoubleGene g2 = new DoubleGene(4.1, 1.1, 7.1);
-		DoubleGene g3 = new DoubleGene(3.1, 0.1, 5.1);
+		DoubleGene g1 = DoubleGene.of(3.1, 0.1, 5.1);
+		DoubleGene g2 = DoubleGene.of(4.1, 1.1, 7.1);
+		DoubleGene g3 = DoubleGene.of(3.1, 0.1, 5.1);
 
 		assertEquals(g1.getMin(), 0.1);
 		assertEquals(g2.getMin(), 1.1);
@@ -138,9 +138,9 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 	@Test
 	public void getMaxValue() {
-		DoubleGene g1 = new DoubleGene(3.2, 0.2, 5.2);
-		DoubleGene g2 = new DoubleGene(4.2, 1.2, 7.2);
-		DoubleGene g3 = new DoubleGene(3.2, 0.2, 5.2);
+		DoubleGene g1 = DoubleGene.of(3.2, 0.2, 5.2);
+		DoubleGene g2 = DoubleGene.of(4.2, 1.2, 7.2);
+		DoubleGene g3 = DoubleGene.of(3.2, 0.2, 5.2);
 
 		assertEquals(g1.getMax(), 5.2);
 		assertEquals(g2.getMax(), 7.2);

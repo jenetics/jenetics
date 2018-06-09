@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -58,6 +59,9 @@ import io.jenetics.util.Seq;
  *
  * @param <G> the gene type
  * @param <C> the fitness type
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -239,10 +243,24 @@ public final class EvolutionResult<
 	 * Return the next evolution start object with the current population and
 	 * the incremented generation.
 	 *
+	 * @since 4.1
+	 *
 	 * @return the next evolution start object
 	 */
-	EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _generation + 1);
+	public EvolutionStart<G, C> next() {
+		return EvolutionStart.of(_population, _totalGenerations + 1);
+	}
+
+	/**
+	 * Return the current evolution result object as an {@code EvolutionStart}
+	 * object with the current population and current total generation.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the current result as evolution start
+	 */
+	public EvolutionStart<G, C> toEvolutionStart() {
+		return EvolutionStart.of(_population, _totalGenerations);
 	}
 
 	/**
@@ -273,40 +291,40 @@ public final class EvolutionResult<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_optimize) + 17;
-		hash += 31*Objects.hashCode(_population) + 17;
-		hash += 31*Objects.hashCode(_generation) + 17;
-		hash += 31*Objects.hashCode(_totalGenerations) + 17;
-		hash += 31*Objects.hashCode(_durations) + 17;
-		hash += 31*Objects.hashCode(_killCount) + 17;
-		hash += 31*Objects.hashCode(_invalidCount) + 17;
-		hash += 31*Objects.hashCode(_alterCount) + 17;
-		hash += 31*Objects.hashCode(getBestFitness()) + 17;
-		return hash;
+		return
+			hash(_optimize,
+			hash(_population,
+			hash(_generation,
+			hash(_totalGenerations,
+			hash(_durations,
+			hash(_killCount,
+			hash(_invalidCount,
+			hash(_alterCount,
+			hash(getBestFitness())))))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionResult<?, ?> &&
+		return obj == this ||
+			obj instanceof EvolutionResult &&
 			Objects.equals(_optimize,
-				((EvolutionResult<?, ?>)obj)._optimize) &&
+				((EvolutionResult)obj)._optimize) &&
 			Objects.equals(_population,
-				((EvolutionResult<?, ?>)obj)._population) &&
+				((EvolutionResult)obj)._population) &&
 			Objects.equals(_generation,
-				((EvolutionResult<?, ?>)obj)._generation) &&
+				((EvolutionResult)obj)._generation) &&
 			Objects.equals(_totalGenerations,
-				((EvolutionResult<?, ?>)obj)._totalGenerations) &&
+				((EvolutionResult)obj)._totalGenerations) &&
 			Objects.equals(_durations,
-				((EvolutionResult<?, ?>)obj)._durations) &&
+				((EvolutionResult)obj)._durations) &&
 			Objects.equals(_killCount,
-				((EvolutionResult<?, ?>)obj)._killCount) &&
+				((EvolutionResult)obj)._killCount) &&
 			Objects.equals(_invalidCount,
-				((EvolutionResult<?, ?>)obj)._invalidCount) &&
+				((EvolutionResult)obj)._invalidCount) &&
 			Objects.equals(_alterCount,
-				((EvolutionResult<?, ?>)obj)._alterCount) &&
+				((EvolutionResult)obj)._alterCount) &&
 			Objects.equals(getBestFitness(),
-				((EvolutionResult<?, ?>)obj).getBestFitness());
+				((EvolutionResult)obj).getBestFitness());
 	}
 
 

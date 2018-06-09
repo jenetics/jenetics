@@ -21,6 +21,7 @@ package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.DoubleSummaryStatistics;
@@ -33,6 +34,9 @@ import io.jenetics.internal.math.DoubleAdder;
  * <i>Value</i> objects which contains statistical summary information.
  *
  * @see java.util.DoubleSummaryStatistics
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -122,18 +126,13 @@ public final class DoubleSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*Double.doubleToLongBits(_sum) + 37;
-		hash += 33*Double.doubleToLongBits(_min) + 37;
-		hash += 33*Double.doubleToLongBits(_max) + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		return hash;
+		return hash(_count, hash(_sum, hash(_min, hash(_max, hash(_mean)))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof DoubleSummary &&
+		return obj == this ||
+			obj instanceof DoubleSummary &&
 			_count == ((DoubleSummary)obj)._count &&
 			Double.compare(_sum, ((DoubleSummary)obj)._sum) == 0 &&
 			Double.compare(_min, ((DoubleSummary)obj)._min) == 0 &&

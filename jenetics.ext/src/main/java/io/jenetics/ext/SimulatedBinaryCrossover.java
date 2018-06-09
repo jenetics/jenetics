@@ -21,7 +21,9 @@ package io.jenetics.ext;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static io.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -132,6 +134,27 @@ public class SimulatedBinaryCrossover<
 		final double min = that.get(i).getMin().doubleValue();
 		final double max = that.get(i).getMax().doubleValue();
 		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(_probability, hash(_contiguity));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof SimulatedBinaryCrossover &&
+			Double.compare(((SimulatedBinaryCrossover)obj)._probability, _probability) == 0 &&
+			Double.compare(((SimulatedBinaryCrossover)obj)._contiguity, _contiguity) == 0;
+	}
+
+	@Override
+	public String toString() {
+		return format(
+			"SimulatedBinaryCrossover[p=%f, c=%f]",
+			_probability, _contiguity
+		);
 	}
 
 }

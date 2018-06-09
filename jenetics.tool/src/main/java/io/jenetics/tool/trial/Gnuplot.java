@@ -128,9 +128,7 @@ public class Gnuplot {
 		return createTempFile("__gnuplot_template__", "__.gp").toPath();
 	}
 
-	public static void main(final String[] args)
-		throws IOException, InterruptedException
-	{
+	public static void main(final String[] args) throws IOException {
 		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
 			"Jenetics/io.jenetics/src/tool/resources/org/jenetics/trial/";
 

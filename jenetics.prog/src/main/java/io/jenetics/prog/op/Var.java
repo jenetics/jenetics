@@ -20,6 +20,10 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Represents the program variables. The {@code Var} operation is a termination
@@ -49,10 +53,12 @@ import static java.util.Objects.requireNonNull;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-public final class Var<T> implements Op<T> {
+public final class Var<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final int _index;
@@ -105,16 +111,14 @@ public final class Var<T> implements Op<T> {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_name.hashCode() + 37;
-		hash += 31*_index + 37;
-		return hash;
+		return hash(_name, hash(_index));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Var<?> &&
-			((Var)obj)._name.equals(_name) &&
+		return obj == this ||
+			obj instanceof Var &&
+			Objects.equals(((Var)obj)._name, _name) &&
 			((Var)obj)._index == _index;
 	}
 

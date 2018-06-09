@@ -20,12 +20,12 @@
 package io.jenetics.tool.trial;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.xml.stream.Writer.elem;
 import static io.jenetics.xml.stream.Writer.text;
 
 import java.io.Serializable;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 
@@ -143,20 +143,21 @@ public final class Env implements Serializable  {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(_osName)
-			.and(_osVersion)
-			.and(_osArch)
-			.and(_javaVersion)
-			.and(_javaRuntimeName)
-			.and(_javaRuntimeVersion)
-			.and(_javaVMName)
-			.and(_javaVMVersion).value();
+		return
+			hash(_osName,
+			hash(_osVersion,
+			hash(_osArch,
+			hash(_javaVersion,
+			hash(_javaRuntimeName,
+			hash(_javaRuntimeVersion,
+			hash(_javaVMName,
+			hash(_javaVMVersion))))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Env &&
+		return obj == this ||
+			obj instanceof Env &&
 			_osName.equals(((Env)obj)._osName) &&
 			_osVersion.equals(((Env)obj)._osVersion) &&
 			_osArch.equals(((Env)obj)._osArch) &&

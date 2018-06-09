@@ -22,10 +22,10 @@ package io.jenetics;
 import static java.lang.Math.exp;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.base.normalize;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Arrays;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -128,12 +128,13 @@ public final class BoltzmannSelector<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_b).value();
+		return hash(_b);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof BoltzmannSelector &&
+		return obj == this ||
+			obj instanceof BoltzmannSelector &&
 			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 

@@ -20,6 +20,7 @@
 package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.function.ToIntFunction;
@@ -30,9 +31,12 @@ import java.util.stream.Collector;
  *
  * @see io.jenetics.stat.IntMomentStatistics
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 4.1
  */
 public final class IntMoments implements Serializable {
 
@@ -167,21 +171,21 @@ public final class IntMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*_sum + 37;
-		hash += 33*_min + 37;
-		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		hash += 33*Double.doubleToLongBits(_variance) + 37;
-		hash += 33*Double.doubleToLongBits(_skewness) + 37;
-		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
-		return hash;
+		return
+			hash(_count,
+			hash(_sum,
+			hash(_min,
+			hash(_max,
+			hash(_mean,
+			hash(_variance,
+			hash(_skewness,
+			hash(_kurtosis))))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof IntMoments &&
+		return obj == this ||
+			obj instanceof IntMoments &&
 			_count == ((IntMoments)obj)._count &&
 			_sum == ((IntMoments)obj)._sum &&
 			_min == ((IntMoments)obj)._min &&
@@ -254,6 +258,25 @@ public final class IntMoments implements Serializable {
 			statistics.getSkewness(),
 			statistics.getKurtosis()
 		);
+	}
+
+	/**
+	 * Return a {@code Collector} which returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * <pre>{@code
+	 * final Stream<Integer> stream = ...
+	 * final IntMoments moments = stream.collect(toIntMoments()));
+	 * }</pre>
+	 *
+	 * @since 4.1
+	 *
+	 * @param <N> the type of the input elements
+	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 */
+	public static <N extends Number> Collector<N, ?, IntMoments>
+	toIntMoments() {
+		return toIntMoments(Number::intValue);
 	}
 
 	/**

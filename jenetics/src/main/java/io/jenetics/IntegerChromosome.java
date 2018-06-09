@@ -24,8 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -35,6 +33,9 @@ import io.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds 32 bit integer numbers.
  *
  * @see IntegerGene
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
@@ -277,16 +278,6 @@ public class IntegerChromosome
 		return new IntegerChromosome(_min, _max, lengthRange());
 	}
 
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
-	}
-
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
@@ -317,7 +308,7 @@ public class IntegerChromosome
 		reflect.setField(this, "_max", in.readInt());
 
 		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new IntegerGene(in.readInt(), _min, _max));
+			genes.set(i, IntegerGene.of(in.readInt(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());

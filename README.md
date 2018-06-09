@@ -12,7 +12,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.0.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.2.0.pdf)).
 
 
 ## Requirements
@@ -25,12 +25,12 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 *  **Gradle 4.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.11**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 6.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.0.0/jenetics-4.0.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -44,10 +44,10 @@ Jenetics uses [Gradle](http://www.gradle.org/downloads) as build system and orga
 
 The following projects/modules are also published to Maven.
 
-* **[jenetics](jenetics)**: This project contains the source code and tests for the Jenetics core-module.
-* **[jenetics.ext](jenetics.ext)**: This module contains additional _non_-standard GA operations and data types.
-* **[jenetics.prog](jenetics.prog)**: The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
-* **[jenetics.xml](jenteics,xml)**: XML marshalling module for the _Jenetics_ base data structures.
+* **[jenetics](jenetics)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics): This project contains the source code and tests for the Jenetics core-module.
+* **[jenetics.ext](jenetics.ext)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.ext): This module contains additional _non_-standard GA operations and data types. It also contains classes for solving multi-objective problems (MOEA). 
+* **[jenetics.prog](jenetics.prog)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.prog): The modules contains classes which allows to do genetic programming (GP). It seamlessly works with the existing `EvolutionStream` and evolution `Engine`.
+* **[jenetics.xml](jenteics,xml)** [![Javadoc](https://www.javadoc.io/badge/io.jenetics/jenetics.svg)](http://www.javadoc.io/doc/io.jenetics/jenetics.xml): XML marshalling module for the _Jenetics_ base data structures.
 
 **Non-published projects**
 
@@ -141,13 +141,21 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Projects using Jenetics
 
+* <a href="https://www.chartsy.one/"><b>Chartsy|One</b>:</a> Chartsy|One is a Netbeans based tool for stock market investors and traders.
 * <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
 * <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
 
 ## Citations
 
-* Michael Trotter, Guyue Liu, Timothy Wood. <a href="http://ieeexplore.ieee.org/abstract/document/8064120/">Into the Storm: Descrying Optimal Configurations Using Genetic Algorithms and Bayesian Optimization. </a> <em>2017 IEEE 2nd International Workshops on Foundations and Applications of Self* Systems (FAS*W).</em> Sep. 2017.
-* Cuadra P., Krawczyk L., Höttger R., Heisig P., Wolff C. <a href="https://link.springer.com/chapter/10.1007/978-3-319-67642-5_30">Automated Scheduling for Tightly-Coupled Embedded Multi-core Systems Using Hybrid Genetic Algorithms. </a> <em>Information and Software Technologies: 23rd International Conference, ICIST 2017, Druskininkai, Lithuania.</em> Communications in Computer and Information Science, vol 756. Springer, Cham, Sep. 2017
+
+* Stephan Pirnbaum. [Die Evolution im Algorithmus - Teil 2: Multikriterielle Optimierung und Architekturerkennung.](http://www.buschmais.de/wp-content/uploads/2018/06/Die-Evolution-im-Algorithmus_Teil2_JS_03_18.pdf) <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 03/2018, pp 66–69, </em></a> May 2018.
+* W. Geithner, Z. Andelkovic, S. Appel, O. Geithner, F. Herfurth, S. Reimann, G. Vorobjev, F. Wilhelmstötter. [Genetic Algorithms for Machine Optimization in the Fair Control System Environment.](http://ipac2018.vrws.de/papers/thpml028.pdf)<em> [The 9th International Particle Accelerator Conference (IPAC'18)](https://ipac18.org/welcome/), </em></a> May 2018.
+* Stephan Pirnbaum. [Die Evolution im Algorithmus - Teil 1: Grundlagen.](http://www.buschmais.de/wp-content/uploads/2018/02/Die-Evolution-im-Algorithmus_JS_01_18.pdf) <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 01/2018, pp 64–68, </em></a> Jan. 2018.
+* Alexander Felfernig, Rouven Walter, José A. Galindo, David Benavides, Seda Polat Erdeniz, Müslüm Atas, Stefan Reiterer. <a href="https://link.springer.com/article/10.1007/s10844-017-0492-1">Anytime diagnosis for reconfiguration. </a> <em>Journal of Intelligent Information Systems, pp 1–22, </em> Jan. 2018.
+* Bruce A. Johnson. <a href="https://link.springer.com/protocol/10.1007/978-1-4939-7386-6_13">From Raw Data to Protein Backbone Chemical Shifts Using NMRFx Processing and NMRViewJ Analysis. </a> <em>Protein NMR: Methods and Protocols, pp. 257--310, Springer New York, </em> Nov. 2017.
+* Cuadra P., Krawczyk L., Höttger R., Heisig P., Wolff C. <a href="https://link.springer.com/chapter/10.1007/978-3-319-67642-5_30">Automated Scheduling for Tightly-Coupled Embedded Multi-core Systems Using Hybrid Genetic Algorithms. </a> <em>Information and Software Technologies: 23rd International Conference, ICIST 2017, Druskininkai, Lithuania.</em> Communications in Computer and Information Science, vol 756. Springer, Cham, Sep. 2017.
+* Michael Trotter, Guyue Liu, Timothy Wood. <a href="http://ieeexplore.ieee.org/abstract/document/8064120/">Into the Storm: Descrying Optimal Configurations Using Genetic Algorithms and Bayesian Optimization. </a> <em><a href="http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=8063634">Foundations and Applications of Self* Systems (FAS*W), 2017 IEEE 2nd International Workshops</a></em> Sep. 2017.
+* Emna Hachicha, Karn Yongsiriwit, Mohamed Sellami. <a href="https://doi.org/10.1109/ICWS.2017.101">Genetic-Based Configurable Cloud Resource Allocation in QoS-Aware Business Process Development. </a> <em>Information and Software Technologies: 23rd International Conference, ICIST 2017, Druskininkai, Lithuania.</em> Web Services (ICWS), 2017 IEEE International Conference, Jun. 2017.
 * Abraão G. Nazário, Fábio R. A. Silva, Raimundo Teive, Leonardo Villa, Antônio Flávio, João Zico, Eire Fragoso, Ederson F. Souza. <a href="http://siaiap32.univali.br/seer/index.php/acotb/article/view/10579/5933">Automação Domótica Simulada Utilizando Algoritmo Genético Especializado na Redução do Consumo de Energia. </a> <em>Computer on the Beach 2017</em> pp. 180-189, March 2017.
 * Bandaru, S. and Deb, K. <a href="http://dx.doi.org/10.1201/9781315183176-12">Metaheuristic Techniques.</a> <em>Decision Sciences.</em> CRC Press, pp. 693-750, Nov. 2016.
 * Lyazid Toumi, Abdelouahab Moussaoui, and Ahmet Ugur. <a href="http://dx.doi.org/10.1145/2816839.2816876">EMeD-Part: An Efficient Methodology for Horizontal Partitioning in Data Warehouses.</a> <em>Proceedings of the International Conference on Intelligent Information Processing, Security and Advanced Communication.</em> Djallel Eddine Boubiche, Faouzi Hidoussi, and Homero Toral Cruz (Eds.). ACM, New York, NY, USA, Article 43, 7 pages, 2015.
@@ -168,7 +176,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2017 Franz Wilhelmstötter
+	Copyright 2007-2018 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -185,39 +193,21 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-### [4.0.0](https://github.com/jenetics/jenetics/releases/tag/v4.0.0)
+### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
 
 #### Improvements
 
-* [#28](https://github.com/jenetics/jenetics/issues/28): Immutable population class. The original `Population` class has been replaced by `Seq<Phenotype<G, C>>`. This points to a more _functional_ implementation of the library.
-* [#119](https://github.com/jenetics/jenetics/issues/119): `Chromosome` implementations are now fully immutable. This is an internal change only.
-* [#121](https://github.com/jenetics/jenetics/issues/121): `Mutator` class is easier now to extend. It has been extended with additional `mutate` methods which serves as extension points for onw `Mutator` implementations.
-* [#123](https://github.com/jenetics/jenetics/issues/123): `Chromosome` with variable number of genes: Most chromosomes can now be created with a variable number of genes. `DoubleChromosome.of(0.0, 1.0, IntRange.of(5, 16))`.
-* [#172](https://github.com/jenetics/jenetics/issues/172): [`io.jenetics.prngine`](https://github.com/jenetics/prngine) library replaces the existing PRNG implementations in the `io.jenetics.base` module.
-* [#175](https://github.com/jenetics/jenetics/issues/175): Align random int range generation with `io.jenetics.prngine` library. This is an internal change only. 
-* [#180](https://github.com/jenetics/jenetics/issues/180): Change library namespace from `org.jenetics` to `io.jenetics`. This is the **most** invasive change of this release. Users have to adopt the imports in all their code.
-* [#183](https://github.com/jenetics/jenetics/issues/183): Change copyright email address to ...@gmail.com
-* [#200](https://github.com/jenetics/jenetics/issues/200): Implementation of gene convergence termination: _A termination method that stops the evolution when a user-specified percentage of the genes that make up a `Genotype` are deemed as converged. A gene is deemed as converged when the average value of that gene across all of the genotypes in the current population is less than a user-specified percentage away from the maximum gene value across the genotypes._
-* [#253](https://github.com/jenetics/jenetics/issues/253): Removal of deprecated code and classes: mainly `JAXB` marshalling and the `LCG64ShiftRandom` class.
-* [#260](https://github.com/jenetics/jenetics/issues/260): Clean room implementation of internal `subset` function. This method was a port from the [C++ source](https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html) written by John Burkardt. The original source has been published under the LGPL licence, which is not compatible to tha Apache 2 licence. To avoid legal issues, the affected method has been reimplemented using the [Clean Room](http://wiki.c2.com/?CleanRoomImplementation) method, based on the original book, [Combinatorial Algorithms for Computers and Calculators](https://www.math.upenn.edu/%7Ewilf/website/CombinatorialAlgorithms.pdf), by Albert Nijenhuis and Herbert Wilf. The `io.jenetics.internal.math.comb.subset` method is now fully compatible with the Apache 2 licence.
-* [#262](https://github.com/jenetics/jenetics/issues/262): Filter for duplicate individuals: It is now possible to intercept the stream of `EvolutionResult`s of the evolution `Engine`:
-```java
-final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	.mapping(EvolutionResult.toUniquePopulation())
-	.build();
-```
-* [#264](https://github.com/jenetics/jenetics/issues/264): Upgrade Gradle to version 4.3.
-* [#266](https://github.com/jenetics/jenetics/issues/266): The `Seq` serialization should be more robust in the case of implementation changes.
-* [#268](https://github.com/jenetics/jenetics/issues/269): Implementation of an [`EliteSelector`](https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)).
-* [#269](https://github.com/jenetics/jenetics/issues/269): Cleanup of internal, mathematical helper functions.
-* [#272](https://github.com/jenetics/jenetics/issues/272): Obey Java naming convention. Two helper classes have been renamed to obey the Java naming conventions. `codecs` -> `Codecs` and `limits` -> `Limits`.
-* [#279](https://github.com/jenetics/jenetics/issues/279): Additional `MSeq.swap` method.
+* [#325](https://github.com/jenetics/jenetics/issues/325): **Allow customization of fitness evaluation execution for bundling calculations**
+* [#327](https://github.com/jenetics/jenetics/issues/327): Improve CPU utilization during fitness evaluation.
+* [#335](https://github.com/jenetics/jenetics/issues/335): Seq view wrapper for List<T> and T[] types.
 
 #### Bugs
 
-* [#247](https://github.com/jenetics/jenetics/issues/247): Fix the classpath of the `jrun` helper script.
-* [#256](https://github.com/jenetics/jenetics/issues/256): Buggy type signature of `AnyChromosome.of` method.
-
+* [#317](https://github.com/jenetics/jenetics/issues/317): Fix links of Javadoc images.
+* [#318](https://github.com/jenetics/jenetics/issues/318): `null` result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
+* [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
+* [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
+* [#345](https://github.com/jenetics/jenetics/issues/345): Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

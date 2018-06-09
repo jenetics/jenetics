@@ -22,7 +22,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.5
+ * @version 4.3
  */
 
 apply plugin: 'packaging'
@@ -35,8 +35,9 @@ repositories {
 dependencies {
 	compile project(':jenetics')
 	compile project(':jenetics.prog')
+	compile project(':jenetics.tool')
 
-	testCompile Include.TestNG
+	testCompile property('include.TestNG')
 }
 
 packaging {

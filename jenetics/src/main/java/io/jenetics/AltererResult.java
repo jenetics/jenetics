@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 
@@ -32,6 +33,9 @@ import io.jenetics.util.Seq;
  * consists of the altered population and the number of altered individuals.
  *
  * @see Alterer
+ *
+ * @implSpec
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
@@ -82,15 +86,13 @@ public final class AltererResult<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_population.hashCode() + 37;
-		hash += 31*_alterations + 37;
-		return hash;
+		return hash(_population, hash(_alterations));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AltererResult<?, ?> &&
+		return obj == this ||
+			obj instanceof AltererResult &&
 			_alterations == ((AltererResult)obj)._alterations &&
 			_population.equals(((AltererResult)obj)._population);
 	}

@@ -21,8 +21,10 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -33,6 +35,9 @@ import java.util.function.Function;
  * @see Mutator#mutate(Genotype, double, Random)
  * @see Mutator#mutate(Chromosome, double, Random)
  * @see Mutator#mutate(Gene, Random)
+ *
+ * @implSpec
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.0
@@ -117,16 +122,14 @@ public final class MutatorResult<T> implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*_result.hashCode() + 31;
-		hash += 37*_mutations + 31;
-		return hash;
+		return hash(_result, hash(_mutations));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof MutatorResult<?> &&
-			((MutatorResult)obj)._result.equals(_result) &&
+		return obj == this ||
+			obj instanceof MutatorResult &&
+			Objects.equals(((MutatorResult)obj)._result, _result) &&
 			((MutatorResult)obj)._mutations == _mutations;
 	}
 

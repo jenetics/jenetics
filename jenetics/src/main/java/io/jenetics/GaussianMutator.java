@@ -24,8 +24,6 @@ import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Hash;
-
 /**
  * The GaussianMutator class performs the mutation of a {@link NumericGene}.
  * This mutator picks a new value based on a Gaussian distribution around the
@@ -68,16 +66,6 @@ public final class GaussianMutator<
 		final double value = gene.doubleValue();
 		final double gaussian = random.nextGaussian();
 		return gene.newInstance(clamp(gaussian*std + value, min, max));
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof GaussianMutator && super.equals(obj);
 	}
 
 	@Override

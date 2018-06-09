@@ -23,19 +23,19 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -44,6 +44,9 @@ import io.jenetics.util.ISeq;
  * Implementation of the <i>classical</i> BitChromosome.
  *
  * @see BitGene
+ *
+ * @implSpec
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -172,8 +175,21 @@ public class BitChromosome extends Number
 	 *
 	 * @since 2.0
 	 * @return the first value of this chromosome.
+	 * @deprecated Use {@link #booleanValue()} instead
 	 */
+	@Deprecated
 	public boolean get() {
+		return bit.get(_genes, 0);
+	}
+
+	/**
+	 * Return the value of the first gene of this chromosome.
+	 *
+	 * @since 4.2
+	 *
+	 * @return the first value of this chromosome.
+	 */
+	public boolean booleanValue() {
 		return bit.get(_genes, 0);
 	}
 
@@ -192,8 +208,25 @@ public class BitChromosome extends Number
 	 * @return the wanted gene value
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *          (index &lt; 1 || index &gt;= length()).
+	 * @deprecated Use {@link #booleanValue(int)} instead
 	 */
+	@Deprecated
 	public boolean get(final int index) {
+		rangeCheck(index);
+		return bit.get(_genes, index);
+	}
+
+	/**
+	 * Return the value on the specified index.
+	 *
+	 * @since 4.2
+	 *
+	 * @param index the gene index
+	 * @return the wanted gene value
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *          (index &lt; 1 || index &gt;= length()).
+	 */
+	public boolean booleanValue(final int index) {
 		rangeCheck(index);
 		return bit.get(_genes, index);
 	}
@@ -595,18 +628,16 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_genes).value();
+		return hash(_genes);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(c -> {
-			boolean equals = length() == c.length();
-			for (int i = 0, n = length(); equals && i < n; ++i) {
-				equals = getGene(i) == c.getGene(i);
-			}
-			return equals;
-		});
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			length() == ((BitChromosome)obj).length() &&
+			Arrays.equals(_genes, ((BitChromosome)obj)._genes);
 	}
 
 	@Override

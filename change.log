@@ -1,3 +1,20 @@
+Jenetics-4.1.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/223: **Implementation of Multi-Objective Optimization.**
+    * https://github.com/jenetics/jenetics/issues/259: Pruning GP program tree.
+    * https://github.com/jenetics/jenetics/issues/285: Population exchange between different Engines.
+    * https://github.com/jenetics/jenetics/issues/294: Cleanup of Jenetics examples.
+    * https://github.com/jenetics/jenetics/issues/295: Upgrade Gradle version 4.5.
+    * https://github.com/jenetics/jenetics/issues/297: Compile JMH test on test execution.
+    * https://github.com/jenetics/jenetics/issues/306: Improve Javadoc on how to extend chromosomes.
+    * https://github.com/jenetics/jenetics/issues/307: Enable @apiNote, @implSpec and @implNote Javadoc tag.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/290: User's manual fixes.
+    * https://github.com/jenetics/jenetics/issues/298: Fix GP load/save of generated tree.
+
+
 Jenetics-4.0.0
 
 - Improvements

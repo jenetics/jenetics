@@ -22,6 +22,7 @@ package io.jenetics.util;
 import static java.lang.String.format;
 
 import java.time.Clock;
+import java.time.Instant;
 
 import org.testng.annotations.Test;
 
@@ -48,5 +49,29 @@ public class NanoClockTest extends Retry {
 			throw new AssertionError(format("Got %d but expected %d.", v1, v2));
 		}
 	}
+
+	//@Test
+	public void perf() {
+		final Instant[] instants = new Instant[500];
+		final long[] nanos = new long[instants.length];
+
+		final Clock clock = NanoClock.systemUTC();
+		for (int i = 0; i < instants.length; ++i) {
+			instants[i] = clock.instant();
+		}
+
+		for (int i = 0; i < instants.length; ++i) {
+			nanos[i] = System.nanoTime();
+		}
+
+		for (int i = 1; i < instants.length; ++i) {
+			final long diffSeconds = instants[i].getEpochSecond() - instants[i - 1].getEpochSecond();
+			final int diffNanos = instants[i].getNano() - instants[i - 1].getNano();
+			final long diff = diffSeconds*1_000_000_000 + diffNanos;
+
+			System.out.println(diff + "\t->\t" + (nanos[i] - nanos[i - 1]));
+		}
+	}
+
 
 }

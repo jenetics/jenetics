@@ -23,16 +23,18 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version 4.3
  */
 
 apply plugin: 'packaging'
 
 dependencies {
 	compile project(':jenetics')
-	compile Include.PRNGine
+	compile project(':jenetics.ext')
+	compile property('include.JPX')
+	compile property('include.PRNGine')
 
-	testCompile Include.TestNG
+	testCompile property('include.TestNG')
 }
 
 jar.manifest.instruction('Export-Package',
@@ -42,9 +44,9 @@ jar.manifest.instruction('Export-Package',
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
 
 packaging {
-	name = 'Jenetics examples'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.io'
+	name = property('jenetics.example.Name')
+	author = property('jenetics.Author')
+	url = property('jenetics.Url')
 	jarjar = false
 	javadoc = false
 

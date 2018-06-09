@@ -20,7 +20,9 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -36,10 +38,15 @@ import io.jenetics.util.MSeq;
  * Default implementation of the {@link FlatTree} interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
+public final class FlatTreeNode<T>
+	implements
+		FlatTree<T, FlatTreeNode<T>>,
+		Serializable
+{
+	private static final long serialVersionUID = 1L;
 
 	private final int _index;
 	private final MSeq<T> _nodes;
@@ -67,7 +74,7 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 	 */
 	@Override
 	public FlatTreeNode<T> getRoot() {
-		return node(0);
+		return nodeAt(0);
 	}
 
 	@Override
@@ -75,7 +82,7 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> node(final int index) {
+	private FlatTreeNode<T> nodeAt(final int index) {
 		return new FlatTreeNode<T>(
 			index,
 			_nodes,
@@ -142,7 +149,7 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
+		return IntStream.range(0, _nodes.size()).mapToObj(this::nodeAt);
 	}
 
 	/**
@@ -166,24 +173,20 @@ public final class FlatTreeNode<T> implements FlatTree<T, FlatTreeNode<T>> {
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof FlatTreeNode<?> &&
+		return other == this ||
+			other instanceof FlatTreeNode &&
 			((FlatTreeNode)other)._index == _index &&
 			((FlatTreeNode)other)._nodes == _nodes;
 	}
 
 	@Override
-	public int hashCode(){
-		int hash = 17;
-		hash += 31*_index + 37;
-		hash += 31*_nodes.hashCode() + 37;
-		hash += 31*Arrays.hashCode(_childCounts) + 37;
-		hash += 31*Arrays.hashCode(_childOffsets) + 37;
-		return hash;
+	public int hashCode() {
+		return hash(_index, hash(_nodes, hash(_childCounts, hash(_childOffsets))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FlatTreeNode<?> &&
+		return obj instanceof FlatTreeNode &&
 			((FlatTreeNode)obj)._index == _index &&
 			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
 			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&

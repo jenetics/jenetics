@@ -224,7 +224,7 @@ public final class Array<T> implements Serializable {
 
 	private static int size(final Iterable<?> values) {
 		int size = 0;
-		if (values instanceof Collection<?>) {
+		if (values instanceof Collection) {
 			size = ((Collection<?>)values).size();
 		} else {
 			for (Object value : values) {
@@ -302,14 +302,30 @@ public final class Array<T> implements Serializable {
 	 *         valid range.
 	 */
 	public final void checkIndex(final int from, final int until) {
-		if (from > until) {
-			throw new ArrayIndexOutOfBoundsException(format(
-				"fromIndex(%d) > toIndex(%d)", from, until
-			));
+		checkIndex(from, until, length());
+	}
+
+	/**
+	 * Check the given {@code from} and {@code until} indices.
+	 *
+	 * @param from the from index, inclusively.
+	 * @param until the until index, exclusively.
+	 * @param size the array size
+	 * @throws ArrayIndexOutOfBoundsException if the given index is not in the
+	 *         valid range.
+	 */
+	public static void checkIndex(final int from, final int until, final int size) {
+		if (from < 0) {
+			throw new ArrayIndexOutOfBoundsException("fromIndex = " + from);
 		}
-		if (from < 0 || until > length()) {
+		if (until > size) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Invalid index range: [%d, %s)", from, until
+			));
+		}
+		if (from > until) {
+			throw new IllegalArgumentException(format(
+				"fromIndex(%d) > toIndex(%d)", from, until
 			));
 		}
 	}

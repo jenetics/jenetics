@@ -21,6 +21,7 @@ package io.jenetics.stat;
 
 import static java.lang.Double.NaN;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.LongSummaryStatistics;
@@ -31,6 +32,9 @@ import java.util.stream.Collector;
  * <i>Value</i> objects which contains statistical summary information.
  *
  * @see java.util.LongSummaryStatistics
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -120,18 +124,13 @@ public final class LongSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*_sum + 37;
-		hash += 33*_min + 37;
-		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		return hash;
+		return hash(_count, hash(_sum, hash(_min, hash(_max, hash(_mean)))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LongSummary &&
+		return obj == this ||
+			obj instanceof LongSummary &&
 			_count == ((LongSummary)obj)._count &&
 			_sum == ((LongSummary)obj)._sum &&
 			_min == ((LongSummary)obj)._min &&

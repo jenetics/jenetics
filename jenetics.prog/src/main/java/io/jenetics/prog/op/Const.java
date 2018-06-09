@@ -20,7 +20,9 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -34,12 +36,14 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-public final class Const<T> implements Op<T> {
+public final class Const<T> implements Op<T>, Serializable {
 
-	private String _name;
+	private static final long serialVersionUID = 1L;
+
+	private final String _name;
 	private final T _const;
 
 	private Const(final String name, final T constant) {
@@ -49,6 +53,17 @@ public final class Const<T> implements Op<T> {
 
 	@Override
 	public T apply(final T[] value) {
+		return _const;
+	}
+
+	/**
+	 * Return the constant value.
+	 *
+	 * @since 4.1
+	 *
+	 * @return the constant value
+	 */
+	public T value() {
 		return _const;
 	}
 
@@ -64,15 +79,13 @@ public final class Const<T> implements Op<T> {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_const) + 37;
-		return hash;
+		return hash(_name, hash(_const));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Const<?> &&
+		return obj == this ||
+			obj instanceof Const &&
 			Objects.equals(((Const)obj)._name, _name) &&
 			Objects.equals(((Const)obj)._const, _const);
 	}

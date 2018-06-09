@@ -19,14 +19,13 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.function.ToIntFunction;
+import java.util.Objects;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -60,6 +59,9 @@ import io.jenetics.util.Verifiable;
  * @see Chromosome
  * @see Phenotype
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0
@@ -74,22 +76,9 @@ public final class Genotype<G extends Gene<?, G>>
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
-	private final int _ngenes;
 
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
-
-	private Genotype(
-		final ISeq<? extends Chromosome<G>> chromosomes,
-		final int ngenes
-	) {
-		if (chromosomes.isEmpty()) {
-			throw new IllegalArgumentException("No chromosomes given.");
-		}
-
-		_chromosomes = ISeq.upcast(chromosomes);
-		_ngenes = ngenes;
-	}
 
 	/**
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
@@ -101,13 +90,19 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
-		this(chromosomes, ngenes(chromosomes));
+		if (chromosomes.isEmpty()) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
+
+		_chromosomes = ISeq.upcast(chromosomes);
 	}
 
 	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		return chromosomes.stream()
-			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
-			.sum();
+		int count = 0;
+		for (int i = 0, n = chromosomes.length(); i < n; ++i) {
+			count += chromosomes.get(i).length();
+		}
+		return count;
 	}
 
 	/**
@@ -229,7 +224,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return Return the number of genes this genotype consists of.
 	 */
 	public int geneCount() {
-		return _ngenes;
+		int count = 0;
+		for (int i = 0, n = _chromosomes.length(); i < n; ++i) {
+			count += _chromosomes.get(i).length();
+		}
+		return count;
 	}
 
 	/**
@@ -256,22 +255,19 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		return new Genotype<>(_chromosomes.map(Factory::newInstance), _ngenes);
-	}
-
-	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
-		return new Genotype<>(chromosomes, _ngenes);
+		return new Genotype<>(_chromosomes.map(Factory::newInstance));
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_chromosomes).value();
+		return hash(_chromosomes);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Genotype<?> &&
-			eq(_chromosomes, ((Genotype<?>)obj)._chromosomes);
+		return obj == this ||
+			obj instanceof Genotype &&
+			Objects.equals(_chromosomes, ((Genotype<?>) obj)._chromosomes);
 	}
 
 	@Override

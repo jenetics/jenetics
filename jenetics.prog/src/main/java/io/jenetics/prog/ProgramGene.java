@@ -26,11 +26,13 @@ import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
-import io.jenetics.ext.AbstractTreeGene;
-import io.jenetics.prog.op.Op;
-import io.jenetics.prog.op.Program;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.AbstractTreeGene;
+
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 
 /**
  * This gene represents a program, build upon an AST of {@link Op} functions.

@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,9 +53,12 @@ import io.jenetics.util.Verifiable;
  *
  * @see Genotype
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.2
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -84,6 +88,7 @@ public final class Phenotype<
 	 * @param generation the current generation of the generated phenotype.
 	 * @param function the fitness function of this phenotype.
 	 * @param scaler the fitness scaler.
+	 * @param rawFitness the known raw-fitness of the phenotype, maybe {@code null}
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
@@ -92,7 +97,8 @@ public final class Phenotype<
 		final Genotype<G> genotype,
 		final long generation,
 		final Function<? super Genotype<G>, ? extends C> function,
-		final Function<? super C, ? extends C> scaler
+		final Function<? super C, ? extends C> scaler,
+		final C rawFitness
 	) {
 		_genotype = requireNonNull(genotype, "Genotype");
 		_function = requireNonNull(function, "Fitness function");
@@ -104,8 +110,13 @@ public final class Phenotype<
 		}
 		_generation = generation;
 
-		_rawFitness = Lazy.of(() -> _function.apply(_genotype));
-		_fitness = Lazy.of(() -> _scaler.apply(_rawFitness.get()));
+		if (rawFitness != null) {
+			_rawFitness = Lazy.ofValue(rawFitness);
+			_fitness = Lazy.ofValue(scaler.apply(rawFitness));
+		} else {
+			_rawFitness = Lazy.of(() -> _function.apply(_genotype));
+			_fitness = Lazy.of(() -> _scaler.apply(_rawFitness.get()));
+		}
 	}
 
 	/**
@@ -128,6 +139,20 @@ public final class Phenotype<
 	public Phenotype<G, C> evaluate() {
 		getFitness();
 		return this;
+	}
+
+	/**
+	 * The fitness value of the <em>phenotype</em> is evaluated lazily. This
+	 * method allows to check whether the fitness value has already been
+	 * calculated or not.
+	 *
+	 * @since 4.2
+	 *
+	 * @return {@code true} is this phenotype has been evaluated, {@code false}
+	 *         otherwise
+	 */
+	public boolean isEvaluated() {
+		return _fitness.isEvaluated();
 	}
 
 	/**
@@ -216,26 +241,48 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_generation + 37;
-		hash += 31*Objects.hashCode(getFitness()) + 37;
-		hash += 31*Objects.hashCode(getRawFitness()) + 37;
-		hash += 31*_genotype.hashCode() + 37;
-		return hash;
+		return
+			hash(_generation,
+			hash(getFitness(),
+			hash(getRawFitness(),
+			hash(_genotype))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Phenotype<?, ?> &&
-			Objects.equals(getFitness(), ((Phenotype<?, ?>) obj).getFitness()) &&
-			Objects.equals(getRawFitness(), ((Phenotype<?, ?>)obj).getRawFitness()) &&
-			Objects.equals(_genotype, ((Phenotype<?, ?>)obj)._genotype) &&
-			_generation == ((Phenotype<?, ?>)obj)._generation;
+		return obj == this ||
+			obj instanceof Phenotype &&
+			Objects.equals(getFitness(), ((Phenotype)obj).getFitness()) &&
+			Objects.equals(getRawFitness(), ((Phenotype)obj).getRawFitness()) &&
+			Objects.equals(_genotype, ((Phenotype)obj)._genotype) &&
+			_generation == ((Phenotype)obj)._generation;
 	}
 
 	@Override
 	public String toString() {
 		return _genotype + " --> " + getFitness();
+	}
+
+	/**
+	 * Return a new {@code Phenotype} object with the given <em>raw</em> fitness
+	 * value. The returned phenotype is automatically <em>evaluated</em>:
+	 * {@code isEvaluated() == true}
+	 *
+	 * @since 4.2
+	 *
+	 * @param fitness the phenotypes fitness value
+	 * @throws NullPointerException if the given {@code fitness} value is
+	 *         {@code null}
+	 * @return a new phenotype with the given fitness value
+	 */
+	public Phenotype<G, C> withFitness(final C fitness) {
+		return Phenotype.of(
+			_genotype,
+			_generation,
+			_function,
+			_scaler,
+			fitness
+		);
 	}
 
 	/**
@@ -364,7 +411,43 @@ public final class Phenotype<
 			genotype,
 			generation,
 			function,
-			scaler
+			scaler,
+			null
+		);
+	}
+
+	/**
+	 * Create a new phenotype from the given arguments. This factory method is
+	 * used when the fitness value of the phenotype has been calculated by a
+	 * different {@link io.jenetics.engine.Engine.GenotypeEvaluator} strategy
+	 * then the default one.
+	 *
+	 * @param <G> the gene type of the chromosome
+	 * @param <C> the fitness value type
+	 * @param genotype the genotype of this phenotype.
+	 * @param generation the current generation of the generated phenotype.
+	 * @param function the fitness function of this phenotype.
+	 * @param scaler the fitness scaler.
+	 * @param rawFitness the known raw-fitness of the phenotype.
+	 * @return a new phenotype object
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         {@code < 0}.
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Phenotype<G, C> of(
+		final Genotype<G> genotype,
+		final long generation,
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super C, ? extends C> scaler,
+		final C rawFitness
+	) {
+		return new Phenotype<>(
+			genotype,
+			generation,
+			function,
+			scaler,
+			requireNonNull(rawFitness)
 		);
 	}
 

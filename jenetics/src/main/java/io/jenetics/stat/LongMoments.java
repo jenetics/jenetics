@@ -20,6 +20,7 @@
 package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.function.ToLongFunction;
@@ -30,9 +31,12 @@ import java.util.stream.Collector;
  *
  * @see io.jenetics.stat.LongMomentStatistics
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 4.1
  */
 public final class LongMoments implements Serializable {
 
@@ -167,21 +171,21 @@ public final class LongMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*_sum + 37;
-		hash += 33*_min + 37;
-		hash += 33*_max + 37;
-		hash += 33*Double.doubleToLongBits(_mean) + 37;
-		hash += 33*Double.doubleToLongBits(_variance) + 37;
-		hash += 33*Double.doubleToLongBits(_skewness) + 37;
-		hash += 33*Double.doubleToLongBits(_kurtosis) + 37;
-		return hash;
+		return
+			hash(_count,
+			hash(_sum,
+			hash(_min,
+			hash(_max,
+			hash(_mean,
+			hash(_variance,
+			hash(_skewness,
+			hash(_kurtosis))))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof LongMoments &&
+		return obj == this ||
+			obj instanceof LongMoments &&
 			_count == ((LongMoments)obj)._count &&
 			_sum == ((LongMoments)obj)._sum &&
 			_min == ((LongMoments)obj)._min &&
@@ -195,7 +199,7 @@ public final class LongMoments implements Serializable {
 	@Override
 	public String toString() {
 		return String.format(
-			"IntMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
+			"LongMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
 			getCount(), getMin(), getMax(), getSum(),
 			getMean(), getVariance(), getSkewness(), getKurtosis()
 		);
@@ -254,6 +258,25 @@ public final class LongMoments implements Serializable {
 			statistics.getSkewness(),
 			statistics.getKurtosis()
 		);
+	}
+
+	/**
+	 * Return a {@code Collector} which returns moments-statistics for the
+	 * resulting values.
+	 *
+	 * <pre>{@code
+	 * final Stream<Long> stream = ...
+	 * final LongMoments moments = stream.collect(toLongMoments()));
+	 * }</pre>
+	 *
+	 * @since 4.1
+	 *
+	 * @param <N> the type of the input elements
+	 * @return a {@code Collector} implementing the moments-statistics reduction
+	 */
+	public static <N extends Number> Collector<N, ?, LongMoments>
+	toLongMoments() {
+		return toLongMoments(Number::longValue);
 	}
 
 	/**

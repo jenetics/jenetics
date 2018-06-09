@@ -30,8 +30,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.array;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.reflect;
@@ -96,6 +94,9 @@ import io.jenetics.util.MSeq;
  * @see EnumGene
  * @see PartiallyMatchedCrossover
  * @see SwapMutator
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -170,18 +171,6 @@ public final class PermutationChromosome<T>
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
 		return new PermutationChromosome<>(genes);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

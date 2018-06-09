@@ -19,13 +19,12 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.stat.DoubleSummary.min;
 
 import java.util.Arrays;
 
 import io.jenetics.internal.math.DoubleAdder;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -37,6 +36,7 @@ import io.jenetics.util.Seq;
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
  *          Wikipedia: Roulette wheel selection
  *      </a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 4.0
@@ -87,12 +87,12 @@ public class RouletteWheelSelector<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).value();
+		return hash(getClass());
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.ofType(this, obj);
+		return obj == this || obj != null && getClass() == obj.getClass();
 	}
 
 	@Override

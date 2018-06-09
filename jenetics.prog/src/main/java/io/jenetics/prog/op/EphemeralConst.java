@@ -21,7 +21,9 @@ package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -40,10 +42,12 @@ import io.jenetics.internal.util.Lazy;
  * }</pre>
  *
  *  @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-public final class EphemeralConst<T> implements Op<T> {
+public final class EphemeralConst<T> implements Op<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final String _name;
 	private final Supplier<T> _supplier;
@@ -82,17 +86,15 @@ public final class EphemeralConst<T> implements Op<T> {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_value.get()) + 37;
-		return hash;
+		return hash(_name, hash(_value));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EphemeralConst<?> &&
+		return obj == this ||
+			obj instanceof EphemeralConst &&
 			Objects.equals(((EphemeralConst)obj)._name, _name) &&
-			Objects.equals(((EphemeralConst)obj)._value.get(), _value.get());
+			Objects.equals(((EphemeralConst)obj)._value, _value);
 	}
 
 	@Override

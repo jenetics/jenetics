@@ -22,8 +22,6 @@ package io.jenetics.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.internal.util.Hash;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -56,11 +54,6 @@ public class Range<C extends Comparable<? super C>> extends Tuple2<C, C> {
 
 	public boolean contains(final C value) {
 		return _1.compareTo(value) <= 0 && _2.compareTo(value) >= 0;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(Range.class).and(super.hashCode()).value();
 	}
 
 }

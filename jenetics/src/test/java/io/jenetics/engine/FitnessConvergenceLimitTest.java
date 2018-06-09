@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -36,6 +37,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.engine.FitnessConvergenceLimit.Buffer;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.stat.DoubleMoments;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 /**
@@ -194,6 +196,29 @@ public class FitnessConvergenceLimitTest {
 			result.getTotalGenerations() < 50,
 			"Gen: " + result.getTotalGenerations()
 		);
+	}
+
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialFitnessConvergence() {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			d -> 1.0,
+			Codecs.ofScalar(DoubleRange.of(0, 1))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+		final AtomicInteger count = new AtomicInteger();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byFitnessConvergence(1, 2, 0.03))
+			.peek(er -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(count.get(), 1);
+		Assert.assertEquals(result.getTotalGenerations(), 1);
+		Assert.assertEquals(result.getGeneration(), 1);
 	}
 
 }

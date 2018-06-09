@@ -27,6 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
+
 import io.jenetics.util.RandomRegistry;
 
 /**

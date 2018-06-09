@@ -42,7 +42,7 @@ import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -88,7 +88,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(LongChromosome.of(domain)),
-			gt -> gt.getChromosome().getGene().getAllele()
+			gt -> gt.getGene().getAllele()
 		);
 	}
 
@@ -104,7 +104,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
-			gt -> gt.getChromosome().getGene().getAllele()
+			gt -> gt.getGene().getAllele()
 		);
 	}
 
@@ -193,7 +193,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
-			gt -> ((IntegerChromosome)gt.getChromosome()).toArray()
+			gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
 		);
 	}
 
@@ -217,7 +217,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
-			gt -> ((LongChromosome)gt.getChromosome()).toArray()
+			gt -> gt.getChromosome().as(LongChromosome.class).toArray()
 		);
 	}
 
@@ -241,7 +241,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
-			gt -> ((DoubleChromosome)gt.getChromosome()).toArray()
+			gt -> gt.getChromosome().as(DoubleChromosome.class).toArray()
 		);
 	}
 
@@ -261,7 +261,7 @@ public final class Codecs {
 		}
 
 		final ISeq<IntegerChromosome> chromosomes = Stream.of(domains)
-			.map(Objects::requireNonNull)
+			.peek(Objects::requireNonNull)
 			.map(IntegerGene::of)
 			.map(IntegerChromosome::of)
 			.collect(ISeq.toISeq());
@@ -269,8 +269,8 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(chromosomes),
 			gt -> {
-				final int[] args = new int[chromosomes.length()];
-				for (int i = chromosomes.length(); --i >= 0;) {
+				final int[] args = new int[gt.length()];
+				for (int i = gt.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().intValue();
 				}
 				return args;
@@ -294,7 +294,7 @@ public final class Codecs {
 		}
 
 		final ISeq<LongChromosome> chromosomes = Stream.of(domains)
-			.map(Objects::requireNonNull)
+			.peek(Objects::requireNonNull)
 			.map(LongGene::of)
 			.map(LongChromosome::of)
 			.collect(ISeq.toISeq());
@@ -302,8 +302,8 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(chromosomes),
 			gt -> {
-				final long[] args = new long[chromosomes.length()];
-				for (int i = chromosomes.length(); --i >= 0;) {
+				final long[] args = new long[gt.length()];
+				for (int i = gt.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().longValue();
 				}
 				return args;
@@ -329,7 +329,7 @@ public final class Codecs {
 		}
 
 		final ISeq<DoubleChromosome> chromosomes = Stream.of(domains)
-			.map(Objects::requireNonNull)
+			.peek(Objects::requireNonNull)
 			.map(DoubleGene::of)
 			.map(DoubleChromosome::of)
 			.collect(ISeq.toISeq());
@@ -337,8 +337,8 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(chromosomes),
 			gt -> {
-				final double[] args = new double[chromosomes.length()];
-				for (int i = chromosomes.length(); --i >= 0;) {
+				final double[] args = new double[gt.length()];
+				for (int i = gt.length(); --i >= 0;) {
 					args[i] = gt.getChromosome(i).getGene().doubleValue();
 				}
 				return args;
@@ -428,7 +428,7 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Equality.<ISeq<A>>True(),
+			Predicates.<ISeq<A>>True(),
 			length
 		);
 	}
@@ -451,7 +451,7 @@ public final class Codecs {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return ofVector(supplier, Equality.TRUE, length);
+		return ofVector(supplier, Predicates.TRUE, length);
 	}
 
 	/**
@@ -469,7 +469,7 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
 			gt -> gt.getChromosome().toSeq().stream()
-				.mapToInt(EnumGene<Integer>::getAllele)
+				.mapToInt(EnumGene::getAllele)
 				.toArray()
 		);
 	}

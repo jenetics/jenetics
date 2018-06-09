@@ -21,13 +21,11 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.maxBy;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -113,17 +111,21 @@ public class TournamentSelector<
 		final int N = population.size();
 		return Stream.generate(() -> population.get(random.nextInt(N)))
 			.limit(sampleSize)
-			.collect(maxBy(opt.ascending())).get();
+			.max(opt.ascending())
+			.orElseThrow(IllegalStateException::new);
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_sampleSize).value();
+		return hash(_sampleSize);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(s -> _sampleSize == s._sampleSize);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			_sampleSize == ((TournamentSelector)obj)._sampleSize;
 	}
 
 	@Override

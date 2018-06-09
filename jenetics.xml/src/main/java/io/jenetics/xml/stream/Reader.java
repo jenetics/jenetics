@@ -663,7 +663,7 @@ final class ListResult implements ReaderResult {
 
 	@Override
 	public void put(final Object value) {
-		if (value instanceof List<?>) {
+		if (value instanceof List) {
 			_value.addAll((List<?>)value);
 		} else {
 			_value.add(value);
