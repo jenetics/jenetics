@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.Serializable;
@@ -48,10 +49,9 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public final class DoubleGene
-	extends AbstractNumericGene<Double, DoubleGene>
 	implements
 		NumericGene<Double, DoubleGene>,
 		Mean<DoubleGene>,
@@ -59,7 +59,11 @@ public final class DoubleGene
 		Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+
+	private final double _value;
+	private final double _min;
+	private final double _max;
 
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
@@ -70,16 +74,111 @@ public final class DoubleGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	DoubleGene(final Double value, final Double min, final Double max) {
-		super(value, min, max);
+	private DoubleGene(final double value, final double min, final double max) {
+		_value = value;
+		_min = min;
+		_max = max;
+	}
+
+	@Override
+	public Double getAllele() {
+		return _value;
+	}
+
+	@Override
+	public Double getMin() {
+		return _min;
+	}
+
+	@Override
+	public Double getMax() {
+		return _max;
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte)_value;
+	}
+
+	@Override
+	public short shortValue() {
+		return (short)_value;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)_value;
+	}
+
+	@Override
+	public long longValue() {
+		return (long)_value;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)_value;
+	}
+
+	@Override
+	public double doubleValue() {
+		 return _value;
+	}
+
+	@Override
+	public boolean isValid() {
+		return Double.compare(_value, _min) >= 0 &&
+			Double.compare(_value, _max) <= 0;
 	}
 
 	@Override
 	public int compareTo(final DoubleGene other) {
-		return _value.compareTo(other._value);
+		return Double.compare(_value, other._value);
 	}
+
+	@Override
+	public DoubleGene mean(final DoubleGene that) {
+		return of(_value + (that._value - _value)/2.0, _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance(final Double value) {
+		return of(value, _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance(final Number number) {
+		return new DoubleGene(number.doubleValue(), _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance() {
+		return of(nextDouble(_min, _max, getRandom()), _min, _max);
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(_value, hash(_min, hash(_max)));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof DoubleGene &&
+			Double.compare(((DoubleGene)obj)._value, _value) == 0 &&
+			Double.compare(((DoubleGene)obj)._min, _min) == 0&&
+			Double.compare(((DoubleGene)obj)._max, _max) == 0;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("[%s]", _value);
+	}
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
@@ -114,7 +213,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final double value, final DoubleRange range) {
-		return new DoubleGene(value, range.getMin(), range.getMax());
+		return of(value, range.getMin(), range.getMax());
 	}
 
 	/**
@@ -144,34 +243,15 @@ public final class DoubleGene
 	}
 
 	static ISeq<DoubleGene> seq(
-		final Double minimum,
-		final Double maximum,
+		final double min,
+		final double max,
 		final IntRange lengthRange
 	) {
-		final double min = minimum;
-		final double max = maximum;
 		final Random r = getRandom();
 
 		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new DoubleGene(nextDouble(min, max, r), minimum, maximum))
+			.fill(() -> of(nextDouble(min, max, r), min, max))
 			.toISeq();
-	}
-
-	@Override
-	public DoubleGene newInstance(final Number number) {
-		return new DoubleGene(number.doubleValue(), _min, _max);
-	}
-
-	@Override
-	public DoubleGene newInstance() {
-		return new DoubleGene(
-			nextDouble(_min, _max, getRandom()), _min, _max
-		);
-	}
-
-	@Override
-	public DoubleGene mean(final DoubleGene that) {
-		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
 	}
 
 }

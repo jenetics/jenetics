@@ -308,7 +308,7 @@ public class LongChromosome
 		reflect.setField(this, "_max", in.readLong());
 
 		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new LongGene(in.readLong(), _min, _max));
+			genes.set(i, LongGene.of(in.readLong(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());

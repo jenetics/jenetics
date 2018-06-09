@@ -307,7 +307,7 @@ public class DoubleChromosome
 		reflect.setField(this, "_max", in.readDouble());
 
 		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new DoubleGene(in.readDouble(), _min, _max));
+			genes.set(i, DoubleGene.of(in.readDouble(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());
