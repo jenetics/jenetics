@@ -40,7 +40,7 @@ public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
 {
 
-	private final IntegerChromosome _factory = new IntegerChromosome(
+	private final IntegerChromosome _factory = IntegerChromosome.of(
 		0, Integer.MAX_VALUE, 500
 	);
 
@@ -59,7 +59,7 @@ public class IntegerChromosomeTest
 			final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
+				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
 				chromosome.toSeq().forEach(g -> {
 					mm.accept(g.getAllele());
