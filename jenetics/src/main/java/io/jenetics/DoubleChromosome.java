@@ -40,7 +40,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -82,7 +82,10 @@ public class DoubleChromosome
 	 *        of the range is inclusively and the range end exclusively
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length is smaller than one
+	 *
+	 * @deprecated Use {@link #of(double, double, IntRange)} instead.
 	 */
+	@Deprecated
 	public DoubleChromosome(
 		final Double min,
 		final Double max,
@@ -100,7 +103,10 @@ public class DoubleChromosome
 	 * @param length the length of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length is smaller than one
+	 *
+	 * @deprecated Use {@link #of(double, double, int)} instead.
 	 */
+	@Deprecated
 	public DoubleChromosome(final Double min,final Double max,final int length) {
 		this(min, max, IntRange.of(length));
 	}
@@ -111,9 +117,22 @@ public class DoubleChromosome
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (exclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 *
+	 * @deprecated Use {@link #of(double, double)} instead.
 	 */
+	@Deprecated
 	public DoubleChromosome(final Double min, final Double max) {
 		this(min, max, 1);
+	}
+
+	@Override
+	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
+		return new DoubleChromosome(genes, lengthRange());
+	}
+
+	@Override
+	public DoubleChromosome newInstance() {
+		return of(_min, _max, lengthRange());
 	}
 
 	/**
@@ -151,6 +170,11 @@ public class DoubleChromosome
 		return toArray(new double[length()]);
 	}
 
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
@@ -184,7 +208,8 @@ public class DoubleChromosome
 		final double max,
 		final IntRange lengthRange
 	) {
-		return new DoubleChromosome(min, max, lengthRange);
+		final ISeq<DoubleGene> genes = DoubleGene.seq(min, max, lengthRange);
+		return new DoubleChromosome(genes, lengthRange);
 	}
 
 	/**
@@ -202,7 +227,7 @@ public class DoubleChromosome
 		final double max,
 		final int length
 	) {
-		return new DoubleChromosome(min, max, length);
+		return of(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -224,7 +249,7 @@ public class DoubleChromosome
 		final DoubleRange range,
 		final IntRange lengthRange
 	) {
-		return new DoubleChromosome(range.getMin(), range.getMax(), lengthRange);
+		return of(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -240,7 +265,7 @@ public class DoubleChromosome
 	 *         one.
 	 */
 	public static DoubleChromosome of(final DoubleRange range, final int length) {
-		return new DoubleChromosome(range.getMin(), range.getMax(), length);
+		return of(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -251,7 +276,7 @@ public class DoubleChromosome
 	 * @return a new {@code DoubleChromosome} with the given parameter
 	 */
 	public static DoubleChromosome of(final double min, final double max) {
-		return new DoubleChromosome(min, max);
+		return of(min, max, 1);
 	}
 
 	/**
@@ -264,18 +289,9 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleRange range) {
-		return new DoubleChromosome(range.getMin(), range.getMax());
+		return of(range.getMin(), range.getMax());
 	}
 
-	@Override
-	public DoubleChromosome newInstance(final ISeq<DoubleGene> genes) {
-		return new DoubleChromosome(genes, lengthRange());
-	}
-
-	@Override
-	public DoubleChromosome newInstance() {
-		return new DoubleChromosome(_min, _max, lengthRange());
-	}
 
 	/* *************************************************************************
 	 *  Java object serialization
