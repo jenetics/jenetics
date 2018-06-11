@@ -47,7 +47,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 	public void newInstanceDistribution() {
 		using(new Random(12345), r -> {
 			final CharSeq characters = new CharSeq("0123456789");
-			final CharacterChromosome chromosome = new CharacterChromosome(characters, 5000);
+			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
 
 			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
 			chromosome.toSeq().stream()
