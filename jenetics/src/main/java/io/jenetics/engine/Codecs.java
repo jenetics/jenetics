@@ -42,7 +42,7 @@ import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -428,7 +428,7 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Equality.<ISeq<A>>True(),
+			Predicates.<ISeq<A>>True(),
 			length
 		);
 	}
@@ -451,7 +451,7 @@ public final class Codecs {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return ofVector(supplier, Equality.TRUE, length);
+		return ofVector(supplier, Predicates.TRUE, length);
 	}
 
 	/**

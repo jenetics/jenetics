@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -90,11 +91,7 @@ public final class ExponentialScaler
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Double.hashCode(_a) + 37;
-		hash += 31*Double.hashCode(_b) + 37;
-		hash += 31*Double.hashCode(_c) + 37;
-		return hash;
+		return hash(_a, hash(_b, hash(_c)));
 	}
 
 	@Override

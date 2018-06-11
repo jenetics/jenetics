@@ -41,7 +41,7 @@ public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
 {
 
-	private final DoubleChromosome _factory = new DoubleChromosome(
+	private final DoubleChromosome _factory = DoubleChromosome.of(
 		0.0, Double.MAX_VALUE, 500
 	);
 
@@ -61,7 +61,7 @@ public class DoubleChromosomeTest
 			final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
+				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
 				for (DoubleGene gene : chromosome) {
 					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());

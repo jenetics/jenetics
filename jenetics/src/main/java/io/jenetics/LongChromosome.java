@@ -24,8 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -83,7 +81,10 @@ public class LongChromosome
 	 * @param lengthRange the allowed length range of the chromosome.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the length is smaller than one
+	 *
+	 * @deprecated Use {@link #of(long, long, IntRange)} instead.
 	 */
+	@Deprecated
 	public LongChromosome(
 		final Long min,
 		final Long max,
@@ -102,7 +103,10 @@ public class LongChromosome
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
+	 *
+	 * @deprecated Use {@link #of(long, long, int)} instead.
 	 */
+	@Deprecated
 	public LongChromosome(final Long min, final Long max, final int length) {
 		this(min, max, IntRange.of(length));
 	}
@@ -113,9 +117,22 @@ public class LongChromosome
 	 * @param min the minimal value of this chromosome (inclusively).
 	 * @param max the maximal value of this chromosome (inclusively).
 	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 *
+	 * @deprecated Use {@link #of(long, long)} instead.
 	 */
+	@Deprecated
 	public LongChromosome(final Long min, final Long max) {
 		this(min, max, 1);
+	}
+
+	@Override
+	public LongChromosome newInstance(final ISeq<LongGene> genes) {
+		return new LongChromosome(genes, lengthRange());
+	}
+
+	@Override
+	public LongChromosome newInstance() {
+		return of(_min, _max, lengthRange());
 	}
 
 	/**
@@ -153,6 +170,11 @@ public class LongChromosome
 		return toArray(new long[length()]);
 	}
 
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new {@code LongChromosome} with the given genes.
 	 *
@@ -164,6 +186,22 @@ public class LongChromosome
 	 */
 	public static LongChromosome of(final LongGene... genes) {
 		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
+	}
+
+	/**
+	 * Create a new {@code LongChromosome} with the given genes.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws NullPointerException if the given {@code genes} are {@code null}
+	 * @throws IllegalArgumentException if the length of the genes array is
+	 *         empty.
+	 */
+	public static LongChromosome of(final Iterable<LongGene> genes) {
+		final ISeq<LongGene> values = ISeq.of(genes);
+		return new LongChromosome(values, IntRange.of(values.length()));
 	}
 
 	/**
@@ -187,7 +225,8 @@ public class LongChromosome
 		final long max,
 		final IntRange lengthRange
 	) {
-		return new LongChromosome(min, max, lengthRange);
+		final ISeq<LongGene> values = LongGene.seq(min, max, lengthRange);
+		return new LongChromosome(values, lengthRange);
 	}
 
 	/**
@@ -205,7 +244,7 @@ public class LongChromosome
 		final long max,
 		final int length
 	) {
-		return new LongChromosome(min, max, length);
+		return of(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -227,7 +266,7 @@ public class LongChromosome
 		final LongRange range,
 		final IntRange lengthRange
 	) {
-		return new LongChromosome(range.getMin(), range.getMax(), lengthRange);
+		return of(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -243,7 +282,7 @@ public class LongChromosome
 	 *         one.
 	 */
 	public static LongChromosome of(final LongRange range, final int length) {
-		return new LongChromosome(range.getMin(), range.getMax(), length);
+		return of(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -254,7 +293,7 @@ public class LongChromosome
 	 * @return a new {@code LongChromosome} with the given gene parameters.
 	 */
 	public static LongChromosome of(final long min, final long max) {
-		return new LongChromosome(min, max);
+		return of(min, max, 1);
 	}
 
 	/**
@@ -267,28 +306,9 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static LongChromosome of(final LongRange range) {
-		return new LongChromosome(range.getMin(), range.getMax());
+		return of(range.getMin(), range.getMax());
 	}
 
-	@Override
-	public LongChromosome newInstance(final ISeq<LongGene> genes) {
-		return new LongChromosome(genes, lengthRange());
-	}
-
-	@Override
-	public LongChromosome newInstance() {
-		return new LongChromosome(_min, _max, lengthRange());
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
-	}
 
 	/* *************************************************************************
 	 *  Java object serialization
@@ -320,7 +340,7 @@ public class LongChromosome
 		reflect.setField(this, "_max", in.readLong());
 
 		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new LongGene(in.readLong(), _min, _max));
+			genes.set(i, LongGene.of(in.readLong(), _min, _max));
 		}
 
 		reflect.setField(this, "_genes", genes.toISeq());

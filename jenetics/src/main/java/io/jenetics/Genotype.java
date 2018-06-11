@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -260,16 +260,14 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_chromosomes) + 37;
-		return hash;
+		return hash(_chromosomes);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Genotype &&
-			eq(_chromosomes, ((Genotype<?>)obj)._chromosomes);
+			Objects.equals(_chromosomes, ((Genotype<?>) obj)._chromosomes);
 	}
 
 	@Override

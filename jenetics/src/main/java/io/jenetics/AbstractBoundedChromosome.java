@@ -19,12 +19,11 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
@@ -37,7 +36,7 @@ import io.jenetics.util.IntRange;
  */
 abstract class AbstractBoundedChromosome<
 	A extends Comparable<? super A>,
-	G extends AbstractBoundedGene<A, G>
+	G extends BoundedGene<A, G>
 >
 	extends VariableChromosome<G>
 	implements BoundedChromosome<A, G>, Serializable
@@ -71,8 +70,8 @@ abstract class AbstractBoundedChromosome<
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_min = genes.get(0)._min;
-		_max = genes.get(0)._max;
+		_min = genes.get(0).getMin();
+		_max = genes.get(0).getMax();
 	}
 
 	@Override
@@ -87,19 +86,20 @@ abstract class AbstractBoundedChromosome<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max).value();
+		return
+			hash(super.hashCode(),
+			hash(_min,
+			hash(_max)));
 	}
 
 	@Override
-	public boolean equals(final Object object) {
-		return Equality.of(this, object).test(nc ->
-			eq(_min, nc._min) &&
-			eq(_max, nc._max) &&
-			super.equals(object)
-		);
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Objects.equals(_min, ((AbstractBoundedChromosome)obj)._min) &&
+			Objects.equals(_max, ((AbstractBoundedChromosome)obj)._max) &&
+			super.equals(obj);
 	}
 
 }

@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -121,10 +122,7 @@ public final class MutatorResult<T> implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 37*Objects.hashCode(_result) + 31;
-		hash += 37*_mutations + 31;
-		return hash;
+		return hash(_result, hash(_mutations));
 	}
 
 	@Override

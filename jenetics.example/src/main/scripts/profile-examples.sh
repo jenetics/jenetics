@@ -55,7 +55,7 @@ main() {
 	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH io.jenetics.example.TravelingSalesman
 }
 
-main $*
+time main $*
 
 
 
