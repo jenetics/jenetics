@@ -188,6 +188,22 @@ public class DoubleChromosome
 	}
 
 	/**
+	 * Create a new {@code DoubleChromosome} with the given genes.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws NullPointerException if the given {@code genes} are {@code null}
+	 * @throws IllegalArgumentException if the length of the genes array is
+	 *         empty.
+	 */
+	public static DoubleChromosome of(final Iterable<DoubleGene> genes) {
+		final ISeq<DoubleGene> values = ISeq.of(genes);
+		return new DoubleChromosome(values, IntRange.of(values.length()));
+	}
+
+	/**
 	 * Create a new random chromosome.
 	 *
 	 * @since 4.0
