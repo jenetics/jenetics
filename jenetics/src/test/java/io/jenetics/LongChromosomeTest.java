@@ -41,7 +41,7 @@ public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
 {
 
-	private final LongChromosome _factory = new LongChromosome(
+	private final LongChromosome _factory = LongChromosome.of(
 		0L, Long.MAX_VALUE, 500
 	);
 
@@ -60,7 +60,7 @@ public class LongChromosomeTest
 			final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final LongChromosome chromosome = new LongChromosome(min, max, 500);
+				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
 				for (LongGene gene : chromosome) {
 					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());
