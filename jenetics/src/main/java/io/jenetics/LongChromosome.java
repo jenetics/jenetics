@@ -191,7 +191,7 @@ public class LongChromosome
 	/**
 	 * Create a new {@code LongChromosome} with the given genes.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.

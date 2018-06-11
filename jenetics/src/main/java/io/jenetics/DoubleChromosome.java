@@ -40,7 +40,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 4.3
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -190,7 +190,7 @@ public class DoubleChromosome
 	/**
 	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
