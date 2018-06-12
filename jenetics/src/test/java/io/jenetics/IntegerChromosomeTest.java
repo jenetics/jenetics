@@ -97,4 +97,16 @@ public class IntegerChromosomeTest
 		};
 	}
 
+	@Test
+	public void intStream() {
+		final IntegerChromosome chromosome = IntegerChromosome.of(0, 10_000, 1000);
+		final int[] values = chromosome.intStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).intValue(), values[i]);
+			Assert.assertEquals(chromosome.intValue(i), values[i]);
+		}
+	}
+
 }
