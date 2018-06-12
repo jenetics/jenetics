@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
@@ -40,7 +42,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version !__version__!
  */
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>
@@ -133,6 +135,18 @@ public class LongChromosome
 	@Override
 	public LongChromosome newInstance() {
 		return of(_min, _max, lengthRange());
+	}
+
+	/**
+	 * Returns a sequential stream of the alleles with this chromosome as its
+	 * source.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a sequential stream of alleles
+	 */
+	public LongStream longStream() {
+		return IntStream.range(0, length()).mapToLong(this::longValue);
 	}
 
 	/**

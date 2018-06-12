@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
@@ -133,6 +135,18 @@ public class DoubleChromosome
 	@Override
 	public DoubleChromosome newInstance() {
 		return of(_min, _max, lengthRange());
+	}
+
+	/**
+	 * Returns a sequential stream of the alleles with this chromosome as its
+	 * source.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a sequential stream of alleles
+	 */
+	public DoubleStream doubleStream() {
+		return IntStream.range(0, length()).mapToDouble(this::doubleValue);
 	}
 
 	/**
