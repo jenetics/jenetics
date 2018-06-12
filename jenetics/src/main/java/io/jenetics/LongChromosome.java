@@ -42,7 +42,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 4.3
  */
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>
@@ -141,7 +141,7 @@ public class LongChromosome
 	 * Returns a sequential stream of the alleles with this chromosome as its
 	 * source.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @return a sequential stream of alleles
 	 */

@@ -141,7 +141,7 @@ public class DoubleChromosome
 	 * Returns a sequential stream of the alleles with this chromosome as its
 	 * source.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @return a sequential stream of alleles
 	 */
