@@ -97,4 +97,16 @@ public class LongChromosomeTest
 		};
 	}
 
+	@Test
+	public void longStream() {
+		final LongChromosome chromosome = LongChromosome.of(0, 10_000, 1000);
+		final long[] values = chromosome.longStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
+			Assert.assertEquals(chromosome.longValue(i), values[i]);
+		}
+	}
+
 }
