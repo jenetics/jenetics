@@ -399,7 +399,9 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
-			gt -> gt.getChromosome().toSeq().map(Gene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(Gene::getAllele)
+				.collect(ISeq.toISeq())
 		);
 	}
 
@@ -468,7 +470,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
-			gt -> gt.getChromosome().toSeq().stream()
+			gt -> gt.getChromosome().stream()
 				.mapToInt(EnumGene::getAllele)
 				.toArray()
 		);
@@ -498,7 +500,9 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().toSeq().map(EnumGene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
+				.collect(ISeq.toISeq())
 		);
 	}
 

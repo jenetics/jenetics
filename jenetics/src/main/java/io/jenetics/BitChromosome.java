@@ -432,7 +432,7 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		return toSeq().stream()
+		return stream()
 			.map(g -> g.booleanValue() ? "1" : "0")
 			.collect(joining());
 	}
