@@ -98,4 +98,16 @@ public class DoubleChromosomeTest
 		};
 	}
 
+	@Test
+	public void doubleStream() {
+		final DoubleChromosome chromosome = DoubleChromosome.of(0, 1, 1000);
+		final double[] values = chromosome.doubleStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
+			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
+		}
+	}
+
 }
