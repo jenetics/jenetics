@@ -72,7 +72,7 @@ public final class RxEvaluator<
 
 		return result
 			.collect(ISeq.toISeq())
-			.map(Observable::blockingFirst);
+			.map(Observable::blockingSingle);
 	}
 
 	public static void main(final String[] args) {
