@@ -19,10 +19,38 @@
  */
 package io.jenetics;
 
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Larva {
+public class Larva<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> {
+
+	private final Genotype<G> _genotype;
+	private final long _generation;
+
+	Larva(final Genotype<G> genotype, final long generation) {
+		_genotype = requireNonNull(genotype, "Genotype");
+		if (generation < 0) {
+			throw new IllegalArgumentException(format(
+				"Generation must not < 0 and was %s.", generation
+			));
+		}
+		_generation = generation;
+	}
+
+	public Genotype<G> getGenotype() {
+		return _genotype;
+	}
+
+	public long getGeneration() {
+		return _generation;
+	}
+
 }
