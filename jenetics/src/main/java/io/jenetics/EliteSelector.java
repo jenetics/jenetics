@@ -23,8 +23,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-
-import java.util.Objects;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -151,16 +150,14 @@ public class EliteSelector<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_eliteCount + 37;
-		hash += 31*Objects.hashCode(_nonEliteSelector) + 37;
-		return hash;
+		return hash(_eliteCount, hash(_nonEliteSelector));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EliteSelector &&
+			obj != null &&
+			getClass() == obj.getClass() &&
 			((EliteSelector)obj)._eliteCount == _eliteCount &&
 			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
 	}

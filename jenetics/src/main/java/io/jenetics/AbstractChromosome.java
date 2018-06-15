@@ -20,15 +20,13 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.RandomAccess;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Verifiable;
 
@@ -116,12 +114,15 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_genes).value();
+		return hash(_genes);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(ch -> eq(_genes, ch._genes));
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Objects.equals(_genes, ((AbstractChromosome)obj)._genes);
 	}
 
 	@Override

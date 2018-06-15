@@ -33,7 +33,7 @@ public class WeaselProgram {
 	public static void main(String[] args) throws Exception {
 		final CharSeq chars = CharSeq.of("A-Z ");
 		final Factory<Genotype<CharacterGene>> gtf = Genotype.of(
-			new CharacterChromosome(chars, TARGET.length())
+			CharacterChromosome.of(chars, TARGET.length())
 		);
 
 		final Engine<CharacterGene, Integer> engine = Engine

@@ -25,7 +25,6 @@ import static io.jenetics.internal.math.random.nextDouble;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -128,18 +127,6 @@ public class LineCrossover<
 		}
 
 		return changed ? 2 : 0;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof LineCrossover &&
-			super.equals(obj);
 	}
 
 	@Override

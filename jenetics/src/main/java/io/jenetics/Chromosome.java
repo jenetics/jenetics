@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Factory;
@@ -164,7 +165,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return a sequential {@code Stream} of genes
 	 */
 	public default Stream<G> stream() {
-		return toSeq().stream();
+		return IntStream.range(0, length()).mapToObj(this::getGene);
 	}
 
 }

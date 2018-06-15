@@ -42,7 +42,7 @@ import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -399,7 +399,9 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
-			gt -> gt.getChromosome().toSeq().map(Gene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(Gene::getAllele)
+				.collect(ISeq.toISeq())
 		);
 	}
 
@@ -428,7 +430,7 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Equality.<ISeq<A>>True(),
+			Predicates.<ISeq<A>>True(),
 			length
 		);
 	}
@@ -451,7 +453,7 @@ public final class Codecs {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return ofVector(supplier, Equality.TRUE, length);
+		return ofVector(supplier, Predicates.TRUE, length);
 	}
 
 	/**
@@ -468,7 +470,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
-			gt -> gt.getChromosome().toSeq().stream()
+			gt -> gt.getChromosome().stream()
 				.mapToInt(EnumGene::getAllele)
 				.toArray()
 		);
@@ -498,7 +500,9 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().toSeq().map(EnumGene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
+				.collect(ISeq.toISeq())
 		);
 	}
 

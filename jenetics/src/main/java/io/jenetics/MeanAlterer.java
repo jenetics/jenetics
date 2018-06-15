@@ -24,7 +24,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -106,18 +105,6 @@ public final class MeanAlterer<
 			a.set(i, a.get(i).mean(b.get(i)));
 		}
 		return a;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof MeanAlterer &&
-			super.equals(obj);
 	}
 
 	@Override

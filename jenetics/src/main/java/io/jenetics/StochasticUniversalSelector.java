@@ -21,8 +21,6 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -112,16 +110,6 @@ public class StochasticUniversalSelector<
 		}
 
 		return selection.toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

@@ -22,9 +22,7 @@ package io.jenetics.internal.math;
 import static java.lang.Double.isInfinite;
 import static java.lang.Double.isNaN;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
-
-import io.jenetics.internal.util.Hash;
+import static io.jenetics.internal.util.Hashes.hash;
 
 /**
  * This class implements the the
@@ -207,13 +205,14 @@ public final class DoubleAdder
 
 	@Override
 	public int hashCode() {
-		return Hash.of(DoubleAdder.class).and(doubleValue()).value();
+		return hash(doubleValue());
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof DoubleAdder &&
-			eq(doubleValue(), ((DoubleAdder)obj).doubleValue());
+		return obj == this ||
+			obj instanceof DoubleAdder &&
+			Double.compare(doubleValue(), ((DoubleAdder)obj).doubleValue()) == 0;
 	}
 
 	@Override

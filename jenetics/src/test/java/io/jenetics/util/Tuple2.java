@@ -19,10 +19,9 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
+import java.util.Objects;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,15 +38,15 @@ class Tuple2<T1, T2> {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_1).and(_2).value();
+		return hash(_1, hash(_2));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(tuple ->
-			eq(_1, tuple._1) &&
-			eq(_2, tuple._2)
-		);
+		return obj == this ||
+			obj instanceof  Tuple2 &&
+			Objects.equals(_1, ((Tuple2) obj)._1) &&
+			Objects.equals(_2, ((Tuple2) obj)._2);
 	}
 
 	@Override
