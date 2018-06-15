@@ -170,7 +170,10 @@ public final class Phenotype<
 	 * (raw) fitness value.
 	 *
 	 * @return the fitness function.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
 		return _function;
 	}
@@ -180,7 +183,10 @@ public final class Phenotype<
 	 * fitness.
 	 *
 	 * @return the fitness scaler.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _scaler;
 	}
