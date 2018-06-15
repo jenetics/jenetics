@@ -71,8 +71,8 @@ public final class RepairingAlterer<
 		return Phenotype.of(
 			_repair.apply(pt.getGenotype()),
 			pt.getGeneration(),
-			pt.getFitnessFunction(),
-			pt.getFitnessScaler()
+			null, //pt.getFitnessFunction(),
+			null //pt.getFitnessScaler()
 		);
 	}
 
