@@ -113,7 +113,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version !__version__!
  */
 @SuppressWarnings("deprecation")
 public final class Engine<
@@ -127,11 +127,10 @@ public final class Engine<
 {
 
 	// Problem definition.
-	private final Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+	private final FitnessEvaluator<G, C> _evaluator;
 	private final Factory<Genotype<G>> _genotypeFactory;
 
 	// Evolution parameters.
-	private final Function<? super C, ? extends C> _fitnessScaler;
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
@@ -143,7 +142,6 @@ public final class Engine<
 
 	// Execution context for concurrent execution of evolving steps.
 	private final TimedExecutor _executor;
-	private final Evaluator<G, C> _evaluator;
 	private final Clock _clock;
 
 	// Additional parameters.
@@ -154,9 +152,7 @@ public final class Engine<
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
-	 * @param fitnessFunction the fitness function this GA is using.
 	 * @param genotypeFactory the genotype factory this GA is working with.
-	 * @param fitnessScaler the fitness scaler this GA is using.
 	 * @param survivorsSelector the selector used for selecting the survivors
 	 * @param offspringSelector the selector used for selecting the offspring
 	 * @param alterer the alterer used for altering the offspring
@@ -176,9 +172,8 @@ public final class Engine<
 	 *         than one.
 	 */
 	Engine(
-		final Function<? super Genotype<G>, ? extends C> fitnessFunction,
+		final FitnessEvaluator<G, C> evaluator,
 		final Factory<Genotype<G>> genotypeFactory,
-		final Function<? super C, ? extends C> fitnessScaler,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
@@ -188,13 +183,11 @@ public final class Engine<
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
 		final Executor executor,
-		final Evaluator<G, C> evaluator,
 		final Clock clock,
 		final int individualCreationRetries,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
-		_fitnessFunction = requireNonNull(fitnessFunction);
-		_fitnessScaler = requireNonNull(fitnessScaler);
+		_evaluator = requireNonNull(evaluator);
 		_genotypeFactory = requireNonNull(genotypeFactory);
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
@@ -207,7 +200,6 @@ public final class Engine<
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
 		_executor = new TimedExecutor(requireNonNull(executor));
-		_evaluator = requireNonNull(evaluator);
 		_clock = requireNonNull(clock);
 
 		if (individualCreationRetries < 0) {
@@ -265,15 +257,21 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evalPop =
+		final ISeq<Phenotype<G, C>> evaluated =
 			_evaluator.evaluate(start.getPopulation());
 
-		if (start.getPopulation().size() != evalPop.size()) {
+		if (start.getPopulation().size() != evaluated.size()) {
 			throw new IllegalStateException(format(
 				"Expected %d individuals, but got %d. " +
 				"Check your evaluator function.",
-				start.getPopulation().size(), evalPop.size()
+				start.getPopulation().size(), evaluated.size()
 			));
+		}
+		if (!evaluated.forAll(Phenotype::isEvaluated)) {
+			throw new IllegalStateException(
+				"Some phenotypes have no assigned fitness value. " +
+				"Check your evaluator function."
+			);
 		}
 
 		evaluateTimer.stop();
@@ -281,14 +279,14 @@ public final class Engine<
 		// Select the offspring population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
 			_executor.async(() ->
-				selectOffspring(evalPop),
+				selectOffspring(evaluated),
 				_clock
 			);
 
 		// Select the survivor population.
 		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
 			_executor.async(() ->
-				selectSurvivors(evalPop),
+				selectSurvivors(evaluated),
 				_clock
 			);
 
@@ -308,8 +306,12 @@ public final class Engine<
 
 		// Filter and replace invalid and old offspring individuals.
 		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
-			_executor.thenApply(alteredOffspring, pop ->
-				filter(pop.result.getPopulation(), start.getGeneration()),
+			_executor.thenApply(
+				alteredOffspring,
+				pop -> filter(
+					pop.result.getPopulation(),
+					start.getGeneration()
+				),
 				_clock
 			);
 
@@ -414,12 +416,7 @@ public final class Engine<
 		int count = 0;
 		Phenotype<G, C> phenotype;
 		do {
-			phenotype = Phenotype.of(
-				_genotypeFactory.newInstance(),
-				generation,
-				_fitnessFunction,
-				_fitnessScaler
-			);
+			phenotype = Phenotype.of(_genotypeFactory.newInstance(), generation);
 		} while (++count < _individualCreationRetries &&
 				!_validator.test(phenotype));
 
@@ -463,7 +460,7 @@ public final class Engine<
 			final long generation = es.getGeneration();
 
 			final Stream<Phenotype<G, C>> stream = Stream.concat(
-				population.stream().map(this::toFixedPhenotype),
+				population.stream(),
 				Stream.generate(() -> newPhenotype(generation))
 			);
 
@@ -475,28 +472,11 @@ public final class Engine<
 		};
 	}
 
-	private Phenotype<G, C> toFixedPhenotype(final Phenotype<G, C> pt) {
-		return
-			pt.getFitnessFunction() == _fitnessFunction &&
-			pt.getFitnessScaler() == _fitnessScaler
-				? pt
-				: pt.newInstance(
-					pt.getGeneration(),
-					_fitnessFunction,
-					_fitnessScaler
-				);
-	}
-
 	private Supplier<EvolutionStart<G, C>>
 	evolutionStart(final EvolutionInit<G> init) {
 		return evolutionStart(() -> EvolutionStart.of(
 			init.getPopulation()
-				.map(gt -> Phenotype.of(
-					gt,
-					init.getGeneration(),
-					_fitnessFunction,
-					_fitnessScaler)
-				),
+				.map(gt -> Phenotype.of(gt, init.getGeneration())),
 			init.getGeneration())
 		);
 	}
@@ -504,24 +484,6 @@ public final class Engine<
 	/* *************************************************************************
 	 * Property access methods.
 	 **************************************************************************/
-
-	/**
-	 * Return the fitness function of the GA engine.
-	 *
-	 * @return the fitness function
-	 */
-	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
-		return _fitnessFunction;
-	}
-
-	/**
-	 * Return the fitness scaler of the GA engine.
-	 *
-	 * @return the fitness scaler
-	 */
-	public Function<? super C, ? extends C> getFitnessScaler() {
-		return _fitnessScaler;
-	}
 
 	/**
 	 * Return the used genotype {@link Factory} of the GA. The genotype factory
@@ -650,10 +612,6 @@ public final class Engine<
 		return _mapper;
 	}
 
-	/* *************************************************************************
-	 * Builder methods.
-	 **************************************************************************/
-
 	/**
 	 * Create a new evolution {@code Engine.Builder} initialized with the values
 	 * of the current evolution {@code Engine}. With this method, the evolution
@@ -662,12 +620,10 @@ public final class Engine<
 	 * @return a new engine builder
 	 */
 	public Builder<G, C> builder() {
-		return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
+		return new Builder<G, C>(_genotypeFactory, _evaluator)
 			.alterers(_alterer)
 			.clock(_clock)
-			.evaluator(_evaluator)
 			.executor(_executor.get())
-			.fitnessScaler(_fitnessScaler)
 			.maximalPhenotypeAge(_maximalPhenotypeAge)
 			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
 			.offspringSelector(_offspringSelector)
@@ -677,6 +633,76 @@ public final class Engine<
 			.survivorsSelector(_survivorsSelector)
 			.individualCreationRetries(_individualCreationRetries)
 			.mapping(_mapper);
+	}
+
+
+	/* *************************************************************************
+	 * Static Builder methods.
+	 **************************************************************************/
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
+	 * evaluator and genotype factory.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param evaluator the fitness evaluator
+	 * @param genotypeFactory the genotype factory
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(
+		final FitnessEvaluator<G, C> evaluator,
+		final Factory<Genotype<G>> genotypeFactory
+	) {
+		return new Builder<>(genotypeFactory, evaluator);
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
+	 * function and genotype factory.
+	 *
+	 * @param ff the fitness function
+	 * @param genotypeFactory the genotype factory
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(
+		final Function<? super Genotype<G>, ? extends C> ff,
+		final Factory<Genotype<G>> genotypeFactory
+	) {
+		return builder(new ConcurrentEvaluator<>(ff), genotypeFactory);
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} with the given fitness
+	 * function and problem {@code codec}.
+	 *
+	 * @since 3.2
+	 *
+	 * @param ff the fitness evaluator
+	 * @param codec the problem codec
+	 * @param <T> the fitness function input type
+	 * @param <C> the fitness function result type
+	 * @param <G> the gene type
+	 * @return a new engine builder
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}.
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder(
+		final Function<? super T, ? extends C> ff,
+		final Codec<T, G> codec
+	) {
+		return builder(ff.compose(codec.decoder()), codec.encoding());
 	}
 
 	/**
@@ -698,22 +724,27 @@ public final class Engine<
 
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
-	 * function and genotype factory.
+	 * evaluator and chromosome templates.
 	 *
-	 * @param ff the fitness function
-	 * @param genotypeFactory the genotype factory
+	 * @since !__version__!
+	 *
+	 * @param evaluator the fitness evaluator
+	 * @param chromosome the first chromosome
+	 * @param chromosomes the chromosome templates
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return a new engine builder
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}.
 	 */
+	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
-		final Function<? super Genotype<G>, ? extends C> ff,
-		final Factory<Genotype<G>> genotypeFactory
+		final FitnessEvaluator<G, C> evaluator,
+		final Chromosome<G> chromosome,
+		final Chromosome<G>... chromosomes
 	) {
-		return new Builder<>(genotypeFactory, ff);
+		return builder(evaluator, Genotype.of(chromosome, chromosomes));
 	}
 
 	/**
@@ -736,30 +767,7 @@ public final class Engine<
 		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return new Builder<>(Genotype.of(chromosome, chromosomes), ff);
-	}
-
-	/**
-	 * Create a new evolution {@code Engine.Builder} with the given fitness
-	 * function and problem {@code codec}.
-	 *
-	 * @since 3.2
-	 *
-	 * @param ff the fitness function
-	 * @param codec the problem codec
-	 * @param <T> the fitness function input type
-	 * @param <C> the fitness function result type
-	 * @param <G> the gene type
-	 * @return a new engine builder
-	 * @throws java.lang.NullPointerException if one of the arguments is
-	 *         {@code null}.
-	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> builder(
-		final Function<? super T, ? extends C> ff,
-		final Codec<T, G> codec
-	) {
-		return builder(ff.compose(codec.decoder()), codec.encoding());
+		return builder(ff, Genotype.of(chromosome, chromosomes));
 	}
 
 
@@ -769,184 +777,13 @@ public final class Engine<
 
 
 	/**
-	 * This interface allows to define different strategies for evaluating the
-	 * fitness functions of a given population. <em>Normally</em>, there is no
-	 * need for <em>overriding</em> the default evaluation strategy, but it might
-	 * be necessary if you have performance problems and a <em>batched</em>
-	 * fitness evaluation would solve the problem.
-	 * <p>
-	 * The implementer is free to do the evaluation <em>in place</em>, or create
-	 * new {@link Phenotype} instance and return the newly created one. A simple
-	 * serial evaluator can easily implemented:
-	 *
-	 * <pre>{@code
-	 * final Evaluator<G, C> evaluator = population -> {
-	 *     population.forEach(Phenotype::evaluate);
-	 *     return population.asISeq();
-	 * };
-	 * }</pre>
-	 *
-	 * @implSpec
-	 * The size of the returned, evaluated, phenotype sequence must be exactly
-	 * the size of the input phenotype sequence. It is allowed to return the
-	 * input sequence, after evaluation, as well a newly created one.
-	 *
-	 * @apiNote
-	 * This interface is an <em>advanced</em> {@code Engine} configuration
-	 * feature, which should be only used when there is a performance gain from
-	 * implementing a different evaluation strategy. Another use case is, when
-	 * the fitness value of an individual also depends on the current composition
-	 * of the population.
-	 *
-	 * @see GenotypeEvaluator
-	 * @see Engine.Builder#evaluator(Engine.Evaluator)
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness result type
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 4.2
-	 * @since 4.2
-	 */
-	@FunctionalInterface
-	public static interface Evaluator<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-
-		/**
-		 * Evaluates the fitness values of the given {@code population}. The
-		 * given {@code population} might contain already evaluated individuals.
-		 * It is the responsibility of the implementer to filter out already
-		 * evaluated individuals, if desired.
-		 *
-		 * @param population the population to evaluate
-		 * @return the evaluated population. Implementers are free to return the
-		 *         the input population or a newly created one.
-		 */
-		public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population);
-
-		/**
-		 * Create a new phenotype evaluator from a given genotype {@code evaluator}.
-		 *
-		 * @implNote
-		 * The returned {@link Evaluator} will only forward <em>un</em>-evaluated
-		 * individuals to the given genotype {@code evaluator}. This means, that
-		 * already evaluated individuals are filtered from the population, which
-		 * is then forwarded to the underlying genotype {@code evaluator}.
-		 *
-		 * @param evaluator the genotype evaluator
-		 * @param <G> the gene type
-		 * @param <C> the fitness result type
-		 * @return a <em>normal</em> phenotype evaluator from the given genotype
-		 *         evaluator
-		 * @throws NullPointerException if the given {@code evaluator} is
-		 *         {@code null}
-		 */
-		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-		Evaluator<G, C> of(final GenotypeEvaluator<G, C> evaluator) {
-			requireNonNull(evaluator);
-
-			return population -> {
-				final ISeq<Genotype<G>> genotypes = population.stream()
-					.filter(pt -> !pt.isEvaluated())
-					.map(Phenotype::getGenotype)
-					.collect(ISeq.toISeq());
-
-				if (genotypes.nonEmpty()) {
-					final ISeq<C> results = evaluator.evaluate(
-						genotypes,
-						population.get(0).getFitnessFunction()
-					);
-
-					if (genotypes.size() != results.size()) {
-						throw new IllegalStateException(format(
-							"Expected %d results, but got %d. " +
-							"Check your evaluator function.",
-							genotypes.size(), results.size()
-						));
-					}
-
-					final MSeq<Phenotype<G, C>> evaluated = population.asMSeq();
-					for (int i = 0, j = 0; i < evaluated.length(); ++i) {
-						if (!population.get(i).isEvaluated()) {
-							evaluated.set(
-								i,
-								population.get(i).withFitness(results.get(j++))
-							);
-						}
-					}
-
-					return evaluated.toISeq();
-				} else {
-					return population.asISeq();
-				}
-			};
-		}
-
-	}
-
-	/**
-	 * This interface gives a different possibility in evaluating the fitness
-	 * values of a population. Sometimes it is necessary (mostly for performance
-	 * reason) to calculate the fitness for the whole population at once. This
-	 * interface allows you to do so. A simple serial evaluator can easily
-	 * implemented:
-	 *
-	 * <pre>{@code
-	 * final GenotypeEvaluator<G, C> gte = (g, f) -> g.map(f).asISeq()
-	 * final Evaluator<G, C> evaluator = Evaluator.of(gte);
-	 * }</pre>
-	 *
-	 * @implSpec
-	 * The size of the returned result sequence must be exactly the size of the
-	 * input genotype sequence.
-	 *
-	 * @apiNote
-	 * This interface is an <em>advanced</em> {@code Engine} configuration
-	 * feature, which should be only used when there is a performance gain from
-	 * implementing a different evaluation strategy.
-	 *
-	 * @see Evaluator
-	 * @see Engine.Builder#evaluator(Engine.GenotypeEvaluator)
-	 *
-	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 4.2
-	 * @since 4.2
-	 */
-	@FunctionalInterface
-	public static interface GenotypeEvaluator<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-
-		/**
-		 * Calculate the fitness values for the given sequence of genotypes.
-		 *
-		 * @see Engine.Evaluator#of(Engine.GenotypeEvaluator)
-		 *
-		 * @param genotypes the genotypes to evaluate the fitness value for
-		 * @param function the fitness function
-		 * @return the fitness values for the given {@code genotypes} The length
-		 *         of the fitness result sequence must match with the size of
-		 *         the given {@code genotypes}.
-		 */
-		public ISeq<C> evaluate(
-			final Seq<Genotype<G>> genotypes,
-			final Function<? super Genotype<G>, ? extends C> function
-		);
-
-	}
-
-
-	/**
 	 * Builder class for building GA {@code Engine} instances.
 	 *
 	 * @see Engine
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 4.0
+	 * @version !__version__!
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -956,11 +793,10 @@ public final class Engine<
 	{
 
 		// No default values for this properties.
-		private Function<? super Genotype<G>, ? extends C> _fitnessFunction;
+		private FitnessEvaluator<G, C> _evaluator;
 		private Factory<Genotype<G>> _genotypeFactory;
 
 		// This are the properties which default values.
-		private Function<? super C, ? extends C> _fitnessScaler = a -> a;
 		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
 		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
 		private Alterer<G, C> _alterer = Alterer.of(
@@ -976,44 +812,16 @@ public final class Engine<
 		// Engine execution environment.
 		private Executor _executor = ForkJoinPool.commonPool();
 		private Clock _clock = NanoClock.systemUTC();
-		private Evaluator<G, C> _evaluator;
 
 		private int _individualCreationRetries = 10;
 		private UnaryOperator<EvolutionResult<G, C>> _mapper = r -> r;
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
-			final Function<? super Genotype<G>, ? extends C> fitnessFunction
+			final FitnessEvaluator<G, C> evaluator
 		) {
 			_genotypeFactory = requireNonNull(genotypeFactory);
-			_fitnessFunction = requireNonNull(fitnessFunction);
-		}
-
-		/**
-		 * Set the fitness function of the evolution {@code Engine}.
-		 *
-		 * @param function the fitness function to use in the GA {@code Engine}
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> fitnessFunction(
-			final Function<? super Genotype<G>, ? extends C> function
-		) {
-			_fitnessFunction = requireNonNull(function);
-			return this;
-		}
-
-		/**
-		 * Set the fitness scaler of the evolution {@code Engine}. <i>Default
-		 * value is set to the identity function.</i>
-		 *
-		 * @param scaler the fitness scale to use in the GA {@code Engine}
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> fitnessScaler(
-			final Function<? super C, ? extends C> scaler
-		) {
-			_fitnessScaler = requireNonNull(scaler);
-			return this;
+			_evaluator = requireNonNull(evaluator);
 		}
 
 		/**
@@ -1326,45 +1134,6 @@ public final class Engine<
 		}
 
 		/**
-		 * The phenotype evaluator allows to change the evaluation strategy.
-		 * By default, the population is evaluated concurrently using the
-		 * defined {@link Executor} implementation.
-		 *
-		 * @apiNote
-		 * This is an <em>advanced</em> {@code Engine} configuration feature,
-		 * which should be only used when there is a performance gain from
-		 * implementing a different evaluation strategy.
-		 *
-		 * @since 4.2
-		 *
-		 * @param evaluator the population evaluation strategy
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> evaluator(final Evaluator<G, C> evaluator) {
-			_evaluator = requireNonNull(evaluator);
-			return this;
-		}
-
-		/**
-		 * Setting the <em>genotype</em> evaluator used for evaluating the
-		 * fitness function of the population.
-		 *
-		 * @apiNote
-		 * This is an <em>advanced</em> {@code Engine} configuration feature,
-		 * which should be only used when there is a performance gain from
-		 * implementing a different evaluation strategy.
-		 *
-		 * @since 4.2
-		 *
-		 * @param evaluator the genotype evaluator
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> evaluator(final GenotypeEvaluator<G, C> evaluator) {
-			_evaluator = Evaluator.of(evaluator);
-			return this;
-		}
-
-		/**
 		 * The maximal number of attempt before the {@code Engine} gives up
 		 * creating a valid individual ({@code Phenotype}). <i>Default values is
 		 * set to {@code 10}.</i>
@@ -1415,10 +1184,16 @@ public final class Engine<
 		 * @return an new {@code Engine} instance from the set properties
 		 */
 		public Engine<G, C> build() {
+			if (_evaluator instanceof ConcurrentEvaluator) {
+				_evaluator = ((ConcurrentEvaluator<G, C>)_evaluator)
+					.with(_executor);
+			}
+
 			return new Engine<>(
-				_fitnessFunction,
+				_evaluator instanceof ConcurrentEvaluator
+					? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
+					: _evaluator,
 				_genotypeFactory,
-				_fitnessScaler,
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
@@ -1428,9 +1203,6 @@ public final class Engine<
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
 				_executor,
-				_evaluator != null
-					? _evaluator
-					: new ConcurrentEvaluator<>(_executor),
 				_clock,
 				_individualCreationRetries,
 				_mapper
@@ -1476,28 +1248,6 @@ public final class Engine<
 		 */
 		public Executor getExecutor() {
 			return _executor;
-		}
-
-		/**
-		 * Return the fitness function of the GA engine.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the fitness function
-		 */
-		public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
-			return _fitnessFunction;
-		}
-
-		/**
-		 * Return the fitness scaler of the GA engine.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the fitness scaler
-		 */
-		public Function<? super C, ? extends C> getFitnessScaler() {
-			return _fitnessScaler;
 		}
 
 		/**
@@ -1609,12 +1359,10 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<G, C>(_genotypeFactory, _fitnessFunction)
+			return new Builder<G, C>(_genotypeFactory, _evaluator)
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)
-				.evaluator(_evaluator)
-				.fitnessScaler(_fitnessScaler)
 				.maximalPhenotypeAge(_maximalPhenotypeAge)
 				.offspringFraction(_offspringFraction)
 				.offspringSelector(_offspringSelector)

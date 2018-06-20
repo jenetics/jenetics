@@ -90,11 +90,7 @@ public final class MeanAlterer<
 		);
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
-
-		population.set(
-			individuals[0],
-			pt1.newInstance(Genotype.of(c1), generation)
-		);
+		population.set(individuals[0], Phenotype.of(Genotype.of(c1), generation));
 
 		return 1;
 	}

@@ -132,7 +132,8 @@ public final class AltererResult<
 	 * @throws NullPointerException if the given population is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
+	AltererResult<G, C>
+	of(final ISeq<Phenotype<G, C>> population) {
 		return new AltererResult<>(population, 0);
 	}
 

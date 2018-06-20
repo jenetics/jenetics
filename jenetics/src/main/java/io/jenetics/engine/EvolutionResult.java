@@ -538,7 +538,7 @@ public final class EvolutionResult<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	UnaryOperator<EvolutionResult<G, C>>
 	toUniquePopulation(final Factory<Genotype<G>> factory, final int maxRetries) {
-		requireNonNull(false);
+		requireNonNull(factory);
 
 		return result -> {
 			final Seq<Phenotype<G, C>> population = result.getPopulation();
@@ -557,8 +557,7 @@ public final class EvolutionResult<
 				uniques = result.with(
 					Stream.concat(elements.stream(), genotypes.stream())
 						.limit(population.size())
-						.map(gt -> population.get(0).newInstance(
-							factory.newInstance(), result.getGeneration()))
+						.map(gt -> Phenotype.<G, C>of(factory.newInstance(), result.getGeneration()))
 						.collect(ISeq.toISeq())
 				);
 			}

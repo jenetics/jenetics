@@ -148,7 +148,7 @@ public class Mutator<
 		final Random random
 	) {
 		return mutate(phenotype.getGenotype(), p, random)
-			.map(gt -> phenotype.newInstance(gt, generation));
+			.map(gt -> Phenotype.of(gt, generation));
 	}
 
 	/**
