@@ -37,6 +37,7 @@ public class ConcurrentEvaluatorTest {
 	public void evaluateSerial() {
 		final ISeq<Phenotype<DoubleGene, Double>> phenotypes =
 			Genotype.of(DoubleChromosome.of(0, 1)).instances()
+				.limit(100)
 				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, 1))
 				.collect(ISeq.toISeq());
 

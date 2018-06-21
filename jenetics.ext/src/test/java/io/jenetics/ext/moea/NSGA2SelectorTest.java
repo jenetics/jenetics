@@ -128,8 +128,7 @@ public class NSGA2SelectorTest {
 	private Phenotype<DoubleGene, Vec<double[]>> phenotype() {
 		return Phenotype.of(
 			PROBLEM.codec().encoding().newInstance(),
-			1L,
-			gt -> PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
+			1L
 		);
 	}
 

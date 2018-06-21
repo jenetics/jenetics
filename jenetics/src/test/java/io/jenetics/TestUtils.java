@@ -129,7 +129,7 @@ class TestUtils {
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -159,7 +159,7 @@ class TestUtils {
 			MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, PFF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -202,9 +202,13 @@ class TestUtils {
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
-		return Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), 0, FF
-		).evaluate();
+		return Phenotype.of(
+			Genotype.of(
+				DoubleChromosome.of(DoubleGene.of(value, 0, 10))
+			),
+			0,
+			value
+		);
 	}
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(

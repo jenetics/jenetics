@@ -227,7 +227,9 @@ public final class EvolutionResult<
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
-		return _best.get() != null ? _best.get().getFitness() : null;
+		return _best.get() != null
+			? _best.get().getFitness()
+			: null;
 	}
 
 	/**

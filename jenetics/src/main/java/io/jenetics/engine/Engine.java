@@ -655,7 +655,7 @@ public final class Engine<
 	 *         {@code null}.
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> builder(
+	Builder<G, C> creator(
 		final FitnessEvaluator<G, C> evaluator,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
@@ -679,7 +679,7 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return builder(new ConcurrentEvaluator<>(ff), genotypeFactory);
+		return creator(new ConcurrentEvaluator<>(ff), genotypeFactory);
 	}
 
 	/**
@@ -739,12 +739,12 @@ public final class Engine<
 	 */
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> builder(
+	Builder<G, C> creator(
 		final FitnessEvaluator<G, C> evaluator,
 		final Chromosome<G> chromosome,
 		final Chromosome<G>... chromosomes
 	) {
-		return builder(evaluator, Genotype.of(chromosome, chromosomes));
+		return creator(evaluator, Genotype.of(chromosome, chromosomes));
 	}
 
 	/**

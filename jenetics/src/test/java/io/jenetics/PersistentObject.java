@@ -379,129 +379,129 @@ public class PersistentObject<T> {
 	public static Phenotype<BitGene, Integer> nextPhenotypeBitGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeBitGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextInt())
+		);
 	}
 
 	public static Phenotype<CharacterGene, Integer> nextPhenotypeCharacterGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeCharacterGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextInt())
+		);
 	}
 
 	public static Phenotype<IntegerGene, Integer> nextPhenotypeIntegerGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextInt())
+		);
 	}
 
 	public static Phenotype<IntegerGene, Long> nextPhenotypeIntegerGeneLong() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextLong())
+		);
 	}
 
 	public static Phenotype<IntegerGene, Double> nextPhenotypeIntegerGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeIntegerGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<LongGene, Integer> nextPhenotypeLongGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextInt())
+		);
 	}
 
 	public static Phenotype<LongGene, Long> nextPhenotypeLongGeneLong() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextLong())
+		);
 	}
 
 	public static Phenotype<LongGene, Double> nextPhenotypeLongGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeLongGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<DoubleGene, Integer> nextPhenotypeDoubleGeneInteger() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextInt()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextInt())
+		);
 	}
 
 	public static Phenotype<DoubleGene, Long> nextPhenotypeDoubleGeneLong() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextLong()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			Math.abs(random().nextLong())
+		);
 	}
 
 	public static Phenotype<DoubleGene, Double> nextPhenotypeDoubleGeneDouble() {
 		return Phenotype.of(
 			nextGenotypeDoubleGene(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<EnumGene<Character>, Double> nextPhenotypeEnumGeneCharacterDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneCharacter(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<EnumGene<Integer>, Double> nextPhenotypeEnumGeneIntegerDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneInteger(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<EnumGene<Long>, Double> nextPhenotypeEnumGeneLongDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneLong(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<EnumGene<Float>, Double> nextPhenotypeEnumGeneFloatDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneFloat(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static Phenotype<EnumGene<Double>, Double> nextPhenotypeEnumGeneDoubleDouble() {
 		return Phenotype.of(
 			nextGenotypeEnumGeneDouble(),
-			Math.abs(random().nextInt()), FitnessFunction(random().nextDouble()),
-			FitnessScaler()
-		).evaluate();
+			Math.abs(random().nextInt()),
+			random().nextDouble()
+		);
 	}
 
 	public static <T, R extends Comparable<R>> Function<T, R>
