@@ -100,7 +100,8 @@ public class FitnessThresholdLimitTest {
 	private static Phenotype<DoubleGene, Double> phenotype(final double value) {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0.0, 1000.0))),
-			1
+			1,
+			value
 		);
 	}
 

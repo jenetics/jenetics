@@ -19,16 +19,15 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.math.random.nextASCIIString;
 import static io.jenetics.internal.math.random.nextByte;
 import static io.jenetics.internal.math.random.nextChar;
 import static io.jenetics.internal.math.random.nextShort;
-import static io.jenetics.internal.math.random.nextASCIIString;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -240,7 +239,7 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.of(ISeq.<Integer>of(random()::nextInt, 5));
+		return EnumGene.of(ISeq.of(random()::nextInt, 5));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {
@@ -502,15 +501,6 @@ public class PersistentObject<T> {
 			Math.abs(random().nextInt()),
 			random().nextDouble()
 		);
-	}
-
-	public static <T, R extends Comparable<R>> Function<T, R>
-	FitnessFunction(final R result) {
-		return (Function<T, R> & Serializable)a -> result;
-	}
-
-	public static <T> Function<T, T> FitnessScaler() {
-		return (Function<T, T> & Serializable)a -> a;
 	}
 
 	private static Random random() {
