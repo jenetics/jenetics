@@ -213,6 +213,17 @@ public final class Engine<
 	}
 
 	/**
+	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
+	 * method.
+	 *
+	 * @since 3.1
+	 */
+	@Override
+	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
+		return evolve(start);
+	}
+
+	/**
 	 * Perform one evolution step with the given {@code population} and
 	 * {@code generation}. New phenotypes are created with the fitness function
 	 * and fitness scaler defined by this <em>engine</em>
@@ -257,23 +268,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evaluated =
-			_evaluator.evaluate(start.getPopulation());
-
-		if (start.getPopulation().size() != evaluated.size()) {
-			throw new IllegalStateException(format(
-				"Expected %d individuals, but got %d. " +
-				"Check your evaluator function.",
-				start.getPopulation().size(), evaluated.size()
-			));
-		}
-		if (!evaluated.forAll(Phenotype::isEvaluated)) {
-			throw new IllegalStateException(
-				"Some phenotypes have no assigned fitness value. " +
-				"Check your evaluator function."
-			);
-		}
-
+		final ISeq<Phenotype<G, C>> evaluated = evaluate(start.getPopulation());
 		evaluateTimer.stop();
 
 		// Select the offspring population.
@@ -325,9 +320,8 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> _evaluator.evaluate(pop), _clock)
+			.of(() -> evaluate(pop), _clock)
 			.get();
-
 
 		final EvolutionDurations durations = EvolutionDurations.of(
 			offspring.join().duration,
@@ -347,6 +341,16 @@ public final class Engine<
 			filteredOffspring.join().result.invalidCount +
 			filteredSurvivors.join().result.invalidCount;
 
+		final EvolutionResult<G, C> er = EvolutionResult.of(
+			_optimize,
+			result.result,
+			start.getGeneration(),
+			durations,
+			killCount,
+			invalidCount,
+			alteredOffspring.join().result.getAlterations()
+		);
+
 		return _mapper.apply(
 			EvolutionResult.of(
 				_optimize,
@@ -358,17 +362,6 @@ public final class Engine<
 				alteredOffspring.join().result.getAlterations()
 			)
 		);
-	}
-
-	/**
-	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
-	 * method.
-	 *
-	 * @since 3.1
-	 */
-	@Override
-	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
-		return evolve(start);
 	}
 
 	// Selects the survivors population. A new population object is returned.
@@ -423,6 +416,73 @@ public final class Engine<
 		return phenotype;
 	}
 
+	/* *************************************************************************
+	 * Evaluation methods.
+	 **************************************************************************/
+
+	/**
+	 * Evaluates the fitness function of the given population with the configured
+	 * {@link FitnessEvaluator} of this engine and returns a new population
+	 * with its fitness value assigned.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param population the population to evaluate
+	 * @return a new population with assigned fitness values
+	 * @throws IllegalStateException if the configured fitness function doesn't
+	 *         return a population with the same size as the input population.
+	 *         This exception is also thrown if one of the populations
+	 *         phenotype has no fitness value assigned.
+	 */
+	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+		final ISeq<Phenotype<G, C>> evaluated = _evaluator.evaluate(population);
+
+		if (population.size() != evaluated.size()) {
+			throw new IllegalStateException(format(
+				"Expected %d individuals, but got %d. " +
+					"Check your evaluator function.",
+				population.size(), evaluated.size()
+			));
+		}
+		if (!evaluated.forAll(Phenotype::isEvaluated)) {
+			throw new IllegalStateException(
+				"Some phenotypes have no assigned fitness value. " +
+					"Check your evaluator function."
+			);
+		}
+
+		return evaluated;
+	}
+
+	public EvolutionResult<G, C> evaluate(final EvolutionResult<G, C> result) {
+		final Timer timer = Timer.of(_clock).start();
+		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
+		timer.stop();
+
+		/*
+		final Duration offspringSelectionDuration,
+		final Duration survivorsSelectionDuration,
+		final Duration offspringAlterDuration,
+		final Duration offspringFilterDuration,
+		final Duration survivorFilterDuration,
+		final Duration evaluationDuration,
+		final Duration evolveDuration
+		 */
+
+		/*
+		final EvolutionDurations durations = EvolutionDurations.of(
+			result.getDurations().getOffspringSelectionDuration(),
+			survivors.join().duration,
+			alteredOffspring.join().duration,
+			filteredOffspring.join().duration,
+			filteredSurvivors.join().duration,
+			result.duration.plus(timer.getTime()),
+			timer.stop().getTime()
+		);
+		*/
+
+		return result;
+	}
 
 	/* *************************************************************************
 	 * Evolution Stream/Iterator creation.
@@ -814,7 +874,7 @@ public final class Engine<
 		private Clock _clock = NanoClock.systemUTC();
 
 		private int _individualCreationRetries = 10;
-		private UnaryOperator<EvolutionResult<G, C>> _mapper = r -> r;
+		private UnaryOperator<EvolutionResult<G, C>> _mapper = UnaryOperator.identity();
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,

@@ -42,6 +42,8 @@ final class Timer {
 	private long _start;
 	private long _stop;
 
+	private long _nanos;
+
 	private Timer(final LongSupplier nanoClock) {
 		_nanoClock = requireNonNull(nanoClock);
 	}
@@ -52,6 +54,7 @@ final class Timer {
 	 * @return {@code this} timer, for method chaining
 	 */
 	public Timer start() {
+		_nanos = _stop - _start;
 		_start = _nanoClock.getAsLong();
 		return this;
 	}

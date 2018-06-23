@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
