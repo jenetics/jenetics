@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -50,8 +51,10 @@ import io.jenetics.util.Seq;
  *
  * @implSpec
  * The size of the returned, evaluated, phenotype sequence must be exactly
- * the size of the input phenotype sequence. It is allowed to return the
- * input sequence, after evaluation, as well a newly created one.
+ * the size of the input phenotype sequence and all phenotypes must have a
+ * fitness value assigned ({@code assert population.forAll(Phenotype::isEvaluated);}).
+ * It is allowed to return the input sequence, after evaluation, as well a newly
+ * created one.
  *
  * @param <G> the gene type
  * @param <C> the fitness result type
@@ -78,40 +81,44 @@ public interface FitnessEvaluator<
 	 */
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population);
 
-
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function of
+	 * the population serially in the main thread. Might be useful for testing
+	 * purpose.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param function the fitness function
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new serial fitness evaluator
+	 * @throws NullPointerException if the fitness {@code function} is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	FitnessEvaluator<G, C>
-	sync(final Function<? super Genotype<G>, ? extends C> fitness) {
-		return null;
+	serial(final Function<? super Genotype<G>, ? extends C> function) {
+		return concurrent(function, Runnable::run);
 	}
 
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function of
+	 * the population (concurrently) with the given {@code executor}. This is
+	 * the default evaluator used by the evolution engine.
+	 *
+	 * @param function the fitness function
+	 * @param executor the {@code Executor} used for evaluating the fitness
+	 *        function
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (concurrent) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	FitnessEvaluator<G, C>
-	async(final Function<? super Genotype<G>, ? extends Future<? extends C>> fitness) {
-		return null;
-	}
-
-
-	public static CompletableFuture<Bar> eval(final Object obj) {
-		return CompletableFuture.completedFuture(null);
-	}
-
-	public static void foo() {
-		Function<Object, CompletableFuture<Bar>> f = FitnessEvaluator::eval;
-
-		FitnessEvaluator<DoubleGene, Foo> e = async(f);
-	}
-
-
-	static class Foo implements Comparable<Foo> {
-		@Override
-		public int compareTo(Foo o) {
-			return 0;
-		}
-	}
-
-	static class Bar extends Foo {
-
+	FitnessEvaluator<G, C> concurrent(
+		final Function<? super Genotype<G>, ? extends C> function,
+		final Executor executor
+	) {
+		return new ConcurrentEvaluator<>(function, executor);
 	}
 
 }
