@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static io.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
@@ -141,7 +142,7 @@ public final class Engine<
 	private final long _maximalPhenotypeAge;
 
 	// Execution context for concurrent execution of evolving steps.
-	private final TimedExecutor _executor;
+	private final Executor _executor;
 	private final Clock _clock;
 
 	// Additional parameters.
@@ -199,7 +200,7 @@ public final class Engine<
 		_survivorsCount = require.nonNegative(survivorsCount);
 		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
 
-		_executor = new TimedExecutor(requireNonNull(executor));
+		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
 
 		if (individualCreationRetries < 0) {
@@ -264,104 +265,101 @@ public final class Engine<
 	 *         {@code start} is {@code null}
 	 */
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
-		final Timer timer = Timer.of(_clock).start();
+		final EvolutionTiming timing = new EvolutionTiming(_clock);
+		timing.evolve.start();
 
 		// Initial evaluation of the population.
-		final Timer evaluateTimer = Timer.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evaluated = evaluate(start.getPopulation());
-		evaluateTimer.stop();
+		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
+			evaluate(start.getPopulation())
+		);
 
 		// Select the offspring population.
-		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> offspring =
-			_executor.async(() ->
-				selectOffspring(evaluated),
-				_clock
+		final CompletableFuture<ISeq<Phenotype<G, C>>> offspring =
+			supplyAsync(() ->
+				timing.offspringSelection.timing(() ->
+					selectOffspring(evaluated)
+				),
+				_executor
 			);
 
 		// Select the survivor population.
-		final CompletableFuture<TimedResult<ISeq<Phenotype<G, C>>>> survivors =
-			_executor.async(() ->
-				selectSurvivors(evaluated),
-				_clock
+		final CompletableFuture<ISeq<Phenotype<G, C>>> survivors =
+			supplyAsync(() ->
+				timing.survivorsSelection.timing(() ->
+					selectSurvivors(evaluated)
+				),
+				_executor
 			);
 
 		// Altering the offspring population.
-		final CompletableFuture<TimedResult<AltererResult<G, C>>> alteredOffspring =
-			_executor.thenApply(offspring, p ->
-				_alterer.alter(p.result, start.getGeneration()),
-				_clock
+		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
+			offspring.thenApplyAsync(off ->
+				timing.offspringAlter.timing(() ->
+					_alterer.alter(off, start.getGeneration())
+				),
+				_executor
 			);
 
 		// Filter and replace invalid and old survivor individuals.
-		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredSurvivors =
-			_executor.thenApply(survivors, pop ->
-				filter(pop.result, start.getGeneration()),
-				_clock
+		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
+			survivors.thenApplyAsync(sur ->
+				timing.survivorFilter.timing(() ->
+					filter(sur, start.getGeneration())
+				),
+				_executor
 			);
 
 		// Filter and replace invalid and old offspring individuals.
-		final CompletableFuture<TimedResult<FilterResult<G, C>>> filteredOffspring =
-			_executor.thenApply(
-				alteredOffspring,
-				pop -> filter(
-					pop.result.getPopulation(),
-					start.getGeneration()
+		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
+			alteredOffspring.thenApplyAsync(off ->
+				timing.offspringFilter.timing(() ->
+					filter(off.getPopulation(), start.getGeneration())
 				),
-				_clock
+				_executor
 			);
 
 		// Combining survivors and offspring to the new population.
 		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
-			filteredSurvivors.thenCombineAsync(filteredOffspring, (s, o) ->
-					ISeq.of(s.result.population.append(o.result.population)),
-				_executor.get()
+			filteredSurvivors.thenCombineAsync(
+				filteredOffspring,
+				(s, o) -> ISeq.of(s.population.append(o.population)),
+				_executor
 			);
 
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
-		final TimedResult<ISeq<Phenotype<G, C>>> result = TimedResult
-			.of(() -> evaluate(pop), _clock)
-			.get();
-
-		final EvolutionDurations durations = EvolutionDurations.of(
-			offspring.join().duration,
-			survivors.join().duration,
-			alteredOffspring.join().duration,
-			filteredOffspring.join().duration,
-			filteredSurvivors.join().duration,
-			result.duration.plus(evaluateTimer.getTime()),
-			timer.stop().getTime()
+		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
+			evaluate(pop)
 		);
 
 		final int killCount =
-			filteredOffspring.join().result.killCount +
-			filteredSurvivors.join().result.killCount;
+			filteredOffspring.join().killCount +
+			filteredSurvivors.join().killCount;
 
 		final int invalidCount =
-			filteredOffspring.join().result.invalidCount +
-			filteredSurvivors.join().result.invalidCount;
+			filteredOffspring.join().invalidCount +
+			filteredSurvivors.join().invalidCount;
 
-		final EvolutionResult<G, C> er = EvolutionResult.of(
+		final int alterationCount = alteredOffspring.join().getAlterations();
+
+		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,
-			result.result,
+			result,
 			start.getGeneration(),
-			durations,
+			timing.toDurations(),
 			killCount,
 			invalidCount,
-			alteredOffspring.join().result.getAlterations()
+			alterationCount
 		);
+		if (!UnaryOperator.identity().equals(_mapper)) {
+			final EvolutionResult<G, C> mapped = _mapper.apply(er);
+			er = er.with(timing.evaluation.timing(() ->
+				evaluate(mapped.getPopulation())
+			));
+		}
 
-		return _mapper.apply(
-			EvolutionResult.of(
-				_optimize,
-				result.result,
-				start.getGeneration(),
-				durations,
-				killCount,
-				invalidCount,
-				alteredOffspring.join().result.getAlterations()
-			)
-		);
+		timing.evolve.stop();
+		return er.with(timing.toDurations());
 	}
 
 	// Selects the survivors population. A new population object is returned.
@@ -455,9 +453,9 @@ public final class Engine<
 	}
 
 	public EvolutionResult<G, C> evaluate(final EvolutionResult<G, C> result) {
-		final Timer timer = Timer.of(_clock).start();
+		final Timing timing = Timing.of(_clock).start();
 		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
-		timer.stop();
+		timing.stop();
 
 		/*
 		final Duration offspringSelectionDuration,
@@ -645,7 +643,7 @@ public final class Engine<
 	 * @return the executor used for performing the evolution steps
 	 */
 	public Executor getExecutor() {
-		return _executor.get();
+		return _executor;
 	}
 
 
@@ -683,7 +681,7 @@ public final class Engine<
 		return new Builder<G, C>(_genotypeFactory, _evaluator)
 			.alterers(_alterer)
 			.clock(_clock)
-			.executor(_executor.get())
+			.executor(_executor)
 			.maximalPhenotypeAge(_maximalPhenotypeAge)
 			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
 			.offspringSelector(_offspringSelector)

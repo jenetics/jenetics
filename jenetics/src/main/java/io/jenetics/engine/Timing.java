@@ -33,7 +33,7 @@ import io.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
 final class Timing {
 
@@ -44,8 +44,9 @@ final class Timing {
 
 	private final LongSupplier _nanoClock;
 
-	private long _start;
-	private long _stop;
+	private long _start = Long.MIN_VALUE;
+	private long _stop = Long.MIN_VALUE;
+	private long _nanos = 0;
 
 	private Timing(final LongSupplier nanoClock) {
 		_nanoClock = requireNonNull(nanoClock);
@@ -77,7 +78,18 @@ final class Timing {
 	 */
 	Timing stop() {
 		_stop = _nanoClock.getAsLong();
+		_nanos += _stop - _start;
+		_start = Long.MIN_VALUE;
+		_stop = Long.MIN_VALUE;
 		return this;
+	}
+
+	boolean isStarted() {
+		return _start != Long.MIN_VALUE;
+	}
+
+	boolean isStopped() {
+		return _stop != Long.MIN_VALUE;
 	}
 
 	/**
@@ -86,12 +98,10 @@ final class Timing {
 	 *
 	 * @return the duration between two {@code start} and {@code stop} calls
 	 */
-	Duration getTime() {
-		return Duration.ofNanos(timeNanos());
-	}
-
-	long timeNanos() {
-		return _stop - _start;
+	Duration duration() {
+		return isStarted()
+			? Duration.ofNanos(_nanos + _nanoClock.getAsLong() - _start)
+			: Duration.ofNanos(_nanos);
 	}
 
 	/**
