@@ -128,7 +128,7 @@ public final class Engine<
 {
 
 	// Problem definition.
-	private final FitnessEvaluator<G, C> _evaluator;
+	private final Evaluator<G, C> _evaluator;
 	private final Factory<Genotype<G>> _genotypeFactory;
 
 	// Evolution parameters.
@@ -173,7 +173,7 @@ public final class Engine<
 	 *         than one.
 	 */
 	Engine(
-		final FitnessEvaluator<G, C> evaluator,
+		final Evaluator<G, C> evaluator,
 		final Factory<Genotype<G>> genotypeFactory,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
@@ -420,13 +420,13 @@ public final class Engine<
 
 	/**
 	 * Evaluates the fitness function of the given population with the configured
-	 * {@link FitnessEvaluator} of this engine and returns a new population
+	 * {@link Evaluator} of this engine and returns a new population
 	 * with its fitness value assigned.
 	 *
 	 * @since !__version__!
 	 *
-	 * @see FitnessEvaluator
-	 * @see FitnessEvaluator#evaluate(Seq)
+	 * @see Evaluator
+	 * @see Evaluator#evaluate(Seq)
 	 *
 	 * @param population the population to evaluate
 	 * @return a new population with assigned fitness values
@@ -700,7 +700,7 @@ public final class Engine<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
 		final Factory<Genotype<G>> genotypeFactory,
-		final FitnessEvaluator<G, C> evaluator
+		final Evaluator<G, C> evaluator
 	) {
 		return new Builder<>(genotypeFactory, evaluator);
 	}
@@ -811,7 +811,7 @@ public final class Engine<
 	{
 
 		// No default values for this properties.
-		private FitnessEvaluator<G, C> _evaluator;
+		private Evaluator<G, C> _evaluator;
 		private Factory<Genotype<G>> _genotypeFactory;
 
 		// This are the properties which default values.
@@ -836,7 +836,7 @@ public final class Engine<
 
 		private Builder(
 			final Factory<Genotype<G>> genotypeFactory,
-			final FitnessEvaluator<G, C> evaluator
+			final Evaluator<G, C> evaluator
 		) {
 			_genotypeFactory = requireNonNull(genotypeFactory);
 			_evaluator = requireNonNull(evaluator);

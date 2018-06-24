@@ -19,12 +19,9 @@
  */
 package io.jenetics.engine;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
@@ -64,7 +61,7 @@ import io.jenetics.util.Seq;
  * @since 4.2
  */
 @FunctionalInterface
-public interface FitnessEvaluator<
+public interface Evaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
@@ -95,7 +92,7 @@ public interface FitnessEvaluator<
 	 * @throws NullPointerException if the fitness {@code function} is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	FitnessEvaluator<G, C>
+	Evaluator<G, C>
 	serial(final Function<? super Genotype<G>, ? extends C> function) {
 		return concurrent(function, Runnable::run);
 	}
@@ -114,7 +111,7 @@ public interface FitnessEvaluator<
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	FitnessEvaluator<G, C> concurrent(
+	Evaluator<G, C> concurrent(
 		final Function<? super Genotype<G>, ? extends C> function,
 		final Executor executor
 	) {

@@ -44,7 +44,7 @@ final class ConcurrentEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements FitnessEvaluator<G, C>
+	implements Evaluator<G, C>
 {
 
 	private final Function<? super Genotype<G>, ? extends C> _function;

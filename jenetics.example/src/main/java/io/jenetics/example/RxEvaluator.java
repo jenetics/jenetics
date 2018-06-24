@@ -33,7 +33,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.FitnessEvaluator;
+import io.jenetics.engine.Evaluator;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
@@ -50,7 +50,7 @@ public final class RxEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements FitnessEvaluator<G, C>
+	implements Evaluator<G, C>
 {
 
 	private final Function<? super Genotype<G>, Observable<C>> _fitness;

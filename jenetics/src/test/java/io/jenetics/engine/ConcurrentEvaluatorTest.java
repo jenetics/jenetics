@@ -43,7 +43,7 @@ public class ConcurrentEvaluatorTest {
 
 		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
 
-		final FitnessEvaluator<DoubleGene, Double> evaluator =
+		final Evaluator<DoubleGene, Double> evaluator =
 			new ConcurrentEvaluator<>(gt -> gt.getGene().doubleValue(), Runnable::run);
 
 		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.evaluate(phenotypes);
