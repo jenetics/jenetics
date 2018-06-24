@@ -58,10 +58,6 @@ final class ConcurrentEvaluator<
 		_executor = requireNonNull(executor);
 	}
 
-	ConcurrentEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
-		this(function, ForkJoinPool.commonPool());
-	}
-
 	ConcurrentEvaluator<G, C> with(final Executor executor) {
 		return new ConcurrentEvaluator<>(_function, executor);
 	}

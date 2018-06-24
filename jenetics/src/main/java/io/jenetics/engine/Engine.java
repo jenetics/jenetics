@@ -23,6 +23,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
+import static java.util.concurrent.ForkJoinPool.commonPool;
 import static io.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
@@ -30,7 +31,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -722,7 +722,7 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return builder(genotypeFactory, new ConcurrentEvaluator<>(ff));
+		return builder(genotypeFactory, Evaluator.concurrent(ff, commonPool()));
 	}
 
 	/**
@@ -828,7 +828,7 @@ public final class Engine<
 		private long _maximalPhenotypeAge = 70;
 
 		// Engine execution environment.
-		private Executor _executor = ForkJoinPool.commonPool();
+		private Executor _executor = commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
 		private int _individualCreationRetries = 10;
