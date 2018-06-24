@@ -457,29 +457,11 @@ public final class Engine<
 		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
 		timing.stop();
 
-		/*
-		final Duration offspringSelectionDuration,
-		final Duration survivorsSelectionDuration,
-		final Duration offspringAlterDuration,
-		final Duration offspringFilterDuration,
-		final Duration survivorFilterDuration,
-		final Duration evaluationDuration,
-		final Duration evolveDuration
-		 */
-
-		/*
-		final EvolutionDurations durations = EvolutionDurations.of(
-			result.getDurations().getOffspringSelectionDuration(),
-			survivors.join().duration,
-			alteredOffspring.join().duration,
-			filteredOffspring.join().duration,
-			filteredSurvivors.join().duration,
-			result.duration.plus(timer.getTime()),
-			timer.stop().getTime()
-		);
-		*/
-
-		return result;
+		return result
+			.with(evaluated)
+			.with(result.getDurations()
+				.plusEvaluation(timing.duration())
+				.plusEvolve(timing.duration()));
 	}
 
 	/* *************************************************************************
