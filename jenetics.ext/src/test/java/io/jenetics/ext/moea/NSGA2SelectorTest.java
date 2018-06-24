@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
@@ -53,7 +54,7 @@ public class NSGA2SelectorTest {
 			)
 		);
 
-	//@Test //TODO Fix
+	@Test
 	public void selectMax() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
 			NSGA2Selector.ofVec();
@@ -70,7 +71,7 @@ public class NSGA2SelectorTest {
 		selected.stream().limit(100)
 			.map(Phenotype::getFitness)
 			.forEach(f -> System.out.println(f.data()[0] + " " + f.data()[1]));
-			*/
+		*/
 
 		final double mean = selected.stream()
 			.map(Phenotype::getFitness)
@@ -88,7 +89,7 @@ public class NSGA2SelectorTest {
 		);
 	}
 
-	//@Test //TODO Fix
+	@Test
 	public void selectMin() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
 			NSGA2Selector.ofVec();
@@ -126,9 +127,11 @@ public class NSGA2SelectorTest {
 	}
 
 	private Phenotype<DoubleGene, Vec<double[]>> phenotype() {
+		final Genotype<DoubleGene> gt = PROBLEM.codec().encoding().newInstance();
 		return Phenotype.of(
-			PROBLEM.codec().encoding().newInstance(),
-			1L
+			gt,
+			1L,
+			PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
 		);
 	}
 

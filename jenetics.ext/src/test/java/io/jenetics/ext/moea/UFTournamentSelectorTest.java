@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
@@ -52,7 +53,7 @@ public class UFTournamentSelectorTest {
 		)
 	);
 
-	//@Test //TODO Fix
+	@Test
 	public void selectMax() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
 			UFTournamentSelector.ofVec();
@@ -87,7 +88,7 @@ public class UFTournamentSelectorTest {
 		);
 	}
 
-	//@Test //TODO Fix
+	@Test
 	public void selectMin() {
 		final Selector<DoubleGene, Vec<double[]>> selector =
 			UFTournamentSelector.ofVec();
@@ -118,9 +119,11 @@ public class UFTournamentSelectorTest {
 	}
 
 	private Phenotype<DoubleGene, Vec<double[]>> phenotype() {
+		final Genotype<DoubleGene> gt = PROBLEM.codec().encoding().newInstance();
 		return Phenotype.of(
-			PROBLEM.codec().encoding().newInstance(),
-			1L
+			gt,
+			1L,
+			PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
 		);
 	}
 
