@@ -81,7 +81,7 @@ public final class RxEvaluator<
 			Genotype.of(DoubleChromosome.of(0, 1));
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.creator(new RxEvaluator<DoubleGene, Double>(RxEvaluator::fitness), gtf)
+			.builder(gtf, new RxEvaluator<DoubleGene, Double>(RxEvaluator::fitness))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
