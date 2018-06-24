@@ -306,8 +306,7 @@ public final class EvolutionResult<
 			hash(_durations,
 			hash(_killCount,
 			hash(_invalidCount,
-			hash(_alterCount,
-			hash(getBestFitness())))))))));
+			hash(_alterCount))))))));
 	}
 
 	@Override
@@ -329,9 +328,7 @@ public final class EvolutionResult<
 			Objects.equals(_invalidCount,
 				((EvolutionResult)obj)._invalidCount) &&
 			Objects.equals(_alterCount,
-				((EvolutionResult)obj)._alterCount) &&
-			Objects.equals(getBestFitness(),
-				((EvolutionResult)obj).getBestFitness());
+				((EvolutionResult)obj)._alterCount);
 	}
 
 
