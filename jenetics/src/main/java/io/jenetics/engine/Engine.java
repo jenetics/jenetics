@@ -425,6 +425,9 @@ public final class Engine<
 	 *
 	 * @since !__version__!
 	 *
+	 * @see FitnessEvaluator
+	 * @see FitnessEvaluator#evaluate(Seq)
+	 *
 	 * @param population the population to evaluate
 	 * @return a new population with assigned fitness values
 	 * @throws IllegalStateException if the configured fitness function doesn't
@@ -452,17 +455,17 @@ public final class Engine<
 		return evaluated;
 	}
 
-	public EvolutionResult<G, C> evaluate(final EvolutionResult<G, C> result) {
-		final Timing timing = Timing.of(_clock).start();
-		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
-		timing.stop();
-
-		return result
-			.with(evaluated)
-			.with(result.getDurations()
-				.plusEvaluation(timing.duration())
-				.plusEvolve(timing.duration()));
-	}
+//	public EvolutionResult<G, C> evaluate(final EvolutionResult<G, C> result) {
+//		final Timing timing = Timing.of(_clock).start();
+//		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
+//		timing.stop();
+//
+//		return result
+//			.with(evaluated)
+//			.with(result.getDurations()
+//				.plusEvaluation(timing.duration())
+//				.plusEvolve(timing.duration()));
+//	}
 
 	/* *************************************************************************
 	 * Evolution Stream/Iterator creation.

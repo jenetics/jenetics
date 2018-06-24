@@ -47,30 +47,30 @@ final class ConcurrentEvaluator<
 	implements FitnessEvaluator<G, C>
 {
 
-	private final Function<? super Genotype<G>, ? extends C> _fitness;
+	private final Function<? super Genotype<G>, ? extends C> _function;
 	private final Executor _executor;
 
 	ConcurrentEvaluator(
-		final Function<? super Genotype<G>, ? extends C> fitness,
+		final Function<? super Genotype<G>, ? extends C> function,
 		final Executor executor
 	) {
-		_fitness = requireNonNull(fitness);
+		_function = requireNonNull(function);
 		_executor = requireNonNull(executor);
 	}
 
-	ConcurrentEvaluator(final Function<? super Genotype<G>, ? extends C> fitness) {
-		this(fitness, ForkJoinPool.commonPool());
+	ConcurrentEvaluator(final Function<? super Genotype<G>, ? extends C> function) {
+		this(function, ForkJoinPool.commonPool());
 	}
 
 	ConcurrentEvaluator<G, C> with(final Executor executor) {
-		return new ConcurrentEvaluator<>(_fitness, executor);
+		return new ConcurrentEvaluator<>(_function, executor);
 	}
 
 	@Override
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
 		final ISeq<PhenotypeFitness<G, C>> evaluate = population.stream()
 			.filter(Phenotype::nonEvaluated)
-			.map(pt -> new PhenotypeFitness<>(pt, _fitness))
+			.map(pt -> new PhenotypeFitness<>(pt, _function))
 			.collect(ISeq.toISeq());
 
 		final ISeq<Phenotype<G, C>> result;

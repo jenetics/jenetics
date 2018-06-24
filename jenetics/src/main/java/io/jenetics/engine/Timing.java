@@ -66,7 +66,7 @@ final class Timing {
 	 *
 	 * @return {@code this} timer, for method chaining
 	 */
-	Timing start() {
+	synchronized Timing start() {
 		_start = _nanoClock.getAsLong();
 		return this;
 	}
@@ -76,7 +76,7 @@ final class Timing {
 	 *
 	 * @return {@code this} timer, for method chaining
 	 */
-	Timing stop() {
+	synchronized Timing stop() {
 		_stop = _nanoClock.getAsLong();
 		_nanos += _stop - _start;
 		_start = Long.MIN_VALUE;
@@ -84,11 +84,11 @@ final class Timing {
 		return this;
 	}
 
-	boolean isStarted() {
+	private boolean isStarted() {
 		return _start != Long.MIN_VALUE;
 	}
 
-	boolean isStopped() {
+	private boolean isStopped() {
 		return _stop != Long.MIN_VALUE;
 	}
 
@@ -98,7 +98,7 @@ final class Timing {
 	 *
 	 * @return the duration between two {@code start} and {@code stop} calls
 	 */
-	Duration duration() {
+	synchronized Duration duration() {
 		return isStarted()
 			? Duration.ofNanos(_nanos + _nanoClock.getAsLong() - _start)
 			: Duration.ofNanos(_nanos);
