@@ -21,15 +21,19 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Gene;
@@ -546,21 +550,29 @@ public final class EvolutionResult<
 		return result -> {
 			final Seq<Phenotype<G, C>> population = result.getPopulation();
 			final Seq<Genotype<G>> genotypes = result.getGenotypes();
-			final Set<Genotype<G>> elements = new HashSet<>(genotypes.asList());
+			final Map<Genotype<G>, Phenotype<G, C>> elements =
+				population.stream()
+					.collect(toMap(
+						Phenotype::getGenotype,
+						Function.identity(),
+						(a, b) -> a));
 
 			EvolutionResult<G, C> uniques = result;
 			if (elements.size() < population.size()) {
 				int retries = 0;
 				while (elements.size() < population.size() && retries < maxRetries) {
-					if (!elements.add(factory.newInstance())) {
+					final Genotype<G> gt = factory.newInstance();
+					final Phenotype<G, C> pt = elements
+						.put(gt, Phenotype.of(gt, result.getGeneration()));
+
+					if (pt != null) {
 						++retries;
 					}
 				}
 
 				uniques = result.with(
-					Stream.concat(elements.stream(), genotypes.stream())
+					Stream.concat(elements.values().stream(), population.stream())
 						.limit(population.size())
-						.map(gt -> Phenotype.<G, C>of(factory.newInstance(), result.getGeneration()))
 						.collect(ISeq.toISeq())
 				);
 			}
@@ -576,6 +588,19 @@ public final class EvolutionResult<
 			getGeneration(),
 			getTotalGenerations(),
 			getDurations(),
+			getKillCount(),
+			getInvalidCount(),
+			getAlterCount()
+		);
+	}
+
+	EvolutionResult<G, C> with(final EvolutionDurations durations) {
+		return EvolutionResult.of(
+			getOptimize(),
+			getPopulation(),
+			getGeneration(),
+			getTotalGenerations(),
+			durations,
 			getKillCount(),
 			getInvalidCount(),
 			getAlterCount()
