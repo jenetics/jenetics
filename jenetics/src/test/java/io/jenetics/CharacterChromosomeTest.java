@@ -50,7 +50,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 			final CharacterChromosome chromosome = CharacterChromosome.of(characters, 5000);
 
 			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
-			chromosome.toSeq().stream()
+			chromosome.stream()
 				.map(g -> Long.valueOf(g.getAllele().toString()))
 				.forEach(histogram);
 

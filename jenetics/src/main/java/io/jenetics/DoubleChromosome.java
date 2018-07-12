@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
@@ -40,7 +42,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 4.3
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -136,6 +138,18 @@ public class DoubleChromosome
 	}
 
 	/**
+	 * Returns a sequential stream of the alleles with this chromosome as its
+	 * source.
+	 *
+	 * @since 4.3
+	 *
+	 * @return a sequential stream of alleles
+	 */
+	public DoubleStream doubleStream() {
+		return IntStream.range(0, length()).mapToDouble(this::doubleValue);
+	}
+
+	/**
 	 * Returns an double array containing all of the elements in this chromosome
 	 * in proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
@@ -190,7 +204,7 @@ public class DoubleChromosome
 	/**
 	 * Create a new {@code DoubleChromosome} with the given genes.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.

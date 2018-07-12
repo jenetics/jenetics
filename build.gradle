@@ -63,6 +63,11 @@ subprojects { Project prj ->
 }
 
 allprojects { Project prj ->
+	repositories {
+		mavenCentral()
+		jcenter()
+	}
+
 	if (prj.plugins.hasPlugin('java')) {
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion

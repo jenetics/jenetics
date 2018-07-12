@@ -134,7 +134,10 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 			: _valid;
 
 		if (valid == null) {
-			final ISeq<A> alleles = toSeq().map(Gene::getAllele);
+			final ISeq<A> alleles = stream()
+				.map(Gene::getAllele)
+				.collect(ISeq.toISeq());
+
 			valid = _alleleSeqValidator.test(alleles) &&
 				alleles.forAll(_alleleValidator);
 		}

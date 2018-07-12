@@ -47,7 +47,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.3
  */
 public class CharacterChromosome
 	extends
@@ -221,7 +221,7 @@ public class CharacterChromosome
 	 * Create a new chromosome with the {@code validCharacters} char set as
 	 * valid characters.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param validCharacters the valid characters for this chromosome.
 	 * @param lengthRange the allowed length range of the chromosome.
@@ -260,7 +260,7 @@ public class CharacterChromosome
 	 * Create a new chromosome with the {@code validCharacters} char set as
 	 * valid characters.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param validCharacters the valid characters for this chromosome.
 	 * @param length the {@code length} of the new chromosome.

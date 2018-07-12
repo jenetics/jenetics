@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
@@ -39,7 +40,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version !__version__!
+ * @version 4.3
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
@@ -139,6 +140,18 @@ public class IntegerChromosome
 	}
 
 	/**
+	 * Returns a sequential stream of the alleles with this chromosome as its
+	 * source.
+	 *
+	 * @since 4.3
+	 *
+	 * @return a sequential stream of alleles
+	 */
+	public IntStream intStream() {
+		return IntStream.range(0, length()).map(this::intValue);
+	}
+
+	/**
 	 * Returns an int array containing all of the elements in this chromosome
 	 * in proper sequence.  If the chromosome fits in the specified array, it is
 	 * returned therein. Otherwise, a new array is allocated with the length of
@@ -193,7 +206,7 @@ public class IntegerChromosome
 	/**
 	 * Create a new {@code IntegerChromosome} with the given genes.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
