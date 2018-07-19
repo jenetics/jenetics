@@ -17,47 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.prog.op;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import org.testng.annotations.Test;
+
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.util.TreeRewriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-public class TreeRewriter {
+public class MaxExprRewriteRuleTest {
 
-	public static interface Rule<V> {
+	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL,
+		MathOp.DIV
+	);
 
-		public boolean matches(final TreeNode<V> node);
+	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+		Var.of("x", 0),
+		Var.of("y", 1),
+		Var.of("z", 2),
+		Const.of(1.0),
+		Const.of(2.0)
+	);
 
-		public void rewrite(final TreeNode<V> node);
+	@Test
+	public void X_SUB_X() {
+		final MathExpr expr = new MathExpr(Program.of(5, OPERATIONS, TERMINALS));
+		System.out.println(expr);
 
-	}
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
+		TreeRewriter.rewrite(tree, MathExprRewriteRule.X_SUB_X);
 
-	public static <V>
-	int rewrite(final TreeNode<V> node, final List<Rule<V>> rules) {
-		if (node.isLeaf()) {
-			return 0;
-		} else {
-			final Optional<Rule<V>> simplifier= rules.stream()
-				.filter(s -> s.matches(node))
-				.findFirst();
-
-			simplifier.ifPresent(r -> r.rewrite(node));
-			return node.childStream()
-				.mapToInt(child -> rewrite(child, rules))
-				.sum();
-		}
-	}
-
-	@SafeVarargs
-	public static <V>
-	int rewrite(final TreeNode<V> node, final Rule<V>... rules) {
-		return rewrite(node, Arrays.asList(rules));
+		System.out.println(new MathExpr(tree));
 	}
 
 }
