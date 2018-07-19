@@ -31,9 +31,9 @@ public class TreeRewriter {
 
 	public static interface Rule<V> {
 
-		public boolean matches(final TreeNode<V> tree);
+		public boolean matches(final TreeNode<V> node);
 
-		public void rewrite(final TreeNode<V> tree);
+		public void rewrite(final TreeNode<V> node);
 
 	}
 

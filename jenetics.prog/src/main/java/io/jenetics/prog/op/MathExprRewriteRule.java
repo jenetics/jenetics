@@ -26,13 +26,14 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.util.TreeRewriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since 4.1
  */
-enum MathExprRewriteRule {
+enum MathExprRewriteRule implements TreeRewriter.Rule<Op<Double>> {
 
 	X_SUB_X {
 		@Override
@@ -41,7 +42,7 @@ enum MathExprRewriteRule {
 				node.getChild(0).equals(node.getChild(1));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			node.removeAllChildren();
 			node.setValue(Const.of(0.0));
 		}
@@ -54,7 +55,7 @@ enum MathExprRewriteRule {
 				node.getChild(0).equals(node.getChild(1));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = node.getChild(0);
 
 			node.removeAllChildren();
@@ -71,7 +72,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 0.0);
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = node.getChild(0);
 
 			node.removeAllChildren();
@@ -90,7 +91,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 0.0));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = equals(node, 0, 0.0)
 				? node.getChild(1)
 				: node.getChild(0);
@@ -110,7 +111,7 @@ enum MathExprRewriteRule {
 				node.getChild(0).equals(node.getChild(1));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			node.removeAllChildren();
 			node.setValue(Const.of(1.0));
 		}
@@ -125,7 +126,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 0.0));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			node.removeAllChildren();
 			node.setValue(Const.of(0.0));
 		}
@@ -139,7 +140,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 1.0));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = equals(node, 0, 1.0)
 				? node.getChild(1)
 				: node.getChild(0);
@@ -159,7 +160,7 @@ enum MathExprRewriteRule {
 				node.getChild(0).equals(node.getChild(1));
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = node.getChild(0);
 
 			node.removeAllChildren();
@@ -177,7 +178,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 0.0);
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			node.removeAllChildren();
 			node.setValue(Const.of(1.0));
 		}
@@ -191,7 +192,7 @@ enum MathExprRewriteRule {
 				equals(node, 1, 1.0);
 		}
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final TreeNode<Op<Double>> sub = node.getChild(0);
 
 			node.removeAllChildren();
@@ -212,7 +213,7 @@ enum MathExprRewriteRule {
 		}
 
 		@Override
-		public void simplify(final TreeNode<Op<Double>> node) {
+		public void rewrite(final TreeNode<Op<Double>> node) {
 			final Double[] args = node.childStream()
 				.map(child -> ((Const<Double>)child.getValue()).value())
 				.toArray(Double[]::new);
@@ -234,15 +235,11 @@ enum MathExprRewriteRule {
 			.filter(s -> s.matches(node))
 			.findFirst();
 
-		simplifier.ifPresent(s -> s.simplify(node));
+		simplifier.ifPresent(s -> s.rewrite(node));
 		return simplifier.isPresent() | node.childStream()
 			.mapToInt(child -> _prune(child) ? 1 : 0)
 			.sum() > 0;
 	}
-
-	abstract boolean matches(final TreeNode<Op<Double>> node);
-
-	abstract public void simplify(final TreeNode<Op<Double>> node);
 
 	static boolean equals(
 		final Tree<? extends Op<Double>, ?> node,
