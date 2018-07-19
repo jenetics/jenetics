@@ -29,10 +29,10 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
-enum MathExprSimplifier {
+enum MathExprRewriteRule {
 
 	X_SUB_X {
 		@Override
@@ -230,7 +230,7 @@ enum MathExprSimplifier {
 
 	private static boolean
 	_prune(final TreeNode<Op<Double>> node) {
-		final Optional<MathExprSimplifier> simplifier= Stream.of(values())
+		final Optional<MathExprRewriteRule> simplifier= Stream.of(values())
 			.filter(s -> s.matches(node))
 			.findFirst();
 
