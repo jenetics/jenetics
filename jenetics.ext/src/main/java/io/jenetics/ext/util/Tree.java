@@ -847,6 +847,73 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 	/* *************************************************************************
+	 * 'toString' methods
+	 **************************************************************************/
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toParenthesesString()
+	 *
+	 * @param mapper the {@code mapper} which converts the tree value to a string
+	 * @return the string representation of the given tree
+	 */
+	public default String
+	toParenthesesString(final Function<? super V, String> mapper) {
+		requireNonNull(mapper);
+		return Trees.toParenthesesString(Trees.<V, T>self(this), mapper);
+	}
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toParenthesesString(Function)
+	 *
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the {@code mapper} is {@code null}
+	 */
+	public default String toParenthesesString() {
+		return toParenthesesString(Objects::toString);
+	}
+
+
+	/* *************************************************************************
 	 * Static helper methods.
 	 **************************************************************************/
 
@@ -929,75 +996,11 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
 	 *
-	 * @deprecated Use {@link #toParenthesesString(Tree)} instead
+	 * @deprecated Use {@link #toParenthesesString()} instead
 	 */
 	@Deprecated
-	public static String toCompactString(final Tree<?, ?> tree) {
-		return toParenthesesString(tree);
-	}
-
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @since !__version__!
-	 *
-	 * @see #toParenthesesString(Tree)
-	 *
-	 * @param tree the input tree
-	 * @param mapper the {@code mapper} which converts the tree value to a string
-	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the {@code mapper} is {@code null}
-	 */
-	public static <V, T extends Tree<V, T>> String
-	toParenthesesString(final T tree, final Function<? super V, String> mapper) {
-		return Trees.toParenthesesString(tree, mapper);
-	}
-
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @since !__version__!
-	 *
-	 * @see #toParenthesesString(Tree, Function)
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 * @throws NullPointerException if the {@code mapper} is {@code null}
-	 */
 	@SuppressWarnings("unchecked")
-	public static String toParenthesesString(final Tree<?, ?> tree) {
+	public static String toCompactString(final Tree<?, ?> tree) {
 		return Trees.toParenthesesString((Tree)tree, Objects::toString);
 	}
 
