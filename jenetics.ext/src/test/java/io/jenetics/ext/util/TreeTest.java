@@ -44,7 +44,7 @@ public class TreeTest {
 	@Test(dataProvider = "paths")
 	public void childByPath(final int[] path, final String result)  {
 		Assert.assertEquals(
-			TREE.childAtPath(path).map(Tree::getValue),
+			TREE.childAtPath(path).map(t -> t.getValue()),
 			Optional.ofNullable(result)
 		);
 	}

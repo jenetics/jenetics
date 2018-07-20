@@ -19,6 +19,9 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.ext.util.Escaping.escape;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -155,27 +158,33 @@ final class Trees {
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
 	 */
-	public static String toCompactString(final Tree<?, ?> tree) {
+	public static <V, T extends Tree<V, T>> String toParenthesesString(
+		final T tree,
+		final Function<? super V, String> mapper
+	) {
+		requireNonNull(mapper);
+
 		if (tree != null) {
 			final StringBuilder out = new StringBuilder();
-			toCompactString(out, tree);
+			toParenthesesString(out, tree, mapper);
 			return out.toString();
 		} else {
 			return "null";
 		}
 	}
 
-	private static void toCompactString(
+	private static  <V, T extends Tree<V, T>> void toParenthesesString(
 		final StringBuilder out,
-		final Tree<?, ?> tree
+		final T tree,
+		final Function<? super V, String> mapper
 	) {
-		out.append(tree.getValue());
+		out.append(escape(mapper.apply(tree.getValue())));
 		if (!tree.isLeaf()) {
 			out.append("(");
-			toCompactString(out, tree.getChild(0));
+			toParenthesesString(out, tree.getChild(0), mapper);
 			for (int i = 1; i < tree.childCount(); ++i) {
-				out.append(", ");
-				toCompactString(out, tree.getChild(i));
+				out.append(",");
+				toParenthesesString(out, tree.getChild(i), mapper);
 			}
 			out.append(")");
 		}
