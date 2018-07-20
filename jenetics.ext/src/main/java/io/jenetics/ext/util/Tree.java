@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
@@ -143,7 +144,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of levels above this node
 	 */
 	public default int level() {
-		Optional<T> ancestor = Optional.of(Trees.<V, T>self(this));
+		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
 		while ((ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent()) {
 			++levels;
@@ -187,6 +188,41 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/* *************************************************************************
 	 * Query operations
 	 **************************************************************************/
+
+	/**
+	 * Return the child node at the given {@code path}. A path consists of the
+	 * child index at a give level, starting with level 1. (The root note has
+	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
+	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
+	 * return the first child of the third child of {@code this node}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param path the child path
+	 * @return the child node at the given {@code path}
+	 * @throws NullPointerException if the given {@code path} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if one of the path elements is smaller
+	 *         than zero
+	 */
+	public default Optional<T> childAtPath(final int... path) {
+		T node = Trees.self(this);
+		for (int i = 0; i < path.length && node != null; ++i) {
+			final int childIndex = path[i];
+			if (childIndex < 0) {
+				throw new IllegalArgumentException(format(
+					"Path element at position %d is smaller than zero: %d",
+					i, childIndex
+				));
+			}
+
+			node = childIndex < node.childCount()
+				? node.getChild(childIndex)
+				: null;
+		}
+
+		return Optional.ofNullable(node);
+	}
 
 	/**
 	 * Return {@code true} if the given {@code node} is an ancestor of
