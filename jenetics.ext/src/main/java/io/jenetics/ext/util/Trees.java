@@ -190,6 +190,42 @@ final class Trees {
 		}
 	}
 
+	// mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	static TreeNode<String> parseParenthesesString(final String value) {
+		final String[] tokens = null;
+		return null;
+	}
+
+	static List<String> tokens(final String value) {
+		final List<String> tokens = new ArrayList<>();
+
+		final StringBuilder token = new StringBuilder();
+		char pc = ' ';
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (isTokenSeparator(c) && pc != '\\') {
+
+				final String t = token.toString().trim();
+				//if (!t.isEmpty()) {
+					tokens.add(token.toString());
+				//}
+				tokens.add(Character.toString(c));
+
+				token.setLength(0);
+			} else {
+				token.append(c);
+				pc = c;
+			}
+		}
+
+		return tokens;
+	}
+
+	private static boolean isTokenSeparator(final char c) {
+		return c == '(' || c == ')' || c == ',';
+	}
+
 	static String toInfixString(final Tree<?, ?> tree) {
 		final StringBuilder out = new StringBuilder();
 		toInfixString(out, tree);
