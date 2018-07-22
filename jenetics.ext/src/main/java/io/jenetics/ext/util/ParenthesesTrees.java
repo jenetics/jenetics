@@ -20,8 +20,9 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.ext.util.Escaping.escape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -32,21 +33,63 @@ import java.util.function.Function;
 final class ParenthesesTrees {
 	private ParenthesesTrees() {}
 
+
+	private static final char ESCAPE_CHAR = '\\';
+
+	private static final char[] PROTECTED_CHARS = new char[] {
+		'(', ')', ',', ESCAPE_CHAR
+	};
+
+	static String escape(final String value) {
+		final StringBuilder result = new StringBuilder();
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+			if (isEscapeChar(c)) {
+				result.append(ESCAPE_CHAR);
+			}
+			result.append(c);
+		}
+
+		return result.toString();
+	}
+
+	private static boolean isEscapeChar(final char c) {
+		for (int i = 0; i < PROTECTED_CHARS.length; ++i) {
+			if (c == PROTECTED_CHARS[i]) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	static String unescape(final String value) {
+		final StringBuilder result = new StringBuilder();
+
+		boolean escaping = false;
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (c == ESCAPE_CHAR && !escaping) {
+				escaping = true;
+				continue;
+			}
+
+			if (escaping) {
+				escaping = false;
+			}
+			result.append(c);
+		}
+
+		return result.toString();
+	}
+
+	/* *************************************************************************
+	 * To string methods.
+	 **************************************************************************/
+
 	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
+	 * Return a compact string representation of the given tree.
 	 * <pre>
 	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
@@ -84,6 +127,47 @@ final class ParenthesesTrees {
 			}
 			out.append(")");
 		}
+	}
+
+
+	/* *************************************************************************
+	 * String parse methods.
+	 **************************************************************************/
+
+	// mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	static TreeNode<String> parseParenthesesString(final String value) {
+		final String[] tokens = null;
+		return null;
+	}
+
+	static List<String> tokens(final String value) {
+		final List<String> tokens = new ArrayList<>();
+
+		final StringBuilder token = new StringBuilder();
+		char pc = ' ';
+		for (int i = 0; i < value.length(); ++i) {
+			final char c = value.charAt(i);
+
+			if (isTokenSeparator(c) && pc != '\\') {
+
+				final String t = token.toString().trim();
+				//if (!t.isEmpty()) {
+				tokens.add(token.toString());
+				//}
+				tokens.add(Character.toString(c));
+
+				token.setLength(0);
+			} else {
+				token.append(c);
+				pc = c;
+			}
+		}
+
+		return tokens;
+	}
+
+	private static boolean isTokenSeparator(final char c) {
+		return c == '(' || c == ')' || c == ',';
 	}
 
 }
