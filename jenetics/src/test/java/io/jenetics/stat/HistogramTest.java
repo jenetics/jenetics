@@ -134,14 +134,14 @@ public class HistogramTest {
 		final Random random = RandomRegistry.getRandom();
 		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
-		for (int i = 0; i < 600000; ++i) {
+		for (int i = 0; i < 600_000; ++i) {
 			histogram.accept(random.nextDouble()*6);
 		}
-		Assert.assertEquals(histogram.getCount(), 600000);
+		Assert.assertEquals(histogram.getCount(), 600_000);
 
 		final long[] hist = histogram.getHistogram();
 		for (int i = 0; i < hist.length; ++i) {
-			Assert.assertEquals(hist[i], 100000.0, 1000.0);
+			Assert.assertEquals(hist[i], 100_000.0, 1_200.0);
 		}
 	}
 
