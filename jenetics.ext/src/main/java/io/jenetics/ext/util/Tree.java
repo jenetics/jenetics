@@ -879,8 +879,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default String
 	toParenthesesString(final Function<? super V, String> mapper) {
 		requireNonNull(mapper);
-		return ParenthesesTrees
-			.toParenthesesString(Trees.<V, T>self(this), mapper);
+		return ParenthesesTrees.toString(Trees.<V, T>self(this), mapper);
 	}
 
 	/**
@@ -1002,8 +1001,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	@Deprecated
 	@SuppressWarnings("unchecked")
 	public static String toCompactString(final Tree<?, ?> tree) {
-		return ParenthesesTrees
-			.toParenthesesString((Tree)tree, Objects::toString);
+		return ParenthesesTrees.toString((Tree)tree, Objects::toString);
 	}
 
 	/**

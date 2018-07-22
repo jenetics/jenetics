@@ -54,7 +54,7 @@ final class ParenthesesTrees {
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
 	 */
-	static <V, T extends Tree<V, T>> String toParenthesesString(
+	static <V, T extends Tree<V, T>> String toString(
 		final T tree,
 		final Function<? super V, String> mapper
 	) {
@@ -62,14 +62,14 @@ final class ParenthesesTrees {
 
 		if (tree != null) {
 			final StringBuilder out = new StringBuilder();
-			toParenthesesString(out, tree, mapper);
+			toString(out, tree, mapper);
 			return out.toString();
 		} else {
 			return "null";
 		}
 	}
 
-	private static  <V, T extends Tree<V, T>> void toParenthesesString(
+	private static  <V, T extends Tree<V, T>> void toString(
 		final StringBuilder out,
 		final T tree,
 		final Function<? super V, String> mapper
@@ -77,10 +77,10 @@ final class ParenthesesTrees {
 		out.append(escape(mapper.apply(tree.getValue())));
 		if (!tree.isLeaf()) {
 			out.append("(");
-			toParenthesesString(out, tree.getChild(0), mapper);
+			toString(out, tree.getChild(0), mapper);
 			for (int i = 1; i < tree.childCount(); ++i) {
 				out.append(",");
-				toParenthesesString(out, tree.getChild(i), mapper);
+				toString(out, tree.getChild(i), mapper);
 			}
 			out.append(")");
 		}
