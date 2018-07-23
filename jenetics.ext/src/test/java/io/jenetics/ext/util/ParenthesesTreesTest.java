@@ -19,7 +19,8 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.Arrays;
+import static io.jenetics.ext.util.ParenthesesTrees.parseParenthesesString;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -71,14 +72,14 @@ public class ParenthesesTreesTest {
 		Assert.assertEquals(ParenthesesTrees.unescape(escaped), unescaped);
 	}
 
-	@Test(dataProvider = "trees")
-	public void tokens(final String tree, final String[] tokens) {
-		final String[] tokenize = ParenthesesTrees.tokens(tree);
+	@Test(dataProvider = "tokens")
+	public void tokenize(final String tree, final String[] tokens) {
+		final String[] tokenize = ParenthesesTrees.tokenize(tree);
 		Assert.assertEquals(tokenize, tokens);
 	}
 
-	@DataProvider(name = "trees")
-	public Object[][] trees() {
+	@DataProvider(name = "tokens")
+	public Object[][] tokens() {
 		return new Object[][] {
 			{"a", new String[]{"a"}},
 			{"a\\", new String[]{"a"}},
@@ -86,9 +87,87 @@ public class ParenthesesTreesTest {
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
 			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
-			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}},
+			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}}
 		};
 	}
 
+	@Test
+	public void rootTree() {
+		Assert.assertEquals(
+			parseParenthesesString("a"),
+			TreeNode.of("a")
+		);
+	}
+
+	@Test
+	public void oneLevelOneTree() {
+		Assert.assertEquals(
+			parseParenthesesString("a(b)"),
+			TreeNode.of("a").attach("b")
+		);
+	}
+	@Test
+	public void oneLevelTwoTree() {
+		Assert.assertEquals(
+			parseParenthesesString("a(b,c)"),
+			TreeNode.of("a").attach("b", "c")
+		);
+	}
+
+	@Test(dataProvider = "validTrees")
+	public void parseValid(final String string, final TreeNode<String> tree) {
+		final TreeNode<String> node = parseParenthesesString(string);
+		final String nodeString = node.toParenthesesString();
+
+		Assert.assertEquals(nodeString, string);
+		Assert.assertEquals(node, tree);
+	}
+
+	@DataProvider(name = "validTrees")
+	public Object[][] validTrees() {
+		final Random random = new Random();
+
+		return IntStream.range(0, 10)
+			.mapToObj(i -> of(7, random))
+			.map(o -> new Object[]{o.toParenthesesString(), o})
+			.toArray(Object[][]::new);
+	}
+
+	public static TreeNode<String> of(final int depth, final Random random) {
+		final TreeNode<String> root = TreeNode.of("R");
+		fill(depth, root, random);
+		return root;
+	}
+
+	private static void fill(
+		final int level,
+		final TreeNode<String> tree,
+		final Random random
+	) {
+		tree.setValue(Integer.toString(random.nextInt(10)*(level+1)));
+		if (level > 1) {
+			for (int i = 0, n = random.nextInt(4) + 1; i < n; ++i) {
+				final TreeNode<String> node = TreeNode.of();
+				fill(level - 1, node, random);
+				tree.attach(node);
+			}
+		}
+	}
+
+	@Test(dataProvider = "invalidTrees", expectedExceptions = IllegalArgumentException.class)
+	public void parseInvalid(final String invalid) {
+		parseParenthesesString(invalid);
+	}
+
+	@DataProvider(name = "invalidTrees")
+	public Object[][] invalidTrees() {
+		return new Object[][] {
+			{""},
+			{"("},
+			//{")"},
+			{"a("},
+			{"("}
+		};
+	}
 
 }

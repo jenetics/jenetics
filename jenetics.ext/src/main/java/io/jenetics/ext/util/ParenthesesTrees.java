@@ -19,10 +19,13 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -135,13 +138,66 @@ final class ParenthesesTrees {
 	 * String parse methods.
 	 **************************************************************************/
 
+	private static final int ROOT_VALUE = 0;
+	private static final int NEW_VALUE = 1;
+	private static final int START_NODE = 2;
+	private static final int END_NODE = 3;
+
 	// mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	static TreeNode<String> parseParenthesesString(final String value) {
-		final String[] tokens = null;
-		return null;
+		final String[] tokens = tokenize(value);
+
+		final TreeNode<String> root = TreeNode.of();
+		TreeNode<String> node = root;
+
+
+
+		int state = ROOT_VALUE;
+		for (String token : tokens) {
+			switch (token) {
+				case "(":
+					state = START_NODE;
+					break;
+				case ")":
+					state = END_NODE;
+					final TreeNode<String> fnode = node;
+					if (!node.isRoot()) {
+						node = node.getParent().orElseThrow(() -> {
+							return new IllegalArgumentException("Unbalanced parentheses.");
+						});
+					} else {
+						//throw new IllegalArgumentException("Unbalanced parentheses.");
+					}
+					break;
+				case ",":
+					state = NEW_VALUE;
+					break;
+				default:
+					switch (state) {
+						case START_NODE:
+							node = node.lastChild().orElse(root);
+						case NEW_VALUE:
+							node.attach(token);
+							break;
+						case END_NODE:
+							break;
+						case ROOT_VALUE:
+							node.setValue(token);
+						default:
+							break;
+					}
+					break;
+			}
+		}
+
+		if (state != END_NODE) {
+			throw new IllegalArgumentException("Unbalanced parentheses.");
+		}
+
+		return root;
 	}
 
-	static String[] tokens(final String value) {
+	static String[] tokenize(final String value) {
 		final List<String> tokens = new ArrayList<>();
 
 		final StringBuilder token = new StringBuilder();
@@ -172,3 +228,37 @@ final class ParenthesesTrees {
 	}
 
 }
+
+final class Token {
+	final String value;
+	final int index;
+
+	private Token(final String value, final int index) {
+		this.value = value;
+		this.index = index;
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(value, hash(index));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Token &&
+			Objects.equals(value, ((Token)obj).value) &&
+			index == ((Token)obj).index;
+	}
+
+	@Override
+	public String toString() {
+		return format("%s[%d]", value, index);
+	}
+
+	static Token of(final String value, final int index) {
+		return new Token(value, index);
+	}
+
+}
+
