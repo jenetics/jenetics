@@ -30,7 +30,7 @@ public class TreesTest {
 
 	@Test
 	public void tokens() {
-		final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
-		tokens.forEach(System.out::println);
+		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
+		//tokens.forEach(System.out::println);
 	}
 }
