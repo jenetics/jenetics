@@ -44,7 +44,7 @@ final class ParenthesesTrees {
 		final StringBuilder result = new StringBuilder();
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
-			if (isEscapeChar(c)) {
+			if (isProtectedChar(c)) {
 				result.append(ESCAPE_CHAR);
 			}
 			result.append(c);
@@ -53,12 +53,13 @@ final class ParenthesesTrees {
 		return result.toString();
 	}
 
-	private static boolean isEscapeChar(final char c) {
+	private static boolean isProtectedChar(final char c) {
 		for (int i = 0; i < PROTECTED_CHARS.length; ++i) {
 			if (c == PROTECTED_CHARS[i]) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -140,30 +141,30 @@ final class ParenthesesTrees {
 		return null;
 	}
 
-	static List<String> tokens(final String value) {
+	static String[] tokens(final String value) {
 		final List<String> tokens = new ArrayList<>();
 
 		final StringBuilder token = new StringBuilder();
-		char pc = ' ';
+		char pc = '\0';
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 
-			if (isTokenSeparator(c) && pc != '\\') {
-
-				final String t = token.toString().trim();
-				//if (!t.isEmpty()) {
-				tokens.add(token.toString());
-				//}
+			if (isTokenSeparator(c) && pc != ESCAPE_CHAR) {
+				tokens.add(unescape(token.toString()));
 				tokens.add(Character.toString(c));
-
 				token.setLength(0);
 			} else {
 				token.append(c);
-				pc = c;
 			}
+
+			pc = c;
 		}
 
-		return tokens;
+		if (token.length() > 0) {
+			tokens.add(unescape(token.toString()));
+		}
+
+		return tokens.toArray(new String[0]);
 	}
 
 	private static boolean isTokenSeparator(final char c) {

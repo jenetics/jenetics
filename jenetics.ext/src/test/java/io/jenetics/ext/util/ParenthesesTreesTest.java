@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -69,5 +70,25 @@ public class ParenthesesTreesTest {
 		final String escaped = ParenthesesTrees.escape(unescaped);
 		Assert.assertEquals(ParenthesesTrees.unescape(escaped), unescaped);
 	}
+
+	@Test(dataProvider = "trees")
+	public void tokens(final String tree, final String[] tokens) {
+		final String[] tokenize = ParenthesesTrees.tokens(tree);
+		Assert.assertEquals(tokenize, tokens);
+	}
+
+	@DataProvider(name = "trees")
+	public Object[][] trees() {
+		return new Object[][] {
+			{"a", new String[]{"a"}},
+			{"a\\", new String[]{"a"}},
+			{"a\\\\", new String[]{"a\\"}},
+			{"a(b)", new String[]{"a", "(", "b", ")"}},
+			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
+			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
+			{"a(\\(b\\),c\\,)", new String[]{"a", "(", "(b)", ",", "c,", ")"}},
+		};
+	}
+
 
 }
