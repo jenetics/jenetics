@@ -34,6 +34,7 @@ import java.util.Deque;
  * @since !__version__!
  */
 final class TreeParser {
+	private TreeParser() {}
 
 	/**
 	 * Represents a parentheses tree string token.
@@ -53,11 +54,6 @@ final class TreeParser {
 
 		int pos() {
 			return _pos;
-		}
-
-		@Override
-		public String toString() {
-			return format("['%s', %s]", _seq, _pos);
 		}
 	}
 
