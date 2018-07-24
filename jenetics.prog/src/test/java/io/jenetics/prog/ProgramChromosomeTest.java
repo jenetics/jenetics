@@ -149,7 +149,7 @@ public class ProgramChromosomeTest {
 		);
 
 		System.out.println(tree);
-		System.out.println(Tree.toCompactString(tree));
+		System.out.println(tree.toParenthesesString());
 	}
 
 	@Test
