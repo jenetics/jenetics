@@ -419,6 +419,11 @@ public final class TreeNode<T>
 	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 *
+	 * @since 4.3
+	 *
 	 * @param tree the parentheses tree string
 	 * @return the parsed tree
 	 * @throws NullPointerException if the given {@code tree} string is
