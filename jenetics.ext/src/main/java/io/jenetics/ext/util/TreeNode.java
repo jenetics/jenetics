@@ -331,7 +331,7 @@ public final class TreeNode<T>
 	 * @param mapper the node value mapper
 	 * @param <B> the new node type
 	 * @return a new tree consisting of all nodes of {@code this} tree
-	 * @throws IllegalArgumentException if the given {@code mapper} function is
+	 * @throws NullPointerException if the given {@code mapper} function is
 	 *         {@code null}
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
