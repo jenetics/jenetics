@@ -7,16 +7,17 @@ import io.jenetics.Mutator;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+
 import io.jenetics.ext.SingleNodeCrossover;
-import io.jenetics.ext.util.Tree;
+
 import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 public class SymbolicRegression {
 
@@ -92,7 +93,7 @@ public class SymbolicRegression {
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
-		System.out.println(Tree.toDottyString(program));
+		System.out.println(program.toParenthesesString());
 	}
 
 }
