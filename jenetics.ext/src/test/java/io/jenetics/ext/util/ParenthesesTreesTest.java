@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class EscapingTest {
+public class ParenthesesTreesTest {
 
 	private static final String CHARS = "qwertzudsa(),\\WERTZUIO";
 
@@ -44,12 +44,12 @@ public class EscapingTest {
 
 	@Test(dataProvider = "escapes")
 	public void escaping(final String unescaped, final String escaped) {
-		Assert.assertEquals(Escaping.escape(unescaped), escaped);
+		Assert.assertEquals(ParenthesesTrees.escape(unescaped), escaped);
 	}
 
 	@Test(dataProvider = "escapes")
 	public void unescaping(final String unescaped, final String escaped) {
-		Assert.assertEquals(Escaping.unescape(escaped), unescaped);
+		Assert.assertEquals(ParenthesesTrees.unescape(escaped), unescaped);
 	}
 
 	@DataProvider(name = "escapes")
@@ -66,8 +66,8 @@ public class EscapingTest {
 	@Test(invocationCount = 10)
 	public void randomString() {
 		final String unescaped = nextString(10_000, new Random());
-		final String escaped = Escaping.escape(unescaped);
-		Assert.assertEquals(Escaping.unescape(escaped), unescaped);
+		final String escaped = ParenthesesTrees.escape(unescaped);
+		Assert.assertEquals(ParenthesesTrees.unescape(escaped), unescaped);
 	}
 
 }

@@ -19,17 +19,22 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
+
 /**
- * Escaping for the parenthesis tree string representation.
+ * Helper methods for creating parentheses tree strings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class Escaping {
-	private Escaping() {}
+final class ParenthesesTrees {
+	private ParenthesesTrees() {}
 
-	private static final char ESCAPE_CHAR = '\\';
+
+	static final char ESCAPE_CHAR = '\\';
 
 	private static final char[] PROTECTED_CHARS = new char[] {
 		'(', ')', ',', ESCAPE_CHAR
@@ -39,7 +44,7 @@ final class Escaping {
 		final StringBuilder result = new StringBuilder();
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
-			if (isEscapeChar(c)) {
+			if (isProtectedChar(c)) {
 				result.append(ESCAPE_CHAR);
 			}
 			result.append(c);
@@ -48,12 +53,13 @@ final class Escaping {
 		return result.toString();
 	}
 
-	private static boolean isEscapeChar(final char c) {
+	private static boolean isProtectedChar(final char c) {
 		for (int i = 0; i < PROTECTED_CHARS.length; ++i) {
 			if (c == PROTECTED_CHARS[i]) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -79,5 +85,52 @@ final class Escaping {
 		return result.toString();
 	}
 
+	/* *************************************************************************
+	 * To string methods.
+	 **************************************************************************/
+
+	/**
+	 * Return a compact string representation of the given tree.
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the input tree
+	 * @return the string representation of the given tree
+	 */
+	static <V, T extends Tree<V, T>> String toString(
+		final T tree,
+		final Function<? super V, String> mapper
+	) {
+		requireNonNull(mapper);
+
+		if (tree != null) {
+			final StringBuilder out = new StringBuilder();
+			toString(out, tree, mapper);
+			return out.toString();
+		} else {
+			return "null";
+		}
+	}
+
+	private static  <V, T extends Tree<V, T>> void toString(
+		final StringBuilder out,
+		final T tree,
+		final Function<? super V, String> mapper
+	) {
+		out.append(escape(mapper.apply(tree.getValue())));
+		if (!tree.isLeaf()) {
+			out.append("(");
+			toString(out, tree.getChild(0), mapper);
+			for (int i = 1; i < tree.childCount(); ++i) {
+				out.append(",");
+				toString(out, tree.getChild(i), mapper);
+			}
+			out.append(")");
+		}
+	}
 
 }
+
+
+

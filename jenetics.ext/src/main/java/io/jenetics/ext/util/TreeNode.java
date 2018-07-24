@@ -346,6 +346,27 @@ public final class TreeNode<T>
 	 **************************************************************************/
 
 	/**
+	 * Return a new {@code TreeNode} with a {@code null} tree value.
+	 *
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
+	 */
+	public static <T> TreeNode<T> of() {
+		return of(null);
+	}
+
+	/**
+	 * Return a new {@code TreeNode} with the given node {@code value}.
+	 *
+	 * @param value the node value
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
+	 */
+	public static <T> TreeNode<T> of(final T value) {
+		return new TreeNode<>(value);
+	}
+
+	/**
 	 * Return a new {@code TreeNode} from the given source {@code tree}. The
 	 * whole tree is copied.
 	 *
@@ -372,24 +393,21 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return a new {@code TreeNode} with the given node {@code value}.
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
 	 *
-	 * @param value the node value
-	 * @param <T> the tree-node type
-	 * @return a new tree-node
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
 	 */
-	public static <T> TreeNode<T> of(final T value) {
-		return new TreeNode<>(value);
-	}
-
-	/**
-	 * Return a new {@code TreeNode} with a {@code null} tree value.
-	 *
-	 * @param <T> the tree-node type
-	 * @return a new tree-node
-	 */
-	public static <T> TreeNode<T> of() {
-		return new TreeNode<>(null);
+	public static TreeNode<String> parse(final String tree) {
+		return TreeParser.parse(tree);
 	}
 
 }
