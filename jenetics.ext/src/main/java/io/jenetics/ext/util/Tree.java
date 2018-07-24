@@ -39,7 +39,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.3
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -197,7 +197,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
 	 * return the first child of the third child of {@code this node}.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
@@ -869,7 +869,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @see #toParenthesesString()
 	 *
@@ -901,7 +901,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @see #toParenthesesString(Function)
 	 *

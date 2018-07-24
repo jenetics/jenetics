@@ -30,8 +30,8 @@ import java.util.Deque;
  * Parses an parentheses string into a {@code TreeNode<String>} object.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.3
+ * @since 4.3
  */
 final class TreeParser {
 	private TreeParser() {}
