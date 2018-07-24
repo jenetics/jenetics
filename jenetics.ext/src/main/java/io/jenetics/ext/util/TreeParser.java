@@ -140,8 +140,17 @@ final class TreeParser {
 						));
 					}
 					current = parents.pop();
+					if (parents.isEmpty()) {
+						current = null;
+					}
 					break;
 				default:
+					if (current == null) {
+						throw new IllegalArgumentException(format(
+							"More than one root element at pos %d.",
+							token.pos()
+						));
+					}
 					if (current.getValue() == null) {
 						current.setValue(token.seq());
 					}
