@@ -21,7 +21,7 @@ package io.jenetics.ext.util;
 
 import static io.jenetics.ext.util.TreeParser.parse;
 
-import java.util.Deque;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -38,7 +38,7 @@ public class TreeParserTest {
 
 	@Test(dataProvider = "tokens")
 	public void tokenize(final String tree, final String[] tokens) {
-		final Deque<Token> tokenize = TreeParser.tokenize(tree);
+		final List<Token> tokenize = TreeParser.tokenize(tree);
 		Assert.assertEquals(
 			tokenize.stream()
 				.map(Token::seq)

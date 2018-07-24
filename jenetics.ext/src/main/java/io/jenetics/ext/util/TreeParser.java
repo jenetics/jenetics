@@ -24,7 +24,9 @@ import static io.jenetics.ext.util.ParenthesesTrees.ESCAPE_CHAR;
 import static io.jenetics.ext.util.ParenthesesTrees.unescape;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * Parses an parentheses string into a {@code TreeNode<String>} object.
@@ -64,8 +66,8 @@ final class TreeParser {
 	 * @return the parentheses string tokens
 	 * @throws NullPointerException if the given {@code value} is {@code null}
 	 */
-	static Deque<Token> tokenize(final String value) {
-		final Deque<Token> tokens = new ArrayDeque<>();
+	static List<Token> tokenize(final String value) {
+		final List<Token> tokens = new ArrayList<>();
 
 		char pc = '\0';
 		int pos = 0;
@@ -106,13 +108,11 @@ final class TreeParser {
 	 *         doesn't represent a valid tree
 	 */
 	static TreeNode<String> parse(final String value) {
-		final Deque<Token> tokens = tokenize(value);
-
 		final TreeNode<String> root = TreeNode.of();
 		final Deque<TreeNode<String>> parents = new ArrayDeque<>();
 
 		TreeNode<String> current = root;
-		for (Token token : tokens) {
+		for (Token token : tokenize(value)) {
 			switch (token.seq()) {
 				case "(":
 					final TreeNode<String> tn1 = TreeNode.of();
