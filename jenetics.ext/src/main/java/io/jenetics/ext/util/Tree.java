@@ -1009,7 +1009,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
+	 *
+	 * @deprecated Will be removed; very special to-string method.
 	 */
+	@Deprecated
 	public static String toDottyString(final Tree<?, ?> tree) {
 		return Trees.toDottyString("T", tree);
 	}

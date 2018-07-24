@@ -392,7 +392,21 @@ public final class TreeNode<T>
 		});
 	}
 
-	public static TreeNode<String> parseParenthesesString(final String tree) {
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static TreeNode<String> parse(final String tree) {
 		return TreeParser.parse(tree);
 	}
 
