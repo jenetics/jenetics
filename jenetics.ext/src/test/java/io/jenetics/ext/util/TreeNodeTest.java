@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Random;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,7 +33,6 @@ import io.jenetics.util.IO;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
 public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 	public TreeNode<Integer> newTree(final int levels, final Random random) {
@@ -109,6 +109,29 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final TreeNode<Integer> copy = tree.copy();
 
 		Assert.assertEquals(copy, tree);
+	}
+
+	@Test
+	public void map() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(TreeNode.of(3))
+				.attach(TreeNode.of(4)))
+			.attach(TreeNode.of(2)
+				.attach(TreeNode.of(5))
+				.attach(TreeNode.of(6)));
+
+		final TreeNode<String> mapped = tree.map(Objects::toString);
+
+		Assert.assertEquals(
+			mapped.stream()
+				.map(TreeNode::getValue)
+				.toArray(String[]::new),
+			tree.stream()
+				.map(TreeNode::getValue)
+				.map(Objects::toString)
+				.toArray(String[]::new)
+		);
 	}
 
 	@Test

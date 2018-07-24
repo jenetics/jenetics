@@ -32,7 +32,7 @@ import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 final class Trees {
