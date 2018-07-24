@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.function.Function;
 
 /**
+ * Helper methods for creating parentheses tree strings.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -32,7 +34,7 @@ final class ParenthesesTrees {
 	private ParenthesesTrees() {}
 
 
-	private static final char ESCAPE_CHAR = '\\';
+	static final char ESCAPE_CHAR = '\\';
 
 	private static final char[] PROTECTED_CHARS = new char[] {
 		'(', ')', ',', ESCAPE_CHAR

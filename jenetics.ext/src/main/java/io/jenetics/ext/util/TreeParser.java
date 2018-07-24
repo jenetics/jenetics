@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import static java.lang.String.format;
+import static io.jenetics.ext.util.ParenthesesTrees.ESCAPE_CHAR;
 import static io.jenetics.ext.util.ParenthesesTrees.unescape;
 
 import java.util.ArrayDeque;
@@ -76,7 +77,7 @@ final class TreeParser {
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 
-			if (isTokenSeparator(c) && pc != '\\') {
+			if (isTokenSeparator(c) && pc != ESCAPE_CHAR) {
 				tokens.add(new Token(unescape(token.toString()), pos));
 				tokens.add(new Token(Character.toString(c), i));
 				token.setLength(0);
