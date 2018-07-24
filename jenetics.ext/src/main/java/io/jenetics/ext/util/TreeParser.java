@@ -129,7 +129,6 @@ final class TreeParser {
 					}
 
 					final TreeNode<String> tn2 = TreeNode.of();
-					assert parents.peek() != null;
 					parents.peek().attach(tn2);
 					current = tn2;
 					break;
@@ -151,9 +150,7 @@ final class TreeParser {
 		}
 
 		if (!parents.isEmpty()) {
-			throw new IllegalArgumentException(
-				"Unbalanced parentheses at position %d."
-			);
+			throw new IllegalArgumentException("Unbalanced parentheses.");
 		}
 
 		return root;

@@ -392,4 +392,8 @@ public final class TreeNode<T>
 		});
 	}
 
+	public static TreeNode<String> parseParenthesesString(final String tree) {
+		return TreeParser.parse(tree);
+	}
+
 }
