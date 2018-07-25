@@ -23,7 +23,9 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -346,7 +348,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the root of the tree that contains this node
 	 */
 	public default T getRoot() {
-		T anc = Trees.<V, T>self(this);
+		T anc = Trees.self(this);
 		T prev;
 
 		do {
@@ -830,6 +832,40 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default Iterator<T>
 	pathFromAncestorIterator(final Tree<?, ?> ancestor) {
 		return new TreeNodePathIterator<>(ancestor, Trees.<V, T>self(this));
+	}
+
+	/**
+	 * Return the path of {@code this} child node from the root node.
+	 * <pre>{@code
+	 * final Tree<?, ?> node = ...;
+	 * final Tree<?, ?> root = node.getRoot();
+	 * final int[] path = node.childPath();
+	 * assert node == root.childAtPath(path);
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #childAtPath(int...)
+	 *
+	 * @return the path of {@code this} child node from the root node.
+	 */
+	public default int[] childPath() {
+		final T root = getRoot();
+
+		final Iterator<T> it = pathFromAncestorIterator(root);
+		final List<Integer> path = new ArrayList<>();
+
+		T tree = root;
+		while (it.hasNext()) {
+			final T child = it.next();
+			path.add(tree.getIndex(child));
+
+			tree = child;
+		}
+
+		return path.subList(1, path.size()).stream()
+			.mapToInt(Integer::intValue)
+			.toArray();
 	}
 
 	/**

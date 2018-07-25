@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.testng.Assert;
@@ -63,6 +64,17 @@ public class TreeTest {
 			{new int[]{10}, null},
 			{new int[]{0, 0, 0, 0}, null}
 		};
+	}
+
+	@Test
+	public void childPath() {
+		TREE.forEach(node -> {
+			final int[] path = node.childPath();
+			Assert.assertEquals(
+				TREE.childAtPath(path).orElseThrow(AssertionError::new),
+				node
+			);
+		});
 	}
 
 }
