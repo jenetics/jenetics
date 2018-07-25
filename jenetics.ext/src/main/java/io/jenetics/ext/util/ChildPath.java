@@ -19,51 +19,44 @@
  */
 package io.jenetics.ext.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeRewriter {
+final class ChildPath {
 
-	public static interface Matcher<V> {
-		public boolean matches(final TreeNode<V> node);
+	private final int[] _path;
+
+	private ChildPath(final int[] path) {
+		_path = path.clone();
 	}
 
-	public static interface Rule<V> {
-
-		public boolean matches(final TreeNode<V> node);
-
-		public void rewrite(final TreeNode<V> node);
-
+	int[] path() {
+		return _path.clone();
 	}
 
-	public static <V>
-	int rewrite(final TreeNode<V> node, final List<Rule<V>> rules) {
-		if (node.isLeaf()) {
-			return 0;
-		} else {
-			final Optional<Rule<V>> simplifier= rules.stream()
-				.filter(s -> s.matches(node))
-				.findFirst();
-
-			simplifier.ifPresent(r -> r.rewrite(node));
-			return node.childStream()
-				.mapToInt(child -> rewrite(child, rules))
-				.sum();
-		}
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_path);
 	}
 
-	@SafeVarargs
-	public static <V>
-	int rewrite(final TreeNode<V> node, final Rule<V>... rules) {
-		return rewrite(node, Arrays.asList(rules));
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof ChildPath &&
+			Arrays.equals(_path, ((ChildPath)obj)._path);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(_path);
+	}
+
+	static ChildPath of(final int[] path) {
+		return new ChildPath(path);
 	}
 
 }
