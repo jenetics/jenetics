@@ -23,9 +23,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -41,7 +39,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version !__version__!
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -835,7 +833,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 	/**
-	 * Return the path of {@code this} child node from the root node.
+	 * Return the path of {@code this} child node from the root node. You will
+	 * get {@code this} node, if you call {@link #childAtPath(int...)} on the
+	 * root node of {@code this} node.
 	 * <pre>{@code
 	 * final Tree<?, ?> node = ...;
 	 * final Tree<?, ?> root = node.getRoot();
@@ -850,22 +850,21 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the path of {@code this} child node from the root node.
 	 */
 	public default int[] childPath() {
-		final T root = getRoot();
+		final Iterator<T> it = pathFromAncestorIterator(getRoot());
+		final int[] path = new int[level()];
 
-		final Iterator<T> it = pathFromAncestorIterator(root);
-		final List<Integer> path = new ArrayList<>();
-
-		T tree = root;
+		T tree = null;
+		int index = 0;
 		while (it.hasNext()) {
 			final T child = it.next();
-			path.add(tree.getIndex(child));
+			if (tree != null) {
+				path[index++] = tree.getIndex(child);
+			}
 
 			tree = child;
 		}
 
-		return path.subList(1, path.size()).stream()
-			.mapToInt(Integer::intValue)
-			.toArray();
+		return path;
 	}
 
 	/**
