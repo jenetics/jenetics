@@ -103,7 +103,7 @@ class TreeMatcher implements Matcher<Object> {
 			.filter(TreeNode::isLeaf)
 			.map(n -> ChildPath.of(n.childPath()))
 			.collect(Collectors.toList());
-		
+
 		return null;
 	}
 
