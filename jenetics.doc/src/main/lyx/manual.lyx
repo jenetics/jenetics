@@ -24223,6 +24223,22 @@ Node
 \end_layout
 
 \begin_layout Subsubsection
+Parentheses tree
+\end_layout
+
+\begin_layout Standard
+TODO: Writing and parsing this trees
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewriting
+\end_layout
+
+\begin_layout Standard
+TODO: Explane rewriting and Rewrite interface.
+\end_layout
+
+\begin_layout Subsubsection
 Flat tree
 \begin_inset CommandInset label
 LatexCommand label
@@ -28853,6 +28869,10 @@ Genetic programming!Program pruning
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \begin_layout Standard
