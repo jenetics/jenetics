@@ -24227,14 +24227,34 @@ Parentheses tree
 \end_layout
 
 \begin_layout Standard
-A parentheses tree is a serialized representation of a tree and is a simplified
- form of the Newick tree format
+A parentheses tree
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status collapsed
+status open
+
+\begin_layout Plain Layout
+
+https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is a serialized representation of a tree and is a simplified form of the
+ Newick tree format
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
 
 \begin_layout Plain Layout
 
@@ -24428,7 +24448,7 @@ map
 \family default
  on the parsed tree.
  How you can parse a given parentheses tree string is shown in the code
- example below.
+ below.
 \end_layout
 
 \begin_layout Standard
@@ -24472,7 +24492,8 @@ Tree rewriting
 \end_layout
 
 \begin_layout Standard
-TODO: Explane rewriting and Rewrite interface.
+Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
+ trees (tree structured data) into other trees by applying rewriting rules.
 \end_layout
 
 \begin_layout Subsubsection
