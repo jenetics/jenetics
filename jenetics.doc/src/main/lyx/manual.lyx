@@ -24229,11 +24229,11 @@ Parentheses tree
 \begin_layout Standard
 A parentheses tree
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -24250,11 +24250,11 @@ https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
  is a serialized representation of a tree and is a simplified form of the
  Newick tree format
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -24280,7 +24280,7 @@ reference "fig:Example-tree"
 \end_layout
 
 \begin_layout LyX-Code
-0(1(4,5),2(6),3(7(10,11),8,9)).
+0(1(4,5),2(6),3(7(10,11),8,9))
 \end_layout
 
 \begin_layout Standard
