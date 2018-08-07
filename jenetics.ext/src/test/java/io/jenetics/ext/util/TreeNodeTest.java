@@ -46,11 +46,11 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final int level,
 		final Random random
 	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
+		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();
 			child.setValue(random.nextInt());
 
-			if (random.nextDouble() < 0.8 && level > 0) {
+			if (level > 0) {
 				fill(child, level - 1, random);
 			}
 
