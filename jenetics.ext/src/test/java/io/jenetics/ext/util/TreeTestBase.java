@@ -106,11 +106,11 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 		final int level,
 		final Random random
 	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
+		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final DefaultMutableTreeNode child = new DefaultMutableTreeNode();
 			child.setUserObject(random.nextInt());
 
-			if (random.nextDouble() < 0.8 && level > 0) {
+			if (level > 0) {
 				fill(child, level - 1, random);
 			}
 
