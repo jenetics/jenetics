@@ -20,6 +20,7 @@
 package io.jenetics.ext.util;
 
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.ext.util.ParenthesesTrees.ESCAPE_CHAR;
 import static io.jenetics.ext.util.ParenthesesTrees.unescape;
 
@@ -27,6 +28,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Parses an parentheses string into a {@code TreeNode<String>} object.
@@ -101,21 +103,32 @@ final class TreeParser {
 	/**
 	 * Parses the given parentheses tree string
 	 *
+	 * @since 4.3
+	 *
+	 * @param <B> the tree node value type
 	 * @param value the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
 	 * @return the parsed tree object
-	 * @throws NullPointerException if the given {@code value} is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid tree
 	 */
-	static TreeNode<String> parse(final String value) {
-		final TreeNode<String> root = TreeNode.of();
-		final Deque<TreeNode<String>> parents = new ArrayDeque<>();
+	static <B> TreeNode<B> parse(
+		final String value,
+		final Function<? super String, ? extends B> mapper
+	) {
+		requireNonNull(value);
+		requireNonNull(mapper);
 
-		TreeNode<String> current = root;
+		final TreeNode<B> root = TreeNode.of();
+		final Deque<TreeNode<B>> parents = new ArrayDeque<>();
+
+		TreeNode<B> current = root;
 		for (Token token : tokenize(value)) {
 			switch (token.seq()) {
 				case "(":
-					final TreeNode<String> tn1 = TreeNode.of();
+					final TreeNode<B> tn1 = TreeNode.of();
 					current.attach(tn1);
 					parents.push(current);
 					current = tn1;
@@ -128,7 +141,7 @@ final class TreeParser {
 						));
 					}
 
-					final TreeNode<String> tn2 = TreeNode.of();
+					final TreeNode<B> tn2 = TreeNode.of();
 					parents.peek().attach(tn2);
 					current = tn2;
 					break;
@@ -152,7 +165,7 @@ final class TreeParser {
 						));
 					}
 					if (current.getValue() == null) {
-						current.setValue(token.seq());
+						current.setValue(mapper.apply(token.seq()));
 					}
 					break;
 			}

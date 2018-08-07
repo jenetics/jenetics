@@ -23,6 +23,7 @@ import static io.jenetics.ext.util.TreeParser.parse;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -64,7 +65,7 @@ public class TreeParserTest {
 	@Test
 	public void emptyTree() {
 		Assert.assertEquals(
-			parse(""),
+			parse("", Function.identity()),
 			TreeNode.of()
 		);
 	}
@@ -72,7 +73,7 @@ public class TreeParserTest {
 	@Test
 	public void rootTree() {
 		Assert.assertEquals(
-			parse("a"),
+			parse("a", Function.identity()),
 			TreeNode.of("a")
 		);
 	}
@@ -80,14 +81,14 @@ public class TreeParserTest {
 	@Test
 	public void oneLevelOneTree() {
 		Assert.assertEquals(
-			parse("a(b)"),
+			parse("a(b)", Function.identity()),
 			TreeNode.of("a").attach("b")
 		);
 	}
 	@Test
 	public void oneLevelTwoTree() {
 		Assert.assertEquals(
-			parse("a(b,c)"),
+			parse("a(b,c)", Function.identity()),
 			TreeNode.of("a").attach("b", "c")
 		);
 	}
@@ -95,7 +96,7 @@ public class TreeParserTest {
 	@Test
 	public void oneLevelTwoThreeTree() {
 		Assert.assertEquals(
-			parse("a(b,c,d)"),
+			parse("a(b,c,d)", Function.identity()),
 			TreeNode.of("a").attach("b", "c", "d")
 		);
 	}
@@ -103,7 +104,7 @@ public class TreeParserTest {
 	@Test
 	public void oneLevelThreeThreeTree() {
 		Assert.assertEquals(
-			parse("a(b,c,d(1,2))"),
+			parse("a(b,c,d(1,2))", Function.identity()),
 			TreeNode.of("a")
 				.attach("b", "c")
 				.attach(TreeNode.of("d")
@@ -113,7 +114,7 @@ public class TreeParserTest {
 
 	@Test(dataProvider = "validTrees")
 	public void parseValid(final String string, final TreeNode<String> tree) {
-		final TreeNode<String> node = parse(string);
+		final TreeNode<String> node = parse(string, Function.identity());
 		final String nodeString = node.toParenthesesString();
 
 		Assert.assertEquals(nodeString, string);
@@ -153,7 +154,7 @@ public class TreeParserTest {
 
 	@Test(dataProvider = "invalidTrees", expectedExceptions = IllegalArgumentException.class)
 	public void parseInvalid(final String invalid) {
-		final Object obj = parse(invalid);
+		final Object obj = parse(invalid, Function.identity());
 		System.out.println(obj);
 	}
 
