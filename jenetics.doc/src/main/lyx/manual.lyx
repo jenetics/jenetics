@@ -24441,12 +24441,12 @@ String\SpecialChar softhyphen
 >
 \family default
  object.
- If you need to create a tree with the original node type, you need to do
- a 
+ If you need to create a tree with the original node type, you can call
+ the 
 \family typewriter
-map
+parse
 \family default
- on the parsed tree.
+ method with an additional string mapper function.
  How you can parse a given parentheses tree string is shown in the code
  below.
 \end_layout
@@ -24459,17 +24459,22 @@ status open
 
 \begin_layout Plain Layout
 
-final Tree<Integer, ?> tree = TreeNode 			
+final Tree<Integer, ?> tree = TreeNode.parse(
 \end_layout
 
 \begin_layout Plain Layout
 
-    .parse("0(1(4,5),2(6),3(7(10,11),8,9))") 		
+    "0(1(4,5),2(6),3(7(10,11),8,9))",
 \end_layout
 
 \begin_layout Plain Layout
 
-    .map(Integer::parseInt);
+    Integer::parseInt
+\end_layout
+
+\begin_layout Plain Layout
+
+);
 \end_layout
 
 \end_inset
