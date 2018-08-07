@@ -438,10 +438,17 @@ public final class TreeNode<T>
 
 	/**
 	 * Parses a (parentheses) tree string, created with
-	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
 	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
 	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = TreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()
