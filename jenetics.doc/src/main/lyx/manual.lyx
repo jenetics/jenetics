@@ -88,7 +88,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends}
+  morekeywords={*,...,public,extends,assert}
 }
 \end_preamble
 \options utf8,utf8x
@@ -24248,7 +24248,11 @@ https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
 \end_inset
 
  is a serialized representation of a tree and is a simplified form of the
- Newick tree format
+ 
+\emph on
+Newick
+\emph default
+ tree format
 \begin_inset Foot
 status collapsed
 
@@ -24771,12 +24775,17 @@ final TreeNode<Integer> tree = ...;
 
 \begin_layout Plain Layout
 
-final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
+final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode.of(tree)
 \end_layout
 
 \begin_layout Plain Layout
 
-    .of(tree).flattenedNodes();
+    .flattenedNodes();
+\end_layout
+
+\begin_layout Plain Layout
+
+assert Tree.equals(tree, nodes.get(0));
 \end_layout
 
 \begin_layout Plain Layout
@@ -24786,6 +24795,16 @@ final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
 \begin_layout Plain Layout
 
 final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.equals(unflattened);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert unflattened.equals(tree);
 \end_layout
 
 \end_inset
