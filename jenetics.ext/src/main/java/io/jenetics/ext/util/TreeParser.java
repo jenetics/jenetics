@@ -44,20 +44,12 @@ final class TreeParser {
 	 * Represents a parentheses tree string token.
 	 */
 	final static class Token {
-		private final String _seq;
-		private final int _pos;
+		final String seq;
+		final int pos;
 
 		Token(final String seq, final int pos) {
-			_seq = seq;
-			_pos = pos;
-		}
-
-		String seq() {
-			return _seq;
-		}
-
-		int pos() {
-			return _pos;
+			this.seq = seq;
+			this.pos = pos;
 		}
 	}
 
@@ -126,7 +118,7 @@ final class TreeParser {
 
 		TreeNode<B> current = root;
 		for (Token token : tokenize(value)) {
-			switch (token.seq()) {
+			switch (token.seq) {
 				case "(":
 					final TreeNode<B> tn1 = TreeNode.of();
 					current.attach(tn1);
@@ -137,7 +129,7 @@ final class TreeParser {
 					if (parents.isEmpty()) {
 						throw new IllegalArgumentException(format(
 							"Expect '(' at position %d.",
-							token.pos()
+							token.pos
 						));
 					}
 
@@ -149,7 +141,7 @@ final class TreeParser {
 					if (parents.isEmpty()) {
 						throw new IllegalArgumentException(format(
 							"Unbalanced parentheses at position %d.",
-							token.pos()
+							token.pos
 						));
 					}
 					current = parents.pop();
@@ -161,11 +153,11 @@ final class TreeParser {
 					if (current == null) {
 						throw new IllegalArgumentException(format(
 							"More than one root element at pos %d.",
-							token.pos()
+							token.pos
 						));
 					}
 					if (current.getValue() == null) {
-						current.setValue(mapper.apply(token.seq()));
+						current.setValue(mapper.apply(token.seq));
 					}
 					break;
 			}

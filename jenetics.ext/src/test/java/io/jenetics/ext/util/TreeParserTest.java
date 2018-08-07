@@ -42,7 +42,7 @@ public class TreeParserTest {
 		final List<Token> tokenize = TreeParser.tokenize(tree);
 		Assert.assertEquals(
 			tokenize.stream()
-				.map(Token::seq)
+				.map(t -> t.seq)
 				.toArray(String[]::new),
 			tokens
 		);
