@@ -41,6 +41,57 @@ public class TreeTest {
 				.attach("9")))
 		.attach(TreeNode.of("10"));
 
+	@Test
+	public void toParenthesesTree1() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(4, 5))
+			.attach(TreeNode.of(2)
+				.attach(6))
+			.attach(TreeNode.of(3)
+				.attach(TreeNode.of(7)
+					.attach(10, 11))
+				.attach(8)
+				.attach(9));
+
+		final String parentheses = tree.toParenthesesString();
+		Assert.assertEquals(
+			TreeNode
+				.parse(parentheses)
+				.map(Integer::parseInt),
+			tree
+		);
+	}
+
+	@Test
+	public void toParenthesesTree2() {
+		final Tree<String, ?> tree = TreeNode.of("(root)")
+			.attach(",", "(", ")");
+		final String string = tree.toParenthesesString();
+
+		Assert.assertEquals(string, "\\(root\\)(\\,,\\(,\\))");
+	}
+
+	@Test
+	public void toParenthesesTree3() {
+		final TreeNode<Integer> tree = TreeNode.of(0)
+			.attach(TreeNode.of(1)
+				.attach(4, 5))
+			.attach(TreeNode.of(2)
+				.attach(6))
+			.attach(TreeNode.of(3)
+				.attach(TreeNode.of(7)
+					.attach(10, 11))
+				.attach(8)
+				.attach(9));
+
+		final Tree<Integer, ?> parsed = TreeNode
+			.parse("0(1(4,5),2(6),3(7(10,11),8,9))")
+			.map(Integer::parseInt);
+
+		Assert.assertEquals(parsed, tree);
+	}
+
 	@Test(dataProvider = "paths")
 	public void childByPath(final int[] path, final String result)  {
 		Assert.assertEquals(
