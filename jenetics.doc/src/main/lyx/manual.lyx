@@ -24305,7 +24305,34 @@ As you can see, nodes on the same tree level are separated by a comma '
  No additional spaces are inserted between the separator character and the
  node value.
  Any spaces in the parentheses tree string will be part of the node value.
- 
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+ shows the syntax diagram
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Syntax_diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of the parentheses tree.
 \end_layout
 
 \begin_layout Standard
@@ -24347,35 +24374,7 @@ Parentheses tree syntax diagram
 \end_layout
 
 \begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Parentheses-tree-syntax"
-
-\end_inset
-
- shows the syntax diagram
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Syntax_diagram
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- of the parentheses tree, which defines its structure.
- To get the parentheses tree representation, you just have to call 
+To get the parentheses tree representation, you just have to call 
 \family typewriter
 Tree\SpecialChar softhyphen
 .to\SpecialChar softhyphen
