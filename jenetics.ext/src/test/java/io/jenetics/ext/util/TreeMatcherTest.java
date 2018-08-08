@@ -23,4 +23,5 @@ package io.jenetics.ext.util;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class TreeMatcherTest {
+
 }

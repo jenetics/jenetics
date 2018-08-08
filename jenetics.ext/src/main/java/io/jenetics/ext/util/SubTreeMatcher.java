@@ -19,9 +19,6 @@
  */
 package io.jenetics.ext.util;
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,43 +29,23 @@ import java.util.stream.Stream;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
+ * Checks if the given list of sub-trees are equals within the given tree.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-class TreeMatcher implements Matcher<Object> {
-	final Map<ChildPath, Object> _values;
-	final List<ChildPath> _equals;
+final class SubTreeMatcher<V> implements Matcher<V> {
 
-	private TreeMatcher(
-		final Map<ChildPath, Object> values,
-		final List<ChildPath> equals
-	) {
-		_values = requireNonNull(values);
-		_equals = requireNonNull(equals);
+	private final List<List<ChildPath>> _subTrees;
+
+	private SubTreeMatcher(final List<List<ChildPath>> subTrees) {
+		_subTrees = subTrees;
 	}
 
 	@Override
-	public boolean matches(final Tree<Object, ?> node) {
-		return value(node) && equals(node, _equals);
-	}
-
-	private boolean value(final Tree<?, ?> tree) {
-		final List<ChildPath> paths = new ArrayList<>(_values.keySet());
-		final List<Tree<?, ?>> nodes = children(tree, paths);
-
-		boolean matches = nodes.size() == paths.size();
-		final Iterator<Tree<?, ?>> tit = nodes.iterator();
-		final Iterator<ChildPath> pit = paths.iterator();
-
-		while (matches && tit.hasNext()) {
-			final Tree<?, ?> tn = tit.next();
-			final ChildPath path = pit.next();
-
-			matches = Objects.equals(_values.get(path), tn.getValue());
-		}
-
-		return matches;
+	public boolean matches(final Tree<V, ?> tree) {
+		return _subTrees.stream().allMatch(sub -> equals(tree, sub));
 	}
 
 	private static boolean
@@ -79,7 +56,6 @@ class TreeMatcher implements Matcher<Object> {
 		final Iterator<Tree<?, ?>> it = nodes.iterator();
 		if (it.hasNext()) {
 			final Tree<?, ?> tn = it.next();
-
 			while (matches && it.hasNext()) {
 				matches = Objects.equals(tn, it.next());
 			}
@@ -96,22 +72,25 @@ class TreeMatcher implements Matcher<Object> {
 			.collect(Collectors.toList());
 	}
 
-	/**
-	 * asdf
-	 * add(x, sub(x, x)) -> x
-	 *
-	 * @param pattern the pattern
-	 * @return the matcher
-	 */
-	static TreeMatcher of(final String pattern) {
-		final TreeNode<String> tree = TreeNode.parse(pattern);
+	static <V> SubTreeMatcher<V> of(final Tree<String, ?> pattern) {
+		final Map<String, List<Tree<String, ?>>> leafs = pattern.stream()
+			.filter(Tree::isLeaf)
+			.filter(n -> isVariable(n.getValue()))
+			.collect(Collectors.groupingBy(Tree::getValue));
 
-		final List<ChildPath> leafs = tree.stream()
-			.filter(TreeNode::isLeaf)
-			.map(n -> ChildPath.of(n.childPath()))
+		final List<List<ChildPath>> paths = leafs.values().stream()
+			.map(l -> l.stream()
+				.map(n -> ChildPath.of(n.childPath()))
+				.collect(Collectors.toList()))
 			.collect(Collectors.toList());
 
-		return null;
+		return new SubTreeMatcher<>(paths);
+	}
+
+	private static boolean isVariable(final String value) {
+		return value.length() == 1 &&
+			Character.isLetter(value.charAt(0)) &&
+			Character.isUpperCase(value.charAt(0));
 	}
 
 }
