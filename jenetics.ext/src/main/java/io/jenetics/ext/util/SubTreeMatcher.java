@@ -74,7 +74,7 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 
 	static <V> SubTreeMatcher<V> of(final Tree<String, ?> pattern) {
 		final Map<String, List<Tree<String, ?>>> leafs = pattern.stream()
-			.filter(Tree::isLeaf)
+			.filter(n -> n.isLeaf())
 			.filter(n -> isVariable(n.getValue()))
 			.collect(Collectors.groupingBy(Tree::getValue));
 
