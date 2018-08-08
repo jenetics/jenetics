@@ -24309,7 +24309,73 @@ As you can see, nodes on the same tree level are separated by a comma '
 \end_layout
 
 \begin_layout Standard
-To get the parentheses tree representation, you just have to call 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/ParenthesesTreeGrammar.png
+	lyxscale 30
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+Parentheses tree syntax diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+ shows the syntax diagram
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Syntax_diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of the parentheses tree, which defines its structure.
+ To get the parentheses tree representation, you just have to call 
 \family typewriter
 Tree\SpecialChar softhyphen
 .to\SpecialChar softhyphen
