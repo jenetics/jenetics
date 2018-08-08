@@ -88,7 +88,7 @@ class TreeMatcher implements Matcher<Object> {
 		return matches;
 	}
 
-	private static List<Tree<?, ?>>
+	static List<Tree<?, ?>>
 	children(final Tree<?, ?> tree, final List<ChildPath> paths) {
 		return paths.stream()
 			.map(p -> tree.childAtPath(p.path()))

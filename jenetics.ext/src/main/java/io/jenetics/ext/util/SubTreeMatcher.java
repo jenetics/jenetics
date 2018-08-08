@@ -19,12 +19,13 @@
  */
 package io.jenetics.ext.util;
 
+import static io.jenetics.ext.util.TreeMatcher.children;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
@@ -62,14 +63,6 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 		}
 
 		return matches;
-	}
-
-	private static List<Tree<?, ?>>
-	children(final Tree<?, ?> tree, final List<ChildPath> paths) {
-		return paths.stream()
-			.map(p -> tree.childAtPath(p.path()))
-			.flatMap(n -> n.map(Stream::of).orElse(Stream.empty()))
-			.collect(Collectors.toList());
 	}
 
 	static <V> SubTreeMatcher<V> of(final Tree<String, ?> pattern) {
