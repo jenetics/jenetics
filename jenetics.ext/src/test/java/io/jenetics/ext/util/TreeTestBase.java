@@ -338,9 +338,9 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 	@Test(dataProvider = "nodeAccessorMethods")
 	public void nodeAccessorMethod(final AccessorMethod method) {
-		final Iterator<T> tree = newTree(15, new Random(123))
+		final Iterator<T> tree = newTree(7, new Random(123))
 			.breadthFirstIterator();
-		final Enumeration<?> swing = newSwingTree(15, new Random(123))
+		final Enumeration<?> swing = newSwingTree(7, new Random(123))
 			.breadthFirstEnumeration();
 
 		while (tree.hasNext()) {

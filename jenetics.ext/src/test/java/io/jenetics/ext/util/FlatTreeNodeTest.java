@@ -36,25 +36,8 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 
 	public FlatTreeNode<Integer> newTree(final int levels, final Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
-		fill(root, levels, random);
+		TreeNodeTest.fill(root, levels, random);
 		return FlatTreeNode.of(root);
-	}
-
-	private static void fill(
-		final TreeNode<Integer> node,
-		final int level,
-		final Random random
-	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
-			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
-
-			if (random.nextDouble() < 0.8 && level > 0) {
-				fill(child, level - 1, random);
-			}
-
-			node.attach(child);
-		}
 	}
 
 	@Test

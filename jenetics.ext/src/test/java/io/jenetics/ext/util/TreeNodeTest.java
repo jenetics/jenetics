@@ -41,7 +41,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		return root;
 	}
 
-	private static void fill(
+	public static void fill(
 		final TreeNode<Integer> node,
 		final int level,
 		final Random random
