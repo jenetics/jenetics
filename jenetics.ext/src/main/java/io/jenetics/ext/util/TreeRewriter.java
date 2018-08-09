@@ -32,6 +32,7 @@ import java.util.Optional;
  */
 public class TreeRewriter {
 
+	@FunctionalInterface
 	public static interface Matcher<V> {
 		public boolean matches(final Tree<V, ?> node);
 	}
