@@ -46,7 +46,9 @@ public class TreeValueMatcherTest {
 	@DataProvider(name = "subTreeMatches")
 	public Object[][] subTreeMatches() {
 		return new Object[][] {
-			{"0(1,2)", "0(1,2)", true}
+			{"0(1,2)", "0(1,2)", true},
+			{"0(1,2,X)", "0(1,2)", true},
+			{"0(3,2,X)", "0(1,2)", false}
 		};
 	}
 
