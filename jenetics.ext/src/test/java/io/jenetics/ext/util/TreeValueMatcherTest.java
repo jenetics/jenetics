@@ -28,15 +28,16 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreeMatcherTest {
+public class TreeValueMatcherTest {
 
 	@Test(dataProvider = "treePattern")
 	public void subTrees(
-		final String pattern,
+		final String patternString,
 		final String treeString,
 		final boolean matches
 	) {
-		final Matcher<Integer> matcher = TreeMatcher.of(pattern, Integer::parseInt);
+		final Tree<String, ?> pattern = TreeNode.parse(patternString);
+		final Matcher<Integer> matcher = TreeValueMatcher.of(pattern, Integer::parseInt);
 
 		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
 		Assert.assertEquals(matcher.matches(tree), matches);
@@ -46,9 +47,8 @@ public class TreeMatcherTest {
 	public Object[][] treePattern() {
 		return new Object[][] {
 			{"0(1,2)", "0(1,2)", true},
-			{"0(1,2,X)", "0(1,2,3(4))", true},
-			{"0(3,2,X)", "0(1,2)", false},
-			{"0(3,2,X,X)", "0(3,2,0(1,2),0(1,2))", true}
+			{"0(1,2,X)", "0(1,2)", true},
+			{"0(3,2,X)", "0(1,2)", false}
 		};
 	}
 

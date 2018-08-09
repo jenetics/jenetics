@@ -21,74 +21,38 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
+ * Implementation of a pattern based tree matcher.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-class TreeMatcher implements Matcher<Object> {
-	final Map<ChildPath, Object> _values;
-	final List<ChildPath> _equals;
+final class TreeMatcher<V> implements Matcher<V> {
+	private final Matcher<V> _subTreeMatcher;
+	private final Matcher<V> _valueMatcher;
 
 	private TreeMatcher(
-		final Map<ChildPath, Object> values,
-		final List<ChildPath> equals
+		final Matcher<V> subTreeMatcher,
+		final Matcher<V> valueMatcher
 	) {
-		_values = requireNonNull(values);
-		_equals = requireNonNull(equals);
+		_subTreeMatcher = requireNonNull(subTreeMatcher);
+		_valueMatcher = requireNonNull(valueMatcher);
 	}
 
 	@Override
-	public boolean matches(final TreeNode<Object> node) {
-		return value(node) && equals(node, _equals);
+	public boolean matches(final Tree<V, ?> node) {
+		return _valueMatcher.matches(node) && _subTreeMatcher.matches(node);
 	}
 
-	private boolean value(final Tree<?, ?> tree) {
-		final List<ChildPath> paths = new ArrayList<>(_values.keySet());
-		final List<Tree<?, ?>> nodes = children(tree, paths);
-
-		boolean matches = nodes.size() == paths.size();
-		final Iterator<Tree<?, ?>> tit = nodes.iterator();
-		final Iterator<ChildPath> pit = paths.iterator();
-
-		while (matches && tit.hasNext()) {
-			final Tree<?, ?> tn = tit.next();
-			final ChildPath path = pit.next();
-
-			matches = Objects.equals(_values.get(path), tn.getValue());
-		}
-
-		return matches;
-	}
-
-	private static boolean
-	equals(final Tree<?, ?> tree, final List<ChildPath> paths) {
-		final List<Tree<?, ?>> nodes = children(tree, paths);
-
-		boolean matches = nodes.size() == paths.size();
-		final Iterator<Tree<?, ?>> it = nodes.iterator();
-		if (it.hasNext()) {
-			final Tree<?, ?> tn = it.next();
-
-			while (matches && it.hasNext()) {
-				matches = Objects.equals(tn, it.next());
-			}
-		}
-
-		return matches;
-	}
-
-	private static List<Tree<?, ?>>
+	static List<Tree<?, ?>>
 	children(final Tree<?, ?> tree, final List<ChildPath> paths) {
 		return paths.stream()
 			.map(p -> tree.childAtPath(p.path()))
@@ -96,16 +60,22 @@ class TreeMatcher implements Matcher<Object> {
 			.collect(Collectors.toList());
 	}
 
-	static TreeMatcher of(final String pattern) {
+	/**
+	 * add(X, sub(X, X)) -> x
+	 *
+	 * @param pattern the pattern
+	 * @return the matcher
+	 */
+	static <V> TreeMatcher<V> of(
+		final String pattern,
+		final Function<? super String, ? extends V> mapper
+	) {
 		final TreeNode<String> tree = TreeNode.parse(pattern);
 
-		final List<ChildPath> equals = tree.stream()
-			.filter(TreeNode::isLeaf)
-			.map(n -> ChildPath.of(n.childPath()))
-			.collect(Collectors.toList());
-
-
-		return null;
+		return new TreeMatcher<>(
+			SubTreeMatcher.of(tree),
+			TreeValueMatcher.of(tree, mapper)
+		);
 	}
 
 }
