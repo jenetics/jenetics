@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
- * Check if a given tree matches specific values.
+ * Check if a given tree matches specific tree values.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -65,13 +65,6 @@ final class TreeValueMatcher<V> implements Matcher<V> {
 		return matches;
 	}
 
-	/**
-	 * add(X, sub(X, X))
-	 *
-	 * @param pattern
-	 * @param <V>
-	 * @return
-	 */
 	static <V> TreeValueMatcher<V> of(
 		final Tree<String, ?> pattern,
 		final Function<? super String, ? extends V> mapper

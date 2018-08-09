@@ -30,7 +30,7 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 public class TreeValueMatcherTest {
 
-	@Test(dataProvider = "subTreeMatches")
+	@Test(dataProvider = "treePattern")
 	public void subTrees(
 		final String patternString,
 		final String treeString,
@@ -43,8 +43,8 @@ public class TreeValueMatcherTest {
 		Assert.assertEquals(matcher.matches(tree), matches);
 	}
 
-	@DataProvider(name = "subTreeMatches")
-	public Object[][] subTreeMatches() {
+	@DataProvider(name = "treePattern")
+	public Object[][] treePattern() {
 		return new Object[][] {
 			{"0(1,2)", "0(1,2)", true},
 			{"0(1,2,X)", "0(1,2)", true},
