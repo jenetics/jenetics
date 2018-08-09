@@ -97,8 +97,7 @@ class TreeMatcher implements Matcher<Object> {
 	}
 
 	/**
-	 * asdf
-	 * add(x, sub(x, x)) -> x
+	 * add(X, sub(X, X)) -> x
 	 *
 	 * @param pattern the pattern
 	 * @return the matcher

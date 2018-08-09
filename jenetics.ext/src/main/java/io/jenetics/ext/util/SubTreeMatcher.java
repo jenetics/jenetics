@@ -67,8 +67,7 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 
 	static <V> SubTreeMatcher<V> of(final Tree<String, ?> pattern) {
 		final Map<String, List<Tree<String, ?>>> leafs = pattern.stream()
-			.filter(n -> n.isLeaf())
-			.filter(n -> isVariable(n.getValue()))
+			.filter(SubTreeMatcher::isVariable)
 			.collect(Collectors.groupingBy(Tree::getValue));
 
 		final List<List<ChildPath>> paths = leafs.values().stream()
@@ -80,10 +79,11 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 		return new SubTreeMatcher<>(paths);
 	}
 
-	private static boolean isVariable(final String value) {
-		return value.length() == 1 &&
-			Character.isLetter(value.charAt(0)) &&
-			Character.isUpperCase(value.charAt(0));
+	static boolean isVariable(final Tree<String, ?> node) {
+		return node.isLeaf() &&
+			node.getValue().length() == 1 &&
+			Character.isLetter(node.getValue().charAt(0)) &&
+			Character.isUpperCase(node.getValue().charAt(0));
 	}
 
 }

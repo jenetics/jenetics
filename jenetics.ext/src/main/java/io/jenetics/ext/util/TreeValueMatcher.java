@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
@@ -38,9 +40,9 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 final class TreeValueMatcher<V> implements Matcher<V> {
 
-	final Map<ChildPath, Object> _values;
+	final Map<ChildPath, V> _values;
 
-	private TreeValueMatcher(final Map<ChildPath, Object> values) {
+	private TreeValueMatcher(final Map<ChildPath, V> values) {
 		_values = values;
 	}
 
@@ -63,8 +65,28 @@ final class TreeValueMatcher<V> implements Matcher<V> {
 		return matches;
 	}
 
-	static <V> TreeValueMatcher<V> of(final Tree<V, ?> pattern) {
-		return null;
+	/**
+	 * add(X, sub(X, X))
+	 *
+	 * @param pattern
+	 * @param <V>
+	 * @return
+	 */
+	static <V> TreeValueMatcher<V> of(
+		final Tree<String, ?> pattern,
+		final Function<? super String, ? extends V> mapper
+	) {
+		final Map<ChildPath, V> values = pattern.stream()
+			.filter(TreeValueMatcher::nonVariable)
+			.collect(Collectors.toMap(
+				n -> ChildPath.of(n.childPath()),
+				n -> mapper.apply(n.getValue())));
+
+		return new TreeValueMatcher<>(values);
+	}
+
+	private static boolean nonVariable(final Tree<String, ?> node) {
+		return !SubTreeMatcher.isVariable(node);
 	}
 
 }
