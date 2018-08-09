@@ -421,6 +421,7 @@ public final class TreeNode<T>
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
 	 *
 	 * @since 4.3
 	 *
@@ -432,7 +433,43 @@ public final class TreeNode<T>
 	 *         parsed
 	 */
 	public static TreeNode<String> parse(final String tree) {
-		return TreeParser.parse(tree);
+		return TreeParser.parse(tree, Function.identity());
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = TreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 4.3
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> TreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return TreeParser.parse(tree, mapper);
 	}
 
 }
