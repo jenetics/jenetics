@@ -19,10 +19,34 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
+ * add(X,0) -> X
+ * mul(X,0) -> 0
+ * sin(neg(X)) -> neg(sin(X))
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-class NodeRewriter {
+final class NodeRewriter<V> {
+
+	private final Map<Character, ChildPath> _replace;
+
+	private NodeRewriter(final Map<Character, ChildPath> replace) {
+		_replace = requireNonNull(replace);
+	}
+
+	public void rewrite(final TreeNode<V> node) {
+		final Map<Character, TreeNode<V>> nodes = _replace.entrySet().stream()
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				e -> node.childAtPath(e.getValue().path())
+					.orElseThrow(AssertionError::new)));
+	}
+
 }
