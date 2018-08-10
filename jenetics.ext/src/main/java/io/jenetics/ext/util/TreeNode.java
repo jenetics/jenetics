@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import io.jenetics.util.Copyable;
 
@@ -37,7 +38,7 @@ import io.jenetics.util.Copyable;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.3
  * @since 3.9
  */
 public final class TreeNode<T>
@@ -322,6 +323,24 @@ public final class TreeNode<T>
 		return ofTree(this);
 	}
 
+	/**
+	 * Returns a new {@code TreeNode} consisting of all nodes of {@code this}
+	 * tree, but with a different value type, created by applying the given
+	 * function to the node values of {@code this} tree.
+	 *
+	 * @param mapper the node value mapper
+	 * @param <B> the new node type
+	 * @return a new tree consisting of all nodes of {@code this} tree
+	 * @throws NullPointerException if the given {@code mapper} function is
+	 *         {@code null}
+	 */
+	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
+		final TreeNode<B> target = of(mapper.apply(getValue()));
+		fill(this, target, mapper);
+		return target;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Tree.hashCode(this);
@@ -346,29 +365,13 @@ public final class TreeNode<T>
 	 **************************************************************************/
 
 	/**
-	 * Return a new {@code TreeNode} from the given source {@code tree}. The
-	 * whole tree is copied.
+	 * Return a new {@code TreeNode} with a {@code null} tree value.
 	 *
-	 * @param tree the source tree the new tree-node is created from
-	 * @param <T> the tree value type
-	 * @return a new {@code TreeNode} from the given source {@code tree}
-	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
 	 */
-	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
-		final TreeNode<T> target = of(tree.getValue());
-		fill(tree, target);
-		return target;
-	}
-
-	private static <T> void fill(
-		final Tree<? extends T, ?> source,
-		final TreeNode<T> target
-	) {
-		source.childStream().forEachOrdered(child -> {
-			final TreeNode<T> targetChild = of(child.getValue());
-			target.attach(targetChild);
-			fill(child, targetChild);
-		});
+	public static <T> TreeNode<T> of() {
+		return of(null);
 	}
 
 	/**
@@ -383,13 +386,90 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return a new {@code TreeNode} with a {@code null} tree value.
+	 * Return a new {@code TreeNode} from the given source {@code tree}. The
+	 * whole tree is copied.
 	 *
-	 * @param <T> the tree-node type
-	 * @return a new tree-node
+	 * @param tree the source tree the new tree-node is created from
+	 * @param <T> the tree value type
+	 * @return a new {@code TreeNode} from the given source {@code tree}
+	 * @throws NullPointerException if the source {@code tree} is {@code null}
 	 */
-	public static <T> TreeNode<T> of() {
-		return new TreeNode<>(null);
+	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
+		final TreeNode<T> target = of(tree.getValue());
+		fill(tree, target, Function.identity());
+		return target;
+	}
+
+	private static <T, B> void fill(
+		final Tree<? extends T, ?> source,
+		final TreeNode<B> target,
+		final Function<? super T, ? extends B> mapper
+	) {
+		source.childStream().forEachOrdered(child -> {
+			final TreeNode<B> targetChild = of(mapper.apply(child.getValue()));
+			target.attach(targetChild);
+			fill(child, targetChild, mapper);
+		});
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
+	 *
+	 * @since 4.3
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static TreeNode<String> parse(final String tree) {
+		return TreeParser.parse(tree, Function.identity());
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = TreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 4.3
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> TreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return TreeParser.parse(tree, mapper);
 	}
 
 }

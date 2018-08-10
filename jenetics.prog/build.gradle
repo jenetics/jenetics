@@ -30,11 +30,6 @@
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
 	compile project(':jenetics')
 	compile project(':jenetics.ext')

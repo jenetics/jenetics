@@ -33,11 +33,6 @@ apply plugin: 'nexus'
 
 description = property('jenetics.Description')
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
 	testCompile property('include.ApacheCommonsMath')
 	testCompile property('include.TestNG')

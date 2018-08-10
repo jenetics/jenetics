@@ -17,37 +17,20 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.ext.util;
 
-import java.util.Random;
+import java.util.List;
 
 import org.testng.annotations.Test;
-
-import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.util.FlatTreeNode;
-import io.jenetics.ext.util.TreeNode;
-import io.jenetics.ext.util.TreeNodeTest;
-import io.jenetics.ext.util.TreeTestBase;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
+public class TreesTest {
 
-	@Override
-	public IntTreeGene newTree(int levels, Random random) {
-		final TreeNode<Integer> root = TreeNode.of(0);
-		TreeNodeTest.fill(root, levels, random);
-
-		final FlatTreeNode<Integer> flattened = FlatTreeNode.of(root);
-		final ISeq<IntTreeGene> genes = flattened.stream()
-			.map(n -> new IntTreeGene(n.getValue(), n.childOffset(), n.childCount()))
-			.collect(ISeq.toISeq());
-
-		return new IntTreeChromosome(genes).getRoot();
+	@Test
+	public void tokens() {
+		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
+		//tokens.forEach(System.out::println);
 	}
-
 }
-

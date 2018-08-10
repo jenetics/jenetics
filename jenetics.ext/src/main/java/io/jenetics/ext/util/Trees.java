@@ -32,7 +32,7 @@ import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.3
  * @since 3.9
  */
 final class Trees {
@@ -130,54 +130,6 @@ final class Trees {
 		result.add(it.next().insert(0, "└── "));
 		while (it.hasNext()) {
 			result.add(it.next().insert(0, "    "));
-		}
-	}
-
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 */
-	public static String toCompactString(final Tree<?, ?> tree) {
-		if (tree != null) {
-			final StringBuilder out = new StringBuilder();
-			toCompactString(out, tree);
-			return out.toString();
-		} else {
-			return "null";
-		}
-	}
-
-	private static void toCompactString(
-		final StringBuilder out,
-		final Tree<?, ?> tree
-	) {
-		out.append(tree.getValue());
-		if (!tree.isLeaf()) {
-			out.append("(");
-			toCompactString(out, tree.getChild(0));
-			for (int i = 1; i < tree.childCount(); ++i) {
-				out.append(", ");
-				toCompactString(out, tree.getChild(i));
-			}
-			out.append(")");
 		}
 	}
 

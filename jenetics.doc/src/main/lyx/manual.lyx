@@ -88,7 +88,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends}
+  morekeywords={*,...,public,extends,assert}
 }
 \end_preamble
 \options utf8,utf8x
@@ -24223,6 +24223,390 @@ Node
 \end_layout
 
 \begin_layout Subsubsection
+Parentheses tree
+\end_layout
+
+\begin_layout Standard
+A parentheses tree
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is a serialized representation of a tree and is a simplified form of the
+ 
+\emph on
+Newick
+\emph default
+ tree format
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://evolution.genetics.washington.edu/phylip/newicktree.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ The parentheses tree representation of the tree in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-tree"
+
+\end_inset
+
+ will look like the following string:
+\end_layout
+
+\begin_layout LyX-Code
+0(1(4,5),2(6),3(7(10,11),8,9))
+\end_layout
+
+\begin_layout Standard
+As you can see, nodes on the same tree level are separated by a comma '
+\family typewriter
+,
+\family default
+'.
+ New tree levels are created with an opening parentheses '
+\family typewriter
+(
+\family default
+' and closed with a closing parentheses '
+\family typewriter
+)
+\family default
+'.
+ No additional spaces are inserted between the separator character and the
+ node value.
+ Any spaces in the parentheses tree string will be part of the node value.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+ shows the syntax diagram
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Syntax_diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of the parentheses tree.
+ The 
+\family typewriter
+Node\SpecialChar softhyphen
+Value
+\family default
+ in the diagram is the string representation of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.get\SpecialChar softhyphen
+Val\SpecialChar softhyphen
+ue()
+\family default
+ object.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/ParenthesesTreeGrammar.png
+	lyxscale 30
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+Parentheses tree syntax diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To get the parentheses tree representation, you just have to call 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Paren\SpecialChar softhyphen
+the\SpecialChar softhyphen
+ses\SpecialChar softhyphen
+Tree()
+\family default
+.
+ This method uses the 
+\family typewriter
+Ob\SpecialChar softhyphen
+ject\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+String()
+\family default
+ method for 
+\emph on
+serializing
+\emph default
+ the tree node value.
+ If you need a different string representation you can use the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Paren\SpecialChar softhyphen
+the\SpecialChar softhyphen
+ses\SpecialChar softhyphen
+Tree(\SpecialChar softhyphen
+Function<\SpecialChar softhyphen
+? super V, String>\SpecialChar softhyphen
+)
+\family default
+ method.
+ A simple example, on how to use this method, is shown in the code snippet
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<Path, ?> tree = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final String string = tree.toParenthesesString(Path::getFileName);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the string representation of the tree node value contains one of the
+ protected characters, '
+\family typewriter
+,
+\family default
+', '
+\family typewriter
+(
+\family default
+' or '
+\family typewriter
+)
+\family default
+', they will be escaped with a '
+\family typewriter
+
+\backslash
+
+\family default
+' character.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> tree = TreeNode.of("(root)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(",", "(", ")")
+\end_layout
+
+\end_inset
+
+The tree in the code snippet above will be represented as the following
+ parentheses string:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+(root
+\backslash
+)(
+\backslash
+,,
+\backslash
+(,
+\backslash
+))
+\end_layout
+
+\begin_layout Standard
+Serializing a tree into parentheses form is just one part of the story.
+ It is also possible to read back the parentheses string as tree object.
+ The 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+.parse(\SpecialChar softhyphen
+String\SpecialChar softhyphen
+)
+\family default
+ method allows you to parse a tree string back to a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>
+\family default
+ object.
+ If you need to create a tree with the original node type, you can call
+ the 
+\family typewriter
+parse
+\family default
+ method with an additional string mapper function.
+ How you can parse a given parentheses tree string is shown in the code
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<Integer, ?> tree = TreeNode.parse(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "0(1(4,5),2(6),3(7(10,11),8,9))",
+\end_layout
+
+\begin_layout Plain Layout
+
+    Integer::parseInt
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+TreeNode.parse
+\family default
+ method will throw an 
+\family typewriter
+Illegal\SpecialChar softhyphen
+Argument\SpecialChar softhyphen
+Exception
+\family default
+ if it is called with an invalid tree string.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewriting
+\end_layout
+
+\begin_layout Standard
+Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
+ trees (tree structured data) into other trees by applying rewriting rules.
+ Rewriting can be non-deterministic.
+ One rule to rewrite a term could be applied in many different ways to that
+ term, or more than one rule could be applicable.
+ Rewriting systems then do not provide an algorithm for changing one term
+ to another, but a set of possible rule applications.
+ When combined with an appropriate algorithm, however, rewrite systems can
+ be viewed as computer programs, and several theorem provers and declarative
+ programming languages are based on term rewriting.
+\end_layout
+
+\begin_layout Standard
+A term rewriting system (TRS) is a rewriting system where the objects are
+ terms, or expressions with nested sub-expressions.
+ For example, the system shown under § Logic above is a term rewriting system.
+\end_layout
+
+\begin_layout Standard
+In contrast to string rewriting systems, whose objects are flat sequences
+ of symbols, the objects a term rewriting system works on, i.e.
+ the terms, form a term algebra.
+ A term can be visualized as a tree of symbols, the set of admitted symbols
+ being fixed by a given signature.
+ 
+\end_layout
+
+\begin_layout Subsubsection
 Flat tree
 \begin_inset CommandInset label
 LatexCommand label
@@ -24492,12 +24876,17 @@ final TreeNode<Integer> tree = ...;
 
 \begin_layout Plain Layout
 
-final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
+final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode.of(tree)
 \end_layout
 
 \begin_layout Plain Layout
 
-    .of(tree).flattenedNodes();
+    .flattenedNodes();
+\end_layout
+
+\begin_layout Plain Layout
+
+assert Tree.equals(tree, nodes.get(0));
 \end_layout
 
 \begin_layout Plain Layout
@@ -24507,6 +24896,16 @@ final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
 \begin_layout Plain Layout
 
 final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.equals(unflattened);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert unflattened.equals(tree);
 \end_layout
 
 \end_inset
@@ -28853,6 +29252,10 @@ Genetic programming!Program pruning
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \begin_layout Standard

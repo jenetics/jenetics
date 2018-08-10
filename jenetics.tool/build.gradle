@@ -25,11 +25,6 @@
 
 apply plugin: 'packaging'
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
 	compile project(':jenetics')
 	compile project(':jenetics.example')

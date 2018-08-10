@@ -146,7 +146,10 @@ public class GeneConvergenceLimitTest {
 				Codecs.ofScalar(DoubleRange.of(0, 1))
 			);
 
-			final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+			final Engine<DoubleGene, Double> engine = Engine
+				.builder(problem)
+				.executor(Runnable::run)
+				.build();
 
 			final AtomicInteger count = new AtomicInteger();
 			final EvolutionResult<DoubleGene, Double> result = engine.stream()
