@@ -19,12 +19,18 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.Math.max;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.AnyChromosome;
@@ -54,7 +60,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 3.4
+ * @version !__version__!
  */
 public final class Codecs {
 
@@ -504,6 +510,65 @@ public final class Codecs {
 				.map(EnumGene::getAllele)
 				.collect(ISeq.toISeq())
 		);
+	}
+
+	/**
+	 * Create a codec, which creates a a mapping from the elements given in the
+	 * {@code source} sequence to the elements given in the {@code target}
+	 * sequence. It is guaranteed, that no {@code target} element is mapped by
+	 * more than one {@code source} element. There is also no requirement that
+	 * the {@code source} and {@code target} sequence have the same number of
+	 * elements. The size of the encoded {@code Map} will always be
+	 * {@code min(source.size(), target.size())}.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
+	 *
+	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+	 *     Codecs.ofMapping(numbers, strings);
+	 * }</pre>
+	 *
+	 * The codec in the example above assigns a string value to the numbers in
+	 * the first sequence. Since there are less string values than numbers, only
+	 * three numbers are mapped to a string value.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param source the source elements. Will be the <em>keys</em> of the
+	 *        encoded {@code Map}.
+	 * @param target the target elements. Will be the <em>values</em> of the
+	 * 	      encoded {@code Map}.
+	 * @param <A> the type of the source elements
+	 * @param <B> the type of the target elements
+	 * @return a new mapping codec
+	 * @throws IllegalArgumentException if both sequences are empty
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
+	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
+	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
+		return ofPermutation(max(source.size(), target.size()))
+			.map(perm -> toMapping(perm, source, target));
+	}
+
+	private static <A, B> Map<A, B> toMapping(
+		final int[] perm,
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target
+	) {
+		return source.size() >= target.size()
+			? IntStream.range(0, perm.length)
+				.filter(i -> perm[i] < target.size())
+				.mapToObj(i -> entry(source.get(i), target.get(perm[i])))
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue))
+			: IntStream.range(0, perm.length)
+				.filter(i -> perm[i] < source.size())
+				.mapToObj(i -> entry(source.get(perm[i]), target.get(i)))
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+	}
+
+	private static <A, B> Entry<A, B> entry(final A key, final B value) {
+		return new SimpleImmutableEntry<>(key, value);
 	}
 
 	/**
