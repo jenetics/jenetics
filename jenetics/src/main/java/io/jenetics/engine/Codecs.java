@@ -19,12 +19,18 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.Math.max;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.AnyChromosome;
@@ -504,6 +510,32 @@ public final class Codecs {
 				.map(EnumGene::getAllele)
 				.collect(ISeq.toISeq())
 		);
+	}
+
+	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
+	ofMapping(final ISeq<? extends A> from, final ISeq<? extends B> to) {
+		return ofPermutation(max(from.size(), to.size()))
+			.map(perm -> toMapping(perm, from, to));
+	}
+
+	private static <A, B> Map<A, B> toMapping(
+		final int[] perm,
+		final ISeq<? extends A> from,
+		final ISeq<? extends B> to
+	) {
+		return from.size() >= to.size()
+			? IntStream.range(0, perm.length)
+				.filter(i -> perm[i] < to.size())
+				.mapToObj(i -> entry(from.get(i), to.get(perm[i])))
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue))
+			: IntStream.range(0, perm.length)
+				.filter(i -> perm[i] < from.size())
+				.mapToObj(i -> entry(from.get(perm[i]), to.get(i)))
+				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+	}
+
+	private static <A, B> Entry<A, B> entry(final A key, final B value) {
+		return new SimpleImmutableEntry<>(key, value);
 	}
 
 	/**
