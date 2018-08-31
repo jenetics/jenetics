@@ -529,6 +529,10 @@ public final class Codecs {
 	 *     Codecs.ofMapping(numbers, chars);
 	 * }</pre>
 	 *
+	 * The codec in the example above assigns a string value to the numbers in
+	 * the first sequence. Since there are less string values than numbers, only
+	 * three numbers are mapped to a string value.
+	 *
 	 * @since !__version__!
 	 *
 	 * @param source the source elements. Will be the <em>keys</em> of the
