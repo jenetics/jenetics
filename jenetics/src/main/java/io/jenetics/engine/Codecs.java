@@ -512,25 +512,54 @@ public final class Codecs {
 		);
 	}
 
+	/**
+	 * Create a codec, which creates a a mapping from the elements given in the
+	 * {@code source} sequence to the elements given in the {@code target}
+	 * sequence. It is guaranteed, that no {@code target} element is mapped by
+	 * more than one {@code source} element. There is also no requirement that
+	 * the {@code source} and {@code target} sequence have the same number of
+	 * elements. The size of the encoded {@code Map} will always be
+	 * {@code min(source.size(), target.size())}.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+	 * final ISeq<String> chars = ISeq.of("1", "2", "3");
+	 *
+	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+	 *     Codecs.ofMapping(numbers, chars);
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @param source the source elements. Will be the <em>keys</em> of the
+	 *        encoded {@code Map}.
+	 * @param target the target elements. Will be the <em>values</em> of the
+	 * 	      encoded {@code Map}.
+	 * @param <A> the type of the source elements
+	 * @param <B> the type of the target elements
+	 * @return a new mapping codec
+	 * @throws IllegalArgumentException if both sequences are empty
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
 	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
-	ofMapping(final ISeq<? extends A> from, final ISeq<? extends B> to) {
-		return ofPermutation(max(from.size(), to.size()))
-			.map(perm -> toMapping(perm, from, to));
+	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
+		return ofPermutation(max(source.size(), target.size()))
+			.map(perm -> toMapping(perm, source, target));
 	}
 
 	private static <A, B> Map<A, B> toMapping(
 		final int[] perm,
-		final ISeq<? extends A> from,
-		final ISeq<? extends B> to
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target
 	) {
-		return from.size() >= to.size()
+		return source.size() >= target.size()
 			? IntStream.range(0, perm.length)
-				.filter(i -> perm[i] < to.size())
-				.mapToObj(i -> entry(from.get(i), to.get(perm[i])))
+				.filter(i -> perm[i] < target.size())
+				.mapToObj(i -> entry(source.get(i), target.get(perm[i])))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue))
 			: IntStream.range(0, perm.length)
-				.filter(i -> perm[i] < from.size())
-				.mapToObj(i -> entry(from.get(perm[i]), to.get(i)))
+				.filter(i -> perm[i] < source.size())
+				.mapToObj(i -> entry(source.get(perm[i]), target.get(i)))
 				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 	}
 

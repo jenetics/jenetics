@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -348,6 +349,56 @@ public class CodecsTest {
 		for (int i = 0; i < value.length(); ++i) {
 			Assert.assertEquals(value.get(i), gt.get(0, i).toString());
 		}
+	}
+
+	@Test
+	public void ofMapping1() {
+		final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+		final ISeq<String> chars = ISeq.of("A", "B", "C");
+
+		final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+			Codecs.ofMapping(numbers, chars);
+
+		final Function<Map<Integer, String>, Integer> ff = map ->
+			map.keySet().stream().mapToInt(Integer::intValue).sum();
+
+		Engine<EnumGene<Integer>, Integer> engine = Engine.builder(ff, codec)
+			.build();
+
+		final Map<Integer, String> best = codec.decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(best.containsKey(3));
+		Assert.assertTrue(best.containsKey(4));
+		Assert.assertTrue(best.containsKey(5));
+	}
+
+	@Test
+	public void ofMapping2() {
+		final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+		final ISeq<String> chars = ISeq.of("A", "B", "C");
+
+		final Codec<Map<String, Integer>, EnumGene<Integer>> codec =
+			Codecs.ofMapping(chars, numbers);
+
+		final Function<Map<String, Integer>, Integer> ff = map ->
+			map.values().stream().mapToInt(Integer::intValue).sum();
+
+		Engine<EnumGene<Integer>, Integer> engine = Engine.builder(ff, codec)
+			.build();
+
+		final Map<String, Integer> best = codec.decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(best.containsValue(3));
+		Assert.assertTrue(best.containsValue(4));
+		Assert.assertTrue(best.containsValue(5));
 	}
 
 
