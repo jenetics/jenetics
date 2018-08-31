@@ -523,10 +523,10 @@ public final class Codecs {
 	 *
 	 * <pre>{@code
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
-	 * final ISeq<String> chars = ISeq.of("1", "2", "3");
+	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
-	 *     Codecs.ofMapping(numbers, chars);
+	 *     Codecs.ofMapping(numbers, strings);
 	 * }</pre>
 	 *
 	 * The codec in the example above assigns a string value to the numbers in
