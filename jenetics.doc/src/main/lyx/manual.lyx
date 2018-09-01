@@ -24729,11 +24729,15 @@ Exception
  if it is called with an invalid tree string.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 Tree rewriting
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
  trees (tree structured data) into other trees by applying rewriting rules.
  Rewriting can be non-deterministic.
@@ -24746,19 +24750,24 @@ Tree rewriting is a synonym for term rewriting, i.e., the process of transformin
  programming languages are based on term rewriting.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A term rewriting system (TRS) is a rewriting system where the objects are
  terms, or expressions with nested sub-expressions.
  For example, the system shown under § Logic above is a term rewriting system.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 In contrast to string rewriting systems, whose objects are flat sequences
  of symbols, the objects a term rewriting system works on, i.e.
  the terms, form a term algebra.
  A term can be visualized as a tree of symbols, the set of admitted symbols
  being fixed by a given signature.
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -29410,7 +29419,16 @@ Genetic programming!Program pruning
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 //TODO: Tree rewriting/Program rewriting
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -34967,7 +34985,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -34988,7 +35006,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
