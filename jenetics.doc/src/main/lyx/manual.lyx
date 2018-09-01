@@ -18318,6 +18318,121 @@ public class TSM {
 \end_layout
 
 \begin_layout Subsection
+Mapping codec
+\end_layout
+
+\begin_layout Standard
+This codec is a variation of the permutation codec.
+ Instead of permuting the elements of a given array, it permutes the mapping
+ of elements of a source set to the elements of a target set.
+ The code snippet below shows the method of the 
+\family typewriter
+Codecs
+\family default
+ class, which creates a 
+\emph on
+mapping
+\emph default
+ codec from a given source- and target set.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static <A, B> Codec<Map<A, B>, EnumGene<Integer>> 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ofMapping(ISeq<? extends A> source, ISeq<? extends B> target)
+\end_layout
+
+\end_inset
+
+It is not necessary that the source and target set are of the same size.
+ If 
+\begin_inset Formula $\left|\mathsf{source}\right|>\left|\mathsf{target}\right|$
+\end_inset
+
+, only some of the source elements are used as mapping key, but all target
+ element are mapped.
+ If 
+\begin_inset Formula $\left|\mathsf{source}\right|<\left|\mathsf{target}\right|$
+\end_inset
+
+, all source elements map to one target element.
+ The 
+\emph on
+mapping
+\emph default
+ function, represented by the encoded 
+\family typewriter
+Map
+\family default
+, is injective
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Injective_function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ in this case.
+ If 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, the 
+\emph on
+mapping
+\emph default
+ function is bijective
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Bijection
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ In every case, the size of the encoded 
+\family typewriter
+Map
+\family default
+ is 
+\begin_inset Formula $\min\left(\left|\mathsf{source}\right|,\left|\mathsf{target}\right|\right)$
+\end_inset
+
+ and a target element is only mapped once.
+\end_layout
+
+\begin_layout Subsection
 Composite codec
 \end_layout
 
