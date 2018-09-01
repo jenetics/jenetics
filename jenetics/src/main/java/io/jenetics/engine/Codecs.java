@@ -60,7 +60,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version !__version__!
+ * @version 4.3
  */
 public final class Codecs {
 
@@ -533,7 +533,7 @@ public final class Codecs {
 	 * the first sequence. Since there are less string values than numbers, only
 	 * three numbers are mapped to a string value.
 	 *
-	 * @since !__version__!
+	 * @since 4.3
 	 *
 	 * @param source the source elements. Will be the <em>keys</em> of the
 	 *        encoded {@code Map}.
