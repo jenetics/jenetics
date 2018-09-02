@@ -18450,6 +18450,52 @@ Map
 \end_inset
 
  and a target element is only mapped once.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Codec-mapping-types"
+
+\end_inset
+
+ shows the described different mapping types in a graphical form.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/MappingCodec.eps
+	lyxscale 80
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Codec-mapping-types"
+
+\end_inset
+
+Mapping codec types
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
