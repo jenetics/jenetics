@@ -18339,6 +18339,16 @@ Codec!Mapping
 \end_inset
 
 
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Assignment problem
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -18486,6 +18496,44 @@ name "fig:Codec-mapping-types"
 \end_inset
 
 Mapping codec types
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, you will create a codec for the 
+\emph on
+assignment problem
+\emph default
+.
+ The problem is defined by a number of workers and a number of jobs.
+ Any worker can be assigned to perform any job.
+ The cost for a worker may vary depending on the worker-job assignment.
+ It is required to perform all jobs by assigning exactly one worker to each
+ job and exactly one job to each worker in such a way which optimizes the
+ total assignment costs.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Assignment_problem
 \end_layout
 
 \end_inset
