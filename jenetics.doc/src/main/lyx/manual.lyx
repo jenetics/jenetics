@@ -17823,13 +17823,13 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
 \end_inset
 
  sums to zero.
- The problem is NP-complete
+ The problem is NP-complete.
+\emph default
+
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
-
-\emph on
 \begin_inset Flex URL
 status collapsed
 
@@ -17845,7 +17845,7 @@ https://en.wikipedia.org/wiki/NP-completeness
 
 \end_inset
 
-.
+
 \end_layout
 
 \begin_layout Standard
