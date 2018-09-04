@@ -19,7 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.Math.max;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
@@ -515,11 +514,8 @@ public final class Codecs {
 	/**
 	 * Create a codec, which creates a a mapping from the elements given in the
 	 * {@code source} sequence to the elements given in the {@code target}
-	 * sequence. It is guaranteed, that no {@code target} element is mapped by
-	 * more than one {@code source} element. There is also no requirement that
-	 * the {@code source} and {@code target} sequence have the same number of
-	 * elements. The size of the encoded {@code Map} will always be
-	 * {@code min(source.size(), target.size())}.
+	 * sequence. The returned mapping can be seen as a function which maps every
+	 * element of the {@code target} set to an element of the {@code source} set.
 	 *
 	 * <pre>{@code
 	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
@@ -529,9 +525,12 @@ public final class Codecs {
 	 *     Codecs.ofMapping(numbers, strings);
 	 * }</pre>
 	 *
-	 * The codec in the example above assigns a string value to the numbers in
-	 * the first sequence. Since there are less string values than numbers, only
-	 * three numbers are mapped to a string value.
+	 * If {@code source.size() > target.size()}, the created mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
+	 * if {@code source.size() < target.size()}, the mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Injective_function">injective</a>
+	 * and if both sets have the same size, the returned mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Bijection">bijective</a>.
 	 *
 	 * @since 4.3
 	 *
@@ -542,12 +541,12 @@ public final class Codecs {
 	 * @param <A> the type of the source elements
 	 * @param <B> the type of the target elements
 	 * @return a new mapping codec
-	 * @throws IllegalArgumentException if both sequences are empty
+	 * @throws IllegalArgumentException if the {@code target} sequences are empty
 	 * @throws NullPointerException if one of the argument is {@code null}
 	 */
 	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
 	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
-		return ofPermutation(max(source.size(), target.size()))
+		return ofPermutation(target.size())
 			.map(perm -> toMapping(perm, source, target));
 	}
 
@@ -556,15 +555,9 @@ public final class Codecs {
 		final ISeq<? extends A> source,
 		final ISeq<? extends B> target
 	) {
-		return source.size() >= target.size()
-			? IntStream.range(0, perm.length)
-				.filter(i -> perm[i] < target.size())
-				.mapToObj(i -> entry(source.get(i), target.get(perm[i])))
-				.collect(Collectors.toMap(Entry::getKey, Entry::getValue))
-			: IntStream.range(0, perm.length)
-				.filter(i -> perm[i] < source.size())
-				.mapToObj(i -> entry(source.get(perm[i]), target.get(i)))
-				.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		return IntStream.range(0, source.size())
+			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
+			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 	}
 
 	private static <A, B> Entry<A, B> entry(final A key, final B value) {
