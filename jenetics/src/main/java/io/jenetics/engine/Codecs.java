@@ -556,12 +556,9 @@ public final class Codecs {
 		final ISeq<? extends B> target
 	) {
 		return IntStream.range(0, source.size())
-			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
+			.mapToObj(i -> new SimpleImmutableEntry<>(
+				source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-	}
-
-	private static <A, B> Entry<A, B> entry(final A key, final B value) {
-		return new SimpleImmutableEntry<>(key, value);
 	}
 
 	/**
