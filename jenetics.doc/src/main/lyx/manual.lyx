@@ -5940,17 +5940,21 @@ s with the same
 \family typewriter
  Genotype
 \family sans
- position are recombined
+ position are recombined (see listing
 \family default
 \shape default
 \emph default
- (see listing 
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Chromosome-selection-recombination"
 
 \end_inset
 
+
+\family sans
+\shape italic
+\emph on
 ).
 \end_layout
 
@@ -7671,27 +7675,6 @@ reference "subsubsec:Fitness-function"
 \begin_layout Description
 
 \family typewriter
-fitnessScaler
-\family default
- This property defines the fitness scaler used by the evolution
-\family typewriter
- Engine
-\family default
-.
- The default value is set to the identity function.
- (See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Fitness-scaler"
-
-\end_inset
-
-.)
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
 genotypeFactory
 \family default
  Defines the
@@ -8546,7 +8529,7 @@ g.
 .
  In a
 \emph on
-typical
+ typical
 \emph default
  setup, no additional synchronization and/or locking is needed.
 \end_layout
