@@ -18197,7 +18197,7 @@ public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
 
 \begin_layout Plain Layout
 
-ofMapping(ISeq<? extends A> source, ISeq<? extends B> target)
+ofMapping(ISeq<? extends A> source, ISeq<? extends B> target);
 \end_layout
 
 \end_inset
@@ -18207,40 +18207,36 @@ It is not necessary that the source and target set are of the same size.
 \begin_inset Formula $\left|\mathsf{source}\right|>\left|\mathsf{target}\right|$
 \end_inset
 
-, only some of the source elements are used as mapping key, but all target
- element are mapped.
- If 
+, the returned mapping function is 
+\emph on
+surjective
+\emph default
+, if 
 \begin_inset Formula $\left|\mathsf{source}\right|<\left|\mathsf{target}\right|$
 \end_inset
 
-, all source elements map to one target element.
- The 
+, the mapping is 
 \emph on
-mapping
+injective
 \emph default
- function, represented by the encoded 
-\family typewriter
-Map
-\family default
-, is injective in this case.
- If 
+ and if 
 \begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
 \end_inset
 
-, the 
+, the created mapping is 
 \emph on
-mapping
+bijective
 \emph default
- function is bijective.
- In every case, the size of the encoded 
+.
+ In every case the size of the encoded 
 \family typewriter
 Map
 \family default
  is 
-\begin_inset Formula $\min\left(\left|\mathsf{source}\right|,\left|\mathsf{target}\right|\right)$
+\begin_inset Formula $\left|\mathsf{source}\right|$
 \end_inset
 
- and a target element is only mapped once.
+.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
