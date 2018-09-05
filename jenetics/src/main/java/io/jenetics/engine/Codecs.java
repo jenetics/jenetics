@@ -571,7 +571,7 @@ public final class Codecs {
 			.collect(Collectors.toMap(
 				Entry::getKey,
 				Entry::getValue,
-				(u,v) -> {throw new IllegalStateException(format("Duplicate key %s", u));},
+				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}
 
