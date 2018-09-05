@@ -19,10 +19,12 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.String.format;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -522,6 +524,68 @@ public final class Codecs {
 	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
 	 *
 	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+	 *     Codecs.ofMapping(numbers, strings, HashMap::new);
+	 * }</pre>
+	 *
+	 * If {@code source.size() > target.size()}, the created mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
+	 * if {@code source.size() < target.size()}, the mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Injective_function">injective</a>
+	 * and if both sets have the same size, the returned mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Bijection">bijective</a>.
+	 *
+	 * @since 4.3
+	 *
+	 * @param source the source elements. Will be the <em>keys</em> of the
+	 *        encoded {@code Map}.
+	 * @param target the target elements. Will be the <em>values</em> of the
+	 * 	      encoded {@code Map}.
+	 * @param mapSupplier a function which returns a new, empty Map into which
+	 *        the mapping will be inserted
+	 * @param <A> the type of the source elements
+	 * @param <B> the type of the target elements
+	 * @param <M> the type of the encoded Map
+	 * @return a new mapping codec
+	 * @throws IllegalArgumentException if the {@code target} sequences are empty
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
+	public static <A, B, M extends Map<A, B>> Codec<M, EnumGene<Integer>>
+	ofMapping(
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target,
+		final Supplier<M> mapSupplier
+	) {
+		return ofPermutation(target.size())
+			.map(perm -> toMapping(perm, source, target, mapSupplier));
+	}
+
+	private static <A, B, M extends Map<A, B>> M toMapping(
+		final int[] perm,
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target,
+		final Supplier<M> mapSupplier
+	) {
+		return IntStream.range(0, source.size())
+			.mapToObj(i -> new SimpleImmutableEntry<>(
+				source.get(i), target.get(perm[i%perm.length])))
+			.collect(Collectors.toMap(
+				Entry::getKey,
+				Entry::getValue,
+				(u,v) -> {throw new IllegalStateException(format("Duplicate key %s", u));},
+				mapSupplier));
+	}
+
+	/**
+	 * Create a codec, which creates a a mapping from the elements given in the
+	 * {@code source} sequence to the elements given in the {@code target}
+	 * sequence. The returned mapping can be seen as a function which maps every
+	 * element of the {@code target} set to an element of the {@code source} set.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
+	 *
+	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
 	 *     Codecs.ofMapping(numbers, strings);
 	 * }</pre>
 	 *
@@ -546,19 +610,7 @@ public final class Codecs {
 	 */
 	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
 	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
-		return ofPermutation(target.size())
-			.map(perm -> toMapping(perm, source, target));
-	}
-
-	private static <A, B> Map<A, B> toMapping(
-		final int[] perm,
-		final ISeq<? extends A> source,
-		final ISeq<? extends B> target
-	) {
-		return IntStream.range(0, source.size())
-			.mapToObj(i -> new SimpleImmutableEntry<>(
-				source.get(i), target.get(perm[i%perm.length])))
-			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+		return ofMapping(source, target, HashMap::new);
 	}
 
 	/**
