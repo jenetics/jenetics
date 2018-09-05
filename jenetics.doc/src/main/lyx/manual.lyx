@@ -19190,7 +19190,7 @@ The
 \emph on
  bind
 \emph default
- the problem encoding and the fitness function into one class.
+ the problem encoding and the fitness function into one data structure.
 \end_layout
 
 \begin_layout Standard
@@ -19975,8 +19975,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/io.jenetics.tool/src/main/java/org
-/jenetics/tool/problem/Knapsack.java
+https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/io
+/jenetics/example/Knapsack.java
 \end_layout
 
 \end_inset
@@ -26397,7 +26397,11 @@ reference "lis:EvolutionStreamable-interface"
 
  shows the main methods of the 
 \family typewriter
-EvolutionStreamable
+Evo\SpecialChar softhyphen
+lu\SpecialChar softhyphen
+tion\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+able
 \family default
  interface.
  The existing 
@@ -33539,7 +33543,7 @@ reference "lis:Default-engine.properties"
 
  shows the default values for the GA engine if the
 \family typewriter
---engine\SpecialChar softhyphen
+ --engine\SpecialChar softhyphen
 -properties
 \family default
  parameter is not specified.
