@@ -4749,7 +4749,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/FitnessProportionalSelection.eps
-	width 97text%
+	width 95text%
 
 \end_inset
 
@@ -5189,7 +5189,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 75text%
+	width 95text%
 
 \end_inset
 
