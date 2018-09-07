@@ -857,6 +857,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			tree = child;
 		}
 
+		assert index == path.length;
+
 		return new Path(path);
 	}
 
@@ -1053,6 +1055,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/**
 	 * This class represents the path to child within a given tree. It allows to
 	 * point (and fetch) a tree child.
+	 *s
+	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @version !__version__!
@@ -1068,7 +1072,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		}
 
 		/**
-		 * Return the path length, which is the depth of the child {@code this}
+		 * Return the path length, which is the level of the child {@code this}
 		 * path points to.
 		 *
 		 * @return the path length
@@ -1078,10 +1082,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		}
 
 		/**
-		 * Return the child index at the given index (child depth).
+		 * Return the child index at the given index (child level).
 		 *
 		 * @param index the path index
-		 * @return the child index at the given child depth
+		 * @return the child index at the given child level
 		 * @throws IndexOutOfBoundsException if the index is not with the range
 		 *         {@code [0, length())}
 		 */
