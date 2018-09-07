@@ -45,7 +45,6 @@ public final class IntList {
 
 	private int[] _data;
 	private int _size;
-	//private int _modCount = 0;
 
 	/**
 	 * Constructs an empty list with the specified initial capacity.
