@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
@@ -38,9 +39,9 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 final class SubTreeMatcher<V> implements Matcher<V> {
 
-	private final List<List<ChildPath>> _subTrees;
+	private final List<List<Path>> _subTrees;
 
-	private SubTreeMatcher(final List<List<ChildPath>> subTrees) {
+	private SubTreeMatcher(final List<List<Path>> subTrees) {
 		_subTrees = subTrees;
 	}
 
@@ -50,7 +51,7 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 	}
 
 	private static boolean
-	equals(final Tree<?, ?> tree, final List<ChildPath> paths) {
+	equals(final Tree<?, ?> tree, final List<Path> paths) {
 		final List<Tree<?, ?>> nodes = children(tree, paths);
 
 		boolean matches = nodes.size() == paths.size();
@@ -70,9 +71,9 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 			.filter(SubTreeMatcher::isVariable)
 			.collect(Collectors.groupingBy(Tree::getValue));
 
-		final List<List<ChildPath>> paths = leafs.values().stream()
+		final List<List<Path>> paths = leafs.values().stream()
 			.map(l -> l.stream()
-				.map(n -> ChildPath.of(n.childPath()))
+				.map(Tree::childPath)
 				.collect(Collectors.toList()))
 			.collect(Collectors.toList());
 

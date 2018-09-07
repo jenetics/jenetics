@@ -26,6 +26,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
@@ -53,9 +54,9 @@ final class TreeMatcher<V> implements Matcher<V> {
 	}
 
 	static List<Tree<?, ?>>
-	children(final Tree<?, ?> tree, final List<ChildPath> paths) {
+	children(final Tree<?, ?> tree, final List<Path> paths) {
 		return paths.stream()
-			.map(p -> tree.childAtPath(p.path()))
+			.map(tree::childAtPath)
 			.flatMap(n -> n.map(Stream::of).orElse(Stream.empty()))
 			.collect(Collectors.toList());
 	}

@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -206,10 +208,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws IllegalArgumentException if one of the path elements is smaller
 	 *         than zero
 	 */
-	public default Optional<T> childAtPath(final int... path) {
+	public default Optional<T> childAtPath(final Path path) {
 		T node = Trees.self(this);
-		for (int i = 0; i < path.length && node != null; ++i) {
-			final int childIndex = path[i];
+		for (int i = 0; i < path.length() && node != null; ++i) {
+			final int childIndex = path.get(i);
 			if (childIndex < 0) {
 				throw new IllegalArgumentException(format(
 					"Path element at position %d is smaller than zero: %d",
@@ -834,7 +836,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 	/**
 	 * Return the path of {@code this} child node from the root node. You will
-	 * get {@code this} node, if you call {@link #childAtPath(int...)} on the
+	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
 	 * root node of {@code this} node.
 	 * <pre>{@code
 	 * final Tree<?, ?> node = ...;
@@ -845,11 +847,11 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @since !__version__!
 	 *
-	 * @see #childAtPath(int...)
+	 * @see #childAtPath(Path)
 	 *
 	 * @return the path of {@code this} child node from the root node.
 	 */
-	public default int[] childPath() {
+	public default Path childPath() {
 		final Iterator<T> it = pathFromAncestorIterator(getRoot());
 		final int[] path = new int[level()];
 
@@ -864,7 +866,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			tree = child;
 		}
 
-		return path;
+		return new Path(path);
 	}
 
 	/**
@@ -1050,6 +1052,87 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	@Deprecated
 	public static String toDottyString(final Tree<?, ?> tree) {
 		return Trees.toDottyString("T", tree);
+	}
+
+
+	/* *************************************************************************
+	 * Inner classes
+	 **************************************************************************/
+
+	/**
+	 * This class represents the path to child within a given tree. It allows to
+	 * point (and fetch) a tree child.
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	public static final class Path implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		private final int[] _path;
+
+		private Path(final int[] path) {
+			_path = requireNonNull(path);
+		}
+
+		/**
+		 * Return the path length, which is the depth of the child {@code this}
+		 * path points to.
+		 *
+		 * @return the path length
+		 */
+		public int length() {
+			return _path.length;
+		}
+
+		/**
+		 * Return the child index at the given index (child depth).
+		 *
+		 * @param index the path index
+		 * @return the child index at the given child depth
+		 * @throws IndexOutOfBoundsException if the index is not with the range
+		 *         {@code [0, length())}
+		 */
+		public int get(final int index) {
+			return _path[index];
+		}
+
+		/**
+		 * Return the path as {@code int[]} array.
+		 *
+		 * @return the path as {@code int[]} array
+		 */
+		public int[] toArray() {
+			return _path.clone();
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(_path);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Path &&
+				Arrays.equals(_path, ((Path)obj)._path);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(_path);
+		}
+
+		/**
+		 * Create a new path object from the given child indexes.
+		 *
+		 * @param path the child indexes
+		 * @return a new tree path
+		 */
+		public static Path of(final int... path) {
+			return new Path(path.clone());
+		}
 	}
 
 }

@@ -24,6 +24,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import io.jenetics.ext.util.Tree.Path;
+
 /**
  * add(X,0) -> X
  * mul(X,0) -> 0
@@ -35,9 +37,9 @@ import java.util.stream.Collectors;
  */
 final class NodeRewriter<V> {
 
-	private final Map<Character, ChildPath> _replace;
+	private final Map<Character, Path> _replace;
 
-	private NodeRewriter(final Map<Character, ChildPath> replace) {
+	private NodeRewriter(final Map<Character, Path> replace) {
 		_replace = requireNonNull(replace);
 	}
 
@@ -45,7 +47,7 @@ final class NodeRewriter<V> {
 		final Map<Character, TreeNode<V>> nodes = _replace.entrySet().stream()
 			.collect(Collectors.toMap(
 				Map.Entry::getKey,
-				e -> node.childAtPath(e.getValue().path())
+				e -> node.childAtPath(e.getValue())
 					.orElseThrow(AssertionError::new)));
 	}
 

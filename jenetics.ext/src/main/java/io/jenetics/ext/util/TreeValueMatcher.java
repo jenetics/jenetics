@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
@@ -40,24 +41,24 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 final class TreeValueMatcher<V> implements Matcher<V> {
 
-	final Map<ChildPath, V> _values;
+	private final Map<Path, V> _values;
 
-	private TreeValueMatcher(final Map<ChildPath, V> values) {
+	private TreeValueMatcher(final Map<Path, V> values) {
 		_values = values;
 	}
 
 	@Override
 	public boolean matches(final Tree<V, ?> tree) {
-		final List<ChildPath> paths = new ArrayList<>(_values.keySet());
+		final List<Path> paths = new ArrayList<>(_values.keySet());
 		final List<Tree<?, ?>> nodes = children(tree, paths);
 
 		boolean matches = nodes.size() == paths.size();
 		final Iterator<Tree<?, ?>> tit = nodes.iterator();
-		final Iterator<ChildPath> pit = paths.iterator();
+		final Iterator<Path> pit = paths.iterator();
 
 		while (matches && tit.hasNext()) {
 			final Tree<?, ?> tn = tit.next();
-			final ChildPath path = pit.next();
+			final Path path = pit.next();
 
 			matches = Objects.equals(_values.get(path), tn.getValue());
 		}
@@ -69,10 +70,10 @@ final class TreeValueMatcher<V> implements Matcher<V> {
 		final Tree<String, ?> pattern,
 		final Function<? super String, ? extends V> mapper
 	) {
-		final Map<ChildPath, V> values = pattern.stream()
+		final Map<Path, V> values = pattern.stream()
 			.filter(TreeValueMatcher::nonVariable)
 			.collect(Collectors.toMap(
-				n -> ChildPath.of(n.childPath()),
+				n -> n.childPath(),
 				n -> mapper.apply(n.getValue())));
 
 		return new TreeValueMatcher<>(values);
