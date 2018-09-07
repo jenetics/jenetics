@@ -4749,7 +4749,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/FitnessProportionalSelection.eps
-	width 90text%
+	width 95text%
 
 \end_inset
 
@@ -5189,7 +5189,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 75text%
+	width 95text%
 
 \end_inset
 
@@ -5940,17 +5940,21 @@ s with the same
 \family typewriter
  Genotype
 \family sans
- position are recombined
+ position are recombined (see listing
 \family default
 \shape default
 \emph default
- (see listing 
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Chromosome-selection-recombination"
 
 \end_inset
 
+
+\family sans
+\shape italic
+\emph on
 ).
 \end_layout
 
@@ -7261,180 +7265,6 @@ The first type parameter of the
 \end_layout
 
 \begin_layout Subsubsection
-Fitness scaler
-\begin_inset CommandInset label
-LatexCommand label
-name "subsubsec:Fitness-scaler"
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Fitness scaler
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The fitness value, calculated by the fitness
-\family typewriter
- Function
-\family default
-, is treated as the
-\shape italic
- raw
-\shape default
--fitness of an individual.
- The
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library allows you to apply an additional scaling function on the raw-fitness
- to form the fitness value which is used by the selectors.
- This can be useful when using probability selectors (see chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "par:Probability-selectors"
-
-\end_inset
-
-), where the actual amount of the fitness value influences the selection
- probability.
- In such cases, the fitness scaler gives you additional flexibility when
- selecting offspring and survivors.
- In the default configuration the raw-fitness is equal to the actual fitness
- value, that means, the used fitness scaler is the identity function.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-class Main {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Engine<DoubleGene, Double> engine = Engine.builder(...)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .fitnessScaler(Math::sqrt)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The given listing shows a fitness scaler which reduces the the raw-fitness
- to its square root.
- This gives weaker individuals a greater changes being selected and weakens
- the influence of
-\emph on
- super
-\emph default
--individuals.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Shaded
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "90col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\family sans
-When using a fitness scaler you have to take care that your scaler doesn't
-\emph on
- destroy
-\emph default
- your fitness value.
- This can be the case when your fitness value is negative and your fitness
- scaler squares the value.
- Trying to find the minimum will not work in this configuration.
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
 Engine
 \begin_inset CommandInset label
 LatexCommand label
@@ -7836,27 +7666,6 @@ fitnessFunction
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:Fitness-function"
-
-\end_inset
-
-.)
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-fitnessScaler
-\family default
- This property defines the fitness scaler used by the evolution
-\family typewriter
- Engine
-\family default
-.
- The default value is set to the identity function.
- (See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Fitness-scaler"
 
 \end_inset
 
@@ -8720,7 +8529,7 @@ g.
 .
  In a
 \emph on
-typical
+ typical
 \emph default
  setup, no additional synchronization and/or locking is needed.
 \end_layout
@@ -17779,32 +17588,6 @@ class Main {
 
 \begin_layout Paragraph
 Fixed-size subsets
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The algorithm for choosing subsets based on a FORTRAN77 version, originally
- implemented by Albert Nijenhuis, Herbert Wilf.
- The actual Java implementation is based on the C++ version by John Burkardt.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Nijenhuis1978"
-
-\end_inset
-
-,
-\begin_inset CommandInset citation
-LatexCommand cite
-key "JSSv068c01"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -17849,13 +17632,13 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
 \end_inset
 
  sums to zero.
- The problem is NP-complete
+ The problem is NP-complete.
+\emph default
+
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
-
-\emph on
 \begin_inset Flex URL
 status collapsed
 
@@ -17871,7 +17654,7 @@ https://en.wikipedia.org/wiki/NP-completeness
 
 \end_inset
 
-.
+
 \end_layout
 
 \begin_layout Standard
@@ -18139,11 +17922,37 @@ reference "lis:Codec-factory-method-ofPermutation"
 
  and uses
 \family typewriter
- java\SpecialChar softhyphen
-.awt\SpecialChar softhyphen
-.geom Point
+ io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.jpx\SpecialChar softhyphen
+.Way\SpecialChar softhyphen
+Point
 \family default
-s for representing the city locations.
+s, from the 
+\emph on
+JPX
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jpx
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ project, for representing the city locations.
 \end_layout
 
 \begin_layout Standard
@@ -18164,7 +17973,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final ISeq<Point> POINTS = ISeq.of(...);
+    static final ISeq<WayPoint> POINTS = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
@@ -18178,7 +17987,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Codec<ISeq<Point>, EnumGene<Point>>
+    static final Codec<ISeq<WayPoint>, EnumGene<WayPoint>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -18197,27 +18006,22 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static double dist(final ISeq<Point> p) {
+    static double dist(final ISeq<WayPoint> path) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        return IntStream.range(0, p.length)
+        return path.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-            .mapToDouble(i -> p.get(i)
+            .collect(Geoid.DEFAULT.toTourLength())
 \end_layout
 
 \begin_layout Plain Layout
 
-                .distance(p.get(i + i%p.length())))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .sum();
+            .to(Length.Unit.METER);
 \end_layout
 
 \begin_layout Plain Layout
@@ -18236,7 +18040,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+    static final Engine<EnumGene<WayPoint>, Double> ENGINE = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -18270,7 +18074,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        final ISeq<Point> result = CODEC.decode(
+        final ISeq<WayPoint> result = CODEC.decode(
 \end_layout
 
 \begin_layout Plain Layout
@@ -18318,7 +18122,542 @@ public class TSM {
 \end_layout
 
 \begin_layout Subsection
+Mapping codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mapping codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Mapping
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Assignment problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This codec is a variation of the permutation codec.
+ Instead of permuting the elements of a given array, it permutes the mapping
+ of elements of a source set to the elements of a target set.
+ The code snippet below shows the method of the 
+\family typewriter
+Codecs
+\family default
+ class, which creates a 
+\emph on
+mapping
+\emph default
+ codec from a given source- and target set.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static <A, B> Codec<Map<A, B>, EnumGene<Integer>> 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ofMapping(ISeq<? extends A> source, ISeq<? extends B> target);
+\end_layout
+
+\end_inset
+
+It is not necessary that the source and target set are of the same size.
+ If 
+\begin_inset Formula $\left|\mathsf{source}\right|>\left|\mathsf{target}\right|$
+\end_inset
+
+, the returned mapping function is 
+\emph on
+surjective
+\emph default
+, if 
+\begin_inset Formula $\left|\mathsf{source}\right|<\left|\mathsf{target}\right|$
+\end_inset
+
+, the mapping is 
+\emph on
+injective
+\emph default
+ and if 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, the created mapping is 
+\emph on
+bijective
+\emph default
+.
+ In every case the size of the encoded 
+\family typewriter
+Map
+\family default
+ is 
+\begin_inset Formula $\left|\mathsf{target}\right|$
+\end_inset
+
+.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Codec-mapping-types"
+
+\end_inset
+
+ shows the described different mapping types in graphical form.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/MappingCodec.eps
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Codec-mapping-types"
+
+\end_inset
+
+Mapping codec types
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, you will create a codec for the 
+\emph on
+assignment problem
+\emph default
+.
+ The problem is defined by a number of workers and a number of jobs.
+ Every worker can be assigned to perform any job.
+ The cost for a worker may vary depending on the worker-job assignment.
+ It is required to perform all jobs by assigning exactly one worker to each
+ job and exactly one job to each worker in such a way which optimizes the
+ total assignment costs.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Assignment_problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ The costs for such worker-job assignments are usually given by a matrix.
+ Such an example matrix is shown in table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Worker-task-cost"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+13
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Worker-task-cost"
+
+\end_inset
+
+Worker-job cost
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+If your worker-job cost can be expressed by a matrix, the Hungarian algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Hungarian_algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ can find an optimal solution in 
+\begin_inset Formula $O\left(n^{3}\right)$
+\end_inset
+
+ time.
+ You should consider this deterministic algorithm before using a GA.
+\end_layout
+
+\begin_layout Subsection
 Composite codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Composite codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Composite
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -18851,7 +19190,7 @@ The
 \emph on
  bind
 \emph default
- the problem encoding and the fitness function into one class.
+ the problem encoding and the fitness function into one data structure.
 \end_layout
 
 \begin_layout Standard
@@ -19636,8 +19975,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/io.jenetics.tool/src/main/java/org
-/jenetics/tool/problem/Knapsack.java
+https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/io
+/jenetics/example/Knapsack.java
 \end_layout
 
 \end_inset
@@ -24574,11 +24913,15 @@ Exception
  if it is called with an invalid tree string.
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 Tree rewriting
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
  trees (tree structured data) into other trees by applying rewriting rules.
  Rewriting can be non-deterministic.
@@ -24591,19 +24934,24 @@ Tree rewriting is a synonym for term rewriting, i.e., the process of transformin
  programming languages are based on term rewriting.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 A term rewriting system (TRS) is a rewriting system where the objects are
  terms, or expressions with nested sub-expressions.
  For example, the system shown under § Logic above is a term rewriting system.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 In contrast to string rewriting systems, whose objects are flat sequences
  of symbols, the objects a term rewriting system works on, i.e.
  the terms, form a term algebra.
  A term can be visualized as a tree of symbols, the set of admitted symbols
  being fixed by a given signature.
  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -26049,7 +26397,11 @@ reference "lis:EvolutionStreamable-interface"
 
  shows the main methods of the 
 \family typewriter
-EvolutionStreamable
+Evo\SpecialChar softhyphen
+lu\SpecialChar softhyphen
+tion\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+able
 \family default
  interface.
  The existing 
@@ -29255,7 +29607,16 @@ Genetic programming!Program pruning
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
 //TODO: Tree rewriting/Program rewriting
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -33182,7 +33543,7 @@ reference "lis:Default-engine.properties"
 
  shows the default values for the GA engine if the
 \family typewriter
---engine\SpecialChar softhyphen
+ --engine\SpecialChar softhyphen
 -properties
 \family default
  parameter is not specified.
@@ -34485,7 +34846,7 @@ Version
 \series default
 :
 \emph on
- 6.13
+ 6.14.3
 \end_layout
 
 \begin_layout Itemize
@@ -34800,7 +35161,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.5
+: 4.10
 \end_layout
 
 \begin_layout Itemize
@@ -34837,7 +35198,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.5-bin.zip
+http://services.gradle.org/distributions/gradle-4.10-bin.zip
 \end_layout
 
 \end_inset

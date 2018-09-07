@@ -97,9 +97,11 @@ abstract class MomentStatistics {
 			.add(dd*d*(pn*b._n*(pn - b._n)/nn))
 			.add(3.0*d*(pn*b._m2.value() - b._n*m2)/n);
 
+		final double bnbn = b._n*b._n;
+
 		_m4.add(b._m4)
-			.add(dd*dd*(pn*b._n*(pn*pn - pn*b._n + b._n*b._n)/(nn*n)))
-			.add(6.0*dd*(pn*pn*b._m2.value() + b._n*b._n*m2)/nn)
+			.add(dd*dd*(pn*b._n*(pn*pn - pn*b._n + bnbn)/(nn*n)))
+			.add(6.0*dd*(pn*pn*b._m2.value() + bnbn*m2)/nn)
 			.add(4.0*d*(pn*b._m3.value() - b._n*m3)/n);
 	}
 

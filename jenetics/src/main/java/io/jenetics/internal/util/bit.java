@@ -300,7 +300,7 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
-		for (int i = 0; i < data.length && (data[i] += 1) == 0; ++i);
+		for (int i = 0; i < data.length && (data[i] += (byte)1) == 0; ++i);
 		return data;
 	}
 

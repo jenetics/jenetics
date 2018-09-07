@@ -86,6 +86,8 @@ import io.jenetics.util.IntRange;
  */
 public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 
+	private static final long serialVersionUID = 1L;
+
 	private final Supplier<? extends A> _supplier;
 	private final Predicate<? super A> _alleleValidator;
 	private final Predicate<? super ISeq<A>> _alleleSeqValidator;
