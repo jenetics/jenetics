@@ -195,9 +195,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/**
 	 * Return the child node at the given {@code path}. A path consists of the
 	 * child index at a give level, starting with level 1. (The root note has
-	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
-	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
-	 * return the first child of the third child of {@code this node}.
+	 * level zero.) {@code tree.childAtPath(Path.of(2))} will return the third
+	 * child node of {@code this} node, if it exists and
+	 * {@code tree.childAtPath(Path.of(2, 0))} will return the first child of
+	 * the third child of {@code this node}.
 	 *
 	 * @since 4.3
 	 *
@@ -205,22 +206,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the child node at the given {@code path}
 	 * @throws NullPointerException if the given {@code path} array is
 	 *         {@code null}
-	 * @throws IllegalArgumentException if one of the path elements is smaller
-	 *         than zero
 	 */
 	public default Optional<T> childAtPath(final Path path) {
 		T node = Trees.self(this);
 		for (int i = 0; i < path.length() && node != null; ++i) {
-			final int childIndex = path.get(i);
-			if (childIndex < 0) {
-				throw new IllegalArgumentException(format(
-					"Path element at position %d is smaller than zero: %d",
-					i, childIndex
-				));
-			}
-
-			node = childIndex < node.childCount()
-				? node.getChild(childIndex)
+			node = path.get(i) < node.childCount()
+				? node.getChild(path.get(i))
 				: null;
 		}
 
@@ -1129,8 +1120,19 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		 *
 		 * @param path the child indexes
 		 * @return a new tree path
+		 * @throws IllegalArgumentException if one of the path elements is
+		 *         smaller than zero
 		 */
 		public static Path of(final int... path) {
+			for (int i = 0; i < path.length; ++i) {
+				if (path[i] < 0) {
+					throw new IllegalArgumentException(format(
+						"Path element at position %d is smaller than zero: %d",
+						i, path[i]
+					));
+				}
+			}
+
 			return new Path(path.clone());
 		}
 	}
