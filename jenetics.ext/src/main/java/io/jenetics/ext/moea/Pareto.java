@@ -206,10 +206,8 @@ public final class Pareto {
 		final int[][] d = new int[set.size()][set.size()];
 		for (int i = 0; i < set.size(); ++i) {
 			for (int j = i + 1; j < set.size(); ++j) {
-				if (i != j) {
-					d[i][j] = dominance.compare(set.get(i), set.get(j));
-					d[j][i] = -d[i][j];
-				}
+				d[i][j] = dominance.compare(set.get(i), set.get(j));
+				d[j][i] = -d[i][j];
 			}
 		}
 

@@ -117,10 +117,7 @@ class SetupPlugin extends JeneticsPlugin {
 			outputs.upToDateWhen { false }
 			useTestNG {
 				parallel = 'tests' // 'methods'
-				threadCount = Math.max(
-					Runtime.runtime.availableProcessors() + 1,
-					4
-				)
+				threadCount = Runtime.runtime.availableProcessors() + 1
 				if (project.hasProperty('excludeGroups')) {
 					excludeGroups project.excludeGroups
 				}
@@ -147,9 +144,8 @@ class SetupPlugin extends JeneticsPlugin {
 				docEncoding = 'UTF-8'
 				charSet = 'UTF-8'
 				linkSource = true
-				links = [
-					'https://docs.oracle.com/javase/8/docs/api'
-				]
+				linksOffline 'https://docs.oracle.com/javase/8/docs/api',
+					"$project.rootDir/buildSrc/resources/javadoc"
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
@@ -217,8 +213,8 @@ class SetupPlugin extends JeneticsPlugin {
 		'finally',
 		'overrides',
 		'rawtypes',
-		//'serial',
-		//'try',
+		'serial',
+		'try',
 		'unchecked'
 	]
 

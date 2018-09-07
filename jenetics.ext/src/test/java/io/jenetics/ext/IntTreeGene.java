@@ -26,6 +26,8 @@ import io.jenetics.util.RandomRegistry;
  */
 final class IntTreeGene extends AbstractTreeGene<Integer, IntTreeGene> {
 
+	private static final long serialVersionUID = 1L;
+
 	public IntTreeGene(
 		final Integer allele,
 		final int childOffset,

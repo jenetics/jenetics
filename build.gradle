@@ -74,7 +74,7 @@ allprojects { Project prj ->
 	}
 }
 
-task wrapper(type: Wrapper) {
+task updateGradle(type: Wrapper) {
 	gradleVersion = project.property('build.GradleVersion')
 }
 
