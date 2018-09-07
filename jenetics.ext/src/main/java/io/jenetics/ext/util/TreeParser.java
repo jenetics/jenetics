@@ -120,6 +120,13 @@ final class TreeParser {
 		for (Token token : tokenize(value)) {
 			switch (token.seq) {
 				case "(":
+					if (current == null) {
+						throw new IllegalArgumentException(format(
+							"Illegal parentheses tree string: '%s'.",
+							value
+						));
+					}
+
 					final TreeNode<B> tn1 = TreeNode.of();
 					current.attach(tn1);
 					parents.push(current);
@@ -134,6 +141,7 @@ final class TreeParser {
 					}
 
 					final TreeNode<B> tn2 = TreeNode.of();
+					assert parents.peek() != null;
 					parents.peek().attach(tn2);
 					current = tn2;
 					break;
