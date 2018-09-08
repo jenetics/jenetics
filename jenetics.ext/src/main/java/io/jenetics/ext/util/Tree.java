@@ -998,7 +998,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @deprecated Use {@link #toParenthesesString()} instead
 	 */
-	@Deprecated 
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public static String toCompactString(final Tree<?, ?> tree) {
 		return ParenthesesTrees.toString((Tree)tree, Objects::toString);
