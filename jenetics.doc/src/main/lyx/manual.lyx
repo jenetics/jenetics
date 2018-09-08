@@ -1204,7 +1204,7 @@ Chromosome
 \family typewriter
  Genotype
 \family default
- can be created with 1 to
+ can be created with 1 to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -4834,7 +4834,7 @@ k
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $n$
 \end_inset
 
@@ -5049,7 +5049,7 @@ where
 \end_inset
 
 .
- A small value of
+ A small value of 
 \begin_inset Formula $c$
 \end_inset
 
@@ -5100,7 +5100,7 @@ where
 \begin_inset Formula $b$
 \end_inset
 
- is a parameter which controls the selection intensity and
+ is a parameter which controls the selection intensity and 
 \begin_inset Formula $Z$
 \end_inset
 
@@ -5223,7 +5223,7 @@ reference "fig:Stochastic-universal-selection"
 
 \end_inset
 
- shows the function of the stochastic-universal selection, where
+ shows the function of the stochastic-universal selection, where 
 \begin_inset Formula $n$
 \end_inset
 
