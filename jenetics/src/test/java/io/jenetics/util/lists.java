@@ -22,13 +22,11 @@ package io.jenetics.util;
 import java.util.List;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class lists {
-	private lists() {require.noInstance();}
+	private lists() {}
 
 
 	/**

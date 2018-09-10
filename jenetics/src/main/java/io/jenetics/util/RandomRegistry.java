@@ -27,8 +27,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.require;
-
 /**
  * This class holds the {@link Random} engine used for the GA. The
  * {@code RandomRegistry} is thread safe. The registry is initialized with the
@@ -95,7 +93,7 @@ import io.jenetics.internal.util.require;
  * @version 3.0
  */
 public final class RandomRegistry {
-	private RandomRegistry() {require.noInstance();}
+	private RandomRegistry() {}
 
 	private static final Context<Supplier<Random>> CONTEXT =
 		new Context<>(ThreadLocalRandom::current);

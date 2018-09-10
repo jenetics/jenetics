@@ -30,7 +30,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
 
@@ -47,7 +46,7 @@ import io.jenetics.util.NanoClock;
  * @version 3.7
  */
 public final class Limits {
-	private Limits() {require.noInstance();}
+	private Limits() {}
 
 	/**
 	 * Return a predicate which always return {@code true}.

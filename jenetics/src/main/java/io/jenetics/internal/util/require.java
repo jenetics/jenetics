@@ -29,28 +29,7 @@ import static java.lang.String.format;
  * @version 1.6
  */
 public final class require {
-	private require() { noInstance(); }
-
-
-	/**
-	 * Calling the constructor of an {@code StaticObject} will always throw an
-	 * {@link AssertionError}.
-	 *
-	 * @throws AssertionError always.
-	 */
-	public static void noInstance() {
-		String message = "Object instantiation is not allowed";
-
-		final StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-		if (trace.length >= 3) {
-			message = format(
-				"Instantiation of '%s' is not allowed.",
-				trace[2].getClassName()
-			);
-		}
-
-		throw new AssertionError(message);
-	}
+	private require() {}
 
 	/**
 	 * Check if the specified value is not negative.

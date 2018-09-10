@@ -27,7 +27,6 @@ import static io.jenetics.internal.util.require.probability;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.IntRange;
 
 /**
@@ -38,7 +37,7 @@ import io.jenetics.util.IntRange;
  * @version 3.0
  */
 public final class random {
-	private random() {require.noInstance();}
+	private random() {}
 
 	public static byte nextByte(final Random random) {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);

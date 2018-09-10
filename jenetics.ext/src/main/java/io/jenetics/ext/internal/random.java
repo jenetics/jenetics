@@ -24,15 +24,13 @@ import static java.lang.String.format;
 import java.math.BigInteger;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.5
  * @since 3.5
  */
 public class random {
-	private random() {require.noInstance();}
+	private random() {}
 
 	/**
 	 * Returns a pseudo-random, uniformly distributed int value between 0
