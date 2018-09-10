@@ -64,7 +64,7 @@ import io.jenetics.util.LongRange;
  */
 public final class Codecs {
 
-	private Codecs() {require.noInstance();}
+	private Codecs() {}
 
 	/**
 	 * Return a scalar {@code Codec} for the given range.
