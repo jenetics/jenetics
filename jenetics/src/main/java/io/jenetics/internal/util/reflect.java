@@ -79,8 +79,8 @@ public class reflect {
 		return Stream.concat(
 			Stream.of(cls),
 			Optional.ofNullable(cls.getSuperclass())
-				.map(reflect::allClasses)
-				.orElse(Stream.empty())
+				.stream()
+				.flatMap(reflect::allClasses)
 		);
 	}
 

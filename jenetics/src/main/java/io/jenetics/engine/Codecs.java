@@ -20,9 +20,9 @@
 package io.jenetics.engine;
 
 import static java.lang.reflect.Array.newInstance;
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -565,11 +565,9 @@ public final class Codecs {
 		final Supplier<M> mapSupplier
 	) {
 		return IntStream.range(0, source.size())
-			.mapToObj(i -> new SimpleImmutableEntry<>(
-				source.get(i), target.get(perm[i%perm.length])))
+			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
-				Entry::getKey,
-				Entry::getValue,
+				Entry::getKey, Entry::getValue,
 				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}

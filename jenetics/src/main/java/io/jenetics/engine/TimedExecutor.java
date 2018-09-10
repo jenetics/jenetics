@@ -36,7 +36,7 @@ import java.util.function.Supplier;
 final class TimedExecutor {
 	private final Executor _executor;
 
-	public TimedExecutor(final Executor executor) {
+	TimedExecutor(final Executor executor) {
 		_executor = requireNonNull(executor);
 	}
 

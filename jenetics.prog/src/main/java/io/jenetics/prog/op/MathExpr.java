@@ -19,6 +19,7 @@
  */
 package io.jenetics.prog.op;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import java.io.DataInput;
@@ -259,7 +260,7 @@ public final class MathExpr
 	}
 
 	void write(final DataOutput out) throws IOException {
-		final byte[] data = toString().getBytes("UTF-8");
+		final byte[] data = toString().getBytes(UTF_8);
 		out.writeInt(data.length);
 		out.write(data);
 	}
@@ -267,7 +268,7 @@ public final class MathExpr
 	static MathExpr read(final DataInput in) throws IOException {
 		final byte[] data = new byte[in.readInt()];
 		in.readFully(data);
-		return parse(new String(data, "UTF-8"));
+		return parse(new String(data, UTF_8));
 	}
 
 
