@@ -1,3 +1,18 @@
+Jenetics-4.2.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/325: **Allow customization of fitness evaluation execution for bundling calculations**
+    * https://github.com/jenetics/jenetics/issues/327: Improve CPU utilization during fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/335: Seq view wrapper for List<T> and T[] types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/317: Fix links of Javadoc images.
+    * https://github.com/jenetics/jenetics/issues/318: NULL result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
+    * https://github.com/jenetics/jenetics/issues/336: Errornous default implementation of 'Seq.indexWhere'.
+    * https://github.com/jenetics/jenetics/issues/341: Error in internal 'bit.increment' method.
+    * https://github.com/jenetics/jenetics/issues/345: Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
+
+
 Jenetics-4.1.0
 
 - Improvements
