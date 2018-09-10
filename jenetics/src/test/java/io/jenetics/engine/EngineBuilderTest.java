@@ -44,7 +44,6 @@ public class EngineBuilderTest {
 	public void build() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
 			gt -> gt.getGene().getAllele();
-		final Function<Double, Double> fitnessScaler = c -> c;
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 		final Selector<DoubleGene, Double> survivorsSelector = new RouletteWheelSelector<>();
@@ -57,7 +56,6 @@ public class EngineBuilderTest {
 
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(fitnessFunction, genotypeFactory)
-			.fitnessScaler(fitnessScaler)
 			.offspringSelector(offspringSelector)
 			.survivorsSelector(survivorsSelector)
 			.alterers(alterer)
@@ -67,7 +65,6 @@ public class EngineBuilderTest {
 			.maximalPhenotypeAge(phenotypeAge)
 			.build();
 
-		Assert.assertEquals(engine.getFitnessScaler(), fitnessScaler);
 		Assert.assertEquals(engine.getFitnessFunction(), fitnessFunction);
 		Assert.assertEquals(engine.getOffspringSelector(), offspringSelector);
 		Assert.assertEquals(engine.getSurvivorsSelector(), survivorsSelector);

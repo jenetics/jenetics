@@ -195,10 +195,11 @@ public class Mutator<
 		final Random random
 	) {
 		final int P = probability.toInt(p);
-		final ISeq<MutatorResult<G>> result = chromosome.toSeq()
+		final ISeq<MutatorResult<G>> result = chromosome.stream()
 			.map(gene -> random.nextInt() < P
 				? MutatorResult.of(mutate(gene, random), 1)
-				: MutatorResult.of(gene));
+				: MutatorResult.of(gene))
+			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
 			chromosome.newInstance(result.map(MutatorResult::getResult)),

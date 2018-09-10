@@ -67,7 +67,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void selectNegativeCountArgument() {
 		final Factory<Genotype<DoubleGene>> gtf =
-			Genotype.of(new DoubleChromosome(0.0, 1.0));
+			Genotype.of(DoubleChromosome.of(0.0, 1.0));
 
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {
@@ -85,7 +85,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	@Test(expectedExceptions = NullPointerException.class)
 	public void selectNullOptimizeArgument() {
 		final Factory<Genotype<DoubleGene>> gtf =
-			Genotype.of(new DoubleChromosome(0.0, 1.0));
+			Genotype.of(DoubleChromosome.of(0.0, 1.0));
 
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {

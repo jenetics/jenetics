@@ -64,6 +64,8 @@ public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<? extends Op<A>> _operations;
 	private final ISeq<? extends Op<A>> _terminals;

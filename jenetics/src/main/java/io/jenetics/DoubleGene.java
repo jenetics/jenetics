@@ -149,7 +149,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance(final Number number) {
-		return new DoubleGene(number.doubleValue(), _min, _max);
+		return of(number.doubleValue(), _min, _max);
 	}
 
 	@Override
@@ -167,7 +167,7 @@ public final class DoubleGene
 		return obj == this ||
 			obj instanceof DoubleGene &&
 			Double.compare(((DoubleGene)obj)._value, _value) == 0 &&
-			Double.compare(((DoubleGene)obj)._min, _min) == 0&&
+			Double.compare(((DoubleGene)obj)._min, _min) == 0 &&
 			Double.compare(((DoubleGene)obj)._max, _max) == 0;
 	}
 
@@ -175,6 +175,7 @@ public final class DoubleGene
 	public String toString() {
 		return String.format("[%s]", _value);
 	}
+
 
 	/* *************************************************************************
 	 * Static factory methods.

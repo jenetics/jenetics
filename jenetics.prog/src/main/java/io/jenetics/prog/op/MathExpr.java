@@ -298,6 +298,9 @@ public final class MathExpr
 	 *
 	 * @param expression the expression string
 	 * @return the tree representation of the given {@code expression}
+	 * @throws NullPointerException if the given {@code expression} is {@code null}
+	 * @throws IllegalArgumentException if the given expression is invalid or
+	 *         can't be parsed.
 	 */
 	public static MathExpr parse(final String expression) {
 		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
