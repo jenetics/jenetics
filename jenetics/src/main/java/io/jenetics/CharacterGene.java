@@ -143,7 +143,7 @@ public final class CharacterGene
 
 	@Override
 	public int hashCode() {
-		return hash(_character, hash(_validCharacters));
+		return hash(_character, hash(_validCharacters, hash(getClass())));
 	}
 
 	@Override

@@ -85,7 +85,7 @@ public final class EvolutionStart<
 
 	@Override
 	public int hashCode() {
-		return hash(_generation, hash(_population));
+		return hash(_generation, hash(_population, hash(getClass())));
 	}
 
 	@Override

@@ -300,7 +300,8 @@ public final class EvolutionResult<
 			hash(_killCount,
 			hash(_invalidCount,
 			hash(_alterCount,
-			hash(getBestFitness())))))))));
+			hash(getBestFitness(),
+			hash(EvolutionResult.class))))))))));
 	}
 
 	@Override

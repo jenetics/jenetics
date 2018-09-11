@@ -251,7 +251,8 @@ public final class Phenotype<
 			hash(_generation,
 			hash(getFitness(),
 			hash(getRawFitness(),
-			hash(_genotype))));
+			hash(_genotype,
+			hash(getClass())))));
 	}
 
 	@Override

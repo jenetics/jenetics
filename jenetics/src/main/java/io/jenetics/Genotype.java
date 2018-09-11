@@ -260,7 +260,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_chromosomes);
+		return hash(_chromosomes, hash(getClass()));
 	}
 
 	@Override
