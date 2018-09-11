@@ -267,7 +267,7 @@ public final class Genotype<G extends Gene<?, G>>
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Genotype &&
-			Objects.equals(_chromosomes, ((Genotype<?>) obj)._chromosomes);
+			Objects.equals(_chromosomes, ((Genotype)obj)._chromosomes);
 	}
 
 	@Override
