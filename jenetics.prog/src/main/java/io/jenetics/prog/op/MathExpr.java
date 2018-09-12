@@ -182,10 +182,10 @@ public final class MathExpr
 	 */
 	@Override
 	public String toString() {
-		return toString(_tree);
+		return format(_tree);
 	}
 
-	private static String toString(
+	private static String format(
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
@@ -198,10 +198,10 @@ public final class MathExpr
 				final boolean brackets = true;
 
 				if (brackets) out.append("(");
-				toString(tree.getChild(0), out);
+				format(tree.getChild(0), out);
 				for (int i = 1; i < tree.childCount(); ++i) {
 					out.append(", ");
-					toString(tree.getChild(i), out);
+					format(tree.getChild(i), out);
 				}
 				if (brackets) out.append(")");
 			}
@@ -218,9 +218,9 @@ public final class MathExpr
 		final boolean brackets = true;
 
 		if (brackets) out.append("(");
-		toString(tree.getChild(0), out);
+		format(tree.getChild(0), out);
 		out.append(op);
-		toString(tree.getChild(1), out);
+		format(tree.getChild(1), out);
 		if (brackets) out.append(")");
 	}
 
@@ -288,9 +288,30 @@ public final class MathExpr
 	 * @param tree the tree object to convert to a string
 	 * @return a new expression string
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 *
+	 * @deprecated Use {@link #format(Tree)} instead
 	 */
+	@Deprecated
 	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
-		return toString(tree, new StringBuilder());
+		return format(tree);
+	}
+
+	/**
+	 * Return the string representation of the given {@code tree} object. The
+	 * string returned by this method can be parsed again and will result in the
+	 * same expression object.
+	 * <pre>{@code
+	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
+	 *  final MathExpr tree = MathExpr.parse(expr);
+	 *  assert MathExpr.format(tree.tree()).equals(expr);
+	 * }</pre>
+	 *
+	 * @param tree the tree object to convert to a string
+	 * @return a new expression string
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String format(final Tree<? extends Op<Double>, ?> tree) {
+		return format(tree, new StringBuilder());
 	}
 
 	/**
