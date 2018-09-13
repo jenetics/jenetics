@@ -61,6 +61,14 @@ public class MathExprTest {
 	}
 
 	@Test
+	public void format1() {
+		//cos(sqrt(neg(asin(z)*x/1.0)));
+
+		final String expr = "cos(sqrt(neg(asin(z)*x/1.0)))";
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+	}
+
+	@Test
 	public void parse() {
 		Assert.assertEquals(
 			MathExpr.eval("3*4"),

@@ -43,8 +43,8 @@ final class MathExprFormatter {
 
 	private static final Map<MathOp, Integer> PRECEDENCE = new EnumMap<>(MathOp.class);
 	static {
-		PRECEDENCE.put(MathOp.ADD, 10);
-		PRECEDENCE.put(MathOp.SUB, 9);
+		PRECEDENCE.put(MathOp.ADD, 6);
+		PRECEDENCE.put(MathOp.SUB, 6);
 		PRECEDENCE.put(MathOp.MUL, 5);
 		PRECEDENCE.put(MathOp.DIV, 5);
 		PRECEDENCE.put(MathOp.MOD, 5);
@@ -63,7 +63,7 @@ final class MathExprFormatter {
 	) {
 		final Op<Double> op = tree.getValue();
 		if (INFIX_OPS.containsKey(op)) {
-			infix(INFIX_OPS.get(op), tree, out);
+			infix(tree, out);
 		} else {
 			out.append(op);
 			if (!tree.isLeaf()) {
@@ -79,7 +79,6 @@ final class MathExprFormatter {
 	}
 
 	private static void infix(
-		final String operation,
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
@@ -95,15 +94,54 @@ final class MathExprFormatter {
 			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
 			.orElse(100);
 
-		final boolean brackets = !tree.isRoot() &&
-			precedence >= parentPrecedence /*&&
-			tree.getParent().filter(p -> p.getValue() != MathOp.ADD).isPresent()*/;
+		//final boolean brackets = !tree.isRoot() &&
+		//	precedence > parentPrecedence /*&&
+		//	tree.getParent().filter(p -> p.getValue() != MathOp.ADD).isPresent()*/;
+
+		final boolean brackets = brackets(tree);
 
 		if (brackets) out.append("(");
 		format(tree.getChild(0), out);
-		out.append(operation);
+		out.append(INFIX_OPS.get(op));
 		format(tree.getChild(1), out);
 		if (brackets) out.append(")");
+	}
+
+	private static boolean brackets(final Tree<? extends Op<Double>, ?> tree) {
+		if (tree.isRoot()) {
+			return false;
+		}
+
+		final Op<Double> op = tree.getValue();
+		final Op<Double> pop = tree.getParent()
+			.map(Tree::getValue)
+			.orElse(null);
+
+		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
+		final int parentPrecedence = tree.getParent()
+			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
+			.orElse(100);
+
+		if (precedence == parentPrecedence) {
+			if (pop == MathOp.SUB && op == MathOp.ADD) {
+				return true;
+			}
+			if (op == MathOp.SUB && pop == MathOp.ADD) {
+				return false;
+			}
+			if (pop == MathOp.DIV && op == MathOp.MUL) {
+				return true;
+			}
+			if (op == MathOp.DIV && pop == MathOp.MUL) {
+				return false;
+			}
+			return false;
+		}
+		if (precedence > parentPrecedence) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
