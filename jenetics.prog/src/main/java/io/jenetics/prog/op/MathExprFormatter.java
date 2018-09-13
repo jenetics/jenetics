@@ -117,10 +117,16 @@ final class MathExprFormatter {
 			.map(Tree::getValue)
 			.orElse(null);
 
+		if (!PRECEDENCE.containsKey(pop)) {
+			return false;
+		}
+
 		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
 		final int parentPrecedence = tree.getParent()
 			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
 			.orElse(100);
+
+		//System.out.println(pop + ":" + op + "--" + parentPrecedence + ":" + precedence);
 
 		if (precedence == parentPrecedence) {
 			if (pop == MathOp.SUB && op == MathOp.ADD) {
@@ -130,7 +136,7 @@ final class MathExprFormatter {
 				return false;
 			}
 			if (pop == MathOp.DIV && op == MathOp.MUL) {
-				return true;
+				//return true;
 			}
 			if (op == MathOp.DIV && pop == MathOp.MUL) {
 				return false;
