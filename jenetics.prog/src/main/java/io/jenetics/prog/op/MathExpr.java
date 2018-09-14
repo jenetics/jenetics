@@ -284,7 +284,7 @@ public final class MathExpr
 	 * mathematical expression tree. The expression may contain all functions
 	 * defined in {@link MathOp}.
 	 * <pre>{@code
-	 * final TreeNode<Op<Double>> tree = MathExpr
+	 * final Tree<? extends Op<Double>, ?> tree = MathExpr
 	 *     .parseTree("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
 	 * }</pre>
 	 * The example above will lead to the following tree:
