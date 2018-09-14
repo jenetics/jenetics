@@ -29,8 +29,6 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -70,16 +68,6 @@ public final class MathExpr
 {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
-	static {
-		INFIX_OPS.put(MathOp.ADD, " + ");
-		INFIX_OPS.put(MathOp.SUB, " - ");
-		INFIX_OPS.put(MathOp.MUL, "*");
-		INFIX_OPS.put(MathOp.DIV, "/");
-		INFIX_OPS.put(MathOp.MOD, "%");
-		INFIX_OPS.put(MathOp.POW, "^");
-	}
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
@@ -186,45 +174,6 @@ public final class MathExpr
 		return format(_tree);
 	}
 
-	private static String format(
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final Op<Double> op = tree.getValue();
-		if (INFIX_OPS.containsKey(op)) {
-			infix(INFIX_OPS.get(op), tree, out);
-		} else {
-			out.append(op);
-			if (!tree.isLeaf()) {
-				final boolean brackets = true;
-
-				if (brackets) out.append("(");
-				format(tree.getChild(0), out);
-				for (int i = 1; i < tree.childCount(); ++i) {
-					out.append(", ");
-					format(tree.getChild(i), out);
-				}
-				if (brackets) out.append(")");
-			}
-		}
-
-		return out.toString();
-	}
-
-	private static void infix(
-		final String op,
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final boolean brackets = true;
-
-		if (brackets) out.append("(");
-		format(tree.getChild(0), out);
-		out.append(op);
-		format(tree.getChild(1), out);
-		if (brackets) out.append(")");
-	}
-
 	/**
 	 * Tries to simplify {@code this} math expression.
 	 *
@@ -312,7 +261,7 @@ public final class MathExpr
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static String format(final Tree<? extends Op<Double>, ?> tree) {
-		return format(tree, new StringBuilder());
+		return MathExprFormatter.format(tree);
 	}
 
 	/**

@@ -55,6 +55,18 @@ public class MathExprTest {
 	);
 
 	@Test
+	public void format() {
+		final String expr = "(((5.0 - 6.0*x) - (3.0 + 4.0)) + sin(x)^34.0) + (1.0 + sin(x*5.0)/4.0)/6.0";
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+	}
+
+	@Test
+	public void format1() {
+		final String expr = "(asin(z)*x)/1.0";
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+	}
+
+	@Test
 	public void parse() {
 		Assert.assertEquals(
 			MathExpr.eval("3*4"),
@@ -115,6 +127,7 @@ public class MathExprTest {
 	@Test
 	public void specialEval3() {
 		final String expr = "5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6";
+
 		Assert.assertEquals(
 			MathExpr.eval(expr, 4.32),
 			31.170600453465315
