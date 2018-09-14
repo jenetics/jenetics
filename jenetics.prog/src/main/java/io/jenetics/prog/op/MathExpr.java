@@ -58,7 +58,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see MathOp
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 4.3
  * @since 4.1
  */
 public final class MathExpr
@@ -255,6 +255,8 @@ public final class MathExpr
 	 *  final MathExpr tree = MathExpr.parse(expr);
 	 *  assert MathExpr.format(tree.tree()).equals(expr);
 	 * }</pre>
+	 *
+	 * @since 4.3
 	 *
 	 * @param tree the tree object to convert to a string
 	 * @return a new expression string
