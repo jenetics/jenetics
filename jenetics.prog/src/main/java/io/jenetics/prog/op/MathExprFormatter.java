@@ -30,6 +30,7 @@ import io.jenetics.ext.util.Tree;
  * @since 4.3
  */
 final class MathExprFormatter {
+	private MathExprFormatter() {}
 
 	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
 	static {
