@@ -30,9 +30,12 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
@@ -69,9 +72,18 @@ public final class MathExpr
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
+	private final Lazy<ISeq<Var<Double>>> _vars;
+
 	// Primary constructor.
 	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
+		_vars = Lazy.of(() -> ISeq.of(
+			_tree.stream()
+				.filter(node -> node.getValue() instanceof Var)
+				.map(node -> (Var<Double>)node.getValue())
+				.collect(Collectors.toCollection(() ->
+					new TreeSet<>(Comparator.comparing(Var::name))))
+		));
 	}
 
 	/**
@@ -94,11 +106,7 @@ public final class MathExpr
 	 * @return the variable list of this <em>math</em> expression
 	 */
 	public ISeq<Var<Double>> vars() {
-		return _tree.stream()
-			.filter(node -> node.getValue() instanceof Var)
-			.map(node -> (Var<Double>)node.getValue())
-			.sorted(Comparator.comparing(Var::name))
-			.collect(ISeq.toISeq());
+		return _vars.get();
 	}
 
 	/**

@@ -55,6 +55,12 @@ public class MathExprTest {
 	);
 
 	@Test
+	public void vars() {
+		final MathExpr expr = MathExpr.parse("a*b*c + a/4 - sin(b*a) + d*d*b");
+		Assert.assertEquals(expr.vars().map(Var::name), ISeq.of("a", "b", "c", "d"));
+	}
+
+	@Test
 	public void format() {
 		final String expr = "(((5.0 - 6.0*x) - (3.0 + 4.0)) + sin(x)^34.0) + (1.0 + sin(x*5.0)/4.0)/6.0";
 		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
