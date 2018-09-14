@@ -84,70 +84,18 @@ final class MathExprFormatter {
 	) {
 		assert tree.childCount() == 2;
 
-		final Op<Double> op = tree.getValue();
-		final Op<Double> pop = tree.getParent()
-			.map(Tree::getValue)
-			.orElse(null);
-
 		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
 		final int parentPrecedence = tree.getParent()
 			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
 			.orElse(100);
 
-		//final boolean brackets = !tree.isRoot() &&
-		//	precedence > parentPrecedence /*&&
-		//	tree.getParent().filter(p -> p.getValue() != MathOp.ADD).isPresent()*/;
-
-		final boolean brackets = brackets(tree);
+		final boolean brackets = !tree.isRoot() && precedence >= parentPrecedence;
 
 		if (brackets) out.append("(");
 		format(tree.getChild(0), out);
-		out.append(INFIX_OPS.get(op));
+		out.append(INFIX_OPS.get(tree.getValue()));
 		format(tree.getChild(1), out);
 		if (brackets) out.append(")");
-	}
-
-	private static boolean brackets(final Tree<? extends Op<Double>, ?> tree) {
-		if (tree.isRoot()) {
-			return false;
-		}
-
-		final Op<Double> op = tree.getValue();
-		final Op<Double> pop = tree.getParent()
-			.map(Tree::getValue)
-			.orElse(null);
-
-		if (!PRECEDENCE.containsKey(pop)) {
-			return false;
-		}
-
-		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
-		final int parentPrecedence = tree.getParent()
-			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
-			.orElse(100);
-
-		//System.out.println(pop + ":" + op + "--" + parentPrecedence + ":" + precedence);
-
-		if (precedence == parentPrecedence) {
-			if (pop == MathOp.SUB && op == MathOp.ADD) {
-				return true;
-			}
-			if (op == MathOp.SUB && pop == MathOp.ADD) {
-				return false;
-			}
-			if (pop == MathOp.DIV && op == MathOp.MUL) {
-				//return true;
-			}
-			if (op == MathOp.DIV && pop == MathOp.MUL) {
-				return false;
-			}
-			return false;
-		}
-		if (precedence > parentPrecedence) {
-			return true;
-		}
-
-		return false;
 	}
 
 }
