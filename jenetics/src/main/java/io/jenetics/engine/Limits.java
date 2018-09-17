@@ -216,7 +216,7 @@ public final class Limits {
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
 	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
-	 *          return esp >= 10E-5
+	 *          return eps >= 10E-5
 	 *     }))
 	 *     .collect(toBestPhenotype());
 	 * }</pre>
