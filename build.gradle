@@ -72,6 +72,11 @@ allprojects { Project prj ->
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion
 	}
+	if (prj.plugins.hasPlugin('jacoco')) {
+		prj.jacoco {
+			toolVersion = '0.8.2'
+		}
+	}
 }
 
 task updateGradle(type: Wrapper) {
