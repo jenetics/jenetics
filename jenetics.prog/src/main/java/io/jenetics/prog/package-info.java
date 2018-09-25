@@ -25,7 +25,8 @@
  * We are trying to find a polynomial (or an arbitrary mathematical function)
  * which approximates a given data set.
  *
- * <table summary="Sample points">
+ * <table>
+ *     <caption>Sample points</caption>
  *     <tr><th>x</th><th>y</th></tr>
  *     <tr><td>0.00</td><td>0.0000</td></tr>
  *     <tr><td>0.10</td><td>0.0740</td></tr>
