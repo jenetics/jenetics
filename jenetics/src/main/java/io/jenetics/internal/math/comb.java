@@ -273,7 +273,7 @@ public final class comb {
 	}
 
 	private static int nextX(final Random random, final int m) {
-		return m > 0 ? random.nextInt(m) : m - 1;
+		return random.nextInt(m + 1);
 	}
 
 }
