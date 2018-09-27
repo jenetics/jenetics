@@ -250,6 +250,7 @@ public final class comb {
 			--m;
 		}
 
+		for (int i = 0; i < a.length; ++i) a[i] -= 1;
 		return a;
 	}
 

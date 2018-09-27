@@ -187,6 +187,7 @@ public class combTest {
 			--m;
 		}
 
+		for (int i = 0; i < sub.length; ++i) sub[i] -= 1;
 		return sub;
 	}
 
