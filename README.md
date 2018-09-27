@@ -195,21 +195,11 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 ## Release notes
 
-### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
-
-#### Improvements
-
-* [#325](https://github.com/jenetics/jenetics/issues/325): **Allow customization of fitness evaluation execution for bundling calculations**
-* [#327](https://github.com/jenetics/jenetics/issues/327): Improve CPU utilization during fitness evaluation.
-* [#335](https://github.com/jenetics/jenetics/issues/335): Seq view wrapper for List<T> and T[] types.
+### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
 
 #### Bugs
 
-* [#317](https://github.com/jenetics/jenetics/issues/317): Fix links of Javadoc images.
-* [#318](https://github.com/jenetics/jenetics/issues/318): `null` result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
-* [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
-* [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
-* [#345](https://github.com/jenetics/jenetics/issues/345): Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
+* [3416](https://github.com/jenetics/jenetics/issues/416): Method 'comb.subset' doesn't create all possible combinations
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
