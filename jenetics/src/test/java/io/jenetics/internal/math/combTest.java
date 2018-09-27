@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
@@ -55,27 +56,37 @@ public class combTest {
 		}
 	}
 
-	@Test
-	public void allCombinations() {
+	@Test(dataProvider = "combinations")
+	public void allCombinations(final int n, final int k) {
 		final Random random = new Random();
 
 		final Set<String> subsets = new HashSet<>();
 		for (int i = 0; i < 1000; ++i) {
-			subsets.add(Arrays.toString(comb.subset(5, new int[3], random)));
+			subsets.add(Arrays.toString(comb.subset(n, new int[k], random)));
 		}
-		Assert.assertEquals(subsets.size(), binomial(5, 3));
-
-		subsets.clear();
-		for (int i = 0; i < 1000; ++i) {
-			subsets.add(Arrays.toString(comb.subset(7, new int[4], random)));
-		}
-		Assert.assertEquals(subsets.size(), binomial(7, 4));
+		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
 
 	private static long binomial(int n, int k) {
 		return (n == k) || (k == 0)
 			? 1
 			: binomial(n - 1, k) + binomial(n - 1, k - 1);
+	}
+
+	@DataProvider
+	public Object[][] combinations() {
+		return new Object[][] {
+			{2, 1},
+			{3, 2},
+			{4, 2},
+			{4, 3},
+			{5, 1},
+			{5, 2},
+			{5, 3},
+			{5, 4},
+			{5, 5},
+			{9, 4}
+		};
 	}
 
 	@Test
