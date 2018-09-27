@@ -4,7 +4,7 @@
 
 #### Bugs
 
-* [3416](https://github.com/jenetics/jenetics/issues/416): Method 'comb.subset' doesn't create all possible combinations
+* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
 
 ### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
 

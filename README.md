@@ -199,7 +199,7 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 
 #### Bugs
 
-* [3416](https://github.com/jenetics/jenetics/issues/416): Method 'comb.subset' doesn't create all possible combinations
+* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
