@@ -1,5 +1,11 @@
 ## Release notes
 
+### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
+
+#### Bugs
+
+* [3416](https://github.com/jenetics/jenetics/issues/416): Method 'comb.subset' doesn't create all possible combinations
+
 ### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
 
 #### Improvements
