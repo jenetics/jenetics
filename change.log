@@ -1,3 +1,9 @@
+Jenetics-4.2.1
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/416: Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+
+
 Jenetics-4.2.0
 
 - Improvements

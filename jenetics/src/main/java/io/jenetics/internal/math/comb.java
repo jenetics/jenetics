@@ -249,6 +249,7 @@ public final class comb {
 			--m;
 		}
 
+		for (int i = 0; i < a.length; ++i) a[i] -= 1;
 		return a;
 	}
 
@@ -272,7 +273,7 @@ public final class comb {
 	}
 
 	private static int nextX(final Random random, final int m) {
-		return m > 0 ? random.nextInt(m) : m - 1;
+		return random.nextInt(m + 1);
 	}
 
 }
