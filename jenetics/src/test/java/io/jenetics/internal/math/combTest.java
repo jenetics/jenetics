@@ -61,7 +61,7 @@ public class combTest {
 		final Random random = new Random();
 
 		final Set<String> subsets = new HashSet<>();
-		for (int i = 0; i < 1000; ++i) {
+		for (int i = 0; i < 3000; ++i) {
 			subsets.add(Arrays.toString(comb.subset(n, new int[k], random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
