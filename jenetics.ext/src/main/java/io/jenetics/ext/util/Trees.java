@@ -174,8 +174,7 @@ final class Trees {
 		for (int i = 0; i < nodes.length(); ++i) {
 			final Tree<?, ?> n = nodes.get(i);
 			n.childStream().forEach(child ->
-				out
-					.append("    ")
+				out.append("    ")
 					.append(id(n))
 					.append(" -> ")
 					.append(id(child))
