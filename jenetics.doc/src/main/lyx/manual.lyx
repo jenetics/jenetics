@@ -631,7 +631,7 @@ some
 \family default
 \series default
 \shape default
- allows you to minimize or maximize the given fitness function without tweaking
+ allows you to minimize or maximize a given fitness function without tweaking
  it.
  In contrast to other GA implementations, the library uses the concept of
  an evolution
@@ -728,7 +728,17 @@ target "https://en.wikipedia.org/wiki/Genetic_programming"
 
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
- Since the library is available on maven central repository
+ Although the library is written in Java 8, it is compilable with Java 9,
+ 10 and 11.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is available on Maven central repository
 \begin_inset Foot
 status collapsed
 
@@ -762,7 +772,7 @@ jenetics:\SpecialChar softhyphen
 
 \end_inset
 
-, it can be easily integrated into existing projects.
+ and can be easily integrated into existing projects.
  The very clear structuring of the different parts of the GA allows an easy
  adaption for different problem domains.
 \end_layout
@@ -883,8 +893,15 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-To give you a first impression of the library usage, lets start with a simple
- 
+To give you a first impression on how to use 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+, lets start with a simple 
 \begin_inset Quotes ald
 \end_inset
 
@@ -1370,7 +1387,7 @@ As the example shows,
 \family typewriter
  Collector
 \family default
- classes in Java 8.
+ classes of Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
  (SAM types) play an important roll in the library design.
 \end_layout
@@ -1713,7 +1730,7 @@ Streams
 
 , is, of course,
 \emph on
-non
+ non
 \emph default
 -deterministic.
  Calling it twice with the same start population will lead to different
@@ -4626,6 +4643,10 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \end_inset
 
 , weak individuals have less chance of being selected.
+ Compared with fitness proportional selectors, the tournament selector is
+ often used in practice because of its lack of stochastic noise.
+ Tournament selectors are also independent to the scaling of the genetic
+ algorithm fitness function.
 \end_layout
 
 \begin_layout Paragraph
@@ -4658,15 +4679,17 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 
 \end_inset
 
- individuals are sorted according to their fitness.
- Only the 
+ individuals are sorted according to their fitness and only the 
 \begin_inset Formula $n$
 \end_inset
 
  best individuals are selected.
  The truncation selection is a very basic selection algorithm.
  It has it's strength in fast selecting individuals in large populations,
- but is not very often used in practice.
+ but is not very often used in practice; whereas the truncation selection
+ is a standard method in animal and plant breeding.
+ Only the best animals, ranked by their phenotypic value, are selected for
+ reproduction.
 \end_layout
 
 \begin_layout Paragraph
@@ -4693,6 +4716,8 @@ Monte Carlo selector
 \begin_layout Standard
 The Monte Carlo selector selects the individuals from a given population
  randomly.
+ Instead of a directed search, the Monte Carlo selector performs a random
+ search.
  This selector can be used to measure the performance of a other selectors.
  In general, the
 \shape italic
@@ -4702,6 +4727,16 @@ The Monte Carlo selector selects the individuals from a given population
 \emph default
  of a selector should be better than the selection performance of the Monte
  Carlo selector.
+ If the Monte Carlo selector is used for selecting the parents for the populatio
+n, it will be a little bit more disruptive, on average, than roulette wheel
+ selection.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -4883,7 +4918,7 @@ name "par:Roulette-wheel-selector"
 
 \begin_layout Standard
 The roulette-wheel selector is also known as fitness proportional selector.
- In the
+ The
 \family sans
 \series bold
 \shape smallcaps
@@ -4891,7 +4926,7 @@ The roulette-wheel selector is also known as fitness proportional selector.
 \family default
 \series default
 \shape default
- library it is implemented as
+ library implements the roulette-wheel selector therefore as
 \emph on
  probability
 \emph default
@@ -4947,7 +4982,17 @@ name "par:Linear-rank-selector"
 \end_layout
 
 \begin_layout Standard
-In linear-ranking selection the individuals are sorted according to their
+The roulette-wheel selector will have problems when the fitness values differ
+ very much.
+ If the best chromosome fitness is 90%, its circumference occupies 90% of
+ roulette-wheel, and then other chromosomes have too few chances to be selected.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+ In linear-ranking selection the individuals are sorted according to their
  fitness values.
  The rank 
 \begin_inset Formula $N$
@@ -5308,7 +5353,7 @@ name "subsec:Alterer"
 \end_layout
 
 \begin_layout Standard
-The problem encoding (representation) determines the bounds of the search
+The problem encoding/representation determines the bounds of the search
  space, but the
 \family typewriter
  Alterer
