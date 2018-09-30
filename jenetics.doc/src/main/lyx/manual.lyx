@@ -5329,6 +5329,19 @@ remember the best solution found so far
 local
 \emph default
  optimum, so pure elitism is a race to the nearest local optimum.
+ The elite selector implementation of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library also lets you specify the selector for the 
+\emph on
+non
+\emph default
+-elite individuals.
 \end_layout
 
 \begin_layout Subsubsection
@@ -5372,7 +5385,7 @@ Stream
 \family typewriter
  Alterer
 \family default
- types used in
+ hierarchies used in
 \family sans
 \series bold
 \shape smallcaps
