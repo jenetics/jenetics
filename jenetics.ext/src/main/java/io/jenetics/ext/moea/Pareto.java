@@ -182,8 +182,8 @@ public final class Pareto {
 	 * using the given {@code dominance} comparator.
 	 *
 	 * @apiNote
-	 * Calculating the rank has a time complexity of {@code O(n^2}, where
-	 * {@code n} the {@code set} size.
+	 * Calculating the rank has a time and space complexity of {@code O(n^2},
+	 * where {@code n} the {@code set} size.
 	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
