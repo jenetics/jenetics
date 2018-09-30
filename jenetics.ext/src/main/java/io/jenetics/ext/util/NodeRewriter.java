@@ -31,6 +31,9 @@ import io.jenetics.ext.util.Tree.Path;
  * mul(X,0) -> 0
  * sin(neg(X)) -> neg(sin(X))
  *
+ * This class is responsible for rewriting a single node with the given set
+ * of paths to be replaced.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -43,11 +46,12 @@ final class NodeRewriter<V> {
 		_replace = requireNonNull(replace);
 	}
 
-	public void rewrite(final TreeNode<V> node) {
+	public void rewrite(final TreeNode<V> root) {
+		// The tree paths replaced by the actual nodes for the given root.
 		final Map<Character, TreeNode<V>> nodes = _replace.entrySet().stream()
 			.collect(Collectors.toMap(
 				Map.Entry::getKey,
-				e -> node.childAtPath(e.getValue())
+				e -> root.childAtPath(e.getValue())
 					.orElseThrow(AssertionError::new)));
 	}
 
