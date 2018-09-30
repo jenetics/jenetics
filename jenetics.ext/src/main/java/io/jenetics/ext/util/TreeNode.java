@@ -176,9 +176,7 @@ public final class TreeNode<T>
 		}
 
 		child.setParent(this);
-		if (_children == null) {
-			_children = new ArrayList<>(2);
-		}
+		createChildrenIfMissing();
 		_children.add(index, child);
 
 		TreeNode<T> parent = this;
@@ -187,6 +185,13 @@ public final class TreeNode<T>
 		}
 
 		return this;
+	}
+
+	// Only entry point for checking and creating non-existing children list.
+	private void createChildrenIfMissing() {
+		if (_children == null) {
+			_children = new ArrayList<>(2);
+		}
 	}
 
 	/**
