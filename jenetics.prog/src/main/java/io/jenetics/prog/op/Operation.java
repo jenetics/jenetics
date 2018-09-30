@@ -43,16 +43,14 @@ final class Operation<T> implements Op<T>, Serializable {
 		final int arity,
 		final Function<T[], T> function
 	) {
-		requireNonNull(name);
-		requireNonNull(function);
+		_name = requireNonNull(name);
+		_function = requireNonNull(function);
 		if (arity < 0) {
 			throw new IllegalArgumentException(
 				"Arity smaller than zero: " + arity
 			);
 		}
 
-		_name = name;
-		_function = function;
 		_arity = arity;
 	}
 

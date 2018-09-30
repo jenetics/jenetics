@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -36,7 +35,7 @@ import io.jenetics.util.MSeq;
  * @since 3.9
  */
 final class Trees {
-	private Trees() {require.noInstance();}
+	private Trees() {}
 
 
 	@SuppressWarnings("unchecked")

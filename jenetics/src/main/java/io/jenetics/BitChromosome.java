@@ -628,7 +628,7 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return hash(_genes);
+		return hash(_genes, hash(getClass()));
 	}
 
 	@Override
