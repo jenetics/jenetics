@@ -5474,7 +5474,9 @@ Exploring the search space
 \series bold
 Maintaining diversity
 \series default
-: Mutation prevents a population from correlating.
+: Mutation prevents a population from converging to a local minimum by stopping
+ the solution to become to close to one another.
+ A genetic algorithm can improve the solution solely by the mutation operator.
  Even if most of the search is being performed by crossover, mutation can
  be vital to provide the diversity which crossover needs.
 \end_layout
@@ -9805,7 +9807,7 @@ io\SpecialChar softhyphen
 \family default
  system property
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -12456,6 +12458,68 @@ DoubleMoments moments = chromosome.stream()
 \begin_layout Plain Layout
 
     .collect(DoubleMoments.toDoubleMoments(v -> v.doubleValue()));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+stat
+\family default
+ package also contains a class for calculating the 
+\begin_inset CommandInset href
+LatexCommand href
+name "quantile"
+target "https://en.wikipedia.org/wiki/Quantile"
+
+\end_inset
+
+ of a stream of double values.
+ It's implementing algorithm, which is described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Jain:1985:PAD:4372.4378"
+
+\end_inset
+
+, calculates—or 
+\emph on
+estimates
+\emph default
+—the quantile value on the fly, without storing the consumed double values.
+ This allows to use the 
+\family typewriter
+Quantile
+\family default
+ class even for very large number of double values.
+ How to calculate the first quartile of a given, random 
+\family typewriter
+Double\SpecialChar softhyphen
+Stream
+\family default
+ is shown in the code snipped below.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Quantile quartile = new Quantile(0.25);
+\end_layout
+
+\begin_layout Plain Layout
+
+new Random().doubles(1000).forEach(quartile);
+\end_layout
+
+\begin_layout Plain Layout
+
+final double value = quartile.getValue();
 \end_layout
 
 \end_inset
