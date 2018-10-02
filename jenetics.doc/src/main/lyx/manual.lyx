@@ -12470,11 +12470,23 @@ The
 \family typewriter
 stat
 \family default
- package also contains a class for calculating the 
-\begin_inset CommandInset href
-LatexCommand href
-name "quantile"
-target "https://en.wikipedia.org/wiki/Quantile"
+ package also contains a class for calculating the quantile
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Quantile
+\end_layout
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
@@ -12514,7 +12526,7 @@ final Quantile quartile = new Quantile(0.25);
 
 \begin_layout Plain Layout
 
-new Random().doubles(1000).forEach(quartile);
+new Random().doubles(10_000).forEach(quartile);
 \end_layout
 
 \begin_layout Plain Layout
@@ -12524,7 +12536,17 @@ final double value = quartile.getValue();
 
 \end_inset
 
+Be aware, that the calculated quartile is 
+\emph on
+just
+\emph default
+ an estimation.
+ For a sufficient accuracy, the stream size should be sufficiently large
+ (
+\begin_inset Formula $size\gg1000$
+\end_inset
 
+).
 \end_layout
 
 \begin_layout Chapter
