@@ -4917,32 +4917,36 @@ name "par:Roulette-wheel-selector"
 \end_layout
 
 \begin_layout Standard
-The roulette-wheel selector is also known as fitness proportional selector.
- The
+The roulette-wheel selector is also known as fitness proportional selector
+ and 
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
+Jenetics
 \family default
 \series default
 \shape default
- library implements the roulette-wheel selector therefore as
+ implements it as
 \emph on
  probability
 \emph default
  selector.
- The fitness value 
+ For calculating the selection probability 
+\begin_inset Formula $P\left(i\right)$
+\end_inset
+
+, the fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is used to calculate the selection probability of individual 
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
-.
+ is used.
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+P\left(i\right)=\frac{f_{i}}{\sum_{j=0}^{N-1}f_{j}}\label{eq:roulette-wheele-distribution}
 \end{equation}
 
 \end_inset
@@ -4951,13 +4955,52 @@ Selecting
 \begin_inset Formula $n$
 \end_inset
 
- individuals from a given population is equivalent to play
+ individuals from a given population is equivalent to play 
 \begin_inset Formula $n$
 \end_inset
 
  times on the roulette-wheel.
  The population don't have to be sorted before selecting the individuals.
- Roulette-wheel selection is one of the traditional selection strategies.
+ Notice that equation 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "eq:roulette-wheele-distribution"
+
+\end_inset
+
+ assumes that all fitness values are positive and the sum of the fitness
+ values is not zero.
+ To cope with negative fitnesses, an adapted formula is used for calculating
+ the selection probabilities.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\mathrm{min}}\right)},
+\]
+
+\end_inset
+
+where
+\begin_inset Formula 
+\[
+f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}f_{i}
+\]
+
+\end_inset
+
+As you can see, the worst fitness value 
+\begin_inset Formula $f_{\mathrm{min}}$
+\end_inset
+
+ has now a selection probability of zero.
+ In the case that the sum of the corrected fitness values is zero, the selection
+ probability of all fitness values will be set 
+\begin_inset Formula $\frac{1}{N}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph
@@ -12506,6 +12549,16 @@ estimates
  This allows to use the 
 \family typewriter
 Quantile
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Quantile
+\end_layout
+
+\end_inset
+
+
 \family default
  class even for very large number of double values.
  How to calculate the first quartile of a given, random 
