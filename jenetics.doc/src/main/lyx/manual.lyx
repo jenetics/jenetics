@@ -4770,7 +4770,7 @@ Probability selectors are a variation of
  selection
 \shape default
  probability 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
 .
@@ -4861,10 +4861,10 @@ where
  follows a binomial distribution
 \begin_inset Formula 
 \begin{equation}
-P(i,k)=\left(\begin{array}{c}
+P\left(i,k\right)=\left(\begin{array}{c}
 n\\
 k
-\end{array}\right)P(i)^{k}\left(1-P(i)\right)^{n-k}
+\end{array}\right)P\left(i\right){}^{k}\left(1-P\left(i\right)\right)^{n-k}
 \end{equation}
 
 \end_inset
@@ -4976,16 +4976,16 @@ reference "eq:roulette-wheele-distribution"
 
 \begin_layout Standard
 \begin_inset Formula 
-\[
+\begin{equation}
 P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\mathrm{min}}\right)},
-\]
+\end{equation}
 
 \end_inset
 
 where
 \begin_inset Formula 
 \[
-f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}f_{i}
+f_{\mathrm{min}}=\min\left(\min_{i\in\left[0,N\right)}\left\{ f_{i}\right\} ,0\right)
 \]
 
 \end_inset
@@ -4994,7 +4994,7 @@ As you can see, the worst fitness value
 \begin_inset Formula $f_{\mathrm{min}}$
 \end_inset
 
- has now a selection probability of zero.
+, if negative, has now a selection probability of zero.
  In the case that the sum of the corrected fitness values is zero, the selection
  probability of all fitness values will be set 
 \begin_inset Formula $\frac{1}{N}$
@@ -5056,7 +5056,7 @@ key "Sivanandam2010"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
+P\left(i\right)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
 
 \end_inset
@@ -5123,7 +5123,7 @@ An alternative to the
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
+P\left(i\right)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
 
 \end_inset
@@ -5133,7 +5133,7 @@ where
 \end_inset
 
  must within the range 
-\begin_inset Formula $\left[0\ldots1\right)$
+\begin_inset Formula $\left[0,1\right)$
 \end_inset
 
 .
@@ -5179,7 +5179,7 @@ name "par:Boltzmann-selector"
 The selection probability of the Boltzmann selector is defined as
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
+P\left(i\right)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
 
 \end_inset
@@ -5526,7 +5526,7 @@ Maintaining diversity
 
 \begin_layout Standard
 The mutation probability, 
-\begin_inset Formula $P(m)$
+\begin_inset Formula $P\left(m\right)$
 \end_inset
 
 , is the parameter that must be optimized.
@@ -5538,7 +5538,7 @@ The mutation probability,
 
 \begin_layout Standard
 The mutation probability, 
-\begin_inset Formula $P(m)$
+\begin_inset Formula $P\left(m\right)$
 \end_inset
 
 , is defined as the probability that a specific gene, over the whole population,
@@ -5546,7 +5546,7 @@ The mutation probability,
  That means, the (average) number of genes mutated by a mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{P}\cdot N_{g}\cdot P(m)
+\hat{\mu}=N_{P}\cdot N_{g}\cdot P\left(m\right)
 \end{equation}
 
 \end_inset
@@ -5617,7 +5617,7 @@ Select a genotype
 \end_inset
 
  from the population with probability 
-\begin_inset Formula $P_{G}(m)$
+\begin_inset Formula $P_{G}\left(m\right)$
 \end_inset
 
 ,
@@ -12063,6 +12063,7 @@ status open
 \begin_layout Plain Layout
 
 // Create "different" sequences.
+     
 \end_layout
 
 \begin_layout Plain Layout
@@ -15158,7 +15159,7 @@ The
 \begin_inset Formula $x_{i}$
 \end_inset
 
- can't be the same for all
+ can't be the same for all 
 \begin_inset Formula $i$
 \end_inset
 
@@ -15474,7 +15475,7 @@ Chromosome
 \family typewriter
  double[]
 \family default
- array, which is collected to an
+ array, which is collected to an 
 \begin_inset Formula $2$
 \end_inset
 
@@ -16349,7 +16350,7 @@ s of length
 \begin_inset Formula $i$
 \end_inset
 
- is connected to node
+ is connected to node 
 \begin_inset Formula $j$
 \end_inset
 
@@ -19713,7 +19714,7 @@ reference "subsec:Encoding"
 \emph default
  step, by rearranging (or creating new)
 \family typewriter
-Genes
+ Genes
 \family default
  within a
 \family typewriter
@@ -20598,7 +20599,7 @@ reference "fig:Fixed-generation-diagram"
 \begin_inset Formula $25^{th}$
 \end_inset
 
-percentile
+ percentile
 \emph default
 ,
 \emph on
@@ -24760,6 +24761,16 @@ Node
 
 \begin_layout Subsubsection
 Parentheses tree
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Parentheses tree
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -26088,7 +26099,7 @@ key "dawkins1986"
 \end_layout
 
 \begin_layout Standard
-If you want to write a Weasel program with th 
+If you want to write a Weasel program with the 
 \family sans
 \series bold
 \shape smallcaps
@@ -29318,6 +29329,16 @@ We can create a constant operation in to flavors: with a value only and
 
 \family typewriter
 EphemeralConst
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Ephemeral constant
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -35166,6 +35187,112 @@ status collapsed
 \begin_layout Plain Layout
 
 http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+:
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache License, Version 2.0"
+target "http://testng.org/license"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+:
+\emph on
+ test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+EqualsVerifier
+\series default
+\emph default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Apache Commons Math
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+:
+\emph on
+ 2.5.2
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jqno.nl/equalsverifier/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jqno/equalsverifier/releases
 \end_layout
 
 \end_inset
