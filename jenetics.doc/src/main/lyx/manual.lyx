@@ -2394,9 +2394,9 @@ s.
 \family default
  are collected into a population
 \family typewriter
- 
+ Seq
 \family default
-Seq.
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4620,7 +4620,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \end_inset
 
  individuals is chosen from the population 
-\begin_inset Formula $Pg$
+\begin_inset Formula $P_{g}$
 \end_inset
 
 .
@@ -4883,11 +4883,11 @@ where
 
  in the set of selected individuals.
  The runtime complexity of the implemented probability selectors is 
-\begin_inset Formula $O(n+\log(n))$
+\begin_inset Formula $O\left(n+\log\left(n\right)\right)$
 \end_inset
 
  instead of 
-\begin_inset Formula $O(n^{2})$
+\begin_inset Formula $O\left(n\text{²}\right)$
 \end_inset
 
  as for the naive approach:
@@ -4985,7 +4985,7 @@ P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\m
 where
 \begin_inset Formula 
 \[
-f_{\mathrm{min}}=\min\left(\min_{i\in\left[0,N\right)}\left\{ f_{i}\right\} ,0\right)
+f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}\left\{ f_{i},0\right\} 
 \]
 
 \end_inset
@@ -5043,7 +5043,7 @@ key "Sivanandam2010"
 
  is assigned to the best individual and the rank 1 to the worst individual.
  The selection probability 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
  of individual
@@ -10334,7 +10334,7 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \begin_layout Standard
 You may want to tweak this parameters, if you realize a low CPU utilization
  during the fitness value evaluation.
- Long running fitness function could lead to CPU under-utilization while
+ Long running fitness functions could lead to CPU under-utilization while
  evaluating the last sub-population.
  In this case, only one core is busy, while the other cores are idle, because
  they already finished the fitness evaluation.
