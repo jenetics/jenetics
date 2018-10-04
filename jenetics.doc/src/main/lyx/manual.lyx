@@ -27634,7 +27634,35 @@ Pareto efficiency
 \end_layout
 
 \begin_layout Standard
-In contrast to single-objective optimization, where usually only one optimal
+Pareto efficiency is named after the Italian economist and political scientist
+ Vilfredo Pareto
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Vilfredo_Pareto
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ He used the concept in his studies of economic efficiency and income distributi
+on.
+ The concept has been applied in different academic fields such as economics,
+ engineering, and the life sciences.
+ Pareto efficiency says that an allocation is efficient if an action makes
+ some individual better off and no individual worse off.
+ In contrast to single-objective optimization, where usually only one optimal
  solution exits, the multi-objective optimization creates a set of 
 \emph on
 optimal
@@ -29342,19 +29370,19 @@ Ephemeral constant
 \end_layout
 
 \begin_layout Standard
-An ephemeral constant
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Genetic programming!EphemeralConst
-\end_layout
-
+An ephemeral constant is a terminal operation, which encapsulating a value
+ that is generated at run time from the 
+\family typewriter
+Supplier
+\family default
+ it is created from.
+ Ephemeral constants allows you to have terminals that don’t have all the
+ same values.
+ To create an ephemeral constant that takes its random value in 
+\begin_inset Formula $\left[0,1\right)$
 \end_inset
 
- is a special constant, which is only constant within an tree.
- If a new tree is created, a new constant is created, by the Supplier function
- the ephemeral constant is created with.
+ you will write the following code.
 \end_layout
 
 \begin_layout Standard
@@ -29365,17 +29393,28 @@ status open
 
 \begin_layout Plain Layout
 
-final Op<Double> rand1 = EphemeralConst.of(Math::random);
+final Op<Double> rand1 = EphemeralConst
 \end_layout
 
 \begin_layout Plain Layout
 
-final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
+    .of(RandomRegistry.getRandom()::nextDouble);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<Double> rand2 = EphemeralConst
+\end_layout
+
+\begin_layout Plain Layout
+
+    .of("R", RandomRegistry.getRandom()::nextDouble);
 \end_layout
 
 \end_inset
 
-
+The ephemeral constant value is determined when it is inserted in the tree
+ and never changes until it is replaced by another ephemeral constant.
 \end_layout
 
 \begin_layout Subsection
