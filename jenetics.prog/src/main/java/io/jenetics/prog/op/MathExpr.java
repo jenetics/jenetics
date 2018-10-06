@@ -158,7 +158,7 @@ public final class MathExpr
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr &&
-			Objects.equals(((MathExpr) obj)._tree, _tree);
+			Objects.equals(((MathExpr)obj)._tree, _tree);
 	}
 
 	/**
