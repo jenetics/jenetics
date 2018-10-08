@@ -554,6 +554,7 @@ public final class Codecs {
 		final ISeq<? extends B> target,
 		final Supplier<M> mapSupplier
 	) {
+		requireNonNull(mapSupplier);
 		return ofPermutation(target.size())
 			.map(perm -> toMapping(perm, source, target, mapSupplier));
 	}
