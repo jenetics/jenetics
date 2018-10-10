@@ -1,3 +1,19 @@
+Jenetics-4.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/347: Improve `hashCode` and `equals` methods.
+    * https://github.com/jenetics/jenetics/issues/349: Cleanup of chromosome constructors. Make the constructors more regular.
+    * https://github.com/jenetics/jenetics/issues/355: Simplify implementation of numeric genes.
+    * https://github.com/jenetics/jenetics/issues/361: Add `NumericChromosome.primitiveStream()` methods.
+    * https://github.com/jenetics/jenetics/issues/366: Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/377: Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+    * https://github.com/jenetics/jenetics/issues/378: Convert tree to parentheses tree string.
+    * https://github.com/jenetics/jenetics/issues/379: Parse parentheses tree string to tree object.
+    * https://github.com/jenetics/jenetics/issues/380: Add `TreeNode.map` method.
+    * https://github.com/jenetics/jenetics/issues/400: Codec for mapping source- and target objects.
+    * https://github.com/jenetics/jenetics/issues/406: Make the library compilable under Java 11.
+    * https://github.com/jenetics/jenetics/issues/411: Improve the behaviour of the `MathExpr.format` method.
+
 Jenetics-4.2.1
 
 - Bug fixes
