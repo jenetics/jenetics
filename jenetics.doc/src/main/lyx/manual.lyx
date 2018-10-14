@@ -19973,9 +19973,9 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 \family default
  creation, you
 \emph on
- only
+ 
 \emph default
- have to create an explicit
+only have to create an explicit
 \family typewriter
  Genotype
 \family default
@@ -21952,13 +21952,21 @@ key "FEDR:FEDR19750860506"
  It is a global optimization algorithm in continuous search spaces and is
  an instance of an
 \emph on
- Evolutionary Algorithm
+ 
 \emph default
- from the field of
+Evolutionary
 \emph on
- Evolutionary Computation
+ 
 \emph default
-.
+Algorithm from the field of
+\emph on
+ 
+\emph default
+Evolutionary
+\emph on
+ 
+\emph default
+Computation.
  ES uses truncation selection
 \begin_inset Foot
 status collapsed
