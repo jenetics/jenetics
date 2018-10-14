@@ -1839,9 +1839,9 @@ reference "fig:Evolution-engine-model"
 \emph default
  view of the main
 \emph on
- evolution
+ 
 \emph default
- classes, together with its dependencies.
+evolution classes, together with its dependencies.
  Since the
 \family typewriter
  Engine
@@ -2447,9 +2447,9 @@ Allele
 .
  Some of the implementations also contains domain information of the
 \emph on
- wrapped
+ 
 \emph default
- allele.
+wrapped allele.
  This is the case for all
 \family typewriter
  Bounded\SpecialChar softhyphen
@@ -2851,15 +2851,7 @@ Integer\SpecialChar softhyphen
 Chromosome
 \family default
  can be created with variable length, where the minimum value of the length
- range is 
-\emph on
-included
-\emph default
- and the maximum value of the length range is 
-\emph on
-excluded
-\emph default
-.
+ range is included and the maximum value of the length range is excluded.
 \end_layout
 
 \begin_layout Standard
@@ -3570,9 +3562,9 @@ Gene
 s) with different constraints.
  This is almost the
 \emph on
- only
+ 
 \emph default
- reason for choosing the column-major layout.
+only reason for choosing the column-major layout.
  The layout of this
 \family typewriter
  Genotype
@@ -3599,9 +3591,9 @@ reference "fig:Column-major-genotype-vector"
 \family default
 s of length
 \emph on
- one
+ 
 \emph default
- are needed.
+one are needed.
 \end_layout
 
 \begin_layout Standard
@@ -4067,13 +4059,13 @@ reference "subsubsec:Fitness-function"
 
  It is
 \emph on
- only
+ 
 \emph default
- a container which forms the
+only a container which forms the
 \emph on
- environment
+ 
 \emph default
- of the
+environment of the
 \family typewriter
  Genotype
 \family default
@@ -4265,8 +4257,11 @@ target "https://en.wikipedia.org/wiki/Genetic_operator"
 
  are used for creating
 \shape italic
- genetic
+ 
+\emph on
+genetic
 \shape default
+\emph default
  diversity (
 \family typewriter
 Alterer
@@ -4288,10 +4283,10 @@ Selector
  library.
  It also contains some
 \emph on
- theoretical
+ 
 \emph default
- information, which should help you to choose the right combination of operators
- and parameters, for the problem to be solved.
+theoretical information, which should help you to choose the right combination
+ of operators and parameters, for the problem to be solved.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4313,12 +4308,18 @@ Selectors are responsible for selecting a given number of individuals from
  the population.
  The selectors are used to divide the population into
 \shape italic
- survivors
+ 
+\emph on
+survivors
 \shape default
+\emph default
  and
 \shape italic
- offspring
+ 
+\emph on
+offspring
 \shape default
+\emph default
 .
  The selectors for
 \shape italic
@@ -4767,8 +4768,11 @@ Probability selectors are a variation of
 \shape default
  selectors and selects individuals from a given population based on it's
 \shape italic
- selection
+ 
+\emph on
+selection
 \shape default
+\emph default
  probability 
 \begin_inset Formula $P\left(i\right)$
 \end_inset
@@ -4928,9 +4932,9 @@ Jenetics
 \shape default
  implements it as
 \emph on
- probability
+ 
 \emph default
- selector.
+probability selector.
  For calculating the selection probability 
 \begin_inset Formula $P\left(i\right)$
 \end_inset
@@ -6858,9 +6862,9 @@ key "Muhlenbein:1993:PMB:1326623.1326626"
 
  takes two
 \emph on
- numeric
+ 
 \emph default
- chromosomes and treats it as a real number vector.
+numeric chromosomes and treats it as a real number vector.
  Each of this vectors can also be seen as a point in 
 \begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
@@ -6940,19 +6944,19 @@ reference "fig:Line-crossover-hypercube"
 , the children may be located on an arbitrary place on the line, even outside
  of the hypercube.This is useful if you want to explore
 \emph on
- unknown
+ 
 \emph default
- regions, and you need a way to generate chromosomes further out than the
- parents are.
+unknown regions, and you need a way to generate chromosomes further out
+ than the parents are.
 \end_layout
 
 \begin_layout Standard
 The
 \emph on
- internal
+ 
 \emph default
- random parameters, which define the location of the new crossover point,
- are generated once for the whole vector (chromosome).
+internal random parameters, which define the location of the new crossover
+ point, are generated once for the whole vector (chromosome).
  If the
 \family typewriter
  Line\SpecialChar softhyphen
@@ -6988,10 +6992,10 @@ name "par:Intermediate-crossover"
 The intermediate crossover is quite similar to the line crossover.
  It differs in the way on how the
 \emph on
- internal
+ 
 \emph default
- random parameters are generated and the handling of the invalid–out of
- range–genes.
+internal random parameters are generated and the handling of the invalid–out
+ of range–genes.
  The
 \emph on
  internal
@@ -7068,9 +7072,9 @@ Engine classes
 \begin_layout Standard
 The
 \emph on
- executing
+ 
 \emph default
- classes, which perform the actual evolution, are located in the
+executing classes, which perform the actual evolution, are located in the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine
@@ -7122,9 +7126,9 @@ Result
  class has several predefined collectors, but you are free to create your
  own one, which can be seamlessly
 \emph on
- plugged
+ 
 \emph default
- into the existing stream.
+plugged into the existing stream.
 \end_layout
 
 \begin_layout Subsubsection
@@ -7401,9 +7405,10 @@ Evolution!Engine
 \begin_layout Standard
 The
 \emph on
- evolution
-\family typewriter
+ 
 \emph default
+evolution
+\family typewriter
  Engine
 \family default
  controls how the evolution steps are executed.
@@ -7858,13 +7863,13 @@ maximalPhenotypeAge
  Set the maximal allowed age of an individual (Phenotype).
  This prevents
 \emph on
- super
+ 
 \emph default
- individuals to live
+super individuals to live
 \emph on
- forever
+ 
 \emph default
-.
+forever.
  The default value is set to 70.
 \end_layout
 
@@ -8308,14 +8313,14 @@ Stream
  controls the execution of the evolution process and can be seen as a kind
  of execution
 \emph on
- handle
+ 
 \emph default
-.
+handle.
  This handle can be used to define the termination criteria and to
 \emph on
- collect
+ 
 \emph default
- the final evolution result.
+collect the final evolution result.
  Since the
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -8546,13 +8551,13 @@ Stream
  method.
  The
 \emph on
- im
+ 
 \emph default
-mutable and
+immutable and
 \emph on
- stateless
+ 
 \emph default
- nature of the evolution
+stateless nature of the evolution
 \family typewriter
  Engine
 \family default
@@ -8790,9 +8795,9 @@ Result
 \family default
  collects the result data of an evolution step into an immutable
 \emph on
- value
+ 
 \emph default
- class.
+value class.
  This class is the type of the stream elements of the EvolutionStream, as
  described in section 
 \begin_inset CommandInset ref
@@ -9620,11 +9625,8 @@ This interface allows to define different strategies for evaluating the
  fitness functions of a given population.
  Usually, it is not necessary to override the default evaluation strategy.
  It is helpful if you have performance problems when the fitness function
- is evaluated 
-\emph on
-serially
-\emph default
-—or in small concurrent batches, as it is implemented by the default strategy.
+ is evaluated serially—or in small concurrent batches, as it is implemented
+ by the default strategy.
  In this case, the 
 \family typewriter
 Engine.Evaluator
@@ -10601,9 +10603,9 @@ name "subsec:Randomness"
 \begin_layout Standard
 In general, GAs heavily depends on
 \emph on
- pseudo
+ 
 \emph default
- random number generators (PRNG)
+pseudo random number generators (PRNG)
 \begin_inset Index idx
 status collapsed
 
@@ -11079,9 +11081,9 @@ Random
 \family default
  PRNG instead, which uses
 \emph on
- block splitting
+ 
 \emph default
- as parallelization strategy.
+block splitting as parallelization strategy.
 \end_layout
 
 \begin_layout Paragraph
@@ -11296,9 +11298,9 @@ reference "fig:Parallelization-via-leapfrogging"
 
  graphically shows the concept of the
 \emph on
- leapfrog
+ 
 \emph default
- method.
+leapfrog method.
 \end_layout
 
 \begin_layout Standard
@@ -11973,9 +11975,9 @@ s, respectively.
 \emph default
  elements, because there are no casts needed when using
 \emph on
- nested
+ 
 \emph default
- generic types.
+nested generic types.
 \end_layout
 
 \begin_layout Standard
@@ -12692,9 +12694,9 @@ s are the starting point in the class hierarchy.
  They hold the actual information, the alleles, of the problem domain.
  Beside the
 \emph on
- classical
+ 
 \emph default
- bit-gene,
+classical bit-gene,
 \family sans
 \series bold
 \shape smallcaps
@@ -12769,9 +12771,10 @@ Gene
  interface.
  For
 \emph on
- normal
+ 
 \emph default
- genes there is no more work to do for using the Java serialization mechanism.
+normal genes there is no more work to do for using the Java serialization
+ mechanism.
 \end_layout
 
 \begin_layout Standard
@@ -13700,7 +13703,7 @@ Selector
  implementation).
  It is worth the effort to try to express your selection strategy in terms
  of selection property 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
 .
@@ -16715,9 +16718,9 @@ Normally, the
 \family default
  has then to be
 \emph on
- transformed
+ 
 \emph default
- into an object of the problem domain.
+transformed into an object of the problem domain.
  The usage
 \family typewriter
  Codec
@@ -17542,13 +17545,13 @@ Codec!Subset
 There are currently two kinds of subset codecs you can choose from: finding
  subsets with
 \emph on
- variable
+ 
 \emph default
- size and with
+variable size and with
 \emph on
- fixed
+ 
 \emph default
- size.
+fixed size.
 \end_layout
 
 \begin_layout Paragraph
@@ -17558,10 +17561,15 @@ Variable-sized subsets
 \begin_layout Standard
 A Codec for
 \emph on
- variable-sized
+ 
 \emph default
- subsets can be easily implemented with the use of a BitChromosome, as shown
- in listing 
+variable-sized subsets can be easily implemented with the use of a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+, as shown in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofSubSet"
@@ -17654,9 +17662,10 @@ name "lis:Codec-factory-method-ofSubSet"
 \begin_layout Standard
 The following usage example of
 \emph on
- subset
-\family typewriter
+ 
 \emph default
+subset
+\family typewriter
  Codec
 \family default
  shows a simplified version of the Knapsack problem (see section 
@@ -18361,11 +18370,7 @@ This codec is a variation of the permutation codec.
 \family typewriter
 Codecs
 \family default
- class, which creates a 
-\emph on
-mapping
-\emph default
- codec from a given source- and target set.
+ class, which creates a mapping codec from a given source- and target set.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -19688,9 +19693,9 @@ A given problem should usually encoded in a way, that it is not possible
 \family default
  to create
 \emph on
- invalid
+ 
 \emph default
- individuals (
+invalid individuals (
 \family typewriter
 Genotypes
 \family default
@@ -19710,9 +19715,9 @@ reference "subsec:Encoding"
 \family default
  creates new individuals in the
 \emph on
- altering
+ 
 \emph default
- step, by rearranging (or creating new)
+altering step, by rearranging (or creating new)
 \family typewriter
  Genes
 \family default
@@ -19727,9 +19732,9 @@ reference "subsec:Encoding"
 \family default
  is treated as
 \emph on
- valid
+ 
 \emph default
- if every single
+valid if every single
 \family typewriter
  Gene
 \family default
@@ -19739,9 +19744,9 @@ reference "subsec:Encoding"
 \family default
  is
 \emph on
- valid
+ 
 \emph default
-, the validity property of the
+valid, the validity property of the
 \family typewriter
  Gene
 \family default
@@ -19764,9 +19769,9 @@ The
 \family default
 s which has been
 \emph on
- destroyed
+ 
 \emph default
- by the altering step.
+destroyed by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
  To guarantee the termination of the
@@ -19803,9 +19808,9 @@ reference "subsubsec:Engine"
 .
  If the described validation mechanism doesn't fulfill your needs, you can
 \emph on
- override
+ 
 \emph default
- the validation mechanism by creating the
+override the validation mechanism by creating the
 \family typewriter
  Engine
 \family default
@@ -19814,9 +19819,9 @@ reference "subsubsec:Engine"
  Genotype
 \family default
 \emph on
- validator
+ 
 \emph default
-.
+validator.
 \end_layout
 
 \begin_layout Standard
@@ -20077,9 +20082,9 @@ er
 \family default
  classes is the most heavy-weighted possibility for solving the
 \emph on
- validity
+ 
 \emph default
- problem.
+validity problem.
  Refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -20663,10 +20668,14 @@ Steady fitness
 \begin_layout Standard
 The
 \emph on
- steady fitness
+ 
 \emph default
- strategy truncates the evolution stream if its best fitness hasn't changed
- after a given number of generations.
+steady
+\emph on
+ 
+\emph default
+fitness strategy truncates the evolution stream if its best fitness hasn't
+ changed after a given number of generations.
  The predicate maintains an internal state, the number of generations with
  non increasing fitness, and must be newly created for every evolution stream.
 \end_layout
@@ -20968,9 +20977,14 @@ ks.
 
  times for each data point—, the tests showed that the
 \emph on
- steady fitness
+ 
 \emph default
- termination strategy always terminated, at least for the given test setup.
+steady
+\emph on
+ 
+\emph default
+fitness termination strategy always terminated, at least for the given test
+ setup.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -21253,9 +21267,9 @@ reference "fig:Fitness-threshold-diagram"
  And it will definitely not terminate if the fitness threshold is higher
  than the
 \emph on
- global
+ 
 \emph default
- maximum of the fitness function.
+global maximum of the fitness function.
  It will be a
 \emph on
  perfect
@@ -21765,13 +21779,14 @@ Evolution!performance
 \begin_layout Standard
 This section contains an empirical
 \emph on
- proof
+ 
 \emph default
-, that
+proof, that
 \emph on
- evolutionary
+ 
 \emph default
- selectors deliver significantly better fitness results than a random search.
+evolutionary selectors deliver significantly better fitness results than
+ a random search.
  The
 \family typewriter
  Monte\SpecialChar softhyphen
@@ -21839,9 +21854,9 @@ reference "fig:Selector-performance-Knapsack"
 
  shows the
 \emph on
- evolution
+ 
 \emph default
- performance of the
+evolution performance of the
 \family typewriter
  Selec\SpecialChar softhyphen
 tor
@@ -21888,9 +21903,9 @@ Selector
  for selecting the survivors and offspring population.
  It can be easily seen, that the performance of the
 \emph on
- real
+ 
 \emph default
- evolutionary
+real evolutionary
 \family typewriter
  Selector
 \family default
@@ -23352,9 +23367,9 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \begin_layout Standard
 will perform the statistical tests for the nano time
 \emph on
- random engine
+ 
 \emph default
-.
+random engine.
  The statistical quality is rather bad: every single test failed.
  Table 
 \begin_inset CommandInset ref
@@ -24458,9 +24473,9 @@ The
 -standard genes and evolutionary operations.
  It also contains
 \emph on
- data structures
+ 
 \emph default
- which are used by this additional genes and operations.
+data structures which are used by this additional genes and operations.
 \end_layout
 
 \begin_layout Subsection
@@ -24576,9 +24591,9 @@ g.
  are derived from this four abstract tree methods.
  A
 \emph on
- mutable
+ 
 \emph default
- default implementation of the
+mutable default implementation of the
 \family typewriter
  Tree
 \family default
@@ -24951,11 +24966,7 @@ ject\SpecialChar softhyphen
 .to\SpecialChar softhyphen
 String()
 \family default
- method for 
-\emph on
-serializing
-\emph default
- the tree node value.
+ method for serializing the tree node value.
  If you need a different string representation you can use the 
 \family typewriter
 Tree\SpecialChar softhyphen
@@ -26616,11 +26627,7 @@ able
 \family typewriter
 stream
 \family default
- methods take an initial value, which allows to 
-\emph on
-concatenate
-\emph default
- different engines.
+ methods take an initial value, which allows to concatenate different engines.
  With the 
 \family typewriter
 limit
@@ -27663,16 +27670,9 @@ on.
  Pareto efficiency says that an allocation is efficient if an action makes
  some individual better off and no individual worse off.
  In contrast to single-objective optimization, where usually only one optimal
- solution exits, the multi-objective optimization creates a set of 
-\emph on
-optimal
-\emph default
+ solution exits, the multi-objective optimization creates a set of optimal
  solutions.
- The 
-\emph on
-optimal
-\emph default
- solutions are also known as the Pareto front or Pareto set.
+ The optimal solutions are also known as the Pareto front or Pareto set.
 \end_layout
 
 \begin_layout Definition*
@@ -28729,11 +28729,7 @@ Most of the existing termination strategies, implemented in the
 \family typewriter
 Limits
 \family default
- class, presumes a 
-\emph on
-total
-\emph default
- order of the fitness values.
+ class, presumes a total order of the fitness values.
  This assumption holds for single-objective optimization problems, but not
  for multi-objective problems.
  Only termination strategies which doesn't rely on the total order of the
@@ -29247,10 +29243,10 @@ final ISeq<Op<Double>> terminals = ISeq.of(x, y, z);
 \begin_layout Standard
 The
 \emph on
- terminal
+ 
 \emph default
- operations defined in the listing above can be used for defining a program
- which takes a 
+terminal operations defined in the listing above can be used for defining
+ a program which takes a 
 \begin_inset Formula $3$
 \end_inset
 
@@ -29440,13 +29436,13 @@ Chromosome
  comes with some factory methods, which lets you easily create program trees
  with a given depth and a given set of
 \emph on
- operations
+ 
 \emph default
- and
+operations and
 \emph on
- terminals
+ 
 \emph default
-.
+terminals.
 \end_layout
 
 \begin_layout Standard
@@ -29734,9 +29730,9 @@ Gene
 \family default
  guarantees that the program tree after the
 \emph on
- alter
+ 
 \emph default
- operation is still valid.
+alter operation is still valid.
  It obeys the tree structure of the gene.
  General alterers, not written for
 \family typewriter
@@ -29755,9 +29751,9 @@ Gene
 \begin_layout Enumerate
 Marking the chromosome as
 \emph on
- invalid
+ 
 \emph default
-.
+invalid.
  This possibility is easier to achieve, but would also to lead to a large
  number of invalid chromosomes, which must be recreated.
  When recreating invalid chromosomes we will also loose possible solutions.
@@ -30624,9 +30620,9 @@ Another important aspect when doing marshalling, is the space needed for
  the marshaled objects and the time needed for doing the marshalling.
  For the performance tests a genotype with a varying
 \emph on
- chromosome count
+ 
 \emph default
- is used.
+chromosome count is used.
  The used genotype template can be seen in the code snippet below.
 \end_layout
 
@@ -34878,13 +34874,13 @@ jenetics.doc
 \series default
 : Contains the
 \emph on
- code
+ 
 \emph default
- of the web-site and
+code of the web-site and
 \emph on
- this
+ 
 \emph default
- manual.
+this manual.
 \end_layout
 
 \begin_layout Itemize
