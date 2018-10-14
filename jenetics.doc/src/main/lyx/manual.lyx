@@ -12140,7 +12140,7 @@ How to create instances of the three
 \begin_inset CommandInset href
 LatexCommand href
 name "Javadoc"
-target "http://jenetics.sourceforge.net/javadoc/index.html"
+target "http://jenetics.io/javadoc/jenetics/index.html"
 
 \end_inset
 
@@ -34544,17 +34544,6 @@ For building the
 \shape default
  library from source, download the most recent, stable package version from
  
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://sourceforge.net/projects/jenetics/files/latest/download
-\end_layout
-
-\end_inset
-
- or 
 \begin_inset Flex URL
 status collapsed
 
