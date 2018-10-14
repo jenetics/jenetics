@@ -1835,9 +1835,9 @@ reference "fig:Evolution-engine-model"
 
  shows the
 \emph on
- static
+ 
 \emph default
- view of the main
+static view of the main
 \emph on
  
 \emph default
@@ -2036,9 +2036,9 @@ io.jenetics.stat
  Java only includes classes for calculating the sum and the average of a
  given
 \emph on
- numeric
+ 
 \emph default
- stream (e.
+numeric stream (e.
 \begin_inset space ~
 \end_inset
 
@@ -5050,7 +5050,7 @@ key "Sivanandam2010"
 \begin_inset Formula $P\left(i\right)$
 \end_inset
 
- of individual
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -17612,7 +17612,7 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-            .mapToObj(basicSet::get)
+            .mapToObj(basicSet)
 \end_layout
 
 \begin_layout Plain Layout
