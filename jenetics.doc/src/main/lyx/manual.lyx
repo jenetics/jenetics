@@ -12599,7 +12599,7 @@ just
  an estimation.
  For a sufficient accuracy, the stream size should be sufficiently large
  (
-\begin_inset Formula $size\gg1000$
+\begin_inset Formula $size\gg100$
 \end_inset
 
 ).
