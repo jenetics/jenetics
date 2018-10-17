@@ -24951,7 +24951,7 @@ reference "fig:Example-tree"
 \end_layout
 
 \begin_layout Standard
-As you can see, nodes on the same tree level are separated by a comma '
+As you can see, nodes on the same tree level are separated by a comma, '
 \family typewriter
 ,
 \family default
@@ -24975,27 +24975,7 @@ reference "fig:Parentheses-tree-syntax"
 
 \end_inset
 
- shows the syntax diagram
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Syntax_diagram
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- of the parentheses tree.
+ shows the syntax diagram of the parentheses tree.
  The 
 \family typewriter
 Node\SpecialChar softhyphen
