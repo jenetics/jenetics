@@ -4788,7 +4788,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/FitnessProportionalSelection.eps
-	width 95text%
+	width 100text%
 
 \end_inset
 
@@ -5263,6 +5263,9 @@ key "back1996evolutionary"
  equally spaced points which we spin.
  SUS uses a single random value for selecting individuals by choosing them
  at equally spaced intervals.
+ Weaker members of the population (according to their fitness) have a better
+ chance to be chosen, which reduces the unfair nature of fitness-proportional
+ selection methods.
  The selection method was introduced by James Baker.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -5281,7 +5284,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 95text%
+	width 100text%
 
 \end_inset
 
