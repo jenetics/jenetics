@@ -4226,6 +4226,43 @@ Durations
 s from the population.
 \end_layout
 
+\begin_layout Subsubsection
+Population
+\end_layout
+
+\begin_layout Standard
+There is no special class which represents a population.
+ It's 
+\emph on
+just
+\emph default
+ a collection of phenotypes.
+ As collection class, the 
+\family typewriter
+Seq
+\family default
+ interface is used.
+ The 
+\emph on
+own
+\emph default
+ 
+\family typewriter
+Seq
+\family default
+ implementations allows to express the mutability state of the population
+ at the type level and makes the coding more reliable.
+ For a detailed description of this collection classes see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:io.jenetics.util.Seq"
+
+\end_inset
+
+.
+ 
+\end_layout
+
 \begin_layout Subsection
 Operation classes
 \begin_inset CommandInset label
@@ -11934,6 +11971,13 @@ status collapsed
 \begin_layout Plain Layout
 Seq
 \end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "par:io.jenetics.util.Seq"
 
 \end_inset
 
@@ -21724,11 +21768,42 @@ Population convergence
 \end_layout
 
 \begin_layout Standard
-A termination method that stops the evolution when the population is deemed
- as converged.
- The population is deemed as converged when the average fitness across the
+This termination method that stops the evolution when the population is
+ deemed as converged.
+ A population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(Limits.byPopulationConvergence(0.9);
+\end_layout
+
+\end_inset
+
+The evolution stream in the example above will terminate, if the population's
+ fitness mean value is 
+\begin_inset Formula $90\%$
+\end_inset
+
+, or better, of the best fitness value of the population.
 \end_layout
 
 \begin_layout Subsection
@@ -21758,11 +21833,26 @@ Gene convergence
 \begin_layout Standard
 This termination strategy is different, in the sense that it takes the genes
  or alleles, respectively, for terminating the evolution stream.
- In the gene convergence termination method the evolution stops when a specified
- percentage of the genes of a genotype are deemed as converged.
+ In the gene convergence termination strategy the evolution stops when a
+ specified percentage of the genes of a genotype are deemed as converged.
  A gene is treated as converged when the average value of that gene across
  all of the genotypes in the current population is less than a given percentage
  away from the maximum allele value across the genotypes.
+\end_layout
+
+\begin_layout Section
+Reproducibility
+\end_layout
+
+\begin_layout Standard
+The evolution performance of a GA depends on a lot of parameters.
+ Beside the actual used selectors and alterers, the chosen problem encoding
+ and fitness function has a big influence the the GA's performance.
+ Jenetics allows you to test the quality of the encoding and the fitness
+ function separately from the rest of the configuration.
+ This is done by making the created individuals and the evaluation reproducible.
+ If you only vary the encoding and/or the used fitness function, you see
+ the improvement of the used fitness function directly.
 \end_layout
 
 \begin_layout Section
