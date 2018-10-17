@@ -21893,6 +21893,134 @@ Reproducibility
 \end_layout
 
 \begin_layout Standard
+Some problems allows to define different kinds of fitness functions or encodings.
+ Which one is best can't usually be decided a priori.
+ To choose one, some testing is needed.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ allows you to setup the evolution 
+\family typewriter
+Engine
+\family default
+ in a way that will produce the very same result on every run.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitnessFunction, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .executor(Runnable::run)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+final EvolutionResult<DoubleGene, Double> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    RandomRegistry.with(new Random(456), r ->
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine.stream(population)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestEvolutionResult())
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Reproducible-evolution-Engine"
+
+\end_inset
+
+Reproducible evolution 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Reproducible-evolution-Engine"
+
+\end_inset
+
+ shows the basic setup of such a reproducible evolution Engine.
+ Firstly, you have to make sure that all evolution steps are executed serially.
+ This is done by configuring a single threaded executor.
+ In the simplest case the evolution is performed solely on the main thread—
+\family typewriter
+Runnable::run
+\family default
+.
+ The second step configures the random engine, the evolution Engine is working
+ with.
+ Just 
+\emph on
+wrap
+\emph default
+ the evolution stream execution in a RandomRegistry::with block.
+ With the
+\end_layout
+
+\begin_layout Standard
+If you want to optimize the fitness function and/or the problem encoding,
+ it is useful to do several runs with different fitness functions and encodings
+ and compare the found solutions.
+ You can reduce the number of runs, by only varying the fitness function
+ and encoding and keep the rest of the evolution process constant.
+\end_layout
+
+\begin_layout Standard
 The evolution performance of a GA depends on a lot of parameters.
  Beside the actual used selectors and alterers, the chosen problem encoding
  and fitness function has a big influence the the GA's performance.
