@@ -21773,11 +21773,8 @@ This termination method that stops the evolution when the population is
  A population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
- 
-\end_layout
-
-\begin_layout Standard
-The evolution stream is truncated if
+ The population is deemed as converged and the evolution stream is truncated
+ if
 \end_layout
 
 \begin_layout Standard
@@ -21890,11 +21887,42 @@ This termination strategy is different, in the sense that it takes the genes
 
 \begin_layout Section
 Reproducibility
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Reproducibility
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!reproducible
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!reproducible
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-Some problems allows to define different kinds of fitness functions or encodings.
- Which one is best can't usually be decided a priori.
+Some problems can be define with different kinds of fitness functions or
+ encodings.
+ Which combination works best can't usually be decided a priori.
  To choose one, some testing is needed.
  
 \family sans
@@ -21904,7 +21932,7 @@ Jenetics
 \family default
 \series default
 \shape default
- allows you to setup the evolution 
+ allows you to setup an evolution 
 \family typewriter
 Engine
 \family default
@@ -21994,7 +22022,11 @@ reference "lis:Reproducible-evolution-Engine"
 
 \end_inset
 
- shows the basic setup of such a reproducible evolution Engine.
+ shows the basic setup of such a reproducible evolution 
+\family typewriter
+Engine
+\family default
+.
  Firstly, you have to make sure that all evolution steps are executed serially.
  This is done by configuring a single threaded executor.
  In the simplest case the evolution is performed solely on the main thread—
@@ -22002,33 +22034,27 @@ reference "lis:Reproducible-evolution-Engine"
 Runnable::run
 \family default
 .
- The second step configures the random engine, the evolution Engine is working
- with.
+ The second step configures the random engine, the evolution 
+\family typewriter
+Engine
+\family default
+ is working with.
  Just 
 \emph on
 wrap
 \emph default
- the evolution stream execution in a RandomRegistry::with block.
- With the
-\end_layout
-
-\begin_layout Standard
-If you want to optimize the fitness function and/or the problem encoding,
- it is useful to do several runs with different fitness functions and encodings
- and compare the found solutions.
- You can reduce the number of runs, by only varying the fitness function
- and encoding and keep the rest of the evolution process constant.
-\end_layout
-
-\begin_layout Standard
-The evolution performance of a GA depends on a lot of parameters.
- Beside the actual used selectors and alterers, the chosen problem encoding
- and fitness function has a big influence the the GA's performance.
- Jenetics allows you to test the quality of the encoding and the fitness
- function separately from the rest of the configuration.
- This is done by making the created individuals and the evaluation reproducible.
- If you only vary the encoding and/or the used fitness function, you see
- the improvement of the used fitness function directly.
+ the evolution stream execution in a 
+\family typewriter
+RandomRegistry::with
+\family default
+ block.
+ Additionally you can start the evolution stream with a predefined, initial
+ population.
+ Once you have setup the 
+\family typewriter
+Engine
+\family default
+, you can vary the fitness function and the codec and compare the results.
 \end_layout
 
 \begin_layout Section
