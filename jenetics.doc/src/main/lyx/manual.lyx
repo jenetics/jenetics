@@ -21568,7 +21568,7 @@ is fulfilled, the evolution stream is truncated.
 \begin_inset Formula 
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
-\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \sigma_{F}(N_{x})\neq0\\
+\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
 1 & \mathrm{otherwise}
 \end{array}\right..\label{eq:fitness-convergence-div}
 \end{equation}
@@ -21773,6 +21773,53 @@ This termination method that stops the evolution when the population is
  A population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
+ 
+\end_layout
+
+\begin_layout Standard
+The evolution stream is truncated if
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{\left|f_{max}-\bar{f}\right|}{\delta}<\epsilon,
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+\bar{f}=\frac{1}{N}\sum_{i=0}^{N-1}f_{i},
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+f_{max}=\max_{i\in\left[1,N\right)}\left\{ f_{i}\right\} 
+\end{equation}
+
+\end_inset
+
+and
+\begin_inset Formula 
+\begin{equation}
+\delta=\left\{ \begin{array}{ccc}
+\max\left(\left|f_{max}\right|,\left|\bar{f}\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
+1 & \mathrm{otherwise}
+\end{array}\right..
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula $N$
+\end_inset
+
+ denotes the number of individuals of the population.
 \end_layout
 
 \begin_layout Standard
@@ -21793,17 +21840,18 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \begin_layout Plain Layout
 
-    .limit(Limits.byPopulationConvergence(0.9);
+    .limit(Limits.byPopulationConvergence(0.1);
 \end_layout
 
 \end_inset
 
-The evolution stream in the example above will terminate, if the population's
- fitness mean value is 
-\begin_inset Formula $90\%$
+The evolution stream in the example above will terminate, if the difference
+ between the population's fitness mean value and the maximal fitness value
+ of the population is less then 
+\begin_inset Formula $10\%$
 \end_inset
 
-, or better, of the best fitness value of the population.
+.
 \end_layout
 
 \begin_layout Subsection
