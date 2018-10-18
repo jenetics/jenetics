@@ -198,6 +198,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 #### Bugs
 
 * [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
+* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
 
 
 ### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)

@@ -14,6 +14,11 @@ Jenetics-4.3.0
     * https://github.com/jenetics/jenetics/issues/406: Make the library compilable under Java 11.
     * https://github.com/jenetics/jenetics/issues/411: Improve the behaviour of the `MathExpr.format` method.
 
+- Bug fixes
+
+    * https://github.com/jenetics/jenetics/issues/357: Invalid length of selected population in `MonteCarloSelector`.
+    * https://github.com/jenetics/jenetics/issues/420: `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
 Jenetics-4.2.1
 
 - Bug fixes
