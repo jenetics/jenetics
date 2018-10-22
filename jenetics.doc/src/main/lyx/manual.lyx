@@ -15592,7 +15592,7 @@ For the special case of
  Genotype
 \family default
  can be simplified to the decoding we introduced for scalar functions in
- section
+ section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Scalar-function"
@@ -15670,7 +15670,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-, 
+ 
 \begin_inset Foot
 status collapsed
 
@@ -21796,7 +21796,7 @@ where
 
 \begin_inset Formula 
 \begin{equation}
-f_{max}=\max_{i\in\left[1,N\right)}\left\{ f_{i}\right\} 
+f_{max}=\max_{i\in\left[0,N\right)}\left\{ f_{i}\right\} 
 \end{equation}
 
 \end_inset
@@ -29649,7 +29649,7 @@ Ephemeral constant
 \end_layout
 
 \begin_layout Standard
-An ephemeral constant is a terminal operation, which encapsulating a value
+An ephemeral constant is a terminal operation, which encapsulates a value
  that is generated at run time from the 
 \family typewriter
 Supplier
