@@ -19,6 +19,7 @@
  */
 package io.jenetics.prog.op;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import java.io.DataInput;
@@ -28,14 +29,13 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
@@ -59,7 +59,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see MathOp
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 4.3
  * @since 4.1
  */
 public final class MathExpr
@@ -70,21 +70,20 @@ public final class MathExpr
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
-	static {
-		INFIX_OPS.put(MathOp.ADD, " + ");
-		INFIX_OPS.put(MathOp.SUB, " - ");
-		INFIX_OPS.put(MathOp.MUL, "*");
-		INFIX_OPS.put(MathOp.DIV, "/");
-		INFIX_OPS.put(MathOp.MOD, "%");
-		INFIX_OPS.put(MathOp.POW, "^");
-	}
-
 	private final Tree<? extends Op<Double>, ?> _tree;
+
+	private final Lazy<ISeq<Var<Double>>> _vars;
 
 	// Primary constructor.
 	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
+		_vars = Lazy.of(() -> ISeq.of(
+			_tree.stream()
+				.filter(node -> node.getValue() instanceof Var)
+				.map(node -> (Var<Double>)node.getValue())
+				.collect(Collectors.toCollection(() ->
+					new TreeSet<>(Comparator.comparing(Var::name))))
+		));
 	}
 
 	/**
@@ -107,13 +106,7 @@ public final class MathExpr
 	 * @return the variable list of this <em>math</em> expression
 	 */
 	public ISeq<Var<Double>> vars() {
-		return ISeq.of(
-			_tree.stream()
-				.filter(node -> node.getValue() instanceof Var)
-				.map(node -> (Var<Double>)node.getValue())
-				.collect(Collectors.toCollection(() ->
-					new TreeSet<>(Comparator.comparing(Var::name))))
-		);
+		return _vars.get();
 	}
 
 	/**
@@ -165,7 +158,7 @@ public final class MathExpr
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr &&
-			Objects.equals(((MathExpr) obj)._tree, _tree);
+			Objects.equals(((MathExpr)obj)._tree, _tree);
 	}
 
 	/**
@@ -182,46 +175,7 @@ public final class MathExpr
 	 */
 	@Override
 	public String toString() {
-		return toString(_tree);
-	}
-
-	private static String toString(
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final Op<Double> op = tree.getValue();
-		if (INFIX_OPS.containsKey(op)) {
-			infix(INFIX_OPS.get(op), tree, out);
-		} else {
-			out.append(op);
-			if (!tree.isLeaf()) {
-				final boolean brackets = true;
-
-				if (brackets) out.append("(");
-				toString(tree.getChild(0), out);
-				for (int i = 1; i < tree.childCount(); ++i) {
-					out.append(", ");
-					toString(tree.getChild(i), out);
-				}
-				if (brackets) out.append(")");
-			}
-		}
-
-		return out.toString();
-	}
-
-	private static void infix(
-		final String op,
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final boolean brackets = true;
-
-		if (brackets) out.append("(");
-		toString(tree.getChild(0), out);
-		out.append(op);
-		toString(tree.getChild(1), out);
-		if (brackets) out.append(")");
+		return format(_tree);
 	}
 
 	/**
@@ -259,7 +213,7 @@ public final class MathExpr
 	}
 
 	void write(final DataOutput out) throws IOException {
-		final byte[] data = toString().getBytes("UTF-8");
+		final byte[] data = toString().getBytes(UTF_8);
 		out.writeInt(data.length);
 		out.write(data);
 	}
@@ -267,7 +221,7 @@ public final class MathExpr
 	static MathExpr read(final DataInput in) throws IOException {
 		final byte[] data = new byte[in.readInt()];
 		in.readFully(data);
-		return parse(new String(data, "UTF-8"));
+		return parse(new String(data, UTF_8));
 	}
 
 
@@ -288,9 +242,32 @@ public final class MathExpr
 	 * @param tree the tree object to convert to a string
 	 * @return a new expression string
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 *
+	 * @deprecated Use {@link #format(Tree)} instead
 	 */
+	@Deprecated
 	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
-		return toString(tree, new StringBuilder());
+		return format(tree);
+	}
+
+	/**
+	 * Return the string representation of the given {@code tree} object. The
+	 * string returned by this method can be parsed again and will result in the
+	 * same expression object.
+	 * <pre>{@code
+	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
+	 *  final MathExpr tree = MathExpr.parse(expr);
+	 *  assert MathExpr.format(tree.tree()).equals(expr);
+	 * }</pre>
+	 *
+	 * @since 4.3
+	 *
+	 * @param tree the tree object to convert to a string
+	 * @return a new expression string
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static String format(final Tree<? extends Op<Double>, ?> tree) {
+		return MathExprFormatter.format(tree);
 	}
 
 	/**
@@ -298,6 +275,9 @@ public final class MathExpr
 	 *
 	 * @param expression the expression string
 	 * @return the tree representation of the given {@code expression}
+	 * @throws NullPointerException if the given {@code expression} is {@code null}
+	 * @throws IllegalArgumentException if the given expression is invalid or
+	 *         can't be parsed.
 	 */
 	public static MathExpr parse(final String expression) {
 		final Tree<? extends Op<Double>, ?> tree = parseTree(expression);
@@ -310,7 +290,7 @@ public final class MathExpr
 	 * mathematical expression tree. The expression may contain all functions
 	 * defined in {@link MathOp}.
 	 * <pre>{@code
-	 * final TreeNode<Op<Double>> tree = MathExpr
+	 * final Tree<? extends Op<Double>, ?> tree = MathExpr
 	 *     .parseTree("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
 	 * }</pre>
 	 * The example above will lead to the following tree:

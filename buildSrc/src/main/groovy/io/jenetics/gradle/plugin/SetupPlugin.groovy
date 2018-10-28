@@ -94,18 +94,18 @@ class SetupPlugin extends JeneticsPlugin {
 				version = version
 				symbolicName = project.name
 				name = project.name
-				instruction 'Bundle-Vendor', project.jenetics.author
-				instruction 'Bundle-Description', project.jenetics.description
-				instruction 'Bundle-DocURL', project.jenetics.url
+				instruction 'Bundle-Vendor', project.property('jenetics.Author')
+				instruction 'Bundle-Description', project.property('jenetics.Description')
+				instruction 'Bundle-DocURL', project.property('jenetics.Url')
 
 				attributes(
 					'Implementation-Title': project.name,
 					'Implementation-Version': project.version,
-					'Implementation-URL': project.jenetics.url,
-					'Implementation-Vendor': project.jenetics.name,
-					'ProjectName': project.jenetics.name,
+					'Implementation-URL': project.property('jenetics.Url'),
+					'Implementation-Vendor': project.property('jenetics.Name'),
+					'ProjectName': project.property('jenetics.Name'),
 					'Version': project.version,
-					'Maintainer': project.jenetics.author
+					'Maintainer': project.property('jenetics.Author')
 				)
 			}
 		}
@@ -114,13 +114,9 @@ class SetupPlugin extends JeneticsPlugin {
 	private void configureTestReporting() {
 		project.plugins.apply(JacocoPlugin)
 		project.test {
-			outputs.upToDateWhen { false }
 			useTestNG {
 				parallel = 'tests' // 'methods'
-				threadCount = Math.max(
-					Runtime.runtime.availableProcessors() + 1,
-					4
-				)
+				threadCount = Runtime.runtime.availableProcessors() + 1
 				if (project.hasProperty('excludeGroups')) {
 					excludeGroups project.excludeGroups
 				}
@@ -147,9 +143,8 @@ class SetupPlugin extends JeneticsPlugin {
 				docEncoding = 'UTF-8'
 				charSet = 'UTF-8'
 				linkSource = true
-				links = [
-					'https://docs.oracle.com/javase/8/docs/api'
-				]
+				linksOffline 'https://docs.oracle.com/javase/8/docs/api',
+					"$project.rootDir/buildSrc/resources/javadoc"
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
@@ -217,8 +212,8 @@ class SetupPlugin extends JeneticsPlugin {
 		'finally',
 		'overrides',
 		'rawtypes',
-		//'serial',
-		//'try',
+		'serial',
+		'try',
 		'unchecked'
 	]
 

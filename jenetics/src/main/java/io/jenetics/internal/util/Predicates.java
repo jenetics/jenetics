@@ -17,40 +17,31 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.internal.util;
 
-import java.io.Serializable;
+import java.util.function.Predicate;
 
 /**
- * Abstract base class for implementing concrete NumericGenes.
+ * This class contains some common predicates
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 1.6
- * @since 1.6
+ * @since 3.0
+ * @version 4.3
  */
-abstract class AbstractNumericGene<
-	N extends Number & Comparable<? super N>,
-	G extends AbstractNumericGene<N, G>
->
-	extends AbstractBoundedGene<N, G>
-	implements NumericGene<N, G>, Serializable
-{
-	private static final long serialVersionUID = 1L;
+public final class Predicates {
+	private Predicates() {}
+
+	public static final Predicate<Object> TRUE = a -> true;
 
 	/**
-	 * Create new {@code NumericGene}.
+	 * Return a predicate, which always return {@code true}.
 	 *
-	 * @param value The value of the gene.
-	 * @param min The allowed min value of the gene.
-	 * @param max The allows max value of the gene.
-	 * @throws NullPointerException if one of the given arguments is
-	 *         {@code null}.
+	 * @param <T> the predicate type
+	 * @return a predicate, which always return {@code true}
 	 */
-	protected AbstractNumericGene(final N value, final N min, final N max) {
-		super(value, min, max);
+	@SuppressWarnings("unchecked")
+	public static <T> Predicate<T> True() {
+		return (Predicate<T>)TRUE;
 	}
-
-	@Override
-	public abstract G newInstance(final Number number);
 
 }

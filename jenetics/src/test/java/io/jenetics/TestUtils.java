@@ -22,7 +22,6 @@ package io.jenetics;
 import java.util.Random;
 import java.util.function.Function;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -32,7 +31,7 @@ import io.jenetics.util.Seq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 class TestUtils {
-	private TestUtils() {require.noInstance();}
+	private TestUtils() {}
 
 	/**
 	 * Data for alter count tests.

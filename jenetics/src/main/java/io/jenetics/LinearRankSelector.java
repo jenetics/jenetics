@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import io.jenetics.util.Seq;
 
@@ -48,7 +49,7 @@ import io.jenetics.util.Seq;
  * <i>
  * T. Blickle, L. Thiele, A comparison of selection schemes used
  * in evolutionary algorithms, Technical Report, ETH Zurich, 1997, page 37.
- * <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.9584&rank=1">
+ * <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.15.9584">
  *	http://citeseer.ist.psu.edu/blickle97comparison.html
  * </a>
  * </i>
@@ -123,10 +124,7 @@ public final class LinearRankSelector<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Double.hashCode(_nminus) + 37;
-		hash += 31*Double.hashCode(_nplus) + 37;
-		return hash;
+		return hash(_nminus, hash(_nplus));
 	}
 
 	@Override

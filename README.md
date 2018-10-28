@@ -14,7 +14,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.3.0.pdf)).
 
 
 ## Requirements
@@ -32,7 +32,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -147,6 +147,14 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * <a href="http://chronetic.io/"><b>Chronetic</b>:</a> Chronetic is an open-source time pattern analysis library built to describe time-series data.
 * <a href="http://www.eclipse.org/app4mc/"><b>APP4MC</b>:</a> Eclipse APP4MC is a platform for engineering embedded multi- and many-core software systems.
 
+## Blogs
+
+* <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
+* <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
+* <a href="http://fxapps.blogspot.co.at/2017/01/genetic-algorithms-with-java.html">Genetic algorithms with Java</a>, by <em>William Antônio</em>, January 10. 2017
+* <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015
+* <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015
+
 ## Citations
 
 * Pasquale Salzaa, Filomena Ferrucci. <a href="https://www.sciencedirect.com/science/article/pii/S0167739X17324147">Speed up genetic algorithms in the cloud using software containers.</a> <em>Future Generation Computer Systems, </em></a> Oct. 2018.
@@ -168,13 +176,40 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * TANG Yi (Guangzhou Power Supply Bureau Limited, Guangzhou 511400, China) <a href="http://en.cnki.com.cn/Article_en/CJFDTOTAL-JXKF201210017.htm"> <em>Study on Object-Oriented Reactive Compensation Allocation Optimization Algorithm for Distribution Networks</em></a>, Oct. 2012.
 * John M. Linebarger, Richard J. Detry, Robert J. Glass, Walter E. Beyeler, Arlo L. Ames, Patrick D. Finley, S. Louise Maffitt. <a href="http://prod.sandia.gov/techlib/access-control.cgi/2012/121117.pdf"> <em>Complex Adaptive Systems of Systems Engineering Environment Version 1.0.  </em></a> <a href="http://www.sandia.gov/CasosEngineering/">SAND REPORT</a>, Feb. 2012.
 
-## Blogs
 
-* <a href="http://www.baeldung.com/jenetics">Introduction to Jenetics Library</a>, by <em>baeldung</em>, April 11. 2017
-* <a href="http://blog.takipi.com/how-to-solve-tough-problems-using-genetic-algorithms/">How to Solve Tough Problems Using Genetic Algorithms</a>, by <em>Tzofia Shiftan</em>, April 6. 2017
-* <a href="http://fxapps.blogspot.co.at/2017/01/genetic-algorithms-with-java.html">Genetic algorithms with Java</a>, by <em>William Antônio</em>, January 10. 2017
-* <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015
-* <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015
+## Release notes
+
+### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
+
+#### Improvements
+
+* [#347](https://github.com/jenetics/jenetics/issues/347): Improve `hashCode` and `equals` methods.
+* [#349](https://github.com/jenetics/jenetics/issues/349): Cleanup of chromosome constructors. Make the constructors more regular.
+* [#355](https://github.com/jenetics/jenetics/issues/355): Simplify implementation of numeric genes.
+* [#361](https://github.com/jenetics/jenetics/issues/361): Add `NumericChromosome.primitiveStream()` methods.
+* [#366](https://github.com/jenetics/jenetics/issues/366): Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+* [#377](https://github.com/jenetics/jenetics/issues/377): Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+* [#378](https://github.com/jenetics/jenetics/issues/378): Convert tree to parentheses tree string.
+* [#379](https://github.com/jenetics/jenetics/issues/379): Parse parentheses tree string to tree object.
+* [#380](https://github.com/jenetics/jenetics/issues/380): Add `TreeNode.map` method.
+* [#400](https://github.com/jenetics/jenetics/issues/400): Codec for mapping source- and target objects.
+* [#406](https://github.com/jenetics/jenetics/issues/406): Make the library compilable under Java 11.
+* [#411](https://github.com/jenetics/jenetics/issues/411): Improve the behaviour of the `MathExpr.format` method.
+
+#### Bugs
+
+* [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
+* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
+
+### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
+
+#### Bugs
+
+* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+
+
+_[All Release Notes](RELEASE_NOTES.md)_
 
 ## License
 
@@ -194,17 +229,6 @@ The library is licensed under the [Apache License, Version 2.0](http://www.apach
 	See the License for the specific language governing permissions and
 	limitations under the License.
 
-
-## Release notes
-
-### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
-
-#### Bugs
-
-* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
-
-
-_[All Release Notes](RELEASE_NOTES.md)_
 
 ## Used software
 

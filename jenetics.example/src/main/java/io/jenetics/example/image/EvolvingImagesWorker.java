@@ -137,7 +137,6 @@ final class EvolvingImagesWorker {
 		chromosome.draw(g2, width, height);
 		g2.dispose();
 
-		final int[] refPixels = _refImagePixels;
 		final int[] testPixels = img.getData()
 			.getPixels(0, 0, width, height, (int[])null);
 
@@ -146,12 +145,12 @@ final class EvolvingImagesWorker {
 		int idx = 0;
 		do {
 			if (idx++%4 != 0) { // ignore the alpha channel for fitness
-				int dp = testPixels[p] - refPixels[p];
+				int dp = testPixels[p] - _refImagePixels[p];
 				diff += (dp < 0) ? -dp : dp;
 			}
 		} while (--p > 0);
 
-		return 1.0 - diff/(width*height*3.0*256);
+		return 1.0 - diff/(double)(width*height*3*256);
 	}
 
 	/**

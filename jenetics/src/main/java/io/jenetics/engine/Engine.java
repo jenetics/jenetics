@@ -518,7 +518,10 @@ public final class Engine<
 	 * Return the fitness scaler of the GA engine.
 	 *
 	 * @return the fitness scaler
+	 *
+	 * @deprecated The fitness scaler will be remove in a future version.
 	 */
+	@Deprecated
 	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _fitnessScaler;
 	}
@@ -1008,7 +1011,10 @@ public final class Engine<
 		 *
 		 * @param scaler the fitness scale to use in the GA {@code Engine}
 		 * @return {@code this} builder, for command chaining
+		 *
+		 * @deprecated The fitness scaler will be remove in a future version.
 		 */
+		@Deprecated
 		public Builder<G, C> fitnessScaler(
 			final Function<? super C, ? extends C> scaler
 		) {
@@ -1495,7 +1501,10 @@ public final class Engine<
 		 * @since 3.1
 		 *
 		 * @return the fitness scaler
+		 *
+		 * @deprecated The fitness scaler will be remove in a future version.
 		 */
+		@Deprecated
 		public Function<? super C, ? extends C> getFitnessScaler() {
 			return _fitnessScaler;
 		}
