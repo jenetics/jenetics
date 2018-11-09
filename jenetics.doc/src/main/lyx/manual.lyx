@@ -27406,7 +27406,7 @@ final Genotype<DoubleGene> result =
 
 \begin_layout Plain Layout
 
-    CyclingEngine.of(
+    CyclicEngine.of(
 \end_layout
 
 \begin_layout Plain Layout
