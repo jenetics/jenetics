@@ -29741,12 +29741,12 @@ final int depth = 5;
 
 \begin_layout Plain Layout
 
-final Op<Double> operations = ISeq.of(...);
+final ISeq<Op<Double>> operations = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Op<Double> terminals = ISeq.of(...);
+final ISeq<Op<Double>> terminals = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
