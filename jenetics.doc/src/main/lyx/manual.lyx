@@ -1,10 +1,10 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass extbook
+\textclass book
 \begin_preamble
 \usepackage{transparent}
 \usepackage{eso-pic}
@@ -50,7 +50,6 @@
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{newunicodechar}
-\usepackage{microtype}
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -91,7 +90,7 @@
   morekeywords={*,...,public,extends,assert}
 }
 \end_preamble
-\options utf8,utf8x
+\options utf8
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -114,6 +113,8 @@ tabs-within-sections
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype true
+\use_dash_ligatures false
 \graphics default
 \default_output_format pdf2
 \output_sync 0
@@ -157,6 +158,7 @@ tabs-within-sections
 \suppress_date false
 \justification true
 \use_refstyle 1
+\use_minted 0
 \boxbgcolor #ffffff
 \index Index
 \shortcut idx
@@ -166,7 +168,10 @@ tabs-within-sections
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language danish
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style danish
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
@@ -404,6 +409,7 @@ LatexCommand href
 name "franz.wilhelmstoetter@gmail.com"
 target "franz.wilhelmstoetter@gmail.com"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -486,6 +492,7 @@ This work is licensed under a
 LatexCommand href
 name "Creative Commons"
 target "http://creativecommons.org/licenses/by-sa/3.0/"
+literal "false"
 
 \end_inset
 
@@ -715,6 +722,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 LatexCommand href
 name "genetic algorithm"
 target "http://en.wikipedia.org/wiki/Genetic_algorithm"
+literal "false"
 
 \end_inset
 
@@ -723,6 +731,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 LatexCommand href
 name "genetic programming"
 target "https://en.wikipedia.org/wiki/Genetic_programming"
+literal "false"
 
 \end_inset
 
@@ -819,6 +828,7 @@ This manual is not an introduction or a tutorial for genetic and/or evolutionary
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -826,6 +836,7 @@ key "Sivanandam2010"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "michalewicz1996genetic"
+literal "true"
 
 \end_inset
 
@@ -833,6 +844,7 @@ key "michalewicz1996genetic"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Shiffman2012"
+literal "true"
 
 \end_inset
 
@@ -840,6 +852,7 @@ key "Shiffman2012"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -847,6 +860,7 @@ key "Luke2013Metaheuristics"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Mitchell1998"
+literal "true"
 
 \end_inset
 
@@ -854,6 +868,7 @@ key "Mitchell1998"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
+literal "true"
 
 \end_inset
 
@@ -862,6 +877,7 @@ key "Whitley94agenetic"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:1992:GPP:138936"
+literal "true"
 
 \end_inset
 
@@ -869,6 +885,7 @@ key "Koza:1992:GPP:138936"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:2008:IGP:1388969.1389057"
+literal "true"
 
 \end_inset
 
@@ -2466,6 +2483,7 @@ Gene
 \begin_inset CommandInset citation
 LatexCommand cite
 key "OracleJDKValueBasedClasses"
+literal "true"
 
 \end_inset
 
@@ -4289,6 +4307,7 @@ Operation classes
 LatexCommand href
 name "Genetic operators"
 target "https://en.wikipedia.org/wiki/Genetic_operator"
+literal "false"
 
 \end_inset
 
@@ -4650,6 +4669,7 @@ In
 LatexCommand href
 name "tournament selection"
 target "https://en.wikipedia.org/wiki/Tournament_selection"
+literal "false"
 
 \end_inset
 
@@ -4714,6 +4734,7 @@ In
 LatexCommand href
 name "truncation selection"
 target "https://en.wikipedia.org/wiki/Truncation_selection"
+literal "false"
 
 \end_inset
 
@@ -4771,6 +4792,7 @@ n, it will be a little bit more disruptive, on average, than roulette wheel
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5073,6 +5095,7 @@ The roulette-wheel selector will have problems when the fitness values differ
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5125,6 +5148,7 @@ Here
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Blickle97acomparison"
+literal "true"
 
 \end_inset
 
@@ -5288,6 +5312,7 @@ Stochastic-universal selection
 \begin_inset CommandInset citation
 LatexCommand cite
 key "back1996evolutionary"
+literal "true"
 
 \end_inset
 
@@ -5307,6 +5332,7 @@ key "back1996evolutionary"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "baker1987selection"
+literal "true"
 
 \end_inset
 
@@ -5365,6 +5391,7 @@ reference "fig:Stochastic-universal-selection"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5488,6 +5515,7 @@ Stream
 LatexCommand href
 name "mutation"
 target "https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)"
+literal "false"
 
 \end_inset
 
@@ -5505,6 +5533,7 @@ g.
 LatexCommand href
 name "crossover"
 target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
+literal "false"
 
 \end_inset
 
@@ -5652,7 +5681,7 @@ reference "subsubsec:Domain-classes-Genotype"
 \end_inset
 
 ).
- The mutator selects the gene which will be mutated in three steps:
+ The mutator selects the gene which will be mutated in three steps: 
 \end_layout
 
 \begin_layout Enumerate
@@ -6699,6 +6728,7 @@ In uniform crossover, the genes at index
 \begin_inset CommandInset citation
 LatexCommand cite
 key "chawdhry1998soft"
+literal "true"
 
 \end_inset
 
@@ -6892,6 +6922,7 @@ The line crossover, also known as line recombination, was originally described
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhlenbein:1993:PMB:1326623.1326626"
+literal "true"
 
 \end_inset
 
@@ -11475,6 +11506,7 @@ lcg64_shift
 LatexCommand href
 name "TRNG"
 target "http://numbercrunch.de/trng/"
+literal "false"
 
 \end_inset
 
@@ -11502,6 +11534,7 @@ http://numbercrunch.de/trng/
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Tina2011"
+literal "true"
 
 \end_inset
 
@@ -12188,6 +12221,7 @@ How to create instances of the three
 LatexCommand href
 name "Javadoc"
 target "http://jenetics.io/javadoc/jenetics/index.html"
+literal "false"
 
 \end_inset
 
@@ -12588,6 +12622,7 @@ https://en.wikipedia.org/wiki/Quantile
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Jain:1985:PAD:4372.4378"
+literal "true"
 
 \end_inset
 
@@ -13284,6 +13319,7 @@ Effective Java
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Bloch2018"
+literal "true"
 
 \end_inset
 
@@ -14017,6 +14053,7 @@ Selector
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Baluja95removingthe"
+literal "true"
 
 \end_inset
 
@@ -14658,6 +14695,7 @@ good
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Rothlauf2006"
+literal "true"
 
 \end_inset
 
@@ -14665,6 +14703,7 @@ key "Rothlauf2006"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Palmer1995"
+literal "true"
 
 \end_inset
 
@@ -15069,6 +15108,7 @@ es for the Genotype encoding.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein"
+literal "true"
 
 \end_inset
 
@@ -15445,6 +15485,7 @@ s of length
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein2"
+literal "true"
 
 \end_inset
 
@@ -16002,6 +16043,7 @@ This encoding ensures that no invalid
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hughes2014computer"
+literal "true"
 
 \end_inset
 
@@ -22241,6 +22283,7 @@ Evolution Strategies
 \begin_inset CommandInset citation
 LatexCommand cite
 key "FEDR:FEDR19750860506"
+literal "true"
 
 \end_inset
 
@@ -22361,6 +22404,7 @@ The
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -22543,6 +22587,7 @@ There are mainly three levers for the
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -22700,6 +22745,7 @@ In the
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -24190,6 +24236,7 @@ This class is part of the
 LatexCommand href
 name "TRNG"
 target "http://numbercrunch.de/trng/"
+literal "false"
 
 \end_inset
 
@@ -25995,6 +26042,7 @@ s such that each position is either crossed contracted or expanded with
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb99self-adaptivegenetic"
+literal "true"
 
 \end_inset
 
@@ -26275,6 +26323,7 @@ Methinks it is like a weasel
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
+literal "true"
 
 \end_inset
 
@@ -26386,6 +26435,7 @@ progeny
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
+literal "true"
 
 \end_inset
 
@@ -27854,6 +27904,7 @@ optimize
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Osyczka1985"
+literal "true"
 
 \end_inset
 
@@ -27866,6 +27917,7 @@ There are several ways for solving multiobjective problems.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -27882,6 +27934,7 @@ Jenetics
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -27889,6 +27942,7 @@ key "Fortin2013"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
+literal "true"
 
 \end_inset
 
@@ -27896,6 +27950,7 @@ key "Deb:2002:FEM:2221359.2221582"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Konak2006"
+literal "true"
 
 \end_inset
 
@@ -27967,6 +28022,7 @@ on.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28026,6 +28082,7 @@ Pareto dominance
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28657,6 +28714,7 @@ https://www.igi-global.com/dictionary/crowding-distance/42740
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28664,6 +28722,7 @@ key "CoelloCoello2007"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -28863,6 +28922,7 @@ reference "eq:crowding-distance"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
+literal "true"
 
 \end_inset
 
@@ -28922,6 +28982,7 @@ ted fitnesses by reducing multiple solutions sharing the same fitness to
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -31606,6 +31667,7 @@ ons
 \begin_inset CommandInset citation
 LatexCommand cite
 key "GoodPRNGPractice"
+literal "true"
 
 \end_inset
 
@@ -31630,6 +31692,7 @@ ons
 \begin_inset CommandInset citation
 LatexCommand cite
 key "GoodPRNGPractice"
+literal "true"
 
 \end_inset
 
@@ -34498,6 +34561,7 @@ Symbolic regression involves finding a mathematical expression, in symbolic
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:1992:GPP:138936"
+literal "true"
 
 \end_inset
 
@@ -34619,6 +34683,7 @@ Deb, Thiele, Laumanns and Zitzler have proposed a set of generational MOPs
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -34634,6 +34699,7 @@ DTLZ1 is an
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb2001"
+literal "true"
 
 \end_inset
 
@@ -35407,6 +35473,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35513,6 +35580,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35619,6 +35687,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35725,6 +35794,7 @@ License
 LatexCommand href
 name "GPL"
 target "https://www.gnu.org/licenses/gpl.html"
+literal "false"
 
 \end_inset
 
@@ -35733,6 +35803,7 @@ target "https://www.gnu.org/licenses/gpl.html"
 LatexCommand href
 name "CPL1.0"
 target "http://www.eclipse.org/legal/cpl-v10.html"
+literal "false"
 
 \end_inset
 
@@ -35849,6 +35920,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://gradle.org/license"
+literal "false"
 
 \end_inset
 
@@ -35961,6 +36033,7 @@ The library itself is licensed under the
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0.html"
+literal "false"
 
 \end_inset
 
@@ -36061,6 +36134,8 @@ options "bibtotoc,plain"
 \begin_inset CommandInset index_print
 LatexCommand printindex
 type "idx"
+name "Index"
+literal "true"
 
 \end_inset
 
