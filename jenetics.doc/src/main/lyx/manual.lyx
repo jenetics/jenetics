@@ -4,7 +4,7 @@
 \begin_header
 \save_transient_properties true
 \origin unavailable
-\textclass book
+\textclass extbook
 \begin_preamble
 \usepackage{transparent}
 \usepackage{eso-pic}
@@ -304,26 +304,18 @@ LIBRARY USER'S MANUAL @__minor_version__@
 \align right
 
 \family sans
-\series bold
-\noun on
-\begin_inset space \hfill{}
-\end_inset
-
-
-\series default
 \size huge
-\noun default
 \color white
 Franz Wilhelmstötter
-\size large
-\noun on
-\color inherit
-
 \begin_inset space \hspace{}
 \length 2.5cm
 \end_inset
 
 
+\size large
+\noun on
+\color inherit
+ 
 \end_layout
 
 \begin_layout Standard
