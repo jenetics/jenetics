@@ -661,7 +661,8 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
-			gt -> ((BitChromosome)gt.getChromosome()).ones()
+			gt -> gt.getChromosome()
+				.as(BitChromosome.class).ones()
 				.<T>mapToObj(basicSet)
 				.collect(ISeq.toISeq())
 		);
