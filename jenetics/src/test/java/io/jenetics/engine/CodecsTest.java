@@ -379,6 +379,28 @@ public class CodecsTest {
 	}
 
 	@Test
+	public void ofDoubleMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<double[][], DoubleGene> codec = Codecs.ofMatrix(
+			DoubleRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		final double[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).doubleValue());
+			}
+		}
+	}
+
+	@Test
 	public void ofPermutation() {
 		final Codec<ISeq<String>, EnumGene<String>> codec = Codecs
 			.ofPermutation(ISeq.of("foo", "bar", "zoo"));

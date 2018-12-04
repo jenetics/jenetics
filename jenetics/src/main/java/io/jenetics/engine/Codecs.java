@@ -60,7 +60,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 4.3
+ * @version !__version__!
  */
 public final class Codecs {
 
@@ -492,6 +492,8 @@ public final class Codecs {
 	 * matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code int[rows][cols]}.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param domain the domain of the matrix values
 	 * @param rows the number of rows of the matrix
 	 * @param cols the number of columns of the matrix
@@ -528,6 +530,8 @@ public final class Codecs {
 	 * matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code long[rows][cols]}.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param domain the domain of the matrix values
 	 * @param rows the number of rows of the matrix
 	 * @param cols the number of columns of the matrix
@@ -556,6 +560,44 @@ public final class Codecs {
 					.mapToLong(LongGene::longValue)
 					.toArray())
 				.toArray(long[][]::new)
+		);
+	}
+
+	/**
+	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
+	 * matrix values are restricted by the same domain. The dimension of the
+	 * returned matrix is {@code double[rows][cols]}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param domain the domain of the matrix values
+	 * @param rows the number of rows of the matrix
+	 * @param cols the number of columns of the matrix
+	 * @return a new matrix {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
+	 *         smaller than one.
+	 */
+	public static Codec<double[][], DoubleGene> ofMatrix(
+		final DoubleRange domain,
+		final int rows,
+		final int cols
+	) {
+		requireNonNull(domain);
+		require.positive(rows);
+		require.positive(cols);
+
+		return Codec.of(
+			Genotype.of(
+				DoubleChromosome.of(domain, cols).instances()
+					.limit(rows)
+					.collect(Collectors.toList())
+			),
+			gt -> gt.stream()
+				.map(ch -> ch.stream()
+					.mapToDouble(DoubleGene::doubleValue)
+					.toArray())
+				.toArray(double[][]::new)
 		);
 	}
 
