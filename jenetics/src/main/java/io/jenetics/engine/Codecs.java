@@ -515,7 +515,7 @@ public final class Codecs {
 			Genotype.of(
 				IntegerChromosome.of(domain, cols).instances()
 					.limit(rows)
-					.collect(Collectors.toList())
+					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
 				.map(ch -> ch.stream()
@@ -553,7 +553,7 @@ public final class Codecs {
 			Genotype.of(
 				LongChromosome.of(domain, cols).instances()
 					.limit(rows)
-					.collect(Collectors.toList())
+					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
 				.map(ch -> ch.stream()
@@ -591,7 +591,7 @@ public final class Codecs {
 			Genotype.of(
 				DoubleChromosome.of(domain, cols).instances()
 					.limit(rows)
-					.collect(Collectors.toList())
+					.collect(ISeq.toISeq())
 			),
 			gt -> gt.stream()
 				.map(ch -> ch.stream()
