@@ -524,6 +524,42 @@ public final class Codecs {
 	}
 
 	/**
+	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
+	 * matrix values are restricted by the same domain. The dimension of the
+	 * returned matrix is {@code long[rows][cols]}.
+	 *
+	 * @param domain the domain of the matrix values
+	 * @param rows the number of rows of the matrix
+	 * @param cols the number of columns of the matrix
+	 * @return a new matrix {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
+	 *         smaller than one.
+	 */
+	public static Codec<long[][], LongGene> ofMatrix(
+		final LongRange domain,
+		final int rows,
+		final int cols
+	) {
+		requireNonNull(domain);
+		require.positive(rows);
+		require.positive(cols);
+
+		return Codec.of(
+			Genotype.of(
+				LongChromosome.of(domain, cols).instances()
+					.limit(rows)
+					.collect(Collectors.toList())
+			),
+			gt -> gt.stream()
+				.map(ch -> ch.stream()
+					.mapToLong(LongGene::longValue)
+					.toArray())
+				.toArray(long[][]::new)
+		);
+	}
+
+	/**
 	 * Create a permutation {@code Codec} with the given alleles.
 	 *
 	 * @param alleles the alleles of the permutation
