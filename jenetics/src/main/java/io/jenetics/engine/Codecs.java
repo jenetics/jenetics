@@ -60,7 +60,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version !__version__!
+ * @version 4.4
  */
 public final class Codecs {
 
@@ -492,7 +492,7 @@ public final class Codecs {
 	 * matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code int[rows][cols]}.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param domain the domain of the matrix values
 	 * @param rows the number of rows of the matrix
@@ -530,7 +530,7 @@ public final class Codecs {
 	 * matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code long[rows][cols]}.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param domain the domain of the matrix values
 	 * @param rows the number of rows of the matrix
@@ -568,7 +568,7 @@ public final class Codecs {
 	 * matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code double[rows][cols]}.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param domain the domain of the matrix values
 	 * @param rows the number of rows of the matrix
