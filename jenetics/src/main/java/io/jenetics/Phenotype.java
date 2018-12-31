@@ -479,7 +479,6 @@ public final class Phenotype<
 		out.writeObject(getRawFitness());
 	}
 
-	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{
