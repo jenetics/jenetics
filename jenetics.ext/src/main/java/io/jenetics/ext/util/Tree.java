@@ -359,12 +359,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * node.
 	 *
 	 * @param node the other node to check
-	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
+	 * @return {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public default boolean isChild(final Tree<?, ?> node) {
 		requireNonNull(node);
-		return childCount() != 0 && node.getParent().equals(Optional.of(this));
+		return childCount() != 0 &&
+			node.getParent().equals(Optional.of(Trees.<V, T>self(this)));
 	}
 
 	/**

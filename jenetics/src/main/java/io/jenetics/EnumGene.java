@@ -166,7 +166,7 @@ public final class EnumGene<A>
 
 	@Override
 	public int hashCode() {
-		return hash(_alleleIndex, hash(_validAlleles, hash(getClass())));
+		return hash(_alleleIndex, hash(_validAlleles));
 	}
 
 	@Override

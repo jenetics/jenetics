@@ -68,9 +68,9 @@ jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
 test.dependsOn(compileJmhJava)
 
 packaging {
-	name = property('jenetics.Name')
-	author = property('jenetics.Author')
-	url = property('jenetics.Url')
+	name = project.property('jenetics.Name')
+	author = project.property('jenetics.Author')
+	url = project.property('jenetics.Url')
 
 	jarjar = false
 	javadoc = true
@@ -79,14 +79,14 @@ packaging {
 modifyPom {
 	project {
 		name 'jenetics'
-		description project('jenetics.Description')
-		url jenetics.url
+		description 'Jenetics - Java Genetic Algorithm Library'
+		url project.property('jenetics.Url')
 		inceptionYear '2007'
 
 		scm {
-			url property('jenetics.MavenScmUrl')
-			connection property('jenetics.MavenScmConnection')
-			developerConnection property('jenetics.MavenScmDeveloperConnection')
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -99,9 +99,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id property('jenetics.Id')
-				name property('jenetics.Author')
-				email property('jenetics.Email')
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -114,6 +114,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = property('build.MavenRepository')
-	snapshotRepository = property('build.MavenSnapshotRepository')
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }

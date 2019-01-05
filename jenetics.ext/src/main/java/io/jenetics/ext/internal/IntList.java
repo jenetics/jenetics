@@ -59,9 +59,7 @@ public final class IntList {
 		} else if (capacity == 0) {
 			_data = EMPTY_ARRAY;
 		} else {
-			throw new IllegalArgumentException(
-				"Illegal Capacity: "+ capacity
-			);
+			throw new IllegalArgumentException("Illegal Capacity: "+ capacity);
 		}
 	}
 

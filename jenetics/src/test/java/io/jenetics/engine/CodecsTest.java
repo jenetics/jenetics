@@ -335,6 +335,72 @@ public class CodecsTest {
 	}
 
 	@Test
+	public void ofIntMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<int[][], IntegerGene> codec = Codecs.ofMatrix(
+			IntRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
+		final int[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).intValue());
+			}
+		}
+	}
+
+	@Test
+	public void ofLongMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<long[][], LongGene> codec = Codecs.ofMatrix(
+			LongRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<LongGene> gt = codec.encoding().newInstance();
+		final long[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).longValue());
+			}
+		}
+	}
+
+	@Test
+	public void ofDoubleMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<double[][], DoubleGene> codec = Codecs.ofMatrix(
+			DoubleRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		final double[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).doubleValue());
+			}
+		}
+	}
+
+	@Test
 	public void ofPermutation() {
 		final Codec<ISeq<String>, EnumGene<String>> codec = Codecs
 			.ofPermutation(ISeq.of("foo", "bar", "zoo"));

@@ -1,5 +1,27 @@
 ## Release notes
 
+### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
+
+#### Improvements
+
+* [#347](https://github.com/jenetics/jenetics/issues/347): Improve `hashCode` and `equals` methods.
+* [#349](https://github.com/jenetics/jenetics/issues/349): Cleanup of chromosome constructors. Make the constructors more regular.
+* [#355](https://github.com/jenetics/jenetics/issues/355): Simplify implementation of numeric genes.
+* [#361](https://github.com/jenetics/jenetics/issues/361): Add `NumericChromosome.primitiveStream()` methods.
+* [#366](https://github.com/jenetics/jenetics/issues/366): Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+* [#377](https://github.com/jenetics/jenetics/issues/377): Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+* [#378](https://github.com/jenetics/jenetics/issues/378): Convert tree to parentheses tree string.
+* [#379](https://github.com/jenetics/jenetics/issues/379): Parse parentheses tree string to tree object.
+* [#380](https://github.com/jenetics/jenetics/issues/380): Add `TreeNode.map` method.
+* [#400](https://github.com/jenetics/jenetics/issues/400): Codec for mapping source- and target objects.
+* [#406](https://github.com/jenetics/jenetics/issues/406): Make the library compilable under Java 11.
+* [#411](https://github.com/jenetics/jenetics/issues/411): Improve the behaviour of the `MathExpr.format` method.
+
+#### Bugs
+
+* [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
+* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
 ### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
 
 #### Bugs
