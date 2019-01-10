@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 /*
  * Java Genetic Algorithm Library (@__identifier__@).
  * Copyright (c) @__year__@ Franz Wilhelmstötter
@@ -25,21 +27,25 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.5"
+	"packaging"
+	"nexus"
+	id("me.champeau.gradle.jmh") version "0.4.5"
+	kotlin("jvm") version "1.3.11"
 }
 
-apply plugin: "packaging"
-apply plugin: "nexus"
+val jeneticsDescription: String by project
 
-description = property("jenetics.Description")
+//description = property("jenetics.Description")
+
+description = jeneticsDescription
 
 dependencies {
-	testCompile property("include.ApacheCommonsMath")
-	testCompile property("include.TestNG")
-	testCompile property("include.EqualsVerifier")
-	testCompile property("include.PRNGine")
+	//testCompile(property("include.ApacheCommonsMath"))
+	//testCompile(property("include.TestNG"))
+	//testCompile(property("include.EqualsVerifier"))
+	//testCompile(property("include.PRNGine"))
 
-	jmh property("include.PRNGine")
+	jmh Libs.PRNGine
 }
 
 jmh {
@@ -56,15 +62,30 @@ idea {
 	}
 }
 
+
+/*
+tasks.jar {
+    manifest {
+        attributes(
+            "Implementation-Title" to "Gradle",
+            "Implementation-Version" to version
+        )
+    }
+}
+ */
+
+/*
 jar.manifest.instruction("Export-Package",
 	"io.jenetics",
 	"io.jenetics.engine",
 	"io.jenetics.util",
 	"io.jenetics.stat"
 )
+*/
 
-jar.manifest.attributes("Automatic-Module-Name": "io.jenetics.base")
+//jar.manifest.attributes("Automatic-Module-Name": "io.jenetics.base")
 
+/*
 test.dependsOn(compileJmhJava)
 
 packaging {
@@ -116,4 +137,16 @@ nexus {
 	sign = true
 	repository = project.property("build.MavenRepository")
 	snapshotRepository = project.property("build.MavenSnapshotRepository")
+}
+*/
+repositories {
+	mavenCentral()
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+	jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+	jvmTarget = "1.8"
 }
