@@ -5895,7 +5895,7 @@ void recombine(final ISeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Phenotype<G, C> pt2 = pop.get(2);
+    final Phenotype<G, C> pt2 = pop.get(i2);
 \end_layout
 
 \begin_layout Plain Layout
