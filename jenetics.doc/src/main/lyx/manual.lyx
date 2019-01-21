@@ -6276,8 +6276,21 @@ reference "fig:Single-point-crossover"
 \family typewriter
  SinglePointCrossover
 \family default
- class is performing the crossover for different crossover points—in the
- given example for the chromosome indexes 
+ class is performing the crossover for different crossover points.
+ Sub-figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover.
+ The examples in sub-figures 
+\emph on
+b)
+\emph default
+ to 
+\emph on
+f)
+\emph default
+ illustrates the crossover results for indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6331,13 +6344,55 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the multi-point crossover works with two
- crossover points, defined at index 
-\begin_inset Formula $1$
+ The figures in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2-point-crossover"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the multi-point crossover works with two crossover points.
+ Figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover, 
+\emph on
+b)
+\emph default
+ shows the crossover result for the crossover points at index 
+\begin_inset Formula $0$
 \end_inset
 
  and 
 \begin_inset Formula $4$
+\end_inset
+
+, 
+\emph on
+c)
+\emph default
+ uses crossover points at index 
+\begin_inset Formula $3$
+\end_inset
+
+ and 
+\begin_inset Formula $6$
+\end_inset
+
+ and 
+\emph on
+d
+\emph default
+) at index 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $7$
 \end_inset
 
 .
@@ -6365,6 +6420,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2-point-crossover"
+
+\end_inset
+
 2-point crossover
 \begin_inset Index idx
 status collapsed
@@ -6577,7 +6638,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.eps
-	width 50text%
+	width 42text%
 	clip
 
 \end_inset
@@ -6737,7 +6798,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/UniformCrossover.eps
-	width 33text%
+	width 35text%
 	clip
 
 \end_inset
@@ -8227,7 +8288,7 @@ Engine\SpecialChar softhyphen
 \family typewriter
 Engine
 \family default
-s no long creates infinite 
+s no longer creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -9657,7 +9718,7 @@ type
 \family default
  method, which is called on every finished generation, you have a
 \emph on
-live
+ live
 \emph default
  view on the evolution progress.
 \end_layout
@@ -28102,7 +28163,7 @@ dominate
 \begin_inset Formula $\mathbf{u}$
 \end_inset
 
- is partially less than 
+ is partially greater than 
 \begin_inset Formula $\boldsymbol{v}$
 \end_inset
 
@@ -29015,7 +29076,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Since the MOO classes are an extensions to the existing evolution 
+Since the multi-objective optimization (MOO) classes are an extensions to
+ the existing evolution 
 \family typewriter
 Engine
 \family sans
