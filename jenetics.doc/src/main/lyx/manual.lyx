@@ -9703,7 +9703,7 @@ type
 \family default
  method, which is called on every finished generation, you have a
 \emph on
-live
+ live
 \emph default
  view on the evolution progress.
 \end_layout
