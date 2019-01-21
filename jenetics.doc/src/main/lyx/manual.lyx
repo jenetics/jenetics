@@ -6290,7 +6290,7 @@ b)
 \emph on
 f)
 \emph default
- illustrates the crossover result for indexes 
+ illustrates the crossover results for indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6638,7 +6638,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.eps
-	width 50text%
+	width 42text%
 	clip
 
 \end_inset
@@ -6798,7 +6798,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/UniformCrossover.eps
-	width 33text%
+	width 35text%
 	clip
 
 \end_inset
