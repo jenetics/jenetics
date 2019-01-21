@@ -29061,7 +29061,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Since the MOO classes are an extensions to the existing evolution 
+Since the multi-objective optimization (MOO) classes are an extensions to
+ the existing evolution 
 \family typewriter
 Engine
 \family sans
