@@ -8273,7 +8273,7 @@ Engine\SpecialChar softhyphen
 \family typewriter
 Engine
 \family default
-s no long creates infinite 
+s no longer creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
