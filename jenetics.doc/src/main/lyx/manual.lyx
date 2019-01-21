@@ -6276,8 +6276,21 @@ reference "fig:Single-point-crossover"
 \family typewriter
  SinglePointCrossover
 \family default
- class is performing the crossover for different crossover points—in the
- given example for the chromosome indexes 
+ class is performing the crossover for different crossover points.
+ Sub-figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover.
+ The examples in sub-figures 
+\emph on
+b)
+\emph default
+ to 
+\emph on
+f)
+\emph default
+ illustrates the crossover result for indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6331,13 +6344,46 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the multi-point crossover works with two
- crossover points, defined at index 
-\begin_inset Formula $1$
+ The following figures shows how the multi-point crossover works with two
+ crossover points.
+ Figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover, 
+\emph on
+b)
+\emph default
+ shows the crossover result for the crossover points at index 
+\begin_inset Formula $0$
 \end_inset
 
  and 
 \begin_inset Formula $4$
+\end_inset
+
+, 
+\emph on
+c)
+\emph default
+ uses crossover points at index 
+\begin_inset Formula $3$
+\end_inset
+
+ and 
+\begin_inset Formula $6$
+\end_inset
+
+ and 
+\emph on
+d
+\emph default
+) at index 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $7$
 \end_inset
 
 .
