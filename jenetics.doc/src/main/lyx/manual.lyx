@@ -6344,8 +6344,17 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following figures shows how the multi-point crossover works with two
- crossover points.
+ The figures in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2-point-crossover"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the multi-point crossover works with two crossover points.
  Figure 
 \emph on
 a)
@@ -6411,6 +6420,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2-point-crossover"
+
+\end_inset
+
 2-point crossover
 \begin_inset Index idx
 status collapsed
