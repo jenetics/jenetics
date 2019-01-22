@@ -18173,7 +18173,7 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
 \end_inset
 
 , the answer is yes because the subset 
-\begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
+\begin_inset Formula $\left\{ -3,-2,5\right\} $
 \end_inset
 
  sums to zero.
