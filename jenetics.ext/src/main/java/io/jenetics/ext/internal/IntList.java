@@ -53,7 +53,7 @@ public final class IntList {
 	 * @throws IllegalArgumentException if the specified initial capacity
 	 *         is negative
 	 */
-	public IntList(int capacity) {
+	public IntList(final int capacity) {
 		if (capacity > 0) {
 			_data = new int[capacity];
 		} else if (capacity == 0) {
@@ -94,7 +94,7 @@ public final class IntList {
 		requireNonNull(action);
 
 		final int size = _size;
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; ++i) {
 			action.accept(_data[i]);
 		}
 	}
