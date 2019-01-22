@@ -17418,7 +17418,7 @@ Codec!Vector
 \end_layout
 
 \begin_layout Standard
-In the listing 
+In listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofVector"
@@ -17645,6 +17645,202 @@ class Main {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Matrix codec
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Matrix-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Matrix codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofMatrix"
+
+\end_inset
+
+, the
+\family typewriter
+ ofMatrix
+\family default
+ factory method returns a
+\family typewriter
+ Codec
+\family default
+ for an
+\family typewriter
+ int[][]
+\family default
+ matrix.
+ The
+\family typewriter
+ domain
+\family default
+ parameter defines the allowed range of the
+\family typewriter
+ int
+\family default
+ values and the
+\family typewriter
+ rows
+\family default
+ and 
+\family typewriter
+cols
+\family default
+ defines the dimension of the matrix.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Codec<int[][], IntegerGene> ofMatrix(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntRange domain,
+\end_layout
+
+\begin_layout Plain Layout
+
+    int rows,
+\end_layout
+
+\begin_layout Plain Layout
+
+    int cols
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            IntegerChromosome.of(domain, cols).instances()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(rows)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+        ),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(ch -> ch.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(IntegerGene::intValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray(int[][]::new)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method:
+\family typewriter
+ of
+\family default
+Matrix
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofMatrix"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -22129,6 +22325,11 @@ Engine
 Runnable::run
 \family default
 .
+ If the evolution 
+\family typewriter
+Engine
+\family default
+ uses more than one worker thread, the reproducibility is no longer guaranteed.
  The second step configures the random engine, the evolution 
 \family typewriter
 Engine
