@@ -34804,6 +34804,24 @@ name "sec:Symbolic-regression"
 \end_layout
 
 \begin_layout Standard
+Symbolic regression is a specific type of regression analyses, where the
+ search space consists of mathematical expressions.
+ The task is to find a model, which fits a given data-set in terms of accuracy
+ and simplicity.
+ In a classical approach, you will try to optimize the parameters of a predefine
+d function type, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a polynomial of grade 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 Symbolic regression is a classical example in genetic programming and tries
  to find a mathematical expression for a given set of values.
 \end_layout
@@ -35067,9 +35085,10 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/dtlz1.svg
-	lyxscale 70
+	filename ../resources/diagram/dtlz1.png
+	lyxscale 30
 	width 70col%
+	clip
 
 \end_inset
 
