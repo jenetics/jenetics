@@ -34917,7 +34917,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 75col%
+	width 73col%
 
 \end_inset
 
@@ -35089,7 +35089,7 @@ reference "fig:Pareto-front-DTLZ1"
 
 \end_inset
 
- shows the output DTLZ1 optimization.
+ shows the Pareto-optimal front of the DTLZ1 optimization.
 \end_layout
 
 \begin_layout Standard
