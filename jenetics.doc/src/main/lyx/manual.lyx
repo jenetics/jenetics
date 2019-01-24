@@ -34819,11 +34819,13 @@ g.
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-Symbolic regression is a classical example in genetic programming and tries
- to find a mathematical expression for a given set of values.
+ If the type of mathematical function is not known in advance, GP can be
+ used finding a function, which is composed out of a given set of 
+\emph on
+primitives
+\emph default
+.
+ 
 \end_layout
 
 \begin_layout Quote
@@ -34842,7 +34844,8 @@ literal "true"
 \end_layout
 
 \begin_layout Standard
-The following example shows how to solve the GP problem with
+The following example shows how to setup and solve a symbolic regression
+ problem with the help of GP and
 \family sans
 \series bold
 \shape smallcaps
@@ -34878,7 +34881,20 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-One output of a GP run is shown is shown in figure 
+The fitness function calculates the summed error between the expected function
+ value and the actual function value.
+ An additional term is added to the error, which penalizes expression trees
+ which grow to big.
+ The factor 
+\begin_inset Formula $0.00001$
+\end_inset
+
+ is an empirical value, 
+\emph on
+found
+\emph default
+ after some test runs.
+ One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Symbolic-regression-polynomial"
@@ -35087,7 +35103,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/dtlz1.png
 	lyxscale 30
-	width 70col%
+	width 60col%
 	clip
 
 \end_inset
