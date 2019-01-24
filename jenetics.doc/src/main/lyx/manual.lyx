@@ -36153,7 +36153,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.10
+: 5.1.1
 \end_layout
 
 \begin_layout Itemize
@@ -36165,7 +36165,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -36190,7 +36190,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.10-bin.zip
+http://services.gradle.org/distributions/gradle-5.1.1-bin.zip
 \end_layout
 
 \end_inset
