@@ -34854,14 +34854,24 @@ The following example shows how to setup and solve a symbolic regression
 \series default
 \shape default
 .
- We are trying to find the polynomial, 
+ The data set used for the example was created with the polynomial, 
 \begin_inset Formula $4x^{3}-3x^{2}+x$
 \end_inset
 
-, which fits a given data set.
- The sample data where created with the polynomial we are searching for.
- This makes it easy to check the quality of the approximation found by the
- GP.
+.
+ This allows us to check the quality of the function found by the GP.
+ Setting up a GP requires a little bit more effort then the setup of a GA.
+ First, you have to define the set of atomic mathematical operations, the
+ GP is working with.
+ This operations influences the search space and is a kind of a 
+\emph on
+priori
+\emph default
+ knowledge put into the GP.
+ As second step you have to define the terminal operations.
+ Terminals are either constants or variables.
+ The number of variables defines the domain dimension of the fitness function.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -36165,7 +36175,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
