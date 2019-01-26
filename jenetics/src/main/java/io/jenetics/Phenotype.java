@@ -29,13 +29,16 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.Function;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.Verifiable;
 
 /**
  * The {@code Phenotype} consists of a {@link Genotype}, the current generation
- * and an optional fitness value.
+ * and an optional fitness value. Once the fitness has been evaluated, a new
+ * {@code Phenotype} instance, with the calculated fitness, can be created with
+ * the {@link #withFitness(Comparable)}.
  *
  * @see Genotype
  *
@@ -238,6 +241,11 @@ public final class Phenotype<
 	public Phenotype<G, C> newInstance(final Genotype<G> genotype) {
 		return of(genotype, _generation);
 	}
+
+
+	/* *************************************************************************
+	 *  Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new phenotype from the given arguments. The phenotype is created
