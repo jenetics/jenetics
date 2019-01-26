@@ -1375,9 +1375,15 @@ public final class Engine<
 
 		/**
 		 * Create a new evolution {@code Engine.Builder} with the given fitness
-		 * evaluator and genotype factory.
+		 * evaluator and genotype factory. This is the most general factory
+		 * method for creating an engine builder.
 		 *
 		 * @since !__version__!
+		 *
+		 * @see Engine#builder(Function, Codec)
+		 * @see Engine#builder(Function, Factory)
+		 * @see Engine#builder(Problem)
+		 * @see Engine#builder(Function, Chromosome, Chromosome[])
 		 *
 		 * @param <G> the gene type
 		 * @param <C> the fitness function result type
