@@ -91,6 +91,24 @@ public final class Phenotype<
 	}
 
 	/**
+	 * Applies the given fitness function to the underlying genotype and return
+	 * a new phenotype with the (newly) evaluated fitness function, if not
+	 * already evaluated. If the fitness value is already set {@code this}
+	 * phenotype is returned.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param ff the fitness function
+	 * @return a evaluated phenotype or {@code this} if the fitness value is
+	 *         already set
+	 * @throws NullPointerException if the given fitness function is {@code null}
+	 */
+	public Phenotype<G, C>
+	evaluate(final Function<? super Genotype<G>, ? extends C> ff) {
+		return _fitness == null ? withFitness(ff.apply(_genotype)) : this;
+	}
+
+	/**
 	 * This method returns a copy of the {@code Genotype}, to guarantee a
 	 * immutable class.
 	 *
