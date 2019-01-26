@@ -701,7 +701,7 @@ public final class Engine<
 		final Factory<Genotype<G>> genotypeFactory
 	) {
 		return Builder.of(
-			Evaluator.concurrent(ff, commonPool()),
+			Evaluators.concurrent(ff, commonPool()),
 			genotypeFactory
 		);
 	}
