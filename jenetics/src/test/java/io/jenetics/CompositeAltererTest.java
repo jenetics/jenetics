@@ -74,7 +74,7 @@ public class CompositeAltererTest {
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, TestUtils.FF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();

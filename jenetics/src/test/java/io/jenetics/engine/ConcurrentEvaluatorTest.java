@@ -19,6 +19,9 @@
  */
 package io.jenetics.engine;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
@@ -28,39 +31,24 @@ import io.jenetics.util.ISeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public final class SpecialEngine {
+public class ConcurrentEvaluatorTest {
 
-	// The fitness function.
-	private static Double fitness(final Genotype<DoubleGene> gt) {
-		return gt.getGene().getAllele();
-	}
-
-	// Create new evolution start object.
-	private static EvolutionStart<DoubleGene, Double>
-	start(final int populationSize, final long generation) {
-		final ISeq<Phenotype<DoubleGene, Double>> population =
+	@Test
+	public void evaluateSerial() {
+		final ISeq<Phenotype<DoubleGene, Double>> phenotypes =
 			Genotype.of(DoubleChromosome.of(0, 1)).instances()
-				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, generation))
-				.limit(populationSize)
+				.limit(100)
+				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, 1))
 				.collect(ISeq.toISeq());
 
-		return EvolutionStart.of(population, generation);
+		phenotypes.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
+
+		final Evaluator<DoubleGene, Double> evaluator =
+			new ConcurrentEvaluator<>(gt -> gt.getGene().doubleValue(), Runnable::run);
+
+		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.evaluate(phenotypes);
+
+		evaluated.forEach(pt -> Assert.assertEquals(pt.getGenotype().getGene().getAllele(), pt.getFitness()));
 	}
 
-	// The special evolution function.
-	private static EvolutionResult<DoubleGene, Double>
-	evolve(final EvolutionStart<DoubleGene, Double> start) {
-		// Your special evolution implementation comes here!
-		return null;
-	}
-
-	public static void main(final String[] args) {
-		final Genotype<DoubleGene> best = EvolutionStream
-			.of(() -> start(50, 0), SpecialEngine::evolve)
-			.limit(Limits.bySteadyFitness(10))
-			.limit(1000)
-			.collect(EvolutionResult.toBestGenotype());
-
-		System.out.println(String.format("Best Genotype: %s", best));
-	}
 }

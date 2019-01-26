@@ -67,7 +67,7 @@ public class MathTreePruneAltererTest {
 		);
 
 		final Phenotype<ProgramGene<Double>, Double> pt =
-			Phenotype.of(gt, 1, a -> 1.0);
+			Phenotype.of(gt, 1);
 
 		final AltererResult<ProgramGene<Double>, Double> result =
 			alterer.alter(Seq.of(pt), 1);

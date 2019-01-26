@@ -74,42 +74,14 @@ public interface Chromosome<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the first gene of this chromosome. Each chromosome must contain
-	 * at least one gene.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return the first gene of this chromosome.
-	 */
-	public default G get() {
-		return getGene(0);
-	}
-
-	/**
 	 * Return the gene on the specified index.
 	 *
 	 * @param index The gene index.
 	 * @return the wanted gene.
 	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 1 || index &gt;= length()).
+	 *          (index &lt; 1 || index &gt;= length()).
 	 */
 	public G getGene(final int index);
-
-	/**
-	 * Return the gene on the specified index.
-	 *
-	 * @since !__version__!
-	 *
-	 * @see #getGene(int)
-	 *
-	 * @param index The gene index.
-	 * @return the wanted gene.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 1 || index &gt;= length()).
-	 */
-	public default G get(final int index) {
-		return getGene(index);
-	}
 
 	/**
 	 * Returns the length of the Chromosome. The minimal length of a

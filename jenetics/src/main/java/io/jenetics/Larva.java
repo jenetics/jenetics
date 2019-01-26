@@ -19,37 +19,38 @@
  */
 package io.jenetics;
 
-import static java.lang.Math.sin;
-import static java.lang.Math.toRadians;
-
-import java.io.Serializable;
-import java.util.function.Function;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.util.Factory;
-import io.jenetics.util.ObjectTester;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-@Test
-public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
+public class Larva<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> {
 
-	private final Function<Genotype<DoubleGene>, Double> _ff =
-		(Function<Genotype<DoubleGene>, Double>  & Serializable)
-			gt -> sin(toRadians(gt.getGene().getAllele()));
+	private final Genotype<G> _genotype;
+	private final long _generation;
 
-	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.of(
-		DoubleChromosome.of(0, 1, 50),
-		DoubleChromosome.of(0, 1, 500),
-		DoubleChromosome.of(0, 1, 100),
-		DoubleChromosome.of(0, 1, 50)
-	);
+	Larva(final Genotype<G> genotype, final long generation) {
+		_genotype = requireNonNull(genotype, "Genotype");
+		if (generation < 0) {
+			throw new IllegalArgumentException(format(
+				"Generation must not < 0 and was %s.", generation
+			));
+		}
+		_generation = generation;
+	}
 
-	@Override
-	protected Factory<Phenotype<DoubleGene, Double>> factory() {
-		return () -> Phenotype.of(_genotype.newInstance(), 0);
+	public Genotype<G> getGenotype() {
+		return _genotype;
+	}
+
+	public long getGeneration() {
+		return _generation;
 	}
 
 }

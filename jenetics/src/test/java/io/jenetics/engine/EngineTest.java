@@ -438,6 +438,7 @@ public class EngineTest {
 		};
 	}
 
+	/*
 	@Test
 	public void populationEvaluator() {
 		final int populationSize = 100;
@@ -458,6 +459,7 @@ public class EngineTest {
 
 		Assert.assertEquals(count.get(), populationSize);
 	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test

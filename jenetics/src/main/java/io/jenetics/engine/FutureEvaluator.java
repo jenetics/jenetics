@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.example;
+package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
@@ -31,14 +31,9 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import io.jenetics.DoubleChromosome;
-import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -47,18 +42,18 @@ import io.jenetics.util.Seq;
  * a {@link Future} of the fitness value instead the value itself.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
- * @since 4.3
+ * @version !__version__!
+ * @since !__version__!
  */
-public class FutureEvaluator<
+final class FutureEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Engine.Evaluator<G, C>
+	implements Evaluator<G, C>
 {
 	private final Function<? super Genotype<G>, ? extends Future<C>> _fitness;
 
-	public FutureEvaluator(
+	FutureEvaluator(
 		final Function<? super Genotype<G>, ? extends Future<C>> fitness
 	) {
 		_fitness = requireNonNull(fitness);
@@ -66,15 +61,16 @@ public class FutureEvaluator<
 
 	@Override
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		final Stream<Future<Phenotype<G, C>>> result = Stream.concat(
-			population.stream()
-				.filter(Phenotype::isEvaluated)
-				.map(CompletableFuture::completedFuture),
-			population.stream()
-				.filter(pt -> !pt.isEvaluated())
-				.map(pt -> new MappedFuture<>(
-					_fitness.apply(pt.getGenotype()), pt::withFitness))
-		);
+		final Stream<Future<Phenotype<G, C>>> result =
+			Stream.concat(
+				population.stream()
+					.filter(Phenotype::isEvaluated)
+					.map(CompletableFuture::completedFuture),
+				population.stream()
+					.filter(Phenotype::nonEvaluated)
+					.map(pt -> new MappedFuture<>(
+						_fitness.apply(pt.getGenotype()), pt::withFitness))
+			);
 
 		return result
 			.collect(ISeq.toISeq())
@@ -92,62 +88,43 @@ public class FutureEvaluator<
 		}
 	}
 
-	public static void main(final String[] args) {
-		final Factory<Genotype<DoubleGene>> gtf =
-			Genotype.of(DoubleChromosome.of(0, 1));
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(/*Dummy fitness function*/gt -> Double.NaN, gtf)
-			.evaluator(new FutureEvaluator<>(FutureEvaluator::fitness))
-			.build();
+	private static final class MappedFuture<A, B> implements Future<B> {
 
-		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(100)
-			.collect(EvolutionResult.toBestEvolutionResult());
+		private final Future<A> _adoptee;
+		private final Function<A, B> _mapper;
 
-		System.out.println(result.getBestPhenotype());
-	}
+		MappedFuture(final Future<A> adoptee, final Function<A, B> mapper) {
+			_adoptee = adoptee;
+			_mapper = mapper;
+		}
 
-	private static Future<Double> fitness(final Genotype<DoubleGene> gt) {
-		return CompletableFuture.supplyAsync(() -> gt.getGene().doubleValue());
-	}
+		@Override
+		public boolean cancel(final boolean mayInterruptIfRunning) {
+			return _adoptee.cancel(mayInterruptIfRunning);
+		}
 
-}
+		@Override
+		public boolean isCancelled() {
+			return _adoptee.isCancelled();
+		}
 
-final class MappedFuture<A, B> implements Future<B> {
+		@Override
+		public boolean isDone() {
+			return _adoptee.isDone();
+		}
 
-	private final Future<A> _adoptee;
-	private final Function<A, B> _mapper;
+		@Override
+		public B get() throws InterruptedException, ExecutionException {
+			return _mapper.apply(_adoptee.get());
+		}
 
-	MappedFuture(final Future<A> adoptee, final Function<A, B> mapper) {
-		_adoptee = requireNonNull(adoptee);
-		_mapper = requireNonNull(mapper);
-	}
-
-	@Override
-	public boolean cancel(final boolean mayInterruptIfRunning) {
-		return _adoptee.cancel(mayInterruptIfRunning);
-	}
-
-	@Override
-	public boolean isCancelled() {
-		return _adoptee.isCancelled();
-	}
-
-	@Override
-	public boolean isDone() {
-		return _adoptee.isDone();
-	}
-
-	@Override
-	public B get() throws InterruptedException, ExecutionException {
-		return _mapper.apply(_adoptee.get());
-	}
-
-	@Override
-	public B get(final long timeout, final TimeUnit unit)
-		throws InterruptedException, ExecutionException, TimeoutException
-	{
-		return _mapper.apply(_adoptee.get(timeout, unit));
+		@Override
+		public B get(final long timeout, final TimeUnit unit)
+			throws InterruptedException, ExecutionException, TimeoutException
+		{
+			return _mapper.apply(_adoptee.get(timeout, unit));
+		}
 	}
 }
+

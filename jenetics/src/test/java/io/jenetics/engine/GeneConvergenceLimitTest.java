@@ -104,8 +104,7 @@ public class GeneConvergenceLimitTest {
 				DoubleGene.of(value, 0.0, 1000.0),
 				DoubleGene.of(value, 0.0, 1000.0)
 			)),
-			1,
-			a -> a.getGene().getAllele()
+			1
 		);
 	}
 

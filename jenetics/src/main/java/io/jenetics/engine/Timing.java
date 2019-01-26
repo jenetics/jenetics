@@ -33,17 +33,32 @@ import io.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version !__version__!
  */
-final class Timer {
+final class Timing {
+
+	@FunctionalInterface
+	interface Task<T, E extends Exception> {
+		T execute() throws E;
+	}
 
 	private final LongSupplier _nanoClock;
 
-	private long _start;
-	private long _stop;
+	private long _start = Long.MIN_VALUE;
+	private long _stop = Long.MIN_VALUE;
+	private long _nanos = 0;
 
-	private Timer(final LongSupplier nanoClock) {
+	private Timing(final LongSupplier nanoClock) {
 		_nanoClock = requireNonNull(nanoClock);
+	}
+
+	<T, E extends Exception> T timing(final Timing.Task<T, E> task) throws E {
+		start();
+		try {
+			return task.execute();
+		} finally {
+			stop();
+		}
 	}
 
 	/**
@@ -51,7 +66,7 @@ final class Timer {
 	 *
 	 * @return {@code this} timer, for method chaining
 	 */
-	public Timer start() {
+	synchronized Timing start() {
 		_start = _nanoClock.getAsLong();
 		return this;
 	}
@@ -61,9 +76,20 @@ final class Timer {
 	 *
 	 * @return {@code this} timer, for method chaining
 	 */
-	public Timer stop() {
+	synchronized Timing stop() {
 		_stop = _nanoClock.getAsLong();
+		_nanos += _stop - _start;
+		_start = Long.MIN_VALUE;
+		_stop = Long.MIN_VALUE;
 		return this;
+	}
+
+	private boolean isStarted() {
+		return _start != Long.MIN_VALUE;
+	}
+
+	private boolean isStopped() {
+		return _stop != Long.MIN_VALUE;
 	}
 
 	/**
@@ -72,8 +98,10 @@ final class Timer {
 	 *
 	 * @return the duration between two {@code start} and {@code stop} calls
 	 */
-	public Duration getTime() {
-		return Duration.ofNanos(_stop - _start);
+	synchronized Duration duration() {
+		return isStarted()
+			? Duration.ofNanos(_nanos + _nanoClock.getAsLong() - _start)
+			: Duration.ofNanos(_nanos);
 	}
 
 	/**
@@ -83,14 +111,14 @@ final class Timer {
 	 * @param clock the clock used for measuring the execution time
 	 * @return a new timer
 	 */
-	public static Timer of(final Clock clock) {
+	static Timing of(final Clock clock) {
 		requireNonNull(clock);
 		return clock instanceof NanoClock
-			? new Timer(System::nanoTime)
-			: new Timer(() -> nanos(clock));
+			? new Timing(System::nanoTime)
+			: new Timing(() -> nanos(clock));
 	}
 
-	private static long nanos(final Clock clock) {
+	static long nanos(final Clock clock) {
 		final Instant now = clock.instant();
 		return now.getEpochSecond()*NanoClock.NANOS_PER_SECOND + now.getNano();
 	}
@@ -100,8 +128,8 @@ final class Timer {
 	 *
 	 * @return a new timer
 	 */
-	public static Timer of() {
-		return new Timer(System::nanoTime);
+	static Timing of() {
+		return new Timing(System::nanoTime);
 	}
 
 }
