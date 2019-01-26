@@ -28,7 +28,8 @@ import java.util.Objects;
 /**
  * Represents an operation which always returns the same, constant, value. To
  * improve readability, constants may have a name. If a name is given, this name
- * is used when printing the program tree.
+ * is used when printing the program tree. The {@code Const} operation is a
+ * <em>terminal</em> operation.
  *
  * <pre>{@code
  * final static Op<Double> PI = Const.of("π", Math.PI);

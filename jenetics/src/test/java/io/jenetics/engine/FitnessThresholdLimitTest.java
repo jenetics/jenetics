@@ -19,7 +19,10 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.String.format;
+
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -29,6 +32,8 @@ import org.testng.annotations.Test;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.util.DoubleRange;
@@ -49,6 +54,8 @@ public class FitnessThresholdLimitTest {
 	) {
 		final FitnessThresholdLimit<Double> limit =
 			new FitnessThresholdLimit<>(threshold);
+
+		limit.test(result(min, max, opt));
 
 		Assert.assertEquals(
 			limit.test(result(min, max, opt)),
@@ -125,6 +132,28 @@ public class FitnessThresholdLimitTest {
 		Assert.assertEquals(count.get(), 1);
 		Assert.assertEquals(result.getTotalGenerations(), 1);
 		Assert.assertEquals(result.getGeneration(), 1);
+	}
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/420
+	public void bestFitnessResult() {
+		final Genotype<IntegerGene> genotype = Genotype.of(IntegerChromosome.of(0, 10));
+		final AtomicInteger ai = new AtomicInteger();
+		final Function<Genotype<IntegerGene>, Integer> ff = x -> ai.incrementAndGet();
+
+		final int threshold = 100;
+		final Integer result = Engine.builder(ff, genotype)
+			.build()
+			.stream()
+			.limit(Limits.byFitnessThreshold(threshold))
+			.collect(EvolutionResult.toBestEvolutionResult())
+			.getBestFitness();
+
+		Assert.assertNotNull(result);
+		Assert.assertTrue(
+			result >= 100,
+			format("Expected value >= %s, but got %s", threshold, result)
+		);
 	}
 
 }

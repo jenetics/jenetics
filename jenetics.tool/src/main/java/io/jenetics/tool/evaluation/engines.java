@@ -30,7 +30,6 @@ import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.example.Knapsack;
-import io.jenetics.internal.util.require;
 
 /**
  * Definition of commonly used testing {@link Engine} objects.
@@ -40,7 +39,7 @@ import io.jenetics.internal.util.require;
  * @since 3.4
  */
 public final class engines {
-	private engines() {require.noInstance();}
+	private engines() {}
 
 	/**
 	 * The test {@link Knapsack} {@link Engine} used for the evolution

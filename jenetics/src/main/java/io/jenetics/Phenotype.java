@@ -302,7 +302,6 @@ public final class Phenotype<
 		out.writeObject(_fitness);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{

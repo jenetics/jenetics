@@ -19,12 +19,14 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -37,7 +39,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.3
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -143,7 +145,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of levels above this node
 	 */
 	public default int level() {
-		Optional<T> ancestor = Optional.of(Trees.<V, T>self(this));
+		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
 		while ((ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent()) {
 			++levels;
@@ -187,6 +189,41 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/* *************************************************************************
 	 * Query operations
 	 **************************************************************************/
+
+	/**
+	 * Return the child node at the given {@code path}. A path consists of the
+	 * child index at a give level, starting with level 1. (The root note has
+	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
+	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
+	 * return the first child of the third child of {@code this node}.
+	 *
+	 * @since 4.3
+	 *
+	 * @param path the child path
+	 * @return the child node at the given {@code path}
+	 * @throws NullPointerException if the given {@code path} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if one of the path elements is smaller
+	 *         than zero
+	 */
+	public default Optional<T> childAtPath(final int... path) {
+		T node = Trees.self(this);
+		for (int i = 0; i < path.length && node != null; ++i) {
+			final int childIndex = path[i];
+			if (childIndex < 0) {
+				throw new IllegalArgumentException(format(
+					"Path element at position %d is smaller than zero: %d",
+					i, childIndex
+				));
+			}
+
+			node = childIndex < node.childCount()
+				? node.getChild(childIndex)
+				: null;
+		}
+
+		return Optional.ofNullable(node);
+	}
 
 	/**
 	 * Return {@code true} if the given {@code node} is an ancestor of
@@ -329,12 +366,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * node.
 	 *
 	 * @param node the other node to check
-	 * @return  {@code true} if {@code node}is a child, {@code false} otherwise
+	 * @return {@code true} if {@code node}is a child, {@code false} otherwise
 	 * @throws NullPointerException if the given {@code node} is {@code null}
 	 */
 	public default boolean isChild(final Tree<?, ?> node) {
 		requireNonNull(node);
-		return childCount() != 0 && node.getParent().equals(Optional.of(this));
+		return childCount() != 0 &&
+			node.getParent().equals(Optional.of(Trees.<V, T>self(this)));
 	}
 
 	/**
@@ -810,6 +848,73 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 	/* *************************************************************************
+	 * 'toString' methods
+	 **************************************************************************/
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @since 4.3
+	 *
+	 * @see #toParenthesesString()
+	 *
+	 * @param mapper the {@code mapper} which converts the tree value to a string
+	 * @return the string representation of the given tree
+	 */
+	public default String
+	toParenthesesString(final Function<? super V, String> mapper) {
+		requireNonNull(mapper);
+		return ParenthesesTrees.toString(Trees.<V, T>self(this), mapper);
+	}
+
+	/**
+	 * Return a compact string representation of the given tree. The tree
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
+	 * is printed as
+	 * <pre>
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 *
+	 * @since 4.3
+	 *
+	 * @see #toParenthesesString(Function)
+	 *
+	 * @return the string representation of the given tree
+	 * @throws NullPointerException if the {@code mapper} is {@code null}
+	 */
+	public default String toParenthesesString() {
+		return toParenthesesString(Objects::toString);
+	}
+
+
+	/* *************************************************************************
 	 * Static helper methods.
 	 **************************************************************************/
 
@@ -891,9 +996,13 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
+	 *
+	 * @deprecated Use {@link #toParenthesesString()} instead
 	 */
+	@Deprecated
+	@SuppressWarnings("unchecked")
 	public static String toCompactString(final Tree<?, ?> tree) {
-		return Trees.toCompactString(tree);
+		return ParenthesesTrees.toString((Tree)tree, Objects::toString);
 	}
 
 	/**
@@ -901,7 +1010,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @param tree the input tree
 	 * @return the string representation of the given tree
+	 *
+	 * @deprecated Will be removed; very special to-string method.
 	 */
+	@Deprecated
 	public static String toDottyString(final Tree<?, ?> tree) {
 		return Trees.toDottyString("T", tree);
 	}

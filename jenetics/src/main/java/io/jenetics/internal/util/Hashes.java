@@ -33,12 +33,13 @@ public final class Hashes {
 
 	private static final int P1 = 47;
 	private static final int P2 = 103;
+	private static final int P3 = 197;
 
 	private Hashes() {
 	}
 
 	public static int hash(final Object value, final int seed) {
-		return seed + P2*Objects.hashCode(value);
+		return seed + P2*Objects.hashCode(value) + P3;
 	}
 
 	public static int hash(final Object value) {
@@ -46,7 +47,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final Object[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final Object[] value) {
@@ -54,7 +55,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final byte value, final int seed) {
-		return seed + P2*Byte.hashCode(value);
+		return seed + P2*Byte.hashCode(value) + P3;
 	}
 
 	public static int hash(final byte value) {
@@ -62,7 +63,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final byte[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final byte[] value) {
@@ -70,7 +71,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final char value, final int seed) {
-		return seed + P2*Character.hashCode(value);
+		return seed + P2*Character.hashCode(value) + P3;
 	}
 
 	public static int hash(final char value) {
@@ -78,7 +79,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final char[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final char[] value) {
@@ -86,7 +87,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final short value, final int seed) {
-		return seed + P2*Short.hashCode(value);
+		return seed + P2*Short.hashCode(value) + P3;
 	}
 
 	public static int hash(final short value) {
@@ -94,7 +95,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final short[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final short[] value) {
@@ -102,7 +103,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final int value, final int seed) {
-		return seed + P2*Integer.hashCode(value);
+		return seed + P2*Integer.hashCode(value) + P3;
 	}
 
 	public static int hash(final int value) {
@@ -110,7 +111,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final int[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final int[] value) {
@@ -118,7 +119,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final long value, final int seed) {
-		return seed + P2*Long.hashCode(value);
+		return seed + P2*Long.hashCode(value) + P3;
 	}
 
 	public static int hash(final long value) {
@@ -126,7 +127,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final long[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final long[] value) {
@@ -134,7 +135,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final float value, final int seed) {
-		return seed + P2*Float.hashCode(value);
+		return seed + P2*Float.hashCode(value) + P3;
 	}
 
 	public static int hash(final float value) {
@@ -142,7 +143,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final float[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final float[] value) {
@@ -150,7 +151,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final double value, final int seed) {
-		return seed + P2*Double.hashCode(value);
+		return seed + P2*Double.hashCode(value) + P3;
 	}
 
 	public static int hash(final double value) {
@@ -158,7 +159,7 @@ public final class Hashes {
 	}
 
 	public static int hash(final double[] value, final int seed) {
-		return seed + P2*Arrays.hashCode(value);
+		return seed + P2*Arrays.hashCode(value) + P3;
 	}
 
 	public static int hash(final double[] value) {

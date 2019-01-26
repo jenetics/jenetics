@@ -121,7 +121,7 @@ public final class LongRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_min, hash(_max));
+		return hash(_min, hash(_max, hash(getClass())));
 	}
 
 	@Override

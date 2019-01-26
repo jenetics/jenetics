@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import io.jenetics.internal.util.reflect;
@@ -62,7 +63,10 @@ import io.jenetics.prog.op.Program;
  */
 public class ProgramChromosome<A>
 	extends AbstractTreeChromosome<Op<A>, ProgramGene<A>>
+	implements Function<A[], A>
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
 	private final ISeq<? extends Op<A>> _operations;
@@ -145,6 +149,7 @@ public class ProgramChromosome<A>
 	 * @return the evaluated value
 	 * @throws NullPointerException if the given variable array is {@code null}
 	 */
+	@Override
 	public A apply(final A[] args) {
 		return getRoot().apply(args);
 	}

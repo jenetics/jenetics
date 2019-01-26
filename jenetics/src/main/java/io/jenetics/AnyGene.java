@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.util.Objects;
@@ -106,7 +107,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(_allele);
+		return hash(_allele, hash(AnyGene.class));
 	}
 
 	@Override

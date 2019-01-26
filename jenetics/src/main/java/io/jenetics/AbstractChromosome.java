@@ -114,7 +114,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_genes);
+		return hash(_genes, hash(getClass()));
 	}
 
 	@Override
