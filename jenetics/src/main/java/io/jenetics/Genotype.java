@@ -260,14 +260,14 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_chromosomes);
+		return hash(_chromosomes, hash(getClass()));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Genotype &&
-			Objects.equals(_chromosomes, ((Genotype<?>) obj)._chromosomes);
+			Objects.equals(_chromosomes, ((Genotype)obj)._chromosomes);
 	}
 
 	@Override

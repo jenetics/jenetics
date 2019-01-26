@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * fitness only depends on the ordering of the genes within the chromosome. This
  * is the case in many combinatorial optimization problems. Other crossover
  * operators for combinatorial optimization are:
- * <ul type="square">
+ * <ul>
  *     <li>order crossover</li>
  *     <li>cycle crossover</li>
  *     <li>edge recombination crossover</li>

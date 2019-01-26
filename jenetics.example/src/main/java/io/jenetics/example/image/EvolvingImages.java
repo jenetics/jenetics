@@ -62,6 +62,8 @@ import io.jenetics.engine.EvolutionResult;
  */
 public class EvolvingImages extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+
 	// Additional Swing components.
 	private final NumberFormat _fitnessFormat = NumberFormat.getNumberInstance();
 	private final ImagePanel _imagePanel;

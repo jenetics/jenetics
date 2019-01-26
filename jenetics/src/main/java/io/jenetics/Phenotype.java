@@ -251,7 +251,8 @@ public final class Phenotype<
 			hash(_generation,
 			hash(getFitness(),
 			hash(getRawFitness(),
-			hash(_genotype))));
+			hash(_genotype,
+			hash(getClass())))));
 	}
 
 	@Override
@@ -478,7 +479,6 @@ public final class Phenotype<
 		out.writeObject(getRawFitness());
 	}
 
-	@SuppressWarnings("unchecked")
 	private void readObject(final ObjectInputStream in)
 		throws IOException, ClassNotFoundException
 	{

@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * @version 4.0
  */
 public class reflect {
-	private reflect() {require.noInstance();}
+	private reflect() {}
 
 	/**
 	 * Reflectively sets the field with the given {@code name} to the new

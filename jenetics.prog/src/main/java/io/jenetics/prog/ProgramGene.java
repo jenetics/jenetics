@@ -59,6 +59,8 @@ public final class ProgramGene<A>
 	implements Gene<Op<A>, ProgramGene<A>>, Function<A[], A>
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private final ISeq<? extends Op<A>> _operations;
 	private final ISeq<? extends Op<A>> _terminals;
 
