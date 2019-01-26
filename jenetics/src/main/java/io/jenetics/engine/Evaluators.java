@@ -27,8 +27,10 @@ import io.jenetics.Gene;
 import io.jenetics.Genotype;
 
 /**
- * This class contains factory methods for creating commonly usable evaluator
- * implementations.
+ * This class contains factory methods for creating commonly usable
+ * {@link Evaluator} implementations.
+ *
+ * @see Evaluator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

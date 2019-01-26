@@ -49,6 +49,8 @@ import io.jenetics.util.Seq;
  * It is allowed to return the input sequence, after evaluation, as well a newly
  * created one.
  *
+ * @see Evaluators
+ *
  * @param <G> the gene type
  * @param <C> the fitness result type
  *
