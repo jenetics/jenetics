@@ -41,10 +41,10 @@ import io.jenetics.util.Seq;
  * serial evaluator can easily implemented:
  *
  * <pre>{@code
- * final Evaluator<G, C> evaluator = population -> {
- *     population.forEach(Phenotype::evaluate);
- *     return population.asISeq();
- * };
+ * final Function<? super Genotype<G>, ? extends C> fitness = ...;
+ * final Evaluator<G, C> evaluator = population -> population
+ *     .map(pt -> pt.evaluate(fitness))
+ *     .asISeq();
  * }</pre>
  *
  * @implSpec
