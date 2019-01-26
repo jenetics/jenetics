@@ -28840,6 +28840,75 @@ Vec
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Although the 
+\family typewriter
+Vec
+\family sans
+ interface extends the 
+\family typewriter
+Comparable
+\family sans
+ interface, it violates its general contract.
+ It only implements the Pareto dominance relation, which defines a partial
+ order.
+ So, trying to sort a list of 
+\family typewriter
+Vec
+\family sans
+ objects, might lead to an exception (thrown by the sorting method) at runtime.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The second difference to the single-objective setup is the 
 \family typewriter
 EvolutionResult
