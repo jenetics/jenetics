@@ -685,28 +685,6 @@ public final class Engine<
 
 	/**
 	 * Create a new evolution {@code Engine.Builder} with the given fitness
-	 * evaluator and genotype factory.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness function result type
-	 * @param genotypeFactory the genotype factory
-	 * @param evaluator the fitness evaluator
-	 * @return a new engine builder
-	 * @throws java.lang.NullPointerException if one of the arguments is
-	 *         {@code null}.
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Builder<G, C> builder(
-		final Factory<Genotype<G>> genotypeFactory,
-		final Evaluator<G, C> evaluator
-	) {
-		return new Builder<>(genotypeFactory, evaluator);
-	}
-
-	/**
-	 * Create a new evolution {@code Engine.Builder} with the given fitness
 	 * function and genotype factory.
 	 *
 	 * @param ff the fitness function
@@ -722,7 +700,10 @@ public final class Engine<
 		final Function<? super Genotype<G>, ? extends C> ff,
 		final Factory<Genotype<G>> genotypeFactory
 	) {
-		return builder(genotypeFactory, Evaluator.concurrent(ff, commonPool()));
+		return Builder.of(
+			Evaluator.concurrent(ff, commonPool()),
+			genotypeFactory
+		);
 	}
 
 	/**
@@ -1390,6 +1371,28 @@ public final class Engine<
 				.survivorsSelector(_survivorsSelector)
 				.individualCreationRetries(_individualCreationRetries)
 				.mapping(_mapper);
+		}
+
+		/**
+		 * Create a new evolution {@code Engine.Builder} with the given fitness
+		 * evaluator and genotype factory.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param <G> the gene type
+		 * @param <C> the fitness function result type
+		 * @param genotypeFactory the genotype factory
+		 * @param evaluator the fitness evaluator
+		 * @return a new engine builder
+		 * @throws java.lang.NullPointerException if one of the arguments is
+		 *         {@code null}.
+		 */
+		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+		Builder<G, C> of(
+			final Evaluator<G, C> evaluator,
+			final Factory<Genotype<G>> genotypeFactory
+		) {
+			return new Builder<>(genotypeFactory, evaluator);
 		}
 
 	}

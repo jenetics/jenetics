@@ -97,8 +97,8 @@ public class FutureEvaluator<
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gtf, new FutureEvaluator<DoubleGene, Double>(FutureEvaluator::fitness))
+		final Engine<DoubleGene, Double> engine = Engine.Builder
+			.of(new FutureEvaluator<DoubleGene, Double>(FutureEvaluator::fitness), gtf)
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
