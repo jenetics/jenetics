@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
@@ -85,7 +86,7 @@ public interface Evaluator<
 	 *
 	 * @since !__version__!
 	 *
-	 * @param function the fitness function
+	 * @param fitness the fitness function
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
 	 * @return a new serial fitness evaluator
@@ -93,8 +94,8 @@ public interface Evaluator<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Evaluator<G, C>
-	serial(final Function<? super Genotype<G>, ? extends C> function) {
-		return concurrent(function, Runnable::run);
+	serial(final Function<? super Genotype<G>, ? extends C> fitness) {
+		return concurrent(fitness, Runnable::run);
 	}
 
 	/**
@@ -102,7 +103,9 @@ public interface Evaluator<
 	 * the population (concurrently) with the given {@code executor}. This is
 	 * the default evaluator used by the evolution engine.
 	 *
-	 * @param function the fitness function
+	 * @since !__version__!
+	 *
+	 * @param fitness the fitness function
 	 * @param executor the {@code Executor} used for evaluating the fitness
 	 *        function
 	 * @param <G> the gene type
@@ -112,10 +115,28 @@ public interface Evaluator<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Evaluator<G, C> concurrent(
-		final Function<? super Genotype<G>, ? extends C> function,
+		final Function<? super Genotype<G>, ? extends C> fitness,
 		final Executor executor
 	) {
-		return new ConcurrentEvaluator<>(function, executor);
+		return new ConcurrentEvaluator<>(fitness, executor);
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
+	 * fitness functions.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param fitness the asynchronous fitness function
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (asynchronous) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C>
+	async(final Function<? super Genotype<G>, ? extends Future<C>> fitness) {
+		return new FutureEvaluator<>(fitness);
 	}
 
 }
