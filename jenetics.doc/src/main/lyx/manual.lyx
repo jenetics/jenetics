@@ -1,5 +1,5 @@
-#LyX 2.2 created this file. For more info see http://www.lyx.org/
-\lyxformat 508
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
 \begin_document
 \begin_header
 \save_transient_properties true
@@ -50,7 +50,6 @@
 \usepackage{multicol}
 \usepackage{changepage}
 \usepackage{newunicodechar}
-\usepackage{microtype}
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -91,7 +90,7 @@
   morekeywords={*,...,public,extends,assert}
 }
 \end_preamble
-\options utf8,utf8x
+\options utf8
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -114,6 +113,8 @@ tabs-within-sections
 \font_osf false
 \font_sf_scale 100 100
 \font_tt_scale 100 100
+\use_microtype true
+\use_dash_ligatures false
 \graphics default
 \default_output_format pdf2
 \output_sync 0
@@ -157,6 +158,7 @@ tabs-within-sections
 \suppress_date false
 \justification true
 \use_refstyle 1
+\use_minted 0
 \boxbgcolor #ffffff
 \index Index
 \shortcut idx
@@ -166,7 +168,10 @@ tabs-within-sections
 \tocdepth 3
 \paragraph_separation indent
 \paragraph_indentation default
-\quotes_language danish
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style danish
+\dynamic_quotes 0
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
@@ -299,26 +304,18 @@ LIBRARY USER'S MANUAL @__minor_version__@
 \align right
 
 \family sans
-\series bold
-\noun on
-\begin_inset space \hfill{}
-\end_inset
-
-
-\series default
 \size huge
-\noun default
 \color white
 Franz Wilhelmstötter
-\size large
-\noun on
-\color inherit
-
 \begin_inset space \hspace{}
 \length 2.5cm
 \end_inset
 
 
+\size large
+\noun on
+\color inherit
+ 
 \end_layout
 
 \begin_layout Standard
@@ -404,6 +401,7 @@ LatexCommand href
 name "franz.wilhelmstoetter@gmail.com"
 target "franz.wilhelmstoetter@gmail.com"
 type "mailto:"
+literal "false"
 
 \end_inset
 
@@ -486,6 +484,7 @@ This work is licensed under a
 LatexCommand href
 name "Creative Commons"
 target "http://creativecommons.org/licenses/by-sa/3.0/"
+literal "false"
 
 \end_inset
 
@@ -715,6 +714,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 LatexCommand href
 name "genetic algorithm"
 target "http://en.wikipedia.org/wiki/Genetic_algorithm"
+literal "false"
 
 \end_inset
 
@@ -723,6 +723,7 @@ target "http://en.wikipedia.org/wiki/Genetic_algorithm"
 LatexCommand href
 name "genetic programming"
 target "https://en.wikipedia.org/wiki/Genetic_programming"
+literal "false"
 
 \end_inset
 
@@ -819,6 +820,7 @@ This manual is not an introduction or a tutorial for genetic and/or evolutionary
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -826,6 +828,7 @@ key "Sivanandam2010"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "michalewicz1996genetic"
+literal "true"
 
 \end_inset
 
@@ -833,6 +836,7 @@ key "michalewicz1996genetic"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Shiffman2012"
+literal "true"
 
 \end_inset
 
@@ -840,6 +844,7 @@ key "Shiffman2012"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -847,6 +852,7 @@ key "Luke2013Metaheuristics"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Mitchell1998"
+literal "true"
 
 \end_inset
 
@@ -854,6 +860,7 @@ key "Mitchell1998"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Whitley94agenetic"
+literal "true"
 
 \end_inset
 
@@ -862,6 +869,7 @@ key "Whitley94agenetic"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:1992:GPP:138936"
+literal "true"
 
 \end_inset
 
@@ -869,6 +877,7 @@ key "Koza:1992:GPP:138936"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:2008:IGP:1388969.1389057"
+literal "true"
 
 \end_inset
 
@@ -2466,6 +2475,7 @@ Gene
 \begin_inset CommandInset citation
 LatexCommand cite
 key "OracleJDKValueBasedClasses"
+literal "true"
 
 \end_inset
 
@@ -4289,6 +4299,7 @@ Operation classes
 LatexCommand href
 name "Genetic operators"
 target "https://en.wikipedia.org/wiki/Genetic_operator"
+literal "false"
 
 \end_inset
 
@@ -4650,6 +4661,7 @@ In
 LatexCommand href
 name "tournament selection"
 target "https://en.wikipedia.org/wiki/Tournament_selection"
+literal "false"
 
 \end_inset
 
@@ -4714,6 +4726,7 @@ In
 LatexCommand href
 name "truncation selection"
 target "https://en.wikipedia.org/wiki/Truncation_selection"
+literal "false"
 
 \end_inset
 
@@ -4771,6 +4784,7 @@ n, it will be a little bit more disruptive, on average, than roulette wheel
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5073,6 +5087,7 @@ The roulette-wheel selector will have problems when the fitness values differ
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5125,6 +5140,7 @@ Here
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Blickle97acomparison"
+literal "true"
 
 \end_inset
 
@@ -5288,6 +5304,7 @@ Stochastic-universal selection
 \begin_inset CommandInset citation
 LatexCommand cite
 key "back1996evolutionary"
+literal "true"
 
 \end_inset
 
@@ -5307,6 +5324,7 @@ key "back1996evolutionary"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "baker1987selection"
+literal "true"
 
 \end_inset
 
@@ -5365,6 +5383,7 @@ reference "fig:Stochastic-universal-selection"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
+literal "true"
 
 \end_inset
 
@@ -5488,6 +5507,7 @@ Stream
 LatexCommand href
 name "mutation"
 target "https://en.wikipedia.org/wiki/Mutation_(genetic_algorithm)"
+literal "false"
 
 \end_inset
 
@@ -5505,6 +5525,7 @@ g.
 LatexCommand href
 name "crossover"
 target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
+literal "false"
 
 \end_inset
 
@@ -5652,7 +5673,7 @@ reference "subsubsec:Domain-classes-Genotype"
 \end_inset
 
 ).
- The mutator selects the gene which will be mutated in three steps:
+ The mutator selects the gene which will be mutated in three steps: 
 \end_layout
 
 \begin_layout Enumerate
@@ -5874,7 +5895,7 @@ void recombine(final ISeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Phenotype<G, C> pt2 = pop.get(2);
+    final Phenotype<G, C> pt2 = pop.get(i2);
 \end_layout
 
 \begin_layout Plain Layout
@@ -6255,8 +6276,21 @@ reference "fig:Single-point-crossover"
 \family typewriter
  SinglePointCrossover
 \family default
- class is performing the crossover for different crossover points—in the
- given example for the chromosome indexes 
+ class is performing the crossover for different crossover points.
+ Sub-figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover.
+ The examples in sub-figures 
+\emph on
+b)
+\emph default
+ to 
+\emph on
+f)
+\emph default
+ illustrates the crossover results for indexes 
 \begin_inset Formula $0$
 \end_inset
 
@@ -6310,13 +6344,55 @@ If the
 \family default
  class is created with one crossover point, it behaves exactly like the
  single-point crossover.
- The following picture shows how the multi-point crossover works with two
- crossover points, defined at index 
-\begin_inset Formula $1$
+ The figures in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:2-point-crossover"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the multi-point crossover works with two crossover points.
+ Figure 
+\emph on
+a)
+\emph default
+ shows the two chromosomes chosen for crossover, 
+\emph on
+b)
+\emph default
+ shows the crossover result for the crossover points at index 
+\begin_inset Formula $0$
 \end_inset
 
  and 
 \begin_inset Formula $4$
+\end_inset
+
+, 
+\emph on
+c)
+\emph default
+ uses crossover points at index 
+\begin_inset Formula $3$
+\end_inset
+
+ and 
+\begin_inset Formula $6$
+\end_inset
+
+ and 
+\emph on
+d
+\emph default
+) at index 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $7$
 \end_inset
 
 .
@@ -6344,6 +6420,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:2-point-crossover"
+
+\end_inset
+
 2-point crossover
 \begin_inset Index idx
 status collapsed
@@ -6556,7 +6638,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/PMX.eps
-	width 50text%
+	width 42text%
 	clip
 
 \end_inset
@@ -6699,6 +6781,7 @@ In uniform crossover, the genes at index
 \begin_inset CommandInset citation
 LatexCommand cite
 key "chawdhry1998soft"
+literal "true"
 
 \end_inset
 
@@ -6715,7 +6798,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/UniformCrossover.eps
-	width 33text%
+	width 35text%
 	clip
 
 \end_inset
@@ -6892,6 +6975,7 @@ The line crossover, also known as line recombination, was originally described
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Muhlenbein:1993:PMB:1326623.1326626"
+literal "true"
 
 \end_inset
 
@@ -8204,7 +8288,7 @@ Engine\SpecialChar softhyphen
 \family typewriter
 Engine
 \family default
-s no long creates infinite 
+s no longer creates infinite 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Stream
@@ -9634,7 +9718,7 @@ type
 \family default
  method, which is called on every finished generation, you have a
 \emph on
-live
+ live
 \emph default
  view on the evolution progress.
 \end_layout
@@ -11475,6 +11559,7 @@ lcg64_shift
 LatexCommand href
 name "TRNG"
 target "http://numbercrunch.de/trng/"
+literal "false"
 
 \end_inset
 
@@ -11502,6 +11587,7 @@ http://numbercrunch.de/trng/
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Tina2011"
+literal "true"
 
 \end_inset
 
@@ -12188,6 +12274,7 @@ How to create instances of the three
 LatexCommand href
 name "Javadoc"
 target "http://jenetics.io/javadoc/jenetics/index.html"
+literal "false"
 
 \end_inset
 
@@ -12588,6 +12675,7 @@ https://en.wikipedia.org/wiki/Quantile
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Jain:1985:PAD:4372.4378"
+literal "true"
 
 \end_inset
 
@@ -13284,6 +13372,7 @@ Effective Java
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Bloch2018"
+literal "true"
 
 \end_inset
 
@@ -14017,6 +14106,7 @@ Selector
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Baluja95removingthe"
+literal "true"
 
 \end_inset
 
@@ -14658,6 +14748,7 @@ good
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Rothlauf2006"
+literal "true"
 
 \end_inset
 
@@ -14665,6 +14756,7 @@ key "Rothlauf2006"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Palmer1995"
+literal "true"
 
 \end_inset
 
@@ -15069,6 +15161,7 @@ es for the Genotype encoding.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein"
+literal "true"
 
 \end_inset
 
@@ -15445,6 +15538,7 @@ s of length
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein2"
+literal "true"
 
 \end_inset
 
@@ -16002,6 +16096,7 @@ This encoding ensures that no invalid
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hughes2014computer"
+literal "true"
 
 \end_inset
 
@@ -17323,7 +17418,7 @@ Codec!Vector
 \end_layout
 
 \begin_layout Standard
-In the listing 
+In listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofVector"
@@ -17550,6 +17645,202 @@ class Main {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Matrix codec
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Matrix-codec"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Matrix codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Matrix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Codec-factory-method-ofMatrix"
+
+\end_inset
+
+, the
+\family typewriter
+ ofMatrix
+\family default
+ factory method returns a
+\family typewriter
+ Codec
+\family default
+ for an
+\family typewriter
+ int[][]
+\family default
+ matrix.
+ The
+\family typewriter
+ domain
+\family default
+ parameter defines the allowed range of the
+\family typewriter
+ int
+\family default
+ values and the
+\family typewriter
+ rows
+\family default
+ and 
+\family typewriter
+cols
+\family default
+ defines the dimension of the matrix.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Codec<int[][], IntegerGene> ofMatrix(
+\end_layout
+
+\begin_layout Plain Layout
+
+    IntRange domain,
+\end_layout
+
+\begin_layout Plain Layout
+
+    int rows,
+\end_layout
+
+\begin_layout Plain Layout
+
+    int cols
+\end_layout
+
+\begin_layout Plain Layout
+
+) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            IntegerChromosome.of(domain, cols).instances()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .limit(rows)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+        ),
+\end_layout
+
+\begin_layout Plain Layout
+
+        gt -> gt.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(ch -> ch.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .mapToInt(IntegerGene::intValue)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray(int[][]::new)
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Codec
+\family default
+ factory method:
+\family typewriter
+ of
+\family default
+Matrix
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Codec-factory-method-ofMatrix"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -17882,7 +18173,7 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
 \end_inset
 
 , the answer is yes because the subset 
-\begin_inset Formula $\left\{ -3,\text{-}2,5\right\} $
+\begin_inset Formula $\left\{ -3,-2,5\right\} $
 \end_inset
 
  sums to zero.
@@ -22034,6 +22325,11 @@ Engine
 Runnable::run
 \family default
 .
+ If the evolution 
+\family typewriter
+Engine
+\family default
+ uses more than one worker thread, the reproducibility is no longer guaranteed.
  The second step configures the random engine, the evolution 
 \family typewriter
 Engine
@@ -22241,6 +22537,7 @@ Evolution Strategies
 \begin_inset CommandInset citation
 LatexCommand cite
 key "FEDR:FEDR19750860506"
+literal "true"
 
 \end_inset
 
@@ -22361,6 +22658,7 @@ The
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -22543,6 +22841,7 @@ There are mainly three levers for the
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -22700,6 +22999,7 @@ In the
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Luke2013Metaheuristics"
+literal "true"
 
 \end_inset
 
@@ -24190,6 +24490,7 @@ This class is part of the
 LatexCommand href
 name "TRNG"
 target "http://numbercrunch.de/trng/"
+literal "false"
 
 \end_inset
 
@@ -25995,6 +26296,7 @@ s such that each position is either crossed contracted or expanded with
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb99self-adaptivegenetic"
+literal "true"
 
 \end_inset
 
@@ -26275,6 +26577,7 @@ Methinks it is like a weasel
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
+literal "true"
 
 \end_inset
 
@@ -26386,6 +26689,7 @@ progeny
 \begin_inset CommandInset citation
 LatexCommand cite
 key "dawkins1986"
+literal "true"
 
 \end_inset
 
@@ -27406,7 +27710,7 @@ final Genotype<DoubleGene> result =
 
 \begin_layout Plain Layout
 
-    CyclingEngine.of(
+    CyclicEngine.of(
 \end_layout
 
 \begin_layout Plain Layout
@@ -27854,6 +28158,7 @@ optimize
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Osyczka1985"
+literal "true"
 
 \end_inset
 
@@ -27866,6 +28171,7 @@ There are several ways for solving multiobjective problems.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -27882,6 +28188,7 @@ Jenetics
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -27889,6 +28196,7 @@ key "Fortin2013"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
+literal "true"
 
 \end_inset
 
@@ -27896,6 +28204,7 @@ key "Deb:2002:FEM:2221359.2221582"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Konak2006"
+literal "true"
 
 \end_inset
 
@@ -27967,6 +28276,7 @@ on.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28026,6 +28336,7 @@ Pareto dominance
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28053,7 +28364,7 @@ dominate
 \begin_inset Formula $\mathbf{u}$
 \end_inset
 
- is partially less than 
+ is partially greater than 
 \begin_inset Formula $\boldsymbol{v}$
 \end_inset
 
@@ -28529,6 +28840,75 @@ Vec
 \end_layout
 
 \begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+Although the 
+\family typewriter
+Vec
+\family sans
+ interface extends the 
+\family typewriter
+Comparable
+\family sans
+ interface, it violates its general contract.
+ It only implements the Pareto dominance relation, which defines a partial
+ order.
+ So, trying to sort a list of 
+\family typewriter
+Vec
+\family sans
+ objects, might lead to an exception (thrown by the sorting method) at runtime.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The second difference to the single-objective setup is the 
 \family typewriter
 EvolutionResult
@@ -28657,6 +29037,7 @@ https://www.igi-global.com/dictionary/crowding-distance/42740
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -28664,6 +29045,7 @@ key "CoelloCoello2007"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -28863,6 +29245,7 @@ reference "eq:crowding-distance"
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb:2002:FEM:2221359.2221582"
+literal "true"
 
 \end_inset
 
@@ -28922,6 +29305,7 @@ ted fitnesses by reducing multiple solutions sharing the same fitness to
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Fortin2013"
+literal "true"
 
 \end_inset
 
@@ -28962,7 +29346,8 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Since the MOO classes are an extensions to the existing evolution 
+Since the multi-objective optimization (MOO) classes are an extensions to
+ the existing evolution 
 \family typewriter
 Engine
 \family sans
@@ -29741,12 +30126,12 @@ final int depth = 5;
 
 \begin_layout Plain Layout
 
-final Op<Double> operations = ISeq.of(...);
+final ISeq<Op<Double>> operations = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Op<Double> terminals = ISeq.of(...);
+final ISeq<Op<Double>> terminals = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
@@ -31606,6 +31991,7 @@ ons
 \begin_inset CommandInset citation
 LatexCommand cite
 key "GoodPRNGPractice"
+literal "true"
 
 \end_inset
 
@@ -31630,6 +32016,7 @@ ons
 \begin_inset CommandInset citation
 LatexCommand cite
 key "GoodPRNGPractice"
+literal "true"
 
 \end_inset
 
@@ -34486,8 +34873,28 @@ name "sec:Symbolic-regression"
 \end_layout
 
 \begin_layout Standard
-Symbolic regression is a classical example in genetic programming and tries
- to find a mathematical expression for a given set of values.
+Symbolic regression is a specific type of regression analyses, where the
+ search space consists of mathematical expressions.
+ The task is to find a model, which fits a given data-set in terms of accuracy
+ and simplicity.
+ In a classical approach, you will try to optimize the parameters of a predefine
+d function type, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a polynomial of grade 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ If the type of mathematical function is not known in advance, GP can be
+ used finding a function, which is composed out of a given set of 
+\emph on
+primitives
+\emph default
+.
+ 
 \end_layout
 
 \begin_layout Quote
@@ -34498,6 +34905,7 @@ Symbolic regression involves finding a mathematical expression, in symbolic
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Koza:1992:GPP:138936"
+literal "true"
 
 \end_inset
 
@@ -34505,7 +34913,8 @@ key "Koza:1992:GPP:138936"
 \end_layout
 
 \begin_layout Standard
-The following example shows how to solve the GP problem with
+The following example shows how to setup and solve a symbolic regression
+ problem with the help of GP and
 \family sans
 \series bold
 \shape smallcaps
@@ -34514,14 +34923,24 @@ The following example shows how to solve the GP problem with
 \series default
 \shape default
 .
- We are trying to find the polynomial, 
+ The data set used for the example was created with the polynomial, 
 \begin_inset Formula $4x^{3}-3x^{2}+x$
 \end_inset
 
-, which fits a given data set.
- The sample data where created with the polynomial we are searching for.
- This makes it easy to check the quality of the approximation found by the
- GP.
+.
+ This allows us to check the quality of the function found by the GP.
+ Setting up a GP requires a little bit more effort then the setup of a GA.
+ First, you have to define the set of atomic mathematical operations, the
+ GP is working with.
+ This operations influences the search space and is a kind of a 
+\emph on
+priori
+\emph default
+ knowledge put into the GP.
+ As second step you have to define the terminal operations.
+ Terminals are either constants or variables.
+ The number of variables defines the domain dimension of the fitness function.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -34541,7 +34960,20 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-One output of a GP run is shown is shown in figure 
+The fitness function calculates the summed error between the expected function
+ value and the actual function value.
+ An additional term is added to the error, which penalizes expression trees
+ which grow to big.
+ The factor 
+\begin_inset Formula $0.00001$
+\end_inset
+
+ is an empirical value, 
+\emph on
+found
+\emph default
+ after some test runs.
+ One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "fig:Symbolic-regression-polynomial"
@@ -34564,7 +34996,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 75col%
+	width 73col%
 
 \end_inset
 
@@ -34619,6 +35051,7 @@ Deb, Thiele, Laumanns and Zitzler have proposed a set of generational MOPs
 \begin_inset CommandInset citation
 LatexCommand cite
 key "CoelloCoello2007"
+literal "true"
 
 \end_inset
 
@@ -34634,6 +35067,7 @@ DTLZ1 is an
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Deb2001"
+literal "true"
 
 \end_inset
 
@@ -34734,7 +35168,7 @@ reference "fig:Pareto-front-DTLZ1"
 
 \end_inset
 
- shows the output DTLZ1 optimization.
+ shows the Pareto-optimal front of the DTLZ1 optimization.
 \end_layout
 
 \begin_layout Standard
@@ -34746,9 +35180,10 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/dtlz1.svg
-	lyxscale 70
-	width 70col%
+	filename ../resources/diagram/dtlz1.png
+	lyxscale 30
+	width 60col%
+	clip
 
 \end_inset
 
@@ -35407,6 +35842,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35513,6 +35949,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35619,6 +36056,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://testng.org/license"
+literal "false"
 
 \end_inset
 
@@ -35725,6 +36163,7 @@ License
 LatexCommand href
 name "GPL"
 target "https://www.gnu.org/licenses/gpl.html"
+literal "false"
 
 \end_inset
 
@@ -35733,6 +36172,7 @@ target "https://www.gnu.org/licenses/gpl.html"
 LatexCommand href
 name "CPL1.0"
 target "http://www.eclipse.org/legal/cpl-v10.html"
+literal "false"
 
 \end_inset
 
@@ -35792,7 +36232,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.10
+: 5.1.1
 \end_layout
 
 \begin_layout Itemize
@@ -35829,7 +36269,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.10-bin.zip
+http://services.gradle.org/distributions/gradle-5.1.1-bin.zip
 \end_layout
 
 \end_inset
@@ -35849,6 +36289,7 @@ License
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://gradle.org/license"
+literal "false"
 
 \end_inset
 
@@ -35961,6 +36402,7 @@ The library itself is licensed under the
 LatexCommand href
 name "Apache License, Version 2.0"
 target "http://www.apache.org/licenses/LICENSE-2.0.html"
+literal "false"
 
 \end_inset
 
@@ -35974,7 +36416,7 @@ Copyright @__year__@ Franz Wilhelmstötter
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -35996,7 +36438,7 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -36006,7 +36448,7 @@ You may obtain a copy of the License at
 \end_layout
 
 \begin_layout LyX-Code
-
+ 
 \end_layout
 
 \begin_layout LyX-Code
@@ -36061,6 +36503,8 @@ options "bibtotoc,plain"
 \begin_inset CommandInset index_print
 LatexCommand printindex
 type "idx"
+name "Index"
+literal "true"
 
 \end_inset
 

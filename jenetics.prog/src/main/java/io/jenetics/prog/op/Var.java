@@ -26,10 +26,11 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents the program variables. The {@code Var} operation is a termination
- * operation, which just returns the value with the defined index of the input
- * variable array. It is essentially an orthogonal projection of the
- * <em>n</em>-dimensional input space to the <em>1</em>-dimensional result space.
+ * Represents the program variables. The {@code Var} operation is a
+ * <em>terminal</em> operation, which just returns the value with the defined
+ * index of the input variable array. It is essentially an orthogonal projection
+ * of the <em>n</em>-dimensional input space to the <em>1</em>-dimensional
+ * result space.
  *
  * <pre>{@code
  * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
