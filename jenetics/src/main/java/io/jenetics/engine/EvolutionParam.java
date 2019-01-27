@@ -28,7 +28,6 @@ import java.util.Objects;
 import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.Selector;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.Seq;
 
@@ -164,13 +163,7 @@ public final class EvolutionParam<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-				.and(getSurvivorsSelector())
-				.and(getOffspringSelector())
-				.and(getAlterer())
-				.and(getPopulationSize())
-				.and(getOffspringFraction())
-				.and(getMaximalPhenotypeAge()).value();
+		return 1;
 	}
 
 	@Override
