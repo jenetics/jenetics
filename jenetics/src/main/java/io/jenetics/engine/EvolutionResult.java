@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -290,17 +291,17 @@ public final class EvolutionResult<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_optimize) + 17;
-		hash += 31*Objects.hashCode(_population) + 17;
-		hash += 31*Objects.hashCode(_generation) + 17;
-		hash += 31*Objects.hashCode(_totalGenerations) + 17;
-		hash += 31*Objects.hashCode(_durations) + 17;
-		hash += 31*Objects.hashCode(_killCount) + 17;
-		hash += 31*Objects.hashCode(_invalidCount) + 17;
-		hash += 31*Objects.hashCode(_alterCount) + 17;
-		hash += 31*Objects.hashCode(getBestFitness()) + 17;
-		return hash;
+		return
+			hash(_optimize,
+			hash(_population,
+			hash(_generation,
+			hash(_totalGenerations,
+			hash(_durations,
+			hash(_killCount,
+			hash(_invalidCount,
+			hash(_alterCount,
+			hash(getBestFitness(),
+			hash(EvolutionResult.class))))))))));
 	}
 
 	@Override

@@ -19,10 +19,8 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 
 /**
@@ -66,13 +64,15 @@ public abstract class AbstractAlterer<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_probability).value();
+		return hash(_probability);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(alterer ->
-			eq(_probability, alterer._probability)
-		);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Double.compare(_probability, ((AbstractAlterer)obj)._probability) == 0;
 	}
+
 }

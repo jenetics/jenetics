@@ -88,7 +88,7 @@
   commentstyle=\color{dkgreen},
   stringstyle=\color{mauve},
   escapeinside={\%*}{*)},
-  morekeywords={*,...,public,extends}
+  morekeywords={*,...,public,extends,assert}
 }
 \end_preamble
 \options utf8,utf8x
@@ -631,7 +631,7 @@ some
 \family default
 \series default
 \shape default
- allows you to minimize or maximize the given fitness function without tweaking
+ allows you to minimize or maximize a given fitness function without tweaking
  it.
  In contrast to other GA implementations, the library uses the concept of
  an evolution
@@ -728,7 +728,17 @@ target "https://en.wikipedia.org/wiki/Genetic_programming"
 
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
- Since the library is available on maven central repository
+ Although the library is written in Java 8, it is compilable with Java 9,
+ 10 and 11.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is available on Maven central repository
 \begin_inset Foot
 status collapsed
 
@@ -762,7 +772,7 @@ jenetics:\SpecialChar softhyphen
 
 \end_inset
 
-, it can be easily integrated into existing projects.
+ and can be easily integrated into existing projects.
  The very clear structuring of the different parts of the GA allows an easy
  adaption for different problem domains.
 \end_layout
@@ -883,8 +893,15 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-To give you a first impression of the library usage, lets start with a simple
- 
+To give you a first impression on how to use 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+, lets start with a simple 
 \begin_inset Quotes ald
 \end_inset
 
@@ -1204,7 +1221,7 @@ Chromosome
 \family typewriter
  Genotype
 \family default
- can be created with 1 to
+ can be created with 1 to 
 \begin_inset Formula $n$
 \end_inset
 
@@ -1370,7 +1387,7 @@ As the example shows,
 \family typewriter
  Collector
 \family default
- classes in Java 8.
+ classes of Java 8.
  Also the newly introduced lambda expressions and the functional interfaces
  (SAM types) play an important roll in the library design.
 \end_layout
@@ -1713,7 +1730,7 @@ Streams
 
 , is, of course,
 \emph on
-non
+ non
 \emph default
 -deterministic.
  Calling it twice with the same start population will lead to different
@@ -1818,13 +1835,13 @@ reference "fig:Evolution-engine-model"
 
  shows the
 \emph on
- static
+ 
 \emph default
- view of the main
+static view of the main
 \emph on
- evolution
+ 
 \emph default
- classes, together with its dependencies.
+evolution classes, together with its dependencies.
  Since the
 \family typewriter
  Engine
@@ -2019,9 +2036,9 @@ io.jenetics.stat
  Java only includes classes for calculating the sum and the average of a
  given
 \emph on
- numeric
+ 
 \emph default
- stream (e.
+numeric stream (e.
 \begin_inset space ~
 \end_inset
 
@@ -2377,9 +2394,9 @@ s.
 \family default
  are collected into a population
 \family typewriter
- 
+ Seq
 \family default
-Seq.
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2430,9 +2447,9 @@ Allele
 .
  Some of the implementations also contains domain information of the
 \emph on
- wrapped
+ 
 \emph default
- allele.
+wrapped allele.
  This is the case for all
 \family typewriter
  Bounded\SpecialChar softhyphen
@@ -2834,15 +2851,7 @@ Integer\SpecialChar softhyphen
 Chromosome
 \family default
  can be created with variable length, where the minimum value of the length
- range is 
-\emph on
-included
-\emph default
- and the maximum value of the length range is 
-\emph on
-excluded
-\emph default
-.
+ range is included and the maximum value of the length range is excluded.
 \end_layout
 
 \begin_layout Standard
@@ -3553,9 +3562,9 @@ Gene
 s) with different constraints.
  This is almost the
 \emph on
- only
+ 
 \emph default
- reason for choosing the column-major layout.
+only reason for choosing the column-major layout.
  The layout of this
 \family typewriter
  Genotype
@@ -3582,9 +3591,9 @@ reference "fig:Column-major-genotype-vector"
 \family default
 s of length
 \emph on
- one
+ 
 \emph default
- are needed.
+one are needed.
 \end_layout
 
 \begin_layout Standard
@@ -4050,13 +4059,13 @@ reference "subsubsec:Fitness-function"
 
  It is
 \emph on
- only
+ 
 \emph default
- a container which forms the
+only a container which forms the
 \emph on
- environment
+ 
 \emph default
- of the
+environment of the
 \family typewriter
  Genotype
 \family default
@@ -4217,6 +4226,43 @@ Durations
 s from the population.
 \end_layout
 
+\begin_layout Subsubsection
+Population
+\end_layout
+
+\begin_layout Standard
+There is no special class which represents a population.
+ It's 
+\emph on
+just
+\emph default
+ a collection of phenotypes.
+ As collection class, the 
+\family typewriter
+Seq
+\family default
+ interface is used.
+ The 
+\emph on
+own
+\emph default
+ 
+\family typewriter
+Seq
+\family default
+ implementations allows to express the mutability state of the population
+ at the type level and makes the coding more reliable.
+ For a detailed description of this collection classes see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "par:io.jenetics.util.Seq"
+
+\end_inset
+
+.
+ 
+\end_layout
+
 \begin_layout Subsection
 Operation classes
 \begin_inset CommandInset label
@@ -4248,8 +4294,11 @@ target "https://en.wikipedia.org/wiki/Genetic_operator"
 
  are used for creating
 \shape italic
- genetic
+ 
+\emph on
+genetic
 \shape default
+\emph default
  diversity (
 \family typewriter
 Alterer
@@ -4271,10 +4320,10 @@ Selector
  library.
  It also contains some
 \emph on
- theoretical
+ 
 \emph default
- information, which should help you to choose the right combination of operators
- and parameters, for the problem to be solved.
+theoretical information, which should help you to choose the right combination
+ of operators and parameters, for the problem to be solved.
 \end_layout
 
 \begin_layout Subsubsection
@@ -4296,12 +4345,18 @@ Selectors are responsible for selecting a given number of individuals from
  the population.
  The selectors are used to divide the population into
 \shape italic
- survivors
+ 
+\emph on
+survivors
 \shape default
+\emph default
  and
 \shape italic
- offspring
+ 
+\emph on
+offspring
 \shape default
+\emph default
 .
  The selectors for
 \shape italic
@@ -4603,7 +4658,7 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \end_inset
 
  individuals is chosen from the population 
-\begin_inset Formula $Pg$
+\begin_inset Formula $P_{g}$
 \end_inset
 
 .
@@ -4626,6 +4681,10 @@ target "https://en.wikipedia.org/wiki/Tournament_selection"
 \end_inset
 
 , weak individuals have less chance of being selected.
+ Compared with fitness proportional selectors, the tournament selector is
+ often used in practice because of its lack of stochastic noise.
+ Tournament selectors are also independent to the scaling of the genetic
+ algorithm fitness function.
 \end_layout
 
 \begin_layout Paragraph
@@ -4658,15 +4717,17 @@ target "https://en.wikipedia.org/wiki/Truncation_selection"
 
 \end_inset
 
- individuals are sorted according to their fitness.
- Only the 
+ individuals are sorted according to their fitness and only the 
 \begin_inset Formula $n$
 \end_inset
 
  best individuals are selected.
  The truncation selection is a very basic selection algorithm.
  It has it's strength in fast selecting individuals in large populations,
- but is not very often used in practice.
+ but is not very often used in practice; whereas the truncation selection
+ is a standard method in animal and plant breeding.
+ Only the best animals, ranked by their phenotypic value, are selected for
+ reproduction.
 \end_layout
 
 \begin_layout Paragraph
@@ -4693,6 +4754,8 @@ Monte Carlo selector
 \begin_layout Standard
 The Monte Carlo selector selects the individuals from a given population
  randomly.
+ Instead of a directed search, the Monte Carlo selector performs a random
+ search.
  This selector can be used to measure the performance of a other selectors.
  In general, the
 \shape italic
@@ -4702,6 +4765,16 @@ The Monte Carlo selector selects the individuals from a given population
 \emph default
  of a selector should be better than the selection performance of the Monte
  Carlo selector.
+ If the Monte Carlo selector is used for selecting the parents for the populatio
+n, it will be a little bit more disruptive, on average, than roulette wheel
+ selection.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -4732,10 +4805,13 @@ Probability selectors are a variation of
 \shape default
  selectors and selects individuals from a given population based on it's
 \shape italic
- selection
+ 
+\emph on
+selection
 \shape default
+\emph default
  probability 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
 .
@@ -4749,7 +4825,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/FitnessProportionalSelection.eps
-	width 90text%
+	width 100text%
 
 \end_inset
 
@@ -4826,15 +4902,15 @@ where
  follows a binomial distribution
 \begin_inset Formula 
 \begin{equation}
-P(i,k)=\left(\begin{array}{c}
+P\left(i,k\right)=\left(\begin{array}{c}
 n\\
 k
-\end{array}\right)P(i)^{k}\left(1-P(i)\right)^{n-k}
+\end{array}\right)P\left(i\right){}^{k}\left(1-P\left(i\right)\right)^{n-k}
 \end{equation}
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $n$
 \end_inset
 
@@ -4848,11 +4924,11 @@ where
 
  in the set of selected individuals.
  The runtime complexity of the implemented probability selectors is 
-\begin_inset Formula $O(n+\log(n))$
+\begin_inset Formula $O\left(n+\log\left(n\right)\right)$
 \end_inset
 
  instead of 
-\begin_inset Formula $O(n^{2})$
+\begin_inset Formula $O\left(n\text{²}\right)$
 \end_inset
 
  as for the naive approach:
@@ -4882,32 +4958,36 @@ name "par:Roulette-wheel-selector"
 \end_layout
 
 \begin_layout Standard
-The roulette-wheel selector is also known as fitness proportional selector.
- In the
+The roulette-wheel selector is also known as fitness proportional selector
+ and 
 \family sans
 \series bold
 \shape smallcaps
- Jenetics
+Jenetics
 \family default
 \series default
 \shape default
- library it is implemented as
+ implements it as
 \emph on
- probability
+ 
 \emph default
- selector.
- The fitness value 
+probability selector.
+ For calculating the selection probability 
+\begin_inset Formula $P\left(i\right)$
+\end_inset
+
+, the fitness value 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is used to calculate the selection probability of individual 
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
-.
+ is used.
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{f_{i}}{\sum_{j=1}^{N}f_{j}}
+P\left(i\right)=\frac{f_{i}}{\sum_{j=0}^{N-1}f_{j}}\label{eq:roulette-wheele-distribution}
 \end{equation}
 
 \end_inset
@@ -4916,13 +4996,52 @@ Selecting
 \begin_inset Formula $n$
 \end_inset
 
- individuals from a given population is equivalent to play
+ individuals from a given population is equivalent to play 
 \begin_inset Formula $n$
 \end_inset
 
  times on the roulette-wheel.
  The population don't have to be sorted before selecting the individuals.
- Roulette-wheel selection is one of the traditional selection strategies.
+ Notice that equation 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "eq:roulette-wheele-distribution"
+
+\end_inset
+
+ assumes that all fitness values are positive and the sum of the fitness
+ values is not zero.
+ To cope with negative fitnesses, an adapted formula is used for calculating
+ the selection probabilities.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P'\left(i\right)=\frac{f_{i}-f_{\mathrm{min}}}{\sum_{j=0}^{N-1}\left(f_{j}-f_{\mathrm{min}}\right)},
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\[
+f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}\left\{ f_{i},0\right\} 
+\]
+
+\end_inset
+
+As you can see, the worst fitness value 
+\begin_inset Formula $f_{\mathrm{min}}$
+\end_inset
+
+, if negative, has now a selection probability of zero.
+ In the case that the sum of the corrected fitness values is zero, the selection
+ probability of all fitness values will be set 
+\begin_inset Formula $\frac{1}{N}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Paragraph
@@ -4947,7 +5066,17 @@ name "par:Linear-rank-selector"
 \end_layout
 
 \begin_layout Standard
-In linear-ranking selection the individuals are sorted according to their
+The roulette-wheel selector will have problems when the fitness values differ
+ very much.
+ If the best chromosome fitness is 90%, its circumference occupies 90% of
+ roulette-wheel, and then other chromosomes have too few chances to be selected.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Sivanandam2010"
+
+\end_inset
+
+ In linear-ranking selection the individuals are sorted according to their
  fitness values.
  The rank 
 \begin_inset Formula $N$
@@ -4955,10 +5084,10 @@ In linear-ranking selection the individuals are sorted according to their
 
  is assigned to the best individual and the rank 1 to the worst individual.
  The selection probability 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
- of individual
+ of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -4968,7 +5097,7 @@ In linear-ranking selection the individuals are sorted according to their
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
+P\left(i\right)=\frac{1}{N}\left(n^{-}+\left(n^{+}-n^{-}\right)\frac{i-1}{N-1}\right).
 \end{equation}
 
 \end_inset
@@ -5035,7 +5164,7 @@ An alternative to the
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-P(i)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
+P\left(i\right)=\left(c-1\right)\frac{c^{i-1}}{c^{N}-1},
 \end{equation}
 
 \end_inset
@@ -5045,11 +5174,11 @@ where
 \end_inset
 
  must within the range 
-\begin_inset Formula $\left[0\ldots1\right)$
+\begin_inset Formula $\left[0,1\right)$
 \end_inset
 
 .
- A small value of
+ A small value of 
 \begin_inset Formula $c$
 \end_inset
 
@@ -5091,7 +5220,7 @@ name "par:Boltzmann-selector"
 The selection probability of the Boltzmann selector is defined as
 \begin_inset Formula 
 \begin{equation}
-P(i)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
+P\left(i\right)=\frac{\textrm{e}^{b\cdot f_{i}}}{Z},
 \end{equation}
 
 \end_inset
@@ -5100,7 +5229,7 @@ where
 \begin_inset Formula $b$
 \end_inset
 
- is a parameter which controls the selection intensity and
+ is a parameter which controls the selection intensity and 
 \begin_inset Formula $Z$
 \end_inset
 
@@ -5171,6 +5300,9 @@ key "back1996evolutionary"
  equally spaced points which we spin.
  SUS uses a single random value for selecting individuals by choosing them
  at equally spaced intervals.
+ Weaker members of the population (according to their fitness) have a better
+ chance to be chosen, which reduces the unfair nature of fitness-proportional
+ selection methods.
  The selection method was introduced by James Baker.
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -5189,7 +5321,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/StochasticUniversalSelection.eps
-	width 75text%
+	width 100text%
 
 \end_inset
 
@@ -5223,7 +5355,7 @@ reference "fig:Stochastic-universal-selection"
 
 \end_inset
 
- shows the function of the stochastic-universal selection, where
+ shows the function of the stochastic-universal selection, where 
 \begin_inset Formula $n$
 \end_inset
 
@@ -5284,6 +5416,19 @@ remember the best solution found so far
 local
 \emph default
  optimum, so pure elitism is a race to the nearest local optimum.
+ The elite selector implementation of the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library also lets you specify the selector for the 
+\emph on
+non
+\emph default
+-elite individuals.
 \end_layout
 
 \begin_layout Subsubsection
@@ -5308,7 +5453,7 @@ name "subsec:Alterer"
 \end_layout
 
 \begin_layout Standard
-The problem encoding (representation) determines the bounds of the search
+The problem encoding/representation determines the bounds of the search
  space, but the
 \family typewriter
  Alterer
@@ -5327,7 +5472,7 @@ Stream
 \family typewriter
  Alterer
 \family default
- types used in
+ hierarchies used in
 \family sans
 \series bold
 \shape smallcaps
@@ -5369,7 +5514,7 @@ target "https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)"
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
@@ -5416,14 +5561,16 @@ Exploring the search space
 \series bold
 Maintaining diversity
 \series default
-: Mutation prevents a population from correlating.
+: Mutation prevents a population from converging to a local minimum by stopping
+ the solution to become to close to one another.
+ A genetic algorithm can improve the solution solely by the mutation operator.
  Even if most of the search is being performed by crossover, mutation can
  be vital to provide the diversity which crossover needs.
 \end_layout
 
 \begin_layout Standard
 The mutation probability, 
-\begin_inset Formula $P(m)$
+\begin_inset Formula $P\left(m\right)$
 \end_inset
 
 , is the parameter that must be optimized.
@@ -5435,7 +5582,7 @@ The mutation probability,
 
 \begin_layout Standard
 The mutation probability, 
-\begin_inset Formula $P(m)$
+\begin_inset Formula $P\left(m\right)$
 \end_inset
 
 , is defined as the probability that a specific gene, over the whole population,
@@ -5443,7 +5590,7 @@ The mutation probability,
  That means, the (average) number of genes mutated by a mutator is
 \begin_inset Formula 
 \begin{equation}
-\hat{\mu}=N_{P}\cdot N_{g}\cdot P(m)
+\hat{\mu}=N_{P}\cdot N_{g}\cdot P\left(m\right)
 \end{equation}
 
 \end_inset
@@ -5514,7 +5661,7 @@ Select a genotype
 \end_inset
 
  from the population with probability 
-\begin_inset Formula $P_{G}(m)$
+\begin_inset Formula $P_{G}\left(m\right)$
 \end_inset
 
 ,
@@ -5655,7 +5802,7 @@ g.
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/fwilhelm/Workspace/Development/Projects/Jenetics/jenetics.doc/src/main/resources/graphic/Aldus_leaf_unicode2766.svg
+	filename ../resources/graphic/Aldus_leaf_unicode2766.svg
 	lyxscale 20
 	height 12pt
 
@@ -5940,17 +6087,21 @@ s with the same
 \family typewriter
  Genotype
 \family sans
- position are recombined
+ position are recombined (see listing
 \family default
 \shape default
 \emph default
- (see listing 
+ 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Chromosome-selection-recombination"
 
 \end_inset
 
+
+\family sans
+\shape italic
+\emph on
 ).
 \end_layout
 
@@ -6751,9 +6902,9 @@ key "Muhlenbein:1993:PMB:1326623.1326626"
 
  takes two
 \emph on
- numeric
+ 
 \emph default
- chromosomes and treats it as a real number vector.
+numeric chromosomes and treats it as a real number vector.
  Each of this vectors can also be seen as a point in 
 \begin_inset Formula $\mathbb{R}^{n}$
 \end_inset
@@ -6833,19 +6984,19 @@ reference "fig:Line-crossover-hypercube"
 , the children may be located on an arbitrary place on the line, even outside
  of the hypercube.This is useful if you want to explore
 \emph on
- unknown
+ 
 \emph default
- regions, and you need a way to generate chromosomes further out than the
- parents are.
+unknown regions, and you need a way to generate chromosomes further out
+ than the parents are.
 \end_layout
 
 \begin_layout Standard
 The
 \emph on
- internal
+ 
 \emph default
- random parameters, which define the location of the new crossover point,
- are generated once for the whole vector (chromosome).
+internal random parameters, which define the location of the new crossover
+ point, are generated once for the whole vector (chromosome).
  If the
 \family typewriter
  Line\SpecialChar softhyphen
@@ -6881,10 +7032,10 @@ name "par:Intermediate-crossover"
 The intermediate crossover is quite similar to the line crossover.
  It differs in the way on how the
 \emph on
- internal
+ 
 \emph default
- random parameters are generated and the handling of the invalid–out of
- range–genes.
+internal random parameters are generated and the handling of the invalid–out
+ of range–genes.
  The
 \emph on
  internal
@@ -6961,9 +7112,9 @@ Engine classes
 \begin_layout Standard
 The
 \emph on
- executing
+ 
 \emph default
- classes, which perform the actual evolution, are located in the
+executing classes, which perform the actual evolution, are located in the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine
@@ -7015,9 +7166,9 @@ Result
  class has several predefined collectors, but you are free to create your
  own one, which can be seamlessly
 \emph on
- plugged
+ 
 \emph default
- into the existing stream.
+plugged into the existing stream.
 \end_layout
 
 \begin_layout Subsubsection
@@ -7261,180 +7412,6 @@ The first type parameter of the
 \end_layout
 
 \begin_layout Subsubsection
-Fitness scaler
-\begin_inset CommandInset label
-LatexCommand label
-name "subsubsec:Fitness-scaler"
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Fitness scaler
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The fitness value, calculated by the fitness
-\family typewriter
- Function
-\family default
-, is treated as the
-\shape italic
- raw
-\shape default
--fitness of an individual.
- The
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library allows you to apply an additional scaling function on the raw-fitness
- to form the fitness value which is used by the selectors.
- This can be useful when using probability selectors (see chapter 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "par:Probability-selectors"
-
-\end_inset
-
-), where the actual amount of the fitness value influences the selection
- probability.
- In such cases, the fitness scaler gives you additional flexibility when
- selecting offspring and survivors.
- In the default configuration the raw-fitness is equal to the actual fitness
- value, that means, the used fitness scaler is the identity function.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-class Main {
-\end_layout
-
-\begin_layout Plain Layout
-
-    public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-        Engine<DoubleGene, Double> engine = Engine.builder(...)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .fitnessScaler(Math::sqrt)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build();
-\end_layout
-
-\begin_layout Plain Layout
-
-    }
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The given listing shows a fitness scaler which reduces the the raw-fitness
- to its square root.
- This gives weaker individuals a greater changes being selected and weakens
- the influence of
-\emph on
- super
-\emph default
--individuals.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Shaded
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "90col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-
-\family sans
-When using a fitness scaler you have to take care that your scaler doesn't
-\emph on
- destroy
-\emph default
- your fitness value.
- This can be the case when your fitness value is negative and your fitness
- scaler squares the value.
- Trying to find the minimum will not work in this configuration.
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset CommandInset line
-LatexCommand rule
-offset "0.5ex"
-width "100col%"
-height "1pt"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
 Engine
 \begin_inset CommandInset label
 LatexCommand label
@@ -7468,9 +7445,10 @@ Evolution!Engine
 \begin_layout Standard
 The
 \emph on
- evolution
-\family typewriter
+ 
 \emph default
+evolution
+\family typewriter
  Engine
 \family default
  controls how the evolution steps are executed.
@@ -7845,27 +7823,6 @@ reference "subsubsec:Fitness-function"
 \begin_layout Description
 
 \family typewriter
-fitnessScaler
-\family default
- This property defines the fitness scaler used by the evolution
-\family typewriter
- Engine
-\family default
-.
- The default value is set to the identity function.
- (See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Fitness-scaler"
-
-\end_inset
-
-.)
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
 genotypeFactory
 \family default
  Defines the
@@ -7946,13 +7903,13 @@ maximalPhenotypeAge
  Set the maximal allowed age of an individual (Phenotype).
  This prevents
 \emph on
- super
+ 
 \emph default
- individuals to live
+super individuals to live
 \emph on
- forever
+ 
 \emph default
-.
+forever.
  The default value is set to 70.
 \end_layout
 
@@ -8396,14 +8353,14 @@ Stream
  controls the execution of the evolution process and can be seen as a kind
  of execution
 \emph on
- handle
+ 
 \emph default
-.
+handle.
  This handle can be used to define the termination criteria and to
 \emph on
- collect
+ 
 \emph default
- the final evolution result.
+collect the final evolution result.
  Since the
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -8634,13 +8591,13 @@ Stream
  method.
  The
 \emph on
- im
+ 
 \emph default
-mutable and
+immutable and
 \emph on
- stateless
+ 
 \emph default
- nature of the evolution
+stateless nature of the evolution
 \family typewriter
  Engine
 \family default
@@ -8720,7 +8677,7 @@ g.
 .
  In a
 \emph on
-typical
+ typical
 \emph default
  setup, no additional synchronization and/or locking is needed.
 \end_layout
@@ -8878,9 +8835,9 @@ Result
 \family default
  collects the result data of an evolution step into an immutable
 \emph on
- value
+ 
 \emph default
- class.
+value class.
  This class is the type of the stream elements of the EvolutionStream, as
  described in section 
 \begin_inset CommandInset ref
@@ -9708,11 +9665,8 @@ This interface allows to define different strategies for evaluating the
  fitness functions of a given population.
  Usually, it is not necessary to override the default evaluation strategy.
  It is helpful if you have performance problems when the fitness function
- is evaluated 
-\emph on
-serially
-\emph default
-—or in small concurrent batches, as it is implemented by the default strategy.
+ is evaluated serially—or in small concurrent batches, as it is implemented
+ by the default strategy.
  In this case, the 
 \family typewriter
 Engine.Evaluator
@@ -9938,7 +9892,7 @@ io\SpecialChar softhyphen
 \family default
  system property
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See section 
@@ -10422,7 +10376,7 @@ $ java -Dio.jenetics.concurrency.splitThreshold=1
 \begin_layout Standard
 You may want to tweak this parameters, if you realize a low CPU utilization
  during the fitness value evaluation.
- Long running fitness function could lead to CPU under-utilization while
+ Long running fitness functions could lead to CPU under-utilization while
  evaluating the last sub-population.
  In this case, only one core is busy, while the other cores are idle, because
  they already finished the fitness evaluation.
@@ -10689,9 +10643,9 @@ name "subsec:Randomness"
 \begin_layout Standard
 In general, GAs heavily depends on
 \emph on
- pseudo
+ 
 \emph default
- random number generators (PRNG)
+pseudo random number generators (PRNG)
 \begin_inset Index idx
 status collapsed
 
@@ -11167,9 +11121,9 @@ Random
 \family default
  PRNG instead, which uses
 \emph on
- block splitting
+ 
 \emph default
- as parallelization strategy.
+block splitting as parallelization strategy.
 \end_layout
 
 \begin_layout Paragraph
@@ -11384,9 +11338,9 @@ reference "fig:Parallelization-via-leapfrogging"
 
  graphically shows the concept of the
 \emph on
- leapfrog
+ 
 \emph default
- method.
+leapfrog method.
 \end_layout
 
 \begin_layout Standard
@@ -12021,6 +11975,13 @@ Seq
 \end_inset
 
 
+\begin_inset CommandInset label
+LatexCommand label
+name "par:io.jenetics.util.Seq"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -12061,9 +12022,9 @@ s, respectively.
 \emph default
  elements, because there are no casts needed when using
 \emph on
- nested
+ 
 \emph default
- generic types.
+nested generic types.
 \end_layout
 
 \begin_layout Standard
@@ -12151,6 +12112,7 @@ status open
 \begin_layout Plain Layout
 
 // Create "different" sequences.
+     
 \end_layout
 
 \begin_layout Plain Layout
@@ -12225,7 +12187,7 @@ How to create instances of the three
 \begin_inset CommandInset href
 LatexCommand href
 name "Javadoc"
-target "http://jenetics.sourceforge.net/javadoc/index.html"
+target "http://jenetics.io/javadoc/jenetics/index.html"
 
 \end_inset
 
@@ -12596,6 +12558,100 @@ DoubleMoments moments = chromosome.stream()
 
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+stat
+\family default
+ package also contains a class for calculating the quantile
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Quantile
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of a stream of double values.
+ It's implementing algorithm, which is described in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Jain:1985:PAD:4372.4378"
+
+\end_inset
+
+, calculates—or 
+\emph on
+estimates
+\emph default
+—the quantile value on the fly, without storing the consumed double values.
+ This allows to use the 
+\family typewriter
+Quantile
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Quantile
+\end_layout
+
+\end_inset
+
+
+\family default
+ class even for very large number of double values.
+ How to calculate the first quartile of a given, random 
+\family typewriter
+Double\SpecialChar softhyphen
+Stream
+\family default
+ is shown in the code snipped below.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Quantile quartile = new Quantile(0.25);
+\end_layout
+
+\begin_layout Plain Layout
+
+new Random().doubles(10_000).forEach(quartile);
+\end_layout
+
+\begin_layout Plain Layout
+
+final double value = quartile.getValue();
+\end_layout
+
+\end_inset
+
+Be aware, that the calculated quartile is 
+\emph on
+just
+\emph default
+ an estimation.
+ For a sufficient accuracy, the stream size should be sufficiently large
+ (
+\begin_inset Formula $size\gg100$
+\end_inset
+
+).
+\end_layout
+
 \begin_layout Chapter
 Advanced topics
 \end_layout
@@ -12685,9 +12741,9 @@ s are the starting point in the class hierarchy.
  They hold the actual information, the alleles, of the problem domain.
  Beside the
 \emph on
- classical
+ 
 \emph default
- bit-gene,
+classical bit-gene,
 \family sans
 \series bold
 \shape smallcaps
@@ -12762,9 +12818,10 @@ Gene
  interface.
  For
 \emph on
- normal
+ 
 \emph default
- genes there is no more work to do for using the Java serialization mechanism.
+normal genes there is no more work to do for using the Java serialization
+ mechanism.
 \end_layout
 
 \begin_layout Standard
@@ -13693,7 +13750,7 @@ Selector
  implementation).
  It is worth the effort to try to express your selection strategy in terms
  of selection property 
-\begin_inset Formula $P(i)$
+\begin_inset Formula $P\left(i\right)$
 \end_inset
 
 .
@@ -15152,7 +15209,7 @@ The
 \begin_inset Formula $x_{i}$
 \end_inset
 
- can't be the same for all
+ can't be the same for all 
 \begin_inset Formula $i$
 \end_inset
 
@@ -15468,7 +15525,7 @@ Chromosome
 \family typewriter
  double[]
 \family default
- array, which is collected to an
+ array, which is collected to an 
 \begin_inset Formula $2$
 \end_inset
 
@@ -15535,7 +15592,7 @@ For the special case of
  Genotype
 \family default
  can be simplified to the decoding we introduced for scalar functions in
- section
+ section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "subsec:Scalar-function"
@@ -15613,7 +15670,7 @@ https://en.wikipedia.org/wiki/Affine_transformation
 
 \end_inset
 
-, 
+ 
 \begin_inset Foot
 status collapsed
 
@@ -16343,7 +16400,7 @@ s of length
 \begin_inset Formula $i$
 \end_inset
 
- is connected to node
+ is connected to node 
 \begin_inset Formula $j$
 \end_inset
 
@@ -16708,9 +16765,9 @@ Normally, the
 \family default
  has then to be
 \emph on
- transformed
+ 
 \emph default
- into an object of the problem domain.
+transformed into an object of the problem domain.
  The usage
 \family typewriter
  Codec
@@ -17535,13 +17592,13 @@ Codec!Subset
 There are currently two kinds of subset codecs you can choose from: finding
  subsets with
 \emph on
- variable
+ 
 \emph default
- size and with
+variable size and with
 \emph on
- fixed
+ 
 \emph default
- size.
+fixed size.
 \end_layout
 
 \begin_layout Paragraph
@@ -17551,10 +17608,15 @@ Variable-sized subsets
 \begin_layout Standard
 A Codec for
 \emph on
- variable-sized
+ 
 \emph default
- subsets can be easily implemented with the use of a BitChromosome, as shown
- in listing 
+variable-sized subsets can be easily implemented with the use of a 
+\family typewriter
+Bit\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+, as shown in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofSubSet"
@@ -17597,7 +17659,7 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-            .mapToObj(basicSet::get)
+            .mapToObj(basicSet)
 \end_layout
 
 \begin_layout Plain Layout
@@ -17647,9 +17709,10 @@ name "lis:Codec-factory-method-ofSubSet"
 \begin_layout Standard
 The following usage example of
 \emph on
- subset
-\family typewriter
+ 
 \emph default
+subset
+\family typewriter
  Codec
 \family default
  shows a simplified version of the Knapsack problem (see section 
@@ -17779,32 +17842,6 @@ class Main {
 
 \begin_layout Paragraph
 Fixed-size subsets
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The algorithm for choosing subsets based on a FORTRAN77 version, originally
- implemented by Albert Nijenhuis, Herbert Wilf.
- The actual Java implementation is based on the C++ version by John Burkardt.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Nijenhuis1978"
-
-\end_inset
-
-,
-\begin_inset CommandInset citation
-LatexCommand cite
-key "JSSv068c01"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -17849,13 +17886,13 @@ Given a set (or multi-set) of integers, is there a non-empty subset whose
 \end_inset
 
  sums to zero.
- The problem is NP-complete
+ The problem is NP-complete.
+\emph default
+
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
-
-\emph on
 \begin_inset Flex URL
 status collapsed
 
@@ -17871,7 +17908,7 @@ https://en.wikipedia.org/wiki/NP-completeness
 
 \end_inset
 
-.
+
 \end_layout
 
 \begin_layout Standard
@@ -18139,11 +18176,37 @@ reference "lis:Codec-factory-method-ofPermutation"
 
  and uses
 \family typewriter
- java\SpecialChar softhyphen
-.awt\SpecialChar softhyphen
-.geom Point
+ io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.jpx\SpecialChar softhyphen
+.Way\SpecialChar softhyphen
+Point
 \family default
-s for representing the city locations.
+s, from the 
+\emph on
+JPX
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jpx
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ project, for representing the city locations.
 \end_layout
 
 \begin_layout Standard
@@ -18164,7 +18227,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final ISeq<Point> POINTS = ISeq.of(...);
+    static final ISeq<WayPoint> POINTS = ISeq.of(...);
 \end_layout
 
 \begin_layout Plain Layout
@@ -18178,7 +18241,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Codec<ISeq<Point>, EnumGene<Point>>
+    static final Codec<ISeq<WayPoint>, EnumGene<WayPoint>>
 \end_layout
 
 \begin_layout Plain Layout
@@ -18197,27 +18260,22 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static double dist(final ISeq<Point> p) {
+    static double dist(final ISeq<WayPoint> path) {
 \end_layout
 
 \begin_layout Plain Layout
 
-        return IntStream.range(0, p.length)
+        return path.stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-            .mapToDouble(i -> p.get(i)
+            .collect(Geoid.DEFAULT.toTourLength())
 \end_layout
 
 \begin_layout Plain Layout
 
-                .distance(p.get(i + i%p.length())))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .sum();
+            .to(Length.Unit.METER);
 \end_layout
 
 \begin_layout Plain Layout
@@ -18236,7 +18294,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-    static final Engine<EnumGene<Point>, Double> ENGINE = Engine
+    static final Engine<EnumGene<WayPoint>, Double> ENGINE = Engine
 \end_layout
 
 \begin_layout Plain Layout
@@ -18270,7 +18328,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-        final ISeq<Point> result = CODEC.decode(
+        final ISeq<WayPoint> result = CODEC.decode(
 \end_layout
 
 \begin_layout Plain Layout
@@ -18318,7 +18376,538 @@ public class TSM {
 \end_layout
 
 \begin_layout Subsection
+Mapping codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mapping codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Mapping
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Assignment problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This codec is a variation of the permutation codec.
+ Instead of permuting the elements of a given array, it permutes the mapping
+ of elements of a source set to the elements of a target set.
+ The code snippet below shows the method of the 
+\family typewriter
+Codecs
+\family default
+ class, which creates a mapping codec from a given source- and target set.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static <A, B> Codec<Map<A, B>, EnumGene<Integer>> 	
+\end_layout
+
+\begin_layout Plain Layout
+
+ofMapping(ISeq<? extends A> source, ISeq<? extends B> target);
+\end_layout
+
+\end_inset
+
+It is not necessary that the source and target set are of the same size.
+ If 
+\begin_inset Formula $\left|\mathsf{source}\right|>\left|\mathsf{target}\right|$
+\end_inset
+
+, the returned mapping function is 
+\emph on
+surjective
+\emph default
+, if 
+\begin_inset Formula $\left|\mathsf{source}\right|<\left|\mathsf{target}\right|$
+\end_inset
+
+, the mapping is 
+\emph on
+injective
+\emph default
+ and if 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, the created mapping is 
+\emph on
+bijective
+\emph default
+.
+ In every case the size of the encoded 
+\family typewriter
+Map
+\family default
+ is 
+\begin_inset Formula $\left|\mathsf{target}\right|$
+\end_inset
+
+.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Codec-mapping-types"
+
+\end_inset
+
+ shows the described different mapping types in graphical form.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/MappingCodec.eps
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Codec-mapping-types"
+
+\end_inset
+
+Mapping codec types
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With 
+\begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
+\end_inset
+
+, you will create a codec for the 
+\emph on
+assignment problem
+\emph default
+.
+ The problem is defined by a number of workers and a number of jobs.
+ Every worker can be assigned to perform any job.
+ The cost for a worker may vary depending on the worker-job assignment.
+ It is required to perform all jobs by assigning exactly one worker to each
+ job and exactly one job to each worker in such a way which optimizes the
+ total assignment costs.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Assignment_problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ The costs for such worker-job assignments are usually given by a matrix.
+ Such an example matrix is shown in table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Worker-task-cost"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Job 4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+13
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Worker 4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+9
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Worker-task-cost"
+
+\end_inset
+
+Worker-job cost
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+If your worker-job cost can be expressed by a matrix, the Hungarian algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Hungarian_algorithm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ can find an optimal solution in 
+\begin_inset Formula $O\left(n^{3}\right)$
+\end_inset
+
+ time.
+ You should consider this deterministic algorithm before using a GA.
+\end_layout
+
+\begin_layout Subsection
 Composite codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Composite codec
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Codec!Composite
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -18851,7 +19440,7 @@ The
 \emph on
  bind
 \emph default
- the problem encoding and the fitness function into one class.
+ the problem encoding and the fitness function into one data structure.
 \end_layout
 
 \begin_layout Standard
@@ -19151,9 +19740,9 @@ A given problem should usually encoded in a way, that it is not possible
 \family default
  to create
 \emph on
- invalid
+ 
 \emph default
- individuals (
+invalid individuals (
 \family typewriter
 Genotypes
 \family default
@@ -19173,11 +19762,11 @@ reference "subsec:Encoding"
 \family default
  creates new individuals in the
 \emph on
- altering
+ 
 \emph default
- step, by rearranging (or creating new)
+altering step, by rearranging (or creating new)
 \family typewriter
-Genes
+ Genes
 \family default
  within a
 \family typewriter
@@ -19190,9 +19779,9 @@ Genes
 \family default
  is treated as
 \emph on
- valid
+ 
 \emph default
- if every single
+valid if every single
 \family typewriter
  Gene
 \family default
@@ -19202,9 +19791,9 @@ Genes
 \family default
  is
 \emph on
- valid
+ 
 \emph default
-, the validity property of the
+valid, the validity property of the
 \family typewriter
  Gene
 \family default
@@ -19227,9 +19816,9 @@ The
 \family default
 s which has been
 \emph on
- destroyed
+ 
 \emph default
- by the altering step.
+destroyed by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
  To guarantee the termination of the
@@ -19266,9 +19855,9 @@ reference "subsubsec:Engine"
 .
  If the described validation mechanism doesn't fulfill your needs, you can
 \emph on
- override
+ 
 \emph default
- the validation mechanism by creating the
+override the validation mechanism by creating the
 \family typewriter
  Engine
 \family default
@@ -19277,9 +19866,9 @@ reference "subsubsec:Engine"
  Genotype
 \family default
 \emph on
- validator
+ 
 \emph default
-.
+validator.
 \end_layout
 
 \begin_layout Standard
@@ -19431,9 +20020,9 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 \family default
  creation, you
 \emph on
- only
+ 
 \emph default
- have to create an explicit
+only have to create an explicit
 \family typewriter
  Genotype
 \family default
@@ -19540,9 +20129,9 @@ er
 \family default
  classes is the most heavy-weighted possibility for solving the
 \emph on
- validity
+ 
 \emph default
- problem.
+validity problem.
  Refer to section 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -19636,8 +20225,8 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://github.com/jenetics/jenetics/blob/master/io.jenetics.tool/src/main/java/org
-/jenetics/tool/problem/Knapsack.java
+https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/io
+/jenetics/example/Knapsack.java
 \end_layout
 
 \end_inset
@@ -20062,7 +20651,7 @@ reference "fig:Fixed-generation-diagram"
 \begin_inset Formula $25^{th}$
 \end_inset
 
-percentile
+ percentile
 \emph default
 ,
 \emph on
@@ -20126,10 +20715,14 @@ Steady fitness
 \begin_layout Standard
 The
 \emph on
- steady fitness
+ 
 \emph default
- strategy truncates the evolution stream if its best fitness hasn't changed
- after a given number of generations.
+steady
+\emph on
+ 
+\emph default
+fitness strategy truncates the evolution stream if its best fitness hasn't
+ changed after a given number of generations.
  The predicate maintains an internal state, the number of generations with
  non increasing fitness, and must be newly created for every evolution stream.
 \end_layout
@@ -20431,9 +21024,14 @@ ks.
 
  times for each data point—, the tests showed that the
 \emph on
- steady fitness
+ 
 \emph default
- termination strategy always terminated, at least for the given test setup.
+steady
+\emph on
+ 
+\emph default
+fitness termination strategy always terminated, at least for the given test
+ setup.
  The lower diagram give an overview of the fitness progression.
  Only the mean values of the maximal fitness is shown.
 \end_layout
@@ -20716,9 +21314,9 @@ reference "fig:Fitness-threshold-diagram"
  And it will definitely not terminate if the fitness threshold is higher
  than the
 \emph on
- global
+ 
 \emph default
- maximum of the fitness function.
+global maximum of the fitness function.
  It will be a
 \emph on
  perfect
@@ -20970,7 +21568,7 @@ is fulfilled, the evolution stream is truncated.
 \begin_inset Formula 
 \begin{equation}
 \delta=\left\{ \begin{array}{ccc}
-\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \sigma_{F}(N_{x})\neq0\\
+\max\left(\left|\sigma_{F}(N_{S})\right|,\left|\sigma_{F}(N_{L})\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
 1 & \mathrm{otherwise}
 \end{array}\right..\label{eq:fitness-convergence-div}
 \end{equation}
@@ -21170,11 +21768,87 @@ Population convergence
 \end_layout
 
 \begin_layout Standard
-A termination method that stops the evolution when the population is deemed
- as converged.
- The population is deemed as converged when the average fitness across the
+This termination method that stops the evolution when the population is
+ deemed as converged.
+ A population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
+ The population is deemed as converged and the evolution stream is truncated
+ if
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{\left|f_{max}-\bar{f}\right|}{\delta}<\epsilon,
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+\bar{f}=\frac{1}{N}\sum_{i=0}^{N-1}f_{i},
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+f_{max}=\max_{i\in\left[0,N\right)}\left\{ f_{i}\right\} 
+\end{equation}
+
+\end_inset
+
+and
+\begin_inset Formula 
+\begin{equation}
+\delta=\left\{ \begin{array}{ccc}
+\max\left(\left|f_{max}\right|,\left|\bar{f}\right|\right) & \mathtt{\mathrm{if}} & \neq0\\
+1 & \mathrm{otherwise}
+\end{array}\right..
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula $N$
+\end_inset
+
+ denotes the number of individuals of the population.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Engine<DobuleGene, Double> engine = ...
+\end_layout
+
+\begin_layout Plain Layout
+
+EvolutionStream<DoubleGene, Double> stream = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(Limits.byPopulationConvergence(0.1);
+\end_layout
+
+\end_inset
+
+The evolution stream in the example above will terminate, if the difference
+ between the population's fitness mean value and the maximal fitness value
+ of the population is less then 
+\begin_inset Formula $10\%$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -21204,11 +21878,183 @@ Gene convergence
 \begin_layout Standard
 This termination strategy is different, in the sense that it takes the genes
  or alleles, respectively, for terminating the evolution stream.
- In the gene convergence termination method the evolution stops when a specified
- percentage of the genes of a genotype are deemed as converged.
+ In the gene convergence termination strategy the evolution stops when a
+ specified percentage of the genes of a genotype are deemed as converged.
  A gene is treated as converged when the average value of that gene across
  all of the genotypes in the current population is less than a given percentage
  away from the maximum allele value across the genotypes.
+\end_layout
+
+\begin_layout Section
+Reproducibility
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Reproducibility
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Engine!reproducible
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution!reproducible
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Some problems can be define with different kinds of fitness functions or
+ encodings.
+ Which combination works best can't usually be decided a priori.
+ To choose one, some testing is needed.
+ 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ allows you to setup an evolution 
+\family typewriter
+Engine
+\family default
+ in a way that will produce the very same result on every run.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+    Engine.builder(fitnessFunction, codec)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .executor(Runnable::run)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+final EvolutionResult<DoubleGene, Double> result =
+\end_layout
+
+\begin_layout Plain Layout
+
+    RandomRegistry.with(new Random(456), r ->
+\end_layout
+
+\begin_layout Plain Layout
+
+        engine.stream(population)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .limit(100)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(EvolutionResult.toBestEvolutionResult())
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Reproducible-evolution-Engine"
+
+\end_inset
+
+Reproducible evolution 
+\family typewriter
+Engine
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Reproducible-evolution-Engine"
+
+\end_inset
+
+ shows the basic setup of such a reproducible evolution 
+\family typewriter
+Engine
+\family default
+.
+ Firstly, you have to make sure that all evolution steps are executed serially.
+ This is done by configuring a single threaded executor.
+ In the simplest case the evolution is performed solely on the main thread—
+\family typewriter
+Runnable::run
+\family default
+.
+ The second step configures the random engine, the evolution 
+\family typewriter
+Engine
+\family default
+ is working with.
+ Just 
+\emph on
+wrap
+\emph default
+ the evolution stream execution in a 
+\family typewriter
+RandomRegistry::with
+\family default
+ block.
+ Additionally you can start the evolution stream with a predefined, initial
+ population.
+ Once you have setup the 
+\family typewriter
+Engine
+\family default
+, you can vary the fitness function and the codec and compare the results.
 \end_layout
 
 \begin_layout Section
@@ -21228,13 +22074,14 @@ Evolution!performance
 \begin_layout Standard
 This section contains an empirical
 \emph on
- proof
+ 
 \emph default
-, that
+proof, that
 \emph on
- evolutionary
+ 
 \emph default
- selectors deliver significantly better fitness results than a random search.
+evolutionary selectors deliver significantly better fitness results than
+ a random search.
  The
 \family typewriter
  Monte\SpecialChar softhyphen
@@ -21302,9 +22149,9 @@ reference "fig:Selector-performance-Knapsack"
 
  shows the
 \emph on
- evolution
+ 
 \emph default
- performance of the
+evolution performance of the
 \family typewriter
  Selec\SpecialChar softhyphen
 tor
@@ -21351,9 +22198,9 @@ Selector
  for selecting the survivors and offspring population.
  It can be easily seen, that the performance of the
 \emph on
- real
+ 
 \emph default
- evolutionary
+real evolutionary
 \family typewriter
  Selector
 \family default
@@ -21400,13 +22247,21 @@ key "FEDR:FEDR19750860506"
  It is a global optimization algorithm in continuous search spaces and is
  an instance of an
 \emph on
- Evolutionary Algorithm
+ 
 \emph default
- from the field of
+Evolutionary
 \emph on
- Evolutionary Computation
+ 
 \emph default
-.
+Algorithm from the field of
+\emph on
+ 
+\emph default
+Evolutionary
+\emph on
+ 
+\emph default
+Computation.
  ES uses truncation selection
 \begin_inset Foot
 status collapsed
@@ -22815,9 +23670,9 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \begin_layout Standard
 will perform the statistical tests for the nano time
 \emph on
- random engine
+ 
 \emph default
-.
+random engine.
  The statistical quality is rather bad: every single test failed.
  Table 
 \begin_inset CommandInset ref
@@ -23921,9 +24776,9 @@ The
 -standard genes and evolutionary operations.
  It also contains
 \emph on
- data structures
+ 
 \emph default
- which are used by this additional genes and operations.
+data structures which are used by this additional genes and operations.
 \end_layout
 
 \begin_layout Subsection
@@ -24039,9 +24894,9 @@ g.
  are derived from this four abstract tree methods.
  A
 \emph on
- mutable
+ 
 \emph default
- default implementation of the
+mutable default implementation of the
 \family typewriter
  Tree
 \family default
@@ -24220,6 +25075,385 @@ Node
  Tree
 \family default
  method list have a look at the Javadoc documentation.
+\end_layout
+
+\begin_layout Subsubsection
+Parentheses tree
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Parentheses tree
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A parentheses tree
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.i-programmer.info/programming/theory/3458-parentheses-are-trees.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ is a serialized representation of a tree and is a simplified form of the
+ 
+\emph on
+Newick
+\emph default
+ tree format
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://evolution.genetics.washington.edu/phylip/newicktree.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ The parentheses tree representation of the tree in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Example-tree"
+
+\end_inset
+
+ will look like the following string:
+\end_layout
+
+\begin_layout LyX-Code
+0(1(4,5),2(6),3(7(10,11),8,9))
+\end_layout
+
+\begin_layout Standard
+As you can see, nodes on the same tree level are separated by a comma, '
+\family typewriter
+,
+\family default
+'.
+ New tree levels are created with an opening parentheses '
+\family typewriter
+(
+\family default
+' and closed with a closing parentheses '
+\family typewriter
+)
+\family default
+'.
+ No additional spaces are inserted between the separator character and the
+ node value.
+ Any spaces in the parentheses tree string will be part of the node value.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+ shows the syntax diagram of the parentheses tree.
+ The 
+\family typewriter
+Node\SpecialChar softhyphen
+Value
+\family default
+ in the diagram is the string representation of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.get\SpecialChar softhyphen
+Val\SpecialChar softhyphen
+ue()
+\family default
+ object.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/diagram/ParenthesesTreeGrammar.png
+	lyxscale 30
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parentheses-tree-syntax"
+
+\end_inset
+
+Parentheses tree syntax diagram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To get the parentheses tree representation, you just have to call 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Paren\SpecialChar softhyphen
+the\SpecialChar softhyphen
+ses\SpecialChar softhyphen
+Tree()
+\family default
+.
+ This method uses the 
+\family typewriter
+Ob\SpecialChar softhyphen
+ject\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+String()
+\family default
+ method for serializing the tree node value.
+ If you need a different string representation you can use the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Paren\SpecialChar softhyphen
+the\SpecialChar softhyphen
+ses\SpecialChar softhyphen
+Tree(\SpecialChar softhyphen
+Function<\SpecialChar softhyphen
+? super V, String>\SpecialChar softhyphen
+)
+\family default
+ method.
+ A simple example, on how to use this method, is shown in the code snippet
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<Path, ?> tree = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final String string = tree.toParenthesesString(Path::getFileName);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the string representation of the tree node value contains one of the
+ protected characters, '
+\family typewriter
+,
+\family default
+', '
+\family typewriter
+(
+\family default
+' or '
+\family typewriter
+)
+\family default
+', they will be escaped with a '
+\family typewriter
+
+\backslash
+
+\family default
+' character.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> tree = TreeNode.of("(root)")
+\end_layout
+
+\begin_layout Plain Layout
+
+	.attach(",", "(", ")")
+\end_layout
+
+\end_inset
+
+The tree in the code snippet above will be represented as the following
+ parentheses string:
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+(root
+\backslash
+)(
+\backslash
+,,
+\backslash
+(,
+\backslash
+))
+\end_layout
+
+\begin_layout Standard
+Serializing a tree into parentheses form is just one part of the story.
+ It is also possible to read back the parentheses string as tree object.
+ The 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+.parse(\SpecialChar softhyphen
+String\SpecialChar softhyphen
+)
+\family default
+ method allows you to parse a tree string back to a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node<\SpecialChar softhyphen
+String\SpecialChar softhyphen
+>
+\family default
+ object.
+ If you need to create a tree with the original node type, you can call
+ the 
+\family typewriter
+parse
+\family default
+ method with an additional string mapper function.
+ How you can parse a given parentheses tree string is shown in the code
+ below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Tree<Integer, ?> tree = TreeNode.parse(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "0(1(4,5),2(6),3(7(10,11),8,9))",
+\end_layout
+
+\begin_layout Plain Layout
+
+    Integer::parseInt
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+TreeNode.parse
+\family default
+ method will throw an 
+\family typewriter
+Illegal\SpecialChar softhyphen
+Argument\SpecialChar softhyphen
+Exception
+\family default
+ if it is called with an invalid tree string.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewriting
+\end_layout
+
+\begin_layout Plain Layout
+Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
+ trees (tree structured data) into other trees by applying rewriting rules.
+ Rewriting can be non-deterministic.
+ One rule to rewrite a term could be applied in many different ways to that
+ term, or more than one rule could be applicable.
+ Rewriting systems then do not provide an algorithm for changing one term
+ to another, but a set of possible rule applications.
+ When combined with an appropriate algorithm, however, rewrite systems can
+ be viewed as computer programs, and several theorem provers and declarative
+ programming languages are based on term rewriting.
+\end_layout
+
+\begin_layout Plain Layout
+A term rewriting system (TRS) is a rewriting system where the objects are
+ terms, or expressions with nested sub-expressions.
+ For example, the system shown under § Logic above is a term rewriting system.
+\end_layout
+
+\begin_layout Plain Layout
+In contrast to string rewriting systems, whose objects are flat sequences
+ of symbols, the objects a term rewriting system works on, i.e.
+ the terms, form a term algebra.
+ A term can be visualized as a tree of symbols, the set of admitted symbols
+ being fixed by a given signature.
+ 
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -24492,12 +25726,17 @@ final TreeNode<Integer> tree = ...;
 
 \begin_layout Plain Layout
 
-final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
+final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode.of(tree)
 \end_layout
 
 \begin_layout Plain Layout
 
-    .of(tree).flattenedNodes();
+    .flattenedNodes();
+\end_layout
+
+\begin_layout Plain Layout
+
+assert Tree.equals(tree, nodes.get(0));
 \end_layout
 
 \begin_layout Plain Layout
@@ -24507,6 +25746,16 @@ final ISeq<FlatTreeNode<Integer>> nodes = FlatTreeNode
 \begin_layout Plain Layout
 
 final TreeNode<Integer> unflattened = TreeNode.of(nodes.get(0));
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.equals(unflattened);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert unflattened.equals(tree);
 \end_layout
 
 \end_inset
@@ -25144,7 +26393,7 @@ key "dawkins1986"
 \end_layout
 
 \begin_layout Standard
-If you want to write a Weasel program with th 
+If you want to write a Weasel program with the 
 \family sans
 \series bold
 \shape smallcaps
@@ -25650,18 +26899,18 @@ reference "lis:EvolutionStreamable-interface"
 
  shows the main methods of the 
 \family typewriter
-EvolutionStreamable
+Evo\SpecialChar softhyphen
+lu\SpecialChar softhyphen
+tion\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+able
 \family default
  interface.
  The existing 
 \family typewriter
 stream
 \family default
- methods take an initial value, which allows to 
-\emph on
-concatenate
-\emph default
- different engines.
+ methods take an initial value, which allows to concatenate different engines.
  With the 
 \family typewriter
 limit
@@ -26675,17 +27924,38 @@ Pareto efficiency
 \end_layout
 
 \begin_layout Standard
-In contrast to single-objective optimization, where usually only one optimal
- solution exits, the multi-objective optimization creates a set of 
-\emph on
-optimal
-\emph default
+Pareto efficiency is named after the Italian economist and political scientist
+ Vilfredo Pareto
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Vilfredo_Pareto
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ He used the concept in his studies of economic efficiency and income distributi
+on.
+ The concept has been applied in different academic fields such as economics,
+ engineering, and the life sciences.
+ Pareto efficiency says that an allocation is efficient if an action makes
+ some individual better off and no individual worse off.
+ In contrast to single-objective optimization, where usually only one optimal
+ solution exits, the multi-objective optimization creates a set of optimal
  solutions.
- The 
-\emph on
-optimal
-\emph default
- solutions are also known as the Pareto front or Pareto set.
+ The optimal solutions are also known as the Pareto front or Pareto set.
 \end_layout
 
 \begin_layout Definition*
@@ -27742,11 +29012,7 @@ Most of the existing termination strategies, implemented in the
 \family typewriter
 Limits
 \family default
- class, presumes a 
-\emph on
-total
-\emph default
- order of the fitness values.
+ class, presumes a total order of the fitness values.
  This assumption holds for single-objective optimization problems, but not
  for multi-objective problems.
  Only termination strategies which doesn't rely on the total order of the
@@ -28260,10 +29526,10 @@ final ISeq<Op<Double>> terminals = ISeq.of(x, y, z);
 \begin_layout Standard
 The
 \emph on
- terminal
+ 
 \emph default
- operations defined in the listing above can be used for defining a program
- which takes a 
+terminal operations defined in the listing above can be used for defining
+ a program which takes a 
 \begin_inset Formula $3$
 \end_inset
 
@@ -28370,22 +29636,32 @@ We can create a constant operation in to flavors: with a value only and
 
 \family typewriter
 EphemeralConst
-\end_layout
-
-\begin_layout Standard
-An ephemeral constant
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
-Genetic programming!EphemeralConst
+Ephemeral constant
 \end_layout
 
 \end_inset
 
- is a special constant, which is only constant within an tree.
- If a new tree is created, a new constant is created, by the Supplier function
- the ephemeral constant is created with.
+
+\end_layout
+
+\begin_layout Standard
+An ephemeral constant is a terminal operation, which encapsulates a value
+ that is generated at run time from the 
+\family typewriter
+Supplier
+\family default
+ it is created from.
+ Ephemeral constants allows you to have terminals that don’t have all the
+ same values.
+ To create an ephemeral constant that takes its random value in 
+\begin_inset Formula $\left[0,1\right)$
+\end_inset
+
+ you will write the following code.
 \end_layout
 
 \begin_layout Standard
@@ -28396,17 +29672,28 @@ status open
 
 \begin_layout Plain Layout
 
-final Op<Double> rand1 = EphemeralConst.of(Math::random);
+final Op<Double> rand1 = EphemeralConst
 \end_layout
 
 \begin_layout Plain Layout
 
-final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
+    .of(RandomRegistry.getRandom()::nextDouble);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Op<Double> rand2 = EphemeralConst
+\end_layout
+
+\begin_layout Plain Layout
+
+    .of("R", RandomRegistry.getRandom()::nextDouble);
 \end_layout
 
 \end_inset
 
-
+The ephemeral constant value is determined when it is inserted in the tree
+ and never changes until it is replaced by another ephemeral constant.
 \end_layout
 
 \begin_layout Subsection
@@ -28432,13 +29719,13 @@ Chromosome
  comes with some factory methods, which lets you easily create program trees
  with a given depth and a given set of
 \emph on
- operations
+ 
 \emph default
- and
+operations and
 \emph on
- terminals
+ 
 \emph default
-.
+terminals.
 \end_layout
 
 \begin_layout Standard
@@ -28726,9 +30013,9 @@ Gene
 \family default
  guarantees that the program tree after the
 \emph on
- alter
+ 
 \emph default
- operation is still valid.
+alter operation is still valid.
  It obeys the tree structure of the gene.
  General alterers, not written for
 \family typewriter
@@ -28747,9 +30034,9 @@ Gene
 \begin_layout Enumerate
 Marking the chromosome as
 \emph on
- invalid
+ 
 \emph default
-.
+invalid.
  This possibility is easier to achieve, but would also to lead to a large
  number of invalid chromosomes, which must be recreated.
  When recreating invalid chromosomes we will also loose possible solutions.
@@ -28848,6 +30135,19 @@ status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!Program pruning
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \end_inset
@@ -29603,9 +30903,9 @@ Another important aspect when doing marshalling, is the space needed for
  the marshaled objects and the time needed for doing the marshalling.
  For the performance tests a genotype with a varying
 \emph on
- chromosome count
+ 
 \emph default
- is used.
+chromosome count is used.
  The used genotype template can be seen in the code snippet below.
 \end_layout
 
@@ -32779,7 +34079,7 @@ reference "lis:Default-engine.properties"
 
  shows the default values for the GA engine if the
 \family typewriter
---engine\SpecialChar softhyphen
+ --engine\SpecialChar softhyphen
 -properties
 \family default
  parameter is not specified.
@@ -33532,17 +34832,6 @@ status collapsed
 
 \begin_layout Plain Layout
 
-https://sourceforge.net/projects/jenetics/files/latest/download
-\end_layout
-
-\end_inset
-
- or 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
 https://github.com/jenetics/jenetics/releases
 \end_layout
 
@@ -33857,13 +35146,13 @@ jenetics.doc
 \series default
 : Contains the
 \emph on
- code
+ 
 \emph default
- of the web-site and
+code of the web-site and
 \emph on
- this
+ 
 \emph default
- manual.
+this manual.
 \end_layout
 
 \begin_layout Itemize
@@ -34082,7 +35371,7 @@ Version
 \series default
 :
 \emph on
- 6.13
+ 6.14.3
 \end_layout
 
 \begin_layout Itemize
@@ -34205,6 +35494,112 @@ status collapsed
 \begin_layout Plain Layout
 
 http://tweedo.com/mirror/apache/commons/math/binaries/commons-math3-3.6.1-bin.zip
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+License
+\series default
+:
+\emph on
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Apache License, Version 2.0"
+target "http://testng.org/license"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Scope
+\series default
+:
+\emph on
+ test
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+EqualsVerifier
+\series default
+\emph default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Apache Commons Math
+\end_layout
+
+\end_inset
+
+
+\begin_inset Separator latexpar
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Version
+\series default
+:
+\emph on
+ 2.5.2
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Homepage
+\series default
+:
+\emph on
+
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://jqno.nl/equalsverifier/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Download
+\series default
+:
+\emph on
+
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jqno/equalsverifier/releases
 \end_layout
 
 \end_inset
@@ -34397,7 +35792,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 4.5
+: 4.10
 \end_layout
 
 \begin_layout Itemize
@@ -34434,7 +35829,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-4.5-bin.zip
+http://services.gradle.org/distributions/gradle-4.10-bin.zip
 \end_layout
 
 \end_inset

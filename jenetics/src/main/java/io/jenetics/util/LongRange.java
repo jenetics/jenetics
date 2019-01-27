@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.stream.LongStream;
@@ -144,7 +145,7 @@ public final class LongRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return (int)(_min + 31*_max);
+		return hash(_min, hash(_max, hash(getClass())));
 	}
 
 	@Override

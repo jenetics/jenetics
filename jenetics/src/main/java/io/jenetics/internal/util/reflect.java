@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @version 4.0
  */
 public class reflect {
-	private reflect() {require.noInstance();}
+	private reflect() {}
 
 	/**
 	 * Reflectively sets the field with the given {@code name} to the new

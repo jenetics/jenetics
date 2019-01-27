@@ -20,6 +20,7 @@
 package io.jenetics.ext;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -109,18 +110,14 @@ public class WeaselMutator<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*WeaselMutator.class.hashCode() + 37;
-		hash += 31*Double.hashCode(_probability) + 37;
-		return hash;
+		return hash(_probability);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof WeaselMutator &&
-			Double.compare(
-				((WeaselMutator) obj)._probability, _probability) == 0;
+			Double.compare(((WeaselMutator) obj)._probability, _probability) == 0;
 	}
 
 	@Override

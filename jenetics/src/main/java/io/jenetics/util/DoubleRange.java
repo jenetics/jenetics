@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 
@@ -108,10 +109,7 @@ public final class DoubleRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash  = 17;
-		hash += 31*Double.hashCode(_max) + 37;
-		hash += 31*Double.hashCode(_min) + 37;
-		return hash;
+		return hash(_min, hash(_max));
 	}
 
 	@Override

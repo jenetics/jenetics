@@ -103,8 +103,9 @@ public final class TravelingSalesman
 			.collect(toBestPhenotype());
 
 		final ISeq<WayPoint> path = best.getGenotype()
-			.getChromosome().toSeq()
-			.map(Gene::getAllele);
+			.getChromosome().stream()
+			.map(Gene::getAllele)
+			.collect(ISeq.toISeq());
 
 		final GPX gpx = GPX.builder()
 			.addTrack(track -> track
@@ -113,11 +114,9 @@ public final class TravelingSalesman
 			.build();
 
 		final double km = tsm.fitness(best.getGenotype())/1_000.0;
-		GPX.write(
-			gpx,
-			format("%s/out_%d.gpx", getProperty("user.home"), (int)km),
-			"    "
-		);
+		GPX.writer("    ")
+			.write(gpx, format("%s/out_%d.gpx", getProperty("user.home"), (int)km));
+
 		System.out.println(statistics);
 		System.out.println("Length: " + km);
 	}

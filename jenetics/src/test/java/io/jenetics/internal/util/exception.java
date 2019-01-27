@@ -19,13 +19,11 @@
  */
 package io.jenetics.internal.util;
 
-import static io.jenetics.internal.util.require.noInstance;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class exception {
-	private exception() {noInstance();}
+	private exception() {}
 
 
 	@FunctionalInterface

@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -169,7 +170,10 @@ public final class Phenotype<
 	 * (raw) fitness value.
 	 *
 	 * @return the fitness function.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Function<? super Genotype<G>, ? extends C> getFitnessFunction() {
 		return _function;
 	}
@@ -179,7 +183,10 @@ public final class Phenotype<
 	 * fitness.
 	 *
 	 * @return the fitness scaler.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Function<? super C, ? extends C> getFitnessScaler() {
 		return _scaler;
 	}
@@ -240,12 +247,12 @@ public final class Phenotype<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_generation + 37;
-		hash += 31*Objects.hashCode(getFitness()) + 37;
-		hash += 31*Objects.hashCode(getRawFitness()) + 37;
-		hash += 31*_genotype.hashCode() + 37;
-		return hash;
+		return
+			hash(_generation,
+			hash(getFitness(),
+			hash(getRawFitness(),
+			hash(_genotype,
+			hash(getClass())))));
 	}
 
 	@Override
@@ -329,7 +336,10 @@ public final class Phenotype<
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Phenotype<G, C> newInstance(
 		final long generation,
 		final Function<? super Genotype<G>, ? extends C> function,
@@ -348,7 +358,10 @@ public final class Phenotype<
 	 * @throws NullPointerException if one of the values is {@code null}.
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         {@code < 0}.
+	 *
+	 * @deprecated Will be removed in a later version
 	 */
+	@Deprecated
 	public Phenotype<G, C> newInstance(
 		final long generation,
 		final Function<? super Genotype<G>, ? extends C> function

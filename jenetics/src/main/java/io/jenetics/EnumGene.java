@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -165,15 +166,13 @@ public final class EnumGene<A>
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_alleleIndex + 37;
-		hash += 31*_validAlleles.hashCode() + 37;
-		return hash;
+		return hash(_alleleIndex, hash(_validAlleles));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EnumGene &&
+		return obj == this ||
+			obj instanceof EnumGene &&
 			Objects.equals(((EnumGene)obj)._alleleIndex, _alleleIndex) &&
 			Objects.equals(((EnumGene)obj)._validAlleles, _validAlleles);
 	}

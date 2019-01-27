@@ -29,6 +29,8 @@ import javax.swing.JPanel;
  */
 final class ImagePanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	private BufferedImage _image;
 
 	ImagePanel() {
