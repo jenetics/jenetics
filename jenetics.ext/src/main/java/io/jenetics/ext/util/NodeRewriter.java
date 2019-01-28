@@ -19,14 +19,33 @@
  */
 package io.jenetics.ext.util;
 
+import static io.jenetics.internal.util.Hashes.hash;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree.Path;
 
 /**
+ * <pre>{@code
+ * <x:expr> + 0 -> <x>
+ * <x:expr> * 1 -> <x>
+ * <x:expr> * 0 -> 0
+ *
+ * add(<x>,0) -> <x>
+ * mul(<x>,1) -> <x>
+ * add(<x>,0,<y>) -> add(<x>,<y>)
+ *
+ *
+ * }</pre>
+ *
  * add(X,0) -> X
  * mul(X,0) -> 0
  * sin(neg(X)) -> neg(sin(X))
@@ -55,4 +74,186 @@ final class NodeRewriter<V> {
 					.orElseThrow(AssertionError::new)));
 	}
 
+}
+
+/**
+ * A compiled representation of a <em>tree</em> pattern. A tree pattern,
+ * specified as a string, must first be compiled into an instance of this class.
+ * The resulting pattern can then be used to create a {@code TreeMatcher} object
+ * that can match arbitrary trees against the tree pattern. All of the state
+ * involved in performing a match resides in the matcher, so many matchers can
+ * share the same pattern.
+ * <p>
+ * The string representation of a tree pattern is a parenthesis tree string,
+ * with a special wildcard syntax for arbitrary sub-trees:
+ * <pre>{@code
+ *     add(<x>,0)
+ *     mul(1,<y>)
+ * }</pre>
+ * The identifier of such sub-trees are put into angle brackets.
+ */
+final class Tree_Pattern {
+
+	private static abstract class Node {
+		private final String _value;
+
+		private Node(final String value) {
+			_value = value;
+		}
+
+		String value() {
+			return _value;
+		}
+
+		@Override
+		public int hashCode() {
+			return hash(getClass(), hash(_value));
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj != null &&
+				getClass() == obj.getClass() &&
+				Objects.equals(_value, ((Node)obj)._value);
+		}
+
+		@Override
+		public String toString() {
+			return Objects.toString(_value);
+		}
+
+		static Val val(final String value) {
+			return new Val(value);
+		}
+
+		static Var var(final String name) {
+			return new Var(name);
+		}
+	}
+
+	private static final class Val extends Node {
+		private Val(final String value) {
+			super(value);
+		}
+	}
+
+	private static final class Var extends Node {
+		private Var(final String value) {
+			super(value);
+		}
+
+		@Override
+		public String toString() {
+			return format("<%s>", value());
+		}
+	}
+
+
+
+
+
+	private final Tree<Node, ?> _tree;
+	private final Map<Path, Node> _nodes;
+	private final Map<Path, Var> _vars;
+	private final Map<Path, Val> _vals;
+
+	private Tree_Pattern(
+		final Tree<Node, ?> tree,
+		final Map<Path, Node> nodes,
+		final Map<Path, Var> vars,
+		final Map<Path, Val> vals
+	) {
+		_tree = requireNonNull(tree);
+		_nodes = requireNonNull(nodes);
+		_vars = requireNonNull(vars);
+		_vals = requireNonNull(vals);
+	}
+
+	Tree_Matcher matcher(final Tree<?, ?> tree) {
+		return null;
+	}
+
+	Map<Path, Node> nodes() {
+		return _nodes;
+	}
+
+	Map<Path, Var> vars() {
+		return _vars;
+	}
+
+	Map<Path, Val> vals() {
+		return _vals;
+	}
+
+	Tree_Pattern compile(final String expr) {
+		final TreeNode<Node> tree = TreeNode.parse(expr, Tree_Pattern::toNode);
+		final Map<Path, Node> nodes = tree.stream()
+			.collect(Collectors.toMap(Tree::childPath, TreeNode::getValue));
+
+		final Map<Path, Var> vars = nodes.entrySet().stream()
+			.filter(n -> n.getValue() instanceof Var)
+			.collect(Collectors.toMap(Map.Entry::getKey, n -> (Var)n.getValue()));
+
+		final Map<Path, Val> vals = nodes.entrySet().stream()
+			.filter(n -> n.getValue() instanceof Val)
+			.collect(Collectors.toMap(Map.Entry::getKey, n -> (Val)n.getValue()));
+
+		return new Tree_Pattern(tree, nodes, vars, vals);
+	}
+
+	private static Node toNode(final String value) {
+		return value.startsWith("<") && value.endsWith(">")
+			? Node.val(value.substring(1, value.length() - 1))
+			: Node.var(value);
+	}
+
+}
+
+final class Tree_Matcher {
+
+	private final Tree_Pattern _pattern;
+	private final Tree<?, ?> _tree;
+
+	private Tree_Matcher(final Tree_Pattern pattern, final Tree<?, ?> tree) {
+		_pattern = requireNonNull(pattern);
+		_tree = requireNonNull(tree);
+	}
+
+	Tree_Pattern pattern() {
+		return _pattern;
+	}
+
+	boolean matches() {
+		return false;
+	}
+
+	Stream<Tree_MatchResult> results() {
+		return null;
+	}
+
+}
+
+final class Tree_MatchResult {
+
+	private final Tree<?, ?> _tree;
+	private final Path _root;
+	private final Map<Path, String> _vars;
+
+	private Tree_MatchResult(
+		final Tree<?, ?> tree,
+		final Path root,
+		final Map<Path, String> vars
+	) {
+		_tree = requireNonNull(tree);
+		_root = requireNonNull(root);
+		_vars = requireNonNull(vars);
+	}
+
+	Path root() {
+		return _root;
+	}
+
+	Map<Path, String> vars() {
+		return _vars;
+	}
 }
