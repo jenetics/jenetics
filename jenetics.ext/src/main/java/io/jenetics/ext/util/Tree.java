@@ -1103,6 +1103,20 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			return _path.clone();
 		}
 
+		/**
+		 * Appends the given {@code path} to {@code this} one.
+		 *
+		 * @param path the path to append
+		 * @return a new {@code Path} with the given {@code path} appended
+		 * @throws NullPointerException if the given {@code path} is {@code null}
+		 */
+		public Path append(final Path path) {
+			final int[] p = new int[length() + path.length()];
+			System.arraycopy(_path, 0, p, 0, length());
+			System.arraycopy(path._path, 0, p, length(), path.length());
+			return new Path(p);
+		}
+
 		@Override
 		public int hashCode() {
 			return Arrays.hashCode(_path);

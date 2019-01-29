@@ -32,6 +32,9 @@ import java.util.stream.Stream;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree.Path;
+import io.jenetics.ext.util.Tree_Pattern.Node;
+import io.jenetics.ext.util.Tree_Pattern.Val;
+import io.jenetics.ext.util.Tree_Pattern.Var;
 
 /**
  * <pre>{@code
@@ -94,10 +97,10 @@ final class NodeRewriter<V> {
  */
 final class Tree_Pattern {
 
-	private static abstract class Node {
+	static abstract class Node {
 		private final String _value;
 
-		private Node(final String value) {
+		Node(final String value) {
 			_value = value;
 		}
 
@@ -131,13 +134,13 @@ final class Tree_Pattern {
 		}
 	}
 
-	private static final class Val extends Node {
+	static final class Val extends Node {
 		private Val(final String value) {
 			super(value);
 		}
 	}
 
-	private static final class Var extends Node {
+	static final class Var extends Node {
 		private Var(final String value) {
 			super(value);
 		}
@@ -170,7 +173,11 @@ final class Tree_Pattern {
 	}
 
 	Tree_Matcher matcher(final Tree<?, ?> tree) {
-		return null;
+		return new Tree_Matcher(_tree, tree);
+	}
+
+	Tree<Node, ?> tree() {
+		return _tree;
 	}
 
 	Map<Path, Node> nodes() {
@@ -185,7 +192,7 @@ final class Tree_Pattern {
 		return _vals;
 	}
 
-	Tree_Pattern compile(final String expr) {
+	static Tree_Pattern compile(final String expr) {
 		final TreeNode<Node> tree = TreeNode.parse(expr, Tree_Pattern::toNode);
 		final Map<Path, Node> nodes = tree.stream()
 			.collect(Collectors.toMap(Tree::childPath, TreeNode::getValue));
@@ -203,32 +210,56 @@ final class Tree_Pattern {
 
 	private static Node toNode(final String value) {
 		return value.startsWith("<") && value.endsWith(">")
-			? Node.val(value.substring(1, value.length() - 1))
-			: Node.var(value);
+			? Node.var(value.substring(1, value.length() - 1))
+			: Node.val(value);
 	}
 
 }
 
 final class Tree_Matcher {
 
-	private final Tree_Pattern _pattern;
+	private final Tree<Node, ?> _pattern;
 	private final Tree<?, ?> _tree;
 
-	private Tree_Matcher(final Tree_Pattern pattern, final Tree<?, ?> tree) {
+	Tree_Matcher(final Tree<Node, ?> pattern, final Tree<?, ?> tree) {
 		_pattern = requireNonNull(pattern);
 		_tree = requireNonNull(tree);
 	}
 
-	Tree_Pattern pattern() {
+	Tree<Node, ?> pattern() {
 		return _pattern;
 	}
 
 	boolean matches() {
-		return false;
+		return results().findFirst().isPresent();
 	}
 
 	Stream<Tree_MatchResult> results() {
-		return null;
+		return _tree.stream()
+			.filter(node -> matches(node, _pattern))
+			.map(node -> Tree_MatchResult.of(node, _pattern));
+	}
+
+	static boolean matches(final Tree<?, ?> node, final Tree<Node, ?> pattern) {
+		if (pattern.getValue() instanceof Var) {
+			System.out.println(node.toParenthesesString() + "::" + pattern.toParenthesesString());
+			return true;
+		} else {
+			if (pattern.getValue().value().equals(node.getValue().toString()) || pattern.getValue() instanceof Var) {
+				if (node.childCount() == pattern.childCount()) {
+					for (int i = 0; i < node.childCount(); ++i) {
+						if (!matches(node.getChild(i), pattern.getChild(i))) {
+							return false;
+						}
+					}
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 	}
 
 }
@@ -249,11 +280,35 @@ final class Tree_MatchResult {
 		_vars = requireNonNull(vars);
 	}
 
+	Tree<?, ?> match() {
+		return _tree.childAtPath(_root)
+			.orElseThrow(AssertionError::new);
+	}
+
 	Path root() {
 		return _root;
 	}
 
 	Map<Path, String> vars() {
 		return _vars;
+	}
+
+	static Tree_MatchResult of(final Tree<?, ?> node, final Tree<Node, ?> pattern) {
+		final Tree<?, ?> tree = node.getRoot();
+		final Path root = node.childPath();
+
+		final Map<Path, Node> nodes = pattern.stream()
+			.collect(Collectors.toMap(Tree::childPath, Tree::getValue));
+
+		final Map<Path, String> vars = nodes.entrySet().stream()
+			.filter(n -> n.getValue() instanceof Var)
+			.collect(Collectors.toMap(e -> root.append(e.getKey()), n -> n.getValue().value()));
+
+		return new Tree_MatchResult(tree, root, vars);
+	}
+
+	@Override
+	public String toString() {
+		return format("M[%s]", match().toParenthesesString());
 	}
 }
