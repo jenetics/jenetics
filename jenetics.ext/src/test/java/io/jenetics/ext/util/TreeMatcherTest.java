@@ -30,26 +30,26 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 public class TreeMatcherTest {
 
-	@Test(dataProvider = "treePattern")
-	public void subTrees(
-		final String pattern,
-		final String treeString,
-		final boolean matches
-	) {
-		final Matcher<Integer> matcher = TreeMatcher.of(pattern, Integer::parseInt);
-
-		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
-		Assert.assertEquals(matcher.matches(tree), matches);
-	}
-
-	@DataProvider(name = "treePattern")
-	public Object[][] treePattern() {
-		return new Object[][] {
-			{"0(1,2)", "0(1,2)", true},
-			{"0(1,2,X)", "0(1,2,3(4))", true},
-			{"0(3,2,X)", "0(1,2)", false},
-			{"0(3,2,X,X)", "0(3,2,0(1,2),0(1,2))", true}
-		};
-	}
+//	@Test(dataProvider = "treePattern")
+//	public void subTrees(
+//		final String pattern,
+//		final String treeString,
+//		final boolean matches
+//	) {
+//		final Matcher<Integer> matcher = TreeMatcher.of(pattern, Integer::parseInt);
+//
+//		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
+//		Assert.assertEquals(matcher.matches(tree), matches);
+//	}
+//
+//	@DataProvider(name = "treePattern")
+//	public Object[][] treePattern() {
+//		return new Object[][] {
+//			{"0(1,2)", "0(1,2)", true},
+//			{"0(1,2,X)", "0(1,2,3(4))", true},
+//			{"0(3,2,X)", "0(1,2)", false},
+//			{"0(3,2,X,X)", "0(3,2,0(1,2),0(1,2))", true}
+//		};
+//	}
 
 }

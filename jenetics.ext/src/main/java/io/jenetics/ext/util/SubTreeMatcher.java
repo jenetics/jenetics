@@ -19,8 +19,7 @@
  */
 package io.jenetics.ext.util;
 
-import static io.jenetics.ext.util.TreeMatcher.children;
-
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ final class SubTreeMatcher<V> implements Matcher<V> {
 
 	private static boolean
 	equals(final Tree<?, ?> tree, final List<Path> paths) {
-		final List<Tree<?, ?>> nodes = children(tree, paths);
+		final List<Tree<?, ?>> nodes = Collections.emptyList();//children(tree, paths);
 
 		boolean matches = nodes.size() == paths.size();
 		final Iterator<Tree<?, ?>> it = nodes.iterator();

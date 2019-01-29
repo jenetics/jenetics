@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
@@ -28,6 +29,8 @@ import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeRewriter.Matcher;
+import io.jenetics.ext.util.Tree_Pattern.Node;
+import io.jenetics.ext.util.Tree_Pattern.Var;
 
 /**
  * Implementation of a pattern based tree matcher.
@@ -37,46 +40,90 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  * @since !__version__!
  */
 final class TreeMatcher<V> implements Matcher<V> {
-	private final Matcher<V> _subTreeMatcher;
-	private final Matcher<V> _valueMatcher;
 
-	private TreeMatcher(
-		final Matcher<V> subTreeMatcher,
-		final Matcher<V> valueMatcher
-	) {
-		_subTreeMatcher = requireNonNull(subTreeMatcher);
-		_valueMatcher = requireNonNull(valueMatcher);
+	private final TreePattern _pattern;
+	private final Tree<V, ?> _tree;
+
+	TreeMatcher(final TreePattern pattern, final Tree<V, ?> tree) {
+		_pattern = requireNonNull(pattern);
+		_tree = requireNonNull(tree);
+	}
+
+	TreePattern pattern() {
+		return _pattern;
+	}
+
+	boolean matches() {
+		return results().findFirst().isPresent();
+	}
+
+	Stream<Tree<V, ?>> results() {
+		@SuppressWarnings("unchecked")
+		final Stream<Tree<V, ?>> ts = (Stream<Tree<V, ?>>)_tree.stream();
+		return  ts.filter(_pattern::matches);
+	}
+
+	static final class Result {
+		private final Tree<?, ?> _match;
+
+		private Result(final Tree<?, ?> match) {
+			_match = requireNonNull(match);
+		}
+
+		Tree<?, ?> match() {
+			return _match;
+		}
+
+		@Override
+		public String toString() {
+			return format("M[%s]", _match.toParenthesesString());
+		}
 	}
 
 	@Override
-	public boolean matches(final Tree<V, ?> node) {
-		return _valueMatcher.matches(node) && _subTreeMatcher.matches(node);
+	public boolean matches(Tree<V, ?> node) {
+		return false;
 	}
-
-	static List<Tree<?, ?>>
-	children(final Tree<?, ?> tree, final List<Path> paths) {
-		return paths.stream()
-			.map(tree::childAtPath)
-			.flatMap(n -> n.map(Stream::of).orElse(Stream.empty()))
-			.collect(Collectors.toList());
-	}
-
-	/**
-	 * add(X, sub(X, X)) -> x
-	 *
-	 * @param pattern the pattern
-	 * @return the matcher
-	 */
-	static <V> TreeMatcher<V> of(
-		final String pattern,
-		final Function<? super String, ? extends V> mapper
-	) {
-		final TreeNode<String> tree = TreeNode.parse(pattern);
-
-		return new TreeMatcher<>(
-			SubTreeMatcher.of(tree),
-			TreeValueMatcher.of(tree, mapper)
-		);
-	}
+	//	private final Matcher<V> _subTreeMatcher;
+//	private final Matcher<V> _valueMatcher;
+//
+//	private TreeMatcher(
+//		final Matcher<V> subTreeMatcher,
+//		final Matcher<V> valueMatcher
+//	) {
+//		_subTreeMatcher = requireNonNull(subTreeMatcher);
+//		_valueMatcher = requireNonNull(valueMatcher);
+//	}
+//
+//	@Override
+//	public boolean matches(final Tree<V, ?> node) {
+//		return _valueMatcher.matches(node) && _subTreeMatcher.matches(node);
+//	}
+//
+//	static List<Tree<?, ?>>
+//	children(final Tree<?, ?> tree, final List<Path> paths) {
+//		return paths.stream()
+//			.map(tree::childAtPath)
+//			.flatMap(n -> n.map(Stream::of).orElse(Stream.empty()))
+//			.collect(Collectors.toList());
+//	}
+//
+//	/**
+//	 * add(X, sub(X, X)) -> x
+//	 *
+//	 * @param pattern the pattern
+//	 * @return the matcher
+//	 */
+//	static <V> TreeMatcher<V> of(
+//		final String pattern,
+//		final Function<? super String, ? extends V> mapper
+//	) {
+//		final TreeNode<String> tree = TreeNode.parse(pattern);
+//
+//		return new TreeMatcher<>(
+//			SubTreeMatcher.of(tree),
+//			TreeValueMatcher.of(tree, mapper)
+//		);
+//	}
 
 }

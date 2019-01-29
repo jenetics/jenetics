@@ -30,29 +30,29 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  */
 public class SubTreeMatcherTest {
 
-	@Test(dataProvider = "treePattern")
-	public void subTrees(
-		final String patternString,
-		final String treeString,
-		final boolean matches
-	) {
-		final Tree<String, ?> pattern = TreeNode.parse(patternString);
-		final Matcher<String> matcher = SubTreeMatcher.of(pattern);
-
-		final Tree<String, ?> tree = TreeNode.parse(treeString);
-		Assert.assertEquals(matcher.matches(tree), matches);
-	}
-
-	@DataProvider(name = "treePattern")
-	public Object[][] treePattern() {
-		return new Object[][] {
-			{"add(X,1)", "add(sub(1,2),1)", true},
-			{"sub(X,X)", "add(sub(1,2),sub(1,2))", true},
-			{"sub(X,X)", "add(sub(1,add(a,b)),sub(1,add(a,b)))", true},
-			{"add(X,Y)", "add(sub(1,2),foo(a,v))", true},
-			{"add(X,Y,Y)", "add(sub(1,2),foo(a,v))", false},
-			{"add(X,Y,Y)", "add(sub(1,2),foo(a,v),foo(a,v))", true},
-		};
-	}
+//	@Test(dataProvider = "treePattern")
+//	public void subTrees(
+//		final String patternString,
+//		final String treeString,
+//		final boolean matches
+//	) {
+//		final Tree<String, ?> pattern = TreeNode.parse(patternString);
+//		final Matcher<String> matcher = SubTreeMatcher.of(pattern);
+//
+//		final Tree<String, ?> tree = TreeNode.parse(treeString);
+//		Assert.assertEquals(matcher.matches(tree), matches);
+//	}
+//
+//	@DataProvider(name = "treePattern")
+//	public Object[][] treePattern() {
+//		return new Object[][] {
+//			{"add(X,1)", "add(sub(1,2),1)", true},
+//			{"sub(X,X)", "add(sub(1,2),sub(1,2))", true},
+//			{"sub(X,X)", "add(sub(1,add(a,b)),sub(1,add(a,b)))", true},
+//			{"add(X,Y)", "add(sub(1,2),foo(a,v))", true},
+//			{"add(X,Y,Y)", "add(sub(1,2),foo(a,v))", false},
+//			{"add(X,Y,Y)", "add(sub(1,2),foo(a,v),foo(a,v))", true},
+//		};
+//	}
 
 }

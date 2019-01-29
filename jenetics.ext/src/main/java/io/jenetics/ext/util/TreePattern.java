@@ -47,21 +47,15 @@ import java.util.Objects;
  */
 final class TreePattern {
 
+	private final Tree<Node, ?> _pattern;
 
 
-
-
-
-
-	private final Tree<Node, ?> _tree;
-
-
-	private TreePattern(final Tree<Node, ?> tree) {
-		_tree = requireNonNull(tree);
+	private TreePattern(final Tree<Node, ?> pattern) {
+		_pattern = requireNonNull(pattern);
 	}
 
-	Tree<Node, ?> tree() {
-		return _tree;
+	private Tree<Node, ?> pattern() {
+		return _pattern;
 	}
 
 	static TreePattern compile(final String expr) {
@@ -75,7 +69,34 @@ final class TreePattern {
 			: Node.val(value);
 	}
 
+	<V> TreeMatcher<V> matcher(final Tree<V, ?> tree) {
+		return new TreeMatcher<>(this, tree);
+	}
 
+	boolean matches(final Tree<?, ?> tree) {
+		return matches(tree, _pattern);
+	}
+
+	private static boolean matches(final Tree<?, ?> node, final Tree<Node, ?> pattern) {
+		if (pattern.getValue() instanceof Var) {
+			return true;
+		} else {
+			if (pattern.getValue().value().equals(node.getValue().toString()) || pattern.getValue() instanceof Var) {
+				if (node.childCount() == pattern.childCount()) {
+					for (int i = 0; i < node.childCount(); ++i) {
+						if (!matches(node.getChild(i), pattern.getChild(i))) {
+							return false;
+						}
+					}
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
 
 	/* *************************************************************************
 	 * Helper classes
