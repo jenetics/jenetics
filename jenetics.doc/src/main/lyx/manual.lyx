@@ -18412,7 +18412,8 @@ Assignment problem
 \begin_layout Standard
 This codec is a variation of the permutation codec.
  Instead of permuting the elements of a given array, it permutes the mapping
- of elements of a source set to the elements of a target set.
+ of elements of a source set to the elements of a target set. 
+ Note that the mapping is identical for all individuals whose first chromosome (only) is identical.
  The code snippet below shows the method of the 
 \family typewriter
 Codecs
