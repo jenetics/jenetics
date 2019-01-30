@@ -80,7 +80,7 @@ public class TreeMatcherTest {
 		final TreePattern pattern = TreePattern.compile(patternString);
 		final Tree<String, ?> tree = TreeNode.parse(treeString);
 		final String[] matches = pattern.matcher(tree).results()
-			.map(Tree::toParenthesesString)
+			.map(t -> t.node().toParenthesesString())
 			.toArray(String[]::new);
 
 		Assert.assertEquals(matches, results);

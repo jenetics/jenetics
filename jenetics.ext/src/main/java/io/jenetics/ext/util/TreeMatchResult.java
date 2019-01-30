@@ -21,33 +21,38 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Optional;
+import java.util.Map;
 
 /**
- * <pre>{@code
- * add(<x>,0) -> <x>
- * sub(<x>,<x>) -> 0
- * add(<x>,<x>) -> mul(<x>,2)
- * }</pre>
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeRewritePattern {
+final class TreeMatchResult<V> {
+	private final Tree<V, ?> _node;
+	private final Map<String, Tree<V, ?>> _variables;
 
-	private final TreePattern _source;
-	private final TreePattern _target;
-
-	private TreeRewritePattern(final TreePattern source, final TreePattern target) {
-		_source = requireNonNull(source);
-		_target = requireNonNull(target);
+	private TreeMatchResult(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		_node = requireNonNull(node);
+		_variables = requireNonNull(variables);
 	}
 
+	Tree<V, ?> node() {
+		return _node;
+	}
 
-	public <V> void rewrite(final TreeNode<V> tree) {
+	Map<String, Tree<V, ?>> variables() {
+		return _variables;
+	}
 
-		Tree<V, ?> node = null;
+	static <V> TreeMatchResult<V> of(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		return new TreeMatchResult<>(node, variables);
 	}
 
 }

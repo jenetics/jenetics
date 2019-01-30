@@ -20,13 +20,16 @@
 package io.jenetics.ext.util;
 
 import static java.lang.String.format;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -127,6 +130,18 @@ final class TreePattern {
 		return Objects.equals(Objects.toString(value), string);
 	}
 
+	<V> Optional<TreeMatchResult<V>> match(
+		final Tree<V, ?> tree,
+		final BiPredicate<V, String> equals
+	) {
+		final Map<String, Tree<V, ?>> vars = new HashMap<>();
+		final boolean matches = matches(tree, _pattern, vars, equals);
+
+		return matches
+			? Optional.of(TreeMatchResult.of(tree, unmodifiableMap(vars)))
+			: Optional.empty();
+	}
+
 	/**
 	 * Tests whether the given input tree matches {@code this} pattern, using
 	 * the given {@code equals} predicate.
@@ -164,15 +179,15 @@ final class TreePattern {
 	private static <V> boolean matches(
 		final Tree<V, ?> node,
 		final Tree<Decl, ?> pattern,
-		final Map<Decl, Tree<V, ?>> vars,
+		final Map<String, Tree<V, ?>> vars,
 		final BiPredicate<V, String> equals
 	) {
 		final Decl decl = pattern.getValue();
 
 		if (decl.isVar) {
-			final Tree<V, ?> tree = vars.get(decl);
+			final Tree<V, ?> tree = vars.get(decl.value);
 			if (tree == null) {
-				vars.put(decl, node);
+				vars.put(decl.value, node);
 				return true;
 			}
 
