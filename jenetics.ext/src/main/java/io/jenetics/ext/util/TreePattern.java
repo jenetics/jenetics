@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiPredicate;
 
@@ -118,7 +120,7 @@ final class TreePattern {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	<V> boolean matches(final Tree<V, ?> tree, final BiPredicate<V, String> equals) {
-		return matches(tree, _pattern, equals);
+		return matches(tree, _pattern, new HashMap<>(), equals);
 	}
 
 	/**
@@ -139,10 +141,19 @@ final class TreePattern {
 	private static <V> boolean matches(
 		final Tree<V, ?> node,
 		final Tree<Decl, ?> pattern,
+		final Map<Decl, Tree<V, ?>> vars,
 		final BiPredicate<V, String> equals
 	) {
-		if (pattern.getValue().isVar) {
-			return true;
+		final Decl decl = pattern.getValue();
+
+		if (decl.isVar) {
+			final Tree<V, ?> tree = vars.get(decl);
+			if (tree == null) {
+				vars.put(decl, node);
+				return true;
+			}
+
+			return tree.equals(node);
 		} else {
 			final String p = pattern.getValue().value;
 			final V v = node.getValue();
@@ -150,7 +161,10 @@ final class TreePattern {
 			if (equals.test(v, p)) {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
-						if (!matches(node.getChild(i), pattern.getChild(i), equals)) {
+						final Tree<V, ?> cn = node.getChild(i);
+						final Tree<Decl, ?> cp = pattern.getChild(i);
+
+						if (!matches(cn, cp, vars, equals)) {
 							return false;
 						}
 					}
@@ -163,6 +177,7 @@ final class TreePattern {
 			}
 		}
 	}
+
 
 	/* *************************************************************************
 	 * Helper classes
