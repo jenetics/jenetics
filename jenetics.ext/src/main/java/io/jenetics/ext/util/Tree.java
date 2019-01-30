@@ -200,7 +200,9 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * {@code tree.childAtPath(Path.of(2, 0))} will return the first child of
 	 * the third child of {@code this node}.
 	 *
-	 * @since 4.3
+	 * @since !__version__!
+	 *
+	 * @see #childAtPath(Path)
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
@@ -216,6 +218,28 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		}
 
 		return Optional.ofNullable(node);
+	}
+
+	/**
+	 * Return the child node at the given {@code path}. A path consists of the
+	 * child index at a give level, starting with level 1. (The root note has
+	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
+	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
+	 * return the first child of the third child of {@code this node}.
+	 *
+	 * @since 4.3
+	 *
+	 * @see #childAtPath(int...)
+	 *
+	 * @param path the child path
+	 * @return the child node at the given {@code path}
+	 * @throws NullPointerException if the given {@code path} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if one of the path elements is smaller
+	 *         than zero
+	 */
+	public default Optional<T> childAtPath(final int... path) {
+		return childAtPath(Path.of(path));
 	}
 
 	/**
