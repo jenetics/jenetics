@@ -48,10 +48,10 @@ import java.util.function.BiPredicate;
  */
 final class TreePattern {
 
-	private final Tree<Node, ?> _pattern;
+	private final Tree<Decl, ?> _pattern;
 
 
-	private TreePattern(final Tree<Node, ?> pattern) {
+	private TreePattern(final Tree<Decl, ?> pattern) {
 		_pattern = requireNonNull(pattern);
 	}
 
@@ -65,13 +65,7 @@ final class TreePattern {
 	 *         doesn't represent a valid pattern tree
 	 */
 	static TreePattern compile(final String pattern) {
-		return new TreePattern(TreeNode.parse(pattern, TreePattern::toNode));
-	}
-
-	private static Node toNode(final String value) {
-		return value.startsWith("<") && value.endsWith(">")
-			? Node.var(value.substring(1, value.length() - 1))
-			: Node.val(value);
+		return new TreePattern(TreeNode.parse(pattern, Decl::of));
 	}
 
 	/**
@@ -139,18 +133,18 @@ final class TreePattern {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	boolean matches(final Tree<?, ?> tree) {
-		return matches(tree, _pattern, TreePattern::equals);
+		return matches(tree, TreePattern::equals);
 	}
 
 	private static <V> boolean matches(
 		final Tree<V, ?> node,
-		final Tree<Node, ?> pattern,
+		final Tree<Decl, ?> pattern,
 		final BiPredicate<V, String> equals
 	) {
-		if (pattern.getValue() instanceof Var) {
+		if (pattern.getValue().isVar) {
 			return true;
 		} else {
-			final String p = pattern.getValue().value();
+			final String p = pattern.getValue().value;
 			final V v = node.getValue();
 
 			if (equals.test(v, p)) {
@@ -174,57 +168,45 @@ final class TreePattern {
 	 * Helper classes
 	 ***************************************************************************/
 
-	static abstract class Node {
-		private final String _value;
+	private static final class Decl {
+		private final String value;
+		private final boolean isVar;
 
-		Node(final String value) {
-			_value = value;
-		}
-
-		String value() {
-			return _value;
+		private Decl(final String value, final boolean isVar) {
+			this.value = value;
+			this.isVar = isVar;
 		}
 
 		@Override
 		public int hashCode() {
-			return hash(getClass(), hash(_value));
+			return hash(value, hash(isVar));
 		}
 
 		@Override
 		public boolean equals(final Object obj) {
-			return obj != null &&
-				getClass() == obj.getClass() &&
-				Objects.equals(_value, ((Node)obj)._value);
+			return obj == this ||
+				obj instanceof Decl &&
+				Objects.equals(value, ((Decl)obj).value) &&
+				isVar == ((Decl)obj).isVar;
 		}
 
 		@Override
 		public String toString() {
-			return Objects.toString(_value);
+			return isVar ? value : format("<%s>", value);
 		}
 
-		static Val val(final String value) {
-			return new Val(value);
+		static Decl val(final String value) {
+			return new Decl(value, false);
 		}
 
-		static Var var(final String name) {
-			return new Var(name);
-		}
-	}
-
-	static final class Val extends Node {
-		private Val(final String value) {
-			super(value);
-		}
-	}
-
-	static final class Var extends Node {
-		private Var(final String value) {
-			super(value);
+		static Decl var(final String value) {
+			return new Decl(value, true);
 		}
 
-		@Override
-		public String toString() {
-			return format("<%s>", value());
+		static Decl of(final String value) {
+			return value.startsWith("<") && value.endsWith(">")
+				? Decl.var(value.substring(1, value.length() - 1))
+				: Decl.val(value);
 		}
 	}
 
