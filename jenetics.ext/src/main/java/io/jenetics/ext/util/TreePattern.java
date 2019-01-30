@@ -24,9 +24,7 @@ import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -216,38 +214,47 @@ final class TreePattern {
 		}
 	}
 
-	<V> TreeNode<V> replace(final Map<String, Tree<V, ?>> nodes) {
-
-		return null;
+	/**
+	 * Expands {@code this} pattern with the given variable mapping and using
+	 * the given value {@code mapper}.
+	 *
+	 * @param variables the variables to use for expanding {@code this} pattern
+	 * @param mapper the string value mapper
+	 * @param <V> the tree node type
+	 * @return the expanded tree pattern
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if not all needed variables are part
+	 *         of the {@code variables} map
+	 */
+	<V> TreeNode<V> expand(
+		final Map<String, Tree<V, ?>> variables,
+		final Function<? super String, ? extends V> mapper
+	) {
+		final TreeNode<V> root = TreeNode.of();
+		expand(_pattern, variables, root, mapper);
+		return root;
 	}
 
-	/**
-	 * <pre>{@code
-	 * add(<x>,0) -> <x>
-	 * sub(<x>,<x>) -> 0
-	 * add(<x>,<x>) -> mul(<x>,2)
-	 * }</pre>
-	 *
-	 * @param template asdf
-	 * @param vars adf
-	 * @param tree adf
-	 * @param <V> asddf
-	 */
-	private static <V> void replace(
+	private static <V> void expand(
 		final Tree<Decl, ?> template,
-		final Map<Decl, Tree<V, ?>> vars,
+		final Map<String, Tree<V, ?>> vars,
 		final TreeNode<V> tree,
 		final Function<? super String, ? extends V> mapper
 	) {
-		final Tree<V, ?> node = vars.get(template.getValue());
-		if (node != null) {
+		if (template.getValue().isVar) {
+			final Tree<V, ?> node = vars.get(template.getValue().value);
+			if (node == null) {
+				throw new IllegalArgumentException(format(
+					"Missing variable '%s'.", template.getValue()
+				));
+			}
+
 			tree.attach(TreeNode.ofTree(node));
 		} else {
 			tree.attach(mapper.apply(template.getValue().value));
-		}
-
-		for (int i = 0; i < template.childCount(); ++i) {
-			replace(template.getChild(i), vars, tree, mapper);
+			for (int i = 0; i < template.childCount(); ++i) {
+				expand(template.getChild(i), vars, tree, mapper);
+			}
 		}
 	}
 
