@@ -19,37 +19,42 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class TreeMatcherTest {
 
-//	@Test(dataProvider = "treePattern")
-//	public void subTrees(
-//		final String pattern,
-//		final String treeString,
-//		final boolean matches
-//	) {
-//		final Matcher<Integer> matcher = TreeMatcher.of(pattern, Integer::parseInt);
-//
-//		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
-//		Assert.assertEquals(matcher.matches(tree), matches);
-//	}
-//
-//	@DataProvider(name = "treePattern")
-//	public Object[][] treePattern() {
-//		return new Object[][] {
-//			{"0(1,2)", "0(1,2)", true},
-//			{"0(1,2,X)", "0(1,2,3(4))", true},
-//			{"0(3,2,X)", "0(1,2)", false},
-//			{"0(3,2,X,X)", "0(3,2,0(1,2),0(1,2))", true}
-//		};
-//	}
+	@Test(dataProvider = "patterns")
+	public void matches(
+		final String pattern,
+		final String treeString,
+		final boolean matches
+	) {
+		final TreePattern tp = TreePattern.compile(pattern);
+		final Tree<String, ?> tree = TreeNode.parse(treeString);
+		final TreeMatcher<String> matcher = tp.matcher(tree);
+
+		Assert.assertEquals(
+			matcher.matches(),
+			matches,
+			format("%s -> %s: %s", pattern, treeString, matches)
+		);
+	}
+
+	@DataProvider
+	public Object[][] patterns() {
+		return new Object[][] {
+			{"0(1,2)", "0(1,2)", true},
+			{"0(1,2,<x>)", "0(1,2,3(4))", true},
+			{"0(3,2,<x>)", "0(1,2)", false},
+			{"0(3,2,<x>,<x>)", "0(3,2,0(1,2),0(1,2))", true}
+		};
+	}
 
 }
