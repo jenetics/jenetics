@@ -157,7 +157,7 @@ public final class IntegerGene
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max)));
+		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
 	}
 
 	@Override

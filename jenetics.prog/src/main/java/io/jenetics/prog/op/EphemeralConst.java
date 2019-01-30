@@ -38,7 +38,7 @@ import io.jenetics.internal.util.Lazy;
  *
  * <pre>{@code
  * final Random random = ...;
- * final Op<Double> val = EphemeralConst.of(random::nextDouble());
+ * final Op<Double> val = EphemeralConst.of(random::nextDouble);
  * }</pre>
  *
  *  @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

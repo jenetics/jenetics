@@ -14,7 +14,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.2.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.3.0.pdf)).
 
 
 ## Requirements
@@ -32,7 +32,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.2.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -157,6 +157,13 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Saad, Christian, Bernhard Bauer, Ulrich R Mansmann, and Jian Li. <a href="https://journals.sagepub.com/doi/10.1177/1177932218818458">AutoAnalyze in Systems Biology.</a> <em>Bioinformatics and Biology Insights, </em></a> Jan. 2019.
+* Gandeva Bayu Satrya, Soo Young Shin. <a href="https://arxiv.org/pdf/1812.01201.pdf">Evolutionary Computing Approach to Optimize Superframe Scheduling on Industrial Wireless Sensor Networks.</a> <em>Cornell University, </em></a> Dec. 2018.
+* H.R. Maier, S. Razavi, Z. Kapelan, L.S. Matott, J. Kasprzyk, B.A. Tolson. <a href="https://www.sciencedirect.com/science/article/pii/S1364815218305905">Introductory overview: Optimization using evolutionary algorithms and other metaheuristics.</a> <em>Environmental Modelling & Software, </em></a> Dec. 2018.
+* Erich C. Teppan and Giacomo Da Col. <a href="http://ceur-ws.org/Vol-2252/paper4.pdf">Automatic Generation of Dispatching Rules for Large Job Shops by Means of Genetic Algorithms.</a> <em>CIMA 2018, International Workshop on Combinations of Intelligent Methods and Applications, </em></a> Nov. 2018.
+* Pasquale Salzaa, Filomena Ferrucci. <a href="https://www.sciencedirect.com/science/article/pii/S0167739X17324147">Speed up genetic algorithms in the cloud using software containers.</a> <em>Future Generation Computer Systems, </em></a> Oct. 2018.
+* Ghulam Mubashar Hassan and Mark Reynolds. <a href="https://easychair.org/publications/open/GRLP">Genetic Algorithms for Scheduling and Optimization of Ore Train Networks.</a> <em>GCAI-2018. 4th Global Conference on Artificial Intelligence, </em></a> Sep. 2018.
+* Drezewski, Rafal & Kruk, Sylwia & Makowka, Maciej. [The Evolutionary Optimization of a Company’s Return on Equity Factor: Towards the Agent-Based Bio-Inspired System Supporting Corporate Finance Decisions.](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8466578) <em>IEEE Access. 6. 10.1109/ACCESS.2018.2870201, </em></a> Sep. 2018.
 * Arifin, H. H., Chimplee, N. , Kit Robert Ong, H. , Daengdej, J. and Sortrakul, T. <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/j.2334-5837.2018.00549.x">Automated Component‐Selection of Design Synthesis for Physical Architecture with Model‐Based Systems Engineering using Evolutionary Trade‐off.</a> <em><a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/j.2334-5837.2018.00549.x">INCOSE International Symposium, 28: 1296-1310</a>, </em></a> Aug. 2018.
 * Stephan Pirnbaum. [Die Evolution im Algorithmus - Teil 2: Multikriterielle Optimierung und Architekturerkennung.](http://www.buschmais.de/wp-content/uploads/2018/06/Die-Evolution-im-Algorithmus_Teil2_JS_03_18.pdf) <a href="https://www.sigs-datacom.de/digital/javaspektrum/"><em>JavaSPEKTRUM 03/2018, pp 66–69, </em></a> May 2018.
 * W. Geithner, Z. Andelkovic, S. Appel, O. Geithner, F. Herfurth, S. Reimann, G. Vorobjev, F. Wilhelmstötter. [Genetic Algorithms for Machine Optimization in the Fair Control System Environment.](http://accelconf.web.cern.ch/AccelConf/ipac2018/papers/thpml028.pdf)<em> [The 9th International Particle Accelerator Conference (IPAC'18)](https://ipac18.org/welcome/), </em></a> May 2018.
@@ -177,21 +184,34 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [4.2.0](https://github.com/jenetics/jenetics/releases/tag/v4.2.0)
+### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
 
 #### Improvements
 
-* [#325](https://github.com/jenetics/jenetics/issues/325): **Allow customization of fitness evaluation execution for bundling calculations**
-* [#327](https://github.com/jenetics/jenetics/issues/327): Improve CPU utilization during fitness evaluation.
-* [#335](https://github.com/jenetics/jenetics/issues/335): Seq view wrapper for List<T> and T[] types.
+* [#347](https://github.com/jenetics/jenetics/issues/347): Improve `hashCode` and `equals` methods.
+* [#349](https://github.com/jenetics/jenetics/issues/349): Cleanup of chromosome constructors. Make the constructors more regular.
+* [#355](https://github.com/jenetics/jenetics/issues/355): Simplify implementation of numeric genes.
+* [#361](https://github.com/jenetics/jenetics/issues/361): Add `NumericChromosome.primitiveStream()` methods.
+* [#366](https://github.com/jenetics/jenetics/issues/366): Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+* [#377](https://github.com/jenetics/jenetics/issues/377): Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+* [#378](https://github.com/jenetics/jenetics/issues/378): Convert tree to parentheses tree string.
+* [#379](https://github.com/jenetics/jenetics/issues/379): Parse parentheses tree string to tree object.
+* [#380](https://github.com/jenetics/jenetics/issues/380): Add `TreeNode.map` method.
+* [#400](https://github.com/jenetics/jenetics/issues/400): Codec for mapping source- and target objects.
+* [#406](https://github.com/jenetics/jenetics/issues/406): Make the library compilable under Java 11.
+* [#411](https://github.com/jenetics/jenetics/issues/411): Improve the behaviour of the `MathExpr.format` method.
 
 #### Bugs
 
-* [#317](https://github.com/jenetics/jenetics/issues/317): Fix links of Javadoc images.
-* [#318](https://github.com/jenetics/jenetics/issues/318): `null` result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
-* [#336](https://github.com/jenetics/jenetics/issues/336): Errornous default implementation of 'Seq.indexWhere'. 
-* [#341](https://github.com/jenetics/jenetics/issues/341): Error in internal 'bit.increment' method.
-* [#345](https://github.com/jenetics/jenetics/issues/345): Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
+* [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
+* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
+
+### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
+
+#### Bugs
+
+* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
@@ -200,7 +220,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2018 Franz Wilhelmstötter
+	Copyright 2007-2019 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

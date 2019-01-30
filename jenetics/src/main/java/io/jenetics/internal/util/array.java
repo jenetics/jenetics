@@ -31,7 +31,7 @@ import io.jenetics.util.RandomRegistry;
  * @version 3.0
  */
 public final class array {
-	private array() {require.noInstance();}
+	private array() {}
 
 	public static <T> void swap(final T[] array, final int i, final int j) {
 		final T temp = array[i];
