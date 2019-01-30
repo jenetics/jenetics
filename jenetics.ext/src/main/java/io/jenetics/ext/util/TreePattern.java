@@ -258,6 +258,21 @@ final class TreePattern {
 		}
 	}
 
+	/**
+	 * Expands {@code this} pattern with the given variable mapping.
+	 *
+	 * @param variables the variables to use for expanding {@code this} pattern
+	 * @return the expanded tree pattern
+	 * @throws NullPointerException if the variables mapping is {@code null}
+	 * @throws IllegalArgumentException if not all needed variables are part
+	 *         of the {@code variables} map
+	 */
+	TreeNode<String> expand(final Map<String, Tree<String, ?>> variables) {
+		final TreeNode<String> root = TreeNode.of();
+		expand(_pattern, variables, root, Objects::toString);
+		return root;
+	}
+
 
 	/* *************************************************************************
 	 * Helper classes
