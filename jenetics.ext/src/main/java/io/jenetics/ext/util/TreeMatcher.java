@@ -47,18 +47,61 @@ final class TreeMatcher<V> {
 		_equals = requireNonNull(equals);
 	}
 
+	/**
+	 * Return the underlying pattern of {@code this} matcher.
+	 *
+	 * @return the underlying tree pattern
+	 */
 	TreePattern pattern() {
 		return _pattern;
 	}
 
-	boolean matches() {
-		return results().findFirst().isPresent();
+	/**
+	 * Tests if the tree matches the pattern, using the given {@code equals}
+	 * predicate.
+	 *
+	 * @param equals the predicate, used for comparing the node value and the
+	 *        pattern string
+	 * @return {@code true} if the tree matches against the pattern,
+	 *         {@code false} otherwise
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	boolean matches(final BiPredicate<V, String> equals) {
+		return _pattern.matches(_tree, equals);
 	}
 
-	Stream<Tree<V, ?>> results() {
+	/**
+	 * Tests if the tree matches the pattern.
+	 *
+	 * @return {@code true} if the tree matches against the pattern,
+	 *         {@code false} otherwise
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	boolean matches() {
+		return matches(TreePattern::equals);
+	}
+
+	/**
+	 * Return all matching <em>sub</em>-trees.
+	 *
+	 * @param equals the predicate, used for comparing the node value and the
+	 *        pattern string
+	 * @return all matching sub-trees
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	Stream<Tree<V, ?>> results(final BiPredicate<V, String> equals) {
 		@SuppressWarnings("unchecked")
 		final Stream<Tree<V, ?>> ts = (Stream<Tree<V, ?>>)_tree.stream();
-		return  ts.filter(_pattern::matches);
+		return  ts.filter(n -> _pattern.matches(n, equals));
+	}
+
+	/**
+	 * Return all matching <em>sub</em>-trees.
+	 *
+	 * @return all matching sub-trees
+	 */
+	Stream<Tree<V, ?>> results() {
+		return results(TreePattern::equals);
 	}
 
 	static <V> TreeMatcher<V> of(

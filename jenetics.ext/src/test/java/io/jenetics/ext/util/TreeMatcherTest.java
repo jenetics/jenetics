@@ -32,18 +32,18 @@ public class TreeMatcherTest {
 
 	@Test(dataProvider = "patterns")
 	public void matches(
-		final String pattern,
+		final String patternString,
 		final String treeString,
 		final boolean matches
 	) {
-		final TreePattern tp = TreePattern.compile(pattern);
+		final TreePattern pattern = TreePattern.compile(patternString);
 		final Tree<String, ?> tree = TreeNode.parse(treeString);
-		final TreeMatcher<String> matcher = tp.matcher(tree);
+		final TreeMatcher<String> matcher = pattern.matcher(tree);
 
 		Assert.assertEquals(
 			matcher.matches(),
 			matches,
-			format("%s -> %s: %s", pattern, treeString, matches)
+			format("%s -> %s: %s", patternString, treeString, matches)
 		);
 	}
 
@@ -68,6 +68,29 @@ public class TreeMatcherTest {
 			{"0(3,2,<x>)", "0(1,2)", false},
 			{"0(3,2,<x>,<x>)", "0(3,2,0(1,2),0(1,2))", true},
 			{"0(3,2,<x>,<x>)", "0(3,2,0(1,2),0(1,3))", false}
+		};
+	}
+
+	@Test(dataProvider = "matchResults")
+	public void results(
+		final String patternString,
+		final String treeString,
+		final String[] results
+	) {
+		final TreePattern pattern = TreePattern.compile(patternString);
+		final Tree<String, ?> tree = TreeNode.parse(treeString);
+		final String[] matches = pattern.matcher(tree).results()
+			.map(Tree::toParenthesesString)
+			.toArray(String[]::new);
+
+		Assert.assertEquals(matches, results);
+	}
+
+	@DataProvider
+	public Object[][] matchResults() {
+		return new Object[][] {
+			{"1", "0(1,1)", new String[]{"1", "1"}},
+			{"O(2,3)", "0(1,O(2,3),5,O(2,3))", new String[]{"O(2,3)", "O(2,3)"}}
 		};
 	}
 

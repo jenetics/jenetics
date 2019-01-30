@@ -103,7 +103,16 @@ final class TreePattern {
 		return matcher(tree, TreePattern::equals);
 	}
 
-	private static <V> boolean equals(final V value, final String string) {
+	/**
+	 * Default equals comparison between node values and pattern string values.
+	 *
+	 * @param value the tree node value
+	 * @param string the pattern node string
+	 * @param <V> the tree node value type
+	 * @return {@code true} if the string representation of the {@code value}
+	 *         and the pattern {@code string} value are equal
+	 */
+	static <V> boolean equals(final V value, final String string) {
 		return Objects.equals(Objects.toString(value), string);
 	}
 
