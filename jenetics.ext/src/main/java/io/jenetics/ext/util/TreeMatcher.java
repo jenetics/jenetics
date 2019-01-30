@@ -21,6 +21,7 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -110,6 +111,29 @@ final class TreeMatcher<V> {
 		final BiPredicate<V, String> equals
 	) {
 		return new TreeMatcher<>(pattern, tree, equals);
+	}
+
+
+	static final class Result<V> {
+		private final Tree<V, ?> _node;
+		private final Map<String, Tree<V, ?>> _variables;
+
+		private Result(
+			final Tree<V, ?> node,
+			final Map<String, Tree<V, ?>> variables
+		) {
+			_node = requireNonNull(node);
+			_variables = requireNonNull(variables);
+		}
+
+		Tree<V, ?> node() {
+			return _node;
+		}
+
+		Map<String, Tree<V, ?>> variables() {
+			return _variables;
+		}
+
 	}
 
 }

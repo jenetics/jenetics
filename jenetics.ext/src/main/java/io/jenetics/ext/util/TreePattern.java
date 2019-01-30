@@ -24,9 +24,11 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 /**
  * A compiled representation of a <em>tree</em> pattern. A tree pattern,
@@ -55,6 +57,15 @@ final class TreePattern {
 
 	private TreePattern(final Tree<Decl, ?> pattern) {
 		_pattern = requireNonNull(pattern);
+
+		for (Tree<Decl, ?> n : pattern) {
+			if (n.getValue().isVar && !n.isLeaf()) {
+				throw new IllegalArgumentException(format(
+					"Variable node '%s' is not a leaf: %s",
+					n.getValue(), n.toParenthesesString()
+				));
+			}
+		}
 	}
 
 	/**
@@ -128,7 +139,10 @@ final class TreePattern {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	<V> boolean matches(final Tree<V, ?> tree, final BiPredicate<V, String> equals) {
+	<V> boolean matches(
+		final Tree<V, ?> tree,
+		final BiPredicate<V, String> equals
+	) {
 		return matches(tree, _pattern, new HashMap<>(), equals);
 	}
 
@@ -184,6 +198,41 @@ final class TreePattern {
 			} else {
 				return false;
 			}
+		}
+	}
+
+	<V> TreeNode<V> replace(final Map<String, Tree<V, ?>> nodes) {
+
+		return null;
+	}
+
+	/**
+	 * <pre>{@code
+	 * add(<x>,0) -> <x>
+	 * sub(<x>,<x>) -> 0
+	 * add(<x>,<x>) -> mul(<x>,2)
+	 * }</pre>
+	 *
+	 * @param template asdf
+	 * @param vars adf
+	 * @param tree adf
+	 * @param <V> asddf
+	 */
+	private static <V> void replace(
+		final Tree<Decl, ?> template,
+		final Map<Decl, Tree<V, ?>> vars,
+		final TreeNode<V> tree,
+		final Function<? super String, ? extends V> mapper
+	) {
+		final Tree<V, ?> node = vars.get(template.getValue());
+		if (node != null) {
+			tree.attach(TreeNode.ofTree(node));
+		} else {
+			tree.attach(mapper.apply(template.getValue().value));
+		}
+
+		for (int i = 0; i < template.childCount(); ++i) {
+			replace(template.getChild(i), vars, tree, mapper);
 		}
 	}
 
