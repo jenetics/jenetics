@@ -231,10 +231,10 @@ final class TreePattern {
 		final Map<String, Tree<V, ?>> variables,
 		final Function<? super String, ? extends V> mapper
 	) {
-		return expand2(_pattern, variables, mapper);
+		return expand(_pattern, variables, mapper);
 	}
 
-	private <V> TreeNode<V> expand2(
+	private <V> TreeNode<V> expand(
 		final Tree<Decl, ?> template,
 		final Map<String, Tree<V, ?>> vars,
 		final Function<? super String, ? extends V> mapper
