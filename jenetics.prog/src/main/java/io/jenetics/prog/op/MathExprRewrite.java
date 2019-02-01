@@ -41,12 +41,12 @@ class MathExprRewrite {
 		compile("add(0,<x>) -> <x>"),
 		compile("div(<x>,<x>) -> 1"),
 		compile("mul(<x>,0) -> 0"),
-		compile("mul(0,<x> -> 0"),
+		compile("mul(0,<x>) -> 0"),
 		compile("mul(<x>,1) -> <x>"),
 		compile("mul(1,<x>) -> <x>"),
 		compile("mul(<x>,<x>) -> pow(<x>,2)"),
 		compile("pow(<x>,0) -> 1"),
-		compile("pos(<x>,1 -> <x>")
+		compile("pos(<x>,1) -> <x>")
 	);
 
 	static TreeNode<Op<Double>> rewrite(final TreeNode<Op<Double>> node) {

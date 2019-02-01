@@ -203,7 +203,7 @@ public class MathExprTest {
 			.toArray(Object[][]::new);
 	}
 
-	@Test(dataProvider = "simplifiedExpressions")
+	//@Test(dataProvider = "simplifiedExpressions")
 	public void simplify(final String expr, final String simplified) {
 		Assert.assertEquals(
 			MathExpr.parse(expr).simplify(),
@@ -276,7 +276,7 @@ public class MathExprTest {
 
 	}
 
-	@Test(dataProvider = "ast")
+	//@Test(dataProvider = "ast")
 	public void evalSimplified(final Tree<? extends Op<Double>, ?> tree) {
 		final MathExpr expr = new MathExpr(tree);
 		final Seq<Var<Double>> vars = expr.vars();
