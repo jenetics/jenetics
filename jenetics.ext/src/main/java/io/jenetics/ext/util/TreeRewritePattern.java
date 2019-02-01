@@ -21,8 +21,6 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Optional;
-
 /**
  * <pre>{@code
  * add(<x>,0) -> <x>
@@ -36,12 +34,15 @@ import java.util.Optional;
  */
 final class TreeRewritePattern {
 
-	private final TreePattern _source;
-	private final TreePattern _target;
+	private final TreePattern _pattern;
+	private final TreePattern _template;
 
-	private TreeRewritePattern(final TreePattern source, final TreePattern target) {
-		_source = requireNonNull(source);
-		_target = requireNonNull(target);
+	private TreeRewritePattern(
+		final TreePattern pattern,
+		final TreePattern template
+	) {
+		_pattern = requireNonNull(pattern);
+		_template = requireNonNull(template);
 	}
 
 

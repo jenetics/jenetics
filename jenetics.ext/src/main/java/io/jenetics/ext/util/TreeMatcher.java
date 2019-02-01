@@ -21,7 +21,6 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -91,11 +90,8 @@ final class TreeMatcher<V> {
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	Stream<TreeMatchResult<V>> results(final BiPredicate<V, String> equals) {
-		@SuppressWarnings("unchecked")
-		final Stream<Tree<V, ?>> ts = (Stream<Tree<V, ?>>)_tree.stream();
-
-		return ts
-			.flatMap(tree -> _pattern.match(tree, equals)
+		return _tree.stream()
+			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, equals)
 				.map(Stream::of)
 				.orElseGet(Stream::empty));
 	}
