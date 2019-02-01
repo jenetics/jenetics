@@ -38,28 +38,29 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * A compiled representation of a <em>tree</em> pattern. A tree pattern,
- * specified as a string, must first be compiled into an instance of this class.
- * The resulting pattern can then be used to create a {@code TreeMatcher} object
- * that can match arbitrary trees against the tree pattern. All of the state
- * involved in performing a match resides in the matcher, so many matchers can
- * share the same pattern.
+ * specified as a parentheses string, must first be compiled into an instance of
+ * this class. The resulting pattern can then be used to create a
+ * {@code TreeMatcher} object that can match arbitrary trees against the tree
+ * pattern. All of the state involved in performing a match resides in the
+ * matcher, so many matchers can share the same pattern.
  * <p>
  * The string representation of a tree pattern is a parenthesis tree string,
- * with a special wildcard syntax for arbitrary sub-trees:
+ * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
+ * variables are put into angle brackets:
  * <pre>{@code
  *     add(<x>,0)
  *     mul(1,<y>)
  * }</pre>
- * The identifier of such sub-trees are put into angle brackets.
+ *
+ * @see Tree#toParenthesesString()
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class TreePattern {
+public final class TreePattern {
 
 	private final Tree<Decl, ?> _pattern;
-
 
 	private TreePattern(final Tree<Decl, ?> pattern) {
 		_pattern = requireNonNull(pattern);
@@ -75,19 +76,6 @@ final class TreePattern {
 	}
 
 	/**
-	 * Compiles the given tree pattern string.
-	 *
-	 * @param pattern the tree pattern string
-	 * @return the compiled pattern
-	 * @throws NullPointerException if the given pattern is {@code null}
-	 * @throws IllegalArgumentException if the given parentheses tree string
-	 *         doesn't represent a valid pattern tree
-	 */
-	static TreePattern compile(final String pattern) {
-		return new TreePattern(TreeNode.parse(pattern, Decl::of));
-	}
-
-	/**
 	 * Creates a matcher that will match the given input tree against
 	 * {@code this} pattern.
 	 *
@@ -98,9 +86,9 @@ final class TreePattern {
 	 * @return a new matcher for {@code this} pattern
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	<V> TreeMatcher<V> matcher(
+	public <V> TreeMatcher<V> matcher(
 		final Tree<V, ?> tree,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		return TreeMatcher.of(this, tree, equals);
 	}
@@ -116,7 +104,7 @@ final class TreePattern {
 	 * @return a new matcher for {@code this} pattern
 	 * @throws NullPointerException if the arguments is {@code null}
 	 */
-	<V> TreeMatcher<V> matcher(final Tree<V, ?> tree) {
+	public <V> TreeMatcher<V> matcher(final Tree<V, ?> tree) {
 		return matcher(tree, TreePattern::equals);
 	}
 
@@ -133,7 +121,7 @@ final class TreePattern {
 		return Objects.equals(Objects.toString(value), string);
 	}
 
-	<V> Optional<TreeMatchResult<V>> match(
+	public <V> Optional<TreeMatchResult<V>> match(
 		final Tree<V, ?> tree,
 		final BiPredicate<V, String> equals
 	) {
@@ -157,9 +145,9 @@ final class TreePattern {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	<V> boolean matches(
+	public <V> boolean matches(
 		final Tree<V, ?> tree,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		return matches(tree, _pattern, new HashMap<>(), equals);
 	}
@@ -175,7 +163,7 @@ final class TreePattern {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	boolean matches(final Tree<?, ?> tree) {
+	public boolean matches(final Tree<?, ?> tree) {
 		return matches(tree, TreePattern::equals);
 	}
 
@@ -183,7 +171,7 @@ final class TreePattern {
 		final Tree<V, ?> node,
 		final Tree<Decl, ?> pattern,
 		final Map<String, Tree<V, ?>> vars,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		final Decl decl = pattern.getValue();
 
@@ -232,7 +220,7 @@ final class TreePattern {
 	 * @throws IllegalArgumentException if not all needed variables are part
 	 *         of the {@code variables} map
 	 */
-	<V> TreeNode<V> expand(
+	public <V> TreeNode<V> expand(
 		final Map<String, Tree<V, ?>> variables,
 		final Function<? super String, ? extends V> mapper
 	) {
@@ -289,13 +277,31 @@ final class TreePattern {
 	 * @throws IllegalArgumentException if not all needed variables are part
 	 *         of the {@code variables} map
 	 */
-	TreeNode<String> expand(final Map<String, Tree<String, ?>> variables) {
+	public TreeNode<String> expand(final Map<String, Tree<String, ?>> variables) {
 		return expand(variables, Function.identity());
 	}
 
 
 	/* *************************************************************************
-	 * Helper classes
+	 * Static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Compiles the given tree pattern string.
+	 *
+	 * @param pattern the tree pattern string
+	 * @return the compiled pattern
+	 * @throws NullPointerException if the given pattern is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid pattern tree
+	 */
+	public static TreePattern compile(final String pattern) {
+		return new TreePattern(TreeNode.parse(pattern, Decl::of));
+	}
+
+
+	/* *************************************************************************
+	 * Helper classes.
 	 * ************************************************************************/
 
 	private static final class Decl {

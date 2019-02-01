@@ -23,11 +23,15 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * Represents a tree rewrite rule. A rewrite rule consists of a pattern, which
+ * must be matched, and a template, which is expanded and replaces the variables
+ * in the tree pattern.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeRewriteRule {
+public final class TreeRewriteRule {
 
 	private final TreePattern _pattern;
 	private final TreePattern _template;
@@ -40,22 +44,52 @@ final class TreeRewriteRule {
 		_template = requireNonNull(template);
 	}
 
-	TreePattern pattern() {
+	/**
+	 * Return the rule matching pattern.
+	 *
+	 * @return the rule matching pattern
+	 */
+	public TreePattern pattern() {
 		return _pattern;
 	}
 
-	TreePattern template() {
+	/**
+	 * Return the replacement pattern of the rule.
+	 *
+	 * @return the replacement pattern of the rule
+	 */
+	public TreePattern template() {
 		return _template;
 	}
 
-	static TreeRewriteRule of(
+	/**
+	 * Create a new rewrite rule with the given values.
+	 *
+	 * @param patter the rule pattern
+	 * @param template the rule replace pattern
+	 * @return a new rewrite rule
+	 */
+	public static TreeRewriteRule of(
 		final TreePattern patter,
 		final TreePattern template
 	) {
 		return new TreeRewriteRule(patter, template);
 	}
 
-	static TreeRewriteRule compile(final String rule) {
+	/**
+	 * Compiles the string representation of a rewrite rule:
+	 * <pre>{@code
+	 * add(<x>,0) -> <x>
+	 * mul(<x>,1) -> <x>
+	 * }</pre>
+	 *
+	 * @param rule the rewrite rule
+	 * @return a new rewrite rule, compiled from the given rule string
+	 * @throws IllegalArgumentException if the rewrite rule is invalid
+	 * @throws NullPointerException if the given {@code rule} string is
+	 *         {@code null}
+	 */
+	public static TreeRewriteRule compile(final String rule) {
 		final String[] parts = rule.split("->");
 		if (parts.length != 2) {
 			throw new IllegalArgumentException(format(

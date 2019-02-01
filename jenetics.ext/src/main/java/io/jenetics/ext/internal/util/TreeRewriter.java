@@ -19,9 +19,15 @@
  */
 package io.jenetics.ext.internal.util;
 
-import java.util.Arrays;
-import java.util.List;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+
+import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -31,41 +37,62 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public class TreeRewriter {
+public final class TreeRewriter<V> {
 
-	@FunctionalInterface
-	public static interface Matcher<V> {
-		public boolean matches(final Tree<V, ?> node);
+	private final ISeq<TreeRewriteRule> _rules;
+	private final BiPredicate<? super V, ? super String> _equals;
+	private final Function<? super String, ? extends V> _mapper;
+
+	public TreeRewriter(
+		final ISeq<TreeRewriteRule> rule,
+		final BiPredicate<? super V, ? super String> equals,
+		Function<? super String, ? extends V> mapper
+	) {
+		_rules = requireNonNull(rule);
+		_equals = requireNonNull(equals);
+		_mapper = requireNonNull(mapper);
 	}
 
-	public static interface Rule<V> {
+	public boolean rewrite(final TreeNode<V> tree) {
+		requireNonNull(tree);
 
-		public boolean matches(final TreeNode<V> node);
-
-		public void rewrite(final TreeNode<V> node);
-
-	}
-
-	public static <V>
-	int rewrite(final TreeNode<V> node, final List<Rule<V>> rules) {
-		if (node.isLeaf()) {
-			return 0;
-		} else {
-			final Optional<Rule<V>> simplifier= rules.stream()
-				.filter(s -> s.matches(node))
+		boolean rewritten = false;
+		Optional<Match<V>> match;
+		do {
+			match = _rules.stream()
+				.flatMap(rule -> rule.pattern().matcher(tree, _equals).results()
+					.map(result -> new Match<V>(rule, result)))
 				.findFirst();
 
-			simplifier.ifPresent(r -> r.rewrite(node));
-			return node.childStream()
-				.mapToInt(child -> rewrite(child, rules))
-				.sum();
-		}
+			match.ifPresent(m -> rewrite(tree, m));
+			rewritten = match.isPresent() || rewritten;
+		} while(match.isPresent());
+
+		return rewritten;
 	}
 
-	@SafeVarargs
-	public static <V>
-	int rewrite(final TreeNode<V> node, final Rule<V>... rules) {
-		return rewrite(node, Arrays.asList(rules));
+	private void rewrite(
+		final TreeNode<V> tree,
+		final Match<V> match
+	) {
+		final Map<String, Tree<V, ?>> vars = match.result.variables();
+		final TreePattern template = match.rule.template();
+
+		template.expand(vars, _mapper);
+	}
+
+	public static TreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {
+		return new TreeRewriter<>(rules, Objects::equals, Function.identity());
+	}
+
+
+	private static final class Match<V> {
+		final TreeRewriteRule rule;
+		final TreeMatchResult<V> result;
+		Match(final TreeRewriteRule rule, final TreeMatchResult<V> result) {
+			this.rule = rule;
+			this.result = result;
+		}
 	}
 
 }

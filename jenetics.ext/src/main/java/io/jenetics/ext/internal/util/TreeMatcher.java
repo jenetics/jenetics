@@ -33,16 +33,16 @@ import io.jenetics.ext.util.Tree;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeMatcher<V> {
+public final class TreeMatcher<V> {
 
 	private final TreePattern _pattern;
 	private final Tree<V, ?> _tree;
-	private final BiPredicate<V, String> _equals;
+	private final BiPredicate<? super V, ? super String> _equals;
 
 	private TreeMatcher(
 		final TreePattern pattern,
 		final Tree<V, ?> tree,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		_pattern = requireNonNull(pattern);
 		_tree = requireNonNull(tree);
@@ -54,7 +54,7 @@ final class TreeMatcher<V> {
 	 *
 	 * @return the underlying tree pattern
 	 */
-	TreePattern pattern() {
+	public TreePattern pattern() {
 		return _pattern;
 	}
 
@@ -68,7 +68,7 @@ final class TreeMatcher<V> {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
-	boolean matches(final BiPredicate<V, String> equals) {
+	public boolean matches(final BiPredicate<? super V, ? super String> equals) {
 		return _pattern.matches(_tree, equals);
 	}
 
@@ -79,7 +79,7 @@ final class TreeMatcher<V> {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
-	boolean matches() {
+	public boolean matches() {
 		return matches(TreePattern::equals);
 	}
 
@@ -91,7 +91,7 @@ final class TreeMatcher<V> {
 	 * @return all matching sub-trees
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
-	Stream<TreeMatchResult<V>> results(final BiPredicate<V, String> equals) {
+	public Stream<TreeMatchResult<V>> results(final BiPredicate<V, String> equals) {
 		return _tree.stream()
 			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, equals)
 				.map(Stream::of)
@@ -103,14 +103,14 @@ final class TreeMatcher<V> {
 	 *
 	 * @return all matching sub-trees
 	 */
-	Stream<TreeMatchResult<V>> results() {
+	public Stream<TreeMatchResult<V>> results() {
 		return results(TreePattern::equals);
 	}
 
 	static <V> TreeMatcher<V> of(
 		final TreePattern pattern,
 		final Tree<V, ?> tree,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		return new TreeMatcher<>(pattern, tree, equals);
 	}

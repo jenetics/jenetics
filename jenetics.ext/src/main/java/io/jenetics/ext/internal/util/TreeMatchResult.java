@@ -26,11 +26,13 @@ import java.util.Map;
 import io.jenetics.ext.util.Tree;
 
 /**
+ * The result of a tree match operation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeMatchResult<V> {
+public final class TreeMatchResult<V> {
 	private final Tree<V, ?> _node;
 	private final Map<String, Tree<V, ?>> _variables;
 
@@ -42,11 +44,11 @@ final class TreeMatchResult<V> {
 		_variables = requireNonNull(variables);
 	}
 
-	Tree<V, ?> node() {
+	public Tree<V, ?> node() {
 		return _node;
 	}
 
-	Map<String, Tree<V, ?>> variables() {
+	public Map<String, Tree<V, ?>> variables() {
 		return _variables;
 	}
 
