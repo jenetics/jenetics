@@ -19,15 +19,10 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
- * <pre>{@code
- * add(<x>,0) -> <x>
- * sub(<x>,<x>) -> 0
- * add(<x>,<x>) -> mul(<x>,2)
- * }</pre>
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -45,10 +40,30 @@ final class TreeRewriteRule {
 		_template = requireNonNull(template);
 	}
 
+	TreePattern pattern() {
+		return _pattern;
+	}
 
-	public <V> void rewrite(final TreeNode<V> tree) {
+	TreePattern template() {
+		return _template;
+	}
 
-		Tree<V, ?> node = null;
+	static TreeRewriteRule of(
+		final TreePattern patter,
+		final TreePattern template
+	) {
+		return new TreeRewriteRule(patter, template);
+	}
+
+	static TreeRewriteRule compile(final String rule) {
+		final String[] parts = rule.split("->");
+		if (parts.length != 2) {
+			throw new IllegalArgumentException(format(
+				"Invalid rewrite rule: %s", rule
+			));
+		}
+
+		return of(TreePattern.compile(parts[0]), TreePattern.compile(parts[1]));
 	}
 
 }
