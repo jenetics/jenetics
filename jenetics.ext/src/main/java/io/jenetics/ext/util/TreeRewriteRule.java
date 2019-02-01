@@ -32,12 +32,12 @@ import static java.util.Objects.requireNonNull;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeRewritePattern {
+final class TreeRewriteRule {
 
 	private final TreePattern _pattern;
 	private final TreePattern _template;
 
-	private TreeRewritePattern(
+	private TreeRewriteRule(
 		final TreePattern pattern,
 		final TreePattern template
 	) {
