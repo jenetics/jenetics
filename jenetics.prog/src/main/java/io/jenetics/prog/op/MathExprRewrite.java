@@ -49,7 +49,7 @@ class MathExprRewrite {
 		compile("pos(<x>,1 -> <x>")
 	);
 
-	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> node) {
+	static TreeNode<Op<Double>> rewrite(final TreeNode<Op<Double>> node) {
 		//while (_prune(node));
 		return node;
 	}

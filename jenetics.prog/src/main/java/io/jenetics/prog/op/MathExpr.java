@@ -379,7 +379,7 @@ public final class MathExpr
 	 */
 	public static Tree<? extends Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
-		return MathExprRewrite.prune(TreeNode.ofTree(tree));
+		return MathExprRewrite.rewrite(TreeNode.ofTree(tree));
 	}
 
 	/**
@@ -392,7 +392,7 @@ public final class MathExpr
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static void prune(final TreeNode<Op<Double>> tree) {
-		MathExprRewrite.prune(tree);
+		MathExprRewrite.rewrite(tree);
 	}
 
 }
