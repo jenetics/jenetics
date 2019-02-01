@@ -31,30 +31,30 @@ import io.jenetics.ext.internal.util.TreeRewriter;
  */
 public class MaxExprRewriteRuleTest {
 
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL,
-		MathOp.DIV
-	);
-
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
-		Var.of("x", 0),
-		Var.of("y", 1),
-		Var.of("z", 2),
-		Const.of(1.0),
-		Const.of(2.0)
-	);
-
-	@Test
-	public void X_SUB_X() {
-		final MathExpr expr = new MathExpr(Program.of(5, OPERATIONS, TERMINALS));
-		System.out.println(expr);
-
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
-		TreeRewriter.rewrite(tree, MathExprRewriteRule.X_SUB_X);
-
-		System.out.println(new MathExpr(tree));
-	}
+//	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+//		MathOp.ADD,
+//		MathOp.SUB,
+//		MathOp.MUL,
+//		MathOp.DIV
+//	);
+//
+//	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+//		Var.of("x", 0),
+//		Var.of("y", 1),
+//		Var.of("z", 2),
+//		Const.of(1.0),
+//		Const.of(2.0)
+//	);
+//
+//	@Test
+//	public void X_SUB_X() {
+//		final MathExpr expr = new MathExpr(Program.of(5, OPERATIONS, TERMINALS));
+//		System.out.println(expr);
+//
+//		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
+//		TreeRewriter.rewrite(tree, MathExprRewriteRule.X_SUB_X);
+//
+//		System.out.println(new MathExpr(tree));
+//	}
 
 }

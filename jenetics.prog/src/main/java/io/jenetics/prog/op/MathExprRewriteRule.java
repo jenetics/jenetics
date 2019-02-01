@@ -19,11 +19,14 @@
  */
 package io.jenetics.prog.op;
 
+import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.internal.util.TreeRewriteRule;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 import io.jenetics.ext.internal.util.TreeRewriter;
@@ -33,176 +36,30 @@ import io.jenetics.ext.internal.util.TreeRewriter;
  * @version !__version__!
  * @since 4.1
  */
-enum MathExprRewriteRule implements TreeRewriter.Rule<Op<Double>> {
+class MathExprRewriteRule {
 
-	X_SUB_X {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.SUB &&
-				node.getChild(0).equals(node.getChild(1));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			node.removeAllChildren();
-			node.setValue(Const.of(0.0));
-		}
-	},
+	private static final ISeq<TreeRewriteRule> RULES = ISeq.of(
+		compile("sub(<x>,<x>) -> 0"),
+		compile("add(<x>,<x>) -> mul(2,<x>)"),
+		compile("sub(<x>,0) -> <x>"),
+		compile("add(<x>,0) -> <x>"),
+		compile("add(0,<x>) -> <x>"),
+		compile("div(<x>,<x>) -> 1"),
+		compile("mul(<x>,0) -> 0"),
+		compile("mul(0,<x> -> 0"),
+		compile("mul(<x>,1) -> <x>"),
+		compile("mul(1,<x>) -> <x>"),
+		compile("mul(<x>,<x>) -> pow(<x>,2)"),
+		compile("pow(<x>,0) -> 1"),
+		compile("pos(<x>,1 -> <x>")
+	);
 
-	X_ADD_X {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.ADD &&
-				node.getChild(0).equals(node.getChild(1));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = node.getChild(0);
+	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> node) {
+		//while (_prune(node));
+		return node;
+	}
 
-			node.removeAllChildren();
-			node.setValue(MathOp.MUL);
-			node.attach(Const.of(2.0));
-			node.attach(sub);
-		}
-	},
-
-	SUB_ZERO {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.SUB &&
-				equals(node, 1, 0.0);
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = node.getChild(0);
-
-			node.removeAllChildren();
-			node.setValue(sub.getValue());
-			sub.childStream()
-				.collect(ISeq.toISeq())
-				.forEach(node::attach);
-		}
-	},
-
-	ADD_ZERO {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.ADD &&
-				(equals(node, 0, 0.0) ||
-				equals(node, 1, 0.0));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = equals(node, 0, 0.0)
-				? node.getChild(1)
-				: node.getChild(0);
-
-			node.removeAllChildren();
-			node.setValue(sub.getValue());
-			sub.childStream()
-				.collect(ISeq.toISeq())
-				.forEach(node::attach);
-		}
-	},
-
-	X_DIV_X {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.DIV &&
-				node.getChild(0).equals(node.getChild(1));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			node.removeAllChildren();
-			node.setValue(Const.of(1.0));
-		}
-	},
-
-	MUL_ZERO {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.MUL &&
-				node.childCount() == 2 &&
-				(equals(node, 0, 0.0) ||
-				equals(node, 1, 0.0));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			node.removeAllChildren();
-			node.setValue(Const.of(0.0));
-		}
-	},
-
-	MUL_ONE {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.MUL &&
-				(equals(node, 0, 1.0) ||
-				equals(node, 1, 1.0));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = equals(node, 0, 1.0)
-				? node.getChild(1)
-				: node.getChild(0);
-
-			node.removeAllChildren();
-			node.setValue(sub.getValue());
-			sub.childStream()
-				.collect(ISeq.toISeq())
-				.forEach(node::attach);
-		}
-	},
-
-	X_MUL_X {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.MUL &&
-				node.getChild(0).equals(node.getChild(1));
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = node.getChild(0);
-
-			node.removeAllChildren();
-			node.setValue(MathOp.POW);
-			node.attach(sub);
-			node.attach(Const.of(2.0));
-		}
-	},
-
-	POW_ZERO {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.POW &&
-				node.childCount() == 2 &&
-				equals(node, 1, 0.0);
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			node.removeAllChildren();
-			node.setValue(Const.of(1.0));
-		}
-	},
-
-	POW_ONE {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return node.getValue() == MathOp.POW &&
-				node.childCount() == 2 &&
-				equals(node, 1, 1.0);
-		}
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final TreeNode<Op<Double>> sub = node.getChild(0);
-
-			node.removeAllChildren();
-			node.setValue(sub.getValue());
-			sub.childStream()
-				.collect(ISeq.toISeq())
-				.forEach(node::attach);
-		}
-	},
-
+/*
 	CONST_EXPR {
 		@Override
 		public boolean matches(final TreeNode<Op<Double>> node) {
@@ -249,5 +106,5 @@ enum MathExprRewriteRule implements TreeRewriter.Rule<Op<Double>> {
 		return node.getChild(index).getValue() instanceof Const &&
 			((Const)node.getChild(index).getValue()).value().equals(value);
 	}
-
+*/
 }
