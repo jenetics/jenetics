@@ -32,6 +32,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.jenetics.ext.util.Tree.Path;
+
 /**
  * A compiled representation of a <em>tree</em> pattern. A tree pattern,
  * specified as a string, must first be compiled into an instance of this class.
@@ -217,7 +219,8 @@ final class TreePattern {
 
 	/**
 	 * Expands {@code this} pattern with the given variable mapping and using
-	 * the given value {@code mapper}.
+	 * the given value {@code mapper}. Missing {@code variables} mapping are
+	 * removed from the expanded tree.
 	 *
 	 * @param variables the variables to use for expanding {@code this} pattern
 	 * @param mapper the string value mapper
@@ -234,27 +237,42 @@ final class TreePattern {
 		return expand(_pattern, variables, mapper);
 	}
 
-	private <V> TreeNode<V> expand(
+	private static <V> TreeNode<V> expand(
 		final Tree<Decl, ?> template,
 		final Map<String, Tree<V, ?>> vars,
 		final Function<? super String, ? extends V> mapper
 	) {
-		final Map<Tree.Path, Decl> paths = template.stream()
+		final Map<Path, Decl> paths = template.stream()
 			.filter((Tree<Decl, ?> n) -> n.getValue().isVar)
 			.collect(Collectors.toMap(Tree::childPath, Tree::getValue));
 
 		final Function<Decl, String> m = d -> d.isVar ? null : d.value;
 		final TreeNode<V> tree = TreeNode.ofTree(template, m.andThen(mapper));
 
-		for (Map.Entry<Tree.Path, Decl> var : paths.entrySet()) {
-			final TreeNode<V> child = tree.childAtPath(var.getKey())
+		for (Map.Entry<Path, Decl> var : paths.entrySet()) {
+			final Path path = var.getKey();
+			final Decl decl = var.getValue();
+			final TreeNode<V> child = tree.childAtPath(path)
 				.orElseThrow(AssertionError::new);
 
 			final Optional<TreeNode<V>> parent = child.getParent();
 			parent.ifPresent(p -> {
 				final int index = p.getIndex(child);
-				p.replace(index, TreeNode.ofTree(vars.get(var.getValue().value)));
+				final Tree<V, ?> replacement = vars.get(decl.value);
+
+				if (replacement != null) {
+					p.replace(index, TreeNode.ofTree(replacement));
+				} else {
+					p.remove(index);
+				}
 			});
+
+			if (!parent.isPresent()) {
+				final Tree<V, ?> replacement = vars.get(decl.value);
+				return replacement != null
+					? TreeNode.ofTree(replacement)
+					: TreeNode.of();
+			}
 		}
 
 		return tree;

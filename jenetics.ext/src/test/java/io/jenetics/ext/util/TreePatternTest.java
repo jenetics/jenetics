@@ -19,9 +19,12 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
@@ -29,25 +32,32 @@ import org.testng.annotations.Test;
  */
 public class TreePatternTest {
 
-	@Test
-	public void foo() {
-		final Tree<?, ?> tree = TreeNode.parse("add(3,mul(sub(1, 1),6))");
-		final Tree_Pattern pattern = Tree_Pattern.compile("mul(<x>,6)");
+	@Test(dataProvider = "patterns")
+	public void expand(
+		final String pattern,
+		final String[] trees,
+		final String expanded
+	) {
+		final TreePattern tp = TreePattern.compile(pattern);
+		final Map<String, Tree<String, ?>> vars = IntStream.range(0, trees.length)
+			.mapToObj(i -> new Object() {
+					final String name = Integer.toString(i + 1);
+					final Tree<String, ?> tree = TreeNode.parse(trees[i]);
+				})
+			.collect(Collectors.toMap(o -> o.name, o -> o.tree));
 
-		System.out.println(pattern.matcher(tree).matches());
-		pattern.matcher(tree).results().forEach(System.out::println);
-
-		System.out.println(Tree_Matcher.matches(tree, pattern.tree()));
+		Assert.assertEquals(tp.expand(vars).toParenthesesString(), expanded);
 	}
 
-	@Test
-	public void expand() {
-		final TreePattern pattern = TreePattern.compile("mul(<x>,6)");
-		final Map<String, Tree<String, ?>> variables = new HashMap<>();
-		variables.put("x", TreeNode.parse("sin(4,5)"));
-
-		final Tree<String, ?> expanded = pattern.expand(variables);
-		System.out.println(expanded.toParenthesesString());
+	@DataProvider
+	public Object[][] patterns() {
+		return new Object[][] {
+			{"<1>", new String[]{"sin(4)"}, "sin(4)"},
+			{"cos(<1>)", new String[]{"sin(4)"}, "cos(sin(4))"},
+			{"cos(<1>,2,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),2,sin(x))"},
+			{"cos(<1>,<2>,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),sin(x))"},
+			{"cos(<1>,<2>,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"}
+		};
 	}
 
 }
