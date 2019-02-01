@@ -61,7 +61,7 @@ public final class TreeRewriter<V> {
 		do {
 			match = _rules.stream()
 				.flatMap(rule -> rule.pattern().matcher(tree, _equals).results()
-					.map(result -> new Match<V>(rule, result)))
+					.map(result -> new Match<>(rule, result)))
 				.findFirst();
 
 			match.ifPresent(m -> rewrite(tree, m));
