@@ -21,15 +21,10 @@ package io.jenetics.prog.op;
 
 import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.internal.util.TreeRewriteRule;
-import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
-import io.jenetics.ext.internal.util.TreeRewriter;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
