@@ -244,7 +244,7 @@ final class TreePattern {
 	) {
 		final Map<Path, Decl> paths = template.stream()
 			.filter((Tree<Decl, ?> n) -> n.getValue().isVar)
-			.collect(Collectors.toMap(Tree::childPath, Tree::getValue));
+			.collect(Collectors.toMap(t -> t.childPath(), t -> t.getValue()));
 
 		final Function<Decl, String> m = d -> d.isVar ? null : d.value;
 		final TreeNode<V> tree = TreeNode.ofTree(template, m.andThen(mapper));
