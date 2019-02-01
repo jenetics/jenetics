@@ -37,7 +37,7 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public final class PatternTreeRewriter<V> {
+public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 
 	private final ISeq<TreeRewriteRule> _rules;
 	private final BiPredicate<? super V, ? super String> _equals;
@@ -53,6 +53,19 @@ public final class PatternTreeRewriter<V> {
 		_mapper = requireNonNull(mapper);
 	}
 
+	public ISeq<TreeRewriteRule> rules() {
+		return _rules;
+	}
+
+	public BiPredicate<? super V, ? super String> equals() {
+		return _equals;
+	}
+
+	public Function<? super String, ? extends V> mapper() {
+		return _mapper;
+	}
+
+	@Override
 	public boolean rewrite(final TreeNode<V> tree) {
 		requireNonNull(tree);
 
@@ -83,6 +96,18 @@ public final class PatternTreeRewriter<V> {
 
 	public static PatternTreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {
 		return new PatternTreeRewriter<>(rules, Objects::equals, Function.identity());
+	}
+
+	public static <V> PatternTreeRewriter<V> compile(
+		final BiPredicate<? super V, ? super String> equals,
+		final Function<? super String, ? extends V> mapper,
+		final String... rules
+	) {
+		return new PatternTreeRewriter<>(
+			ISeq.of(rules).map(TreeRewriteRule::compile),
+			equals,
+			mapper
+		);
 	}
 
 

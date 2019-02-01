@@ -43,7 +43,10 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
 
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * This class contains operations for performing basic numeric operations.
@@ -356,5 +359,51 @@ public enum MathOp implements Op<Double> {
 	public String toString() {
 		return _name;
 	}
+
+
+	/**
+	 * Tests whether the given operation is equal with the given string
+	 * representation.
+	 *
+	 * @param op the operation to test
+	 * @param value the string representation of the operation to test
+	 * @return {@code true} if the given string {@code value} is the string
+	 *         representation of the given {@code op}, {@code false} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static boolean equals(final Op<Double> op, final String value) {
+
+		return false;
+	}
+
+	/**
+	 * Converts the string representation of an operation to the operation
+	 * object.
+	 *
+	 * @param value the string representation of an operation which should be
+	 *        converted
+	 * @return the operation, converted from the given string
+	 * @throws IllegalArgumentException if the given {@code value} doesn't
+	 *         represent a mathematical expression
+	 * @throws NullPointerException if the given string {@code value} is
+	 *         {@code null}
+	 */
+	public static Op<Double> convert(final String value) {
+		if (Numbers.isNumber(value)) {
+			return Const.of(Double.parseDouble(value));
+		}
+
+		final Optional<MathOp> mop = Stream.of(values())
+			.filter(op -> Objects.equals(op._name, value))
+			.findFirst();
+
+		if (mop.isPresent()) {
+			return mop.get();
+		}
+
+		return Var.of(value, 0);
+	}
+
+
 
 }
