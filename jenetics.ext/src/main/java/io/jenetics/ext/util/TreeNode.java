@@ -179,11 +179,6 @@ public final class TreeNode<T>
 		createChildrenIfMissing();
 		_children.add(index, child);
 
-		TreeNode<T> parent = this;
-		while (parent != null) {
-			parent = parent._parent;
-		}
-
 		return this;
 	}
 
@@ -195,9 +190,41 @@ public final class TreeNode<T>
 	}
 
 	/**
+	 * Replaces the child at the give index with the given {@code child}
+	 *
+	 * @param index the index of the child which will be replaced
+	 * @param child the new child
+	 * @return {@code this} tree-node, for method chaining
+	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
+	 *         bounds
+	 * @throws IllegalArgumentException if {@code child} is an ancestor of
+	 *         {@code this} node
+	 * @throws NullPointerException if the given {@code child} is {@code null}
+	 */
+	public TreeNode<T> replace(final int index, final TreeNode<T> child) {
+		requireNonNull(child);
+		if (_children == null) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Child index is out of bounds: %s", index
+			));
+		}
+		if (isAncestor(child)) {
+			throw new IllegalArgumentException("The new child is an ancestor.");
+		}
+
+		final TreeNode<T> oldChild = _children.set(index, child);
+		assert oldChild != null;
+		assert oldChild._parent == this;
+
+		oldChild.setParent(null);
+		child.setParent(this);
+
+		return this;
+	}
+
+	/**
 	 * Removes the child at the specified index from this node's children and
-	 * sets that node's parent to {@code null}. The child node to remove must be
-	 * a {@code MutableTreeNode}.
+	 * sets that node's parent to {@code null}.
 	 *
 	 * @param index the index in this node's child array of the child to remove
 	 * @return {@code this} tree-node, for method chaining
@@ -213,12 +240,6 @@ public final class TreeNode<T>
 
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
-
-		TreeNode<T> parent = this;
-		while (parent != null) {
-			parent = parent._parent;
-		}
-
 		child.setParent(null);
 
 		if (_children.isEmpty()) {
