@@ -25,8 +25,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.internal.util.TreeMatcher;
-import io.jenetics.ext.internal.util.TreePattern;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 

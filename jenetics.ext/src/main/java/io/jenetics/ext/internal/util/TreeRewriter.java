@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.internal.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
