@@ -260,29 +260,6 @@ final class TreePattern {
 		return tree;
 	}
 
-//	private static <V> void expand(
-//		final Tree<Decl, ?> template,
-//		final Map<String, Tree<V, ?>> vars,
-//		final TreeNode<V> tree,
-//		final Function<? super String, ? extends V> mapper
-//	) {
-//		if (template.getValue().isVar) {
-//			final Tree<V, ?> node = vars.get(template.getValue().value);
-//			if (node == null) {
-//				throw new IllegalArgumentException(format(
-//					"Missing variable '%s'.", template.getValue()
-//				));
-//			}
-//
-//			tree.attach(TreeNode.ofTree(node));
-//		} else {
-//			tree.attach(mapper.apply(template.getValue().value));
-//			for (int i = 0; i < template.childCount(); ++i) {
-//				expand(template.getChild(i), vars, tree, mapper);
-//			}
-//		}
-//	}
-
 	/**
 	 * Expands {@code this} pattern with the given variable mapping.
 	 *
