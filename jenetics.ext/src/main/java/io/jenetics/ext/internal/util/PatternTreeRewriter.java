@@ -37,13 +37,13 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeRewriter<V> {
+public final class PatternTreeRewriter<V> {
 
 	private final ISeq<TreeRewriteRule> _rules;
 	private final BiPredicate<? super V, ? super String> _equals;
 	private final Function<? super String, ? extends V> _mapper;
 
-	public TreeRewriter(
+	public PatternTreeRewriter(
 		final ISeq<TreeRewriteRule> rule,
 		final BiPredicate<? super V, ? super String> equals,
 		Function<? super String, ? extends V> mapper
@@ -81,8 +81,8 @@ public final class TreeRewriter<V> {
 		template.expand(vars, _mapper);
 	}
 
-	public static TreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {
-		return new TreeRewriter<>(rules, Objects::equals, Function.identity());
+	public static PatternTreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {
+		return new PatternTreeRewriter<>(rules, Objects::equals, Function.identity());
 	}
 
 
