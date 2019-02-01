@@ -416,13 +416,18 @@ public final class TreeNode<T>
 	 * whole tree is copied.
 	 *
 	 * @param tree the source tree the new tree-node is created from
-	 * @param <T> the tree value type
+	 * @param mapper the tree value mapper function
+	 * @param <T> the current tree value type
+	 * @param <B> the mapped tree value type
 	 * @return a new {@code TreeNode} from the given source {@code tree}
-	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
-		final TreeNode<T> target = of(tree.getValue());
-		fill(tree, target, Function.identity());
+	public static <T, B> TreeNode<B> ofTree(
+		final Tree<? extends T, ?> tree,
+		final Function<? super T, ? extends B> mapper
+	) {
+		final TreeNode<B> target = of(mapper.apply(tree.getValue()));
+		fill(tree, target, mapper);
 		return target;
 	}
 
@@ -436,6 +441,19 @@ public final class TreeNode<T>
 			target.attach(targetChild);
 			fill(child, targetChild, mapper);
 		});
+	}
+
+	/**
+	 * Return a new {@code TreeNode} from the given source {@code tree}. The
+	 * whole tree is copied.
+	 *
+	 * @param tree the source tree the new tree-node is created from
+	 * @param <T> the current tree value type
+	 * @return a new {@code TreeNode} from the given source {@code tree}
+	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 */
+	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
+		return ofTree(tree, Function.identity());
 	}
 
 	/**
