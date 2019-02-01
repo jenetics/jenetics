@@ -19,36 +19,78 @@
  */
 package io.jenetics.ext.util;
 
+import static java.lang.String.format;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class TreeMatcherTest {
 
-	@Test(dataProvider = "treePattern")
-	public void subTrees(
-		final String pattern,
+	@Test(dataProvider = "patterns")
+	public void matches(
+		final String patternString,
 		final String treeString,
 		final boolean matches
 	) {
-		final Matcher<Integer> matcher = TreeMatcher.of(pattern, Integer::parseInt);
+		final TreePattern pattern = TreePattern.compile(patternString);
+		final Tree<String, ?> tree = TreeNode.parse(treeString);
+		final TreeMatcher<String> matcher = pattern.matcher(tree);
 
-		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
-		Assert.assertEquals(matcher.matches(tree), matches);
+		Assert.assertEquals(
+			matcher.matches(),
+			matches,
+			format("%s -> %s: %s", patternString, treeString, matches)
+		);
 	}
 
-	@DataProvider(name = "treePattern")
-	public Object[][] treePattern() {
+	@DataProvider
+	public Object[][] patterns() {
 		return new Object[][] {
-			{"0(1,2)", "0(1,2)", true},
-			{"0(1,2,X)", "0(1,2,3(4))", true},
-			{"0(3,2,X)", "0(1,2)", false},
-			{"0(3,2,X,X)", "0(3,2,0(1,2),0(1,2))", true}
+			{"1", "1", true},
+			{"1", "2", false},
+			{"<x>", "2", true},
+			{"<x>", "R(3,2,R(1,2),R(1,2))", true},
+			{"R(1,2)", "R(1,2)", true},
+			{"R(<x>,<x>)", "R(1,2)", false},
+			{"R(<x>,<x>)", "R(1,1)", true},
+			{"R(<x>,<x>)", "R(R(1,2),2)", false},
+			{"R(<x>,<x>)", "R(R(1,2),R(1,2))", true},
+			{"R(<x>,<x>)", "R(R(1,2),R(1,2,3))", false},
+			{"R(<x>,<y>)", "R(R(1,2),R(1,2,3))", true},
+			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3),5)", true},
+			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3))", false},
+			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3),9)", false},
+			{"R(1,2,<x>)", "R(1,2,3(4))", true},
+			{"R(3,2,<x>)", "R(1,2)", false},
+			{"R(3,2,<x>,<x>)", "R(3,2,R(1,2),R(1,2))", true},
+			{"R(3,2,<x>,<x>)", "R(3,2,R(1,2),R(1,3))", false}
+		};
+	}
+
+	@Test(dataProvider = "matchResults")
+	public void results(
+		final String patternString,
+		final String treeString,
+		final String[] results
+	) {
+		final TreePattern pattern = TreePattern.compile(patternString);
+		final Tree<String, ?> tree = TreeNode.parse(treeString);
+		final String[] matches = pattern.matcher(tree).results()
+			.map(t -> t.node().toParenthesesString())
+			.toArray(String[]::new);
+
+		Assert.assertEquals(matches, results);
+	}
+
+	@DataProvider
+	public Object[][] matchResults() {
+		return new Object[][] {
+			{"1", "R(1,1)", new String[]{"1", "1"}},
+			{"O(2,3)", "R(1,O(2,3),5,O(2,3))", new String[]{"O(2,3)", "O(2,3)"}}
 		};
 	}
 

@@ -19,44 +19,40 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Map;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class ChildPath {
+final class TreeMatchResult<V> {
+	private final Tree<V, ?> _node;
+	private final Map<String, Tree<V, ?>> _variables;
 
-	private final int[] _path;
-
-	private ChildPath(final int[] path) {
-		_path = path.clone();
+	private TreeMatchResult(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		_node = requireNonNull(node);
+		_variables = requireNonNull(variables);
 	}
 
-	int[] path() {
-		return _path.clone();
+	Tree<V, ?> node() {
+		return _node;
 	}
 
-	@Override
-	public int hashCode() {
-		return Arrays.hashCode(_path);
+	Map<String, Tree<V, ?>> variables() {
+		return _variables;
 	}
 
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof ChildPath &&
-			Arrays.equals(_path, ((ChildPath)obj)._path);
-	}
-
-	@Override
-	public String toString() {
-		return Arrays.toString(_path);
-	}
-
-	static ChildPath of(final int[] path) {
-		return new ChildPath(path);
+	static <V> TreeMatchResult<V> of(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		return new TreeMatchResult<>(node, variables);
 	}
 
 }

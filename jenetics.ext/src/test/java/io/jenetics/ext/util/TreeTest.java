@@ -19,12 +19,13 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.Tree.Path;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -96,7 +97,7 @@ public class TreeTest {
 	@Test(dataProvider = "paths")
 	public void childByPath(final int[] path, final String result)  {
 		Assert.assertEquals(
-			TREE.childAtPath(path).map(t -> t.getValue()),
+			TREE.childAtPath(Path.of(path)).map(t -> t.getValue()),
 			Optional.ofNullable(result)
 		);
 	}
@@ -120,7 +121,7 @@ public class TreeTest {
 	@Test
 	public void childPath() {
 		TREE.forEach(node -> {
-			final int[] path = node.childPath();
+			final Path path = node.childPath();
 			Assert.assertEquals(
 				TREE.childAtPath(path).orElseThrow(AssertionError::new),
 				node

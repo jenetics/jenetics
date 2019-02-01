@@ -21,12 +21,8 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.function.BiPredicate;
 import java.util.stream.Stream;
-
-import io.jenetics.ext.util.TreeRewriter.Matcher;
 
 /**
  * Implementation of a pattern based tree matcher.
@@ -35,47 +31,86 @@ import io.jenetics.ext.util.TreeRewriter.Matcher;
  * @version !__version__!
  * @since !__version__!
  */
-final class TreeMatcher<V> implements Matcher<V> {
-	private final Matcher<V> _subTreeMatcher;
-	private final Matcher<V> _valueMatcher;
+final class TreeMatcher<V> {
+
+	private final TreePattern _pattern;
+	private final Tree<V, ?> _tree;
+	private final BiPredicate<V, String> _equals;
 
 	private TreeMatcher(
-		final Matcher<V> subTreeMatcher,
-		final Matcher<V> valueMatcher
+		final TreePattern pattern,
+		final Tree<V, ?> tree,
+		final BiPredicate<V, String> equals
 	) {
-		_subTreeMatcher = requireNonNull(subTreeMatcher);
-		_valueMatcher = requireNonNull(valueMatcher);
-	}
-
-	@Override
-	public boolean matches(final Tree<V, ?> node) {
-		return _valueMatcher.matches(node) && _subTreeMatcher.matches(node);
-	}
-
-	static List<Tree<?, ?>>
-	children(final Tree<?, ?> tree, final List<ChildPath> paths) {
-		return paths.stream()
-			.map(p -> tree.childAtPath(p.path()))
-			.flatMap(n -> n.map(Stream::of).orElse(Stream.empty()))
-			.collect(Collectors.toList());
+		_pattern = requireNonNull(pattern);
+		_tree = requireNonNull(tree);
+		_equals = requireNonNull(equals);
 	}
 
 	/**
-	 * add(X, sub(X, X)) -> x
+	 * Return the underlying pattern of {@code this} matcher.
 	 *
-	 * @param pattern the pattern
-	 * @return the matcher
+	 * @return the underlying tree pattern
 	 */
-	static <V> TreeMatcher<V> of(
-		final String pattern,
-		final Function<? super String, ? extends V> mapper
-	) {
-		final TreeNode<String> tree = TreeNode.parse(pattern);
+	TreePattern pattern() {
+		return _pattern;
+	}
 
-		return new TreeMatcher<>(
-			SubTreeMatcher.of(tree),
-			TreeValueMatcher.of(tree, mapper)
-		);
+	/**
+	 * Tests if the tree matches the pattern, using the given {@code equals}
+	 * predicate.
+	 *
+	 * @param equals the predicate, used for comparing the node value and the
+	 *        pattern string
+	 * @return {@code true} if the tree matches against the pattern,
+	 *         {@code false} otherwise
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	boolean matches(final BiPredicate<V, String> equals) {
+		return _pattern.matches(_tree, equals);
+	}
+
+	/**
+	 * Tests if the tree matches the pattern.
+	 *
+	 * @return {@code true} if the tree matches against the pattern,
+	 *         {@code false} otherwise
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	boolean matches() {
+		return matches(TreePattern::equals);
+	}
+
+	/**
+	 * Return all matching <em>sub</em>-trees.
+	 *
+	 * @param equals the predicate, used for comparing the node value and the
+	 *        pattern string
+	 * @return all matching sub-trees
+	 * @throws NullPointerException if the given predicate is {@code null}
+	 */
+	Stream<TreeMatchResult<V>> results(final BiPredicate<V, String> equals) {
+		return _tree.stream()
+			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, equals)
+				.map(Stream::of)
+				.orElseGet(Stream::empty));
+	}
+
+	/**
+	 * Return all matching <em>sub</em>-trees.
+	 *
+	 * @return all matching sub-trees
+	 */
+	Stream<TreeMatchResult<V>> results() {
+		return results(TreePattern::equals);
+	}
+
+	static <V> TreeMatcher<V> of(
+		final TreePattern pattern,
+		final Tree<V, ?> tree,
+		final BiPredicate<V, String> equals
+	) {
+		return new TreeMatcher<>(pattern, tree, equals);
 	}
 
 }
