@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A compiled representation of a <em>tree</em> pattern. A tree pattern,
@@ -230,33 +231,57 @@ final class TreePattern {
 		final Map<String, Tree<V, ?>> variables,
 		final Function<? super String, ? extends V> mapper
 	) {
-		final TreeNode<V> root = TreeNode.of();
-		expand(_pattern, variables, root, mapper);
-		return root;
+		return expand2(_pattern, variables, mapper);
 	}
 
-	private static <V> void expand(
+	private <V> TreeNode<V> expand2(
 		final Tree<Decl, ?> template,
 		final Map<String, Tree<V, ?>> vars,
-		final TreeNode<V> tree,
 		final Function<? super String, ? extends V> mapper
 	) {
-		if (template.getValue().isVar) {
-			final Tree<V, ?> node = vars.get(template.getValue().value);
-			if (node == null) {
-				throw new IllegalArgumentException(format(
-					"Missing variable '%s'.", template.getValue()
-				));
-			}
+		final Map<Tree.Path, Decl> paths = template.stream()
+			.filter((Tree<Decl, ?> n) -> n.getValue().isVar)
+			.collect(Collectors.toMap(Tree::childPath, Tree::getValue));
 
-			tree.attach(TreeNode.ofTree(node));
-		} else {
-			tree.attach(mapper.apply(template.getValue().value));
-			for (int i = 0; i < template.childCount(); ++i) {
-				expand(template.getChild(i), vars, tree, mapper);
-			}
+		final Function<Decl, String> m = d -> d.isVar ? null : d.value;
+		final TreeNode<V> tree = TreeNode.ofTree(template, m.andThen(mapper));
+
+		for (Map.Entry<Tree.Path, Decl> var : paths.entrySet()) {
+			final TreeNode<V> child = tree.childAtPath(var.getKey())
+				.orElseThrow(AssertionError::new);
+
+			final Optional<TreeNode<V>> parent = child.getParent();
+			parent.ifPresent(p -> {
+				final int index = p.getIndex(child);
+				p.replace(index, TreeNode.ofTree(vars.get(var.getValue().value)));
+			});
 		}
+
+		return tree;
 	}
+
+//	private static <V> void expand(
+//		final Tree<Decl, ?> template,
+//		final Map<String, Tree<V, ?>> vars,
+//		final TreeNode<V> tree,
+//		final Function<? super String, ? extends V> mapper
+//	) {
+//		if (template.getValue().isVar) {
+//			final Tree<V, ?> node = vars.get(template.getValue().value);
+//			if (node == null) {
+//				throw new IllegalArgumentException(format(
+//					"Missing variable '%s'.", template.getValue()
+//				));
+//			}
+//
+//			tree.attach(TreeNode.ofTree(node));
+//		} else {
+//			tree.attach(mapper.apply(template.getValue().value));
+//			for (int i = 0; i < template.childCount(); ++i) {
+//				expand(template.getChild(i), vars, tree, mapper);
+//			}
+//		}
+//	}
 
 	/**
 	 * Expands {@code this} pattern with the given variable mapping.
@@ -268,9 +293,7 @@ final class TreePattern {
 	 *         of the {@code variables} map
 	 */
 	TreeNode<String> expand(final Map<String, Tree<String, ?>> variables) {
-		final TreeNode<String> root = TreeNode.of();
-		expand(_pattern, variables, root, Objects::toString);
-		return root;
+		return expand(variables, Function.identity());
 	}
 
 

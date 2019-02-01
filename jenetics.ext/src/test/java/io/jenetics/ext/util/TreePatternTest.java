@@ -19,6 +19,9 @@
  */
 package io.jenetics.ext.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.testng.annotations.Test;
 
 /**
@@ -35,6 +38,16 @@ public class TreePatternTest {
 		pattern.matcher(tree).results().forEach(System.out::println);
 
 		System.out.println(Tree_Matcher.matches(tree, pattern.tree()));
+	}
+
+	@Test
+	public void expand() {
+		final TreePattern pattern = TreePattern.compile("mul(<x>,6)");
+		final Map<String, Tree<String, ?>> variables = new HashMap<>();
+		variables.put("x", TreeNode.parse("sin(4,5)"));
+
+		final Tree<String, ?> expanded = pattern.expand(variables);
+		System.out.println(expanded.toParenthesesString());
 	}
 
 }
