@@ -31,7 +31,7 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since 4.1
  */
-class MathExprRewriteRule {
+class MathExprRewrite {
 
 	private static final ISeq<TreeRewriteRule> RULES = ISeq.of(
 		compile("sub(<x>,<x>) -> 0"),
