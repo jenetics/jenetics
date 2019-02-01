@@ -17,13 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.internal.util;
 
 import static java.lang.String.format;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.internal.util.TreeMatcher;
+import io.jenetics.ext.internal.util.TreePattern;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

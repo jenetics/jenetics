@@ -17,13 +17,16 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

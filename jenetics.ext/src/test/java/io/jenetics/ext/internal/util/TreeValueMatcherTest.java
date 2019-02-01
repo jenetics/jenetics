@@ -17,42 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
-
-import static java.util.Objects.requireNonNull;
-
-import java.util.Map;
+package io.jenetics.ext.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
-final class TreeMatchResult<V> {
-	private final Tree<V, ?> _node;
-	private final Map<String, Tree<V, ?>> _variables;
+public class TreeValueMatcherTest {
 
-	private TreeMatchResult(
-		final Tree<V, ?> node,
-		final Map<String, Tree<V, ?>> variables
-	) {
-		_node = requireNonNull(node);
-		_variables = requireNonNull(variables);
-	}
-
-	Tree<V, ?> node() {
-		return _node;
-	}
-
-	Map<String, Tree<V, ?>> variables() {
-		return _variables;
-	}
-
-	static <V> TreeMatchResult<V> of(
-		final Tree<V, ?> node,
-		final Map<String, Tree<V, ?>> variables
-	) {
-		return new TreeMatchResult<>(node, variables);
-	}
+//	@Test(dataProvider = "treePattern")
+//	public void subTrees(
+//		final String patternString,
+//		final String treeString,
+//		final boolean matches
+//	) {
+//		final Tree<String, ?> pattern = TreeNode.parse(patternString);
+//		final Matcher<Integer> matcher = TreeValueMatcher.of(pattern, Integer::parseInt);
+//
+//		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
+//		Assert.assertEquals(matcher.matches(tree), matches);
+//	}
+//
+//	@DataProvider(name = "treePattern")
+//	public Object[][] treePattern() {
+//		return new Object[][] {
+//			{"0(1,2)", "0(1,2)", true},
+//			{"0(1,2,X)", "0(1,2)", true},
+//			{"0(3,2,X)", "0(1,2)", false}
+//		};
+//	}
 
 }

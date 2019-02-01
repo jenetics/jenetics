@@ -17,54 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.internal.util;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import io.jenetics.ext.util.Tree.Path;
+import io.jenetics.ext.util.Tree;
 
 /**
- * <pre>{@code
- * <x:expr> + 0 -> <x>
- * <x:expr> * 1 -> <x>
- * <x:expr> * 0 -> 0
- *
- * add(<x>,0) -> <x>
- * mul(<x>,1) -> <x>
- * add(<x>,0,<y>) -> add(<x>,<y>)
- *
- *
- * }</pre>
- *
- * add(X,0) -> X
- * mul(X,0) -> 0
- * sin(neg(X)) -> neg(sin(X))
- *
- * This class is responsible for rewriting a single node with the given set
- * of paths to be replaced.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class NodeRewriter<V> {
+final class TreeMatchResult<V> {
+	private final Tree<V, ?> _node;
+	private final Map<String, Tree<V, ?>> _variables;
 
-	private final Map<Character, Path> _replace;
-
-	private NodeRewriter(final Map<Character, Path> replace) {
-		_replace = requireNonNull(replace);
+	private TreeMatchResult(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		_node = requireNonNull(node);
+		_variables = requireNonNull(variables);
 	}
 
-	public void rewrite(final TreeNode<V> root) {
-		// The tree paths replaced by the actual nodes for the given root.
-		final Map<Character, TreeNode<V>> nodes = _replace.entrySet().stream()
-			.collect(Collectors.toMap(
-				Map.Entry::getKey,
-				e -> root.childAtPath(e.getValue())
-					.orElseThrow(AssertionError::new)));
+	Tree<V, ?> node() {
+		return _node;
+	}
+
+	Map<String, Tree<V, ?>> variables() {
+		return _variables;
+	}
+
+	static <V> TreeMatchResult<V> of(
+		final Tree<V, ?> node,
+		final Map<String, Tree<V, ?>> variables
+	) {
+		return new TreeMatchResult<>(node, variables);
 	}
 
 }
