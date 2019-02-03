@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.internal.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.function.Function;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -76,7 +78,7 @@ public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 				.flatMap(rule -> rule.pattern().matcher(tree, _equals).results()
 					.map(result -> new Match<>(rule, result)))
 				.findFirst();
-
+			System.out.println(match);
 			match.ifPresent(m -> rewrite(tree, m));
 			rewritten = match.isPresent() || rewritten;
 		} while(match.isPresent());
@@ -91,7 +93,10 @@ public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 		final Map<String, Tree<V, ?>> vars = match.result.variables();
 		final TreePattern template = match.rule.template();
 
-		template.expand(vars, _mapper);
+		final TreeNode<V> r = template.expand(vars, _mapper);
+
+		final Path path = match.result.node().childPath();
+		tree.replaceAt(path, r);
 	}
 
 	public static PatternTreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {
@@ -117,6 +122,11 @@ public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 		Match(final TreeRewriteRule rule, final TreeMatchResult<V> result) {
 			this.rule = rule;
 			this.result = result;
+		}
+
+		@Override
+		public String toString() {
+			return format("M[%s,%s]", rule, result);
 		}
 	}
 

@@ -281,6 +281,10 @@ public final class TreePattern {
 		return expand(variables, Function.identity());
 	}
 
+	@Override
+	public String toString() {
+		return _pattern.toParenthesesString();
+	}
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -328,7 +332,7 @@ public final class TreePattern {
 
 		@Override
 		public String toString() {
-			return isVar ? value : format("<%s>", value);
+			return isVar ? format("<%s>", value) : value;
 		}
 
 		static Decl val(final String value) {

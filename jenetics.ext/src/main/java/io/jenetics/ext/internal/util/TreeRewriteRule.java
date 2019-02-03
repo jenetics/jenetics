@@ -62,6 +62,11 @@ public final class TreeRewriteRule {
 		return _template;
 	}
 
+	@Override
+	public String toString() {
+		return format("Rule[%s -> %s]", _pattern, _template);
+	}
+
 	/**
 	 * Create a new rewrite rule with the given values.
 	 *
@@ -97,7 +102,10 @@ public final class TreeRewriteRule {
 			));
 		}
 
-		return of(TreePattern.compile(parts[0]), TreePattern.compile(parts[1]));
+		return of(
+			TreePattern.compile(parts[0].trim()),
+			TreePattern.compile(parts[1].trim())
+		);
 	}
 
 }

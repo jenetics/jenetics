@@ -371,7 +371,7 @@ public enum MathOp implements Op<Double> {
 	 *         representation of the given {@code op}, {@code false} otherwise
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static boolean equals(final Op<Double> op, final String value) {
+	static boolean equals(final Op<Double> op, final String value) {
 
 		return false;
 	}
@@ -388,7 +388,7 @@ public enum MathOp implements Op<Double> {
 	 * @throws NullPointerException if the given string {@code value} is
 	 *         {@code null}
 	 */
-	public static Op<Double> convert(final String value) {
+	static Op<Double> convert(final String value) {
 		if (Numbers.isNumber(value)) {
 			return Const.of(Double.parseDouble(value));
 		}

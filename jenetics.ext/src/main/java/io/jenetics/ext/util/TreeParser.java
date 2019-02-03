@@ -160,8 +160,8 @@ final class TreeParser {
 				default:
 					if (current == null) {
 						throw new IllegalArgumentException(format(
-							"More than one root element at pos %d.",
-							token.pos
+							"More than one root element at pos %d: %s",
+							token.pos, value
 						));
 					}
 					if (current.getValue() == null) {

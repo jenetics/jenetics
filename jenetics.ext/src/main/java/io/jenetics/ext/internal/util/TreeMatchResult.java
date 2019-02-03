@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.internal.util;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
@@ -50,6 +51,11 @@ public final class TreeMatchResult<V> {
 
 	public Map<String, Tree<V, ?>> variables() {
 		return _variables;
+	}
+
+	@Override
+	public String toString() {
+		return format("Match[%s]", _node.toParenthesesString());
 	}
 
 	static <V> TreeMatchResult<V> of(
