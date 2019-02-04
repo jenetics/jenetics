@@ -249,7 +249,17 @@ public final class TreeNode<T>
 		return this;
 	}
 
-	
+	/**
+	 * Replaces the child at the given {@code path} with the given new
+	 * {@code child}. If no child exists at the given path, nothing is replaced.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param path the path of the child to replace
+	 * @param child the new child
+	 * @return {@code this} tree-node, for method chaining
+	 * @throws NullPointerException if one of the given argument is {@code null}
+	 */
 	public TreeNode<T> replaceAtPath(final Path path, final TreeNode<T> child) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
 			.flatMap(TreeNode::getParent);
