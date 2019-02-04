@@ -22,6 +22,24 @@ package io.jenetics.ext.internal.util;
 import io.jenetics.ext.util.TreeNode;
 
 /**
+ * Interface for rewriting a given tree.
+ * <b>Description from <a href="https://en.wikipedia.org/wiki/Rewriting">
+ *     Wikipedia</a></b>
+ * <em>
+ *     In mathematics, computer science, and logic, rewriting covers a wide
+ *     range of (potentially non-deterministic) methods of replacing subterms
+ *     of a formula with other terms. In their most basic form, they consist of
+ *     a set of objects, plus relations on how to transform those objects.
+ *     <p>
+ *     Rewriting can be non-deterministic. One rule to rewrite a term could be
+ *     applied in many different ways to that term, or more than one rule could
+ *     be applicable. Rewriting systems then do not provide an algorithm for
+ *     changing one term to another, but a set of possible rule applications.
+ *     When combined with an appropriate algorithm, however, rewrite systems can
+ *     be viewed as computer programs, and several theorem provers and
+ *     declarative programming languages are based on term rewriting.
+ * </em>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -29,6 +47,15 @@ import io.jenetics.ext.util.TreeNode;
 @FunctionalInterface
 public interface TreeRewriter<V> {
 
+	/**
+	 * Applies the rewriting to the given (mutable) {@code tree}. The tree
+	 * rewrite is done in place.
+	 *
+	 * @param tree the tree to be rewritten
+	 * @return {@code true} if the tree has been changed (rewritten) by this
+	 *         method, {@code false} if the tree hasn't been changed
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
 	public boolean rewrite(final TreeNode<V> tree);
 
 }

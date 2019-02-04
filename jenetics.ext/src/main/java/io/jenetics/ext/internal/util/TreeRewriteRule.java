@@ -25,7 +25,11 @@ import static java.util.Objects.requireNonNull;
 /**
  * Represents a tree rewrite rule. A rewrite rule consists of a pattern, which
  * must be matched, and a template, which is expanded and replaces the variables
- * in the tree pattern.
+ * in the tree pattern. Some simple <em>arithmetic</em> rewrite rules.
+ * <pre>{@code
+ * add(<x>,0) -> <x>
+ * mul(<x>,1) -> <x>
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
