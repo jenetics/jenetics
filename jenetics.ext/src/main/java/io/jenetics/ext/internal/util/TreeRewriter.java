@@ -19,6 +19,10 @@
  */
 package io.jenetics.ext.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -57,5 +61,37 @@ public interface TreeRewriter<V> {
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public boolean rewrite(final TreeNode<V> tree);
+
+
+	/**
+	 * Rewrites the given {@code tree} by applying the given {@code rewriters}.
+	 * This method to apply the rewriters until the tree stays unchanged.
+	 *
+	 * @param tree the tree to rewrite
+	 * @param rewriters the rewriters applied to the tree
+	 * @param <V> the tree value type
+	 * @return {@code true} if the tree has been changed (rewritten) by this
+	 *         method, {@code false} if the tree hasn't been changed
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <V> boolean rewrite(
+		final TreeNode<V> tree,
+		final ISeq<TreeRewriter<V>> rewriters
+	) {
+		requireNonNull(tree);
+		requireNonNull(rewriters);
+
+		boolean rewritten = false;
+		int count = 0;
+		do {
+			count = rewriters.stream()
+				.mapToInt(r -> r.rewrite(tree) ? 1 : 0)
+				.sum();
+
+			rewritten = count > 0 || rewritten;
+		} while(count > 0);
+
+		return rewritten;
+	}
 
 }

@@ -23,7 +23,6 @@ import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.internal.util.PatternTreeRewriter;
 import io.jenetics.ext.internal.util.TreeRewriteRule;
 import io.jenetics.ext.internal.util.TreeRewriter;
 import io.jenetics.ext.util.TreeNode;
@@ -51,11 +50,13 @@ class MathExprRewrite {
 		compile("pos(<x>,1) -> <x>")
 	);
 
+	/*
 	private static final TreeRewriter<Op<Double>>
-	PATTERN_REWRITE = PatternTreeRewriter.compile(
+	PATTERN_REWRITE = nPatternTreeRewriter.compile(
 			null, null,
 			"sub(<x>,<x>) -> 0"
 		);
+*/
 
 	static TreeNode<Op<Double>> rewrite(final TreeNode<Op<Double>> node) {
 		//while (_prune(node));

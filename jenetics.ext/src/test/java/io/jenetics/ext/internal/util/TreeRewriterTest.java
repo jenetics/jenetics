@@ -32,31 +32,31 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class PatternTreeRewriteTest {
+public class TreeRewriterTest {
 
-	private static final ISeq<TreeRewriteRule> RULES = ISeq.of(
-		compile("sub(<x>,<x>) -> 0"),
-		compile("add(<x>,<x>) -> mul(2,<x>)"),
-		compile("sub(<x>,0) -> <x>"),
-		compile("add(<x>,0) -> <x>"),
-		compile("add(0,<x>) -> <x>"),
-		compile("div(<x>,<x>) -> 1"),
-		compile("mul(<x>,0) -> 0"),
-		compile("mul(0,<x>) -> 0"),
-		compile("mul(<x>,1) -> <x>"),
-		compile("mul(1,<x>) -> <x>"),
-		compile("mul(<x>,<x>) -> pow(<x>,2)"),
-		compile("pow(<x>,0) -> 1"),
-		compile("pos(<x>,1) -> <x>")
+	private static final ISeq<String> RULES = ISeq.of(
+		"sub(<x>,<x>) -> 0",
+		"add(<x>,<x>) -> mul(2,<x>)",
+		"sub(<x>,0) -> <x>",
+		"add(<x>,0) -> <x>",
+		"add(0,<x>) -> <x>",
+		"div(<x>,<x>) -> 1",
+		"mul(<x>,0) -> 0",
+		"mul(0,<x>) -> 0",
+		"mul(<x>,1) -> <x>",
+		"mul(1,<x>) -> <x>",
+		"mul(<x>,<x>) -> pow(<x>,2)",
+		"pow(<x>,0) -> 1",
+		"pos(<x>,1) -> <x>"
 	);
 
-	private static final PatternTreeRewriter<String> REWRITER =
-		PatternTreeRewriter.of(RULES);
+	private static final ISeq<TreeRewriter<String>> REWRITERS = RULES
+		.map(RuleTreeRewriter::compile);
 
 	@Test(dataProvider = "trees")
 	public void rewrite(final String treeString, final String rewrittenTreeString) {
 		final TreeNode<String> tree = TreeNode.parse(treeString);
-		REWRITER.rewrite(tree);
+		TreeRewriter.rewrite(tree, REWRITERS);
 		Assert.assertEquals(tree, TreeNode.parse(rewrittenTreeString));
 	}
 
