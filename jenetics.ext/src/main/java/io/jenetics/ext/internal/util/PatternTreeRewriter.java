@@ -96,7 +96,7 @@ public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 		final TreeNode<V> r = template.expand(vars, _mapper);
 
 		final Path path = match.result.node().childPath();
-		tree.replaceAt(path, r);
+		tree.replaceAtPath(path, r);
 	}
 
 	public static PatternTreeRewriter<String> of(final ISeq<TreeRewriteRule> rules) {

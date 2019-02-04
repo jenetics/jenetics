@@ -249,7 +249,8 @@ public final class TreeNode<T>
 		return this;
 	}
 
-	public TreeNode<T> replaceAt(final Path path, final TreeNode<T> child) {
+	
+	public TreeNode<T> replaceAtPath(final Path path, final TreeNode<T> child) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
 			.flatMap(TreeNode::getParent);
 

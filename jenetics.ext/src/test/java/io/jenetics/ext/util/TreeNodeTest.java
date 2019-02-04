@@ -113,7 +113,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final TreeNode<Integer> child = tree.childAtPath(0 , 1, 0)
 			.orElseThrow(AssertionError::new);
 
-		tree.replaceAt(Path.of(0, 1, 0), tree1);
+		tree.replaceAtPath(Path.of(0, 1, 0), tree1);
 		Assert.assertEquals(
 			tree.childAtPath(0, 1, 0).orElseThrow(AssertionError::new),
 			tree1
