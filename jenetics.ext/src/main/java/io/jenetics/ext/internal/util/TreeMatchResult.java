@@ -21,6 +21,7 @@ package io.jenetics.ext.internal.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Map;
 
@@ -54,8 +55,21 @@ public final class TreeMatchResult<V> {
 	}
 
 	@Override
+	public int hashCode() {
+		return hash(_node, hash(_variables));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof TreeMatchResult &&
+			_node.equals(((TreeMatchResult)obj)._node) &&
+			_variables.equals(((TreeMatchResult)obj)._variables);
+	}
+
+	@Override
 	public String toString() {
-		return format("Match[%s]", _node.toParenthesesString());
+		return format("MatchResult[%s]", _node.toParenthesesString());
 	}
 
 	static <V> TreeMatchResult<V> of(

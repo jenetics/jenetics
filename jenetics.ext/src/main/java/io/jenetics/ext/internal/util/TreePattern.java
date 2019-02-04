@@ -53,6 +53,7 @@ import io.jenetics.ext.util.TreeNode;
  * }</pre>
  *
  * @see Tree#toParenthesesString()
+ * @see TreeMatcher
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -267,6 +268,18 @@ public final class TreePattern {
 	 */
 	public TreeNode<String> expand(final Map<String, Tree<String, ?>> variables) {
 		return expand(variables, Function.identity());
+	}
+
+	@Override
+	public int hashCode() {
+		return _pattern.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof TreePattern &&
+			_pattern.equals(((TreePattern)obj)._pattern);
 	}
 
 	@Override

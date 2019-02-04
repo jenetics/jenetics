@@ -21,6 +21,7 @@ package io.jenetics.ext.internal.util;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 /**
  * Represents a tree rewrite rule. A rewrite rule consists of a pattern, which
@@ -67,8 +68,21 @@ public final class TreeRewriteRule {
 	}
 
 	@Override
+	public int hashCode() {
+		return hash(_pattern, hash(_template));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof TreeRewriteRule &&
+			_pattern.equals(((TreeRewriteRule)obj)._pattern) &&
+			_template.equals(((TreeRewriteRule)obj)._template);
+	}
+
+	@Override
 	public String toString() {
-		return format("Rule[%s -> %s]", _pattern, _template);
+		return format("RewriteRule[%s -> %s]", _pattern, _template);
 	}
 
 	/**
@@ -107,8 +121,8 @@ public final class TreeRewriteRule {
 		}
 
 		return of(
-			TreePattern.compile(parts[0].trim()),
-			TreePattern.compile(parts[1].trim())
+			TreePattern.compile(parts[0]),
+			TreePattern.compile(parts[1])
 		);
 	}
 
