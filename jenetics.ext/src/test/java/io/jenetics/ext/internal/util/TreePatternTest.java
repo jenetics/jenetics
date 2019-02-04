@@ -59,7 +59,8 @@ public class TreePatternTest {
 			{"cos(<1>)", new String[]{"sin(4)"}, "cos(sin(4))"},
 			{"cos(<1>,2,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),2,sin(x))"},
 			{"cos(<1>,<2>,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),sin(x))"},
-			{"cos(<1>,<2>,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"}
+			{"cos(<1>,<2>,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"},
+			{"mul(2,<1>)", new String[]{"1"}, "mul(2,1)"},
 		};
 	}
 

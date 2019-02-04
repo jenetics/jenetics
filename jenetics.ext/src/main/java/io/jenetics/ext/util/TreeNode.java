@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import io.jenetics.util.Copyable;
+import io.jenetics.util.ISeq;
 
 /**
  * A general purpose node in a tree data-structure. The {@code TreeNode} is a
@@ -250,6 +251,25 @@ public final class TreeNode<T>
 	}
 
 	/**
+	 * Removes the child at the given {@code path}. If no child exists at the
+	 * given path, nothing is removed.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param path the path of the child to replace
+	 * @return {@code true} if a child at the given {@code path} existed and
+	 *         has been removed
+	 * @throws NullPointerException if one of the given argument is {@code null}
+	 */
+	public boolean removeAtPath(final Path path) {
+		final Optional<TreeNode<T>> parent = childAtPath(path)
+			.flatMap(Tree::getParent);
+
+		parent.ifPresent(p -> p.remove(path.get(path.length() - 1)));
+		return parent.isPresent();
+	}
+
+	/**
 	 * Replaces the child at the given {@code path} with the given new
 	 * {@code child}. If no child exists at the given path, nothing is replaced.
 	 *
@@ -257,16 +277,33 @@ public final class TreeNode<T>
 	 *
 	 * @param path the path of the child to replace
 	 * @param child the new child
-	 * @return {@code this} tree-node, for method chaining
+	 * @return {@code true} if a child at the given {@code path} existed and
+	 *         has been replaced
 	 * @throws NullPointerException if one of the given argument is {@code null}
 	 */
-	public TreeNode<T> replaceAtPath(final Path path, final TreeNode<T> child) {
-		final Optional<TreeNode<T>> parent = childAtPath(path)
-			.flatMap(TreeNode::getParent);
+	public boolean replaceAtPath(final Path path, final TreeNode<T> child) {
+		requireNonNull(path);
+		requireNonNull(child);
 
-		parent.ifPresent(p -> p.replace(path.get(path.length() - 1), child));
+		final Optional<TreeNode<T>> old = childAtPath(path);
+		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::getParent);
 
-		return this;
+		if (parent.isPresent()) {
+			parent.orElseThrow(AssertionError::new)
+				.replace(path.get(path.length() - 1), child);
+		} else {
+			removeAllChildren();
+			setValue(child.getValue());
+
+			final ISeq<TreeNode<T>> nodes = child.childStream()
+				.collect(ISeq.toISeq());
+
+			for (TreeNode<T> node : nodes) {
+				attach(node);
+			}
+		}
+
+		return old.isPresent();
 	}
 
 	/* *************************************************************************

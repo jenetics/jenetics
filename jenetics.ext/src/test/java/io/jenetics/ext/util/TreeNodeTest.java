@@ -61,6 +61,12 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 	}
 
 	@Test
+	public void childIterator() {
+		final TreeNode<Integer> tree = TreeNode.of(0).attach(1, 2, 3, 4, 5);
+		Assert.assertEquals(tree.childStream().count(), tree.childCount());
+	}
+
+	@Test
 	public void remove() {
 		final TreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));

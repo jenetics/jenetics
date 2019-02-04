@@ -245,23 +245,11 @@ public final class TreePattern {
 			final TreeNode<V> child = tree.childAtPath(path)
 				.orElseThrow(AssertionError::new);
 
-			final Optional<TreeNode<V>> parent = child.getParent();
-			parent.ifPresent(p -> {
-				final int index = p.getIndex(child);
-				final Tree<V, ?> replacement = vars.get(decl.value);
-
-				if (replacement != null) {
-					p.replace(index, TreeNode.ofTree(replacement));
-				} else {
-					p.remove(index);
-				}
-			});
-
-			if (!parent.isPresent()) {
-				final Tree<V, ?> replacement = vars.get(decl.value);
-				return replacement != null
-					? TreeNode.ofTree(replacement)
-					: TreeNode.of();
+			final Tree<V, ?> replacement = vars.get(decl.value);
+			if (replacement != null) {
+				tree.replaceAtPath(path, TreeNode.ofTree(replacement));
+			} else {
+				tree.removeAtPath(path);
 			}
 		}
 

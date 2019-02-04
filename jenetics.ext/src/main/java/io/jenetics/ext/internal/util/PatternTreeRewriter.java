@@ -78,7 +78,7 @@ public final class PatternTreeRewriter<V> implements TreeRewriter<V> {
 				.flatMap(rule -> rule.pattern().matcher(tree, _equals).results()
 					.map(result -> new Match<>(rule, result)))
 				.findFirst();
-			System.out.println(match);
+
 			match.ifPresent(m -> rewrite(tree, m));
 			rewritten = match.isPresent() || rewritten;
 		} while(match.isPresent());

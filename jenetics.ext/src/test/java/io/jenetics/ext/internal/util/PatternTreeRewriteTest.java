@@ -21,12 +21,12 @@ package io.jenetics.ext.internal.util;
 
 import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -56,17 +56,20 @@ public class PatternTreeRewriteTest {
 	@Test(dataProvider = "trees")
 	public void rewrite(final String treeString, final String rewrittenTreeString) {
 		final TreeNode<String> tree = TreeNode.parse(treeString);
-		//final TreeNode<String> rewrittenTree = TreeNode.parse(rewrittenTreeString);
-
 		REWRITER.rewrite(tree);
-
-		System.out.println(tree.toParenthesesString());
+		Assert.assertEquals(tree, TreeNode.parse(rewrittenTreeString));
 	}
 
 	@DataProvider
 	public Object[][] trees() {
 		return new Object[][] {
-			{"sub(1,1)", "0"}
+			{"sub(1,1)", "0"},
+			{"sub(x,x)", "0"},
+			{"sub(x(4,3),x(4,3))", "0"},
+			{"sub(x(4,3(3,4)),x(4,3(3,4)))", "0"},
+			{"add(1,1)", "2"},
+			{"sub(sin(4),0)", "sin(4)"},
+			{"div(sin(4),sin(4))", "1"}
 		};
 	}
 
