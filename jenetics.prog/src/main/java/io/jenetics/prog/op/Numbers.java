@@ -19,6 +19,7 @@
  */
 package io.jenetics.prog.op;
 
+import java.util.OptionalDouble;
 import java.util.regex.Pattern;
 
 /**
@@ -78,6 +79,12 @@ final class Numbers {
 
 	static boolean isNumber(final String value) {
 		return FP_PATTERN.matcher(value).matches();
+	}
+
+	static OptionalDouble tryParseDouble(final String value) {
+		return isNumber(value)
+			? OptionalDouble.of(Double.parseDouble(value))
+			: OptionalDouble.empty();
 	}
 
 }
