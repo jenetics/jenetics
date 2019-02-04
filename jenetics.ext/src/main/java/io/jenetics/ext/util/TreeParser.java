@@ -117,7 +117,7 @@ final class TreeParser {
 		final Deque<TreeNode<B>> parents = new ArrayDeque<>();
 
 		TreeNode<B> current = root;
-		for (Token token : tokenize(value)) {
+		for (Token token : tokenize(value.trim())) {
 			switch (token.seq) {
 				case "(":
 					if (current == null) {
@@ -160,7 +160,7 @@ final class TreeParser {
 				default:
 					if (current == null) {
 						throw new IllegalArgumentException(format(
-							"More than one root element at pos %d: %s",
+							"More than one root element at pos %d: '%s'.",
 							token.pos, value
 						));
 					}
