@@ -34,21 +34,22 @@ import io.jenetics.ext.util.TreeNode;
  */
 class MathExprRewrite {
 
-	private static final ISeq<String> RULES = ISeq.of(
-		"sub(<x>,<x>) -> 0",
-		"add(<x>,<x>) -> mul(2,<x>)",
-		"sub(<x>,0) -> <x>",
-		"add(<x>,0) -> <x>",
-		"add(0,<x>) -> <x>",
-		"div(<x>,<x>) -> 1",
-		"mul(<x>,0) -> 0",
-		"mul(0,<x>) -> 0",
-		"mul(<x>,1) -> <x>",
-		"mul(1,<x>) -> <x>",
-		"mul(<x>,<x>) -> pow(<x>,2)",
-		"pow(<x>,0) -> 1",
-		"pos(<x>,1) -> <x>"
-	);
+	private static final ISeq<String> RULES =
+		ISeq.of(
+			"sub(<x>,<x>) -> 0",
+			"add(<x>,<x>) -> mul(2,<x>)",
+			"sub(<x>,0) -> <x>",
+			"add(<x>,0) -> <x>",
+			"add(0,<x>) -> <x>",
+			"div(<x>,<x>) -> 1",
+			"mul(<x>,0) -> 0",
+			"mul(0,<x>) -> 0",
+			"mul(<x>,1) -> <x>",
+			"mul(1,<x>) -> <x>",
+			"mul(<x>,<x>) -> pow(<x>,2)",
+			"pow(<x>,0) -> 1",
+			"pos(<x>,1) -> <x>"
+		);
 
 	/*
 	private static final TreeRewriter<Op<Double>>
