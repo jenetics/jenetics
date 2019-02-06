@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.internal.util;
 
-import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -32,7 +30,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreeRewriterTest {
+public class RuleTreeRewriterTest {
 
 	private static final ISeq<String> RULES = ISeq.of(
 		"sub(<x>,<x>) -> 0",
@@ -56,6 +54,7 @@ public class TreeRewriterTest {
 	@Test(dataProvider = "trees")
 	public void rewrite(final String treeString, final String rewrittenTreeString) {
 		final TreeNode<String> tree = TreeNode.parse(treeString);
+
 		TreeRewriter.rewrite(tree, REWRITERS);
 		Assert.assertEquals(tree, TreeNode.parse(rewrittenTreeString));
 	}
