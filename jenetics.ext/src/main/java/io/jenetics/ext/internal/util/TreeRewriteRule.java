@@ -32,6 +32,8 @@ import static io.jenetics.internal.util.Hashes.hash;
  * mul(<x>,1) -> <x>
  * }</pre>
  *
+ * @see RuleTreeRewriter
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

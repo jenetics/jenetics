@@ -52,6 +52,7 @@ import io.jenetics.ext.util.TreeNode;
  *     mul(1,<y>)
  * }</pre>
  *
+ * @see TreeRewriteRule
  * @see Tree#toParenthesesString()
  * @see TreeMatcher
  *
