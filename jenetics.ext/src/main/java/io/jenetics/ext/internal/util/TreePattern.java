@@ -238,7 +238,8 @@ public final class TreePattern {
 			.filter((Tree<Decl, ?> n) -> n.getValue().isVar)
 			.collect(Collectors.toMap(t -> t.childPath(), t -> t.getValue()));
 
-		final Function<Decl, String> m = d -> d.isVar ? d.value : d.value;
+		//final Function<Decl, String> m = d -> d.isVar ? null: d.value;
+		final Function<Decl, String> m = d -> d.value;
 		final TreeNode<V> tree = TreeNode.ofTree(template, m.andThen(mapper));
 
 		for (Map.Entry<Path, Decl> var : paths.entrySet()) {
