@@ -42,6 +42,7 @@ import static java.lang.Math.sinh;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -373,6 +374,14 @@ public enum MathOp implements Op<Double> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	static boolean equals(final Op<Double> op, final String value) {
+		final Optional<Double> number = Numbers.tryParseDouble(value);
+		if (number.isPresent() && op instanceof Const) {
+			final double d = number.orElseThrow(AssertionError::new);
+			final Const<Double> c = (Const<Double>)op;
+
+			return Double.compare(d, c.value()) == 0;
+		}
+
 		return Objects.equals(op.toString(), value);
 	}
 
@@ -389,8 +398,9 @@ public enum MathOp implements Op<Double> {
 	 *         {@code null}
 	 */
 	static Op<Double> convert(final String string) {
-		final Op<Double> result;
+		requireNonNull(string);
 
+		final Op<Double> result;
 		final Optional<Op<Double>> cop = toConst(string);
 		if (cop.isPresent()) {
 			result = cop.orElseThrow(AssertionError::new);
@@ -405,7 +415,9 @@ public enum MathOp implements Op<Double> {
 	}
 
 	private static Optional<Op<Double>> toConst(final String string) {
-		return Numbers.tryParseDouble(string).map(Const::of);
+		return Numbers
+			.tryParseDouble(string)
+			.map(Const::of);
 	}
 
 	private static Optional<Op<Double>> toMathOp(final String string) {

@@ -56,7 +56,10 @@ public class RuleTreeRewriterTest {
 		final TreeNode<String> tree = TreeNode.parse(treeString);
 
 		TreeRewriter.rewrite(tree, REWRITERS);
-		Assert.assertEquals(tree, TreeNode.parse(rewrittenTreeString));
+		Assert.assertEquals(
+			tree.toParenthesesString(),
+			TreeNode.parse(rewrittenTreeString).toParenthesesString()
+		);
 	}
 
 	@DataProvider
@@ -67,6 +70,7 @@ public class RuleTreeRewriterTest {
 			{"sub(x(4,3),x(4,3))", "0"},
 			{"sub(x(4,3(3,4)),x(4,3(3,4)))", "0"},
 			{"add(1,1)", "2"},
+			{"add(x,x)", "mul(2,x)"},
 			{"sub(sin(4),0)", "sin(4)"},
 			{"div(sin(4),sin(4))", "1"}
 		};

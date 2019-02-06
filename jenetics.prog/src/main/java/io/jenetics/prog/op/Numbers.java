@@ -19,6 +19,8 @@
  */
 package io.jenetics.prog.op;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -78,6 +80,7 @@ final class Numbers {
 	private static final Pattern FP_PATTERN = Pattern.compile(FP_REGEX);
 
 	static boolean isNumber(final String value) {
+		requireNonNull(value);
 		return FP_PATTERN.matcher(value).matches();
 	}
 
