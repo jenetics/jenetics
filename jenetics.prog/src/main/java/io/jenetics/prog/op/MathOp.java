@@ -45,6 +45,7 @@ import static java.lang.Math.tanh;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -372,15 +373,14 @@ public enum MathOp implements Op<Double> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	static boolean equals(final Op<Double> op, final String value) {
-
-		return false;
+		return Objects.equals(op.toString(), value);
 	}
 
 	/**
 	 * Converts the string representation of an operation to the operation
 	 * object.
 	 *
-	 * @param value the string representation of an operation which should be
+	 * @param string the string representation of an operation which should be
 	 *        converted
 	 * @return the operation, converted from the given string
 	 * @throws IllegalArgumentException if the given {@code value} doesn't
@@ -388,22 +388,31 @@ public enum MathOp implements Op<Double> {
 	 * @throws NullPointerException if the given string {@code value} is
 	 *         {@code null}
 	 */
-	static Op<Double> convert(final String value) {
-		if (Numbers.isNumber(value)) {
-			return Const.of(Double.parseDouble(value));
+	static Op<Double> convert(final String string) {
+		final Op<Double> result;
+
+		final Optional<Op<Double>> cop = toConst(string);
+		if (cop.isPresent()) {
+			result = cop.orElseThrow(AssertionError::new);
+		} else {
+			final Optional<Op<Double>> mop = toMathOp(string);
+			result = mop.isPresent()
+				? mop.orElseThrow(AssertionError::new)
+				: Var.of(string, 0);
 		}
 
-		final Optional<MathOp> mop = Stream.of(values())
-			.filter(op -> Objects.equals(op._name, value))
-			.findFirst();
-
-		if (mop.isPresent()) {
-			return mop.get();
-		}
-
-		return Var.of(value, 0);
+		return result;
 	}
 
+	private static Optional<Op<Double>> toConst(final String string) {
+		return Numbers.tryParseDouble(string).map(Const::of);
+	}
 
+	private static Optional<Op<Double>> toMathOp(final String string) {
+		return Stream.of(values())
+			.filter(op -> Objects.equals(op._name, string))
+			.map(op -> (Op<Double>)op)
+			.findFirst();
+	}
 
 }

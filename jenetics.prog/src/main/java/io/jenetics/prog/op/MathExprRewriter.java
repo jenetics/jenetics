@@ -19,10 +19,9 @@
  */
 package io.jenetics.prog.op;
 
-import static io.jenetics.ext.internal.util.TreeRewriteRule.compile;
-
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.internal.util.RuleTreeRewriter;
 import io.jenetics.ext.internal.util.TreeRewriteRule;
 import io.jenetics.ext.internal.util.TreeRewriter;
 import io.jenetics.ext.util.TreeNode;
@@ -34,88 +33,41 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 
-	private static final ISeq<String> RULES =
-		ISeq.of(
-			"sub(<x>,<x>) -> 0",
-			"add(<x>,<x>) -> mul(2,<x>)",
-			"sub(<x>,0) -> <x>",
-			"add(<x>,0) -> <x>",
-			"add(0,<x>) -> <x>",
-			"div(<x>,<x>) -> 1",
-			"mul(<x>,0) -> 0",
-			"mul(0,<x>) -> 0",
-			"mul(<x>,1) -> <x>",
-			"mul(1,<x>) -> <x>",
-			"mul(<x>,<x>) -> pow(<x>,2)",
-			"pow(<x>,0) -> 1",
-			"pos(<x>,1) -> <x>"
-		);
+	private static final ISeq<TreeRewriter<Op<Double>>> REWRITERS = rewriters();
+
+	private static ISeq<TreeRewriter<Op<Double>>> rewriters() {
+		final ISeq<TreeRewriter<Op<Double>>> ruleRewriter =
+			ISeq.of(
+					"sub(<x>,<x>) -> 0",
+					"add(<x>,<x>) -> mul(2,<x>)",
+					"sub(<x>,0) -> <x>",
+					"add(<x>,0) -> <x>",
+					"add(0,<x>) -> <x>",
+					"div(<x>,<x>) -> 1",
+					"mul(<x>,0) -> 0",
+					"mul(0,<x>) -> 0",
+					"mul(<x>,1) -> <x>",
+					"mul(1,<x>) -> <x>",
+					"mul(<x>,<x>) -> pow(<x>,2)",
+					"pow(<x>,0) -> 1",
+					"pos(<x>,1) -> <x>")
+				.map(TreeRewriteRule::compile)
+				.map(rule -> new RuleTreeRewriter<>(
+					rule, MathOp::equals, MathOp::convert));
+
+		return ruleRewriter.append(ISeq.of(ConstExprRewriter.REWRITER));
+	}
+
+	private static final MathExprRewriter INSTANCE = new MathExprRewriter();
 
 	@Override
 	public boolean rewrite(final TreeNode<Op<Double>> tree) {
-
-
-		return false;
+		return TreeRewriter.rewrite(tree, REWRITERS);
 	}
 
-	/*
-	private static final TreeRewriter<Op<Double>>
-	PATTERN_REWRITE = nPatternTreeRewriter.compile(
-			null, null,
-			"sub(<x>,<x>) -> 0"
-		);
-*/
-
-	//public void rewrite(final TreeNode<Op<Double>> node) {
-		//while (_prune(node));
-	//}
-
-/*
-	CONST_EXPR {
-		@Override
-		public boolean matches(final TreeNode<Op<Double>> node) {
-			return
-				node.getValue() instanceof MathOp &&
-				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Const);
-		}
-
-		@Override
-		public void rewrite(final TreeNode<Op<Double>> node) {
-			final Double[] args = node.childStream()
-				.map(child -> ((Const<Double>)child.getValue()).value())
-				.toArray(Double[]::new);
-
-			final Double value = node.getValue().apply(args);
-			node.removeAllChildren();
-			node.setValue(Const.of(value));
-		}
-	};
-
-	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> node) {
-		while (_prune(node));
-		return node;
+	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> tree) {
+		INSTANCE.rewrite(tree);
+		return tree;
 	}
 
-	private static boolean
-	_prune(final TreeNode<Op<Double>> node) {
-		final Optional<MathExprRewriteRule> simplifier= Stream.of(values())
-			.filter(s -> s.matches(node))
-			.findFirst();
-
-		simplifier.ifPresent(s -> s.rewrite(node));
-		return simplifier.isPresent() | node.childStream()
-			.mapToInt(child -> _prune(child) ? 1 : 0)
-			.sum() > 0;
-	}
-
-	static boolean equals(
-		final Tree<? extends Op<Double>, ?> node,
-		final int index,
-		final double value
-	) {
-		return node.getChild(index).getValue() instanceof Const &&
-			((Const)node.getChild(index).getValue()).value().equals(value);
-	}
-*/
 }

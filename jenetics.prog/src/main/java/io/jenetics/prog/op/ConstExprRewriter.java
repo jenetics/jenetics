@@ -37,6 +37,8 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 
+	static final TreeRewriter<Op<Double>> REWRITER = new ConstExprRewriter();
+
 	@Override
 	public boolean rewrite(final TreeNode<Op<Double>> node) {
 		boolean result = false;
