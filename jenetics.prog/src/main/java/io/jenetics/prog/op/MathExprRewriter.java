@@ -32,7 +32,7 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since 4.1
  */
-class MathExprRewrite {
+final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 
 	private static final ISeq<String> RULES =
 		ISeq.of(
@@ -51,6 +51,13 @@ class MathExprRewrite {
 			"pos(<x>,1) -> <x>"
 		);
 
+	@Override
+	public boolean rewrite(final TreeNode<Op<Double>> tree) {
+
+
+		return false;
+	}
+
 	/*
 	private static final TreeRewriter<Op<Double>>
 	PATTERN_REWRITE = nPatternTreeRewriter.compile(
@@ -59,10 +66,9 @@ class MathExprRewrite {
 		);
 */
 
-	static TreeNode<Op<Double>> rewrite(final TreeNode<Op<Double>> node) {
+	//public void rewrite(final TreeNode<Op<Double>> node) {
 		//while (_prune(node));
-		return node;
-	}
+	//}
 
 /*
 	CONST_EXPR {
