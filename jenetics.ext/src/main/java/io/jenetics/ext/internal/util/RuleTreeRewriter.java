@@ -93,7 +93,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	}
 
 	@Override
-	public boolean rewrite(TreeNode<V> tree) {
+	public boolean rewrite(final TreeNode<V> tree) {
 		requireNonNull(tree);
 
 		boolean rewritten = false;
