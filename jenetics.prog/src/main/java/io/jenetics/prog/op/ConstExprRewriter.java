@@ -23,6 +23,14 @@ import io.jenetics.ext.internal.util.TreeRewriter;
 import io.jenetics.ext.util.TreeNode;
 
 /**
+ * This class rewrites constant expressions to its single value.
+ *
+ * <pre>{@code
+ * 1 + 2 + 3 + 4 -> 10.0
+ * 1 + 2*(6 + 7) -> 27.0
+ * sin(0) -> 0.0
+ * }</pre>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
