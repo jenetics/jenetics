@@ -197,13 +197,14 @@ public class MathExprTest {
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, new Random(125)))
-			.limit(10)
+		final Random random = new Random(1233);
+		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, random))
+			.limit(13)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
 	}
 
-	//@Test(dataProvider = "ast")
+	@Test(dataProvider = "ast")
 	public void evalSimplified(final Tree<? extends Op<Double>, ?> tree) {
 		final MathExpr expr = new MathExpr(tree);
 		final Seq<Var<Double>> vars = expr.vars();
