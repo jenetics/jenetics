@@ -28,7 +28,7 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.4
  * @since 4.1
  */
 final class MathExprRewriter implements TreeRewriter<Op<Double>> {

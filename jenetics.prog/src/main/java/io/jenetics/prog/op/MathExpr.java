@@ -365,7 +365,7 @@ public final class MathExpr
 	 * @see #eval(double...)
 	 * @see #eval(String, double...)
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param expression the expression to evaluate
 	 * @param args the expression arguments, in alphabetical order
