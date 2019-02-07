@@ -50,12 +50,12 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 					"mul(1,<x>) -> <x>",
 					"mul(<x>,<x>) -> pow(<x>,2)",
 					"pow(<x>,0) -> 1",
-					"pos(<x>,1) -> <x>")
+					"pow(<x>,1) -> <x>")
 				.map(TreeRewriteRule::compile)
 				.map(rule -> new RuleTreeRewriter<>(
 					rule, MathOp::equals, MathOp::convert));
 
-		return ruleRewriter.append(ISeq.of(ConstExprRewriter.REWRITER));
+		return ruleRewriter.prepend(ISeq.of(ConstExprRewriter.REWRITER));
 	}
 
 	private static final MathExprRewriter INSTANCE = new MathExprRewriter();

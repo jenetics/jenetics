@@ -146,7 +146,12 @@ public final class MathExpr
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		return apply(DoubleStream.of(args).boxed().toArray(Double[]::new));
+		final double val = apply(
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
+		return val == -0.0 ? 0.0 : val;
 	}
 
 	@Override

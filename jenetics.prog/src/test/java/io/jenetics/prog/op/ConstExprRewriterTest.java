@@ -47,7 +47,7 @@ public class ConstExprRewriterTest {
 			{"sin(0)", 0.0},
 			{"cos(0)", 1.0},
 			{"cos(0) + sin(0)", 1.0},
-			{"cos(0) * sin(0)", 0.0}
+			{"cos(0)*sin(0)", 0.0}
 		};
 	}
 

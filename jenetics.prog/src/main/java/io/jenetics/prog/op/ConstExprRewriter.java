@@ -19,7 +19,13 @@
  */
 package io.jenetics.prog.op;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import io.jenetics.ext.internal.util.TreeRewriter;
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -41,14 +47,19 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 
 	@Override
 	public boolean rewrite(final TreeNode<Op<Double>> node) {
-		boolean result = false;
-		boolean rewritten = false;
-		do {
-			rewritten = _rewrite(node);
-			result = rewritten || result;
-		} while (rewritten);
+		requireNonNull(node);
 
-		return result;
+		boolean rewritten = false;
+		boolean res;
+		Optional<TreeNode<Op<Double>>> result;
+		do {
+			result = results(node).findFirst();
+
+			res = result.map(ConstExprRewriter::_rewrite).orElse(false);
+			rewritten = res || rewritten;
+		} while(result.isPresent());
+
+		return rewritten;
 	}
 
 	private static boolean _rewrite(final TreeNode<Op<Double>> node) {
@@ -57,7 +68,7 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 				.map(child -> ((Const<Double>)child.getValue()).value())
 				.toArray(Double[]::new);
 
-			final Double value = node.getValue().apply(args);
+			final double value = node.getValue().apply(args);
 			node.removeAllChildren();
 			node.setValue(Const.of(value));
 
@@ -67,7 +78,13 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		return false;
 	}
 
-	private static boolean matches(final TreeNode<Op<Double>> node) {
+	private static Stream<TreeNode<Op<Double>>>
+	results(final TreeNode<Op<Double>> node) {
+		return node.stream()
+			.filter(ConstExprRewriter::matches);
+	}
+
+	private static boolean matches(final Tree<Op<Double>, ?> node) {
 		return
 			node.getValue() instanceof MathOp &&
 				node.childStream()
