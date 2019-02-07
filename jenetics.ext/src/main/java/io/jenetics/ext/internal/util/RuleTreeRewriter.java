@@ -101,7 +101,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		boolean rewritten = false;
 		Optional<TreeMatchResult<V>> result;
 		do {
-			result = _rule.pattern().matcher(tree, _equals).results()
+			result = _rule.match().matcher(tree, _equals).results()
 				.findFirst();
 
 			result.ifPresent(res -> rewrite(res, tree));
@@ -116,9 +116,9 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		final TreeNode<V> tree
 	) {
 		final Map<String, Tree<V, ?>> vars = result.variables();
-		final TreePattern template = _rule.template();
+		final TreePattern substitution = _rule.substitution();
 
-		final TreeNode<V> r = template.expand(vars, _mapper);
+		final TreeNode<V> r = substitution.expand(vars, _mapper);
 
 		final Path path = result.node().childPath();
 		tree.replaceAtPath(path, r);

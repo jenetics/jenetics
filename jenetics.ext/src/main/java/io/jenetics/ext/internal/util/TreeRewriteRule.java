@@ -28,15 +28,16 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 /**
- * Represents a tree rewrite rule. A rewrite rule consists of a pattern, which
- * must be matched, and a template, which is expanded and replaces the variables
- * in the tree pattern. Some simple <em>arithmetic</em> rewrite rules.
+ * Represents a tree rewrite rule. A rewrite rule consists of a match pattern,
+ * which must be matched, and a substitution pattern, which is expanded and
+ * replaces the variables in the pattern. Some simple <em>arithmetic</em>
+ * rewrite rules.
  * <pre>{@code
  * add(<x>,0) -> <x>
  * mul(<x>,1) -> <x>
  * }</pre>
- * The <em>template</em> pattern may only use variables, already defined in the
- * <em>pattern</em> pattern. So, the creation of the following rewrite rule s
+ * The <em>substitution</em> pattern may only use variables, already defined in
+ * the <em>match</em> pattern. So, the creation of the following rewrite rule s
  * would lead to an {@link IllegalArgumentException}:
  * <pre>{@code
  * add(<x>,0) -> <y>
@@ -51,28 +52,28 @@ import static io.jenetics.internal.util.Hashes.hash;
  */
 public final class TreeRewriteRule {
 
-	private final TreePattern _pattern;
-	private final TreePattern _template;
+	private final TreePattern _match;
+	private final TreePattern _substitution;
 
 	/**
-	 * Create a new rewrite rule from the given {@code pattern} and
-	 * {@code template} pattern.
+	 * Create a new rewrite rule from the given {@code match} and
+	 * {@code substitution} pattern.
 	 *
-	 * @param pattern the matching pattern of the rule
-	 * @param template the template pattern
+	 * @param match the matching pattern of the rule
+	 * @param substitution the substitution pattern
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the <em>template</em> pattern uses
 	 *         variables not defined in the <em>matcher</em> pattern
 	 */
 	private TreeRewriteRule(
-		final TreePattern pattern,
-		final TreePattern template
+		final TreePattern match,
+		final TreePattern substitution
 	) {
-		_pattern = requireNonNull(pattern);
-		_template = requireNonNull(template);
+		_match = requireNonNull(match);
+		_substitution = requireNonNull(substitution);
 
-		final Set<String> undefined = new HashSet<>(_pattern.variables());
-		undefined.removeAll(_template.variables());
+		final Set<String> undefined = new HashSet<>(_match.variables());
+		undefined.removeAll(_substitution.variables());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
 				"Some template variables are not defined in the matcher: %s",
@@ -88,8 +89,8 @@ public final class TreeRewriteRule {
 	 *
 	 * @return the rule matching pattern
 	 */
-	public TreePattern pattern() {
-		return _pattern;
+	public TreePattern match() {
+		return _match;
 	}
 
 	/**
@@ -97,26 +98,26 @@ public final class TreeRewriteRule {
 	 *
 	 * @return the replacement pattern of the rule
 	 */
-	public TreePattern template() {
-		return _template;
+	public TreePattern substitution() {
+		return _substitution;
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_pattern, hash(_template));
+		return hash(_match, hash(_substitution));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof TreeRewriteRule &&
-			_pattern.equals(((TreeRewriteRule)obj)._pattern) &&
-			_template.equals(((TreeRewriteRule)obj)._template);
+			_match.equals(((TreeRewriteRule)obj)._match) &&
+			_substitution.equals(((TreeRewriteRule)obj)._substitution);
 	}
 
 	@Override
 	public String toString() {
-		return format("RewriteRule[%s -> %s]", _pattern, _template);
+		return format("%s -> %s", _match, _substitution);
 	}
 
 	/**
