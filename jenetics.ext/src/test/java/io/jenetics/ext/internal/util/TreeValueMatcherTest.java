@@ -17,18 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
-
-import org.testng.annotations.Test;
+package io.jenetics.ext.internal.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreesTest {
+public class TreeValueMatcherTest {
 
-	@Test
-	public void tokens() {
-		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
-		//tokens.forEach(System.out::println);
-	}
+//	@Test(dataProvider = "treePattern")
+//	public void subTrees(
+//		final String patternString,
+//		final String treeString,
+//		final boolean matches
+//	) {
+//		final Tree<String, ?> pattern = TreeNode.parse(patternString);
+//		final Matcher<Integer> matcher = TreeValueMatcher.of(pattern, Integer::parseInt);
+//
+//		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
+//		Assert.assertEquals(matcher.matches(tree), matches);
+//	}
+//
+//	@DataProvider(name = "treePattern")
+//	public Object[][] treePattern() {
+//		return new Object[][] {
+//			{"0(1,2)", "0(1,2)", true},
+//			{"0(1,2,X)", "0(1,2)", true},
+//			{"0(3,2,X)", "0(1,2)", false}
+//		};
+//	}
+
 }
