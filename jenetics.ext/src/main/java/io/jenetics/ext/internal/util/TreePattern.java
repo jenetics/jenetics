@@ -24,10 +24,15 @@ import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,18 +68,36 @@ import io.jenetics.ext.util.TreeNode;
 public final class TreePattern {
 
 	private final Tree<Decl, ?> _pattern;
+	private final SortedSet<String> _variables;
 
 	private TreePattern(final Tree<Decl, ?> pattern) {
 		_pattern = requireNonNull(pattern);
 
+		final SortedSet<String> variables = new TreeSet<>();
 		for (Tree<Decl, ?> n : pattern) {
-			if (n.getValue().isVar && !n.isLeaf()) {
-				throw new IllegalArgumentException(format(
-					"Variable node '%s' is not a leaf: %s",
-					n.getValue(), n.toParenthesesString()
-				));
+			if (n.getValue().isVar) {
+				if (!n.isLeaf()) {
+					throw new IllegalArgumentException(format(
+						"Variable node '%s' is not a leaf: %s",
+						n.getValue(), n.toParenthesesString()
+					));
+				}
+
+				variables.add(n.getValue().value);
 			}
 		}
+
+		_variables = Collections.unmodifiableSortedSet(variables);
+	}
+
+	/**
+	 * Return the <em>unmodifiable</em> set of variables, defined in {@code this}
+	 * pattern. The variables are returned without the angle brackets.
+	 *
+	 * @return the variables, defined in this pattern
+	 */
+	public SortedSet<String> variables() {
+		return _variables;
 	}
 
 	/**

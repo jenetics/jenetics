@@ -19,6 +19,10 @@
  */
 package io.jenetics.ext.internal.util;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
@@ -30,6 +34,13 @@ import static io.jenetics.internal.util.Hashes.hash;
  * <pre>{@code
  * add(<x>,0) -> <x>
  * mul(<x>,1) -> <x>
+ * }</pre>
+ * The <em>template</em> pattern may only use variables, already defined in the
+ * <em>pattern</em> pattern. So, the creation of the following rewrite rule s
+ * would lead to an {@link IllegalArgumentException}:
+ * <pre>{@code
+ * add(<x>,0) -> <y>
+ * mul(0,1) -> mul(<x>,1)
  * }</pre>
  *
  * @see RuleTreeRewriter
@@ -43,12 +54,33 @@ public final class TreeRewriteRule {
 	private final TreePattern _pattern;
 	private final TreePattern _template;
 
+	/**
+	 * Create a new rewrite rule from the given {@code pattern} and
+	 * {@code template} pattern.
+	 *
+	 * @param pattern the matching pattern of the rule
+	 * @param template the template pattern
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the <em>template</em> pattern uses
+	 *         variables not defined in the <em>matcher</em> pattern
+	 */
 	private TreeRewriteRule(
 		final TreePattern pattern,
 		final TreePattern template
 	) {
 		_pattern = requireNonNull(pattern);
 		_template = requireNonNull(template);
+
+		final Set<String> undefined = new HashSet<>(_pattern.variables());
+		undefined.removeAll(_template.variables());
+		if (!undefined.isEmpty()) {
+			throw new IllegalArgumentException(format(
+				"Some template variables are not defined in the matcher: %s",
+				undefined.stream()
+					.map(v -> format("<%s>", v))
+					.collect(Collectors.joining(", "))
+			));
+		}
 	}
 
 	/**
