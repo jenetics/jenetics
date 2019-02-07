@@ -61,20 +61,6 @@ public final class TreeMatcher<V> {
 	}
 
 	/**
-	 * Tests if the tree matches the pattern, using the given {@code equals}
-	 * predicate.
-	 *
-	 * @param equals the predicate, used for comparing the node value and the
-	 *        pattern string
-	 * @return {@code true} if the tree matches against the pattern,
-	 *         {@code false} otherwise
-	 * @throws NullPointerException if the given predicate is {@code null}
-	 */
-	public boolean matches(final BiPredicate<? super V, ? super String> equals) {
-		return _pattern.matches(_tree, equals);
-	}
-
-	/**
 	 * Tests if the tree matches the pattern.
 	 *
 	 * @return {@code true} if the tree matches against the pattern,
@@ -82,31 +68,20 @@ public final class TreeMatcher<V> {
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public boolean matches() {
-		return matches(TreePattern::equals);
+		return _pattern.matches(_tree, _equals);
 	}
 
 	/**
 	 * Return all matching <em>sub</em>-trees.
 	 *
-	 * @param equals the predicate, used for comparing the node value and the
-	 *        pattern string
 	 * @return all matching sub-trees
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
-	public Stream<TreeMatchResult<V>> results(final BiPredicate<V, String> equals) {
+	public Stream<TreeMatchResult<V>> results() {
 		return _tree.stream()
-			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, equals)
+			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, _equals)
 				.map(Stream::of)
 				.orElseGet(Stream::empty));
-	}
-
-	/**
-	 * Return all matching <em>sub</em>-trees.
-	 *
-	 * @return all matching sub-trees
-	 */
-	public Stream<TreeMatchResult<V>> results() {
-		return results(TreePattern::equals);
 	}
 
 	static <V> TreeMatcher<V> of(

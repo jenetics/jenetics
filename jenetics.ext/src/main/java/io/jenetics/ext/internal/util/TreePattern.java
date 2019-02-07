@@ -148,7 +148,7 @@ public final class TreePattern {
 
 	public <V> Optional<TreeMatchResult<V>> match(
 		final Tree<V, ?> tree,
-		final BiPredicate<V, String> equals
+		final BiPredicate<? super V, ? super String> equals
 	) {
 		final Map<String, Tree<V, ?>> vars = new HashMap<>();
 		final boolean matches = matches(tree, _pattern, vars, equals);
