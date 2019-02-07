@@ -72,11 +72,12 @@ public final class TreeRewriteRule {
 		_match = requireNonNull(match);
 		_substitution = requireNonNull(substitution);
 
-		final Set<String> undefined = new HashSet<>(_match.variables());
-		undefined.removeAll(_substitution.variables());
+		final Set<String> undefined = new HashSet<>(_substitution.variables());
+		undefined.removeAll(_match.variables());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
-				"Some template variables are not defined in the matcher: %s",
+				"Some template variables are not defined in the matcher '%s': %s",
+				this,
 				undefined.stream()
 					.map(v -> format("<%s>", v))
 					.collect(Collectors.joining(", "))
