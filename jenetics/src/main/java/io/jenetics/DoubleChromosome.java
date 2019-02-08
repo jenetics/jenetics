@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
@@ -195,9 +196,10 @@ public class DoubleChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 *         empty or the given {@code genes} doesn't have the same range.
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
+		checkGeneRange(Stream.of(genes).map(DoubleGene::range));
 		return new DoubleChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
@@ -209,11 +211,12 @@ public class DoubleChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 * @throws IllegalArgumentException if the of the genes iterable is empty or
+	 *         the given {@code genes} doesn't have the same range.
 	 */
 	public static DoubleChromosome of(final Iterable<DoubleGene> genes) {
 		final ISeq<DoubleGene> values = ISeq.of(genes);
+		checkGeneRange(values.stream().map(DoubleGene::range));
 		return new DoubleChromosome(values, IntRange.of(values.length()));
 	}
 
