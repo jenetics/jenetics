@@ -99,7 +99,7 @@ public final class LongGene
 	/**
 	 * Return the range of {@code this} gene.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @return the range of {@code this} gene
 	 */

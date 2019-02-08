@@ -45,8 +45,8 @@ import io.jenetics.ext.util.TreeNode;
  * </em>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 4.4
+ * @since 4.4
  */
 @FunctionalInterface
 public interface TreeRewriter<V> {

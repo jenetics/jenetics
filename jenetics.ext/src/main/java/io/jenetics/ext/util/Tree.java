@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.4
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -200,7 +200,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * {@code tree.childAtPath(Path.of(2, 0))} will return the first child of
 	 * the third child of {@code this node}.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @see #childAtPath(Path)
 	 *
@@ -861,7 +861,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * assert node == root.childAtPath(path);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @see #childAtPath(Path)
 	 *
@@ -1084,8 +1084,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 4.4
+	 * @since 4.4
 	 */
 	public static final class Path implements Serializable {
 		private static final long serialVersionUID = 1L;

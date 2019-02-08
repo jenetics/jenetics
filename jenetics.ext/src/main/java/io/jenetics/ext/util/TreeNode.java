@@ -254,7 +254,7 @@ public final class TreeNode<T>
 	 * Removes the child at the given {@code path}. If no child exists at the
 	 * given path, nothing is removed.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param path the path of the child to replace
 	 * @return {@code true} if a child at the given {@code path} existed and
@@ -273,7 +273,7 @@ public final class TreeNode<T>
 	 * Replaces the child at the given {@code path} with the given new
 	 * {@code child}. If no child exists at the given path, nothing is replaced.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param path the path of the child to replace
 	 * @param child the new child
