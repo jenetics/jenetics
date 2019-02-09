@@ -202,7 +202,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @since 4.4
 	 *
-	 * @see #childAtPath(Path)
+	 * @see #childAtPath(int...)
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
@@ -229,7 +229,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @since 4.3
 	 *
-	 * @see #childAtPath(int...)
+	 * @see #childAtPath(Path)
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
