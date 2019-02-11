@@ -30,6 +30,8 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 
+import io.jenetics.ext.util.Tree.Path;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -59,6 +61,12 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 	}
 
 	@Test
+	public void childIterator() {
+		final TreeNode<Integer> tree = TreeNode.of(0).attach(1, 2, 3, 4, 5);
+		Assert.assertEquals(tree.childStream().count(), tree.childCount());
+	}
+
+	@Test
 	public void remove() {
 		final TreeNode<Integer> tree = newTree(5, new Random(123));
 		final DefaultMutableTreeNode stree = newSwingTree(5, new Random(123));
@@ -84,6 +92,38 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		((DefaultMutableTreeNode)stree.getChildAt(1)).insert(stree1, 0);
 		Assert.assertTrue(equals(tree, stree));
+	}
+
+	@Test
+	public void replace() {
+		final Random random = new Random(124);
+
+		final TreeNode<Integer> tree = newTree(5, random);
+		final TreeNode<Integer> tree1 = newTree(2, random);
+
+		final TreeNode<Integer> child = tree.childAtPath(0 , 1)
+			.orElseThrow(AssertionError::new);
+		Assert.assertNotEquals(child, tree1);
+
+		child.replace(0, tree1);
+		Assert.assertEquals(child.getChild(0), tree1);
+	}
+
+	@Test
+	public void replaceAt() {
+		final Random random = new Random(124);
+
+		final TreeNode<Integer> tree = newTree(5, random);
+		final TreeNode<Integer> tree1 = newTree(2, random);
+
+		final TreeNode<Integer> child = tree.childAtPath(0 , 1, 0)
+			.orElseThrow(AssertionError::new);
+
+		tree.replaceAtPath(Path.of(0, 1, 0), tree1);
+		Assert.assertEquals(
+			tree.childAtPath(0, 1, 0).orElseThrow(AssertionError::new),
+			tree1
+		);
 	}
 
 	@Test

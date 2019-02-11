@@ -17,18 +17,30 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.prog.op;
 
+import static java.lang.String.format;
+
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreesTest {
+public class MathOpTest {
 
-	@Test
-	public void tokens() {
-		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
-		//tokens.forEach(System.out::println);
+	@Test(dataProvider = "operations")
+	public void equals(final Op<Double> op, final String string, final boolean matches) {
+		Assert.assertEquals(MathOp.equals(Const.of(1.0), string), matches);
 	}
+
+	@DataProvider
+	public Object[][] operations() {
+		return new Object[][] {
+			{Const.of(1.0), "1", true},
+			{Const.of(1.0), "b", false}
+		};
+	}
+
 }

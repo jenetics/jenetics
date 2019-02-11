@@ -25,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
@@ -194,11 +195,12 @@ public class LongChromosome
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
+	 * @throws IllegalArgumentException if the length of the genes array is
+	 *         empty or the given {@code genes} doesn't have the same range.
 	 */
 	public static LongChromosome of(final LongGene... genes) {
+		checkGeneRange(Stream.of(genes).map(LongGene::range));
 		return new LongChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
@@ -210,11 +212,12 @@ public class LongChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 * @throws IllegalArgumentException if the of the genes iterable is empty or
+	 *         the given {@code genes} doesn't have the same range.
 	 */
 	public static LongChromosome of(final Iterable<LongGene> genes) {
 		final ISeq<LongGene> values = ISeq.of(genes);
+		checkGeneRange(values.stream().map(LongGene::range));
 		return new LongChromosome(values, IntRange.of(values.length()));
 	}
 

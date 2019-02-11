@@ -17,18 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.prog.op;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreesTest {
+public class ConstExprRewriterTest {
 
-	@Test
-	public void tokens() {
-		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
-		//tokens.forEach(System.out::println);
+	@Test(dataProvider = "expressions")
+	public void rewrite(final String expr, final double value) {
+		final ConstExprRewriter rewriter = new ConstExprRewriter();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
+
+
+		Assert.assertEquals(MathExpr.eval(tree), value);
 	}
+
+	@DataProvider
+	public Object[][] expressions() {
+		return new Object[][] {
+			{"1+2+3+4", 10.0},
+			{"1+2*(6+7)", 27.0},
+			{"sin(0)", 0.0},
+			{"cos(0)", 1.0},
+			{"cos(0) + sin(0)", 1.0},
+			{"cos(0)*sin(0)", 0.0}
+		};
+	}
+
 }
