@@ -320,6 +320,9 @@ public final class Phenotype<
 	 * @param generation date of birth (generation) of the new phenotype.
 	 * @return New {@link Phenotype} with the same fitness {@link Function}.
 	 * @throws NullPointerException if the {@code genotype} is {@code null}.
+	 *
+	 * @deprecated Will be removed without replacement. No longer needed in the
+	 *             next major release (5.0).
 	 */
 	@Deprecated
 	public Phenotype<G, C> newInstance(
