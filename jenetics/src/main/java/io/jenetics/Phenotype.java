@@ -267,7 +267,10 @@ public final class Phenotype<
 	 * @param genotype the new genotype
 	 * @return a new {@code phenotype} with replaced {@code genotype}
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
+	 *
+	 * @deprecated Will be removed without replacement. Is not used.
 	 */
+	@Deprecated
 	public Phenotype<G, C> newInstance(final Genotype<G> genotype) {
 		return of(genotype, _generation);
 	}

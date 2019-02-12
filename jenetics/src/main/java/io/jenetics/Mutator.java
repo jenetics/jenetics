@@ -141,6 +141,7 @@ public class Mutator<
 	 * @param random the random engine used for the phenotype mutation
 	 * @return the mutation result
 	 */
+	@SuppressWarnings("deprecation")
 	protected MutatorResult<Phenotype<G, C>> mutate(
 		final Phenotype<G, C> phenotype,
 		final long generation,
