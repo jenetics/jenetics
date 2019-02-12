@@ -22,7 +22,6 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 import io.jenetics.Gene;

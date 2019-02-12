@@ -28,7 +28,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.internal.util.reflect;

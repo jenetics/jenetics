@@ -19,8 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import static java.lang.String.format;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

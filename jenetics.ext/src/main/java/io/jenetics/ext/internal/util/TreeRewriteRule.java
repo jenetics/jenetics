@@ -19,13 +19,13 @@
  */
 package io.jenetics.ext.internal.util;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Represents a tree rewrite rule. A rewrite rule consists of a match pattern,
