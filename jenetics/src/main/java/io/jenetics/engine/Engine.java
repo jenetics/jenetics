@@ -115,7 +115,6 @@ import io.jenetics.util.Seq;
  * @since 3.0
  * @version 5.0
  */
-@SuppressWarnings("deprecation")
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
