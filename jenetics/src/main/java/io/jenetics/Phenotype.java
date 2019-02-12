@@ -257,24 +257,6 @@ public final class Phenotype<
 		);
 	}
 
-	/**
-	 * Create a new {@code Phenotype} with a different {@code Genotype} but the
-	 * same {@code generation}, fitness {@code function} and fitness
-	 * {@code scaler}.
-	 *
-	 * @since 3.1
-	 *
-	 * @param genotype the new genotype
-	 * @return a new {@code phenotype} with replaced {@code genotype}
-	 * @throws NullPointerException if the given {@code genotype} is {@code null}.
-	 *
-	 * @deprecated Will be removed without replacement. Is not used.
-	 */
-	@Deprecated
-	public Phenotype<G, C> newInstance(final Genotype<G> genotype) {
-		return of(genotype, _generation);
-	}
-
 
 	/* *************************************************************************
 	 *  Static factory methods.
