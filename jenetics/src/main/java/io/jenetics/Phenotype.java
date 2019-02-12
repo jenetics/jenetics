@@ -106,6 +106,7 @@ public final class Phenotype<
 	 */
 	public Phenotype<G, C>
 	eval(final Function<? super Genotype<G>, ? extends C> ff) {
+		requireNonNull(ff);
 		return _fitness == null ? withFitness(ff.apply(_genotype)) : this;
 	}
 
@@ -151,25 +152,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * Maps the fitness function of this phenotype to a different type, if
-	 * available.
-	 *
-	 * @since 5.0
-	 *
-	 * @param f the mapping function
-	 * @param <B> the mapped type
-	 * @return the mapped fitness value or {@link Optional#empty()} if the
-	 *         fitness value hasn't been evaluated yet
-	 */
-	public <B> Optional<B> map(final Function<? super C, ? extends B> f) {
-		requireNonNull(f);
-
-		return isEvaluated()
-			? Optional.of(f.apply(_fitness))
-			: Optional.empty();
-	}
-
-	/**
 	 * Return the fitness value of this {@code Phenotype}.
 	 *
 	 * @return The fitness value of this {@code Phenotype}.
@@ -184,6 +166,16 @@ public final class Phenotype<
 		}
 
 		return _fitness;
+	}
+
+	/**
+	 * Return the fitness value of {@code this} phenotype, or
+	 * {@link Optional#empty()} if not evaluated yet.
+	 *
+	 * @return the fitness value
+	 */
+	public Optional<C> fitnessOptional() {
+		return Optional.ofNullable(_fitness);
 	}
 
 	/**
