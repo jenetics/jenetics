@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 
 import io.jenetics.internal.util.reflect;
@@ -104,7 +105,7 @@ public final class Phenotype<
 	 * @throws NullPointerException if the given fitness function is {@code null}
 	 */
 	public Phenotype<G, C>
-	evaluate(final Function<? super Genotype<G>, ? extends C> ff) {
+	eval(final Function<? super Genotype<G>, ? extends C> ff) {
 		return _fitness == null ? withFitness(ff.apply(_genotype)) : this;
 	}
 
@@ -147,6 +148,25 @@ public final class Phenotype<
 	 */
 	public boolean nonEvaluated() {
 		return _fitness == null;
+	}
+
+	/**
+	 * Maps the fitness function of this phenotype to a different type, if
+	 * available.
+	 *
+	 * @since 5.0
+	 *
+	 * @param f the mapping function
+	 * @param <B> the mapped type
+	 * @return the mapped fitness value or {@link Optional#empty()} if the
+	 *         fitness value hasn't been evaluated yet
+	 */
+	public <B> Optional<B> map(final Function<? super C, ? extends B> f) {
+		requireNonNull(f);
+
+		return isEvaluated()
+			? Optional.of(f.apply(_fitness))
+			: Optional.empty();
 	}
 
 	/**
