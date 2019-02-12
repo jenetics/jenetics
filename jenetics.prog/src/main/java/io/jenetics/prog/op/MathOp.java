@@ -46,7 +46,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.stream.Stream;
 

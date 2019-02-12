@@ -27,7 +27,6 @@ import static java.util.concurrent.ForkJoinPool.commonPool;
 import static io.jenetics.internal.util.require.probability;
 
 import java.time.Clock;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -123,8 +122,7 @@ public final class Engine<
 >
 	implements
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
-		EvolutionStreamable<G, C>,
-		EvolutionIterable<G, C>
+		EvolutionStreamable<G, C>
 {
 
 	// Problem definition.
@@ -468,21 +466,8 @@ public final class Engine<
 //	}
 
 	/* *************************************************************************
-	 * Evolution Stream/Iterator creation.
+	 * Evolution Stream creation.
 	 **************************************************************************/
-
-	@Deprecated
-	@Override
-	public Iterator<EvolutionResult<G, C>>
-	iterator(final Supplier<EvolutionStart<G, C>> start) {
-		return new EvolutionIterator<>(evolutionStart(start), this::evolve);
-	}
-
-	@Deprecated
-	@Override
-	public Iterator<EvolutionResult<G, C>> iterator(final EvolutionInit<G> init) {
-		return iterator(evolutionStart(init));
-	}
 
 	@Override
 	public EvolutionStream<G, C>
