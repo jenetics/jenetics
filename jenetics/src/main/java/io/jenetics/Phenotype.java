@@ -47,7 +47,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.0
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -96,7 +96,7 @@ public final class Phenotype<
 	 * already evaluated. If the fitness value is already set {@code this}
 	 * phenotype is returned.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param ff the fitness function
 	 * @return a evaluated phenotype or {@code this} if the fitness value is
@@ -140,7 +140,7 @@ public final class Phenotype<
 	 * fitness evaluation strategy is responsible for creating phenotypes with
 	 * fitness value assigned.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @return {@code false} is this phenotype has an fitness value assigned,
 	 *         {@code true} otherwise

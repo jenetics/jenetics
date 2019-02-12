@@ -33,7 +33,7 @@ import io.jenetics.util.NanoClock;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.0
  */
 final class Timing {
 

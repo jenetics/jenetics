@@ -114,7 +114,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.0
  */
 @SuppressWarnings("deprecation")
 public final class Engine<
@@ -423,7 +423,7 @@ public final class Engine<
 	 * {@link Evaluator} of this engine and returns a new population
 	 * with its fitness value assigned.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @see Evaluator
 	 * @see Evaluator#evaluate(Seq)
@@ -782,7 +782,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version !__version__!
+	 * @version 5.0
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -1378,7 +1378,7 @@ public final class Engine<
 		 * evaluator and genotype factory. This is the most general factory
 		 * method for creating an engine builder.
 		 *
-		 * @since !__version__!
+		 * @since 5.0
 		 *
 		 * @see Engine#builder(Function, Codec)
 		 * @see Engine#builder(Function, Factory)

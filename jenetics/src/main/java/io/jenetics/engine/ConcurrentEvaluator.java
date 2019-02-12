@@ -37,7 +37,7 @@ import io.jenetics.util.Seq;
  * for the fitness evaluation.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.0
  * @since 4.2
  */
 final class ConcurrentEvaluator<

@@ -33,8 +33,8 @@ import io.jenetics.Genotype;
  * @see Evaluator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 public final class Evaluators {
 	private Evaluators() {}
@@ -44,7 +44,7 @@ public final class Evaluators {
 	 * the population serially in the main thread. Might be useful for testing
 	 * purpose.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param fitness the fitness function
 	 * @param <G> the gene type
@@ -63,7 +63,7 @@ public final class Evaluators {
 	 * the population (concurrently) with the given {@code executor}. This is
 	 * the default evaluator used by the evolution engine.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param fitness the fitness function
 	 * @param executor the {@code Executor} used for evaluating the fitness
@@ -85,7 +85,7 @@ public final class Evaluators {
 	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
 	 * fitness functions.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param fitness the asynchronous fitness function
 	 * @param <G> the gene type

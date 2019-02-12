@@ -24,8 +24,8 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 public class Larva<
 	G extends Gene<?, G>,
