@@ -63,7 +63,6 @@ public abstract class Crossover<
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected final int recombine(
 		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,

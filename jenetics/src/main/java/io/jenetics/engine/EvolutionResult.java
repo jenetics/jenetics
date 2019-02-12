@@ -539,7 +539,6 @@ public final class EvolutionResult<
 	 * @throws NullPointerException if the given genotype {@code factory} is
 	 *         {@code null}
 	 */
-	@SuppressWarnings("deprecation")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	UnaryOperator<EvolutionResult<G, C>>
 	toUniquePopulation(final Factory<Genotype<G>> factory, final int maxRetries) {
