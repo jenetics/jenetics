@@ -65,6 +65,7 @@ public class DynamicGenotype {
 	}
 
 	// The special mutator also variates the chromosome/genotype length.
+	@SuppressWarnings("deprecation")
 	private static final class DynamicMutator<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
