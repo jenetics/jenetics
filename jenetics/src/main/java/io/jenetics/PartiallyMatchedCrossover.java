@@ -24,8 +24,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -37,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * fitness only depends on the ordering of the genes within the chromosome. This
  * is the case in many combinatorial optimization problems. Other crossover
  * operators for combinatorial optimization are:
- * <ul type="square">
+ * <ul>
  *     <li>order crossover</li>
  *     <li>cycle crossover</li>
  *     <li>edge recombination crossover</li>
@@ -126,16 +124,6 @@ public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 				index = that.indexOf(that.get(i), begin, end);
 			}
 		}
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

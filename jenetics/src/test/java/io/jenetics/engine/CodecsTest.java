@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -334,6 +335,72 @@ public class CodecsTest {
 	}
 
 	@Test
+	public void ofIntMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<int[][], IntegerGene> codec = Codecs.ofMatrix(
+			IntRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<IntegerGene> gt = codec.encoding().newInstance();
+		final int[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).intValue());
+			}
+		}
+	}
+
+	@Test
+	public void ofLongMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<long[][], LongGene> codec = Codecs.ofMatrix(
+			LongRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<LongGene> gt = codec.encoding().newInstance();
+		final long[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).longValue());
+			}
+		}
+	}
+
+	@Test
+	public void ofDoubleMatrix() {
+		final int rows = 10;
+		final int cols = 15;
+		final Codec<double[][], DoubleGene> codec = Codecs.ofMatrix(
+			DoubleRange.of(0, 1_000),
+			rows, cols
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		final double[][] matrix = codec.decode(gt);
+
+		Assert.assertEquals(matrix.length, rows);
+		Assert.assertEquals(matrix[0].length, cols);
+
+		for (int row = 0; row < rows; ++row) {
+			for (int col = 0; col < cols; ++col) {
+				Assert.assertEquals(matrix[row][col], gt.get(row, col).doubleValue());
+			}
+		}
+	}
+
+	@Test
 	public void ofPermutation() {
 		final Codec<ISeq<String>, EnumGene<String>> codec = Codecs
 			.ofPermutation(ISeq.of("foo", "bar", "zoo"));
@@ -348,6 +415,56 @@ public class CodecsTest {
 		for (int i = 0; i < value.length(); ++i) {
 			Assert.assertEquals(value.get(i), gt.get(0, i).toString());
 		}
+	}
+
+	@Test
+	public void ofMapping1() {
+		final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+		final ISeq<String> chars = ISeq.of("A", "B", "C");
+
+		final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+			Codecs.ofMapping(numbers, chars);
+
+		final Function<Map<Integer, String>, Integer> ff = map ->
+			map.keySet().stream().mapToInt(Integer::intValue).sum();
+
+		Engine<EnumGene<Integer>, Integer> engine = Engine.builder(ff, codec)
+			.build();
+
+		final Map<Integer, String> best = codec.decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(best.containsKey(3));
+		Assert.assertTrue(best.containsKey(4));
+		Assert.assertTrue(best.containsKey(5));
+	}
+
+	@Test
+	public void ofMapping2() {
+		final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+		final ISeq<String> chars = ISeq.of("A", "B", "C");
+
+		final Codec<Map<String, Integer>, EnumGene<Integer>> codec =
+			Codecs.ofMapping(chars, numbers);
+
+		final Function<Map<String, Integer>, Integer> ff = map ->
+			map.values().stream().mapToInt(Integer::intValue).sum();
+
+		Engine<EnumGene<Integer>, Integer> engine = Engine.builder(ff, codec)
+			.build();
+
+		final Map<String, Integer> best = codec.decode(
+			engine.stream()
+				.limit(100)
+				.collect(EvolutionResult.toBestGenotype())
+		);
+
+		Assert.assertTrue(best.containsValue(3));
+		Assert.assertTrue(best.containsValue(4));
+		Assert.assertTrue(best.containsValue(5));
 	}
 
 

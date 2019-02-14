@@ -20,6 +20,7 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,7 +28,8 @@ import java.util.Objects;
 /**
  * Represents an operation which always returns the same, constant, value. To
  * improve readability, constants may have a name. If a name is given, this name
- * is used when printing the program tree.
+ * is used when printing the program tree. The {@code Const} operation is a
+ * <em>terminal</em> operation.
  *
  * <pre>{@code
  * final static Op<Double> PI = Const.of("π", Math.PI);
@@ -78,10 +80,7 @@ public final class Const<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_const) + 37;
-		return hash;
+		return hash(_name, hash(_const));
 	}
 
 	@Override
@@ -89,7 +88,17 @@ public final class Const<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof Const &&
 			Objects.equals(((Const)obj)._name, _name) &&
-			Objects.equals(((Const)obj)._const, _const);
+			equal(((Const)obj)._const, _const);
+	}
+
+	private static boolean equal(final Object a, final Object b) {
+		if (a instanceof Double && b instanceof Double) {
+			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
+		} else if (a instanceof Float && b instanceof Float) {
+			return ((Float)a).floatValue() == ((Float)b).floatValue();
+		}
+
+		return Objects.equals(a, b);
 	}
 
 	@Override

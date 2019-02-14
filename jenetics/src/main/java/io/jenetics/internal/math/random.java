@@ -27,7 +27,6 @@ import static io.jenetics.internal.util.require.probability;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.IntRange;
 
 /**
@@ -38,7 +37,7 @@ import io.jenetics.util.IntRange;
  * @version 3.0
  */
 public final class random {
-	private random() {require.noInstance();}
+	private random() {}
 
 	public static byte nextByte(final Random random) {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
@@ -85,20 +84,15 @@ public final class random {
 		}
 
 		final int value;
-
-		if (origin < bound) {
-			int n = bound - origin;
-			if (n > 0) {
-				value = random.nextInt(n) + origin;
-			} else {
-				int r;
-				do {
-					r = random.nextInt();
-				} while (r < origin || r >= bound);
-				value = r;
-			}
+		int n = bound - origin;
+		if (n > 0) {
+			value = random.nextInt(n) + origin;
 		} else {
-			value = random.nextInt();
+			int r;
+			do {
+				r = random.nextInt();
+			} while (r < origin || r >= bound);
+			value = r;
 		}
 
 		return value;
@@ -189,17 +183,17 @@ public final class random {
 		return value;
 	}
 
-	public static String nextString(final int length, final Random random) {
+	public static String nextASCIIString(final int length, final Random random) {
 		final char[] chars = new char[length];
 		for (int i = 0; i < length; ++i) {
-			chars[i] = nextChar(random);
+			chars[i] = (char)nextInt(32, 127, random);
 		}
 
 		return new String(chars);
 	}
 
-	public static String nextString(final Random random) {
-		return nextString(nextInt(5, 20, random), random);
+	public static String nextASCIIString(final Random random) {
+		return nextASCIIString(nextInt(5, 20, random), random);
 	}
 
 	/*

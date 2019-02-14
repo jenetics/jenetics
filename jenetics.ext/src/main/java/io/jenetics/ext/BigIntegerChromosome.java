@@ -23,7 +23,6 @@ import static io.jenetics.internal.util.SerialIO.readBytes;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeBytes;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -36,8 +35,6 @@ import java.math.BigInteger;
 import io.jenetics.AbstractChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.NumericChromosome;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -124,23 +121,6 @@ public class BigIntegerChromosome
 	@Override
 	public BigIntegerChromosome newInstance() {
 		return new BigIntegerChromosome(_min, _max, length());
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-			.and(super.hashCode())
-			.and(_min)
-			.and(_max).value();
-	}
-
-	@Override
-	public boolean equals(final Object object) {
-		return Equality.of(this, object).test(nc ->
-			eq(_min, nc._min) &&
-				eq(_max, nc._max) &&
-				super.equals(object)
-		);
 	}
 
 	/* *************************************************************************

@@ -34,6 +34,8 @@ import io.jenetics.ext.BigIntegerChromosome;
  */
 final class Serial implements Externalizable {
 
+	private static final long serialVersionUID = 1;
+
 	static final byte PROGRAM_CHROMOSOME = 1;
 
 	/**

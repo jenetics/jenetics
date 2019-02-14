@@ -20,6 +20,7 @@
 package io.jenetics.colorizer;
 
 import static java.lang.String.format;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 
@@ -46,7 +47,7 @@ import java.util.Set;
  */
 public final class Colorizer extends SimpleFileVisitor<Path> {
 
-	private static final Charset CHARSET = Charset.forName("UTF-8");
+	private static final Charset CHARSET = UTF_8;
 
 	// Original start tag: <pre>{@code
 	private static final String START_TAG = "<pre><code>";

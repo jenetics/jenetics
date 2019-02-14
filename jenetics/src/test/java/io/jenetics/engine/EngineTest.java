@@ -32,7 +32,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -438,6 +437,7 @@ public class EngineTest {
 		};
 	}
 
+	/*
 	@Test
 	public void populationEvaluator() {
 		final int populationSize = 100;
@@ -458,6 +458,7 @@ public class EngineTest {
 
 		Assert.assertEquals(count.get(), populationSize);
 	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test

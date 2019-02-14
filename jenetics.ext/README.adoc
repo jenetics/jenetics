@@ -11,7 +11,7 @@ The `io.jenetics.ext.moea` package contains classes and data structures, which a
 
 == Modifiable Engines
 
-The `io.jenetics.ext.engine` contains classes, which allows the creation of adapting evolution streams.
+The `io.jenetics.ext.engine` contains classes, which allows the creation of adapting evolution streams. Depending on the actual population statistics, it is possible to change the parameters for the underlying evolution `Engine`.
 
 == Genes and chromosomes
 

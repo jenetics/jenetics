@@ -20,11 +20,11 @@
 package io.jenetics;
 
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readString;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.SerialIO.writeString;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -32,11 +32,9 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
@@ -101,7 +99,10 @@ public class CharacterChromosome
 	 *         empty, doesn't match with the allowed length range, the minimum
 	 *         or maximum of the range is smaller or equal zero or the given
 	 *         range size is zero.
+	 *
+	 * @deprecated Use {@link #of(CharSeq, IntRange)} instead.
 	 */
+	@Deprecated
 	public CharacterChromosome(
 		final CharSeq validCharacters,
 		final IntRange lengthRange
@@ -122,7 +123,10 @@ public class CharacterChromosome
 	 *         empty, doesn't match with the allowed length range, the minimum
 	 *         or maximum of the range is smaller or equal zero or the given
 	 *         range size is zero.
+	 *
+	 * @deprecated Use {@link #of(CharSeq, int)} instead.
 	 */
+	@Deprecated
 	public CharacterChromosome(
 		final CharSeq validCharacters,
 		final int length
@@ -153,29 +157,26 @@ public class CharacterChromosome
 	 */
 	@Override
 	public CharacterChromosome newInstance() {
-		return new CharacterChromosome(_validCharacters, lengthRange());
+		return of(_validCharacters, lengthRange());
 	}
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.and(_validCharacters).value();
+		return hash(super.hashCode(), hash(_validCharacters));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(cc ->
-			super.equals(obj) &&
-			eq(_validCharacters, cc._validCharacters)
-		);
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			Objects.equals(_validCharacters, ((CharacterChromosome)obj)._validCharacters) &&
+			super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
-		return toSeq().stream()
-			.map(Object::toString)
-			.collect(Collectors.joining());
+		return new String(toArray());
 	}
 
 	/**
@@ -215,6 +216,37 @@ public class CharacterChromosome
 		return toArray(new char[length()]);
 	}
 
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @since 4.3
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param lengthRange the allowed length range of the chromosome.
+	 * @return a new {@code CharacterChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 */
+	public static CharacterChromosome of(
+		final CharSeq validCharacters,
+		final IntRange lengthRange
+	) {
+		return new CharacterChromosome(
+			CharacterGene.seq(validCharacters, lengthRange),
+			lengthRange
+		);
+	}
+
 	/**
 	 * Create a new chromosome with the {@link CharacterGene#DEFAULT_CHARACTERS}
 	 * char set as valid characters.
@@ -225,10 +257,30 @@ public class CharacterChromosome
 	 *         one.
 	 */
 	public static CharacterChromosome of(final IntRange lengthRange) {
-		return new CharacterChromosome(
-			CharacterGene.seq(DEFAULT_CHARACTERS, lengthRange),
-			lengthRange
-		);
+		return of(DEFAULT_CHARACTERS, lengthRange);
+	}
+
+	/**
+	 * Create a new chromosome with the {@code validCharacters} char set as
+	 * valid characters.
+	 *
+	 * @since 4.3
+	 *
+	 * @param validCharacters the valid characters for this chromosome.
+	 * @param length the {@code length} of the new chromosome.
+	 * @return a new {@code CharacterChromosome} with the given parameter
+	 * @throws NullPointerException if the {@code validCharacters} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the length of the gene sequence is
+	 *         empty, doesn't match with the allowed length range, the minimum
+	 *         or maximum of the range is smaller or equal zero or the given
+	 *         range size is zero.
+	 */
+	public static CharacterChromosome of(
+		final CharSeq validCharacters,
+		final int length
+	) {
+		return of(validCharacters, IntRange.of(length));
 	}
 
 	/**
@@ -241,10 +293,7 @@ public class CharacterChromosome
 	 *         one.
 	 */
 	public static CharacterChromosome of(final int length) {
-		return new CharacterChromosome(
-			CharacterGene.seq(DEFAULT_CHARACTERS, IntRange.of(length)),
-			IntRange.of(length)
-		);
+		return of(DEFAULT_CHARACTERS, length);
 	}
 
 	/**

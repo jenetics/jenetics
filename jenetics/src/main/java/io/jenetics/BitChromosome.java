@@ -23,19 +23,19 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -432,7 +432,7 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		return toSeq().stream()
+		return stream()
 			.map(g -> g.booleanValue() ? "1" : "0")
 			.collect(joining());
 	}
@@ -628,18 +628,16 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_genes).value();
+		return hash(_genes, hash(getClass()));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(c -> {
-			boolean equals = length() == c.length();
-			for (int i = 0, n = length(); equals && i < n; ++i) {
-				equals = getGene(i) == c.getGene(i);
-			}
-			return equals;
-		});
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			length() == ((BitChromosome)obj).length() &&
+			Arrays.equals(_genes, ((BitChromosome)obj)._genes);
 	}
 
 	@Override

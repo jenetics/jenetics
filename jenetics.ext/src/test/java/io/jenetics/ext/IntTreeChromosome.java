@@ -30,6 +30,8 @@ import io.jenetics.util.RandomRegistry;
  */
 final class IntTreeChromosome extends AbstractTreeChromosome<Integer, IntTreeGene> {
 
+	private static final long serialVersionUID = 1L;
+
 	public IntTreeChromosome(final ISeq<? extends IntTreeGene> genes) {
 		super(genes);
 	}

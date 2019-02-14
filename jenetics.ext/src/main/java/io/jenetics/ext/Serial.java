@@ -32,6 +32,8 @@ import java.io.StreamCorruptedException;
  */
 final class Serial implements Externalizable {
 
+	private static final long serialVersionUID = 1;
+
 	static final byte BIG_INTEGER_CHROMOSOME = 1;
 
 	/**

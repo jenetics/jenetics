@@ -26,6 +26,8 @@ import javax.swing.SpinnerNumberModel;
  */
 public class EngineParamPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Creates new form EngineParamPanel
 	 */

@@ -21,10 +21,10 @@ package io.jenetics;
 
 import static java.lang.Math.pow;
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -115,7 +115,7 @@ public final class ExponentialRankSelector<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_c).value();
+		return hash(_c);
 	}
 
 	@Override

@@ -26,6 +26,8 @@ import io.jenetics.prngine.Random64;
  */
 public class ContinuousRandom extends Random64 {
 
+	private static final long serialVersionUID = 1L;
+
 	private long _next;
 
 	public ContinuousRandom(final long start) {

@@ -107,13 +107,13 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 		assertTrue(g1.compareTo(g2) < 0);
 		assertTrue(g2.compareTo(g3) < 0);
 		assertTrue(g3.compareTo(g2) > 0);
-		assertTrue(g2.compareTo(g2) == 0);
+		assertEquals(0, g2.compareTo(g2));
 	}
 
 	@Test
 	public void testIsValidCharacter() {
 		for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
-			assertTrue(CharacterGene.of(c).isValidCharacter(c));
+			assertTrue(CharacterGene.of(c.charValue()).isValidCharacter(c));
 		}
 	}
 

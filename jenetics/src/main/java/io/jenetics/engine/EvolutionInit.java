@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
@@ -34,7 +35,6 @@ import io.jenetics.util.ISeq;
  *
  * @see EvolutionStart
  * @see EvolutionStreamable#stream(EvolutionInit)
- * @see Engine#iterator(EvolutionInit)
  *
  * @param <G> the gene type
  *
@@ -78,10 +78,7 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_generation + 17;
-		hash += 31*Objects.hashCode(_population) + 17;
-		return hash;
+		return hash(_generation, hash(_population));
 	}
 
 	@Override

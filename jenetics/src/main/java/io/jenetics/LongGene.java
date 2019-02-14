@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.getRandom;
@@ -102,6 +103,47 @@ public final class LongGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public LongRange range() {
+		return LongRange.of(_min, _max);
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte)_value;
+	}
+
+	@Override
+	public short shortValue() {
+		return (short)_value;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)_value;
+	}
+
+	@Override
+	public long longValue() {
+		return _value;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)_value;
+	}
+
+	@Override
+	public double doubleValue() {
+		return _value;
+	}
+
 	@Override
 	public boolean isValid() {
 		return _value >= _min && _value <= _max;
@@ -113,12 +155,39 @@ public final class LongGene
 	}
 
 	@Override
+	public LongGene mean(final LongGene that) {
+		return LongGene.of(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since !__version__!
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public LongGene newInstance(final long value) {
+		return LongGene.of(value, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Long number) {
+		return LongGene.of(number, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Number number) {
+		return LongGene.of(number.longValue(), _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance() {
+		return LongGene.of(nextLong(getRandom(), _min, _max), _min, _max);
+	}
+
+	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_value + 37;
-		hash += 31*_min + 37;
-		hash += 31*_max + 37;
-		return hash;
+		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
 	}
 
 	@Override
@@ -134,6 +203,10 @@ public final class LongGene
 	public String toString() {
 		return String.format("[%s]", _value);
 	}
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
@@ -164,7 +237,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final long value, final LongRange range) {
-		return new LongGene(value, range.getMin(), range.getMax());
+		return LongGene.of(value, range.getMin(), range.getMax());
 	}
 
 	/**
@@ -200,39 +273,8 @@ public final class LongGene
 	) {
 		final Random r = getRandom();
 		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new LongGene(nextLong(r, min, max), min, max))
+			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
 			.toISeq();
-	}
-
-	/**
-	 * Create a new gene from the given {@code value} and the gene context.
-	 *
-	 * @since !__version__!
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
-	 */
-	public LongGene newInstance(final long value) {
-		return new LongGene(value, _min, _max);
-	}
-
-	@Override
-	public LongGene newInstance(final Long value) {
-		return newInstance(value.longValue());
-	}
-
-	@Override
-	public LongGene newInstance(final Number value) {
-		return newInstance(value.longValue());
-	}
-
-	@Override
-	public LongGene newInstance() {
-		return new LongGene(nextLong(getRandom(), _min, _max), _min, _max);
-	}
-
-	@Override
-	public LongGene mean(final LongGene that) {
-		return new LongGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	/**

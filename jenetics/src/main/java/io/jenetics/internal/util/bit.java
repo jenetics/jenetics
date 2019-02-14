@@ -43,7 +43,7 @@ import io.jenetics.util.RandomRegistry;
  * @version 3.0
  */
 public final class bit {
-	private bit() {require.noInstance();}
+	private bit() {}
 
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.
@@ -300,7 +300,7 @@ public final class bit {
 	 * @throws NullPointerException if the {@code data} array is {@code null}.
 	 */
 	public static byte[] increment(final byte[] data) {
-		for (int i = 0; i < data.length && (data[i] += 1) == 0; ++i);
+		for (int i = 0; i < data.length && (data[i] += (byte)1) == 0; ++i);
 		return data;
 	}
 

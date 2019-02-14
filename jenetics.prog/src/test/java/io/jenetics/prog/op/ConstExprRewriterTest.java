@@ -17,40 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.prog.op;
 
-import java.io.Serializable;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
- * Abstract base class for implementing concrete NumericGenes.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 1.6
- * @since 1.6
  */
-abstract class AbstractNumericGene<
-	N extends Number & Comparable<? super N>,
-	G extends AbstractNumericGene<N, G>
->
-	extends AbstractBoundedGene<N, G>
-	implements NumericGene<N, G>, Serializable
-{
-	private static final long serialVersionUID = 1L;
+public class ConstExprRewriterTest {
 
-	/**
-	 * Create new {@code NumericGene}.
-	 *
-	 * @param value The value of the gene.
-	 * @param min The allowed min value of the gene.
-	 * @param max The allows max value of the gene.
-	 * @throws NullPointerException if one of the given arguments is
-	 *         {@code null}.
-	 */
-	protected AbstractNumericGene(final N value, final N min, final N max) {
-		super(value, min, max);
+	@Test(dataProvider = "expressions")
+	public void rewrite(final String expr, final double value) {
+		final ConstExprRewriter rewriter = new ConstExprRewriter();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
+
+
+		Assert.assertEquals(MathExpr.eval(tree), value);
 	}
 
-	@Override
-	public abstract G newInstance(final Number number);
+	@DataProvider
+	public Object[][] expressions() {
+		return new Object[][] {
+			{"1+2+3+4", 10.0},
+			{"1+2*(6+7)", 27.0},
+			{"sin(0)", 0.0},
+			{"cos(0)", 1.0},
+			{"cos(0) + sin(0)", 1.0},
+			{"cos(0)*sin(0)", 0.0}
+		};
+	}
 
 }

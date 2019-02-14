@@ -22,9 +22,15 @@ package io.jenetics.engine;
 import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.AnyChromosome;
@@ -42,7 +48,7 @@ import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
+import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -54,11 +60,11 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 3.4
+ * @version 4.4
  */
 public final class Codecs {
 
-	private Codecs() {require.noInstance();}
+	private Codecs() {}
 
 	/**
 	 * Return a scalar {@code Codec} for the given range.
@@ -399,7 +405,9 @@ public final class Codecs {
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
-			gt -> gt.getChromosome().toSeq().map(Gene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(Gene::getAllele)
+				.collect(ISeq.toISeq())
 		);
 	}
 
@@ -428,7 +436,7 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Equality.<ISeq<A>>True(),
+			Predicates.<ISeq<A>>True(),
 			length
 		);
 	}
@@ -451,7 +459,7 @@ public final class Codecs {
 		final Supplier<? extends A> supplier,
 		final int length
 	) {
-		return ofVector(supplier, Equality.TRUE, length);
+		return ofVector(supplier, Predicates.TRUE, length);
 	}
 
 	/**
@@ -468,7 +476,7 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.ofInteger(length)),
-			gt -> gt.getChromosome().toSeq().stream()
+			gt -> gt.getChromosome().stream()
 				.mapToInt(EnumGene::getAllele)
 				.toArray()
 		);
@@ -477,6 +485,120 @@ public final class Codecs {
 	@SuppressWarnings("unchecked")
 	private static <T> T[] newArray(final Class<?> type, final int length) {
 		return (T[])newInstance(type, length);
+	}
+
+	/**
+	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
+	 * matrix values are restricted by the same domain. The dimension of the
+	 * returned matrix is {@code int[rows][cols]}.
+	 *
+	 * @since 4.4
+	 *
+	 * @param domain the domain of the matrix values
+	 * @param rows the number of rows of the matrix
+	 * @param cols the number of columns of the matrix
+	 * @return a new matrix {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
+	 *         smaller than one.
+	 */
+	public static Codec<int[][], IntegerGene> ofMatrix(
+		final IntRange domain,
+		final int rows,
+		final int cols
+	) {
+		requireNonNull(domain);
+		require.positive(rows);
+		require.positive(cols);
+
+		return Codec.of(
+			Genotype.of(
+				IntegerChromosome.of(domain, cols).instances()
+					.limit(rows)
+					.collect(ISeq.toISeq())
+			),
+			gt -> gt.stream()
+				.map(ch -> ch.stream()
+					.mapToInt(IntegerGene::intValue)
+					.toArray())
+				.toArray(int[][]::new)
+		);
+	}
+
+	/**
+	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
+	 * matrix values are restricted by the same domain. The dimension of the
+	 * returned matrix is {@code long[rows][cols]}.
+	 *
+	 * @since 4.4
+	 *
+	 * @param domain the domain of the matrix values
+	 * @param rows the number of rows of the matrix
+	 * @param cols the number of columns of the matrix
+	 * @return a new matrix {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
+	 *         smaller than one.
+	 */
+	public static Codec<long[][], LongGene> ofMatrix(
+		final LongRange domain,
+		final int rows,
+		final int cols
+	) {
+		requireNonNull(domain);
+		require.positive(rows);
+		require.positive(cols);
+
+		return Codec.of(
+			Genotype.of(
+				LongChromosome.of(domain, cols).instances()
+					.limit(rows)
+					.collect(ISeq.toISeq())
+			),
+			gt -> gt.stream()
+				.map(ch -> ch.stream()
+					.mapToLong(LongGene::longValue)
+					.toArray())
+				.toArray(long[][]::new)
+		);
+	}
+
+	/**
+	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
+	 * matrix values are restricted by the same domain. The dimension of the
+	 * returned matrix is {@code double[rows][cols]}.
+	 *
+	 * @since 4.4
+	 *
+	 * @param domain the domain of the matrix values
+	 * @param rows the number of rows of the matrix
+	 * @param cols the number of columns of the matrix
+	 * @return a new matrix {@code Codec}
+	 * @throws NullPointerException if the given {@code domain} is {@code null}
+	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
+	 *         smaller than one.
+	 */
+	public static Codec<double[][], DoubleGene> ofMatrix(
+		final DoubleRange domain,
+		final int rows,
+		final int cols
+	) {
+		requireNonNull(domain);
+		require.positive(rows);
+		require.positive(cols);
+
+		return Codec.of(
+			Genotype.of(
+				DoubleChromosome.of(domain, cols).instances()
+					.limit(rows)
+					.collect(ISeq.toISeq())
+			),
+			gt -> gt.stream()
+				.map(ch -> ch.stream()
+					.mapToDouble(DoubleGene::doubleValue)
+					.toArray())
+				.toArray(double[][]::new)
+		);
 	}
 
 	/**
@@ -498,8 +620,111 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().toSeq().map(EnumGene::getAllele)
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
+				.collect(ISeq.toISeq())
 		);
+	}
+
+	/**
+	 * Create a codec, which creates a a mapping from the elements given in the
+	 * {@code source} sequence to the elements given in the {@code target}
+	 * sequence. The returned mapping can be seen as a function which maps every
+	 * element of the {@code target} set to an element of the {@code source} set.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
+	 *
+	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+	 *     Codecs.ofMapping(numbers, strings, HashMap::new);
+	 * }</pre>
+	 *
+	 * If {@code source.size() > target.size()}, the created mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
+	 * if {@code source.size() < target.size()}, the mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Injective_function">injective</a>
+	 * and if both sets have the same size, the returned mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Bijection">bijective</a>.
+	 *
+	 * @since 4.3
+	 *
+	 * @param source the source elements. Will be the <em>keys</em> of the
+	 *        encoded {@code Map}.
+	 * @param target the target elements. Will be the <em>values</em> of the
+	 * 	      encoded {@code Map}.
+	 * @param mapSupplier a function which returns a new, empty Map into which
+	 *        the mapping will be inserted
+	 * @param <A> the type of the source elements
+	 * @param <B> the type of the target elements
+	 * @param <M> the type of the encoded Map
+	 * @return a new mapping codec
+	 * @throws IllegalArgumentException if the {@code target} sequences are empty
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
+	public static <A, B, M extends Map<A, B>> Codec<M, EnumGene<Integer>>
+	ofMapping(
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target,
+		final Supplier<M> mapSupplier
+	) {
+		requireNonNull(mapSupplier);
+		return ofPermutation(target.size())
+			.map(perm -> toMapping(perm, source, target, mapSupplier));
+	}
+
+	private static <A, B, M extends Map<A, B>> M toMapping(
+		final int[] perm,
+		final ISeq<? extends A> source,
+		final ISeq<? extends B> target,
+		final Supplier<M> mapSupplier
+	) {
+		return IntStream.range(0, source.size())
+			.mapToObj(i -> new SimpleImmutableEntry<>(
+				source.get(i), target.get(perm[i%perm.length])))
+			.collect(Collectors.toMap(
+				Entry::getKey,
+				Entry::getValue,
+				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
+				mapSupplier));
+	}
+
+	/**
+	 * Create a codec, which creates a a mapping from the elements given in the
+	 * {@code source} sequence to the elements given in the {@code target}
+	 * sequence. The returned mapping can be seen as a function which maps every
+	 * element of the {@code target} set to an element of the {@code source} set.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> numbers = ISeq.of(1, 2, 3, 4, 5);
+	 * final ISeq<String> strings = ISeq.of("1", "2", "3");
+	 *
+	 * final Codec<Map<Integer, String>, EnumGene<Integer>> codec =
+	 *     Codecs.ofMapping(numbers, strings);
+	 * }</pre>
+	 *
+	 * If {@code source.size() > target.size()}, the created mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Surjective_function">surjective</a>,
+	 * if {@code source.size() < target.size()}, the mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Injective_function">injective</a>
+	 * and if both sets have the same size, the returned mapping is
+	 * <a href="https://en.wikipedia.org/wiki/Bijection">bijective</a>.
+	 *
+	 * @since 4.3
+	 *
+	 * @param source the source elements. Will be the <em>keys</em> of the
+	 *        encoded {@code Map}.
+	 * @param target the target elements. Will be the <em>values</em> of the
+	 * 	      encoded {@code Map}.
+	 * @param <A> the type of the source elements
+	 * @param <B> the type of the target elements
+	 * @return a new mapping codec
+	 * @throws IllegalArgumentException if the {@code target} sequences are empty
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
+	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
+	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
+		return ofMapping(source, target, HashMap::new);
 	}
 
 	/**
@@ -550,8 +775,9 @@ public final class Codecs {
 
 		return Codec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
-			gt -> ((BitChromosome)gt.getChromosome()).ones()
-				.<T>mapToObj(basicSet::get)
+			gt -> gt.getChromosome()
+				.as(BitChromosome.class).ones()
+				.<T>mapToObj(basicSet)
 				.collect(ISeq.toISeq())
 		);
 	}

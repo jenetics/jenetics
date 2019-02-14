@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.io.DataInput;
@@ -100,6 +101,47 @@ public final class DoubleGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public DoubleRange range() {
+		return DoubleRange.of(_min, _max);
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte)_value;
+	}
+
+	@Override
+	public short shortValue() {
+		return (short)_value;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)_value;
+	}
+
+	@Override
+	public long longValue() {
+		return (long)_value;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)_value;
+	}
+
+	@Override
+	public double doubleValue() {
+		 return _value;
+	}
+
 	@Override
 	public boolean isValid() {
 		return Double.compare(_value, _min) >= 0 &&
@@ -112,12 +154,39 @@ public final class DoubleGene
 	}
 
 	@Override
+	public DoubleGene mean(final DoubleGene that) {
+		return of(_value + (that._value - _value)/2.0, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since !__version__!
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public DoubleGene newInstance(final double value) {
+		return DoubleGene.of(value, _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance(final Double value) {
+		return of(value, _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance(final Number number) {
+		return of(number.doubleValue(), _min, _max);
+	}
+
+	@Override
+	public DoubleGene newInstance() {
+		return of(nextDouble(_min, _max, getRandom()), _min, _max);
+	}
+
+	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Double.hashCode(_value) + 37;
-		hash += 31*Double.hashCode(_min) + 37;
-		hash += 31*Double.hashCode(_max) + 37;
-		return hash;
+		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
 	}
 
 	@Override
@@ -133,6 +202,11 @@ public final class DoubleGene
 	public String toString() {
 		return String.format("[%s]", _value);
 	}
+
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new random {@code DoubleGene} with the given value and the
@@ -167,7 +241,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final double value, final DoubleRange range) {
-		return new DoubleGene(value, range.getMin(), range.getMax());
+		return of(value, range.getMin(), range.getMax());
 	}
 
 	/**
@@ -205,37 +279,6 @@ public final class DoubleGene
 		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();
-	}
-
-	/**
-	 * Create a new gene from the given {@code value} and the gene context.
-	 *
-	 * @since !__version__!
-	 * @param value the value of the new gene.
-	 * @return a new gene with the given value.
-	 */
-	public DoubleGene newInstance(final double value) {
-		return new DoubleGene(value, _min, _max);
-	}
-
-	@Override
-	public DoubleGene newInstance(final Double value) {
-		return newInstance(value.doubleValue());
-	}
-
-	@Override
-	public DoubleGene newInstance(final Number value) {
-		return newInstance(value.doubleValue());
-	}
-
-	@Override
-	public DoubleGene newInstance() {
-		return new DoubleGene(nextDouble(_min, _max, getRandom()), _min, _max);
-	}
-
-	@Override
-	public DoubleGene mean(final DoubleGene that) {
-		return new DoubleGene(_value + (that._value - _value)/2.0, _min, _max);
 	}
 
 
