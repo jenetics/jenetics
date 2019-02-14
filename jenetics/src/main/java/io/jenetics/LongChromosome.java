@@ -80,60 +80,6 @@ public class LongChromosome
 		super(genes, lengthRange);
 	}
 
-	/**
-	 * Create a new random chromosome.
-	 *
-	 * @since 4.0
-	 *
-	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
-	 * @param lengthRange the allowed length range of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the length is smaller than one
-	 *
-	 * @deprecated Use {@link #of(long, long, IntRange)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(
-		final Long min,
-		final Long max,
-		final IntRange lengthRange
-	) {
-		this(LongGene.seq(min, max, lengthRange), lengthRange);
-		_valid = true;
-	}
-
-	/**
-	 * Create a new random {@code LongChromosome}.
-	 *
-	 * @param min the min value of the {@link LongGene}s (inclusively).
-	 * @param max the max value of the {@link LongGene}s (inclusively).
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 *
-	 * @deprecated Use {@link #of(long, long, int)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(final Long min, final Long max, final int length) {
-		this(min, max, IntRange.of(length));
-	}
-
-	/**
-	 * Create a new random {@code LongChromosome} of length one.
-	 *
-	 * @param min the minimal value of this chromosome (inclusively).
-	 * @param max the maximal value of this chromosome (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 *
-	 * @deprecated Use {@link #of(long, long)} instead.
-	 */
-	@Deprecated
-	public LongChromosome(final Long min, final Long max) {
-		this(min, max, 1);
-	}
-
 	@Override
 	public LongChromosome newInstance(final ISeq<LongGene> genes) {
 		return new LongChromosome(genes, lengthRange());
