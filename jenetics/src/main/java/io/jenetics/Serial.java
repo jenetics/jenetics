@@ -38,13 +38,14 @@ final class Serial implements Externalizable {
 	static final byte INTEGER_GENE = 2;
 	static final byte LONG_GENE = 3;
 
-	static final byte DOUBLE_CHROMOSOME = 4;
-	static final byte INTEGER_CHROMOSOME = 5;
-	static final byte LONG_CHROMOSOME = 6;
-	static final byte CHARACTER_CHROMOSOME = 7;
-	static final byte PERMUTATION_CHROMOSOME = 8;
+	static final byte BIT_CHROMOSOME = 4;
+	static final byte DOUBLE_CHROMOSOME = 5;
+	static final byte INTEGER_CHROMOSOME = 6;
+	static final byte LONG_CHROMOSOME = 7;
+	static final byte CHARACTER_CHROMOSOME = 8;
+	static final byte PERMUTATION_CHROMOSOME = 9;
 
-	static final byte PHENOTYPE = 9;
+	static final byte PHENOTYPE = 10;
 
 	/**
 	 * The type being serialized.
@@ -80,6 +81,7 @@ final class Serial implements Externalizable {
 			case DOUBLE_GENE: ((DoubleGene)_object).write(out); break;
 			case INTEGER_GENE: ((IntegerGene)_object).write(out); break;
 			case LONG_GENE: ((LongGene)_object).write(out); break;
+			case BIT_CHROMOSOME: ((BitChromosome)_object).write(out); break;
 			case DOUBLE_CHROMOSOME: ((DoubleChromosome)_object).write(out); break;
 			case INTEGER_CHROMOSOME: ((IntegerChromosome)_object).write(out); break;
 			case LONG_CHROMOSOME: ((LongChromosome)_object).write(out); break;
@@ -100,6 +102,7 @@ final class Serial implements Externalizable {
 			case DOUBLE_GENE: _object = DoubleGene.read(in); break;
 			case INTEGER_GENE: _object = IntegerGene.read(in); break;
 			case LONG_GENE: _object = LongGene.read(in); break;
+			case BIT_CHROMOSOME: _object = BitChromosome.read(in); break;
 			case DOUBLE_CHROMOSOME: _object = DoubleChromosome.read(in); break;
 			case INTEGER_CHROMOSOME: _object = IntegerChromosome.read(in); break;
 			case LONG_CHROMOSOME: _object = LongChromosome.read(in); break;
