@@ -47,7 +47,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 5.0
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>

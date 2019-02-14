@@ -56,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 5.0
  */
 public final class LongGene
 	implements
@@ -162,7 +162,7 @@ public final class LongGene
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */

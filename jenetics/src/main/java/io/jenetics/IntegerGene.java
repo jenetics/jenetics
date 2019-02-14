@@ -55,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version !__version__!
+ * @version 5.0
  */
 public final class IntegerGene
 	implements
@@ -161,7 +161,7 @@ public final class IntegerGene
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 * @param value the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
