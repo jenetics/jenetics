@@ -85,55 +85,6 @@ public class CharacterChromosome
 		_validCharacters = genes.get(0).getValidCharacters();
 	}
 
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @since 4.0
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param lengthRange the allowed length range of the chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene sequence is
-	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
-	 *         range size is zero.
-	 *
-	 * @deprecated Use {@link #of(CharSeq, IntRange)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(
-		final CharSeq validCharacters,
-		final IntRange lengthRange
-	) {
-		this(CharacterGene.seq(validCharacters, lengthRange), lengthRange);
-		_valid = true;
-	}
-
-	/**
-	 * Create a new chromosome with the {@code validCharacters} char set as
-	 * valid characters.
-	 *
-	 * @param validCharacters the valid characters for this chromosome.
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if the {@code validCharacters} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the length of the gene sequence is
-	 *         empty, doesn't match with the allowed length range, the minimum
-	 *         or maximum of the range is smaller or equal zero or the given
-	 *         range size is zero.
-	 *
-	 * @deprecated Use {@link #of(CharSeq, int)} instead.
-	 */
-	@Deprecated
-	public CharacterChromosome(
-		final CharSeq validCharacters,
-		final int length
-	) {
-		this(validCharacters, IntRange.of(length));
-	}
-
 	@Override
 	public char charAt(final int index) {
 		return getGene(index).charValue();
