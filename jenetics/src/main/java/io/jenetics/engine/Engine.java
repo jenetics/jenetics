@@ -647,7 +647,7 @@ public final class Engine<
 	 * @return a new engine builder
 	 */
 	public Builder<G, C> builder() {
-		return new Builder<G, C>(_genotypeFactory, _evaluator)
+		return new Builder<>(_evaluator, _genotypeFactory)
 			.alterers(_alterer)
 			.clock(_clock)
 			.executor(_executor)
@@ -672,7 +672,7 @@ public final class Engine<
 	 * function and genotype factory.
 	 *
 	 * @param ff the fitness function
-	 * @param genotypeFactory the genotype factory
+	 * @param gtf the genotype factory
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
 	 * @return a new engine builder
@@ -682,12 +682,9 @@ public final class Engine<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Builder<G, C> builder(
 		final Function<? super Genotype<G>, ? extends C> ff,
-		final Factory<Genotype<G>> genotypeFactory
+		final Factory<Genotype<G>> gtf
 	) {
-		return Builder.of(
-			Evaluators.concurrent(ff, commonPool()),
-			genotypeFactory
-		);
+		return new Builder<>(Evaluators.concurrent(ff, commonPool()), gtf);
 	}
 
 	/**
@@ -764,6 +761,9 @@ public final class Engine<
 	 *
 	 * @see Engine
 	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
 	 * @version 5.0
@@ -799,9 +799,25 @@ public final class Engine<
 		private int _individualCreationRetries = 10;
 		private UnaryOperator<EvolutionResult<G, C>> _mapper = UnaryOperator.identity();
 
-		private Builder(
-			final Factory<Genotype<G>> genotypeFactory,
-			final Evaluator<G, C> evaluator
+		/**
+		 * Create a new evolution {@code Engine.Builder} with the given fitness
+		 * evaluator and genotype factory. This is the most general way for
+		 * creating an engine builder.
+		 *
+		 * @since 5.0
+		 *
+		 * @see Engine#builder(Function, Codec)
+		 * @see Engine#builder(Function, Factory)
+		 * @see Engine#builder(Problem)
+		 * @see Engine#builder(Function, Chromosome, Chromosome[])
+		 *
+		 * @param evaluator the fitness evaluator
+		 * @param genotypeFactory the genotype factory
+		 * @throws NullPointerException if one of the arguments is {@code null}.
+		 */
+		public Builder(
+			final Evaluator<G, C> evaluator,
+			final Factory<Genotype<G>> genotypeFactory
 		) {
 			_genotypeFactory = requireNonNull(genotypeFactory);
 			_evaluator = requireNonNull(evaluator);
@@ -1342,7 +1358,7 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<G, C>(_genotypeFactory, _evaluator)
+			return new Builder<G, C>(_evaluator, _genotypeFactory)
 				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)
@@ -1355,34 +1371,6 @@ public final class Engine<
 				.survivorsSelector(_survivorsSelector)
 				.individualCreationRetries(_individualCreationRetries)
 				.mapping(_mapper);
-		}
-
-		/**
-		 * Create a new evolution {@code Engine.Builder} with the given fitness
-		 * evaluator and genotype factory. This is the most general factory
-		 * method for creating an engine builder.
-		 *
-		 * @since 5.0
-		 *
-		 * @see Engine#builder(Function, Codec)
-		 * @see Engine#builder(Function, Factory)
-		 * @see Engine#builder(Problem)
-		 * @see Engine#builder(Function, Chromosome, Chromosome[])
-		 *
-		 * @param <G> the gene type
-		 * @param <C> the fitness function result type
-		 * @param genotypeFactory the genotype factory
-		 * @param evaluator the fitness evaluator
-		 * @return a new engine builder
-		 * @throws java.lang.NullPointerException if one of the arguments is
-		 *         {@code null}.
-		 */
-		public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-		Builder<G, C> of(
-			final Evaluator<G, C> evaluator,
-			final Factory<Genotype<G>> genotypeFactory
-		) {
-			return new Builder<>(genotypeFactory, evaluator);
 		}
 
 	}
