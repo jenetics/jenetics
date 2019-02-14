@@ -1029,50 +1029,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 *
-	 * @deprecated Use {@link #toParenthesesString()} instead
-	 */
-	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static String toCompactString(final Tree<?, ?> tree) {
-		return ParenthesesTrees.toString((Tree)tree, Objects::toString);
-	}
-
-	/**
-	 * Return a string representation of the given {@code tree} in dotty syntax.
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 *
-	 * @deprecated Will be removed; very special to-string method.
-	 */
-	@Deprecated
-	public static String toDottyString(final Tree<?, ?> tree) {
-		return Trees.toDottyString("T", tree);
-	}
-
-
 	/* *************************************************************************
 	 * Inner classes
 	 **************************************************************************/
