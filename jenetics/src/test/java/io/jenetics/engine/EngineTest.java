@@ -96,7 +96,7 @@ public class EngineTest {
 			.filter(pt -> pt.getFitness() == max)
 			.count();
 
-		Assert.assertTrue(maxCount >= genotypeCount);
+		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);
 	}
 
 	@Test

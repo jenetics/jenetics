@@ -22,17 +22,20 @@ package io.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -316,22 +319,35 @@ public final class Phenotype<
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.PHENOTYPE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.defaultWriteObject();
-		out.writeLong(getGeneration());
-		out.writeObject(getGenotype());
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeLong(_generation, out);
+		out.writeObject(_genotype);
 		out.writeObject(_fitness);
 	}
 
-	private void readObject(final ObjectInputStream in)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Phenotype read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-		reflect.setField(this, "_generation", in.readLong());
-		reflect.setField(this, "_genotype", in.readObject());
-		reflect.setField(this, "_fitness", in.readObject());
+		final long generation = readLong(in);
+		final Genotype genotype = (Genotype)in.readObject();
+		final Comparable fitness = (Comparable)in.readObject();
+
+		return new Phenotype(
+			genotype,
+			generation,
+			fitness
+		);
 	}
 
 }

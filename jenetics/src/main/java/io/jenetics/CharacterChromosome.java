@@ -21,16 +21,21 @@ package io.jenetics;
 
 import static io.jenetics.CharacterGene.DEFAULT_CHARACTERS;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readString;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeString;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import io.jenetics.internal.util.IntRef;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -46,7 +51,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.3
+ * @version !__version__!
  */
 public class CharacterChromosome
 	extends
@@ -57,7 +62,7 @@ public class CharacterChromosome
 {
 	private static final long serialVersionUID = 3L;
 
-	private transient CharSeq _validCharacters;
+	private transient final CharSeq _validCharacters;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
@@ -332,36 +337,34 @@ public class CharacterChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
-
-		out.writeInt(length());
-		out.writeObject(_validCharacters);
-
-		for (CharacterGene gene : _genes) {
-			out.writeChar(gene.getAllele());
-		}
+	private Object writeReplace() {
+		return new Serial(Serial.CHARACTER_CHROMOSOME, this);
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		in.defaultReadObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		final int length = in.readInt();
-		_validCharacters = (CharSeq)in.readObject();
+	void write(final DataOutput out) throws IOException {
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
+		writeString(_validCharacters.toString(), out);
+		writeString(toString(), out);
+	}
 
-		final MSeq<CharacterGene> genes = MSeq.ofLength(length);
-		for (int i = 0; i < length; ++i) {
-			final CharacterGene gene = CharacterGene.of(
-				in.readChar(),
-				_validCharacters
-			);
-			genes.set(i, gene);
+	static CharacterChromosome read(final DataInput in) throws IOException {
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final CharSeq validCharacters = new CharSeq(readString(in));
+		final String chars = readString(in);
+
+		final MSeq<CharacterGene> values = MSeq.ofLength(chars.length());
+		for (int i = 0, n = chars.length(); i <  n; ++i) {
+			values.set(i, CharacterGene.of(chars.charAt(i), validCharacters));
 		}
-		reflect.setField(this, "_genes", genes.toISeq());
+
+		return new CharacterChromosome(values.toISeq(), lengthRange);
 	}
 
 }

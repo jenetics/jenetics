@@ -19,15 +19,19 @@
  */
 package io.jenetics;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.reflect;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -43,7 +47,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version !__version__!
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -51,7 +55,7 @@ public class DoubleChromosome
 		NumericChromosome<Double, DoubleGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed
@@ -330,36 +334,40 @@ public class DoubleChromosome
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.DOUBLE_CHROMOSOME, this);
+	}
 
-		out.writeInt(length());
-		out.writeObject(lengthRange());
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 
-		for (DoubleGene gene : _genes) {
-			out.writeDouble(gene.getAllele());
+		for (int i = 0, n = length(); i < n; ++i) {
+			out.writeDouble(doubleValue(i));
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static DoubleChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final double min = in.readDouble();
+		final double max = in.readDouble();
 
-		final MSeq<DoubleGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readDouble());
-		reflect.setField(this, "_max", in.readDouble());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, DoubleGene.of(in.readDouble(), _min, _max));
+		final MSeq<DoubleGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, DoubleGene.of(in.readDouble(), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new DoubleChromosome(values.toISeq(), lengthRange);
 	}
 
 }
