@@ -45,7 +45,8 @@ final class Serial implements Externalizable {
 	static final byte CHARACTER_CHROMOSOME = 8;
 	static final byte PERMUTATION_CHROMOSOME = 9;
 
-	static final byte PHENOTYPE = 10;
+	static final byte GENOTYPE = 10;
+	static final byte PHENOTYPE = 11;
 
 	/**
 	 * The type being serialized.
@@ -87,6 +88,7 @@ final class Serial implements Externalizable {
 			case LONG_CHROMOSOME: ((LongChromosome)_object).write(out); break;
 			case CHARACTER_CHROMOSOME: ((CharacterChromosome)_object).write(out); break;
 			case PERMUTATION_CHROMOSOME: ((PermutationChromosome)_object).write(out); break;
+			case GENOTYPE: ((Genotype)_object).write(out); break;
 			case PHENOTYPE: ((Phenotype)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
@@ -108,6 +110,7 @@ final class Serial implements Externalizable {
 			case LONG_CHROMOSOME: _object = LongChromosome.read(in); break;
 			case CHARACTER_CHROMOSOME: _object = CharacterChromosome.read(in); break;
 			case PERMUTATION_CHROMOSOME: _object = PermutationChromosome.read(in); break;
+			case GENOTYPE: _object = Genotype.read(in); break;
 			case PHENOTYPE: _object = Phenotype.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
