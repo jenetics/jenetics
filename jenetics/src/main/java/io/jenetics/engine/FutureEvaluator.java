@@ -25,14 +25,13 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -59,10 +58,9 @@ final class FutureEvaluator<
 
 	@Override
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		final ISeq<Future<Phenotype<G, C>>> evaluate = population.stream()
+		final ISeq<Future<C>> evaluate = population.stream()
 			.filter(Phenotype::nonEvaluated)
-			.map(pt -> new MappedFuture<>(
-				_fitness.apply(pt.getGenotype()), pt::withFitness))
+			.map(pt -> _fitness.apply(pt.getGenotype()))
 			.collect(ISeq.toISeq());
 
 		final ISeq<Phenotype<G, C>> evaluated = population.stream()
@@ -71,10 +69,10 @@ final class FutureEvaluator<
 
 		join(evaluate);
 
-		return evaluated.append(evaluate.map(FutureEvaluator::get));
+		return evaluated.append(map(population, evaluate));
 	}
 
-	private void join(final ISeq<Future<Phenotype<G, C>>> futures) {
+	private void join(final ISeq<Future<C>> futures) {
 		Exception exception = null;
 		int index = 0;
 		try {
@@ -105,6 +103,23 @@ final class FutureEvaluator<
 		}
 	}
 
+	private ISeq<Phenotype<G, C>> map(
+		final Seq<Phenotype<G, C>> population,
+		final Seq<Future<C>> fitnesses
+	) {
+		final ISeq<Phenotype<G, C>> phenotypes = population.stream()
+			.filter(Phenotype::nonEvaluated)
+			.collect(ISeq.toISeq());
+		assert phenotypes.length() == fitnesses.length();
+
+		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(phenotypes.size());
+		for (int i = 0; i < fitnesses.length(); ++i) {
+			result.set(i, phenotypes.get(i).withFitness(get(fitnesses.get(i))));
+		}
+
+		return result.asISeq();
+	}
+
 	private static <T> T get(final Future<T> future) {
 		try {
 			return future.get();
@@ -113,42 +128,5 @@ final class FutureEvaluator<
 		}
 	}
 
-	private static final class MappedFuture<A, B> implements Future<B> {
-
-		private final Future<A> _adoptee;
-		private final Function<A, B> _mapper;
-
-		MappedFuture(final Future<A> adoptee, final Function<A, B> mapper) {
-			_adoptee = adoptee;
-			_mapper = mapper;
-		}
-
-		@Override
-		public boolean cancel(final boolean mayInterruptIfRunning) {
-			return _adoptee.cancel(mayInterruptIfRunning);
-		}
-
-		@Override
-		public boolean isCancelled() {
-			return _adoptee.isCancelled();
-		}
-
-		@Override
-		public boolean isDone() {
-			return _adoptee.isDone();
-		}
-
-		@Override
-		public B get() throws InterruptedException, ExecutionException {
-			return _mapper.apply(_adoptee.get());
-		}
-
-		@Override
-		public B get(final long timeout, final TimeUnit unit)
-			throws InterruptedException, ExecutionException, TimeoutException
-		{
-			return _mapper.apply(_adoptee.get(timeout, unit));
-		}
-	}
 }
 

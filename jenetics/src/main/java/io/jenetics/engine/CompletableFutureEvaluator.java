@@ -74,10 +74,14 @@ final class CompletableFutureEvaluator<
 		final Seq<Phenotype<G, C>> population,
 		final CompletableFuture<C>[] fitnesses
 	) {
-		assert population.size() == fitnesses.length;
-		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(population.size());
+		final ISeq<Phenotype<G, C>> phenotypes = population.stream()
+			.filter(Phenotype::nonEvaluated)
+			.collect(ISeq.toISeq());
+		assert phenotypes.length() == fitnesses.length;
+
+		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(phenotypes.size());
 		for (int i = 0; i < fitnesses.length; ++i) {
-			result.set(i, population.get(i).withFitness(fitnesses[i].join()));
+			result.set(i, phenotypes.get(i).withFitness(fitnesses[i].join()));
 		}
 
 		return result.asISeq();
