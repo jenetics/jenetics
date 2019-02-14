@@ -62,7 +62,7 @@ public class CharacterChromosome
 {
 	private static final long serialVersionUID = 3L;
 
-	private transient CharSeq _validCharacters;
+	private transient final CharSeq _validCharacters;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} array. The genes
