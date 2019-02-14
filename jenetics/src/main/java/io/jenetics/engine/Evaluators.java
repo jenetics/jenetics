@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -87,6 +88,8 @@ public final class Evaluators {
 	 *
 	 * @since 5.0
 	 *
+	 * @see #completable(Function)
+	 *
 	 * @param fitness the asynchronous fitness function
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
@@ -97,6 +100,30 @@ public final class Evaluators {
 	Evaluator<G, C>
 	async(final Function<? super Genotype<G>, ? extends Future<C>> fitness) {
 		return new FutureEvaluator<>(fitness);
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
+	 * fitness functions.
+	 *
+	 * @since 5.0
+	 *
+	 * @see #async(Function)
+	 *
+	 * @param fitness the asynchronous fitness function
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (asynchronous) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C>
+	completable(
+		final Function<
+			? super Genotype<G>,
+			? extends CompletableFuture<C>> fitness
+	) {
+		return new CompletableFutureEvaluator<>(fitness);
 	}
 
 }
