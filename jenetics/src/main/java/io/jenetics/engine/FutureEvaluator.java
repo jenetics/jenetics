@@ -22,14 +22,12 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -61,33 +59,59 @@ final class FutureEvaluator<
 
 	@Override
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		final Stream<Future<Phenotype<G, C>>> result =
-			Stream.concat(
-				population.stream()
-					.filter(Phenotype::isEvaluated)
-					.map(CompletableFuture::completedFuture),
-				population.stream()
-					.filter(Phenotype::nonEvaluated)
-					.map(pt -> new MappedFuture<>(
-						_fitness.apply(pt.getGenotype()), pt::withFitness))
-			);
+		final ISeq<Future<Phenotype<G, C>>> evaluate = population.stream()
+			.filter(Phenotype::nonEvaluated)
+			.map(pt -> new MappedFuture<>(
+				_fitness.apply(pt.getGenotype()), pt::withFitness))
+			.collect(ISeq.toISeq());
 
-		return result
-			.collect(ISeq.toISeq())
-			.map(FutureEvaluator::join);
+		final ISeq<Phenotype<G, C>> evaluated = population.stream()
+			.filter(Phenotype::isEvaluated)
+			.collect(ISeq.toISeq());
+
+		join(evaluate);
+
+		return evaluated.append(evaluate.map(FutureEvaluator::get));
 	}
 
-	private static <T> T join(final Future<T> future) {
+	private void join(final ISeq<Future<Phenotype<G, C>>> futures) {
+		Exception exception = null;
+		int index = 0;
 		try {
-			return future.get();
-		} catch (InterruptedException e) {
-			throw (CancellationException)new CancellationException(e.getMessage())
-				.initCause(e);
-		} catch (ExecutionException e) {
-			throw new CompletionException(e);
+			while (index < futures.size()) {
+				futures.get(index).get();
+				++index;
+			}
+		} catch (InterruptedException |
+				ExecutionException |
+				CancellationException e)
+		{
+			exception = e;
+		}
+
+		while (index < futures.size()) {
+			futures.get(index).cancel(true);
+			++index;
+		}
+
+		if (exception instanceof InterruptedException) {
+			throw (CancellationException)
+				new CancellationException(exception.getMessage())
+					.initCause(exception);
+		} else if (exception instanceof CancellationException) {
+			throw (CancellationException)exception;
+		} else if (exception != null) {
+			throw new CompletionException(exception);
 		}
 	}
 
+	private static <T> T get(final Future<T> future) {
+		try {
+			return future.get();
+		} catch (InterruptedException|ExecutionException e) {
+			throw new AssertionError(e);
+		}
+	}
 
 	private static final class MappedFuture<A, B> implements Future<B> {
 
