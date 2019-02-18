@@ -1,3 +1,21 @@
+Jenetics-4.4.0
+
+- Improvements
+
+	* https://github.com/jenetics/jenetics/issues/316: Improve implementation of tree rewriting. This is a preparations tep for https://github.com/jenetics/jenetics/issues/442).
+	* https://github.com/jenetics/jenetics/issues/414: Use Gradle 'implementation' instead of 'compile' dependency
+	* https://github.com/jenetics/jenetics/issues/426: Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed.
+	* https://github.com/jenetics/jenetics/issues/430: Codec for numeric 2d matrices.
+	* https://github.com/jenetics/jenetics/issues/433: Upgrade Gradle to 5.x.
+	* https://github.com/jenetics/jenetics/issues/443: Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+	* https://github.com/jenetics/jenetics/issues/445: Mark `Phenotype.newInstance` methods as deprecated.
+	* https://github.com/jenetics/jenetics/issues/457: Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
+- Bugs
+
+	* https://github.com/jenetics/jenetics/issues/425: Manual fixes.
+
+
 Jenetics-4.3.0
 
 - Improvements
