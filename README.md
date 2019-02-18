@@ -185,34 +185,23 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
+### [4.4.0](https://github.com/jenetics/jenetics/releases/tag/v4.4.0)
 
 #### Improvements
 
-* [#347](https://github.com/jenetics/jenetics/issues/347): Improve `hashCode` and `equals` methods.
-* [#349](https://github.com/jenetics/jenetics/issues/349): Cleanup of chromosome constructors. Make the constructors more regular.
-* [#355](https://github.com/jenetics/jenetics/issues/355): Simplify implementation of numeric genes.
-* [#361](https://github.com/jenetics/jenetics/issues/361): Add `NumericChromosome.primitiveStream()` methods.
-* [#366](https://github.com/jenetics/jenetics/issues/366): Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
-* [#377](https://github.com/jenetics/jenetics/issues/377): Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
-* [#378](https://github.com/jenetics/jenetics/issues/378): Convert tree to parentheses tree string.
-* [#379](https://github.com/jenetics/jenetics/issues/379): Parse parentheses tree string to tree object.
-* [#380](https://github.com/jenetics/jenetics/issues/380): Add `TreeNode.map` method.
-* [#400](https://github.com/jenetics/jenetics/issues/400): Codec for mapping source- and target objects.
-* [#406](https://github.com/jenetics/jenetics/issues/406): Make the library compilable under Java 11.
-* [#411](https://github.com/jenetics/jenetics/issues/411): Improve the behaviour of the `MathExpr.format` method.
+* [#316](https://github.com/jenetics/jenetics/issues/316): Improve implementation of tree rewriting. This is a preparations tep for [#442](https://github.com/jenetics/jenetics/issues/442).
+* [#414](https://github.com/jenetics/jenetics/issues/414): Use Gradle 'implementation' instead of 'compile' dependency
+* [#426](https://github.com/jenetics/jenetics/issues/426): Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed. 
+* [#430](https://github.com/jenetics/jenetics/issues/430): Codec for numeric 2d matrices.
+* [#433](https://github.com/jenetics/jenetics/issues/433): Upgrade Gradle to 5.x.
+* [#443](https://github.com/jenetics/jenetics/issues/443): Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+* [#445](https://github.com/jenetics/jenetics/issues/445): Mark `Phenotype.newInstance` methods as deprecated. 
+* [#457](https://github.com/jenetics/jenetics/issues/457): Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
 
 #### Bugs
 
-* [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
-* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
-
-
-### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
-
-#### Bugs
-
-* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+* [#425](https://github.com/jenetics/jenetics/issues/425): Manual fixes.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
