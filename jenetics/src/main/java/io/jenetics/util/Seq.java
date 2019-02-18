@@ -606,7 +606,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * Returns an array containing the elements of this sequence, using the
 	 * provided generator function to allocate the returned array.
 	 *
-	 * @since !__version__!
+	 * @since 4.4
 	 *
 	 * @param generator a function which produces a new array of the desired
 	 *        type and the provided length
