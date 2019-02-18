@@ -22,7 +22,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.3
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
@@ -33,12 +33,15 @@ repositories {
 }
 
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.prog')
-	compile project(':jenetics.tool')
+	implementation project(':jenetics')
+	implementation project(':jenetics.ext')
+	implementation project(':jenetics.prog')
+	implementation project(':jenetics.tool')
 
-	testCompile property('include.TestNG')
+	testImplementation property('include.TestNG')
 }
+
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.doc')
 
 packaging {
 	name = 'Jenetics doc'
