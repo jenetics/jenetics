@@ -20,19 +20,19 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.4
- * @version 4.3
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
 
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.example')
-	compile project(':jenetics.ext')
-	compile project(':jenetics.xml')
-	compile property('include.PRNGine')
+	implementation project(':jenetics')
+	implementation project(':jenetics.example')
+	implementation project(':jenetics.ext')
+	implementation project(':jenetics.xml')
+	implementation property('include.PRNGine')
 
-	testCompile property('include.TestNG')
+	testImplementation property('include.TestNG')
 }
 
 jar.manifest.instruction('Export-Package',

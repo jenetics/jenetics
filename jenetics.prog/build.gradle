@@ -24,18 +24,18 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.3
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
+	implementation project(':jenetics')
+	implementation project(':jenetics.ext')
 
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
 }
 
 jar.manifest.instruction('Export-Package',

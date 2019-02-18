@@ -23,19 +23,19 @@ import org.apache.tools.ant.filters.ReplaceTokens
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.3
+ * @version !__version__!
  */
 
 apply plugin: 'packaging'
 
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
-	compile property('include.JPX')
-	compile property('include.PRNGine')
-	compile "io.reactivex.rxjava2:rxjava:2.1.14"
+	implementation project(':jenetics')
+	implementation project(':jenetics.ext')
+	implementation property('include.JPX')
+	implementation property('include.PRNGine')
+	implementation "io.reactivex.rxjava2:rxjava:2.1.14"
 
-	testCompile property('include.TestNG')
+	testImplementation property('include.TestNG')
 }
 
 jar.manifest.instruction('Export-Package',

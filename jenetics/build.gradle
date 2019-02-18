@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.3
+ * @version !__version__!
  */
 
 plugins {
@@ -34,10 +34,10 @@ apply plugin: 'nexus'
 description = property('jenetics.Description')
 
 dependencies {
-	testCompile property('include.ApacheCommonsMath')
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
-	testCompile property('include.PRNGine')
+	testImplementation property('include.ApacheCommonsMath')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
+	testImplementation property('include.PRNGine')
 
 	jmh property('include.PRNGine')
 }
