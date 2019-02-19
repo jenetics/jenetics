@@ -96,6 +96,17 @@ public final class DoubleGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public DoubleRange range() {
+		return DoubleRange.of(_min, _max);
+	}
+
 	@Override
 	public byte byteValue() {
 		return (byte)_value;

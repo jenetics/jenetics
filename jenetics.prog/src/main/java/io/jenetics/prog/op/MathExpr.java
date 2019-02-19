@@ -146,7 +146,12 @@ public final class MathExpr
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		return apply(DoubleStream.of(args).boxed().toArray(Double[]::new));
+		final double val = apply(
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
+		return val == -0.0 ? 0.0 : val;
 	}
 
 	@Override
@@ -343,13 +348,36 @@ public final class MathExpr
 	 * @param expression the expression to evaluate
 	 * @param args the expression arguments, in alphabetical order
 	 * @return the evaluation result
-	 * @throws NullPointerException if the given {@code program} is {@code null}
+	 * @throws NullPointerException if the given {@code expression} is
+	 *         {@code null}
 	 * @throws IllegalArgumentException if the given operation tree is invalid,
 	 *         which means there is at least one node where the operation arity
 	 *         and the node child count differ.
 	 */
 	public static double eval(final String expression, final double... args) {
 		return parse(expression).eval(args);
+	}
+
+	/**
+	 * Evaluates the given {@code expression} with the given arguments.
+	 *
+	 * @see #apply(Double[])
+	 * @see #eval(double...)
+	 * @see #eval(String, double...)
+	 *
+	 * @since 4.4
+	 *
+	 * @param expression the expression to evaluate
+	 * @param args the expression arguments, in alphabetical order
+	 * @return the evaluation result
+	 * @throws NullPointerException if the given {@code expression} is
+	 *         {@code null}
+	 */
+	public static double eval(
+		final Tree<? extends Op<Double>, ?> expression,
+		final double... args
+	) {
+		return new MathExpr(expression, true).eval(args);
 	}
 
 	/**
@@ -379,7 +407,7 @@ public final class MathExpr
 	 */
 	public static Tree<? extends Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
-		return MathExprSimplifier.prune(TreeNode.ofTree(tree));
+		return MathExprRewriter.prune(TreeNode.ofTree(tree));
 	}
 
 	/**
@@ -392,7 +420,7 @@ public final class MathExpr
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
 	public static void prune(final TreeNode<Op<Double>> tree) {
-		MathExprSimplifier.prune(tree);
+		MathExprRewriter.prune(tree);
 	}
 
 }

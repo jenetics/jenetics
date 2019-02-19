@@ -20,6 +20,7 @@
 package io.jenetics.gradle.plugin
 
 import io.jenetics.gradle.task.ColorizerTask
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -37,7 +38,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.8
+ * @version 4.4
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -129,8 +130,13 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
+
 		project.task('testReport', dependsOn: 'test').doLast {
-			project.jacocoTestReport.execute()
+			if (project.file(project.jacoco.reportsDir).exists()) {
+				project.jacocoTestReport.actions.each { Action action ->
+					action.execute(project.jacocoTestReport)
+				}
+			}
 		}
 	}
 
@@ -198,8 +204,12 @@ class SetupPlugin extends JeneticsPlugin {
 		}
 
 		project.javadoc.doLast {
-			project.colorize.execute()
-			project.java2html.execute()
+			project.colorize.actions.each { Action action ->
+				action.execute(project.colorize)
+			}
+			project.java2html.actions.each { Action action ->
+				action.execute(project.java2html)
+			}
 		}
 	}
 

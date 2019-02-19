@@ -23,6 +23,8 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 4.4
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -193,11 +195,41 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/**
 	 * Return the child node at the given {@code path}. A path consists of the
 	 * child index at a give level, starting with level 1. (The root note has
+	 * level zero.) {@code tree.childAtPath(Path.of(2))} will return the third
+	 * child node of {@code this} node, if it exists and
+	 * {@code tree.childAtPath(Path.of(2, 0))} will return the first child of
+	 * the third child of {@code this node}.
+	 *
+	 * @since 4.4
+	 *
+	 * @see #childAtPath(int...)
+	 *
+	 * @param path the child path
+	 * @return the child node at the given {@code path}
+	 * @throws NullPointerException if the given {@code path} array is
+	 *         {@code null}
+	 */
+	public default Optional<T> childAtPath(final Path path) {
+		T node = Trees.self(this);
+		for (int i = 0; i < path.length() && node != null; ++i) {
+			node = path.get(i) < node.childCount()
+				? node.getChild(path.get(i))
+				: null;
+		}
+
+		return Optional.ofNullable(node);
+	}
+
+	/**
+	 * Return the child node at the given {@code path}. A path consists of the
+	 * child index at a give level, starting with level 1. (The root note has
 	 * level zero.) {@code tree.childAtPath(2)} will return the third child node
 	 * of {@code this} node, if it exists and {@code tree.childAtPath(2, 0)} will
 	 * return the first child of the third child of {@code this node}.
 	 *
 	 * @since 4.3
+	 *
+	 * @see #childAtPath(Path)
 	 *
 	 * @param path the child path
 	 * @return the child node at the given {@code path}
@@ -207,22 +239,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         than zero
 	 */
 	public default Optional<T> childAtPath(final int... path) {
-		T node = Trees.self(this);
-		for (int i = 0; i < path.length && node != null; ++i) {
-			final int childIndex = path[i];
-			if (childIndex < 0) {
-				throw new IllegalArgumentException(format(
-					"Path element at position %d is smaller than zero: %d",
-					i, childIndex
-				));
-			}
-
-			node = childIndex < node.childCount()
-				? node.getChild(childIndex)
-				: null;
-		}
-
-		return Optional.ofNullable(node);
+		return childAtPath(Path.of(path));
 	}
 
 	/**
@@ -346,7 +363,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the root of the tree that contains this node
 	 */
 	public default T getRoot() {
-		T anc = Trees.<V, T>self(this);
+		T anc = Trees.self(this);
 		T prev;
 
 		do {
@@ -834,6 +851,43 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	}
 
 	/**
+	 * Return the path of {@code this} child node from the root node. You will
+	 * get {@code this} node, if you call {@link #childAtPath(Path)} on the
+	 * root node of {@code this} node.
+	 * <pre>{@code
+	 * final Tree<?, ?> node = ...;
+	 * final Tree<?, ?> root = node.getRoot();
+	 * final int[] path = node.childPath();
+	 * assert node == root.childAtPath(path);
+	 * }</pre>
+	 *
+	 * @since 4.4
+	 *
+	 * @see #childAtPath(Path)
+	 *
+	 * @return the path of {@code this} child node from the root node.
+	 */
+	public default Path childPath() {
+		final Iterator<T> it = pathFromAncestorIterator(getRoot());
+		final int[] path = new int[level()];
+
+		T tree = null;
+		int index = 0;
+		while (it.hasNext()) {
+			final T child = it.next();
+			if (tree != null) {
+				path[index++] = tree.getIndex(child);
+			}
+
+			tree = child;
+		}
+
+		assert index == path.length;
+
+		return new Path(path);
+	}
+
+	/**
 	 * Tests whether {@code this} node is the same as the {@code other} node.
 	 * The default implementation returns the object identity,
 	 * {@code this == other}, of the two objects, but other implementations may
@@ -1016,6 +1070,114 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	@Deprecated
 	public static String toDottyString(final Tree<?, ?> tree) {
 		return Trees.toDottyString("T", tree);
+	}
+
+
+	/* *************************************************************************
+	 * Inner classes
+	 **************************************************************************/
+
+	/**
+	 * This class represents the path to child within a given tree. It allows to
+	 * point (and fetch) a tree child.
+	 *s
+	 * @see Tree#childAtPath(Path)
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version 4.4
+	 * @since 4.4
+	 */
+	public static final class Path implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		private final int[] _path;
+
+		private Path(final int[] path) {
+			_path = requireNonNull(path);
+		}
+
+		/**
+		 * Return the path length, which is the level of the child {@code this}
+		 * path points to.
+		 *
+		 * @return the path length
+		 */
+		public int length() {
+			return _path.length;
+		}
+
+		/**
+		 * Return the child index at the given index (child level).
+		 *
+		 * @param index the path index
+		 * @return the child index at the given child level
+		 * @throws IndexOutOfBoundsException if the index is not with the range
+		 *         {@code [0, length())}
+		 */
+		public int get(final int index) {
+			return _path[index];
+		}
+
+		/**
+		 * Return the path as {@code int[]} array.
+		 *
+		 * @return the path as {@code int[]} array
+		 */
+		public int[] toArray() {
+			return _path.clone();
+		}
+
+		/**
+		 * Appends the given {@code path} to {@code this} one.
+		 *
+		 * @param path the path to append
+		 * @return a new {@code Path} with the given {@code path} appended
+		 * @throws NullPointerException if the given {@code path} is {@code null}
+		 */
+		public Path append(final Path path) {
+			final int[] p = new int[length() + path.length()];
+			System.arraycopy(_path, 0, p, 0, length());
+			System.arraycopy(path._path, 0, p, length(), path.length());
+			return new Path(p);
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(_path);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Path &&
+				Arrays.equals(_path, ((Path)obj)._path);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(_path);
+		}
+
+		/**
+		 * Create a new path object from the given child indexes.
+		 *
+		 * @param path the child indexes
+		 * @return a new tree path
+		 * @throws IllegalArgumentException if one of the path elements is
+		 *         smaller than zero
+		 */
+		public static Path of(final int... path) {
+			for (int i = 0; i < path.length; ++i) {
+				if (path[i] < 0) {
+					throw new IllegalArgumentException(format(
+						"Path element at position %d is smaller than zero: %d",
+						i, path[i]
+					));
+				}
+			}
+
+			return new Path(path.clone());
+		}
 	}
 
 }

@@ -24,6 +24,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.jenetics.internal.util.reflect;
 import io.jenetics.util.ISeq;
@@ -197,9 +198,10 @@ public class IntegerChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 *         empty or the given {@code genes} doesn't have the same range.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
+		checkGeneRange(Stream.of(genes).map(IntegerGene::range));
 		return new IntegerChromosome(ISeq.of(genes), IntRange.of(genes.length));
 	}
 
@@ -211,11 +213,12 @@ public class IntegerChromosome
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws NullPointerException if the given {@code genes} are {@code null}
-	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 * @throws IllegalArgumentException if the of the genes iterable is empty or
+	 *         the given {@code genes} doesn't have the same range.
 	 */
 	public static IntegerChromosome of(final Iterable<IntegerGene> genes) {
 		final ISeq<IntegerGene> values = ISeq.of(genes);
+		checkGeneRange(values.stream().map(IntegerGene::range));
 		return new IntegerChromosome(values, IntRange.of(values.length()));
 	}
 

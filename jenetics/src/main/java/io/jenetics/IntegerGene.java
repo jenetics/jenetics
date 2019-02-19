@@ -95,6 +95,17 @@ public final class IntegerGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public IntRange range() {
+		return IntRange.of(_min, _max);
+	}
+
 	@Override
 	public byte byteValue() {
 		return (byte)_value;
