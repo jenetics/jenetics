@@ -14,7 +14,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.3.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.4/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.4.0.pdf)).
 
 
 ## Requirements
@@ -32,7 +32,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.4.0/jenetics-4.4.0.zip) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
