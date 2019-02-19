@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 4.3
+ * @version 4.4
  */
 
 plugins {
@@ -36,12 +36,12 @@ description = 'Jenetics extension - Java Genetic Algorithm Library Extension'
 compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
 dependencies {
-	compile project(':jenetics')
+	implementation project(':jenetics')
 
-	testCompile property('include.ApacheCommonsMath')
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
-	testCompile project(':jenetics').sourceSets.test.output
+	testImplementation property('include.ApacheCommonsMath')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
+	testImplementation project(':jenetics').sourceSets.test.output
 }
 
 idea {

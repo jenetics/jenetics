@@ -37,9 +37,9 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.4
  */
-public final class MeanAlterer<
+public class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
 	C extends Comparable<? super C>
 >
