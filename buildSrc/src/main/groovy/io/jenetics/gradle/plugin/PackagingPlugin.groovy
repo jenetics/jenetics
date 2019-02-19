@@ -196,9 +196,9 @@ class PackagingPlugin implements Plugin<Project> {
 		if (_project.plugins.hasPlugin('java') && _project.name != 'buildSrc') {
 			_project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
-				_project.configurations.testRuntime.each { jar ->
+				_project.configurations.testRuntimeClasspath.each { jar ->
 					if (jar.name.endsWith('.jar') &&
-						!jar.name.startsWith('org.jeneti'))
+						!jar.name.startsWith('jenetics'))
 					{
 						_project.copy {
 							from jar
