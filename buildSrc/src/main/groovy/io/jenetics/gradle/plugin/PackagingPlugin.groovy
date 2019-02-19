@@ -323,7 +323,6 @@ class PackagingPlugin implements Plugin<Project> {
 		'.project',
 		'random-x86_64',
 		'.settings/**',
-		//'*.so',
 		'test-output/**',
 		'wiki/**'
 	]
