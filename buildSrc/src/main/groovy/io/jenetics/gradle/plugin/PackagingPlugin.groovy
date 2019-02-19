@@ -240,8 +240,18 @@ class PackagingPlugin implements Plugin<Project> {
 			filter(ReplaceTokens, tokens: _textContentReplacements)
 		}
 
-		copyDir(new File('gradle'), _exportProjectDir)
-		copyDir(new File('buildSrc'), _exportProjectDir)
+		_project.copy {
+			from('buildSrc') {
+				excludes = IGNORED_FILES
+			}
+			into "${_exportProjectDir}/buildSrc"
+		}
+		_project.copy {
+			from('gradle') {
+				excludes = IGNORED_FILES
+			}
+			into "${_exportProjectDir}/gradle"
+		}
 	}
 
 	private void copyDir(final File source, final File target) {
@@ -313,7 +323,7 @@ class PackagingPlugin implements Plugin<Project> {
 		'.project',
 		'random-x86_64',
 		'.settings/**',
-		'*.so',
+		//'*.so',
 		'test-output/**',
 		'wiki/**'
 	]
