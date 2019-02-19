@@ -38,7 +38,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version !__version__!
+ * @version 4.4
  */
 class SetupPlugin extends JeneticsPlugin {
 
