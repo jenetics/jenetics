@@ -64,6 +64,20 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		return factory().newInstance();
 	}
 
+	@Test @Override
+	public void equals() { }
+	@Test @Override
+	public void notEquals() { }
+	@Test @Override
+	public void notEqualsNull() { }
+	@Test @Override
+	public void notEqualsStringType() { }
+	@Test @Override
+	public void notEqualsClassType() { }
+	@Test @Override
+	public void hashCodeMethod() { }
+
+
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void selectNegativeCountArgument() {
 		final Factory<Genotype<DoubleGene>> gtf =
