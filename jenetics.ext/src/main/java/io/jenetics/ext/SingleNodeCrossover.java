@@ -20,7 +20,6 @@
 package io.jenetics.ext;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -67,7 +66,7 @@ import io.jenetics.ext.util.TreeNode;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public class SingleNodeCrossover<
@@ -123,18 +122,6 @@ public class SingleNodeCrossover<
 		}
 
 		return changed;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_probability);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof SingleNodeCrossover &&
-			Double.compare(((SingleNodeCrossover)obj)._probability, _probability) == 0;
 	}
 
 	@Override
