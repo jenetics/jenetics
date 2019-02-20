@@ -39,7 +39,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version !__version__!
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -83,16 +83,6 @@ public class RouletteWheelSelector<
 		}
 
 		return fitness;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(getClass());
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj != null && getClass() == obj.getClass();
 	}
 
 	@Override
