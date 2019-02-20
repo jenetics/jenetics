@@ -20,10 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.ISeq.toISeq;
 
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +34,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version !__version__!
  */
 final class CompositeAlterer<
 	G extends Gene<?, G>,
@@ -99,18 +97,6 @@ final class CompositeAlterer<
 	 */
 	ISeq<Alterer<G, C>> getAlterers() {
 		return _alterers;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_alterers);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof CompositeAlterer &&
-			Objects.equals(((CompositeAlterer) obj)._alterers, _alterers);
 	}
 
 	@Override
