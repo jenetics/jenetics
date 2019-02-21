@@ -59,7 +59,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version !__version__!
  */
 public class WeaselSelector<
 	G extends Gene<?, G>,
@@ -87,16 +87,6 @@ public class WeaselSelector<
 
 		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(count);
 		return result.fill(minMax::getMax).toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return WeaselMutator.class.hashCode();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof WeaselMutator;
 	}
 
 	@Override

@@ -20,6 +20,7 @@
 package io.jenetics.gradle.plugin
 
 import io.jenetics.gradle.task.ColorizerTask
+import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -37,7 +38,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.5
- * @version 3.8
+ * @version 4.4
  */
 class SetupPlugin extends JeneticsPlugin {
 
@@ -114,13 +115,9 @@ class SetupPlugin extends JeneticsPlugin {
 	private void configureTestReporting() {
 		project.plugins.apply(JacocoPlugin)
 		project.test {
-			outputs.upToDateWhen { false }
 			useTestNG {
 				parallel = 'tests' // 'methods'
-				threadCount = Math.max(
-					Runtime.runtime.availableProcessors() + 1,
-					4
-				)
+				threadCount = Runtime.runtime.availableProcessors() + 1
 				if (project.hasProperty('excludeGroups')) {
 					excludeGroups project.excludeGroups
 				}
@@ -133,8 +130,13 @@ class SetupPlugin extends JeneticsPlugin {
 				csv.enabled true
 			}
 		}
+
 		project.task('testReport', dependsOn: 'test').doLast {
-			project.jacocoTestReport.execute()
+			if (project.file(project.jacoco.reportsDir).exists()) {
+				project.jacocoTestReport.actions.each { Action action ->
+					action.execute(project.jacocoTestReport)
+				}
+			}
 		}
 	}
 
@@ -147,9 +149,8 @@ class SetupPlugin extends JeneticsPlugin {
 				docEncoding = 'UTF-8'
 				charSet = 'UTF-8'
 				linkSource = true
-				links = [
-					'https://docs.oracle.com/javase/8/docs/api'
-				]
+				linksOffline 'https://docs.oracle.com/javase/8/docs/api',
+					"$project.rootDir/buildSrc/resources/javadoc"
 				windowTitle = "Jenetics ${project.version}"
 				docTitle = "<h1>Jenetics ${project.version}</h1>"
 				bottom = "&copy; ${copyrightYear} Franz Wilhelmst&ouml;tter  &nbsp;<i>(${dateFormat.format(now)})</i>"
@@ -203,8 +204,12 @@ class SetupPlugin extends JeneticsPlugin {
 		}
 
 		project.javadoc.doLast {
-			project.colorize.execute()
-			project.java2html.execute()
+			project.colorize.actions.each { Action action ->
+				action.execute(project.colorize)
+			}
+			project.java2html.actions.each { Action action ->
+				action.execute(project.java2html)
+			}
 		}
 	}
 
@@ -217,8 +222,8 @@ class SetupPlugin extends JeneticsPlugin {
 		'finally',
 		'overrides',
 		'rawtypes',
-		//'serial',
-		//'try',
+		'serial',
+		'try',
 		'unchecked'
 	]
 

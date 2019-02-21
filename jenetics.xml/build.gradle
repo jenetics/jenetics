@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.3
+ * @version 4.4
  */
 
 plugins {
@@ -32,10 +32,12 @@ apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	compile project(':jenetics')
+	implementation project(':jenetics')
 
-	testCompile property('include.TestNG')
-	testCompile property('include.PRNGine')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.PRNGine')
+
+	jmh project(':jenetics')
 }
 
 jmh {
@@ -76,13 +78,13 @@ modifyPom {
 	project {
 		name 'jenetics.xml'
 		description 'Jenetics XML marshalling module'
-		url property('jenetics.Url')
+		url project.property('jenetics.Url')
 		inceptionYear '2017'
 
 		scm {
-			url property('jenetics.MavenScmUrl')
-			connection property('jenetics.MavenScmConnection')
-			developerConnection property('jenetics.MavenScmDeveloperConnection')
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -95,9 +97,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id property('jenetics.Id')
-				name property('jenetics.Author')
-				email property('jenetics.Email')
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -110,6 +112,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = property('build.MavenRepository')
-	snapshotRepository = property('build.MavenSnapshotRepository')
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }

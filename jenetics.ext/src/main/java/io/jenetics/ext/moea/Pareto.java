@@ -182,8 +182,8 @@ public final class Pareto {
 	 * using the given {@code dominance} comparator.
 	 *
 	 * @apiNote
-	 * Calculating the rank has a time complexity of {@code O(n^2}, where
-	 * {@code n} the {@code set} size.
+	 * Calculating the rank has a time and space complexity of {@code O(n^2},
+	 * where {@code n} the {@code set} size.
 	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
@@ -206,10 +206,8 @@ public final class Pareto {
 		final int[][] d = new int[set.size()][set.size()];
 		for (int i = 0; i < set.size(); ++i) {
 			for (int j = i + 1; j < set.size(); ++j) {
-				if (i != j) {
-					d[i][j] = dominance.compare(set.get(i), set.get(j));
-					d[j][i] = -d[i][j];
-				}
+				d[i][j] = dominance.compare(set.get(i), set.get(j));
+				d[j][i] = -d[i][j];
 			}
 		}
 

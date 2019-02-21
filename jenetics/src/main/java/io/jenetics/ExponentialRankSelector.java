@@ -53,7 +53,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version !__version__!
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -111,18 +111,6 @@ public final class ExponentialRankSelector<
 		}
 
 		return probabilities;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_c);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof ExponentialRankSelector &&
-			Objects.equals(((ExponentialRankSelector) obj)._c, _c);
 	}
 
 	@Override

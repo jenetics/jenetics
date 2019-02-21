@@ -1,3 +1,63 @@
+Jenetics-4.4.0
+
+- Improvements
+
+	* https://github.com/jenetics/jenetics/issues/316: Improve implementation of tree rewriting. This is a preparations tep for https://github.com/jenetics/jenetics/issues/442).
+	* https://github.com/jenetics/jenetics/issues/414: Use Gradle 'implementation' instead of 'compile' dependency
+	* https://github.com/jenetics/jenetics/issues/426: Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed.
+	* https://github.com/jenetics/jenetics/issues/430: Codec for numeric 2d matrices.
+	* https://github.com/jenetics/jenetics/issues/433: Upgrade Gradle to 5.x.
+	* https://github.com/jenetics/jenetics/issues/443: Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+	* https://github.com/jenetics/jenetics/issues/445: Mark `Phenotype.newInstance` methods as deprecated.
+	* https://github.com/jenetics/jenetics/issues/457: Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
+- Bugs
+
+	* https://github.com/jenetics/jenetics/issues/425: Manual fixes.
+
+
+Jenetics-4.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/347: Improve `hashCode` and `equals` methods.
+    * https://github.com/jenetics/jenetics/issues/349: Cleanup of chromosome constructors. Make the constructors more regular.
+    * https://github.com/jenetics/jenetics/issues/355: Simplify implementation of numeric genes.
+    * https://github.com/jenetics/jenetics/issues/361: Add `NumericChromosome.primitiveStream()` methods.
+    * https://github.com/jenetics/jenetics/issues/366: Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/377: Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+    * https://github.com/jenetics/jenetics/issues/378: Convert tree to parentheses tree string.
+    * https://github.com/jenetics/jenetics/issues/379: Parse parentheses tree string to tree object.
+    * https://github.com/jenetics/jenetics/issues/380: Add `TreeNode.map` method.
+    * https://github.com/jenetics/jenetics/issues/400: Codec for mapping source- and target objects.
+    * https://github.com/jenetics/jenetics/issues/406: Make the library compilable under Java 11.
+    * https://github.com/jenetics/jenetics/issues/411: Improve the behaviour of the `MathExpr.format` method.
+
+- Bug fixes
+
+    * https://github.com/jenetics/jenetics/issues/357: Invalid length of selected population in `MonteCarloSelector`.
+    * https://github.com/jenetics/jenetics/issues/420: `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
+Jenetics-4.2.1
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/416: Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+
+
+Jenetics-4.2.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/325: **Allow customization of fitness evaluation execution for bundling calculations**
+    * https://github.com/jenetics/jenetics/issues/327: Improve CPU utilization during fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/335: Seq view wrapper for List<T> and T[] types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/317: Fix links of Javadoc images.
+    * https://github.com/jenetics/jenetics/issues/318: NULL result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
+    * https://github.com/jenetics/jenetics/issues/336: Errornous default implementation of 'Seq.indexWhere'.
+    * https://github.com/jenetics/jenetics/issues/341: Error in internal 'bit.increment' method.
+    * https://github.com/jenetics/jenetics/issues/345: Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
+
+
 Jenetics-4.1.0
 
 - Improvements

@@ -17,32 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
-
-import java.util.Random;
+package io.jenetics.ext.util;
 
 import org.testng.annotations.Test;
-
-import io.jenetics.util.Factory;
-import io.jenetics.util.ObjectTester;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
+public class TreesTest {
 
-	@Override
-	protected Factory<ExponentialScaler> factory() {
-		return () -> {
-			final Random random = RandomRegistry.getRandom();
-			final double a = random.nextInt(100) + 10;
-			final double b = random.nextInt(100) + 10;
-			final double c = random.nextInt(100) + 10;
-
-			return new ExponentialScaler(a, b, c);
-		};
+	@Test
+	public void tokens() {
+		//final List<String> tokens = Trees.tokens("mul(div(cos(1.0), cos(π)), sin(mul(\\(1.0, z)))");
+		//tokens.forEach(System.out::println);
 	}
-
 }

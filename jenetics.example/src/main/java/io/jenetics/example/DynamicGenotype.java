@@ -90,7 +90,7 @@ public class DynamicGenotype {
 				final Genotype<G> gt = pt.getGenotype();
 				final Genotype<G> mgt = mutate(gt, p, alterations);
 
-				final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
+				final Phenotype<G, C> mpt = Phenotype.of(mgt, generation);
 				pop.set(i, mpt);
 			});
 

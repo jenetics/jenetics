@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -149,20 +148,6 @@ public class MultiPointCrossover<
 			final int index = indexes[indexes.length - 1];
 			that.swap(index, min(that.length(), other.length()), other, index);
 		}
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(super.hashCode(), hash(_n));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			_n == ((MultiPointCrossover)obj)._n &&
-			super.equals(obj);
 	}
 
 	@Override

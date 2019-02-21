@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 
@@ -107,6 +108,26 @@ public class LongChromosomeTest
 			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
 			Assert.assertEquals(chromosome.longValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		LongChromosome.of(
+			LongGene.of(1, 2),
+			LongGene.of(3, 4),
+			LongGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		LongChromosome.of(
+			ISeq.of(
+				LongGene.of(1, 2),
+				LongGene.of(3, 4),
+				LongGene.of(5, 6)
+			)
+		);
 	}
 
 }

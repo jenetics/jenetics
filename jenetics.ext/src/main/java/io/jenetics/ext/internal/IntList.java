@@ -26,7 +26,6 @@ import static java.util.Arrays.copyOf;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.ConcurrentModificationException;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
@@ -34,7 +33,7 @@ import java.util.stream.IntStream;
  * Resizable-int array implementation
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 4.3
  * @since 4.1
  */
 public final class IntList {
@@ -46,7 +45,6 @@ public final class IntList {
 
 	private int[] _data;
 	private int _size;
-	private int _modCount = 0;
 
 	/**
 	 * Constructs an empty list with the specified initial capacity.
@@ -55,15 +53,13 @@ public final class IntList {
 	 * @throws IllegalArgumentException if the specified initial capacity
 	 *         is negative
 	 */
-	public IntList(int capacity) {
+	public IntList(final int capacity) {
 		if (capacity > 0) {
 			_data = new int[capacity];
 		} else if (capacity == 0) {
 			_data = EMPTY_ARRAY;
 		} else {
-			throw new IllegalArgumentException(
-				"Illegal Capacity: "+ capacity
-			);
+			throw new IllegalArgumentException("Illegal Capacity: "+ capacity);
 		}
 	}
 
@@ -97,13 +93,9 @@ public final class IntList {
 	public void forEach(final IntConsumer action) {
 		requireNonNull(action);
 
-		final int expectedModCount = _modCount;
 		final int size = _size;
-		for (int i = 0; _modCount == expectedModCount && i < size; i++) {
+		for (int i = 0; i < size; ++i) {
 			action.accept(_data[i]);
-		}
-		if (_modCount != expectedModCount) {
-			throw new ConcurrentModificationException();
 		}
 	}
 
@@ -200,7 +192,6 @@ public final class IntList {
 	 * this call returns.
 	 */
 	public void clear() {
-		_modCount++;
 		_size = 0;
 	}
 
@@ -210,7 +201,6 @@ public final class IntList {
 	 * storage of an <tt>ArrayList</tt> instance.
 	 */
 	public void trimToSize() {
-		_modCount++;
 		if (_size < _data.length) {
 			_data = _size == 0
 				? EMPTY_ARRAY
@@ -250,7 +240,6 @@ public final class IntList {
 	}
 
 	private void ensureExplicitSize(int size) {
-		_modCount++;
 		if (size - _data.length > 0) {
 			grow(size);
 		}

@@ -30,6 +30,9 @@ import javax.swing.JPanel;
  * Draws the given {@code PolygonChromosome}.
  */
 final class PolygonPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+
 	private int _width;
 	private int _height;
 	private PolygonChromosome _chromosome;

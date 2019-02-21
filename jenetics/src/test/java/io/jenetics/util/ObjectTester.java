@@ -68,11 +68,11 @@ public abstract class ObjectTester<T> extends Retry {
 			final Object other = factory().newInstance();
 
 			if (that.equals(other)) {
-				Assert.assertTrue(other.equals(that));
+				Assert.assertEquals(other, that);
 				Assert.assertEquals(that.hashCode(), other.hashCode());
 			} else {
-				Assert.assertFalse(other.equals(that));
-				Assert.assertFalse(that.equals(other));
+				Assert.assertNotEquals(other, that);
+				Assert.assertNotEquals(that, other);
 			}
 		}
 	}
@@ -80,19 +80,19 @@ public abstract class ObjectTester<T> extends Retry {
 	@Test
 	public void notEqualsNull() {
 		final Object that = factory().newInstance();
-		Assert.assertFalse(that == null);
+		Assert.assertNotNull(that);
 	}
 
 	@Test
 	public void notEqualsStringType() {
 		final Object that = factory().newInstance();
-		Assert.assertFalse(that.equals("__some_string__"));
+		Assert.assertNotEquals("__some_string__", that);
 	}
 
 	@Test
 	public void notEqualsClassType() {
 		final Object that = factory().newInstance();
-		Assert.assertFalse(that.equals(Class.class));
+		Assert.assertNotEquals(that, Class.class);
 	}
 
 	@Test
@@ -156,6 +156,7 @@ public abstract class ObjectTester<T> extends Retry {
 	@Test
 	public void objectSerialize() throws Exception {
 		final Object object = factory().newInstance();
+		System.out.println(object.getClass());
 
 		if (object instanceof Serializable) {
 			for (int i = 0; i < 10; ++i) {

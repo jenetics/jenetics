@@ -96,7 +96,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * Inserting a new element has a time complexity of {@code O(n)}.
 	 *
 	 * @param element the element to add
-	 * @return <tt>true</tt> if this set did not already contain the specified
+	 * @return {@code true} if this set did not already contain the specified
 	 *         element
 	 */
 	@Override

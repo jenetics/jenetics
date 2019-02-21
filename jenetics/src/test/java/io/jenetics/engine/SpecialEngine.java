@@ -40,7 +40,7 @@ public final class SpecialEngine {
 	start(final int populationSize, final long generation) {
 		final ISeq<Phenotype<DoubleGene, Double>> population =
 			Genotype.of(DoubleChromosome.of(0, 1)).instances()
-				.map(gt -> Phenotype.of(gt, generation, SpecialEngine::fitness))
+				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, generation))
 				.limit(populationSize)
 				.collect(ISeq.toISeq());
 

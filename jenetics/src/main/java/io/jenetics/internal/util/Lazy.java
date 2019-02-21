@@ -22,9 +22,12 @@ package io.jenetics.internal.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.Externalizable;
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -34,7 +37,7 @@ import java.util.function.Supplier;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 5.0
  */
 public final class Lazy<T> implements Supplier<T>, Serializable {
 	private static final long serialVersionUID = 2L;
@@ -136,21 +139,43 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 *  Java object serialization
 	 *************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		final Object value = get();
-		out.defaultWriteObject();
-		out.writeObject(value);
+	static final class Serial implements Externalizable  {
+		private static final long serialVersionUID = 1L;
+
+		private Lazy<?> _object;
+
+		public Serial() {
+		}
+
+		Serial(final Lazy<?> object) {
+			_object = object;
+		}
+
+		private Object readResolve() {
+			return _object;
+		}
+
+		@Override
+		public void writeExternal(final ObjectOutput out) throws IOException {
+			out.writeObject(_object.get());
+		}
+
+		@Override
+		public void readExternal(ObjectInput in)
+			throws IOException, ClassNotFoundException
+		{
+			_object = Lazy.ofValue(in.readObject());
+		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
+	private Object writeReplace() {
+		return new Serial(this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		in.defaultReadObject();
-		_value = (T)in.readObject();
-		_evaluated = true;
+		throw new InvalidObjectException("Serialization proxy required.");
 	}
 
 }

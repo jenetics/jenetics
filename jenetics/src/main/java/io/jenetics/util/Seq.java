@@ -577,7 +577,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @throws ArrayStoreException if the runtime type of the specified array is
 	 *         not a super type of the runtime type of every element in this
 	 *         array
-	 * @throws NullPointerException if the given array is {@code null}.
+	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public default <B> B[] toArray(final B[] array) {
@@ -600,6 +600,25 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		}
 
 		return array;
+	}
+
+	/**
+	 * Returns an array containing the elements of this sequence, using the
+	 * provided generator function to allocate the returned array.
+	 *
+	 * @since 4.4
+	 *
+	 * @param generator a function which produces a new array of the desired
+	 *        type and the provided length
+	 * @param <B> the element type of the resulting array
+	 * @return an array containing the elements in {@code this} sequence
+	 * @throws ArrayStoreException if the runtime type of the specified array is
+	 *         not a super type of the runtime type of every element in this
+	 *         array
+	 * @throws NullPointerException if the given {@code generator} is {@code null}.
+	 */
+	public default <B> B[] toArray(final IntFunction<B[]> generator) {
+		return toArray(generator.apply(length()));
 	}
 
 	/**

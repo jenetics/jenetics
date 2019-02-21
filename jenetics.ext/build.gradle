@@ -21,7 +21,7 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 4.3
+ * @version 4.4
  */
 
 plugins {
@@ -36,12 +36,12 @@ description = 'Jenetics extension - Java Genetic Algorithm Library Extension'
 compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
 dependencies {
-	compile project(':jenetics')
+	implementation project(':jenetics')
 
-	testCompile property('include.ApacheCommonsMath')
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
-	testCompile project(':jenetics').sourceSets.test.output
+	testImplementation property('include.ApacheCommonsMath')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
+	testImplementation project(':jenetics').sourceSets.test.output
 }
 
 idea {
@@ -78,13 +78,13 @@ modifyPom {
 	project {
 		name 'jenetics.ext'
 		description 'Jenetics Extension Library'
-		url jenetics.url
+		url project.property('jenetics.Url')
 		inceptionYear '2015'
 
 		scm {
-			url property('jenetics.MavenScmUrl')
-			connection property('jenetics.MavenScmConnection')
-			developerConnection property('jenetics.MavenScmDeveloperConnection')
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -97,9 +97,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id property('jenetics.Id')
-				name property('jenetics.Author')
-				email property('jenetics.Email')
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -112,6 +112,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = property('build.MavenRepository')
-	snapshotRepository = property('build.MavenSnapshotRepository')
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }
