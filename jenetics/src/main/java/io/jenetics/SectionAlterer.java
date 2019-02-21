@@ -32,7 +32,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-final class SectionAlterer<
+public final class SectionAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -59,7 +59,7 @@ final class SectionAlterer<
 		);
 	}
 
-	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	SectionAlterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
 		return new SectionAlterer<>(alterer, new Section(indices));
 	}
