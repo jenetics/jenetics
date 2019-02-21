@@ -84,4 +84,88 @@ public class SectionAltererTest {
 		Assert.assertEquals(merged, population);
 	}
 
+	@Test
+	public void alterer() {
+		final Genotype<DoubleGene> gt = Genotype.of(
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(1, 2),
+			DoubleChromosome.of(2, 3),
+			DoubleChromosome.of(3, 4)
+		);
+
+		final ISeq<Phenotype<DoubleGene, Double>> population = gt.instances()
+			.limit(3)
+			.map(g -> Phenotype.<DoubleGene, Double>of(g, 0))
+			.collect(ISeq.toISeq());
+
+		final Alterer<DoubleGene, Double> alterer = SectionAlterer.of(
+			new ConstAlterer<DoubleGene, Double>(0.5),
+			1, 2
+		);
+
+		final AltererResult<DoubleGene, Double> result =
+			alterer.alter(population, 10);
+
+		for (int i = 0; i < population.length(); ++i) {
+			final Phenotype<DoubleGene, Double> pt1 = population.get(0);
+			final Phenotype<DoubleGene, Double> pt2 = result.getPopulation().get(0);
+
+			Assert.assertEquals(pt1.getGenotype().get(0), pt2.getGenotype().get(0));
+			Assert.assertNotEquals(pt1.getGenotype().get(1), pt2.getGenotype().get(1));
+			Assert.assertNotEquals(pt1.getGenotype().get(2), pt2.getGenotype().get(2));
+			Assert.assertEquals(pt1.getGenotype().get(3), pt2.getGenotype().get(3));
+
+			Assert.assertEquals(pt2.getGenotype().get(1).getGene().doubleValue(), 0.5);
+			Assert.assertEquals(pt2.getGenotype().get(2).getGene().doubleValue(), 0.5);
+		}
+
+	}
+
+	private static final class ConstAlterer<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		implements Alterer<G, C>
+	{
+		private final C _const;
+
+		ConstAlterer(final C value) {
+			_const = value;
+		}
+
+		@Override
+		public AltererResult<G, C> alter(
+			final Seq<Phenotype<G, C>> population,
+			final long generation
+		) {
+			final ISeq<Phenotype<G, C>> pop = population.map(this::mapPt).asISeq();
+			return AltererResult.of(pop, pop.length());
+		}
+
+		private Phenotype<G, C> mapPt(final Phenotype<G, C> phenotype) {
+			return Phenotype.of(mapGt(phenotype.getGenotype()), phenotype.getGeneration());
+		}
+
+		private Genotype<G> mapGt(final Genotype<G> genotype) {
+			return Genotype.of(
+				genotype.stream()
+					.map(this::mapCh)
+					.collect(ISeq.toISeq())
+			);
+		}
+
+		@SuppressWarnings("unchecked")
+		private Chromosome<G> mapCh(final Chromosome chromosome) {
+			return chromosome.newInstance(
+				chromosome.toSeq().map(g -> mapGene((G)g))
+			);
+		}
+
+		@SuppressWarnings("unchecked")
+		private G mapGene(final G gene) {
+			return (G)((Gene)gene).newInstance(_const);
+		}
+
+	}
+
 }
