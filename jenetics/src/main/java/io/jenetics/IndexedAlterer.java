@@ -21,8 +21,7 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
@@ -39,60 +38,81 @@ final class IndexedAlterer<
 	implements Alterer<G, C>
 {
 
-	private final ISeq<Component<G, C>> _alterers;
+	private final Alt<G, C> _alterer;
 
-	private IndexedAlterer(final ISeq<Component<G, C>> alterers) {
-		_alterers = requireNonNull(alterers);
+	private IndexedAlterer(final Alt<G, C> alterer) {
+		_alterer = requireNonNull(alterer);
 	}
 
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final Map<Integer, Seq<Phenotype<G, C>>> slices = split(population);
+		final Section section = _alterer.section;
+		final Alterer<G, C> alterer = _alterer.alterer;
 
-		int alterations = 0;
-		for (int i = 0; i < _alterers.size(); ++i) {
-			final int index = _alterers.get(i).index;
-			final Alterer<G, C> alterer = _alterers.get(i).alterer;
+		final Seq<Phenotype<G, C>> pop  = section.split(population);
+		final AltererResult<G, C> result = alterer.alter(pop, generation);
 
-			final Seq<Phenotype<G, C>> pop = slices.get(index);
-			final AltererResult<G, C> result = alterer.alter(pop, generation);
-
-			alterations += result.getAlterations();
-			slices.put(i, result.getPopulation());
-		}
-
-		return AltererResult.of(merge(population, slices), alterations);
-	}
-
-	private Map<Integer, Seq<Phenotype<G, C>>>
-	split(final Seq<Phenotype<G, C>> population) {
-		final Map<Integer, Seq<Phenotype<G, C>>> split = new HashMap<>();
-		return split;
-	}
-
-	private ISeq<Phenotype<G, C>> merge(
-		final Seq<Phenotype<G, C>> population,
-		Map<Integer, Seq<Phenotype<G, C>>> slices
-	) {
-		return population.asISeq();
+		return AltererResult.of(
+			section.merge(result.getPopulation(), population),
+			result.getAlterations()
+		);
 	}
 
 
-	private static final class Component<
+	private static final class Alt<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	> {
-		final int index;
+		final Section section;
 		final Alterer<G, C> alterer;
 
-		private Component(final int index, final Alterer<G, C> alterer) {
-			this.index = index;
+		private Alt(final Section section, final Alterer<G, C> alterer) {
+			this.section = requireNonNull(section);
 			this.alterer = requireNonNull(alterer);
 		}
 	}
 
-	
+
+	static final class Section {
+		final int[] indices;
+
+		Section(final int[] indices) {
+			this.indices = indices;
+		}
+
+		<G extends Gene<?, G>, C extends Comparable<? super C>>
+		Seq<Phenotype<G, C>>
+		split(final Seq<Phenotype<G, C>> population) {
+			return null;
+		}
+
+		<G extends Gene<?, G>, C extends Comparable<? super C>>
+		ISeq<Phenotype<G, C>> merge(
+			final Seq<Phenotype<G, C>> section,
+			final Seq<Phenotype<G, C>> population
+		) {
+			return population.asISeq();
+		}
+
+		@Override
+		public int hashCode() {
+			return Arrays.hashCode(indices);
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return obj == this ||
+				obj instanceof Section &&
+				Arrays.equals(((Section)obj).indices, indices);
+		}
+
+		@Override
+		public String toString() {
+			return Arrays.toString(indices);
+		}
+
+	}
 
 
 }
