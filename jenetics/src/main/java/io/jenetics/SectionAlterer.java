@@ -62,6 +62,10 @@ import io.jenetics.util.Seq;
  * {@link java.util.concurrent.CompletionException} is thrown when the evolution
  * stream is evaluated.
  *
+ * @implNote
+ * This alterer is slower than the performance of the wrapped alterer, because
+ * of the needed <em>sectioning</em> of the genotype.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
