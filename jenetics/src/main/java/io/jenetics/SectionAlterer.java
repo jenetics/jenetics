@@ -32,7 +32,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-final class RegionAlterer<
+final class SectionAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -42,7 +42,7 @@ final class RegionAlterer<
 	private final Alterer<G, C> _alterer;
 	private final Section _section;
 
-	private RegionAlterer(final Alterer<G, C> alterer, final Section section) {
+	private SectionAlterer(final Alterer<G, C> alterer, final Section section) {
 		_alterer = requireNonNull(alterer);
 		_section = requireNonNull(section);
 	}
@@ -60,8 +60,8 @@ final class RegionAlterer<
 	}
 
 	static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	RegionAlterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new RegionAlterer<>(alterer, new Section(indices));
+	SectionAlterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
+		return new SectionAlterer<>(alterer, new Section(indices));
 	}
 
 	static final class Section {

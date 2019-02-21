@@ -22,14 +22,14 @@ package io.jenetics;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.RegionAlterer.Section;
+import io.jenetics.SectionAlterer.Section;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class RegionAltererTest {
+public class SectionAltererTest {
 
 	@Test
 	public void split() {
