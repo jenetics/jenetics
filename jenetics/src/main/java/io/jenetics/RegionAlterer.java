@@ -32,7 +32,7 @@ import io.jenetics.util.Seq;
  * @version !__version__!
  * @since !__version__!
  */
-final class IndexedAlterer<
+final class RegionAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -41,7 +41,7 @@ final class IndexedAlterer<
 
 	private final SAlterer<G, C> _alterer;
 
-	private IndexedAlterer(final SAlterer<G, C> alterer) {
+	private RegionAlterer(final SAlterer<G, C> alterer) {
 		_alterer = requireNonNull(alterer);
 	}
 
