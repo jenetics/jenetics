@@ -108,12 +108,38 @@ final class RegionAlterer<
 			final Seq<Phenotype<G, C>> section,
 			final Seq<Phenotype<G, C>> population
 		) {
-			final MSeq<Phenotype<G, C>> pop = population.asMSeq();
+			assert section.length() == population.length();
+
+			return IntStream.range(0, section.length())
+				.mapToObj(i -> merge(section.get(i), population.get(i)))
+				.collect(ISeq.toISeq());
+		}
+
+		<G extends Gene<?, G>, C extends Comparable<? super C>>
+		Phenotype<G, C> merge(
+			final Phenotype<G, C> section,
+			final Phenotype<G, C> phenotype
+		) {
+			final MSeq<Chromosome<G>> chromosomes = phenotype.getGenotype()
+				.toSeq()
+				.copy();
+
 			for (int i = 0; i < indices.length; ++i) {
-				pop.set(indices[i], section.get(i));
+				chromosomes.set(indices[i], section.getGenotype().get(i));
 			}
 
-			return pop.toISeq();
+			final Genotype<G> genotype = Genotype.of(chromosomes);
+
+			return phenotype.isEvaluated()
+				? Phenotype.of(
+					genotype,
+					phenotype.getGeneration(),
+					phenotype.getFitness())
+				: Phenotype.of(genotype, phenotype.getGeneration());
+		}
+
+		static Section of(final int... indices) {
+			return new Section(indices);
 		}
 
 	}
