@@ -150,15 +150,15 @@ public class CompositeAltererTest {
 			);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 2);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
+		Assert.assertTrue(alterer.getAlterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.getAlterers().get(1) instanceof SwapMutator);
 
 		alterer = CompositeAlterer.join(alterer, new MeanAlterer<>());
 
 		Assert.assertEquals(alterer.getAlterers().length(), 3);
-		Assert.assertEquals(alterer.getAlterers().get(0), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new MeanAlterer<DoubleGene, Double>());
+		Assert.assertTrue(alterer.getAlterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.getAlterers().get(1) instanceof SwapMutator);
+		Assert.assertTrue(alterer.getAlterers().get(2) instanceof MeanAlterer);
 
 		alterer = CompositeAlterer.of(
 			new MeanAlterer<>(),
@@ -168,12 +168,6 @@ public class CompositeAltererTest {
 		);
 
 		Assert.assertEquals(alterer.getAlterers().length(), 6);
-		Assert.assertEquals(alterer.getAlterers().get(0), new MeanAlterer<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(1), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(2), new Mutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(3), new SwapMutator<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(4), new MeanAlterer<DoubleGene, Double>());
-		Assert.assertEquals(alterer.getAlterers().get(5), new SwapMutator<DoubleGene, Double>());
 	}
 
 }
