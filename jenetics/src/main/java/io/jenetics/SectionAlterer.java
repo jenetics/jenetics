@@ -26,6 +26,7 @@ import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
@@ -102,6 +103,8 @@ public final class SectionAlterer<
 	 * Wraps the given {@code alterer}, so that it will only work on chromosomes
 	 * with the given chromosome indices.
 	 *
+	 * @see #of(Alterer, IntRange)
+	 *
 	 * @param alterer the alterer to user for altering the chromosomes with the
 	 *        given {@code indices}
 	 * @param indices the chromosomes indices (section)
@@ -119,6 +122,34 @@ public final class SectionAlterer<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
 		return new SectionAlterer<>(alterer, Section.of(indices));
+	}
+
+	/**
+	 * Wraps the given {@code alterer}, so that it will only work on chromosomes
+	 * with the given chromosome indices.
+	 *
+	 * @see #of(Alterer, int...)
+	 *
+	 * @param alterer the alterer to user for altering the chromosomes with the
+	 *        given {@code indices}
+	 * @param section the half-open chromosome index range {@code [min, max)}
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a wrapped alterer which only works for the given chromosome
+	 *         section
+	 * @throws NullPointerException if the given {@code indices} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code indices} array is
+	 *         empty
+	 * @throws NegativeArraySizeException if one of the given {@code indices} is
+	 *         negative
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Alterer<G, C> of(final Alterer<G, C> alterer, final IntRange section) {
+		return new SectionAlterer<>(
+			alterer,
+			Section.of(section.stream().toArray())
+		);
 	}
 
 
