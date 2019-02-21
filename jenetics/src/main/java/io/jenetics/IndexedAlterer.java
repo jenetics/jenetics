@@ -19,6 +19,12 @@
  */
 package io.jenetics;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -33,10 +39,60 @@ final class IndexedAlterer<
 	implements Alterer<G, C>
 {
 
+	private final ISeq<Component<G, C>> _alterers;
+
+	private IndexedAlterer(final ISeq<Component<G, C>> alterers) {
+		_alterers = requireNonNull(alterers);
+	}
+
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		return null;
+		final Map<Integer, Seq<Phenotype<G, C>>> slices = split(population);
+
+		int alterations = 0;
+		for (int i = 0; i < _alterers.size(); ++i) {
+			final int index = _alterers.get(i).index;
+			final Alterer<G, C> alterer = _alterers.get(i).alterer;
+
+			final Seq<Phenotype<G, C>> pop = slices.get(index);
+			final AltererResult<G, C> result = alterer.alter(pop, generation);
+
+			alterations += result.getAlterations();
+			slices.put(i, result.getPopulation());
+		}
+
+		return AltererResult.of(merge(population, slices), alterations);
 	}
+
+	private Map<Integer, Seq<Phenotype<G, C>>>
+	split(final Seq<Phenotype<G, C>> population) {
+		final Map<Integer, Seq<Phenotype<G, C>>> split = new HashMap<>();
+		return split;
+	}
+
+	private ISeq<Phenotype<G, C>> merge(
+		final Seq<Phenotype<G, C>> population,
+		Map<Integer, Seq<Phenotype<G, C>>> slices
+	) {
+		return population.asISeq();
+	}
+
+
+	private static final class Component<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+		final int index;
+		final Alterer<G, C> alterer;
+
+		private Component(final int index, final Alterer<G, C> alterer) {
+			this.index = index;
+			this.alterer = requireNonNull(alterer);
+		}
+	}
+
+	
+
 
 }
