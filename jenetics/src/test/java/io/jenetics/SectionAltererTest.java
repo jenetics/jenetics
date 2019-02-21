@@ -19,10 +19,21 @@
  */
 package io.jenetics;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
+import java.util.concurrent.CompletionException;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.SectionAlterer.Section;
+import io.jenetics.engine.Codecs;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -154,7 +165,7 @@ public class SectionAltererTest {
 			);
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		private Chromosome<G> mapCh(final Chromosome chromosome) {
 			return chromosome.newInstance(
 				chromosome.toSeq().map(g -> mapGene((G)g))
@@ -166,6 +177,37 @@ public class SectionAltererTest {
 			return (G)((Gene)gene).newInstance(_const);
 		}
 
+	}
+
+	@Test(expectedExceptions = CompletionException.class)
+	public void withEngineOutOfBounds() {
+		// Problem definition.
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			x -> cos(0.5 + sin(x))*cos(x),
+			Codecs.ofScalar(DoubleRange.of(0.0, 2.0*PI))
+		);
+
+		final Genotype<DoubleGene> gtf = Genotype.of(
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(1, 2),
+			DoubleChromosome.of(2, 3),
+			DoubleChromosome.of(3, 4)
+		);
+
+		// Define the GA engine.
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), gtf)
+			.selector(new RouletteWheelSelector<>())
+			.alterers(
+				SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+				SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3, 4),
+				new GaussianMutator<>()
+			)
+			.build();
+
+		engine.stream()
+			.limit(100)
+			.collect(EvolutionResult.toBestEvolutionResult());
 	}
 
 }
