@@ -21,8 +21,6 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
-
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -38,9 +36,9 @@ final class IndexedAlterer<
 	implements Alterer<G, C>
 {
 
-	private final Alt<G, C> _alterer;
+	private final SAlterer<G, C> _alterer;
 
-	private IndexedAlterer(final Alt<G, C> alterer) {
+	private IndexedAlterer(final SAlterer<G, C> alterer) {
 		_alterer = requireNonNull(alterer);
 	}
 
@@ -50,8 +48,8 @@ final class IndexedAlterer<
 		final Section section = _alterer.section;
 		final Alterer<G, C> alterer = _alterer.alterer;
 
-		final Seq<Phenotype<G, C>> pop  = section.split(population);
-		final AltererResult<G, C> result = alterer.alter(pop, generation);
+		final Seq<Phenotype<G, C>> split  = section.split(population);
+		final AltererResult<G, C> result = alterer.alter(split, generation);
 
 		return AltererResult.of(
 			section.merge(result.getPopulation(), population),
@@ -60,14 +58,14 @@ final class IndexedAlterer<
 	}
 
 
-	private static final class Alt<
+	private static final class SAlterer<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	> {
 		final Section section;
 		final Alterer<G, C> alterer;
 
-		private Alt(final Section section, final Alterer<G, C> alterer) {
+		private SAlterer(final Section section, final Alterer<G, C> alterer) {
 			this.section = requireNonNull(section);
 			this.alterer = requireNonNull(alterer);
 		}
@@ -93,23 +91,6 @@ final class IndexedAlterer<
 			final Seq<Phenotype<G, C>> population
 		) {
 			return population.asISeq();
-		}
-
-		@Override
-		public int hashCode() {
-			return Arrays.hashCode(indices);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof Section &&
-				Arrays.equals(((Section)obj).indices, indices);
-		}
-
-		@Override
-		public String toString() {
-			return Arrays.toString(indices);
 		}
 
 	}
