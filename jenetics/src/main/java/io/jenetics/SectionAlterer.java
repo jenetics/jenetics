@@ -19,15 +19,48 @@
  */
 package io.jenetics;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.stream.IntStream;
 
+import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 /**
+ * This alterer wraps a given alterer which works on a given section of the
+ * genotype's chromosomes.
+ * <pre>{@code
+ * // The genotype prototype, consisting of 4 chromosomes
+ * final Genotype<DoubleGene> gtf = Genotype.of(
+ *     DoubleChromosome.of(0, 1),
+ *     DoubleChromosome.of(1, 2),
+ *     DoubleChromosome.of(2, 3),
+ *     DoubleChromosome.of(3, 4)
+ * );
+ *
+ * // Define the GA engine.
+ * final Engine<DoubleGene, Double> engine = Engine
+ *     .builder(gt -> gt.getGene().doubleValue(), gtf)
+ *     .selector(new RouletteWheelSelector<>())
+ *     .alterers(
+ *         // The `Mutator` is used on chromosome with index 0 and 2.
+ *         SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+ *         // The `MeanAlterer` is used on chromosome 3.
+ *         SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
+ *         // The `GaussianMutator` is used on all chromosomes.
+ *         new GaussianMutator<>()
+ *     )
+ *     .build();
+ * }</pre>
+ *
+ * If you are using chromosome indices which are greater or equal than the
+ * number of chromosomes defined in the genotype, a
+ * {@link java.util.concurrent.CompletionException} is thrown when the evolution
+ * stream is evaluated.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -50,25 +83,74 @@ public final class SectionAlterer<
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final Seq<Phenotype<G, C>> split  = _section.split(population);
-		final AltererResult<G, C> result = _alterer.alter(split, generation);
+		if (!population.isEmpty()) {
+			_section.checkIndices(population.get(0).getGenotype().length());
 
-		return AltererResult.of(
-			_section.merge(result.getPopulation(), population),
-			result.getAlterations()
-		);
+			final Seq<Phenotype<G, C>> split  = _section.split(population);
+			final AltererResult<G, C> result = _alterer.alter(split, generation);
+
+			return AltererResult.of(
+				_section.merge(result.getPopulation(), population),
+				result.getAlterations()
+			);
+		} else {
+			return AltererResult.of(population.asISeq(), 0);
+		}
 	}
 
+	/**
+	 * Wraps the given {@code alterer}, so that it will only work on chromosomes
+	 * with the given chromosome indices.
+	 *
+	 * @param alterer the alterer to user for altering the chromosomes with the
+	 *        given {@code indices}
+	 * @param indices the chromosomes indices (section)
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a wrapped alterer which only works for the given chromosome
+	 *         section
+	 * @throws NullPointerException if the given {@code indices} array is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given {@code indices} array is
+	 *         empty
+	 * @throws NegativeArraySizeException if one of the given {@code indices} is
+	 *         negative
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	SectionAlterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new SectionAlterer<>(alterer, new Section(indices));
+	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
+		return new SectionAlterer<>(alterer, Section.of(indices));
 	}
 
+
+	/**
+	 * The section class, which defines the chromosomes used by the alterer.
+	 */
 	static final class Section {
 		final int[] indices;
 
-		Section(final int[] indices) {
+		private Section(final int[] indices) {
+			if (indices.length == 0) {
+				throw new IllegalArgumentException(
+					"Chromosome indices must not be empty."
+				);
+			}
+			for (int i = 0; i < indices.length; ++i) {
+				require.nonNegative(indices[i]);
+			}
+
 			this.indices = indices;
+		}
+
+		void checkIndices(final int length) {
+			for (int i = 0; i < indices.length; ++i) {
+				if (indices[i] >= length) {
+					throw new IndexOutOfBoundsException(format(
+						"Genotype contains %d Chromosome, but found " +
+						"SectionAlterer for Chromosome index %d.",
+						length, indices[i]
+					));
+				}
+			}
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
