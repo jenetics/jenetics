@@ -66,7 +66,7 @@ public final class RxEvaluator<
 				.filter(Phenotype::isEvaluated)
 				.map(Observable::just),
 			population.stream()
-				.filter(pt -> !pt.isEvaluated())
+				.filter(Phenotype::nonEvaluated)
 				.map(pt -> _fitness.apply(pt.getGenotype())
 								.map(pt::withFitness))
 		);
