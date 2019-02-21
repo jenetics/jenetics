@@ -39,41 +39,30 @@ final class RegionAlterer<
 	implements Alterer<G, C>
 {
 
-	private final SAlterer<G, C> _alterer;
+	private final Alterer<G, C> _alterer;
+	private final Section _section;
 
-	private RegionAlterer(final SAlterer<G, C> alterer) {
+	private RegionAlterer(final Alterer<G, C> alterer, final Section section) {
 		_alterer = requireNonNull(alterer);
+		_section = requireNonNull(section);
 	}
 
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final Section section = _alterer.section;
-		final Alterer<G, C> alterer = _alterer.alterer;
-
-		final Seq<Phenotype<G, C>> split  = section.split(population);
-		final AltererResult<G, C> result = alterer.alter(split, generation);
+		final Seq<Phenotype<G, C>> split  = _section.split(population);
+		final AltererResult<G, C> result = _alterer.alter(split, generation);
 
 		return AltererResult.of(
-			section.merge(result.getPopulation(), population),
+			_section.merge(result.getPopulation(), population),
 			result.getAlterations()
 		);
 	}
 
-
-	private static final class SAlterer<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-		final Section section;
-		final Alterer<G, C> alterer;
-
-		private SAlterer(final Section section, final Alterer<G, C> alterer) {
-			this.section = requireNonNull(section);
-			this.alterer = requireNonNull(alterer);
-		}
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	RegionAlterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
+		return new RegionAlterer<>(alterer, new Section(indices));
 	}
-
 
 	static final class Section {
 		final int[] indices;
