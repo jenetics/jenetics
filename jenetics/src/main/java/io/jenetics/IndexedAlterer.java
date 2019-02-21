@@ -21,7 +21,10 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.stream.IntStream;
+
 import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
 /**
@@ -80,9 +83,24 @@ final class IndexedAlterer<
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
-		Seq<Phenotype<G, C>>
-		split(final Seq<Phenotype<G, C>> population) {
-			return null;
+		Seq<Phenotype<G, C>> split(final Seq<Phenotype<G, C>> population) {
+			return population.map(this::split);
+		}
+
+		<G extends Gene<?, G>, C extends Comparable<? super C>>
+		Phenotype<G, C> split(final Phenotype<G, C> phenotype) {
+			final ISeq<Chromosome<G>> chromosomes = IntStream.of(indices)
+				.mapToObj(phenotype.getGenotype()::get)
+				.collect(ISeq.toISeq());
+
+			final Genotype<G> genotype = Genotype.of(chromosomes);
+
+			return phenotype.isEvaluated()
+				? Phenotype.of(
+					genotype,
+					phenotype.getGeneration(),
+					phenotype.getFitness())
+				: Phenotype.of(genotype, phenotype.getGeneration());
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -90,7 +108,12 @@ final class IndexedAlterer<
 			final Seq<Phenotype<G, C>> section,
 			final Seq<Phenotype<G, C>> population
 		) {
-			return population.asISeq();
+			final MSeq<Phenotype<G, C>> pop = population.asMSeq();
+			for (int i = 0; i < indices.length; ++i) {
+				pop.set(indices[i], section.get(i));
+			}
+
+			return pop.toISeq();
 		}
 
 	}
