@@ -22,10 +22,13 @@ package io.jenetics.ext.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
@@ -34,6 +37,7 @@ import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
+import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.DoubleRange;
 
 import io.jenetics.ext.internal.GeneratorSpliterator;
@@ -221,9 +225,57 @@ public final class AdaptiveEngine<
 	 * @return a new adaptive evolution engine which maintains the given fitness
 	 *         variance
 	 */
-	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
-	AdaptiveEngine<G, N> ofFitnessVariance(final DoubleRange variance) {
-		return null;
+	public static
+	<G extends Gene<?, G>, N extends Number & Comparable<? super N>>
+	AdaptiveEngine<G, N> ofFitnessVariance(
+		final DoubleRange variance,
+		final Engine.Builder<G, N> builder,
+		final Alterer<G, N> narrow,
+		final Alterer<G, N> enlarge
+	) {
+		final AtomicReference<Engine<G, N>> eng = new AtomicReference<>();
+		final AtomicBoolean isNarrow = new AtomicBoolean();
+
+		return of(result -> {
+			if (result == null) {
+				final Engine<G, N> e = builder.copy()
+					.alterers(narrow)
+					.build();
+				eng.set(e);
+				isNarrow.set(true);
+				return e;
+			} else {
+				final DoubleMomentStatistics stat = new DoubleMomentStatistics();
+
+				result.getPopulation().stream()
+					.mapToDouble(pt -> pt.getFitness().doubleValue())
+					.forEach(stat);
+
+				if (stat.getVariance() < variance.getMin()) {
+					if (isNarrow.get()) {
+						final Engine<G, N> e = builder.copy()
+							.alterers(enlarge)
+							.build();
+						eng.set(e);
+						isNarrow.set(false);
+						return e;
+					}
+				} else if (stat.getVariance() > variance.getMax()) {
+					if (isNarrow.get()) {
+						return eng.get();
+					} else {
+						final Engine<G, N> e = builder.copy()
+							.alterers(narrow)
+							.build();
+						eng.set(e);
+						isNarrow.set(true);
+						return e;
+					}
+				}
+
+				return eng.get();
+			}
+		});
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -232,6 +284,11 @@ public final class AdaptiveEngine<
 		Engine<G, C> template
 	) {
 		return null;
+	}
+
+
+	public static final class Builder {
+
 	}
 
 }
