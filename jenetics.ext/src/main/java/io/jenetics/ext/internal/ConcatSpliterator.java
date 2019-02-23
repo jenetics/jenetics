@@ -57,7 +57,7 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 			final Spliterator<T> spliterator = _spliterators.peek();
 			assert spliterator != null;
 
-			if (!spliterator.tryAdvance(action::accept)) {
+			if (!spliterator.tryAdvance(action)) {
 				_spliterators.removeFirst();
 				advance = !_spliterators.isEmpty();
 			}
