@@ -209,8 +209,20 @@ public final class AdaptiveEngine<
 		return new AdaptiveEngine<>(engine);
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AdaptiveEngine<G, C> ofFitnessVariance(final DoubleRange variance) {
+	/**
+	 * Return a new adaptive evolution engine, which tries to keep the
+	 * population's fitness variance within the given {@code variance} range.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param variance the desired fitness variance range
+	 * @param <G> the gene type
+	 * @param <N> the fitness value type
+	 * @return a new adaptive evolution engine which maintains the given fitness
+	 *         variance
+	 */
+	public static <G extends Gene<?, G>, N extends Number & Comparable<? super N>>
+	AdaptiveEngine<G, N> ofFitnessVariance(final DoubleRange variance) {
 		return null;
 	}
 
