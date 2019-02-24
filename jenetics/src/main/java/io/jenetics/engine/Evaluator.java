@@ -38,7 +38,7 @@ import io.jenetics.util.Seq;
  * <pre>{@code
  * final Function<? super Genotype<G>, ? extends C> fitness = ...;
  * final Evaluator<G, C> evaluator = population -> population
- *     .map(pt -> pt.evaluate(fitness))
+ *     .map(pt -> pt.eval(fitness))
  *     .asISeq();
  *
  * final Engine<G, C> engine = new Engine.Builder(evaluator, genotypeFactory)
