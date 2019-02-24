@@ -40,6 +40,9 @@ import io.jenetics.util.Seq;
  * final Evaluator<G, C> evaluator = population -> population
  *     .map(pt -> pt.evaluate(fitness))
  *     .asISeq();
+ *
+ * final Engine<G, C> engine = new Engine.Builder(evaluator, genotypeFactory)
+ *     .build();
  * }</pre>
  *
  * @implSpec
