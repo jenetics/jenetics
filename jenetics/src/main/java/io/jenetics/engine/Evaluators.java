@@ -26,8 +26,6 @@ import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.Seq;
 
 /**
  * This class contains factory methods for creating commonly usable
@@ -57,6 +55,48 @@ public final class Evaluators {
 	Evaluator<G, C>
 	serial(final Function<? super Genotype<G>, ? extends C> fitness) {
 		return concurrent(fitness, Runnable::run);
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function of
+	 * the population serially in the main thread. Might be useful for testing
+	 * purpose.
+	 *
+	 * @param fitness the fitness function
+	 * @param decoder the decoder function for the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (concurrent) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> serial(
+		final Function<? super T, ? extends C> fitness,
+		final Function<? super Genotype<G>, ? extends T> decoder
+	) {
+		return serial(fitness.compose(decoder));
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates the fitness function of
+	 * the population serially in the main thread. Might be useful for testing
+	 * purpose.
+	 *
+	 * @param fitness the fitness function
+	 * @param codec the codec used for transforming the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (concurrent) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> serial(
+		final Function<? super T, ? extends C> fitness,
+		final Codec<T, G> codec
+	) {
+		return serial(fitness.compose(codec.decoder()));
 	}
 
 	/**
