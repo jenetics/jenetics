@@ -192,6 +192,48 @@ public final class Evaluators {
 	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
 	 * fitness functions.
 	 *
+	 * @param fitness the asynchronous fitness function, working on the
+	 *        <em>native</em> fitness domain
+	 * @param decoder the decoder function for the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (async) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> async(
+		final Function<? super T, ? extends Future<C>> fitness,
+		final Function<? super Genotype<G>, ? extends T> decoder
+	) {
+		return async(fitness.compose(decoder));
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
+	 * fitness functions.
+	 *
+	 * @param fitness the asynchronous fitness function, working on the
+	 *        <em>native</em> fitness domain
+	 * @param codec the codec used for transforming the fitness domain
+	 * @param <T> the <em>native</em> fitness domain type
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new (async) fitness evaluator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Evaluator<G, C> async(
+		final Function<? super T, ? extends Future<C>> fitness,
+		final Codec<T, G> codec
+	) {
+		return async(fitness, codec.decoder());
+	}
+
+	/**
+	 * Return a new fitness evaluator, which evaluates <em>asynchronous</em>
+	 * fitness functions.
+	 *
 	 * @see #async(Function)
 	 *
 	 * @param fitness the asynchronous fitness function
