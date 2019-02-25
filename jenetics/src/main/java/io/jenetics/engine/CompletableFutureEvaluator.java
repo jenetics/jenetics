@@ -52,7 +52,7 @@ final class CompletableFutureEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		final CompletableFuture<C>[] evaluate =
 			(CompletableFuture<C>[])population.stream()

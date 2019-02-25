@@ -62,7 +62,7 @@ final class ConcurrentEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final ISeq<PhenotypeFitness<G, C>> evaluate = population.stream()
 			.filter(Phenotype::nonEvaluated)
 			.map(pt -> new PhenotypeFitness<>(pt, _function))

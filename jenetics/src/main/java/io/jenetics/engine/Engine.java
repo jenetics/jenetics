@@ -423,7 +423,7 @@ public final class Engine<
 	 * @since 5.0
 	 *
 	 * @see Evaluator
-	 * @see Evaluator#evaluate(Seq)
+	 * @see Evaluator#eval(Seq)
 	 *
 	 * @param population the population to evaluate
 	 * @return a new population with assigned fitness values
@@ -433,7 +433,7 @@ public final class Engine<
 	 *         phenotype has no fitness value assigned.
 	 */
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		final ISeq<Phenotype<G, C>> evaluated = _evaluator.evaluate(population);
+		final ISeq<Phenotype<G, C>> evaluated = _evaluator.eval(population);
 
 		if (population.size() != evaluated.size()) {
 			throw new IllegalStateException(format(

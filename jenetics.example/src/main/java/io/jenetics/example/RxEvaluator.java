@@ -60,7 +60,7 @@ public final class RxEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final Stream<Observable<Phenotype<G, C>>> result = Stream.concat(
 			population.stream()
 				.filter(Phenotype::isEvaluated)
