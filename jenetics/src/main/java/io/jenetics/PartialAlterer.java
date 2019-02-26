@@ -48,9 +48,9 @@ import io.jenetics.util.Seq;
  *     .selector(new RouletteWheelSelector<>())
  *     .alterers(
  *         // The `Mutator` is used on chromosome with index 0 and 2.
- *         SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+ *         PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
  *         // The `MeanAlterer` is used on chromosome 3.
- *         SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
+ *         PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
  *         // The `GaussianMutator` is used on all chromosomes.
  *         new GaussianMutator<>()
  *     )
