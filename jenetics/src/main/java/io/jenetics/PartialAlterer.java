@@ -70,7 +70,7 @@ import io.jenetics.util.Seq;
  * @version 5.0
  * @since 5.0
  */
-public final class SectionAlterer<
+public final class PartialAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -80,7 +80,7 @@ public final class SectionAlterer<
 	private final Alterer<G, C> _alterer;
 	private final Section _section;
 
-	private SectionAlterer(final Alterer<G, C> alterer, final Section section) {
+	private PartialAlterer(final Alterer<G, C> alterer, final Section section) {
 		_alterer = requireNonNull(alterer);
 		_section = requireNonNull(section);
 	}
@@ -125,7 +125,7 @@ public final class SectionAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new SectionAlterer<>(alterer, Section.of(indices));
+		return new PartialAlterer<>(alterer, Section.of(indices));
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class SectionAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final IntRange section) {
-		return new SectionAlterer<>(
+		return new PartialAlterer<>(
 			alterer,
 			Section.of(section.stream().toArray())
 		);

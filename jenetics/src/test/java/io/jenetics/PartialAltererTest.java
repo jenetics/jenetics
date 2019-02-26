@@ -28,7 +28,7 @@ import java.util.concurrent.CompletionException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.SectionAlterer.Section;
+import io.jenetics.PartialAlterer.Section;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -40,7 +40,7 @@ import io.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SectionAltererTest {
+public class PartialAltererTest {
 
 	@Test
 	public void split() {
@@ -109,7 +109,7 @@ public class SectionAltererTest {
 			.map(g -> Phenotype.<DoubleGene, Double>of(g, 0))
 			.collect(ISeq.toISeq());
 
-		final Alterer<DoubleGene, Double> alterer = SectionAlterer.of(
+		final Alterer<DoubleGene, Double> alterer = PartialAlterer.of(
 			new ConstAlterer<DoubleGene, Double>(0.5),
 			1, 2
 		);
@@ -199,8 +199,8 @@ public class SectionAltererTest {
 			.builder(gt -> gt.getGene().doubleValue(), gtf)
 			.selector(new RouletteWheelSelector<>())
 			.alterers(
-				SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
-				SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3, 4),
+				PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+				PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3, 4),
 				new GaussianMutator<>()
 			)
 			.build();
