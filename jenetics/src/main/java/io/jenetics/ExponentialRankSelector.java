@@ -53,7 +53,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.0
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,

@@ -175,6 +175,8 @@ public final class Phenotype<
 	 * Return the fitness value of {@code this} phenotype, or
 	 * {@link Optional#empty()} if not evaluated yet.
 	 *
+	 * @since 5.0
+	 *
 	 * @return the fitness value
 	 */
 	public Optional<C> fitnessOptional() {
