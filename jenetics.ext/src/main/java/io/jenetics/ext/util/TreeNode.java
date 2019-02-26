@@ -22,6 +22,11 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +54,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private T _value;
 	private TreeNode<T> _parent;
@@ -571,6 +576,33 @@ public final class TreeNode<T>
 		final Function<? super String, ? extends B> mapper
 	) {
 		return TreeParser.parse(tree, mapper);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		FlatTreeNode.of(this).write(out);
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static TreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return TreeNode.ofTree(FlatTreeNode.read(in));
 	}
 
 }
