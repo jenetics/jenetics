@@ -36,7 +36,6 @@ import java.util.stream.Stream;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Seq;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -102,14 +101,6 @@ public final class Genotype<G extends Gene<?, G>>
 		}
 
 		_chromosomes = ISeq.upcast(chromosomes);
-	}
-
-	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		int count = 0;
-		for (int i = 0, n = chromosomes.length(); i < n; ++i) {
-			count += chromosomes.get(i).length();
-		}
-		return count;
 	}
 
 	/**
