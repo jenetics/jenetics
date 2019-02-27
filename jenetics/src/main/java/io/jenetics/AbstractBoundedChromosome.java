@@ -23,6 +23,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -100,6 +101,14 @@ abstract class AbstractBoundedChromosome<
 			Objects.equals(_min, ((AbstractBoundedChromosome)obj)._min) &&
 			Objects.equals(_max, ((AbstractBoundedChromosome)obj)._max) &&
 			super.equals(obj);
+	}
+
+	static void checkGeneRange(final Stream<?> ranges) {
+		if (ranges.distinct().count() > 1) {
+			throw new IllegalArgumentException(
+				"All genes must have the same range."
+			);
+		}
 	}
 
 }

@@ -36,7 +36,6 @@ import io.jenetics.util.ISeq;
  * @see EvolutionResult
  * @see EvolutionInit
  * @see EvolutionStreamable#stream(EvolutionStart)
- * @see EvolutionIterable#iterator(EvolutionStart)
  *
  * @param <G> the gene type
  * @param <C> the fitness type

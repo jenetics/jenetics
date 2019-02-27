@@ -19,13 +19,9 @@
  */
 package io.jenetics;
 
-import static java.lang.Double.compare;
-import static java.lang.Double.doubleToLongBits;
-import static java.lang.Double.longBitsToDouble;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.base.clamp;
 
-import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -44,17 +40,14 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.4
  */
-public final class GaussianMutator<
+public class GaussianMutator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
-	implements Serializable
 {
-
-	private static final long serialVersionUID = 1L;
 
 	public GaussianMutator(final double probability) {
 		super(probability);

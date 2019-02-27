@@ -22,7 +22,6 @@ package io.jenetics;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.stat.DoubleSummary.min;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 import io.jenetics.internal.math.DoubleAdder;
@@ -40,17 +39,14 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version  !__version__!
+ * @version 5.0
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
-	implements Serializable
 {
-
-	private static final long serialVersionUID = 1L;
 
 	public RouletteWheelSelector() {
 		this(false);
@@ -87,16 +83,6 @@ public class RouletteWheelSelector<
 		}
 
 		return fitness;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(getClass());
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj != null && getClass() == obj.getClass();
 	}
 
 	@Override

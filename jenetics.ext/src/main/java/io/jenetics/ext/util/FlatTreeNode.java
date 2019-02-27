@@ -21,7 +21,14 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -46,7 +53,7 @@ public final class FlatTreeNode<T>
 		FlatTree<T, FlatTreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final int _index;
 	private final MSeq<T> _nodes;
@@ -239,6 +246,55 @@ public final class FlatTreeNode<T>
 		}
 
 		return root;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.FLAT_TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(_childCounts.length, out);
+		for (int i = 0; i < _childCounts.length; ++i) {
+			out.writeObject(_nodes.get(i));
+			writeInt(_childCounts[i], out);
+			writeInt(_childOffsets[i], out);
+		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static FlatTreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final int size = readInt(in);
+
+		final MSeq elements = MSeq.ofLength(size);
+		final int[] childOffsets = new int[size];
+		final int[] childCounts = new int[size];
+
+		for (int i = 0; i < size; ++i) {
+			elements.set(i, in.readObject());
+			childCounts[i] = readInt(in);
+			childOffsets[i] = readInt(in);
+		}
+
+		return new FlatTreeNode(
+			0,
+			elements,
+			childOffsets,
+			childCounts
+		);
 	}
 
 }

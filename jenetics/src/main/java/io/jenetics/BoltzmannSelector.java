@@ -22,9 +22,7 @@ package io.jenetics;
 import static java.lang.Math.exp;
 import static java.lang.String.format;
 import static io.jenetics.internal.math.base.normalize;
-import static io.jenetics.internal.util.Hashes.hash;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 import io.jenetics.util.Seq;
@@ -58,17 +56,14 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version  !__version__!
+ * @version 5.0
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
 	N extends Number & Comparable<? super N>
 >
 	extends ProbabilitySelector<G, N>
-	implements Serializable
 {
-
-	private static final long serialVersionUID = 3L;
 
 	private final double _b;
 
@@ -128,18 +123,6 @@ public final class BoltzmannSelector<
 		}
 
 		return normalize(fitness);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_b);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof BoltzmannSelector &&
-			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 
 	@Override

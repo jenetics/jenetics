@@ -88,7 +88,17 @@ public final class Const<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof Const &&
 			Objects.equals(((Const)obj)._name, _name) &&
-			Objects.equals(((Const)obj)._const, _const);
+			equal(((Const)obj)._const, _const);
+	}
+
+	private static boolean equal(final Object a, final Object b) {
+		if (a instanceof Double && b instanceof Double) {
+			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
+		} else if (a instanceof Float && b instanceof Float) {
+			return ((Float)a).floatValue() == ((Float)b).floatValue();
+		}
+
+		return Objects.equals(a, b);
 	}
 
 	@Override

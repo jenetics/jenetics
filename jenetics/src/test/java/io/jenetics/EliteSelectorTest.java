@@ -45,7 +45,7 @@ public class EliteSelectorTest
 			final Genotype<DoubleGene> gt =
 				Genotype.of(DoubleChromosome.of(DoubleGene.of(i, 0, n)));
 
-			population.set(i, Phenotype.of(gt, 12, TestUtils.FF));
+			population.set(i, Phenotype.of(gt, 12, gt.getGene().doubleValue()));
 		}
 
 		final EliteSelector<DoubleGene, Double> selector = new EliteSelector<>();
@@ -65,7 +65,7 @@ public class EliteSelectorTest
 			final Genotype<DoubleGene> gt =
 				Genotype.of(DoubleChromosome.of(DoubleGene.of(i, 0, n)));
 
-			population.set(i, Phenotype.of(gt, 12, TestUtils.FF));
+			population.set(i, Phenotype.of(gt, 12, gt.getGene().doubleValue()));
 		}
 
 		final EliteSelector<DoubleGene, Double> selector = new EliteSelector<>();

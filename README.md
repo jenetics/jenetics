@@ -14,7 +14,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.3/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.3.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4.4/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-4.4.0.pdf)).
 
 
 ## Requirements
@@ -32,7 +32,7 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/4
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.2.0/jenetics-4.3.0.zip) (or [Sourceforge](https://sourceforge.net/projects/jenetics/files/latest/download)) and extract it to some build directory.
+For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.4.0/jenetics-4.4.0.zip) and extract it to some build directory.
 
     $ unzip jenetics-<version>.zip -d <builddir>
 
@@ -157,6 +157,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* S. Appel, W. Geithner, S. Reimann, M Sapinski, R. Singh, D. M. Vilsmeier <a href="https://www.researchgate.net/profile/Sabrina_Appel/publication/330934110_OPTIMIZATION_OF_HEAVY-ION_SYNCHROTRONS_USING_NATURE-INSPIRED_ALGORITHMS_AND_MACHINE_LEARNING/links/5c5c425b299bf1d14cb33546/OPTIMIZATION-OF-HEAVY-ION-SYNCHROTRONS-USING-NATURE-INSPIRED-ALGORITHMS-AND-MACHINE-LEARNING.pdf">OPTIMIZATION OF HEAVY-ION SYNCHROTRONS USINGNATURE-INSPIRED ALGORITHMS AND MACHINE LEARNING.</a><em><a href="https://bt.pa.msu.edu/ICAP18/index.html">13th Int. Computational Accelerator Physics Conf.</a>, </em></a> Feb. 2019.
 * Saad, Christian, Bernhard Bauer, Ulrich R Mansmann, and Jian Li. <a href="https://journals.sagepub.com/doi/10.1177/1177932218818458">AutoAnalyze in Systems Biology.</a> <em>Bioinformatics and Biology Insights, </em></a> Jan. 2019.
 * Gandeva Bayu Satrya, Soo Young Shin. <a href="https://arxiv.org/pdf/1812.01201.pdf">Evolutionary Computing Approach to Optimize Superframe Scheduling on Industrial Wireless Sensor Networks.</a> <em>Cornell University, </em></a> Dec. 2018.
 * H.R. Maier, S. Razavi, Z. Kapelan, L.S. Matott, J. Kasprzyk, B.A. Tolson. <a href="https://www.sciencedirect.com/science/article/pii/S1364815218305905">Introductory overview: Optimization using evolutionary algorithms and other metaheuristics.</a> <em>Environmental Modelling & Software, </em></a> Dec. 2018.
@@ -184,34 +185,23 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [4.3.0](https://github.com/jenetics/jenetics/releases/tag/v4.3.0)
+### [4.4.0](https://github.com/jenetics/jenetics/releases/tag/v4.4.0)
 
 #### Improvements
 
-* [#347](https://github.com/jenetics/jenetics/issues/347): Improve `hashCode` and `equals` methods.
-* [#349](https://github.com/jenetics/jenetics/issues/349): Cleanup of chromosome constructors. Make the constructors more regular.
-* [#355](https://github.com/jenetics/jenetics/issues/355): Simplify implementation of numeric genes.
-* [#361](https://github.com/jenetics/jenetics/issues/361): Add `NumericChromosome.primitiveStream()` methods.
-* [#366](https://github.com/jenetics/jenetics/issues/366): Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
-* [#377](https://github.com/jenetics/jenetics/issues/377): Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
-* [#378](https://github.com/jenetics/jenetics/issues/378): Convert tree to parentheses tree string.
-* [#379](https://github.com/jenetics/jenetics/issues/379): Parse parentheses tree string to tree object.
-* [#380](https://github.com/jenetics/jenetics/issues/380): Add `TreeNode.map` method.
-* [#400](https://github.com/jenetics/jenetics/issues/400): Codec for mapping source- and target objects.
-* [#406](https://github.com/jenetics/jenetics/issues/406): Make the library compilable under Java 11.
-* [#411](https://github.com/jenetics/jenetics/issues/411): Improve the behaviour of the `MathExpr.format` method.
+* [#316](https://github.com/jenetics/jenetics/issues/316): Improve implementation of tree rewriting. This is a preparations tep for [#442](https://github.com/jenetics/jenetics/issues/442).
+* [#414](https://github.com/jenetics/jenetics/issues/414): Use Gradle 'implementation' instead of 'compile' dependency
+* [#426](https://github.com/jenetics/jenetics/issues/426): Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed. 
+* [#430](https://github.com/jenetics/jenetics/issues/430): Codec for numeric 2d matrices.
+* [#433](https://github.com/jenetics/jenetics/issues/433): Upgrade Gradle to 5.x.
+* [#443](https://github.com/jenetics/jenetics/issues/443): Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+* [#445](https://github.com/jenetics/jenetics/issues/445): Mark `Phenotype.newInstance` methods as deprecated. 
+* [#457](https://github.com/jenetics/jenetics/issues/457): Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
 
 #### Bugs
 
-* [#357](https://github.com/jenetics/jenetics/issues/357): Invalid length of selected population in `MonteCarloSelector`.
-* [#420](https://github.com/jenetics/jenetics/issues/420): `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
-
-
-### [4.2.1](https://github.com/jenetics/jenetics/releases/tag/v4.2.1)
-
-#### Bugs
-
-* [416](https://github.com/jenetics/jenetics/issues/416): Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+* [#425](https://github.com/jenetics/jenetics/issues/425): Manual fixes.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_

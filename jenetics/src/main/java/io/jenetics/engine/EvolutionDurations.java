@@ -175,6 +175,30 @@ public final class EvolutionDurations
 		);
 	}
 
+	EvolutionDurations plusEvaluation(final Duration duration) {
+		return of(
+			_offspringSelectionDuration,
+			_survivorsSelectionDuration,
+			_offspringAlterDuration,
+			_offspringFilterDuration,
+			_survivorFilterDuration,
+			_evaluationDuration.plus(duration),
+			_evolveDuration
+		);
+	}
+
+	EvolutionDurations plusEvolve(final Duration duration) {
+		return of(
+			_offspringSelectionDuration,
+			_survivorsSelectionDuration,
+			_offspringAlterDuration,
+			_offspringFilterDuration,
+			_survivorFilterDuration,
+			_evaluationDuration,
+			_evolveDuration.plus(duration)
+		);
+	}
+
 	/**
 	 * Compares two durations objects. Only the {@link #getEvolveDuration()}
 	 * property is taken into account for the comparison.

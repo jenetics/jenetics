@@ -22,55 +22,46 @@ package io.jenetics.example;
 import static io.jenetics.engine.EvolutionResult.toBestPhenotype;
 import static io.jenetics.engine.Limits.bySteadyFitness;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.function.Function;
-
+import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
-import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.Mutator;
 import io.jenetics.Phenotype;
-import io.jenetics.SinglePointCrossover;
 import io.jenetics.engine.Engine;
-import io.jenetics.util.ISeq;
-import io.jenetics.util.Seq;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStatistics;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.2
- * @since 4.2
  */
-public class BatchEvalKnapsack {
+public class UniquePopulation {
 
-	public static void main(String[] args) throws IOException {
-		final Knapsack knapsack = Knapsack.of(15, new Random(123));
-
-		final Engine<BitGene, Double> engine = Engine.builder(knapsack)
-			.populationSize(500)
-			.alterers(
-				new Mutator<>(0.115),
-				new SinglePointCrossover<>(0.16))
-			.evaluator(BatchEvalKnapsack::batchEval)
-			.evaluator(pop -> {
-				pop.forEach(Phenotype::evaluate);
-				return pop.asISeq(); })
-			.build();
-
-		final Phenotype<BitGene, Double> best = engine.stream()
-			.limit(bySteadyFitness(20))
-			.collect(toBestPhenotype());
-
-		System.out.println(best);
+	// This method calculates the fitness for a given genotype.
+	private static Integer count(final Genotype<BitGene> gt) {
+		return gt.getChromosome()
+			.as(BitChromosome.class)
+			.bitCount();
 	}
 
-	// Not really batch eval. Just for testing.
-	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	ISeq<C> batchEval(
-		final Seq<Genotype<G>> genotypes,
-		final Function<? super Genotype<G>, ? extends C> function
-	) {
-		return genotypes.<C>map(function).asISeq();
+	public static void main(String[] args) {
+		final Engine<BitGene, Integer> engine = Engine
+			.builder(
+				UniquePopulation::count,
+				BitChromosome.of(20, 0.15))
+			// Remove duplicate individuals after each generation.
+			.mapping(EvolutionResult.toUniquePopulation())
+			.build();
+
+		// Create evolution statistics consumer.
+		final EvolutionStatistics<Integer, ?>
+			statistics = EvolutionStatistics.ofNumber();
+
+		final Phenotype<BitGene, Integer> best = engine.stream()
+			.limit(bySteadyFitness(7))
+			.peek(statistics)
+			.collect(toBestPhenotype());
+
+		System.out.println(statistics);
+		System.out.println(best);
 	}
 
 }

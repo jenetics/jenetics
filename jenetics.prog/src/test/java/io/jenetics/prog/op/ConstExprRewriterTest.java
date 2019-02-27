@@ -17,31 +17,38 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.util;
+package io.jenetics.prog.op;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class reflectTest {
+public class ConstExprRewriterTest {
 
-	@Test
-	public void setField() {
-		final FinalFields fields = new FinalFields();
-		Assert.assertEquals(fields.foo, "foo");
-		Assert.assertEquals(fields.bar, "bar");
+	@Test(dataProvider = "expressions")
+	public void rewrite(final String expr, final double value) {
+		final ConstExprRewriter rewriter = new ConstExprRewriter();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
 
-		reflect.setField(fields, "foo", "bar");
-		reflect.setField(fields, "bar", "foo");
-		Assert.assertEquals(fields.foo, "bar");
-		Assert.assertEquals(fields.bar, "foo");
+
+		Assert.assertEquals(MathExpr.eval(tree), value);
 	}
 
-}
+	@DataProvider
+	public Object[][] expressions() {
+		return new Object[][] {
+			{"1+2+3+4", 10.0},
+			{"1+2*(6+7)", 27.0},
+			{"sin(0)", 0.0},
+			{"cos(0)", 1.0},
+			{"cos(0) + sin(0)", 1.0},
+			{"cos(0)*sin(0)", 0.0}
+		};
+	}
 
-final class FinalFields {
-	public String foo = "foo";
-	public String bar = "bar";
 }

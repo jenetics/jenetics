@@ -21,7 +21,6 @@ package io.jenetics;
 
 import static java.lang.String.format;
 
-import java.io.Serializable;
 import java.util.Random;
 
 import io.jenetics.internal.math.comb;
@@ -73,14 +72,11 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 4.4
  */
-public final class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
+public class PartiallyMatchedCrossover<T, C extends Comparable<? super C>>
 	extends Crossover<EnumGene<T>, C>
-	implements Serializable
 {
-
-	private static final long serialVersionUID = 1L;
 
 	public PartiallyMatchedCrossover(final double probability) {
 		super(probability);

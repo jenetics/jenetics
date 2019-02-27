@@ -33,6 +33,7 @@ import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Evaluator;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
@@ -49,7 +50,7 @@ public final class RxEvaluator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Engine.Evaluator<G, C>
+	implements Evaluator<G, C>
 {
 
 	private final Function<? super Genotype<G>, Observable<C>> _fitness;
@@ -59,13 +60,13 @@ public final class RxEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final Stream<Observable<Phenotype<G, C>>> result = Stream.concat(
 			population.stream()
 				.filter(Phenotype::isEvaluated)
 				.map(Observable::just),
 			population.stream()
-				.filter(pt -> !pt.isEvaluated())
+				.filter(Phenotype::nonEvaluated)
 				.map(pt -> _fitness.apply(pt.getGenotype())
 								.map(pt::withFitness))
 		);
@@ -79,9 +80,8 @@ public final class RxEvaluator<
 		final Factory<Genotype<DoubleGene>> gtf =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(/*Dummy fitness function*/gt -> Double.NaN, gtf)
-			.evaluator(new RxEvaluator<>(RxEvaluator::fitness))
+		final Engine<DoubleGene, Double> engine = new Engine.Builder<>
+			(new RxEvaluator<DoubleGene, Double>(RxEvaluator::fitness), gtf)
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()

@@ -21,9 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
-import java.io.Serializable;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -46,16 +44,14 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.0
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Selector<G, C>, Serializable
+	implements Selector<G, C>
 {
-
-	private static final long serialVersionUID = 1L;
 
 	private final int _sampleSize;
 
@@ -125,19 +121,6 @@ public class TournamentSelector<
 			.limit(sampleSize)
 			.max(opt.ascending())
 			.orElseThrow(IllegalStateException::new);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_sampleSize);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			_sampleSize == ((TournamentSelector)obj)._sampleSize;
 	}
 
 	@Override

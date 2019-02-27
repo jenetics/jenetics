@@ -23,7 +23,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -49,7 +48,7 @@ import io.jenetics.util.Seq;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 5.0
  * @since 4.0
  */
 public class EliteSelector<
@@ -146,20 +145,6 @@ public class EliteSelector<
 		}
 
 		return result;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_eliteCount, hash(_nonEliteSelector));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			((EliteSelector)obj)._eliteCount == _eliteCount &&
-			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
 	}
 
 	@Override

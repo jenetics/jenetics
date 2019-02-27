@@ -17,31 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.prog.op;
 
-import java.util.Random;
-
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import io.jenetics.util.Factory;
-import io.jenetics.util.ObjectTester;
-import io.jenetics.util.RandomRegistry;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class ExponentialScalerTest extends ObjectTester<ExponentialScaler> {
+public class MathOpTest {
 
-	@Override
-	protected Factory<ExponentialScaler> factory() {
-		return () -> {
-			final Random random = RandomRegistry.getRandom();
-			final double a = random.nextInt(100) + 10;
-			final double b = random.nextInt(100) + 10;
-			final double c = random.nextInt(100) + 10;
+	@Test(dataProvider = "operations")
+	public void equals(final Op<Double> op, final String string, final boolean matches) {
+		Assert.assertEquals(MathOp.equals(Const.of(1.0), string), matches);
+	}
 
-			return new ExponentialScaler(a, b, c);
+	@DataProvider
+	public Object[][] operations() {
+		return new Object[][] {
+			{Const.of(1.0), "1", true},
+			{Const.of(1.0), "b", false}
 		};
 	}
 

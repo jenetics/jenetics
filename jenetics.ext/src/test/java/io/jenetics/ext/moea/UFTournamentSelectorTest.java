@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 import org.testng.util.RetryAnalyzerCount;
 
 import io.jenetics.DoubleGene;
+import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
@@ -127,10 +128,11 @@ public class UFTournamentSelectorTest {
 	}
 
 	private Phenotype<DoubleGene, Vec<double[]>> phenotype() {
+		final Genotype<DoubleGene> gt = PROBLEM.codec().encoding().newInstance();
 		return Phenotype.of(
-			PROBLEM.codec().encoding().newInstance(),
+			gt,
 			1L,
-			gt -> PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
+			PROBLEM.fitness().apply(PROBLEM.codec().decode(gt))
 		);
 	}
 
