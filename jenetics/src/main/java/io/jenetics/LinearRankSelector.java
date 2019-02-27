@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import io.jenetics.util.Seq;
 
 /**
- * <p>s
+ * <p>
  * In linear-ranking selection the individuals are sorted according to their
  * fitness values. The rank <i>N</i> is assignee to the best individual and the
  * rank 1 to the worst individual. The selection probability <i>P(i)</i>  of

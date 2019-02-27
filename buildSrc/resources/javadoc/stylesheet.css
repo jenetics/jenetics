@@ -496,7 +496,7 @@ th.colFirst, th.colLast, th.colOne, .constantsSummary th {
     padding:8px 3px 3px 7px;
 }
 td.colFirst, th.colFirst {
-    white-space:nowrap;
+    white-space:break-word;
     font-size:13px;
 }
 td.colLast, th.colLast {

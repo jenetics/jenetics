@@ -50,8 +50,7 @@ import io.jenetics.util.ISeq;
 public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;

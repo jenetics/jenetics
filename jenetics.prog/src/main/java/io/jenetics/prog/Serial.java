@@ -25,8 +25,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StreamCorruptedException;
 
-import io.jenetics.ext.BigIntegerChromosome;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0

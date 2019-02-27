@@ -100,6 +100,15 @@ public final class require {
 		return value;
 	}
 
+	public static double positive(final double value) {
+		if (Double.compare(value, 0) <= 0) {
+			throw new IllegalArgumentException(format(
+				"Value is not positive: %f", value
+			));
+		}
+		return value;
+	}
+
 	/**
 	 * Check if the given double value is within the closed range {@code [0, 1]}.
 	 *

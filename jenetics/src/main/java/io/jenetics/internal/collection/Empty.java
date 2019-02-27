@@ -151,7 +151,13 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
+
 
 
 	public static enum EmptyISeq implements ISeq<Object> {
@@ -236,7 +242,12 @@ public final class Empty {
 			return EmptyMSeq.INSTANCE;
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {

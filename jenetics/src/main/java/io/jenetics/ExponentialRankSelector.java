@@ -19,11 +19,9 @@
  */
 package io.jenetics;
 
+import static java.lang.Double.compare;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
-
-import java.util.Objects;
 
 import io.jenetics.util.Seq;
 
@@ -74,9 +72,9 @@ public final class ExponentialRankSelector<
 	public ExponentialRankSelector(final double c) {
 		super(true);
 
-		if (c < 0.0 || c >= 1.0) {
+		if (compare(c, 0) < 0 || compare(c, 1) >= 0) {
 			throw new IllegalArgumentException(format(
-				"Value %s is out of range [0..1): ", c
+				"Value %f is out of range [0..1): ", c
 			));
 		}
 		_c = c;

@@ -84,6 +84,71 @@ public interface ISeq<T>
 
 
 	/* *************************************************************************
+	 *  Some static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * element followed by all the elements of the sequence.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param a the first element
+	 * @param b the appending sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the second arguments is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final T a,
+		final ISeq<? extends T> b
+	) {
+		return ((ISeq<T>)b).prepend(a);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the vararg array.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param a the first sequence
+	 * @param b the vararg elements
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final ISeq<? extends T> a,
+		final T... b
+	) {
+		return ((ISeq<T>)a).append(b);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the second sequence.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param a the first sequence
+	 * @param b the second sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two input sequences
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final ISeq<? extends T> a,
+		final ISeq<? extends T> b
+	) {
+		return ((ISeq<T>)a).append(b);
+	}
+
+	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
 

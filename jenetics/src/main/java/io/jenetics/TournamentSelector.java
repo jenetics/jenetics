@@ -78,6 +78,17 @@ public class TournamentSelector<
 		this(2);
 	}
 
+	/**
+	 * Return the sample size of the tournament selector.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the sample size of the tournament selector
+	 */
+	public int getSampleSize() {
+		return _sampleSize;
+	}
+
 	@Override
 	public ISeq<Phenotype<G, C>> select(
 		final Seq<Phenotype<G, C>> population,
