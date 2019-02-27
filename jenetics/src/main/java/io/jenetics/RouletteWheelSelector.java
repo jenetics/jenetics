@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.stat.DoubleSummary.min;
 
 import java.util.Arrays;

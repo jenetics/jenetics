@@ -22,9 +22,6 @@ package io.jenetics;
 import static java.lang.Double.compare;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
-
-import java.util.Objects;
 
 import io.jenetics.util.Seq;
 
