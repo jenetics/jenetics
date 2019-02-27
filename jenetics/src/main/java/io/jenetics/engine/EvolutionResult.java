@@ -65,7 +65,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 4.0
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,

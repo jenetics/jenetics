@@ -45,8 +45,6 @@ public class SwapMutator<
 
 {
 
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Constructs an alterer with a given recombination probability.
 	 *

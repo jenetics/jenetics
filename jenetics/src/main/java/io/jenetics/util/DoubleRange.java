@@ -71,30 +71,6 @@ public final class DoubleRange implements Serializable {
 	}
 
 	/**
-	 * Returns the range of this {@code DoubleRange} as a {@code IntRange} after
-	 * a narrowing primitive conversion.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return this {@code DoubleRange} as {@code IntRange}
-	 */
-	public IntRange intRange() {
-		return IntRange.of((int)_min, (int)_max);
-	}
-
-	/**
-	 * Returns the range of this {@code DoubleRange} as a {@code LongRange} after
-	 * a narrowing primitive conversion.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return this {@code DoubleRange} as {@code LongRange}
-	 */
-	public LongRange longRange() {
-		return LongRange.of((long)_min, (long)_max);
-	}
-
-	/**
 	 * Create a new {@code DoubleRange} object with the given {@code min} and
 	 * {@code max} values.
 	 *

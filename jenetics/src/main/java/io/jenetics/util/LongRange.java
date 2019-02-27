@@ -92,30 +92,6 @@ public final class LongRange implements Serializable {
 	public LongStream stream() {
 		return LongStream.range(_min, _max);
 	}
-	
-	/**
-	 * Returns the range of this {@code LongRange} as a {@code IntRange} after
-	 * a narrowing primitive conversion.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return this {@code LongRange} as {@code IntRange}
-	 */
-	public IntRange intRange() {
-		return IntRange.of((int)_min, (int)_max);
-	}
-
-	/**
-	 * Returns the range of this {@code IntRange} as a {@code DoubleRange} after
-	 * a widening primitive conversion.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return this {@code IntRange} as {@code DoubleRange}
-	 */
-	public DoubleRange doubleRange() {
-		return DoubleRange.of(_min, _max);
-	}
 
 	/**
 	 * Create a new {@code LongRange} object with the given {@code min} and

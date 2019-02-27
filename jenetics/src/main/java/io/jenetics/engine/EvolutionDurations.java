@@ -34,7 +34,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 3.0
  */
 public final class EvolutionDurations
 	implements

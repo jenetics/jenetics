@@ -81,6 +81,8 @@ public class TournamentSelector<
 	/**
 	 * Return the sample size of the tournament selector.
 	 *
+	 * @since !__version__!
+	 *
 	 * @return the sample size of the tournament selector
 	 */
 	public int getSampleSize() {
