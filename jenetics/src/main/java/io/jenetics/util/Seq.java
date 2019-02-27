@@ -857,7 +857,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * Return a sequence whose elements are all the elements of the first
 	 * element followed by all the elements of the sequence.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param a the first element
 	 * @param b the appending sequence
@@ -878,7 +878,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * Return a sequence whose elements are all the elements of the first
 	 * sequence followed by all the elements of the vararg array.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param a the first sequence
 	 * @param b the vararg elements
@@ -898,7 +898,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * Return a sequence whose elements are all the elements of the first
 	 * sequence followed by all the elements of the second sequence.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param a the first sequence
 	 * @param b the second sequence

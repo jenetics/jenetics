@@ -81,7 +81,7 @@ public class TournamentSelector<
 	/**
 	 * Return the sample size of the tournament selector.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @return the sample size of the tournament selector
 	 */
