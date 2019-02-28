@@ -169,20 +169,20 @@ public final class PartialAlterer<
 					"Chromosome indices must not be empty."
 				);
 			}
-			for (int i = 0; i < indices.length; ++i) {
-				require.nonNegative(indices[i]);
+			for (int index : indices) {
+				require.nonNegative(index);
 			}
 
 			this.indices = indices;
 		}
 
 		void checkIndices(final int length) {
-			for (int i = 0; i < indices.length; ++i) {
-				if (indices[i] >= length) {
+			for (int index : indices) {
+				if (index >= length) {
 					throw new IndexOutOfBoundsException(format(
 						"Genotype contains %d Chromosome, but found " +
-						"SectionAlterer for Chromosome index %d.",
-						length, indices[i]
+							"SectionAlterer for Chromosome index %d.",
+						length, index
 					));
 				}
 			}

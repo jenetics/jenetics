@@ -88,8 +88,7 @@ public final class AltererResult<
 	public int hashCode() {
 		return
 			hash(_population,
-			hash(_alterations,
-			hash(AltererResult.class)));
+			hash(_alterations));
 	}
 
 	@Override

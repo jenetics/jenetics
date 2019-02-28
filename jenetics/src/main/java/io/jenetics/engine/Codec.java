@@ -21,7 +21,6 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -128,7 +127,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
 	public default T decode(final Genotype<G> genotype) {
-		Objects.requireNonNull(genotype);
+		requireNonNull(genotype);
 		return decoder().apply(genotype);
 	}
 

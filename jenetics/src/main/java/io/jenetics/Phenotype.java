@@ -132,6 +132,8 @@ public final class Phenotype<
 	 *
 	 * @since 4.2
 	 *
+	 * @see #nonEvaluated()
+	 *
 	 * @return {@code true} is this phenotype has an fitness value assigned,
 	 *         {@code false} otherwise
 	 */
@@ -147,6 +149,8 @@ public final class Phenotype<
 	 *
 	 * @since 5.0
 	 *
+	 * @see #isEvaluated()
+	 *
 	 * @return {@code false} is this phenotype has an fitness value assigned,
 	 *         {@code true} otherwise
 	 */
@@ -156,6 +160,8 @@ public final class Phenotype<
 
 	/**
 	 * Return the fitness value of this {@code Phenotype}.
+	 *
+	 * @see #fitnessOptional()
 	 *
 	 * @return The fitness value of this {@code Phenotype}.
 	 * @throws NoSuchElementException if {@link #isEvaluated()} returns
@@ -177,6 +183,8 @@ public final class Phenotype<
 	 *
 	 * @since 5.0
 	 *
+	 * @see #getFitness()
+	 *
 	 * @return the fitness value
 	 */
 	public Optional<C> fitnessOptional() {
@@ -186,6 +194,8 @@ public final class Phenotype<
 	/**
 	 * Return the generation this {@link Phenotype} was created.
 	 *
+	 * @see #getAge(long)
+	 *
 	 * @return The generation this {@link Phenotype} was created.
 	 */
 	public long getGeneration() {
@@ -194,6 +204,8 @@ public final class Phenotype<
 
 	/**
 	 * Return the age of this phenotype depending on the given current generation.
+	 *
+	 * @see #getGeneration()
 	 *
 	 * @param currentGeneration the current generation evaluated by the GA.
 	 * @return the age of this phenotype:
@@ -239,7 +251,7 @@ public final class Phenotype<
 
 	@Override
 	public String toString() {
-		return _genotype + " --> " + _fitness;
+		return _genotype + " -> " + _fitness;
 	}
 
 	/**
