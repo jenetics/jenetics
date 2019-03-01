@@ -482,11 +482,6 @@ public final class Codecs {
 		);
 	}
 
-	@SuppressWarnings("unchecked")
-	private static <T> T[] newArray(final Class<?> type, final int length) {
-		return (T[])newInstance(type, length);
-	}
-
 	/**
 	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
 	 * matrix values are restricted by the same domain. The dimension of the

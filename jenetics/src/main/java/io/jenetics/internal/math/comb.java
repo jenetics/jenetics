@@ -249,6 +249,7 @@ public final class comb {
 			--m;
 		}
 
+		// Convert to zero based indexed arrays.
 		for (int i = 0; i < a.length; ++i) a[i] -= 1;
 		return a;
 	}
