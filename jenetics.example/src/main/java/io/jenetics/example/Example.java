@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog;
+package io.jenetics.example;
 
 import static java.lang.Math.abs;
 import static java.lang.String.format;
@@ -35,6 +35,8 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.Tree;
 
+import io.jenetics.prog.ProgramChromosome;
+import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
