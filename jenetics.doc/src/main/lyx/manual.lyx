@@ -30261,6 +30261,90 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
+During the evolution phase, the size of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ can grow and shrink.
+ The 
+\family typewriter
+Single\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Cross\SpecialChar softhyphen
+over
+\family default
+, which is part of the 
+\family typewriter
+jenetics\SpecialChar softhyphen
+.ext
+\family default
+ module is responsible for this change in the program size.
+ When a smaller sub-tree is exchanged with a bigger sub-tree, the size of
+ the first tree will grow and the size of the second tree will shrink.
+ This can lead to undesirable large programs.
+ Because of this reason, it is possible to create a 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ with an additional 
+\emph on
+validation
+\emph default
+ predicate.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> program = ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    depth, ch -> ch.getRoot().size() <= 50, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The predicate, 
+\family typewriter
+ch -> ch.getRoot().size() <= 50
+\family default
+, marks all programs with more then 50 nodes as invalid.
+ Invalid chromosomes will then be replaced by newly created one.
+ When defining a validation predicate, you have to take care, that the desired
+ depth and the validation predicate 
+\emph on
+matches
+\emph default
+.
+ If the given program tree depth is too big, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 51, every newly created program will be immediately marked as invalid.
+ This is because a tree with depth 51 will have for sure more than 50 nodes.
+\end_layout
+
+\begin_layout Standard
 The evolution
 \family typewriter
  Engine
@@ -30493,7 +30577,7 @@ Genes.
 \emph on
  destroyed
 \emph default
- by such alterer are repaired.
+ by such alterers are repaired.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30732,6 +30816,131 @@ The variables in an expression string are sorted alphabetically.
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Subsection
+Multi-root programs
+\end_layout
+
+\begin_layout Standard
+The given examples, so fare, where using a single 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ for modeling the program.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ is able to hold more than one chromosome, it is possible to create more
+ than one program roots.
+ This programs are evaluated in parallel.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // First 'program'
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            4, ch -> ch.getRoot().size() <= 30,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        ),
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Second 'program'
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            5, ch -> ch.getRoot().size() <= 50,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    ),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(Chromosome::getGene)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to create a codec with two independent
+ program roots.
+ 
 \end_layout
 
 \begin_layout Section
