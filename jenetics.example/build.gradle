@@ -31,6 +31,7 @@ apply plugin: 'packaging'
 dependencies {
 	implementation project(':jenetics')
 	implementation project(':jenetics.ext')
+	implementation project(':jenetics.prog')
 	implementation property('include.JPX')
 	implementation property('include.PRNGine')
 	implementation "io.reactivex.rxjava2:rxjava:2.1.14"
