@@ -43,11 +43,16 @@ import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
 
 /**
+ * Symbolic regression involves finding a mathematical expression, in symbolic
+ * form, that provides a good, best, or perfect fit between a given finite
+ * sampling of values of the independent variables and the associated values of
+ * the dependent variables. --- John R. Koza, Genetic Programming I
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.9
  * @since 3.9
  */
-public class Example {
+public class SymbolicRegression {
 
 	// Lookup table for 4*x^3 - 3*x^2 + x
 	static final double[][] SAMPLES = new double[][] {
@@ -113,7 +118,7 @@ public class Example {
 
 	public static void main(final String[] args) {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(Example::error, CODEC)
+			.builder(SymbolicRegression::error, CODEC)
 			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),
