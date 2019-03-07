@@ -21,8 +21,10 @@ package io.jenetics.ext.util;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
@@ -85,6 +87,32 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 		System.out.println(tree.getChild(2).getChild(0).getChild(0).getParent().map(t -> t.getValue()));
 		*/
 	}
+
+	@Test(dataProvider = "methods")
+	public void methodResults(final Function<Tree<Integer, ?>, Object> method) {
+		final TreeNode<Integer> tree = TreeNode.of(0);
+		TreeNodeTest.fill(tree, 3, new Random(345));
+
+		final FlatTreeNode<Integer> flatTree = FlatTreeNode.of(tree);
+
+		for (Tree<Integer, ?> node : tree) {
+			Assert.assertEquals(method.apply(tree), method.apply(flatTree));
+		}
+	}
+
+	@DataProvider
+	public Object[][] methods() {
+		return new Object[][] {
+			{(Function<Tree<Integer, ?>, Object>)Tree::toParenthesesString},
+			{(Function<Tree<Integer, ?>, Object>)Tree::level},
+			{(Function<Tree<Integer, ?>, Object>)Tree::childCount},
+			{(Function<Tree<Integer, ?>, Object>)Tree::childPath},
+			{(Function<Tree<Integer, ?>, Object>)Tree::isLeaf},
+			{(Function<Tree<Integer, ?>, Object>)t -> t.getRoot().getValue()},
+			{(Function<Tree<Integer, ?>, Object>)t -> t.getParent().map(Tree::getValue).orElse(null)}
+		};
+	}
+
 
 	@Test
 	public void serialize() throws IOException {
