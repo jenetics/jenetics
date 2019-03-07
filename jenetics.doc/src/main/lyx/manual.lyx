@@ -30844,7 +30844,7 @@ status open
 
 \begin_layout Plain Layout
 
-Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> 
+final Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> 
 \end_layout
 
 \begin_layout Plain Layout
@@ -30940,7 +30940,16 @@ codec = Codec.of(
 \begin_layout Standard
 The code snippet above shows how to create a codec with two independent
  program roots.
+ This programs are then mapped, in the fitness function, to the combined
+ fitness value.
+ It is also possible to used different operations and terminals for each
  
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
 \end_layout
 
 \begin_layout Section
