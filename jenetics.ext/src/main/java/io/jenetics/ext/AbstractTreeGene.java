@@ -29,8 +29,6 @@ import java.util.Optional;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.util.Tree;
-
 /**
  * Abstract implementation of the {@link TreeGene} interface..
  *
@@ -181,17 +179,6 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	public boolean isValid() {
 		return _genes != null;
 	}
-
-	/*
-	@Override
-	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof AbstractTreeGene &&
-			Objects.equals(((AbstractTreeGene)other)._allele, _allele) &&
-			((AbstractTreeGene)other)._genes == _genes &&
-			((AbstractTreeGene)other)._childOffset == _childOffset &&
-			((AbstractTreeGene)other)._childCount == _childCount;
-	}
-	*/
 
 	@Override
 	public int hashCode() {
