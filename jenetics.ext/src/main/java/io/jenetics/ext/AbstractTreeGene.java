@@ -182,6 +182,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _genes != null;
 	}
 
+	/*
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
 		return other instanceof AbstractTreeGene &&
@@ -190,6 +191,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 			((AbstractTreeGene)other)._childOffset == _childOffset &&
 			((AbstractTreeGene)other)._childCount == _childCount;
 	}
+	*/
 
 	@Override
 	public int hashCode() {
