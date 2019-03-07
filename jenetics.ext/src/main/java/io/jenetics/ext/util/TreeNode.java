@@ -141,22 +141,6 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this} node
-	 * in pre-order. The first node returned by the iterator is {@code this}
-	 * node.
-	 * <p>
-	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any iterator created before the modification.
-	 *
-	 * @see #postorderIterator
-	 * @return an iterator for traversing the tree in pre-order
-	 */
-	@Override
-	public Iterator<TreeNode<T>> iterator() {
-		return preorderIterator();
-	}
-
-	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's
 	 * child array at index {@code index}. The new {@code child} must not be
