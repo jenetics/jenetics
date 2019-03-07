@@ -99,22 +99,15 @@ public final class FlatTreeNode<T>
 	@Override
 	public Optional<FlatTreeNode<T>> getParent() {
 		int index = -1;
-		//for (int i = _index; --i >= 0 && index == -1;) {
-		for (int i = 0; i < _index && index == -1; ++i) {
+		for (int i = _index; --i >= 0 && index == -1;) {
 			if (isParent(i)) {
 				index = i;
 			}
 		}
-		System.out.println(index);
+
 		return index != -1
 			? Optional.of(nodeAt(index))
 			: Optional.empty();
-
-		/*
-		return stream()
-			.filter(node -> node.childStream().anyMatch(this::identical))
-			.findFirst();
-			*/
 	}
 
 	private boolean isParent(final int index) {
