@@ -29660,8 +29660,16 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The extension point for own GP implementations is the Op interface.
- There is in general no need for extending the ProgramChromosome class.
+The extension point for own GP implementations is the 
+\family typewriter
+Op
+\family sans
+ interface.
+ There is in general no need for extending the 
+\family typewriter
+ProgramChromosome
+\family sans
+ class.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30452,6 +30460,67 @@ reference "sec:Symbolic-regression"
 \end_inset
 
 .
+ The code example above also shows, that the program is represented by the
+ first gene (aka root gene) of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+ Since the 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ implements the 
+\family typewriter
+Tree<\SpecialChar softhyphen
+Op<A>,\SpecialChar softhyphen
+Program\SpecialChar softhyphen
+Gene<A\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+ interface, it smoothly integrates with existing tree algorithms.
+ Some possible program gene assignments are shown in the code snippet below,
+ which will compile without warnings or additional casts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> chromosome = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+assert chromosome.getGene() == chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<Op<Double>, ?> opTree = chromosome.getRoot(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<?, ?> tree = chromosome.getRoot();
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
