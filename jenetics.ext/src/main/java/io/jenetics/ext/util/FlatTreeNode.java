@@ -112,8 +112,8 @@ public final class FlatTreeNode<T>
 
 	private boolean isParent(final int index) {
 		return _childCounts[index] > 0 &&
-			_childOffsets[index] >= _index &&
-			_childOffsets[index] + _childCounts[index] < _index;
+			_childOffsets[index] <= _index &&
+			_childOffsets[index] + _childCounts[index] > _index;
 	}
 
 	@Override
