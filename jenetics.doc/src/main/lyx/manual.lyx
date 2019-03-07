@@ -7172,6 +7172,14 @@ The crossover parameter,
  should be avoided.
 \end_layout
 
+\begin_layout Paragraph
+Partial alterer
+\end_layout
+
+\begin_layout Standard
+// TODO: describe PartialAlterer class.
+\end_layout
+
 \begin_layout Subsection
 Engine classes
 \begin_inset CommandInset label
@@ -9742,6 +9750,10 @@ Engine!Evaluator
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+// TODO: Update description for Evaluator interface.
 \end_layout
 
 \begin_layout Standard
@@ -30928,7 +30940,7 @@ codec = Codec.of(
 
 \begin_layout Plain Layout
 
-        // First 'program'
+        // First 'program'.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30953,7 +30965,7 @@ codec = Codec.of(
 
 \begin_layout Plain Layout
 
-        // Second 'program'
+        // Second 'program'.
 \end_layout
 
 \begin_layout Plain Layout
