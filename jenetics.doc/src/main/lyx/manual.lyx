@@ -7865,6 +7865,7 @@ Pool()
 \family typewriter
 evaluator
 \family default
+ // TODO remove builder property and extend descritption.
  This property allows you to replace the evaluation strategy of the 
 \family typewriter
 Phenotype
