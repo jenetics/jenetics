@@ -45,7 +45,7 @@ import io.jenetics.util.Seq;
  *     .build();
  * }</pre>
  *
- * @implSpec
+ * @apiNote
  * The size of the returned, evaluated, phenotype sequence must be exactly
  * the size of the input phenotype sequence and all phenotypes must have a
  * fitness value assigned ({@code assert population.forAll(Phenotype::isEvaluated);}).
