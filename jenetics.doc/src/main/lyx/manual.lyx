@@ -9977,12 +9977,12 @@ The implementer is free to do the evaluation in place, or create new Phenotype
 \end_layout
 
 \begin_layout Enumerate
-The size of the returned, evaluated, phenotype sequence must be exactly
- the size of the input phenotype sequence.
+the size of the returned, evaluated, phenotype sequence must be exactly
+ the size of the input phenotype sequence and
 \end_layout
 
 \begin_layout Enumerate
-All phenotypes of the returned population must have a fitness value assigned.
+all phenotypes of the returned population must have a fitness value assigned.
  Than means, the expression 
 \family typewriter
 pop.forAll(\SpecialChar softhyphen
