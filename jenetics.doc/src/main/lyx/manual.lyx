@@ -7177,7 +7177,136 @@ Partial alterer
 \end_layout
 
 \begin_layout Standard
-// TODO: describe PartialAlterer class.
+Alterers are working on the whole population, which is effectively a sequence
+ of genotypes.
+ If your genotype consists of more than one chromosome, it is not possible
+ to specify the chromosome, the alterer is using for alteration.
+ The 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ class overcomes this shortcoming and allows you to define the chromosomes
+ the wrapped 
+\family typewriter
+Alterer
+\family default
+ is using.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(0, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(1, 2),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(2, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(3, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+   .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+      new LineCrossover<>()
+\end_layout
+
+\begin_layout Plain Layout
+
+   )
+\end_layout
+
+\begin_layout Plain Layout
+
+   .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example above shows how to use the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ The wrapped 
+\family typewriter
+Mutator
+\family default
+ will only work on the chromosome with the index 0 and 3, the wrapped 
+\family typewriter
+Mean\SpecialChar softhyphen
+Alterer
+\family default
+ will work on the chromosome with index 1 and the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ will work on all chromosomes.
+ A potential drawback of the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ is a possible performance drawback.
+ This is because the chromosomes must be 
+\emph on
+sliced
+\emph default
+ into different population sequences for each 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ If this is an issue for the overall performance depends on the concrete
+ application.
 \end_layout
 
 \begin_layout Subsection
