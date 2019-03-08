@@ -149,7 +149,7 @@ Navigation bar styles
     height:2.8em;
     padding-top:10px;
     overflow:hidden;
-    font-size:12px; 
+    font-size:12px;
 }
 .bottomNav {
     margin-top:10px;
@@ -349,7 +349,7 @@ ul.blockList li.blockList, ul.blockListLast li.blockList {
 }
 ul.blockList ul.blockList li.blockList, ul.blockList ul.blockListLast li.blockList {
     padding:0px 20px 5px 10px;
-    border:1px solid #ededed; 
+    border:1px solid #ededed;
     background-color:#f8f8f8;
 }
 ul.blockList ul.blockList ul.blockList li.blockList, ul.blockList ul.blockList ul.blockListLast li.blockList {
@@ -377,9 +377,9 @@ Table styles
 */
 .overviewSummary, .memberSummary, .typeSummary, .useSummary, .constantsSummary, .deprecatedSummary {
     width:100%;
-    border-left:1px solid #EEE; 
-    border-right:1px solid #EEE; 
-    border-bottom:1px solid #EEE; 
+    border-left:1px solid #EEE;
+    border-right:1px solid #EEE;
+    border-bottom:1px solid #EEE;
 }
 .overviewSummary, .memberSummary  {
     padding:0px;
@@ -464,7 +464,7 @@ Table styles
     display:none;
     width:5px;
     margin-right:3px;
-    position:relative; 
+    position:relative;
     float:left;
     background-color:#F8981D;
 }
@@ -496,7 +496,7 @@ th.colFirst, th.colLast, th.colOne, .constantsSummary th {
     padding:8px 3px 3px 7px;
 }
 td.colFirst, th.colFirst {
-    white-space:break-word;
+	white-space:nowrap;
     font-size:13px;
 }
 td.colLast, th.colLast {
