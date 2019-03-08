@@ -33,8 +33,8 @@ import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 final class CompletableFutureEvaluator<
 	G extends Gene<?, G>,
@@ -52,7 +52,7 @@ final class CompletableFutureEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		final CompletableFuture<C>[] evaluate =
 			(CompletableFuture<C>[])population.stream()

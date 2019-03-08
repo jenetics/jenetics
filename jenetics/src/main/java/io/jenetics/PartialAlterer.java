@@ -48,9 +48,9 @@ import io.jenetics.util.Seq;
  *     .selector(new RouletteWheelSelector<>())
  *     .alterers(
  *         // The `Mutator` is used on chromosome with index 0 and 2.
- *         SectionAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
+ *         PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
  *         // The `MeanAlterer` is used on chromosome 3.
- *         SectionAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
+ *         PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
  *         // The `GaussianMutator` is used on all chromosomes.
  *         new GaussianMutator<>()
  *     )
@@ -67,10 +67,10 @@ import io.jenetics.util.Seq;
  * of the needed <em>sectioning</em> of the genotype.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
-public final class SectionAlterer<
+public final class PartialAlterer<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -80,7 +80,7 @@ public final class SectionAlterer<
 	private final Alterer<G, C> _alterer;
 	private final Section _section;
 
-	private SectionAlterer(final Alterer<G, C> alterer, final Section section) {
+	private PartialAlterer(final Alterer<G, C> alterer, final Section section) {
 		_alterer = requireNonNull(alterer);
 		_section = requireNonNull(section);
 	}
@@ -125,7 +125,7 @@ public final class SectionAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final int... indices) {
-		return new SectionAlterer<>(alterer, Section.of(indices));
+		return new PartialAlterer<>(alterer, Section.of(indices));
 	}
 
 	/**
@@ -150,7 +150,7 @@ public final class SectionAlterer<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C> alterer, final IntRange section) {
-		return new SectionAlterer<>(
+		return new PartialAlterer<>(
 			alterer,
 			Section.of(section.stream().toArray())
 		);
@@ -169,20 +169,20 @@ public final class SectionAlterer<
 					"Chromosome indices must not be empty."
 				);
 			}
-			for (int i = 0; i < indices.length; ++i) {
-				require.nonNegative(indices[i]);
+			for (int index : indices) {
+				require.nonNegative(index);
 			}
 
 			this.indices = indices;
 		}
 
 		void checkIndices(final int length) {
-			for (int i = 0; i < indices.length; ++i) {
-				if (indices[i] >= length) {
+			for (int index : indices) {
+				if (index >= length) {
 					throw new IndexOutOfBoundsException(format(
 						"Genotype contains %d Chromosome, but found " +
-						"SectionAlterer for Chromosome index %d.",
-						length, indices[i]
+							"SectionAlterer for Chromosome index %d.",
+						length, index
 					));
 				}
 			}

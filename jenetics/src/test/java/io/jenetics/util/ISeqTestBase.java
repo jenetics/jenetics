@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -67,5 +68,15 @@ public abstract class ISeqTestBase extends SeqTestBase {
 		for (int i = 0; i < copy.length(); ++i) {
 			Assert.assertEquals(copy.get(i).intValue(), random.nextInt());
 		}
+	}
+
+	@Test
+	public void iterator() {
+		final Iterator<Integer> it = newSeq(100).iterator();
+		for (int i = 0; i < 100; ++i) {
+			it.next();
+		}
+
+		Assert.assertFalse(it.hasNext());
 	}
 }

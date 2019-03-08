@@ -676,7 +676,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of leaves beneath this node
 	 */
 	public default int leafCount() {
-		return (int) breadthFirstStream()
+		return (int)breadthFirstStream()
 			.filter(Tree<V, T>::isLeaf)
 			.count();
 	}

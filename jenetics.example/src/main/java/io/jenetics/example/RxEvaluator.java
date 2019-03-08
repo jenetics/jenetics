@@ -32,8 +32,8 @@ import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Evaluator;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
@@ -60,7 +60,7 @@ public final class RxEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final Stream<Observable<Phenotype<G, C>>> result = Stream.concat(
 			population.stream()
 				.filter(Phenotype::isEvaluated)

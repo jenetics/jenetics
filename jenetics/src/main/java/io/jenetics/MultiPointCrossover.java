@@ -50,7 +50,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.0
+ * @version 5.0
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,

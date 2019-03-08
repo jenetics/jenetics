@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.stat.DoubleSummary.min;
 
 import java.util.Arrays;
@@ -39,7 +38,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.0
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,

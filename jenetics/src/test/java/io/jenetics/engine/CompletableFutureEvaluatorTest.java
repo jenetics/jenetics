@@ -52,7 +52,7 @@ public class CompletableFutureEvaluatorTest {
 		final Evaluator<DoubleGene, Double> evaluator = Evaluators
 			.completable(CompletableFutureEvaluatorTest::eval);
 
-		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.evaluate(population);
+		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(population);
 
 		evaluated.forEach(pt -> Assert.assertTrue(pt.isEvaluated()));
 		evaluated.forEach(pt ->

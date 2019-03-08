@@ -45,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version !__version__!
+ * @version 5.0
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,

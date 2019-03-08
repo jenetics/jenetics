@@ -57,7 +57,7 @@ final class FutureEvaluator<
 	}
 
 	@Override
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final ISeq<Future<C>> evaluate = population.stream()
 			.filter(Phenotype::nonEvaluated)
 			.map(pt -> _fitness.apply(pt.getGenotype()))

@@ -38,8 +38,11 @@ import io.jenetics.util.Seq;
  * <pre>{@code
  * final Function<? super Genotype<G>, ? extends C> fitness = ...;
  * final Evaluator<G, C> evaluator = population -> population
- *     .map(pt -> pt.evaluate(fitness))
+ *     .map(pt -> pt.eval(fitness))
  *     .asISeq();
+ *
+ * final Engine<G, C> engine = new Engine.Builder(evaluator, genotypeFactory)
+ *     .build();
  * }</pre>
  *
  * @implSpec
@@ -74,6 +77,6 @@ public interface Evaluator<
 	 * @return the evaluated population. Implementers are free to return the
 	 *         the input population or a newly created one.
 	 */
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population);
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population);
 
 }

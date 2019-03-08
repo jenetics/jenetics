@@ -51,7 +51,7 @@ public class FutureEvaluatorTest {
 		population.forEach(pt -> Assert.assertTrue(pt.nonEvaluated()));
 
 		final Evaluator<DoubleGene, Double> evaluator = Evaluators.async(FutureEvaluatorTest::eval);
-		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.evaluate(population);
+		final ISeq<Phenotype<DoubleGene, Double>> evaluated = evaluator.eval(population);
 
 		evaluated.forEach(pt -> Assert.assertTrue(pt.isEvaluated()));
 		evaluated.forEach(pt ->

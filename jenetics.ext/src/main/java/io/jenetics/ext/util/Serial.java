@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog;
+package io.jenetics.ext.util;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,7 +34,8 @@ final class Serial implements Externalizable {
 
 	private static final long serialVersionUID = 1;
 
-	static final byte PROGRAM_CHROMOSOME = 1;
+	static final byte TREE_NODE = 1;
+	static final byte FLAT_TREE_NODE = 2;
 
 	/**
 	 * The type being serialized.
@@ -67,7 +68,8 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case PROGRAM_CHROMOSOME: ((ProgramChromosome)_object).write(out); break;
+			case TREE_NODE: ((TreeNode)_object).write(out); break;
+			case FLAT_TREE_NODE: ((FlatTreeNode)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -79,7 +81,8 @@ final class Serial implements Externalizable {
 	{
 		_type = in.readByte();
 		switch (_type) {
-			case PROGRAM_CHROMOSOME: _object = ProgramChromosome.read(in); break;
+			case TREE_NODE: _object = TreeNode.read(in); break;
+			case FLAT_TREE_NODE: _object = FlatTreeNode.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

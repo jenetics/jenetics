@@ -44,7 +44,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.0
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -78,6 +78,17 @@ public class TournamentSelector<
 		this(2);
 	}
 
+	/**
+	 * Return the sample size of the tournament selector.
+	 *
+	 * @since 5.0
+	 *
+	 * @return the sample size of the tournament selector
+	 */
+	public int getSampleSize() {
+		return _sampleSize;
+	}
+
 	@Override
 	public ISeq<Phenotype<G, C>> select(
 		final Seq<Phenotype<G, C>> population,
@@ -97,21 +108,24 @@ public class TournamentSelector<
 		return population.isEmpty()
 			? ISeq.empty()
 			: MSeq.<Phenotype<G, C>>ofLength(count)
-				.fill(() -> select(population, opt, _sampleSize, random))
+				.fill(() -> select(population, opt, random))
 				.toISeq();
 	}
 
 	private Phenotype<G, C> select(
 		final Seq<Phenotype<G, C>> population,
 		final Optimize opt,
-		final int sampleSize,
 		final Random random
 	) {
 		final int N = population.size();
+
+		assert _sampleSize >= 2;
+		assert N >= 1;
+
 		return Stream.generate(() -> population.get(random.nextInt(N)))
-			.limit(sampleSize)
+			.limit(_sampleSize)
 			.max(opt.ascending())
-			.orElseThrow(IllegalStateException::new);
+			.orElseThrow(AssertionError::new);
 	}
 
 	@Override

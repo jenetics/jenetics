@@ -7172,6 +7172,153 @@ The crossover parameter,
  should be avoided.
 \end_layout
 
+\begin_layout Paragraph
+Partial alterer
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Partial alterer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alterers are working on the whole population, which is effectively a sequence
+ of genotypes.
+ If your genotype consists of more than one chromosome, it is not possible
+ to specify the chromosome, the alterer is using for alteration.
+ The 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ class overcomes this shortcoming and allows you to define the chromosomes
+ the wrapped 
+\family typewriter
+Alterer
+\family default
+ is using.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(0, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(1, 2),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(2, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(3, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+   .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+      new LineCrossover<>()
+\end_layout
+
+\begin_layout Plain Layout
+
+   )
+\end_layout
+
+\begin_layout Plain Layout
+
+   .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example above shows how to use the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ The wrapped 
+\family typewriter
+Mutator
+\family default
+ will only work on the chromosome with the index 0 and 3, the wrapped 
+\family typewriter
+Mean\SpecialChar softhyphen
+Alterer
+\family default
+ will work on the chromosome with index 1 and the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ will work on all chromosomes.
+ A potential drawback of the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ is a possible performance drawback.
+ This is because the chromosomes must be 
+\emph on
+sliced
+\emph default
+ into different population sequences for each 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ If this is an issue for the overall performance depends on the concrete
+ application.
+\end_layout
+
 \begin_layout Subsection
 Engine classes
 \begin_inset CommandInset label
@@ -7850,34 +7997,6 @@ Pool\SpecialChar softhyphen
 Pool()
 \family default
 .
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-evaluator
-\family default
- This property allows you to replace the evaluation strategy of the 
-\family typewriter
-Phenotype
-\family default
-'s fitness function.
- Normally, each fitness value is evaluated concurrently, but independently
- from each other.
- In some configuration it is necessary, for performance reason, to evaluate
- the fitness values of a population at once.
- This is then performed by the 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Evaluator
-\family default
- or 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Genotype\SpecialChar softhyphen
-Evaluator
-\family default
- interface.
 \end_layout
 
 \begin_layout Description
@@ -9724,10 +9843,10 @@ type
 \end_layout
 
 \begin_layout Subsubsection
-Engine.Evaluator
+Evaluator
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Engine.Evaluator"
+name "subsec:Evaluator"
 
 \end_inset
 
@@ -9745,18 +9864,45 @@ Engine!Evaluator
 \end_layout
 
 \begin_layout Standard
-This interface allows to define different strategies for evaluating the
- fitness functions of a given population.
- Usually, it is not necessary to override the default evaluation strategy.
- It is helpful if you have performance problems when the fitness function
- is evaluated serially—or in small concurrent batches, as it is implemented
- by the default strategy.
+The 
+\family typewriter
+Evaluator
+\family default
+ is responsible for evaluating the fitness values for a given population.
+ It is the most general way for doing the fitness evaluation.
+ Usually, it is not necessary to implement an own evaluation strategy.
+ If you creating an evolution 
+\family typewriter
+Engine
+\family default
+ with a fitness function, this is done for you automatically.
+ Each fitness value is then evaluated concurrently, but independently from
+ each other.
+ Using the 
+\family typewriter
+Evaluator
+\family default
+ interface is helpful if you have performance problems when the fitness
+ function is evaluated serially—or in small concurrent batches, as it is
+ implemented by the default strategy.
  In this case, the 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface can be used to calculate the fitness function for a population
  in one batch.
+ Another use case for the 
+\family typewriter
+Evaluator
+\family default
+ interface is, when the fitness value also depends on the current composition
+ of the population.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ it is possible to normalize the population's fitness values.
 \end_layout
 
 \begin_layout Standard
@@ -9787,7 +9933,7 @@ public interface Evaluator<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> evaluate(Seq<Phenotype<G, C>> pop);
+    ISeq<Phenotype<G, C>> eval(Seq<Phenotype<G, C>> pop);
 \end_layout
 
 \begin_layout Plain Layout
@@ -9802,12 +9948,12 @@ public interface Evaluator<
 \begin_layout Plain Layout
 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface
 \begin_inset CommandInset label
 LatexCommand label
-name "lis:EngineEvaluator-interface"
+name "lis:Evaluator-interface"
 
 \end_inset
 
@@ -9821,24 +9967,91 @@ name "lis:EngineEvaluator-interface"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The implementer is free to do the evaluation in place, or create new Phenotype
  instance and return the newly created one.
+ There are only two requirements which must be fulfilled:
+\end_layout
+
+\begin_layout Enumerate
+the size of the returned, evaluated, phenotype sequence must be exactly
+ the size of the input phenotype sequence and
+\end_layout
+
+\begin_layout Enumerate
+all phenotypes of the returned population must have a fitness value assigned.
+ Than means, the expression 
+\family typewriter
+pop.forAll(\SpecialChar softhyphen
+Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+::isEvaluated
+\family default
+\SpecialChar softhyphen
+) must be true.
  
 \end_layout
 
 \begin_layout Standard
-A second use case for the 
+The code snippet below implements an evaluator which evaluates the fitness
+ values for a given population serially in the main thread.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Function<? super Genotype<G>, ? extends C> fitness = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Evaluator<G, C> evaluator = population -> population
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(pt -> pt.eval(fitness))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .asISeq();
+\end_layout
+
+\end_inset
+
+To use the fitness 
 \family typewriter
 Evaluator
 \family default
- interface is, when the fitness value also depends on the current composition
- of the population.
- E.
-\begin_inset space ~
+, you have to use the 
+\family typewriter
+Engine.Builder
+\family default
+ constructor directly, instead of one of the factory methods.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<G, C> engine = new Engine.Builder(evaluator, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
 \end_inset
 
-g.
- it is possible to normalize the population's fitness values.
+
 \end_layout
 
 \begin_layout Section
@@ -29660,8 +29873,16 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The extension point for own GP implementations is the Op interface.
- There is in general no need for extending the ProgramChromosome class.
+The extension point for own GP implementations is the 
+\family typewriter
+Op
+\family sans
+ interface.
+ There is in general no need for extending the 
+\family typewriter
+ProgramChromosome
+\family sans
+ class.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30261,6 +30482,90 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
+During the evolution phase, the size of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ can grow and shrink.
+ The 
+\family typewriter
+Single\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Cross\SpecialChar softhyphen
+over
+\family default
+, which is part of the 
+\family typewriter
+jenetics\SpecialChar softhyphen
+.ext
+\family default
+ module is responsible for this change in the program size.
+ When a smaller sub-tree is exchanged with a bigger sub-tree, the size of
+ the first tree will grow and the size of the second tree will shrink.
+ This can lead to undesirable large programs.
+ Because of this reason, it is possible to create a 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ with an additional 
+\emph on
+validation
+\emph default
+ predicate.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> program = ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    depth, ch -> ch.getRoot().size() <= 50, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The predicate, 
+\family typewriter
+ch -> ch.getRoot().size() <= 50
+\family default
+, marks all programs with more then 50 nodes as invalid.
+ Invalid chromosomes will then be replaced by newly created one.
+ When defining a validation predicate, you have to take care, that the desired
+ depth and the validation predicate 
+\emph on
+matches
+\emph default
+.
+ If the given program tree depth is too big, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 51, every newly created program will be immediately marked as invalid.
+ This is because a tree with depth 51 will have for sure more than 50 nodes.
+\end_layout
+
+\begin_layout Standard
 The evolution
 \family typewriter
  Engine
@@ -30368,6 +30673,67 @@ reference "sec:Symbolic-regression"
 \end_inset
 
 .
+ The code example above also shows, that the program is represented by the
+ first gene (aka root gene) of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+ Since the 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ implements the 
+\family typewriter
+Tree<\SpecialChar softhyphen
+Op<A>,\SpecialChar softhyphen
+Program\SpecialChar softhyphen
+Gene<A\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+ interface, it smoothly integrates with existing tree algorithms.
+ Some possible program gene assignments are shown in the code snippet below,
+ which will compile without warnings or additional casts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> chromosome = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+assert chromosome.getGene() == chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<Op<Double>, ?> opTree = chromosome.getRoot(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<?, ?> tree = chromosome.getRoot();
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -30493,7 +30859,7 @@ Genes.
 \emph on
  destroyed
 \emph default
- by such alterer are repaired.
+ by such alterers are repaired.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30731,6 +31097,140 @@ The variables in an expression string are sorted alphabetically.
 \begin_inset Formula $44.19673085074048$
 \end_inset
 
+.
+\end_layout
+
+\begin_layout Subsection
+Multi-root programs
+\end_layout
+
+\begin_layout Standard
+The given examples, so fare, where using a single 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ for modeling the program.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ is able to hold more than one chromosome, it is possible to create more
+ than one program roots.
+ This programs are evaluated in parallel.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // First 'program'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            4, ch -> ch.getRoot().size() <= 30,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        ),
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Second 'program'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            5, ch -> ch.getRoot().size() <= 50,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    ),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(Chromosome::getGene)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to create a codec with two independent
+ program roots.
+ This programs are then mapped, in the fitness function, to the combined
+ fitness value.
+ It is also possible to used different operations and terminals for each
+ 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
 .
 \end_layout
 

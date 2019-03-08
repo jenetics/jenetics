@@ -131,8 +131,7 @@ public final class DoubleSummary implements Serializable {
 			hash(_sum,
 			hash(_min,
 			hash(_max,
-			hash(_mean,
-			hash(getClass()))))));
+			hash(_mean)))));
 	}
 
 	@Override

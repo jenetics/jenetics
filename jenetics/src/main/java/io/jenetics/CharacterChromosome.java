@@ -145,8 +145,9 @@ public class CharacterChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public char[] toArray(final char[] array) {
-		final char[] a = array.length >= length() ?
-			array : new char[length()];
+		final char[] a = array.length >= length()
+			? array
+			: new char[length()];
 
 		for (int i = length(); --i >= 0;) {
 			a[i] = charAt(i);

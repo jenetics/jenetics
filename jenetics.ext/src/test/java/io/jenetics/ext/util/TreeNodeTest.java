@@ -176,8 +176,9 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 	@Test
 	public void serialize() throws IOException {
-		final TreeNode<Integer> tree = newTree(6, new Random());
+		final TreeNode<Integer> tree = newTree(6, new Random(345));
 		final byte[] data = IO.object.toByteArray(tree);
+		System.out.println(data.length);
 		Assert.assertEquals(IO.object.fromByteArray(data), tree);
 	}
 
