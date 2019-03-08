@@ -7174,6 +7174,16 @@ The crossover parameter,
 
 \begin_layout Paragraph
 Partial alterer
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Partial alterer
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -7987,35 +7997,6 @@ Pool\SpecialChar softhyphen
 Pool()
 \family default
 .
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-evaluator
-\family default
- // TODO remove builder property and extend descritption.
- This property allows you to replace the evaluation strategy of the 
-\family typewriter
-Phenotype
-\family default
-'s fitness function.
- Normally, each fitness value is evaluated concurrently, but independently
- from each other.
- In some configuration it is necessary, for performance reason, to evaluate
- the fitness values of a population at once.
- This is then performed by the 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Evaluator
-\family default
- or 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Genotype\SpecialChar softhyphen
-Evaluator
-\family default
- interface.
 \end_layout
 
 \begin_layout Description
@@ -9862,10 +9843,10 @@ type
 \end_layout
 
 \begin_layout Subsubsection
-Engine.Evaluator
+Evaluator
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Engine.Evaluator"
+name "subsec:Evaluator"
 
 \end_inset
 
@@ -9883,22 +9864,45 @@ Engine!Evaluator
 \end_layout
 
 \begin_layout Standard
-// TODO: Update description for Evaluator interface.
-\end_layout
-
-\begin_layout Standard
-This interface allows to define different strategies for evaluating the
- fitness functions of a given population.
- Usually, it is not necessary to override the default evaluation strategy.
- It is helpful if you have performance problems when the fitness function
- is evaluated serially—or in small concurrent batches, as it is implemented
- by the default strategy.
+The 
+\family typewriter
+Evaluator
+\family default
+ is responsible for evaluating the fitness values for a given population.
+ It is the most general way for doing the fitness evaluation.
+ Usually, it is not necessary to implement an own evaluation strategy.
+ If you creating an evolution 
+\family typewriter
+Engine
+\family default
+ with a fitness function, this is done for you automatically.
+ Each fitness value is then evaluated concurrently, but independently from
+ each other.
+ Using the 
+\family typewriter
+Evaluator
+\family default
+ interface is helpful if you have performance problems when the fitness
+ function is evaluated serially—or in small concurrent batches, as it is
+ implemented by the default strategy.
  In this case, the 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface can be used to calculate the fitness function for a population
  in one batch.
+ Another use case for the 
+\family typewriter
+Evaluator
+\family default
+ interface is, when the fitness value also depends on the current composition
+ of the population.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ it is possible to normalize the population's fitness values.
 \end_layout
 
 \begin_layout Standard
@@ -9929,7 +9933,7 @@ public interface Evaluator<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> evaluate(Seq<Phenotype<G, C>> pop);
+    ISeq<Phenotype<G, C>> eval(Seq<Phenotype<G, C>> pop);
 \end_layout
 
 \begin_layout Plain Layout
@@ -9944,12 +9948,12 @@ public interface Evaluator<
 \begin_layout Plain Layout
 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface
 \begin_inset CommandInset label
 LatexCommand label
-name "lis:EngineEvaluator-interface"
+name "lis:Evaluator-interface"
 
 \end_inset
 
@@ -9963,24 +9967,91 @@ name "lis:EngineEvaluator-interface"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The implementer is free to do the evaluation in place, or create new Phenotype
  instance and return the newly created one.
+ There are only two requirements which must be fulfilled:
+\end_layout
+
+\begin_layout Enumerate
+The size of the returned, evaluated, phenotype sequence must be exactly
+ the size of the input phenotype sequence.
+\end_layout
+
+\begin_layout Enumerate
+All phenotypes of the returned population must have a fitness value assigned.
+ Than means, the expression 
+\family typewriter
+pop.forAll(\SpecialChar softhyphen
+Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+::isEvaluated
+\family default
+\SpecialChar softhyphen
+) must be true.
  
 \end_layout
 
 \begin_layout Standard
-A second use case for the 
+The code snippet below implements an evaluator which evaluates the fitness
+ values for a given population serially in the main thread.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Function<? super Genotype<G>, ? extends C> fitness = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Evaluator<G, C> evaluator = population -> population
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(pt -> pt.eval(fitness))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .asISeq();
+\end_layout
+
+\end_inset
+
+To use the fitness 
 \family typewriter
 Evaluator
 \family default
- interface is, when the fitness value also depends on the current composition
- of the population.
- E.
-\begin_inset space ~
+, you have to use the 
+\family typewriter
+Engine.Builder
+\family default
+ constructor directly, instead of one of the factory methods.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<G, C> engine = new Engine.Builder(evaluator, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
 \end_inset
 
-g.
- it is possible to normalize the population's fitness values.
+
 \end_layout
 
 \begin_layout Section
