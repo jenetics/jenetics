@@ -118,7 +118,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public final class AdaptiveEngine<
@@ -193,41 +193,22 @@ public final class AdaptiveEngine<
 	}
 
 	/**
-	 * Return a new adaptive evolution engine, with the given engine generation
-	 * function.
-	 *
-	 * @param engine the engine generating function used for adapting the engines.
-	 *       <b>Be aware, that the {@code EvolutionResult} for the first created
-	 *       {@code Engine} is {@code null}.</b>
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 * @return a new adaptive evolution engine
-	 * @throws NullPointerException if the given {@code engine} is {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AdaptiveEngine<G, C> of(
-		final Function<
-			? super EvolutionResult<G, C>,
-			? extends EvolutionStreamable<G, C>> engine
-	) {
-		return new AdaptiveEngine<>(engine);
-	}
-
-	/**
 	 * Return a new adaptive evolution engine, which tries to keep the
 	 * population's fitness variance within the given {@code variance} range.
 	 *
 	 * @since !__version__!
 	 *
-	 * @param variance the desired fitness variance range
+	 * @param variance the desired fitness variance range for the population's
+	 *        fitness
 	 * @param <G> the gene type
 	 * @param <N> the fitness value type
 	 * @return a new adaptive evolution engine which maintains the given fitness
 	 *         variance
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static
 	<G extends Gene<?, G>, N extends Number & Comparable<? super N>>
-	AdaptiveEngine<G, N> ofFitnessVariance(
+	AdaptiveEngine<G, N> byFitnessVariance(
 		final DoubleRange variance,
 		final Engine.Builder<G, N> builder,
 		final Alterer<G, N> narrow,
@@ -236,7 +217,7 @@ public final class AdaptiveEngine<
 		final AtomicReference<Engine<G, N>> eng = new AtomicReference<>();
 		final AtomicBoolean isNarrow = new AtomicBoolean();
 
-		return of(result -> {
+		return new AdaptiveEngine<>(result -> {
 			if (result == null) {
 				final Engine<G, N> e = builder.copy()
 					.alterers(narrow)
