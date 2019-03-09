@@ -127,7 +127,7 @@ public class AdaptiveEngineTest {
 			.minimizing();
 
 		final Genotype<DoubleGene> result =
-			AdaptiveEngine.<DoubleGene, Double>of(er -> engine(er, builder))
+			new AdaptiveEngine<DoubleGene, Double>(er -> engine(er, builder))
 				.stream()
 				.limit(Limits.bySteadyFitness(50))
 				.collect(EvolutionResult.toBestGenotype());

@@ -25,13 +25,16 @@ import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import io.jenetics.Alterer;
 import io.jenetics.Gene;
+import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
+import io.jenetics.util.DoubleRange;
 
 import io.jenetics.ext.internal.GeneratorSpliterator;
 
@@ -111,7 +114,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public final class AdaptiveEngine<
@@ -186,24 +189,39 @@ public final class AdaptiveEngine<
 	}
 
 	/**
-	 * Return a new adaptive evolution engine, with the given engine generation
-	 * function.
+	 * Return a new adaptive evolution engine, which tries to keep the
+	 * population's fitness variance within the given {@code variance} range. If
+	 * the population fitness variance is below the desired value, the
+	 * {@code enlarge} alterer is used for introduce more diversity in the
+	 * population fitness. And if the fitness variance is above the desired
+	 * variance, the {@code narrow} alterer is used for reducing the population
+	 * diversity.
 	 *
-	 * @param engine the engine generating function used for adapting the engines.
-	 *       <b>Be aware, that the {@code EvolutionResult} for the first created
-	 *       {@code Engine} is {@code null}.</b>
+	 * @since !__version__!
+	 *
+	 * @param variance the desired fitness variance range for the population's
+	 *        fitness
+	 * @param builder the engine builder template used for creating new new
+	 *        evolution engines with the different alterers
+	 * @param narrow the narrowing alterer
+	 * @param enlarge the alterer used for introducing a more divers population
 	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 * @return a new adaptive evolution engine
-	 * @throws NullPointerException if the given {@code engine} is {@code null}
+	 * @param <N> the fitness value type
+	 * @return a new adaptive evolution engine which maintains the given fitness
+	 *         variance
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AdaptiveEngine<G, C> of(
-		final Function<
-			? super EvolutionResult<G, C>,
-			? extends EvolutionStreamable<G, C>> engine
+	public static
+	<G extends Gene<?, G>, N extends Number & Comparable<? super N>>
+	AdaptiveEngine<G, N> byFitnessVariance(
+		final DoubleRange variance,
+		final Engine.Builder<G, N> builder,
+		final Alterer<G, N> narrow,
+		final Alterer<G, N> enlarge
 	) {
-		return new AdaptiveEngine<>(engine);
+		return new AdaptiveEngine<>(new FitnessVarianceAdaptiveEngine<>(
+			variance, builder, narrow, enlarge
+		));
 	}
 
 }
