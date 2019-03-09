@@ -22,9 +22,6 @@ package io.jenetics.ext.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -37,7 +34,6 @@ import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.internal.engine.EvolutionStreamImpl;
-import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.DoubleRange;
 
 import io.jenetics.ext.internal.GeneratorSpliterator;
@@ -194,12 +190,21 @@ public final class AdaptiveEngine<
 
 	/**
 	 * Return a new adaptive evolution engine, which tries to keep the
-	 * population's fitness variance within the given {@code variance} range.
+	 * population's fitness variance within the given {@code variance} range. If
+	 * the population fitness variance is below the desired value, the
+	 * {@code enlarge} alterer is used for introduce more diversity in the
+	 * population fitness. And if the fitness variance is above the desired
+	 * variance, the {@code narrow} alterer is used for reducing the population
+	 * diversity.
 	 *
 	 * @since !__version__!
 	 *
 	 * @param variance the desired fitness variance range for the population's
 	 *        fitness
+	 * @param builder the engine builder template used for creating new new
+	 *        evolution engines with the different alterers
+	 * @param narrow the narrowing alterer
+	 * @param enlarge the alterer used for introducing a more divers population
 	 * @param <G> the gene type
 	 * @param <N> the fitness value type
 	 * @return a new adaptive evolution engine which maintains the given fitness
@@ -214,62 +219,9 @@ public final class AdaptiveEngine<
 		final Alterer<G, N> narrow,
 		final Alterer<G, N> enlarge
 	) {
-		final AtomicReference<Engine<G, N>> eng = new AtomicReference<>();
-		final AtomicBoolean isNarrow = new AtomicBoolean();
-
-		return new AdaptiveEngine<>(result -> {
-			if (result == null) {
-				final Engine<G, N> e = builder.copy()
-					.alterers(narrow)
-					.build();
-				eng.set(e);
-				isNarrow.set(true);
-				return e;
-			} else {
-				final DoubleMomentStatistics stat = new DoubleMomentStatistics();
-
-				result.getPopulation().stream()
-					.mapToDouble(pt -> pt.getFitness().doubleValue())
-					.forEach(stat);
-
-				if (stat.getVariance() < variance.getMin()) {
-					if (isNarrow.get()) {
-						final Engine<G, N> e = builder.copy()
-							.alterers(enlarge)
-							.build();
-						eng.set(e);
-						isNarrow.set(false);
-						return e;
-					}
-				} else if (stat.getVariance() > variance.getMax()) {
-					if (isNarrow.get()) {
-						return eng.get();
-					} else {
-						final Engine<G, N> e = builder.copy()
-							.alterers(narrow)
-							.build();
-						eng.set(e);
-						isNarrow.set(true);
-						return e;
-					}
-				}
-
-				return eng.get();
-			}
-		});
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AdaptiveEngine<G, C> ofFitnessVariance(
-		final DoubleUnaryOperator varianceToMutationRate,
-		Engine<G, C> template
-	) {
-		return null;
-	}
-
-
-	public static final class Builder {
-
+		return new AdaptiveEngine<>(new FitnessVarianceAdaptiveEngine<>(
+			variance, builder, narrow, enlarge
+		));
 	}
 
 }
