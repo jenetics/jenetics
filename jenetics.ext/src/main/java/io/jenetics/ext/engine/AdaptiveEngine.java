@@ -114,7 +114,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.0
  * @since 4.1
  */
 public final class AdaptiveEngine<
@@ -197,7 +197,7 @@ public final class AdaptiveEngine<
 	 * variance, the {@code narrow} alterer is used for reducing the population
 	 * diversity.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param variance the desired fitness variance range for the population's
 	 *        fitness
