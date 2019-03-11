@@ -63,14 +63,14 @@ import io.jenetics.ext.util.Tree.Path;
  */
 public final class TreePattern {
 
-	private final Tree<Decl, ?> _pattern;
+	private final Tree<Var, ?> _pattern;
 	private final SortedSet<String> _variables;
 
-	private TreePattern(final Tree<Decl, ?> pattern) {
+	private TreePattern(final Tree<Var, ?> pattern) {
 		_pattern = requireNonNull(pattern);
 
 		final SortedSet<String> variables = new TreeSet<>();
-		for (Tree<Decl, ?> n : pattern) {
+		for (Tree<Var, ?> n : pattern) {
 			if (n.getValue().isVar) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
@@ -190,11 +190,11 @@ public final class TreePattern {
 
 	private static <V> boolean matches(
 		final Tree<V, ?> node,
-		final Tree<Decl, ?> pattern,
+		final Tree<Var, ?> pattern,
 		final Map<String, Tree<V, ?>> vars,
 		final BiPredicate<? super V, ? super String> equals
 	) {
-		final Decl decl = pattern.getValue();
+		final Var decl = pattern.getValue();
 
 		if (decl.isVar) {
 			final Tree<V, ?> tree = vars.get(decl.value);
@@ -212,7 +212,7 @@ public final class TreePattern {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
 						final Tree<V, ?> cn = node.getChild(i);
-						final Tree<Decl, ?> cp = pattern.getChild(i);
+						final Tree<Var, ?> cp = pattern.getChild(i);
 
 						if (!matches(cn, cp, vars, equals)) {
 							return false;
@@ -249,21 +249,21 @@ public final class TreePattern {
 	}
 
 	private static <V> TreeNode<V> expand(
-		final Tree<Decl, ?> template,
+		final Tree<Var, ?> template,
 		final Map<String, Tree<V, ?>> vars,
 		final Function<? super String, ? extends V> mapper
 	) {
-		final Map<Path, Decl> paths = template.stream()
-			.filter((Tree<Decl, ?> n) -> n.getValue().isVar)
+		final Map<Path, Var> paths = template.stream()
+			.filter((Tree<Var, ?> n) -> n.getValue().isVar)
 			.collect(Collectors.toMap(t -> t.childPath(), t -> t.getValue()));
 
 		//final Function<Decl, String> m = d -> d.isVar ? null: d.value;
-		final Function<Decl, String> m = d -> d.value;
+		final Function<Var, String> m = d -> d.value;
 		final TreeNode<V> tree = TreeNode.ofTree(template, m.andThen(mapper));
 
-		for (Map.Entry<Path, Decl> var : paths.entrySet()) {
+		for (Map.Entry<Path, Var> var : paths.entrySet()) {
 			final Path path = var.getKey();
-			final Decl decl = var.getValue();
+			final Var decl = var.getValue();
 			final TreeNode<V> child = tree.childAtPath(path)
 				.orElseThrow(AssertionError::new);
 
@@ -322,7 +322,7 @@ public final class TreePattern {
 	 *         doesn't represent a valid pattern tree
 	 */
 	public static TreePattern compile(final String pattern) {
-		return new TreePattern(TreeNode.parse(pattern, Decl::of));
+		return new TreePattern(TreeNode.parse(pattern, Var::of));
 	}
 
 
@@ -330,11 +330,11 @@ public final class TreePattern {
 	 * Helper classes.
 	 * ************************************************************************/
 
-	private static final class Decl {
+	public static final class Var {
 		private final String value;
 		private final boolean isVar;
 
-		private Decl(final String value, final boolean isVar) {
+		private Var(final String value, final boolean isVar) {
 			this.value = value;
 			this.isVar = isVar;
 		}
@@ -347,9 +347,9 @@ public final class TreePattern {
 		@Override
 		public boolean equals(final Object obj) {
 			return obj == this ||
-				obj instanceof Decl &&
-				Objects.equals(value, ((Decl)obj).value) &&
-				isVar == ((Decl)obj).isVar;
+				obj instanceof Var &&
+				Objects.equals(value, ((Var)obj).value) &&
+				isVar == ((Var)obj).isVar;
 		}
 
 		@Override
@@ -357,19 +357,23 @@ public final class TreePattern {
 			return isVar ? format("<%s>", value) : value;
 		}
 
-		static Decl val(final String value) {
-			return new Decl(value, false);
+		static Var val(final String value) {
+			return new Var(value, false);
 		}
 
-		static Decl var(final String value) {
-			return new Decl(value, true);
+		static Var var(final String value) {
+			return new Var(value, true);
 		}
 
-		static Decl of(final String value) {
+		static Var of(final String value) {
 			return value.startsWith("<") && value.endsWith(">")
-				? Decl.var(value.substring(1, value.length() - 1))
-				: Decl.val(value);
+				? Var.var(value.substring(1, value.length() - 1))
+				: Var.val(value);
 		}
+	}
+
+	public static final class Val {
+
 	}
 
 }

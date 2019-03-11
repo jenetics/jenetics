@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import io.jenetics.ext.util.TreeRewriter;
+import io.jenetics.ext.trs.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 

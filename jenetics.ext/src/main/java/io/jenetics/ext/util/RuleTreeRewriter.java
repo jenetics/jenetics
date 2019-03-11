@@ -28,6 +28,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import io.jenetics.ext.util.Tree.Path;
+import io.jenetics.ext.trs.TreeRewriter;
 
 /**
  * Rewriter implementation, which applies a single rule to a given tree until

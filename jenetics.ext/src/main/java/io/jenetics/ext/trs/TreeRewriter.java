@@ -17,11 +17,13 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.trs;
 
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Interface for rewriting a given tree.
