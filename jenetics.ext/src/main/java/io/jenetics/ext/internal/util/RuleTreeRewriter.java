@@ -30,6 +30,7 @@ import java.util.function.Function;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.util.TreeRewriter;
 
 /**
  * Rewriter implementation, which applies a single rule to a given tree until

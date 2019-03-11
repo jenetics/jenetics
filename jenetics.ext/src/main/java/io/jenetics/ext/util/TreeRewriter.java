@@ -17,24 +17,22 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal.util;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.util.TreeNode;
-
 /**
  * Interface for rewriting a given tree.
+ * <p>
  * <b>Description from <a href="https://en.wikipedia.org/wiki/Rewriting">
- *     Wikipedia</a></b>
+ *     Wikipedia: </a></b>
  * <em>
  *     In mathematics, computer science, and logic, rewriting covers a wide
- *     range of (potentially non-deterministic) methods of replacing subterms
+ *     range of (potentially non-deterministic) methods of replacing sub-terms
  *     of a formula with other terms. In their most basic form, they consist of
  *     a set of objects, plus relations on how to transform those objects.
- *     <p>
  *     Rewriting can be non-deterministic. One rule to rewrite a term could be
  *     applied in many different ways to that term, or more than one rule could
  *     be applicable. Rewriting systems then do not provide an algorithm for
@@ -43,10 +41,11 @@ import io.jenetics.ext.util.TreeNode;
  *     be viewed as computer programs, and several theorem provers and
  *     declarative programming languages are based on term rewriting.
  * </em>
+ * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface TreeRewriter<V> {
