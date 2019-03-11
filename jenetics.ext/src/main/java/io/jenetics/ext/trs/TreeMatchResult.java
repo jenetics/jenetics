@@ -20,11 +20,13 @@
 package io.jenetics.ext.trs;
 
 import static java.lang.String.format;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Map;
 
+import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 
 /**
@@ -35,22 +37,22 @@ import io.jenetics.ext.util.Tree;
  * @since 4.4
  */
 public final class TreeMatchResult<V> {
-	private final Tree<V, ?> _node;
-	private final Map<String, Tree<V, ?>> _variables;
+	private final Tree<? extends V, ?> _node;
+	private final Map<Var<V>, Tree<? extends V, ?>> _variables;
 
 	private TreeMatchResult(
-		final Tree<V, ?> node,
-		final Map<String, Tree<V, ?>> variables
+		final Tree<? extends V, ?> node,
+		final Map<Var<V>, Tree<? extends V, ?>> variables
 	) {
 		_node = requireNonNull(node);
-		_variables = requireNonNull(variables);
+		_variables = unmodifiableMap(requireNonNull(variables));
 	}
 
-	public Tree<V, ?> node() {
+	public Tree<? extends V, ?> node() {
 		return _node;
 	}
 
-	public Map<String, Tree<V, ?>> variables() {
+	public Map<Var<V>, Tree<? extends V, ?>> variables() {
 		return _variables;
 	}
 
@@ -73,8 +75,8 @@ public final class TreeMatchResult<V> {
 	}
 
 	static <V> TreeMatchResult<V> of(
-		final Tree<V, ?> node,
-		final Map<String, Tree<V, ?>> variables
+		final Tree<? extends V, ?> node,
+		final Map<Var<V>, Tree<? extends V, ?>> variables
 	) {
 		return new TreeMatchResult<>(node, variables);
 	}

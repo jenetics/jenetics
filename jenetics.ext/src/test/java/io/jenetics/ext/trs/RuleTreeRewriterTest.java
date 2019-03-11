@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.trs;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -27,6 +27,7 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.trs.RuleTreeRewriter;
 import io.jenetics.ext.trs.TreeRewriter;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
@@ -115,10 +116,10 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		final TreeMatchResult<V> result,
 		final TreeNode<V> tree
 	) {
-		final Map<String, Tree<V, ?>> vars = result.variables();
-		final TreePattern substitution = _rule.substitution();
+		final Map<Var<V>, Tree<? extends V, ?>> vars = result.variables();
+		final TreePattern<V> substitution = _rule.substitution();
 
-		final TreeNode<V> r = substitution.expand(vars, _mapper);
+		final TreeNode<V> r = substitution.expand(vars);
 
 		final Path path = result.node().childPath();
 		tree.replaceAtPath(path, r);

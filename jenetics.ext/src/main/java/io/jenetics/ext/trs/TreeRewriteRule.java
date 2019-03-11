@@ -99,7 +99,7 @@ public final class TreeRewriteRule {
 	 *
 	 * @return the replacement pattern of the rule
 	 */
-	public TreePattern substitution() {
+	public TreePattern<V> substitution() {
 		return _substitution;
 	}
 

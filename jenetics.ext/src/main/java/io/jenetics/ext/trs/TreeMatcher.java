@@ -21,7 +21,6 @@ package io.jenetics.ext.trs;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -37,18 +36,15 @@ import io.jenetics.ext.util.Tree;
  */
 public final class TreeMatcher<V> {
 
-	private final TreePattern _pattern;
-	private final Tree<V, ?> _tree;
-	private final BiPredicate<? super V, ? super String> _equals;
+	private final TreePattern<V> _pattern;
+	private final Tree<? extends V, ?> _tree;
 
 	private TreeMatcher(
-		final TreePattern pattern,
-		final Tree<V, ?> tree,
-		final BiPredicate<? super V, ? super String> equals
+		final TreePattern<V> pattern,
+		final Tree<? extends V, ?> tree
 	) {
 		_pattern = requireNonNull(pattern);
 		_tree = requireNonNull(tree);
-		_equals = requireNonNull(equals);
 	}
 
 	/**
@@ -56,7 +52,7 @@ public final class TreeMatcher<V> {
 	 *
 	 * @return the underlying tree pattern
 	 */
-	public TreePattern pattern() {
+	public TreePattern<V> pattern() {
 		return _pattern;
 	}
 
@@ -68,7 +64,7 @@ public final class TreeMatcher<V> {
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public boolean matches() {
-		return _pattern.matches(_tree, _equals);
+		return _pattern.matches(_tree);
 	}
 
 	/**
@@ -79,17 +75,16 @@ public final class TreeMatcher<V> {
 	 */
 	public Stream<TreeMatchResult<V>> results() {
 		return _tree.stream()
-			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, _equals)
+			.flatMap((Tree<? extends V, ?> tree) -> _pattern.match(tree)
 				.map(Stream::of)
 				.orElseGet(Stream::empty));
 	}
 
 	static <V> TreeMatcher<V> of(
-		final TreePattern pattern,
-		final Tree<V, ?> tree,
-		final BiPredicate<? super V, ? super String> equals
+		final TreePattern<V> pattern,
+		final Tree<? extends V, ?> tree
 	) {
-		return new TreeMatcher<>(pattern, tree, equals);
+		return new TreeMatcher<>(pattern, tree);
 	}
 
 }
