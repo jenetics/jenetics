@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal.util;
+package io.jenetics.ext.util;
 
 import java.util.Map;
 import java.util.stream.Collectors;
