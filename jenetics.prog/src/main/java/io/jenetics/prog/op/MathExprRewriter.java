@@ -21,8 +21,8 @@ package io.jenetics.prog.op;
 
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.internal.util.RuleTreeRewriter;
-import io.jenetics.ext.internal.util.TreeRewriteRule;
+import io.jenetics.ext.util.RuleTreeRewriter;
+import io.jenetics.ext.util.TreeRewriteRule;
 import io.jenetics.ext.util.TreeRewriter;
 import io.jenetics.ext.util.TreeNode;
 

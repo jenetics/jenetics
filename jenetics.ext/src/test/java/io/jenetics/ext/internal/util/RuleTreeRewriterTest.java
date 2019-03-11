@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.util.RuleTreeRewriter;
 import io.jenetics.ext.util.TreeNode;
 import io.jenetics.ext.util.TreeRewriter;
 

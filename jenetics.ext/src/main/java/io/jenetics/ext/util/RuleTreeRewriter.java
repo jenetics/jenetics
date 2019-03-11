@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal.util;
+package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 
@@ -27,10 +27,7 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
-import io.jenetics.ext.util.TreeNode;
-import io.jenetics.ext.util.TreeRewriter;
 
 /**
  * Rewriter implementation, which applies a single rule to a given tree until
