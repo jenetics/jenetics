@@ -64,7 +64,8 @@ public interface TreeRewriter<V> {
 
 	/**
 	 * Rewrites the given {@code tree} by applying the given {@code rewriters}.
-	 * This method to apply the rewriters until the tree stays unchanged.
+	 * This method to apply the all rewriters, in the order they are given in
+	 * the sequence, until the tree stays unchanged.
 	 *
 	 * @param tree the tree to rewrite
 	 * @param rewriters the rewriters applied to the tree
