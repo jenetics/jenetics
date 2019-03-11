@@ -27,9 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
-import io.jenetics.ext.util.TreePattern;
+import io.jenetics.ext.trs.TreePattern;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -17,12 +17,14 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.util;
+package io.jenetics.ext.trs;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
+
+import io.jenetics.ext.util.Tree;
 
 /**
  * Implementation of a pattern based tree matcher.
