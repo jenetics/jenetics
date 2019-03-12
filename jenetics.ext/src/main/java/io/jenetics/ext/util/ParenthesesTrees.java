@@ -33,12 +33,9 @@ import java.util.function.Function;
 final class ParenthesesTrees {
 	private ParenthesesTrees() {}
 
-
 	static final char ESCAPE_CHAR = '\\';
 
-	private static final char[] PROTECTED_CHARS = new char[] {
-		'(', ')', ',', ESCAPE_CHAR
-	};
+	private static final char[] PROTECTED_CHARS = { '(', ')', ',' };
 
 	static String escape(final String value) {
 		final StringBuilder result = new StringBuilder();
@@ -71,7 +68,11 @@ final class ParenthesesTrees {
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
 
-			if (c == ESCAPE_CHAR && !escaping) {
+			if (c == ESCAPE_CHAR &&
+				!escaping &&
+				i + 1 < value.length() &&
+				isProtectedChar(value.charAt(i + 1)))
+			{
 				escaping = true;
 				continue;
 			}

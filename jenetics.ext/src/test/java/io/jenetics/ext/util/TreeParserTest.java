@@ -52,8 +52,8 @@ public class TreeParserTest {
 	public Object[][] tokens() {
 		return new Object[][] {
 			{"a", new String[]{"a"}},
-			{"a\\", new String[]{"a"}},
-			{"a\\\\", new String[]{"a\\"}},
+			{"a\\", new String[]{"a\\"}},
+			{"a\\\\", new String[]{"a\\\\"}},
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
 			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
