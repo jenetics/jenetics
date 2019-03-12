@@ -23,6 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
+import io.jenetics.ext.internal.Escaper;
+
 /**
  * Helper methods for creating parentheses tree strings.
  *
@@ -33,57 +35,17 @@ import java.util.function.Function;
 final class ParenthesesTrees {
 	private ParenthesesTrees() {}
 
+	private static final char[] PROTECTED_CHARS = { '(', ')', ',' };
 	static final char ESCAPE_CHAR = '\\';
 
-	private static final char[] PROTECTED_CHARS = { '(', ')', ',' };
+	private static final Escaper ESCAPER = new Escaper(PROTECTED_CHARS, ESCAPE_CHAR);
 
 	static String escape(final String value) {
-		final StringBuilder result = new StringBuilder();
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-			if (isProtectedChar(c)) {
-				result.append(ESCAPE_CHAR);
-			}
-			result.append(c);
-		}
-
-		return result.toString();
+		return ESCAPER.escape(value);
 	}
-
-	private static boolean isProtectedChar(final char c) {
-		for (int i = 0; i < PROTECTED_CHARS.length; ++i) {
-			if (c == PROTECTED_CHARS[i]) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 
 	static String unescape(final String value) {
-		final StringBuilder result = new StringBuilder();
-
-		boolean escaping = false;
-		for (int i = 0; i < value.length(); ++i) {
-			final char c = value.charAt(i);
-
-			if (c == ESCAPE_CHAR &&
-				!escaping &&
-				i + 1 < value.length() &&
-				isProtectedChar(value.charAt(i + 1)))
-			{
-				escaping = true;
-				continue;
-			}
-
-			if (escaping) {
-				escaping = false;
-			}
-			result.append(c);
-		}
-
-		return result.toString();
+		return ESCAPER.unescape(value);
 	}
 
 	/* *************************************************************************
