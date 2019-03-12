@@ -21,7 +21,6 @@ package io.jenetics.ext.trs;
 
 import static java.lang.String.format;
 import static java.util.Collections.unmodifiableMap;
-import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.Collections;
@@ -48,22 +47,22 @@ import io.jenetics.ext.util.TreeNode;
  * The string representation of a tree pattern is a parenthesis tree string,
  * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
  * variables are put into angle brackets:
- * <pre>{@code
- *     add(<x>,0)
- *     mul(1,<y>)
- * }</pre>
+ * <pre>
+ *     add(:x,0)
+ *     mul(1,:y)
+ * </pre>
  *
  * @see TreeRewriteRule
  * @see Tree#toParenthesesString()
  * @see TreeMatcher
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class TreePattern<V> {
 
-	private final TreeNode<Node<V>> _pattern;
+	private final TreeNode<Decl<V>> _pattern;
 	private final SortedSet<Var<V>> _variables;
 
 	/**
@@ -74,7 +73,7 @@ public final class TreePattern<V> {
 	 * @throws IllegalArgumentException if {@link Var} nodes are not leaf nodes;
 	 *         {@link Tree#isLeaf()} is {@code false}
 	 */
-	public TreePattern(final Tree<Node<V>, ?> pattern) {
+	public TreePattern(final Tree<Decl<V>, ?> pattern) {
 		_pattern = TreeNode.ofTree(pattern);
 		_variables = vars();
 	}
@@ -82,7 +81,7 @@ public final class TreePattern<V> {
 	// Extracts the variables from the pattern.
 	private SortedSet<Var<V>> vars() {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
-		for (Tree<Node<V>, ?> n : _pattern) {
+		for (Tree<Decl<V>, ?> n : _pattern) {
 			if (n.getValue() instanceof Var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
@@ -175,10 +174,10 @@ public final class TreePattern<V> {
 
 	private static <V> boolean matches(
 		final Tree<V, ?> node,
-		final Tree<Node<V>, ?> pattern,
+		final Tree<Decl<V>, ?> pattern,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		final Node<V> decl = pattern.getValue();
+		final Decl<V> decl = pattern.getValue();
 
 		if (decl instanceof Var) {
 			final Tree<? extends V, ?> tree = vars.get(decl);
@@ -196,7 +195,7 @@ public final class TreePattern<V> {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
 						final Tree<V, ?> cn = node.getChild(i);
-						final Tree<Node<V>, ?> cp = pattern.getChild(i);
+						final Tree<Decl<V>, ?> cp = pattern.getChild(i);
 
 						if (!matches(cn, cp, vars)) {
 							return false;
@@ -229,11 +228,11 @@ public final class TreePattern<V> {
 
 	// Expanding the template.
 	private static <V> TreeNode<V> expand(
-		final Tree<Node<V>, ?> template,
+		final Tree<Decl<V>, ?> template,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
-			.filter((Tree<Node<V>, ?> n) -> n.getValue() instanceof Var)
+			.filter((Tree<Decl<V>, ?> n) -> n.getValue() instanceof Var)
 			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.getValue()));
 
 		final TreeNode<V> tree = TreeNode.ofTree(
@@ -297,7 +296,7 @@ public final class TreePattern<V> {
 		final Function<? super String, ? extends V> mapper
 	) {
 		return new TreePattern<>(
-			TreeNode.parse(pattern, v -> Node.of(v, mapper))
+			TreeNode.parse(pattern, v -> Decl.of(v, mapper))
 		);
 	}
 
@@ -305,30 +304,79 @@ public final class TreePattern<V> {
 	 * Helper classes.
 	 * ************************************************************************/
 
-	public abstract static class Node<V> {
-		private Node() {
+	/**
+	 * A <em>sealed</em> class, which constitutes the pattern tree. The only two
+	 * implementations of this class are the {@link Var} and the {@link Val}
+	 * class. The {@link Var} class represents a placeholder for an arbitrary
+	 * sub-tree and the {@link Val} class stands for an arbitrary concrete
+	 * sub-tree.
+	 *
+	 * @see Var
+	 * @see Val
+	 *
+	 * @param <V> the node type the tree-pattern is working on
+	 */
+	public abstract static class Decl<V> {
+		private Decl() {
 		}
 
-		static <V> Node<V> of(
+		static <V> Decl<V> of(
 			final String value,
 			final Function<? super String, ? extends V> mapper
 		) {
-			return value.startsWith("<") && value.endsWith(">")
-				? Var.of(value.substring(1, value.length() - 1))
+			return Var.isVar(value)
+				? Var.of(value.substring(1))
 				: Val.of(mapper.apply(value));
 		}
 	}
 
+	/**
+	 * Represents a placeholder (variable) for an arbitrary sub-tree. A variable
+	 * is identified by its name.
+	 *
+	 * @param <V> the node type the tree-pattern is working on
+	 */
 	public static final class Var<V>
-		extends Node<V>
+		extends Decl<V>
 		implements Comparable<Var<V>>
 	{
 		private final String _name;
 
 		private Var(final String name) {
-			_name = requireNonNull(name);
+			if (!isIdentifier(name)) {
+				throw new IllegalArgumentException(format(
+					"Variable is not valid Java identifier: '%s'",
+					name
+				));
+			}
+			_name = name;
 		}
 
+		private static boolean isIdentifier(final String id) {
+			if (id.isEmpty()) {
+				return false;
+			}
+			int cp = id.codePointAt(0);
+			if (!Character.isJavaIdentifierStart(cp)) {
+				return false;
+			}
+			for (int i = Character.charCount(cp);
+				 i < id.length();
+				 i += Character.charCount(cp))
+			{
+				cp = id.codePointAt(i);
+				if (!Character.isJavaIdentifierPart(cp)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/**
+		 * Return the name of the variable.
+		 *
+		 * @return the variable name
+		 */
 		public String name() {
 			return _name;
 		}
@@ -352,21 +400,36 @@ public final class TreePattern<V> {
 
 		@Override
 		public String toString() {
-			return format("<%s>", _name);
+			return format(":%s", _name);
 		}
 
-		static <V> Var<V> of(final String name) {
+		/**
+		 * Return a new variable with the given name.
+		 *
+		 * @param name the name of the variable
+		 * @param <V> the node type the tree-pattern is working on
+		 * @return a new variable with the given name
+		 * @throws NullPointerException if the given {@code name} is {@code null}
+		 * @throws IllegalArgumentException if the given {@code name} is not a
+		 *         valid Java identifier
+		 */
+		public static <V> Var<V> of(final String name) {
 			return new Var<>(name);
+		}
+
+		static boolean isVar(final String name) {
+			return name.startsWith(":") && isIdentifier(name.substring(1));
 		}
 
 	}
 
 	/**
-	 * This class represents a constant pattern value.
+	 * This class represents a constant pattern value, which can be part of a
+	 * whole sub-tree.
 	 *
 	 * @param <V> the node value type
 	 */
-	public static final class Val<V> extends Node<V> {
+	public static final class Val<V> extends Decl<V> {
 		private final V _value;
 
 		private Val(final V value) {
@@ -394,6 +457,13 @@ public final class TreePattern<V> {
 			return Objects.toString(_value);
 		}
 
+		/**
+		 * Create a new <em>value</em> object.
+		 *
+		 * @param value the underlying pattern value
+		 * @param <V> the node type
+		 * @return a new <em>value</em> object
+		 */
 		public static <V> Val<V> of(final V value) {
 			return new Val<>(value);
 		}
