@@ -46,6 +46,7 @@ public class TreePatternTest {
 		final String expanded
 	) {
 		final TreePattern<String> tp = TreePattern.compile(pattern);
+		System.out.println(tp);
 		final Map<Var<String>, Tree<String, ?>> vars = IntStream.range(0, trees.length)
 			.mapToObj(i -> new Object() {
 					final Var<String> name = Var.of(VARS[i]);
@@ -59,9 +60,9 @@ public class TreePatternTest {
 	@DataProvider
 	public Object[][] patterns() {
 		return new Object[][] {
-			{":a", new String[]{"sin(4)"}, "sin(4)"},
-			{"cos(:a)", new String[]{"sin(4)"}, "cos(sin(4))"},
-			{"cos(:a,2,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),2,sin(x))"},
+			{"[a]", new String[]{"sin(4)"}, "sin(4)"},
+			{"cos(#a)", new String[]{"sin(4)"}, "cos(sin(4))"},
+			{"cos($a,2,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),2,sin(x))"},
 			{"cos(:a,:b,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),sin(x))"},
 			{"cos(:a,:b,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"},
 			{"mul(2,:a)", new String[]{"1"}, "mul(2,1)"},

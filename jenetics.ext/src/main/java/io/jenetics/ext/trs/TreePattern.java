@@ -285,7 +285,8 @@ public final class TreePattern<V> {
 	 * @return the compiled pattern
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
-	 *         doesn't represent a valid pattern tree
+	 *         doesn't represent a valid pattern tree or one of the variable
+	 *         name is not a valid (Java) identifier
 	 */
 	public static TreePattern<String> compile(final String pattern) {
 		return compile(pattern, Function.identity());
@@ -324,10 +325,16 @@ public final class TreePattern<V> {
 			final String value,
 			final Function<? super String, ? extends V> mapper
 		) {
+			System.out.println(value + "--" + Var.isVar(value));
 			return Var.isVar(value)
 				? Var.of(value.substring(1))
 				: Val.of(mapper.apply(value));
 		}
+
+		private static String unescape(final String value) {
+			return value.replace("\\:", ":");
+		}
+
 	}
 
 	/**
@@ -418,7 +425,7 @@ public final class TreePattern<V> {
 		}
 
 		static boolean isVar(final String name) {
-			return name.startsWith(":") && isIdentifier(name.substring(1));
+			return name.startsWith(":");
 		}
 
 	}
