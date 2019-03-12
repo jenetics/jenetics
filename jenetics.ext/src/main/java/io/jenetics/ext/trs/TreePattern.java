@@ -345,7 +345,7 @@ public final class TreePattern<V> {
 		private Var(final String name) {
 			if (!isIdentifier(name)) {
 				throw new IllegalArgumentException(format(
-					"Variable is not valid Java identifier: '%s'",
+					"Variable is not valid identifier: '%s'",
 					name
 				));
 			}
