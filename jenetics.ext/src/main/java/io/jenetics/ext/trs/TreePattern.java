@@ -31,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
@@ -235,10 +236,9 @@ public final class TreePattern<V> {
 			.filter((Tree<Node<V>, ?> n) -> n.getValue() instanceof Var)
 			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.getValue()));
 
-		//final Function<Var, String> m = d -> d.value;
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
-			n -> ((Val<V>)n).value()
+			n -> n instanceof Val ? ((Val<V>)n).value() : null
 		);
 
 		for (Map.Entry<Path, Var<V>> var : paths.entrySet()) {
@@ -288,11 +288,18 @@ public final class TreePattern<V> {
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree
 	 */
-	public static <V> TreePattern<V> compile(final String pattern) {
-		return null;
-		//return new TreePattern(TreeNode.parse(pattern, Var::of));
+	public static TreePattern<String> compile(final String pattern) {
+		return compile(pattern, Function.identity());
 	}
 
+	public static <V> TreePattern<V> compile(
+		final String pattern,
+		final Function<? super String, ? extends V> mapper
+	) {
+		return new TreePattern<>(
+			TreeNode.parse(pattern, v -> Node.of(v, mapper))
+		);
+	}
 
 	/* *************************************************************************
 	 * Helper classes.
@@ -302,10 +309,13 @@ public final class TreePattern<V> {
 		private Node() {
 		}
 
-		static <V> Node<V> of(final String value) {
+		static <V> Node<V> of(
+			final String value,
+			final Function<? super String, ? extends V> mapper
+		) {
 			return value.startsWith("<") && value.endsWith(">")
 				? Var.of(value.substring(1, value.length() - 1))
-				: Val.of(value);
+				: Val.of(mapper.apply(value));
 		}
 	}
 

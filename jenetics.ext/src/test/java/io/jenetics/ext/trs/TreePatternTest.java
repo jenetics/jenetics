@@ -28,6 +28,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.ext.trs.TreePattern;
+import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -42,10 +43,10 @@ public class TreePatternTest {
 		final String[] trees,
 		final String expanded
 	) {
-		final TreePattern tp = TreePattern.compile(pattern);
-		final Map<String, Tree<String, ?>> vars = IntStream.range(0, trees.length)
+		final TreePattern<String> tp = TreePattern.compile(pattern);
+		final Map<Var<String>, Tree<String, ?>> vars = IntStream.range(0, trees.length)
 			.mapToObj(i -> new Object() {
-					final String name = Integer.toString(i + 1);
+					final Var<String> name = Var.of(Integer.toString(i + 1));
 					final Tree<String, ?> tree = TreeNode.parse(trees[i]);
 				})
 			.collect(Collectors.toMap(o -> o.name, o -> o.tree));
