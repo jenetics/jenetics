@@ -62,7 +62,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TreePattern<V> {
 
-	private final Tree<? extends Node<V>, ?> _pattern;
+	private final TreeNode<Node<V>> _pattern;
 	private final SortedSet<Var<V>> _variables;
 
 	/**
@@ -73,14 +73,15 @@ public final class TreePattern<V> {
 	 * @throws IllegalArgumentException if {@link Var} nodes are not leaf nodes;
 	 *         {@link Tree#isLeaf()} is {@code false}
 	 */
-	public TreePattern(final Tree<? extends Node<V>, ?> pattern) {
-		_pattern = requireNonNull(pattern);
+	public TreePattern(final Tree<Node<V>, ?> pattern) {
+		_pattern = TreeNode.ofTree(pattern);
 		_variables = vars();
 	}
 
+	// Extracts the variables from the pattern.
 	private SortedSet<Var<V>> vars() {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
-		for (Tree<? extends Node<V>, ?> n : _pattern) {
+		for (Tree<Node<V>, ?> n : _pattern) {
 			if (n.getValue() instanceof Var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
@@ -130,7 +131,7 @@ public final class TreePattern<V> {
 	 * @return a new matcher for {@code this} pattern
 	 * @throws NullPointerException if the arguments is {@code null}
 	 */
-	public TreeMatcher<V> matcher(final Tree<? extends V, ?> tree) {
+	public TreeMatcher<V> matcher(final Tree<V, ?> tree) {
 		return TreeMatcher.of(this, tree);
 	}
 
@@ -147,8 +148,8 @@ public final class TreePattern<V> {
 		return Objects.equals(Objects.toString(value), string);
 	}
 
-	public Optional<TreeMatchResult<V>> match(final Tree<? extends V, ?> tree) {
-		final Map<Var<V>, Tree<? extends V, ?>> vars = new HashMap<>();
+	public Optional<TreeMatchResult<V>> match(final Tree<V, ?> tree) {
+		final Map<Var<V>, Tree<V, ?>> vars = new HashMap<>();
 		final boolean matches = matches(tree, _pattern, vars);
 
 		return matches
@@ -167,14 +168,14 @@ public final class TreePattern<V> {
 	 *         {@code false} otherwise
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public boolean matches(final Tree<? extends V, ?> tree) {
+	public boolean matches(final Tree<V, ?> tree) {
 		return matches(tree, _pattern, new HashMap<>());
 	}
 
 	private static <V> boolean matches(
-		final Tree<? extends V, ?> node,
-		final Tree<? extends Node<V>, ?> pattern,
-		final Map<Var<V>, Tree<? extends V, ?>> vars
+		final Tree<V, ?> node,
+		final Tree<Node<V>, ?> pattern,
+		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		final Node<V> decl = pattern.getValue();
 
@@ -193,8 +194,8 @@ public final class TreePattern<V> {
 			if (Objects.equals(v, p.value())) {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
-						final Tree<? extends V, ?> cn = node.getChild(i);
-						final Tree<? extends Node<V>, ?> cp = pattern.getChild(i);
+						final Tree<V, ?> cn = node.getChild(i);
+						final Tree<Node<V>, ?> cp = pattern.getChild(i);
 
 						if (!matches(cn, cp, vars)) {
 							return false;
@@ -221,14 +222,14 @@ public final class TreePattern<V> {
 	 * @throws IllegalArgumentException if not all needed variables are part
 	 *         of the {@code variables} map
 	 */
-	public <V> TreeNode<V>
-	expand(final Map<Var<V>, Tree<? extends V, ?>> variables) {
-		return expand((Tree<Node<V>, ?>)_pattern, variables);
+	public TreeNode<V> expand(final Map<Var<V>, Tree<V, ?>> variables) {
+		return expand(_pattern, variables);
 	}
 
+	// Expanding the template.
 	private static <V> TreeNode<V> expand(
 		final Tree<Node<V>, ?> template,
-		final Map<Var<V>, Tree<? extends V, ?>> vars
+		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
 			.filter((Tree<Node<V>, ?> n) -> n.getValue() instanceof Var)
@@ -287,8 +288,9 @@ public final class TreePattern<V> {
 	 * @throws IllegalArgumentException if the given parentheses tree string
 	 *         doesn't represent a valid pattern tree
 	 */
-	public static TreePattern compile(final String pattern) {
-		return new TreePattern(TreeNode.parse(pattern, Var::of));
+	public static <V> TreePattern<V> compile(final String pattern) {
+		return null;
+		//return new TreePattern(TreeNode.parse(pattern, Var::of));
 	}
 
 

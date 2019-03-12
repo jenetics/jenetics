@@ -46,7 +46,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 
-	private final TreeRewriteRule _rule;
+	private final TreeRewriteRule<V> _rule;
 	private final BiPredicate<? super V, ? super String> _equals;
 	private final Function<? super String, ? extends V> _mapper;
 
@@ -59,7 +59,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public RuleTreeRewriter(
-		final TreeRewriteRule rule,
+		final TreeRewriteRule<V> rule,
 		final BiPredicate<? super V, ? super String> equals,
 		final Function<? super String, ? extends V> mapper
 	) {
@@ -102,7 +102,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		boolean rewritten = false;
 		Optional<TreeMatchResult<V>> result;
 		do {
-			result = _rule.match().matcher(tree, _equals).results()
+			result = _rule.match().matcher(tree).results()
 				.findFirst();
 
 			result.ifPresent(res -> rewrite(res, tree));
@@ -116,7 +116,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		final TreeMatchResult<V> result,
 		final TreeNode<V> tree
 	) {
-		final Map<Var<V>, Tree<? extends V, ?>> vars = result.variables();
+		final Map<Var<V>, Tree<V, ?>> vars = result.variables();
 		final TreePattern<V> substitution = _rule.substitution();
 
 		final TreeNode<V> r = substitution.expand(vars);

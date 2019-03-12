@@ -27,6 +27,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.jenetics.ext.trs.TreePattern.Var;
+
 /**
  * Represents a tree rewrite rule. A rewrite rule consists of a match pattern,
  * which must be matched, and a substitution pattern, which is expanded and
@@ -50,10 +52,10 @@ import java.util.stream.Collectors;
  * @version 4.4
  * @since 4.4
  */
-public final class TreeRewriteRule {
+public final class TreeRewriteRule<V> {
 
-	private final TreePattern _match;
-	private final TreePattern _substitution;
+	private final TreePattern<V> _match;
+	private final TreePattern<V> _substitution;
 
 	/**
 	 * Create a new rewrite rule from the given {@code match} and
@@ -66,13 +68,13 @@ public final class TreeRewriteRule {
 	 *         variables not defined in the <em>matcher</em> pattern
 	 */
 	private TreeRewriteRule(
-		final TreePattern match,
-		final TreePattern substitution
+		final TreePattern<V> match,
+		final TreePattern<V> substitution
 	) {
 		_match = requireNonNull(match);
 		_substitution = requireNonNull(substitution);
 
-		final Set<String> undefined = new HashSet<>(_substitution.variables());
+		final Set<Var<V>> undefined = new HashSet<>(_substitution.variables());
 		undefined.removeAll(_match.variables());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(

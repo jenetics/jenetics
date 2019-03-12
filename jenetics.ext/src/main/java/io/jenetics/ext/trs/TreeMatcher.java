@@ -37,12 +37,9 @@ import io.jenetics.ext.util.Tree;
 public final class TreeMatcher<V> {
 
 	private final TreePattern<V> _pattern;
-	private final Tree<? extends V, ?> _tree;
+	private final Tree<V, ?> _tree;
 
-	private TreeMatcher(
-		final TreePattern<V> pattern,
-		final Tree<? extends V, ?> tree
-	) {
+	private TreeMatcher(final TreePattern<V> pattern, final Tree<V, ?> tree) {
 		_pattern = requireNonNull(pattern);
 		_tree = requireNonNull(tree);
 	}
@@ -75,14 +72,14 @@ public final class TreeMatcher<V> {
 	 */
 	public Stream<TreeMatchResult<V>> results() {
 		return _tree.stream()
-			.flatMap((Tree<? extends V, ?> tree) -> _pattern.match(tree)
+			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree)
 				.map(Stream::of)
 				.orElseGet(Stream::empty));
 	}
 
 	static <V> TreeMatcher<V> of(
 		final TreePattern<V> pattern,
-		final Tree<? extends V, ?> tree
+		final Tree<V, ?> tree
 	) {
 		return new TreeMatcher<>(pattern, tree);
 	}

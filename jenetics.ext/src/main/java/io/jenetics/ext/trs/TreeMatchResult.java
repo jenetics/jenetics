@@ -37,22 +37,22 @@ import io.jenetics.ext.util.Tree;
  * @since 4.4
  */
 public final class TreeMatchResult<V> {
-	private final Tree<? extends V, ?> _node;
-	private final Map<Var<V>, Tree<? extends V, ?>> _variables;
+	private final Tree<V, ?> _node;
+	private final Map<Var<V>, Tree<V, ?>> _variables;
 
 	private TreeMatchResult(
-		final Tree<? extends V, ?> node,
-		final Map<Var<V>, Tree<? extends V, ?>> variables
+		final Tree<V, ?> node,
+		final Map<Var<V>, Tree<V, ?>> variables
 	) {
 		_node = requireNonNull(node);
 		_variables = unmodifiableMap(requireNonNull(variables));
 	}
 
-	public Tree<? extends V, ?> node() {
+	public Tree<V, ?> node() {
 		return _node;
 	}
 
-	public Map<Var<V>, Tree<? extends V, ?>> variables() {
+	public Map<Var<V>, Tree<V, ?>> variables() {
 		return _variables;
 	}
 
@@ -75,8 +75,8 @@ public final class TreeMatchResult<V> {
 	}
 
 	static <V> TreeMatchResult<V> of(
-		final Tree<? extends V, ?> node,
-		final Map<Var<V>, Tree<? extends V, ?>> variables
+		final Tree<V, ?> node,
+		final Map<Var<V>, Tree<V, ?>> variables
 	) {
 		return new TreeMatchResult<>(node, variables);
 	}
