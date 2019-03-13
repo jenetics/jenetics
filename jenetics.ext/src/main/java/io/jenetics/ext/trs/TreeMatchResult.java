@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.trs;
 
-import static java.lang.String.format;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
@@ -39,15 +38,16 @@ import io.jenetics.ext.util.TreeNode;
  * @since !__version__!
  */
 public final class TreeMatchResult<V> {
-	private final Tree<V, ?> _node;
-	private final Map<Var<V>, Tree<V, ?>> _variables;
+
+	private final Tree<V, ?> _tree;
+	private final Map<Var<V>, Tree<V, ?>> _vars;
 
 	private TreeMatchResult(
-		final Tree<V, ?> node,
-		final Map<Var<V>, Tree<V, ?>> variables
+		final Tree<V, ?> tree,
+		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		_node = TreeNode.ofTree(node);
-		_variables = unmodifiableMap(requireNonNull(variables));
+		_tree = TreeNode.ofTree(tree);
+		_vars = unmodifiableMap(requireNonNull(vars));
 	}
 
 	/**
@@ -55,42 +55,42 @@ public final class TreeMatchResult<V> {
 	 *
 	 * @return node (tree), which has been matched by some pattern
 	 */
-	public Tree<V, ?> node() {
-		return _node;
+	public Tree<V, ?> tree() {
+		return _tree;
 	}
 
 	/**
-	 * The variables involved while matching the tree {@link #node()}.
+	 * The variables involved while matching the tree {@link #tree()}.
 	 *
-	 * @return variables involved while matching the tree {@link #node()}.
+	 * @return variables involved while matching the tree {@link #tree()}.
 	 */
-	public Map<Var<V>, Tree<V, ?>> variables() {
-		return _variables;
+	public Map<Var<V>, Tree<V, ?>> vars() {
+		return _vars;
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_node, hash(_variables));
+		return hash(_tree, hash(_vars));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof TreeMatchResult &&
-			_node.equals(((TreeMatchResult)obj)._node) &&
-			_variables.equals(((TreeMatchResult)obj)._variables);
+			_tree.equals(((TreeMatchResult)obj)._tree) &&
+			_vars.equals(((TreeMatchResult)obj)._vars);
 	}
 
 	@Override
 	public String toString() {
-		return format("MatchResult[%s]", _node.toParenthesesString());
+		return _tree.toParenthesesString();
 	}
 
 	static <V> TreeMatchResult<V> of(
-		final Tree<V, ?> node,
-		final Map<Var<V>, Tree<V, ?>> variables
+		final Tree<V, ?> tree,
+		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		return new TreeMatchResult<>(node, variables);
+		return new TreeMatchResult<>(tree, vars);
 	}
 
 }
