@@ -28,13 +28,15 @@ import java.util.Map;
 
 import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
- * The result of a tree match operation.
+ * The result of a tree match operation. It contains the matching tree and the
+ * variables trees which matches the matching tree.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class TreeMatchResult<V> {
 	private final Tree<V, ?> _node;
@@ -44,14 +46,24 @@ public final class TreeMatchResult<V> {
 		final Tree<V, ?> node,
 		final Map<Var<V>, Tree<V, ?>> variables
 	) {
-		_node = requireNonNull(node);
+		_node = TreeNode.ofTree(node);
 		_variables = unmodifiableMap(requireNonNull(variables));
 	}
 
+	/**
+	 * The node (tree), which has been matched by some pattern.
+	 *
+	 * @return node (tree), which has been matched by some pattern
+	 */
 	public Tree<V, ?> node() {
 		return _node;
 	}
 
+	/**
+	 * The variables involved while matching the tree {@link #node()}.
+	 *
+	 * @return variables involved while matching the tree {@link #node()}.
+	 */
 	public Map<Var<V>, Tree<V, ?>> variables() {
 		return _variables;
 	}

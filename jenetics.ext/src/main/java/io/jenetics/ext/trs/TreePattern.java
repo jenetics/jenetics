@@ -38,24 +38,66 @@ import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
 
 /**
+ * This class serves two purposes. Firstly, it is used as a <em>classical</em>
+ * pattern, which is used to find <em>matches</em> against a <em>matching</em>
+ * tree. Secondly, it can <em>expand</em> a given pattern to a full tree with a
+ * given <em>pattern</em> variable to sub-tree mapping.
+ *
+ * <p><b>Matching trees</b></p>
+ *
  * A compiled representation of a <em>tree</em> pattern. A tree pattern,
  * specified as a parentheses string, must first be compiled into an instance of
  * this class. The resulting pattern can then be used to create a
- * {@code TreeMatcher} object that can match arbitrary trees against the tree
+ * {@link TreeMatcher} object that can match arbitrary trees against the tree
  * pattern. All of the state involved in performing a match resides in the
  * matcher, so many matchers can share the same pattern.
  * <p>
  * The string representation of a tree pattern is a parenthesis tree string,
  * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
- * variables are put into angle brackets:
- * <pre>
- * add($x,0)
- * mul(1,$y)
- * </pre>
+ * variables are prefixed with a '$' and must be a valid Java identifier.
+ * <pre>{@code
+ * final TreePattern<String> p1 = TreePattern.compile("add($a,add($b,sin(x)))");
+ * final TreePattern<String> p2 = TreePattern.compile("pow($x,$y)");
+ * }</pre>
+ *
+ * If you need to have values which starts with a '$' character, you can escape
+ * it with a '\'.
+ * <pre>{@code
+ * final TreePattern<String> p1 = TreePattern.compile("concat($x,\\$foo)");
+ * }</pre>
+ *
+ * The second value, {@code $foo}, of the {@code concat} function is not treated
+ * as <em>pattern</em> variable.
+ * <p>
+ * If you want to match against trees with a different value type than
+ * {@code String}, you have to specify an additional type mapper function when
+ * compiling the pattern string.
+ * <pre>{@code
+ * final TreePattern<Op<Double>> p = TreePattern.compile(
+ *     "add($a,add($b,sin(x)))",
+ *     OpConverter::ofString
+ * );
+ * }</pre>
+ *
+ * <p><b>Expanding trees</b></p>
+ *
+ * The second functionality of the tree pattern is to expand a pattern to a whole
+ * tree with a given <em>pattern</em> variable to sub-tree mapping.
+ * <pre>{@code
+ * final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+ * final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+ * vars.put(Var.of("x"), TreeNode.parse("sin(x)"));
+ * vars.put(Var.of("y"), TreeNode.parse("sin(y)"));
+ *
+ * final Tree<String, ?> tree = pattern.expand(vars);
+ * assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
+ * }</pre>
  *
  * @see TreeRewriteRule
  * @see Tree#toParenthesesString()
  * @see TreeMatcher
+ *
+ * @param <V> the value type of the tree than can be matched by this pattern
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -113,22 +155,6 @@ public final class TreePattern<V> {
 	 * {@code this} pattern.
 	 *
 	 * @param tree the tree to be matched
-	 * @param equals the predicate which checks the equality between the tree
-	 *        node values and the string representation of the tree pattern
-	 * @return a new matcher for {@code this} pattern
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	//public TreeMatcher<V> matcher(final Tree<V, ?> tree) {
-	//	return TreeMatcher.of(this, tree, equals);
-	//}
-
-	/**
-	 * Creates a matcher that will match the given input tree against
-	 * {@code this} pattern. For comparing the tree node values with the pattern,
-	 * the node values are converted to strings (with the {@link Object#toString()}
-	 * first.
-	 *
-	 * @param tree the tree to be matched
 	 * @return a new matcher for {@code this} pattern
 	 * @throws NullPointerException if the arguments is {@code null}
 	 */
@@ -137,18 +163,13 @@ public final class TreePattern<V> {
 	}
 
 	/**
-	 * Default equals comparison between node values and pattern string values.
+	 * Try to match the given {@code tree} against {@code this} pattern.
 	 *
-	 * @param value the tree node value
-	 * @param string the pattern node string
-	 * @param <V> the tree node value type
-	 * @return {@code true} if the string representation of the {@code value}
-	 *         and the pattern {@code string} value are equal
+	 * @param tree the tree to be matched
+	 * @return the match result, or {@link Optional#empty()} if the given
+	 *         {@code tree} doesn't match
+	 * @throws NullPointerException if the arguments is {@code null}
 	 */
-	static <V> boolean equals(final V value, final String string) {
-		return Objects.equals(Objects.toString(value), string);
-	}
-
 	public Optional<TreeMatchResult<V>> match(final Tree<V, ?> tree) {
 		final Map<Var<V>, Tree<V, ?>> vars = new HashMap<>();
 		final boolean matches = matches(tree, _pattern, vars);
@@ -159,10 +180,7 @@ public final class TreePattern<V> {
 	}
 
 	/**
-	 * Tests whether the given input tree matches {@code this} pattern, using
-	 * the given {@code equals} predicate. For comparing the tree node values
-	 * with the pattern, the node values are converted to strings (with the
-	 * {@link Object#toString()} first.
+	 * Tests whether the given input {@code tree} matches {@code this} pattern.
 	 *
 	 * @param tree the tree to be matched
 	 * @return {@code true} if the {@code tree} matches {@code this} pattern,
@@ -213,9 +231,7 @@ public final class TreePattern<V> {
 	}
 
 	/**
-	 * Expands {@code this} pattern with the given variable mapping and using
-	 * the given value {@code mapper}. Missing {@code variables} mapping are
-	 * removed from the expanded tree.
+	 * Expands {@code this} pattern with the given variable mapping.
 	 *
 	 * @param variables the variables to use for expanding {@code this} pattern
 	 * @return the expanded tree pattern

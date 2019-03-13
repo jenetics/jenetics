@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.trs;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -84,4 +85,14 @@ public class TreePatternTest {
 		};
 	}
 
+	@Test
+	public void expand() {
+		final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+		final Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+		vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
+		vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+
+		final Tree<String, ?> tree = pattern.expand(vars);
+		Assert.assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
+	}
 }
