@@ -105,8 +105,11 @@ import io.jenetics.ext.util.TreeNode;
  */
 public final class TreePattern<V> {
 
+	// Primary state of the tree pattern.
 	private final TreeNode<Decl<V>> _pattern;
-	private final SortedSet<Var<V>> _variables;
+
+	// Cached variable set.
+	private final SortedSet<Var<V>> _vars;
 
 	/**
 	 * Create a new tree-pattern object from the given pattern tree.
@@ -118,13 +121,14 @@ public final class TreePattern<V> {
 	 */
 	public TreePattern(final Tree<Decl<V>, ?> pattern) {
 		_pattern = TreeNode.ofTree(pattern);
-		_variables = vars();
+		_vars = extractVars(_pattern);
 	}
 
 	// Extracts the variables from the pattern.
-	private SortedSet<Var<V>> vars() {
+	private static <V> SortedSet<Var<V>>
+	extractVars(final TreeNode<Decl<V>> pattern) {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
-		for (Tree<Decl<V>, ?> n : _pattern) {
+		for (Tree<Decl<V>, ?> n : pattern) {
 			if (n.getValue() instanceof Var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
@@ -146,8 +150,8 @@ public final class TreePattern<V> {
 	 *
 	 * @return the variables, defined in this pattern
 	 */
-	public SortedSet<Var<V>> variables() {
-		return _variables;
+	public SortedSet<Var<V>> vars() {
+		return _vars;
 	}
 
 	/**

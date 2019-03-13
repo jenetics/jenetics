@@ -74,8 +74,8 @@ public final class TreeRewriteRule<V> {
 		_match = requireNonNull(match);
 		_substitution = requireNonNull(substitution);
 
-		final Set<Var<V>> undefined = new HashSet<>(_substitution.variables());
-		undefined.removeAll(_match.variables());
+		final Set<Var<V>> undefined = new HashSet<>(_substitution.vars());
+		undefined.removeAll(_match.vars());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
 				"Some template variables are not defined in the matcher '%s': %s",
