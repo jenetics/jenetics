@@ -25,6 +25,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.trs.TreePattern.Var;
@@ -148,12 +149,16 @@ public final class TreeRewriteRule<V> {
 	 * </pre>
 	 *
 	 * @param rule the rewrite rule
+	 * @param mapper the mapper function which converts the node value into the
+	 *        actual type {@code V}
 	 * @return a new rewrite rule, compiled from the given rule string
 	 * @throws IllegalArgumentException if the rewrite rule is invalid
-	 * @throws NullPointerException if the given {@code rule} string is
-	 *         {@code null}
+	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static TreeRewriteRule compile(final String rule) {
+	public static <V> TreeRewriteRule<V> compile(
+		final String rule,
+		final Function<? super String, ? extends V> mapper
+	) {
 		final String[] parts = rule.split("->");
 		if (parts.length != 2) {
 			throw new IllegalArgumentException(format(
@@ -162,9 +167,25 @@ public final class TreeRewriteRule<V> {
 		}
 
 		return of(
-			TreePattern.compile(parts[0]),
-			TreePattern.compile(parts[1])
+			TreePattern.compile(parts[0], mapper),
+			TreePattern.compile(parts[1], mapper)
 		);
+	}
+
+	/**
+	 * Compiles the string representation of a rewrite rule:
+	 * <pre>
+	 *     add($x,0) -> $x
+	 *     mul($x,1) -> $x
+	 * </pre>
+	 *
+	 * @param rule the rewrite rule
+	 * @return a new rewrite rule, compiled from the given rule string
+	 * @throws IllegalArgumentException if the rewrite rule is invalid
+	 * @throws NullPointerException if on of the arguments is {@code null}
+	 */
+	public static TreeRewriteRule<String> compile(final String rule) {
+		return compile(rule, Function.identity());
 	}
 
 }
