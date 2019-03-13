@@ -23,6 +23,12 @@ import static java.lang.String.format;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toMap;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,7 +109,9 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreePattern<V> {
+public final class TreePattern<V> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	// Primary state of the tree pattern.
 	private final TreeNode<Decl<V>> _pattern;
@@ -323,7 +331,34 @@ public final class TreePattern<V> {
 	}
 
 	/* *************************************************************************
-	 * Helper classes.
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TREE_PATTERN, this);
+	}
+
+	private void readObject(final ObjectOutputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_pattern);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static TreePattern read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final TreeNode pattern = (TreeNode)in.readObject();
+		return new TreePattern(pattern);
+	}
+
+
+	/* *************************************************************************
+	 * Pattern node classes.
 	 * ************************************************************************/
 
 	/**
@@ -365,8 +400,10 @@ public final class TreePattern<V> {
 	 */
 	public static final class Var<V>
 		extends Decl<V>
-		implements Comparable<Var<V>>
+		implements Comparable<Var<V>>, Serializable
 	{
+		private static final long serialVersionUID = 1L;
+
 		private final String _name;
 
 		private Var(final String name) {
@@ -427,7 +464,7 @@ public final class TreePattern<V> {
 
 		@Override
 		public String toString() {
-			return format(":%s", _name);
+			return format("%s%s", Decl.VAR_PREFIX, _name);
 		}
 
 		/**
@@ -448,6 +485,32 @@ public final class TreePattern<V> {
 			return !name.isEmpty() && name.charAt(0) == Decl.VAR_PREFIX;
 		}
 
+		/* *********************************************************************
+		 *  Java object serialization
+		 * ********************************************************************/
+
+		private Object writeReplace() {
+			return new Serial(Serial.TREE_PATTERN_VAR, this);
+		}
+
+		private void readObject(final ObjectOutputStream stream)
+			throws InvalidObjectException
+		{
+			throw new InvalidObjectException("Serialization proxy required.");
+		}
+
+		void write(final ObjectOutput out) throws IOException {
+			out.writeObject(_name);
+		}
+
+		@SuppressWarnings({"unchecked", "rawtypes"})
+		static Var read(final ObjectInput in)
+			throws IOException, ClassNotFoundException
+		{
+			final String name = (String)in.readObject();
+			return new Var(name);
+		}
+
 	}
 
 	/**
@@ -456,7 +519,9 @@ public final class TreePattern<V> {
 	 *
 	 * @param <V> the node value type
 	 */
-	public static final class Val<V> extends Decl<V> {
+	public static final class Val<V> extends Decl<V> implements Serializable {
+		private static final long serialVersionUID = 1L;
+
 		private final V _value;
 
 		private Val(final V value) {
@@ -495,6 +560,31 @@ public final class TreePattern<V> {
 			return new Val<>(value);
 		}
 
+
+		/* *********************************************************************
+		 *  Java object serialization
+		 * ********************************************************************/
+
+		private Object writeReplace() {
+			return new Serial(Serial.TREE_PATTERN_VAL, this);
+		}
+
+		private void readObject(final ObjectOutputStream stream)
+			throws InvalidObjectException
+		{
+			throw new InvalidObjectException("Serialization proxy required.");
+		}
+
+		void write(final ObjectOutput out) throws IOException {
+			out.writeObject(_value);
+		}
+
+		@SuppressWarnings({"unchecked", "rawtypes"})
+		static Val read(final ObjectInput in)
+			throws IOException, ClassNotFoundException
+		{
+			return new Val(in.readObject());
+		}
 	}
 
 }

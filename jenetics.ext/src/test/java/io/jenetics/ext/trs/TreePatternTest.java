@@ -19,6 +19,7 @@
  */
 package io.jenetics.ext.trs;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,6 +28,8 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.IO;
 
 import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
@@ -94,5 +97,12 @@ public class TreePatternTest {
 
 		final Tree<String, ?> tree = pattern.expand(vars);
 		Assert.assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+		final byte[] data = IO.object.toByteArray(pattern);
+		Assert.assertEquals(IO.object.fromByteArray(data), pattern);
 	}
 }
