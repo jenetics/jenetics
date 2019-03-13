@@ -25,8 +25,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.trs.TreeMatcher;
-import io.jenetics.ext.trs.TreePattern;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -41,7 +39,7 @@ public class TreeMatcherTest {
 		final String treeString,
 		final boolean matches
 	) {
-		final TreePattern pattern = TreePattern.compile(patternString);
+		final TreePattern<String> pattern = TreePattern.compile(patternString);
 		final Tree<String, ?> tree = TreeNode.parse(treeString);
 		final TreeMatcher<String> matcher = pattern.matcher(tree);
 
@@ -57,39 +55,39 @@ public class TreeMatcherTest {
 		return new Object[][] {
 			{"1", "1", true},
 			{"1", "2", false},
-			{"<x>", "2", true},
-			{"<x>", "R(3,2,R(1,2),R(1,2))", true},
+			{"$x", "2", true},
+			{"$x", "R(3,2,R(1,2),R(1,2))", true},
 			{"R(1,2)", "R(1,2)", true},
-			{"R(<x>,<x>)", "R(1,2)", false},
-			{"R(<x>,<x>)", "R(1,1)", true},
-			{"R(<x>,<x>)", "R(R(1,2),2)", false},
-			{"R(<x>,<x>)", "R(R(1,2),R(1,2))", true},
-			{"R(<x>,<x>)", "R(R(1,2),R(1,2,3))", false},
-			{"R(<x>,<y>)", "R(R(1,2),R(1,2,3))", true},
-			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3),5)", true},
-			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3))", false},
-			{"R(<x>,<y>,5)", "R(R(1,2),R(1,2,3),9)", false},
-			{"R(1,2,<x>)", "R(1,2,3(4))", true},
-			{"R(3,2,<x>)", "R(1,2)", false},
-			{"R(3,2,<x>,<x>)", "R(3,2,R(1,2),R(1,2))", true},
-			{"R(3,2,<x>,<x>)", "R(3,2,R(1,2),R(1,3))", false}
+			{"R($x,$x)", "R(1,2)", false},
+			{"R($x,$x)", "R(1,1)", true},
+			{"R($x,$x)", "R(R(1,2),2)", false},
+			{"R($x,$x)", "R(R(1,2),R(1,2))", true},
+			{"R($x,$x)", "R(R(1,2),R(1,2,3))", false},
+			{"R($x,$y)", "R(R(1,2),R(1,2,3))", true},
+			{"R($x,$y,5)", "R(R(1,2),R(1,2,3),5)", true},
+			{"R($x,$y,5)", "R(R(1,2),R(1,2,3))", false},
+			{"R($x,$y,5)", "R(R(1,2),R(1,2,3),9)", false},
+			{"R(1,2,$x)", "R(1,2,3(4))", true},
+			{"R(3,2,$x)", "R(1,2)", false},
+			{"R(3,2,$x,$x)", "R(3,2,R(1,2),R(1,2))", true},
+			{"R(3,2,$x,$x)", "R(3,2,R(1,2),R(1,3))", false}
 		};
 	}
 
-//	@Test(dataProvider = "matchResults")
-//	public void results(
-//		final String patternString,
-//		final String treeString,
-//		final String[] results
-//	) {
-//		final TreePattern pattern = TreePattern.compile(patternString);
-//		final Tree<String, ?> tree = TreeNode.parse(treeString);
-//		final String[] matches = pattern.matcher(tree).results()
-//			.map(t -> t.node().toParenthesesString())
-//			.toArray(String[]::new);
-//
-//		Assert.assertEquals(matches, results);
-//	}
+	@Test(dataProvider = "matchResults")
+	public void results(
+		final String patternString,
+		final String treeString,
+		final String[] results
+	) {
+		final TreePattern<String> pattern = TreePattern.compile(patternString);
+		final Tree<String, ?> tree = TreeNode.parse(treeString);
+		final String[] matches = pattern.matcher(tree).results()
+			.map(t -> t.tree().toParenthesesString())
+			.toArray(String[]::new);
+
+		Assert.assertEquals(matches, results);
+	}
 
 	@DataProvider
 	public Object[][] matchResults() {
