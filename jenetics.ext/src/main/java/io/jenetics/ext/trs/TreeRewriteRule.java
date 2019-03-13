@@ -68,7 +68,7 @@ public final class TreeRewriteRule<V> {
 	 * @throws IllegalArgumentException if the <em>template</em> pattern uses
 	 *         variables not defined in the <em>matcher</em> pattern
 	 */
-	private TreeRewriteRule(
+	public TreeRewriteRule(
 		final TreePattern<V> match,
 		final TreePattern<V> replacement
 	) {
@@ -106,6 +106,17 @@ public final class TreeRewriteRule<V> {
 		return _replacement;
 	}
 
+	/**
+	 * Maps {@code this} rewrite rule from type {@code V} to type {@code B}.
+	 *
+	 * @param mapper the type mapper
+	 * @param <B> the target type
+	 * @return a new rewrite rule for the mapped type
+	 */
+	public <B> TreeRewriteRule<B> map(final Function<? super V, ? extends B> mapper) {
+		return new TreeRewriteRule<>(_match.map(mapper), _replacement.map(mapper));
+	}
+
 	@Override
 	public int hashCode() {
 		return hash(_match, hash(_replacement));
@@ -122,23 +133,6 @@ public final class TreeRewriteRule<V> {
 	@Override
 	public String toString() {
 		return format("%s -> %s", _match, _replacement);
-	}
-
-	/**
-	 * Create a new rewrite rule with the given values.
-	 *
-	 * @param match the matching pattern of the rule
-	 * @param replacement the substitution pattern
-	 * @return a new rewrite rule
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 * @throws IllegalArgumentException if the <em>match</em> pattern uses
-	 *         variables not defined in the <em>replacement</em> pattern
-	 */
-	public static <V> TreeRewriteRule<V> of(
-		final TreePattern<V> match,
-		final TreePattern<V> replacement
-	) {
-		return new TreeRewriteRule<>(match, replacement);
 	}
 
 	/**
@@ -166,7 +160,7 @@ public final class TreeRewriteRule<V> {
 			));
 		}
 
-		return of(
+		return new TreeRewriteRule<>(
 			TreePattern.compile(parts[0], mapper),
 			TreePattern.compile(parts[1], mapper)
 		);

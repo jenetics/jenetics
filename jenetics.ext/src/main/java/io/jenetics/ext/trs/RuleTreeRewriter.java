@@ -141,11 +141,14 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		final BiPredicate<? super V, ? super String> equals,
 		final Function<? super String, ? extends V> mapper
 	) {
+		/*
 		return new RuleTreeRewriter<>(
 			TreeRewriteRule.compile(rule),
 			equals,
 			mapper
 		);
+		*/
+		return null;
 	}
 
 	/**

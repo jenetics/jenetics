@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 
+import io.jenetics.ext.trs.TreePattern.Val;
 import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -97,6 +98,15 @@ public class TreePatternTest {
 
 		final Tree<String, ?> tree = pattern.expand(vars);
 		Assert.assertEquals(tree.toParenthesesString(), "add(sin(x),sin(y),1)");
+	}
+
+	@Test
+	public void map() {
+		final TreePattern<String> pattern = TreePattern.compile("3($x,$y,1)");
+		final TreePattern<Integer> ipattern = pattern.map(Integer::parseInt);
+
+		Assert.assertEquals(ipattern.pattern().getRoot().getValue(), Val.of(3));
+		Assert.assertEquals(ipattern.toString(), "3($x,$y,1)");
 	}
 
 	@Test

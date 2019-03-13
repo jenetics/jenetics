@@ -152,6 +152,10 @@ public final class TreePattern<V> implements Serializable {
 		return Collections.unmodifiableSortedSet(variables);
 	}
 
+	TreeNode<Decl<V>> pattern() {
+		return _pattern;
+	}
+
 	/**
 	 * Return the <em>unmodifiable</em> set of variables, defined in {@code this}
 	 * pattern. The variables are returned without the angle brackets.
@@ -160,6 +164,17 @@ public final class TreePattern<V> implements Serializable {
 	 */
 	public SortedSet<Var<V>> vars() {
 		return _vars;
+	}
+
+	/**
+	 * Maps {@code this} tree-pattern from type {@code V} to type {@code B}.
+	 *
+	 * @param mapper the type mapper
+	 * @param <B> the target type
+	 * @return a new tree-pattern for the mapped type
+	 */
+	public <B> TreePattern<B> map(final Function<? super V, ? extends B> mapper) {
+		return new TreePattern<>(_pattern.map(d -> d.map(mapper)));
 	}
 
 	/**
@@ -382,6 +397,8 @@ public final class TreePattern<V> implements Serializable {
 		private Decl() {
 		}
 
+		abstract <B> Decl<B> map(final Function<? super V, ? extends B> mapper);
+
 		static <V> Decl<V> of(
 			final String value,
 			final Function<? super String, ? extends V> mapper
@@ -414,6 +431,12 @@ public final class TreePattern<V> implements Serializable {
 				));
 			}
 			_name = name;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		<B> Var<B> map(final Function<? super V, ? extends B> mapper) {
+			return (Var<B>)this;
 		}
 
 		private static boolean isIdentifier(final String id) {
@@ -530,6 +553,11 @@ public final class TreePattern<V> implements Serializable {
 
 		public V value() {
 			return _value;
+		}
+
+		@Override
+		<B> Val<B> map(final Function<? super V, ? extends B> mapper) {
+			return of(mapper.apply(_value));
 		}
 
 		@Override
