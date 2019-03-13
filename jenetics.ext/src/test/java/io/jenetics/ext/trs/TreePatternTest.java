@@ -27,7 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.trs.TreePattern;
 import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -46,7 +45,6 @@ public class TreePatternTest {
 		final String expanded
 	) {
 		final TreePattern<String> tp = TreePattern.compile(pattern);
-		System.out.println(tp);
 		final Map<Var<String>, Tree<String, ?>> vars = IntStream.range(0, trees.length)
 			.mapToObj(i -> new Object() {
 					final Var<String> name = Var.of(VARS[i]);
@@ -60,12 +58,29 @@ public class TreePatternTest {
 	@DataProvider
 	public Object[][] patterns() {
 		return new Object[][] {
-			{"[a]", new String[]{"sin(4)"}, "sin(4)"},
-			{"cos(#a)", new String[]{"sin(4)"}, "cos(sin(4))"},
+			{"$a", new String[]{"sin(4)"}, "sin(4)"},
+			{"cos($a)", new String[]{"sin(4)"}, "cos(sin(4))"},
 			{"cos($a,2,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),2,sin(x))"},
-			{"cos(:a,:b,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),sin(x))"},
-			{"cos(:a,:b,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"},
-			{"mul(2,:a)", new String[]{"1"}, "mul(2,1)"},
+			{"cos($a,$b,sin(x))", new String[]{"sin(4)"}, "cos(sin(4),sin(x))"},
+			{"cos($a,$b,sin(x))", new String[]{"sin(4)", "exp(4,add(5))"}, "cos(sin(4),exp(4,add(5)),sin(x))"},
+			{"mul(2,$a)", new String[]{"1"}, "mul(2,1)"},
+			{"mul(\\$d,$a)", new String[]{"1"}, "mul($d,1)"},
+			{"mul(\\$d sdf,$a)", new String[]{"1"}, "mul($d sdf,1)"},
+			{"mul(\\\\$d,$a)", new String[]{"1"}, "mul(\\$d,1)"}
+		};
+	}
+
+	@Test(dataProvider = "erroneousPatterns", expectedExceptions = IllegalArgumentException.class)
+	public void compileError(final String pattern) {
+		TreePattern.compile(pattern);
+	}
+
+	@DataProvider
+	public Object[][] erroneousPatterns() {
+		return new Object[][] {
+			{"cos($a:b)"},
+			{"cos($a b)"},
+			{"cos($1)"}
 		};
 	}
 

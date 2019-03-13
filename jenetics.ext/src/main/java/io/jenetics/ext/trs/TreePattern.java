@@ -32,6 +32,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
+import io.jenetics.ext.internal.Escaper;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;
@@ -48,8 +49,8 @@ import io.jenetics.ext.util.TreeNode;
  * with a special wildcard syntax for arbitrary sub-trees. The sub-trees
  * variables are put into angle brackets:
  * <pre>
- *     add(:x,0)
- *     mul(1,:y)
+ * add($x,0)
+ * mul(1,$y)
  * </pre>
  *
  * @see TreeRewriteRule
@@ -318,6 +319,8 @@ public final class TreePattern<V> {
 	 * @param <V> the node type the tree-pattern is working on
 	 */
 	public abstract static class Decl<V> {
+		private static final Escaper ESCAPER = new Escaper(new char[]{'$'}, '\\');
+
 		private Decl() {
 		}
 
@@ -325,16 +328,10 @@ public final class TreePattern<V> {
 			final String value,
 			final Function<? super String, ? extends V> mapper
 		) {
-			System.out.println(value + "--" + Var.isVar(value));
 			return Var.isVar(value)
 				? Var.of(value.substring(1))
-				: Val.of(mapper.apply(value));
+				: Val.of(mapper.apply(ESCAPER.unescape(value)));
 		}
-
-		private static String unescape(final String value) {
-			return value.replace("\\:", ":");
-		}
-
 	}
 
 	/**
@@ -425,7 +422,7 @@ public final class TreePattern<V> {
 		}
 
 		static boolean isVar(final String name) {
-			return name.startsWith(":");
+			return name.startsWith("$");
 		}
 
 	}
