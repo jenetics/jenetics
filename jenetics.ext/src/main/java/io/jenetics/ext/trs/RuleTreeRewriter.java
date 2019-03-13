@@ -117,7 +117,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 		final TreeNode<V> tree
 	) {
 		final Map<Var<V>, Tree<V, ?>> vars = result.vars();
-		final TreePattern<V> substitution = _rule.substitution();
+		final TreePattern<V> substitution = _rule.replacement();
 
 		final TreeNode<V> r = substitution.expand(vars);
 

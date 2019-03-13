@@ -34,47 +34,47 @@ import io.jenetics.ext.trs.TreePattern.Var;
  * which must be matched, and a substitution pattern, which is expanded and
  * replaces the variables in the pattern. Some simple <em>arithmetic</em>
  * rewrite rules.
- * <pre>{@code
- * add(<x>,0) -> <x>
- * mul(<x>,1) -> <x>
- * }</pre>
+ * <pre>
+ *     add($x,0) -> $x
+ *     mul($x,1) -> $x
+ * </pre>
  * The <em>substitution</em> pattern may only use variables, already defined in
  * the <em>match</em> pattern. So, the creation of the following rewrite rule s
  * would lead to an {@link IllegalArgumentException}:
- * <pre>{@code
- * add(<x>,0) -> <y>
- * mul(0,1) -> mul(<x>,1)
- * }</pre>
+ * <pre>
+ *     add($x,0) -> $y
+ *     mul(0,1) -> mul($x,1)
+ * </pre>
  *
  * @see RuleTreeRewriter
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class TreeRewriteRule<V> {
 
 	private final TreePattern<V> _match;
-	private final TreePattern<V> _substitution;
+	private final TreePattern<V> _replacement;
 
 	/**
 	 * Create a new rewrite rule from the given {@code match} and
-	 * {@code substitution} pattern.
+	 * {@code replacement} pattern.
 	 *
 	 * @param match the matching pattern of the rule
-	 * @param substitution the substitution pattern
+	 * @param replacement the substitution pattern
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the <em>template</em> pattern uses
 	 *         variables not defined in the <em>matcher</em> pattern
 	 */
 	private TreeRewriteRule(
 		final TreePattern<V> match,
-		final TreePattern<V> substitution
+		final TreePattern<V> replacement
 	) {
 		_match = requireNonNull(match);
-		_substitution = requireNonNull(substitution);
+		_replacement = requireNonNull(replacement);
 
-		final Set<Var<V>> undefined = new HashSet<>(_substitution.vars());
+		final Set<Var<V>> undefined = new HashSet<>(_replacement.vars());
 		undefined.removeAll(_match.vars());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
@@ -92,7 +92,7 @@ public final class TreeRewriteRule<V> {
 	 *
 	 * @return the rule matching pattern
 	 */
-	public TreePattern match() {
+	public TreePattern<V> match() {
 		return _match;
 	}
 
@@ -101,13 +101,13 @@ public final class TreeRewriteRule<V> {
 	 *
 	 * @return the replacement pattern of the rule
 	 */
-	public TreePattern<V> substitution() {
-		return _substitution;
+	public TreePattern<V> replacement() {
+		return _replacement;
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_match, hash(_substitution));
+		return hash(_match, hash(_replacement));
 	}
 
 	@Override
@@ -115,34 +115,37 @@ public final class TreeRewriteRule<V> {
 		return obj == this ||
 			obj instanceof TreeRewriteRule &&
 			_match.equals(((TreeRewriteRule)obj)._match) &&
-			_substitution.equals(((TreeRewriteRule)obj)._substitution);
+			_replacement.equals(((TreeRewriteRule)obj)._replacement);
 	}
 
 	@Override
 	public String toString() {
-		return format("%s -> %s", _match, _substitution);
+		return format("%s -> %s", _match, _replacement);
 	}
 
 	/**
 	 * Create a new rewrite rule with the given values.
 	 *
-	 * @param patter the rule pattern
-	 * @param template the rule replace pattern
+	 * @param match the matching pattern of the rule
+	 * @param replacement the substitution pattern
 	 * @return a new rewrite rule
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the <em>match</em> pattern uses
+	 *         variables not defined in the <em>replacement</em> pattern
 	 */
-	public static TreeRewriteRule of(
-		final TreePattern patter,
-		final TreePattern template
+	public static <V> TreeRewriteRule<V> of(
+		final TreePattern<V> match,
+		final TreePattern<V> replacement
 	) {
-		return new TreeRewriteRule(patter, template);
+		return new TreeRewriteRule<>(match, replacement);
 	}
 
 	/**
 	 * Compiles the string representation of a rewrite rule:
-	 * <pre>{@code
-	 * add(<x>,0) -> <x>
-	 * mul(<x>,1) -> <x>
-	 * }</pre>
+	 * <pre>
+	 *     add($x,0) -> $x
+	 *     mul($x,1) -> $x
+	 * </pre>
 	 *
 	 * @param rule the rewrite rule
 	 * @return a new rewrite rule, compiled from the given rule string
