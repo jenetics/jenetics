@@ -22,9 +22,7 @@ package io.jenetics.ext.trs;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import io.jenetics.ext.trs.TreePattern.Var;
@@ -47,25 +45,16 @@ import io.jenetics.ext.util.TreeNode;
 public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 
 	private final TreeRewriteRule<V> _rule;
-	private final BiPredicate<? super V, ? super String> _equals;
-	private final Function<? super String, ? extends V> _mapper;
 
 	/**
 	 * Create a new rule based tree rewriter with the given parameters.
 	 *
 	 * @param rule the rewriter rule applied for this rewriter
-	 * @param equals the equals predicate for matching the tree values
-	 * @param mapper the tree value mapper function
-	 * @throws NullPointerException if one of the given arguments is {@code null}
+	 * @throws NullPointerException if one of the given arguments is
+	 *         {@code null}
 	 */
-	public RuleTreeRewriter(
-		final TreeRewriteRule<V> rule,
-		final BiPredicate<? super V, ? super String> equals,
-		final Function<? super String, ? extends V> mapper
-	) {
+	public RuleTreeRewriter(final TreeRewriteRule<V> rule) {
 		_rule = requireNonNull(rule);
-		_equals = requireNonNull(equals);
-		_mapper = requireNonNull(mapper);
 	}
 
 	/**
@@ -73,26 +62,8 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 *
 	 * @return the rewriter rule
 	 */
-	public TreeRewriteRule rules() {
+	public TreeRewriteRule rule() {
 		return _rule;
-	}
-
-	/**
-	 * Return the equals predicate used for matching the tree values.
-	 *
-	 * @return the equals predicate for the tree values
-	 */
-	public BiPredicate<? super V, ? super String> equals() {
-		return _equals;
-	}
-
-	/**
-	 * Return the tree value mapper function.
-	 *
-	 * @return the tree value mapper function
-	 */
-	public Function<? super String, ? extends V> mapper() {
-		return _mapper;
 	}
 
 	@Override
@@ -131,41 +102,30 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 * @see TreeRewriteRule#compile(String)
 	 *
 	 * @param rule the rewriter rule applied for this rewriter
-	 * @param equals the equals predicate for matching the tree values
 	 * @param mapper the tree value mapper function
 	 * @throws IllegalArgumentException if the rewrite {@code rule} is invalid
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
 	public static <V> RuleTreeRewriter<V> compile(
 		final String rule,
-		final BiPredicate<? super V, ? super String> equals,
 		final Function<? super String, ? extends V> mapper
 	) {
-		/*
 		return new RuleTreeRewriter<>(
-			TreeRewriteRule.compile(rule),
-			equals,
-			mapper
+			TreeRewriteRule.compile(rule).map(mapper)
 		);
-		*/
-		return null;
 	}
 
 	/**
 	 * Create a new rule based tree rewriter with the given parameters.
 	 *
-	 * @see TreeRewriteRule#compile(String)
+	 * @see TreeRewriteRule#compile(String, Function)
 	 *
 	 * @param rule the rewriter rule applied for this rewriter
 	 * @throws IllegalArgumentException if the rewrite {@code rule} is invalid
 	 * @throws NullPointerException if the given {@code rule} is {@code null}
 	 */
 	public static RuleTreeRewriter<String> compile(final String rule) {
-		return new RuleTreeRewriter<>(
-			TreeRewriteRule.compile(rule),
-			Objects::equals,
-			Function.identity()
-		);
+		return compile(rule, Function.identity());
 	}
 
 }
