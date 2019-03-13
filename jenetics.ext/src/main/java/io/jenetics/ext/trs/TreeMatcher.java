@@ -55,6 +55,15 @@ public final class TreeMatcher<V> {
 	}
 
 	/**
+	 * Return the matching tree .
+	 *
+	 * @return the matching tree
+	 */
+	public Tree<V, ?> tree() {
+		return _tree;
+	}
+
+	/**
 	 * Tests if the tree matches the pattern.
 	 *
 	 * @return {@code true} if the tree matches against the pattern,
