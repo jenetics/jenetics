@@ -113,8 +113,10 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 *
 	 * @see TreeRewriteRule#compile(String)
 	 *
+	 * @param <V> the tree node type
 	 * @param rule the rewriter rule applied for this rewriter
 	 * @param mapper the tree value mapper function
+	 * @return a new rule based tree rewriter with the given parameters
 	 * @throws IllegalArgumentException if the rewrite {@code rule} is invalid
 	 * @throws NullPointerException if one of the given arguments is {@code null}
 	 */
@@ -133,6 +135,7 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 * @see TreeRewriteRule#compile(String, Function)
 	 *
 	 * @param rule the rewriter rule applied for this rewriter
+	 * @return a new rule based tree rewriter with the given parameter
 	 * @throws IllegalArgumentException if the rewrite {@code rule} is invalid
 	 * @throws NullPointerException if the given {@code rule} is {@code null}
 	 */
