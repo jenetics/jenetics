@@ -31,8 +31,8 @@ import io.jenetics.ext.util.Tree;
  * @see TreePattern
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class TreeMatcher<V> {
 
