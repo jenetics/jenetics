@@ -62,8 +62,20 @@ public final class RuleTreeRewriter<V> implements TreeRewriter<V> {
 	 *
 	 * @return the rewriter rule
 	 */
-	public TreeRewriteRule rule() {
+	public TreeRewriteRule<V> rule() {
 		return _rule;
+	}
+
+	/**
+	 * Maps {@code this} rewriter from type {@code V} to type {@code B}.
+	 *
+	 * @param mapper the type mapper
+	 * @param <B> the target type
+	 * @return a new rewriter for the mapped type
+	 */
+	public <B> RuleTreeRewriter<B>
+	map(final Function<? super V, ? extends B> mapper) {
+		return new RuleTreeRewriter<>(_rule.map(mapper));
 	}
 
 	@Override
