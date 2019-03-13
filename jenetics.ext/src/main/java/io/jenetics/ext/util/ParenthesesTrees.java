@@ -38,7 +38,7 @@ final class ParenthesesTrees {
 	private static final char[] PROTECTED_CHARS = { '(', ')', ',' };
 	static final char ESCAPE_CHAR = '\\';
 
-	private static final Escaper ESCAPER = new Escaper(PROTECTED_CHARS, ESCAPE_CHAR);
+	private static final Escaper ESCAPER = new Escaper(ESCAPE_CHAR, PROTECTED_CHARS);
 
 	static String escape(final String value) {
 		return ESCAPER.escape(value);

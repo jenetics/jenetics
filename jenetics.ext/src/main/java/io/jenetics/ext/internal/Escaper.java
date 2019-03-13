@@ -30,7 +30,7 @@ public final class Escaper {
 	private final char _escape;
 
 
-	public Escaper(final char[] protect, final char escape) {
+	public Escaper(final char escape, final char... protect) {
 		_protect = protect.clone();
 		_escape = escape;
 	}

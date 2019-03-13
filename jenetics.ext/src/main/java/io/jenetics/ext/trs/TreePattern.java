@@ -335,7 +335,7 @@ public final class TreePattern<V> {
 	 * @param <V> the node type the tree-pattern is working on
 	 */
 	public abstract static class Decl<V> {
-		private static final Escaper ESCAPER = new Escaper(new char[]{'$'}, '\\');
+		private static final Escaper ESCAPER = new Escaper('\\', new char[]{'$'});
 
 		private Decl() {
 		}
