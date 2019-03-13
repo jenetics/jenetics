@@ -40,6 +40,7 @@ final class Serial implements Externalizable {
 	static final byte TREE_PATTERN = 1;
 	static final byte TREE_PATTERN_VAR = 2;
 	static final byte TREE_PATTERN_VAL = 3;
+	static final byte TREE_REWRITE_RULE = 4;
 
 	/**
 	 * The type being serialized.
@@ -75,6 +76,7 @@ final class Serial implements Externalizable {
 			case TREE_PATTERN: ((TreePattern)_object).write(out); break;
 			case TREE_PATTERN_VAR: ((Var)_object).write(out); break;
 			case TREE_PATTERN_VAL: ((Val)_object).write(out); break;
+			case TREE_REWRITE_RULE: ((TreeRewriteRule)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -89,6 +91,7 @@ final class Serial implements Externalizable {
 			case TREE_PATTERN: _object = TreePattern.read(in); break;
 			case TREE_PATTERN_VAR: _object = Var.read(in); break;
 			case TREE_PATTERN_VAL: _object = Val.read(in); break;
+			case TREE_REWRITE_RULE: _object = TreeRewriteRule.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

@@ -23,6 +23,12 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -53,7 +59,9 @@ import io.jenetics.ext.trs.TreePattern.Var;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeRewriteRule<V> {
+public final class TreeRewriteRule<V> implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final TreePattern<V> _match;
 	private final TreePattern<V> _replacement;
@@ -180,6 +188,35 @@ public final class TreeRewriteRule<V> {
 	 */
 	public static TreeRewriteRule<String> compile(final String rule) {
 		return compile(rule, Function.identity());
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TREE_REWRITE_RULE, this);
+	}
+
+	private void readObject(final ObjectOutputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_match);
+		out.writeObject(_replacement);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static TreeRewriteRule read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final TreePattern match = (TreePattern)in.readObject();
+		final TreePattern replacement = (TreePattern)in.readObject();
+		return new TreeRewriteRule(match, replacement);
 	}
 
 }
