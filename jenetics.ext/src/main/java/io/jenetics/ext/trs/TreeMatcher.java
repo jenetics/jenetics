@@ -26,9 +26,10 @@ import java.util.stream.Stream;
 import io.jenetics.ext.util.Tree;
 
 /**
- * Implementation of a pattern based tree matcher.
+ * Implementation of a pattern based tree matcher. It allows you to iterate over
+ * all matches of a tree for a given pattern.
  *
- * @see TreePattern
+ * @see TreePattern#matcher(Tree)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
