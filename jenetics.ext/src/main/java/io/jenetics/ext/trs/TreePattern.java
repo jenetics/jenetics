@@ -323,11 +323,11 @@ public final class TreePattern<V> {
 	 * ************************************************************************/
 
 	/**
-	 * A <em>sealed</em> class, which constitutes the pattern tree. The only two
-	 * implementations of this class are the {@link Var} and the {@link Val}
-	 * class. The {@link Var} class represents a placeholder for an arbitrary
-	 * sub-tree and the {@link Val} class stands for an arbitrary concrete
-	 * sub-tree.
+	 * A <em>sealed</em> class, which constitutes the nodes of a pattern tree.
+	 * The only two implementations of this class are the {@link Var} and the
+	 * {@link Val} class. The {@link Var} class represents a placeholder for an
+	 * arbitrary sub-tree and the {@link Val} class stands for an arbitrary
+	 * concrete sub-tree.
 	 *
 	 * @see Var
 	 * @see Val
