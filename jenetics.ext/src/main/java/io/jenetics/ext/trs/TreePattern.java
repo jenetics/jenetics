@@ -335,7 +335,10 @@ public final class TreePattern<V> {
 	 * @param <V> the node type the tree-pattern is working on
 	 */
 	public abstract static class Decl<V> {
-		private static final Escaper ESCAPER = new Escaper('\\', new char[]{'$'});
+		private static final char VAR_PREFIX = '$';
+		private static final char ESC_CHAR = '\\';
+
+		private static final Escaper ESCAPER = new Escaper(ESC_CHAR, VAR_PREFIX);
 
 		private Decl() {
 		}
@@ -351,10 +354,10 @@ public final class TreePattern<V> {
 	}
 
 	/**
-	 * Represents a placeholder (variable) for an arbitrary sub-tree. A variable
-	 * is identified by its name.
+	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
+	 * <em>pattern</em> variable is identified by its name.
 	 *
-	 * @param <V> the node type the tree-pattern is working on
+	 * @param <V> the node type the tree-pattern is working
 	 */
 	public static final class Var<V>
 		extends Decl<V>
@@ -438,7 +441,7 @@ public final class TreePattern<V> {
 		}
 
 		static boolean isVar(final String name) {
-			return name.startsWith("$");
+			return !name.isEmpty() && name.charAt(0) == Decl.VAR_PREFIX;
 		}
 
 	}
