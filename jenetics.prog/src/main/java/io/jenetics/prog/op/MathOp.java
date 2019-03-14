@@ -49,6 +49,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import io.jenetics.ext.util.TreeNode;
+
 /**
  * This class contains operations for performing basic numeric operations.
  *
@@ -363,7 +365,23 @@ public enum MathOp implements Op<Double> {
 
 	/**
 	 * Converts the string representation of an operation to the operation
-	 * object.
+	 * object. It is used for converting the string representation of a tree to
+	 * an operation tree. If you use it that way, you should not forget to
+	 * re-index the tree variables.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * Ops.reindexVars(tree);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 *
+	 * @see Ops#reindexVars(TreeNode)
+	 * @see Program#eval(Op, Object[])
 	 *
 	 * @param string the string representation of an operation which should be
 	 *        converted

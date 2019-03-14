@@ -27,7 +27,6 @@ import java.util.Map;
 
 import io.jenetics.ext.trs.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
-import io.jenetics.ext.util.TreeNode;
 
 /**
  * The result of a tree match operation. It contains the matching tree and the
