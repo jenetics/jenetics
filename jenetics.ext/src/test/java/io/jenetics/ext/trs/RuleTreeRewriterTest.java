@@ -52,7 +52,7 @@ public class RuleTreeRewriterTest {
 	);
 
 	private static final ISeq<TreeRewriter<String>> REWRITERS = RULES
-		.map(RuleTreeRewriter::compile);
+		.map(TreeRewriteRule::compile);
 
 	@Test(dataProvider = "trees")
 	public void rewrite(final String treeString, final String rewrittenTreeString) {

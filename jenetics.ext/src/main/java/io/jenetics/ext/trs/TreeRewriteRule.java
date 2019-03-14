@@ -30,11 +30,16 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.trs.TreePattern.Var;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.Tree.Path;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Represents a tree rewrite rule. A rewrite rule consists of a match pattern,
@@ -53,13 +58,11 @@ import io.jenetics.ext.trs.TreePattern.Var;
  *     mul(0,1) -&gt; mul($x,1)
  * </pre>
  *
- * @see RuleTreeRewriter
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class TreeRewriteRule<V> implements Serializable {
+public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -123,6 +126,34 @@ public final class TreeRewriteRule<V> implements Serializable {
 	 */
 	public <B> TreeRewriteRule<B> map(final Function<? super V, ? extends B> mapper) {
 		return new TreeRewriteRule<>(_match.map(mapper), _replacement.map(mapper));
+	}
+
+	@Override
+	public boolean rewrite(final TreeNode<V> tree) {
+		requireNonNull(tree);
+
+		boolean rewritten = false;
+		Optional<TreeMatchResult<V>> result;
+		do {
+			result = match().matcher(tree).results()
+				.findFirst();
+
+			result.ifPresent(res -> rewrite(res, tree));
+			rewritten = result.isPresent() || rewritten;
+		} while(result.isPresent());
+
+		return rewritten;
+	}
+
+	private void rewrite(
+		final TreeMatchResult<V> result,
+		final TreeNode<V> tree
+	) {
+		final Map<Var<V>, Tree<V, ?>> vars = result.vars();
+		final TreeNode<V> r = _replacement.expand(vars);
+
+		final Path path = result.tree().childPath();
+		tree.replaceAtPath(path, r);
 	}
 
 	@Override
