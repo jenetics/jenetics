@@ -20,7 +20,6 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -80,14 +79,13 @@ public final class Const<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_const));
+		return Objects.hashCode(_const);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Const &&
-			Objects.equals(((Const)obj)._name, _name) &&
 			equal(((Const)obj)._const, _const);
 	}
 

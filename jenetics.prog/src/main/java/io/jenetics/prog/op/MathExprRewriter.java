@@ -51,7 +51,7 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 					"pow($x,0) -> 1",
 					"pow($x,1) -> $x")
 				.map(TreeRewriteRule::compile)
-				.map(rule -> rule.map(MathOp::convert));
+				.map(rule -> rule.map(MathOp::toMathOp));
 
 		return ruleRewriter.prepend(ISeq.of(ConstExprRewriter.REWRITER));
 	}

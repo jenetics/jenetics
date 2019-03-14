@@ -30,7 +30,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class MathExprRewriterTest {
 
-	//@Test(dataProvider = "expressions")
+	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final String simplified) {
 		Assert.assertEquals(
 			MathExpr.parse(expr).simplify(),
