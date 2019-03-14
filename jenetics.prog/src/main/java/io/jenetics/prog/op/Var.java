@@ -53,11 +53,14 @@ import java.util.Objects;
  * }
  * }</pre>
  *
+ * @implNote
+ * The {@code Var} object is comparable according it's name.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 3.9
  */
-public final class Var<T> implements Op<T>, Serializable {
+public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -108,6 +111,11 @@ public final class Var<T> implements Op<T>, Serializable {
 	@Override
 	public T apply(final T[] variables) {
 		return variables[_index];
+	}
+
+	@Override
+	public int compareTo(final Var<T> o) {
+		return _name.compareTo(o._name);
 	}
 
 	@Override
