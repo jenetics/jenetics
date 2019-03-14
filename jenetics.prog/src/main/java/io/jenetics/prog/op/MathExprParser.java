@@ -189,7 +189,7 @@ final class MathExprParser {
 			));
 		}
 
-		Ops.reindexVars(expr);
+		Var.reindex(expr);
 		return expr;
 	}
 

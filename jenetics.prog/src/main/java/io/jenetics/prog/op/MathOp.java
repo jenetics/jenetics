@@ -377,11 +377,11 @@ public enum MathOp implements Op<Double> {
 	 * );
 	 *
 	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
-	 * Ops.reindexVars(tree);
+	 * Var.reindex(tree);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
 	 * }</pre>
 	 *
-	 * @see Ops#reindexVars(TreeNode)
+	 * @see Var#reindex(TreeNode)
 	 * @see Program#eval(Tree, Object[])
 	 *
 	 * @param string the string representation of an operation which should be

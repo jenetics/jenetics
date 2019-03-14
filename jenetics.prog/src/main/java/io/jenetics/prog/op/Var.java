@@ -20,10 +20,17 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Represents the program variables. The {@code Var} operation is a
@@ -119,15 +126,14 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_index));
+		return Objects.hashCode(_name);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Var &&
-			Objects.equals(((Var)obj)._name, _name) &&
-			((Var)obj)._index == _index;
+			Objects.equals(((Var)obj)._name, _name);
 	}
 
 	@Override
@@ -148,6 +154,57 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 */
 	public static <T> Var<T> of(final String name, final int index) {
 		return new Var<>(name, index);
+	}
+
+	/**
+	 * Re-indexes the variables of the given operation {@code tree}. If the
+	 * operation tree is created from it's string representation, the indices
+	 * of the variables ({@link Var}), are all set to zero, since it needs the
+	 * whole tree for setting the indices correctly. The mapping from the node
+	 * string to the {@link Op} object, on the other hand, is a <em>local</em>
+	 * operation. This method gives you the possibility to fix the indices of
+	 * the variables. The indices of the variables are assigned according it's
+	 * <em>natural</em> order.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * Var.reindex(tree);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 * The example above shows a use-case of this method. If you parse a tree
+	 * string and convert it to an operation tree, you have to re-index the
+	 * variables first. If not, you will get the wrong result when evaluating
+	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 *
+	 * @see MathOp#toMathOp(String)
+	 * @see Program#eval(Tree, Object[])
+	 *
+	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param <V> the operation value type
+	 */
+	public static <V> void reindex(final TreeNode<Op<V>> tree) {
+		final SortedSet<Var<V>> vars = tree.stream()
+			.filter(node -> node.getValue() instanceof Var)
+			.map(node -> (Var<V>)node.getValue())
+			.collect(Collectors.toCollection(TreeSet::new));
+
+		int index = 0;
+		final Map<Var<V>, Integer> indexes = new HashMap<>();
+		for (Var<V> var : vars) {
+			indexes.put(var, index++);
+		}
+
+		for (TreeNode<Op<V>> node : tree) {
+			final Op<V> op = node.getValue();
+			if (op instanceof Var) {
+				node.setValue(Var.of(op.name(), indexes.get(op)));
+			}
+		}
 	}
 
 }

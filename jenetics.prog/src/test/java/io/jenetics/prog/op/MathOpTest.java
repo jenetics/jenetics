@@ -63,7 +63,7 @@ public class MathOpTest {
 		);
 
 		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
-		Ops.reindexVars(tree);
+		Var.reindex(tree);
 		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
 	}
 
