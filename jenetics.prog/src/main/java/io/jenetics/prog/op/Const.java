@@ -21,6 +21,11 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -41,7 +46,7 @@ import java.util.Objects;
  */
 public final class Const<T> implements Op<T>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final String _name;
 	private final T _const;
@@ -127,6 +132,35 @@ public final class Const<T> implements Op<T>, Serializable {
 	 */
 	public static <T> Const<T> of(final T value) {
 		return new Const<>(null, value);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.CONST, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeUTF(_name);
+		out.writeObject(_const);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Const read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final String name = in.readUTF();
+		final Object value = in.readObject();
+		return new Const(name, value);
 	}
 
 }
