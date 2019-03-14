@@ -20,6 +20,8 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readNullableString;
+import static io.jenetics.internal.util.SerialIO.writeNullableString;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -150,7 +152,7 @@ public final class Const<T> implements Op<T>, Serializable {
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		out.writeUTF(_name);
+		writeNullableString(_name, out);
 		out.writeObject(_const);
 	}
 
@@ -158,7 +160,7 @@ public final class Const<T> implements Op<T>, Serializable {
 	static Const read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final String name = in.readUTF();
+		final String name = readNullableString(in);
 		final Object value = in.readObject();
 		return new Const(name, value);
 	}
