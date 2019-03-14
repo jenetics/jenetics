@@ -21,6 +21,8 @@ package io.jenetics.prog.op;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -219,12 +221,12 @@ public final class MathExpr
 
 	void write(final DataOutput out) throws IOException {
 		final byte[] data = toString().getBytes(UTF_8);
-		out.writeInt(data.length);
+		writeInt(data.length, out);
 		out.write(data);
 	}
 
 	static MathExpr read(final DataInput in) throws IOException {
-		final byte[] data = new byte[in.readInt()];
+		final byte[] data = new byte[readInt(in)];
 		in.readFully(data);
 		return parse(new String(data, UTF_8));
 	}
