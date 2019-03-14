@@ -48,7 +48,6 @@ import java.util.Objects;
  *     final double y = ...;
  *     final double result = program.apply(x, y);
  *     ...
- *
  *     return ...;
  * }
  * }</pre>
@@ -57,7 +56,7 @@ import java.util.Objects;
  * The {@code Var} object is comparable according it's name.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 3.9
  */
 public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {

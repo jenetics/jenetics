@@ -310,8 +310,7 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static Tree<? extends Op<Double>, ?>
-	parseTree(final String expression) {
+	public static Tree<Op<Double>, ?> parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
@@ -386,7 +385,7 @@ public final class MathExpr
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static Tree<? extends Op<Double>, ?>
+	public static Tree<Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return MathExprRewriter.prune(TreeNode.ofTree(tree));
 	}

@@ -76,10 +76,10 @@ public final class Ops {
 			.map(node -> (Var<V>)node.getValue())
 			.collect(Collectors.toCollection(TreeSet::new));
 
-		int nextIndex = 0;
+		int index = 0;
 		final Map<Var<V>, Integer> indexes = new HashMap<>();
 		for (Var<V> var : vars) {
-			indexes.put(var, nextIndex++);
+			indexes.put(var, index++);
 		}
 
 		for (TreeNode<Op<V>> node : tree) {

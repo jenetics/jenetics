@@ -43,7 +43,7 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 3.9
  */
 public final class Const<T> implements Op<T>, Serializable {

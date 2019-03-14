@@ -49,6 +49,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -381,7 +382,7 @@ public enum MathOp implements Op<Double> {
 	 * }</pre>
 	 *
 	 * @see Ops#reindexVars(TreeNode)
-	 * @see Program#eval(Op, Object[])
+	 * @see Program#eval(Tree, Object[])
 	 *
 	 * @param string the string representation of an operation which should be
 	 *        converted
