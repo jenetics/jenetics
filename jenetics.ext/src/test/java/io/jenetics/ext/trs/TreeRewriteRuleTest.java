@@ -33,7 +33,7 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class RuleTreeRewriterTest {
+public class TreeRewriteRuleTest {
 
 	private static final ISeq<String> RULES = ISeq.of(
 		"sub($x,$x) -> 0",
