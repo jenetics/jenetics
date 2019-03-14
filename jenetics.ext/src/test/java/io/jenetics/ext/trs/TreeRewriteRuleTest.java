@@ -75,7 +75,8 @@ public class TreeRewriteRuleTest {
 			{"add(1,1)", "2"},
 			{"add(x,x)", "mul(2,x)"},
 			{"sub(sin(4),0)", "sin(4)"},
-			{"div(sin(4),sin(4))", "1"}
+			{"div(sin(4),sin(4))", "1"},
+			{"sub(add(sub(sub(sin(x),y),0),tan(z)),0)", "add(sub(sin(x),y),tan(z))"}
 		};
 	}
 

@@ -20,7 +20,6 @@
 package io.jenetics.ext.trs;
 
 import static java.lang.String.format;
-import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toMap;
 
 import java.io.IOException;
@@ -202,7 +201,7 @@ public final class TreePattern<V> implements Serializable {
 		final boolean matches = matches(tree, _pattern, vars);
 
 		return matches
-			? Optional.of(TreeMatchResult.of(tree, unmodifiableMap(vars)))
+			? Optional.of(TreeMatchResult.of(tree, vars))
 			: Optional.empty();
 	}
 

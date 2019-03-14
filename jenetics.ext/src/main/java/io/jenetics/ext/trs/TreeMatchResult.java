@@ -46,7 +46,7 @@ public final class TreeMatchResult<V> {
 		final Tree<V, ?> tree,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		_tree = TreeNode.ofTree(tree);
+		_tree = tree;
 		_vars = unmodifiableMap(requireNonNull(vars));
 	}
 

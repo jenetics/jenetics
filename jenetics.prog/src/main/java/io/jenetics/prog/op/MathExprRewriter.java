@@ -35,7 +35,7 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 	private static final ISeq<TreeRewriter<Op<Double>>> REWRITERS = rewriters();
 
 	private static ISeq<TreeRewriter<Op<Double>>> rewriters() {
-		final ISeq<TreeRewriter<Op<Double>>> ruleRewriter = ISeq.empty();
+		final ISeq<TreeRewriter<Op<Double>>> rewriters =
 			ISeq.of(
 					"sub($x,$x) -> 0",
 					"add($x,$x) -> mul(2,$x)",
@@ -50,10 +50,9 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 					"mul($x,$x) -> pow($x,2)",
 					"pow($x,0) -> 1",
 					"pow($x,1) -> $x")
-				.map(TreeRewriteRule::compile)
-				.map(rule -> rule.map(MathOp::toMathOp));
+				.map(rule -> TreeRewriteRule.compile(rule, MathOp::toMathOp));
 
-		return ruleRewriter.prepend(ISeq.of(ConstExprRewriter.REWRITER));
+		return rewriters.prepend(ISeq.of(ConstExprRewriter.REWRITER));
 	}
 
 	private static final MathExprRewriter INSTANCE = new MathExprRewriter();

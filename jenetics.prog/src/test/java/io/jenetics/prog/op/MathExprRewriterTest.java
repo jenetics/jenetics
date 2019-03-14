@@ -23,12 +23,30 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.ext.trs.TreePattern;
+import io.jenetics.ext.trs.TreeRewriteRule;
+import io.jenetics.ext.trs.TreeRewriter;
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class MathExprRewriterTest {
+
+
+	@Test
+	public void rewriting() {
+		final TreeRewriter<Op<Double>> rewriter = TreeRewriteRule
+			.compile("div($x,$x) -> 1", MathOp::toMathOp);
+
+		final TreePattern<Op<Double>> pattern = TreePattern
+			.compile("div($x,$x)",MathOp::toMathOp);
+
+		final Tree<Op<Double>, ?> expr = MathExpr.parse("2/2").toTree();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr);
+		rewriter.rewrite(tree);
+	}
 
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final String simplified) {

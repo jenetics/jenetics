@@ -114,7 +114,7 @@ public final class MathExpr
 	 *
 	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> toTree() {
+	public Tree<Op<Double>, ?> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
