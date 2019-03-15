@@ -412,6 +412,9 @@ public final class TreePattern<V> implements Serializable {
 	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
 	 * <em>pattern</em> variable is identified by its name.
 	 *
+	 * @implNote
+	 * This class is comparable by it's name.
+	 *
 	 * @param <V> the node type the tree-pattern is working
 	 */
 	public static final class Var<V>
