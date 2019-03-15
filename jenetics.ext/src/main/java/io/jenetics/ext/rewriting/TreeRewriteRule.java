@@ -66,28 +66,28 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final TreePattern<V> _match;
-	private final TreePattern<V> _replacement;
+	private final TreePattern<V> _left;
+	private final TreePattern<V> _right;
 
 	/**
-	 * Create a new rewrite rule from the given {@code match} and
-	 * {@code replacement} pattern.
+	 * Create a new rewrite rule from the given <em>matching</em> ({@code left})
+	 * and <em>replacement</em> ({@code right}) pattern.
 	 *
-	 * @param match the matching pattern of the rule
-	 * @param replacement the substitution pattern
+	 * @param left the matching pattern of the rule
+	 * @param right the substitution pattern
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the <em>template</em> pattern uses
 	 *         variables not defined in the <em>matcher</em> pattern
 	 */
 	public TreeRewriteRule(
-		final TreePattern<V> match,
-		final TreePattern<V> replacement
+		final TreePattern<V> left,
+		final TreePattern<V> right
 	) {
-		_match = requireNonNull(match);
-		_replacement = requireNonNull(replacement);
+		_left = requireNonNull(left);
+		_right = requireNonNull(right);
 
-		final Set<Var<V>> undefined = new HashSet<>(_replacement.vars());
-		undefined.removeAll(_match.vars());
+		final Set<Var<V>> undefined = new HashSet<>(_right.vars());
+		undefined.removeAll(_left.vars());
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
 				"Some template variables are not defined in the matcher '%s': %s",
@@ -104,8 +104,8 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 *
 	 * @return the rule matching pattern
 	 */
-	public TreePattern<V> match() {
-		return _match;
+	public TreePattern<V> left() {
+		return _left;
 	}
 
 	/**
@@ -113,8 +113,8 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 *
 	 * @return the replacement pattern of the rule
 	 */
-	public TreePattern<V> replacement() {
-		return _replacement;
+	public TreePattern<V> right() {
+		return _right;
 	}
 
 	/**
@@ -125,7 +125,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 * @return a new rewrite rule for the mapped type
 	 */
 	public <B> TreeRewriteRule<B> map(final Function<? super V, ? extends B> mapper) {
-		return new TreeRewriteRule<>(_match.map(mapper), _replacement.map(mapper));
+		return new TreeRewriteRule<>(_left.map(mapper), _right.map(mapper));
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 		boolean rewritten = false;
 		Optional<TreeMatchResult<V>> result;
 		do {
-			result = match().matcher(tree).results()
+			result = left().matcher(tree).results()
 				.findFirst();
 
 			result.ifPresent(res -> rewrite(res, tree));
@@ -150,7 +150,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 		final TreeNode<V> tree
 	) {
 		final Map<Var<V>, Tree<V, ?>> vars = result.vars();
-		final TreeNode<V> r = _replacement.expand(vars);
+		final TreeNode<V> r = _right.expand(vars);
 
 		final Path path = result.tree().childPath();
 		tree.replaceAtPath(path, r);
@@ -158,20 +158,20 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_match, hash(_replacement));
+		return hash(_left, hash(_right));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof TreeRewriteRule &&
-			_match.equals(((TreeRewriteRule)obj)._match) &&
-			_replacement.equals(((TreeRewriteRule)obj)._replacement);
+			_left.equals(((TreeRewriteRule)obj)._left) &&
+			_right.equals(((TreeRewriteRule)obj)._right);
 	}
 
 	@Override
 	public String toString() {
-		return format("%s -> %s", _match, _replacement);
+		return format("%s -> %s", _left, _right);
 	}
 
 	/**
@@ -238,8 +238,8 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		out.writeObject(_match);
-		out.writeObject(_replacement);
+		out.writeObject(_left);
+		out.writeObject(_right);
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
