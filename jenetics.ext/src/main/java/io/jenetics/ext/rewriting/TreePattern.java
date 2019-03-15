@@ -80,7 +80,7 @@ import io.jenetics.ext.util.TreeNode;
  * <pre>{@code
  * final TreePattern<Op<Double>> p = TreePattern.compile(
  *     "add($a,add($b,sin(x)))",
- *     OpConverter::ofString
+ *     MathOp::toMathOp
  * );
  * }</pre>
  *
@@ -259,14 +259,14 @@ public final class TreePattern<V> implements Serializable {
 	/**
 	 * Expands {@code this} pattern with the given variable mapping.
 	 *
-	 * @param variables the variables to use for expanding {@code this} pattern
+	 * @param vars the variables to use for expanding {@code this} pattern
 	 * @return the expanded tree pattern
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if not all needed variables are part
 	 *         of the {@code variables} map
 	 */
-	public TreeNode<V> expand(final Map<Var<V>, Tree<V, ?>> variables) {
-		return expand(_pattern, variables);
+	public TreeNode<V> expand(final Map<Var<V>, Tree<V, ?>> vars) {
+		return expand(_pattern, vars);
 	}
 
 	// Expanding the template.
