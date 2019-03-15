@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 

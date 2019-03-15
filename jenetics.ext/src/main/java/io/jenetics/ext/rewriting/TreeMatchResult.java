@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;
 
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
@@ -25,7 +25,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Map;
 
-import io.jenetics.ext.trs.TreePattern.Var;
+import io.jenetics.ext.rewriting.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 
 /**

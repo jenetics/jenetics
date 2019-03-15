@@ -31,4 +31,4 @@
  * @version !__version__!
  * @since !__version__!
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;

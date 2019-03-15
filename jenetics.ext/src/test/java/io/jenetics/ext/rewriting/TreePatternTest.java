@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,8 +31,8 @@ import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
 
-import io.jenetics.ext.trs.TreePattern.Val;
-import io.jenetics.ext.trs.TreePattern.Var;
+import io.jenetics.ext.rewriting.TreePattern.Val;
+import io.jenetics.ext.rewriting.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 

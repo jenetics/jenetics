@@ -23,9 +23,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.trs.TreePattern;
-import io.jenetics.ext.trs.TreeRewriteRule;
-import io.jenetics.ext.trs.TreeRewriter;
+import io.jenetics.ext.rewriting.TreePattern;
+import io.jenetics.ext.rewriting.TreeRewriteRule;
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 

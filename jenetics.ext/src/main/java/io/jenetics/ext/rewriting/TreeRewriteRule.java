@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import io.jenetics.ext.trs.TreePattern.Var;
+import io.jenetics.ext.rewriting.TreePattern.Var;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.Tree.Path;
 import io.jenetics.ext.util.TreeNode;

@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.trs;
+package io.jenetics.ext.rewriting;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -25,8 +25,8 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StreamCorruptedException;
 
-import io.jenetics.ext.trs.TreePattern.Val;
-import io.jenetics.ext.trs.TreePattern.Var;
+import io.jenetics.ext.rewriting.TreePattern.Val;
+import io.jenetics.ext.rewriting.TreePattern.Var;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
