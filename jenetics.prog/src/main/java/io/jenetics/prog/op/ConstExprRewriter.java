@@ -55,14 +55,14 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		do {
 			result = results(node).findFirst();
 
-			res = result.map(ConstExprRewriter::_rewrite).orElse(0);
+			res = result.map(ConstExprRewriter::rewriting).orElse(0);
 			rewritten += res;
 		} while(result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
 
-	private static int _rewrite(final TreeNode<Op<Double>> node) {
+	private static int rewriting(final TreeNode<Op<Double>> node) {
 		if (matches(node)) {
 			final Double[] args = node.childStream()
 				.map(child -> ((Const<Double>)child.getValue()).value())
