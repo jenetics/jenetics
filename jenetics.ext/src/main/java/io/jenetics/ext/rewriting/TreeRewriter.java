@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.stream.StreamSupport;
 
-import io.jenetics.util.ISeq;
-
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -93,6 +91,8 @@ public interface TreeRewriter<V> {
 	 *
 	 * @param tree the tree to rewrite
 	 * @param rewriters the rewriters applied to the tree
+	 * @param limit the maximal number this rewrite rule is applied to the given
+	 *        tree. This guarantees the termination of the rewrite method.
 	 * @param <V> the tree value type
 	 * @return {@code true} if the tree has been changed (rewritten) by this
 	 *         method, {@code false} if the tree hasn't been changed
@@ -102,7 +102,7 @@ public interface TreeRewriter<V> {
 	 */
 	public static <V> int rewrite(
 		final TreeNode<V> tree,
-		final Iterable<TreeRewriter<V>> rewriters,
+		final Iterable<? extends TreeRewriter<V>> rewriters,
 		final int limit
 	) {
 		requireNonNull(tree);
@@ -131,6 +131,8 @@ public interface TreeRewriter<V> {
 	 * This method to apply the all rewriters, in the order they are given in
 	 * the sequence, until the tree stays unchanged.
 	 *
+	 * @see #rewrite(TreeNode, Iterable, int)
+	 *
 	 * @param tree the tree to rewrite
 	 * @param rewriters the rewriters applied to the tree
 	 * @param <V> the tree value type
@@ -140,7 +142,7 @@ public interface TreeRewriter<V> {
 	 */
 	public static <V> int rewrite(
 		final TreeNode<V> tree,
-		final Iterable<TreeRewriter<V>> rewriters
+		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
 		return rewrite(tree, rewriters, Integer.MAX_VALUE);
 	}
