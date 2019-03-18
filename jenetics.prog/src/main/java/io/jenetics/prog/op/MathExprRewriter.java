@@ -33,34 +33,32 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 
-	private static final ISeq<TreeRewriter<Op<Double>>> REWRITERS = rewriters();
+	private static final ISeq<TreeRewriter<Op<Double>>> REWRITERS = ISeq.of(
+		compile("sub($x,$x) -> 0"),
+		compile("add($x,$x) -> mul(2,$x)"),
+		compile("sub($x,0) -> $x"),
+		compile("add($x,0) -> $x"),
+		compile("add(0,$x) -> $x"),
+		compile("div($x,$x) -> 1"),
+		compile("mul($x,0) -> 0"),
+		compile("mul(0,$x) -> 0"),
+		compile("mul($x,1) -> $x"),
+		compile("mul(1,$x) -> $x"),
+		compile("mul($x,$x) -> pow($x,2)"),
+		compile("pow($x,0) -> 1"),
+		compile("pow($x,1) -> $x"),
+		ConstExprRewriter.REWRITER
+	);
 
-	private static ISeq<TreeRewriter<Op<Double>>> rewriters() {
-		final ISeq<TreeRewriter<Op<Double>>> rewriters =
-			ISeq.of(
-					"sub($x,$x) -> 0",
-					"add($x,$x) -> mul(2,$x)",
-					"sub($x,0) -> $x",
-					"add($x,0) -> $x",
-					"add(0,$x) -> $x",
-					"div($x,$x) -> 1",
-					"mul($x,0) -> 0",
-					"mul(0,$x) -> 0",
-					"mul($x,1) -> $x",
-					"mul(1,$x) -> $x",
-					"mul($x,$x) -> pow($x,2)",
-					"pow($x,0) -> 1",
-					"pow($x,1) -> $x")
-				.map(rule -> TreeRewriteRule.compile(rule, MathOp::toMathOp));
-
-		return rewriters.prepend(ISeq.of(ConstExprRewriter.REWRITER));
+	private static TreeRewriter<Op<Double>> compile(final String rule) {
+		return TreeRewriteRule.compile(rule, MathOp::toMathOp);
 	}
 
 	private static final MathExprRewriter INSTANCE = new MathExprRewriter();
 
 	@Override
 	public int rewrite(final TreeNode<Op<Double>> tree, final int limit) {
-		return TreeRewriters.rewrite(tree, REWRITERS, limit);
+		return TreeRewriters.rewrite(tree, limit, REWRITERS);
 	}
 
 	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> tree) {

@@ -181,6 +181,8 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * variables first. If not, you will get the wrong result when evaluating
 	 * the tree. After the re-indexing you will get the correct result of 45.0.
 	 *
+	 * @since !__version__!
+	 *
 	 * @see MathOp#toMathOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *

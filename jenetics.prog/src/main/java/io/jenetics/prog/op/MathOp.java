@@ -58,7 +58,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see Math
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public enum MathOp implements Op<Double> {
@@ -380,6 +380,8 @@ public enum MathOp implements Op<Double> {
 	 * Var.reindex(tree);
 	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
 	 * }</pre>
+	 *
+	 * @since !__version__!
 	 *
 	 * @see Var#reindex(TreeNode)
 	 * @see Program#eval(Tree, Object[])
