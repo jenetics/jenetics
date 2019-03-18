@@ -42,11 +42,11 @@ public final class TreeRewriters {
 	 * This method to apply the all rewriters, in the order they are given in
 	 * the sequence, until the tree stays unchanged.
 	 *
+	 * @param <V> the tree value type
 	 * @param tree the tree to rewrite
-	 * @param rewriters the rewriters applied to the tree
 	 * @param limit the maximal number this rewrite rule is applied to the given
 	 *        tree. This guarantees the termination of the rewrite method.
-	 * @param <V> the tree value type
+	 * @param rewriters the rewriters applied to the tree
 	 * @return {@code true} if the tree has been changed (rewritten) by this
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if one of the arguments is {@code null}
@@ -55,8 +55,8 @@ public final class TreeRewriters {
 	 */
 	public static <V> int rewrite(
 		final TreeNode<V> tree,
-		final Iterable<? extends TreeRewriter<V>> rewriters,
-		final int limit
+		final int limit,
+		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
 		requireNonNull(tree);
 		requireNonNull(rewriters);
@@ -84,7 +84,7 @@ public final class TreeRewriters {
 	 * This method to apply the all rewriters, in the order they are given in
 	 * the sequence, until the tree stays unchanged.
 	 *
-	 * @see #rewrite(TreeNode, Iterable, int)
+	 * @see #rewrite(TreeNode, int, Iterable)
 	 *
 	 * @param tree the tree to rewrite
 	 * @param rewriters the rewriters applied to the tree
@@ -97,7 +97,7 @@ public final class TreeRewriters {
 		final TreeNode<V> tree,
 		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
-		return rewrite(tree, rewriters, Integer.MAX_VALUE);
+		return rewrite(tree, Integer.MAX_VALUE, rewriters);
 	}
 
 }
