@@ -23,6 +23,7 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
+import io.jenetics.ext.rewriting.TreeRewriters;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -59,7 +60,7 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 
 	@Override
 	public int rewrite(final TreeNode<Op<Double>> tree, final int limit) {
-		return TreeRewriter.rewrite(tree, REWRITERS, limit);
+		return TreeRewriters.rewrite(tree, REWRITERS, limit);
 	}
 
 	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> tree) {

@@ -58,7 +58,7 @@ public class TreeRewriteRuleTest {
 	public void rewrite(final String treeString, final String rewrittenTreeString) {
 		final TreeNode<String> tree = TreeNode.parse(treeString);
 
-		TreeRewriter.rewrite(tree, REWRITERS);
+		TreeRewriters.rewrite(tree, REWRITERS);
 		Assert.assertEquals(
 			tree.toParenthesesString(),
 			TreeNode.parse(rewrittenTreeString).toParenthesesString()
