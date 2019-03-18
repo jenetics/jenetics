@@ -41,9 +41,9 @@ import io.jenetics.ext.util.TreeNode;
  * @version 4.4
  * @since 4.4
  */
-final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
+final class ConstExpr implements TreeRewriter<Op<Double>> {
 
-	static final TreeRewriter<Op<Double>> REWRITER = new ConstExprRewriter();
+	static final TreeRewriter<Op<Double>> REWRITER = new ConstExpr();
 
 	@Override
 	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
@@ -55,7 +55,7 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		do {
 			result = results(node).findFirst();
 
-			res = result.map(ConstExprRewriter::rewriting).orElse(0);
+			res = result.map(ConstExpr::rewriting).orElse(0);
 			rewritten += res;
 		} while(result.isPresent() && rewritten < limit);
 
@@ -81,7 +81,7 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 	private static Stream<TreeNode<Op<Double>>>
 	results(final TreeNode<Op<Double>> node) {
 		return node.stream()
-			.filter(ConstExprRewriter::matches);
+			.filter(ConstExpr::matches);
 	}
 
 	private static boolean matches(final Tree<Op<Double>, ?> node) {
