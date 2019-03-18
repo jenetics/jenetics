@@ -30,7 +30,14 @@ import io.jenetics.ext.util.Tree;
 
 /**
  * The result of a tree match operation. It contains the matching tree and the
- * variables trees which matches the matching tree.
+ * tree variables which matches the matching tree.
+ *
+ * <pre>{@code
+ * final Tree<String, ?> tree = ...;
+ * final TreePattern<String> pattern = ...;
+ * final Optional<TreeMatchResult<String>> result = pattern.match(tree);
+ * result.ifPresent(r -> {assert r.tree() == tree;});
+ * }</pre>
  *
  * @see TreePattern#match(Tree)
  *
@@ -47,7 +54,7 @@ public final class TreeMatchResult<V> {
 		final Tree<V, ?> tree,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		_tree = tree;
+		_tree = requireNonNull(tree);
 		_vars = unmodifiableMap(requireNonNull(vars));
 	}
 
