@@ -46,23 +46,23 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 	static final TreeRewriter<Op<Double>> REWRITER = new ConstExprRewriter();
 
 	@Override
-	public boolean rewrite(final TreeNode<Op<Double>> node) {
+	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
 		requireNonNull(node);
 
-		boolean rewritten = false;
-		boolean res;
+		int rewritten = 0;
+		int res;
 		Optional<TreeNode<Op<Double>>> result;
 		do {
 			result = results(node).findFirst();
 
-			res = result.map(ConstExprRewriter::_rewrite).orElse(false);
-			rewritten = res || rewritten;
-		} while(result.isPresent());
+			res = result.map(ConstExprRewriter::_rewrite).orElse(0);
+			rewritten += res;
+		} while(result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
 
-	private static boolean _rewrite(final TreeNode<Op<Double>> node) {
+	private static int _rewrite(final TreeNode<Op<Double>> node) {
 		if (matches(node)) {
 			final Double[] args = node.childStream()
 				.map(child -> ((Const<Double>)child.getValue()).value())
@@ -72,10 +72,10 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 			node.removeAllChildren();
 			node.setValue(Const.of(value));
 
-			return true;
+			return 1;
 		}
 
-		return false;
+		return 0;
 	}
 
 	private static Stream<TreeNode<Op<Double>>>

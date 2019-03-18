@@ -27,7 +27,7 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
+ * @version !__version__!
  * @since 4.1
  */
 final class MathExprRewriter implements TreeRewriter<Op<Double>> {
@@ -58,8 +58,8 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 	private static final MathExprRewriter INSTANCE = new MathExprRewriter();
 
 	@Override
-	public boolean rewrite(final TreeNode<Op<Double>> tree) {
-		return TreeRewriter.rewrite(tree, REWRITERS);
+	public int rewrite(final TreeNode<Op<Double>> tree, final int limit) {
+		return TreeRewriter.rewrite(tree, REWRITERS, limit);
 	}
 
 	static TreeNode<Op<Double>> prune(final TreeNode<Op<Double>> tree) {

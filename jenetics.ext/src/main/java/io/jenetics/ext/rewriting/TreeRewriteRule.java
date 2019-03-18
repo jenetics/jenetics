@@ -58,6 +58,9 @@ import io.jenetics.ext.util.TreeNode;
  *     mul(0,1) -&gt; mul($x,1)
  * </pre>
  *
+ * @see <a href="https://en.wikipedia.org/wiki/Rewriting#Term_rewriting_systems">
+ *      Tree rewriting systems</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -93,7 +96,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 				"Some template variables are not defined in the matcher '%s': %s",
 				this,
 				undefined.stream()
-					.map(v -> format("<%s>", v))
+					.map(v -> format("%s", v))
 					.collect(Collectors.joining(", "))
 			));
 		}
@@ -129,18 +132,18 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	}
 
 	@Override
-	public boolean rewrite(final TreeNode<V> tree) {
+	public int rewrite(final TreeNode<V> tree, final int limit) {
 		requireNonNull(tree);
 
-		boolean rewritten = false;
+		int rewritten = 0;
 		Optional<TreeMatchResult<V>> result;
 		do {
 			result = left().matcher(tree).results()
 				.findFirst();
 
 			result.ifPresent(res -> rewrite(res, tree));
-			rewritten = result.isPresent() || rewritten;
-		} while(result.isPresent());
+			rewritten += result.isPresent() ? 1 : 0;
+		} while(result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
