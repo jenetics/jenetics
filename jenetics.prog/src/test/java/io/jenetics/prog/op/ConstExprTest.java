@@ -32,11 +32,10 @@ public class ConstExprTest {
 
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final double value) {
-		final ConstExpr rewriter = new ConstExpr();
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
+		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
+		ConstExpr.rewrite(tree);
 
-
-		Assert.assertEquals(MathExpr.eval(tree), value);
+		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
 
 	@DataProvider

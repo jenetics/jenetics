@@ -40,6 +40,7 @@ import java.util.stream.DoubleStream;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -71,6 +72,19 @@ public final class MathExpr
 {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * This tree-rewriter rewrites constant expressions to its single value.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
+	 * MathExpr.CONST_REWRITER.rewrite(tree);
+	 * assertEquals(tree.getValue(), Const.of(27.0));
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 */
+	public static final TreeRewriter<Op<Double>> CONST_REWRITER = ConstExpr::rewrite;
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
@@ -116,7 +130,7 @@ public final class MathExpr
 	 *
 	 * @return a new expression tree
 	 */
-	public Tree<Op<Double>, ?> toTree() {
+	public TreeNode<Op<Double>> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -310,7 +324,7 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static Tree<Op<Double>, ?> parseTree(final String expression) {
+	public static TreeNode<Op<Double>> parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 

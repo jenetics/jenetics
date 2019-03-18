@@ -24,29 +24,22 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class rewrites constant expressions to its single value.
  *
- * <pre>{@code
- * 1 + 2 + 3 + 4 -> 10.0
- * 1 + 2*(6 + 7) -> 27.0
- * sin(0) -> 0.0
- * }</pre>
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
-final class ConstExpr implements TreeRewriter<Op<Double>> {
+final class ConstExpr {
 
-	static final TreeRewriter<Op<Double>> REWRITER = new ConstExpr();
+	private ConstExpr() {
+	}
 
-	@Override
-	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
+	public static int rewrite(final TreeNode<Op<Double>> node, final int limit) {
 		requireNonNull(node);
 
 		int rewritten = 0;
@@ -91,4 +84,7 @@ final class ConstExpr implements TreeRewriter<Op<Double>> {
 					.allMatch(child -> child.getValue() instanceof Const);
 	}
 
+	public static int rewrite(final TreeNode<Op<Double>> node) {
+		return rewrite(node, Integer.MAX_VALUE);
+	}
 }
