@@ -19,9 +19,19 @@
  */
 package io.jenetics.ext.rewriting;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.function.Function;
 
 import io.jenetics.util.ISeq;
+import io.jenetics.util.MSeq;
 
 import io.jenetics.ext.util.TreeNode;
 
@@ -49,7 +59,9 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-public final class TRS<V> implements TreeRewriter<V> {
+public final class TRS<V> implements TreeRewriter<V>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<TreeRewriteRule<V>> _rules;
 
@@ -85,6 +97,18 @@ public final class TRS<V> implements TreeRewriter<V> {
 		return new TRS<>(_rules.map(rule -> rule.map(mapper)));
 	}
 
+	@Override
+	public int hashCode() {
+		return _rules.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof TRS &&
+			_rules.equals(((TRS)obj)._rules);
+	}
+
 	/**
 	 * Create a new TRS from the given rewrite rules and type mapper.
 	 *
@@ -117,6 +141,40 @@ public final class TRS<V> implements TreeRewriter<V> {
 	 */
 	public static TRS<String> of(final String... rules) {
 		return of(Function.identity(), rules);
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TRS_KEY, this);
+	}
+
+	private void readObject(final ObjectOutputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(_rules.length(), out);
+		for (int i = 0; i < _rules.length(); ++i) {
+			out.writeObject(_rules.get(i));
+		}
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static TRS read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final int length = readInt(in);
+		final MSeq rules = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			rules.set(i, in.readObject());
+		}
+
+		return new TRS(rules.toISeq());
 	}
 
 }
