@@ -22,7 +22,8 @@ package io.jenetics.ext.rewriting;
 import io.jenetics.ext.util.TreeNode;
 
 /**
- * Interface for rewriting a given tree.
+ * Interface for rewriting a given tree. The rewrite is performed on a mutable
+ * {@link TreeNode} and is done in place.
  * <p>
  * <b>Description from <a href="https://en.wikipedia.org/wiki/Rewriting">
  *     Wikipedia: </a></b>
