@@ -126,6 +126,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 * @param mapper the type mapper
 	 * @param <B> the target type
 	 * @return a new rewrite rule for the mapped type
+	 * @throws NullPointerException if the {@code mapper} is {@code null}
 	 */
 	public <B> TreeRewriteRule<B> map(final Function<? super V, ? extends B> mapper) {
 		return new TreeRewriteRule<>(_left.map(mapper), _right.map(mapper));
