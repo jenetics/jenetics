@@ -40,7 +40,9 @@ import java.util.stream.DoubleStream;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
+import io.jenetics.ext.rewriting.TreeRewriters;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -78,18 +80,66 @@ public final class MathExpr
 	 *
 	 * <pre>{@code
 	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
-	 * MathExpr.CONST_EXPR_REWRITER.rewrite(tree);
+	 * MathExpr.CONST_REWRITER.rewrite(tree);
 	 * assertEquals(tree.getValue(), Const.of(27.0));
 	 * }</pre>
 	 *
 	 * @since !__version__!
 	 */
-	public static final TreeRewriter<Op<Double>> CONST_EXPR_REWRITER =
+	public static final TreeRewriter<Op<Double>> CONST_REWRITER =
 		new ConstExprRewriter();
 
-	public static final TreeRewriter<Op<Double>> MATH_EXPR_REWRITER =
-		new MathExprRewriter();
+	/**
+	 * This rewriter implements some common arithmetic identities.
+	 * <pre>
+	 *     sub($x,$x) -&gt;  0
+	 *     add($x,$x) -&gt;  mul(2,$x)
+	 *     sub($x,0)  -&gt;  $x
+	 *     add($x,0)  -&gt;  $x
+	 *     add(0,$x)  -&gt;  $x
+	 *     div($x,$x) -&gt;  1
+	 *     mul($x,0)  -&gt;  0
+	 *     mul(0,$x)  -&gt;  0
+	 *     mul($x,1)  -&gt;  $x
+	 *     mul(1,$x)  -&gt;  $x
+	 *     mul($x,$x) -&gt;  pow($x,2)
+	 *     pow($x,0)  -&gt;  1
+	 *     pow($x,1)  -&gt;  $x
+	 * </pre>
+	 *
+	 * @since !__version__!
+	 */
+	public static final TreeRewriter<Op<Double>> ARITHMETIC_REWRITER =
+		TreeRewriters.concat(
+			compile("sub($x,$x) -> 0"),
+			compile("add($x,$x) -> mul(2,$x)"),
+			compile("sub($x,0) -> $x"),
+			compile("add($x,0) -> $x"),
+			compile("add(0,$x) -> $x"),
+			compile("div($x,$x) -> 1"),
+			compile("mul($x,0) -> 0"),
+			compile("mul(0,$x) -> 0"),
+			compile("mul($x,1) -> $x"),
+			compile("mul(1,$x) -> $x"),
+			compile("mul($x,$x) -> pow($x,2)"),
+			compile("pow($x,0) -> 1"),
+			compile("pow($x,1) -> $x")
+		);
 
+	private static TreeRewriter<Op<Double>> compile(final String rule) {
+		return TreeRewriteRule.compile(rule, MathOp::toMathOp);
+	}
+
+	/**
+	 * Combination of the {@link #ARITHMETIC_REWRITER} and the
+	 * {@link #CONST_REWRITER}, in this specific order.
+	 *
+	 * @since !__version__!
+	 */
+	public static final TreeRewriter<Op<Double>> REWRITER = TreeRewriters.concat(
+		ARITHMETIC_REWRITER,
+		CONST_REWRITER
+	);
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
@@ -204,29 +254,22 @@ public final class MathExpr
 		return format(_tree);
 	}
 
-	public MathExpr simplify(final TreeRewriter<Op<Double>> rewriter) {
+
+	public MathExpr simplify(
+		final TreeRewriter<Op<Double>> rewriter,
+		final int limit
+	) {
 		final TreeNode<Op<Double>> tree = toTree();
-		rewriter.rewrite(tree);
-		return null;
+		rewriter.rewrite(tree, limit);
+		return new MathExpr(tree, true);
 	}
 
-	/**
-	 * Tries to simplify {@code this} math expression.
-	 *
-	 * <pre>{@code
-	 * final MathExpr expr = MathExpr.parse("4.0 + 4.0 + x*(5.0 + 13.0)");
-	 * final MathExpr simplified = expr.simplify()
-	 * System.out.println(simplified);
-	 * }</pre>
-	 * The simplified expression will be look like this: {@code 8.0 + (x*18.0)}.
-	 *
-	 * @see #prune(TreeNode)
-	 * @see #simplify(Tree)
-	 *
-	 * @return a new simplified math expression
-	 */
+	public MathExpr simplify(final TreeRewriter<Op<Double>> rewriter) {
+		return simplify(rewriter, Integer.MAX_VALUE);
+	}
+
 	public MathExpr simplify() {
-		return new MathExpr(simplify(_tree));
+		return simplify(REWRITER);
 	}
 
 
@@ -383,49 +426,6 @@ public final class MathExpr
 		final double... args
 	) {
 		return new MathExpr(expression, true).eval(args);
-	}
-
-	/**
-	 * Tries to simplify the given math tree.
-	 *
-	 * <pre>{@code
-	 * final Tree<? extends Op<Double>, ?> tree =
-	 *     MathExpr.parseTree("4.0 + 4.0 + x*(5.0 + 13.0)");
-	 * final Tree<? extends Op<Double>, ?> simplified = MathExpr.simplify(tree)
-	 * System.out.println(simplified);
-	 * }</pre>
-	 * The simplified tree will be look like this:
-	 * <pre> {@code
-	 *  add
-	 *  ├── 8.0
-	 *  └── mul
-	 *      ├── x
-	 *      └── 18.0
-	 * }</pre>
-	 *
-	 * @see #prune(TreeNode)
-	 * @see #simplify()
-	 *
-	 * @param tree the math tree to simplify
-	 * @return the new simplified tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
-	 */
-	public static Tree<Op<Double>, ?>
-	simplify(final Tree<? extends Op<Double>, ?> tree) {
-		return MathExprRewriter.prune(TreeNode.ofTree(tree));
-	}
-
-	/**
-	 * Tries to simplify the given math tree in place.
-	 *
-	 * @see #simplify(Tree)
-	 * @see #simplify()
-	 *
-	 * @param tree the math tree to simplify
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
-	 */
-	public static void prune(final TreeNode<Op<Double>> tree) {
-		MathExprRewriter.prune(tree);
 	}
 
 }

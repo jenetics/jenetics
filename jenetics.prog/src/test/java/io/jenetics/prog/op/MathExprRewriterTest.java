@@ -34,7 +34,6 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class MathExprRewriterTest {
 
-
 	@Test
 	public void rewriting() {
 		final TreeRewriter<Op<Double>> rewriter = TreeRewriteRule
@@ -54,15 +53,6 @@ public class MathExprRewriterTest {
 			MathExpr.parse(expr).simplify(),
 			MathExpr.parse(simplified)
 		);
-	}
-
-	@Test
-	public void foo() {
-		final MathExpr expr = MathExpr.parse("cos(z)*sin(0)");
-		System.out.println(expr.simplify());
-
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
-		System.out.println(ConstExprRewriter.rewrite(tree));
 	}
 
 	@DataProvider
