@@ -506,8 +506,17 @@ public final class TreeNode<T>
 	 * Parses a (parentheses) tree string, created with
 	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
 	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
+	 *
+	 * The parse method doesn't strip the whitespace between the parentheses and
+	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
+	 * you should do the parsing with an addition <em>mapper</em> function.
+	 * <pre>{@code
+	 * final TreeNode<String> tree = TreeNode
+	 *     .parse("mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))", String::trim);
+	 * }</pre>
+	 * The code above will trim all tree nodes during the parsing process.
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()

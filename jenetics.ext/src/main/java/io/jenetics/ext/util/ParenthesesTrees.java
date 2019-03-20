@@ -62,8 +62,8 @@ final class ParenthesesTrees {
 	 * @param mapper the string mapper function
 	 * @return the string representation of the given tree
 	 */
-	static <V, T extends Tree<V, T>> String toString(
-		final T tree,
+	static <V> String toString(
+		final Tree<V, ?> tree,
 		final Function<? super V, String> mapper
 	) {
 		requireNonNull(mapper);
@@ -77,9 +77,9 @@ final class ParenthesesTrees {
 		}
 	}
 
-	private static  <V, T extends Tree<V, T>> void toString(
+	private static  <V> void toString(
 		final StringBuilder out,
-		final T tree,
+		final Tree<V, ?> tree,
 		final Function<? super V, String> mapper
 	) {
 		out.append(escape(mapper.apply(tree.getValue())));
