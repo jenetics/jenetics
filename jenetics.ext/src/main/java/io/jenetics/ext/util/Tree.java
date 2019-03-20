@@ -967,6 +967,11 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return toParenthesesString(Objects::toString);
 	}
 
+	public default String toTreeString(final Function<? super V, String> mapper) {
+		requireNonNull(mapper);
+		return TreeFormatter.TREE_STRING.format(Trees.<V, T>self(this), mapper);
+	}
+
 	/**
 	 * Return a string representation of {@code this} tree, like the following
 	 * example.
@@ -986,15 +991,12 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *     └── 9
 	 * </pre>
 	 *
-	 * This method is intended to be used when override the
-	 * {@link Object#toString()} method.
-	 *
 	 * @since !__version__!
 	 *
 	 * @return the string representation of the given tree
 	 */
 	public default String toTreeString() {
-		return Trees.toString(this);
+		return toTreeString(Objects::toString);
 	}
 
 
