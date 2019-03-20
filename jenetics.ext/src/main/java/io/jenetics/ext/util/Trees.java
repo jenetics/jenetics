@@ -19,11 +19,8 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.jenetics.util.ISeq;
@@ -31,7 +28,7 @@ import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version !__version__!
  * @since 3.9
  */
 final class Trees {
