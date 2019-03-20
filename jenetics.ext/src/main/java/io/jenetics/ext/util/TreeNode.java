@@ -427,7 +427,7 @@ public final class TreeNode<T>
 
 	@Override
 	public String toString() {
-		return Tree.toString(this);
+		return toParenthesesString();
 	}
 
 

@@ -967,6 +967,36 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		return toParenthesesString(Objects::toString);
 	}
 
+	/**
+	 * Return a string representation of {@code this} tree, like the following
+	 * example.
+	 *
+	 * <pre>
+	 * 0
+	 * ├── 1
+	 * │   ├── 4
+	 * │   └── 5
+	 * ├── 2
+	 * │   └── 6
+	 * └── 3
+	 *     ├── 7
+	 *     │   ├── 10
+	 *     │   └── 11
+	 *     ├── 8
+	 *     └── 9
+	 * </pre>
+	 *
+	 * This method is intended to be used when override the
+	 * {@link Object#toString()} method.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the string representation of the given tree
+	 */
+	public default String toTreeString() {
+		return Trees.toString(this);
+	}
+
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -1004,18 +1034,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * example.
 	 *
 	 * <pre>
-	 * 0
-	 * ├── 1
-	 * │   ├── 4
-	 * │   └── 5
-	 * ├── 2
-	 * │   └── 6
-	 * └── 3
-	 *     ├── 7
-	 *     │   ├── 10
-	 *     │   └── 11
-	 *     ├── 8
-	 *     └── 9
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
 	 * This method is intended to be used when override the
@@ -1025,7 +1044,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the string representation of the given tree
 	 */
 	public static String toString(final Tree<?, ?> tree) {
-		return Trees.toString(tree);
+		return tree.toParenthesesString();
 	}
 
 
