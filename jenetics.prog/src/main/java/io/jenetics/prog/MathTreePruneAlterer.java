@@ -50,7 +50,7 @@ public class MathTreePruneAlterer<
 
 	@Override
 	protected void mutate(final TreeNode<Op<Double>> tree) {
-		MathExpr.prune(tree);
+		//MathExpr.prune(tree);
 	}
 
 }

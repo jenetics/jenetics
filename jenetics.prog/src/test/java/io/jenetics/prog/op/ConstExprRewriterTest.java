@@ -28,12 +28,12 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConstExprTest {
+public class ConstExprRewriterTest {
 
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final double value) {
 		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
-		ConstExpr.rewrite(tree);
+		new ConstExprRewriter().rewrite(tree);
 
 		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
