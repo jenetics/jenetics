@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 public class TreeFormatterTest {
 
 	private static final TreeNode<String> TREE = TreeNode
-		.parse("mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))", String::trim);
+		.parse("mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))", String::trim);
 
 	@Test
 	public void toTreeString() {
