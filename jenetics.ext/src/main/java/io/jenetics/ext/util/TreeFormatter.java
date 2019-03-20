@@ -36,22 +36,23 @@ import java.util.stream.Collectors;
 abstract class TreeFormatter {
 
 	/**
-	 * This formatter creates tree strings which look like this:
-	 *
+	 * This formatter creates tree strings, which formats the given tree
 	 * <pre>
-	 * 0
-	 * ├── 1
-	 * │   ├── 4
-	 * │   └── 5
-	 * ├── 2
-	 * │   └── 6
-	 * └── 3
-	 *     ├── 7
-	 *     │   ├── 10
-	 *     │   └── 11
-	 *     ├── 8
-	 *     └── 9
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
+	 * to
+	 * <pre>
+	 *  mul
+	 *  ├── div
+	 *  │   ├── cos
+	 *  │   │   └── 1.0
+	 *  │   └── cos
+	 *  │       └── π
+	 *  └── sin
+	 *      └── mul
+	 *          ├── 1.0
+	 *          └── z
+	 *  </pre>
 	 */
 	static final TreeFormatter TREE_STRING = new TreeFormatter() {
 
