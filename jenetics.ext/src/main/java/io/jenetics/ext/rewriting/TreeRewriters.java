@@ -22,6 +22,7 @@ package io.jenetics.ext.rewriting;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.ext.util.TreeNode;
@@ -69,8 +70,9 @@ public final class TreeRewriters {
 		int rewritten = 0;
 		int count = 0;
 		do {
+			final int rwrt = rewritten;
 			count = StreamSupport.stream(rewriters.spliterator(), false)
-				.mapToInt(r -> r.rewrite(tree, limit))
+				.mapToInt(r -> r.rewrite(tree, limit - rwrt))
 				.sum();
 
 			rewritten += count;
@@ -98,6 +100,30 @@ public final class TreeRewriters {
 		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
 		return rewrite(tree, Integer.MAX_VALUE, rewriters);
+	}
+
+	/**
+	 * Concat the given {@code rewriters} to one tree-rewriter.
+	 *
+	 * @param rewriters the tree-rewriter to concatenate
+	 * @param <V> the tree value type
+	 * @return a new tree-rewriter which concatenates the given one
+	 * @throws NullPointerException if the given {@code rewriters} are
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the {@code limit} is smaller than
+	 *         zero
+	 */
+	@SafeVarargs
+	public static <V> TreeRewriter<V>
+	concat(final TreeRewriter<V>... rewriters) {
+		if (rewriters.length == 0) {
+			throw new IllegalArgumentException(
+				"The given rewriter array must not be empty."
+			);
+		}
+
+		return (tree, limit) ->
+			TreeRewriters.rewrite(tree, limit, Arrays.asList(rewriters));
 	}
 
 }
