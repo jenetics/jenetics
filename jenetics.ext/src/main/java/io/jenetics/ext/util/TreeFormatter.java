@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -56,8 +58,11 @@ public abstract class TreeFormatter {
 		@Override
 		public <V, T extends Tree<V, T>> String format(
 			final T tree,
-			final Function<? super V, ? extends CharSequence> mapper
+			final Function<? super V, String> mapper
 		) {
+			requireNonNull(tree);
+			requireNonNull(mapper);
+
 			return toStrings(tree, mapper).stream()
 				.map(StringBuilder::toString)
 				.collect(Collectors.joining("\n"));
@@ -65,7 +70,7 @@ public abstract class TreeFormatter {
 
 		private <V, T extends Tree<V, T>> List<StringBuilder> toStrings(
 			final T tree,
-			final Function<? super V, ? extends CharSequence> mapper
+			final Function<? super V, String> mapper
 		) {
 			final List<StringBuilder> result = new ArrayList<>();
 			result.add(new StringBuilder().append(mapper.apply(tree.getValue())));
@@ -85,7 +90,7 @@ public abstract class TreeFormatter {
 		private <V, T extends Tree<V, T>> void subtree(
 			final List<StringBuilder> result,
 			final List<StringBuilder> subtree,
-			final Function<? super V, ? extends CharSequence> mapper
+			final Function<? super V, String> mapper
 		) {
 			final Iterator<StringBuilder> it = subtree.iterator();
 			result.add(it.next().insert(0, "├── "));
@@ -106,11 +111,29 @@ public abstract class TreeFormatter {
 		}
 	};
 
+	/**
+	 * Formats a given tree to a parentheses string representation:
+	 * <pre>
+	 *     mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 * </pre>
+	 */
+	public static final TreeFormatter PARENTHESES_STRING = new TreeFormatter() {
+		@Override
+		public <V, T extends Tree<V, T>> String format(
+			final T tree,
+			final Function<? super V, String> mapper
+		) {
+			requireNonNull(tree);
+			requireNonNull(mapper);
+			return ParenthesesTrees.toString(tree, mapper);
+		}
+	};
+
 	public static final TreeFormatter LISP_STRING = new TreeFormatter() {
 		@Override
 		public <V, T extends Tree<V, T>> String format(
 			final T tree,
-			final Function<? super V, ? extends CharSequence> mapper
+			final Function<? super V, String> mapper
 		) {
 			return null;
 		}
@@ -134,7 +157,7 @@ public abstract class TreeFormatter {
 	 */
 	public abstract  <V, T extends Tree<V, T>> String format(
 		final T tree,
-		final Function<? super V, ? extends CharSequence> mapper
+		final Function<? super V, String> mapper
 	);
 
 	/**
