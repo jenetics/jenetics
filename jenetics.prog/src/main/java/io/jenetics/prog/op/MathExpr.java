@@ -84,7 +84,7 @@ public final class MathExpr
 	 * assertEquals(tree.getValue(), Const.of(27.0));
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> CONST_REWRITER =
 		new ConstExprRewriter();
@@ -107,7 +107,7 @@ public final class MathExpr
 	 *     pow($x,1)  -&gt;  $x
 	 * </pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> ARITHMETIC_REWRITER =
 		TreeRewriters.concat(
@@ -134,7 +134,7 @@ public final class MathExpr
 	 * Combination of the {@link #ARITHMETIC_REWRITER} and the
 	 * {@link #CONST_REWRITER}, in this specific order.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> REWRITER = TreeRewriters.concat(
 		ARITHMETIC_REWRITER,

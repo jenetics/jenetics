@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
  * Definition of different tree formatter strategies.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 public abstract class TreeFormatter {
 

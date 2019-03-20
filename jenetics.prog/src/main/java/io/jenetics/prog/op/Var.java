@@ -63,7 +63,7 @@ import io.jenetics.ext.util.TreeNode;
  * The {@code Var} object is comparable according it's name.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.0
  * @since 3.9
  */
 public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
@@ -181,7 +181,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * variables first. If not, you will get the wrong result when evaluating
 	 * the tree. After the re-indexing you will get the correct result of 45.0.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @see MathOp#toMathOp(String)
 	 * @see Program#eval(Tree, Object[])

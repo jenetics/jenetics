@@ -31,8 +31,8 @@ import io.jenetics.ext.util.TreeNode;
  * Some helper methods concerning tree-rewriters.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 public final class TreeRewriters {
 	private TreeRewriters() {

@@ -32,8 +32,8 @@ import io.jenetics.ext.util.TreeNode;
  * This class rewrites constant expressions to its single value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 

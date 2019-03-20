@@ -30,8 +30,8 @@ import io.jenetics.ext.rewriting.TreePattern.Var;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 final class Serial implements Externalizable {
 
