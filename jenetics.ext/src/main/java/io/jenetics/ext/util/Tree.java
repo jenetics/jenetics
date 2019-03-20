@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
+ * @version !__version__!
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -927,14 +927,15 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString()
+	 * @see TreeFormatter#PARENTHESES_STRING
 	 *
 	 * @param mapper the {@code mapper} which converts the tree value to a string
 	 * @return the string representation of the given tree
 	 */
 	public default String
 	toParenthesesString(final Function<? super V, String> mapper) {
-		requireNonNull(mapper);
-		return ParenthesesTrees.toString(Trees.<V, T>self(this), mapper);
+		return TreeFormatter.PARENTHESES_STRING
+			.format(Trees.<V, T>self(this), mapper);
 	}
 
 	/**
@@ -959,6 +960,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString(Function)
+	 * @see TreeFormatter#PARENTHESES_STRING
 	 *
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the {@code mapper} is {@code null}
@@ -966,7 +968,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default String toParenthesesString() {
 		return toParenthesesString(Objects::toString);
 	}
-
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -1004,18 +1005,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * example.
 	 *
 	 * <pre>
-	 * 0
-	 * ├── 1
-	 * │   ├── 4
-	 * │   └── 5
-	 * ├── 2
-	 * │   └── 6
-	 * └── 3
-	 *     ├── 7
-	 *     │   ├── 10
-	 *     │   └── 11
-	 *     ├── 8
-	 *     └── 9
+	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 *
 	 * This method is intended to be used when override the
@@ -1025,7 +1015,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the string representation of the given tree
 	 */
 	public static String toString(final Tree<?, ?> tree) {
-		return Trees.toString(tree);
+		return tree.toParenthesesString();
 	}
 
 

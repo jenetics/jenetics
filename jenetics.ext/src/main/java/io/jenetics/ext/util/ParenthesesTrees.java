@@ -59,6 +59,7 @@ final class ParenthesesTrees {
 	 * </pre>
 	 *
 	 * @param tree the input tree
+	 * @param mapper the string mapper function
 	 * @return the string representation of the given tree
 	 */
 	static <V, T extends Tree<V, T>> String toString(

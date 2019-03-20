@@ -19,11 +19,8 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.jenetics.util.ISeq;
@@ -31,12 +28,11 @@ import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version !__version__!
  * @since 3.9
  */
 final class Trees {
 	private Trees() {}
-
 
 	@SuppressWarnings("unchecked")
 	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
@@ -67,69 +63,6 @@ final class Trees {
 		}
 
 		return path;
-	}
-
-	static String toString(final Tree<?, ?> tree) {
-		return toString(tree, t -> Objects.toString(t.getValue()));
-	}
-
-	/**
-	 * Return a string representation of the given tree.
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 */
-	static String toString(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		return tree != null
-			? toStrings(tree, toNodeString).stream()
-				.map(StringBuilder::toString)
-				.collect(Collectors.joining("\n"))
-			: "null";
-	}
-
-	private static List<StringBuilder> toStrings(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final List<StringBuilder> result = new ArrayList<>();
-		result.add(new StringBuilder().append(toNodeString.apply(tree)));
-
-		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
-		while (it.hasNext()) {
-			final List<StringBuilder> subtree = toStrings(it.next(), toNodeString);
-			if (it.hasNext()) {
-				subtree(result, subtree, toNodeString);
-			} else {
-				lastSubtree(result, subtree);
-			}
-		}
-		return result;
-	}
-
-	private static void subtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "├── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "│   "));
-		}
-	}
-
-	private static void lastSubtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "└── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "    "));
-		}
 	}
 
 	static String toInfixString(final Tree<?, ?> tree) {
