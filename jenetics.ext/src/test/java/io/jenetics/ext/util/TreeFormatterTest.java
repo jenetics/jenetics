@@ -26,10 +26,22 @@ import org.testng.annotations.Test;
  */
 public class TreeFormatterTest {
 
+	private static final TreeNode<String> TREE = TreeNode
+		.parse("mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))", String::trim);
+
 	@Test
 	public void toTreeString() {
-		final TreeNode<String> tree = TreeNode.parse("add(mul(1,div(a,b)),4)");
-		System.out.println(TreeFormatter.TREE_STRING.format(tree));
+		System.out.println(TreeFormatter.TREE_STRING.format(TREE));
+	}
+
+	@Test
+	public void toParenthesesString() {
+		System.out.println(TreeFormatter.PARENTHESES_STRING.format(TREE));
+	}
+
+	@Test
+	public void toLispString() {
+		System.out.println(TreeFormatter.LISP_STRING.format(TREE));
 	}
 
 }

@@ -21,7 +21,6 @@ package io.jenetics.ext.util;
 
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -126,19 +125,6 @@ final class Trees {
 			out.append(id(node));
 			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
 		});
-	}
-
-
-	static String toLispString(Tree<?, ?> tree) {
-		final String value = String.valueOf(tree.getValue());
-		if (tree.isLeaf()) {
-			return value;
-		} else {
-			final String children = tree.childStream()
-				.map(Trees::toLispString)
-				.collect(Collectors.joining(" "));
-			return "(" + value + " " + children + ")";
-		}
 	}
 
 	/**

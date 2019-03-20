@@ -38,8 +38,7 @@ import java.util.stream.Collectors;
 public abstract class TreeFormatter {
 
 	/**
-	 * This formatter creates tree strings, which formats a given tree to a
-	 * string like this:
+	 * Formats a given tree to a <em>tree</em> string representation.
 	 * <pre>
 	 *     mul
 	 *     ├── div
@@ -112,7 +111,7 @@ public abstract class TreeFormatter {
 	};
 
 	/**
-	 * Formats a given tree to a parentheses string representation:
+	 * Formats a given tree to a parentheses string representation.
 	 * <pre>
 	 *     mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
@@ -129,16 +128,29 @@ public abstract class TreeFormatter {
 		}
 	};
 
+	/**
+	 * Formats a given tree to a lisp string representation.
+	 * <pre>
+	 *     (mul (div (cos 1.0) (cos π)) (sin (mul 1.0 z)))
+	 * </pre>
+	 */
 	public static final TreeFormatter LISP_STRING = new TreeFormatter() {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
-			return null;
+			final String value = mapper.apply(tree.getValue());
+			if (tree.isLeaf()) {
+				return value;
+			} else {
+				final String children = tree.childStream()
+					.map(child -> format(child, mapper))
+					.collect(Collectors.joining(" "));
+				return "(" + value + " " + children + ")";
+			}
 		}
 	};
-
 
 	protected TreeFormatter() {
 	}
