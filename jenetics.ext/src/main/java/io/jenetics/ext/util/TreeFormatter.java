@@ -56,8 +56,8 @@ public abstract class TreeFormatter {
 	public static final TreeFormatter TREE_STRING = new TreeFormatter() {
 
 		@Override
-		public <V, T extends Tree<V, T>> String format(
-			final T tree,
+		public <V> String format(
+			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
 			requireNonNull(tree);
@@ -68,14 +68,14 @@ public abstract class TreeFormatter {
 				.collect(Collectors.joining("\n"));
 		}
 
-		private <V, T extends Tree<V, T>> List<StringBuilder> toStrings(
-			final T tree,
+		private <V> List<StringBuilder> toStrings(
+			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
 			final List<StringBuilder> result = new ArrayList<>();
 			result.add(new StringBuilder().append(mapper.apply(tree.getValue())));
 
-			final Iterator<T> it = tree.childIterator();
+			final Iterator<? extends Tree<V, ?>> it = tree.childIterator();
 			while (it.hasNext()) {
 				final List<StringBuilder> subtree = toStrings(it.next(), mapper);
 				if (it.hasNext()) {
@@ -87,7 +87,7 @@ public abstract class TreeFormatter {
 			return result;
 		}
 
-		private <V, T extends Tree<V, T>> void subtree(
+		private <V> void subtree(
 			final List<StringBuilder> result,
 			final List<StringBuilder> subtree,
 			final Function<? super V, String> mapper
@@ -119,8 +119,8 @@ public abstract class TreeFormatter {
 	 */
 	public static final TreeFormatter PARENTHESES_STRING = new TreeFormatter() {
 		@Override
-		public <V, T extends Tree<V, T>> String format(
-			final T tree,
+		public <V> String format(
+			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
 			requireNonNull(tree);
@@ -131,8 +131,8 @@ public abstract class TreeFormatter {
 
 	public static final TreeFormatter LISP_STRING = new TreeFormatter() {
 		@Override
-		public <V, T extends Tree<V, T>> String format(
-			final T tree,
+		public <V> String format(
+			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
 			return null;
@@ -151,12 +151,11 @@ public abstract class TreeFormatter {
 	 * @param tree the input tree to format
 	 * @param mapper the tree node value mapper
 	 * @param <V> the tree node type
-	 * @param <T> the tree type
 	 * @return the string representation of the given {@code tree}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public abstract  <V, T extends Tree<V, T>> String format(
-		final T tree,
+	public abstract  <V> String format(
+		final Tree<V, ?> tree,
 		final Function<? super V, String> mapper
 	);
 
@@ -164,12 +163,10 @@ public abstract class TreeFormatter {
 	 * Formats the given {@code tree} to its string representation.
 	 *
 	 * @param tree the input tree to format
-	 * @param <V> the tree node type
-	 * @param <T> the tree type
 	 * @return the string representation of the given {@code tree}
 	 * @throws NullPointerException if the {@code tree} is {@code null}
 	 */
-	 public <V, T extends Tree<V, T>> String format(final T tree) {
+	 public String format(final Tree<?, ?> tree) {
 	 	return format(tree, Objects::toString);
 	 }
 

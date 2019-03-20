@@ -934,8 +934,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default String
 	toParenthesesString(final Function<? super V, String> mapper) {
-		return TreeFormatter.PARENTHESES_STRING
-			.format(Trees.<V, T>self(this), mapper);
+		return TreeFormatter.PARENTHESES_STRING.format(this, mapper);
 	}
 
 	/**
