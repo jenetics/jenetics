@@ -37,7 +37,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 
-	private ConstExprRewriter() {
+	ConstExprRewriter() {
 	}
 
 	@Override

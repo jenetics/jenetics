@@ -78,13 +78,18 @@ public final class MathExpr
 	 *
 	 * <pre>{@code
 	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
-	 * MathExpr.CONST_REWRITER.rewrite(tree);
+	 * MathExpr.CONST_EXPR_REWRITER.rewrite(tree);
 	 * assertEquals(tree.getValue(), Const.of(27.0));
 	 * }</pre>
 	 *
 	 * @since !__version__!
 	 */
-	public static final TreeRewriter<Op<Double>> CONST_REWRITER = ConstExprRewriter::rewrite;
+	public static final TreeRewriter<Op<Double>> CONST_EXPR_REWRITER =
+		new ConstExprRewriter();
+
+	public static final TreeRewriter<Op<Double>> MATH_EXPR_REWRITER =
+		new MathExprRewriter();
+
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
