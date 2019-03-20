@@ -104,7 +104,7 @@ public class TreeParserTest {
 	@Test
 	public void oneLevelThreeThreeTree() {
 		Assert.assertEquals(
-			parse("a(b,c,d(1,2))", Function.identity()),
+			parse("a  ( b , c  ,  d ( 1 , 2  )  )", String::trim),
 			TreeNode.of("a")
 				.attach("b", "c")
 				.attach(TreeNode.of("d")
