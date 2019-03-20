@@ -113,7 +113,7 @@ public abstract class TreeFormatter {
 	/**
 	 * Formats a given tree to a parentheses string representation.
 	 * <pre>
-	 *     mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 *     mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
 	 */
 	public static final TreeFormatter PARENTHESES = new TreeFormatter() {
