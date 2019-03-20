@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -34,12 +35,13 @@ import io.jenetics.ext.util.TreeNode;
  * @version !__version__!
  * @since !__version__!
  */
-final class ConstRewriter {
+final class ConstRewriter implements TreeRewriter<Op<Double>> {
 
 	private ConstRewriter() {
 	}
 
-	public static int rewrite(final TreeNode<Op<Double>> node, final int limit) {
+	@Override
+	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
 		requireNonNull(node);
 
 		int rewritten = 0;
@@ -84,7 +86,9 @@ final class ConstRewriter {
 					.allMatch(child -> child.getValue() instanceof Const);
 	}
 
-	public static int rewrite(final TreeNode<Op<Double>> node) {
-		return rewrite(node, Integer.MAX_VALUE);
+	@Override
+	public String toString() {
+		return "ConstExprRewriter";
 	}
+
 }
