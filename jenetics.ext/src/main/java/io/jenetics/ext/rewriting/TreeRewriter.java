@@ -60,7 +60,7 @@ public interface TreeRewriter<V> {
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
-	 *         zero
+	 *         one
 	 */
 	public int rewrite(final TreeNode<V> tree, final int limit);
 

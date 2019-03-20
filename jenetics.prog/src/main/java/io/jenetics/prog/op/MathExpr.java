@@ -254,7 +254,17 @@ public final class MathExpr
 		return format(_tree);
 	}
 
-
+	/**
+	 * Simplifying {@code this} expression by applying the given {@code rewriter}
+	 * and the given rewrite {@code limit}.
+	 *
+	 * @param rewriter the rewriter used for simplifying {@code this} expression
+	 * @param limit the rewrite limit
+	 * @return a newly created math expression object
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 * @throws IllegalArgumentException if the {@code limit} is smaller than
+	 *         zero
+	 */
 	public MathExpr simplify(
 		final TreeRewriter<Op<Double>> rewriter,
 		final int limit
@@ -264,10 +274,23 @@ public final class MathExpr
 		return new MathExpr(tree, true);
 	}
 
+	/**
+	 * Simplifying {@code this} expression by applying the given {@code rewriter}.
+	 *
+	 * @param rewriter the rewriter used for simplifying {@code this} expression
+	 * @return a newly created math expression object
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 */
 	public MathExpr simplify(final TreeRewriter<Op<Double>> rewriter) {
 		return simplify(rewriter, Integer.MAX_VALUE);
 	}
 
+	/**
+	 * Simplifies {@code this} expression by applying the default
+	 * {@link #REWRITER}.
+	 *
+	 * @return a newly created math expression object
+	 */
 	public MathExpr simplify() {
 		return simplify(REWRITER);
 	}
