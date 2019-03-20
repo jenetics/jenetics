@@ -84,7 +84,7 @@ public final class MathExpr
 	 *
 	 * @since !__version__!
 	 */
-	public static final TreeRewriter<Op<Double>> CONST_REWRITER = ConstRewriter::rewrite;
+	public static final TreeRewriter<Op<Double>> CONST_REWRITER = ConstExprRewriter::rewrite;
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 

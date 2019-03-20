@@ -62,7 +62,7 @@ public class MathExprRewriterTest {
 		System.out.println(expr.simplify());
 
 		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
-		System.out.println(ConstRewriter.rewrite(tree));
+		System.out.println(ConstExprRewriter.rewrite(tree));
 	}
 
 	@DataProvider
