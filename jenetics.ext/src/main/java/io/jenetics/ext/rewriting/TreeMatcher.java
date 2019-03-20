@@ -17,38 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal.util;
+package io.jenetics.ext.rewriting;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 
 /**
- * Implementation of a pattern based tree matcher.
+ * Implementation of a pattern based tree matcher. It allows you to iterate over
+ * all matches of a tree for a given pattern.
  *
- * @see TreePattern
+ * <pre>{@code
+ * final TreePattern<String> pattern = TreePattern.compile("add($x,$y)");
+ * final Tree<String, ?> tree = TreeNode.parse("add(1,add(2,3))");
+ * final TreeMatcher<String> matcher = pattern.matcher(tree);
+ * matcher.results().forEach(r -> System.out.println(r.tree().toParenthesesString()));
+ * // Prints:
+ * // add(1,add(2,3))
+ * // add(2,3)
+ * }</pre>
+ *
+ * @see TreePattern#matcher(Tree)
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version !__version__!
+ * @since !__version__!
  */
 public final class TreeMatcher<V> {
 
-	private final TreePattern _pattern;
+	private final TreePattern<V> _pattern;
 	private final Tree<V, ?> _tree;
-	private final BiPredicate<? super V, ? super String> _equals;
 
-	private TreeMatcher(
-		final TreePattern pattern,
-		final Tree<V, ?> tree,
-		final BiPredicate<? super V, ? super String> equals
-	) {
+	private TreeMatcher(final TreePattern<V> pattern, final Tree<V, ?> tree) {
 		_pattern = requireNonNull(pattern);
 		_tree = requireNonNull(tree);
-		_equals = requireNonNull(equals);
 	}
 
 	/**
@@ -56,8 +60,17 @@ public final class TreeMatcher<V> {
 	 *
 	 * @return the underlying tree pattern
 	 */
-	public TreePattern pattern() {
+	public TreePattern<V> pattern() {
 		return _pattern;
+	}
+
+	/**
+	 * Return the matching tree.
+	 *
+	 * @return the matching tree
+	 */
+	public Tree<V, ?> tree() {
+		return _tree;
 	}
 
 	/**
@@ -68,7 +81,7 @@ public final class TreeMatcher<V> {
 	 * @throws NullPointerException if the given predicate is {@code null}
 	 */
 	public boolean matches() {
-		return _pattern.matches(_tree, _equals);
+		return _pattern.matches(_tree);
 	}
 
 	/**
@@ -79,17 +92,16 @@ public final class TreeMatcher<V> {
 	 */
 	public Stream<TreeMatchResult<V>> results() {
 		return _tree.stream()
-			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree, _equals)
+			.flatMap((Tree<V, ?> tree) -> _pattern.match(tree)
 				.map(Stream::of)
 				.orElseGet(Stream::empty));
 	}
 
 	static <V> TreeMatcher<V> of(
-		final TreePattern pattern,
-		final Tree<V, ?> tree,
-		final BiPredicate<? super V, ? super String> equals
+		final TreePattern<V> pattern,
+		final Tree<V, ?> tree
 	) {
-		return new TreeMatcher<>(pattern, tree, equals);
+		return new TreeMatcher<>(pattern, tree);
 	}
 
 }

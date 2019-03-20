@@ -49,13 +49,16 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
+
 /**
  * This class contains operations for performing basic numeric operations.
  *
  * @see Math
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public enum MathOp implements Op<Double> {
@@ -361,32 +364,27 @@ public enum MathOp implements Op<Double> {
 		return _name;
 	}
 
-
-	/**
-	 * Tests whether the given operation is equal with the given string
-	 * representation.
-	 *
-	 * @param op the operation to test
-	 * @param value the string representation of the operation to test
-	 * @return {@code true} if the given string {@code value} is the string
-	 *         representation of the given {@code op}, {@code false} otherwise
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	static boolean equals(final Op<Double> op, final String value) {
-		final Optional<Double> number = Numbers.tryParseDouble(value);
-		if (number.isPresent() && op instanceof Const) {
-			final double d = number.orElseThrow(AssertionError::new);
-			final Const<Double> c = (Const<Double>)op;
-
-			return Double.compare(d, c.value()) == 0;
-		}
-
-		return Objects.equals(op.toString(), value);
-	}
-
 	/**
 	 * Converts the string representation of an operation to the operation
-	 * object.
+	 * object. It is used for converting the string representation of a tree to
+	 * an operation tree. If you use it that way, you should not forget to
+	 * re-index the tree variables.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * Var.reindex(tree);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see Var#reindex(TreeNode)
+	 * @see Program#eval(Tree, Object[])
 	 *
 	 * @param string the string representation of an operation which should be
 	 *        converted
@@ -396,15 +394,15 @@ public enum MathOp implements Op<Double> {
 	 * @throws NullPointerException if the given string {@code value} is
 	 *         {@code null}
 	 */
-	static Op<Double> convert(final String string) {
+	public static Op<Double> toMathOp(final String string) {
 		requireNonNull(string);
 
 		final Op<Double> result;
-		final Optional<Op<Double>> cop = toConst(string);
+		final Optional<Const<Double>> cop = toConst(string);
 		if (cop.isPresent()) {
 			result = cop.orElseThrow(AssertionError::new);
 		} else {
-			final Optional<Op<Double>> mop = toMathOp(string);
+			final Optional<Op<Double>> mop = toOp(string);
 			result = mop.isPresent()
 				? mop.orElseThrow(AssertionError::new)
 				: Var.of(string, 0);
@@ -413,13 +411,13 @@ public enum MathOp implements Op<Double> {
 		return result;
 	}
 
-	private static Optional<Op<Double>> toConst(final String string) {
+	static Optional<Const<Double>> toConst(final String string) {
 		return Numbers
 			.tryParseDouble(string)
 			.map(Const::of);
 	}
 
-	private static Optional<Op<Double>> toMathOp(final String string) {
+	private static Optional<Op<Double>> toOp(final String string) {
 		return Stream.of(values())
 			.filter(op -> Objects.equals(op._name, string))
 			.map(op -> (Op<Double>)op)

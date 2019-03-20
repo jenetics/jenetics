@@ -20,8 +20,14 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readNullableString;
+import static io.jenetics.internal.util.SerialIO.writeNullableString;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,12 +43,12 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 3.9
  */
 public final class Const<T> implements Op<T>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final String _name;
 	private final T _const;
@@ -80,14 +86,13 @@ public final class Const<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_const));
+		return Objects.hashCode(_const);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Const &&
-			Objects.equals(((Const)obj)._name, _name) &&
 			equal(((Const)obj)._const, _const);
 	}
 
@@ -129,6 +134,35 @@ public final class Const<T> implements Op<T>, Serializable {
 	 */
 	public static <T> Const<T> of(final T value) {
 		return new Const<>(null, value);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.CONST, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeNullableString(_name, out);
+		out.writeObject(_const);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Const read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final String name = readNullableString(in);
+		final Object value = in.readObject();
+		return new Const(name, value);
 	}
 
 }

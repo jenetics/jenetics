@@ -36,7 +36,9 @@ public class VarTest {
 
 	@Test
 	public void equalsVerifier() {
-		EqualsVerifier.forClass(Var.class).verify();
+		EqualsVerifier.forClass(Var.class)
+			.withIgnoredFields("_index")
+			.verify();
 	}
 
 	@Test

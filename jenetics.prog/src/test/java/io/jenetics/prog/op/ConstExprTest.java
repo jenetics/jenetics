@@ -19,33 +19,35 @@
  */
 package io.jenetics.prog.op;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.io.IOException;
-import java.util.Random;
-
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.util.IO;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConstTest {
+public class ConstExprTest {
 
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(Const.class)
-			.withIgnoredFields("_name")
-			.verify();
+	@Test(dataProvider = "expressions")
+	public void rewrite(final String expr, final double value) {
+		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
+		ConstExpr.rewrite(tree);
+
+		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
 
-	@Test
-	public void serialize() throws IOException {
-		final Const<Integer> object = Const.of("some name", new Random().nextInt());
-		final byte[] data = IO.object.toByteArray(object);
-		Assert.assertEquals(IO.object.fromByteArray(data), object);
+	@DataProvider
+	public Object[][] expressions() {
+		return new Object[][] {
+			{"1+2+3+4", 10.0},
+			{"1+2*(6+7)", 27.0},
+			{"sin(0)", 0.0},
+			{"cos(0)", 1.0},
+			{"cos(0) + sin(0)", 1.0},
+			{"cos(0)*sin(0)", 0.0}
+		};
 	}
 
 }

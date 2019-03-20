@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
+package io.jenetics.ext.rewriting;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -25,16 +25,23 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.StreamCorruptedException;
 
+import io.jenetics.ext.rewriting.TreePattern.Val;
+import io.jenetics.ext.rewriting.TreePattern.Var;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
- * @since 4.1
+ * @version !__version__!
+ * @since !__version__!
  */
 final class Serial implements Externalizable {
-	private static final long serialVersionUID = 1L;
 
-	static final byte MATH_EXPR = 1;
-	static final byte CONST = 2;
+	private static final long serialVersionUID = 1;
+
+	static final byte TREE_PATTERN = 1;
+	static final byte TREE_PATTERN_VAR = 2;
+	static final byte TREE_PATTERN_VAL = 3;
+	static final byte TREE_REWRITE_RULE = 4;
+	static final byte TRS_KEY = 5;
 
 	/**
 	 * The type being serialized.
@@ -67,8 +74,11 @@ final class Serial implements Externalizable {
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeByte(_type);
 		switch (_type) {
-			case MATH_EXPR: ((MathExpr)_object).write(out); break;
-			case CONST: ((Const)_object).write(out); break;
+			case TREE_PATTERN: ((TreePattern)_object).write(out); break;
+			case TREE_PATTERN_VAR: ((Var)_object).write(out); break;
+			case TREE_PATTERN_VAL: ((Val)_object).write(out); break;
+			case TREE_REWRITE_RULE: ((TreeRewriteRule)_object).write(out); break;
+			case TRS_KEY: ((TRS)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -80,8 +90,11 @@ final class Serial implements Externalizable {
 	{
 		_type = in.readByte();
 		switch (_type) {
-			case MATH_EXPR: _object = MathExpr.read(in); break;
-			case CONST: _object = Const.read(in); break;
+			case TREE_PATTERN: _object = TreePattern.read(in); break;
+			case TREE_PATTERN_VAR: _object = Var.read(in); break;
+			case TREE_PATTERN_VAL: _object = Val.read(in); break;
+			case TREE_REWRITE_RULE: _object = TreeRewriteRule.read(in); break;
+			case TRS_KEY: _object = TRS.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -92,3 +105,4 @@ final class Serial implements Externalizable {
 	}
 
 }
+

@@ -21,6 +21,8 @@ package io.jenetics.prog.op;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -38,6 +40,7 @@ import java.util.stream.DoubleStream;
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -69,6 +72,19 @@ public final class MathExpr
 {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * This tree-rewriter rewrites constant expressions to its single value.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
+	 * MathExpr.CONST_REWRITER.rewrite(tree);
+	 * assertEquals(tree.getValue(), Const.of(27.0));
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 */
+	public static final TreeRewriter<Op<Double>> CONST_REWRITER = ConstExpr::rewrite;
 
 	private final Tree<? extends Op<Double>, ?> _tree;
 
@@ -114,7 +130,7 @@ public final class MathExpr
 	 *
 	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> toTree() {
+	public TreeNode<Op<Double>> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -219,12 +235,12 @@ public final class MathExpr
 
 	void write(final DataOutput out) throws IOException {
 		final byte[] data = toString().getBytes(UTF_8);
-		out.writeInt(data.length);
+		writeInt(data.length, out);
 		out.write(data);
 	}
 
 	static MathExpr read(final DataInput in) throws IOException {
-		final byte[] data = new byte[in.readInt()];
+		final byte[] data = new byte[readInt(in)];
 		in.readFully(data);
 		return parse(new String(data, UTF_8));
 	}
@@ -308,8 +324,7 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static Tree<? extends Op<Double>, ?>
-	parseTree(final String expression) {
+	public static TreeNode<Op<Double>> parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
@@ -384,7 +399,7 @@ public final class MathExpr
 	 * @return the new simplified tree
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static Tree<? extends Op<Double>, ?>
+	public static Tree<Op<Double>, ?>
 	simplify(final Tree<? extends Op<Double>, ?> tree) {
 		return MathExprRewriter.prune(TreeNode.ofTree(tree));
 	}

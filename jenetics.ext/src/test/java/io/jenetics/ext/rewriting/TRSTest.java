@@ -17,38 +17,47 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
+package io.jenetics.ext.rewriting;
+
+import java.io.IOException;
 
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.IO;
 
 import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConstExprRewriterTest {
+public class TRSTest {
 
-	@Test(dataProvider = "expressions")
-	public void rewrite(final String expr, final double value) {
-		final ConstExprRewriter rewriter = new ConstExprRewriter();
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
+	@Test
+	public void normalForm() {
+		final TRS<String> trs = TRS.of(
+			"add(0,$x) -> $x",
+			"add(S($x),$y) -> S(add($x,$y))",
+			"mul(0,$x) -> 0",
+			"mul(S($x),$y) -> add(mul($x,$y),$y)"
+		);
 
-
-		Assert.assertEquals(MathExpr.eval(tree), value);
+		final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
+		trs.rewrite(tree);
+		Assert.assertEquals(tree, TreeNode.parse("S(S(S(S(0))))"));
 	}
 
-	@DataProvider
-	public Object[][] expressions() {
-		return new Object[][] {
-			{"1+2+3+4", 10.0},
-			{"1+2*(6+7)", 27.0},
-			{"sin(0)", 0.0},
-			{"cos(0)", 1.0},
-			{"cos(0) + sin(0)", 1.0},
-			{"cos(0)*sin(0)", 0.0}
-		};
+	@Test
+	public void serialize() throws IOException {
+		final TRS<String> trs = TRS.of(
+			"add(0,$x) -> $x",
+			"add(S($x),$y) -> S(add($x,$y))",
+			"mul(0,$x) -> 0",
+			"mul(S($x),$y) -> add(mul($x,$y),$y)"
+		);
+
+		final byte[] data = IO.object.toByteArray(trs);
+		Assert.assertEquals(IO.object.fromByteArray(data), trs);
 	}
 
 }

@@ -25593,6 +25593,13 @@ Node
 
 \begin_layout Subsubsection
 Parentheses tree
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Parentheses-tree"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -25927,47 +25934,6 @@ Argument\SpecialChar softhyphen
 Exception
 \family default
  if it is called with an invalid tree string.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-Tree rewriting
-\end_layout
-
-\begin_layout Plain Layout
-Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
- trees (tree structured data) into other trees by applying rewriting rules.
- Rewriting can be non-deterministic.
- One rule to rewrite a term could be applied in many different ways to that
- term, or more than one rule could be applicable.
- Rewriting systems then do not provide an algorithm for changing one term
- to another, but a set of possible rule applications.
- When combined with an appropriate algorithm, however, rewrite systems can
- be viewed as computer programs, and several theorem provers and declarative
- programming languages are based on term rewriting.
-\end_layout
-
-\begin_layout Plain Layout
-A term rewriting system (TRS) is a rewriting system where the objects are
- terms, or expressions with nested sub-expressions.
- For example, the system shown under § Logic above is a term rewriting system.
-\end_layout
-
-\begin_layout Plain Layout
-In contrast to string rewriting systems, whose objects are flat sequences
- of symbols, the objects a term rewriting system works on, i.e.
- the terms, form a term algebra.
- A term can be visualized as a tree of symbols, the set of admitted symbols
- being fixed by a given signature.
- 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsubsection
@@ -26344,6 +26310,436 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Rewriting
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Rewriting"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewriting
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
+ trees (tree structured data) into other trees by applying rewriting rules.
+ Rewriting can be non-deterministic.
+ One rule to rewrite a term could be applied in many different ways to that
+ term, or more than one rule could be applicable.
+ Rewriting systems then do not provide an algorithm for changing one term
+ to another, but a set of possible rule applications.
+ When combined with an appropriate algorithm, however, rewrite systems can
+ be viewed as computer programs, and several theorem provers and declarative
+ programming languages are based on term rewriting.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Tree rewrite rule):
+\series default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite rule
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewrite rule
+\end_layout
+
+\end_inset
+
+ A tree rewrite rule is a pair of terms (sub-trees) 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+.
+ The notation indicates that the 
+\emph on
+left
+\emph default
+-hand side 
+\begin_inset Formula $l$
+\end_inset
+
+ can be replaced by the 
+\emph on
+right
+\emph default
+-hand side 
+\begin_inset Formula $r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A rule 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+ can be applied to a tree 
+\begin_inset Formula $t$
+\end_inset
+
+ if the left tree (pattern) matches a sub-tree of 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ The matching sub-tree is then replaced by the right tree (pattern) 
+\begin_inset Formula $r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Tree rewrite system):
+\series default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite system
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewrite system
+\end_layout
+
+\end_inset
+
+ A tree rewrite system is a set 
+\begin_inset Formula $\mathfrak{\mathcal{R}}$
+\end_inset
+
+ of rewrite rules 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In contrast to string rewriting systems, whose objects are flat sequences
+ of symbols, the objects a term rewriting system works on, i.e.
+ the terms, form a term algebra.
+ A term can be visualized as a tree of symbols, the set of admitted symbols
+ being fixed by a given signature.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Tree pattern
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree pattern
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+TreePattern
+\family default
+ class is used for the left-hand and the right-hand side of a rewrite rule.
+ It is typed and consists of variable (
+\family typewriter
+Var
+\family default
+) and value (
+\family typewriter
+Val
+\family default
+) nodes which form a sum type
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Algebraic_data_type
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of the 
+\emph on
+sealed
+\emph default
+ 
+\family typewriter
+Decl
+\family default
+ class.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class TreePattern<V> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreePattern(Tree<Decl<V>, ?> pattern) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreeMatcher<V> matcher(Tree<V, ?> tree) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreeNode<V> expand(Map<Var<V>, Tree<V, ?>> vars) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:TreePattern-class"
+
+\end_inset
+
+
+\family typewriter
+TreePattern
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:TreePattern-class"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the constructor and main methods of the TreePattern.
+ The 
+\family typewriter
+matcher
+\family default
+ method is used when used for the left-hand side and the 
+\family typewriter
+expand
+\family default
+ method for the right-hand side.
+ How to create a simple tree pattern is shown in the code snippet below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Tree<Decl<String>, ?> t = TreeNode.<Decl<String>>
+\end_layout
+
+\begin_layout Plain Layout
+
+    of(Val.of("add")).attach(Var.of("x"), Val.of("1"));
+\end_layout
+
+\begin_layout Plain Layout
+
+TreePattern<String> p = new TreePattern<>(t);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert p.matcher(TreeNode.parse("add(sub(x,y),1)")).matches();
+\end_layout
+
+\end_inset
+
+You can see that the variable 
+\family typewriter
+x
+\family default
+ will match for arbitrary sub trees.
+ For more complicated patterns it is quite cumbersome to create it via a
+ 
+\family typewriter
+Decl
+\family default
+ tree.
+ Usually you will create a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Pattern
+\family default
+ object by compiling a proper pattern string.
+ For creating the same pattern as in the example above you can write 
+\family typewriter
+Tree\SpecialChar softhyphen
+Pattern\SpecialChar softhyphen
+.compile(\SpecialChar softhyphen
+"add($x,1)"\SpecialChar softhyphen
+)
+\family default
+.
+ The base syntax for the tree pattern follows the parentheses tree DSL described
+ in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Parentheses-tree"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ It only differs for the declaration of tree variables, which starts with
+ a '$' and must be a valid Java identifier.
+ If you want to match 
+\emph on
+non
+\emph default
+-string trees, you must specify an additional mapper function with the 
+\family typewriter
+compile
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TreePattern<Integer> pattern = TreePattern 	
+\end_layout
+
+\begin_layout Plain Layout
+
+    .compile("0($x,1)", Integer::parseInt);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The right-hand side functionality of the rewrite rule is to expand a given
+ pattern.
+ For expanding a given pattern you have to deliver a 
+\family typewriter
+Var
+\family default
+ to sub-tree mapping.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+\end_layout
+
+\begin_layout Plain Layout
+
+Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> tree = pattern.expand(vars);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.toParenthesesString().equals("add(sin(x),sin(y),1)"));
 \end_layout
 
 \end_inset

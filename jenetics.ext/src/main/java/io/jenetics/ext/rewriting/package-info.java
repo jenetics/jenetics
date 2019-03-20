@@ -17,33 +17,18 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.internal.util;
 
 /**
+ * This package contains the implementation of a Tree (Term) Rewrite System.
+ * It's main purpose is to deliver a DSL which simplifies the definition of
+ * rewrite rules, which work on the existing {@link io.jenetics.ext.util.Tree}
+ * implementations. This DSL is also used in the {@code io.jenetics.prog} module
+ * for simplifying arithmetic expression trees.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Rewriting">TRS</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class TreeValueMatcherTest {
-
-//	@Test(dataProvider = "treePattern")
-//	public void subTrees(
-//		final String patternString,
-//		final String treeString,
-//		final boolean matches
-//	) {
-//		final Tree<String, ?> pattern = TreeNode.parse(patternString);
-//		final Matcher<Integer> matcher = TreeValueMatcher.of(pattern, Integer::parseInt);
-//
-//		final Tree<Integer, ?> tree = TreeNode.parse(treeString, Integer::parseInt);
-//		Assert.assertEquals(matcher.matches(tree), matches);
-//	}
-//
-//	@DataProvider(name = "treePattern")
-//	public Object[][] treePattern() {
-//		return new Object[][] {
-//			{"0(1,2)", "0(1,2)", true},
-//			{"0(1,2,X)", "0(1,2)", true},
-//			{"0(3,2,X)", "0(1,2)", false}
-//		};
-//	}
-
-}
+package io.jenetics.ext.rewriting;
