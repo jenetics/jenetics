@@ -33,31 +33,28 @@ import java.util.stream.Collectors;
  * @version !__version__!
  * @since !__version__!
  */
-abstract class TreeFormatter {
+public abstract class TreeFormatter {
 
 	/**
-	 * This formatter creates tree strings, which formats the given tree
+	 * This formatter creates tree strings, which formats a given tree to a
+	 * string like this:
 	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 * to
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
+	 *     mul
+	 *     ├── div
+	 *     │   ├── cos
+	 *     │   │   └── 1.0
+	 *     │   └── cos
+	 *     │       └── π
+	 *     └── sin
+	 *         └── mul
+	 *             ├── 1.0
+	 *             └── z
 	 *  </pre>
 	 */
-	static final TreeFormatter TREE_STRING = new TreeFormatter() {
+	public static final TreeFormatter TREE_STRING = new TreeFormatter() {
 
 		@Override
-		<V, T extends Tree<V, T>> String format(
+		public <V, T extends Tree<V, T>> String format(
 			final T tree,
 			final Function<? super V, ? extends CharSequence> mapper
 		) {
@@ -109,6 +106,20 @@ abstract class TreeFormatter {
 		}
 	};
 
+	public static final TreeFormatter LISP_STRING = new TreeFormatter() {
+		@Override
+		public <V, T extends Tree<V, T>> String format(
+			final T tree,
+			final Function<? super V, ? extends CharSequence> mapper
+		) {
+			return null;
+		}
+	};
+
+
+	protected TreeFormatter() {
+	}
+
 	/**
 	 * Formats the given {@code tree} to its string representation. The given
 	 * {@code mapper} is used for converting the node type {@code V} to a string
@@ -121,7 +132,7 @@ abstract class TreeFormatter {
 	 * @return the string representation of the given {@code tree}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	abstract  <V, T extends Tree<V, T>> String format(
+	public abstract  <V, T extends Tree<V, T>> String format(
 		final T tree,
 		final Function<? super V, ? extends CharSequence> mapper
 	);
@@ -135,7 +146,7 @@ abstract class TreeFormatter {
 	 * @return the string representation of the given {@code tree}
 	 * @throws NullPointerException if the {@code tree} is {@code null}
 	 */
-	 <V, T extends Tree<V, T>> String format(final T tree) {
+	 public <V, T extends Tree<V, T>> String format(final T tree) {
 	 	return format(tree, Objects::toString);
 	 }
 
