@@ -31,17 +31,17 @@ public class TreeFormatterTest {
 
 	@Test
 	public void toTreeString() {
-		System.out.println(TreeFormatter.TREE_STRING.format(TREE));
+		System.out.println(TreeFormatter.TREE.format(TREE));
 	}
 
 	@Test
 	public void toParenthesesString() {
-		System.out.println(TreeFormatter.PARENTHESES_STRING.format(TREE));
+		System.out.println(TreeFormatter.PARENTHESES.format(TREE));
 	}
 
 	@Test
 	public void toLispString() {
-		System.out.println(TreeFormatter.LISP_STRING.format(TREE));
+		System.out.println(TreeFormatter.LISP.format(TREE));
 	}
 
 }

@@ -52,7 +52,7 @@ public abstract class TreeFormatter {
 	 *             └── z
 	 *  </pre>
 	 */
-	public static final TreeFormatter TREE_STRING = new TreeFormatter() {
+	public static final TreeFormatter TREE = new TreeFormatter() {
 
 		@Override
 		public <V> String format(
@@ -116,7 +116,7 @@ public abstract class TreeFormatter {
 	 *     mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
 	 * </pre>
 	 */
-	public static final TreeFormatter PARENTHESES_STRING = new TreeFormatter() {
+	public static final TreeFormatter PARENTHESES = new TreeFormatter() {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,
@@ -134,7 +134,7 @@ public abstract class TreeFormatter {
 	 *     (mul (div (cos 1.0) (cos π)) (sin (mul 1.0 z)))
 	 * </pre>
 	 */
-	public static final TreeFormatter LISP_STRING = new TreeFormatter() {
+	public static final TreeFormatter LISP = new TreeFormatter() {
 		@Override
 		public <V> String format(
 			final Tree<V, ?> tree,

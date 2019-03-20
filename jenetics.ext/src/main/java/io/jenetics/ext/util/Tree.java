@@ -927,14 +927,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString()
-	 * @see TreeFormatter#PARENTHESES_STRING
+	 * @see TreeFormatter#PARENTHESES
 	 *
 	 * @param mapper the {@code mapper} which converts the tree value to a string
 	 * @return the string representation of the given tree
 	 */
 	public default String
 	toParenthesesString(final Function<? super V, String> mapper) {
-		return TreeFormatter.PARENTHESES_STRING.format(this, mapper);
+		return TreeFormatter.PARENTHESES.format(this, mapper);
 	}
 
 	/**
@@ -959,7 +959,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @since 4.3
 	 *
 	 * @see #toParenthesesString(Function)
-	 * @see TreeFormatter#PARENTHESES_STRING
+	 * @see TreeFormatter#PARENTHESES
 	 *
 	 * @return the string representation of the given tree
 	 * @throws NullPointerException if the {@code mapper} is {@code null}
