@@ -47,7 +47,7 @@ final class MathExprRewriter implements TreeRewriter<Op<Double>> {
 		compile("mul($x,$x) -> pow($x,2)"),
 		compile("pow($x,0) -> 1"),
 		compile("pow($x,1) -> $x"),
-		ConstExpr::rewrite
+		ConstRewriter::rewrite
 	);
 
 	private static TreeRewriter<Op<Double>> compile(final String rule) {
