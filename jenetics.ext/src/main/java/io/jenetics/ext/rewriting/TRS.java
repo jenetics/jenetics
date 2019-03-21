@@ -28,7 +28,9 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -107,6 +109,13 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 		return obj == this ||
 			obj instanceof TRS &&
 			_rules.equals(((TRS)obj)._rules);
+	}
+
+	@Override
+	public String toString() {
+		return _rules.stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining("; "));
 	}
 
 	/**
