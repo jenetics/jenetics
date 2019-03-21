@@ -513,8 +513,10 @@ public final class TreeNode<T>
 	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
 	 * you should do the parsing with an addition <em>mapper</em> function.
 	 * <pre>{@code
-	 * final TreeNode<String> tree = TreeNode
-	 *     .parse("mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))", String::trim);
+	 * final TreeNode<String> tree = TreeNode.parse(
+	 *     "mul(  div(cos( 1.0) , cos(π )), sin(mul(1.0, z) ) )",
+	 *     String::trim
+	 * );
 	 * }</pre>
 	 * The code above will trim all tree nodes during the parsing process.
 	 *
