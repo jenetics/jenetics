@@ -42,7 +42,13 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
 /**
- * Default implementation of the {@link FlatTree} interface.
+ * Default implementation of the {@link FlatTree} interface. Beside the
+ * flattened and dense layout it is also an <em>immutable</em> implementation of
+ * the {@link Tree} interface. It can only be created from an existing tree.
+ *
+ * <pre>{@code
+ * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -56,13 +62,13 @@ public final class FlatTreeNode<T>
 	private static final long serialVersionUID = 2L;
 
 	private final int _index;
-	private final MSeq<T> _nodes;
+	private final ISeq<T> _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final MSeq<T> nodes,
+		final ISeq<T> nodes,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
@@ -219,7 +225,7 @@ public final class FlatTreeNode<T>
 	}
 
 	/**
-	 * Create a new {@code FlatTreeNode} from the given {@code tree}.
+	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
 	 *
 	 * @param tree the source tree
 	 * @param <V> the tree value types
@@ -230,17 +236,11 @@ public final class FlatTreeNode<T>
 		requireNonNull(tree);
 
 		final int size = tree.size();
+		assert size >= 1;
+
 		final MSeq<V> elements = MSeq.ofLength(size);
 		final int[] childOffsets = new int[size];
 		final int[] childCounts = new int[size];
-
-		assert size >= 1;
-		final FlatTreeNode<V> root = new FlatTreeNode<>(
-			0,
-			elements,
-			childOffsets,
-			childCounts
-		);
 
 		int childOffset = 1;
 		int index = 0;
@@ -258,7 +258,72 @@ public final class FlatTreeNode<T>
 			++index;
 		}
 
-		return root;
+		return new FlatTreeNode<>(
+			0,
+			elements.toISeq(),
+			childOffsets,
+			childCounts
+		);
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static FlatTreeNode<String> parse(final String tree) {
+		return of(TreeParser.parse(tree, Function.identity()));
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = FlatTreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
+	 *
+	 * @since 5.0
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> FlatTreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return of(TreeParser.parse(tree, mapper));
 	}
 
 
@@ -304,7 +369,7 @@ public final class FlatTreeNode<T>
 
 		return new FlatTreeNode(
 			0,
-			elements,
+			elements.toISeq(),
 			childOffsets,
 			childCounts
 		);
