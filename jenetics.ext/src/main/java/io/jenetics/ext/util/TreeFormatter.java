@@ -22,8 +22,10 @@ package io.jenetics.ext.util;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -152,6 +154,43 @@ public abstract class TreeFormatter {
 		}
 	};
 
+	/**
+	 * A tree formatter for .dot string representations. This strings can be
+	 * used to create nice looking tree images. The tree
+	 * <pre>
+	 *     mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 * is rendered into this dot string
+	 * <pre>
+	 * digraph Tree {
+	 *     node_001 [label="div"];
+	 *     node_002 [label="cos"];
+	 *     node_003 [label="1.0"];
+	 *     node_004 [label="cos"];
+	 *     node_000 [label="mul"];
+	 *     node_009 [label="z"];
+	 *     node_005 [label="π"];
+	 *     node_006 [label="sin"];
+	 *     node_007 [label="mul"];
+	 *     node_008 [label="1.0"];
+	 *     node_000 -&gt; node_001;
+	 *     node_001 -&gt; node_002;
+	 *     node_002 -&gt; node_003;
+	 *     node_001 -&gt; node_004;
+	 *     node_004 -&gt; node_005;
+	 *     node_000 -&gt; node_006;
+	 *     node_006 -&gt; node_007;
+	 *     node_007 -&gt; node_008;
+	 *     node_007 -&gt; node_009;
+	 * }
+	 * </pre>
+	 * This dot string can be rendered into the following graph:
+	 * <p>
+	 * <img alt="Dot-tree" src="doc-files/dot-tree.svg" width="400" height="252" >
+	 * </p>
+	 */
+	public static final TreeFormatter DOT = dot("Tree");
+
 	protected TreeFormatter() {
 	}
 
@@ -178,8 +217,140 @@ public abstract class TreeFormatter {
 	 * @return the string representation of the given {@code tree}
 	 * @throws NullPointerException if the {@code tree} is {@code null}
 	 */
-	 public String format(final Tree<?, ?> tree) {
-	 	return format(tree, Objects::toString);
-	 }
+	public String format(final Tree<?, ?> tree) {
+		return format(tree, Objects::toString);
+	}
+
+	/**
+	 * A tree formatter for .dot string representations. This strings can be
+	 * used to create nice looking tree images. The tree
+	 * <pre>
+	 *     mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 * is rendered into this dot string
+	 * <pre>
+	 * digraph Tree {
+	 *     node_001 [label="div"];
+	 *     node_002 [label="cos"];
+	 *     node_003 [label="1.0"];
+	 *     node_004 [label="cos"];
+	 *     node_000 [label="mul"];
+	 *     node_009 [label="z"];
+	 *     node_005 [label="π"];
+	 *     node_006 [label="sin"];
+	 *     node_007 [label="mul"];
+	 *     node_008 [label="1.0"];
+	 *     node_000 -&gt; node_001;
+	 *     node_001 -&gt; node_002;
+	 *     node_002 -&gt; node_003;
+	 *     node_001 -&gt; node_004;
+	 *     node_004 -&gt; node_005;
+	 *     node_000 -&gt; node_006;
+	 *     node_006 -&gt; node_007;
+	 *     node_007 -&gt; node_008;
+	 *     node_007 -&gt; node_009;
+	 * }
+	 * </pre>
+	 * This dot string can be rendered into the following graph:
+	 * <p>
+	 * <img alt="Dot-tree" src="doc-files/dot-tree.svg" width="400" height="252" >
+	 * </p>
+	 *
+	 * @param treeName the name of the digraph
+	 * @return a dot string formatter
+	 * @throws NullPointerException if the given tree name is {@code null}
+	 */
+	public static TreeFormatter dot(final String treeName) {
+		return new Dotty(treeName);
+	}
+
+
+	/* *************************************************************************
+	 * Some helper classes.
+	 * ************************************************************************/
+
+	/**
+	 * This formatter converts a tree to the .dot representation.
+	 */
+	private static final class Dotty extends TreeFormatter {
+		private final String _name;
+
+		Dotty(final String name) {
+			_name = requireNonNull(name);
+		}
+
+		@Override
+		public <V> String format(
+			final Tree<V, ?> tree,
+			final Function<? super V, String> mapper
+		) {
+			return new Helper<>(_name, tree, mapper).draw();
+		}
+
+		private static final class Helper<V> {
+			private final String _name;
+			private final Function<? super V, String> _mapper;
+
+			private final Map<String, String> _labels = new HashMap<>();
+			private final List<String> _edges = new ArrayList<>();
+
+			Helper(
+				final String name,
+				final Tree<V, ?> tree,
+				final Function<? super V, String> mapper
+			) {
+				_name = requireNonNull(name);
+				_mapper = requireNonNull(mapper);
+				init(tree, null, 0);
+			}
+
+			private int init(
+				final Tree<V, ?> tree,
+				final String parentLabel,
+				final int index
+			) {
+				int idx = index;
+				final String value = _mapper.apply(tree.getValue());
+				final String label = String.format("node_%03d", idx);
+				_labels.put(label, value);
+
+				if (parentLabel != null) {
+					_edges.add(parentLabel + " -> " + label);
+				}
+				for (int i = 0; i < tree.childCount(); ++i) {
+					final Tree<V, ?> child = tree.getChild(i);
+					idx = init(child, label, idx + 1);
+				}
+				return idx;
+			}
+
+			String draw() {
+				final StringBuilder builder = new StringBuilder();
+				builder
+					.append("digraph ")
+					.append(_name)
+					.append(" {\n");
+
+				_labels.forEach((key, value) ->
+					builder
+						.append("    ")
+						.append(key)
+						.append(" [label=\"")
+						.append(value.replace("\"", "\\\""))
+						.append("\"];\n")
+				);
+
+				_edges.forEach(edge ->
+					builder
+						.append("    ")
+						.append(edge)
+						.append(";\n")
+				);
+				builder.append("}\n");
+
+				return builder.toString();
+			}
+		}
+	}
 
 }

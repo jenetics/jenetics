@@ -44,4 +44,9 @@ public class TreeFormatterTest {
 		System.out.println(TreeFormatter.LISP.format(TREE));
 	}
 
+	@Test
+	public void toDottyString() {
+		System.out.println(TreeFormatter.dot("TREE").format(TREE));
+	}
+
 }
