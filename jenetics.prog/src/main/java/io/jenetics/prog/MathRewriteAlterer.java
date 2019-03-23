@@ -23,7 +23,6 @@ import io.jenetics.ext.TreeGene;
 import io.jenetics.ext.TreeMutator;
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
 
 /**
@@ -33,18 +32,18 @@ import io.jenetics.prog.op.Op;
  * @version 4.1
  * @since 4.1
  */
-public class MathTreePruneAlterer<
+public class MathRewriteAlterer<
 	G extends TreeGene<Op<Double>, G>,
 	C extends Comparable<? super C>
 >
 	extends TreeMutator<Op<Double>, G, C>
 {
 
-	public MathTreePruneAlterer() {
+	public MathRewriteAlterer() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
-	public MathTreePruneAlterer(double probability) {
+	public MathRewriteAlterer(double probability) {
 		super(probability);
 	}
 
