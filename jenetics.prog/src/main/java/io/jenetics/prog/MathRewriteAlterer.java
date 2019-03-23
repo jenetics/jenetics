@@ -20,36 +20,86 @@
 package io.jenetics.prog;
 
 import io.jenetics.ext.TreeGene;
-import io.jenetics.ext.TreeMutator;
-import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.TreeRewriteAlterer;
+import io.jenetics.ext.rewriting.TreeRewriter;
 
+import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.Op;
 
 /**
  * Prunes a given mathematical tree with the given alterer probability.
  *
+ * @see TreeRewriteAlterer
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public class MathRewriteAlterer<
 	G extends TreeGene<Op<Double>, G>,
 	C extends Comparable<? super C>
 >
-	extends TreeMutator<Op<Double>, G, C>
+	extends TreeRewriteAlterer<Op<Double>, G, C>
 {
 
+	/**
+	 * Create a new alterer with the given {@code rewriter} and given rewrite
+	 * {@code limit}.
+	 *
+	 * @param rewriter the tree rewriter
+	 * @param limit the rewriting limit
+	 * @param probability the altering probability
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 */
+	public MathRewriteAlterer(
+		final TreeRewriter<Op<Double>> rewriter,
+		final int limit,
+		final double probability
+	) {
+		super(rewriter, limit, probability);
+	}
+
+	/**
+	 * Create a new alterer with the given {@code rewriter} and given rewrite
+	 * {@code limit}.
+	 *
+	 * @param rewriter the tree rewriter
+	 * @param probability the altering probability
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 */
+	public MathRewriteAlterer(
+		final TreeRewriter<Op<Double>> rewriter,
+		final double probability
+	) {
+		this(rewriter, Integer.MAX_VALUE, probability);
+	}
+
+	/**
+	 * Create a new alterer with the given {@code rewriter}.
+	 *
+	 * @param rewriter the tree rewriter
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 */
+	public MathRewriteAlterer(final TreeRewriter<Op<Double>> rewriter) {
+		this(rewriter, Integer.MAX_VALUE, DEFAULT_ALTER_PROBABILITY);
+	}
+
+	/**
+	 * Create a new alterer with the default math rewriter
+	 * {@link MathExpr#REWRITER} and given rewrite.
+	 *
+	 * @param probability the altering probability
+	 */
+	public MathRewriteAlterer(final double probability) {
+		this(MathExpr.REWRITER, Integer.MAX_VALUE, probability);
+	}
+
+	/**
+	 * Create a new alterer with the default math rewriter
+	 * {@link MathExpr#REWRITER} and given rewrite.
+	 */
 	public MathRewriteAlterer() {
-		this(DEFAULT_ALTER_PROBABILITY);
-	}
-
-	public MathRewriteAlterer(double probability) {
-		super(probability);
-	}
-
-	@Override
-	protected void mutate(final TreeNode<Op<Double>> tree) {
-		//MathExpr.prune(tree);
+		this(MathExpr.REWRITER, Integer.MAX_VALUE, DEFAULT_ALTER_PROBABILITY);
 	}
 
 }
