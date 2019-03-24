@@ -250,9 +250,9 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	static TreeRewriteRule read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final TreePattern match = (TreePattern)in.readObject();
-		final TreePattern replacement = (TreePattern)in.readObject();
-		return new TreeRewriteRule(match, replacement);
+		final TreePattern left = (TreePattern)in.readObject();
+		final TreePattern right = (TreePattern)in.readObject();
+		return new TreeRewriteRule(left, right);
 	}
 
 }
