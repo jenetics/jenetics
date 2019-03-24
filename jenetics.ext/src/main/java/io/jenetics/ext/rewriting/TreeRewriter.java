@@ -56,8 +56,7 @@ public interface TreeRewriter<V> {
 	 * @param tree the tree to be rewritten
 	 * @param limit the maximal number this rewrite rule is applied to the given
 	 *        tree. This guarantees the termination of the rewrite method.
-	 * @return {@code true} if the tree has been changed (rewritten) by this
-	 *         method, {@code false} if the tree hasn't been changed
+	 * @return the number of rewrites applied to the input {@code tree}
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
 	 *         one
