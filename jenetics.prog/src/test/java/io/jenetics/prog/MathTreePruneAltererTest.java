@@ -60,8 +60,8 @@ public class MathTreePruneAltererTest {
 
 	//@Test(invocationCount = 10)
 	public void prune() {
-		final MathTreePruneAlterer<ProgramGene<Double>, Double> alterer =
-			new MathTreePruneAlterer<>(1);
+		final MathRewriteAlterer<ProgramGene<Double>, Double> alterer =
+			new MathRewriteAlterer<>(1);
 
 		final Genotype<ProgramGene<Double>> gt = Genotype.of(
 			ProgramChromosome.of(10, OPERATIONS, TERMINALS)
