@@ -20,7 +20,15 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -34,7 +42,13 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
 /**
- * Default implementation of the {@link FlatTree} interface.
+ * Default implementation of the {@link FlatTree} interface. Beside the
+ * flattened and dense layout it is also an <em>immutable</em> implementation of
+ * the {@link Tree} interface. It can only be created from an existing tree.
+ *
+ * <pre>{@code
+ * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
@@ -45,16 +59,16 @@ public final class FlatTreeNode<T>
 		FlatTree<T, FlatTreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final int _index;
-	private final MSeq<T> _nodes;
+	private final ISeq<T> _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final MSeq<T> nodes,
+		final ISeq<T> nodes,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
@@ -73,7 +87,7 @@ public final class FlatTreeNode<T>
 	 */
 	@Override
 	public FlatTreeNode<T> getRoot() {
-		return node(0);
+		return nodeAt(0);
 	}
 
 	@Override
@@ -81,7 +95,7 @@ public final class FlatTreeNode<T>
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> node(final int index) {
+	private FlatTreeNode<T> nodeAt(final int index) {
 		return new FlatTreeNode<T>(
 			index,
 			_nodes,
@@ -97,9 +111,22 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public Optional<FlatTreeNode<T>> getParent() {
-		return stream()
-			.filter(node -> node.childStream().anyMatch(this::identical))
-			.findFirst();
+		int index = -1;
+		for (int i = _index; --i >= 0 && index == -1;) {
+			if (isParent(i)) {
+				index = i;
+			}
+		}
+
+		return index != -1
+			? Optional.of(nodeAt(index))
+			: Optional.empty();
+	}
+
+	private boolean isParent(final int index) {
+		return _childCounts[index] > 0 &&
+			_childOffsets[index] <= _index &&
+			_childOffsets[index] + _childCounts[index] > _index;
 	}
 
 	@Override
@@ -148,7 +175,7 @@ public final class FlatTreeNode<T>
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.size()).mapToObj(this::node);
+		return IntStream.range(0, _nodes.size()).mapToObj(this::nodeAt);
 	}
 
 	/**
@@ -172,24 +199,20 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof FlatTreeNode<?> &&
+		return other == this ||
+			other instanceof FlatTreeNode &&
 			((FlatTreeNode)other)._index == _index &&
 			((FlatTreeNode)other)._nodes == _nodes;
 	}
 
 	@Override
-	public int hashCode(){
-		int hash = 17;
-		hash += 31*_index + 37;
-		hash += 31*_nodes.hashCode() + 37;
-		hash += 31*Arrays.hashCode(_childCounts) + 37;
-		hash += 31*Arrays.hashCode(_childOffsets) + 37;
-		return hash;
+	public int hashCode() {
+		return hash(_index, hash(_nodes, hash(_childCounts, hash(_childOffsets))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof FlatTreeNode<?> &&
+		return obj instanceof FlatTreeNode &&
 			((FlatTreeNode)obj)._index == _index &&
 			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
 			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
@@ -202,7 +225,7 @@ public final class FlatTreeNode<T>
 	}
 
 	/**
-	 * Create a new {@code FlatTreeNode} from the given {@code tree}.
+	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
 	 *
 	 * @param tree the source tree
 	 * @param <V> the tree value types
@@ -213,17 +236,11 @@ public final class FlatTreeNode<T>
 		requireNonNull(tree);
 
 		final int size = tree.size();
+		assert size >= 1;
+
 		final MSeq<V> elements = MSeq.ofLength(size);
 		final int[] childOffsets = new int[size];
 		final int[] childCounts = new int[size];
-
-		assert size >= 1;
-		final FlatTreeNode<V> root = new FlatTreeNode<>(
-			0,
-			elements,
-			childOffsets,
-			childCounts
-		);
 
 		int childOffset = 1;
 		int index = 0;
@@ -241,7 +258,121 @@ public final class FlatTreeNode<T>
 			++index;
 		}
 
-		return root;
+		return new FlatTreeNode<>(
+			0,
+			elements.toISeq(),
+			childOffsets,
+			childCounts
+		);
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static FlatTreeNode<String> parse(final String tree) {
+		return of(TreeParser.parse(tree, Function.identity()));
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = FlatTreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
+	 *
+	 * @since 5.0
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> FlatTreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return of(TreeParser.parse(tree, mapper));
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.FLAT_TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(_childCounts.length, out);
+		for (int i = 0; i < _childCounts.length; ++i) {
+			out.writeObject(_nodes.get(i));
+			writeInt(_childCounts[i], out);
+			writeInt(_childOffsets[i], out);
+		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static FlatTreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final int size = readInt(in);
+
+		final MSeq elements = MSeq.ofLength(size);
+		final int[] childOffsets = new int[size];
+		final int[] childCounts = new int[size];
+
+		for (int i = 0; i < size; ++i) {
+			elements.set(i, in.readObject());
+			childCounts[i] = readInt(in);
+			childOffsets[i] = readInt(in);
+		}
+
+		return new FlatTreeNode(
+			0,
+			elements.toISeq(),
+			childOffsets,
+			childCounts
+		);
 	}
 
 }

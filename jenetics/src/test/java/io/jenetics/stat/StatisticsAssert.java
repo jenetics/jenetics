@@ -27,13 +27,11 @@ import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
 import org.testng.Assert;
 
-import io.jenetics.internal.util.require;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class StatisticsAssert {
-	private StatisticsAssert() {require.noInstance();}
+	private StatisticsAssert() {}
 
 	public static <C extends Comparable<? super C>> void assertDistribution(
 		final Histogram<C> histogram,

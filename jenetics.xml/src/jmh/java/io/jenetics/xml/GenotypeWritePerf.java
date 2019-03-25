@@ -52,7 +52,6 @@ import io.jenetics.xml.stream.XML;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@SuppressWarnings("deprecation")
 public class GenotypeWritePerf {
 
 	public static final Writer<Genotype<DoubleGene>> writer = Writers.Genotype

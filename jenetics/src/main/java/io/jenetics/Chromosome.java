@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Factory;
@@ -30,7 +31,7 @@ import io.jenetics.util.Verifiable;
  * method for creating new, random chromosome instances of the same type and the
  * same constraint.
  *
- * @apiNote
+ * @implSpec
  * Implementations of the {@code Chromosome} interface must be <em>immutable</em>
  * and guarantee an efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.
@@ -136,7 +137,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return a sequential {@code Stream} of genes
 	 */
 	public default Stream<G> stream() {
-		return toSeq().stream();
+		return IntStream.range(0, length()).mapToObj(this::getGene);
 	}
 
 }

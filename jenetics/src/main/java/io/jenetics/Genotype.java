@@ -19,19 +19,23 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Seq;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -61,7 +65,7 @@ import io.jenetics.util.Verifiable;
  * @see Chromosome
  * @see Phenotype
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -78,22 +82,9 @@ public final class Genotype<G extends Gene<?, G>>
 	private static final long serialVersionUID = 3L;
 
 	private final ISeq<Chromosome<G>> _chromosomes;
-	private final int _ngenes;
 
 	//Caching isValid value.
 	private volatile Boolean _valid = null;
-
-	private Genotype(
-		final ISeq<? extends Chromosome<G>> chromosomes,
-		final int ngenes
-	) {
-		if (chromosomes.isEmpty()) {
-			throw new IllegalArgumentException("No chromosomes given.");
-		}
-
-		_chromosomes = ISeq.upcast(chromosomes);
-		_ngenes = ngenes;
-	}
 
 	/**
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
@@ -105,13 +96,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if {@code chromosome.length == 0}.
 	 */
 	Genotype(final ISeq<? extends Chromosome<G>> chromosomes) {
-		this(chromosomes, ngenes(chromosomes));
-	}
+		if (chromosomes.isEmpty()) {
+			throw new IllegalArgumentException("No chromosomes given.");
+		}
 
-	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		return chromosomes.stream()
-			.mapToInt((ToIntFunction<Chromosome<?>>)Chromosome::length)
-			.sum();
+		_chromosomes = ISeq.upcast(chromosomes);
 	}
 
 	/**
@@ -233,7 +222,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return Return the number of genes this genotype consists of.
 	 */
 	public int geneCount() {
-		return _ngenes;
+		int count = 0;
+		for (int i = 0, n = _chromosomes.length(); i < n; ++i) {
+			count += _chromosomes.get(i).length();
+		}
+		return count;
 	}
 
 	/**
@@ -260,25 +253,19 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public Genotype<G> newInstance() {
-		return new Genotype<>(_chromosomes.map(Factory::newInstance), _ngenes);
-	}
-
-	Genotype<G> newInstance(final ISeq<Chromosome<G>> chromosomes) {
-		return new Genotype<>(chromosomes, _ngenes);
+		return new Genotype<>(_chromosomes.map(Factory::newInstance));
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_chromosomes) + 37;
-		return hash;
+		return hash(_chromosomes, hash(getClass()));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Genotype<?> &&
-			eq(_chromosomes, ((Genotype<?>)obj)._chromosomes);
+			obj instanceof Genotype &&
+			Objects.equals(_chromosomes, ((Genotype)obj)._chromosomes);
 	}
 
 	@Override
@@ -354,6 +341,41 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G>
 	of(final Iterable<? extends Chromosome<G>> chromosomes) {
 		return new Genotype<>(ISeq.of(chromosomes));
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.GENOTYPE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(_chromosomes.length(), out);
+		for (Chromosome<G> ch : _chromosomes) {
+			out.writeObject(ch);
+		}
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Genotype read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final int length = readInt(in);
+		final MSeq<Chromosome> chromosomes = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			chromosomes.set(i, (Chromosome)in.readObject());
+		}
+
+		return new Genotype(chromosomes.asISeq());
 	}
 
 }

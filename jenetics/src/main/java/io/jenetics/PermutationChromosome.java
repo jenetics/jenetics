@@ -20,21 +20,22 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.bit.getAndSet;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.array;
 import io.jenetics.internal.util.bit;
-import io.jenetics.internal.util.reflect;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -97,7 +98,7 @@ import io.jenetics.util.MSeq;
  * @see PartiallyMatchedCrossover
  * @see SwapMutator
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -110,7 +111,7 @@ public final class PermutationChromosome<T>
 {
 	private static final long serialVersionUID = 2L;
 
-	private ISeq<T> _validAlleles;
+	private final ISeq<T> _validAlleles;
 
 	// Private primary constructor.
 	private PermutationChromosome(
@@ -173,18 +174,6 @@ public final class PermutationChromosome<T>
 	@Override
 	public PermutationChromosome<T> newInstance(final ISeq<EnumGene<T>> genes) {
 		return new PermutationChromosome<>(genes);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override
@@ -334,31 +323,34 @@ public final class PermutationChromosome<T>
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.PERMUTATION_CHROMOSOME, this);
+	}
 
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
 		out.writeObject(_validAlleles);
 		for (EnumGene<?> gene : _genes) {
-			out.writeInt(gene.getAlleleIndex());
+			writeInt(gene.getAlleleIndex(), out);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void readObject(final ObjectInputStream in)
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static PermutationChromosome read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		in.defaultReadObject();
-
-		_validAlleles = (ISeq<T>)in.readObject();
-
-		final MSeq<EnumGene<T>> genes = MSeq.ofLength(_validAlleles.length());
-		for (int i = 0; i < _validAlleles.length(); ++i) {
-			genes.set(i, new EnumGene<>(in.readInt(), _validAlleles));
+		final ISeq validAlleles = (ISeq)in.readObject();
+		final MSeq genes = MSeq.ofLength(validAlleles.length());
+		for (int i = 0, n = validAlleles.length(); i < n; ++i) {
+			genes.set(i, new EnumGene(readInt(in), validAlleles));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new PermutationChromosome(genes.toISeq());
 	}
 
 }

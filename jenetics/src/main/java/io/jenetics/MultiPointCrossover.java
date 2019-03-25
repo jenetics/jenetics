@@ -25,8 +25,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.internal.math.comb;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -52,7 +50,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.0
+ * @version 5.0
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
@@ -153,30 +151,11 @@ public class MultiPointCrossover<
 	}
 
 	@Override
-	public int hashCode() {
-		return Hash.of(getClass())
-				.and(super.hashCode())
-				.and(_n).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(mpc ->
-			_n == mpc._n &&
-			super.equals(obj)
-		);
-	}
-
-	@Override
 	public String toString() {
 		return format(
 			"%s[p=%f, n=%d]",
 			getClass().getSimpleName(), _probability, _n
 		);
 	}
-
-	//public static <G extends Gene<?, G>> MultiPointCrossover<G> zip() {
-	//	return new MultiPointCrossover<>(Integer.MAX_VALUE);
-	//}
 
 }

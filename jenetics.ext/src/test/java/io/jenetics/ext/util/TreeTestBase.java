@@ -106,11 +106,11 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 		final int level,
 		final Random random
 	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
+		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final DefaultMutableTreeNode child = new DefaultMutableTreeNode();
 			child.setUserObject(random.nextInt());
 
-			if (random.nextDouble() < 0.8 && level > 0) {
+			if (level > 0) {
 				fill(child, level - 1, random);
 			}
 
@@ -338,9 +338,9 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 	@Test(dataProvider = "nodeAccessorMethods")
 	public void nodeAccessorMethod(final AccessorMethod method) {
-		final Iterator<T> tree = newTree(15, new Random(123))
+		final Iterator<T> tree = newTree(7, new Random(123))
 			.breadthFirstIterator();
-		final Enumeration<?> swing = newSwingTree(15, new Random(123))
+		final Enumeration<?> swing = newSwingTree(7, new Random(123))
 			.breadthFirstEnumeration();
 
 		while (tree.hasNext()) {
@@ -406,7 +406,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 	}
 
 	private static Object unwrap(final Object object) {
-		return object instanceof Optional<?>
+		return object instanceof Optional
 			? ((Optional<?>)object).orElse(null)
 			: object;
 	}

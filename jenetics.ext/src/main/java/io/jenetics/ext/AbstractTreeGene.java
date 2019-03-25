@@ -21,14 +21,13 @@ package io.jenetics.ext;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.util.Tree;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface..
@@ -182,28 +181,15 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	public boolean identical(final Tree<?, ?> other) {
-		return other instanceof AbstractTreeGene<?, ?> &&
-			Objects.equals(((AbstractTreeGene<?, ?>)other)._allele, _allele) &&
-			((AbstractTreeGene)other)._genes == _genes &&
-			((AbstractTreeGene)other)._childOffset == _childOffset &&
-			((AbstractTreeGene)other)._childCount == _childCount;
-	}
-
-	@Override
 	public int hashCode() {
-		int hash = 31;
-		hash += 31*Objects.hashCode(_allele) + 17;
-		hash += 31*_childOffset + 17;
-		hash += 32*_childCount + 17;
-		return hash;
+		return hash(_allele, hash(_childOffset, hash(_childCount)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof AbstractTreeGene<?, ?> &&
-			Objects.equals(((AbstractTreeGene<?, ?>)obj)._allele, _allele) &&
+			obj instanceof AbstractTreeGene &&
+			Objects.equals(((AbstractTreeGene)obj)._allele, _allele) &&
 			((AbstractTreeGene)obj)._childOffset == _childOffset &&
 			((AbstractTreeGene)obj)._childCount == _childCount;
 	}

@@ -122,11 +122,13 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @since 3.6
 	 *
-	 * @param gt the genotype to be converted
+	 * @param genotype the genotype to be converted
 	 * @return the converted genotype
+	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
-	public default T decode(final Genotype<G> gt) {
-		return decoder().apply(gt);
+	public default T decode(final Genotype<G> genotype) {
+		requireNonNull(genotype);
+		return decoder().apply(genotype);
 	}
 
 	/**
@@ -170,7 +172,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <G extends Gene<?, G>, T> Codec<T, G> of(
+	public static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder
 	) {
@@ -245,7 +247,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *        {@code codec2}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
+	public static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
 		final Codec<A, G> codec1,
 		final Codec<B, G> codec2,
 		final BiFunction<A, B, T> decoder
@@ -307,12 +309,24 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *        given given codecs, to the argument type of the resulting codec.
 	 * @return a new codec which combines the given {@code codecs}
 	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given {@code codecs} sequence is
+	 *         empty
 	 */
 	public static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final ISeq<? extends Codec<?, G>> codecs,
 		final Function<? super Object[], ? extends T> decoder
 	) {
-		return new CompositeCodec<>(codecs, decoder);
+		if (codecs.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Codecs sequence must not be empty."
+			);
+		}
+		return codecs.size() == 1
+			? of(codecs.get(0).encoding(), gt -> {
+					final Object value = codecs.get(0).decoder().apply(gt);
+					return decoder.apply(new Object[]{value});
+				})
+			: new CompositeCodec<>(codecs, decoder);
 	}
 
 }

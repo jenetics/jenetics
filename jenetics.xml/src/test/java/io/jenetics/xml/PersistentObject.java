@@ -21,10 +21,10 @@ package io.jenetics.xml;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.random.nextASCIIString;
 import static io.jenetics.internal.math.random.nextByte;
 import static io.jenetics.internal.math.random.nextChar;
 import static io.jenetics.internal.math.random.nextShort;
-import static io.jenetics.internal.math.random.nextString;
 import static io.jenetics.util.RandomRegistry.using;
 import static io.jenetics.xml.stream.Reader.text;
 
@@ -40,6 +40,8 @@ import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
+import io.jenetics.prngine.LCG64ShiftRandom;
+
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.CharacterChromosome;
@@ -53,7 +55,6 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -301,7 +302,7 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<String> nextEnumGeneString() {
-		return EnumGene.of(ISeq.of(() -> nextString(random()), 5));
+		return EnumGene.of(ISeq.of(() -> nextASCIIString(random()), 5));
 	}
 
 	/* *************************************************************************
@@ -357,7 +358,7 @@ public class PersistentObject<T> {
 	}
 
 	public static PermutationChromosome<String> nextStringPermutationChromosome() {
-		return PermutationChromosome.of(ISeq.of(() -> nextString(random()), 15));
+		return PermutationChromosome.of(ISeq.of(() -> nextASCIIString(random()), 15));
 	}
 
 

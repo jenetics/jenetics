@@ -25,7 +25,6 @@ import static io.jenetics.internal.math.random.nextDouble;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -115,7 +114,6 @@ public class IntermediateCrossover<
 		final double min = v.get(0).getMin().doubleValue();
 		final double max = v.get(0).getMax().doubleValue();
 
-		boolean changed = false;
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
 			final double vi = v.get(i).doubleValue();
 			final double wi = w.get(i).doubleValue();
@@ -134,18 +132,6 @@ public class IntermediateCrossover<
 		}
 
 		return 2;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof IntermediateCrossover &&
-			super.equals(obj);
 	}
 
 	@Override

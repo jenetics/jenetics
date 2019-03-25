@@ -196,9 +196,9 @@ class PackagingPlugin implements Plugin<Project> {
 		if (_project.plugins.hasPlugin('java') && _project.name != 'buildSrc') {
 			_project.tasks.findByPath('build').doLast {
 				// Copy the external jar dependencies.
-				_project.configurations.testRuntime.each { jar ->
+				_project.configurations.testRuntimeClasspath.each { jar ->
 					if (jar.name.endsWith('.jar') &&
-						!jar.name.startsWith('org.jeneti'))
+						!jar.name.startsWith('jenetics'))
 					{
 						_project.copy {
 							from jar
@@ -240,8 +240,18 @@ class PackagingPlugin implements Plugin<Project> {
 			filter(ReplaceTokens, tokens: _textContentReplacements)
 		}
 
-		copyDir(new File('gradle'), _exportProjectDir)
-		copyDir(new File('buildSrc'), _exportProjectDir)
+		_project.copy {
+			from('buildSrc') {
+				excludes = IGNORED_FILES
+			}
+			into "${_exportProjectDir}/buildSrc"
+		}
+		_project.copy {
+			from('gradle') {
+				excludes = IGNORED_FILES
+			}
+			into "${_exportProjectDir}/gradle"
+		}
 	}
 
 	private void copyDir(final File source, final File target) {
@@ -313,7 +323,6 @@ class PackagingPlugin implements Plugin<Project> {
 		'.project',
 		'random-x86_64',
 		'.settings/**',
-		'*.so',
 		'test-output/**',
 		'wiki/**'
 	]

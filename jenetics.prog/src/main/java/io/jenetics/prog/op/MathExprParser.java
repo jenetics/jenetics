@@ -29,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -191,30 +189,8 @@ final class MathExprParser {
 			));
 		}
 
-		return addVarIndex(expr);
-	}
-
-	private static TreeNode<Op<Double>>
-	addVarIndex(final TreeNode<Op<Double>> tree) {
-		final SortedSet<String> vars = tree.stream()
-			.filter(node -> node.getValue() instanceof Var<?>)
-			.map(node -> node.getValue().name())
-			.collect(Collectors.toCollection(TreeSet::new));
-
-		int nextIndex = 0;
-		final Map<String, Integer> indexes = new HashMap<>();
-		for (String name : vars) {
-			indexes.put(name, nextIndex++);
-		}
-
-		for (TreeNode<Op<Double>> node : tree) {
-			final Op<Double> op = node.getValue();
-			if (op instanceof Var<?>) {
-				node.setValue(Var.of(op.name(), indexes.get(op.name())));
-			}
-		}
-
-		return tree;
+		Var.reindex(expr);
+		return expr;
 	}
 
 	private TreeNode<Op<Double>> expression() {

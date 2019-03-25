@@ -19,25 +19,19 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.0
  * @since 3.9
  */
 final class Trees {
-	private Trees() {require.noInstance();}
-
+	private Trees() {}
 
 	@SuppressWarnings("unchecked")
 	static <V, T extends Tree<V, T>> T self(final Tree<?, ?> tree) {
@@ -61,124 +55,13 @@ final class Trees {
 	) {
 		final MSeq<T> path;
 		if (node == null) {
-			path = depth == 0 ? MSeq.empty() : MSeq.ofLength(depth);
+			path = MSeq.ofLength(depth);
 		} else {
 			path = pathToRoot(node.getParent().orElse(null), depth + 1);
 			path.set(path.length() - depth - 1, node);
 		}
 
 		return path;
-	}
-
-	static String toString(final Tree<?, ?> tree) {
-		return toString(tree, t -> Objects.toString(t.getValue()));
-	}
-
-	/**
-	 * Return a string representation of the given tree.
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 */
-	static String toString(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		return tree != null
-			? toStrings(tree, toNodeString).stream()
-				.map(StringBuilder::toString)
-				.collect(Collectors.joining("\n"))
-			: "null";
-	}
-
-	private static List<StringBuilder> toStrings(
-		final Tree<?, ?> tree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final List<StringBuilder> result = new ArrayList<>();
-		result.add(new StringBuilder().append(toNodeString.apply(tree)));
-
-		final Iterator<? extends Tree<?, ?>> it = tree.childIterator();
-		while (it.hasNext()) {
-			final List<StringBuilder> subtree = toStrings(it.next(), toNodeString);
-			if (it.hasNext()) {
-				subtree(result, subtree, toNodeString);
-			} else {
-				lastSubtree(result, subtree);
-			}
-		}
-		return result;
-	}
-
-	private static void subtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree,
-		final Function<? super Tree<?, ?>, ? extends CharSequence> toNodeString
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "├── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "│   "));
-		}
-	}
-
-	private static void lastSubtree(
-		final List<StringBuilder> result,
-		final List<StringBuilder> subtree
-	) {
-		final Iterator<StringBuilder> it = subtree.iterator();
-		result.add(it.next().insert(0, "└── "));
-		while (it.hasNext()) {
-			result.add(it.next().insert(0, "    "));
-		}
-	}
-
-	/**
-	 * Return a compact string representation of the given tree. The tree
-	 * <pre>
-	 *  mul
-	 *  ├── div
-	 *  │   ├── cos
-	 *  │   │   └── 1.0
-	 *  │   └── cos
-	 *  │       └── π
-	 *  └── sin
-	 *      └── mul
-	 *          ├── 1.0
-	 *          └── z
-	 *  </pre>
-	 * is printed as
-	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
-	 * </pre>
-	 *
-	 * @param tree the input tree
-	 * @return the string representation of the given tree
-	 */
-	public static String toCompactString(final Tree<?, ?> tree) {
-		if (tree != null) {
-			final StringBuilder out = new StringBuilder();
-			toCompactString(out, tree);
-			return out.toString();
-		} else {
-			return "null";
-		}
-	}
-
-	private static void toCompactString(
-		final StringBuilder out,
-		final Tree<?, ?> tree
-	) {
-		out.append(tree.getValue());
-		if (!tree.isLeaf()) {
-			out.append("(");
-			toCompactString(out, tree.getChild(0));
-			for (int i = 1; i < tree.childCount(); ++i) {
-				out.append(", ");
-				toCompactString(out, tree.getChild(i));
-			}
-			out.append(")");
-		}
 	}
 
 	static String toInfixString(final Tree<?, ?> tree) {
@@ -223,8 +106,7 @@ final class Trees {
 		for (int i = 0; i < nodes.length(); ++i) {
 			final Tree<?, ?> n = nodes.get(i);
 			n.childStream().forEach(child ->
-				out
-					.append("    ")
+				out.append("    ")
 					.append(id(n))
 					.append(" -> ")
 					.append(id(child))
@@ -243,19 +125,6 @@ final class Trees {
 			out.append(id(node));
 			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
 		});
-	}
-
-
-	static String toLispString(Tree<?, ?> tree) {
-		final String value = String.valueOf(tree.getValue());
-		if (tree.isLeaf()) {
-			return value;
-		} else {
-			final String children = tree.childStream()
-				.map(Trees::toLispString)
-				.collect(Collectors.joining(" "));
-			return "(" + value + " " + children + ")";
-		}
 	}
 
 	/**

@@ -24,8 +24,6 @@ import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
 
 /**
@@ -37,13 +35,14 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class SwapMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
+
 {
 
 	/**
@@ -90,16 +89,6 @@ public class SwapMutator<
 		}
 
 		return result;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

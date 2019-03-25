@@ -21,12 +21,11 @@ package io.jenetics.stat;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.util.Objects;
 import java.util.function.ToDoubleFunction;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Range;
 
 
@@ -135,12 +134,14 @@ public class UniformDistribution<
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_domain).value();
+		return hash(_domain);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(dist -> eq(_domain, dist._domain));
+		return obj == this ||
+			obj instanceof UniformDistribution &&
+			Objects.equals(_domain, ((UniformDistribution) obj)._domain);
 	}
 
 	@Override

@@ -20,14 +20,22 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readNullableString;
+import static io.jenetics.internal.util.SerialIO.writeNullableString;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Represents an operation which always returns the same, constant, value. To
  * improve readability, constants may have a name. If a name is given, this name
- * is used when printing the program tree.
+ * is used when printing the program tree. The {@code Const} operation is a
+ * <em>terminal</em> operation.
  *
  * <pre>{@code
  * final static Op<Double> PI = Const.of("π", Math.PI);
@@ -35,12 +43,12 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 3.9
  */
 public final class Const<T> implements Op<T>, Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final String _name;
 	private final T _const;
@@ -78,18 +86,24 @@ public final class Const<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_const) + 37;
-		return hash;
+		return Objects.hashCode(_const);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Const<?> &&
-			Objects.equals(((Const)obj)._name, _name) &&
-			Objects.equals(((Const)obj)._const, _const);
+			obj instanceof Const &&
+			equal(((Const)obj)._const, _const);
+	}
+
+	private static boolean equal(final Object a, final Object b) {
+		if (a instanceof Double && b instanceof Double) {
+			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
+		} else if (a instanceof Float && b instanceof Float) {
+			return ((Float)a).floatValue() == ((Float)b).floatValue();
+		}
+
+		return Objects.equals(a, b);
 	}
 
 	@Override
@@ -120,6 +134,35 @@ public final class Const<T> implements Op<T>, Serializable {
 	 */
 	public static <T> Const<T> of(final T value) {
 		return new Const<>(null, value);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.CONST, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeNullableString(_name, out);
+		out.writeObject(_const);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Const read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final String name = readNullableString(in);
+		final Object value = in.readObject();
+		return new Const(name, value);
 	}
 
 }

@@ -35,8 +35,7 @@ import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.internal.SeqView;
+import io.jenetics.util.Seq;
 
 /**
  * This class only contains non-dominate (Pareto-optimal) elements according to
@@ -97,7 +96,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * Inserting a new element has a time complexity of {@code O(n)}.
 	 *
 	 * @param element the element to add
-	 * @return <tt>true</tt> if this set did not already contain the specified
+	 * @return {@code true} if this set did not already contain the specified
 	 *         element
 	 */
 	@Override
@@ -132,6 +131,9 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 	/**
 	 * Add the all {@code elements} to {@code this} pareto-set.
+	 *
+	 * @apiNote
+	 * Merging two pareto fronts has a time complexity of {@code O(n*m)}.
 	 *
 	 * @param elements the elements to add
 	 * @return {@code this} pareto-set
@@ -174,7 +176,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 
 		if (size() > size) {
 			final double[] distances = Pareto.crowdingDistance(
-				SeqView.of(_population),
+				Seq.viewOf(_population),
 				comparator,
 				distance,
 				dimension

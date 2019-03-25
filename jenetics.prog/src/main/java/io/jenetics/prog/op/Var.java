@@ -22,13 +22,22 @@ package io.jenetics.prog.op;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
- * Represents the program variables. The {@code Var} operation is a termination
- * operation, which just returns the value with the defined index of the input
- * variable array. It is essentially an orthogonal projection of the
- * <em>n</em>-dimensional input space to the <em>1</em>-dimensional result space.
+ * Represents the program variables. The {@code Var} operation is a
+ * <em>terminal</em> operation, which just returns the value with the defined
+ * index of the input variable array. It is essentially an orthogonal projection
+ * of the <em>n</em>-dimensional input space to the <em>1</em>-dimensional
+ * result space.
  *
  * <pre>{@code
  * final ISeq<? extends Op<Double>> operations = ISeq.of(...);
@@ -46,16 +55,18 @@ import java.util.Objects;
  *     final double y = ...;
  *     final double result = program.apply(x, y);
  *     ...
- *
  *     return ...;
  * }
  * }</pre>
  *
+ * @implNote
+ * The {@code Var} object is comparable according it's name.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 3.9
  */
-public final class Var<T> implements Op<T>, Serializable {
+public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -109,19 +120,20 @@ public final class Var<T> implements Op<T>, Serializable {
 	}
 
 	@Override
+	public int compareTo(final Var<T> o) {
+		return _name.compareTo(o._name);
+	}
+
+	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*_index + 37;
-		return hash;
+		return Objects.hashCode(_name);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Var<?> &&
-			Objects.equals(((Var)obj)._name, _name) &&
-			((Var)obj)._index == _index;
+			obj instanceof Var &&
+			Objects.equals(((Var)obj)._name, _name);
 	}
 
 	@Override
@@ -142,6 +154,59 @@ public final class Var<T> implements Op<T>, Serializable {
 	 */
 	public static <T> Var<T> of(final String name, final int index) {
 		return new Var<>(name, index);
+	}
+
+	/**
+	 * Re-indexes the variables of the given operation {@code tree}. If the
+	 * operation tree is created from it's string representation, the indices
+	 * of the variables ({@link Var}), are all set to zero, since it needs the
+	 * whole tree for setting the indices correctly. The mapping from the node
+	 * string to the {@link Op} object, on the other hand, is a <em>local</em>
+	 * operation. This method gives you the possibility to fix the indices of
+	 * the variables. The indices of the variables are assigned according it's
+	 * <em>natural</em> order.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * Var.reindex(tree);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 * The example above shows a use-case of this method. If you parse a tree
+	 * string and convert it to an operation tree, you have to re-index the
+	 * variables first. If not, you will get the wrong result when evaluating
+	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 *
+	 * @since 5.0
+	 *
+	 * @see MathOp#toMathOp(String)
+	 * @see Program#eval(Tree, Object[])
+	 *
+	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param <V> the operation value type
+	 */
+	public static <V> void reindex(final TreeNode<Op<V>> tree) {
+		final SortedSet<Var<V>> vars = tree.stream()
+			.filter(node -> node.getValue() instanceof Var)
+			.map(node -> (Var<V>)node.getValue())
+			.collect(Collectors.toCollection(TreeSet::new));
+
+		int index = 0;
+		final Map<Var<V>, Integer> indexes = new HashMap<>();
+		for (Var<V> var : vars) {
+			indexes.put(var, index++);
+		}
+
+		for (TreeNode<Op<V>> node : tree) {
+			final Op<V> op = node.getValue();
+			if (op instanceof Var) {
+				node.setValue(Var.of(op.name(), indexes.get(op)));
+			}
+		}
 	}
 
 }

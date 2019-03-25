@@ -50,7 +50,7 @@ import io.jenetics.util.IntRange;
  */
 public class MOEATest {
 
-	@Test(invocationCount = 5)
+	@Test(invocationCount = 5, successPercentage = 80)
 	public void collect() {
 		final Problem<double[], DoubleGene, Vec<double[]>> problem = Problem.of(
 			v -> Vec.of(v[0]*cos(v[1]), v[0]*sin(v[1])),

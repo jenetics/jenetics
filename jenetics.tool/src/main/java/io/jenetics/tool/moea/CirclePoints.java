@@ -30,10 +30,11 @@ import java.nio.file.Paths;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import io.jenetics.prngine.LCG64ShiftRandom;
+
 import io.jenetics.DoubleGene;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Problem;
-import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;

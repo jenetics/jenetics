@@ -56,8 +56,8 @@ public abstract class NumericChromosomeTester<
 			c = (NumericChromosome<N, G>) factory().newInstance();
 
 		for (G gene : c) {
-			Assert.assertSame(gene.getMin(), c.getMin());
-			Assert.assertSame(gene.getMax(), c.getMax());
+			Assert.assertEquals(gene.getMin(), c.getMin());
+			Assert.assertEquals(gene.getMax(), c.getMax());
 		}
 	}
 

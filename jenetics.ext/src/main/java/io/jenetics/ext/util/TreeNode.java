@@ -22,13 +22,20 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import io.jenetics.util.Copyable;
+import io.jenetics.util.ISeq;
 
 /**
  * A general purpose node in a tree data-structure. The {@code TreeNode} is a
@@ -37,7 +44,7 @@ import io.jenetics.util.Copyable;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.3
  * @since 3.9
  */
 public final class TreeNode<T>
@@ -47,7 +54,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private T _value;
 	private TreeNode<T> _parent;
@@ -134,22 +141,6 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this} node
-	 * in pre-order. The first node returned by the iterator is {@code this}
-	 * node.
-	 * <p>
-	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any iterator created before the modification.
-	 *
-	 * @see #postorderIterator
-	 * @return an iterator for traversing the tree in pre-order
-	 */
-	@Override
-	public Iterator<TreeNode<T>> iterator() {
-		return preorderIterator();
-	}
-
-	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's
 	 * child array at index {@code index}. The new {@code child} must not be
@@ -175,23 +166,55 @@ public final class TreeNode<T>
 		}
 
 		child.setParent(this);
+		createChildrenIfMissing();
+		_children.add(index, child);
+
+		return this;
+	}
+
+	// Only entry point for checking and creating non-existing children list.
+	private void createChildrenIfMissing() {
 		if (_children == null) {
 			_children = new ArrayList<>(2);
 		}
-		_children.add(index, child);
+	}
 
-		TreeNode<T> parent = this;
-		while (parent != null) {
-			parent = parent._parent;
+	/**
+	 * Replaces the child at the give index with the given {@code child}
+	 *
+	 * @param index the index of the child which will be replaced
+	 * @param child the new child
+	 * @return {@code this} tree-node, for method chaining
+	 * @throws ArrayIndexOutOfBoundsException  if the {@code index} is out of
+	 *         bounds
+	 * @throws IllegalArgumentException if {@code child} is an ancestor of
+	 *         {@code this} node
+	 * @throws NullPointerException if the given {@code child} is {@code null}
+	 */
+	public TreeNode<T> replace(final int index, final TreeNode<T> child) {
+		requireNonNull(child);
+		if (_children == null) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Child index is out of bounds: %s", index
+			));
 		}
+		if (isAncestor(child)) {
+			throw new IllegalArgumentException("The new child is an ancestor.");
+		}
+
+		final TreeNode<T> oldChild = _children.set(index, child);
+		assert oldChild != null;
+		assert oldChild._parent == this;
+
+		oldChild.setParent(null);
+		child.setParent(this);
 
 		return this;
 	}
 
 	/**
 	 * Removes the child at the specified index from this node's children and
-	 * sets that node's parent to {@code null}. The child node to remove must be
-	 * a {@code MutableTreeNode}.
+	 * sets that node's parent to {@code null}.
 	 *
 	 * @param index the index in this node's child array of the child to remove
 	 * @return {@code this} tree-node, for method chaining
@@ -207,12 +230,6 @@ public final class TreeNode<T>
 
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
-
-		TreeNode<T> parent = this;
-		while (parent != null) {
-			parent = parent._parent;
-		}
-
 		child.setParent(null);
 
 		if (_children.isEmpty()) {
@@ -220,6 +237,62 @@ public final class TreeNode<T>
 		}
 
 		return this;
+	}
+
+	/**
+	 * Removes the child at the given {@code path}. If no child exists at the
+	 * given path, nothing is removed.
+	 *
+	 * @since 4.4
+	 *
+	 * @param path the path of the child to replace
+	 * @return {@code true} if a child at the given {@code path} existed and
+	 *         has been removed
+	 * @throws NullPointerException if one of the given argument is {@code null}
+	 */
+	public boolean removeAtPath(final Path path) {
+		final Optional<TreeNode<T>> parent = childAtPath(path)
+			.flatMap(Tree::getParent);
+
+		parent.ifPresent(p -> p.remove(path.get(path.length() - 1)));
+		return parent.isPresent();
+	}
+
+	/**
+	 * Replaces the child at the given {@code path} with the given new
+	 * {@code child}. If no child exists at the given path, nothing is replaced.
+	 *
+	 * @since 4.4
+	 *
+	 * @param path the path of the child to replace
+	 * @param child the new child
+	 * @return {@code true} if a child at the given {@code path} existed and
+	 *         has been replaced
+	 * @throws NullPointerException if one of the given argument is {@code null}
+	 */
+	public boolean replaceAtPath(final Path path, final TreeNode<T> child) {
+		requireNonNull(path);
+		requireNonNull(child);
+
+		final Optional<TreeNode<T>> old = childAtPath(path);
+		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::getParent);
+
+		if (parent.isPresent()) {
+			parent.orElseThrow(AssertionError::new)
+				.replace(path.get(path.length() - 1), child);
+		} else {
+			removeAllChildren();
+			setValue(child.getValue());
+
+			final ISeq<TreeNode<T>> nodes = child.childStream()
+				.collect(ISeq.toISeq());
+
+			for (TreeNode<T> node : nodes) {
+				attach(node);
+			}
+		}
+
+		return old.isPresent();
 	}
 
 	/* *************************************************************************
@@ -322,6 +395,24 @@ public final class TreeNode<T>
 		return ofTree(this);
 	}
 
+	/**
+	 * Returns a new {@code TreeNode} consisting of all nodes of {@code this}
+	 * tree, but with a different value type, created by applying the given
+	 * function to the node values of {@code this} tree.
+	 *
+	 * @param mapper the node value mapper
+	 * @param <B> the new node type
+	 * @return a new tree consisting of all nodes of {@code this} tree
+	 * @throws NullPointerException if the given {@code mapper} function is
+	 *         {@code null}
+	 */
+	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
+		final TreeNode<B> target = of(mapper.apply(getValue()));
+		fill(this, target, mapper);
+		return target;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Tree.hashCode(this);
@@ -330,13 +421,13 @@ public final class TreeNode<T>
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof TreeNode<?> &&
-			Tree.equals(this, (TreeNode<?>)obj);
+			obj instanceof TreeNode &&
+			Tree.equals(this, (TreeNode)obj);
 	}
 
 	@Override
 	public String toString() {
-		return Tree.toString(this);
+		return toParenthesesString();
 	}
 
 
@@ -346,29 +437,13 @@ public final class TreeNode<T>
 	 **************************************************************************/
 
 	/**
-	 * Return a new {@code TreeNode} from the given source {@code tree}. The
-	 * whole tree is copied.
+	 * Return a new {@code TreeNode} with a {@code null} tree value.
 	 *
-	 * @param tree the source tree the new tree-node is created from
-	 * @param <T> the tree value type
-	 * @return a new {@code TreeNode} from the given source {@code tree}
-	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 * @param <T> the tree-node type
+	 * @return a new tree-node
 	 */
-	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
-		final TreeNode<T> target = of(tree.getValue());
-		fill(tree, target);
-		return target;
-	}
-
-	private static <T> void fill(
-		final Tree<? extends T, ?> source,
-		final TreeNode<T> target
-	) {
-		source.childStream().forEachOrdered(child -> {
-			final TreeNode<T> targetChild = of(child.getValue());
-			target.attach(targetChild);
-			fill(child, targetChild);
-		});
+	public static <T> TreeNode<T> of() {
+		return of(null);
 	}
 
 	/**
@@ -383,13 +458,146 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Return a new {@code TreeNode} with a {@code null} tree value.
+	 * Return a new {@code TreeNode} from the given source {@code tree}. The
+	 * whole tree is copied.
 	 *
-	 * @param <T> the tree-node type
-	 * @return a new tree-node
+	 * @param tree the source tree the new tree-node is created from
+	 * @param mapper the tree value mapper function
+	 * @param <T> the current tree value type
+	 * @param <B> the mapped tree value type
+	 * @return a new {@code TreeNode} from the given source {@code tree}
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T> TreeNode<T> of() {
-		return new TreeNode<>(null);
+	public static <T, B> TreeNode<B> ofTree(
+		final Tree<? extends T, ?> tree,
+		final Function<? super T, ? extends B> mapper
+	) {
+		final TreeNode<B> target = of(mapper.apply(tree.getValue()));
+		fill(tree, target, mapper);
+		return target;
+	}
+
+	private static <T, B> void fill(
+		final Tree<? extends T, ?> source,
+		final TreeNode<B> target,
+		final Function<? super T, ? extends B> mapper
+	) {
+		source.childStream().forEachOrdered(child -> {
+			final TreeNode<B> targetChild = of(mapper.apply(child.getValue()));
+			target.attach(targetChild);
+			fill(child, targetChild, mapper);
+		});
+	}
+
+	/**
+	 * Return a new {@code TreeNode} from the given source {@code tree}. The
+	 * whole tree is copied.
+	 *
+	 * @param tree the source tree the new tree-node is created from
+	 * @param <T> the current tree value type
+	 * @return a new {@code TreeNode} from the given source {@code tree}
+	 * @throws NullPointerException if the source {@code tree} is {@code null}
+	 */
+	public static <T> TreeNode<T> ofTree(final Tree<? extends T, ?> tree) {
+		return ofTree(tree, Function.identity());
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
+	 * <pre>
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
+	 * </pre>
+	 *
+	 * The parse method doesn't strip the whitespace between the parentheses and
+	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
+	 * you should do the parsing with an addition <em>mapper</em> function.
+	 * <pre>{@code
+	 * final TreeNode<String> tree = TreeNode.parse(
+	 *     "mul(  div(cos( 1.0) , cos(π )), sin(mul(1.0, z) ) )",
+	 *     String::trim
+	 * );
+	 * }</pre>
+	 * The code above will trim all tree nodes during the parsing process.
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String, Function)
+	 *
+	 * @since 4.3
+	 *
+	 * @param tree the parentheses tree string
+	 * @return the parsed tree
+	 * @throws NullPointerException if the given {@code tree} string is
+	 *         {@code null}
+	 * @throws IllegalArgumentException if the given tree string could not be
+	 *         parsed
+	 */
+	public static TreeNode<String> parse(final String tree) {
+		return TreeParser.parse(tree, Function.identity());
+	}
+
+	/**
+	 * Parses a (parentheses) tree string, created with
+	 * {@link Tree#toParenthesesString()}. The tree string might look like this
+	 * <pre>
+	 *  0(1(4,5),2(6),3(7(10,11),8,9))
+	 * </pre>
+	 * and can be parsed to an integer tree with the following code:
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = TreeNode.parse(
+	 *     "0(1(4,5),2(6),3(7(10,11),8,9))",
+	 *     Integer::parseInt
+	 * );
+	 * }</pre>
+	 *
+	 * @see Tree#toParenthesesString(Function)
+	 * @see Tree#toParenthesesString()
+	 * @see TreeNode#parse(String)
+	 *
+	 * @since 4.3
+	 *
+	 * @param <B> the tree node value type
+	 * @param tree the parentheses tree string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the parsed tree object
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid tree
+	 */
+	public static <B> TreeNode<B> parse(
+		final String tree,
+		final Function<? super String, ? extends B> mapper
+	) {
+		return TreeParser.parse(tree, mapper);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		FlatTreeNode.of(this).write(out);
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static TreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return TreeNode.ofTree(FlatTreeNode.read(in));
 	}
 
 }

@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
 
@@ -41,7 +42,7 @@ public class LongChromosomeTest
 	extends NumericChromosomeTester<Long, LongGene>
 {
 
-	private final LongChromosome _factory = new LongChromosome(
+	private final LongChromosome _factory = LongChromosome.of(
 		0L, Long.MAX_VALUE, 500
 	);
 
@@ -60,7 +61,7 @@ public class LongChromosomeTest
 			final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final LongChromosome chromosome = new LongChromosome(min, max, 500);
+				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
 				for (LongGene gene : chromosome) {
 					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());
@@ -95,6 +96,38 @@ public class LongChromosomeTest
 			{LongChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
 			{LongChromosome.of(LongRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
 		};
+	}
+
+	@Test
+	public void longStream() {
+		final LongChromosome chromosome = LongChromosome.of(0, 10_000, 1000);
+		final long[] values = chromosome.longStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
+			Assert.assertEquals(chromosome.longValue(i), values[i]);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		LongChromosome.of(
+			LongGene.of(1, 2),
+			LongGene.of(3, 4),
+			LongGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		LongChromosome.of(
+			ISeq.of(
+				LongGene.of(1, 2),
+				LongGene.of(3, 4),
+				LongGene.of(5, 6)
+			)
+		);
 	}
 
 }

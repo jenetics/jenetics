@@ -35,8 +35,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.ISeq;
-
-import io.jenetics.ext.internal.SeqView;
+import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -110,7 +109,7 @@ public class ParetoFrontTest {
 		set.addAll(elements);
 
 		final Set<Vec<double[]>> front = new HashSet<>(
-			Pareto.front(SeqView.of(elements)).asList()
+			Pareto.front(Seq.viewOf(elements)).asList()
 		);
 
 		Assert.assertEquals(new HashSet<>(set), front);
@@ -121,11 +120,13 @@ public class ParetoFrontTest {
 		set.trim(trimmedSize, Vec::compare, Vec::distance, Vec::length);
 		Assert.assertEquals(set.size(), trimmedSize);
 
+		/*
 		final List<Vec<double[]>> missing = set.stream()
 			.filter(v -> !front.contains(v))
 			.collect(Collectors.toList());
 
 		System.out.println(missing);
+		*/
 	}
 
 	private static Vec<double[]> circle(final Random random) {

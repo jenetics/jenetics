@@ -19,14 +19,18 @@
  */
 package io.jenetics;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
-import io.jenetics.internal.util.reflect;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -36,12 +40,12 @@ import io.jenetics.util.MSeq;
  *
  * @see IntegerGene
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz  Wilhelmstötter</a>
  * @since 2.0
- * @version 4.0
+ * @version 5.0
  */
 public class IntegerChromosome
 	extends AbstractBoundedChromosome<Integer, IntegerGene>
@@ -49,7 +53,7 @@ public class IntegerChromosome
 			NumericChromosome<Integer, IntegerGene>,
 			Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * Create a new chromosome from the given {@code genes} and the allowed
@@ -72,53 +76,26 @@ public class IntegerChromosome
 		super(genes, lengthRange);
 	}
 
-	/**
-	 * Create a new random chromosome.
-	 *
-	 * @since 4.0
-	 *
-	 * @param min the min value of the {@link IntegerGene}s (inclusively).
-	 * @param max the max value of the {@link IntegerGene}s (inclusively).
-	 * @param lengthRange the allowed length range of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the length is smaller than one
-	 */
-	public IntegerChromosome(
-		final Integer min,
-		final Integer max,
-		final IntRange lengthRange
-	) {
-		this(IntegerGene.seq(min, max, lengthRange), lengthRange);
-		_valid = true;
+	@Override
+	public IntegerChromosome newInstance(final ISeq<IntegerGene> genes) {
+		return new IntegerChromosome(genes, lengthRange());
+	}
+
+	@Override
+	public IntegerChromosome newInstance() {
+		return of(_min, _max, lengthRange());
 	}
 
 	/**
-	 * Create a new random {@code IntegerChromosome}.
+	 * Returns a sequential stream of the alleles with this chromosome as its
+	 * source.
 	 *
-	 * @param min the min value of the {@link IntegerGene}s (inclusively).
-	 * @param max the max value of the {@link IntegerGene}s (inclusively).
-	 * @param length the length of the chromosome.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @throws IllegalArgumentException if the {@code length} is smaller than
-	 *         one.
-	 */
-	public IntegerChromosome(
-		final Integer min,
-		final Integer max,
-		final int length
-	) {
-		this(min, max, IntRange.of(length));
-	}
-
-	/**
-	 * Create a new random {@code IntegerChromosome} of length one.
+	 * @since 4.3
 	 *
-	 * @param min the minimal value of this chromosome (inclusively).
-	 * @param max the maximal value of this chromosome (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @return a sequential stream of alleles
 	 */
-	public IntegerChromosome(final Integer min, final Integer max) {
-		this(min, max, 1);
+	public IntStream intStream() {
+		return IntStream.range(0, length()).map(this::intValue);
 	}
 
 	/**
@@ -156,16 +133,39 @@ public class IntegerChromosome
 		return toArray(new int[length()]);
 	}
 
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new {@code IntegerChromosome} with the given genes.
 	 *
 	 * @param genes the genes of the chromosome.
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
-	 *         empty.
+	 *         empty or the given {@code genes} doesn't have the same range.
 	 */
 	public static IntegerChromosome of(final IntegerGene... genes) {
+		checkGeneRange(Stream.of(genes).map(IntegerGene::range));
 		return new IntegerChromosome(ISeq.of(genes), IntRange.of(genes.length));
+	}
+
+	/**
+	 * Create a new {@code IntegerChromosome} with the given genes.
+	 *
+	 * @since 4.3
+	 *
+	 * @param genes the genes of the chromosome.
+	 * @return a new chromosome with the given genes.
+	 * @throws NullPointerException if the given {@code genes} are {@code null}
+	 * @throws IllegalArgumentException if the of the genes iterable is empty or
+	 *         the given {@code genes} doesn't have the same range.
+	 */
+	public static IntegerChromosome of(final Iterable<IntegerGene> genes) {
+		final ISeq<IntegerGene> values = ISeq.of(genes);
+		checkGeneRange(values.stream().map(IntegerGene::range));
+		return new IntegerChromosome(values, IntRange.of(values.length()));
 	}
 
 	/**
@@ -189,7 +189,8 @@ public class IntegerChromosome
 		final int max,
 		final IntRange lengthRange
 	) {
-		return new IntegerChromosome(min, max, lengthRange);
+		final ISeq<IntegerGene> values = IntegerGene.seq(min, max, lengthRange);
+		return new IntegerChromosome(values, lengthRange);
 	}
 
 	/**
@@ -206,7 +207,7 @@ public class IntegerChromosome
 		final int max,
 		final int length
 	) {
-		return new IntegerChromosome(min, max, length);
+		return of(min, max, IntRange.of(length));
 	}
 
 	/**
@@ -228,7 +229,7 @@ public class IntegerChromosome
 		final IntRange range,
 		final IntRange lengthRange
 	) {
-		return new IntegerChromosome(range.getMin(), range.getMax(), lengthRange);
+		return of(range.getMin(), range.getMax(), lengthRange);
 	}
 
 	/**
@@ -243,7 +244,7 @@ public class IntegerChromosome
 	 * @throws IllegalArgumentException if the length is smaller than one
 	 */
 	public static IntegerChromosome of(final IntRange range, final int length) {
-		return new IntegerChromosome(range.getMin(), range.getMax(), length);
+		return of(range.getMin(), range.getMax(), length);
 	}
 
 	/**
@@ -254,7 +255,7 @@ public class IntegerChromosome
 	 * @return a new random {@code IntegerChromosome} of length one
 	 */
 	public static IntegerChromosome of(final int min, final int max) {
-		return new IntegerChromosome(min, max);
+		return of(min, max, 1);
 	}
 
 	/**
@@ -267,63 +268,49 @@ public class IntegerChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static IntegerChromosome of(final IntRange range) {
-		return new IntegerChromosome(range.getMin(), range.getMax());
+		return of(range.getMin(), range.getMax(), 1);
 	}
 
-	@Override
-	public IntegerChromosome newInstance(final ISeq<IntegerGene> genes) {
-		return new IntegerChromosome(genes, lengthRange());
-	}
 
-	@Override
-	public IntegerChromosome newInstance() {
-		return new IntegerChromosome(_min, _max, lengthRange());
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
-	}
 
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_CHROMOSOME, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
 	{
-		out.defaultWriteObject();
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
 
-		out.writeInt(length());
-		out.writeObject(lengthRange());
-		out.writeInt(_min);
-		out.writeInt(_max);
+	void write(final DataOutput out) throws IOException {
+		writeInt(length(), out);
+		writeInt(lengthRange().getMin(), out);
+		writeInt(lengthRange().getMax(), out);
+		writeInt(_min, out);
+		writeInt(_max, out);
 
-		for (IntegerGene gene : _genes) {
-			out.writeInt(gene.getAllele());
+		for (int i = 0, n = length(); i < n; ++i) {
+			writeInt(intValue(i), out);
 		}
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static IntegerChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
+		final int min = readInt(in);
+		final int max = readInt(in);
 
-		final MSeq<IntegerGene> genes = MSeq.ofLength(in.readInt());
-		reflect.setField(this, "_lengthRange", in.readObject());
-		reflect.setField(this, "_min", in.readInt());
-		reflect.setField(this, "_max", in.readInt());
-
-		for (int i = 0; i < genes.length(); ++i) {
-			genes.set(i, new IntegerGene(in.readInt(), _min, _max));
+		final MSeq<IntegerGene> values = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			values.set(i, IntegerGene.of(readInt(in), min, max));
 		}
 
-		reflect.setField(this, "_genes", genes.toISeq());
+		return new IntegerChromosome(values.toISeq(), lengthRange);
 	}
 
 }

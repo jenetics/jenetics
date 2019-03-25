@@ -20,9 +20,12 @@
 package io.jenetics.ext.util;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Function;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.util.IO;
@@ -36,25 +39,8 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 
 	public FlatTreeNode<Integer> newTree(final int levels, final Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
-		fill(root, levels, random);
+		TreeNodeTest.fill(root, levels, random);
 		return FlatTreeNode.of(root);
-	}
-
-	private static void fill(
-		final TreeNode<Integer> node,
-		final int level,
-		final Random random
-	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
-			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
-
-			if (random.nextDouble() < 0.8 && level > 0) {
-				fill(child, level - 1, random);
-			}
-
-			node.attach(child);
-		}
 	}
 
 	@Test
@@ -72,16 +58,13 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 
 		final ISeq<FlatTreeNode<Integer>> nodes =
 			FlatTreeNode.of(tree).flattenedNodes();
+		assert Tree.equals(tree, nodes.get(0));
 
 		final TreeNode<Integer> unflattened = TreeNode.ofTree(nodes.get(0));
 
-		//print(FlatTree.of(tree));
-		//FlatTree.of(tree).childStream().map(t -> t.getValue()).forEach(System.out::println);
-		//print(tree);
-
-		//System.out.println(FlatTree.of(tree.getChild(1).firstLeaf()).getValue());
-		//System.out.println(tree.firstLeaf().getValue());
-		//System.out.println(tree);
+		Assert.assertEquals(unflattened, tree);
+		assert tree.equals(unflattened);
+		assert unflattened.equals(tree);
 	}
 
 	private void print(final Tree<?, ?> tree) {
@@ -89,14 +72,36 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 		tree.breadthFirstStream().forEach(n -> {
 			System.out.println("" + n.getParent().map(t -> t.getValue()) + "->" + n.getValue());
 		});
-
-		/*
-		System.out.println(tree.getParent().map(t -> t.getValue()));
-		System.out.println(tree.getChild(0).getParent().map(t -> t.getValue()));
-		System.out.println(tree.getChild(0).getChild(0).getParent().map(t -> t.getValue()));
-		System.out.println(tree.getChild(2).getChild(0).getChild(0).getParent().map(t -> t.getValue()));
-		*/
 	}
+
+	@Test(dataProvider = "methods")
+	public void methodResults(final Function<Tree<?, ?>, Object> method) {
+		final TreeNode<Integer> tree = TreeNode.of(0);
+		TreeNodeTest.fill(tree, 2, new Random(345));
+		final FlatTreeNode<Integer> flatTree = FlatTreeNode.of(tree);
+
+		final Iterator<? extends Tree<?, ?>> it1 = tree.iterator();
+		final Iterator<? extends Tree<?, ?>> it2 = flatTree.iterator();
+		while (it1.hasNext()) {
+			final Tree<?, ?> node1 = it1.next();
+			final Tree<?, ?> node2 = it2.next();
+			Assert.assertEquals(method.apply(node1), method.apply(node2));
+		}
+	}
+
+	@DataProvider
+	public Object[][] methods() {
+		return new Object[][] {
+			{(Function<Tree<?, ?>, Object>)Tree::toParenthesesString},
+			{(Function<Tree<?, ?>, Object>)Tree::level},
+			{(Function<Tree<?, ?>, Object>)Tree::childCount},
+			{(Function<Tree<?, ?>, Object>)Tree::childPath},
+			{(Function<Tree<?, ?>, Object>)Tree::isLeaf},
+			{(Function<Tree<?, ?>, Object>)t -> t.getRoot().getValue()},
+			{(Function<Tree<?, ?>, Object>)t -> t.getParent().map(t2 -> t2.getValue()).orElse(null)}
+		};
+	}
+
 
 	@Test
 	public void serialize() throws IOException {

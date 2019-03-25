@@ -32,6 +32,7 @@ REPORT_DIR="${SCRIPT_DIR}/../report/performance"
 
 VERSION="@__version__@"
 CLS_PATH="${SCRIPT_DIR}/../lib/jenetics-${VERSION}.jar"
+CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../project/buildSrc/lib/jpx-1.4.0.jar"
 CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/jenetics.example-${VERSION}.jar":.
 
 agent_param() {
@@ -54,7 +55,7 @@ main() {
 	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH io.jenetics.example.TravelingSalesman
 }
 
-main $*
+time main $*
 
 
 

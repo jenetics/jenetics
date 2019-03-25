@@ -30,6 +30,12 @@ import io.jenetics.util.Verifiable;
  * with own {@code Gene} implementations, it is recommended to also implement it
  * as <a href="https://en.wikipedia.org/wiki/Value_object">value objects</a>.
  *
+ * @implSpec
+ * <em>Jenetics</em> requires that the individuals ({@link Genotype} and
+ * {@link Phenotype}) are not changed after they have been created. Therefore,
+ * all implementations of the {@code Gene} interface must also be
+ * <em>immutable</em>.
+ *
  * @see <a href="https://en.wikipedia.org/wiki/Value_object">Value object</a>
  * @see Chromosome
  *

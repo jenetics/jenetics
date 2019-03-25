@@ -21,11 +21,11 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.9
+ * @version 4.4
  */
 
 plugins {
-    id "me.champeau.gradle.jmh" version "0.4.4"
+    id "me.champeau.gradle.jmh" version "0.4.5"
 }
 
 apply plugin: 'packaging'
@@ -35,18 +35,13 @@ description = 'Jenetics extension - Java Genetic Algorithm Library Extension'
 
 compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
-	compile project(':jenetics')
+	implementation project(':jenetics')
 
-	testCompile Include.Apache.Commons.Math
-	testCompile Include.TestNG
-	testCompile Include.EqualsVerifier
-	testCompile project(':jenetics').sourceSets.test.output
+	testImplementation property('include.ApacheCommonsMath')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
+	testImplementation project(':jenetics').sourceSets.test.output
 }
 
 idea {
@@ -57,6 +52,8 @@ idea {
 
 jar.manifest.instruction('Export-Package',
 	'io.jenetics.ext',
+	'io.jenetics.ext.engine',
+	'io.jenetics.ext.moea',
 	'io.jenetics.ext.util'
 )
 
@@ -69,9 +66,9 @@ javadoc {
 }
 
 packaging {
-	name = 'Jenetics Extension'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.io'
+	name = property('jenetics.ext.Name')
+	author = property('jenetics.Author')
+	url = property('jenetics.Url')
 
 	jarjar = false
 	javadoc = true
@@ -81,13 +78,13 @@ modifyPom {
 	project {
 		name 'jenetics.ext'
 		description 'Jenetics Extension Library'
-		url jenetics.url
+		url project.property('jenetics.Url')
 		inceptionYear '2015'
 
 		scm {
-			url jenetics.maven.scm.url
-			connection jenetics.maven.scm.connection
-			developerConnection jenetics.maven.scm.developer_connection
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -100,9 +97,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id 'jenetics'
-				name 'Franz Wilhelmstötter'
-				email 'franz.wilhelmstoetter@gmail.com'
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -115,6 +112,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }

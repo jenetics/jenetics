@@ -55,10 +55,9 @@ import java.util.stream.Collector;
  * @implNote
  * This implementation is not thread safe. However, it is safe to use on a
  * parallel stream, because the parallel implementation of
- * {@link java.util.stream.Stream#collect Stream.collect()}provides the
+ * {@link java.util.stream.Stream#collect Stream.collect()} provides the
  * necessary partitioning, isolation, and merging of results for safe and
  * efficient parallel execution.
- * <br>
  * Using this class in the {@code collect} method of an parallel stream can
  * lead to an reduced accuracy of the quantile value. Since this implementation
  * is an estimation algorithm, combining the estimations will only work for
@@ -191,7 +190,7 @@ public class Quantile implements DoubleConsumer {
 	 *         of the {@code other} object differs from {@code this} one.
 	 */
 	public Quantile combine(final Quantile other) {
-		if (_quantile != other._quantile) {
+		if (Double.compare(_quantile, other._quantile) != 0) {
 			throw new IllegalArgumentException(format(
 				"Can't perform combine, the quantile are not equal: %s != %s",
 				_quantile, other._quantile

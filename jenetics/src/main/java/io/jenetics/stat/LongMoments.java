@@ -20,6 +20,7 @@
 package io.jenetics.stat;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.function.ToLongFunction;
@@ -30,7 +31,7 @@ import java.util.stream.Collector;
  *
  * @see io.jenetics.stat.LongMomentStatistics
  *
- * @implSpec
+ * @implNote
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -170,16 +171,16 @@ public final class LongMoments implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 33*_count + 37;
-		hash += 33*_sum + 37;
-		hash += 33*_min + 37;
-		hash += 33*_max + 37;
-		hash += 33*Double.hashCode(_mean) + 37;
-		hash += 33*Double.hashCode(_variance) + 37;
-		hash += 33*Double.hashCode(_skewness) + 37;
-		hash += 33*Double.hashCode(_kurtosis) + 37;
-		return hash;
+		return
+			hash(_count,
+			hash(_sum,
+			hash(_min,
+			hash(_max,
+			hash(_mean,
+			hash(_variance,
+			hash(_skewness,
+			hash(_kurtosis,
+			hash(getClass())))))))));
 	}
 
 	@Override

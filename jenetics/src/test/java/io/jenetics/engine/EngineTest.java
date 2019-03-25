@@ -96,7 +96,7 @@ public class EngineTest {
 			.filter(pt -> pt.getFitness() == max)
 			.count();
 
-		Assert.assertTrue(maxCount >= genotypeCount);
+		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);
 	}
 
 	@Test
@@ -436,6 +436,29 @@ public class EngineTest {
 			{new ForkJoinPool(10)}
 		};
 	}
+
+	/*
+	@Test
+	public void populationEvaluator() {
+		final int populationSize = 100;
+		final AtomicInteger count = new AtomicInteger();
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.evaluator((gt, ff) -> {
+				count.compareAndSet(0, gt.length());
+				return gt.stream().map(ff).collect(ISeq.toISeq());
+			})
+			.build();
+
+		engine.stream()
+			.limit(1)
+			.collect(EvolutionResult.toBestGenotype());
+
+		Assert.assertEquals(count.get(), populationSize);
+	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test

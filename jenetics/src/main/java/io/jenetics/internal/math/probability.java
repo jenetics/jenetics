@@ -21,8 +21,6 @@ package io.jenetics.internal.math;
 
 import static io.jenetics.internal.math.base.pow;
 
-import io.jenetics.internal.util.require;
-
 /**
  * Mathematical functions regarding probabilities.
  *
@@ -31,7 +29,7 @@ import io.jenetics.internal.util.require;
  * @version 1.4
  */
 public final class probability {
-	private probability() {require.noInstance();}
+	private probability() {}
 
 	private static final long INT_RANGE = pow(2, 32) - 1;
 
