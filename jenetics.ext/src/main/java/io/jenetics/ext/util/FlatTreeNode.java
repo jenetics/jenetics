@@ -39,7 +39,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.MSeq;
 
 /**
  * Default implementation of the {@link FlatTree} interface. Beside the
@@ -62,13 +61,13 @@ public final class FlatTreeNode<T>
 	private static final long serialVersionUID = 2L;
 
 	private final int _index;
-	private final ISeq<T> _nodes;
+	private final Object[] _nodes;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final ISeq<T> nodes,
+		final Object[] nodes,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
@@ -104,9 +103,10 @@ public final class FlatTreeNode<T>
 		);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getValue() {
-		return _nodes.get(_index);
+		return (T)_nodes[_index];
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public final class FlatTreeNode<T>
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.size()).mapToObj(this::nodeAt);
+		return IntStream.range(0, _nodes.length).mapToObj(this::nodeAt);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public final class FlatTreeNode<T>
 	public boolean equals(final Object obj) {
 		return obj instanceof FlatTreeNode &&
 			((FlatTreeNode)obj)._index == _index &&
-			Objects.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
+			Arrays.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
 			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
 			Arrays.equals(((FlatTreeNode)obj)._childOffsets, _childOffsets);
 	}
@@ -238,7 +238,7 @@ public final class FlatTreeNode<T>
 		final int size = tree.size();
 		assert size >= 1;
 
-		final MSeq<V> elements = MSeq.ofLength(size);
+		final Object[] elements = new Object[size];
 		final int[] childOffsets = new int[size];
 		final int[] childCounts = new int[size];
 
@@ -250,7 +250,7 @@ public final class FlatTreeNode<T>
 		while (it.hasNext()) {
 			final Tree<? extends V, ?> node = it.next();
 
-			elements.set(index, node.getValue());
+			elements[index] = node.getValue();
 			childCounts[index] = node.childCount();
 			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
 
@@ -260,7 +260,7 @@ public final class FlatTreeNode<T>
 
 		return new FlatTreeNode<>(
 			0,
-			elements.toISeq(),
+			elements,
 			childOffsets,
 			childCounts
 		);
@@ -345,7 +345,7 @@ public final class FlatTreeNode<T>
 	void write(final ObjectOutput out) throws IOException {
 		writeInt(_childCounts.length, out);
 		for (int i = 0; i < _childCounts.length; ++i) {
-			out.writeObject(_nodes.get(i));
+			out.writeObject(_nodes[i]);
 			writeInt(_childCounts[i], out);
 			writeInt(_childOffsets[i], out);
 		}
@@ -357,19 +357,19 @@ public final class FlatTreeNode<T>
 	{
 		final int size = readInt(in);
 
-		final MSeq elements = MSeq.ofLength(size);
+		final Object[] elements = new Object[size];
 		final int[] childOffsets = new int[size];
 		final int[] childCounts = new int[size];
 
 		for (int i = 0; i < size; ++i) {
-			elements.set(i, in.readObject());
+			elements[i] = in.readObject();
 			childCounts[i] = readInt(in);
 			childOffsets[i] = readInt(in);
 		}
 
 		return new FlatTreeNode(
 			0,
-			elements.toISeq(),
+			elements,
 			childOffsets,
 			childCounts
 		);
