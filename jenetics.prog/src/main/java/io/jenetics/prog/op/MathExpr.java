@@ -90,21 +90,25 @@ public final class MathExpr
 		new ConstExprRewriter();
 
 	/**
-	 * This rewriter implements some common arithmetic identities.
+	 * This rewriter implements some common arithmetic identities, in exactly
+	 * this order.
 	 * <pre>
 	 *     sub($x,$x) -&gt;  0
-	 *     add($x,$x) -&gt;  mul(2,$x)
 	 *     sub($x,0)  -&gt;  $x
 	 *     add($x,0)  -&gt;  $x
 	 *     add(0,$x)  -&gt;  $x
+	 *     add($x,$x) -&gt;  mul(2,$x)
 	 *     div($x,$x) -&gt;  1
+	 *     div(0,$x)  -&gt;  0
 	 *     mul($x,0)  -&gt;  0
 	 *     mul(0,$x)  -&gt;  0
 	 *     mul($x,1)  -&gt;  $x
 	 *     mul(1,$x)  -&gt;  $x
 	 *     mul($x,$x) -&gt;  pow($x,2)
 	 *     pow($x,0)  -&gt;  1
+	 *     pow(0,$x)  -&gt;  0
 	 *     pow($x,1)  -&gt;  $x
+	 *     pow(1,$x)  -&gt;  1
 	 * </pre>
 	 *
 	 * @since 5.0
@@ -112,18 +116,21 @@ public final class MathExpr
 	public static final TreeRewriter<Op<Double>> ARITHMETIC_REWRITER =
 		TreeRewriters.concat(
 			compile("sub($x,$x) -> 0"),
-			compile("add($x,$x) -> mul(2,$x)"),
 			compile("sub($x,0) -> $x"),
 			compile("add($x,0) -> $x"),
 			compile("add(0,$x) -> $x"),
+			compile("add($x,$x) -> mul(2,$x)"),
 			compile("div($x,$x) -> 1"),
+			compile("div(0,$x) -> 0"),
 			compile("mul($x,0) -> 0"),
 			compile("mul(0,$x) -> 0"),
 			compile("mul($x,1) -> $x"),
 			compile("mul(1,$x) -> $x"),
 			compile("mul($x,$x) -> pow($x,2)"),
 			compile("pow($x,0) -> 1"),
-			compile("pow($x,1) -> $x")
+			compile("pow(0,$x) -> 0"),
+			compile("pow($x,1) -> $x"),
+			compile("pow(1,$x) -> 1")
 		);
 
 	private static TreeRewriter<Op<Double>> compile(final String rule) {
