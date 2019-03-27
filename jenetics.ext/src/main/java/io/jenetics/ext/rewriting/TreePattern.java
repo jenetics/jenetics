@@ -21,6 +21,7 @@ package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
+import static io.jenetics.ext.internal.Names.isIdentifier;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -441,26 +442,6 @@ public final class TreePattern<V> implements Serializable {
 		@SuppressWarnings("unchecked")
 		<B> Var<B> map(final Function<? super V, ? extends B> mapper) {
 			return (Var<B>)this;
-		}
-
-		private static boolean isIdentifier(final String id) {
-			if (id.isEmpty()) {
-				return false;
-			}
-			int cp = id.codePointAt(0);
-			if (!Character.isJavaIdentifierStart(cp)) {
-				return false;
-			}
-			for (int i = Character.charCount(cp);
-				 i < id.length();
-				 i += Character.charCount(cp))
-			{
-				cp = id.codePointAt(i);
-				if (!Character.isJavaIdentifierPart(cp)) {
-					return false;
-				}
-			}
-			return true;
 		}
 
 		/**
