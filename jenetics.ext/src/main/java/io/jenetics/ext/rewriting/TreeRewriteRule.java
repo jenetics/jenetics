@@ -46,17 +46,17 @@ import io.jenetics.ext.util.TreeNode;
  * which must be matched, and a substitution pattern, which is expanded and
  * replaces the variables in the pattern. Some simple <em>arithmetic</em>
  * rewrite rules.
- * <pre>
- *     add($x,0) -&gt; $x
- *     mul($x,1) -&gt; $x
- * </pre>
+ * <pre> {@code
+ *     add($x,0) -> $x
+ *     mul($x,1) -> $x
+ * }</pre>
  * The <em>substitution</em> pattern may only use variables, already defined in
  * the <em>match</em> pattern. So, the creation of the following rewrite rule s
  * would lead to an {@link IllegalArgumentException}:
- * <pre>
- *     add($x,0) -&gt; $y
- *     mul(0,1) -&gt; mul($x,1)
- * </pre>
+ * <pre> {@code
+ *     add($x,0) -> $y
+ *     mul(0,1) -> mul($x,1)
+ * }</pre>
  *
  * @see <a href="https://en.wikipedia.org/wiki/Rewriting#Term_rewriting_systems">
  *      Tree rewriting systems</a>
@@ -180,10 +180,10 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	/**
 	 * Compiles the string representation of a rewrite rule:
-	 * <pre>
-	 *     add($x,0) -&gt; $x
-	 *     mul($x,1) -&gt; $x
-	 * </pre>
+	 * <pre> {@code
+	 *     add($x,0) -> $x
+	 *     mul($x,1) -> $x
+	 * }</pre>
 	 *
 	 * @param <V> the tree node type
 	 * @param rule the rewrite rule
@@ -218,10 +218,10 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 	/**
 	 * Compiles the string representation of a rewrite rule:
-	 * <pre>
-	 *     add($x,0) -&gt; $x
-	 *     mul($x,1) -&gt; $x
-	 * </pre>
+	 * <pre> {@code
+	 *     add($x,0) -> $x
+	 *     mul($x,1) -> $x
+	 * }</pre>
 	 *
 	 * @param rule the rewrite rule
 	 * @return a new rewrite rule, compiled from the given rule string
