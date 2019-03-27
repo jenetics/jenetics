@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import io.jenetics.ext.util.Tree;
@@ -154,6 +156,8 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * Create a new variable with the given {@code name} and projection
 	 * {@code index}.
 	 *
+	 * @see #parse(String)
+	 *
 	 * @param name the variable name. Used when printing the operation tree
 	 *        (program)
 	 * @param index the projection index
@@ -169,6 +173,59 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 */
 	public static <T> Var<T> of(final String name, final int index) {
 		return new Var<>(name, index);
+	}
+
+	/**
+	 * Create a new variable with the given {@code name}. The projection index
+	 * is set to zero.
+	 *
+	 * @see #parse(String)
+	 *
+	 * @param name the variable name. Used when printing the operation tree
+	 *        (program)
+	 * @param <T> the variable type
+	 * @return a new variable with the given {@code name} and projection index
+	 *         zero
+	 * @throws IllegalArgumentException if the given {@code name} is not a valid
+	 *         Java identifier
+	 * @throws NullPointerException if the given variable {@code name} is
+	 *         {@code null}
+	 */
+	public static <T> Var<T> of(final String name) {
+		return new Var<>(name, 0);
+	}
+
+	private static final Pattern VAR_INDEX = Pattern.compile("(.+)\\[\\s*(\\d+)\\s*\\]");
+
+	/**
+	 * Parses the given variable string to its name and index. The expected
+	 * format is <em>var_name</em>[<em>index</em>].
+	 *
+	 * <pre> {@code
+	 * x[0]
+	 * y[3]
+	 * my_var[4]
+	 * }</pre>
+	 *
+	 * If no variable <em>index</em> is encoded in the name, a variable with
+	 * index 0 is created.
+	 *
+	 * @see #of(String, int)
+	 *
+	 * @param name the variable name + index
+	 * @param <T> the operation type
+	 * @return a new variable parsed from the input string
+	 * @throws IllegalArgumentException if the given variable couldn't be parsed
+	 *         and the given {@code name} is not a valid Java identifier
+	 * @throws NullPointerException if the given variable {@code name} is
+	 *         {@code null}
+	 */
+	public static <T> Var<T> parse(final String name) {
+		final Matcher matcher = VAR_INDEX.matcher(name);
+
+		return matcher.matches()
+			? of(matcher.group(1), Integer.parseInt(matcher.group(2)))
+			: of(name, 0);
 	}
 
 	/**
@@ -216,6 +273,46 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 			indexes.put(var, index++);
 		}
 
+		reindex(tree, indexes);
+	}
+
+	/**
+	 * Re-indexes the variables of the given operation {@code tree}. If the
+	 * operation tree is created from it's string representation, the indices
+	 * of the variables ({@link Var}), are all set to zero, since it needs the
+	 * whole tree for setting the indices correctly.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * final Map<Var<Double>, Integer> indexes = new HashMap<>();
+	 * indexes.put(Var.of("x"), 0);
+	 * indexes.put(Var.of("y"), 1);
+	 * Var.reindex(tree, indexes);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 * The example above shows a use-case of this method. If you parse a tree
+	 * string and convert it to an operation tree, you have to re-index the
+	 * variables first. If not, you will get the wrong result when evaluating
+	 * the tree. After the re-indexing you will get the correct result of 45.0.
+	 *
+	 * @since 5.0
+	 *
+	 * @see MathOp#toMathOp(String)
+	 * @see Program#eval(Tree, Object[])
+	 *
+	 * @param tree the tree where the variable indices needs to be fixed
+	 * @param indexes the variable to index mapping
+	 * @param <V> the operation value type
+	 */
+	public static <V> void reindex(
+		final TreeNode<Op<V>> tree,
+		final Map<Var<V>, Integer> indexes
+	) {
 		for (TreeNode<Op<V>> node : tree) {
 			final Op<V> op = node.getValue();
 			if (op instanceof Var) {

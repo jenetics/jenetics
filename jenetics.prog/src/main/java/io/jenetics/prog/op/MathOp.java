@@ -405,7 +405,7 @@ public enum MathOp implements Op<Double> {
 			final Optional<Op<Double>> mop = toOp(string);
 			result = mop.isPresent()
 				? mop.orElseThrow(AssertionError::new)
-				: Var.of(string, 0);
+				: Var.parse(string);
 		}
 
 		return result;
