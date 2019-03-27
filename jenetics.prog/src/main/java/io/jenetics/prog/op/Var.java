@@ -19,7 +19,8 @@
  */
 package io.jenetics.prog.op;
 
-import static java.util.Objects.requireNonNull;
+import static java.lang.String.format;
+import static io.jenetics.ext.internal.Names.isIdentifier;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -80,18 +81,26 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * @param name the variable name. Used when printing the operation tree
 	 *        (program)
 	 * @param index the projection index
-	 * @throws IllegalArgumentException if the projection {@code index} is
+	 * @throws IllegalArgumentException if the given {@code name} is not a valid
+	 *         Java identifier
+	 * @throws IndexOutOfBoundsException if the projection {@code index} is
 	 *         smaller than zero
 	 * @throws NullPointerException if the given variable {@code name} is
 	 *         {@code null}
 	 */
 	private Var(final String name, final int index) {
-		_name = requireNonNull(name);
+		if (!isIdentifier(name)) {
+			throw new IllegalArgumentException(format(
+				"'%s' is not a valid identifier.", name
+			));
+		}
 		if (index < 0) {
 			throw new IndexOutOfBoundsException(
 				"Index smaller than zero: " + index
 			);
 		}
+
+		_name = name;
 		_index = index;
 	}
 
@@ -151,6 +160,12 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * @param <T> the variable type
 	 * @return a new variable with the given {@code name} and projection
 	 *         {@code index}
+	 * @throws IllegalArgumentException if the given {@code name} is not a valid
+	 *         Java identifier
+	 * @throws IndexOutOfBoundsException if the projection {@code index} is
+	 *         smaller than zero
+	 * @throws NullPointerException if the given variable {@code name} is
+	 *         {@code null}
 	 */
 	public static <T> Var<T> of(final String name, final int index) {
 		return new Var<>(name, index);
