@@ -177,7 +177,9 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 
 	/**
 	 * Create a new variable with the given {@code name}. The projection index
-	 * is set to zero.
+	 * is set to zero. Always prefer to create new variables with
+	 * {@link #of(String, int)}, especially when you define your terminal
+	 * operation for your GP problem.
 	 *
 	 * @see #parse(String)
 	 *
