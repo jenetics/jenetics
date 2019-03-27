@@ -198,9 +198,15 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 		final Function<? super String, ? extends V> mapper
 	) {
 		final String[] parts = rule.split("->");
-		if (parts.length != 2) {
+		if (parts.length == 1) {
 			throw new IllegalArgumentException(format(
-				"Invalid rewrite rule: %s", rule
+				"Invalid rewrite rule; missing separator '->': %s", rule
+			));
+		}
+		if (parts.length > 2) {
+			throw new IllegalArgumentException(format(
+				"Invalid rewrite rule; found %d separators '->': %s",
+				parts.length - 1, rule
 			));
 		}
 
