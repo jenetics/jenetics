@@ -410,7 +410,9 @@ public final class TreePattern<V> implements Serializable {
 
 	/**
 	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
-	 * <em>pattern</em> variable is identified by its name.
+	 * <em>pattern</em> variable is identified by its name. The pattern DSL
+	 * denotes variable names with a leading '$' character, e.g. {@code $x},
+	 * {@code $y} or {@code $my_var}.
 	 *
 	 * @implNote
 	 * This class is comparable by it's name.
