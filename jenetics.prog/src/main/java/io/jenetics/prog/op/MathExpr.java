@@ -42,7 +42,6 @@ import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.rewriting.TreeRewriteRule;
 import io.jenetics.ext.rewriting.TreeRewriter;
-import io.jenetics.ext.rewriting.TreeRewriters;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -114,7 +113,7 @@ public final class MathExpr
 	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> ARITHMETIC_REWRITER =
-		TreeRewriters.concat(
+		TreeRewriter.concat(
 			compile("sub($x,$x) -> 0"),
 			compile("sub($x,0) -> $x"),
 			compile("add($x,0) -> $x"),
@@ -143,7 +142,7 @@ public final class MathExpr
 	 *
 	 * @since 5.0
 	 */
-	public static final TreeRewriter<Op<Double>> REWRITER = TreeRewriters.concat(
+	public static final TreeRewriter<Op<Double>> REWRITER = TreeRewriter.concat(
 		ARITHMETIC_REWRITER,
 		CONST_REWRITER
 	);

@@ -84,7 +84,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 
 	@Override
 	public int rewrite(final TreeNode<V> tree, final int limit) {
-		return TreeRewriters.rewrite(tree, limit, _rules);
+		return TreeRewriter.rewrite(tree, limit, _rules);
 	}
 
 	/**
