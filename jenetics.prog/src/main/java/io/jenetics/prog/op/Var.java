@@ -56,7 +56,7 @@ import io.jenetics.ext.util.TreeNode;
  * static double error(final ProgramChromosome<Double> program) {
  *     final double x = ...;
  *     final double y = ...;
- *     final double result = program.apply(x, y);
+ *     final double result = program.eval(x, y);
  *     ...
  *     return ...;
  * }
