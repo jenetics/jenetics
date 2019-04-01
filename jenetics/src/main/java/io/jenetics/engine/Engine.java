@@ -824,20 +824,6 @@ public final class Engine<
 		}
 
 		/**
-		 * The genotype factory used for creating new individuals.
-		 *
-		 * @param genotypeFactory the genotype factory for creating new
-		 *        individuals.
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> genotypeFactory(
-			final Factory<Genotype<G>> genotypeFactory
-		) {
-			_genotypeFactory = requireNonNull(genotypeFactory);
-			return this;
-		}
-
-		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
@@ -910,7 +896,7 @@ public final class Engine<
 		/**
 		 * The phenotype validator used for detecting invalid individuals.
 		 * Alternatively it is also possible to set the genotype validator with
-		 * {@link #genotypeFactory(Factory)}, which will replace any
+		 * {@link #genotypeValidator(Predicate)}, which will replace any
 		 * previously set phenotype validators.
 		 *
 		 * <p><i>Default value is set to {@code Phenotype::isValid}.</i></p>
