@@ -132,7 +132,6 @@ public final class Engine<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final Predicate<? super Phenotype<G, C>> _validator;
 	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
@@ -143,6 +142,7 @@ public final class Engine<
 	private final Clock _clock;
 
 	// Additional parameters.
+	private final Predicate<? super Phenotype<G, C>> _validator;
 	private final int _individualCreationRetries;
 	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
