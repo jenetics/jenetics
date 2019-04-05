@@ -25,14 +25,13 @@ import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.util.Factory;
-import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public interface PhenotypeConstraint<
+public interface Constraint<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
@@ -43,12 +42,12 @@ public interface PhenotypeConstraint<
 
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	PhenotypeConstraint<G, C> of(
+	Constraint<G, C> of(
 		final Predicate<? super Phenotype<G, C>> predicate,
 		final Factory<Genotype<G>> genotypeFactory,
 		final int retryLimit
 	) {
-		return new PhenotypeConstraint<G, C>() {
+		return new Constraint<G, C>() {
 			@Override
 			public boolean isValid(final Phenotype<G, C> individual) {
 				return predicate.test(individual);
@@ -68,7 +67,7 @@ public interface PhenotypeConstraint<
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	PhenotypeConstraint<G, C> of(
+	Constraint<G, C> of(
 		final Factory<Genotype<G>> genotypeFactory,
 		final int retryLimit
 	) {
