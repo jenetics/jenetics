@@ -29,24 +29,43 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.Factory;
 
 /**
+ * This simple {@code Constraint} implementation <em>repairs</em> an invalid
+ * phenotype by creating new individuals until a valid one has been created.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class RetryConstraint<
+public final class RetryConstraint<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements Constraint<G, C>
 {
 
-	static final int DEFAULT_RETRY_COUNT = 15;
+	/**
+	 * The default retry-count for creating new, valid phenotypes.
+	 */
+	public static final int DEFAULT_RETRY_COUNT = 15;
 
 	private final Predicate<? super Phenotype<G, C>> _validator;
 	private final Factory<Genotype<G>> _genotypeFactory;
 	private final int _retryLimit;
 
-	RetryConstraint(
+	/**
+	 * Create a new retry-constraint with the given parameters.
+	 *
+	 * @param validator the phenotype validator
+	 * @param genotypeFactory the genotype factory used for creating new
+	 *        phenotypes
+	 * @param retryLimit the limit of the phenotype creation retries. If more
+	 *        re-creation tries are necessary, an invalid phenotype is returned.
+	 *        This limit guarantees the termination of the
+	 *        {@link #repair(Phenotype)} method.
+	 * @throws NullPointerException if the {@code validator} or
+	 *         {@code genotypeFactory} is {@code null}
+	 */
+	public RetryConstraint(
 		final Predicate<? super Phenotype<G, C>> validator,
 		final Factory<Genotype<G>> genotypeFactory,
 		final int retryLimit
