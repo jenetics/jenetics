@@ -19,6 +19,11 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.BiFunction;
+import java.util.function.Predicate;
+
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 
@@ -56,12 +61,72 @@ public interface Constraint<
 	 * {@code false}.
 	 *
 	 * @param individual the phenotype to repair
+	 * @param generation the actual generation used for the repaired phenotype
 	 * @return a newly created, valid phenotype. The implementation is free to
 	 *         use the given invalid {@code individual} as a starting point for
 	 *         the created phenotype.
 	 * @throws NullPointerException if the given {@code individual} is
 	 *         {@code null}
 	 */
-	public Phenotype<G, C> repair(final Phenotype<G, C> individual);
+	public Phenotype<G, C> repair(
+		final Phenotype<G, C> individual,
+		final long generation
+	);
+
+
+	/**
+	 * Return a new constraint object with the given {@code validator} and
+	 * {@code repairer}.
+	 *
+	 * @param validator the phenotype validator used by the constraint
+	 * @param repairer the phenotype repairer used by the constraint
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Constraint<G, C> of(
+		final Predicate<? super Phenotype<G, C>> validator,
+		final BiFunction<? super Phenotype<G, C>, Long, Phenotype<G, C>> repairer
+	) {
+		requireNonNull(validator);
+		requireNonNull(repairer);
+
+		return new Constraint<G, C>() {
+			@Override
+			public boolean test(final Phenotype<G, C> individual) {
+				return validator.test(individual);
+			}
+
+			@Override
+			public Phenotype<G, C> repair(
+				final Phenotype<G, C> individual,
+				final long generation
+			) {
+				return repairer.apply(individual, generation);
+			}
+		};
+	}
+
+	/**
+	 * Return a new constraint object with the given {@code validator}. The used
+	 * repairer just creates a new phenotype by using the phenotype to be
+	 * repaired as template. The <em>repaired</em> phenotype might still be
+	 * invalid.
+	 *
+	 * @param validator the phenotype validator used by the constraint
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
+		return of(
+			validator,
+			(pt, gen) -> Phenotype.of(pt.getGenotype().newInstance(), gen)
+		);
+	}
 
 }

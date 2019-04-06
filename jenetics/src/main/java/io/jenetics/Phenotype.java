@@ -274,6 +274,22 @@ public final class Phenotype<
 		);
 	}
 
+	/**
+	 * Return a new {@code Phenotype} object with the given generation.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param generation the generation of the newly created phenotype
+	 * @return a new phenotype with the given generation
+	 */
+	public Phenotype<G, C> withGeneration(final long generation) {
+		return Phenotype.of(
+			_genotype,
+			generation,
+			_fitness
+		);
+	}
+
 
 	/* *************************************************************************
 	 *  Static factory methods.

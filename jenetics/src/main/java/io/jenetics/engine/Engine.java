@@ -376,7 +376,7 @@ public final class Engine<
 			final Phenotype<G, C> individual = pop.get(i);
 
 			if (!_constraint.test(individual)) {
-				pop.set(i, _constraint.repair(individual));
+				pop.set(i, _constraint.repair(individual, generation));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
 				pop.set(i, Phenotype.of(_genotypeFactory.newInstance(), generation));
