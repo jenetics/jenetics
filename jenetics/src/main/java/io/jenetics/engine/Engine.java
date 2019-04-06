@@ -31,7 +31,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
@@ -142,8 +141,7 @@ public final class Engine<
 	private final Clock _clock;
 
 	// Additional parameters.
-	private final Predicate<? super Phenotype<G, C>> _validator;
-	private final int _individualCreationRetries;
+	private final Constraint<G, C> _constraint;
 	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
 
@@ -154,8 +152,9 @@ public final class Engine<
 	 * @param survivorsSelector the selector used for selecting the survivors
 	 * @param offspringSelector the selector used for selecting the offspring
 	 * @param alterer the alterer used for altering the offspring
-	 * @param validator phenotype validator which can override the default
-	 *        implementation the {@link Phenotype#isValid()} method.
+	 * @param constraint phenotype constraint which can override the default
+	 *        implementation the {@link Phenotype#isValid()} method and repairs
+	 *        invalid phenotypes when needed.
 	 * @param optimize the kind of optimization (minimize or maximize)
 	 * @param offspringCount the number of the offspring individuals
 	 * @param survivorsCount the number of the survivor individuals
@@ -163,8 +162,6 @@ public final class Engine<
 	 * @param executor the executor used for executing the single evolve steps
 	 * @param evaluator the population fitness evaluator
 	 * @param clock the clock used for calculating the timing results
-	 * @param individualCreationRetries the maximal number of attempts for
-	 *        creating a valid individual.
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
@@ -175,14 +172,13 @@ public final class Engine<
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final Predicate<? super Phenotype<G, C>> validator,
+		final Constraint<G, C> constraint,
 		final Optimize optimize,
 		final int offspringCount,
 		final int survivorsCount,
 		final long maximalPhenotypeAge,
 		final Executor executor,
 		final Clock clock,
-		final int individualCreationRetries,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
 		_evaluator = requireNonNull(evaluator);
@@ -190,7 +186,7 @@ public final class Engine<
 		_survivorsSelector = requireNonNull(survivorsSelector);
 		_offspringSelector = requireNonNull(offspringSelector);
 		_alterer = requireNonNull(alterer);
-		_validator = requireNonNull(validator);
+		_constraint = requireNonNull(constraint);
 		_optimize = requireNonNull(optimize);
 
 		_offspringCount = require.nonNegative(offspringCount);
@@ -199,14 +195,6 @@ public final class Engine<
 
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
-
-		if (individualCreationRetries < 0) {
-			throw new IllegalArgumentException(format(
-				"Retry count must not be negative: %d",
-				individualCreationRetries
-			));
-		}
-		_individualCreationRetries = individualCreationRetries;
 		_mapper = requireNonNull(mapper);
 	}
 
@@ -387,11 +375,11 @@ public final class Engine<
 		for (int i = 0, n = pop.size(); i < n; ++i) {
 			final Phenotype<G, C> individual = pop.get(i);
 
-			if (!_validator.test(individual)) {
-				pop.set(i, newPhenotype(generation));
+			if (!_constraint.test(individual)) {
+				pop.set(i, _constraint.repair(individual));
 				++invalidCount;
 			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
-				pop.set(i, newPhenotype(generation));
+				pop.set(i, Phenotype.of(_genotypeFactory.newInstance(), generation));
 				++killCount;
 			}
 		}
@@ -399,17 +387,6 @@ public final class Engine<
 		return new FilterResult<>(pop.toISeq(), killCount, invalidCount);
 	}
 
-	// Create a new and valid phenotype
-	private Phenotype<G, C> newPhenotype(final long generation) {
-		int count = 0;
-		Phenotype<G, C> phenotype;
-		do {
-			phenotype = Phenotype.of(_genotypeFactory.newInstance(), generation);
-		} while (++count < _individualCreationRetries &&
-				!_validator.test(phenotype));
-
-		return phenotype;
-	}
 
 	/* *************************************************************************
 	 * Evaluation methods.
@@ -488,7 +465,8 @@ public final class Engine<
 
 			final Stream<Phenotype<G, C>> stream = Stream.concat(
 				population.stream(),
-				Stream.generate(() -> newPhenotype(generation))
+				Stream.generate(() ->
+					Phenotype.of(_genotypeFactory.newInstance(), generation))
 			);
 
 			final ISeq<Phenotype<G, C>> pop = stream
@@ -615,19 +593,6 @@ public final class Engine<
 		return _executor;
 	}
 
-
-	/**
-	 * Return the maximal number of attempt before the {@code Engine} gives
-	 * up creating a valid individual ({@code Phenotype}).
-	 *
-	 * @since 4.0
-	 *
-	 * @return the maximal number of {@code Phenotype} creation attempts
-	 */
-	public int getIndividualCreationRetries() {
-		return _individualCreationRetries;
-	}
-
 	/**
 	 * Return the evolution result mapper.
 	 *
@@ -655,10 +620,9 @@ public final class Engine<
 			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
 			.offspringSelector(_offspringSelector)
 			.optimize(_optimize)
-			.phenotypeValidator(_validator)
+			.constraint(_constraint)
 			.populationSize(getPopulationSize())
 			.survivorsSelector(_survivorsSelector)
-			.individualCreationRetries(_individualCreationRetries)
 			.mapping(_mapper);
 	}
 
@@ -776,8 +740,8 @@ public final class Engine<
 	{
 
 		// No default values for this properties.
-		private Evaluator<G, C> _evaluator;
-		private Factory<Genotype<G>> _genotypeFactory;
+		private final Evaluator<G, C> _evaluator;
+		private final Factory<Genotype<G>> _genotypeFactory;
 
 		// This are the properties which default values.
 		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
@@ -786,7 +750,7 @@ public final class Engine<
 			new SinglePointCrossover<G, C>(0.2),
 			new Mutator<>(0.15)
 		);
-		private Predicate<? super Phenotype<G, C>> _validator = Phenotype::isValid;
+		private Constraint<G, C> _constraint;
 		private Optimize _optimize = Optimize.MAXIMUM;
 		private double _offspringFraction = 0.6;
 		private int _populationSize = 50;
@@ -796,7 +760,6 @@ public final class Engine<
 		private Executor _executor = commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
-		private int _individualCreationRetries = 10;
 		private UnaryOperator<EvolutionResult<G, C>> _mapper = UnaryOperator.identity();
 
 		/**
@@ -894,54 +857,23 @@ public final class Engine<
 		}
 
 		/**
-		 * The phenotype validator used for detecting invalid individuals.
-		 * Alternatively it is also possible to set the genotype validator with
-		 * {@link #genotypeValidator(Predicate)}, which will replace any
-		 * previously set phenotype validators.
+		 * The phenotype constraint is used for detecting invalid individuals
+		 * and repairing them.
 		 *
-		 * <p><i>Default value is set to {@code Phenotype::isValid}.</i></p>
+		 * <p><i>Default implementation uses {@code Phenotype::isValid} for
+		 * validating the phenotype.</i></p>
 		 *
-		 * @since 3.1
+		 * @since !__version__!
 		 *
-		 * @see #genotypeValidator(Predicate)
-		 *
-		 * @param validator the {@code validator} used for validating the
-		 *        individuals (phenotypes).
+		 * @param constraint phenotype constraint which can override the default
+		 *        implementation the {@link Phenotype#isValid()} method and repairs
+		 *        invalid phenotypes when needed.
 		 * @return {@code this} builder, for command chaining
 		 * @throws java.lang.NullPointerException if the {@code validator} is
 		 *         {@code null}.
 		 */
-		public Builder<G, C> phenotypeValidator(
-			final Predicate<? super Phenotype<G, C>> validator
-		) {
-			_validator = requireNonNull(validator);
-			return this;
-		}
-
-		/**
-		 * The genotype validator used for detecting invalid individuals.
-		 * Alternatively it is also possible to set the phenotype validator with
-		 * {@link #phenotypeValidator(Predicate)}, which will replace any
-		 * previously set genotype validators.
-		 *
-		 * <p><i>Default value is set to {@code Genotype::isValid}.</i></p>
-		 *
-		 * @since 3.1
-		 *
-		 * @see #phenotypeValidator(Predicate)
-		 *
-		 * @param validator the {@code validator} used for validating the
-		 *        individuals (genotypes).
-		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.NullPointerException if the {@code validator} is
-		 *         {@code null}.
-		 */
-		public Builder<G, C> genotypeValidator(
-			final Predicate<? super Genotype<G>> validator
-		) {
-			requireNonNull(validator);
-
-			_validator = pt -> validator.test(pt.getGenotype());
+		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
+			_constraint = requireNonNull(constraint);
 			return this;
 		}
 
@@ -1119,29 +1051,6 @@ public final class Engine<
 		}
 
 		/**
-		 * The maximal number of attempt before the {@code Engine} gives up
-		 * creating a valid individual ({@code Phenotype}). <i>Default values is
-		 * set to {@code 10}.</i>
-		 *
-		 * @since 3.1
-		 *
-		 * @param retries the maximal retry count
-		 * @throws IllegalArgumentException if the given retry {@code count} is
-		 *         smaller than zero.
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> individualCreationRetries(final int retries) {
-			if (retries < 0) {
-				throw new IllegalArgumentException(format(
-					"Retry count must not be negative: %d",
-					retries
-				));
-			}
-			_individualCreationRetries = retries;
-			return this;
-		}
-
-		/**
 		 * The result mapper, which allows to change the evolution result after
 		 * each generation.
 		 *
@@ -1169,11 +1078,6 @@ public final class Engine<
 		 * @return an new {@code Engine} instance from the set properties
 		 */
 		public Engine<G, C> build() {
-			if (_evaluator instanceof ConcurrentEvaluator) {
-				_evaluator = ((ConcurrentEvaluator<G, C>)_evaluator)
-					.with(_executor);
-			}
-
 			return new Engine<>(
 				_evaluator instanceof ConcurrentEvaluator
 					? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
@@ -1182,14 +1086,18 @@ public final class Engine<
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
-				_validator,
+				_constraint == null
+					? new RetryConstraint<>(
+						Phenotype::isValid,
+						_genotypeFactory,
+						15)
+					: _constraint,
 				_optimize,
 				getOffspringCount(),
 				getSurvivorsCount(),
 				_maximalPhenotypeAge,
 				_executor,
 				_clock,
-				_individualCreationRetries,
 				_mapper
 			);
 		}
@@ -1313,18 +1221,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the maximal number of attempt before the {@code Engine} gives
-		 * up creating a valid individual ({@code Phenotype}).
-		 *
-		 * @since 3.1
-		 *
-		 * @return the maximal number of {@code Phenotype} creation attempts
-		 */
-		public int getIndividualCreationRetries() {
-			return _individualCreationRetries;
-		}
-
-		/**
 		 * Return the evolution result mapper.
 		 *
 		 * @since 4.0
@@ -1351,11 +1247,10 @@ public final class Engine<
 				.maximalPhenotypeAge(_maximalPhenotypeAge)
 				.offspringFraction(_offspringFraction)
 				.offspringSelector(_offspringSelector)
-				.phenotypeValidator(_validator)
+				.constraint(_constraint)
 				.optimize(_optimize)
 				.populationSize(_populationSize)
 				.survivorsSelector(_survivorsSelector)
-				.individualCreationRetries(_individualCreationRetries)
 				.mapping(_mapper);
 		}
 

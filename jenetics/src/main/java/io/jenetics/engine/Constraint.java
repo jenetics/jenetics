@@ -19,12 +19,8 @@
  */
 package io.jenetics.engine;
 
-import java.util.function.Predicate;
-
 import io.jenetics.Gene;
-import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.util.Factory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,42 +32,8 @@ public interface Constraint<
 	C extends Comparable<? super C>
 > {
 
-	public boolean isValid(final Phenotype<G, C> individual);
+	public boolean test(final Phenotype<G, C> individual);
 
-	public Phenotype<G, C> newInstance(final long generation);
-
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Constraint<G, C> of(
-		final Predicate<? super Phenotype<G, C>> predicate,
-		final Factory<Genotype<G>> genotypeFactory,
-		final int retryLimit
-	) {
-		return new Constraint<G, C>() {
-			@Override
-			public boolean isValid(final Phenotype<G, C> individual) {
-				return predicate.test(individual);
-			}
-
-			@Override
-			public Phenotype<G, C> newInstance(final long generation) {
-				int count = 0;
-				Phenotype<G, C> phenotype;
-				do {
-					phenotype = Phenotype.of(genotypeFactory.newInstance(), generation);
-				} while (++count < retryLimit && !isValid(phenotype));
-
-				return phenotype;
-			}
-		};
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	Constraint<G, C> of(
-		final Factory<Genotype<G>> genotypeFactory,
-		final int retryLimit
-	) {
-		return of(Phenotype::isValid, genotypeFactory, retryLimit);
-	}
+	public Phenotype<G, C> repair(final Phenotype<G, C> individual);
 
 }
