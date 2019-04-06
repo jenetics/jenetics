@@ -92,4 +92,25 @@ public final class RetryConstraint<
 
 		return phenotype;
 	}
+
+	/**
+	 * Return a new constraint with the given genotype factory. The phenotype
+	 * validator is set to {@link Phenotype#isValid()} and the retry count to
+	 * {@link #DEFAULT_RETRY_COUNT}.
+	 *
+	 * @param genotypeFactory the genotype factory used for creating new
+	 *        phenotypes
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(final Factory<Genotype<G>> genotypeFactory) {
+		return new RetryConstraint<>(
+			Phenotype::isValid,
+			genotypeFactory,
+			DEFAULT_RETRY_COUNT
+		);
+	}
+
 }
