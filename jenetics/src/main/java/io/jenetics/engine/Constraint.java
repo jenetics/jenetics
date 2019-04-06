@@ -23,11 +23,10 @@ import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 
 /**
- * This interface allows you to define constraints on single phenotypes. In some
- * sense it is a more advanced version of the {@link Phenotype#isValid()}
- * method, which checks the validity of the underlying genotypes and/or
- * chromosomes. Additionally it is possible to <em>repair</em> invalid
- * individuals.
+ * This interface allows you to define constraints on single phenotypes. It is a
+ * more advanced version of the {@link Phenotype#isValid()} method, which checks
+ * the validity of the underlying genotypes and/or chromosomes. Additionally it
+ * is possible to <em>repair</em> invalid individuals.
  *
  * @see Engine.Builder#constraint(Constraint)
  *
