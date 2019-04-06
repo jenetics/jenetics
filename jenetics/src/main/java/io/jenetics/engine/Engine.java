@@ -1087,10 +1087,7 @@ public final class Engine<
 				_offspringSelector,
 				_alterer,
 				_constraint == null
-					? new RetryConstraint<>(
-						Phenotype::isValid,
-						_genotypeFactory,
-						15)
+					? RetryConstraint.of(_genotypeFactory)
 					: _constraint,
 				_optimize,
 				getOffspringCount(),

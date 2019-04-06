@@ -57,13 +57,13 @@ public final class RetryConstraint<
 	 *
 	 * @param validator the phenotype validator
 	 * @param genotypeFactory the genotype factory used for creating new
-	 *        phenotypes
+	 *        phenotypes. The genotype factory may be {@code null}. In this case,
+	 *        the phenotype to be repaired is used as template.
 	 * @param retryLimit the limit of the phenotype creation retries. If more
 	 *        re-creation tries are necessary, an invalid phenotype is returned.
 	 *        This limit guarantees the termination of the
 	 *        {@link #repair(Phenotype)} method.
-	 * @throws NullPointerException if the {@code validator} or
-	 *         {@code genotypeFactory} is {@code null}
+	 * @throws NullPointerException if the {@code validator} is {@code null}
 	 */
 	public RetryConstraint(
 		final Predicate<? super Phenotype<G, C>> validator,
@@ -71,7 +71,7 @@ public final class RetryConstraint<
 		final int retryLimit
 	) {
 		_validator = requireNonNull(validator);
-		_genotypeFactory = requireNonNull(genotypeFactory);
+		_genotypeFactory = genotypeFactory;
 		_retryLimit = retryLimit;
 	}
 
@@ -83,11 +83,14 @@ public final class RetryConstraint<
 	@Override
 	public Phenotype<G, C> repair(final Phenotype<G, C> individual) {
 		final long generation = individual.getGeneration();
+		final Factory<Genotype<G>> gtf = _genotypeFactory != null
+			? _genotypeFactory
+			: individual.getGenotype();
 
 		int count = 0;
 		Phenotype<G, C> phenotype;
 		do {
-			phenotype = Phenotype.of(_genotypeFactory.newInstance(), generation);
+			phenotype = Phenotype.of(gtf.newInstance(), generation);
 		} while (++count < _retryLimit && !test(phenotype));
 
 		return phenotype;
@@ -109,6 +112,25 @@ public final class RetryConstraint<
 		return new RetryConstraint<>(
 			Phenotype::isValid,
 			genotypeFactory,
+			DEFAULT_RETRY_COUNT
+		);
+	}
+
+	/**
+	 * Return a new constraint with the given genotype factory. The phenotype
+	 * validator is set to {@link Phenotype#isValid()} and the retry count to
+	 * {@link #DEFAULT_RETRY_COUNT}.
+	 *
+	 * @param validator the phenotype validator
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
+		return new RetryConstraint<>(
+			validator,
+			null,
 			DEFAULT_RETRY_COUNT
 		);
 	}
