@@ -502,6 +502,17 @@ public final class Engine<
 	}
 
 	/**
+	 * Return the constraint of the evolution problem.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the constraint of the evolution problem
+	 */
+	public Constraint<G, C> getConstraint() {
+		return _constraint;
+	}
+
+	/**
 	 * Return the used survivor {@link Selector} of the GA.
 	 *
 	 * @return the used survivor {@link Selector} of the GA.
@@ -1151,6 +1162,17 @@ public final class Engine<
 		 */
 		public Factory<Genotype<G>> getGenotypeFactory() {
 			return _genotypeFactory;
+		}
+
+		/**
+		 * Return the constraint of the evolution problem.
+		 *
+		 * @since !__version__!
+		 *
+		 * @return the constraint of the evolution problem
+		 */
+		public Constraint<G, C> getConstraint() {
+			return _constraint;
 		}
 
 		/**
