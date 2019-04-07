@@ -31,7 +31,17 @@ import io.jenetics.Phenotype;
  * This interface allows you to define constraints on single phenotypes. It is a
  * more advanced version of the {@link Phenotype#isValid()} method, which checks
  * the validity of the underlying genotypes and/or chromosomes. Additionally it
- * is possible to <em>repair</em> invalid individuals.
+ * is possible to <em>repair</em> invalid individuals. The evolution
+ * {@link Engine} is using the constraint in the following way: check the validity
+ * and repair invalid individuals.
+ * <pre>{@code
+ * for (int i = 0; i < population.size(); ++i) {
+ *     final Phenotype<G, C> individual = population.get(i);
+ *     if (!constraint.test(individual)) {
+ *         population.set(i, constraint.repair(individual, generation));
+ *     }
+ * }
+ * }</pre>
  *
  * @see Engine.Builder#constraint(Constraint)
  *
