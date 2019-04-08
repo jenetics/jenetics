@@ -450,19 +450,18 @@ public final class Engine<
 		return () -> {
 			final EvolutionStart<G, C> es = start.get();
 			final ISeq<Phenotype<G, C>> population = es.getPopulation();
-			final long generation = es.getGeneration();
+			final long gen = es.getGeneration();
 
 			final Stream<Phenotype<G, C>> stream = Stream.concat(
 				population.stream(),
-				Stream.generate(() ->
-					Phenotype.of(_genotypeFactory.newInstance(), generation))
+				_genotypeFactory.instances().map(gt -> Phenotype.of(gt, gen))
 			);
 
 			final ISeq<Phenotype<G, C>> pop = stream
 				.limit(getPopulationSize())
 				.collect(ISeq.toISeq());
 
-			return EvolutionStart.of(pop, generation);
+			return EvolutionStart.of(pop, gen);
 		};
 	}
 
