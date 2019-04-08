@@ -429,17 +429,6 @@ public final class Engine<
 		return evaluated;
 	}
 
-//	public EvolutionResult<G, C> evaluate(final EvolutionResult<G, C> result) {
-//		final Timing timing = Timing.of(_clock).start();
-//		final ISeq<Phenotype<G, C>> evaluated = evaluate(result.getPopulation());
-//		timing.stop();
-//
-//		return result
-//			.with(evaluated)
-//			.with(result.getDurations()
-//				.plusEvaluation(timing.duration())
-//				.plusEvolve(timing.duration()));
-//	}
 
 	/* *************************************************************************
 	 * Evolution Stream creation.
