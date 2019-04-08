@@ -504,7 +504,7 @@ public final class Engine<
 	/**
 	 * Return the constraint of the evolution problem.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @return the constraint of the evolution problem
 	 */
@@ -874,7 +874,7 @@ public final class Engine<
 		 * <p><i>Default implementation uses {@code Phenotype::isValid} for
 		 * validating the phenotype.</i></p>
 		 *
-		 * @since !__version__!
+		 * @since 5.0
 		 *
 		 * @param constraint phenotype constraint which can override the default
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
@@ -1167,7 +1167,7 @@ public final class Engine<
 		/**
 		 * Return the constraint of the evolution problem.
 		 *
-		 * @since !__version__!
+		 * @since 5.0
 		 *
 		 * @return the constraint of the evolution problem
 		 */

@@ -277,7 +277,7 @@ public final class Phenotype<
 	/**
 	 * Return a new {@code Phenotype} object with the given generation.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param generation the generation of the newly created phenotype
 	 * @return a new phenotype with the given generation

@@ -32,7 +32,7 @@ import io.jenetics.prog.op.Op;
  * @see TreeRewriteAlterer
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.0
  * @since 4.1
  */
 public class MathRewriteAlterer<
