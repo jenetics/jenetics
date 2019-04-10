@@ -102,12 +102,21 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 		};
 	}
 
-
 	@Test
 	public void serialize() throws IOException {
 		final FlatTreeNode<Integer> tree = newTree(6, new Random());
 		final byte[] data = IO.object.toByteArray(tree);
 		Assert.assertEquals(IO.object.fromByteArray(data), tree);
+	}
+
+	@Test
+	public void serializeSubTree() throws IOException {
+		final FlatTreeNode<Integer> tree = newTree(6, new Random(234));
+		final FlatTreeNode<Integer> node = tree.childAtPath(0, 1, 0)
+			.orElseThrow(AssertionError::new);
+
+		final byte[] data = IO.object.toByteArray(node);
+		Assert.assertEquals(IO.object.fromByteArray(data), node);
 	}
 
 }

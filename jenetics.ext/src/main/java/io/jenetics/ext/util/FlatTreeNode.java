@@ -52,7 +52,7 @@ import io.jenetics.util.ISeq;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 3.9
  */
 public final class FlatTreeNode<T>
@@ -60,7 +60,7 @@ public final class FlatTreeNode<T>
 		FlatTree<T, FlatTreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	private final int _index;
 	private final Object[] _elements;
@@ -204,21 +204,25 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public int hashCode() {
-		return hash(_index, hash(_elements, hash(_childCounts, hash(_childOffsets))));
+		return Tree.hashCode(this);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof FlatTreeNode &&
-			((FlatTreeNode)obj)._index == _index &&
-			Arrays.equals(((FlatTreeNode)obj)._elements, _elements) &&
-			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
-			Arrays.equals(((FlatTreeNode)obj)._childOffsets, _childOffsets);
+			(equals((FlatTreeNode<?>)obj) || Tree.equals((Tree<?, ?>)obj, this));
+	}
+
+	private boolean equals(final FlatTreeNode<?> tree) {
+		return tree._index == _index &&
+			Arrays.equals(tree._elements, _elements) &&
+			Arrays.equals(tree._childCounts, _childCounts) &&
+			Arrays.equals(tree._childOffsets, _childOffsets);
 	}
 
 	@Override
 	public String toString() {
-		return Objects.toString(getValue());
+		return toParenthesesString();
 	}
 
 	/**
@@ -340,9 +344,11 @@ public final class FlatTreeNode<T>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		writeObjectArray(_elements, out);
-		writeIntArray(_childOffsets, out);
-		writeIntArray(_childCounts, out);
+		final FlatTreeNode<T> node = _index == 0 ? this : of(this);
+
+		writeObjectArray(node._elements, out);
+		writeIntArray(node._childOffsets, out);
+		writeIntArray(node._childCounts, out);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
