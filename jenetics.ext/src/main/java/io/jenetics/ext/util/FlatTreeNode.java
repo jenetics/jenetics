@@ -21,8 +21,10 @@ package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.internal.util.SerialIO.readInt;
-import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.readIntArray;
+import static io.jenetics.internal.util.SerialIO.readObjectArray;
+import static io.jenetics.internal.util.SerialIO.writeIntArray;
+import static io.jenetics.internal.util.SerialIO.writeObjectArray;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -61,18 +63,18 @@ public final class FlatTreeNode<T>
 	private static final long serialVersionUID = 2L;
 
 	private final int _index;
-	private final Object[] _nodes;
+	private final Object[] _elements;
 	private final int[] _childOffsets;
 	private final int[] _childCounts;
 
 	private FlatTreeNode(
 		final int index,
-		final Object[] nodes,
+		final Object[] elements,
 		final int[] childOffsets,
 		final int[] childCounts
 	) {
 		_index = index;
-		_nodes = requireNonNull(nodes);
+		_elements = requireNonNull(elements);
 		_childOffsets = requireNonNull(childOffsets);
 		_childCounts = requireNonNull(childCounts);
 	}
@@ -97,7 +99,7 @@ public final class FlatTreeNode<T>
 	private FlatTreeNode<T> nodeAt(final int index) {
 		return new FlatTreeNode<T>(
 			index,
-			_nodes,
+			_elements,
 			_childOffsets,
 			_childCounts
 		);
@@ -106,7 +108,7 @@ public final class FlatTreeNode<T>
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getValue() {
-		return (T)_nodes[_index];
+		return (T) _elements[_index];
 	}
 
 	@Override
@@ -135,12 +137,7 @@ public final class FlatTreeNode<T>
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
 
-		return new FlatTreeNode<T>(
-			childOffset() + index,
-			_nodes,
-			_childOffsets,
-			_childCounts
-		);
+		return nodeAt(childOffset() + index);
 	}
 
 	@Override
@@ -175,7 +172,7 @@ public final class FlatTreeNode<T>
 	 * @return a stream of all nodes of the whole underlying tree
 	 */
 	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _nodes.length).mapToObj(this::nodeAt);
+		return IntStream.range(0, _elements.length).mapToObj(this::nodeAt);
 	}
 
 	/**
@@ -202,19 +199,19 @@ public final class FlatTreeNode<T>
 		return other == this ||
 			other instanceof FlatTreeNode &&
 			((FlatTreeNode)other)._index == _index &&
-			((FlatTreeNode)other)._nodes == _nodes;
+			((FlatTreeNode)other)._elements == _elements;
 	}
 
 	@Override
 	public int hashCode() {
-		return hash(_index, hash(_nodes, hash(_childCounts, hash(_childOffsets))));
+		return hash(_index, hash(_elements, hash(_childCounts, hash(_childOffsets))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof FlatTreeNode &&
 			((FlatTreeNode)obj)._index == _index &&
-			Arrays.equals(((FlatTreeNode)obj)._nodes, _nodes) &&
+			Arrays.equals(((FlatTreeNode)obj)._elements, _elements) &&
 			Arrays.equals(((FlatTreeNode)obj)._childCounts, _childCounts) &&
 			Arrays.equals(((FlatTreeNode)obj)._childOffsets, _childOffsets);
 	}
@@ -343,35 +340,20 @@ public final class FlatTreeNode<T>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		writeInt(_childCounts.length, out);
-		for (int i = 0; i < _childCounts.length; ++i) {
-			out.writeObject(_nodes[i]);
-			writeInt(_childCounts[i], out);
-			writeInt(_childOffsets[i], out);
-		}
+		writeObjectArray(_elements, out);
+		writeIntArray(_childOffsets, out);
+		writeIntArray(_childCounts, out);
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	static FlatTreeNode read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final int size = readInt(in);
-
-		final Object[] elements = new Object[size];
-		final int[] childOffsets = new int[size];
-		final int[] childCounts = new int[size];
-
-		for (int i = 0; i < size; ++i) {
-			elements[i] = in.readObject();
-			childCounts[i] = readInt(in);
-			childOffsets[i] = readInt(in);
-		}
-
 		return new FlatTreeNode(
 			0,
-			elements,
-			childOffsets,
-			childCounts
+			readObjectArray(in),
+			readIntArray(in),
+			readIntArray(in)
 		);
 	}
 
