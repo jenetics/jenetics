@@ -20,7 +20,6 @@
 package io.jenetics.ext.util;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readIntArray;
 import static io.jenetics.internal.util.SerialIO.readObjectArray;
 import static io.jenetics.internal.util.SerialIO.writeIntArray;
@@ -34,7 +33,6 @@ import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
