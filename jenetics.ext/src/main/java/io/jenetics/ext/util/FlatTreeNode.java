@@ -244,11 +244,10 @@ public final class FlatTreeNode<T>
 
 		int childOffset = 1;
 		int index = 0;
-		final Iterator<? extends Tree<? extends V, ?>> it =
-			tree.breadthFirstIterator();
 
+		final Iterator<? extends Tree<?, ?>> it = tree.breadthFirstIterator();
 		while (it.hasNext()) {
-			final Tree<? extends V, ?> node = it.next();
+			final Tree<?, ?> node = it.next();
 
 			elements[index] = node.getValue();
 			childCounts[index] = node.childCount();
@@ -350,7 +349,7 @@ public final class FlatTreeNode<T>
 		writeIntArray(node._childCounts, out);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings("rawtypes")
 	static FlatTreeNode read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
