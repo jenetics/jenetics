@@ -98,4 +98,12 @@ final class Trees {
 		return equals;
 	}
 
+	static int countChildren(final Tree<?, ?> tree) {
+		int cnt = tree.childCount();
+		for (int i = 0; i < tree.childCount(); ++i) {
+			cnt += countChildren(tree.getChild(i));
+		}
+		return cnt;
+	}
+
 }

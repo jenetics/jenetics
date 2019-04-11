@@ -45,6 +45,15 @@ dependencies {
 	testImplementation project(':jenetics').sourceSets.test.output
 }
 
+jmh {
+	//jmhVersion = '1.20'
+	//duplicateClassesStrategy = 'include'
+	warmupIterations = 2
+	iterations = 4
+	fork = 1
+	include = ['.*TreePerf.*']
+}
+
 idea {
 	module{
 		scopes.COMPILE.plus += [configurations.jmh]

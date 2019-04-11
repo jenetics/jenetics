@@ -224,6 +224,19 @@ public final class FlatTreeNode<T>
 		return toParenthesesString();
 	}
 
+	@Override
+	public int size() {
+		return countChildren( _index) + 1;
+	}
+
+	private int countChildren(final int index) {
+		int cnt = _childCounts[index];
+		for (int i = 0; i < _childCounts[index]; ++i) {
+			cnt += countChildren(_childOffsets[index] + i);
+		}
+		return cnt;
+	}
+
 	/**
 	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
 	 *
