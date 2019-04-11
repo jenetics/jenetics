@@ -25,14 +25,15 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.5"
+	id "me.champeau.gradle.jmh" version "0.4.8"
 }
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	implementation project(':jenetics')
+	api project(':jenetics')
 
 	testImplementation property('include.TestNG')
 	testImplementation property('include.PRNGine')
