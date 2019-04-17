@@ -246,9 +246,9 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 *     MathOp::toMathOp
 	 * );
 	 *
-	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0; // wrong result
 	 * Var.reindex(tree);
-	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0; // correct result
 	 * }</pre>
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
@@ -290,12 +290,12 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 *     MathOp::toMathOp
 	 * );
 	 *
-	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0; // wrong result
 	 * final Map<Var<Double>, Integer> indexes = new HashMap<>();
 	 * indexes.put(Var.of("x"), 0);
 	 * indexes.put(Var.of("y"), 1);
 	 * Var.reindex(tree, indexes);
-	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0; // correct result
 	 * }</pre>
 	 * The example above shows a use-case of this method. If you parse a tree
 	 * string and convert it to an operation tree, you have to re-index the
