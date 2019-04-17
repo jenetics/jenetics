@@ -146,7 +146,6 @@ public final class ProgramGene<A>
 		} else {
 			final ISeq<Op<A>> operations = _operations.stream()
 				.filter(op -> op.arity() == getValue().arity())
-				.map(op -> (Op<A>)op)
 				.collect(ISeq.toISeq());
 
 			if (operations.length() > 1) {
