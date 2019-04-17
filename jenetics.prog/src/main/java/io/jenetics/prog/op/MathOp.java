@@ -320,7 +320,7 @@ public enum MathOp implements Op<Double> {
 	 * Returns +1.0 if its first argument is greater than its second argument
 	 * and returns -1.0 otherwise.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 */
 	GT("gt", 2, v -> v[0] > v[1] ? 1.0 : -1.0);
 
