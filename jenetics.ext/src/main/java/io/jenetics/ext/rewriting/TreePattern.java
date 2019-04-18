@@ -341,7 +341,7 @@ public final class TreePattern<V> implements Serializable {
 		final Function<? super String, ? extends V> mapper
 	) {
 		return new TreePattern<>(
-			TreeNode.parse(pattern, v -> Decl.of(v, mapper))
+			TreeNode.parse(pattern, v -> Decl.of(v.trim(), mapper))
 		);
 	}
 
