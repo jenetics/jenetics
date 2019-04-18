@@ -49,6 +49,9 @@ import io.jenetics.util.ISeq;
  * final Tree<String, ?> immutable = FlatTreeNode.of(TreeNode.parse(...));
  * }</pre>
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 3.9
