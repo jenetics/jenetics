@@ -318,7 +318,7 @@ public abstract class TreeFormatter {
 					_edges.add(parentLabel + " -> " + label);
 				}
 				for (int i = 0; i < tree.childCount(); ++i) {
-					final Tree<V, ?> child = tree.getChild(i);
+					final Tree<V, ?> child = tree.childAt(i);
 					idx = init(child, label, idx + 1);
 				}
 				return idx;

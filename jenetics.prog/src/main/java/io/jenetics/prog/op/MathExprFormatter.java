@@ -69,10 +69,10 @@ final class MathExprFormatter {
 			out.append(op);
 			if (!tree.isLeaf()) {
 				out.append("(");
-				format(tree.getChild(0), out);
+				format(tree.childAt(0), out);
 				for (int i = 1; i < tree.childCount(); ++i) {
 					out.append(", ");
-					format(tree.getChild(i), out);
+					format(tree.childAt(i), out);
 				}
 				out.append(")");
 			}
@@ -93,9 +93,9 @@ final class MathExprFormatter {
 		final boolean brackets = !tree.isRoot() && precedence >= parentPrecedence;
 
 		if (brackets) out.append("(");
-		format(tree.getChild(0), out);
+		format(tree.childAt(0), out);
 		out.append(INFIX_OPS.get(tree.getValue()));
-		format(tree.getChild(1), out);
+		format(tree.childAt(1), out);
 		if (brackets) out.append(")");
 	}
 

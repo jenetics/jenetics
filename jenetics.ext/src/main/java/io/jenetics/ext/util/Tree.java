@@ -75,7 +75,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException  if the {@code index} is out of
 	 *         bounds ({@code [0, childCount())})
 	 */
-	public T getChild(final int index);
+	public T childAt(final int index);
 
 	/**
 	 * Return the number of children this tree node consists of.
@@ -170,7 +170,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default int getIndex(final Tree<?, ?> child) {
 		int index = -1;
 		for (int i = 0, n = childCount(); i < n && index == -1; ++i) {
-			if (getChild(i).identical(child)) {
+			if (childAt(i).identical(child)) {
 				index = i;
 			}
 		}
@@ -213,7 +213,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		T node = Trees.self(this);
 		for (int i = 0; i < path.length() && node != null; ++i) {
 			node = path.get(i) < node.childCount()
-				? node.getChild(path.get(i))
+				? node.childAt(path.get(i))
 				: null;
 		}
 
@@ -400,7 +400,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default Optional<T> firstChild() {
 		return childCount() > 0
-			? Optional.of(getChild(0))
+			? Optional.of(childAt(0))
 			: Optional.empty();
 	}
 
@@ -412,7 +412,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default Optional<T> lastChild() {
 		return childCount() > 0
-			? Optional.of(getChild(childCount() - 1))
+			? Optional.of(childAt(childCount() - 1))
 			: Optional.empty();
 	}
 
@@ -436,7 +436,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		}
 
 		return index < childCount() - 1
-			? Optional.of(getChild(index + 1))
+			? Optional.of(childAt(index + 1))
 			: Optional.empty();
 	}
 
@@ -459,7 +459,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		}
 
 		return index > 0
-			? Optional.of(getChild(index - 1))
+			? Optional.of(childAt(index - 1))
 			: Optional.empty();
 	}
 
@@ -482,7 +482,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 				node = node.getParent().orElse(null);
 			}
 		} else {
-			next = Optional.of(getChild(0));
+			next = Optional.of(childAt(0));
 		}
 
 		return next;

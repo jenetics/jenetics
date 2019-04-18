@@ -101,7 +101,7 @@ final class Trees {
 	static int countChildren(final Tree<?, ?> tree) {
 		int cnt = tree.childCount();
 		for (int i = 0; i < tree.childCount(); ++i) {
-			cnt += countChildren(tree.getChild(i));
+			cnt += countChildren(tree.childAt(i));
 		}
 		return cnt;
 	}

@@ -133,7 +133,7 @@ public final class FlatTreeNode<T>
 	}
 
 	@Override
-	public FlatTreeNode<T> getChild(final int index) {
+	public FlatTreeNode<T> childAt(final int index) {
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
