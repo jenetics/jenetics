@@ -36,7 +36,7 @@ public class TRSTest {
 	@Test
 	public void normalForm() {
 		final TRS<String> trs = TRS.of(
-			"add(0,$x) -> $x",
+			"add ( 0, $x ) -> $x ",
 			"add(S($x),$y) -> S(add($x,$y))",
 			"mul(0,$x) -> 0",
 			"mul(S($x),$y) -> add(mul($x,$y),$y)"

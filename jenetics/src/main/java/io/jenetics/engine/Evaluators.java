@@ -29,7 +29,8 @@ import io.jenetics.Genotype;
 
 /**
  * This class contains factory methods for creating commonly usable
- * {@link Evaluator} implementations.
+ * {@link Evaluator} implementations. By default, the evolution {@link Engine}
+ * uses the {@code concurrent} evaluators ({@link #concurrent(Function, Executor)}).
  *
  * @see Evaluator
  *

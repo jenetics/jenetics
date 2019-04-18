@@ -19,6 +19,8 @@
  */
 package io.jenetics.prog.op;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.testng.Assert;
@@ -56,7 +58,7 @@ public class MathOpTest {
 	}
 
 	@Test
-	public void toMathOp() {
+	public void toMathOpWithReindex() {
 		final TreeNode<Op<Double>> tree = TreeNode.parse(
 			"add(mul(x,y),sub(y,x))",
 			MathOp::toMathOp
@@ -64,6 +66,33 @@ public class MathOpTest {
 
 		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
 		Var.reindex(tree);
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+	}
+
+	@Test
+	public void toMathOpWithReindex2() {
+		final TreeNode<Op<Double>> tree = TreeNode.parse(
+			"add(mul(x,y),sub(y,x))",
+			MathOp::toMathOp
+		);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
+
+		final Map<Var<Double>, Integer> indexes = new HashMap<>();
+		indexes.put(Var.of("x"), 0);
+		indexes.put(Var.of("y"), 1);
+		Var.reindex(tree, indexes);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+	}
+
+	@Test
+	public void toMathOp() {
+		final TreeNode<Op<Double>> tree = TreeNode.parse(
+			"add(mul(x[0],y[1]),sub(y[1],x[0]))",
+			MathOp::toMathOp
+		);
+
 		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
 	}
 

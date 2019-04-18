@@ -21,6 +21,7 @@ package io.jenetics.ext.rewriting;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toMap;
+import static io.jenetics.ext.internal.Names.isIdentifier;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -239,8 +240,8 @@ public final class TreePattern<V> implements Serializable {
 			if (Objects.equals(v, p.value())) {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
-						final Tree<V, ?> cn = node.getChild(i);
-						final Tree<Decl<V>, ?> cp = pattern.getChild(i);
+						final Tree<V, ?> cn = node.childAt(i);
+						final Tree<Decl<V>, ?> cp = pattern.childAt(i);
 
 						if (!matches(cn, cp, vars)) {
 							return false;
@@ -340,7 +341,7 @@ public final class TreePattern<V> implements Serializable {
 		final Function<? super String, ? extends V> mapper
 	) {
 		return new TreePattern<>(
-			TreeNode.parse(pattern, v -> Decl.of(v, mapper))
+			TreeNode.parse(pattern, v -> Decl.of(v.trim(), mapper))
 		);
 	}
 
@@ -410,7 +411,9 @@ public final class TreePattern<V> implements Serializable {
 
 	/**
 	 * Represents a placeholder (variable) for an arbitrary sub-tree. A
-	 * <em>pattern</em> variable is identified by its name.
+	 * <em>pattern</em> variable is identified by its name. The pattern DSL
+	 * denotes variable names with a leading '$' character, e.g. {@code $x},
+	 * {@code $y} or {@code $my_var}.
 	 *
 	 * @implNote
 	 * This class is comparable by it's name.
@@ -439,26 +442,6 @@ public final class TreePattern<V> implements Serializable {
 		@SuppressWarnings("unchecked")
 		<B> Var<B> map(final Function<? super V, ? extends B> mapper) {
 			return (Var<B>)this;
-		}
-
-		private static boolean isIdentifier(final String id) {
-			if (id.isEmpty()) {
-				return false;
-			}
-			int cp = id.codePointAt(0);
-			if (!Character.isJavaIdentifierStart(cp)) {
-				return false;
-			}
-			for (int i = Character.charCount(cp);
-				 i < id.length();
-				 i += Character.charCount(cp))
-			{
-				cp = id.codePointAt(i);
-				if (!Character.isJavaIdentifierPart(cp)) {
-					return false;
-				}
-			}
-			return true;
 		}
 
 		/**

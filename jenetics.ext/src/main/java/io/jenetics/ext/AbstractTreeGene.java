@@ -158,7 +158,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
-	public G getChild(final int index) {
+	public G childAt(final int index) {
 		checkTreeState();
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException(format(

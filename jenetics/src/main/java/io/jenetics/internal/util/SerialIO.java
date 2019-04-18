@@ -22,6 +22,8 @@ package io.jenetics.internal.util;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -239,7 +241,9 @@ public final class SerialIO {
 	 * @throws NullPointerException if the given data output is {@code null}
 	 * @throws IOException if an I/O error occurs
 	 */
-	public static void writeInt(final int value, final DataOutput out) throws IOException {
+	public static void writeInt(final int value, final DataOutput out)
+		throws IOException
+	{
 		// Zig-zag encoding.
 		int n = (value << 1)^(value >> 31);
 		if ((n & ~0x7F) != 0) {
@@ -426,6 +430,101 @@ public final class SerialIO {
 			}
 		}
 		return l;
+	}
+
+	/**
+	 * Write the given {@code int[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeIntArray(final int[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (int value : values) {
+			writeInt(value, out);
+		}
+	}
+
+	/**
+	 * Write the given {@code long[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeLongArray(final long[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (long value : values) {
+			writeLong(value, out);
+		}
+	}
+
+	/**
+	 * Read an {@code int[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static int[] readIntArray(final DataInput in) throws IOException {
+		final int[] values = new int[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = readInt(in);
+		}
+		return values;
+	}
+
+	/**
+	 * Read a {@code long[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static long[] readLongArray(final DataInput in) throws IOException {
+		final long[] values = new long[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = readLong(in);
+		}
+		return values;
+	}
+
+	/**
+	 * Write the given {@code Object[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeObjectArray(final Object[] values, final ObjectOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (Object value : values) {
+			out.writeObject(value);
+		}
+	}
+
+	/**
+	 * Read an {@code Object[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static Object[] readObjectArray(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final Object[] values = new Object[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = in.readObject();
+		}
+		return values;
 	}
 
 }

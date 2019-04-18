@@ -310,8 +310,23 @@ public enum MathOp implements Op<Double> {
 	 *
 	 * @see Math#tanh(double)
 	 */
-	TANH("tanh", 1, v -> tanh(v[0]));
+	TANH("tanh", 1, v -> tanh(v[0])),
 
+	/* *************************************************************************
+	 * Conditional functions
+	 * ************************************************************************/
+
+	/**
+	 * Returns +1.0 if its first argument is greater than its second argument
+	 * and returns -1.0 otherwise.
+	 *
+	 * @since 5.0
+	 */
+	GT("gt", 2, v -> v[0] > v[1] ? 1.0 : -1.0);
+
+	/* *************************************************************************
+	 * Additional mathematical constants.
+	 * ************************************************************************/
 
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
@@ -405,7 +420,7 @@ public enum MathOp implements Op<Double> {
 			final Optional<Op<Double>> mop = toOp(string);
 			result = mop.isPresent()
 				? mop.orElseThrow(AssertionError::new)
-				: Var.of(string, 0);
+				: Var.parse(string);
 		}
 
 		return result;

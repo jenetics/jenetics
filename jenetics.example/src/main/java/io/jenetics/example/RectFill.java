@@ -35,6 +35,7 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
+import io.jenetics.engine.RetryConstraint;
 import io.jenetics.example.RectFill.Rect;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -104,8 +105,7 @@ public final class RectFill
 		final RectFill problem = new RectFill(new Rect(0, 100, 0, 100));
 
 		final Engine<AnyGene<Rect>, Double> engine = Engine.builder(problem)
-			.individualCreationRetries(10)
-			.genotypeValidator(gt -> true)
+			.constraint(RetryConstraint.of(pt -> true))
 			.offspringSelector(new RouletteWheelSelector<>())
 			.alterers(
 				new SwapMutator<>(),

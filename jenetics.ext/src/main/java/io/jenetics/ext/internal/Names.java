@@ -17,35 +17,42 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.op;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.io.IOException;
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.util.IO;
+package io.jenetics.ext.internal;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 5.0
+ * @since 5.0
  */
-public class VarTest {
-
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(Var.class)
-			.withIgnoredFields("_index")
-			.verify();
+public final class Names {
+	private Names() {
 	}
 
-	@Test
-	public void serialize() throws IOException {
-		final Var<Integer> object = Var.of("some_name", new Random().nextInt(100));
-		final byte[] data = IO.object.toByteArray(object);
-		Assert.assertEquals(IO.object.fromByteArray(data), object);
+	/**
+	 * Checks whether the given {@code name} is a valid (Java) identifier.
+	 *
+	 * @param name the name to check
+	 * @return {@code true} if the given {@code name} is a valid identifier,
+	 *         {@code false} otherwise
+	 */
+	public static boolean isIdentifier(final String name) {
+		if (name.isEmpty()) {
+			return false;
+		}
+		int cp = name.codePointAt(0);
+		if (!Character.isJavaIdentifierStart(cp)) {
+			return false;
+		}
+		for (int i = Character.charCount(cp);
+			 i < name.length();
+			 i += Character.charCount(cp))
+		{
+			cp = name.codePointAt(i);
+			if (!Character.isJavaIdentifierPart(cp)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

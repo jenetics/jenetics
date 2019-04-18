@@ -340,7 +340,8 @@ public class ProgramChromosome<A>
 	) {
 		return of(
 			depth,
-			(Predicate<? super ProgramChromosome<A>> & Serializable)ProgramChromosome::isSuperValid,
+			(Predicate<? super ProgramChromosome<A>> & Serializable)
+				ProgramChromosome::isSuperValid,
 			operations,
 			terminals
 		);

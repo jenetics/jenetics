@@ -27,12 +27,13 @@
  * @version 4.4
  */
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	implementation project(':jenetics')
-	implementation project(':jenetics.ext')
+	api project(':jenetics')
+	api project(':jenetics.ext')
 
 	testImplementation property('include.TestNG')
 	testImplementation property('include.EqualsVerifier')

@@ -22,7 +22,6 @@ package io.jenetics.ext.util;
 import java.util.Iterator;
 import java.util.Objects;
 
-import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
 /**
@@ -64,69 +63,6 @@ final class Trees {
 		return path;
 	}
 
-	static String toInfixString(final Tree<?, ?> tree) {
-		final StringBuilder out = new StringBuilder();
-		toInfixString(out, tree);
-		return out.toString();
-	}
-
-	private static void toInfixString(final StringBuilder out, final Tree<?, ?> tree) {
-		if (!tree.isLeaf()) {
-			toInfixChild(out, tree.getChild(0));
-			out.append(tree.getValue());
-			toInfixChild(out, tree.getChild(1));
-		} else {
-			out.append(tree.getValue());
-		}
-	}
-
-	private static void toInfixChild(final StringBuilder out, final Tree<?, ?> child) {
-		if (child.isLeaf()) {
-			toInfixString(out, child);
-		} else {
-			out.append("(");
-			toInfixString(out, child);
-			out.append(")");
-		}
-	}
-
-	public static String toDottyString(final String name, final Tree<?, ?> tree) {
-		final StringBuilder out = new StringBuilder();
-		out.append("digraph ").append(name).append(" {\n");
-		dotty(out, tree);
-		labels(out, tree);
-		out.append("}\n");
-		return out.toString();
-	}
-
-	private static void dotty(final StringBuilder out, final Tree<?, ?> node) {
-		final ISeq<? extends Tree<?, ?>> nodes = node.breadthFirstStream()
-			.collect(ISeq.toISeq());
-
-		for (int i = 0; i < nodes.length(); ++i) {
-			final Tree<?, ?> n = nodes.get(i);
-			n.childStream().forEach(child ->
-				out.append("    ")
-					.append(id(n))
-					.append(" -> ")
-					.append(id(child))
-					.append(";\n")
-			);
-		}
-	}
-
-	private static String id(final Tree<?, ?> node) {
-		return "node_" + Math.abs(System.identityHashCode(node));
-	}
-
-	private static void labels(final StringBuilder out, final Tree<?, ?> tree) {
-		tree.depthFirstStream().forEach(node -> {
-			out.append("    ");
-			out.append(id(node));
-			out.append(" [label=\"").append(node.getValue()).append("\"];\n");
-		});
-	}
-
 	/**
 	 * Checks if the two given trees has the same structure with the same values.
 	 *
@@ -160,6 +96,14 @@ final class Trees {
 		}
 
 		return equals;
+	}
+
+	static int countChildren(final Tree<?, ?> tree) {
+		int cnt = tree.childCount();
+		for (int i = 0; i < tree.childCount(); ++i) {
+			cnt += countChildren(tree.childAt(i));
+		}
+		return cnt;
 	}
 
 }

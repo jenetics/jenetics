@@ -85,10 +85,10 @@ final class ParenthesesTrees {
 		out.append(escape(mapper.apply(tree.getValue())));
 		if (!tree.isLeaf()) {
 			out.append("(");
-			toString(out, tree.getChild(0), mapper);
+			toString(out, tree.childAt(0), mapper);
 			for (int i = 1; i < tree.childCount(); ++i) {
 				out.append(",");
-				toString(out, tree.getChild(i), mapper);
+				toString(out, tree.childAt(i), mapper);
 			}
 			out.append(")");
 		}
