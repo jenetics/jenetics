@@ -19,48 +19,12 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.function.DoubleFunction;
-
-import io.jenetics.prog.ProgramGene;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Samples {
-
-	private final int _dim;
-	private final int _capacity;
-	private final double[][] _samples;
-
-	private int _index = 0;
-	private int _size = 0;
-
-	public Samples(final int dim, final int capacity) {
-		_dim = dim;
-		_capacity = capacity;
-		_samples = new double[_capacity][_dim];
-	}
-
-	public void add(final double... sample) {
-		if (sample.length != _dim) {
-			throw new IllegalArgumentException();
-		}
-
-		System.arraycopy(sample, 0, _samples[_index], 0, _dim);
-		_index = (_index + 1)%_capacity;
-		_size = Math.max(_size + 1, _capacity);
-	}
-
-
-	public double error(
-		final FitnessFunction ff,
-		final ErrorFunction ef,
-		final DoubleFunction<ProgramGene<?>> complexity
-	) {
-		return 0;
-	}
-
-
+@FunctionalInterface
+public interface ErrorFunction {
+	public double apply(final double[] result, final double[] calculated);
 }
