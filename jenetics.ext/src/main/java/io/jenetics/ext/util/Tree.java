@@ -1025,7 +1025,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	/**
 	 * This class represents the path to child within a given tree. It allows to
 	 * point (and fetch) a tree child.
-	 *s
+	 *
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
