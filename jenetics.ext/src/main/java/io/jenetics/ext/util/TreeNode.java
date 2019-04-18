@@ -124,7 +124,7 @@ public final class TreeNode<T>
 	 *         bounds
 	 */
 	@Override
-	public TreeNode<T> getChild(final int index) {
+	public TreeNode<T> childAt(final int index) {
 		if (_children == null) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Child index is out of bounds: %s", index

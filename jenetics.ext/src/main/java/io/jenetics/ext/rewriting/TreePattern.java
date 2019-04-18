@@ -240,8 +240,8 @@ public final class TreePattern<V> implements Serializable {
 			if (Objects.equals(v, p.value())) {
 				if (node.childCount() == pattern.childCount()) {
 					for (int i = 0; i < node.childCount(); ++i) {
-						final Tree<V, ?> cn = node.getChild(i);
-						final Tree<Decl<V>, ?> cp = pattern.getChild(i);
+						final Tree<V, ?> cn = node.childAt(i);
+						final Tree<Decl<V>, ?> cp = pattern.childAt(i);
 
 						if (!matches(cn, cp, vars)) {
 							return false;
