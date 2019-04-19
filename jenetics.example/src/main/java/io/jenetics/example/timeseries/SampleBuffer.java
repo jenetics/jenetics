@@ -34,24 +34,6 @@ import io.jenetics.prog.ProgramGene;
  * @since !__version__!
  */
 public class SampleBuffer {
-	/**
-	 * Represents a (relative) measure of the program complexity. The complexity
-	 * is added to the error value for the overall error metric.
-	 */
-	@FunctionalInterface
-	public interface Complexity {
-
-		/**
-		 * Calculates the complexity of the current program (possibly) relative
-		 * to the actual error value.
-		 *
-		 * @param program the actual program
-		 * @param error the error value calculated with the given program
-		 * @return the measure of the program complexity
-		 */
-		double apply(final ProgramGene<Double> program, final double error);
-	}
-
 	// Helper class for holding a sample points snapshot.
 	private final class Samples {
 		private final double[][] arguments;
