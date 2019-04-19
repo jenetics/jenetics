@@ -37,4 +37,5 @@ public interface Complexity {
 	 * @return the measure of the program complexity
 	 */
 	double apply(final ProgramGene<Double> program, final double error);
+
 }

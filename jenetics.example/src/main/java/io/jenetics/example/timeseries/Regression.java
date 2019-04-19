@@ -22,12 +22,9 @@ package io.jenetics.example.timeseries;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.function.DoubleBinaryOperator;
+import java.util.List;
 
-import io.jenetics.ext.util.Tree;
-
-import io.jenetics.prog.op.MathExpr;
-import io.jenetics.prog.op.Op;
+import io.jenetics.prog.ProgramGene;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -36,33 +33,66 @@ import io.jenetics.prog.op.Op;
  */
 public class Regression {
 
-	private final double[][] _data;
-	private final DoubleBinaryOperator _error;
-
-
-	public Regression(final double[][] data, final DoubleBinaryOperator error) {
-		_data = requireNonNull(data);
-		_error = requireNonNull(error);
+	// Helper class for holding a sample points snapshot.
+	private static final class Samples {
+		private final double[][] arguments;
+		private final double[] results;
+		private Samples(final double[][] arguments, final double[] results) {
+			this.arguments = arguments;
+			this.results = results;
+		}
 	}
 
-	public Regression(final double[][] data) {
-		this(data, (a, b) -> (a - b)*(a - b));
+	private final Samples _samples;
+
+	private Regression(final Samples samples) {
+		_samples = requireNonNull(samples);
 	}
 
-	public double error(final Tree<? extends Op<Double>, ?> expr) {
-		return Arrays.stream(_data)
-			.mapToDouble(sample -> _error
-				.applyAsDouble(eval(expr, sample), sample[sample.length - 1]))
-			.sum();
-	}
-
-	private double eval(
-		final Tree<? extends Op<Double>, ?> expr,
-		final double[] point
+	/**
+	 * Calculates the actual error for the given {@code program}.
+	 *
+	 * @param program the program to calculate the error value for
+	 * @param error the error function
+	 * @param complexity the program complexity metric
+	 * @return the overall error value of the program, including its complexity
+	 *         penalty
+	 */
+	public double error(
+		final ProgramGene<Double> program,
+		final Error error,
+		final Complexity complexity
 	) {
-		final double[] args = new double[point.length - 1];
-		System.arraycopy(point, 1, args, 0, args.length);
-		return MathExpr.eval(expr, args);
+		final double[] calculated = Arrays.stream(_samples.arguments)
+			.mapToDouble(args -> eval(program, args))
+			.toArray();
+
+		final double err = error.apply(_samples.results, calculated);
+		final double cpx = complexity.apply(program, err);
+
+		return err + cpx;
 	}
 
+	private static double
+	eval(final ProgramGene<Double> program, final double[] args) {
+		final Double[] value = new Double[args.length];
+		for (int i = 0; i < args.length; ++i) {
+			value[i] = args[i];
+		}
+
+		return program.eval(value);
+	}
+
+
+	public static Regression of(final List<Sample> samples) {
+		final double[][] arguments = samples.stream()
+			.map(Sample::arguments)
+			.toArray(double[][]::new);
+
+		final double[] results = samples.stream()
+			.mapToDouble(Sample::result)
+			.toArray();
+
+		return new Regression(new Samples(arguments, results));
+	}
 }

@@ -74,7 +74,7 @@ public class TimeSeries
 
 	@Override
 	public void onNext(final double[][] doubles) {
-		_regression = new Regression(doubles);
+		_regression = null;// new Regression(doubles);
 	}
 
 	@Override

@@ -19,11 +19,9 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import io.jenetics.prog.ProgramGene;
 
 /**
  * This class holds the actual sample values which are used for the symbolic
@@ -33,24 +31,14 @@ import io.jenetics.prog.ProgramGene;
  * @version !__version__!
  * @since !__version__!
  */
-public class SampleBuffer {
-	// Helper class for holding a sample points snapshot.
-	private final class Samples {
-		private final double[][] arguments;
-		private final double[] results;
-		private Samples(final double[][] arguments, final double[] results) {
-			this.arguments = arguments;
-			this.results = results;
-		}
-	}
-
+public final class SampleBuffer {
 	private final int _dim;
 	private final int _capacity;
 	private final Sample[] _samples;
 
 	private int _index = 0;
 	private int _size = 0;
-	private volatile Samples _snapshot;
+	private volatile Regression _regression;
 
 	/**
 	 * Create a new sample object with the given dimension of the function
@@ -79,7 +67,7 @@ public class SampleBuffer {
 			_samples[_index] = sample;
 			_index = (_index + 1)%_capacity;
 			_size = Math.max(_size + 1, _capacity);
-			_snapshot = null;
+			_regression = null;
 		}
 	}
 
@@ -98,7 +86,7 @@ public class SampleBuffer {
 				_samples[_index] = sample;
 				_index = (_index + 1)%_capacity;
 				_size = Math.max(_size + 1, _capacity);
-				_snapshot = null;
+				_regression = null;
 			}
 		}
 	}
@@ -119,70 +107,26 @@ public class SampleBuffer {
 		synchronized (_samples) {
 			_index = 0;
 			_size = 0;
-			_snapshot = null;
+			_regression = null;
 		}
 	}
 
-	private Samples snapshot() {
-		Samples samples = _snapshot;
-		if (samples == null) {
+	public Regression regression() {
+		Regression regression = _regression;
+		if (regression == null) {
 			synchronized (_samples) {
-				samples = new Samples(arguments(), results());
-				_snapshot = samples;
+				regression = Regression.of(samples());
+				_regression = regression;
 			}
 		}
 
-		return samples;
+		return regression;
 	}
 
-	private double[][] arguments() {
+	private List<Sample> samples() {
 		return IntStream.range(0, _size)
-			.mapToObj(i -> _samples[(i + _index)%_capacity].arguments())
-			.toArray(double[][]::new);
-	}
-
-	private double[] results() {
-		final double[] results = new double[_size];
-		for (int i = 0; i < _size; ++i) {
-			results[i] = _samples[(i + _index)%_capacity].result();
-		}
-		return results;
-	}
-
-	/**
-	 * Calculates the actual error for the given {@code program}.
-	 *
-	 * @param program the program to calculate the error value for
-	 * @param error the error function
-	 * @param complexity the program complexity metric
-	 * @return the overall error value of the program, including its complexity
-	 *         penalty
-	 */
-	public double error(
-		final ProgramGene<Double> program,
-		final Error error,
-		final Complexity complexity
-	) {
-		final Samples sample = snapshot();
-
-		final double[] calculated = Arrays.stream(sample.arguments)
-			.mapToDouble(args -> eval(program, args))
-			.toArray();
-
-		final double err = error.apply(sample.results, calculated);
-		final double cpx = complexity.apply(program, err);
-
-		return err + cpx;
-	}
-
-	private static double
-	eval(final ProgramGene<Double> program, final double[] args) {
-		final Double[] value = new Double[args.length];
-		for (int i = 0; i < args.length; ++i) {
-			value[i] = args[i];
-		}
-
-		return program.eval(value);
+			.mapToObj(i -> _samples[(i + _index)%_capacity])
+			.collect(Collectors.toList());
 	}
 
 }

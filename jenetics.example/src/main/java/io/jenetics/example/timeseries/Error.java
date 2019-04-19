@@ -35,4 +35,5 @@ public interface Error {
 	 * @return the error value
 	 */
 	double apply(final double[] expected, final double[] calculated);
+
 }
