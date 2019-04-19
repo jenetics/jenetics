@@ -35,24 +35,6 @@ import io.jenetics.prog.ProgramGene;
  */
 public class SampleBuffer {
 	/**
-	 * This function calculates the error between the expected function values
-	 * and the values calculated by the actual {@link ProgramGene}.
-	 */
-	@FunctionalInterface
-	public interface Error {
-
-		/**
-		 * Calculates the error between the expected function values and the
-		 * values calculated by the actual {@link ProgramGene}.
-		 *
-		 * @param expected the expected function values
-		 * @param calculated the currently calculated function value
-		 * @return the error value
-		 */
-		double apply(final double[] expected, final double[] calculated);
-	}
-
-	/**
 	 * Represents a (relative) measure of the program complexity. The complexity
 	 * is added to the error value for the overall error metric.
 	 */
