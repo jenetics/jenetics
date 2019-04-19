@@ -19,11 +19,11 @@
  */
 package io.jenetics.example.timeseries;
 
-import io.jenetics.prog.ProgramGene;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import io.jenetics.prog.ProgramGene;
 
 /**
  * This class holds the actual sample values which are used for the symbolic
@@ -34,30 +34,6 @@ import java.util.stream.IntStream;
  * @since !__version__!
  */
 public class SampleBuffer {
-
-	public static final class Sample {
-		private final double[] _arguments;
-		private final double _result;
-
-		private Sample(final double[] arguments, final double result) {
-			_arguments = arguments;
-			_result = result;
-		}
-
-		public double[] arguments() {
-			return _arguments;
-		}
-
-		public double result() {
-			return _result;
-		}
-
-		public static Sample of(final double[] arguments, final double result) {
-			return new Sample(arguments, result);
-		}
-	}
-
-
 	/**
 	 * This function calculates the error between the expected function values
 	 * and the values calculated by the actual {@link ProgramGene}.
@@ -131,7 +107,7 @@ public class SampleBuffer {
 	 * @param sample the sample point to add
 	 */
 	public void add(final Sample sample) {
-		if (sample._arguments.length != _dim) {
+		if (sample.arity() != _dim) {
 			throw new IllegalArgumentException();
 		}
 
@@ -149,7 +125,7 @@ public class SampleBuffer {
 	 * @param samples the sample points to add
 	 */
 	public void addAll(final List<Sample> samples) {
-		if (samples.stream().anyMatch(s -> s._arguments.length != _dim)) {
+		if (samples.stream().anyMatch(s -> s.arity() != _dim)) {
 			throw new IllegalArgumentException();
 		}
 
@@ -197,14 +173,14 @@ public class SampleBuffer {
 
 	private double[][] arguments() {
 		return IntStream.range(0, _size)
-			.mapToObj(i -> _samples[(i + _index)%_capacity]._arguments)
+			.mapToObj(i -> _samples[(i + _index)%_capacity].arguments())
 			.toArray(double[][]::new);
 	}
 
 	private double[] results() {
 		final double[] results = new double[_size];
 		for (int i = 0; i < _size; ++i) {
-			results[i] = _samples[(i + _index)%_capacity]._result;
+			results[i] = _samples[(i + _index)%_capacity].result();
 		}
 		return results;
 	}
