@@ -19,18 +19,16 @@
  */
 package io.jenetics.example.timeseries;
 
-import io.jenetics.prog.ProgramGene;
-
 /**
  * This function calculates the error between the expected function values
- * and the values calculated by the actual {@link ProgramGene}.
+ * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
  */
 @FunctionalInterface
 public interface Error {
 
 	/**
 	 * Calculates the error between the expected function values and the
-	 * values calculated by the actual {@link ProgramGene}.
+	 * values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
 	 *
 	 * @param expected the expected function values
 	 * @param calculated the currently calculated function value
