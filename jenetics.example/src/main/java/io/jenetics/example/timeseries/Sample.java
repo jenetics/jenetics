@@ -48,4 +48,9 @@ public final class Sample {
 	public static Sample of(final double[] arguments, final double result) {
 		return new Sample(arguments, result);
 	}
+
+	public static Sample of(final double x, final double y) {
+		return of(new double[]{x}, y);
+	}
+
 }

@@ -19,12 +19,19 @@
  */
 package io.jenetics.example.timeseries;
 
+import java.util.stream.IntStream;
+
 /**
  * This function calculates the error between the expected function values
  * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
  */
 @FunctionalInterface
 public interface Error {
+
+	public static final Error ABS_SUM = (expected, calculated) ->
+		IntStream.range(0, expected.length)
+			.mapToDouble(i -> Math.abs(expected[i] - calculated[i]))
+			.sum();
 
 	/**
 	 * Calculates the error between the expected function values and the
