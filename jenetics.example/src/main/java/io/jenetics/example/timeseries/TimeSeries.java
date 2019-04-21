@@ -19,8 +19,6 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.Arrays;
-
 import io.jenetics.Genotype;
 import io.jenetics.Mutator;
 import io.jenetics.engine.Codec;
@@ -30,7 +28,6 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.SingleNodeCrossover;
-import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.ProgramChromosome;
@@ -48,7 +45,9 @@ import io.jenetics.prog.op.Var;
  */
 public class TimeSeries {
 
-	private static final Regression REGRESSION = Regression.of(Arrays.asList(
+	private static final Regression REGRESSION = Regression.of(
+		Error.ABS_SUM,
+		(a, b) -> 0,
 		Sample.of(-1.0, -8.0000),
 		Sample.of(-0.9, -6.2460),
 		Sample.of(-0.8, -4.7680),
@@ -70,11 +69,7 @@ public class TimeSeries {
 		Sample.of(0.8, 0.9280),
 		Sample.of(0.9, 1.3860),
 		Sample.of(1.0, 2.0000)
-	));
-
-	private static double error(final ProgramGene<Double> program) {
-		return REGRESSION.error(program, Error.ABS_SUM, (a, b) -> 0);
-	}
+	);
 
 	// Definition of the allowed operations.
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
@@ -102,7 +97,7 @@ public class TimeSeries {
 
 	public static void main(final String[] args) {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(TimeSeries::error, CODEC)
+			.builder(REGRESSION::error, CODEC)
 			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),

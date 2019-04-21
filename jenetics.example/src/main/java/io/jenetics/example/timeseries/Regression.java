@@ -22,7 +22,9 @@ package io.jenetics.example.timeseries;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.function.Supplier;
+
+import io.jenetics.example.timeseries.SampleBuffer.Samples;
 
 import io.jenetics.prog.ProgramGene;
 
@@ -33,42 +35,36 @@ import io.jenetics.prog.ProgramGene;
  */
 public class Regression {
 
-	// Helper class for holding a sample points snapshot.
-	private static final class Samples {
-		private final double[][] arguments;
-		private final double[] results;
-		private Samples(final double[][] arguments, final double[] results) {
-			this.arguments = arguments;
-			this.results = results;
-		}
-	}
+	private final Supplier<Samples> _samples;
+	private final Error _error;
+	private final Complexity _complexity;
 
-	private final Samples _samples;
-
-	private Regression(final Samples samples) {
+	public Regression(
+		final Supplier<Samples> samples,
+		final Error error,
+		final Complexity complexity
+	) {
 		_samples = requireNonNull(samples);
+		_error = requireNonNull(error);
+		_complexity = requireNonNull(complexity);
 	}
 
 	/**
 	 * Calculates the actual error for the given {@code program}.
 	 *
 	 * @param program the program to calculate the error value for
-	 * @param error the error function
-	 * @param complexity the program complexity metric
 	 * @return the overall error value of the program, including its complexity
 	 *         penalty
 	 */
-	public double error(
-		final ProgramGene<Double> program,
-		final Error error,
-		final Complexity complexity
-	) {
-		final double[] calculated = Arrays.stream(_samples.arguments)
+	public double error(final ProgramGene<Double> program) {
+		final Samples samples = _samples.get();
+
+		final double[] calculated = Arrays.stream(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
 			.toArray();
 
-		final double err = error.apply(_samples.results, calculated);
-		final double cpx = complexity.apply(program, err);
+		final double err = _error.apply(samples.results(), calculated);
+		final double cpx = _complexity.apply(program, err);
 
 		return err + cpx;
 	}
@@ -84,15 +80,12 @@ public class Regression {
 	}
 
 
-	public static Regression of(final List<Sample> samples) {
-		final double[][] arguments = samples.stream()
-			.map(Sample::arguments)
-			.toArray(double[][]::new);
-
-		final double[] results = samples.stream()
-			.mapToDouble(Sample::result)
-			.toArray();
-
-		return new Regression(new Samples(arguments, results));
+	public static Regression of(
+		final Error error,
+		final Complexity complexity,
+		final Sample... samples
+	) {
+		final Samples s = new Samples(Arrays.asList(samples));
+		return new Regression(() -> s, error, complexity);
 	}
 }

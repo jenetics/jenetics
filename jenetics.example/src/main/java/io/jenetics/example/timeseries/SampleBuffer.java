@@ -19,6 +19,10 @@
  */
 package io.jenetics.example.timeseries;
 
+import static java.util.Collections.unmodifiableList;
+
+import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -32,13 +36,54 @@ import java.util.stream.IntStream;
  * @since !__version__!
  */
 public final class SampleBuffer {
+
+	/**
+	 * This class contains a snapshot of the current samples in the buffer.
+	 */
+	public static final class Samples extends AbstractList<Sample> {
+		private final List<Sample> _samples;
+
+		private final double[][] _arguments;
+		private final double[] _results;
+
+		Samples(final List<Sample> samples) {
+			_samples = unmodifiableList(samples);
+
+			_arguments = samples.stream()
+				.map(Sample::arguments)
+				.toArray(double[][]::new);
+			_results = samples.stream()
+				.mapToDouble(Sample::result)
+				.toArray();
+		}
+
+		double[][] arguments() {
+			return _arguments;
+		}
+
+		double[] results() {
+			return _results;
+		}
+
+		@Override
+		public Sample get(int index) {
+			return _samples.get(index);
+		}
+
+		@Override
+		public int size() {
+			return _samples.size();
+		}
+	}
+
+
 	private final int _dim;
 	private final int _capacity;
-	private final Sample[] _samples;
+	private final Sample[] _buffer;
 
 	private int _index = 0;
 	private int _size = 0;
-	private volatile Regression _regression;
+	private volatile Samples _samples;
 
 	/**
 	 * Create a new sample object with the given dimension of the function
@@ -50,7 +95,7 @@ public final class SampleBuffer {
 	public SampleBuffer(final int dim, final int capacity) {
 		_dim = dim;
 		_capacity = capacity;
-		_samples = new Sample[_capacity];
+		_buffer = new Sample[_capacity];
 	}
 
 	/**
@@ -63,11 +108,11 @@ public final class SampleBuffer {
 			throw new IllegalArgumentException();
 		}
 
-		synchronized (_samples) {
-			_samples[_index] = sample;
+		synchronized (_buffer) {
+			_buffer[_index] = sample;
 			_index = (_index + 1)%_capacity;
 			_size = Math.max(_size + 1, _capacity);
-			_regression = null;
+			_samples = null;
 		}
 	}
 
@@ -81,52 +126,69 @@ public final class SampleBuffer {
 			throw new IllegalArgumentException();
 		}
 
-		synchronized (_samples) {
+		synchronized (_buffer) {
 			for (Sample sample : samples) {
-				_samples[_index] = sample;
+				_buffer[_index] = sample;
 				_index = (_index + 1)%_capacity;
 				_size = Math.max(_size + 1, _capacity);
-				_regression = null;
+				_samples = null;
 			}
 		}
 	}
 
+	/**
+	 * Return the capacity of the sample buffer.
+	 *
+	 * @return the capacity of the sample buffer
+	 */
 	public int capacity() {
 		return _capacity;
 	}
 
+	/**
+	 * Return the dimensionality of the sample points.
+	 *
+	 * @return the dimensionality of the sample points
+	 */
 	public int dim() {
 		return _dim;
 	}
 
+	/**
+	 * Return the size (number of sample points) the buffer actually contains.
+	 *
+	 * @return the number of sample points the buffer contains
+	 */
 	public int size() {
 		return _size;
 	}
 
+	/**
+	 * Removes all sample points from this buffer.
+	 */
 	public void clear() {
-		synchronized (_samples) {
+		synchronized (_buffer) {
+			Arrays.fill(_buffer, null);
 			_index = 0;
 			_size = 0;
-			_regression = null;
+			_samples = null;
 		}
 	}
 
-	public Regression regression() {
-		Regression regression = _regression;
-		if (regression == null) {
-			synchronized (_samples) {
-				regression = Regression.of(samples());
-				_regression = regression;
+	public Samples samples() {
+		Samples samples = _samples;
+		if (samples == null) {
+			synchronized (_buffer) {
+				samples = new Samples(
+					IntStream.range(0, _size)
+						.mapToObj(i -> _buffer[(i + _index)%_capacity])
+						.collect(Collectors.toList())
+				);
+				_samples = samples;
 			}
 		}
 
-		return regression;
-	}
-
-	private List<Sample> samples() {
-		return IntStream.range(0, _size)
-			.mapToObj(i -> _samples[(i + _index)%_capacity])
-			.collect(Collectors.toList());
+		return samples;
 	}
 
 }
