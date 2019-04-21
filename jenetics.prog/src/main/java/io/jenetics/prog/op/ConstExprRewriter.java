@@ -60,7 +60,7 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 	private static int rewriting(final TreeNode<Op<Double>> node) {
 		if (matches(node)) {
 			final Double[] args = node.childStream()
-				.map(child -> ((Const<Double>)child.getValue()).value())
+				.map(child -> value(child.getValue()))
 				.toArray(Double[]::new);
 
 			final double value = node.getValue().apply(args);
@@ -73,6 +73,16 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		return 0;
 	}
 
+	private static double value(final Op<Double> constant) {
+		if (constant instanceof Const) {
+			return ((Const<Double>)constant).value();
+		} else if (constant instanceof EphemeralConst) {
+			return ((EphemeralConst<Double>)constant).value();
+		} else {
+			throw new AssertionError();
+		}
+	}
+
 	private static Stream<TreeNode<Op<Double>>>
 	results(final TreeNode<Op<Double>> node) {
 		return node.stream()
@@ -82,8 +92,10 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 	private static boolean matches(final Tree<Op<Double>, ?> node) {
 		return
 			node.getValue() instanceof MathOp &&
-				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Const);
+			node.childStream()
+				.allMatch(child ->
+					child.getValue() instanceof Const ||
+					child.getValue() instanceof EphemeralConst);
 	}
 
 	@Override
