@@ -19,29 +19,35 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.stream.IntStream;
+import static java.lang.String.format;
 
 /**
- * This function calculates the error between the expected function values
- * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-@FunctionalInterface
-public interface Error {
+final class Errors {
+	private Errors() {
+	}
 
-	/**
-	 * The <a href="https://en.wikipedia.org/wiki/Mean_squared_error">
-	 *     Mean Square Error</a> of
-	 */
-	public static final Error MSE = Errors::mse;
+	static double mse(final double[] expected, final double[] calculated) {
+		if (expected.length != calculated.length) {
+			throw new IllegalArgumentException(format(
+				"Expected result and calculated results have different " +
+					"length: %d != %d",
+				expected.length, calculated.length
+			));
+		}
 
-	/**
-	 * Calculates the error between the expected function values and the
-	 * values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
-	 *
-	 * @param expected the expected function values
-	 * @param calculated the currently calculated function value
-	 * @return the error value
-	 */
-	double apply(final double[] expected, final double[] calculated);
+		double result = 0;
+		for (int i = 0; i < expected.length; ++i) {
+			result += (expected[i] - calculated[i])*(expected[i] - calculated[i]);
+		}
+		if (expected.length > 0) {
+			result = result/expected.length;
+		}
+
+		return result;
+	}
 
 }

@@ -58,6 +58,7 @@ public class Regression {
 	 */
 	public double error(final ProgramGene<Double> program) {
 		final Samples samples = _samples.get();
+		assert samples != null;
 
 		final double[] calculated = Arrays.stream(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
@@ -88,4 +89,7 @@ public class Regression {
 		final Samples s = new Samples(Arrays.asList(samples));
 		return new Regression(() -> s, error, complexity);
 	}
+
+
+
 }

@@ -46,7 +46,7 @@ import io.jenetics.prog.op.Var;
 public class TimeSeries {
 
 	private static final Regression REGRESSION = Regression.of(
-		Error.ABS_SUM,
+		Error.MSE,
 		(a, b) -> 0,
 		Sample.of(-1.0, -8.0000),
 		Sample.of(-0.9, -6.2460),
@@ -112,7 +112,7 @@ public class TimeSeries {
 		final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
 		System.out.println(tree);
 		MathExpr.REWRITER.rewrite(tree);
-		System.out.println(tree);
+		System.out.println(MathExpr.parse(tree.toString()));
 	}
 
 
