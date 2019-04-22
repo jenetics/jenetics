@@ -24,7 +24,8 @@ import java.util.List;
 
 /**
  * This class holds the actual sample values which are used for the symbolic
- * regression example.
+ * regression example. This class is <em>thread-safe</em> and can be used in a
+ * <em>producer-consumer</em> setup.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -129,20 +130,36 @@ public final class SampleBuffer {
 		}
 	}
 
-	public Samples samples() {
+	/**
+	 * Return the current samples of this buffer.
+	 *
+	 * @apiNote
+	 * This method is thread-safe.
+	 *
+	 * @return the current samples of this buffer
+	 */
+	public List<Sample> samples() {
+		return snapshot();
+	}
+
+	Samples snapshot() {
 		Samples samples = _samples;
 		if (samples == null) {
 			synchronized (_buffer) {
-				final Sample[] temp = new Sample[_size];
-				for (int i = 0; i < _size; ++i) {
-					temp[i] = _buffer[(i + _index)%_capacity];
+				samples = _samples;
+				if (samples == null) {
+					final Sample[] temp = new Sample[_size];
+					for (int i = 0; i < _size; ++i) {
+						temp[i] = _buffer[(i + _index)%_capacity];
+					}
+					samples = new Samples(temp);
+					_samples = samples;
 				}
-				samples = new Samples(temp);
-				_samples = samples;
 			}
 		}
 
 		return samples;
 	}
+
 
 }

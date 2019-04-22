@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Samples extends AbstractList<Sample> {
+final class Samples extends AbstractList<Sample> {
 	private final Sample[] _samples;
 
 	private final double[][] _arguments;

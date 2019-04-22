@@ -21,8 +21,8 @@ package io.jenetics.example.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import io.jenetics.prog.ProgramGene;
 
@@ -58,7 +58,7 @@ public final class Regression {
 		final Samples samples = _samples.get();
 		assert samples != null;
 
-		final double[] calculated = Arrays.stream(samples.arguments())
+		final double[] calculated = Stream.of(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
 			.toArray();
 
@@ -93,7 +93,7 @@ public final class Regression {
 		final Complexity complexity,
 		final SampleBuffer buffer
 	) {
-		return new Regression(buffer::samples, error, complexity);
+		return new Regression(buffer::snapshot, error, complexity);
 	}
 
 }
