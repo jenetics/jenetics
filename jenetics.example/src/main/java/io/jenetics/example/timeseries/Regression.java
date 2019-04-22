@@ -21,8 +21,12 @@ package io.jenetics.example.timeseries;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Problem;
 
 import io.jenetics.prog.ProgramGene;
 
@@ -31,7 +35,9 @@ import io.jenetics.prog.ProgramGene;
  * @version !__version__!
  * @since !__version__!
  */
-public final class Regression {
+public final class Regression
+	implements Problem<ProgramGene<Double>, ProgramGene<Double>, Double>
+{
 
 	private final Supplier<Samples> _samples;
 	private final Error _error;
@@ -45,6 +51,16 @@ public final class Regression {
 		_samples = requireNonNull(samples);
 		_error = requireNonNull(error);
 		_complexity = requireNonNull(complexity);
+	}
+
+	@Override
+	public Function<ProgramGene<Double>, Double> fitness() {
+		return this::error;
+	}
+
+	@Override
+	public Codec<ProgramGene<Double>, ProgramGene<Double>> codec() {
+		return null;
 	}
 
 	/**
