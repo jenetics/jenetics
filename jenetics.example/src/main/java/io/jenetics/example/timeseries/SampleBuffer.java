@@ -19,9 +19,6 @@
  */
 package io.jenetics.example.timeseries;
 
-import static java.util.Collections.unmodifiableList;
-
-import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,47 +33,6 @@ import java.util.stream.IntStream;
  * @since !__version__!
  */
 public final class SampleBuffer {
-
-	/**
-	 * This class contains a snapshot of the current samples in the buffer.
-	 */
-	public static final class Samples extends AbstractList<Sample> {
-		private final List<Sample> _samples;
-
-		private final double[][] _arguments;
-		private final double[] _results;
-
-		Samples(final List<Sample> samples) {
-			_samples = unmodifiableList(samples);
-
-			_arguments = samples.stream()
-				.map(Sample::arguments)
-				.toArray(double[][]::new);
-			_results = samples.stream()
-				.mapToDouble(Sample::result)
-				.toArray();
-		}
-
-		double[][] arguments() {
-			return _arguments;
-		}
-
-		double[] results() {
-			return _results;
-		}
-
-		@Override
-		public Sample get(int index) {
-			return _samples.get(index);
-		}
-
-		@Override
-		public int size() {
-			return _samples.size();
-		}
-	}
-
-
 	private final int _dim;
 	private final int _capacity;
 	private final Sample[] _buffer;

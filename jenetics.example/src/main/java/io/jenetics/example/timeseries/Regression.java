@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import io.jenetics.example.timeseries.SampleBuffer.Samples;
-
 import io.jenetics.prog.ProgramGene;
 
 /**
@@ -33,13 +31,13 @@ import io.jenetics.prog.ProgramGene;
  * @version !__version__!
  * @since !__version__!
  */
-public class Regression {
+public final class Regression {
 
 	private final Supplier<Samples> _samples;
 	private final Error _error;
 	private final Complexity _complexity;
 
-	public Regression(
+	private Regression(
 		final Supplier<Samples> samples,
 		final Error error,
 		final Complexity complexity
@@ -90,6 +88,12 @@ public class Regression {
 		return new Regression(() -> s, error, complexity);
 	}
 
-
+	public static Regression of(
+		final Error error,
+		final Complexity complexity,
+		final SampleBuffer buffer
+	) {
+		return new Regression(buffer::samples, error, complexity);
+	}
 
 }
