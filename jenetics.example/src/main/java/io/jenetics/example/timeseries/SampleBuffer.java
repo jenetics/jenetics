@@ -21,8 +21,6 @@ package io.jenetics.example.timeseries;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * This class holds the actual sample values which are used for the symbolic
@@ -135,11 +133,11 @@ public final class SampleBuffer {
 		Samples samples = _samples;
 		if (samples == null) {
 			synchronized (_buffer) {
-				samples = new Samples(
-					IntStream.range(0, _size)
-						.mapToObj(i -> _buffer[(i + _index)%_capacity])
-						.collect(Collectors.toList())
-				);
+				final Sample[] temp = new Sample[_size];
+				for (int i = 0; i < _size; ++i) {
+					temp[i] = _buffer[(i + _index)%_capacity];
+				}
+				samples = new Samples(temp);
 				_samples = samples;
 			}
 		}

@@ -84,7 +84,7 @@ public final class Regression {
 		final Complexity complexity,
 		final Sample... samples
 	) {
-		final Samples s = new Samples(Arrays.asList(samples));
+		final Samples s = new Samples(samples.clone());
 		return new Regression(() -> s, error, complexity);
 	}
 
