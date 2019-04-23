@@ -47,7 +47,7 @@ public interface Complexity {
 
 	public static double count(final Tree<?, ?> program, final int maxNodes) {
 		final double cc = min(count(program), maxNodes);
-		return sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
+		return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	}
 
 }
