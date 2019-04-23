@@ -30,16 +30,16 @@ public interface Similarity {
 	 * The <a href="https://en.wikipedia.org/wiki/Mean_squared_error">
 	 *     Mean Square Error</a> of
 	 */
-	public static final Similarity MSE = Errors::mse;
+	public static final Similarity MSE = (calculated, expected) -> Errors.mse(expected, calculated);
 
 	/**
 	 * Calculates the error between the expected function values and the
 	 * values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
 	 *
-	 * @param expected the expected function values
 	 * @param calculated the currently calculated function value
+	 * @param expected the expected function values
 	 * @return the error value
 	 */
-	double apply(final double[] expected, final double[] calculated);
+	double apply(final double[] calculated, final double[] expected);
 
 }

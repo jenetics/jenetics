@@ -19,30 +19,30 @@
  */
 package io.jenetics.example.timeseries;
 
-import static java.lang.Math.min;
+import io.jenetics.ext.util.Tree;
 
-import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.Op;
 
 /**
- * Represents a (relative) measure of the program complexity. The complexity
- * is added to the error value for the overall error metric.
+ * Represents a <em>measure</em> for the
  */
 @FunctionalInterface
 public interface Complexity {
+
+	public static Complexity NODE_COUNT = Tree::size;
 
 	/**
 	 * Calculates the complexity of the current program (possibly) relative
 	 * to the actual error value.
 	 *
 	 * @param program the actual program
-	 * @param error the error value calculated with the given program
 	 * @return the measure of the program complexity
 	 */
-	public double apply(final ProgramGene<Double> program, final double error);
+	public double apply(final Tree<Op<Double>, ?> program);
 
 
-	public static Complexity linear(final double cm) {
-		return (program, error) -> error*(1 + min(program.size(), cm)/cm);
+	public static double count(final Tree<?, ?> program, final int maxNodeCount) {
+		return 9;
 	}
 
 }

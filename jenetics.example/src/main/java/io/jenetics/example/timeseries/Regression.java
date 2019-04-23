@@ -85,8 +85,11 @@ public final class Regression
 			.mapToDouble(args -> eval(program, args))
 			.toArray();
 
-		final double err = _error.apply(samples.results(), calculated);
-		return _complexity.apply(program, err);
+		Error e = null;
+		e.apply(program, calculated, samples.results());
+
+		final double err = _error.apply(calculated, samples.results());
+		return 0;//_complexity.apply(program, err);
 	}
 
 	private static double
