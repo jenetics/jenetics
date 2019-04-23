@@ -59,8 +59,12 @@ public class TimeSeries {
 	);
 
 	private static final Regression REGRESSION = Regression.of(
+		Regression.codecOf(
+			OPERATIONS,
+			TERMINALS,
+			5
+		),
 		Error.MSE,
-		Complexity.linear(50),
 		Sample.of(-1.0, -8.0000),
 		Sample.of(-0.9, -6.2460),
 		Sample.of(-0.8, -4.7680),

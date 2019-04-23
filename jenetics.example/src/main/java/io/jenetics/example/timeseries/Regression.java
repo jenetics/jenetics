@@ -25,10 +25,16 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import io.jenetics.Genotype;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.Op;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -111,6 +117,42 @@ public final class Regression
 		final SampleBuffer buffer
 	) {
 		return new Regression(null, error, complexity, buffer::snapshot);
+	}
+
+	public static Regression of(
+		final ISeq<Op<Double>> operations,
+		final ISeq<Op<Double>> terminals,
+		final int depth,
+		final int maxNodeCount,
+		final Error error,
+		final Sample... samples
+	) {
+		return null;
+	}
+
+	public static Regression of(
+		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
+		final Error error,
+		final Sample... samples
+	) {
+		return null;
+	}
+
+	public static Codec<ProgramGene<Double>, ProgramGene<Double>>
+	codecOf(
+		final ISeq<Op<Double>> operations,
+		final ISeq<Op<Double>> terminals,
+		final int treeDepth
+	) {
+		return Codec.of(
+			Genotype.of(ProgramChromosome.of(
+				treeDepth,
+				ch -> ch.getRoot().size() <= 50,
+				operations,
+				terminals
+			)),
+			Genotype::getGene
+		);
 	}
 
 }
