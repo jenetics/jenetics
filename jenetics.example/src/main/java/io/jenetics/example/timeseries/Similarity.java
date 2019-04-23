@@ -19,20 +19,18 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.stream.IntStream;
-
 /**
  * This function calculates the error between the expected function values
  * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
  */
 @FunctionalInterface
-public interface Error {
+public interface Similarity {
 
 	/**
 	 * The <a href="https://en.wikipedia.org/wiki/Mean_squared_error">
 	 *     Mean Square Error</a> of
 	 */
-	public static final Error MSE = Errors::mse;
+	public static final Similarity MSE = Errors::mse;
 
 	/**
 	 * Calculates the error between the expected function values and the

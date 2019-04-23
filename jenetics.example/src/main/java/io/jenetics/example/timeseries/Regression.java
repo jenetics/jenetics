@@ -30,8 +30,6 @@ import io.jenetics.engine.Codec;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 
-import io.jenetics.ext.util.Tree;
-
 import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
@@ -46,13 +44,13 @@ public final class Regression
 {
 
 	private final Codec<ProgramGene<Double>, ProgramGene<Double>> _codec;
-	private final Error _error;
+	private final Similarity _error;
 	private final Complexity _complexity;
 	private final Supplier<Samples> _samples;
 
 	private Regression(
 		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final Error error,
+		final Similarity error,
 		final Complexity complexity,
 		final Supplier<Samples> samples
 	) {
@@ -103,7 +101,7 @@ public final class Regression
 
 
 	public static Regression of(
-		final Error error,
+		final Similarity error,
 		final Complexity complexity,
 		final Sample... samples
 	) {
@@ -112,7 +110,7 @@ public final class Regression
 	}
 
 	public static Regression of(
-		final Error error,
+		final Similarity error,
 		final Complexity complexity,
 		final SampleBuffer buffer
 	) {
@@ -124,7 +122,7 @@ public final class Regression
 		final ISeq<Op<Double>> terminals,
 		final int depth,
 		final int maxNodeCount,
-		final Error error,
+		final Similarity error,
 		final Sample... samples
 	) {
 		return null;
@@ -132,7 +130,7 @@ public final class Regression
 
 	public static Regression of(
 		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final Error error,
+		final Similarity error,
 		final Sample... samples
 	) {
 		return null;
