@@ -44,13 +44,13 @@ public final class Regression
 {
 
 	private final Codec<ProgramGene<Double>, ProgramGene<Double>> _codec;
-	private final Similarity _error;
+	private final LossFunction _error;
 	private final Complexity _complexity;
 	private final Supplier<Samples> _samples;
 
 	private Regression(
 		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final Similarity error,
+		final LossFunction error,
 		final Complexity complexity,
 		final Supplier<Samples> samples
 	) {
@@ -104,7 +104,7 @@ public final class Regression
 
 
 	public static Regression of(
-		final Similarity error,
+		final LossFunction error,
 		final Complexity complexity,
 		final Sample... samples
 	) {
@@ -113,7 +113,7 @@ public final class Regression
 	}
 
 	public static Regression of(
-		final Similarity error,
+		final LossFunction error,
 		final Complexity complexity,
 		final SampleBuffer buffer
 	) {
@@ -125,7 +125,7 @@ public final class Regression
 		final ISeq<Op<Double>> terminals,
 		final int depth,
 		final int maxNodeCount,
-		final Similarity error,
+		final LossFunction error,
 		final Sample... samples
 	) {
 		return null;
@@ -133,7 +133,7 @@ public final class Regression
 
 	public static Regression of(
 		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final Similarity error,
+		final LossFunction error,
 		final Sample... samples
 	) {
 		return null;

@@ -41,7 +41,7 @@ public interface Error {
 	);
 
 
-	public static Error linear(final Similarity similarity, final Complexity complexity) {
+	public static Error linear(final LossFunction similarity, final Complexity complexity) {
 		return (p, c, e) -> {
 			return similarity.apply(c, e)*complexity.apply(p);
 		};
