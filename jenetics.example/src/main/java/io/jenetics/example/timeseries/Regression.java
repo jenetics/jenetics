@@ -39,18 +39,21 @@ public final class Regression
 	implements Problem<ProgramGene<Double>, ProgramGene<Double>, Double>
 {
 
-	private final Supplier<Samples> _samples;
+	private final Codec<ProgramGene<Double>, ProgramGene<Double>> _codec;
 	private final Error _error;
 	private final Complexity _complexity;
+	private final Supplier<Samples> _samples;
 
 	private Regression(
-		final Supplier<Samples> samples,
+		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
 		final Error error,
-		final Complexity complexity
+		final Complexity complexity,
+		final Supplier<Samples> samples
 	) {
-		_samples = requireNonNull(samples);
+		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
 		_complexity = requireNonNull(complexity);
+		_samples = requireNonNull(samples);
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public final class Regression
 
 	@Override
 	public Codec<ProgramGene<Double>, ProgramGene<Double>> codec() {
-		return null;
+		return _codec;
 	}
 
 	/**
@@ -79,9 +82,7 @@ public final class Regression
 			.toArray();
 
 		final double err = _error.apply(samples.results(), calculated);
-		final double cpx = _complexity.apply(program, err);
-
-		return err + cpx;
+		return _complexity.apply(program, err);
 	}
 
 	private static double
@@ -101,7 +102,7 @@ public final class Regression
 		final Sample... samples
 	) {
 		final Samples s = new Samples(samples.clone());
-		return new Regression(() -> s, error, complexity);
+		return new Regression(null, error, complexity, () -> s);
 	}
 
 	public static Regression of(
@@ -109,7 +110,7 @@ public final class Regression
 		final Complexity complexity,
 		final SampleBuffer buffer
 	) {
-		return new Regression(buffer::snapshot, error, complexity);
+		return new Regression(null, error, complexity, buffer::snapshot);
 	}
 
 }

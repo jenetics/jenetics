@@ -45,9 +45,22 @@ import io.jenetics.prog.op.Var;
  */
 public class TimeSeries {
 
+	// Definition of the allowed operations.
+	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL
+	);
+
+	// Definition of the terminals.
+	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+		Var.of("x", 0),
+		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
+	);
+
 	private static final Regression REGRESSION = Regression.of(
 		Error.MSE,
-		(a, b) -> 0,
+		Complexity.linear(50),
 		Sample.of(-1.0, -8.0000),
 		Sample.of(-0.9, -6.2460),
 		Sample.of(-0.8, -4.7680),
@@ -69,19 +82,6 @@ public class TimeSeries {
 		Sample.of(0.8, 0.9280),
 		Sample.of(0.9, 1.3860),
 		Sample.of(1.0, 2.0000)
-	);
-
-	// Definition of the allowed operations.
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL
-	);
-
-	// Definition of the terminals.
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
-		Var.of("x", 0),
-		EphemeralConst.of(() -> (double) RandomRegistry.getRandom().nextInt(10))
 	);
 
 	private static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =

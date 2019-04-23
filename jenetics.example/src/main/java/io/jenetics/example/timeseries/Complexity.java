@@ -19,6 +19,8 @@
  */
 package io.jenetics.example.timeseries;
 
+import static java.lang.Math.min;
+
 import io.jenetics.prog.ProgramGene;
 
 /**
@@ -36,6 +38,11 @@ public interface Complexity {
 	 * @param error the error value calculated with the given program
 	 * @return the measure of the program complexity
 	 */
-	double apply(final ProgramGene<Double> program, final double error);
+	public double apply(final ProgramGene<Double> program, final double error);
+
+
+	public static Complexity linear(final double cm) {
+		return (program, error) -> error*(1 + min(program.size(), cm)/cm);
+	}
 
 }
