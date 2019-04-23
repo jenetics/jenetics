@@ -19,9 +19,6 @@
  */
 package io.jenetics.example.timeseries;
 
-import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
-
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -41,28 +38,16 @@ public interface Error {
 	);
 
 
-	public static Error linear(final LossFunction similarity, final Complexity complexity) {
+	public static Error of(final LossFunction loss) {
+		return (p, c, e) -> loss.apply(c, e);
+	}
+
+	public static Error of(final LossFunction loss, final Complexity complexity) {
 		return (p, c, e) -> {
-			return similarity.apply(c, e)*complexity.apply(p);
+			final double lss = loss.apply(c, e);
+			final double cpx = complexity.apply(p);
+			return lss + lss*cpx;
 		};
-	}
-
-	/**
-	 * e' = e*(1 + c/cm)
-	 *
-	 * @param e ssff
-	 * @param c aaaf
-	 * @param cm asdf
-	 * @return asdf
-	 */
-	public static double linear(final double e, final double c, final double cm) {
-		final double cc = min(c, cm);
-		return e*(1.0 + cc/cm);
-	}
-
-	public static double euclidean(final double e, final double c, final double cm) {
-		final double cc = min(c, cm);
-		return 2*e - e*sqrt(1.0 - (cc*cc)/(cm*cm));
 	}
 
 }

@@ -19,6 +19,9 @@
  */
 package io.jenetics.example.timeseries;
 
+import static java.lang.Math.min;
+import static java.lang.Math.sqrt;
+
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
@@ -29,8 +32,6 @@ import io.jenetics.prog.op.Op;
 @FunctionalInterface
 public interface Complexity {
 
-	public static Complexity NODE_COUNT = Tree::size;
-
 	/**
 	 * Calculates the complexity of the current program (possibly) relative
 	 * to the actual error value.
@@ -40,9 +41,13 @@ public interface Complexity {
 	 */
 	public double apply(final Tree<Op<Double>, ?> program);
 
+	public static double count(final Tree<?, ?> program) {
+		return program.size();
+	}
 
-	public static double count(final Tree<?, ?> program, final int maxNodeCount) {
-		return 9;
+	public static double count(final Tree<?, ?> program, final int maxNodes) {
+		final double cc = min(count(program), maxNodes);
+		return sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	}
 
 }

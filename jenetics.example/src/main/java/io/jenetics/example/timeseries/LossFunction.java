@@ -20,11 +20,14 @@
 package io.jenetics.example.timeseries;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 import static java.lang.String.format;
 
 /**
  * This function calculates the error between the expected function values
  * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
+ *
+ * https://blog.algorithmia.com/introduction-to-loss-functions/
  */
 @FunctionalInterface
 public interface LossFunction {
@@ -37,7 +40,7 @@ public interface LossFunction {
 	 * @param expected the expected function values
 	 * @return the error value
 	 */
-	double apply(final double[] calculated, final double[] expected);
+	public double apply(final double[] calculated, final double[] expected);
 
 	/**
 	 * Mean square error is measured as the average of squared difference
@@ -68,6 +71,10 @@ public interface LossFunction {
 		}
 
 		return result;
+	}
+
+	public static double rmse(final double[] calculated, final double[] expected) {
+		return sqrt(mse(calculated, expected));
 	}
 
 	/**
