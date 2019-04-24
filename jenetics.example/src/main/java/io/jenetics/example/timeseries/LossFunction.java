@@ -23,11 +23,19 @@ import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 import static java.lang.String.format;
 
+// https://blog.algorithmia.com/introduction-to-loss-functions/
+// https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
+
 /**
- * This function calculates the error between the expected function values
- * and the values calculated by the actual {@link io.jenetics.prog.ProgramGene}.
+ * This function evaluates how well an evolved program tree fits the given
+ * sample data set. If the predictions are totally off, the loss function will
+ * output a higher value. If they’re pretty good, it’ll output a lower number.
  *
- * https://blog.algorithmia.com/introduction-to-loss-functions/
+ * @see <a href="https://en.wikipedia.org/wiki/Loss_function">Loss function</a>
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface LossFunction {
@@ -46,7 +54,7 @@ public interface LossFunction {
 	 * Mean square error is measured as the average of squared difference
 	 * between predictions and actual observations.
 	 *
-	 * https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
+	 * @see #rmse(double[], double[])
 	 *
 	 * @param calculated the function values calculated with the current program
 	 *        tree
@@ -73,6 +81,17 @@ public interface LossFunction {
 		return result;
 	}
 
+	/**
+	 * Root mean square error is measured as the average of squared difference
+	 * between predictions and actual observations.
+	 *
+	 * @see #mse(double[], double[])
+	 *
+	 * @param calculated the function values calculated with the current program
+	 *        tree
+	 * @param expected the expected function value as given by the sample points
+	 * @return the mean square error
+	 */
 	public static double rmse(final double[] calculated, final double[] expected) {
 		return sqrt(mse(calculated, expected));
 	}
@@ -80,8 +99,6 @@ public interface LossFunction {
 	/**
 	 * Mean absolute error is measured as the average of sum of absolute
 	 * differences between predictions and actual observations.
-	 *
-	 * https://towardsdatascience.com/common-loss-functions-in-machine-learning-46af0ffc4d23
 	 *
 	 * @param calculated the function values calculated with the current program
 	 *        tree
