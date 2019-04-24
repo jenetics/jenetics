@@ -19,26 +19,27 @@
  */
 package io.jenetics.example.timeseries;
 
-import io.jenetics.Genotype;
-import io.jenetics.engine.Codec;
-import io.jenetics.engine.Problem;
-import io.jenetics.ext.util.Tree;
-import io.jenetics.prog.ProgramChromosome;
-import io.jenetics.prog.ProgramGene;
-import io.jenetics.prog.op.Op;
-import io.jenetics.prog.op.Program;
-import io.jenetics.util.ISeq;
+import static java.lang.Math.pow;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.lang.Math.pow;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
+import io.jenetics.Genotype;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Problem;
+import io.jenetics.util.ISeq;
+
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.ProgramChromosome;
+import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 
 /**
  * This class implements a <em>symbolic</em> regression problem.
@@ -53,7 +54,7 @@ public final class Regression
 
 	private final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> _codec;
 	private final Error _error;
-	private final Supplier<List<Sample>> _samples;
+	private final Supplier<Samples> _samples;
 
 	/**
 	 * Create a new <em>symbolic</em> regression problem with the given data.
@@ -67,7 +68,7 @@ public final class Regression
 	private Regression(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
-		final Supplier<List<Sample>> samples
+		final Supplier<Samples> samples
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
@@ -91,10 +92,7 @@ public final class Regression
 	 * @return the overall error value of the program
 	 */
 	public double error(final Tree<Op<Double>, ?> program) {
-		final List<Sample> list = _samples.get();
-		final Samples samples = list instanceof Samples
-			? (Samples)list
-			: new Samples(list.toArray(new Sample[0]));
+		final Samples samples = _samples.get();
 
 		final double[] calculated = Stream.of(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
