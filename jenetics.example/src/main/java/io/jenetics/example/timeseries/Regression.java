@@ -19,20 +19,22 @@
  */
 package io.jenetics.example.timeseries;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.Genotype;
+import io.jenetics.engine.Codec;
+import io.jenetics.engine.Problem;
+import io.jenetics.ext.util.Tree;
+import io.jenetics.prog.ProgramChromosome;
+import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
+import io.jenetics.util.ISeq;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import io.jenetics.Genotype;
-import io.jenetics.engine.Codec;
-import io.jenetics.engine.Problem;
-import io.jenetics.util.ISeq;
-
-import io.jenetics.prog.ProgramChromosome;
-import io.jenetics.prog.ProgramGene;
-import io.jenetics.prog.op.Op;
+import static java.lang.Math.pow;
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -40,33 +42,30 @@ import io.jenetics.prog.op.Op;
  * @since !__version__!
  */
 public final class Regression
-	implements Problem<ProgramGene<Double>, ProgramGene<Double>, Double>
+	implements Problem<Tree<Op<Double>, ?>, ProgramGene<Double>, Double>
 {
 
-	private final Codec<ProgramGene<Double>, ProgramGene<Double>> _codec;
-	private final LossFunction _error;
-	private final Complexity _complexity;
+	private final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> _codec;
+	private final Error _error;
 	private final Supplier<Samples> _samples;
 
-	private Regression(
-		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final LossFunction error,
-		final Complexity complexity,
+	public Regression(
+		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
+		final Error error,
 		final Supplier<Samples> samples
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
-		_complexity = requireNonNull(complexity);
 		_samples = requireNonNull(samples);
 	}
 
 	@Override
-	public Function<ProgramGene<Double>, Double> fitness() {
+	public Function<Tree<Op<Double>, ?>, Double> fitness() {
 		return this::error;
 	}
 
 	@Override
-	public Codec<ProgramGene<Double>, ProgramGene<Double>> codec() {
+	public Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec() {
 		return _codec;
 	}
 
@@ -77,7 +76,7 @@ public final class Regression
 	 * @return the overall error value of the program, including its complexity
 	 *         penalty
 	 */
-	public double error(final ProgramGene<Double> program) {
+	public double error(final Tree<Op<Double>, ?> program) {
 		final Samples samples = _samples.get();
 		assert samples != null;
 
@@ -85,66 +84,66 @@ public final class Regression
 			.mapToDouble(args -> eval(program, args))
 			.toArray();
 
-		Error e = null;
-		e.apply(program, calculated, samples.results());
-
-		final double err = _error.apply(calculated, samples.results());
-		return 0;//_complexity.apply(program, err);
+		return _error.apply(program, calculated, samples.results());
 	}
 
 	private static double
-	eval(final ProgramGene<Double> program, final double[] args) {
+	eval(final Tree<Op<Double>, ?> program, final double[] args) {
 		final Double[] value = new Double[args.length];
 		for (int i = 0; i < args.length; ++i) {
 			value[i] = args[i];
 		}
 
-		return program.eval(value);
+		return Program.eval(program, value);
 	}
 
 
 	public static Regression of(
-		final LossFunction error,
-		final Complexity complexity,
+		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
+		final Error error,
 		final Sample... samples
 	) {
 		final Samples s = new Samples(samples.clone());
-		return new Regression(null, error, complexity, () -> s);
+		return new Regression(codec, error, () -> s);
 	}
 
-	public static Regression of(
-		final LossFunction error,
-		final Complexity complexity,
-		final SampleBuffer buffer
-	) {
-		return new Regression(null, error, complexity, buffer::snapshot);
-	}
+//	public static Regression of(
+//		final LossFunction error,
+//		final Complexity complexity,
+//		final SampleBuffer buffer
+//	) {
+//		return new Regression(null, error, complexity, buffer::snapshot);
+//	}
+//
+//	public static Regression of(
+//		final ISeq<Op<Double>> operations,
+//		final ISeq<Op<Double>> terminals,
+//		final int depth,
+//		final int maxNodeCount,
+//		final LossFunction error,
+//		final Sample... samples
+//	) {
+//		return null;
+//	}
+//
+//	public static Regression of(
+//		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
+//		final LossFunction error,
+//		final Sample... samples
+//	) {
+//		return null;
+//	}
+//
 
-	public static Regression of(
-		final ISeq<Op<Double>> operations,
-		final ISeq<Op<Double>> terminals,
-		final int depth,
-		final int maxNodeCount,
-		final LossFunction error,
-		final Sample... samples
-	) {
-		return null;
-	}
-
-	public static Regression of(
-		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-		final LossFunction error,
-		final Sample... samples
-	) {
-		return null;
-	}
-
-	public static Codec<ProgramGene<Double>, ProgramGene<Double>>
+	public static Codec<Tree<Op<Double>, ?>, ProgramGene<Double>>
 	codecOf(
 		final ISeq<Op<Double>> operations,
 		final ISeq<Op<Double>> terminals,
 		final int treeDepth
 	) {
+		final int min = 2*treeDepth + 1;
+		final int max = (int)pow(2, treeDepth + 1) - 1;
+
 		return Codec.of(
 			Genotype.of(ProgramChromosome.of(
 				treeDepth,
