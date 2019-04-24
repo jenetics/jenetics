@@ -84,6 +84,8 @@ public interface Complexity {
 	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	 * }</pre>
 	 *
+	 * @see #ofMaxNodeCount(int)
+	 *
 	 * @param program the program used for the complexity measure
 	 * @param maxNodes the maximal expected node count
 	 * @return the complexity measure of the given {@code program}
