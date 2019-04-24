@@ -27,7 +27,16 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.op.Op;
 
 /**
- * Represents a <em>measure</em> for the
+ * Represents a complexity <em>measure</em> if a given program tree. The
+ * program complexity ensures, that simpler programs with similar loss function
+ * values are preferred.
+ *
+ * @see LossFunction
+ * @see Error
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
 @FunctionalInterface
 public interface Complexity {
@@ -39,14 +48,35 @@ public interface Complexity {
 	 * @param program the actual program
 	 * @return the measure of the program complexity
 	 */
-	public double apply(final Tree<Op<Double>, ?> program);
+	public double apply(final Tree<? extends Op<Double>, ?> program);
 
-	public static double count(final Tree<?, ?> program) {
-		return program.size();
-	}
 
+	/**
+	 * This method uses the node count of a program tree for calculating its
+	 * complexity. The returned node count <em>measure</em> is within the range
+	 * of {@code [0, 1]}. If the program contains only one node, zero is returned.
+	 * If the node count is bigger or equal {@code maxNodes}, one is returned.
+	 * <p>
+	 * The complexity is calculated in the following way:
+	 * <pre>{@code
+	 * final double cc = min(program.size() - 1, maxNodes);
+	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
+	 * }</pre>
+	 *
+	 * @param program the program used for the complexity measure
+	 * @param maxNodes the maximal expected node count
+	 * @return the complexity measure of the given {@code program}
+	 * @throws NullPointerException if the given {@code program} is {@code null}
+	 * @throws IllegalArgumentException if {@code maxNodes} is smaller than one
+	 */
 	public static double count(final Tree<?, ?> program, final int maxNodes) {
-		final double cc = min(count(program), maxNodes);
+		if (maxNodes < 1) {
+			throw new IllegalArgumentException(
+				"Max node count must be greater than zero: " + maxNodes
+			);
+		}
+
+		final double cc = min(program.size() - 1, maxNodes);
 		return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	}
 
