@@ -127,6 +127,16 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @see #level()
 	 *
+	 * @implNote
+	 * The implementation of this method follows the specification of the
+	 * {@link javax.swing.tree.DefaultMutableTreeNode#getDepth} method. If you
+	 * following the <a href="https://en.wikipedia.org/wiki/Tree_%28data_structure%29">
+	 * literature</a>, this method actually returns the <em>height</em> of the
+	 * tree node, where the height of a node is the length of the longest
+	 * downward path to a leaf from that node. The height of the root is the
+	 * height of the tree. On the other hand, the depth of a node is the length
+	 * of the path to its root (i.e., its root path).
+	 *
 	 * @return the depth of the tree whose root is this node
 	 */
 	public default int depth() {
