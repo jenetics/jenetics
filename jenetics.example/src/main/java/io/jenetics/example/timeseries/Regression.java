@@ -29,14 +29,20 @@ import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 import io.jenetics.util.ISeq;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 /**
+ * This class implements a <em>symbolic</em> regression problem.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -47,12 +53,21 @@ public final class Regression
 
 	private final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> _codec;
 	private final Error _error;
-	private final Supplier<Samples> _samples;
+	private final Supplier<List<Sample>> _samples;
 
-	public Regression(
+	/**
+	 * Create a new <em>symbolic</em> regression problem with the given data.
+	 *
+	 * @param codec the codec used for the for the problem
+	 * @param error the error function
+	 * @param samples the sample values used for finding a regression. Since
+	 *        the samples are given via a <em>supplier</em> they can be changed
+	 *        during the evolution process
+	 */
+	private Regression(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
-		final Supplier<Samples> samples
+		final Supplier<List<Sample>> samples
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
@@ -73,12 +88,13 @@ public final class Regression
 	 * Calculates the actual error for the given {@code program}.
 	 *
 	 * @param program the program to calculate the error value for
-	 * @return the overall error value of the program, including its complexity
-	 *         penalty
+	 * @return the overall error value of the program
 	 */
 	public double error(final Tree<Op<Double>, ?> program) {
-		final Samples samples = _samples.get();
-		assert samples != null;
+		final List<Sample> list = _samples.get();
+		final Samples samples = list instanceof Samples
+			? (Samples)list
+			: new Samples(list.toArray(new Sample[0]));
 
 		final double[] calculated = Stream.of(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
@@ -97,7 +113,17 @@ public final class Regression
 		return Program.eval(program, value);
 	}
 
-
+	/**
+	 * Create a new regression problem instance with the given parameters.
+	 *
+	 * @see #codecOf(ISeq, ISeq, int)
+	 * @see #codecOf(ISeq, ISeq, int, Predicate)
+	 *
+	 * @param codec the problem codec to use
+	 * @param error the error function
+	 * @param samples the sample points used for regression analysis
+	 * @return a new regression problem instance
+	 */
 	public static Regression of(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
@@ -107,51 +133,104 @@ public final class Regression
 		return new Regression(codec, error, () -> s);
 	}
 
-//	public static Regression of(
-//		final LossFunction error,
-//		final Complexity complexity,
-//		final SampleBuffer buffer
-//	) {
-//		return new Regression(null, error, complexity, buffer::snapshot);
-//	}
-//
-//	public static Regression of(
-//		final ISeq<Op<Double>> operations,
-//		final ISeq<Op<Double>> terminals,
-//		final int depth,
-//		final int maxNodeCount,
-//		final LossFunction error,
-//		final Sample... samples
-//	) {
-//		return null;
-//	}
-//
-//	public static Regression of(
-//		final Codec<ProgramGene<Double>, ProgramGene<Double>> codec,
-//		final LossFunction error,
-//		final Sample... samples
-//	) {
-//		return null;
-//	}
-//
+	/**
+	 * Create a new regression problem instance with the given parameters.
+	 *
+	 * @see #codecOf(ISeq, ISeq, int)
+	 * @see #codecOf(ISeq, ISeq, int, Predicate)
+	 *
+	 * @param codec the problem codec to use
+	 * @param error the error function
+	 * @param buffer the (mutable) sample points used for regression analysis
+	 * @return a new regression problem instance
+	 */
+	public static Regression of(
+		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
+		final Error error,
+		final SampleBuffer buffer
+	) {
+		return new Regression(codec, error, buffer::snapshot);
+	}
 
+
+	/* *************************************************************************
+	 * Codec factory methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new <em>codec</em>, usable for <em>symbolic regression</em>
+	 * problems, with the given parameters.
+	 *
+	 * @param operations the operations used for the symbolic regression
+	 * @param terminals the terminal operations of the program tree
+	 * @param depth the maximal tree depth (height) of newly created program
+	 *        trees
+	 * @param validator the chromosome validator. A typical validator would
+	 *        check the size of the tree and if the tree is too large, mark it
+	 *        at <em>invalid</em>. The <em>validator</em> may be {@code null}.
+	 * @return a new codec, usable for symbolic regression
+	 * @throws IllegalArgumentException if the tree {@code depth} is not in the
+	 *         valid range of {@code [0, 30)}
+	 * @throws NullPointerException if the {@code operations} or {@code terminals}
+	 *         are {@code null}
+	 */
 	public static Codec<Tree<Op<Double>, ?>, ProgramGene<Double>>
 	codecOf(
 		final ISeq<Op<Double>> operations,
 		final ISeq<Op<Double>> terminals,
-		final int treeDepth
+		final int depth,
+		final Predicate<? super ProgramChromosome<Double>> validator
 	) {
-		final int min = 2*treeDepth + 1;
-		final int max = (int)pow(2, treeDepth + 1) - 1;
+		if (depth >= 30 || depth < 0) {
+			throw new IllegalArgumentException(format(
+				"Tree depth out of range [0, 30): %d", depth
+			));
+		}
 
 		return Codec.of(
 			Genotype.of(ProgramChromosome.of(
-				treeDepth,
-				ch -> ch.getRoot().size() <= 50,
+				depth,
+				validator,
 				operations,
 				terminals
 			)),
 			Genotype::getGene
+		);
+	}
+
+	/**
+	 * Create a new <em>codec</em>, usable for <em>symbolic regression</em>
+	 * problems, with the given parameters.
+	 *
+	 * @param operations the operations used for the symbolic regression
+	 * @param terminals the terminal operations of the program tree
+	 * @param depth the maximal tree depth (height) of newly created program
+	 *        trees
+	 * @return a new codec, usable for symbolic regression
+	 * @throws IllegalArgumentException if the tree {@code depth} is not in the
+	 *         valid range of {@code [0, 30)}
+	 * @throws NullPointerException if the {@code operations} or {@code terminals}
+	 *         are {@code null}
+	 */
+	public static Codec<Tree<Op<Double>, ?>, ProgramGene<Double>>
+	codecOf(
+		final ISeq<Op<Double>> operations,
+		final ISeq<Op<Double>> terminals,
+		final int depth
+	) {
+		// Average arity of tree nodes.
+		final double k = operations.stream()
+			.collect(Collectors.averagingDouble(Op::arity));
+
+		// The average node count between treeDepth and treeDepth + 1.
+		// 2^(k + 1) - 1 + 2^(k + 2) - 1)/2 == 3*2^k - 1
+		final int max = (int)(3*pow(k, depth) - 1);
+
+		return codecOf(
+			operations,
+			terminals,
+			depth,
+			ch -> ch.getRoot().size() <= max
 		);
 	}
 
