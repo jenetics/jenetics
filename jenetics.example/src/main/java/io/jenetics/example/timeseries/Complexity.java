@@ -50,6 +50,27 @@ public interface Complexity {
 	 */
 	public double apply(final Tree<? extends Op<Double>, ?> program);
 
+	/**
+	 * Return a complexity measure which counts the number of nodes of a program.
+	 *
+	 * @see #count(Tree, int)
+	 *
+	 * @param count the maximal node count. The returned complexity will be one
+	 *        if the program node count is greater or equal the given
+	 *        {@code count}
+	 * @return a program node count complexity measure
+	 * @throws IllegalArgumentException if the max node {@code count} is smaller
+	 *         than one
+	 */
+	public static Complexity ofMaxNodeCount(final int count) {
+		if (count < 1) {
+			throw new IllegalArgumentException(
+				"Max node count must be greater than zero: " + count
+			);
+		}
+
+		return p -> count(p, count);
+	}
 
 	/**
 	 * This method uses the node count of a program tree for calculating its
