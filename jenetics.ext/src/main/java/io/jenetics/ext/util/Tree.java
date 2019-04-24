@@ -125,6 +125,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * more expensive than {@link #level()} because it must effectively traverse
 	 * the entire tree rooted at {@code this} node.
 	 *
+	 * @see #level()
+	 *
 	 * @return the depth of the tree whose root is this node
 	 */
 	public default int depth() {
