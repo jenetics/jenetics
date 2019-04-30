@@ -33,12 +33,12 @@ import java.util.List;
  */
 public final class SampleBuffer {
 	private final int _dim;
-	private final int _capacity;
 	private final Sample[] _buffer;
 
 	private int _index = 0;
 	private int _size = 0;
 	private volatile Samples _samples;
+
 
 	/**
 	 * Create a new sample object with the given dimension of the function
@@ -49,8 +49,7 @@ public final class SampleBuffer {
 	 */
 	public SampleBuffer(final int dim, final int capacity) {
 		_dim = dim;
-		_capacity = capacity;
-		_buffer = new Sample[_capacity];
+		_buffer = new Sample[capacity];
 	}
 
 	/**
@@ -65,8 +64,8 @@ public final class SampleBuffer {
 
 		synchronized (_buffer) {
 			_buffer[_index] = sample;
-			_index = (_index + 1)%_capacity;
-			_size = Math.max(_size + 1, _capacity);
+			_index = (_index + 1)%_buffer.length;
+			_size = Math.max(_size + 1, _buffer.length);
 			_samples = null;
 		}
 	}
@@ -84,8 +83,8 @@ public final class SampleBuffer {
 		synchronized (_buffer) {
 			for (Sample sample : samples) {
 				_buffer[_index] = sample;
-				_index = (_index + 1)%_capacity;
-				_size = Math.max(_size + 1, _capacity);
+				_index = (_index + 1)%_buffer.length;
+				_size = Math.max(_size + 1, _buffer.length);
 				_samples = null;
 			}
 		}
@@ -97,7 +96,7 @@ public final class SampleBuffer {
 	 * @return the capacity of the sample buffer
 	 */
 	public int capacity() {
-		return _capacity;
+		return _buffer.length;
 	}
 
 	/**
@@ -151,7 +150,7 @@ public final class SampleBuffer {
 					final Sample[] temp = new Sample[_size];
 					final int start = (_buffer.length + _index - _size)%_buffer.length;
 					for (int i = 0; i < _size; ++i) {
-						temp[i] = _buffer[(i + start)%_capacity];
+						temp[i] = _buffer[(i + start)%_buffer.length];
 					}
 					samples = new Samples(temp);
 					_samples = samples;

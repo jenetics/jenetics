@@ -23,14 +23,19 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
 import io.jenetics.engine.Codec;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
 
@@ -52,27 +57,47 @@ public final class Regression
 	implements Problem<Tree<Op<Double>, ?>, ProgramGene<Double>, Double>
 {
 
+	private static final class PhenotypeReset
+		implements UnaryOperator<EvolutionResult<ProgramGene<Double>, Double>>
+	{
+		private final AtomicBoolean _reset = new AtomicBoolean(false);
+
+		@Override
+		public EvolutionResult<ProgramGene<Double>, Double>
+		apply(final EvolutionResult<ProgramGene<Double>, Double> result) {
+			final boolean reset = _reset.compareAndSet(true, false);
+			return reset ? result.map(Phenotype::reset) : result;
+		}
+
+		void reset() {
+			_reset.set(true);
+		}
+	}
+
 	private final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> _codec;
 	private final Error _error;
-	private final Supplier<Samples> _samples;
+	private final SampleBuffer _buffer;
+
+
+	private final PhenotypeReset _reevaluateOnUpdate = new PhenotypeReset();
 
 	/**
 	 * Create a new <em>symbolic</em> regression problem with the given data.
 	 *
 	 * @param codec the codec used for the for the problem
 	 * @param error the error function
-	 * @param samples the sample values used for finding a regression. Since
+	 * @param buffer the sample values used for finding a regression. Since
 	 *        the samples are given via a <em>supplier</em> they can be changed
 	 *        during the evolution process
 	 */
 	private Regression(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
-		final Supplier<Samples> samples
+		final SampleBuffer buffer
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
-		_samples = requireNonNull(samples);
+		_buffer = requireNonNull(buffer);
 	}
 
 	@Override
@@ -92,7 +117,7 @@ public final class Regression
 	 * @return the overall error value of the program
 	 */
 	public double error(final Tree<Op<Double>, ?> program) {
-		final Samples samples = _samples.get();
+		final Samples samples = _buffer.snapshot();
 
 		final double[] calculated = Stream.of(samples.arguments())
 			.mapToDouble(args -> eval(program, args))
@@ -111,6 +136,21 @@ public final class Regression
 		return Program.eval(program, value);
 	}
 
+	public UnaryOperator<EvolutionResult<ProgramGene<Double>, Double>>
+	reevaluateOnUpdate() {
+		return _reevaluateOnUpdate;
+	}
+
+	public <C extends Comparable<? super C>> Function<C, Stream<C>>
+	toStrictlyImproving() {
+		return null;
+	}
+
+
+	/* *************************************************************************
+	 * Factory methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new regression problem instance with the given parameters.
 	 *
@@ -127,8 +167,20 @@ public final class Regression
 		final Error error,
 		final Sample... samples
 	) {
-		final Samples s = new Samples(samples.clone());
-		return new Regression(codec, error, () -> s);
+		if (samples.length < 1) {
+			throw new IllegalArgumentException(format(
+				"Sample size must be greater than one: %s",
+				samples.length
+			));
+		}
+
+		final SampleBuffer buffer = new SampleBuffer(
+			samples[0].arity(),
+			samples.length
+		);
+		buffer.addAll(Arrays.asList(samples));
+
+		return new Regression(codec, error, buffer);
 	}
 
 	/**
@@ -147,7 +199,7 @@ public final class Regression
 		final Error error,
 		final SampleBuffer buffer
 	) {
-		return new Regression(codec, error, buffer::snapshot);
+		return new Regression(codec, error, buffer);
 	}
 
 

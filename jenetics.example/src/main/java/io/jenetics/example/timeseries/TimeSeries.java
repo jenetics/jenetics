@@ -89,6 +89,7 @@ public class TimeSeries {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(REGRESSION)
 			.minimizing()
+			.mapping(REGRESSION.reevaluateOnUpdate())
 			.alterers(
 				new SingleNodeCrossover<>(),
 				new Mutator<>())
@@ -96,6 +97,7 @@ public class TimeSeries {
 
 		final ProgramGene<Double> program = engine.stream()
 			.limit(3000)
+			.flatMap(REGRESSION.toStrictlyImproving())
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
