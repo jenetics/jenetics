@@ -955,6 +955,26 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	}
 
 	/**
+	 * Returns a {@code Collector} that accumulates the last {@code n} input
+	 * elements into a new {@code Seq}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param maxSize the maximal size of the collected sequence
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects maximal {@code maxSize} of the
+	 *         input elements into an {@code ISeq}, in encounter order
+	 */
+	public static <T> Collector<T, ?, Seq<T>> toSeq(final int maxSize) {
+		return Collector.of(
+			() -> new Buffer<T>(maxSize),
+			Buffer::add,
+			(left, right) -> { left.addAll(right.toSeq()); return left; },
+			Buffer::toSeq
+		);
+	}
+
+	/**
 	 * Create a new {@code Seq} from the given values.
 	 *
 	 * @param <T> the element type
