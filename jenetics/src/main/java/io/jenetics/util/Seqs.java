@@ -53,13 +53,20 @@ final class Seqs {
 				"Max size is negative: %d", maxSize
 			));
 		}
-
-		return Collector.of(
-			() -> new Buffer<T>(maxSize),
-			Buffer::add,
-			(left, right) -> { left.addAll(right.toSeq()); return left; },
-			finisher
-		);
+		return maxSize > 0
+			? Collector.of(
+				() -> new Buffer<T>(maxSize),
+				Buffer::add,
+				(left, right) -> { left.addAll(right.toSeq()); return left; },
+				finisher)
+			: Collector.of(
+				() -> null,
+				(buffer, value) -> {},
+				(left, right) -> left,
+				buffer -> {
+					@SuppressWarnings("unchecked") final S seq = (S) Seq.empty();
+					return seq;
+				});
 	}
 
 }

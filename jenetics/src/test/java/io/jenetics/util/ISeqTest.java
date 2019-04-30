@@ -122,4 +122,16 @@ public class ISeqTest {
 		);
 	}
 
+	@Test
+	public void collectEmptySeq() {
+		final ISeq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(ISeq.toISeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(ISeq.toISeq(0)),
+			ISeq.empty()
+		);
+	}
+
 }

@@ -206,4 +206,16 @@ public class SeqTest {
 		);
 	}
 
+	@Test
+	public void collectEmptySeq() {
+		final Seq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(Seq.toSeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(Seq.toSeq(0)),
+			Seq.empty()
+		);
+	}
+
 }
