@@ -26,8 +26,8 @@ import java.util.stream.Collector;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 final class Seqs {
 	private Seqs() {
@@ -37,7 +37,7 @@ final class Seqs {
 	 * Returns a {@code Collector} that accumulates the last {@code n} input
 	 * elements into a new {@code ISeq}.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param maxSize the maximal size of the collected sequence
 	 * @param <T> the type of the input elements

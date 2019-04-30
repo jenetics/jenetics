@@ -958,7 +958,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * Returns a {@code Collector} that accumulates the last {@code n} input
 	 * elements into a new {@code Seq}.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param maxSize the maximal size of the collected sequence
 	 * @param <T> the type of the input elements

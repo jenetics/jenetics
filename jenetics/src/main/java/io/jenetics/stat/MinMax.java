@@ -293,7 +293,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * // [6,47,65,78,96,96,99]
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
@@ -320,7 +320,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * // [45,32,15,12,3,1]
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @param <C> the comparable type
 	 * @return a new flat-mapper function
