@@ -188,6 +188,15 @@ public interface ISeq<T>
 		);
 	}
 
+	public static <T> Collector<T, ?, ISeq<T>> toISeq(final int maxSize) {
+		return Collector.of(
+			() -> new Buffer<T>(maxSize),
+			Buffer::add,
+			(left, right) -> { left.addAll(right.toSeq()); return left; },
+			Buffer::toSeq
+		);
+	}
+
 	/**
 	 * Create a new {@code ISeq} from the given values.
 	 *
