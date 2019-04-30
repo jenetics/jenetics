@@ -964,14 +964,10 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * @param <T> the type of the input elements
 	 * @return a {@code Collector} which collects maximal {@code maxSize} of the
 	 *         input elements into an {@code ISeq}, in encounter order
+	 * @throws IllegalArgumentException if the {@code maxSize} is negative
 	 */
 	public static <T> Collector<T, ?, Seq<T>> toSeq(final int maxSize) {
-		return Collector.of(
-			() -> new Buffer<T>(maxSize),
-			Buffer::add,
-			(left, right) -> { left.addAll(right.toSeq()); return left; },
-			Buffer::toSeq
-		);
+		return Seqs.toSeq(maxSize, Buffer::toSeq);
 	}
 
 	/**
