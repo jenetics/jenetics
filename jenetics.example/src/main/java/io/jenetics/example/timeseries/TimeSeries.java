@@ -19,9 +19,7 @@
  */
 package io.jenetics.example.timeseries;
 
-import io.jenetics.Genotype;
 import io.jenetics.Mutator;
-import io.jenetics.engine.Codec;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.ISeq;
@@ -30,7 +28,6 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathExpr;
@@ -88,20 +85,9 @@ public class TimeSeries {
 		Sample.of(1.0, 2.0000)
 	);
 
-	private static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
-		Codec.of(
-			Genotype.of(ProgramChromosome.of(
-				5,
-				ch -> ch.getRoot().size() <= 50,
-				OPERATIONS,
-				TERMINALS
-			)),
-			Genotype::getGene
-		);
-
 	public static void main(final String[] args) {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(REGRESSION::error, CODEC)
+			.builder(REGRESSION)
 			.minimizing()
 			.alterers(
 				new SingleNodeCrossover<>(),
