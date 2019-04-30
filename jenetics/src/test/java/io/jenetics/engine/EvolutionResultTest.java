@@ -39,6 +39,7 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.stat.MinMax;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -328,6 +329,18 @@ public class EvolutionResultTest
 			result.getPopulation().size(),
 			unified.getPopulation().size()
 		);
+	}
+
+	@Test
+	public void toStrictlyImprovingResults() {
+		final ISeq<Integer> results = new Random()
+			.ints(100, 0, 100)
+			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
+			.flatMap(MinMax.toStrictlyIncreasing())
+			.map(EvolutionResult::getBestFitness)
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(results.isSorted());
 	}
 
 }
