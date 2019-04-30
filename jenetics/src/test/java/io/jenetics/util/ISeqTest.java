@@ -110,4 +110,16 @@ public class ISeqTest {
 		Assert.assertSame(ISeq.empty().copy(), MSeq.empty());
 	}
 
+	@Test
+	public void collectLimitedSeq() {
+		final ISeq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(ISeq.toISeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(ISeq.toISeq(25)),
+			seq.subSeq(75)
+		);
+	}
+
 }

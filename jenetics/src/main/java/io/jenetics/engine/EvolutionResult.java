@@ -331,6 +331,7 @@ public final class EvolutionResult<
 	 *  Some static collector/factory methods.
 	 * ************************************************************************/
 
+
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
 	 *
@@ -598,6 +599,13 @@ public final class EvolutionResult<
 			getAlterCount()
 		);
 	}
+
+
+	/* *************************************************************************
+	 * Some collectors and mapping functions.
+	 * ************************************************************************/
+
+
 
 	/**
 	 * Return a mapping function, which removes duplicate individuals from the
