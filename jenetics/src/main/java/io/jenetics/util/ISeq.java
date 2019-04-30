@@ -188,6 +188,17 @@ public interface ISeq<T>
 		);
 	}
 
+	/**
+	 * Returns a {@code Collector} that accumulates the last {@code n} input
+	 * elements into a new {@code ISeq}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param maxSize the maximal size of the collected sequence
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects maximal {@code maxSize} of the
+	 *         input elements into an {@code ISeq}, in encounter order
+	 */
 	public static <T> Collector<T, ?, ISeq<T>> toISeq(final int maxSize) {
 		return Collector.of(
 			() -> new Buffer<T>(maxSize),
