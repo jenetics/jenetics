@@ -149,8 +149,9 @@ public final class SampleBuffer {
 				samples = _samples;
 				if (samples == null) {
 					final Sample[] temp = new Sample[_size];
+					final int start = (_buffer.length + _index - _size)%_buffer.length;
 					for (int i = 0; i < _size; ++i) {
-						temp[i] = _buffer[(i + _index)%_capacity];
+						temp[i] = _buffer[(i + start)%_capacity];
 					}
 					samples = new Samples(temp);
 					_samples = samples;
