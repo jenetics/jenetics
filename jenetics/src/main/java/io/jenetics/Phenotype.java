@@ -255,6 +255,21 @@ public final class Phenotype<
 	}
 
 	/**
+	 * Resets the fitness value of {@code this} phenotype and returns a new
+	 * phenotype instance if this phenotype has already been evaluated. If the
+	 * phenotype is not evaluated, {@code this} instance is returned.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a (new) phenotype with an unset fitness value
+	 */
+	public Phenotype<G, C> reset() {
+		return isEvaluated()
+			? Phenotype.of(_genotype, _generation)
+			: this;
+	}
+
+	/**
 	 * Return a new {@code Phenotype} object with the given <em>raw</em> fitness
 	 * value. The returned phenotype is automatically <em>evaluated</em>:
 	 * {@code isEvaluated() == true}
