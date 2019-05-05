@@ -36753,6 +36753,8 @@ jenetics.ext
 \emph default
 -standard GA operations and data types.
  It also contains classes for solving multi-objective problems (MOEA).
+ Additional classes for defining tree rewrite systems are also part of this
+ module.
 \end_layout
 
 \begin_layout Itemize
