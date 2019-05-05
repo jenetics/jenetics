@@ -26341,14 +26341,41 @@ Rewriting
 \begin_layout Standard
 Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
  trees (tree structured data) into other trees by applying rewriting rules.
- Rewriting can be non-deterministic.
- One rule to rewrite a term could be applied in many different ways to that
- term, or more than one rule could be applicable.
- Rewriting systems then do not provide an algorithm for changing one term
- to another, but a set of possible rule applications.
- When combined with an appropriate algorithm, however, rewrite systems can
- be viewed as computer programs, and several theorem provers and declarative
- programming languages are based on term rewriting.
+ Rewriting trees is not necessarily deterministic.
+ One rewrite rule can be applied in many different ways to that term, or
+ more than one rule will be applicable to a tree node.
+ The rewriting system implementation in Jenetics is currently used for simplifyi
+ng program trees, which are evolved in genetic programming problems (see
+ section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Program-pruning"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ A good introduction in tree/term rewriting systems can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "baader_nipkow_1998"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Definition*
@@ -31653,24 +31680,18 @@ height "1pt"
 
 \begin_layout Subsection
 Program pruning
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-pruning"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!Program pruning
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \end_inset
@@ -31686,11 +31707,59 @@ When you are solving symbolic regression problems, the mathematical expression
  With the 
 \family typewriter
 Math\SpecialChar softhyphen
-Tree\SpecialChar softhyphen
-Prune\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
 Alterer
 \family default
  you are able to simplify some portion of the population in each generation.
+ The rewrite alterer uses the 
+\emph on
+default
+\emph default
+ 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Rewriting"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a detailed description of the implemented tree rewrite system.
+\end_layout
+
+\end_inset
+
+
+\family default
+ defined by the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.RE\SpecialChar softhyphen
+WRITER
+\family default
+ field.
+ It is also possible to create a 
+\family typewriter
+Math\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Alterer
+\family default
+ instance with your own 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -31731,7 +31800,7 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 
 \begin_layout Plain Layout
 
-        new MathTreePruneAlterer<>(0.5))
+        new MathRewriteAlterer<>(0.5))
 \end_layout
 
 \begin_layout Plain Layout
@@ -31751,11 +31820,10 @@ In the example above, half of the expression trees are simplified in each
 \family typewriter
 Math\SpecialChar softhyphen
 Expr\SpecialChar softhyphen
-.simp\SpecialChar softhyphen
-li\SpecialChar softhyphen
-fy
+.RE\SpecialChar softhyphen
+WRITER
 \family default
- method.
+ tree rewriter.
 \end_layout
 
 \begin_layout Standard
@@ -31790,7 +31858,12 @@ final ProgramGene<Double> program = engine.stream()
 
 \begin_layout Plain Layout
 
-final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
+\end_layout
+
+\begin_layout Plain Layout
+
+MathExpr.REWRITER.rewrite(tree);
 \end_layout
 
 \end_inset
