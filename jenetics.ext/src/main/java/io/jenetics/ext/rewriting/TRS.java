@@ -135,7 +135,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	) {
 		return new TRS<>(
 			ISeq.of(rules)
-				.map(rule -> TreeRewriteRule.compile(rule, mapper))
+				.map(rule -> TreeRewriteRule.parse(rule, mapper))
 		);
 	}
 

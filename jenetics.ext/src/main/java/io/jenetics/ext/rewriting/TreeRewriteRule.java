@@ -193,7 +193,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 * @throws IllegalArgumentException if the rewrite rule is invalid
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static <V> TreeRewriteRule<V> compile(
+	public static <V> TreeRewriteRule<V> parse(
 		final String rule,
 		final Function<? super String, ? extends V> mapper
 	) {
@@ -228,8 +228,8 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	 * @throws IllegalArgumentException if the rewrite rule is invalid
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static TreeRewriteRule<String> compile(final String rule) {
-		return compile(rule, Function.identity());
+	public static TreeRewriteRule<String> parse(final String rule) {
+		return parse(rule, Function.identity());
 	}
 
 

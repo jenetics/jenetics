@@ -37,7 +37,7 @@ public class MathExprRewriterTest {
 	@Test
 	public void rewriting() {
 		final TreeRewriter<Op<Double>> rewriter = TreeRewriteRule
-			.compile("div($x,$x) -> 1", MathOp::toMathOp);
+			.parse("div($x,$x) -> 1", MathOp::toMathOp);
 
 		final TreePattern<Op<Double>> pattern = TreePattern
 			.compile("div($x,$x)",MathOp::toMathOp);

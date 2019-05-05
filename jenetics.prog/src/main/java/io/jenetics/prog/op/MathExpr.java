@@ -133,7 +133,7 @@ public final class MathExpr
 		);
 
 	private static TreeRewriter<Op<Double>> compile(final String rule) {
-		return TreeRewriteRule.compile(rule, MathOp::toMathOp);
+		return TreeRewriteRule.parse(rule, MathOp::toMathOp);
 	}
 
 	/**
