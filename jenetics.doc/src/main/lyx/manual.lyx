@@ -26468,6 +26468,13 @@ In contrast to string rewriting systems, whose objects are flat sequences
 
 \begin_layout Subsubsection
 Tree pattern
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Tree-pattern"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -26734,6 +26741,10 @@ vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
 final Tree<String, ?> tree = pattern.expand(vars);
 \end_layout
 
@@ -26745,6 +26756,371 @@ assert tree.toParenthesesString().equals("add(sin(x),sin(y),1)"));
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewriter
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewriter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface is an abstraction of the tree 
+\emph on
+rewriting
+\emph default
+ functionality.
+ Its 
+\family typewriter
+rewrite
+\family default
+ method takes a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+, which will be rewritten, and the maximal number the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class TreeRewriter<V> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int rewrite(final TreeNode<V> tree, final int limit);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:TreeRewriter-interface"
+
+\end_inset
+
+
+\family typewriter
+TreeRewriter
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+With the TreeRewriter interface you are able to combine two or more tree
+ rewriter to one.
+ This can be done with the 
+\family typewriter
+con\SpecialChar softhyphen
+cat(\SpecialChar softhyphen
+final TreeRewriter<V>...
+ rewriters\SpecialChar softhyphen
+)
+\family default
+ factory method.
+ There are two implementations of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface: the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Rule
+\family default
+ class and the 
+\family typewriter
+TRS
+\family default
+ class.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite rule
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite rule
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite rule
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A 
+\family typewriter
+TreeRewriteRule
+\family default
+ consists of left 
+\emph on
+matching
+\emph default
+ pattern and a right 
+\emph on
+replacing
+\emph default
+ pattern.
+ To simplify the creation of a rewrite rule, it is possible to create one
+ via a simple DSL: 
+\family typewriter
+add(0,$x) -> $x
+\family default
+.
+ The left and the right tree pattern is separated by an arrow, 
+\family typewriter
+->
+\family default
+, and the pattern DSL is described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Tree-pattern"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeRewriteRule<String> rule = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    TreeRewriteRule.compile("add($x,0) -> $x");
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(5,0)");
+\end_layout
+
+\begin_layout Plain Layout
+
+rule.rewrite(t);
+\end_layout
+
+\end_inset
+
+Since the 
+\family typewriter
+TreeRewriteRule
+\family default
+ implements the 
+\family typewriter
+TreeRewriter
+\family default
+ interface, it can directly be used for rewriting input trees.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite system (TRS)
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite system
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+TRS
+\family default
+ class puts all things together and allows to define a complete tree (term)
+ rewriting system.
+ The primary constructor will take a sequence of 
+\family typewriter
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule
+\family default
+s (
+\family typewriter
+ISeq<\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule<\SpecialChar softhyphen
+V\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+), but the 
+\family typewriter
+TRS
+\family default
+ creation can be simplified by using a simple DSL.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TRS<String> trs = TRS.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(0,$x) -> $x",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(S($x),$y) -> S(add($x,$y))",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(0,$x) -> 0",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(S($x),$y) -> add(mul($x,$y),$y)"
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The example above defines a tree rewrite system with four rewrite rules,
+ which are applied in the given order.
+ Each rule is applied until the given tree stays unchanged.
+ This also means, that the termination of the 
+\family typewriter
+TRS
+\family default
+ can't be guaranteed.
+ It's mainly on you to only create rewrite system which will 
+\emph on
+always
+\emph default
+ terminate.
+ If you are not sure whether the system is terminating or not, you better
+ call the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter\SpecialChar softhyphen
+.re\SpecialChar softhyphen
+write(\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Node, int\SpecialChar softhyphen
+)
+\family default
+ method, which also takes the maximal number, the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(S(0),S(mul(S(0),S(S(0)))))");
+\end_layout
+
+\begin_layout Plain Layout
+
+trs.rewrite(t); 
+\end_layout
+
+\begin_layout Plain Layout
+
+assert t.equals(parse("S(S(S(S(0))))"));
+\end_layout
+
+\end_inset
+
+Since the given tree rewrite system is terminating, we can safely apply
+ the 
+\family typewriter
+TRS
+\family default
+ to 
+\family sans
+add(S(0),S(mul(S(0),S(S(0)))))
+\family default
+, which will then be rewritten to 
+\family sans
+S(S(S(S(0))))
+\family default
+.
 \end_layout
 
 \begin_layout Subsection
