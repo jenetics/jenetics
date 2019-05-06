@@ -31820,10 +31820,16 @@ In the example above, half of the expression trees are simplified in each
 \family typewriter
 Math\SpecialChar softhyphen
 Expr\SpecialChar softhyphen
+.rewrite 
+\family default
+method, which uses the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
 .RE\SpecialChar softhyphen
 WRITER
 \family default
- tree rewriter.
+ tree rewriter for the rewrite task.
 \end_layout
 
 \begin_layout Standard
@@ -31863,7 +31869,7 @@ final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
 
 \begin_layout Plain Layout
 
-MathExpr.REWRITER.rewrite(tree);
+MathExpr.rewrite(tree);
 \end_layout
 
 \end_inset
