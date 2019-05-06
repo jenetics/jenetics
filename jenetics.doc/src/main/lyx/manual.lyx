@@ -26344,9 +26344,16 @@ Tree rewriting is a synonym for term rewriting, i.e., the process of transformin
  Rewriting trees is not necessarily deterministic.
  One rewrite rule can be applied in many different ways to that term, or
  more than one rule will be applicable to a tree node.
- The rewriting system implementation in Jenetics is currently used for simplifyi
-ng program trees, which are evolved in genetic programming problems (see
- section 
+ The rewriting system implementation in 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is currently used for simplifying program trees, which are evolved in genetic
+ programming problems (see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "sec:Genetic-programming"
