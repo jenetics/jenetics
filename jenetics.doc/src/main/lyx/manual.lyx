@@ -26170,10 +26170,6 @@ Example
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -26315,6 +26311,23 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Since there is no possibility to change the nodes of a 
+\family typewriter
+FlatTree
+\family default
+, it can be used as immutable version of the 
+\family typewriter
+Tree
+\family default
+ interface.
+ The tree nodes are also stored more memory efficient than in the 
+\family typewriter
+TreeNode
+\family default
+ class.
 \end_layout
 
 \begin_layout Subsection
