@@ -457,4 +457,43 @@ public final class MathExpr
 		return new MathExpr(expression, true).eval(args);
 	}
 
+	/**
+	 * Applies the {@link #REWRITER} to the given (mutable) {@code tree}. The
+	 * tree rewrite is done in place.
+	 *
+	 * @see TreeRewriter#rewrite(TreeNode, int)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the tree to be rewritten
+	 * @param limit the maximal number this rewrite rule is applied to the given
+	 *        tree. This guarantees the termination of the rewrite method.
+	 * @return the number of rewrites applied to the input {@code tree}
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 * @throws IllegalArgumentException if the {@code limit} is smaller than
+	 *         one
+	 */
+	public static int rewrite(final TreeNode<Op<Double>> tree, final int limit) {
+		return REWRITER.rewrite(tree, limit);
+	}
+
+	/**
+	 * Applies the {@link #REWRITER} to the given (mutable) {@code tree}. The
+	 * tree rewrite is done in place. The limit of the applied rewrites is set
+	 * unlimited ({@link Integer#MAX_VALUE}).
+	 *
+	 * @see #rewrite(TreeNode, int)
+	 * @see TreeRewriter#rewrite(TreeNode)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the tree to be rewritten
+	 * @return {@code true} if the tree has been changed (rewritten) by this
+	 *         method, {@code false} if the tree hasn't been changed
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 */
+	public static int rewrite(final TreeNode<Op<Double>> tree) {
+		return rewrite(tree, Integer.MAX_VALUE);
+	}
+
 }
