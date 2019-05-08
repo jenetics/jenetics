@@ -233,11 +233,11 @@ public final class FlatTreeNode<T>
 	}
 
 	private int countChildren(final int index) {
-		int cnt = _childCounts[index];
+		int count = _childCounts[index];
 		for (int i = 0; i < _childCounts[index]; ++i) {
-			cnt += countChildren(_childOffsets[index] + i);
+			count += countChildren(_childOffsets[index] + i);
 		}
-		return cnt;
+		return count;
 	}
 
 	/**
