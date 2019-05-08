@@ -19,10 +19,34 @@
  */
 package io.jenetics.example.timeseries;
 
+import java.util.function.Supplier;
+
+import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class ConsumerEngine {
+public class ConsumerEngine<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements EvolutionStreamable<G, C>
+{
+
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		return null;
+	}
+
+	@Override
+	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		return null;
+	}
 }
