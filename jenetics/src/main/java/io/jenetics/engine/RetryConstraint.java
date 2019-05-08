@@ -32,6 +32,10 @@ import io.jenetics.util.Factory;
  * This simple {@code Constraint} implementation <em>repairs</em> an invalid
  * phenotype by creating new individuals until a valid one has been created.
  *
+ * @apiNote
+ * This class is part of the more advanced API and is not needed for default use
+ * cases.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
