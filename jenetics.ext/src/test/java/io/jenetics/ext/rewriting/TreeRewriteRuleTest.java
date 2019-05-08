@@ -52,7 +52,7 @@ public class TreeRewriteRuleTest {
 	);
 
 	private static final ISeq<TreeRewriter<String>> REWRITERS = RULES
-		.map(TreeRewriteRule::compile);
+		.map(TreeRewriteRule::parse);
 
 	@Test(dataProvider = "trees")
 	public void rewrite(final String treeString, final String rewrittenTreeString) {
@@ -83,7 +83,7 @@ public class TreeRewriteRuleTest {
 	@Test
 	public void serialize() throws IOException {
 		final TreeRewriteRule<String> rule =
-			TreeRewriteRule.compile("mul($x,$x) -> pow($x,2)");
+			TreeRewriteRule.parse("mul($x,$x) -> pow($x,2)");
 
 		final byte[] data = IO.object.toByteArray(rule);
 		Assert.assertEquals(IO.object.fromByteArray(data), rule);

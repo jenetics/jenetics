@@ -26170,10 +26170,6 @@ Example
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -26317,6 +26313,23 @@ height "1pt"
 
 \end_layout
 
+\begin_layout Standard
+Since there is no possibility to change the nodes of a 
+\family typewriter
+FlatTree
+\family default
+, it can be used as immutable version of the 
+\family typewriter
+Tree
+\family default
+ interface.
+ The tree nodes are also stored more memory efficient than in the 
+\family typewriter
+TreeNode
+\family default
+ class.
+\end_layout
+
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
@@ -26341,14 +26354,48 @@ Rewriting
 \begin_layout Standard
 Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
  trees (tree structured data) into other trees by applying rewriting rules.
- Rewriting can be non-deterministic.
- One rule to rewrite a term could be applied in many different ways to that
- term, or more than one rule could be applicable.
- Rewriting systems then do not provide an algorithm for changing one term
- to another, but a set of possible rule applications.
- When combined with an appropriate algorithm, however, rewrite systems can
- be viewed as computer programs, and several theorem provers and declarative
- programming languages are based on term rewriting.
+ Rewriting trees is not necessarily deterministic.
+ One rewrite rule can be applied in many different ways to that term, or
+ more than one rule will be applicable to a tree node.
+ The rewriting system implementation in 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is currently used for simplifying program trees, which are evolved in genetic
+ programming problems (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Program-pruning"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ A good introduction in tree/term rewriting systems can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "baader_nipkow_1998"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Definition*
@@ -26468,6 +26515,13 @@ In contrast to string rewriting systems, whose objects are flat sequences
 
 \begin_layout Subsubsection
 Tree pattern
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Tree-pattern"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -26734,6 +26788,10 @@ vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
 
 \begin_layout Plain Layout
 
+\end_layout
+
+\begin_layout Plain Layout
+
 final Tree<String, ?> tree = pattern.expand(vars);
 \end_layout
 
@@ -26745,6 +26803,371 @@ assert tree.toParenthesesString().equals("add(sin(x),sin(y),1)"));
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewriter
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewriter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface is an abstraction of the tree 
+\emph on
+rewriting
+\emph default
+ functionality.
+ Its 
+\family typewriter
+rewrite
+\family default
+ method takes a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+, which will be rewritten, and the maximal number the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class TreeRewriter<V> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int rewrite(final TreeNode<V> tree, final int limit);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:TreeRewriter-interface"
+
+\end_inset
+
+
+\family typewriter
+TreeRewriter
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+With the TreeRewriter interface you are able to combine two or more tree
+ rewriter to one.
+ This can be done with the 
+\family typewriter
+con\SpecialChar softhyphen
+cat(\SpecialChar softhyphen
+final TreeRewriter<V>...
+ rewriters\SpecialChar softhyphen
+)
+\family default
+ factory method.
+ There are two implementations of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface: the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Rule
+\family default
+ class and the 
+\family typewriter
+TRS
+\family default
+ class.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite rule
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite rule
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite rule
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A 
+\family typewriter
+TreeRewriteRule
+\family default
+ consists of left 
+\emph on
+matching
+\emph default
+ pattern and a right 
+\emph on
+replacing
+\emph default
+ pattern.
+ To simplify the creation of a rewrite rule, it is possible to create one
+ via a simple DSL: 
+\family typewriter
+add(0,$x) -> $x
+\family default
+.
+ The left and the right tree pattern is separated by an arrow, 
+\family typewriter
+->
+\family default
+, and the pattern DSL is described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Tree-pattern"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeRewriteRule<String> rule = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    TreeRewriteRule.compile("add($x,0) -> $x");
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(5,0)");
+\end_layout
+
+\begin_layout Plain Layout
+
+rule.rewrite(t);
+\end_layout
+
+\end_inset
+
+Since the 
+\family typewriter
+TreeRewriteRule
+\family default
+ implements the 
+\family typewriter
+TreeRewriter
+\family default
+ interface, it can directly be used for rewriting input trees.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite system (TRS)
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite system
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+TRS
+\family default
+ class puts all things together and allows to define a complete tree (term)
+ rewriting system.
+ The primary constructor will take a sequence of 
+\family typewriter
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule
+\family default
+s (
+\family typewriter
+ISeq<\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule<\SpecialChar softhyphen
+V\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+), but the 
+\family typewriter
+TRS
+\family default
+ creation can be simplified by using a simple DSL.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TRS<String> trs = TRS.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(0,$x) -> $x",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(S($x),$y) -> S(add($x,$y))",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(0,$x) -> 0",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(S($x),$y) -> add(mul($x,$y),$y)"
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The example above defines a tree rewrite system with four rewrite rules,
+ which are applied in the given order.
+ Each rule is applied until the given tree stays unchanged.
+ This also means, that the termination of the 
+\family typewriter
+TRS
+\family default
+ can't be guaranteed.
+ It's mainly on you to only create rewrite system which will 
+\emph on
+always
+\emph default
+ terminate.
+ If you are not sure whether the system is terminating or not, you better
+ call the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter\SpecialChar softhyphen
+.re\SpecialChar softhyphen
+write(\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Node, int\SpecialChar softhyphen
+)
+\family default
+ method, which also takes the maximal number, the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(S(0),S(mul(S(0),S(S(0)))))");
+\end_layout
+
+\begin_layout Plain Layout
+
+trs.rewrite(t); 
+\end_layout
+
+\begin_layout Plain Layout
+
+assert t.equals(parse("S(S(S(S(0))))"));
+\end_layout
+
+\end_inset
+
+Since the given tree rewrite system is terminating, we can safely apply
+ the 
+\family typewriter
+TRS
+\family default
+ to 
+\family sans
+add(S(0),S(mul(S(0),S(S(0)))))
+\family default
+, which will then be rewritten to 
+\family sans
+S(S(S(S(0))))
+\family default
+.
 \end_layout
 
 \begin_layout Subsection
@@ -31277,24 +31700,18 @@ height "1pt"
 
 \begin_layout Subsection
 Program pruning
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-pruning"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!Program pruning
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \end_inset
@@ -31310,11 +31727,59 @@ When you are solving symbolic regression problems, the mathematical expression
  With the 
 \family typewriter
 Math\SpecialChar softhyphen
-Tree\SpecialChar softhyphen
-Prune\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
 Alterer
 \family default
  you are able to simplify some portion of the population in each generation.
+ The rewrite alterer uses the 
+\emph on
+default
+\emph default
+ 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Rewriting"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a detailed description of the implemented tree rewrite system.
+\end_layout
+
+\end_inset
+
+
+\family default
+ defined by the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.RE\SpecialChar softhyphen
+WRITER
+\family default
+ field.
+ It is also possible to create a 
+\family typewriter
+Math\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Alterer
+\family default
+ instance with your own 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -31355,7 +31820,7 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 
 \begin_layout Plain Layout
 
-        new MathTreePruneAlterer<>(0.5))
+        new MathRewriteAlterer<>(0.5))
 \end_layout
 
 \begin_layout Plain Layout
@@ -31375,11 +31840,16 @@ In the example above, half of the expression trees are simplified in each
 \family typewriter
 Math\SpecialChar softhyphen
 Expr\SpecialChar softhyphen
-.simp\SpecialChar softhyphen
-li\SpecialChar softhyphen
-fy
+.rewrite 
 \family default
- method.
+method, which uses the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.RE\SpecialChar softhyphen
+WRITER
+\family default
+ tree rewriter for the rewrite task.
 \end_layout
 
 \begin_layout Standard
@@ -31414,7 +31884,12 @@ final ProgramGene<Double> program = engine.stream()
 
 \begin_layout Plain Layout
 
-final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
+\end_layout
+
+\begin_layout Plain Layout
+
+MathExpr.rewrite(tree);
 \end_layout
 
 \end_inset
@@ -36377,6 +36852,8 @@ jenetics.ext
 \emph default
 -standard GA operations and data types.
  It also contains classes for solving multi-objective problems (MOEA).
+ Additional classes for defining tree rewrite systems are also part of this
+ module.
 \end_layout
 
 \begin_layout Itemize

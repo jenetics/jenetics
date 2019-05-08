@@ -179,7 +179,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the index of the node in this node's child array, or {@code -1}
 	 *         if the node could not be found
 	 */
-	public default int getIndex(final Tree<?, ?> child) {
+	public default int indexOf(final Tree<?, ?> child) {
 		int index = -1;
 		for (int i = 0, n = childCount(); i < n && index == -1; ++i) {
 			if (childAt(i).identical(child)) {
@@ -442,7 +442,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default Optional<T> childAfter(final Tree<?, ?> child) {
 		requireNonNull(child);
 
-		final int index = getIndex(child);
+		final int index = indexOf(child);
 		if (index == -1) {
 			throw new IllegalArgumentException("The given node is not a child.");
 		}
@@ -465,7 +465,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default Optional<T> childBefore(final Tree<?, ?> child) {
 		requireNonNull(child);
 
-		final int index = getIndex(child);
+		final int index = indexOf(child);
 		if (index == -1) {
 			throw new IllegalArgumentException("The given node is not a child.");
 		}
@@ -888,7 +888,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		while (it.hasNext()) {
 			final T child = it.next();
 			if (tree != null) {
-				path[index++] = tree.getIndex(child);
+				path[index++] = tree.indexOf(child);
 			}
 
 			tree = child;
