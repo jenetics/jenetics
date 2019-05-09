@@ -23,6 +23,8 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -124,20 +126,47 @@ public final class Regression
 	 * @param error the error function
 	 * @param samples the sample points used for regression analysis
 	 * @return a new regression problem instance
+	 * @throws IllegalArgumentException if the given {@code samples} is empty
+	 * @throws NullPointerException if on of the arguments is {@code null}
+	 */
+	public static Regression of(
+		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
+		final Error error,
+		final Collection<Sample> samples
+	) {
+		if (samples.size() < 1) {
+			throw new IllegalArgumentException(format(
+				"Sample size must be greater than one: %s",
+				samples.size()
+			));
+		}
+
+		return new Regression(
+			codec,
+			error,
+			new Samples(samples.toArray(new Sample[0]))
+		);
+	}
+
+	/**
+	 * Create a new regression problem instance with the given parameters.
+	 *
+	 * @see #codecOf(ISeq, ISeq, int)
+	 * @see #codecOf(ISeq, ISeq, int, Predicate)
+	 *
+	 * @param codec the problem codec to use
+	 * @param error the error function
+	 * @param samples the sample points used for regression analysis
+	 * @return a new regression problem instance
+	 * @throws IllegalArgumentException if the given {@code samples} is empty
+	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
 	public static Regression of(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
 		final Sample... samples
 	) {
-		if (samples.length < 1) {
-			throw new IllegalArgumentException(format(
-				"Sample size must be greater than one: %s",
-				samples.length
-			));
-		}
-
-		return new Regression(codec, error, new Samples(samples));
+		return of(codec, error, Arrays.asList(samples));
 	}
 
 
