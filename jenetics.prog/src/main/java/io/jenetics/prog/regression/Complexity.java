@@ -29,7 +29,12 @@ import io.jenetics.prog.op.Op;
 /**
  * Represents a complexity <em>measure</em> if a given program tree. The
  * program complexity ensures, that simpler programs with similar loss function
- * values are preferred.
+ * values are preferred. It is part of the <em>overall</em> {@link Error}
+ * function.
+ *
+ * <pre>{@code
+ * final Error error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * }</pre>
  *
  * @see LossFunction
  * @see Error
