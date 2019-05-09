@@ -30,6 +30,10 @@ import io.jenetics.prog.op.Op;
  * The error is calculated from the {@link LossFunction} and, if desired, the
  * program {@link Complexity}.
  *
+ * <pre>{@code
+ * final Error error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * }</pre>
+ *
  * @see LossFunction
  * @see Complexity
  *
