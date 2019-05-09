@@ -30,6 +30,11 @@ import static java.lang.String.format;
  * This function evaluates how well an evolved program tree fits the given
  * sample data set. If the predictions are totally off, the loss function will
  * output a higher value. If they’re pretty good, it’ll output a lower number.
+ * It is the essential part of the <em>overall</em> {@link Error} function.
+ *
+ * <pre>{@code
+ * final Error error = Error.of(LossFunction::mse);
+ * }</pre>
  *
  * @see <a href="https://en.wikipedia.org/wiki/Loss_function">Loss function</a>
  *
