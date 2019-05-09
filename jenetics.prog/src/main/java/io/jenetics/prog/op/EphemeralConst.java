@@ -84,6 +84,17 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 		return _value.get();
 	}
 
+	/**
+	 * Fixes and returns the constant value.
+	 *
+	 * @since !__value__!
+	 *
+	 * @return the constant value
+	 */
+	public T value() {
+		return _value.get();
+	}
+
 	@Override
 	public int hashCode() {
 		return hash(_name, hash(_value));
