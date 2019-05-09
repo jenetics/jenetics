@@ -92,6 +92,8 @@ public class MathExprRewriterTest {
 			{"x * 1", "x"},
 			{"1 * x", "x"},
 			{"1 * x * 1", "x"},
+			{"1.0*((x - ((x - x*x) - (x - x*x)*(x - x*x))*x) - (x - x*x)*x)",
+				"(x - ((x - x^2.0) - (x - x^2.0)^2.0)*x) - (x - x^2.0)*x"},
 			{"sin(x) - y * 1 + tan(z) + 0", "sin(x) - y + tan(z)"},
 
 			// X_MUL_X
