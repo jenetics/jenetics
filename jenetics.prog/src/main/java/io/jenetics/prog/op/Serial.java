@@ -35,6 +35,7 @@ final class Serial implements Externalizable {
 
 	static final byte MATH_EXPR = 1;
 	static final byte CONST = 2;
+	static final byte EPHEMERAL_CONST = 3;
 
 	/**
 	 * The type being serialized.
@@ -69,6 +70,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case MATH_EXPR: ((MathExpr)_object).write(out); break;
 			case CONST: ((Const)_object).write(out); break;
+			case EPHEMERAL_CONST: ((EphemeralConst)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -82,6 +84,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case MATH_EXPR: _object = MathExpr.read(in); break;
 			case CONST: _object = Const.read(in); break;
+			case EPHEMERAL_CONST: _object = EphemeralConst.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
