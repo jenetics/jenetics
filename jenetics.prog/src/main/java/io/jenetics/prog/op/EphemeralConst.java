@@ -92,20 +92,9 @@ public final class EphemeralConst<T>
 	 *
 	 * @return the constant value
 	 */
+	@Override
 	public T value() {
 		return _value.get();
-	}
-
-	/**
-	 * Return a new {@code Const} object with the value of {@code this} ephemeral
-	 * constant.
-	 *
-	 * @since !__version__!
-	 *
-	 * @return a new constant with the value of {@code this} ephemeral const
-	 */
-	public Const<T> toConst() {
-		return Const.of(value());
 	}
 
 	@Override
