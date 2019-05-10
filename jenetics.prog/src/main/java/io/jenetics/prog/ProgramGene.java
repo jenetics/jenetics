@@ -32,7 +32,6 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.ext.AbstractTreeGene;
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 
@@ -139,21 +138,14 @@ public final class ProgramGene<A>
 	}
 
 	/**
-	 * Creates a new {@link TreeNode} from this program gene. Every
-	 * {@link EphemeralConst} is normalized to a {@link io.jenetics.prog.op.Const}
-	 * object with the same const value.
+	 * Creates a new {@link TreeNode} from this program gene.
 	 *
 	 * @since !__version__!
 	 *
 	 * @return a new tree node value build from this program gene
 	 */
 	public TreeNode<Op<A>> toTreeNode() {
-		return TreeNode.ofTree(
-			this,
-			n -> n instanceof EphemeralConst
-				? ((EphemeralConst<A>)n).toConst()
-				: n
-		);
+		return TreeNode.ofTree(this);
 	}
 
 	@Override
