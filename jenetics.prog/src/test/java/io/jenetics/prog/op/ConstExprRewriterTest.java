@@ -50,4 +50,16 @@ public class ConstExprRewriterTest {
 		};
 	}
 
+	@Test
+	public void ephemeralConst() {
+		final TreeNode<Op<Double>> tree = MathExpr.parse("1+2+3")
+			.toTree()
+			.map(n -> n instanceof Const
+				? EphemeralConst.of(((Const<Double>) n)::value)
+				: n);
+
+		new ConstExprRewriter().rewrite(tree);
+		Assert.assertEquals(tree.getValue(), Const.of(6.0));
+	}
+
 }

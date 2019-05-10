@@ -46,69 +46,25 @@ import java.util.Objects;
  * @version 5.0
  * @since 3.9
  */
-public final class Const<T> implements Op<T>, Serializable {
+public final class Const<T> extends Val<T> implements Serializable {
 
 	private static final long serialVersionUID = 2L;
 
-	private final String _name;
 	private final T _const;
 
 	private Const(final String name, final T constant) {
-		_name = name;
+		super(name);
 		_const = constant;
 	}
 
 	@Override
-	public T apply(final T[] value) {
-		return _const;
-	}
-
-	/**
-	 * Return the constant value.
-	 *
-	 * @since 4.1
-	 *
-	 * @return the constant value
-	 */
 	public T value() {
 		return _const;
 	}
 
 	@Override
-	public String name() {
-		return _name;
-	}
-
-	@Override
-	public int arity() {
-		return 0;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(_const);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Const &&
-			equal(((Const)obj)._const, _const);
-	}
-
-	private static boolean equal(final Object a, final Object b) {
-		if (a instanceof Double && b instanceof Double) {
-			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
-		} else if (a instanceof Float && b instanceof Float) {
-			return ((Float)a).floatValue() == ((Float)b).floatValue();
-		}
-
-		return Objects.equals(a, b);
-	}
-
-	@Override
 	public String toString() {
-		return _name != null ? _name : Objects.toString(_const);
+		return name() != null ? name() : Objects.toString(_const);
 	}
 
 	/**
@@ -152,7 +108,7 @@ public final class Const<T> implements Op<T>, Serializable {
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		writeNullableString(_name, out);
+		writeNullableString(name(), out);
 		out.writeObject(_const);
 	}
 
