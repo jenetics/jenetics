@@ -45,7 +45,10 @@ import io.jenetics.internal.util.Lazy;
  * @version 4.1
  * @since 3.9
  */
-public final class EphemeralConst<T> implements Op<T>, Serializable {
+public final class EphemeralConst<T>
+	extends Val<T>
+	implements Op<T>, Serializable
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,6 +84,18 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 
 	@Override
 	public T apply(final T[] ts) {
+		return _value.get();
+	}
+
+	/**
+	 * Fixes and returns the constant value.
+	 *
+	 * @since !__value__!
+	 *
+	 * @return the constant value
+	 */
+	@Override
+	public T value() {
 		return _value.get();
 	}
 

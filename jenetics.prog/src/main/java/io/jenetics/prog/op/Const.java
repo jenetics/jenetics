@@ -46,7 +46,7 @@ import java.util.Objects;
  * @version 5.0
  * @since 3.9
  */
-public final class Const<T> implements Op<T>, Serializable {
+public final class Const<T> extends Val<T> implements Serializable {
 
 	private static final long serialVersionUID = 2L;
 
@@ -70,6 +70,7 @@ public final class Const<T> implements Op<T>, Serializable {
 	 *
 	 * @return the constant value
 	 */
+	@Override
 	public T value() {
 		return _const;
 	}
