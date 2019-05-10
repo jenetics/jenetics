@@ -52,6 +52,10 @@ public interface LossFunction {
 	 * @param calculated the currently calculated function value
 	 * @param expected the expected function values
 	 * @return the error value
+	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 *         equal
+	 * @throws NullPointerException if one of the {@code double[]} arrays is
+	 *         {@code null}
 	 */
 	public double apply(final double[] calculated, final double[] expected);
 
@@ -65,6 +69,10 @@ public interface LossFunction {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean square error
+	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 *         equal
+	 * @throws NullPointerException if one of the {@code double[]} arrays is
+	 *         {@code null}
 	 */
 	public static double mse(final double[] calculated, final double[] expected) {
 		if (expected.length != calculated.length) {
@@ -96,6 +104,10 @@ public interface LossFunction {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean square error
+	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 *         equal
+	 * @throws NullPointerException if one of the {@code double[]} arrays is
+	 *         {@code null}
 	 */
 	public static double rmse(final double[] calculated, final double[] expected) {
 		return sqrt(mse(calculated, expected));
@@ -109,6 +121,10 @@ public interface LossFunction {
 	 *        tree
 	 * @param expected the expected function value as given by the sample points
 	 * @return the mean absolute error
+	 * @throws IllegalArgumentException if the length of the two arrays are not
+	 *         equal
+	 * @throws NullPointerException if one of the {@code double[]} arrays is
+	 *         {@code null}
 	 */
 	public static double mae(final double[] calculated, final double[] expected) {
 		if (expected.length != calculated.length) {
