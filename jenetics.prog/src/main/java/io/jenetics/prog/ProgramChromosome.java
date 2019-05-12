@@ -100,8 +100,8 @@ public class ProgramChromosome<A>
 	) {
 		super(program);
 		_validator = requireNonNull(validator);
-		_operations = ISeq.upcast(operations);
-		_terminals = ISeq.upcast(terminals);
+		_operations = requireNonNull(ISeq.upcast(operations));
+		_terminals = requireNonNull(ISeq.upcast(terminals));
 
 		if (operations.isEmpty()) {
 			throw new IllegalArgumentException("No operations given.");
@@ -233,7 +233,6 @@ public class ProgramChromosome<A>
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
 		final ISeq<?> terminals = operations.stream()
 			.filter(op -> op.isTerminal())
-			.map(op -> (Op<?>)op)
 			.collect(ISeq.toISeq());
 
 		if (!terminals.isEmpty()) {
@@ -247,7 +246,6 @@ public class ProgramChromosome<A>
 	private static void checkTerminals(final ISeq<? extends Op<?>> terminals) {
 		final ISeq<?> operations = terminals.stream()
 			.filter(op -> !op.isTerminal())
-			.map(op -> (Op<?>)op)
 			.collect(ISeq.toISeq());
 
 		if (!operations.isEmpty()) {
