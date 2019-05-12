@@ -72,8 +72,8 @@ public class ProgramChromosome<A>
 	private static final long serialVersionUID = 1L;
 
 	private final Predicate<? super ProgramChromosome<A>> _validator;
-	private final ISeq<? extends Op<A>> _operations;
-	private final ISeq<? extends Op<A>> _terminals;
+	private final ISeq<Op<A>> _operations;
+	private final ISeq<Op<A>> _terminals;
 
 	/**
 	 * Create a new program chromosome from the given program genes. This
@@ -100,8 +100,8 @@ public class ProgramChromosome<A>
 	) {
 		super(program);
 		_validator = requireNonNull(validator);
-		_operations = requireNonNull(operations);
-		_terminals = requireNonNull(terminals);
+		_operations = requireNonNull(ISeq.upcast(operations));
+		_terminals = requireNonNull(ISeq.upcast(terminals));
 
 		if (operations.isEmpty()) {
 			throw new IllegalArgumentException("No operations given.");
@@ -114,18 +114,22 @@ public class ProgramChromosome<A>
 	/**
 	 * Return the allowed operations.
 	 *
+	 * @since 5.0
+	 *
 	 * @return the allowed operations
 	 */
-	public ISeq<? extends Op<A>> getOperations() {
+	public ISeq<Op<A>> operations() {
 		return _operations;
 	}
 
 	/**
 	 * Return the allowed terminal operations.
 	 *
+	 * @since 5.0
+	 *
 	 * @return the allowed terminal operations
 	 */
-	public ISeq<? extends Op<A>> getTerminals() {
+	public ISeq<Op<A>> terminals() {
 		return _terminals;
 	}
 
@@ -229,7 +233,6 @@ public class ProgramChromosome<A>
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
 		final ISeq<?> terminals = operations.stream()
 			.filter(op -> op.isTerminal())
-			.map(op -> (Op<?>)op)
 			.collect(ISeq.toISeq());
 
 		if (!terminals.isEmpty()) {
@@ -243,7 +246,6 @@ public class ProgramChromosome<A>
 	private static void checkTerminals(final ISeq<? extends Op<?>> terminals) {
 		final ISeq<?> operations = terminals.stream()
 			.filter(op -> !op.isTerminal())
-			.map(op -> (Op<?>)op)
 			.collect(ISeq.toISeq());
 
 		if (!operations.isEmpty()) {
