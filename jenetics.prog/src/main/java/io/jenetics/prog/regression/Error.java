@@ -25,6 +25,8 @@ import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
 
+import java.util.function.DoubleBinaryOperator;
+
 /**
  * This function calculates the <em>overall</em> error of a given program tree.
  * The error is calculated from the {@link LossFunction} and, if desired, the
@@ -92,14 +94,34 @@ public interface Error {
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
 	public static Error of(final LossFunction loss, final Complexity complexity) {
+		return of(loss, complexity, (lss, cpx) -> lss + lss*cpx);
+	}
+
+	/**
+	 * Creates an error function by combining the given {@code loss} function
+	 * and program {@code complexity}. The loss function and program complexity
+	 * is combined in the following way: {@code error = loss + loss*complexity}.
+	 * The complexity function penalizes programs which grows to big.
+	 *
+	 * @param loss the loss function
+	 * @param complexity the program complexity measure
+	 * @param compose the function which composes the {@code loss} and
+	 *        {@code complexity} function
+	 * @return a new error function by combining the given loss and complexity
+	 *         function
+	 * @throws NullPointerException if one of the functions is {@code null}
+	 */
+	public static Error of(
+		final LossFunction loss,
+		final Complexity complexity,
+		final DoubleBinaryOperator compose
+	) {
 		requireNonNull(loss);
 		requireNonNull(complexity);
+		requireNonNull(compose);
 
-		return (p, c, e) -> {
-			final double lss = loss.apply(c, e);
-			final double cpx = complexity.apply(p);
-			return lss + lss*cpx;
-		};
+		return (p, c, e) ->
+			compose.applyAsDouble(loss.apply(c, e), complexity.apply(p));
 	}
 
 }
