@@ -31,7 +31,6 @@ import io.jenetics.util.RandomRegistry;
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.TreeNode;
 
-import io.jenetics.prog.MathRewriteAlterer;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.EphemeralConst;
 import io.jenetics.prog.op.MathExpr;
@@ -61,9 +60,11 @@ public class RegressionTest {
 		Regression.codecOf(
 			OPERATIONS,
 			TERMINALS,
-			5
+			5,
+			t -> t.getGene().size() < 30
 		),
-		Error.of(LossFunction::mae),
+		Error.of(LossFunction::mse),
+		// Lookup table for 4*x^3 - 3*x^2 + x
 		Sample.of(-1.0, -8.0000),
 		Sample.of(-0.9, -6.2460),
 		Sample.of(-0.8, -4.7680),
@@ -93,20 +94,24 @@ public class RegressionTest {
 			.builder(REGRESSION)
 			.minimizing()
 			.alterers(
-				new MathRewriteAlterer<>(),
-				new SingleNodeCrossover<>(),
+				new SingleNodeCrossover<>(0.1),
 				new Mutator<>())
 			.build();
 
-		final ProgramGene<Double> program = engine.stream()
-			.limit(Limits.bySteadyFitness(10))
-			.collect(EvolutionResult.toBestGenotype())
-			.getGene();
+		final EvolutionResult<ProgramGene<Double>, Double> result = engine.stream()
+			.limit(Limits.byFitnessThreshold(0.01))
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		System.out.println("Generations: " + result.getTotalGenerations());
+
+		final ProgramGene<Double> program = result.getBestPhenotype().getGenotype().getGene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		System.out.println(MathExpr.parse(tree.toString()));
 		MathExpr.rewrite(tree);
 		System.out.println(MathExpr.parse(tree.toString()));
+
+		System.out.println(REGRESSION.error(program));
 	}
 
 }

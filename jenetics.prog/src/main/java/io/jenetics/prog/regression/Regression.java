@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -85,6 +86,15 @@ public final class Regression
 	@Override
 	public Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec() {
 		return _codec;
+	}
+
+	/**
+	 * Return an immutable list of the symbolic regression's points.
+	 *
+	 * @return the sample points
+	 */
+	public List<Sample> samples() {
+		return _samples;
 	}
 
 	/**
