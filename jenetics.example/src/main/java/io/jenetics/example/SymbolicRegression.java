@@ -50,31 +50,23 @@ import io.jenetics.prog.regression.Sample;
  * the dependent variables. --- John R. Koza, Genetic Programming I
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public class SymbolicRegression {
 
 	// Definition of the allowed operations.
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL
-	);
+	private static final ISeq<Op<Double>> OPS =
+		ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
 
 	// Definition of the terminals.
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
 		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
 	);
 
 	private static final Regression REGRESSION = Regression.of(
-		Regression.codecOf(
-			OPERATIONS,
-			TERMINALS,
-			5,
-			t -> t.getGene().size() < 30
-		),
+		Regression.codecOf(OPS, TMS, 5, t -> t.getGene().size() < 30),
 		Error.of(LossFunction::mse),
 		// Lookup table for 4*x^3 - 3*x^2 + x
 		Sample.of(-1.0, -8.0000),
@@ -112,7 +104,6 @@ public class SymbolicRegression {
 		final EvolutionResult<ProgramGene<Double>, Double> result = engine.stream()
 			.limit(Limits.byFitnessThreshold(0.01))
 			.collect(EvolutionResult.toBestEvolutionResult());
-		System.out.println("Generations: " + result.getTotalGenerations());
 
 		final ProgramGene<Double> program = result.getBestPhenotype()
 			.getGenotype()
@@ -120,8 +111,9 @@ public class SymbolicRegression {
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);
-		System.out.println("Function: " + MathExpr.parse(tree.toString()));
-		System.out.println("Error: " + REGRESSION.error(program));
+		System.out.println("Generations: " + result.getTotalGenerations());
+		System.out.println("Function:    " + new MathExpr(tree));
+		System.out.println("Error:       " + REGRESSION.error(program));
 
 		System.out.println("x: y, y', error");
 		for (Sample sample : REGRESSION.samples()) {

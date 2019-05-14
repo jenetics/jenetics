@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,7 +44,53 @@ import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 
 /**
- * This class implements a <em>symbolic</em> regression problem.
+ * This class implements a <em>symbolic</em> regression problem. The example
+ * below shows a typical usage of the {@code Regression} class.
+ *
+ * <pre>{@code
+ * public class SymbolicRegression {
+ *     private static final ISeq<Op<Double>> OPERATIONS =
+ *         ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
+ *
+ *     private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+ *         Var.of("x", 0),
+ *         EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
+ *     );
+ *
+ *     private static final Regression REGRESSION = Regression.of(
+ *         Regression.codecOf(OPERATIONS, TERMINALS, 5),
+ *         Error.of(LossFunction::mse),
+ *         Sample.of(-1.0, -8.0000),
+ *         // ...
+ *         Sample.of(0.9, 1.3860),
+ *         Sample.of(1.0, 2.0000)
+ *     );
+ *
+ *     public static void main(final String[] args) {
+ *         final Engine<ProgramGene<Double>, Double> engine = Engine
+ *             .builder(REGRESSION)
+ *             .minimizing()
+ *             .alterers(
+ *                 new SingleNodeCrossover<>(0.1),
+ *                 new Mutator<>())
+ *             .build();
+ *
+ *         final EvolutionResult<ProgramGene<Double>, Double> result = engine.stream()
+ *             .limit(Limits.byFitnessThreshold(0.01))
+ *             .collect(EvolutionResult.toBestEvolutionResult());
+ *
+ *         final ProgramGene<Double> program = result.getBestPhenotype()
+ *             .getGenotype()
+ *             .getGene();
+ *
+ *         final TreeNode<Op<Double>> tree = program.toTreeNode();
+ *         MathExpr.rewrite(tree); // Simplify result program.
+ *         System.out.println("Generations: " + result.getTotalGenerations());
+ *         System.out.println("Function:    " + new MathExpr(tree));
+ *         System.out.println("Error:       " + REGRESSION.error(program));
+ *     }
+ * }
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
