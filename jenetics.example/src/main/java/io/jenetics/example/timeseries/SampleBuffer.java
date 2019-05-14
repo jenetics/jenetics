@@ -22,6 +22,8 @@ package io.jenetics.example.timeseries;
 import java.util.Arrays;
 import java.util.List;
 
+import io.jenetics.prog.regression.Sample;
+
 /**
  * This class holds the actual sample values which are used for the symbolic
  * regression example. This class is <em>thread-safe</em> and can be used in a
@@ -37,7 +39,6 @@ public final class SampleBuffer {
 
 	private int _index = 0;
 	private int _size = 0;
-	private volatile Samples _samples;
 
 
 	/**
@@ -66,7 +67,6 @@ public final class SampleBuffer {
 			_buffer[_index] = sample;
 			_index = (_index + 1)%_buffer.length;
 			_size = Math.max(_size + 1, _buffer.length);
-			_samples = null;
 		}
 	}
 
@@ -85,7 +85,6 @@ public final class SampleBuffer {
 				_buffer[_index] = sample;
 				_index = (_index + 1)%_buffer.length;
 				_size = Math.max(_size + 1, _buffer.length);
-				_samples = null;
 			}
 		}
 	}
@@ -125,7 +124,6 @@ public final class SampleBuffer {
 			Arrays.fill(_buffer, null);
 			_index = 0;
 			_size = 0;
-			_samples = null;
 		}
 	}
 
@@ -138,9 +136,10 @@ public final class SampleBuffer {
 	 * @return the current samples of this buffer
 	 */
 	public List<Sample> samples() {
-		return snapshot();
+		return null;//snapshot();
 	}
 
+	/*
 	Samples snapshot() {
 		Samples samples = _samples;
 		if (samples == null) {
@@ -160,6 +159,7 @@ public final class SampleBuffer {
 
 		return samples;
 	}
+	 */
 
 
 }

@@ -34,6 +34,11 @@ import io.jenetics.prog.op.MathExpr;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Var;
+import io.jenetics.prog.regression.Complexity;
+import io.jenetics.prog.regression.Error;
+import io.jenetics.prog.regression.LossFunction;
+import io.jenetics.prog.regression.Regression;
+import io.jenetics.prog.regression.Sample;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -89,7 +94,6 @@ public class TimeSeries {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
 			.builder(REGRESSION)
 			.minimizing()
-			.mapping(REGRESSION.reevaluateOnUpdate())
 			.alterers(
 				new SingleNodeCrossover<>(),
 				new Mutator<>())
@@ -97,7 +101,6 @@ public class TimeSeries {
 
 		final ProgramGene<Double> program = engine.stream()
 			.limit(3000)
-			.flatMap(REGRESSION.toStrictlyImproving())
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();
 
