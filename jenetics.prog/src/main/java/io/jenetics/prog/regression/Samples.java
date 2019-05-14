@@ -21,6 +21,7 @@ package io.jenetics.prog.regression;
 
 import java.io.Serializable;
 import java.util.AbstractList;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -31,19 +32,19 @@ import java.util.stream.Stream;
 final class Samples extends AbstractList<Sample> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final Sample[] _samples;
+	private final List<Sample> _samples;
 
 	private final double[][] _arguments;
 	private final double[] _results;
 
-	Samples(final Sample[] samples) {
+	Samples(final List<Sample> samples) {
 		_samples = samples;
 
-		_arguments = Stream.of(samples)
+		_arguments = _samples.stream()
 			.map(Sample::args)
 			.toArray(double[][]::new);
 
-		_results = Stream.of(samples)
+		_results = _samples.stream()
 			.mapToDouble(Sample::result)
 			.toArray();
 	}
@@ -58,12 +59,12 @@ final class Samples extends AbstractList<Sample> implements Serializable {
 
 	@Override
 	public Sample get(int index) {
-		return _samples[index];
+		return _samples.get(index);
 	}
 
 	@Override
 	public int size() {
-		return _samples.length;
+		return _samples.size();
 	}
 
 }

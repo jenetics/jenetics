@@ -67,14 +67,32 @@ public final class Sample implements Comparable<Sample>, Serializable {
 		return _sample.length - 1;
 	}
 
+	/**
+	 * Return the argument value with the given {@code index}.
+	 *
+	 * @see #args()
+	 * @see #arity()
+	 *
+	 * @param index the argument index
+	 * @return the argument value with the given {@code index}
+	 * @throws ArrayIndexOutOfBoundsException if the given {@code index} is not
+	 *         within the given range {@code [0, arity)}
+	 */
 	public double argAt(final int index) {
-		if (index < 0 || index >= arity()) {
-			throw new ArrayIndexOutOfBoundsException();
+		if (index < 0 || index >= arity() - 1) {
+			throw new ArrayIndexOutOfBoundsException(format(
+				"Argument index out or range [0, %s): %s", arity(), index
+			));
 		}
 
 		return _sample[index];
 	}
 
+	/**
+	 * Return a copy of the samples argument array.
+	 *
+	 * @return a copy of the samples argument array
+	 */
 	public double[] args() {
 		return Arrays.copyOfRange(_sample, 0, _sample.length - 1);
 	}
@@ -143,7 +161,7 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @return a new sample point
 	 */
 	public static Sample of(final double x, final double y) {
-		return new Sample(new double[]{x, x});
+		return new Sample(new double[]{x, y});
 	}
 
 	/**

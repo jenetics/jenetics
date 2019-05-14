@@ -23,6 +23,7 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -142,7 +143,7 @@ public final class Regression
 	public static Regression of(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
-		final Collection<Sample> samples
+		final List<Sample> samples
 	) {
 		if (samples.size() < 1) {
 			throw new IllegalArgumentException(format(
@@ -154,7 +155,7 @@ public final class Regression
 		return new Regression(
 			codec,
 			error,
-			new Samples(samples.toArray(new Sample[0]))
+			new Samples(new ArrayList<>(samples))
 		);
 	}
 
