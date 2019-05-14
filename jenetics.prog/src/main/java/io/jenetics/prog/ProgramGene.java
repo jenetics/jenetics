@@ -30,6 +30,7 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.AbstractTreeGene;
+import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
@@ -134,6 +135,17 @@ public final class ProgramGene<A>
 	 */
 	public ISeq<? extends Op<A>> getTerminals() {
 		return _terminals;
+	}
+
+	/**
+	 * Creates a new {@link TreeNode} from this program gene.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a new tree node value build from this program gene
+	 */
+	public TreeNode<Op<A>> toTreeNode() {
+		return TreeNode.ofTree(this);
 	}
 
 	@Override

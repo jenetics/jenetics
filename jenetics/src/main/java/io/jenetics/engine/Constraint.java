@@ -45,6 +45,10 @@ import io.jenetics.Phenotype;
  *
  * @see Engine.Builder#constraint(Constraint)
  *
+ * @apiNote
+ * This class is part of the more advanced API and is not needed for default use
+ * cases.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
