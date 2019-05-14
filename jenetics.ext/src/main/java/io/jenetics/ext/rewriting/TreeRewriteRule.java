@@ -139,12 +139,11 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 		int rewritten = 0;
 		Optional<TreeMatchResult<V>> result;
 		do {
-			result = left().matcher(tree).results()
-				.findFirst();
+			result = left().matcher(tree).results().findFirst();
 
 			result.ifPresent(res -> rewrite(res, tree));
 			rewritten += result.isPresent() ? 1 : 0;
-		} while(result.isPresent() && rewritten < limit);
+		} while (result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}

@@ -122,10 +122,10 @@ public interface TreeRewriter<V> {
 		int rewritten = 0;
 		int count = 0;
 		do {
-			final int rwrt = rewritten;
-			count = StreamSupport.stream(rewriters.spliterator(), false)
-				.mapToInt(r -> r.rewrite(tree, limit - rwrt))
-				.sum();
+			count = 0;
+			for (TreeRewriter<V> rw : rewriters) {
+				count += rw.rewrite(tree, limit - rewritten);
+			}
 
 			rewritten += count;
 		} while(count > 0 && rewritten < limit);
