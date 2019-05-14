@@ -133,14 +133,11 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * ************************************************************************/
 
 	/**
-	 * Create a new sample point from the given argument array and sample result.
-	 * It represents the function arguments with the function value:
-	 * {@code f: args -> result}
-	 *
-	 * @implNote
-	 * For performance reasons, the returned array is not copied. Changing the
-	 * argument array after creating the {@code Sample} point will lead to
-	 * unpredictable results.
+	 * Create a new sample point from the given argument and sample result. It
+	 * represents the function arguments with the function value:
+	 * {@code f: sample[0:sample.length-1] -> sample[sample.length-1]}. The last
+	 * array element contains the result and the first n-1 elements are function
+	 * arguments.
 	 *
 	 * @param sample the sample point result
 	 * @return a new sample point
