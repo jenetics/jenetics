@@ -19,10 +19,49 @@
  */
 package io.jenetics.ext.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
+import io.jenetics.Gene;
+import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class UpdatableEngine {
+public class UpdatableEngine<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+>
+	implements EvolutionStreamable<G, C>
+{
+
+	private final AtomicReference<EvolutionStreamable<G, C>> _engine =
+		new AtomicReference<>();
+
+	public UpdatableEngine(final EvolutionStreamable<G, C> engine) {
+		_engine.set(requireNonNull(engine));
+	}
+
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		return null;
+	}
+
+	@Override
+	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		return null;
+	}
+
+	public void update(final EvolutionStreamable<G, C> engine) {
+
+	}
+
 }
