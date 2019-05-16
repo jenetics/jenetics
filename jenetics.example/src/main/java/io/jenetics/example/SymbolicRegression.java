@@ -50,7 +50,7 @@ import io.jenetics.prog.regression.Sample;
  * the dependent variables. --- John R. Koza, Genetic Programming I
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.0
  * @since 3.9
  */
 public class SymbolicRegression {

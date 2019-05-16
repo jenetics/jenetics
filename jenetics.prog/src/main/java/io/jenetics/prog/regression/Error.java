@@ -40,8 +40,8 @@ import java.util.function.DoubleBinaryOperator;
  * @see Complexity
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 @FunctionalInterface
 public interface Error {
