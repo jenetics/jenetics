@@ -21,14 +21,18 @@ package io.jenetics.ext.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Spliterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionInit;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -39,11 +43,16 @@ public class UpdatableEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements EvolutionStreamable<G, C>
+	implements
+		EvolutionStreamable<G, C>,
+		Updatable<EvolutionStreamable<G, C>>
 {
 
-	private final AtomicReference<EvolutionStreamable<G, C>> _engine =
-		new AtomicReference<>();
+	private final CopyOnWriteArrayList<Updatable<Spliterator<EvolutionResult<G, C>>>>
+	_updatables = new CopyOnWriteArrayList<>();
+
+	private final AtomicReference<EvolutionStreamable<G, C>>
+	_engine = new AtomicReference<>();
 
 	public UpdatableEngine(final EvolutionStreamable<G, C> engine) {
 		_engine.set(requireNonNull(engine));
@@ -52,15 +61,32 @@ public class UpdatableEngine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return null;
+		final UpdatableSpliterator<G, C> spliterator =
+			new UpdatableSpliterator<>(this, _engine.get().stream(start).spliterator());
+
+		return new EvolutionStreamImpl<G, C>(spliterator, false);
 	}
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return null;
+		final UpdatableSpliterator<G, C> spliterator =
+			new UpdatableSpliterator<>(this, _engine.get().stream(init).spliterator());
+
+		return new EvolutionStreamImpl<G, C>(spliterator, false);
 	}
 
+	@Override
 	public void update(final EvolutionStreamable<G, C> engine) {
+		for (Updatable<Spliterator<EvolutionResult<G, C>>> updatable : _updatables) {
+			updatable.update(engine.stream().spliterator());
+		}
+	}
+
+	void addUpdatable(final Updatable<Spliterator<EvolutionResult<G, C>>> updatable) {
+
+	}
+
+	void removeUpdatable(final Updatable<Spliterator<EvolutionResult<G, C>>> updatable) {
 
 	}
 
