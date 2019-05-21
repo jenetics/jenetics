@@ -191,7 +191,7 @@ public final class Regression
 		final Iterable<Sample> samples
 	) {
 		if (!samples.iterator().hasNext()) {
-			throw new IllegalArgumentException("Sample size must not be empty.");
+			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
 
 		final List<Sample> s = new ArrayList<>();
