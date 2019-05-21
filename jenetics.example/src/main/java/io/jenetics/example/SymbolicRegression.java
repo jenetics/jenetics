@@ -117,7 +117,7 @@ public class SymbolicRegression {
 
 		System.out.println("x: y, y', error");
 		for (Sample sample : REGRESSION.samples()) {
-			final double x = sample.args()[0];
+			final double x = sample.argAt(0);
 			final double y = program.eval(x);
 
 			System.out.println(format(
