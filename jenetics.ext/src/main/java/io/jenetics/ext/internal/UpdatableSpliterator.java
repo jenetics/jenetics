@@ -22,59 +22,62 @@ package io.jenetics.ext.internal;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
-
-import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionResult;
-
-import io.jenetics.ext.engine.UpdatableEngine;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public final class UpdatableSpliterator<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	implements Spliterator<EvolutionResult<G, C>>
-{
+public final class UpdatableSpliterator<T> implements Spliterator<T> {
 
-	private final ReadWriteLock _lock = new ReentrantReadWriteLock();
+	private final Lock _lock = new ReentrantLock();
 
-	private final UpdatableEngine<G, C> _engine;
+	private final Function<? super T, ? extends T> _updater;
 
-	private Spliterator<EvolutionResult<G, C>> _current;
-
-	private EvolutionResult<G, C> _result;
+	private Spliterator<T> _spliterator;
+	private boolean _updated = false;
 
 	UpdatableSpliterator(
-		final UpdatableEngine<G, C> engine,
-		final Spliterator<EvolutionResult<G, C>> spliterator
+		final Spliterator<T> spliterator,
+		final Function<? super T, ? extends T> updater
 	) {
-		_engine = requireNonNull(engine);
-		_current = requireNonNull(spliterator);
+		_spliterator = requireNonNull(spliterator);
+		_updater = requireNonNull(updater);
 	}
 
 	@Override
 	public boolean
-	tryAdvance(final Consumer<? super EvolutionResult<G, C>> action) {
+	tryAdvance(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		final boolean advance = spliterator().tryAdvance(element -> {
-			action.accept(element);
-			_result = element;
-		});
+		final Spliterator<T> spliterator;
+		final boolean updated;
 
-		return advance;
+		_lock.lock();
+		try {
+			spliterator = _spliterator;
+			updated = _updated;
+			_updated = false;
+		} finally {
+			_lock.unlock();
+		}
+
+		assert spliterator != null;
+
+		return spliterator.tryAdvance(element -> {
+			final T ele = updated ? _updater.apply(element) : element;
+			action.accept(ele);
+		});
 	}
 
 	@Override
-	public Spliterator<EvolutionResult<G, C>> trySplit() {
-		return new UpdatableSpliterator<>(_engine, _current);
+	public Spliterator<T> trySplit() {
+		//return new UpdatableSpliterator<>(_spliterator, _updater);
+		return null;
 	}
 
 	@Override
@@ -87,24 +90,13 @@ public final class UpdatableSpliterator<
 		return Spliterator.ORDERED;
 	}
 
-	private Spliterator<EvolutionResult<G, C>> spliterator() {
-		_lock.readLock().lock();
+	public void update(final Spliterator<T> spliterator) {
+		_lock.lock();
 		try {
-			final Spliterator<EvolutionResult<G, C>> result = _current;
-			return result;
+			_spliterator = requireNonNull(spliterator);
+			_updated = true;
 		} finally {
-			_lock.readLock().unlock();
-		}
-	}
-
-	public void update(final Spliterator<EvolutionResult<G, C>> spliterator) {
-		requireNonNull(spliterator);
-
-		_lock.writeLock().lock();
-		try {
-			_current = spliterator;
-		} finally {
-			_lock.writeLock().unlock();
+			_lock.unlock();
 		}
 	}
 
