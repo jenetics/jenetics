@@ -185,7 +185,7 @@ public static void main(final String[] args) {
     MathExpr.rewrite(tree); // Simplify result program.
     System.out.println("Generations: " + result.getTotalGenerations());
     System.out.println("Function:    " + new MathExpr(tree));
-    System.out.println("Error:       " + REGRESSION.error(program));
+    System.out.println("Error:       " + REGRESSION.error(tree));
 }
 ```
 The error function uses the _mean square error_ as _loss_ function. It is also possible to define a more advanced error function, which penalizes big program trees.

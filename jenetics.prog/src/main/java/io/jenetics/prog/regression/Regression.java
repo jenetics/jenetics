@@ -87,7 +87,7 @@ import io.jenetics.prog.op.Program;
  *         MathExpr.rewrite(tree); // Simplify result program.
  *         System.out.println("Generations: " + result.getTotalGenerations());
  *         System.out.println("Function:    " + new MathExpr(tree));
- *         System.out.println("Error:       " + REGRESSION.error(program));
+ *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
  * }
  * }</pre>

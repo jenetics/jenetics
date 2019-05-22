@@ -113,7 +113,7 @@ public class SymbolicRegression {
 		MathExpr.rewrite(tree);
 		System.out.println("Generations: " + result.getTotalGenerations());
 		System.out.println("Function:    " + new MathExpr(tree));
-		System.out.println("Error:       " + REGRESSION.error(program));
+		System.out.println("Error:       " + REGRESSION.error(tree));
 
 		System.out.println("x: y, y', error");
 		for (Sample sample : REGRESSION.samples()) {
