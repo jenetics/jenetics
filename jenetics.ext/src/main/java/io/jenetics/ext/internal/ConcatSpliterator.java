@@ -97,8 +97,8 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 	public int characteristics() {
 		return _spliterators.stream()
 			.mapToInt(Spliterator::characteristics)
-			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2)
-			& ~Spliterator.SORTED;
+			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2) &
+			~Spliterator.SORTED;
 	}
 
 }
