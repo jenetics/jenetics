@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext.internal;
 
 import static java.util.Objects.requireNonNull;
 
@@ -29,18 +29,18 @@ import java.util.function.Consumer;
 import io.jenetics.Gene;
 import io.jenetics.engine.EvolutionResult;
 
+import io.jenetics.ext.engine.UpdatableEngine;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class UpdatableSpliterator<
+public final class UpdatableSpliterator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements
-		Spliterator<EvolutionResult<G, C>>,
-		Updatable<Spliterator<EvolutionResult<G, C>>>
+	implements Spliterator<EvolutionResult<G, C>>
 {
 
 	private final ReadWriteLock _lock = new ReentrantReadWriteLock();
@@ -97,7 +97,6 @@ final class UpdatableSpliterator<
 		}
 	}
 
-	@Override
 	public void update(final Spliterator<EvolutionResult<G, C>> spliterator) {
 		requireNonNull(spliterator);
 

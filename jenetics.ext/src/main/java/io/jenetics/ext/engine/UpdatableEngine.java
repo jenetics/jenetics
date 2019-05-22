@@ -32,7 +32,7 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
-import io.jenetics.internal.engine.EvolutionStreamImpl;
+
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -61,18 +61,24 @@ public class UpdatableEngine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
+		/*
 		final UpdatableSpliterator<G, C> spliterator =
 			new UpdatableSpliterator<>(this, _engine.get().stream(start).spliterator());
 
 		return new EvolutionStreamImpl<G, C>(spliterator, false);
+		 */
+		return null;
 	}
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		/*
 		final UpdatableSpliterator<G, C> spliterator =
 			new UpdatableSpliterator<>(this, _engine.get().stream(init).spliterator());
 
 		return new EvolutionStreamImpl<G, C>(spliterator, false);
+		 */
+		return null;
 	}
 
 	@Override
