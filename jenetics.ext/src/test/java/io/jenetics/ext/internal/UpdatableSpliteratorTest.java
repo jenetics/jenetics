@@ -19,9 +19,13 @@
  */
 package io.jenetics.ext.internal;
 
+import java.util.List;
 import java.util.Spliterator;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -32,35 +36,70 @@ import org.testng.annotations.Test;
  */
 public class UpdatableSpliteratorTest {
 
+	private static final int MAX_ELEMENTS = 10;
+
+	private final Lock _lock = new ReentrantLock();
+	private final Condition _change = _lock.newCondition();
+	private final Condition _consume = _lock.newCondition();
+
+	private int _counter = 0;
+
 	@Test
-	public void foo() {
+	public void foo() throws InterruptedException {
 		final UpdatableSpliterator<String> spliterator = new UpdatableSpliterator<>(
-			newSpliterator("a", 0),
+			newSpliterator("0", 0),
 			this::transform
 		);
 
 		final Runnable updater = () -> {
-			for (int i = 0; i < 10; ++i) {
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				spliterator.update(newSpliterator("" + i, 0));
-			}
-		};
-		new Thread(updater).start();
+			try {
+				int i = 0;
+				while (!Thread.currentThread().isInterrupted()) {
+					_lock.lock();
+					try {
+						while (_counter < MAX_ELEMENTS) {
+							_change.await();
+						}
 
-		StreamSupport.stream(spliterator, false).parallel()
-			.limit(150)
-			.peek(e -> {
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException ee) {
-					ee.printStackTrace();
+						spliterator.update(newSpliterator("" + ++i, 0));
+						_counter = 0;
+						_consume.signal();
+					} finally {
+						_lock.unlock();
+					}
 				}
-			})
-			.forEach(System.out::println);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+
+		};
+		final Thread thread = new Thread(updater);
+		thread.start();
+
+		StreamSupport.stream(spliterator, false)
+			//.parallel()
+			.limit(150)
+			.forEach(this::consume);
+
+		thread.interrupt();
+		thread.join();
+	}
+
+	private void consume(final String value) {
+		_lock.lock();
+		try {
+			while (_counter >= MAX_ELEMENTS) {
+				_consume.await();
+			}
+			_counter++;
+			_change.signal();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} finally {
+			_lock.unlock();
+		}
+
+		System.out.println(value);
 	}
 
 	private String transform(final String value) {
@@ -69,10 +108,12 @@ public class UpdatableSpliteratorTest {
 
 	private Spliterator<String> newSpliterator(final String prefix, final int b) {
 		final AtomicInteger count = new AtomicInteger(b);
-
-		return Stream
+		final List<String> values = Stream
 			.generate(() -> prefix + "_" + count.getAndIncrement())
-			.spliterator();
+			.limit(MAX_ELEMENTS+1)
+			.collect(Collectors.toList());
+
+		return values.spliterator();
 	}
 
 }
