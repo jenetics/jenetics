@@ -19,16 +19,17 @@
  */
 package io.jenetics.ext.internal;
 
-import java.util.List;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -45,13 +46,13 @@ public class UpdatableSpliteratorTest {
 	private int _counter = 0;
 
 	@Test
-	public void foo() throws InterruptedException {
-		final UpdatableSpliterator<String> spliterator = new UpdatableSpliterator<>(
-			newSpliterator("0", 0),
-			this::transform
-		);
+	public void update() throws InterruptedException {
+		final UpdatableSpliterator<Map.Entry<Integer, Integer>> spliterator =
+			new UpdatableSpliterator<>(this::transform);
 
 		final Runnable updater = () -> {
+			spliterator.update(newSpliterator(0));
+
 			try {
 				int i = 0;
 				while (!Thread.currentThread().isInterrupted()) {
@@ -61,7 +62,7 @@ public class UpdatableSpliteratorTest {
 							_change.await();
 						}
 
-						spliterator.update(newSpliterator("" + ++i, 0));
+						spliterator.update(newSpliterator(++i));
 						_counter = 0;
 						_consume.signal();
 					} finally {
@@ -76,16 +77,22 @@ public class UpdatableSpliteratorTest {
 		final Thread thread = new Thread(updater);
 		thread.start();
 
+		final AtomicInteger run = new AtomicInteger(0);
 		StreamSupport.stream(spliterator, false)
-			//.parallel()
-			.limit(150)
-			.forEach(this::consume);
+			.limit(200)
+			.peek(this::consume)
+			.forEach(e -> {
+				if (e.getKey() != run.get()) {
+					Assert.assertEquals(e.getValue().intValue(), Integer.MAX_VALUE);
+					run.set(e.getKey());
+				}
+			});
 
 		thread.interrupt();
 		thread.join();
 	}
 
-	private void consume(final String value) {
+	private void consume(final Map.Entry<Integer, Integer> entry) {
 		_lock.lock();
 		try {
 			while (_counter >= MAX_ELEMENTS) {
@@ -99,21 +106,25 @@ public class UpdatableSpliteratorTest {
 			_lock.unlock();
 		}
 
-		System.out.println(value);
+		//System.out.println(entry);
 	}
 
-	private String transform(final String value) {
-		return value + ": updated";
+	private Map.Entry<Integer, Integer>
+	transform(final Map.Entry<Integer, Integer> entry) {
+		return entry(entry.getKey(), Integer.MAX_VALUE);
 	}
 
-	private Spliterator<String> newSpliterator(final String prefix, final int b) {
-		final AtomicInteger count = new AtomicInteger(b);
-		final List<String> values = Stream
-			.generate(() -> prefix + "_" + count.getAndIncrement())
-			.limit(MAX_ELEMENTS+1)
-			.collect(Collectors.toList());
+	private Spliterator<Map.Entry<Integer, Integer>>
+	newSpliterator(final int run) {
+		final AtomicInteger count = new AtomicInteger(0);
 
-		return values.spliterator();
+		return Stream
+			.generate(() -> entry(run, count.getAndIncrement()))
+			.spliterator();
+	}
+
+	private static <K, V> Map.Entry<K, V> entry(final K key, final V value) {
+		return new SimpleEntry<>(key, value);
 	}
 
 }

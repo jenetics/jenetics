@@ -22,6 +22,7 @@ package io.jenetics.ext.internal;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -35,18 +36,23 @@ import java.util.function.Function;
 public final class UpdatableSpliterator<T> implements Spliterator<T> {
 
 	private final Lock _lock = new ReentrantLock();
-
-	private final Function<? super T, ? extends T> _updater;
+	private final Condition _available = _lock.newCondition();
 
 	private Spliterator<T> _spliterator;
 	private boolean _updated = false;
 
-	UpdatableSpliterator(
+	private final Function<? super T, ? extends T> _updater;
+
+	public UpdatableSpliterator(
 		final Spliterator<T> spliterator,
 		final Function<? super T, ? extends T> updater
 	) {
-		_spliterator = requireNonNull(spliterator);
+		_spliterator = spliterator;
 		_updater = requireNonNull(updater);
+	}
+
+	public UpdatableSpliterator(final Function<? super T, ? extends T> updater) {
+		this(null, updater);
 	}
 
 	@Override
@@ -59,14 +65,18 @@ public final class UpdatableSpliterator<T> implements Spliterator<T> {
 
 		_lock.lock();
 		try {
+			while (_spliterator == null) {
+				_available.await();
+			}
 			spliterator = _spliterator;
 			updated = _updated;
 			_updated = false;
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			return false;
 		} finally {
 			_lock.unlock();
 		}
-
-		assert spliterator != null;
 
 		return spliterator.tryAdvance(element -> {
 			final T ele = updated ? _updater.apply(element) : element;
@@ -76,7 +86,6 @@ public final class UpdatableSpliterator<T> implements Spliterator<T> {
 
 	@Override
 	public Spliterator<T> trySplit() {
-		//return new UpdatableSpliterator<>(_spliterator, _updater);
 		return null;
 	}
 
@@ -91,10 +100,13 @@ public final class UpdatableSpliterator<T> implements Spliterator<T> {
 	}
 
 	public void update(final Spliterator<T> spliterator) {
+		requireNonNull(spliterator);
+
 		_lock.lock();
 		try {
-			_spliterator = requireNonNull(spliterator);
+			_spliterator = spliterator;
 			_updated = true;
+			_available.signal();
 		} finally {
 			_lock.unlock();
 		}
