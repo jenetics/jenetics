@@ -87,7 +87,7 @@ import io.jenetics.prog.op.Program;
  *         MathExpr.rewrite(tree); // Simplify result program.
  *         System.out.println("Generations: " + result.getTotalGenerations());
  *         System.out.println("Function:    " + new MathExpr(tree));
- *         System.out.println("Error:       " + REGRESSION.error(program));
+ *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
  * }
  * }</pre>
@@ -188,20 +188,16 @@ public final class Regression
 	public static Regression of(
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
 		final Error error,
-		final List<Sample> samples
+		final Iterable<Sample> samples
 	) {
-		if (samples.size() < 1) {
-			throw new IllegalArgumentException(format(
-				"Sample size must be greater than one: %s",
-				samples.size()
-			));
+		if (!samples.iterator().hasNext()) {
+			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
 
-		return new Regression(
-			codec,
-			error,
-			new Samples(new ArrayList<>(samples))
-		);
+		final List<Sample> s = new ArrayList<>();
+		samples.forEach(s::add);
+
+		return new Regression(codec, error, new Samples(s));
 	}
 
 	/**
