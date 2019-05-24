@@ -21,9 +21,12 @@ package io.jenetics.ext.engine;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Spliterator;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicReference;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Supplier;
 
 import io.jenetics.Gene;
@@ -32,7 +35,9 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 
+import io.jenetics.ext.internal.UpdatableSpliterator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -48,52 +53,86 @@ public class UpdatableEngine<
 		Updatable<EvolutionStreamable<G, C>>
 {
 
-	private final CopyOnWriteArrayList<Updatable<Spliterator<EvolutionResult<G, C>>>>
-	_updatables = new CopyOnWriteArrayList<>();
+	private final Lock _lock = new ReentrantLock();
 
-	private final AtomicReference<EvolutionStreamable<G, C>>
-	_engine = new AtomicReference<>();
+	private final List<WeakReference<UpdatableSpliterator<EvolutionResult<G, C>>>>
+	_updatables = new ArrayList<>();
+
+	private EvolutionStreamable<G, C> _engine;
 
 	public UpdatableEngine(final EvolutionStreamable<G, C> engine) {
-		_engine.set(requireNonNull(engine));
+		_engine = requireNonNull(engine);
 	}
 
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		/*
-		final UpdatableSpliterator<G, C> spliterator =
-			new UpdatableSpliterator<>(this, _engine.get().stream(start).spliterator());
+		_lock.lock();
+		try {
+			return stream(spliterator(start));
+		} finally {
+			_lock.unlock();
+		}
+	}
 
-		return new EvolutionStreamImpl<G, C>(spliterator, false);
-		 */
-		return null;
+	private EvolutionStream<G, C>
+	stream(UpdatableSpliterator<EvolutionResult<G, C>> spliterator) {
+		_updatables.add(new WeakReference<>(spliterator));
+		return new EvolutionStreamImpl<>(spliterator, false);
+	}
+
+	private UpdatableSpliterator<EvolutionResult<G, C>>
+	spliterator(final Supplier<EvolutionStart<G, C>> start) {
+		return new UpdatableSpliterator<>(
+			_engine.stream(start).spliterator(),
+			this::invalidate
+		);
+	}
+
+	private EvolutionResult<G, C> invalidate(final EvolutionResult<G, C> result) {
+		return result;
 	}
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		/*
-		final UpdatableSpliterator<G, C> spliterator =
-			new UpdatableSpliterator<>(this, _engine.get().stream(init).spliterator());
+		_lock.lock();
+		try {
+			return stream(spliterator(init));
+		} finally {
+			_lock.unlock();
+		}
+	}
 
-		return new EvolutionStreamImpl<G, C>(spliterator, false);
-		 */
-		return null;
+	private UpdatableSpliterator<EvolutionResult<G, C>>
+	spliterator(final EvolutionInit<G> init) {
+		return new UpdatableSpliterator<>(
+			_engine.stream(init).spliterator(),
+			this::invalidate
+		);
 	}
 
 	@Override
 	public void update(final EvolutionStreamable<G, C> engine) {
-		for (Updatable<Spliterator<EvolutionResult<G, C>>> updatable : _updatables) {
-			updatable.update(engine.stream().spliterator());
+		requireNonNull(engine);
+
+		_lock.lock();
+		try {
+			_engine = engine;
+
+			final Iterator<WeakReference<UpdatableSpliterator<EvolutionResult<G, C>>>>
+				it = _updatables.iterator();
+
+			while (it.hasNext()) {
+				final UpdatableSpliterator<EvolutionResult<G, C>>
+					spliterator = it.next().get();
+
+				if (spliterator != null) {
+					spliterator.update(_engine.stream().spliterator());
+				}
+			}
+		} finally {
+			_lock.unlock();
 		}
-	}
-
-	void addUpdatable(final Updatable<Spliterator<EvolutionResult<G, C>>> updatable) {
-
-	}
-
-	void removeUpdatable(final Updatable<Spliterator<EvolutionResult<G, C>>> updatable) {
-
 	}
 
 }
