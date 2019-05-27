@@ -24,7 +24,7 @@ package io.jenetics.ext.internal;
  * @version 5.0
  * @since 5.0
  */
-public final class Escaper {
+public final class  Escaper {
 
 	private final char[] _protect;
 	private final char _escape;
