@@ -19,7 +19,6 @@
  */
 package io.jenetics;
 
-import static java.lang.String.format;
 import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
@@ -95,11 +94,6 @@ public class SwapMutator<
 		}
 
 		return result;
-	}
-
-	@Override
-	public String toString() {
-		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }
