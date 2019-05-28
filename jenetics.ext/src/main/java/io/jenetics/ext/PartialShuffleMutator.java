@@ -30,13 +30,12 @@ import io.jenetics.util.MSeq;
 
 /**
  * The Partial Transfer Shuffle (PSM), change part of the order of the genes in
- * the chromosome.
+ * the chromosome. This mutator is useful for solving the Traveling Salesman
+ * Problem.
  *
  * @see <a href="https://arxiv.org/ftp/arxiv/papers/1203/1203.3099.pdf">
  *     Analyzing the Performance of Mutation Operators to Solve the Travelling
  *     Salesman Problem</a>
- * @see <a href="https://www.researchgate.net/publication/282732991_A_New_Mutation_Operator_for_Solving_an_NP-Complete_Problem_Travelling_Salesman_Problem">
- *     A New Mutation Operator for Solving an NP-Complete Problem: Travelling Salesman Problem</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
