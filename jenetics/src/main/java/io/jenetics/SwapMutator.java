@@ -32,6 +32,12 @@ import io.jenetics.util.MSeq;
  * production of building blocks. This mutation operator can also be used for
  * combinatorial problems, where no duplicated genes within a chromosome are
  * allowed, e.g. for the TSP.
+ * <p>
+ * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
+ *
+ * @see <a href="https://arxiv.org/ftp/arxiv/papers/1203/1203.3099.pdf">
+ *     Analyzing the Performance of Mutation Operators to Solve the Travelling
+ *     Salesman Problem</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
