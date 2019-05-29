@@ -75,7 +75,7 @@ public class ReverseSequenceMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int[] points = comb.subset(chromosome.length(), 2);
+			final int[] points = comb.subset(chromosome.length() + 1, 2);
 			final MSeq<G> genes = chromosome.toSeq().copy();
 			genes.subSeq(points[0], points[1]).reverse();
 
