@@ -32,15 +32,15 @@ import io.jenetics.PermutationChromosome;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ReverseSequenceMutatorTest {
+public class HPRMutatorTest {
 
 	@Test(invocationCount = 10)
 	public void mutate() {
 		final PermutationChromosome<Integer> original =
-			PermutationChromosome.ofInteger(50);
+			PermutationChromosome.ofInteger(100);
 
-		final ReverseSequenceMutator<EnumGene<Integer>, Integer> mutator =
-			new ReverseSequenceMutator<>(1.0);
+		final HPRMutator<EnumGene<Integer>, Integer> mutator =
+			new HPRMutator<>(1.0);
 
 		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
 			mutator.mutate(original, 1, new Random());
@@ -53,24 +53,8 @@ public class ReverseSequenceMutatorTest {
 			.mapToInt(EnumGene::getAllele)
 			.toArray();
 
-		Assert.assertEquals(
-			result.getMutations(),
-			endIndex(a, b) - startIndex(a, b)
-		);
-	}
+		Assert.assertNotEquals(a, b);
 
-	private static int startIndex(final int[] a, final int[] b) {
-		for (int i = 0; i < a.length; ++i) {
-			if (a[i] != b[i]) return i;
-		}
-		return 0;
-	}
-
-	private static int endIndex(final int[] a, final int[] b) {
-		for (int i = a.length; --i >= 0;) {
-			if (a[i] != b[i]) return i;
-		}
-		return 0;
 	}
 
 }
