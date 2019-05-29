@@ -31,11 +31,16 @@ import io.jenetics.internal.math.probability;
 import io.jenetics.util.MSeq;
 
 /**
- * The Hybridizing
- *  ing PSM and RSM Operator (HPRM)
- * constructs an offspring from a pair of parents by hybridizing
- * two mutation
- *  tion operators, PSM and RSM.
+ * The Hybridizing PSM and RSM Operator (HPRM) constructs an offspring from a
+ * pair of parents by hybridizing two mutation operators, PSM and RSM.
+ * <p>
+ * This mutator is described in <a href="https://arxiv.org/abs/1203.5028">A New
+ * Mutation Operator for Solving an NP-Complete Problem: Travelling Salesman
+ * Problem</a>, by <em>Otman Abdoun, Chakir Tajani</em> and
+ * <em>Jaafar Abouchabka</em>.
+ *
+ * @see ReverseSequenceMutator
+ * @see io.jenetics.SwapMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -76,14 +81,12 @@ public class HPRMutator<
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
 			final int P = probability.toInt(p);
-			final int[] points = comb.subset(chromosome.length() + 1, 2);
+			final int[] points = comb.subset(chromosome.length(), 2);
 			final MSeq<G> genes = chromosome.toSeq().copy();
 
-			int mutations = 0;
+			int mutations = (points[1] - points[0] + 1)/2;
 			for (int i = points[0], j = points[1]; i < j; ++i, --j) {
 				genes.swap(i, j);
-				++mutations;
-
 				if (random.nextInt() < P) {
 					genes.swap(i, random.nextInt(chromosome.length()));
 					++mutations;
