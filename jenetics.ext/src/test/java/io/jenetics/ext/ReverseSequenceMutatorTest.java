@@ -39,7 +39,6 @@ public class ReverseSequenceMutatorTest {
 		final PermutationChromosome<Integer> original =
 			PermutationChromosome.ofInteger(50);
 
-
 		final ReverseSequenceMutator<EnumGene<Integer>, Integer> mutator =
 			new ReverseSequenceMutator<>(1.0);
 
