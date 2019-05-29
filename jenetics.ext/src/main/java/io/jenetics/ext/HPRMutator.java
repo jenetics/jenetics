@@ -19,16 +19,23 @@
  */
 package io.jenetics.ext;
 
+import java.util.Random;
+
 import io.jenetics.AbstractAlterer;
+import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
+import io.jenetics.MutatorResult;
+import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.probability;
+import io.jenetics.util.MSeq;
 
 /**
  * The Hybridizing
  *  ing PSM and RSM Operator (HPRM)
  * constructs an offspring from a pair of parents by hybridizing
  * two mutation
- *  tion operators, PSM and RSM. 
+ *  tion operators, PSM and RSM.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -59,4 +66,39 @@ public class HPRMutator<
 	public HPRMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
+
+	@Override
+	protected MutatorResult<Chromosome<G>> mutate(
+		final Chromosome<G> chromosome,
+		final double p,
+		final Random random
+	) {
+		final MutatorResult<Chromosome<G>> result;
+		if (chromosome.length() > 1) {
+			final int P = probability.toInt(p);
+			final int[] points = comb.subset(chromosome.length() + 1, 2);
+			final MSeq<G> genes = chromosome.toSeq().copy();
+
+			int mutations = 0;
+			for (int i = points[0], j = points[1]; i < j; ++i, --j) {
+				genes.swap(i, j);
+				++mutations;
+
+				if (random.nextInt() < P) {
+					genes.swap(i, random.nextInt(chromosome.length()));
+					++mutations;
+				}
+			}
+
+			result = MutatorResult.of(
+				chromosome.newInstance(genes.toISeq()),
+				mutations
+			);
+		} else {
+			result = MutatorResult.of(chromosome);
+		}
+
+		return result;
+	}
+
 }
