@@ -35,7 +35,7 @@ public class TRSTest {
 
 	@Test
 	public void normalForm() {
-		final TRS<String> trs = TRS.of(
+		final TRS<String> trs = TRS.parse(
 			"add ( 0, $x ) -> $x ",
 			"add(S($x),$y) -> S(add($x,$y))",
 			"mul(0,$x) -> 0",
@@ -49,7 +49,7 @@ public class TRSTest {
 
 	@Test
 	public void serialize() throws IOException {
-		final TRS<String> trs = TRS.of(
+		final TRS<String> trs = TRS.parse(
 			"add(0,$x) -> $x",
 			"add(S($x),$y) -> S(add($x,$y))",
 			"mul(0,$x) -> 0",

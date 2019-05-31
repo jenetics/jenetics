@@ -41,7 +41,7 @@ import io.jenetics.ext.util.TreeNode;
  * This class represents a Tree Rewrite System, which consists of a set of
  * Tree Rewrite Rules.
  * <pre>{@code
- * final TRS<String> trs = TRS.of(
+ * final TRS<String> trs = TRS.parse(
  *     "add(0,$x) -> $x",
  *     "add(S($x),$y) -> S(add($x,$y))",
  *     "mul(0,$x) -> 0",
@@ -129,7 +129,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	 * @throws IllegalArgumentException if the given {@code rules} sequence is
 	 *         empty
 	 */
-	public static <V> TRS<V> of(
+	public static <V> TRS<V> parse(
 		final Function<? super String, ? extends V> mapper,
 		final String... rules
 	) {
@@ -148,8 +148,8 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	 * @throws IllegalArgumentException if the given {@code rules} sequence is
 	 *         empty
 	 */
-	public static TRS<String> of(final String... rules) {
-		return of(Function.identity(), rules);
+	public static TRS<String> parse(final String... rules) {
+		return parse(Function.identity(), rules);
 	}
 
 	/* *************************************************************************
