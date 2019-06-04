@@ -370,8 +370,8 @@ public enum MathOp implements Op<Double> {
 	}
 
 	@Override
-	public Double apply(final Double[] doubles) {
-		return _function.apply(doubles);
+	public Double apply(final Double[] args) {
+		return _function.apply(args);
 	}
 
 	@Override
