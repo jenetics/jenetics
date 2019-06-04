@@ -19,7 +19,15 @@
  */
 package io.jenetics.prog.op;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
+
+import io.jenetics.ext.util.Tree;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class contains basic and secondary boolean operations.
@@ -102,6 +110,76 @@ public enum BoolOp implements Op<Boolean> {
 	@Override
 	public String toString() {
 		return _name;
+	}
+
+
+	/**
+	 * Converts the string representation of an operation to the operation
+	 * object. It is used for converting the string representation of a tree to
+	 * an operation tree. If you use it that way, you should not forget to
+	 * re-index the tree variables.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Boolean>> tree = TreeNode.parse(
+	 *     "and(or(x,y),not(y))",
+	 *     BoolOp::toBoolOp
+	 * );
+	 *
+	 * assert Program.eval(tree, false, false) == false;
+	 * Var.reindex(tree);
+	 * assert Program.eval(tree, false, false) == true;
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see Var#reindex(TreeNode)
+	 * @see Program#eval(Tree, Object[])
+	 *
+	 * @param string the string representation of an operation which should be
+	 *        converted
+	 * @return the operation, converted from the given string
+	 * @throws IllegalArgumentException if the given {@code value} doesn't
+	 *         represent a mathematical expression
+	 * @throws NullPointerException if the given string {@code value} is
+	 *         {@code null}
+	 */
+	public static Op<Boolean> toBoolOp(final String string) {
+		requireNonNull(string);
+
+		final Op<Boolean> result;
+		final Optional<Const<Boolean>> cop = toConst(string);
+		if (cop.isPresent()) {
+			result = cop.orElseThrow(AssertionError::new);
+		} else {
+			final Optional<Op<Boolean>> mop = toOp(string);
+			result = mop.isPresent()
+				? mop.orElseThrow(AssertionError::new)
+				: Var.parse(string);
+		}
+
+		return result;
+	}
+
+	static Optional<Const<Boolean>> toConst(final String string) {
+		return tryParseBoolean(string)
+			.map(Const::of);
+	}
+
+	private static Optional<Boolean> tryParseBoolean(final String value) {
+		switch (value) {
+			case "true":
+			case "1": return Optional.of(true);
+			case "false":
+			case "0": return Optional.of(false);
+			default: return Optional.empty();
+		}
+	}
+
+	private static Optional<Op<Boolean>> toOp(final String string) {
+		return Stream.of(values())
+			.filter(op -> Objects.equals(op._name, string))
+			.map(op -> (Op<Boolean>)op)
+			.findFirst();
 	}
 
 }
