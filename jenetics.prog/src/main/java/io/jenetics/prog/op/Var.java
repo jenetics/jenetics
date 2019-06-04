@@ -305,6 +305,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 * @since 5.0
 	 *
 	 * @see MathOp#toMathOp(String)
+	 * @see BoolOp#toBoolOp(String)
 	 * @see Program#eval(Tree, Object[])
 	 *
 	 * @param tree the tree where the variable indices needs to be fixed
