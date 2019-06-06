@@ -46,7 +46,7 @@ public enum BoolOp implements Op<Boolean> {
 	/**
 	 * Disjunction. <em>This operation has arity 2.</em>
 	 */
-	OR("or", 2, v -> v[0] && v[1]),
+	OR("or", 2, v -> v[0] || v[1]),
 
 	/**
 	 * Negation. <em>This operation has arity 1.</em>
@@ -105,6 +105,23 @@ public enum BoolOp implements Op<Boolean> {
 	@Override
 	public Boolean apply(final Boolean[] args) {
 		return _function.apply(args);
+	}
+
+	/**
+	 * Evaluates the operation with the given arguments.
+	 *
+	 * @see #apply(Boolean[])
+	 *
+	 * @param args the operation arguments
+	 * @return the evaluated operation
+	 */
+	public boolean eval(final boolean... args) {
+		final Boolean[] v = new Boolean[args.length];
+		for (int i = 0; i < args.length; ++i) {
+			v[i] = args[i];
+		}
+
+		return apply(v);
 	}
 
 	@Override
