@@ -29,6 +29,51 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class BoolOpTest {
 
+	@Test
+	public void and() {
+		Assert.assertEquals(BoolOp.AND.eval(false, false), false);
+		Assert.assertEquals(BoolOp.AND.eval(false, true), false);
+		Assert.assertEquals(BoolOp.AND.eval(true, false), false);
+		Assert.assertEquals(BoolOp.AND.eval(true, true), true);
+	}
+
+	@Test
+	public void or() {
+		Assert.assertEquals(BoolOp.OR.eval(false, false), false);
+		Assert.assertEquals(BoolOp.OR.eval(false, true), true);
+		Assert.assertEquals(BoolOp.OR.eval(true, false), true);
+		Assert.assertEquals(BoolOp.OR.eval(true, true), true);
+	}
+
+	@Test
+	public void xor() {
+		Assert.assertEquals(BoolOp.XOR.eval(false, false), false);
+		Assert.assertEquals(BoolOp.XOR.eval(false, true), true);
+		Assert.assertEquals(BoolOp.XOR.eval(true, false), true);
+		Assert.assertEquals(BoolOp.XOR.eval(true, true), false);
+	}
+
+	@Test
+	public void imp() {
+		Assert.assertEquals(BoolOp.IMP.eval(false, false), true);
+		Assert.assertEquals(BoolOp.IMP.eval(false, true), true);
+		Assert.assertEquals(BoolOp.IMP.eval(true, false), false);
+		Assert.assertEquals(BoolOp.IMP.eval(true, true), true);
+	}
+
+	@Test
+	public void eq() {
+		Assert.assertEquals(BoolOp.EQ.eval(false, false), true);
+		Assert.assertEquals(BoolOp.EQ.eval(false, true), false);
+		Assert.assertEquals(BoolOp.EQ.eval(true, false), false);
+		Assert.assertEquals(BoolOp.EQ.eval(true, true), true);
+	}
+
+	@Test
+	public void not() {
+		Assert.assertEquals(BoolOp.NOT.eval(false), true);
+		Assert.assertEquals(BoolOp.NOT.eval(true), false);
+	}
 
 	@Test
 	public void toBoolOp() {
