@@ -66,7 +66,7 @@ public enum BoolOp implements Op<Boolean> {
 	/**
 	 * Equivalence. <em>This operation has arity 2.</em>
 	 */
-	EQ("eq", 2, v -> (v[0] && v[1]) || (!v[0] && !v[1]));
+	EQU("equ", 2, v -> (v[0] && v[1]) || (!v[0] && !v[1]));
 
 	/**
 	 * Represents the constant {@code true}.

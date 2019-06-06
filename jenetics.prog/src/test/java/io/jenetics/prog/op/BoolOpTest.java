@@ -63,10 +63,10 @@ public class BoolOpTest {
 
 	@Test
 	public void eq() {
-		Assert.assertEquals(BoolOp.EQ.eval(false, false), true);
-		Assert.assertEquals(BoolOp.EQ.eval(false, true), false);
-		Assert.assertEquals(BoolOp.EQ.eval(true, false), false);
-		Assert.assertEquals(BoolOp.EQ.eval(true, true), true);
+		Assert.assertEquals(BoolOp.EQU.eval(false, false), true);
+		Assert.assertEquals(BoolOp.EQU.eval(false, true), false);
+		Assert.assertEquals(BoolOp.EQU.eval(true, false), false);
+		Assert.assertEquals(BoolOp.EQU.eval(true, true), true);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class BoolOpTest {
 	@Test
 	public void toBoolOp() {
 		final TreeNode<Op<Boolean>> tree = TreeNode.parse(
-			"and(xor(x[0],y[1]),eq(y[1],x[0]))",
+			"and(xor(x[0],y[1]),equ(y[1],x[0]))",
 			BoolOp::toBoolOp
 		);
 		Assert.assertFalse(Program.eval(tree, true, true));
