@@ -60,10 +60,10 @@ import io.jenetics.prog.op.Program;
  *     private static final Regression<Double> REGRESSION = Regression.of(
  *         Regression.codecOf(OPERATIONS, TERMINALS, 5),
  *         Error.of(LossFunction::mse),
- *         Sample.of(-1.0, -8.0000),
+ *         Sample.ofDouble(-1.0, -8.0000),
  *         // ...
- *         Sample.of(0.9, 1.3860),
- *         Sample.of(1.0, 2.0000)
+ *         Sample.ofDouble(0.9, 1.3860),
+ *         Sample.ofDouble(1.0, 2.0000)
  *     );
  *
  *     public static void main(final String[] args) {

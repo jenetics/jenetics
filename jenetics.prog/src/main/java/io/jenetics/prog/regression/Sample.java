@@ -154,7 +154,7 @@ public final class Sample<T> implements Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> of(final double x, final double y) {
+	public static Sample<Double> ofDouble(final double x, final double y) {
 		return new Sample<>(new Double[]{x, y});
 	}
 
@@ -168,7 +168,7 @@ public final class Sample<T> implements Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> of(final double x1, final double x2, final double y) {
+	public static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
 		return new Sample<>(new Double[]{x1, x2, y});
 	}
 
@@ -183,7 +183,7 @@ public final class Sample<T> implements Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> of(
+	public static Sample<Double> ofDouble(
 		final double x1,
 		final double x2,
 		final double x3,
