@@ -30,6 +30,7 @@ import static java.util.Objects.requireNonNull;
  * of an argument array and a result value. The sample point is comparable
  * according its {@link #result()} value.
  *
+ * @param <T> the sample type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
@@ -134,6 +135,7 @@ public final class Sample<T> implements Serializable {
 	 * array element contains the result and the first n-1 elements are function
 	 * arguments.
 	 *
+	 * @param <T> the sample type
 	 * @param sample the sample point result
 	 * @return a new sample point
 	 * @throws IllegalArgumentException if the argument array is empty

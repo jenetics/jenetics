@@ -21,11 +21,11 @@ package io.jenetics.prog.regression;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.DoubleBinaryOperator;
+
 import io.jenetics.ext.util.Tree;
 
 import io.jenetics.prog.op.Op;
-
-import java.util.function.DoubleBinaryOperator;
 
 /**
  * This function calculates the <em>overall</em> error of a given program tree.
@@ -38,6 +38,8 @@ import java.util.function.DoubleBinaryOperator;
  *
  * @see LossFunction
  * @see Complexity
+ *
+ * @param <T> the sample type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
@@ -69,6 +71,7 @@ public interface Error<T> {
 	 * Creates an error function which only uses the given {@code loss} function
 	 * for calculating the program error
 	 *
+	 * @param <T> the sample type
 	 * @param loss the loss function to use for calculating the program error
 	 * @return an error function which uses the loss function for error
 	 *         calculation
@@ -87,14 +90,15 @@ public interface Error<T> {
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
 	 * The complexity function penalizes programs which grows to big.
 	 *
+	 * @param <T> the sample type
 	 * @param loss the loss function
  	 * @param complexity the program complexity measure
 	 * @return a new error function by combining the given loss and complexity
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static Error<Double>
-	of(final LossFunction<Double> loss, final Complexity<Double> complexity) {
+	public static <T> Error<T>
+	of(final LossFunction<T> loss, final Complexity<T> complexity) {
 		return of(loss, complexity, (lss, cpx) -> lss + lss*cpx);
 	}
 
@@ -104,6 +108,7 @@ public interface Error<T> {
 	 * is combined in the following way: {@code error = loss + loss*complexity}.
 	 * The complexity function penalizes programs which grows to big.
 	 *
+	 * @param <T> the sample type
 	 * @param loss the loss function
 	 * @param complexity the program complexity measure
 	 * @param compose the function which composes the {@code loss} and
@@ -112,9 +117,9 @@ public interface Error<T> {
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static Error<Double> of(
-		final LossFunction<Double> loss,
-		final Complexity<Double> complexity,
+	public static <T> Error<T> of(
+		final LossFunction<T> loss,
+		final Complexity<T> complexity,
 		final DoubleBinaryOperator compose
 	) {
 		requireNonNull(loss);

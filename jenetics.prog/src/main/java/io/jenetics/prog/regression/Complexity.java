@@ -39,6 +39,8 @@ import io.jenetics.prog.op.Op;
  * @see LossFunction
  * @see Error
  *
+ * @param <T> the sample type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0

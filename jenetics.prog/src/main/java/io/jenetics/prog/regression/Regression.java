@@ -57,7 +57,7 @@ import io.jenetics.prog.op.Program;
  *         EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
  *     );
  *
- *     private static final Regression REGRESSION = Regression.of(
+ *     private static final Regression<Double> REGRESSION = Regression.of(
  *         Regression.codecOf(OPERATIONS, TERMINALS, 5),
  *         Error.of(LossFunction::mse),
  *         Sample.of(-1.0, -8.0000),
@@ -91,6 +91,8 @@ import io.jenetics.prog.op.Program;
  *     }
  * }
  * }</pre>
+ *
+ * @param <T> the operation type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
@@ -168,6 +170,7 @@ public final class Regression<T>
 	 * @see #codecOf(ISeq, ISeq, int)
 	 * @see #codecOf(ISeq, ISeq, int, Predicate)
 	 *
+	 * @param <T> the operation type
 	 * @param codec the problem codec to use
 	 * @param error the error function
 	 * @param samples the sample points used for regression analysis
@@ -196,6 +199,7 @@ public final class Regression<T>
 	 * @see #codecOf(ISeq, ISeq, int)
 	 * @see #codecOf(ISeq, ISeq, int, Predicate)
 	 *
+	 * @param <T> the operation type
 	 * @param codec the problem codec to use
 	 * @param error the error function
 	 * @param samples the sample points used for regression analysis
@@ -221,6 +225,7 @@ public final class Regression<T>
 	 * Create a new <em>codec</em>, usable for <em>symbolic regression</em>
 	 * problems, with the given parameters.
 	 *
+	 * @param <T> the operation type
 	 * @param operations the operations used for the symbolic regression
 	 * @param terminals the terminal operations of the program tree
 	 * @param depth the maximal tree depth (height) of newly created program
@@ -234,12 +239,12 @@ public final class Regression<T>
 	 * @throws NullPointerException if the {@code operations} or {@code terminals}
 	 *         are {@code null}
 	 */
-	public static Codec<Tree<Op<Double>, ?>, ProgramGene<Double>>
+	public static <T> Codec<Tree<Op<T>, ?>, ProgramGene<T>>
 	codecOf(
-		final ISeq<Op<Double>> operations,
-		final ISeq<Op<Double>> terminals,
+		final ISeq<Op<T>> operations,
+		final ISeq<Op<T>> terminals,
 		final int depth,
-		final Predicate<? super ProgramChromosome<Double>> validator
+		final Predicate<? super ProgramChromosome<T>> validator
 	) {
 		if (depth >= 30 || depth < 0) {
 			throw new IllegalArgumentException(format(
@@ -262,6 +267,7 @@ public final class Regression<T>
 	 * Create a new <em>codec</em>, usable for <em>symbolic regression</em>
 	 * problems, with the given parameters.
 	 *
+	 * @param <T> the operation type
 	 * @param operations the operations used for the symbolic regression
 	 * @param terminals the terminal operations of the program tree
 	 * @param depth the maximal tree depth (height) of newly created program
@@ -272,10 +278,10 @@ public final class Regression<T>
 	 * @throws NullPointerException if the {@code operations} or {@code terminals}
 	 *         are {@code null}
 	 */
-	public static Codec<Tree<Op<Double>, ?>, ProgramGene<Double>>
+	public static <T> Codec<Tree<Op<T>, ?>, ProgramGene<T>>
 	codecOf(
-		final ISeq<Op<Double>> operations,
-		final ISeq<Op<Double>> terminals,
+		final ISeq<Op<T>> operations,
+		final ISeq<Op<T>> terminals,
 		final int depth
 	) {
 		// Average arity of tree nodes.
