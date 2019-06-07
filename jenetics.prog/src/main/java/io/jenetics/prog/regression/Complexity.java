@@ -62,6 +62,7 @@ public interface Complexity<T> {
 	 *
 	 * @see #count(Tree, int)
 	 *
+	 * @param <T> the sample type
 	 * @param count the maximal node count. The returned complexity will be one
 	 *        if the program node count is greater or equal the given
 	 *        {@code count}
