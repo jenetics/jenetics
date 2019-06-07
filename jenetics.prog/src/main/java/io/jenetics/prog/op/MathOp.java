@@ -378,7 +378,7 @@ public enum MathOp implements Op<Double> {
 	/**
 	 * Evaluates the operation with the given arguments.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @see #apply(Double[])
 	 *

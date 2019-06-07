@@ -33,8 +33,8 @@ import io.jenetics.ext.util.TreeNode;
  * This class contains basic and secondary boolean operations.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 public enum BoolOp implements Op<Boolean> {
 
@@ -147,7 +147,7 @@ public enum BoolOp implements Op<Boolean> {
 	 * assert Program.eval(tree, false, false) == true;
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @see Var#reindex(TreeNode)
 	 * @see Program#eval(Tree, Object[])
