@@ -20,6 +20,7 @@
 package io.jenetics.prog.regression;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
 
@@ -41,12 +42,29 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 		_samples = samples;
 
 		_arguments = (T[][])_samples.stream()
-			.map(Sample::args)
+			.map(Samples::args)
 			.toArray();
 
 		_results = (T[])_samples.stream()
 			.map(Sample::result)
 			.toArray();
+	}
+
+	private static <T> T[] args(final Sample<T> sample) {
+		if (sample.arity() == 0) {
+			throw new IllegalArgumentException(
+				"The arity of the sample point must not be zero."
+			);
+		}
+
+		@SuppressWarnings("unchecked")
+		final T[] args = (T[])Array
+			.newInstance(sample.argAt(0).getClass(), sample.arity());
+		for (int i = 0; i < sample.arity(); ++i) {
+			args[i] = sample.argAt(i);
+		}
+
+		return args;
 	}
 
 	T[][] arguments() {
