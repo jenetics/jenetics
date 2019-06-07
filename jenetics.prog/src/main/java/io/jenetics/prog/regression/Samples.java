@@ -20,45 +20,63 @@
 package io.jenetics.prog.regression;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
-final class Samples extends AbstractList<Sample> implements Serializable {
+final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final List<Sample> _samples;
+	private final List<Sample<T>> _samples;
 
-	private final double[][] _arguments;
-	private final double[] _results;
+	private final T[][] _arguments;
+	private final T[] _results;
 
-	Samples(final List<Sample> samples) {
+	@SuppressWarnings("unchecked")
+	Samples(final List<Sample<T>> samples) {
 		_samples = samples;
 
-		_arguments = _samples.stream()
-			.map(Sample::args)
-			.toArray(double[][]::new);
+		_arguments = (T[][])_samples.stream()
+			.map(Samples::args)
+			.toArray();
 
-		_results = _samples.stream()
-			.mapToDouble(Sample::result)
+		_results = (T[])_samples.stream()
+			.map(Sample::result)
 			.toArray();
 	}
 
-	double[][] arguments() {
+	private static <T> T[] args(final Sample<T> sample) {
+		if (sample.arity() == 0) {
+			throw new IllegalArgumentException(
+				"The arity of the sample point must not be zero."
+			);
+		}
+
+		@SuppressWarnings("unchecked")
+		final T[] args = (T[])Array
+			.newInstance(sample.argAt(0).getClass(), sample.arity());
+		for (int i = 0; i < sample.arity(); ++i) {
+			args[i] = sample.argAt(i);
+		}
+
+		return args;
+	}
+
+	T[][] arguments() {
 		return _arguments;
 	}
 
-	double[] results() {
+	T[] results() {
 		return _results;
 	}
 
 	@Override
-	public Sample get(int index) {
+	public Sample<T> get(int index) {
 		return _samples.get(index);
 	}
 

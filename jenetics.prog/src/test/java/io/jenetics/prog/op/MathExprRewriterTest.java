@@ -40,7 +40,7 @@ public class MathExprRewriterTest {
 			.parse("div($x,$x) -> 1", MathOp::toMathOp);
 
 		final TreePattern<Op<Double>> pattern = TreePattern
-			.compile("div($x,$x)",MathOp::toMathOp);
+			.compile("div($x,$x)", MathOp::toMathOp);
 
 		final Tree<Op<Double>, ?> expr = MathExpr.parse("2/2").toTree();
 		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr);

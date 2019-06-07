@@ -17,47 +17,44 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.rewriting;
+package io.jenetics.ext;
 
-import java.io.IOException;
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.util.IO;
-
-import io.jenetics.ext.util.TreeNode;
+import io.jenetics.Chromosome;
+import io.jenetics.EnumGene;
+import io.jenetics.MutatorResult;
+import io.jenetics.PermutationChromosome;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TRSTest {
+public class HPRMutatorTest {
 
-	@Test
-	public void normalForm() {
-		final TRS<String> trs = TRS.parse(
-			"add ( 0, $x ) -> $x ",
-			"add(S($x),$y) -> S(add($x,$y))",
-			"mul(0,$x) -> 0",
-			"mul(S($x),$y) -> add(mul($x,$y),$y)"
-		);
+	@Test(invocationCount = 10)
+	public void mutate() {
+		final PermutationChromosome<Integer> original =
+			PermutationChromosome.ofInteger(100);
 
-		final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
-		trs.rewrite(tree);
-		Assert.assertEquals(tree, TreeNode.parse("S(S(S(S(0))))"));
-	}
+		final HPRMutator<EnumGene<Integer>, Integer> mutator =
+			new HPRMutator<>(1.0);
 
-	@Test
-	public void serialize() throws IOException {
-		final TRS<String> trs = TRS.parse(
-			"add(0,$x) -> $x",
-			"add(S($x),$y) -> S(add($x,$y))",
-			"mul(0,$x) -> 0",
-			"mul(S($x),$y) -> add(mul($x,$y),$y)"
-		);
+		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
+			mutator.mutate(original, 1, new Random());
 
-		final byte[] data = IO.object.toByteArray(trs);
-		Assert.assertEquals(IO.object.fromByteArray(data), trs);
+		final int[] a = original.stream()
+			.mapToInt(EnumGene::getAllele)
+			.toArray();
+
+		final int[] b = result.getResult().stream()
+			.mapToInt(EnumGene::getAllele)
+			.toArray();
+
+		Assert.assertNotEquals(a, b);
+
 	}
 
 }

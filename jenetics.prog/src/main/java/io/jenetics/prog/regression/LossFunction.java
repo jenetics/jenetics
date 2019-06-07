@@ -33,7 +33,7 @@ import static java.lang.String.format;
  * It is the essential part of the <em>overall</em> {@link Error} function.
  *
  * <pre>{@code
- * final Error error = Error.of(LossFunction::mse);
+ * final Error<Double> error = Error.of(LossFunction::mse);
  * }</pre>
  *
  * @see <a href="https://en.wikipedia.org/wiki/Loss_function">Loss function</a>
@@ -43,7 +43,7 @@ import static java.lang.String.format;
  * @since 5.0
  */
 @FunctionalInterface
-public interface LossFunction {
+public interface LossFunction<T> {
 
 	/**
 	 * Calculates the error between the expected function values and the
@@ -57,13 +57,13 @@ public interface LossFunction {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public double apply(final double[] calculated, final double[] expected);
+	public double apply(final T[] calculated, final T[] expected);
 
 	/**
 	 * Mean square error is measured as the average of squared difference
 	 * between predictions and actual observations.
 	 *
-	 * @see #rmse(double[], double[])
+	 * @see #rmse(Double[], Double[])
 	 *
 	 * @param calculated the function values calculated with the current program
 	 *        tree
@@ -74,7 +74,7 @@ public interface LossFunction {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double mse(final double[] calculated, final double[] expected) {
+	public static double mse(final Double[] calculated, final Double[] expected) {
 		if (expected.length != calculated.length) {
 			throw new IllegalArgumentException(format(
 				"Expected result and calculated results have different " +
@@ -98,7 +98,7 @@ public interface LossFunction {
 	 * Root mean square error is measured as the average of squared difference
 	 * between predictions and actual observations.
 	 *
-	 * @see #mse(double[], double[])
+	 * @see #mse(Double[], Double[])
 	 *
 	 * @param calculated the function values calculated with the current program
 	 *        tree
@@ -109,7 +109,7 @@ public interface LossFunction {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double rmse(final double[] calculated, final double[] expected) {
+	public static double rmse(final Double[] calculated, final Double[] expected) {
 		return sqrt(mse(calculated, expected));
 	}
 
@@ -126,7 +126,7 @@ public interface LossFunction {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double mae(final double[] calculated, final double[] expected) {
+	public static double mae(final Double[] calculated, final Double[] expected) {
 		if (expected.length != calculated.length) {
 			throw new IllegalArgumentException(format(
 				"Expected result and calculated results have different " +

@@ -33,18 +33,20 @@ import io.jenetics.prog.op.Op;
  * function.
  *
  * <pre>{@code
- * final Error error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
  * }</pre>
  *
  * @see LossFunction
  * @see Error
+ *
+ * @param <T> the sample type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
 @FunctionalInterface
-public interface Complexity {
+public interface Complexity<T> {
 
 	/**
 	 * Calculates the complexity of the current program (possibly) relative
@@ -53,13 +55,14 @@ public interface Complexity {
 	 * @param program the actual program
 	 * @return the measure of the program complexity
 	 */
-	public double apply(final Tree<? extends Op<Double>, ?> program);
+	public double apply(final Tree<? extends Op<T>, ?> program);
 
 	/**
 	 * Return a complexity measure which counts the number of nodes of a program.
 	 *
 	 * @see #count(Tree, int)
 	 *
+	 * @param <T> the sample type
 	 * @param count the maximal node count. The returned complexity will be one
 	 *        if the program node count is greater or equal the given
 	 *        {@code count}
@@ -67,7 +70,7 @@ public interface Complexity {
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
 	 *         than one
 	 */
-	public static Complexity ofMaxNodeCount(final int count) {
+	public static <T> Complexity<T> ofMaxNodeCount(final int count) {
 		if (count < 1) {
 			throw new IllegalArgumentException(
 				"Max node count must be greater than zero: " + count

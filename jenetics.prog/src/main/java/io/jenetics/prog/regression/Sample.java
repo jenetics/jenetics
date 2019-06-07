@@ -19,58 +19,32 @@
  */
 package io.jenetics.prog.regression;
 
-import java.io.Serializable;
-import java.util.Arrays;
-
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-
 /**
  * Represents a sample point used for the symbolic regression task. It consists
  * of an argument array and a result value. The sample point is comparable
  * according its {@link #result()} value.
  *
+ * @implSpec
+ * The dimensionality of the sample point must be at least one, which means
+ * {@code arity() >= 1}.
+ *
+ * @param <T> the sample type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
-public final class Sample implements Comparable<Sample>, Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	private final double[] _sample;
-
-	/**
-	 * Create a new sample point with the given argument array and result value.
-	 *
-	 * @param sample the arguments of the sample point
-	 * @throws IllegalArgumentException if the argument array is empty
-	 * @throws NullPointerException if the argument array is {@code null}
-	 */
-	private Sample(final double[] sample) {
-		if (sample.length < 2) {
-			throw new IllegalArgumentException(format(
-				"Argument sample must contain at least two values: %s",
-				sample.length
-			));
-		}
-
-		_sample = requireNonNull(sample);
-	}
+public interface Sample<T> {
 
 	/**
 	 * Return the dimensionality of the sample point arguments.
 	 *
 	 * @return the arity of the sample point
 	 */
-	public int arity() {
-		return _sample.length - 1;
-	}
+	public int arity();
 
 	/**
 	 * Return the argument value with the given {@code index}.
 	 *
-	 * @see #args()
 	 * @see #arity()
 	 *
 	 * @param index the argument index
@@ -78,55 +52,15 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @throws ArrayIndexOutOfBoundsException if the given {@code index} is not
 	 *         within the given range {@code [0, arity)}
 	 */
-	public double argAt(final int index) {
-		if (index < 0 || index >= arity() - 1) {
-			throw new ArrayIndexOutOfBoundsException(format(
-				"Argument index out or range [0, %s): %s", arity(), index
-			));
-		}
-
-		return _sample[index];
-	}
-
-	/**
-	 * Return a copy of the samples argument array.
-	 *
-	 * @return a copy of the samples argument array
-	 */
-	public double[] args() {
-		return Arrays.copyOfRange(_sample, 0, _sample.length - 1);
-	}
+	public T argAt(final int index);
 
 	/**
 	 * Return the result of the sample point.
 	 *
 	 * @return the result of the sample point
 	 */
-	public double result() {
-		return _sample[_sample.length - 1];
-	}
+	public T result();
 
-	@Override
-	public int compareTo(final Sample sample) {
-		return Double.compare(result(), sample.result());
-	}
-
-	@Override
-	public int hashCode() {
-		return Arrays.hashCode(_sample);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Sample &&
-			Arrays.equals(_sample, ((Sample)obj)._sample);
-	}
-
-	@Override
-	public String toString() {
-		return format("%s -> %f", Arrays.toString(args()), result());
-	}
 
 	/* *************************************************************************
 	 * Static factory methods.
@@ -139,13 +73,14 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * array element contains the result and the first n-1 elements are function
 	 * arguments.
 	 *
+	 * @param <T> the sample type
 	 * @param sample the sample point result
 	 * @return a new sample point
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	public static Sample of(final double[] sample) {
-		return new Sample(sample.clone());
+	public static <T> Sample<T> of(final T[] sample) {
+		return new ObjectSample<>(sample.clone());
 	}
 
 	/**
@@ -157,8 +92,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(final double x, final double y) {
-		return new Sample(new double[]{x, y});
+	public static Sample<Double> ofDouble(final double x, final double y) {
+		return new DoubleSample(x, y);
 	}
 
 	/**
@@ -171,8 +106,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(final double x1, final double x2, final double y) {
-		return new Sample(new double[]{x1, x2, y});
+	public static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
+		return new DoubleSample(x1, x2, y);
 	}
 
 	/**
@@ -186,13 +121,13 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(
+	public static Sample<Double> ofDouble(
 		final double x1,
 		final double x2,
 		final double x3,
 		final double y
 	) {
-		return new Sample(new double[]{x1, x2, x3, y});
+		return new DoubleSample(x1, x2, x3, y);
 	}
 
 }
