@@ -30,11 +30,11 @@ import java.util.Arrays;
  * @version !__version__!
  * @since !__version__!
  */
-final class ObjectSample<T> implements Sample<T>, Serializable {
+final class DoubleSample implements Sample<Double>, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final T[] _sample;
+	private final double[] _sample;
 
 	/**
 	 * Create a new sample point with the given argument array and result value.
@@ -43,8 +43,7 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	@SafeVarargs
-	ObjectSample(final T... sample) {
+	DoubleSample(final double... sample) {
 		if (sample.length < 2) {
 			throw new IllegalArgumentException(format(
 				"Argument sample must contain at least two values: %s",
@@ -61,7 +60,7 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 	}
 
 	@Override
-	public T argAt(final int index) {
+	public Double argAt(final int index) {
 		if (index < 0 || index >= arity() - 1) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Argument index out or range [0, %s): %s", arity(), index
@@ -71,12 +70,12 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 		return _sample[index];
 	}
 
-	public T[] args() {
+	double[] args() {
 		return Arrays.copyOfRange(_sample, 0, _sample.length - 1);
 	}
 
 	@Override
-	public T result() {
+	public Double result() {
 		return _sample[_sample.length - 1];
 	}
 
@@ -88,13 +87,12 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof ObjectSample &&
-			Arrays.equals(_sample, ((ObjectSample)obj)._sample);
+			obj instanceof DoubleSample &&
+			Arrays.equals(_sample, ((DoubleSample)obj)._sample);
 	}
 
 	@Override
 	public String toString() {
 		return format("%s -> %s", Arrays.toString(args()), result());
 	}
-
 }

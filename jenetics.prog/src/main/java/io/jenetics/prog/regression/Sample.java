@@ -93,7 +93,7 @@ public interface Sample<T> {
 	 * @return a new sample point
 	 */
 	public static Sample<Double> ofDouble(final double x, final double y) {
-		return new ObjectSample<>(new Double[]{x, y});
+		return new DoubleSample(x, y);
 	}
 
 	/**
@@ -107,7 +107,7 @@ public interface Sample<T> {
 	 * @return a new sample point
 	 */
 	public static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
-		return new ObjectSample<>(new Double[]{x1, x2, y});
+		return new DoubleSample(x1, x2, y);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public interface Sample<T> {
 		final double x3,
 		final double y
 	) {
-		return new ObjectSample<>(new Double[]{x1, x2, x3, y});
+		return new DoubleSample(x1, x2, x3, y);
 	}
 
 }
