@@ -154,13 +154,13 @@ The chosen _non-terminal_ operation set is sufficient to create any polynomial. 
 The `io.jenetics.prog.regression` package contains interfaces and classes, which simplifies the definition of the _error_ function and the implementation of _symbolic regression_ problems.
 
 ```java
-private static final Regression REGRESSION = Regression.of(
+private static final Regression<Double> REGRESSION = Regression.of(
     Regression.codecOf(OPERATIONS, TERMINALS, 5),
     Error.of(LossFunction::mse),
-    Sample.of(-1.0, -8.0000),
+    Sample.ofDouble(-1.0, -8.0000),
     // ...
-    Sample.of(0.9, 1.3860),
-    Sample.of(1.0, 2.0000)
+    Sample.ofDouble(0.9, 1.3860),
+    Sample.ofDouble(1.0, 2.0000)
 );
 
 public static void main(final String[] args) {
