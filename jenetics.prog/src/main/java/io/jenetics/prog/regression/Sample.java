@@ -139,7 +139,7 @@ public final class Sample<T> implements Serializable {
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	public static <T> Sample of(final T[] sample) {
+	public static <T> Sample<T> of(final T[] sample) {
 		return new Sample<>(sample.clone());
 	}
 

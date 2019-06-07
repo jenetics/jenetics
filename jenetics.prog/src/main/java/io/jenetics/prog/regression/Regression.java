@@ -175,7 +175,7 @@ public final class Regression<T>
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static <T> Regression of(
+	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
 		final Iterable<Sample<T>> samples
@@ -204,7 +204,7 @@ public final class Regression<T>
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
 	@SafeVarargs
-	public static <T> Regression of(
+	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
 		final Sample<T>... samples
