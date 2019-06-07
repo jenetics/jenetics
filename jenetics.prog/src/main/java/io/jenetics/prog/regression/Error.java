@@ -33,7 +33,7 @@ import java.util.function.DoubleBinaryOperator;
  * program {@link Complexity}.
  *
  * <pre>{@code
- * final Error error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
  * }</pre>
  *
  * @see LossFunction
@@ -44,7 +44,7 @@ import java.util.function.DoubleBinaryOperator;
  * @since 5.0
  */
 @FunctionalInterface
-public interface Error {
+public interface Error<T> {
 
 	/**
 	 * Calculates the <em>overall</em> error of a given program tree. The error
@@ -59,9 +59,9 @@ public interface Error {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public double apply(
-		final Tree<Op<Double>, ?> program,
-		final double[] calculated,
-		final double[] expected
+		final Tree<Op<T>, ?> program,
+		final T[] calculated,
+		final T[] expected
 	);
 
 
@@ -75,7 +75,7 @@ public interface Error {
 	 * @throws NullPointerException if the given {@code loss} function is
 	 *         {@code null}
 	 */
-	public static Error of(final LossFunction loss) {
+	public static <T> Error<T> of(final LossFunction<T> loss) {
 		requireNonNull(loss);
 
 		return (p, c, e) -> loss.apply(c, e);
@@ -93,7 +93,8 @@ public interface Error {
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static Error of(final LossFunction loss, final Complexity complexity) {
+	public static Error<Double>
+	of(final LossFunction<Double> loss, final Complexity<Double> complexity) {
 		return of(loss, complexity, (lss, cpx) -> lss + lss*cpx);
 	}
 
@@ -111,9 +112,9 @@ public interface Error {
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static Error of(
-		final LossFunction loss,
-		final Complexity complexity,
+	public static Error<Double> of(
+		final LossFunction<Double> loss,
+		final Complexity<Double> complexity,
 		final DoubleBinaryOperator compose
 	) {
 		requireNonNull(loss);

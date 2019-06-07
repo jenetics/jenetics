@@ -65,7 +65,7 @@ public class SymbolicRegression {
 		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
 	);
 
-	private static final Regression REGRESSION = Regression.of(
+	private static final Regression<Double> REGRESSION = Regression.of(
 		Regression.codecOf(OPS, TMS, 5, t -> t.getGene().size() < 30),
 		Error.of(LossFunction::mse),
 		// Lookup table for 4*x^3 - 3*x^2 + x
@@ -116,7 +116,7 @@ public class SymbolicRegression {
 		System.out.println("Error:       " + REGRESSION.error(tree));
 
 		System.out.println("x: y, y', error");
-		for (Sample sample : REGRESSION.samples()) {
+		for (Sample<Double> sample : REGRESSION.samples()) {
 			final double x = sample.argAt(0);
 			final double y = program.eval(x);
 

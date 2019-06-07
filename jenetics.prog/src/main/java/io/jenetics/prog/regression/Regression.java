@@ -96,13 +96,13 @@ import io.jenetics.prog.op.Program;
  * @version 5.0
  * @since 5.0
  */
-public final class Regression
-	implements Problem<Tree<Op<Double>, ?>, ProgramGene<Double>, Double>
+public final class Regression<T>
+	implements Problem<Tree<Op<T>, ?>, ProgramGene<T>, Double>
 {
 
-	private final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> _codec;
-	private final Error _error;
-	private final Samples _samples;
+	private final Codec<Tree<Op<T>, ?>, ProgramGene<T>> _codec;
+	private final Error<T> _error;
+	private final Samples<T> _samples;
 
 
 	/**
@@ -115,9 +115,9 @@ public final class Regression
 	 *        during the evolution process
 	 */
 	private Regression(
-		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
-		final Error error,
-		final Samples samples
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final Samples<T> samples
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
@@ -125,12 +125,12 @@ public final class Regression
 	}
 
 	@Override
-	public Function<Tree<Op<Double>, ?>, Double> fitness() {
+	public Function<Tree<Op<T>, ?>, Double> fitness() {
 		return this::error;
 	}
 
 	@Override
-	public Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec() {
+	public Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec() {
 		return _codec;
 	}
 
@@ -139,7 +139,7 @@ public final class Regression
 	 *
 	 * @return the sample points
 	 */
-	public List<Sample> samples() {
+	public List<Sample<T>> samples() {
 		return _samples;
 	}
 
@@ -149,24 +149,14 @@ public final class Regression
 	 * @param program the program to calculate the error value for
 	 * @return the overall error value of the program
 	 */
-	public double error(final Tree<Op<Double>, ?> program) {
-		final double[] calculated = Stream.of(_samples.arguments())
-			.mapToDouble(args -> eval(program, args))
+	public double error(final Tree<Op<T>, ?> program) {
+		@SuppressWarnings("unchecked")
+		final T[] calculated = (T[])Stream.of(_samples.arguments())
+			.map(args -> Program.eval(program, args))
 			.toArray();
 
 		return _error.apply(program, calculated, _samples.results());
 	}
-
-	private static double
-	eval(final Tree<Op<Double>, ?> program, final double[] args) {
-		final Double[] value = new Double[args.length];
-		for (int i = 0; i < args.length; ++i) {
-			value[i] = args[i];
-		}
-
-		return Program.eval(program, value);
-	}
-
 
 	/* *************************************************************************
 	 * Factory methods.
@@ -185,19 +175,19 @@ public final class Regression
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static Regression of(
-		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
-		final Error error,
-		final Iterable<Sample> samples
+	public static <T> Regression of(
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final Iterable<Sample<T>> samples
 	) {
 		if (!samples.iterator().hasNext()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
 		}
 
-		final List<Sample> s = new ArrayList<>();
+		final List<Sample<T>> s = new ArrayList<>();
 		samples.forEach(s::add);
 
-		return new Regression(codec, error, new Samples(s));
+		return new Regression<>(codec, error, new Samples<>(s));
 	}
 
 	/**
@@ -213,10 +203,11 @@ public final class Regression
 	 * @throws IllegalArgumentException if the given {@code samples} is empty
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
-	public static Regression of(
-		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec,
-		final Error error,
-		final Sample... samples
+	@SafeVarargs
+	public static <T> Regression of(
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final Sample<T>... samples
 	) {
 		return of(codec, error, Arrays.asList(samples));
 	}

@@ -34,11 +34,11 @@ import static java.util.Objects.requireNonNull;
  * @version 5.0
  * @since 5.0
  */
-public final class Sample implements Comparable<Sample>, Serializable {
+public final class Sample<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private final double[] _sample;
+	private final T[] _sample;
 
 	/**
 	 * Create a new sample point with the given argument array and result value.
@@ -47,7 +47,7 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	private Sample(final double[] sample) {
+	private Sample(final T[] sample) {
 		if (sample.length < 2) {
 			throw new IllegalArgumentException(format(
 				"Argument sample must contain at least two values: %s",
@@ -78,7 +78,7 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @throws ArrayIndexOutOfBoundsException if the given {@code index} is not
 	 *         within the given range {@code [0, arity)}
 	 */
-	public double argAt(final int index) {
+	public T argAt(final int index) {
 		if (index < 0 || index >= arity() - 1) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Argument index out or range [0, %s): %s", arity(), index
@@ -93,7 +93,7 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 *
 	 * @return a copy of the samples argument array
 	 */
-	public double[] args() {
+	public T[] args() {
 		return Arrays.copyOfRange(_sample, 0, _sample.length - 1);
 	}
 
@@ -102,13 +102,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 *
 	 * @return the result of the sample point
 	 */
-	public double result() {
+	public T result() {
 		return _sample[_sample.length - 1];
-	}
-
-	@Override
-	public int compareTo(final Sample sample) {
-		return Double.compare(result(), sample.result());
 	}
 
 	@Override
@@ -125,7 +120,7 @@ public final class Sample implements Comparable<Sample>, Serializable {
 
 	@Override
 	public String toString() {
-		return format("%s -> %f", Arrays.toString(args()), result());
+		return format("%s -> %s", Arrays.toString(args()), result());
 	}
 
 	/* *************************************************************************
@@ -144,8 +139,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	public static Sample of(final double[] sample) {
-		return new Sample(sample.clone());
+	public static <T> Sample of(final T[] sample) {
+		return new Sample<>(sample.clone());
 	}
 
 	/**
@@ -157,8 +152,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(final double x, final double y) {
-		return new Sample(new double[]{x, y});
+	public static Sample<Double> of(final double x, final double y) {
+		return new Sample<>(new Double[]{x, y});
 	}
 
 	/**
@@ -171,8 +166,8 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(final double x1, final double x2, final double y) {
-		return new Sample(new double[]{x1, x2, y});
+	public static Sample<Double> of(final double x1, final double x2, final double y) {
+		return new Sample<>(new Double[]{x1, x2, y});
 	}
 
 	/**
@@ -186,13 +181,13 @@ public final class Sample implements Comparable<Sample>, Serializable {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample of(
+	public static Sample<Double> of(
 		final double x1,
 		final double x2,
 		final double x3,
 		final double y
 	) {
-		return new Sample(new double[]{x1, x2, x3, y});
+		return new Sample<>(new Double[]{x1, x2, x3, y});
 	}
 
 }
