@@ -36,7 +36,7 @@ import io.jenetics.util.Verifiable;
  * and guarantee an efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipedia: Chromosome</a>
  * @see Genotype
  * @see Gene
  *
