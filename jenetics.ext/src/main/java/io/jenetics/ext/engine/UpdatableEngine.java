@@ -128,6 +128,8 @@ public class UpdatableEngine<
 
 				if (spliterator != null) {
 					spliterator.update(_engine.stream().spliterator());
+				} else {
+					it.remove();
 				}
 			}
 		} finally {
