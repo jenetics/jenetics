@@ -9,7 +9,6 @@ Jenetics-5.0.0
 * https://github.com/jenetics/jenetics/issues/509: Allow to collect the nth best optimization results.
 * https://github.com/jenetics/jenetics/issues/504: Rename `Tree.getChild(int)` to `Tree.childAt(int)`.
 * https://github.com/jenetics/jenetics/issues/500: Implementation of Reverse Sequence mutation operator (RSM).
-* https://github.com/jenetics/jenetics/issues/499: Implementation of Partial Shuffle mutation operator (PSM).
 * https://github.com/jenetics/jenetics/issues/497: Implement Boolean operators for GP.
 * https://github.com/jenetics/jenetics/issues/496: Implement `GT` operator for GP.
 * https://github.com/jenetics/jenetics/issues/493: Add dotty tree formatter

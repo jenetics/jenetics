@@ -210,7 +210,6 @@ final ISeq<EvolutionResult<DoubleGene, Double>> best = engine.stream()
 ```
 * [#504](https://github.com/jenetics/jenetics/issues/504): Rename `Tree.getChild(int)` to `Tree.childAt(int)`.
 * [#500](https://github.com/jenetics/jenetics/issues/500): Implementation of Reverse Sequence mutation operator (RSM).
-* [#499](https://github.com/jenetics/jenetics/issues/499): Implementation of Partial Shuffle mutation operator (PSM).
 * [#497](https://github.com/jenetics/jenetics/issues/497): Implement Boolean operators for GP.
 * [#496](https://github.com/jenetics/jenetics/issues/496): Implement `GT` operator for GP.
 * [#493](https://github.com/jenetics/jenetics/issues/493): Add dotty tree formatter
