@@ -32105,6 +32105,57 @@ some
 .
 \end_layout
 
+\begin_layout Subsection
+Symbolic regression
+\end_layout
+
+\begin_layout Standard
+Symbolic regression is a specific type of regression analyses, where the
+ search space consists of mathematical expressions.
+ The task is to find a model, which fits a given data-set in terms of accuracy
+ and simplicity.
+ In a classical approach, you will try to optimize the parameters of a predefine
+d function type, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a polynomial of grade 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ 
+\begin_inset Formula 
+\[
+f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}
+\]
+
+\end_inset
+
+If the type of mathematical function is not known in advance, GP can be
+ used finding a function, which is composed out of a given set of 
+\emph on
+primitives
+\emph default
+.
+\end_layout
+
+\begin_layout Quote
+Symbolic regression involves finding a mathematical expression, in symbolic
+ form, that provides a good, best, or perfect fit between a given finite
+ sampling of values of the independent variables and the associated values
+ of the dependent variables.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:1992:GPP:138936"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
@@ -36244,46 +36295,6 @@ name "sec:Symbolic-regression"
 \end_layout
 
 \begin_layout Standard
-Symbolic regression is a specific type of regression analyses, where the
- search space consists of mathematical expressions.
- The task is to find a model, which fits a given data-set in terms of accuracy
- and simplicity.
- In a classical approach, you will try to optimize the parameters of a predefine
-d function type, e.
-\begin_inset space ~
-\end_inset
-
-g.
- a polynomial of grade 
-\begin_inset Formula $n$
-\end_inset
-
-.
- If the type of mathematical function is not known in advance, GP can be
- used finding a function, which is composed out of a given set of 
-\emph on
-primitives
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Quote
-Symbolic regression involves finding a mathematical expression, in symbolic
- form, that provides a good, best, or perfect fit between a given finite
- sampling of values of the independent variables and the associated values
- of the dependent variables.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Koza:1992:GPP:138936"
-literal "true"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 The following example shows how to setup and solve a symbolic regression
  problem with the help of GP and
 \family sans
@@ -36331,19 +36342,35 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-The fitness function calculates the summed error between the expected function
- value and the actual function value.
- An additional term is added to the error, which penalizes expression trees
- which grow to big.
- The factor 
-\begin_inset Formula $0.00001$
+The error function uses the 
+\emph on
+mean squared error
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Mean_squared_error
+\end_layout
+
 \end_inset
 
- is an empirical value, 
+
+\end_layout
+
+\end_inset
+
+
 \emph on
-found
+ 
 \emph default
- after some test runs.
+as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
