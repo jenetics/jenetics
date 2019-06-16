@@ -29953,8 +29953,11 @@ best
  result, which is different in the multi-object optimization.
  As we have seen in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Pareto-efficiency"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -30186,8 +30189,11 @@ The fitness function in the example problem above will create 2D-points
 .
  In figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Maximizing-Pareto-front"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -32124,16 +32130,33 @@ g.
 \begin_inset Formula $n$
 \end_inset
 
-.
- 
+: 
 \begin_inset Formula 
 \[
-f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}
+f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}.
 \]
 
 \end_inset
 
-If the type of mathematical function is not known in advance, GP can be
+The encoding would only be a 
+\family typewriter
+Double\SpecialChar softhyphen
+Chromosome
+\family default
+ of length 
+\begin_inset Formula $n+1$
+\end_inset
+
+, where the gene at position 
+\begin_inset Formula $k\in\left[0,...,n\right]$
+\end_inset
+
+ represents the factor 
+\begin_inset Formula $a_{k}$
+\end_inset
+
+ of the polynomial.
+ If the type of mathematical function is not known in advance, GP can be
  used finding a function, which is composed out of a given set of 
 \emph on
 primitives
@@ -32150,6 +32173,152 @@ Symbolic regression involves finding a mathematical expression, in symbolic
 LatexCommand cite
 key "Koza:1992:GPP:138936"
 literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since symbolic regression is quite a common task in GP, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with some classes, supporting the defining of such problems.
+ The io.jenetics.prog.regression package contains classes and interface for
+ defining the error function and setting up the Regression problem.
+\end_layout
+
+\begin_layout Standard
+The fitness function of a symbolic regression problem is defined by its
+ error function.
+ The Error interface defines the most general why for calculating the error
+ value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Error<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Tree<? extends Op<T>, ?> program,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] calculated,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] expected
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Error-interface"
+
+\end_inset
+
+
+\family typewriter
+Error
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The Error functional interface takes as arguments the actual program tree,
+ the function values calculated with this tree and the expected function
+ values.
+ From this parameters, the actual error is calculated.
+ Usually, only the calculated and the expected values are needed for calculating
+ the error value.
+ The program parameter allows to calculate a program complexity and take
+ it into account when calculating the actual program error.
+ Using some predefined error- and complexity measure, the definition of
+ an error function might be look like this:
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Error<Double> error = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mse,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofMaxNodeCount(50)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+In the example above shows that the error function is logically divided
+ into the LossFunction and a program Complexity measure.
+ The loss-function is the mean squared error.
+ The complexity of the program takes the number of program nodes.
+\begin_inset Formula 
+\[
+c=1-\sqrt{1-\frac{\left\Vert P\right\Vert _{n}^{2}}{\left\Vert P\right\Vert _{m}^{2}}},
+\]
+
+\end_inset
+
+where
+\begin_inset Formula 
+\[
+Tm=fd
+\]
 
 \end_inset
 
