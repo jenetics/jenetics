@@ -61,7 +61,7 @@ public interface Error<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public double apply(
-		final Tree<Op<T>, ?> program,
+		final Tree<? extends Op<T>, ?> program,
 		final T[] calculated,
 		final T[] expected
 	);
