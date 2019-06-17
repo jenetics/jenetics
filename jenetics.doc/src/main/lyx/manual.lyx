@@ -31493,7 +31493,7 @@ final double result = program.eval(3.4);
 For a complete GP example have a look at the examples in chapter 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Symbolic-regression"
+reference "sec:Symbolic-regression-example"
 
 \end_inset
 
@@ -32200,7 +32200,18 @@ etics\SpecialChar softhyphen
 ression
 \family default
  package.
- The following sections describes this classes and interfaces.
+ The following sections describes this classes and interfaces and its usage.
+ A complete symbolic regression example is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -32222,11 +32233,11 @@ regression
 classification
 \emph default
  losses.
- The following paragraphs will describe loss functions suitable for 
+ In the following paragraphs only loss functions suitable for 
 \emph on
 regression
 \emph default
- problems.
+ problems will be described.
 \end_layout
 
 \begin_layout Paragraph
@@ -32358,6 +32369,77 @@ LatexCommand rule
 offset "0.5ex"
 width "100col%"
 height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The interface used for calculating the loss between 
+\emph on
+calculated
+\emph default
+ and 
+\emph on
+expected
+\emph default
+ values is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:LossFunction-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface LossFunction<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(T[] calculated, T[] expected);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:LossFunction-interface"
+
+\end_inset
+
+
+\family typewriter
+LossFunction
+\family default
+ interface
+\end_layout
 
 \end_inset
 
@@ -36698,7 +36780,7 @@ Genetic programming
 
 \begin_inset CommandInset label
 LatexCommand label
-name "sec:Symbolic-regression"
+name "sec:Symbolic-regression-example"
 
 \end_inset
 
