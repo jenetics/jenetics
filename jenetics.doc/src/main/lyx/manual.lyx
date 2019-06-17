@@ -32438,8 +32438,124 @@ MSE
 Complexity function
 \end_layout
 
+\begin_layout Standard
+The complexity function measures the complexity of the evolved tree.
+ If you have two programs with the 
+\emph on
+same
+\emph default
+ loss value, you usually want the 
+\emph on
+simpler
+\emph default
+ program to survive.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Complexity<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(Tree<? extends Op<T>, ?> program);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Complexity-interface"
+
+\end_inset
+
+
+\family typewriter
+Complexity
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+A simple complexity measure is the number of nodes a program tree consists
+ of.
+ You can obtain such a measure by the 
+\family typewriter
+of\SpecialChar softhyphen
+Max\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Count(\SpecialChar softhyphen
+int\SpecialChar softhyphen
+)
+\family default
+ factory method of the 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ interface.
+ The complexity measure, 
+\begin_inset Formula $C\left(P\right)$
+\end_inset
+
+, is defined as
+\begin_inset Formula 
+\begin{equation}
+C\left(P\right)=1-\sqrt{1-\frac{\min\left(N\left(P\right),N_{max}\right)^{2}}{N_{max}^{2}}},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N\left(P\right)$
+\end_inset
+
+ is the number of nodes the program 
+\begin_inset Formula $P$
+\end_inset
+
+ consists of and 
+\begin_inset Formula $N_{max}$
+\end_inset
+
+ the maximal allowed program nodes.
+ If the number of program nodes is equal or greater then the maximal node
+ number, 
+\begin_inset Formula $P_{c}$
+\end_inset
+
+ will return 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Subsubsection
 Error function
+\end_layout
+
+\begin_layout Standard
+The error function combines the loss function and the complexity function
+ into one error measure.
 \end_layout
 
 \begin_layout Section
