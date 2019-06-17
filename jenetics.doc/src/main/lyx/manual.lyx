@@ -32309,7 +32309,7 @@ In the example above shows that the error function is logically divided
  The complexity of the program takes the number of program nodes.
 \begin_inset Formula 
 \[
-c=1-\sqrt{1-\frac{\left\Vert P\right\Vert _{n}^{2}}{\left\Vert P\right\Vert _{m}^{2}}},
+c=1-\sqrt{1-\frac{\left\Vert T\right\Vert _{n}^{2}}{\left\Vert T\right\Vert _{m}^{2}}},
 \]
 
 \end_inset
@@ -32323,6 +32323,101 @@ Tm=fd
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Loss function
+\end_layout
+
+\begin_layout Standard
+The loss function measures how good the evolved program (tree) predicts
+ the expected outcome or data set.
+ If the prediction deviates too much from the expected data set, the loss
+ function will cough up a larger number.
+ Loss functions are classified into two major categories depending, depending
+ on the type of the learning task —
+\emph on
+regression
+\emph default
+ losses and 
+\emph on
+classification
+\emph default
+ losses.
+ The following paragraphs will describe loss functions suitable for 
+\emph on
+regression
+\emph default
+ problems.
+\end_layout
+
+\begin_layout Paragraph
+Mean squared error
+\end_layout
+
+\begin_layout Standard
+The mean squared error is the default loss function used for regression
+ analysis.
+ It is also known as 
+\emph on
+quadratic
+\emph default
+ loss or 
+\emph on
+L2
+\emph default
+ loss and is calculated as the average of the squared differences between
+ the predicted and actual values.
+\begin_inset Formula 
+\begin{equation}
+MSE=\frac{\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2}}{n},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ denotes the expected function value and 
+\begin_inset Formula $\tilde{y_{i}}$
+\end_inset
+
+ the calculated (estimated) value for data point 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The result is always positive and the perfect value is 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ The squaring means that larger mistakes result in more errors than smaller
+ mistakes, meaning that the model is punished for making larger mistakes.
+ The mean squared error is the preferred loss function for regression problems.
+\end_layout
+
+\begin_layout Paragraph
+Mean absolute error
+\end_layout
+
+\begin_layout Standard
+On some regression problems, the distribution of the target variable may
+ be mostly Gaussian, but may have outliers, e.g.
+ large or small values far from the mean value.
+ The Mean Absolute Error, or MAE, loss is an appropriate loss function in
+ this case as it is more robust to outliers.
+ It is calculated as the average of the absolute difference between the
+ actual and predicted values.
+\end_layout
+
+\begin_layout Subsubsection
+Complexity function
+\end_layout
+
+\begin_layout Subsubsection
+Error function
 \end_layout
 
 \begin_layout Section
