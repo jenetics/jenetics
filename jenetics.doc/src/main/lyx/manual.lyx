@@ -32332,10 +32332,10 @@ Loss function
 \begin_layout Standard
 The loss function measures how good the evolved program (tree) predicts
  the expected outcome or data set.
- If the prediction deviates too much from the expected data set, the loss
- function will cough up a larger number.
+ If the prediction deviates too much from the expected data, the loss function
+ will cough up a larger number.
  Loss functions are classified into two major categories depending, depending
- on the type of the learning task —
+ on the type of the learning task—
 \emph on
 regression
 \emph default
@@ -32370,7 +32370,7 @@ L2
  the predicted and actual values.
 \begin_inset Formula 
 \begin{equation}
-MSE=\frac{\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2}}{n},
+MSE=\frac{1}{n}\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2},
 \end{equation}
 
 \end_inset
@@ -32394,7 +32394,7 @@ where
 
 .
  The squaring means that larger mistakes result in more errors than smaller
- mistakes, meaning that the model is punished for making larger mistakes.
+ mistakes, meaning that the model penalizes larger mistakes.
  The mean squared error is the preferred loss function for regression problems.
 \end_layout
 
@@ -32403,13 +32403,35 @@ Mean absolute error
 \end_layout
 
 \begin_layout Standard
-On some regression problems, the distribution of the target variable may
- be mostly Gaussian, but may have outliers, e.g.
+The mean absolute error, also known as 
+\emph on
+L1
+\emph default
+ loss, is calculated as the average of the absolute difference between the
+ expected and calculated values.
+\begin_inset Formula 
+\begin{equation}
+MAE=\frac{1}{n}\sum_{i=0}^{n-1}\left|y_{i}-\tilde{y_{i}}\right|
+\end{equation}
+
+\end_inset
+
+This loss function is suitable for regression problems where the distribution
+ of the target variable may be mostly Gaussian, but may have outliers, e.
+\begin_inset space ~
+\end_inset
+
+g.
  large or small values far from the mean value.
- The Mean Absolute Error, or MAE, loss is an appropriate loss function in
- this case as it is more robust to outliers.
- It is calculated as the average of the absolute difference between the
- actual and predicted values.
+ This means, the 
+\emph on
+MAE
+\emph default
+ is more robust against outliers than the 
+\emph on
+MSE
+\emph default
+.
 \end_layout
 
 \begin_layout Subsubsection
