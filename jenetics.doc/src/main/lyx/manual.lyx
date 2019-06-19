@@ -32113,6 +32113,16 @@ some
 
 \begin_layout Subsection
 Symbolic regression
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Symbolic regression
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32216,6 +32226,16 @@ noprefix "false"
 
 \begin_layout Subsubsection
 Loss function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32242,6 +32262,56 @@ regression
 
 \begin_layout Paragraph
 Mean squared error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean squared error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!L2
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32289,6 +32359,56 @@ where
 
 \begin_layout Paragraph
 Mean absolute error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean absolute error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L1
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Loss function!L1
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32453,6 +32573,16 @@ LossFunction
 
 \begin_layout Subsubsection
 Complexity function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Complexity function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32635,6 +32765,16 @@ noprefix "false"
 
 \begin_layout Subsubsection
 Error function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Error function
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -32720,7 +32860,7 @@ noprefix "false"
  problems.
  Instead of implementing the error function from scratch, you will probably
  want to use one of the factory methods for creating it from one of the
- preexisting 
+ predefined 
 \family typewriter
 Loss\SpecialChar softhyphen
 Function
@@ -32814,10 +32954,30 @@ error3
 
 \begin_layout Subsubsection
 Sample points
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Sample point
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
 Regression problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Regression problem
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
