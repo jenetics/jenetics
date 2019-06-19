@@ -9,7 +9,7 @@ set ylabel "C(P)"
 set xrange [0.0:30.0]
 
 set samples 30
-set style line 1 lt 1 lc rgb "blue"
+set style line 1 lt 1 lc rgb "#0087ca"
 set style fill solid
 
 min(a,b) = (a < b) ? a : b

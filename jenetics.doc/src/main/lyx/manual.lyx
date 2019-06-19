@@ -32640,6 +32640,7 @@ Error function
 \begin_layout Standard
 The error function combines the loss function and the complexity function
  into one error measure.
+ It is used as fitness function which the GP is minimizing.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -32705,7 +32706,32 @@ Error
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Error-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
+\end_inset
+
+ shows the error (fitness) function used for evolving symbolic regression
+ problems.
+ Instead of implementing the error function from scratch, you will probably
+ want to use one of the factory methods for creating it from one of the
+ preexisting 
+\family typewriter
+Loss\SpecialChar softhyphen
+Function
+\family default
+ and 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ measure.
 \end_layout
 
 \begin_layout Subsubsection
