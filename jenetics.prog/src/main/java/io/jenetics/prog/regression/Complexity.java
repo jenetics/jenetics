@@ -63,21 +63,21 @@ public interface Complexity<T> {
 	 * @see #count(Tree, int)
 	 *
 	 * @param <T> the sample type
-	 * @param count the maximal node count. The returned complexity will be one
-	 *        if the program node count is greater or equal the given
+	 * @param maxNodeCount the maximal node count. The returned complexity will
+	 *        be one if the program node count is greater or equal the given
 	 *        {@code count}
 	 * @return a program node count complexity measure
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
 	 *         than one
 	 */
-	public static <T> Complexity<T> ofMaxNodeCount(final int count) {
-		if (count < 1) {
+	public static <T> Complexity<T> ofNodeCount(final int maxNodeCount) {
+		if (maxNodeCount < 1) {
 			throw new IllegalArgumentException(
-				"Max node count must be greater than zero: " + count
+				"Max node count must be greater than zero: " + maxNodeCount
 			);
 		}
 
-		return p -> count(p, count);
+		return p -> count(p, maxNodeCount);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public interface Complexity<T> {
 	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	 * }</pre>
 	 *
-	 * @see #ofMaxNodeCount(int)
+	 * @see #ofNodeCount(int)
 	 *
 	 * @param program the program used for the complexity measure
 	 * @param maxNodes the maximal expected node count
