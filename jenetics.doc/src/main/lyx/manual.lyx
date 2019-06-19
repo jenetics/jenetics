@@ -32466,54 +32466,12 @@ same
 simpler
 \emph default
  program to survive.
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public interface Complexity<T> {
-\end_layout
-
-\begin_layout Plain Layout
-
-	public double apply(Tree<? extends Op<T>, ?> program);
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Complexity-interface"
-
-\end_inset
-
-
-\family typewriter
-Complexity
-\family default
- interface
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-A simple complexity measure is the number of nodes a program tree consists
+ A simple complexity measure is the number of nodes a program tree consists
  of.
- You can obtain such a measure by the 
+\end_layout
+
+\begin_layout Standard
+You can obtain such a measure by the 
 \family typewriter
 of\SpecialChar softhyphen
 Max\SpecialChar softhyphen
@@ -32564,6 +32522,116 @@ where
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/TreeNodeCountComplexity.svg
+	lyxscale 80
+	width 95text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:TreeNodeCountComplexity"
+
+\end_inset
+
+Node count complexity
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The graph in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:TreeNodeCountComplexity"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the program complexity increases with the number of nodes.
+ For the example graph the maximal node count was set to 
+\begin_inset Formula $28$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Complexity<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(Tree<? extends Op<T>, ?> program);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Complexity-interface"
+
+\end_inset
+
+
+\family typewriter
+Complexity
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Complexity-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the interface which calculates the complexity measure of a given
+ program tree.
 \end_layout
 
 \begin_layout Subsubsection
