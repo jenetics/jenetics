@@ -32805,7 +32805,7 @@ error2
 error3
 \family default
  defines the same error function.
- The only difference is, that 
+ The only difference is that 
 \family typewriter
 error3
 \family default
