@@ -32732,6 +32732,84 @@ plex\SpecialChar softhyphen
 ity
 \family default
  measure.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Error<Double> error1 = Error.of(LossFunction::mse);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error2 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mae, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error3 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mse,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28),
+\end_layout
+
+\begin_layout Plain Layout
+
+    (loss, complexity) -> loss + loss*complexity
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The code snippet above shows the three possibilities to create an error
+ function by using the predefined loss functions and complexity measure.
+ 
+\family typewriter
+error1
+\family default
+ is created by using the mean squared error, MES.
+ 
+\family typewriter
+error2
+\family default
+ and 
+\family typewriter
+error3
+\family default
+ defines the same error function.
+ The only difference is, that 
+\family typewriter
+error3
+\family default
+ defines the loss-complexity composition function explicitly.
 \end_layout
 
 \begin_layout Subsubsection
