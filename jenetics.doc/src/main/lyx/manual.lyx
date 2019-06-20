@@ -27520,6 +27520,30 @@ Single-node crossover
 \end_layout
 
 \begin_layout Paragraph
+Reverse sequence mutator (RSM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ReverseSequenceMutator
+\family default
+ chooses two positions 
+\emph on
+i
+\emph default
+ and 
+\emph on
+j
+\emph default
+ randomly.
+ The gene order in a chromosome will then be reversed between this two points.
+ This mutation operator can also be used for combinatorial problems, where
+ no duplicated genes within a chromosome are allowed, e.g.
+ for the TSP.
+\end_layout
+
+\begin_layout Paragraph
 Hybridizing PSM and RSM (HPRM)
 \end_layout
 
