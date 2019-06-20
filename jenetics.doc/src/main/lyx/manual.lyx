@@ -27526,7 +27526,7 @@ Reverse sequence mutator (RSM)
 \begin_layout Standard
 The 
 \family typewriter
-ReverseSequenceMutator
+RSMutator
 \family default
  chooses two positions 
 \emph on
