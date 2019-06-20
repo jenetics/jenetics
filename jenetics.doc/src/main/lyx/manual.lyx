@@ -25345,7 +25345,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public T getChild(int index);
+    public T childAt(int index);
 \end_layout
 
 \begin_layout Plain Layout
