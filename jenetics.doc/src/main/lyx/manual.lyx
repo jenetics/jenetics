@@ -32977,7 +32977,7 @@ original
 \family typewriter
 Sample
 \family default
- interface represents on such sample point.
+ interface represents such sample point.
  It actually maps a 
 \emph on
 n
@@ -33102,6 +33102,77 @@ Regression problem
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Regression
+\family default
+ class is the only concrete type of the public API of the 
+\family typewriter
+regression
+\family default
+ package.
+ It integrates the interfaces, described in the last sections, into one
+ problem definition.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Regression<T>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<Tree<Op<T>, ?>, ProgramGene<T>, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+As you can see in the code snippet above, the 
+\family typewriter
+Regression
+\family default
+ class implements the 
+\family typewriter
+Problem
+\family default
+ interface and can be therefore easily used in setting up an appropriate
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ A full such regression example can be found in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
