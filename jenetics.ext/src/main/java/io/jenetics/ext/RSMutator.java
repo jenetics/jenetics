@@ -41,7 +41,7 @@ import io.jenetics.util.MSeq;
  * @version 5.0
  * @since 5.0
  */
-public class ReverseSequenceMutator<
+public class RSMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -55,7 +55,7 @@ public class ReverseSequenceMutator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public ReverseSequenceMutator(final double probability) {
+	public RSMutator(final double probability) {
 		super(probability);
 	}
 
@@ -63,7 +63,7 @@ public class ReverseSequenceMutator<
 	 * Default constructor, with default mutation probability
 	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
 	 */
-	public ReverseSequenceMutator() {
+	public RSMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
