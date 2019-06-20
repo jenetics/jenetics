@@ -27519,6 +27519,35 @@ Single-node crossover
 
 \end_layout
 
+\begin_layout Paragraph
+Hybridizing PSM and RSM (HPRM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+HPRMutator
+\family default
+ constructs an offspring from a pair of parents by hybridizing two mutation
+ operators, PSM (
+\family typewriter
+Swap\SpecialChar softhyphen
+Mu\SpecialChar softhyphen
+ta\SpecialChar softhyphen
+tor
+\family default
+) and RSM 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-5028"
+literal "false"
+
+\end_inset
+
+.
+ Its main application is for combinatorial problems, like the TSP.
+\end_layout
+
 \begin_layout Subsection
 Weasel program
 \begin_inset CommandInset label
