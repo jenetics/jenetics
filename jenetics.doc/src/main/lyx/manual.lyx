@@ -32400,7 +32400,7 @@ Loss function!MAE
 
 
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Loss function!L1
@@ -32964,6 +32964,130 @@ Sample point
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Solving regression problems requires to compare the current solution (program
+ tree) with a set of sample points, which represents the 
+\emph on
+original
+\emph default
+ function to be approximated.
+ The 
+\family typewriter
+Sample
+\family default
+ interface represents on such sample point.
+ It actually maps a 
+\emph on
+n
+\emph default
+-dimensional point of domain, 
+\begin_inset Formula $\mathbb{D}$
+\end_inset
+
+, to an one-dimensional point of the same domain: 
+\begin_inset Formula $\mathbb{D}^{n}\rightarrow\mathbb{D}$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Sample<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public int arity();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T argAt(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T result();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Sample-interface"
+
+\end_inset
+
+
+\family typewriter
+Sample
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The arity of the sample point returns the dimension, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ To make it easier to create 
+\family typewriter
+double
+\family default
+ sample points, some factory methods are also given in the 
+\family typewriter
+Sample
+\family default
+ interface.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample1 = Sample.ofDouble(0.0, 0.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample2 = Sample.ofDouble(1.0, 1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample3 = Sample.ofDouble(2.0, 2.0);
+\end_layout
+
+\end_inset
+
+The code snippet above shows how to create three sample points for a function
+ 
+\begin_inset Formula $f:\mathbb{R}\rightarrow\mathbb{R}$
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -38223,7 +38347,7 @@ Version
 \series default
 :
 \emph on
- 2.5.2
+ 3.1.8
 \end_layout
 
 \begin_layout Itemize
@@ -38489,7 +38613,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
