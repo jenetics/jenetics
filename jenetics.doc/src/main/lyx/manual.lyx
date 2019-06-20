@@ -32663,8 +32663,8 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/TreeNodeCountComplexity.svg
-	lyxscale 80
-	width 95text%
+	lyxscale 85
+	width 100text%
 
 \end_inset
 
@@ -35892,7 +35892,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/RealFunction.svg
-	lyxscale 70
+	lyxscale 85
 	width 100text%
 
 \end_inset
