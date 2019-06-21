@@ -10115,6 +10115,97 @@ final Engine<G, C> engine = new Engine.Builder(evaluator, gtf)
 
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+Evaluators
+\family default
+ class contains factory methods, which allows you to create 
+\family typewriter
+Evaluator
+\family default
+ instances from fitness functions which doesn't return the fitness value
+ directly, but return 
+\family typewriter
+Future<T>
+\family default
+ or 
+\family typewriter
+CompletableFuture<T>
+\family default
+ instead.
+ With this methods, there is no need for waiting for the fitness value,
+ if the fitness function is already asynchronous.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Future<Double> fitness(final double x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<Double, DoubleGene> codec = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evaluator<DoubleGene, Double> evaluator = Evaluators         
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+        .async(Main::fitness, codec);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Engine.Builder<>(evaluator, codec.encoding())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Nuts and bolts
 \begin_inset CommandInset label
@@ -10123,7 +10214,7 @@ name "sec:Nuts-and-bolts"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Subsection
