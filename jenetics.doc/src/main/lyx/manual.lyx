@@ -27541,6 +27541,15 @@ j
  This mutation operator can also be used for combinatorial problems, where
  no duplicated genes within a chromosome are allowed, e.g.
  for the TSP.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-3099"
+literal "false"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -27560,7 +27569,9 @@ Mu\SpecialChar softhyphen
 ta\SpecialChar softhyphen
 tor
 \family default
-) and RSM 
+) and RSM.
+ Its main application is for combinatorial problems, like the TSP.
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "DBLP:journals/corr/abs-1203-5028"
@@ -27568,8 +27579,7 @@ literal "false"
 
 \end_inset
 
-.
- Its main application is for combinatorial problems, like the TSP.
+
 \end_layout
 
 \begin_layout Subsection
