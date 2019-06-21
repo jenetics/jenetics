@@ -26391,6 +26391,130 @@ TreeNode
  class.
 \end_layout
 
+\begin_layout Subsubsection
+Tree formatting
+\end_layout
+
+\begin_layout Standard
+Using the parentheses tree is one possibility for creating a string representati
+on of a given tree.
+ Although it is the default format, also returned by the 
+\family typewriter
+toString()
+\family default
+ method, it is sometime desirable to use different formats.
+ The 
+\family typewriter
+Tree\SpecialChar softhyphen
+For\SpecialChar softhyphen
+mat\SpecialChar softhyphen
+ter
+\family default
+ class lets you implement your own formats and also defines additional tree
+ formats.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.PARENTHESES
+\family default
+ Converts a tree to its default parentheses format.
+ This is the default format and is also used by the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+String()
+\family default
+ method.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.TREE
+\family default
+ Creates a verbose tree string, which spans multiple lines, e.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        div 
+\end_layout
+
+\begin_layout LyX-Code
+        ├── cos 
+\end_layout
+
+\begin_layout LyX-Code
+        │   └── 1.3 
+\end_layout
+
+\begin_layout LyX-Code
+        └── cos 
+\end_layout
+
+\begin_layout LyX-Code
+            └── 3.14 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.DOT
+\family default
+ Creates a tree string in the dot format, which can be used to create nice
+ graphs with Graphviz
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.graphviz.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.LISP
+\family default
+ Creates a 
+\emph on
+Lisp
+\emph default
+ tree from a given 
+\family typewriter
+Tree
+\family default
+ instance.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
+\end_layout
+
 \begin_layout Subsection
 Rewriting
 \begin_inset CommandInset label
