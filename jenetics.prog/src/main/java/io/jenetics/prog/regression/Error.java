@@ -33,7 +33,7 @@ import io.jenetics.prog.op.Op;
  * program {@link Complexity}.
  *
  * <pre>{@code
- * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
  * }</pre>
  *
  * @see LossFunction
