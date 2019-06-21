@@ -33299,6 +33299,28 @@ noprefix "false"
 .
 \end_layout
 
+\begin_layout Subsection
+Boolean programs
+\end_layout
+
+\begin_layout Standard
+The default data type for doing symbolic regression is the Double class.
+ This is supported by a standard set of mathematical operations, defined
+ in the 
+\family typewriter
+Math\SpecialChar softhyphen
+Op
+\family default
+ class.
+ Since the GP operations are not restricted to any particular type, the
+ boolean operations, defined in the 
+\family typewriter
+Bool\SpecialChar softhyphen
+Op
+\family default
+ class, can be used for defining boolean programs.
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
