@@ -9312,6 +9312,67 @@ Genotype<DoubleGene> result = stream
 
 \end_layout
 
+\begin_layout Standard
+Sometime it is useful not only to collect one 
+\emph on
+final
+\emph default
+ result, but to collect the 
+\emph on
+n
+\emph default
+ best evolution results instead.
+ This can be achieved by combining the 
+\family typewriter
+Min\SpecialChar softhyphen
+Max\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Strictly\SpecialChar softhyphen
+De\SpecialChar softhyphen
+crea\SpecialChar softhyphen
+sing()
+\family default
+ and 
+\family typewriter
+ISeq\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+ISeq(int)
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ISeq<EvolutionResult<DoubleGene, Double>> results = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .flatMap(MinMax.toStrictlyIncreasing())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(ISeq.toISeq(10));
+\end_layout
+
+\end_inset
+
+The code snippet above collects the best 
+\begin_inset Formula $10$
+\end_inset
+
+ evolution results into the results sequence in increasing order.
+\end_layout
+
 \begin_layout Subsubsection
 EvolutionStatistics
 \begin_inset CommandInset label
