@@ -7972,6 +7972,55 @@ System\SpecialChar softhyphen
 \begin_layout Description
 
 \family typewriter
+constraint
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Constraint
+\end_layout
+
+\end_inset
+
+
+\family default
+ This property lets you
+\emph on
+ override
+\emph default
+ the default implementation of the
+\family typewriter
+ Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+.isValid
+\family default
+ method, which is useful if the
+\family typewriter
+ Phenotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+ A description of the 
+\family typewriter
+Const\SpecialChar softhyphen
+raint
+\family default
+ interface is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 executor
 \family default
  With this property it is possible to change the
@@ -8046,56 +8095,6 @@ ory, it is sufficient to create a
  Genotype
 \family default
 , which then serves as template.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-genotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Genotype!Validation
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "Engine-genotypeValidator"
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Geno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Genotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
 \end_layout
 
 \begin_layout Description
@@ -8198,49 +8197,6 @@ optimize
 \begin_layout Description
 
 \family typewriter
-phenotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Phenotype!Validation
-\end_layout
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Pheno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Phenotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
 populationSize
 \family default
  Defines the number of individuals of a population.
@@ -8296,41 +8252,6 @@ survivorsSelector
 Selec\SpecialChar softhyphen
 tor<>(3)
 \family default
-.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-individualCreationRetries
-\family default
- The evolution
-\family typewriter
- Engine
-\family default
- tries to create only valid individuals.
- If a newly created
-\family typewriter
- Genotype
-\family default
- is not valid, the
-\family typewriter
- Engine
-\family default
- creates another one, till the created
-\family typewriter
- Genotype
-\family default
- is valid.
- This parameter sets the maximal number of retries before the
-\family typewriter
- Engine
-\family default
- gives up and accept invalid individuals.
- The default value is set to 
-\begin_inset Formula $10$
-\end_inset
-
 .
 \end_layout
 
@@ -20368,10 +20289,10 @@ The listing above shows how a new
 \end_layout
 
 \begin_layout Section
-Validation
+Constraint
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Validation"
+name "subsec:Constraint"
 
 \end_inset
 
@@ -20380,7 +20301,7 @@ name "subsec:Validation"
 status collapsed
 
 \begin_layout Plain Layout
-Validation
+Constraint
 \end_layout
 
 \end_inset
@@ -20475,7 +20396,10 @@ s which has been
  
 \emph default
 destroyed by the altering step.
- Individuals which has exceeded its lifetime are also replaced by new valid
+\end_layout
+
+\begin_layout Standard
+Individuals which has exceeded its lifetime are also replaced by new valid
  ones.
  To guarantee the termination of the
 \family typewriter
