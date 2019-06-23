@@ -27426,7 +27426,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/SingleNodeCrossover-t1a.svg
 	lyxscale 50
-	width 42text%
+	width 35text%
 	BoundingBox 30bp -144bp 380bp 188bp
 
 \end_inset
