@@ -84,6 +84,71 @@ public interface ISeq<T>
 
 
 	/* *************************************************************************
+	 *  Some static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * element followed by all the elements of the sequence.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first element
+	 * @param b the appending sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the second arguments is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final T a,
+		final ISeq<? extends T> b
+	) {
+		return ((ISeq<T>)b).prepend(a);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the vararg array.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first sequence
+	 * @param b the vararg elements
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final ISeq<? extends T> a,
+		final T... b
+	) {
+		return ((ISeq<T>)a).append(b);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the second sequence.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first sequence
+	 * @param b the second sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two input sequences
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> ISeq<T> concat(
+		final ISeq<? extends T> a,
+		final ISeq<? extends T> b
+	) {
+		return ((ISeq<T>)a).append(b);
+	}
+
+	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
@@ -121,6 +186,22 @@ public interface ISeq<T>
 			(left, right) -> { left.addAll(right); return left; },
 			ISeq::of
 		);
+	}
+
+	/**
+	 * Returns a {@code Collector} that accumulates the last {@code n} input
+	 * elements into a new {@code ISeq}.
+	 *
+	 * @since 5.0
+	 *
+	 * @param maxSize the maximal size of the collected sequence
+	 * @param <T> the type of the input elements
+	 * @return a {@code Collector} which collects maximal {@code maxSize} of the
+	 *         input elements into an {@code ISeq}, in encounter order
+	 * @throws IllegalArgumentException if the {@code maxSize} is negative
+	 */
+	public static <T> Collector<T, ?, ISeq<T>> toISeq(final int maxSize) {
+		return Seqs.toSeq(maxSize, Buffer::toSeq);
 	}
 
 	/**

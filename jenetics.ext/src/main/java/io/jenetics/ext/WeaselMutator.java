@@ -20,7 +20,6 @@
 package io.jenetics.ext;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Random;
 
@@ -63,7 +62,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.0
  */
 public class WeaselMutator<
 	G extends Gene<?, G>,
@@ -106,18 +105,6 @@ public class WeaselMutator<
 			Genotype.of(result.map(MutatorResult::getResult)),
 			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_probability);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof WeaselMutator &&
-			Double.compare(((WeaselMutator) obj)._probability, _probability) == 0;
 	}
 
 	@Override

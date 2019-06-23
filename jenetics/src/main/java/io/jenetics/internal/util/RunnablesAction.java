@@ -51,7 +51,7 @@ final class RunnablesAction extends RecursiveAction {
 		_high = high;
 	}
 
-	public RunnablesAction(final Seq<? extends Runnable> runnables) {
+	RunnablesAction(final Seq<? extends Runnable> runnables) {
 		this(runnables, 0, runnables.size());
 	}
 

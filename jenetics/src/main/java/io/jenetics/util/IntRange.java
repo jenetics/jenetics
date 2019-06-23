@@ -132,7 +132,7 @@ public final class IntRange implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_min, hash(_max, hash(getClass())));
+		return hash(_min, hash(_max));
 	}
 
 	@Override

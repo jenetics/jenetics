@@ -36,7 +36,9 @@ public class ConstTest {
 
 	@Test
 	public void equalsVerifier() {
-		EqualsVerifier.forClass(Const.class).verify();
+		EqualsVerifier.forClass(Const.class)
+			.withIgnoredFields("_name")
+			.verify();
 	}
 
 	@Test

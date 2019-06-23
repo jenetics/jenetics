@@ -19,11 +19,15 @@
  */
 package io.jenetics.prog.op;
 
-import static java.lang.String.format;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -31,16 +35,65 @@ import org.testng.annotations.Test;
 public class MathOpTest {
 
 	@Test(dataProvider = "operations")
-	public void equals(final Op<Double> op, final String string, final boolean matches) {
-		Assert.assertEquals(MathOp.equals(Const.of(1.0), string), matches);
+	public void toConst(
+		final Const<Double> constant,
+		final String string,
+		final boolean matches
+	) {
+		final Optional<Const<Double>> c = MathOp.toConst(string);
+		Assert.assertEquals(c.isPresent(), matches);
+		if (matches) {
+			Assert.assertEquals(c.orElseThrow(AssertionError::new), constant);
+		}
 	}
 
 	@DataProvider
 	public Object[][] operations() {
 		return new Object[][] {
 			{Const.of(1.0), "1", true},
+			{Const.of(1.0), "1.0", true},
+			{Const.of(1.0111), "1.0111", true},
 			{Const.of(1.0), "b", false}
 		};
+	}
+
+	@Test
+	public void toMathOpWithReindex() {
+		final TreeNode<Op<Double>> tree = TreeNode.parse(
+			"add(mul(x,y),sub(y,x))",
+			MathOp::toMathOp
+		);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
+		Var.reindex(tree);
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+	}
+
+	@Test
+	public void toMathOpWithReindex2() {
+		final TreeNode<Op<Double>> tree = TreeNode.parse(
+			"add(mul(x,y),sub(y,x))",
+			MathOp::toMathOp
+		);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
+
+		final Map<Var<Double>, Integer> indexes = new HashMap<>();
+		indexes.put(Var.of("x"), 0);
+		indexes.put(Var.of("y"), 1);
+		Var.reindex(tree, indexes);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+	}
+
+	@Test
+	public void toMathOp() {
+		final TreeNode<Op<Double>> tree = TreeNode.parse(
+			"add(mul(x[0],y[1]),sub(y[1],x[0]))",
+			MathOp::toMathOp
+		);
+
+		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
 	}
 
 }

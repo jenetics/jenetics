@@ -221,6 +221,13 @@ public class MathExprTest {
 		}
 	}
 
+	@Test
+	public void evalSimplifiedFromString() {
+		final MathExpr expr = MathExpr.parse("x + 0 - y*1");
+		System.out.println(expr.eval(10, 1));
+		System.out.println(expr.simplify().eval(10, 1));
+	}
+
 	@Test(dataProvider = "ast")
 	public void serialize(final Tree<? extends Op<Double>, ?> tree) throws IOException {
 		final MathExpr object = new MathExpr(tree);

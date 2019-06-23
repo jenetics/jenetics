@@ -58,8 +58,6 @@ public abstract class TreeMutator<
 	/**
 	 * Mutates the given chromosome.
 	 *
-	 * @see #mutate(Gene, Random)
-	 *
 	 * @param chromosome the chromosome to mutate
 	 * @param p the mutation probability for the underlying genetic objects
 	 * @param random the random engine used for the genotype mutation

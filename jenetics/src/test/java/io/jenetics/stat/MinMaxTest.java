@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.Optimize;
 import io.jenetics.internal.util.Named;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -191,6 +192,30 @@ public class MinMaxTest {
 			Assert.assertTrue(mm1.sameState(mm1));
 			Assert.assertTrue(mm2.sameState(mm2));
 		}
+	}
+
+	@Test
+	public void toStrictlyIncreasing() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(500)
+			.flatMap(MinMax.toStrictlyIncreasing())
+			.collect(ISeq.toISeq());
+
+		System.out.println(values);
+		Assert.assertTrue(values.isSorted());
+	}
+
+	@Test
+	public void toStrictlyDecreasing() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(100)
+			.flatMap(MinMax.toStrictlyDecreasing())
+			.collect(ISeq.toISeq());
+
+		System.out.println(values);
+		Assert.assertTrue(values.copy().reverse().isSorted());
 	}
 
 }

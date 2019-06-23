@@ -141,7 +141,6 @@ public class Mutator<
 	 * @param random the random engine used for the phenotype mutation
 	 * @return the mutation result
 	 */
-	@SuppressWarnings("deprecation")
 	protected MutatorResult<Phenotype<G, C>> mutate(
 		final Phenotype<G, C> phenotype,
 		final long generation,
@@ -149,7 +148,7 @@ public class Mutator<
 		final Random random
 	) {
 		return mutate(phenotype.getGenotype(), p, random)
-			.map(gt -> phenotype.newInstance(gt, generation));
+			.map(gt -> Phenotype.of(gt, generation));
 	}
 
 	/**

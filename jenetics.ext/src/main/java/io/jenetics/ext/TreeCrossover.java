@@ -64,7 +64,6 @@ public abstract class TreeCrossover<
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	protected int recombine(
 		final MSeq<Phenotype<G, C>> population,
 		final int[] individuals,
@@ -89,11 +88,11 @@ public abstract class TreeCrossover<
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.of(c1.toISeq()), generation)
+			Phenotype.of(Genotype.of(c1.toISeq()), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(Genotype.of(c2.toISeq()), generation)
+			Phenotype.of(Genotype.of(c2.toISeq()), generation)
 		);
 
 		return getOrder();

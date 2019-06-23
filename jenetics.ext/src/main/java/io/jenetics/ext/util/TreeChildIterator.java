@@ -55,7 +55,7 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 		}
 
 		cursor = i + 1;
-		return _tree.getChild(lastElement = i);
+		return _tree.childAt(lastElement = i);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 		}
 
 		cursor = i;
-		return _tree.getChild(lastElement = i);
+		return _tree.childAt(lastElement = i);
 	}
 
 	@Override

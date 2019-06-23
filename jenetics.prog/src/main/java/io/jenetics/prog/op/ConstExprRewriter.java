@@ -24,58 +24,53 @@ import static java.util.Objects.requireNonNull;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import io.jenetics.ext.internal.util.TreeRewriter;
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class rewrites constant expressions to its single value.
  *
- * <pre>{@code
- * 1 + 2 + 3 + 4 -> 10.0
- * 1 + 2*(6 + 7) -> 27.0
- * sin(0) -> 0.0
- * }</pre>
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.4
- * @since 4.4
+ * @version 5.0
+ * @since 5.0
  */
 final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 
-	static final TreeRewriter<Op<Double>> REWRITER = new ConstExprRewriter();
+	ConstExprRewriter() {
+	}
 
 	@Override
-	public boolean rewrite(final TreeNode<Op<Double>> node) {
+	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
 		requireNonNull(node);
 
-		boolean rewritten = false;
-		boolean res;
+		int rewritten = 0;
+		int res;
 		Optional<TreeNode<Op<Double>>> result;
 		do {
 			result = results(node).findFirst();
 
-			res = result.map(ConstExprRewriter::_rewrite).orElse(false);
-			rewritten = res || rewritten;
-		} while(result.isPresent());
+			res = result.map(ConstExprRewriter::rewriting).orElse(0);
+			rewritten += res;
+		} while(result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
 
-	private static boolean _rewrite(final TreeNode<Op<Double>> node) {
+	private static int rewriting(final TreeNode<Op<Double>> node) {
 		if (matches(node)) {
 			final Double[] args = node.childStream()
-				.map(child -> ((Const<Double>)child.getValue()).value())
+				.map(child -> ((Val<Double>)child.getValue()).value())
 				.toArray(Double[]::new);
 
 			final double value = node.getValue().apply(args);
 			node.removeAllChildren();
 			node.setValue(Const.of(value));
 
-			return true;
+			return 1;
 		}
 
-		return false;
+		return 0;
 	}
 
 	private static Stream<TreeNode<Op<Double>>>
@@ -88,7 +83,12 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		return
 			node.getValue() instanceof MathOp &&
 				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Const);
+					.allMatch(child -> child.getValue() instanceof Val);
+	}
+
+	@Override
+	public String toString() {
+		return "ConstExprRewriter";
 	}
 
 }

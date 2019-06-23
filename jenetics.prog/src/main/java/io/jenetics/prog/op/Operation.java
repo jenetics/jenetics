@@ -65,8 +65,8 @@ final class Operation<T> implements Op<T>, Serializable {
 	}
 
 	@Override
-	public T apply(final T[] doubles) {
-		return _function.apply(doubles);
+	public T apply(final T[] values) {
+		return _function.apply(values);
 	}
 
 	@Override

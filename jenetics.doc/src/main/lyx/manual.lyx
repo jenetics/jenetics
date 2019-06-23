@@ -7172,6 +7172,153 @@ The crossover parameter,
  should be avoided.
 \end_layout
 
+\begin_layout Paragraph
+Partial alterer
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Partial alterer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Alterers are working on the whole population, which is effectively a sequence
+ of genotypes.
+ If your genotype consists of more than one chromosome, it is not possible
+ to specify the chromosome, the alterer is using for alteration.
+ The 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ class overcomes this shortcoming and allows you to define the chromosomes
+ the wrapped 
+\family typewriter
+Alterer
+\family default
+ is using.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Genotype<DoubleGene> gtf = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(0, 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(1, 2),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(2, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+   DoubleChromosome.of(3, 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+   .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+      PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 1),
+\end_layout
+
+\begin_layout Plain Layout
+
+      new LineCrossover<>()
+\end_layout
+
+\begin_layout Plain Layout
+
+   )
+\end_layout
+
+\begin_layout Plain Layout
+
+   .build();
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The example above shows how to use the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ The wrapped 
+\family typewriter
+Mutator
+\family default
+ will only work on the chromosome with the index 0 and 3, the wrapped 
+\family typewriter
+Mean\SpecialChar softhyphen
+Alterer
+\family default
+ will work on the chromosome with index 1 and the 
+\family typewriter
+Line\SpecialChar softhyphen
+Crossover
+\family default
+ will work on all chromosomes.
+ A potential drawback of the 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+ is a possible performance penalty.
+ This is because the chromosomes must be 
+\emph on
+sliced
+\emph default
+ into different population sequences for each 
+\family typewriter
+Partial\SpecialChar softhyphen
+Alterer
+\family default
+.
+ If this is an issue for the overall performance depends on the concrete
+ application.
+\end_layout
+
 \begin_layout Subsection
 Engine classes
 \begin_inset CommandInset label
@@ -7642,20 +7789,6 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Evolution iterator for external evolution iteration.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Iterator<EvolutionResult<G,C>> iterator();
-\end_layout
-
-\begin_layout Plain Layout
-
 }
 \begin_inset Caption Standard
 
@@ -7729,22 +7862,6 @@ reference "subsubsec:EvolutionStream"
 \end_inset
 
 .
- Alternatively it is possible to iterate through the evolution process in
- an imperative way (for whatever reasons this should be necessary).
- Just create an
-\family typewriter
- Iterator
-\family default
- of
-\family typewriter
- Evolution\SpecialChar softhyphen
-Result
-\family default
- object by calling the
-\family typewriter
- iterator
-\family default
- method.
 \end_layout
 
 \begin_layout Standard
@@ -7825,6 +7942,55 @@ System\SpecialChar softhyphen
 \begin_layout Description
 
 \family typewriter
+constraint
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Constraint
+\end_layout
+
+\end_inset
+
+
+\family default
+ This property lets you
+\emph on
+ override
+\emph default
+ the default implementation of the
+\family typewriter
+ Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+.isValid
+\family default
+ method, which is useful if the
+\family typewriter
+ Phenotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+ A description of the 
+\family typewriter
+Const\SpecialChar softhyphen
+raint
+\family default
+ interface is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 executor
 \family default
  With this property it is possible to change the
@@ -7850,34 +8016,6 @@ Pool\SpecialChar softhyphen
 Pool()
 \family default
 .
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-evaluator
-\family default
- This property allows you to replace the evaluation strategy of the 
-\family typewriter
-Phenotype
-\family default
-'s fitness function.
- Normally, each fitness value is evaluated concurrently, but independently
- from each other.
- In some configuration it is necessary, for performance reason, to evaluate
- the fitness values of a population at once.
- This is then performed by the 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Evaluator
-\family default
- or 
-\family typewriter
-Engine\SpecialChar softhyphen
-.Genotype\SpecialChar softhyphen
-Evaluator
-\family default
- interface.
 \end_layout
 
 \begin_layout Description
@@ -7911,72 +8049,22 @@ genotypeFactory
 \family default
  Defines the
 \family typewriter
- Genotype Facto
+ Genotype Factory
 \family default
-ry used for creating new individuals.
+ used for creating new individuals.
  Since the
 \family typewriter
  Genotype
 \family default
  is its own
 \family typewriter
- Fact
+ Factory
 \family default
-ory, it is sufficient to create a
+, it is sufficient to create a
 \family typewriter
  Genotype
 \family default
 , which then serves as template.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-genotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Genotype!Validation
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "Engine-genotypeValidator"
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Geno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Genotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
 \end_layout
 
 \begin_layout Description
@@ -8079,49 +8167,6 @@ optimize
 \begin_layout Description
 
 \family typewriter
-phenotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Phenotype!Validation
-\end_layout
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Pheno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Phenotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
 populationSize
 \family default
  Defines the number of individuals of a population.
@@ -8177,41 +8222,6 @@ survivorsSelector
 Selec\SpecialChar softhyphen
 tor<>(3)
 \family default
-.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-individualCreationRetries
-\family default
- The evolution
-\family typewriter
- Engine
-\family default
- tries to create only valid individuals.
- If a newly created
-\family typewriter
- Genotype
-\family default
- is not valid, the
-\family typewriter
- Engine
-\family default
- creates another one, till the created
-\family typewriter
- Genotype
-\family default
- is valid.
- This parameter sets the maximal number of retries before the
-\family typewriter
- Engine
-\family default
- gives up and accept invalid individuals.
- The default value is set to 
-\begin_inset Formula $10$
-\end_inset
-
 .
 \end_layout
 
@@ -9193,6 +9203,67 @@ Genotype<DoubleGene> result = stream
 
 \end_layout
 
+\begin_layout Standard
+Sometime it is useful not only to collect one 
+\emph on
+final
+\emph default
+ result, but to collect the 
+\emph on
+n
+\emph default
+ best evolution results instead.
+ This can be achieved by combining the 
+\family typewriter
+Min\SpecialChar softhyphen
+Max\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Strictly\SpecialChar softhyphen
+In\SpecialChar softhyphen
+crea\SpecialChar softhyphen
+sing()
+\family default
+ and 
+\family typewriter
+ISeq\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+ISeq(int)
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ISeq<EvolutionResult<DoubleGene, Double>> results = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .flatMap(MinMax.toStrictlyIncreasing())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(ISeq.toISeq(10));
+\end_layout
+
+\end_inset
+
+The code snippet above collects the best 
+\begin_inset Formula $10$
+\end_inset
+
+ evolution results into the results sequence in increasing order.
+\end_layout
+
 \begin_layout Subsubsection
 EvolutionStatistics
 \begin_inset CommandInset label
@@ -9724,10 +9795,10 @@ type
 \end_layout
 
 \begin_layout Subsubsection
-Engine.Evaluator
+Evaluator
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Engine.Evaluator"
+name "subsec:Evaluator"
 
 \end_inset
 
@@ -9745,18 +9816,45 @@ Engine!Evaluator
 \end_layout
 
 \begin_layout Standard
-This interface allows to define different strategies for evaluating the
- fitness functions of a given population.
- Usually, it is not necessary to override the default evaluation strategy.
- It is helpful if you have performance problems when the fitness function
- is evaluated serially—or in small concurrent batches, as it is implemented
- by the default strategy.
+The 
+\family typewriter
+Evaluator
+\family default
+ is responsible for evaluating the fitness values for a given population.
+ It is the most general way for doing the fitness evaluation.
+ Usually, it is not necessary to implement an own evaluation strategy.
+ If you creating an evolution 
+\family typewriter
+Engine
+\family default
+ with a fitness function, this is done for you automatically.
+ Each fitness value is then evaluated concurrently, but independently from
+ each other.
+ Using the 
+\family typewriter
+Evaluator
+\family default
+ interface is helpful if you have performance problems when the fitness
+ function is evaluated serially—or in small concurrent batches, as it is
+ implemented by the default strategy.
  In this case, the 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface can be used to calculate the fitness function for a population
  in one batch.
+ Another use case for the 
+\family typewriter
+Evaluator
+\family default
+ interface is, when the fitness value also depends on the current composition
+ of the population.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+ it is possible to normalize the population's fitness values.
 \end_layout
 
 \begin_layout Standard
@@ -9787,7 +9885,7 @@ public interface Evaluator<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> evaluate(Seq<Phenotype<G, C>> pop);
+    ISeq<Phenotype<G, C>> eval(Seq<Phenotype<G, C>> pop);
 \end_layout
 
 \begin_layout Plain Layout
@@ -9802,12 +9900,12 @@ public interface Evaluator<
 \begin_layout Plain Layout
 
 \family typewriter
-Engine.Evaluator
+Evaluator
 \family default
  interface
 \begin_inset CommandInset label
 LatexCommand label
-name "lis:EngineEvaluator-interface"
+name "lis:Evaluator-interface"
 
 \end_inset
 
@@ -9821,24 +9919,182 @@ name "lis:EngineEvaluator-interface"
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The implementer is free to do the evaluation in place, or create new Phenotype
  instance and return the newly created one.
+ There are only two requirements which must be fulfilled:
+\end_layout
+
+\begin_layout Enumerate
+the size of the returned, evaluated, phenotype sequence must be exactly
+ the size of the input phenotype sequence and
+\end_layout
+
+\begin_layout Enumerate
+all phenotypes of the returned population must have a fitness value assigned.
+ Than means, the expression 
+\family typewriter
+pop.forAll(\SpecialChar softhyphen
+Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+::isEvaluated
+\family default
+\SpecialChar softhyphen
+) must be true.
  
 \end_layout
 
 \begin_layout Standard
-A second use case for the 
+The code snippet below implements an evaluator which evaluates the fitness
+ values for a given population serially in the main thread.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Function<? super Genotype<G>, ? extends C> fitness = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final Evaluator<G, C> evaluator = population -> population
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(pt -> pt.eval(fitness))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .asISeq();
+\end_layout
+
+\end_inset
+
+To use the fitness 
 \family typewriter
 Evaluator
 \family default
- interface is, when the fitness value also depends on the current composition
- of the population.
- E.
-\begin_inset space ~
+, you have to use the 
+\family typewriter
+Engine.Builder
+\family default
+ constructor directly, instead of one of the factory methods.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Engine<G, C> engine = new Engine.Builder(evaluator, gtf)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .build();
+\end_layout
+
 \end_inset
 
-g.
- it is possible to normalize the population's fitness values.
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Evaluators
+\family default
+ class contains factory methods, which allows you to create 
+\family typewriter
+Evaluator
+\family default
+ instances from fitness functions which doesn't return the fitness value
+ directly, but return 
+\family typewriter
+Future<T>
+\family default
+ or 
+\family typewriter
+CompletableFuture<T>
+\family default
+ instead.
+ With this methods, there is no need for waiting for the fitness value,
+ if the fitness function is already asynchronous.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Future<Double> fitness(final double x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<Double, DoubleGene> codec = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evaluator<DoubleGene, Double> evaluator = Evaluators         
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+        .async(Main::fitness, codec);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Engine.Builder<>(evaluator, codec.encoding())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -9849,7 +10105,7 @@ name "sec:Nuts-and-bolts"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Subsection
@@ -20003,10 +20259,10 @@ The listing above shows how a new
 \end_layout
 
 \begin_layout Section
-Validation
+Constraint
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Validation"
+name "subsec:Constraint"
 
 \end_inset
 
@@ -20015,7 +20271,7 @@ name "subsec:Validation"
 status collapsed
 
 \begin_layout Plain Layout
-Validation
+Constraint
 \end_layout
 
 \end_inset
@@ -20093,10 +20349,7 @@ s determines the validity of the whole
  Genotype
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-The
+ The
 \family typewriter
  Engine
 \family default
@@ -20110,59 +20363,15 @@ s which has been
  
 \emph default
 destroyed by the altering step.
- Individuals which has exceeded its lifetime are also replaced by new valid
- ones.
- To guarantee the termination of the
+ Individuals which has exceeded its lifetime are also replaced by new ones.
+ Although this behavior will work for most genotypes, it is still possible
+ that invalid individuals will be created during the evolution.
+ If you need a more advanced validation strategy, the 
 \family typewriter
- Genotype
+Con\SpecialChar softhyphen
+straint
 \family default
- creation, the Engine is parameterized with the maximal number of retries
- (
-\family typewriter
-indi\SpecialChar softhyphen
-vidual\SpecialChar softhyphen
-Crea\SpecialChar softhyphen
-tion\SpecialChar softhyphen
-Re\SpecialChar softhyphen
-tr
-\family default
-ies)
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-.
- If the described validation mechanism doesn't fulfill your needs, you can
-\emph on
- 
-\emph default
-override the validation mechanism by creating the
-\family typewriter
- Engine
-\family default
- with an external
-\family typewriter
- Genotype
-\family default
-\emph on
- 
-\emph default
-validator.
-\end_layout
-
-\begin_layout Standard
+ interface comes into play.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -20170,117 +20379,52 @@ status open
 
 \begin_layout Plain Layout
 
-final Predicate<? super Genotype<DoubleGene>> validator = gt -> {
+public interface Constraint<
 \end_layout
 
 \begin_layout Plain Layout
 
-    // Implement advanced Genotype check.
+    G extends Gene<?, G>,
 \end_layout
 
 \begin_layout Plain Layout
 
-    boolean valid = ...;
+    C extends Comparable<? super C>
 \end_layout
 
 \begin_layout Plain Layout
 
-    return valid;
+> {
 \end_layout
 
 \begin_layout Plain Layout
 
-};
+    public boolean test(Phenotype<G, C> ind);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+	public Phenotype<G, C> repair(Phenotype<G, C> ind, long gen);
 \end_layout
 
 \begin_layout Plain Layout
 
-    .limit(100)
-\end_layout
+}
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
-    .genotypeValidator(validator)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
+\family typewriter
+Constraint
+\family default
+ interface 
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Constraint-interface"
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Having the possibility to replace the default validation check is a nice
- thing, but it is better to not create invalid individuals in the first
- place.
- For achieving this goal, you have two possibilities:
-\end_layout
-
-\begin_layout Enumerate
-Creating an explicit
-\family typewriter
- Genotype
-\family default
- factory and
-\end_layout
-
-\begin_layout Enumerate
-implementing new
-\family typewriter
- Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\family default
- classes.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Genotype
-\family default
- factory
-\end_layout
-
-\begin_layout Standard
-The usual mechanism for defining an encoding is to create a
-\family typewriter
- Genotype
-\family default
-\emph on
- prototype
-\emph default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Prototype_pattern
 \end_layout
 
 \end_inset
@@ -20290,147 +20434,56 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 
 \end_inset
 
-.
- Since the
-\family typewriter
- Genotype
-\family default
- implements the
-\family typewriter
- Factory
-\family default
- interface, an prototype instance can easily passed to the
-\family typewriter
- Engine\SpecialChar softhyphen
-.builder
-\family default
- method.
- For a more advanced
-\family typewriter
- Genotype
-\family default
- creation, you
-\emph on
- 
-\emph default
-only have to create an explicit
-\family typewriter
- Genotype
-\family default
- factory.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Factory<Genotype<DoubleGene>> gtf = () -> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Implement your advanced Genotype factory.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Genotype<DoubleGene> genotype = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-    return genotype;
-\end_layout
-
-\begin_layout Plain Layout
-
-};
-\end_layout
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(100)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-With this method you can avoid that the
-\family typewriter
- Engine
-\family default
- creates invalid individuals in the first place, but it is still possible
- that the alterer step will destroy your
-\family typewriter
- Genotype
-\family default
-s.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\end_layout
-
-\begin_layout Standard
-Creating your own
-\family typewriter
- Gene
-\family default
-,
-\family typewriter
- Chromosome
-\family default
- and
-\family typewriter
- Alt\SpecialChar softhyphen
-er\SpecialChar softhyphen
-er
-\family default
- classes is the most heavy-weighted possibility for solving the
-\emph on
- 
-\emph default
-validity problem.
- Refer to section 
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Extending-Jenetics"
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
- for a more detailed description on how to implement this classes.
+ shows the definition of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ The 
+\family typewriter
+test
+\family default
+ method of the interface checks the validity of the given phenotype and
+ the 
+\family typewriter
+repair
+\family default
+ method creates a new individual using the invalid individual as template.
+ The 
+\family typewriter
+Retry\SpecialChar softhyphen
+Constraint
+\family default
+ class is the default implementation of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ It implements the 
+\family typewriter
+repair
+\family default
+ method by creating a new phenotype until the created individual is valid.
+ You can parameterize a different constraint definition with the 
+\family typewriter
+constraint
+\family default
+ method of the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Builder
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -21562,7 +21615,6 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
-	lyxscale 80
 	width 100text%
 
 \end_inset
@@ -25132,7 +25184,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public T getChild(int index);
+    public T childAt(int index);
 \end_layout
 
 \begin_layout Plain Layout
@@ -25380,6 +25432,13 @@ Node
 
 \begin_layout Subsubsection
 Parentheses tree
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Parentheses-tree"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
@@ -25716,47 +25775,6 @@ Exception
  if it is called with an invalid tree string.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-Tree rewriting
-\end_layout
-
-\begin_layout Plain Layout
-Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
- trees (tree structured data) into other trees by applying rewriting rules.
- Rewriting can be non-deterministic.
- One rule to rewrite a term could be applied in many different ways to that
- term, or more than one rule could be applicable.
- Rewriting systems then do not provide an algorithm for changing one term
- to another, but a set of possible rule applications.
- When combined with an appropriate algorithm, however, rewrite systems can
- be viewed as computer programs, and several theorem provers and declarative
- programming languages are based on term rewriting.
-\end_layout
-
-\begin_layout Plain Layout
-A term rewriting system (TRS) is a rewriting system where the objects are
- terms, or expressions with nested sub-expressions.
- For example, the system shown under § Logic above is a term rewriting system.
-\end_layout
-
-\begin_layout Plain Layout
-In contrast to string rewriting systems, whose objects are flat sequences
- of symbols, the objects a term rewriting system works on, i.e.
- the terms, form a term algebra.
- A term can be visualized as a tree of symbols, the set of admitted symbols
- being fixed by a given signature.
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Flat tree
 \begin_inset CommandInset label
@@ -25991,10 +26009,6 @@ Example
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -26136,6 +26150,987 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Since there is no possibility to change the nodes of a 
+\family typewriter
+FlatTree
+\family default
+, it can be used as immutable version of the 
+\family typewriter
+Tree
+\family default
+ interface.
+ The tree nodes are also stored more memory efficient than in the 
+\family typewriter
+TreeNode
+\family default
+ class.
+\end_layout
+
+\begin_layout Subsubsection
+Tree formatting
+\end_layout
+
+\begin_layout Standard
+Using the parentheses tree is one possibility for creating a string representati
+on of a given tree.
+ Although it is the default format, also returned by the 
+\family typewriter
+toString()
+\family default
+ method, it is sometime desirable to use different formats.
+ The 
+\family typewriter
+Tree\SpecialChar softhyphen
+For\SpecialChar softhyphen
+mat\SpecialChar softhyphen
+ter
+\family default
+ class lets you implement your own formats and also defines additional tree
+ formats.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.PARENTHESES
+\family default
+ Converts a tree to its default parentheses format.
+ This is the default format and is also used by the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+String()
+\family default
+ method.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.TREE
+\family default
+ Creates a verbose tree string, which spans multiple lines, e.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        div 
+\end_layout
+
+\begin_layout LyX-Code
+        ├── cos 
+\end_layout
+
+\begin_layout LyX-Code
+        │   └── 1.3 
+\end_layout
+
+\begin_layout LyX-Code
+        └── cos 
+\end_layout
+
+\begin_layout LyX-Code
+            └── 3.14 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.DOT
+\family default
+ Creates a tree string in the dot format, which can be used to create nice
+ graphs with Graphviz
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.graphviz.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.LISP
+\family default
+ Creates a 
+\emph on
+Lisp
+\emph default
+ tree from a given 
+\family typewriter
+Tree
+\family default
+ instance.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
+\end_layout
+
+\begin_layout Subsection
+Rewriting
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Rewriting"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewriting
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tree rewriting is a synonym for term rewriting, i.e., the process of transforming
+ trees (tree structured data) into other trees by applying rewriting rules.
+ Rewriting trees is not necessarily deterministic.
+ One rewrite rule can be applied in many different ways to that term, or
+ more than one rule will be applicable to a tree node.
+ The rewriting system implementation in 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is currently used for simplifying program trees, which are evolved in genetic
+ programming problems (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Program-pruning"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ A good introduction in tree/term rewriting systems can be found in 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "baader_nipkow_1998"
+literal "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Tree rewrite rule):
+\series default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite rule
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewrite rule
+\end_layout
+
+\end_inset
+
+ A tree rewrite rule is a pair of terms (sub-trees) 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+.
+ The notation indicates that the 
+\emph on
+left
+\emph default
+-hand side 
+\begin_inset Formula $l$
+\end_inset
+
+ can be replaced by the 
+\emph on
+right
+\emph default
+-hand side 
+\begin_inset Formula $r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A rule 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+ can be applied to a tree 
+\begin_inset Formula $t$
+\end_inset
+
+ if the left tree (pattern) matches a sub-tree of 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ The matching sub-tree is then replaced by the right tree (pattern) 
+\begin_inset Formula $r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+(Tree rewrite system):
+\series default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite system
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Rewrite system
+\end_layout
+
+\end_inset
+
+ A tree rewrite system is a set 
+\begin_inset Formula $\mathfrak{\mathcal{R}}$
+\end_inset
+
+ of rewrite rules 
+\begin_inset Formula $l\rightarrow r$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In contrast to string rewriting systems, whose objects are flat sequences
+ of symbols, the objects a term rewriting system works on, i.e.
+ the terms, form a term algebra.
+ A term can be visualized as a tree of symbols, the set of admitted symbols
+ being fixed by a given signature.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Tree pattern
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Tree-pattern"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree pattern
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+TreePattern
+\family default
+ class is used for the left-hand and the right-hand side of a rewrite rule.
+ It is typed and consists of variable (
+\family typewriter
+Var
+\family default
+) and value (
+\family typewriter
+Val
+\family default
+) nodes which form a sum type
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Algebraic_data_type
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ of the 
+\emph on
+sealed
+\emph default
+ 
+\family typewriter
+Decl
+\family default
+ class.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class TreePattern<V> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreePattern(Tree<Decl<V>, ?> pattern) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreeMatcher<V> matcher(Tree<V, ?> tree) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+    public TreeNode<V> expand(Map<Var<V>, Tree<V, ?>> vars) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:TreePattern-class"
+
+\end_inset
+
+
+\family typewriter
+TreePattern
+\family default
+ class
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:TreePattern-class"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the constructor and main methods of the TreePattern.
+ The 
+\family typewriter
+matcher
+\family default
+ method is used when used for the left-hand side and the 
+\family typewriter
+expand
+\family default
+ method for the right-hand side.
+ How to create a simple tree pattern is shown in the code snippet below.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Tree<Decl<String>, ?> t = TreeNode.<Decl<String>>
+\end_layout
+
+\begin_layout Plain Layout
+
+    of(Val.of("add")).attach(Var.of("x"), Val.of("1"));
+\end_layout
+
+\begin_layout Plain Layout
+
+TreePattern<String> p = new TreePattern<>(t);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert p.matcher(TreeNode.parse("add(sub(x,y),1)")).matches();
+\end_layout
+
+\end_inset
+
+You can see that the variable 
+\family typewriter
+x
+\family default
+ will match for arbitrary sub trees.
+ For more complicated patterns it is quite cumbersome to create it via a
+ 
+\family typewriter
+Decl
+\family default
+ tree.
+ Usually you will create a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Pattern
+\family default
+ object by compiling a proper pattern string.
+ For creating the same pattern as in the example above you can write 
+\family typewriter
+Tree\SpecialChar softhyphen
+Pattern\SpecialChar softhyphen
+.compile(\SpecialChar softhyphen
+"add($x,1)"\SpecialChar softhyphen
+)
+\family default
+.
+ The base syntax for the tree pattern follows the parentheses tree DSL described
+ in 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Parentheses-tree"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ It only differs for the declaration of tree variables, which starts with
+ a '$' and must be a valid Java identifier.
+ If you want to match 
+\emph on
+non
+\emph default
+-string trees, you must specify an additional mapper function with the 
+\family typewriter
+compile
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TreePattern<Integer> pattern = TreePattern 	
+\end_layout
+
+\begin_layout Plain Layout
+
+    .compile("0($x,1)", Integer::parseInt);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The right-hand side functionality of the rewrite rule is to expand a given
+ pattern.
+ For expanding a given pattern you have to deliver a 
+\family typewriter
+Var
+\family default
+ to sub-tree mapping.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TreePattern<String> pattern = TreePattern.compile("add($x,$y,1)");
+\end_layout
+
+\begin_layout Plain Layout
+
+Map<Var<String>, Tree<String, ?>> vars = new HashMap<>();
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(TreePattern.Var.of("x"), TreeNode.parse("sin(x)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+vars.put(TreePattern.Var.of("y"), TreeNode.parse("sin(y)"));
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<String, ?> tree = pattern.expand(vars);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.toParenthesesString().equals("add(sin(x),sin(y),1)"));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewriter
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewriter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface is an abstraction of the tree 
+\emph on
+rewriting
+\emph default
+ functionality.
+ Its 
+\family typewriter
+rewrite
+\family default
+ method takes a 
+\family typewriter
+Tree\SpecialChar softhyphen
+Node
+\family default
+, which will be rewritten, and the maximal number the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class TreeRewriter<V> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    public int rewrite(final TreeNode<V> tree, final int limit);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:TreeRewriter-interface"
+
+\end_inset
+
+
+\family typewriter
+TreeRewriter
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+With the TreeRewriter interface you are able to combine two or more tree
+ rewriter to one.
+ This can be done with the 
+\family typewriter
+con\SpecialChar softhyphen
+cat(\SpecialChar softhyphen
+final TreeRewriter<V>...
+ rewriters\SpecialChar softhyphen
+)
+\family default
+ factory method.
+ There are two implementations of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter
+\family default
+ interface: the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Rule
+\family default
+ class and the 
+\family typewriter
+TRS
+\family default
+ class.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite rule
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite rule
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite rule
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A 
+\family typewriter
+TreeRewriteRule
+\family default
+ consists of left 
+\emph on
+matching
+\emph default
+ pattern and a right 
+\emph on
+replacing
+\emph default
+ pattern.
+ To simplify the creation of a rewrite rule, it is possible to create one
+ via a simple DSL: 
+\family typewriter
+add(0,$x) -> $x
+\family default
+.
+ The left and the right tree pattern is separated by an arrow, 
+\family typewriter
+->
+\family default
+, and the pattern DSL is described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Tree-pattern"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeRewriteRule<String> rule = 
+\end_layout
+
+\begin_layout Plain Layout
+
+    TreeRewriteRule.compile("add($x,0) -> $x");
+\end_layout
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(5,0)");
+\end_layout
+
+\begin_layout Plain Layout
+
+rule.rewrite(t);
+\end_layout
+
+\end_inset
+
+Since the 
+\family typewriter
+TreeRewriteRule
+\family default
+ implements the 
+\family typewriter
+TreeRewriter
+\family default
+ interface, it can directly be used for rewriting input trees.
+\end_layout
+
+\begin_layout Subsubsection
+Tree rewrite system (TRS)
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Tree rewrite system
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Term rewrite system
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+TRS
+\family default
+ class puts all things together and allows to define a complete tree (term)
+ rewriting system.
+ The primary constructor will take a sequence of 
+\family typewriter
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule
+\family default
+s (
+\family typewriter
+ISeq<\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Re\SpecialChar softhyphen
+write\SpecialChar softhyphen
+Rule<\SpecialChar softhyphen
+V\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+), but the 
+\family typewriter
+TRS
+\family default
+ creation can be simplified by using a simple DSL.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TRS<String> trs = TRS.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(0,$x) -> $x",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "add(S($x),$y) -> S(add($x,$y))",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(0,$x) -> 0",
+\end_layout
+
+\begin_layout Plain Layout
+
+    "mul(S($x),$y) -> add(mul($x,$y),$y)"
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The example above defines a tree rewrite system with four rewrite rules,
+ which are applied in the given order.
+ Each rule is applied until the given tree stays unchanged.
+ This also means, that the termination of the 
+\family typewriter
+TRS
+\family default
+ can't be guaranteed.
+ It's mainly on you to only create rewrite system which will 
+\emph on
+always
+\emph default
+ terminate.
+ If you are not sure whether the system is terminating or not, you better
+ call the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewriter\SpecialChar softhyphen
+.re\SpecialChar softhyphen
+write(\SpecialChar softhyphen
+Tree\SpecialChar softhyphen
+Node, int\SpecialChar softhyphen
+)
+\family default
+ method, which also takes the maximal number, the rule should be applied
+ to the input tree.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final TreeNode<String> t = parse("add(S(0),S(mul(S(0),S(S(0)))))");
+\end_layout
+
+\begin_layout Plain Layout
+
+trs.rewrite(t); 
+\end_layout
+
+\begin_layout Plain Layout
+
+assert t.equals(parse("S(S(S(S(0))))"));
+\end_layout
+
+\end_inset
+
+Since the given tree rewrite system is terminating, we can safely apply
+ the 
+\family typewriter
+TRS
+\family default
+ to 
+\family sans
+add(S(0),S(mul(S(0),S(S(0)))))
+\family default
+, which will then be rewritten to 
+\family sans
+S(S(S(S(0))))
+\family default
+.
 \end_layout
 
 \begin_layout Subsection
@@ -26430,7 +27425,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/SingleNodeCrossover-t1a.svg
 	lyxscale 50
-	width 42text%
+	width 35text%
 	BoundingBox 30bp -144bp 380bp 188bp
 
 \end_inset
@@ -26481,6 +27476,69 @@ Single-node crossover
 
 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Reverse sequence mutator (RSM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+RSMutator
+\family default
+ chooses two positions 
+\emph on
+i
+\emph default
+ and 
+\emph on
+j
+\emph default
+ randomly.
+ The gene order in a chromosome will then be reversed between this two points.
+ This mutation operator can also be used for combinatorial problems, where
+ no duplicated genes within a chromosome are allowed, e.g.
+ for the TSP.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-3099"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Hybridizing PSM and RSM (HPRM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+HPRMutator
+\family default
+ constructs an offspring from a pair of parents by hybridizing two mutation
+ operators, PSM (
+\family typewriter
+Swap\SpecialChar softhyphen
+Mu\SpecialChar softhyphen
+ta\SpecialChar softhyphen
+tor
+\family default
+) and RSM.
+ Its main application is for combinatorial problems, like the TSP.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-5028"
+literal "false"
 
 \end_inset
 
@@ -28921,8 +29979,11 @@ best
  result, which is different in the multi-object optimization.
  As we have seen in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Pareto-efficiency"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29154,8 +30215,11 @@ The fitness function in the example problem above will create 2D-points
 .
  In figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Maximizing-Pareto-front"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29660,8 +30724,16 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-The extension point for own GP implementations is the Op interface.
- There is in general no need for extending the ProgramChromosome class.
+The extension point for own GP implementations is the 
+\family typewriter
+Op
+\family sans
+ interface.
+ There is in general no need for extending the 
+\family typewriter
+ProgramChromosome
+\family sans
+ class.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30261,6 +31333,90 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
+During the evolution phase, the size of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ can grow and shrink.
+ The 
+\family typewriter
+Single\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Cross\SpecialChar softhyphen
+over
+\family default
+, which is part of the 
+\family typewriter
+jenetics\SpecialChar softhyphen
+.ext
+\family default
+ module is responsible for this change in the program size.
+ When a smaller sub-tree is exchanged with a bigger sub-tree, the size of
+ the first tree will grow and the size of the second tree will shrink.
+ This can lead to undesirable large programs.
+ Because of this reason, it is possible to create a 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ with an additional 
+\emph on
+validation
+\emph default
+ predicate.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> program = ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    depth, ch -> ch.getRoot().size() <= 50, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The predicate, 
+\family typewriter
+ch -> ch.getRoot().size() <= 50
+\family default
+, marks all programs with more then 50 nodes as invalid.
+ Invalid chromosomes will then be replaced by newly created one.
+ When defining a validation predicate, you have to take care, that the desired
+ depth and the validation predicate 
+\emph on
+matches
+\emph default
+.
+ If the given program tree depth is too big, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 51, every newly created program will be immediately marked as invalid.
+ This is because a tree with depth 51 will have for sure more than 50 nodes.
+\end_layout
+
+\begin_layout Standard
 The evolution
 \family typewriter
  Engine
@@ -30363,11 +31519,72 @@ final double result = program.eval(3.4);
 For a complete GP example have a look at the examples in chapter 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Symbolic-regression"
+reference "sec:Symbolic-regression-example"
 
 \end_inset
 
 .
+ The code example above also shows, that the program is represented by the
+ first gene (aka root gene) of the 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+ Since the 
+\family typewriter
+Program\SpecialChar softhyphen
+Gene
+\family default
+ implements the 
+\family typewriter
+Tree<\SpecialChar softhyphen
+Op<A>,\SpecialChar softhyphen
+Program\SpecialChar softhyphen
+Gene<A\SpecialChar softhyphen
+>\SpecialChar softhyphen
+>
+\family default
+ interface, it smoothly integrates with existing tree algorithms.
+ Some possible program gene assignments are shown in the code snippet below,
+ which will compile without warnings or additional casts.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final ProgramChromosome<Double> chromosome = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+assert chromosome.getGene() == chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final ProgramGene<Double> program = chromosome.getRoot();
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<Op<Double>, ?> opTree = chromosome.getRoot(); 
+\end_layout
+
+\begin_layout Plain Layout
+
+final Tree<?, ?> tree = chromosome.getRoot();
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -30493,7 +31710,7 @@ Genes.
 \emph on
  destroyed
 \emph default
- by such alterer are repaired.
+ by such alterers are repaired.
 \end_layout
 
 \begin_layout Plain Layout
@@ -30515,24 +31732,18 @@ height "1pt"
 
 \begin_layout Subsection
 Program pruning
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Program-pruning"
+
+\end_inset
+
+
 \begin_inset Index idx
 status collapsed
 
 \begin_layout Plain Layout
 Genetic programming!Program pruning
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Comment
-status collapsed
-
-\begin_layout Plain Layout
-//TODO: Tree rewriting/Program rewriting
 \end_layout
 
 \end_inset
@@ -30548,11 +31759,59 @@ When you are solving symbolic regression problems, the mathematical expression
  With the 
 \family typewriter
 Math\SpecialChar softhyphen
-Tree\SpecialChar softhyphen
-Prune\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
 Alterer
 \family default
  you are able to simplify some portion of the population in each generation.
+ The rewrite alterer uses the 
+\emph on
+default
+\emph default
+ 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Rewriting"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for a detailed description of the implemented tree rewrite system.
+\end_layout
+
+\end_inset
+
+
+\family default
+ defined by the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.RE\SpecialChar softhyphen
+WRITER
+\family default
+ field.
+ It is also possible to create a 
+\family typewriter
+Math\SpecialChar softhyphen
+Rewrite\SpecialChar softhyphen
+Alterer
+\family default
+ instance with your own 
+\family typewriter
+Tree\SpecialChar softhyphen
+Rewiter
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -30593,7 +31852,7 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 
 \begin_layout Plain Layout
 
-        new MathTreePruneAlterer<>(0.5))
+        new MathRewriteAlterer<>(0.5))
 \end_layout
 
 \begin_layout Plain Layout
@@ -30613,11 +31872,16 @@ In the example above, half of the expression trees are simplified in each
 \family typewriter
 Math\SpecialChar softhyphen
 Expr\SpecialChar softhyphen
-.simp\SpecialChar softhyphen
-li\SpecialChar softhyphen
-fy
+.rewrite 
 \family default
- method.
+method, which uses the 
+\family typewriter
+Math\SpecialChar softhyphen
+Expr\SpecialChar softhyphen
+.RE\SpecialChar softhyphen
+WRITER
+\family default
+ tree rewriter for the rewrite task.
 \end_layout
 
 \begin_layout Standard
@@ -30652,7 +31916,12 @@ final ProgramGene<Double> program = engine.stream()
 
 \begin_layout Plain Layout
 
-final TreeNode<Op<Double>> expr = MathExpr.simplify(program);
+final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
+\end_layout
+
+\begin_layout Plain Layout
+
+MathExpr.rewrite(tree);
 \end_layout
 
 \end_inset
@@ -30732,6 +32001,1226 @@ The variables in an expression string are sorted alphabetically.
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Subsection
+Multi-root programs
+\end_layout
+
+\begin_layout Standard
+The given examples, so fare, where using a single 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+ for modeling the program.
+ Since the 
+\family typewriter
+Genotype
+\family default
+ is able to hold more than one chromosome, it is possible to create more
+ than one program roots.
+ This programs are evaluated in parallel.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+codec = Codec.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        // First 'program'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            4, ch -> ch.getRoot().size() <= 30,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        ),
+\end_layout
+
+\begin_layout Plain Layout
+
+        // Second 'program'.
+\end_layout
+
+\begin_layout Plain Layout
+
+        ProgramChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            5, ch -> ch.getRoot().size() <= 50,
+\end_layout
+
+\begin_layout Plain Layout
+
+            operations, terminals
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    ),
+\end_layout
+
+\begin_layout Plain Layout
+
+    gt -> gt.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .map(Chromosome::getGene)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The code snippet above shows how to create a codec with two independent
+ program roots.
+ This programs are then mapped, in the fitness function, to the combined
+ fitness value.
+ It is also possible to used different operations and terminals for each
+ 
+\family typewriter
+Program\SpecialChar softhyphen
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Symbolic regression
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Symbolic regression
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Symbolic regression is a specific type of regression analyses, where the
+ search space consists of mathematical expressions.
+ The task is to find a model, which fits a given data set in terms of accuracy
+ and simplicity.
+ In a classical approach, you will try to optimize the parameters of a predefine
+d function type, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a polynomial of grade 
+\begin_inset Formula $n$
+\end_inset
+
+: 
+\begin_inset Formula 
+\[
+f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}.
+\]
+
+\end_inset
+
+The encoding would only be a 
+\family typewriter
+Double\SpecialChar softhyphen
+Chromosome
+\family default
+ of length 
+\begin_inset Formula $n+1$
+\end_inset
+
+, where the gene at position 
+\begin_inset Formula $k\in\left[0,...,n\right]$
+\end_inset
+
+ represents the factor 
+\begin_inset Formula $a_{k}$
+\end_inset
+
+ of the polynomial.
+ If the type of mathematical function is not known in advance, GP can be
+ used finding a function, which is composed out of a given set of 
+\emph on
+primitives
+\emph default
+.
+\end_layout
+
+\begin_layout Quote
+Symbolic regression involves finding a mathematical expression, in symbolic
+ form, that provides a good, best, or perfect fit between a given finite
+ sampling of values of the independent variables and the associated values
+ of the dependent variables.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:1992:GPP:138936"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since symbolic regression is quite a common task in GP, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with classes and interfaces, supporting the implementation of such
+ problems.
+ This classes are defined in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jen\SpecialChar softhyphen
+etics\SpecialChar softhyphen
+.prog\SpecialChar softhyphen
+.reg\SpecialChar softhyphen
+ression
+\family default
+ package.
+ The following sections describes this classes and interfaces and its usage.
+ A complete symbolic regression example is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Loss function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The loss function measures how good the evolved program (tree) predicts
+ the expected outcome or data set.
+ If the prediction deviates too much from the expected data, the loss function
+ will cough up a larger number.
+ Loss functions are classified into two major categories depending, depending
+ on the type of the learning task—
+\emph on
+regression
+\emph default
+ losses and 
+\emph on
+classification
+\emph default
+ losses.
+ In the following paragraphs only loss functions suitable for 
+\emph on
+regression
+\emph default
+ problems will be described.
+\end_layout
+
+\begin_layout Paragraph
+Mean squared error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean squared error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!L2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The mean squared error is the default loss function used for regression
+ analysis.
+ It is also known as 
+\emph on
+quadratic
+\emph default
+ loss or 
+\emph on
+L2
+\emph default
+ loss and is calculated as the average of the squared differences between
+ the predicted and actual values.
+\begin_inset Formula 
+\begin{equation}
+MSE=\frac{1}{n}\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ denotes the expected function value and 
+\begin_inset Formula $\tilde{y_{i}}$
+\end_inset
+
+ the calculated (estimated) value for data point 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The result is always positive and the perfect value is 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ The squaring means that larger mistakes result in more errors than smaller
+ mistakes, meaning that the model penalizes larger mistakes.
+ The mean squared error is the preferred loss function for regression problems.
+\end_layout
+
+\begin_layout Paragraph
+Mean absolute error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean absolute error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L1
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!L1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The mean absolute error, also known as 
+\emph on
+L1
+\emph default
+ loss, is calculated as the average of the absolute difference between the
+ expected and calculated values.
+\begin_inset Formula 
+\begin{equation}
+MAE=\frac{1}{n}\sum_{i=0}^{n-1}\left|y_{i}-\tilde{y_{i}}\right|
+\end{equation}
+
+\end_inset
+
+This loss function is suitable for regression problems where the distribution
+ of the target variable may be mostly Gaussian, but may have outliers, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ large or small values far from the mean value.
+ This means that the 
+\emph on
+MAE
+\emph default
+ is more robust than the 
+\emph on
+MSE
+\emph default
+, which is useful if the sample data is corrupted with outliers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The MAE is more robust to outliers, but its derivatives are not continuous,
+ making it less inefficient to find the correct solution.
+ The MSE is sensitive to corrupt data, but finds more stable and closed
+ form solutions.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The interface used for calculating the loss between 
+\emph on
+calculated
+\emph default
+ and 
+\emph on
+expected
+\emph default
+ values is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:LossFunction-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface LossFunction<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(T[] calculated, T[] expected);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:LossFunction-interface"
+
+\end_inset
+
+
+\family typewriter
+LossFunction
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Complexity function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Complexity function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The complexity function measures the complexity of the evolved tree.
+ If you have two programs with the 
+\emph on
+same
+\emph default
+ loss value, you usually want the 
+\emph on
+simpler
+\emph default
+ program to survive.
+ A simple complexity measure is the number of nodes a program tree consists
+ of.
+\end_layout
+
+\begin_layout Standard
+You can obtain such a measure by the 
+\family typewriter
+of\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Count(\SpecialChar softhyphen
+int\SpecialChar softhyphen
+)
+\family default
+ factory method of the 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ interface.
+ The complexity measure, 
+\begin_inset Formula $C\left(P\right)$
+\end_inset
+
+, is defined as
+\begin_inset Formula 
+\begin{equation}
+C\left(P\right)=1-\sqrt{1-\frac{\min\left(N\left(P\right),N_{max}\right)^{2}}{N_{max}^{2}}},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N\left(P\right)$
+\end_inset
+
+ is the number of nodes the program 
+\begin_inset Formula $P$
+\end_inset
+
+ consists of and 
+\begin_inset Formula $N_{max}$
+\end_inset
+
+ the maximal allowed program nodes.
+ If the number of program nodes is equal or greater then the maximal node
+ number 
+\begin_inset Formula $C\left(P\right)$
+\end_inset
+
+ will return 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/TreeNodeCountComplexity.svg
+	lyxscale 85
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:TreeNodeCountComplexity"
+
+\end_inset
+
+Node count complexity
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The graph in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:TreeNodeCountComplexity"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the program complexity increases with the number of nodes.
+ For the example graph the maximal node count was set to 
+\begin_inset Formula $28$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Complexity<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(Tree<? extends Op<T>, ?> program);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Complexity-interface"
+
+\end_inset
+
+
+\family typewriter
+Complexity
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Complexity-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the interface which calculates the complexity measure of a given
+ program tree.
+\end_layout
+
+\begin_layout Subsubsection
+Error function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Error function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The error function combines the loss function and the complexity function
+ into one error measure.
+ It is used as fitness function which the GP is minimizing.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Error<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Tree<? extends Op<T>, ?> program,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] calculated,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] expected
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Error-interface"
+
+\end_inset
+
+
+\family typewriter
+Error
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Error-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the error (fitness) function used for evolving symbolic regression
+ problems.
+ Instead of implementing the error function from scratch, you will probably
+ want to use one of the factory methods for creating it from one of the
+ predefined 
+\family typewriter
+Loss\SpecialChar softhyphen
+Function
+\family default
+ and 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ measure.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Error<Double> error1 = Error.of(LossFunction::mse);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error2 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mae, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error3 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mse,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28),
+\end_layout
+
+\begin_layout Plain Layout
+
+    (loss, complexity) -> loss + loss*complexity
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The code snippet above shows the three possibilities to create an error
+ function by using the predefined loss functions and complexity measure.
+ 
+\family typewriter
+error1
+\family default
+ is created by using the mean squared error, MES.
+ 
+\family typewriter
+error2
+\family default
+ and 
+\family typewriter
+error3
+\family default
+ defines the same error function.
+ The only difference is that 
+\family typewriter
+error3
+\family default
+ defines the loss-complexity composition function explicitly.
+\end_layout
+
+\begin_layout Subsubsection
+Sample points
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Sample point
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solving regression problems requires to compare the current solution (program
+ tree) with a set of sample points, which represents the 
+\emph on
+original
+\emph default
+ function to be approximated.
+ The 
+\family typewriter
+Sample
+\family default
+ interface represents such sample point.
+ It actually maps a 
+\emph on
+n
+\emph default
+-dimensional point of domain, 
+\begin_inset Formula $\mathbb{D}$
+\end_inset
+
+, to an one-dimensional point of the same domain: 
+\begin_inset Formula $\mathbb{D}^{n}\rightarrow\mathbb{D}$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Sample<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public int arity();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T argAt(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T result();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Sample-interface"
+
+\end_inset
+
+
+\family typewriter
+Sample
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The arity of the sample point returns the dimension, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ To make it easier to create 
+\family typewriter
+double
+\family default
+ sample points, some factory methods are also given in the 
+\family typewriter
+Sample
+\family default
+ interface.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample1 = Sample.ofDouble(0.0, 0.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample2 = Sample.ofDouble(1.0, 1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample3 = Sample.ofDouble(2.0, 2.0);
+\end_layout
+
+\end_inset
+
+The code snippet above shows how to create three sample points for a function
+ 
+\begin_inset Formula $f:\mathbb{R}\rightarrow\mathbb{R}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Regression problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Regression problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Regression
+\family default
+ class is the only concrete type of the public API of the 
+\family typewriter
+regression
+\family default
+ package.
+ It integrates the interfaces, described in the last sections, into one
+ problem definition.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Regression<T>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<Tree<Op<T>, ?>, ProgramGene<T>, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+As you can see in the code snippet above, the 
+\family typewriter
+Regression
+\family default
+ class implements the 
+\family typewriter
+Problem
+\family default
+ interface and can be therefore easily used in setting up an appropriate
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ A full such regression example can be found in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Boolean programs
+\end_layout
+
+\begin_layout Standard
+The default data type for doing symbolic regression is the Double class.
+ This is supported by a standard set of mathematical operations, defined
+ in the 
+\family typewriter
+Math\SpecialChar softhyphen
+Op
+\family default
+ class.
+ Since the GP operations are not restricted to any particular type, the
+ boolean operations, defined in the 
+\family typewriter
+Bool\SpecialChar softhyphen
+Op
+\family default
+ class, can be used for defining boolean programs.
 \end_layout
 
 \begin_layout Section
@@ -33451,7 +35940,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/RealFunction.svg
-	lyxscale 70
+	lyxscale 85
 	width 100text%
 
 \end_inset
@@ -34865,47 +37354,7 @@ Genetic programming
 
 \begin_inset CommandInset label
 LatexCommand label
-name "sec:Symbolic-regression"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Symbolic regression is a specific type of regression analyses, where the
- search space consists of mathematical expressions.
- The task is to find a model, which fits a given data-set in terms of accuracy
- and simplicity.
- In a classical approach, you will try to optimize the parameters of a predefine
-d function type, e.
-\begin_inset space ~
-\end_inset
-
-g.
- a polynomial of grade 
-\begin_inset Formula $n$
-\end_inset
-
-.
- If the type of mathematical function is not known in advance, GP can be
- used finding a function, which is composed out of a given set of 
-\emph on
-primitives
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Quote
-Symbolic regression involves finding a mathematical expression, in symbolic
- form, that provides a good, best, or perfect fit between a given finite
- sampling of values of the independent variables and the associated values
- of the dependent variables.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Koza:1992:GPP:138936"
-literal "true"
+name "sec:Symbolic-regression-example"
 
 \end_inset
 
@@ -34960,19 +37409,35 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-The fitness function calculates the summed error between the expected function
- value and the actual function value.
- An additional term is added to the error, which penalizes expression trees
- which grow to big.
- The factor 
-\begin_inset Formula $0.00001$
+The error function uses the 
+\emph on
+mean squared error
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Mean_squared_error
+\end_layout
+
 \end_inset
 
- is an empirical value, 
+
+\end_layout
+
+\end_inset
+
+
 \emph on
-found
+ 
 \emph default
- after some test runs.
+as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -35481,6 +37946,8 @@ jenetics.ext
 \emph default
 -standard GA operations and data types.
  It also contains classes for solving multi-objective problems (MOEA).
+ Additional classes for defining tree rewrite systems are also part of this
+ module.
 \end_layout
 
 \begin_layout Itemize
@@ -35999,7 +38466,7 @@ Version
 \series default
 :
 \emph on
- 2.5.2
+ 3.1.8
 \end_layout
 
 \begin_layout Itemize
@@ -36265,7 +38732,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 

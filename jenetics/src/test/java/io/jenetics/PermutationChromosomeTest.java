@@ -135,7 +135,6 @@ public class PermutationChromosomeTest
 			.collect(ISeq.toISeq());
 
 		final PermutationChromosome<Integer> ch = new PermutationChromosome<>(genes);
-		System.out.println(ch);
 		Assert.assertFalse(ch.isValid());
 		Assert.assertEquals(ch.length(), 10);
 	}

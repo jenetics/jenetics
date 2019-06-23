@@ -32,11 +32,10 @@ public class ConstExprRewriterTest {
 
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final double value) {
-		final ConstExprRewriter rewriter = new ConstExprRewriter();
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(MathExpr.parse(expr).toTree());
+		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
+		new ConstExprRewriter().rewrite(tree);
 
-
-		Assert.assertEquals(MathExpr.eval(tree), value);
+		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
 
 	@DataProvider
@@ -49,6 +48,18 @@ public class ConstExprRewriterTest {
 			{"cos(0) + sin(0)", 1.0},
 			{"cos(0)*sin(0)", 0.0}
 		};
+	}
+
+	@Test
+	public void ephemeralConst() {
+		final TreeNode<Op<Double>> tree = MathExpr.parse("1+2+3")
+			.toTree()
+			.map(n -> n instanceof Const
+				? EphemeralConst.of(((Const<Double>) n)::value)
+				: n);
+
+		new ConstExprRewriter().rewrite(tree);
+		Assert.assertEquals(tree.getValue(), Const.of(6.0));
 	}
 
 }
