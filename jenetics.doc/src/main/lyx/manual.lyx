@@ -21615,7 +21615,6 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
-	lyxscale 80
 	width 100text%
 
 \end_inset
