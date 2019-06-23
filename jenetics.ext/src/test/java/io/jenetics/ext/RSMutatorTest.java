@@ -32,15 +32,15 @@ import io.jenetics.PermutationChromosome;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ReverseSequenceMutatorTest {
+public class RSMutatorTest {
 
 	@Test(invocationCount = 10)
 	public void mutate() {
 		final PermutationChromosome<Integer> original =
 			PermutationChromosome.ofInteger(50);
 
-		final ReverseSequenceMutator<EnumGene<Integer>, Integer> mutator =
-			new ReverseSequenceMutator<>(1.0);
+		final RSMutator<EnumGene<Integer>, Integer> mutator =
+			new RSMutator<>(1.0);
 
 		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
 			mutator.mutate(original, 1, new Random());

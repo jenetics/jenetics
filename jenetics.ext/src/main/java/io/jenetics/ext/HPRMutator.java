@@ -39,7 +39,7 @@ import io.jenetics.util.MSeq;
  * Problem</a>, by <em>Otman Abdoun, Chakir Tajani</em> and
  * <em>Jaafar Abouchabka</em>.
  *
- * @see ReverseSequenceMutator
+ * @see RSMutator
  * @see io.jenetics.SwapMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

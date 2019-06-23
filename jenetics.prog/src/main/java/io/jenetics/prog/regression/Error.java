@@ -33,7 +33,7 @@ import io.jenetics.prog.op.Op;
  * program {@link Complexity}.
  *
  * <pre>{@code
- * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofNodeCount(50));
  * }</pre>
  *
  * @see LossFunction
@@ -61,7 +61,7 @@ public interface Error<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public double apply(
-		final Tree<Op<T>, ?> program,
+		final Tree<? extends Op<T>, ?> program,
 		final T[] calculated,
 		final T[] expected
 	);
