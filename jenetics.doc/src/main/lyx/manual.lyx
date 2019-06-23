@@ -20379,10 +20379,7 @@ s determines the validity of the whole
  Genotype
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-The
+ The
 \family typewriter
  Engine
 \family default
@@ -20396,62 +20393,15 @@ s which has been
  
 \emph default
 destroyed by the altering step.
-\end_layout
-
-\begin_layout Standard
-Individuals which has exceeded its lifetime are also replaced by new valid
- ones.
- To guarantee the termination of the
+ Individuals which has exceeded its lifetime are also replaced by new ones.
+ Although this behavior will work for most genotypes, it is still possible
+ that invalid individuals will be created during the evolution.
+ If you need a more advanced validation strategy, the 
 \family typewriter
- Genotype
+Con\SpecialChar softhyphen
+straint
 \family default
- creation, the Engine is parameterized with the maximal number of retries
- (
-\family typewriter
-indi\SpecialChar softhyphen
-vidual\SpecialChar softhyphen
-Crea\SpecialChar softhyphen
-tion\SpecialChar softhyphen
-Re\SpecialChar softhyphen
-tr
-\family default
-ies)
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-.
- If the described validation mechanism doesn't fulfill your needs, you can
-\emph on
- 
-\emph default
-override the validation mechanism by creating the
-\family typewriter
- Engine
-\family default
- with an external
-\family typewriter
- Genotype
-\family default
-\emph on
- 
-\emph default
-validator.
-\end_layout
-
-\begin_layout Standard
+ interface comes into play.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -20459,117 +20409,52 @@ status open
 
 \begin_layout Plain Layout
 
-final Predicate<? super Genotype<DoubleGene>> validator = gt -> {
+public interface Constraint<
 \end_layout
 
 \begin_layout Plain Layout
 
-    // Implement advanced Genotype check.
+    G extends Gene<?, G>,
 \end_layout
 
 \begin_layout Plain Layout
 
-    boolean valid = ...;
+    C extends Comparable<? super C>
 \end_layout
 
 \begin_layout Plain Layout
 
-    return valid;
+> {
 \end_layout
 
 \begin_layout Plain Layout
 
-};
+    public boolean test(Phenotype<G, C> ind);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+	public Phenotype<G, C> repair(Phenotype<G, C> ind, long gen);
 \end_layout
 
 \begin_layout Plain Layout
 
-    .limit(100)
-\end_layout
+}
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
-    .genotypeValidator(validator)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
+\family typewriter
+Constraint
+\family default
+ interface 
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Constraint-interface"
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Having the possibility to replace the default validation check is a nice
- thing, but it is better to not create invalid individuals in the first
- place.
- For achieving this goal, you have two possibilities:
-\end_layout
-
-\begin_layout Enumerate
-Creating an explicit
-\family typewriter
- Genotype
-\family default
- factory and
-\end_layout
-
-\begin_layout Enumerate
-implementing new
-\family typewriter
- Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\family default
- classes.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Genotype
-\family default
- factory
-\end_layout
-
-\begin_layout Standard
-The usual mechanism for defining an encoding is to create a
-\family typewriter
- Genotype
-\family default
-\emph on
- prototype
-\emph default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Prototype_pattern
 \end_layout
 
 \end_inset
@@ -20579,147 +20464,56 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 
 \end_inset
 
-.
- Since the
-\family typewriter
- Genotype
-\family default
- implements the
-\family typewriter
- Factory
-\family default
- interface, an prototype instance can easily passed to the
-\family typewriter
- Engine\SpecialChar softhyphen
-.builder
-\family default
- method.
- For a more advanced
-\family typewriter
- Genotype
-\family default
- creation, you
-\emph on
- 
-\emph default
-only have to create an explicit
-\family typewriter
- Genotype
-\family default
- factory.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Factory<Genotype<DoubleGene>> gtf = () -> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Implement your advanced Genotype factory.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Genotype<DoubleGene> genotype = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-    return genotype;
-\end_layout
-
-\begin_layout Plain Layout
-
-};
-\end_layout
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(100)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-With this method you can avoid that the
-\family typewriter
- Engine
-\family default
- creates invalid individuals in the first place, but it is still possible
- that the alterer step will destroy your
-\family typewriter
- Genotype
-\family default
-s.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\end_layout
-
-\begin_layout Standard
-Creating your own
-\family typewriter
- Gene
-\family default
-,
-\family typewriter
- Chromosome
-\family default
- and
-\family typewriter
- Alt\SpecialChar softhyphen
-er\SpecialChar softhyphen
-er
-\family default
- classes is the most heavy-weighted possibility for solving the
-\emph on
- 
-\emph default
-validity problem.
- Refer to section 
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Extending-Jenetics"
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
- for a more detailed description on how to implement this classes.
+ shows the definition of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ The 
+\family typewriter
+test
+\family default
+ method of the interface checks the validity of the given phenotype and
+ the 
+\family typewriter
+repair
+\family default
+ method creates a new individual using the invalid individual as template.
+ The 
+\family typewriter
+Retry\SpecialChar softhyphen
+Constraint
+\family default
+ class is the default implementation of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ It implements the 
+\family typewriter
+repair
+\family default
+ method by creating a new phenotype until the created individual is valid.
+ You can parameterize a different constraint definition with the 
+\family typewriter
+constraint
+\family default
+ method of the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Builder
+\family default
+.
 \end_layout
 
 \begin_layout Section
