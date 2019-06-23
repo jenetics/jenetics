@@ -33,18 +33,20 @@ import io.jenetics.prog.op.Op;
  * function.
  *
  * <pre>{@code
- * final Error error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
+ * final Error<Double> error = Error.of(LossFunction::mse, Complexity.ofMaxNodeCount(50));
  * }</pre>
  *
  * @see LossFunction
  * @see Error
  *
+ * @param <T> the sample type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.0
+ * @since 5.0
  */
 @FunctionalInterface
-public interface Complexity {
+public interface Complexity<T> {
 
 	/**
 	 * Calculates the complexity of the current program (possibly) relative
@@ -53,28 +55,29 @@ public interface Complexity {
 	 * @param program the actual program
 	 * @return the measure of the program complexity
 	 */
-	public double apply(final Tree<? extends Op<Double>, ?> program);
+	public double apply(final Tree<? extends Op<T>, ?> program);
 
 	/**
 	 * Return a complexity measure which counts the number of nodes of a program.
 	 *
 	 * @see #count(Tree, int)
 	 *
-	 * @param count the maximal node count. The returned complexity will be one
-	 *        if the program node count is greater or equal the given
+	 * @param <T> the sample type
+	 * @param maxNodeCount the maximal node count. The returned complexity will
+	 *        be one if the program node count is greater or equal the given
 	 *        {@code count}
 	 * @return a program node count complexity measure
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
 	 *         than one
 	 */
-	public static Complexity ofMaxNodeCount(final int count) {
-		if (count < 1) {
+	public static <T> Complexity<T> ofNodeCount(final int maxNodeCount) {
+		if (maxNodeCount < 1) {
 			throw new IllegalArgumentException(
-				"Max node count must be greater than zero: " + count
+				"Max node count must be greater than zero: " + maxNodeCount
 			);
 		}
 
-		return p -> count(p, count);
+		return p -> count(p, maxNodeCount);
 	}
 
 	/**
@@ -89,7 +92,7 @@ public interface Complexity {
 	 * return 1.0 - sqrt(1.0 - (cc*cc)/(maxNodes*maxNodes));
 	 * }</pre>
 	 *
-	 * @see #ofMaxNodeCount(int)
+	 * @see #ofNodeCount(int)
 	 *
 	 * @param program the program used for the complexity measure
 	 * @param maxNodes the maximal expected node count

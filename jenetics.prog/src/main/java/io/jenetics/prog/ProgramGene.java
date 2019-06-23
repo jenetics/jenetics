@@ -140,7 +140,7 @@ public final class ProgramGene<A>
 	/**
 	 * Creates a new {@link TreeNode} from this program gene.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @return a new tree node value build from this program gene
 	 */

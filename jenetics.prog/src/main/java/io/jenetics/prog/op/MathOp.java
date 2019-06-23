@@ -47,6 +47,7 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
@@ -370,8 +371,26 @@ public enum MathOp implements Op<Double> {
 	}
 
 	@Override
-	public Double apply(final Double[] doubles) {
-		return _function.apply(doubles);
+	public Double apply(final Double[] args) {
+		return _function.apply(args);
+	}
+
+	/**
+	 * Evaluates the operation with the given arguments.
+	 *
+	 * @since 5.0
+	 *
+	 * @see #apply(Double[])
+	 *
+	 * @param args the operation arguments
+	 * @return the evaluated operation
+	 */
+	public double eval(final double... args) {
+		return apply(
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
 	}
 
 	@Override

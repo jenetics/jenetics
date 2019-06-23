@@ -7304,7 +7304,7 @@ Crossover
 Partial\SpecialChar softhyphen
 Alterer
 \family default
- is a possible performance drawback.
+ is a possible performance penalty.
  This is because the chromosomes must be 
 \emph on
 sliced
@@ -7789,20 +7789,6 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Evolution iterator for external evolution iteration.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Iterator<EvolutionResult<G,C>> iterator();
-\end_layout
-
-\begin_layout Plain Layout
-
 }
 \begin_inset Caption Standard
 
@@ -7876,22 +7862,6 @@ reference "subsubsec:EvolutionStream"
 \end_inset
 
 .
- Alternatively it is possible to iterate through the evolution process in
- an imperative way (for whatever reasons this should be necessary).
- Just create an
-\family typewriter
- Iterator
-\family default
- of
-\family typewriter
- Evolution\SpecialChar softhyphen
-Result
-\family default
- object by calling the
-\family typewriter
- iterator
-\family default
- method.
 \end_layout
 
 \begin_layout Standard
@@ -7972,6 +7942,55 @@ System\SpecialChar softhyphen
 \begin_layout Description
 
 \family typewriter
+constraint
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Constraint
+\end_layout
+
+\end_inset
+
+
+\family default
+ This property lets you
+\emph on
+ override
+\emph default
+ the default implementation of the
+\family typewriter
+ Pheno\SpecialChar softhyphen
+type\SpecialChar softhyphen
+.isValid
+\family default
+ method, which is useful if the
+\family typewriter
+ Phenotype
+\family default
+ validity not only depends on valid property of the elements it consists
+ of.
+ A description of the 
+\family typewriter
+Const\SpecialChar softhyphen
+raint
+\family default
+ interface is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 executor
 \family default
  With this property it is possible to change the
@@ -8030,72 +8049,22 @@ genotypeFactory
 \family default
  Defines the
 \family typewriter
- Genotype Facto
+ Genotype Factory
 \family default
-ry used for creating new individuals.
+ used for creating new individuals.
  Since the
 \family typewriter
  Genotype
 \family default
  is its own
 \family typewriter
- Fact
+ Factory
 \family default
-ory, it is sufficient to create a
+, it is sufficient to create a
 \family typewriter
  Genotype
 \family default
 , which then serves as template.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-genotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Genotype!Validation
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset label
-LatexCommand label
-name "Engine-genotypeValidator"
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Geno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Genotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
 \end_layout
 
 \begin_layout Description
@@ -8198,49 +8167,6 @@ optimize
 \begin_layout Description
 
 \family typewriter
-phenotypeValidator
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Validation
-\end_layout
-
-\end_inset
-
-
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Phenotype!Validation
-\end_layout
-
-\end_inset
-
- This property lets you
-\emph on
- override
-\emph default
- the default implementation of the
-\family typewriter
- Pheno\SpecialChar softhyphen
-type\SpecialChar softhyphen
-.isValid
-\family default
- method, which is useful if the
-\family typewriter
- Phenotype
-\family default
- validity not only depends on valid property of the elements it consists
- of.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
 populationSize
 \family default
  Defines the number of individuals of a population.
@@ -8296,41 +8222,6 @@ survivorsSelector
 Selec\SpecialChar softhyphen
 tor<>(3)
 \family default
-.
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-individualCreationRetries
-\family default
- The evolution
-\family typewriter
- Engine
-\family default
- tries to create only valid individuals.
- If a newly created
-\family typewriter
- Genotype
-\family default
- is not valid, the
-\family typewriter
- Engine
-\family default
- creates another one, till the created
-\family typewriter
- Genotype
-\family default
- is valid.
- This parameter sets the maximal number of retries before the
-\family typewriter
- Engine
-\family default
- gives up and accept invalid individuals.
- The default value is set to 
-\begin_inset Formula $10$
-\end_inset
-
 .
 \end_layout
 
@@ -9312,6 +9203,67 @@ Genotype<DoubleGene> result = stream
 
 \end_layout
 
+\begin_layout Standard
+Sometime it is useful not only to collect one 
+\emph on
+final
+\emph default
+ result, but to collect the 
+\emph on
+n
+\emph default
+ best evolution results instead.
+ This can be achieved by combining the 
+\family typewriter
+Min\SpecialChar softhyphen
+Max\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+Strictly\SpecialChar softhyphen
+In\SpecialChar softhyphen
+crea\SpecialChar softhyphen
+sing()
+\family default
+ and 
+\family typewriter
+ISeq\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+ISeq(int)
+\family default
+ method.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ISeq<EvolutionResult<DoubleGene, Double>> results = engine.stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+    .limit(1000)
+\end_layout
+
+\begin_layout Plain Layout
+
+    .flatMap(MinMax.toStrictlyIncreasing())
+\end_layout
+
+\begin_layout Plain Layout
+
+    .collect(ISeq.toISeq(10));
+\end_layout
+
+\end_inset
+
+The code snippet above collects the best 
+\begin_inset Formula $10$
+\end_inset
+
+ evolution results into the results sequence in increasing order.
+\end_layout
+
 \begin_layout Subsubsection
 EvolutionStatistics
 \begin_inset CommandInset label
@@ -10054,6 +10006,97 @@ final Engine<G, C> engine = new Engine.Builder(evaluator, gtf)
 
 \end_layout
 
+\begin_layout Standard
+The 
+\family typewriter
+Evaluators
+\family default
+ class contains factory methods, which allows you to create 
+\family typewriter
+Evaluator
+\family default
+ instances from fitness functions which doesn't return the fitness value
+ directly, but return 
+\family typewriter
+Future<T>
+\family default
+ or 
+\family typewriter
+CompletableFuture<T>
+\family default
+ instead.
+ With this methods, there is no need for waiting for the fitness value,
+ if the fitness function is already asynchronous.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+static Future<Double> fitness(final double x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Codec<Double, DoubleGene> codec = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evaluator<DoubleGene, Double> evaluator = Evaluators         
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+        .async(Main::fitness, codec);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine<DoubleGene, Double> engine =
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Engine.Builder<>(evaluator, codec.encoding())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Nuts and bolts
 \begin_inset CommandInset label
@@ -10062,7 +10105,7 @@ name "sec:Nuts-and-bolts"
 
 \end_inset
 
- 
+
 \end_layout
 
 \begin_layout Subsection
@@ -20216,10 +20259,10 @@ The listing above shows how a new
 \end_layout
 
 \begin_layout Section
-Validation
+Constraint
 \begin_inset CommandInset label
 LatexCommand label
-name "subsec:Validation"
+name "subsec:Constraint"
 
 \end_inset
 
@@ -20228,7 +20271,7 @@ name "subsec:Validation"
 status collapsed
 
 \begin_layout Plain Layout
-Validation
+Constraint
 \end_layout
 
 \end_inset
@@ -20306,10 +20349,7 @@ s determines the validity of the whole
  Genotype
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-The
+ The
 \family typewriter
  Engine
 \family default
@@ -20323,59 +20363,15 @@ s which has been
  
 \emph default
 destroyed by the altering step.
- Individuals which has exceeded its lifetime are also replaced by new valid
- ones.
- To guarantee the termination of the
+ Individuals which has exceeded its lifetime are also replaced by new ones.
+ Although this behavior will work for most genotypes, it is still possible
+ that invalid individuals will be created during the evolution.
+ If you need a more advanced validation strategy, the 
 \family typewriter
- Genotype
+Con\SpecialChar softhyphen
+straint
 \family default
- creation, the Engine is parameterized with the maximal number of retries
- (
-\family typewriter
-indi\SpecialChar softhyphen
-vidual\SpecialChar softhyphen
-Crea\SpecialChar softhyphen
-tion\SpecialChar softhyphen
-Re\SpecialChar softhyphen
-tr
-\family default
-ies)
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-.
- If the described validation mechanism doesn't fulfill your needs, you can
-\emph on
- 
-\emph default
-override the validation mechanism by creating the
-\family typewriter
- Engine
-\family default
- with an external
-\family typewriter
- Genotype
-\family default
-\emph on
- 
-\emph default
-validator.
-\end_layout
-
-\begin_layout Standard
+ interface comes into play.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -20383,117 +20379,52 @@ status open
 
 \begin_layout Plain Layout
 
-final Predicate<? super Genotype<DoubleGene>> validator = gt -> {
+public interface Constraint<
 \end_layout
 
 \begin_layout Plain Layout
 
-    // Implement advanced Genotype check.
+    G extends Gene<?, G>,
 \end_layout
 
 \begin_layout Plain Layout
 
-    boolean valid = ...;
+    C extends Comparable<? super C>
 \end_layout
 
 \begin_layout Plain Layout
 
-    return valid;
+> {
 \end_layout
 
 \begin_layout Plain Layout
 
-};
+    public boolean test(Phenotype<G, C> ind);
 \end_layout
 
 \begin_layout Plain Layout
 
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
+	public Phenotype<G, C> repair(Phenotype<G, C> ind, long gen);
 \end_layout
 
 \begin_layout Plain Layout
 
-    .limit(100)
-\end_layout
+}
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
 
-    .genotypeValidator(validator)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
+\family typewriter
+Constraint
+\family default
+ interface 
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Constraint-interface"
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-Having the possibility to replace the default validation check is a nice
- thing, but it is better to not create invalid individuals in the first
- place.
- For achieving this goal, you have two possibilities:
-\end_layout
-
-\begin_layout Enumerate
-Creating an explicit
-\family typewriter
- Genotype
-\family default
- factory and
-\end_layout
-
-\begin_layout Enumerate
-implementing new
-\family typewriter
- Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\family default
- classes.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Genotype
-\family default
- factory
-\end_layout
-
-\begin_layout Standard
-The usual mechanism for defining an encoding is to create a
-\family typewriter
- Genotype
-\family default
-\emph on
- prototype
-\emph default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://en.wikipedia.org/wiki/Prototype_pattern
 \end_layout
 
 \end_inset
@@ -20503,147 +20434,56 @@ https://en.wikipedia.org/wiki/Prototype_pattern
 
 \end_inset
 
-.
- Since the
-\family typewriter
- Genotype
-\family default
- implements the
-\family typewriter
- Factory
-\family default
- interface, an prototype instance can easily passed to the
-\family typewriter
- Engine\SpecialChar softhyphen
-.builder
-\family default
- method.
- For a more advanced
-\family typewriter
- Genotype
-\family default
- creation, you
-\emph on
- 
-\emph default
-only have to create an explicit
-\family typewriter
- Genotype
-\family default
- factory.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-final Factory<Genotype<DoubleGene>> gtf = () -> {
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Implement your advanced Genotype factory.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Genotype<DoubleGene> genotype = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-    return genotype;
-\end_layout
-
-\begin_layout Plain Layout
-
-};
-\end_layout
-
-\begin_layout Plain Layout
-
-final Engine<DoubleGene, Double> engine = Engine.builder(gtf, ff)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .limit(100)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .individualCreationRetries(15)
-\end_layout
-
-\begin_layout Plain Layout
-
-    .build();
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-With this method you can avoid that the
-\family typewriter
- Engine
-\family default
- creates invalid individuals in the first place, but it is still possible
- that the alterer step will destroy your
-\family typewriter
- Genotype
-\family default
-s.
-\end_layout
-
-\begin_layout Paragraph
-
-\family typewriter
-Gene
-\family default
-/
-\family typewriter
-Chromosome
-\family default
-/
-\family typewriter
-Alterer
-\end_layout
-
-\begin_layout Standard
-Creating your own
-\family typewriter
- Gene
-\family default
-,
-\family typewriter
- Chromosome
-\family default
- and
-\family typewriter
- Alt\SpecialChar softhyphen
-er\SpecialChar softhyphen
-er
-\family default
- classes is the most heavy-weighted possibility for solving the
-\emph on
- 
-\emph default
-validity problem.
- Refer to section 
+Listing 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Extending-Jenetics"
+reference "subsec:Constraint"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
- for a more detailed description on how to implement this classes.
+ shows the definition of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ The 
+\family typewriter
+test
+\family default
+ method of the interface checks the validity of the given phenotype and
+ the 
+\family typewriter
+repair
+\family default
+ method creates a new individual using the invalid individual as template.
+ The 
+\family typewriter
+Retry\SpecialChar softhyphen
+Constraint
+\family default
+ class is the default implementation of the 
+\family typewriter
+Constraint
+\family default
+ interface.
+ It implements the 
+\family typewriter
+repair
+\family default
+ method by creating a new phenotype until the created individual is valid.
+ You can parameterize a different constraint definition with the 
+\family typewriter
+constraint
+\family default
+ method of the 
+\family typewriter
+Engine\SpecialChar softhyphen
+.Builder
+\family default
+.
 \end_layout
 
 \begin_layout Section
@@ -21775,7 +21615,6 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/diagram/Knapsack-fitness_threshold_termination.svg
-	lyxscale 80
 	width 100text%
 
 \end_inset
@@ -25345,7 +25184,7 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public T getChild(int index);
+    public T childAt(int index);
 \end_layout
 
 \begin_layout Plain Layout
@@ -26328,6 +26167,130 @@ Tree
 TreeNode
 \family default
  class.
+\end_layout
+
+\begin_layout Subsubsection
+Tree formatting
+\end_layout
+
+\begin_layout Standard
+Using the parentheses tree is one possibility for creating a string representati
+on of a given tree.
+ Although it is the default format, also returned by the 
+\family typewriter
+toString()
+\family default
+ method, it is sometime desirable to use different formats.
+ The 
+\family typewriter
+Tree\SpecialChar softhyphen
+For\SpecialChar softhyphen
+mat\SpecialChar softhyphen
+ter
+\family default
+ class lets you implement your own formats and also defines additional tree
+ formats.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.PARENTHESES
+\family default
+ Converts a tree to its default parentheses format.
+ This is the default format and is also used by the 
+\family typewriter
+Tree\SpecialChar softhyphen
+.to\SpecialChar softhyphen
+String()
+\family default
+ method.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.TREE
+\family default
+ Creates a verbose tree string, which spans multiple lines, e.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        div 
+\end_layout
+
+\begin_layout LyX-Code
+        ├── cos 
+\end_layout
+
+\begin_layout LyX-Code
+        │   └── 1.3 
+\end_layout
+
+\begin_layout LyX-Code
+        └── cos 
+\end_layout
+
+\begin_layout LyX-Code
+            └── 3.14 
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.DOT
+\family default
+ Creates a tree string in the dot format, which can be used to create nice
+ graphs with Graphviz
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.graphviz.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
+TreeFormatter.LISP
+\family default
+ Creates a 
+\emph on
+Lisp
+\emph default
+ tree from a given 
+\family typewriter
+Tree
+\family default
+ instance.
+ E.
+\begin_inset space ~
+\end_inset
+
+g.
+\end_layout
+
+\begin_layout LyX-Code
+        (mul (div (cos 1.0) (cos 3.14)) (sin (mul 1.0 z)))
 \end_layout
 
 \begin_layout Subsection
@@ -27462,7 +27425,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/graphic/SingleNodeCrossover-t1a.svg
 	lyxscale 50
-	width 42text%
+	width 35text%
 	BoundingBox 30bp -144bp 380bp 188bp
 
 \end_inset
@@ -27513,6 +27476,69 @@ Single-node crossover
 
 
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Reverse sequence mutator (RSM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+RSMutator
+\family default
+ chooses two positions 
+\emph on
+i
+\emph default
+ and 
+\emph on
+j
+\emph default
+ randomly.
+ The gene order in a chromosome will then be reversed between this two points.
+ This mutation operator can also be used for combinatorial problems, where
+ no duplicated genes within a chromosome are allowed, e.g.
+ for the TSP.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-3099"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Hybridizing PSM and RSM (HPRM)
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+HPRMutator
+\family default
+ constructs an offspring from a pair of parents by hybridizing two mutation
+ operators, PSM (
+\family typewriter
+Swap\SpecialChar softhyphen
+Mu\SpecialChar softhyphen
+ta\SpecialChar softhyphen
+tor
+\family default
+) and RSM.
+ Its main application is for combinatorial problems, like the TSP.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "DBLP:journals/corr/abs-1203-5028"
+literal "false"
 
 \end_inset
 
@@ -29953,8 +29979,11 @@ best
  result, which is different in the multi-object optimization.
  As we have seen in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Pareto-efficiency"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -30186,8 +30215,11 @@ The fitness function in the example problem above will create 2D-points
 .
  In figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Maximizing-Pareto-front"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -31487,7 +31519,7 @@ final double result = program.eval(3.4);
 For a complete GP example have a look at the examples in chapter 
 \begin_inset CommandInset ref
 LatexCommand vref
-reference "sec:Symbolic-regression"
+reference "sec:Symbolic-regression-example"
 
 \end_inset
 
@@ -32103,6 +32135,1092 @@ Chromo\SpecialChar softhyphen
 some
 \family default
 .
+\end_layout
+
+\begin_layout Subsection
+Symbolic regression
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Symbolic regression
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Symbolic regression is a specific type of regression analyses, where the
+ search space consists of mathematical expressions.
+ The task is to find a model, which fits a given data set in terms of accuracy
+ and simplicity.
+ In a classical approach, you will try to optimize the parameters of a predefine
+d function type, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ a polynomial of grade 
+\begin_inset Formula $n$
+\end_inset
+
+: 
+\begin_inset Formula 
+\[
+f\left(x\right)=\sum_{k=0}^{n}a_{k}x^{k}.
+\]
+
+\end_inset
+
+The encoding would only be a 
+\family typewriter
+Double\SpecialChar softhyphen
+Chromosome
+\family default
+ of length 
+\begin_inset Formula $n+1$
+\end_inset
+
+, where the gene at position 
+\begin_inset Formula $k\in\left[0,...,n\right]$
+\end_inset
+
+ represents the factor 
+\begin_inset Formula $a_{k}$
+\end_inset
+
+ of the polynomial.
+ If the type of mathematical function is not known in advance, GP can be
+ used finding a function, which is composed out of a given set of 
+\emph on
+primitives
+\emph default
+.
+\end_layout
+
+\begin_layout Quote
+Symbolic regression involves finding a mathematical expression, in symbolic
+ form, that provides a good, best, or perfect fit between a given finite
+ sampling of values of the independent variables and the associated values
+ of the dependent variables.
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Koza:1992:GPP:138936"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since symbolic regression is quite a common task in GP, 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ comes with classes and interfaces, supporting the implementation of such
+ problems.
+ This classes are defined in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jen\SpecialChar softhyphen
+etics\SpecialChar softhyphen
+.prog\SpecialChar softhyphen
+.reg\SpecialChar softhyphen
+ression
+\family default
+ package.
+ The following sections describes this classes and interfaces and its usage.
+ A complete symbolic regression example is given in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Loss function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The loss function measures how good the evolved program (tree) predicts
+ the expected outcome or data set.
+ If the prediction deviates too much from the expected data, the loss function
+ will cough up a larger number.
+ Loss functions are classified into two major categories depending, depending
+ on the type of the learning task—
+\emph on
+regression
+\emph default
+ losses and 
+\emph on
+classification
+\emph default
+ losses.
+ In the following paragraphs only loss functions suitable for 
+\emph on
+regression
+\emph default
+ problems will be described.
+\end_layout
+
+\begin_layout Paragraph
+Mean squared error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean squared error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MSE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!L2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The mean squared error is the default loss function used for regression
+ analysis.
+ It is also known as 
+\emph on
+quadratic
+\emph default
+ loss or 
+\emph on
+L2
+\emph default
+ loss and is calculated as the average of the squared differences between
+ the predicted and actual values.
+\begin_inset Formula 
+\begin{equation}
+MSE=\frac{1}{n}\sum_{i=0}^{n-1}\left(y_{i}-\tilde{y_{i}}\right)^{2},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+ denotes the expected function value and 
+\begin_inset Formula $\tilde{y_{i}}$
+\end_inset
+
+ the calculated (estimated) value for data point 
+\begin_inset Formula $i$
+\end_inset
+
+.
+ The result is always positive and the perfect value is 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ The squaring means that larger mistakes result in more errors than smaller
+ mistakes, meaning that the model penalizes larger mistakes.
+ The mean squared error is the preferred loss function for regression problems.
+\end_layout
+
+\begin_layout Paragraph
+Mean absolute error
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mean absolute error
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+L1
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!MAE
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Loss function!L1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The mean absolute error, also known as 
+\emph on
+L1
+\emph default
+ loss, is calculated as the average of the absolute difference between the
+ expected and calculated values.
+\begin_inset Formula 
+\begin{equation}
+MAE=\frac{1}{n}\sum_{i=0}^{n-1}\left|y_{i}-\tilde{y_{i}}\right|
+\end{equation}
+
+\end_inset
+
+This loss function is suitable for regression problems where the distribution
+ of the target variable may be mostly Gaussian, but may have outliers, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ large or small values far from the mean value.
+ This means that the 
+\emph on
+MAE
+\emph default
+ is more robust than the 
+\emph on
+MSE
+\emph default
+, which is useful if the sample data is corrupted with outliers.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The MAE is more robust to outliers, but its derivatives are not continuous,
+ making it less inefficient to find the correct solution.
+ The MSE is sensitive to corrupt data, but finds more stable and closed
+ form solutions.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The interface used for calculating the loss between 
+\emph on
+calculated
+\emph default
+ and 
+\emph on
+expected
+\emph default
+ values is shown in listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:LossFunction-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface LossFunction<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(T[] calculated, T[] expected);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:LossFunction-interface"
+
+\end_inset
+
+
+\family typewriter
+LossFunction
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Complexity function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Complexity function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The complexity function measures the complexity of the evolved tree.
+ If you have two programs with the 
+\emph on
+same
+\emph default
+ loss value, you usually want the 
+\emph on
+simpler
+\emph default
+ program to survive.
+ A simple complexity measure is the number of nodes a program tree consists
+ of.
+\end_layout
+
+\begin_layout Standard
+You can obtain such a measure by the 
+\family typewriter
+of\SpecialChar softhyphen
+Node\SpecialChar softhyphen
+Count(\SpecialChar softhyphen
+int\SpecialChar softhyphen
+)
+\family default
+ factory method of the 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ interface.
+ The complexity measure, 
+\begin_inset Formula $C\left(P\right)$
+\end_inset
+
+, is defined as
+\begin_inset Formula 
+\begin{equation}
+C\left(P\right)=1-\sqrt{1-\frac{\min\left(N\left(P\right),N_{max}\right)^{2}}{N_{max}^{2}}},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $N\left(P\right)$
+\end_inset
+
+ is the number of nodes the program 
+\begin_inset Formula $P$
+\end_inset
+
+ consists of and 
+\begin_inset Formula $N_{max}$
+\end_inset
+
+ the maximal allowed program nodes.
+ If the number of program nodes is equal or greater then the maximal node
+ number 
+\begin_inset Formula $C\left(P\right)$
+\end_inset
+
+ will return 
+\begin_inset Formula $1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/TreeNodeCountComplexity.svg
+	lyxscale 85
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:TreeNodeCountComplexity"
+
+\end_inset
+
+Node count complexity
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The graph in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:TreeNodeCountComplexity"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how the program complexity increases with the number of nodes.
+ For the example graph the maximal node count was set to 
+\begin_inset Formula $28$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Complexity<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(Tree<? extends Op<T>, ?> program);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Complexity-interface"
+
+\end_inset
+
+
+\family typewriter
+Complexity
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Complexity-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the interface which calculates the complexity measure of a given
+ program tree.
+\end_layout
+
+\begin_layout Subsubsection
+Error function
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Error function
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The error function combines the loss function and the complexity function
+ into one error measure.
+ It is used as fitness function which the GP is minimizing.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Error<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public double apply(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Tree<? extends Op<T>, ?> program,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] calculated,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final T[] expected
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Error-interface"
+
+\end_inset
+
+
+\family typewriter
+Error
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Error-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the error (fitness) function used for evolving symbolic regression
+ problems.
+ Instead of implementing the error function from scratch, you will probably
+ want to use one of the factory methods for creating it from one of the
+ predefined 
+\family typewriter
+Loss\SpecialChar softhyphen
+Function
+\family default
+ and 
+\family typewriter
+Com\SpecialChar softhyphen
+plex\SpecialChar softhyphen
+ity
+\family default
+ measure.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Error<Double> error1 = Error.of(LossFunction::mse);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error2 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mae, 
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28)
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Error<Double> error3 = Error.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    LossFunction::mse,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Complexity.ofNodeCount(28),
+\end_layout
+
+\begin_layout Plain Layout
+
+    (loss, complexity) -> loss + loss*complexity
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The code snippet above shows the three possibilities to create an error
+ function by using the predefined loss functions and complexity measure.
+ 
+\family typewriter
+error1
+\family default
+ is created by using the mean squared error, MES.
+ 
+\family typewriter
+error2
+\family default
+ and 
+\family typewriter
+error3
+\family default
+ defines the same error function.
+ The only difference is that 
+\family typewriter
+error3
+\family default
+ defines the loss-complexity composition function explicitly.
+\end_layout
+
+\begin_layout Subsubsection
+Sample points
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Sample point
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solving regression problems requires to compare the current solution (program
+ tree) with a set of sample points, which represents the 
+\emph on
+original
+\emph default
+ function to be approximated.
+ The 
+\family typewriter
+Sample
+\family default
+ interface represents such sample point.
+ It actually maps a 
+\emph on
+n
+\emph default
+-dimensional point of domain, 
+\begin_inset Formula $\mathbb{D}$
+\end_inset
+
+, to an one-dimensional point of the same domain: 
+\begin_inset Formula $\mathbb{D}^{n}\rightarrow\mathbb{D}$
+\end_inset
+
+.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Sample<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+	public int arity();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T argAt(int index);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public T result();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Sample-interface"
+
+\end_inset
+
+
+\family typewriter
+Sample
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The arity of the sample point returns the dimension, 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ To make it easier to create 
+\family typewriter
+double
+\family default
+ sample points, some factory methods are also given in the 
+\family typewriter
+Sample
+\family default
+ interface.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample1 = Sample.ofDouble(0.0, 0.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample2 = Sample.ofDouble(1.0, 1.0);
+\end_layout
+
+\begin_layout Plain Layout
+
+final Sample<Double> sample3 = Sample.ofDouble(2.0, 2.0);
+\end_layout
+
+\end_inset
+
+The code snippet above shows how to create three sample points for a function
+ 
+\begin_inset Formula $f:\mathbb{R}\rightarrow\mathbb{R}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Regression problem
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Regression problem
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+Regression
+\family default
+ class is the only concrete type of the public API of the 
+\family typewriter
+regression
+\family default
+ package.
+ It integrates the interfaces, described in the last sections, into one
+ problem definition.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public final class Regression<T>
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Problem<Tree<Op<T>, ?>, ProgramGene<T>, Double>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    ...
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+As you can see in the code snippet above, the 
+\family typewriter
+Regression
+\family default
+ class implements the 
+\family typewriter
+Problem
+\family default
+ interface and can be therefore easily used in setting up an appropriate
+ evolution 
+\family typewriter
+Engine
+\family default
+.
+ A full such regression example can be found in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Boolean programs
+\end_layout
+
+\begin_layout Standard
+The default data type for doing symbolic regression is the Double class.
+ This is supported by a standard set of mathematical operations, defined
+ in the 
+\family typewriter
+Math\SpecialChar softhyphen
+Op
+\family default
+ class.
+ Since the GP operations are not restricted to any particular type, the
+ boolean operations, defined in the 
+\family typewriter
+Bool\SpecialChar softhyphen
+Op
+\family default
+ class, can be used for defining boolean programs.
 \end_layout
 
 \begin_layout Section
@@ -34822,7 +35940,7 @@ status open
 \align center
 \begin_inset Graphics
 	filename ../resources/graphic/RealFunction.svg
-	lyxscale 70
+	lyxscale 85
 	width 100text%
 
 \end_inset
@@ -36236,47 +37354,7 @@ Genetic programming
 
 \begin_inset CommandInset label
 LatexCommand label
-name "sec:Symbolic-regression"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Symbolic regression is a specific type of regression analyses, where the
- search space consists of mathematical expressions.
- The task is to find a model, which fits a given data-set in terms of accuracy
- and simplicity.
- In a classical approach, you will try to optimize the parameters of a predefine
-d function type, e.
-\begin_inset space ~
-\end_inset
-
-g.
- a polynomial of grade 
-\begin_inset Formula $n$
-\end_inset
-
-.
- If the type of mathematical function is not known in advance, GP can be
- used finding a function, which is composed out of a given set of 
-\emph on
-primitives
-\emph default
-.
- 
-\end_layout
-
-\begin_layout Quote
-Symbolic regression involves finding a mathematical expression, in symbolic
- form, that provides a good, best, or perfect fit between a given finite
- sampling of values of the independent variables and the associated values
- of the dependent variables.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Koza:1992:GPP:138936"
-literal "true"
+name "sec:Symbolic-regression-example"
 
 \end_inset
 
@@ -36331,19 +37409,35 @@ lstinputlisting{../java/SymbolicRegression.java}
 \end_layout
 
 \begin_layout Standard
-The fitness function calculates the summed error between the expected function
- value and the actual function value.
- An additional term is added to the error, which penalizes expression trees
- which grow to big.
- The factor 
-\begin_inset Formula $0.00001$
+The error function uses the 
+\emph on
+mean squared error
+\emph default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Mean_squared_error
+\end_layout
+
 \end_inset
 
- is an empirical value, 
+
+\end_layout
+
+\end_inset
+
+
 \emph on
-found
+ 
 \emph default
- after some test runs.
+as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -37372,7 +38466,7 @@ Version
 \series default
 :
 \emph on
- 2.5.2
+ 3.1.8
 \end_layout
 
 \begin_layout Itemize
@@ -37638,7 +38732,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 

@@ -17,37 +17,35 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
-
-import static io.jenetics.internal.math.random.indexes;
+package io.jenetics.ext;
 
 import java.util.Random;
 
+import io.jenetics.AbstractAlterer;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.Mutator;
+import io.jenetics.MutatorResult;
+import io.jenetics.internal.math.comb;
 import io.jenetics.util.MSeq;
 
 /**
- * The {@code SwapMutation} changes the order of genes in a chromosome, with the
- * hope of bringing related genes closer together, thereby facilitating the
- * production of building blocks. This mutation operator can also be used for
- * combinatorial problems, where no duplicated genes within a chromosome are
- * allowed, e.g. for the TSP.
- * <p>
- * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
+ * The reverse sequence mutation, two positions i and j are randomly chosen The
+ * gene order in a chromosome will then be reversed between this two points.
+ * This mutation operator can also be used for combinatorial problems, where no
+ * duplicated genes within a chromosome are allowed, e.g. for the TSP.
  *
- * @see <a href="https://arxiv.org/ftp/arxiv/papers/1203/1203.3099.pdf">
- *     Analyzing the Performance of Mutation Operators to Solve the Travelling
- *     Salesman Problem</a>
+ * @see io.jenetics.SwapMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.0
  * @version 5.0
+ * @since 5.0
  */
-public class SwapMutator<
+public class RSMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
-
 {
 
 	/**
@@ -57,7 +55,7 @@ public class SwapMutator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public SwapMutator(final double probability) {
+	public RSMutator(final double probability) {
 		super(probability);
 	}
 
@@ -65,14 +63,10 @@ public class SwapMutator<
 	 * Default constructor, with default mutation probability
 	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
 	 */
-	public SwapMutator() {
+	public RSMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
-	/**
-	 * Swaps the genes in the given array, with the mutation probability of this
-	 * mutation.
-	 */
 	@Override
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
@@ -81,13 +75,13 @@ public class SwapMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
+			final int[] points = comb.subset(chromosome.length() + 1, 2);
 			final MSeq<G> genes = chromosome.toSeq().copy();
-			final int mutations = (int)indexes(random, genes.length(), p)
-				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-				.count();
+			genes.subSeq(points[0], points[1]).reverse();
+
 			result = MutatorResult.of(
 				chromosome.newInstance(genes.toISeq()),
-				mutations
+				points[1] - points[0] - 1
 			);
 		} else {
 			result = MutatorResult.of(chromosome);

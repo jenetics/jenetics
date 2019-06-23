@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot -p
 
-set terminal svg size 700,300 fname "Serif" fsize 16
+set terminal svg size 700,300 font "Serif,16"
 set output "RealFunction.svg"
 
 set grid

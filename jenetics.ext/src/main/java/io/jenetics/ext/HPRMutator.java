@@ -17,37 +17,40 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
-
-import static io.jenetics.internal.math.random.indexes;
+package io.jenetics.ext;
 
 import java.util.Random;
 
+import io.jenetics.AbstractAlterer;
+import io.jenetics.Chromosome;
+import io.jenetics.Gene;
+import io.jenetics.Mutator;
+import io.jenetics.MutatorResult;
+import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.probability;
 import io.jenetics.util.MSeq;
 
 /**
- * The {@code SwapMutation} changes the order of genes in a chromosome, with the
- * hope of bringing related genes closer together, thereby facilitating the
- * production of building blocks. This mutation operator can also be used for
- * combinatorial problems, where no duplicated genes within a chromosome are
- * allowed, e.g. for the TSP.
+ * The Hybridizing PSM and RSM Operator (HPRM) constructs an offspring from a
+ * pair of parents by hybridizing two mutation operators, PSM and RSM.
  * <p>
- * This mutator is also known as <em>Partial Shuffle Mutator</em> (PSM).
+ * This mutator is described in <a href="https://arxiv.org/abs/1203.5028">A New
+ * Mutation Operator for Solving an NP-Complete Problem: Travelling Salesman
+ * Problem</a>, by <em>Otman Abdoun, Chakir Tajani</em> and
+ * <em>Jaafar Abouchabka</em>.
  *
- * @see <a href="https://arxiv.org/ftp/arxiv/papers/1203/1203.3099.pdf">
- *     Analyzing the Performance of Mutation Operators to Solve the Travelling
- *     Salesman Problem</a>
+ * @see RSMutator
+ * @see io.jenetics.SwapMutator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.0
  * @version 5.0
+ * @since 5.0
  */
-public class SwapMutator<
+public class HPRMutator<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
-
 {
 
 	/**
@@ -57,7 +60,7 @@ public class SwapMutator<
 	 * @throws IllegalArgumentException if the {@code probability} is not in the
 	 *          valid range of {@code [0, 1]}.
 	 */
-	public SwapMutator(final double probability) {
+	public HPRMutator(final double probability) {
 		super(probability);
 	}
 
@@ -65,14 +68,10 @@ public class SwapMutator<
 	 * Default constructor, with default mutation probability
 	 * ({@link AbstractAlterer#DEFAULT_ALTER_PROBABILITY}).
 	 */
-	public SwapMutator() {
+	public HPRMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
 
-	/**
-	 * Swaps the genes in the given array, with the mutation probability of this
-	 * mutation.
-	 */
 	@Override
 	protected MutatorResult<Chromosome<G>> mutate(
 		final Chromosome<G> chromosome,
@@ -81,10 +80,19 @@ public class SwapMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
+			final int P = probability.toInt(p);
+			final int[] points = comb.subset(chromosome.length(), 2);
 			final MSeq<G> genes = chromosome.toSeq().copy();
-			final int mutations = (int)indexes(random, genes.length(), p)
-				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
-				.count();
+
+			int mutations = (points[1] - points[0] + 1)/2;
+			for (int i = points[0], j = points[1]; i < j; ++i, --j) {
+				genes.swap(i, j);
+				if (random.nextInt() < P) {
+					genes.swap(i, random.nextInt(chromosome.length()));
+					++mutations;
+				}
+			}
+
 			result = MutatorResult.of(
 				chromosome.newInstance(genes.toISeq()),
 				mutations

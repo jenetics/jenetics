@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
@@ -96,8 +97,8 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		seq.shuffle(new Random(23));
 		Assert.assertFalse(seq.isSorted());
 
-		seq.sort((a, b) -> b.compareTo(a));
-		Assert.assertTrue(seq.isSorted((a, b) -> b.compareTo(a)));
+		seq.sort(Comparator.reverseOrder());
+		Assert.assertTrue(seq.isSorted(Comparator.reverseOrder()));
 		Assert.assertTrue(seq.reverse().isSorted());
 	}
 
