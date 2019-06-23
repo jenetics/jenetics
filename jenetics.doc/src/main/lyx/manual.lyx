@@ -7304,7 +7304,7 @@ Crossover
 Partial\SpecialChar softhyphen
 Alterer
 \family default
- is a possible performance drawback.
+ is a possible performance penalty.
  This is because the chromosomes must be 
 \emph on
 sliced
@@ -7789,20 +7789,6 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Evolution iterator for external evolution iteration.
-\end_layout
-
-\begin_layout Plain Layout
-
-    Iterator<EvolutionResult<G,C>> iterator();
-\end_layout
-
-\begin_layout Plain Layout
-
 }
 \begin_inset Caption Standard
 
@@ -7876,22 +7862,6 @@ reference "subsubsec:EvolutionStream"
 \end_inset
 
 .
- Alternatively it is possible to iterate through the evolution process in
- an imperative way (for whatever reasons this should be necessary).
- Just create an
-\family typewriter
- Iterator
-\family default
- of
-\family typewriter
- Evolution\SpecialChar softhyphen
-Result
-\family default
- object by calling the
-\family typewriter
- iterator
-\family default
- method.
 \end_layout
 
 \begin_layout Standard
@@ -8079,18 +8049,18 @@ genotypeFactory
 \family default
  Defines the
 \family typewriter
- Genotype Facto
+ Genotype Factory
 \family default
-ry used for creating new individuals.
+ used for creating new individuals.
  Since the
 \family typewriter
  Genotype
 \family default
  is its own
 \family typewriter
- Fact
+ Factory
 \family default
-ory, it is sufficient to create a
+, it is sufficient to create a
 \family typewriter
  Genotype
 \family default
@@ -9249,7 +9219,7 @@ Min\SpecialChar softhyphen
 Max\SpecialChar softhyphen
 .to\SpecialChar softhyphen
 Strictly\SpecialChar softhyphen
-De\SpecialChar softhyphen
+In\SpecialChar softhyphen
 crea\SpecialChar softhyphen
 sing()
 \family default
