@@ -19,10 +19,32 @@
  */
 package io.jenetics.prog.regression;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class DoubleSampleTest {
+
+	@Test(dataProvider = "argsSamples")
+	public void args(final DoubleSample sample, final Double[] result) {
+		final double[] args = sample.args();
+		Assert.assertEquals(args.length, result.length);
+
+		for (int i = 0; i < args.length; ++i) {
+			Assert.assertEquals(args[i], result[i]);
+		}
+	}
+
+	@DataProvider
+	public Object[][] argsSamples() {
+		return new Object[][] {
+			{Sample.ofDouble(1, 2), new Double[]{1.0}},
+			{Sample.ofDouble(1, 2, 3), new Double[]{1.0, 2.0}},
+			{Sample.ofDouble(1, 2, 3, 4), new Double[]{1.0, 2.0, 3.0}}
+		};
+	}
+
 }

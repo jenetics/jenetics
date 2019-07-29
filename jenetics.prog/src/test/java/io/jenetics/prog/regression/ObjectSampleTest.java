@@ -19,10 +19,34 @@
  */
 package io.jenetics.prog.regression;
 
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class ObjectSampleTest {
+
+	@Test(dataProvider = "argsSamples")
+	public void args(final ObjectSample<Integer> sample, final Integer[] result) {
+		final Integer[] args = sample.args();
+		Assert.assertEquals(args.length, result.length);
+
+		for (int i = 0; i < args.length; ++i) {
+			Assert.assertEquals(args[i], result[i]);
+		}
+	}
+
+	@DataProvider
+	public Object[][] argsSamples() {
+		return new Object[][] {
+			{Sample.of(new Integer[]{1, 2}), new Integer[]{1}},
+			{Sample.of(new Integer[]{1, 2, 3}), new Integer[]{1, 2}},
+			{Sample.of(new Integer[]{1, 2, 3, 4}), new Integer[]{1, 2, 3}},
+			{Sample.of(new Integer[]{1, 2, 3, 4, 5}), new Integer[]{1, 2, 3, 4}},
+			{Sample.of(new Integer[]{1, 2, 3, 4, 5, 6}), new Integer[]{1, 2, 3, 4, 5}}
+		};
+	}
+
 }
