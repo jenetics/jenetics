@@ -61,7 +61,7 @@ final class DoubleSample implements Sample<Double>, Serializable {
 
 	@Override
 	public Double argAt(final int index) {
-		if (index < 0 || index >= arity() - 1) {
+		if (index < 0 || index >= arity()) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Argument index out or range [0, %s): %s", arity(), index
 			));
