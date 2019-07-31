@@ -19,32 +19,29 @@
  */
 package io.jenetics.prog.regression;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class DoubleSampleTest {
+public class SamplesTest {
 
-	@Test(dataProvider = "argsSamples")
-	public void args(final DoubleSample sample, final Double[] result) {
-		final Double[] args = sample.args();
-		Assert.assertEquals(args.length, result.length);
+	@Test
+	public void create() {
+		final List<Sample<Double>> points = Arrays.asList(
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4)
+		);
 
-		for (int i = 0; i < args.length; ++i) {
-			Assert.assertEquals(args[i], result[i]);
-		}
-	}
-
-	@DataProvider
-	public Object[][] argsSamples() {
-		return new Object[][] {
-			{Sample.ofDouble(1, 2), new Double[]{1.0}},
-			{Sample.ofDouble(1, 2, 3), new Double[]{1.0, 2.0}},
-			{Sample.ofDouble(1, 2, 3, 4), new Double[]{1.0, 2.0, 3.0}}
-		};
+		final Samples<Double> samples = new Samples<>(points);
+		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
+		Assert.assertEquals(samples.results().getClass(), Double[].class);
 	}
 
 }
