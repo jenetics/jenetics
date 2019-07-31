@@ -37,13 +37,13 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 	private final T[][] _arguments;
 	private final T[] _results;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtype"})
 	Samples(final List<Sample<T>> samples) {
 		_samples = samples;
 
 		_arguments = (T[][])_samples.stream()
 			.map(Samples::args)
-			.toArray();
+			.toArray(Object[][]::new);
 
 		_results = (T[])_samples.stream()
 			.map(Sample::result)
@@ -60,7 +60,7 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 		@SuppressWarnings("unchecked")
 		final T[] args = (T[])Array
 			.newInstance(sample.argAt(0).getClass(), sample.arity());
-		for (int i = 0; i < sample.arity(); ++i) {
+		for (int i = 0; i < args.length; ++i) {
 			args[i] = sample.argAt(i);
 		}
 
