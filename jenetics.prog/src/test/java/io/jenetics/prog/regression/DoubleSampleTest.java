@@ -30,7 +30,7 @@ public class DoubleSampleTest {
 
 	@Test(dataProvider = "argsSamples")
 	public void args(final DoubleSample sample, final Double[] result) {
-		final double[] args = sample.args();
+		final Double[] args = sample.args();
 		Assert.assertEquals(args.length, result.length);
 
 		for (int i = 0; i < args.length; ++i) {

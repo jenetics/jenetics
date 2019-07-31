@@ -22,6 +22,7 @@ package io.jenetics.prog.regression;
 import java.util.Arrays;
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -39,6 +40,8 @@ public class SamplesTest {
 		);
 
 		final Samples<Double> samples = new Samples<>(points);
+		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
+		Assert.assertEquals(samples.results().getClass(), Double[].class);
 	}
 
 }

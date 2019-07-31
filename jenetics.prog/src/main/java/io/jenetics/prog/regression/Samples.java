@@ -19,6 +19,8 @@
  */
 package io.jenetics.prog.regression;
 
+import static java.lang.String.format;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -34,29 +36,43 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 
 	private final List<Sample<T>> _samples;
 
+	private final Class<T> _type;
 	private final T[][] _arguments;
 	private final T[] _results;
 
-	@SuppressWarnings({"unchecked", "rawtype"})
+	@SuppressWarnings("unchecked")
 	Samples(final List<Sample<T>> samples) {
-		_samples = samples;
+		_type = (Class<T>)samples.get(0).argAt(0).getClass();
 
-		_arguments = (T[][])_samples.stream()
-			.map(Samples::args)
-			.toArray(Object[][]::new);
-
-		_results = (T[])_samples.stream()
-			.map(Sample::result)
-			.toArray();
-	}
-
-	private static <T> T[] args(final Sample<T> sample) {
-		if (sample.arity() == 0) {
+		final int arity = samples.get(0).arity();
+		if (arity == 0) {
 			throw new IllegalArgumentException(
 				"The arity of the sample point must not be zero."
 			);
 		}
 
+		for (int i = 0; i < samples.size(); ++i) {
+			final Sample<T> sample = samples.get(0);
+			if (arity != sample.arity()) {
+				throw new IllegalArgumentException(format(
+					"Expected arity %d, but got %d for sample index %d.",
+					arity, sample.arity(), i
+				));
+			}
+		}
+
+		_samples = samples;
+
+		_arguments = samples.stream()
+			.map(s -> args(_type, s))
+			.toArray(size -> (T[][])Array.newInstance(_type, size, 0));
+
+		_results = _samples.stream()
+			.map(Sample::result)
+			.toArray(size -> (T[])Array.newInstance(_type, size));
+	}
+
+	private static <T> T[] args(final Class<T> type, final Sample<T> sample) {
 		@SuppressWarnings("unchecked")
 		final T[] args = (T[])Array
 			.newInstance(sample.argAt(0).getClass(), sample.arity());
@@ -65,6 +81,10 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 		}
 
 		return args;
+	}
+
+	Class<T> type() {
+		return _type;
 	}
 
 	T[][] arguments() {
