@@ -88,7 +88,7 @@ public final class EphemeralConst<T>
 	/**
 	 * Fixes and returns the constant value.
 	 *
-	 * @since !__value__!
+	 * @since 5.0
 	 *
 	 * @return the constant value
 	 */
