@@ -60,18 +60,12 @@ public interface IndexSorter<T> {
 	/**
 	 * Index sorter for {@code int[]} arrays.
 	 */
-	public static final IndexSorter<int[]> INT = of(
-		a -> a.length,
-		(a, i, j) -> Integer.compare(a[i], a[j])
-	);
+	public static final IndexSorter<int[]> INT = of(a -> a.length, Comp.INT);
 
 	/**
 	 * Index sorter for {@code double[]} arrays.
 	 */
-	public static final IndexSorter<double[]> DOUBLE = of(
-		a -> a.length,
-		(a, i, j) -> Double.compare(a[i], a[j])
-	);
+	public static final IndexSorter<double[]> DOUBLE = of(a -> a.length, Comp.DOUBLE);
 
 	/**
 	 * The comparator used for comparing two array elements at the specified
@@ -93,6 +87,12 @@ public interface IndexSorter<T> {
 	@FunctionalInterface
 	interface Comp<T> {
 
+		public static final Comp<int[]> INT =
+			(a, i, j) -> Integer.compare(a[i], a[j]);
+
+		public static final Comp<double[]> DOUBLE =
+			(a, i, j) -> Double.compare(a[i], a[j]);
+
 		/**
 		 * Compares the two array elements, specified by its indices, for order.
 		 * Returns a negative integer, zero, or a positive integer as the first
@@ -109,6 +109,17 @@ public interface IndexSorter<T> {
 		 *         comparator does not permit null arguments
 		 */
 		public int compare(final T array, final int i, final int j);
+
+		/**
+		 * Returns a comparator that imposes the reverse ordering of this
+		 * comparator.
+		 *
+		 * @return a comparator that imposes the reverse ordering of this
+		 *         comparator.
+		 */
+		public default Comp<T> reversed() {
+			return (a, i, j) -> compare(a, j, i);
+		}
 
 	}
 
