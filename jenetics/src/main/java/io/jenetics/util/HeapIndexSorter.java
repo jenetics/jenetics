@@ -31,10 +31,13 @@ import java.util.function.ToIntFunction;
  */
 final class HeapIndexSorter<T> implements IndexSorter<T> {
 
-	private final ToIntFunction<T> _length;
-	private final Comp<T> _comparator;
+	private final ToIntFunction<? super T> _length;
+	private final Comp<? super T> _comparator;
 
-	HeapIndexSorter(final ToIntFunction<T> length, final Comp<T> comparator) {
+	HeapIndexSorter(
+		final ToIntFunction<? super T> length,
+		final Comp<? super T> comparator
+	) {
 		_length = requireNonNull(length);
 		_comparator = requireNonNull(comparator);
 	}

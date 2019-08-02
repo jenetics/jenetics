@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.function.ToIntFunction;
 
 /**
@@ -156,8 +157,8 @@ public interface IndexSorter<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> IndexSorter<T> of(
-		final ToIntFunction<T> length,
-		final Comp<T> comparator
+		final ToIntFunction<? super T> length,
+		final Comp<? super T> comparator
 	) {
 		requireNonNull(length);
 		requireNonNull(comparator);
@@ -169,6 +170,10 @@ public interface IndexSorter<T> {
 				? new InsertionIndexSorter<>(length, comparator).sort(a)
 				: new HeapIndexSorter<>(length, comparator).sort(a);
 		};
+	}
+
+	public static <T> IndexSorter<T[]> array(final Comparator<? super T> comparator) {
+		return null;
 	}
 
 }

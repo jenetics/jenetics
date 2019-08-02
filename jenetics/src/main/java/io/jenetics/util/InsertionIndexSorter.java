@@ -24,7 +24,6 @@ import static io.jenetics.internal.util.array.swap;
 
 import java.util.function.ToIntFunction;
 
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -32,10 +31,13 @@ import java.util.function.ToIntFunction;
  */
 final class InsertionIndexSorter<T> implements IndexSorter<T> {
 
-	private final ToIntFunction<T> _length;
-	private final Comp<T> _comparator;
+	private final ToIntFunction<? super T> _length;
+	private final Comp<? super T> _comparator;
 
-	InsertionIndexSorter(final ToIntFunction<T> length, final Comp<T> comparator) {
+	InsertionIndexSorter(
+		final ToIntFunction<? super T> length,
+		final Comp<? super T> comparator
+	) {
 		_length = requireNonNull(length);
 		_comparator = requireNonNull(comparator);
 	}
