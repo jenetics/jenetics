@@ -172,8 +172,21 @@ public interface IndexSorter<T> {
 		};
 	}
 
-	public static <T> IndexSorter<T[]> array(final Comparator<? super T> comparator) {
-		return null;
+	/**
+	 * Return an index sorter for object arrays of type {@code T}.
+	 *
+	 * @param comparator the array element comparator
+	 * @param <T> the element type
+	 * @return an index sorter for object arrays of type {@code T}
+	 */
+	public static <T> IndexSorter<T[]>
+	ofArray(final Comparator<? super T> comparator) {
+		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
+	}
+
+	public static <T> IndexSorter<Seq<T>>
+	ofSeq(final Comparator<? super T> comparator) {
+		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
 	}
 
 }
