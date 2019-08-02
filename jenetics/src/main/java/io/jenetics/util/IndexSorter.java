@@ -55,11 +55,17 @@ import java.util.function.ToIntFunction;
 @FunctionalInterface
 public interface IndexSorter<T> {
 
+	/**
+	 * Index sorter for {@code int[]} arrays.
+	 */
 	public static final IndexSorter<int[]> INT = of(
 		a -> a.length,
 		(a, i, j) -> Integer.compare(a[i], a[j])
 	);
 
+	/**
+	 * Index sorter for {@code double[]} arrays.
+	 */
 	public static final IndexSorter<double[]> DOUBLE = of(
 		a -> a.length,
 		(a, i, j) -> Double.compare(a[i], a[j])
