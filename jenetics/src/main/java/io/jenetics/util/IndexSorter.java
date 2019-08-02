@@ -19,6 +19,8 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.ToIntFunction;
 
 /**
@@ -140,11 +142,15 @@ public interface IndexSorter<T> {
 	 * @param comparator the array element index comparator
 	 * @param <T> the array type
 	 * @return a index sorter with the given parameter
+	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> IndexSorter<T> of(
 		final ToIntFunction<T> length,
 		final Comp<T> comparator
 	) {
+		requireNonNull(length);
+		requireNonNull(comparator);
+
 		final int insertionSortThreshold = 80;
 		return a -> {
 			final int size = length.applyAsInt(a);
