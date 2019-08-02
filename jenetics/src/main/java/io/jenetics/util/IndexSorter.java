@@ -24,7 +24,26 @@ import java.util.function.ToIntFunction;
 /**
  * An {@code IndexSorter} doesn't touch the original array type, instead
  * an index lookup array is returned which allows to access the array in
- * an sorted order. The arrays are sorted in descending order.
+ * an sorted order. The arrays are sorted in ascending order.
+ *
+ * <pre>{@code
+ * final IndexSorter<double[]> sorter = IndexSorter.of(
+ *     a -> a.length,
+ *     (a, i, j) -> Double.compare(a[i], a[j])
+ * );
+ *
+ * final double[] array = new Random().doubles(100).toArray();
+ * final int[] indexes = sorter.sort(array);
+ *
+ * // 'Classical' array sort.
+ * final double[] sorted = array.clone();
+ * Arrays.sort(sorted);
+ *
+ * // Iterating the array in ascending order.
+ * for (int i = 0; i < array.length; ++i) {
+ *     assert sorted[i] == array[indexes[i]];
+ * }
+ * }</pre>
  *
  * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
  *            {@code Seq<String>}
