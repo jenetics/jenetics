@@ -28,24 +28,19 @@ import java.util.function.ToIntFunction;
  * @version !__version__!
  * @since !__version__!
  */
-public class HeapIndexSorter<T> implements IndexSorter<T> {
+final class HeapIndexSorter<T> implements IndexSorter<T> {
 
 	private final ToIntFunction<T> _length;
-	private final IndexComparator<T> _comparator;
+	private final Comp<T> _comparator;
 
-	HeapIndexSorter(
-		final ToIntFunction<T> length,
-		final IndexComparator<T> comparator
-	) {
+	HeapIndexSorter(final ToIntFunction<T> length, final Comp<T> comparator) {
 		_length = length;
 		_comparator = comparator;
 	}
 
-	public void sort(
-		final T array,
-		final int[] indexes
-	) {
+	public int[] sort(final T array) {
 		final int length = _length.applyAsInt(array);
+		final int[] indexes = IndexSorters.indexes(length);
 
 		// Heapify
 		for (int k = length/2; k >= 0; --k) {
@@ -57,12 +52,14 @@ public class HeapIndexSorter<T> implements IndexSorter<T> {
 			swap(indexes, 0, i);
 			sink(array, indexes, _comparator, 0, i);
 		}
+
+		return indexes;
 	}
 
 	private static <T> void sink(
 		final T array,
 		final int[] indexes,
-		final IndexComparator<T> comparator,
+		final Comp<T> comparator,
 		final int start,
 		final int end
 	) {

@@ -32,22 +32,17 @@ import java.util.function.ToIntFunction;
 final class InsertionIndexSorter<T> implements IndexSorter<T> {
 
 	private final ToIntFunction<T> _length;
-	private final IndexComparator<T> _comparator;
+	private final Comp<T> _comparator;
 
-	InsertionIndexSorter(
-		final ToIntFunction<T> length,
-		final IndexComparator<T> comparator
-	) {
+	InsertionIndexSorter(final ToIntFunction<T> length, final Comp<T> comparator) {
 		_length = length;
 		_comparator = comparator;
 	}
 
 	@Override
-	public void sort(
-		final T array,
-		final int[] indexes
-	) {
+	public int[] sort(final T array) {
 		final int length = _length.applyAsInt(array);
+		final int[] indexes = IndexSorters.indexes(length);
 
 		for (int i = 1; i < length; ++i) {
 			int j = i;
@@ -61,6 +56,8 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 				--j;
 			}
 		}
+
+		return indexes;
 	}
 
 }
