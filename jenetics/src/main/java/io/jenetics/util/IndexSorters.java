@@ -24,7 +24,33 @@ package io.jenetics.util;
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface IndexComparator<T> {
-	public int compare(final T array, final int i, final int j);
+final class IndexSorters {
+	private IndexSorters() {
+	}
+
+	/**
+	 * Create an initial indexes array of the given {@code length}.
+	 *
+	 * @param length the length of the indexes array
+	 * @return the initialized indexes array
+	 */
+	static int[] indexes(final int length) {
+		return init(new int[length]);
+	}
+
+	/**
+	 * Initializes the given {@code indexes} array.
+	 *
+	 * @param indexes the indexes array to initialize
+	 * @return the initialized indexes array
+	 * @throws NullPointerException if the given {@code indexes} array is
+	 *         {@code null}
+	 */
+	static int[] init(final int[] indexes) {
+		for (int i = 0; i < indexes.length; ++i) {
+			indexes[i] = i;
+		}
+		return indexes;
+	}
+
 }
