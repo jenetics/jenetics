@@ -49,6 +49,12 @@ public interface IndexSorter<T> {
 	/**
 	 * The comparator used for comparing two array elements at the specified
 	 * indexes.
+	 * <pre>{@code
+	 * final Comp<double[]> comparator =
+	 *     (a, i, j) -> Double.compare(a[i], a[j]);
+	 * }</pre>
+	 * The example above shows how to create a comparator for {@code double[]}
+	 * arrays.
 	 *
 	 * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
 	 *            {@code Seq<String>}
@@ -63,7 +69,7 @@ public interface IndexSorter<T> {
 		/**
 		 * Compares the two array elements, specified by its indices, for order.
 		 * Returns a negative integer, zero, or a positive integer as the first
-		 * argument is less than, equal to, or greater than the second. This
+		 * argument is less than, equal to, or greater than the second.
 		 *
 		 * @see java.util.Comparator#compare(Object, Object)
 		 *
