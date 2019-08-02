@@ -96,11 +96,37 @@ public interface IndexSorter<T> {
 	public int[] sort(final T array);
 
 
+	/* *************************************************************************
+	 * Static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create a new index sorter with the given {@code length} function and
+	 * array element {@code comparator}.
+	 *
+	 * <pre>{@code
+	 * final IndexSorter<int[]> sorter = of(
+	 *     a -> a.length,
+	 *     (a, i, j) -> Integer.compare(a[i], a[j])
+	 * );
+	 * }</pre>
+	 *
+	 * @param length the array length function
+	 * @param comparator the array element index comparator
+	 * @param <T> the array type
+	 * @return a index sorter with the given parameter
+	 */
 	public static <T> IndexSorter<T> of(
 		final ToIntFunction<T> length,
 		final Comp<T> comparator
 	) {
-		return new HeapIndexSorter<>(length, comparator);
+		final int insertionSortThreshold = 80;
+		return a -> {
+			final int size = length.applyAsInt(a);
+			return size < insertionSortThreshold
+				? new InsertionIndexSorter<>(length, comparator).sort(a)
+				: new HeapIndexSorter<>(length, comparator).sort(a);
+		};
 	}
 
 }
