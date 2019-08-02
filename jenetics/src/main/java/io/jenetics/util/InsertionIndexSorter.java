@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.array.swap;
 
 import java.util.function.ToIntFunction;
@@ -35,8 +36,8 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 	private final Comp<T> _comparator;
 
 	InsertionIndexSorter(final ToIntFunction<T> length, final Comp<T> comparator) {
-		_length = length;
-		_comparator = comparator;
+		_length = requireNonNull(length);
+		_comparator = requireNonNull(comparator);
 	}
 
 	@Override
