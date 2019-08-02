@@ -59,15 +59,15 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 	private static <T> void sink(
 		final T array,
 		final int[] indexes,
-		final Comp<T> comparator,
+		final Comp<T> comp,
 		final int start,
 		final int end
 	) {
 		int m = start;
 		while (2*m < end) {
 			int j = 2*m;
-			if (j < end - 1 && comparator.compare(array, indexes[j], indexes[j + 1]) > 0) ++j;
-			if (comparator.compare(array, indexes[m], indexes[j]) <= 0) break;
+			if (j < end - 1 && comp.compare(array, indexes[j], indexes[j + 1]) < 0) ++j;
+			if (comp.compare(array, indexes[m], indexes[j]) >= 0) break;
 			swap(indexes, m, j);
 			m = j;
 		}

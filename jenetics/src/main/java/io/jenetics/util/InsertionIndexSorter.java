@@ -46,9 +46,8 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 
 		for (int i = 1; i < length; ++i) {
 			int j = i;
-
 			while (j > 0) {
-				if (_comparator.compare(array, indexes[j - 1], indexes[j]) < 0) {
+				if (_comparator.compare(array, indexes[j - 1], indexes[j]) > 0) {
 					swap(indexes, j - 1, j);
 				} else {
 					break;
