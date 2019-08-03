@@ -61,7 +61,7 @@ final class DoubleSample implements Sample<Double>, Serializable {
 
 	@Override
 	public Double argAt(final int index) {
-		if (index < 0 || index >= arity() - 1) {
+		if (index < 0 || index >= arity()) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Argument index out or range [0, %s): %s", arity(), index
 			));
@@ -70,8 +70,12 @@ final class DoubleSample implements Sample<Double>, Serializable {
 		return _sample[index];
 	}
 
-	double[] args() {
-		return Arrays.copyOfRange(_sample, 0, _sample.length - 1);
+	Double[] args() {
+		final Double[] result = new Double[arity()];
+		for (int i = 0; i < result.length; ++i) {
+			result[i] = _sample[i];
+		}
+		return result;
 	}
 
 	@Override
