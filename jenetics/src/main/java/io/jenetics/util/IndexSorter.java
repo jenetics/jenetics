@@ -167,7 +167,7 @@ public interface IndexSorter<T> {
 		return a -> {
 			final int size = length.applyAsInt(a);
 			return size < insertionSortThreshold
-				? new InsertionIndexSorter<>(length, comparator).sort(a)
+				? InsertionIndexSorter.sort(a, length, comparator)
 				: new HeapIndexSorter<>(length, comparator).sort(a);
 		};
 	}

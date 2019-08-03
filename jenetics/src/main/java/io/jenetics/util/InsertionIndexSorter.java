@@ -44,13 +44,21 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 
 	@Override
 	public int[] sort(final T array) {
-		final int length = _length.applyAsInt(array);
-		final int[] indexes = IndexSorters.indexes(length);
+		return sort(array, _length, _comparator);
+	}
 
-		for (int i = 1; i < length; ++i) {
+	static <T> int[] sort(
+		final T array,
+		final ToIntFunction<? super T> length,
+		final Comp<? super T> comparator
+	) {
+		final int n = length.applyAsInt(array);
+		final int[] indexes = IndexSorters.indexes(n);
+
+		for (int i = 1; i < n; ++i) {
 			int j = i;
 			while (j > 0) {
-				if (_comparator.compare(array, indexes[j - 1], indexes[j]) > 0) {
+				if (comparator.compare(array, indexes[j - 1], indexes[j]) > 0) {
 					swap(indexes, j - 1, j);
 				} else {
 					break;

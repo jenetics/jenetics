@@ -43,16 +43,16 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 	}
 
 	public int[] sort(final T array) {
-		final int length = _length.applyAsInt(array);
-		final int[] indexes = IndexSorters.indexes(length);
+		final int n = _length.applyAsInt(array);
+		final int[] indexes = IndexSorters.indexes(n);
 
 		// Heapify
-		for (int k = length/2; k >= 0; --k) {
-			sink(array, indexes, _comparator, k, length);
+		for (int k = n/2; k >= 0; --k) {
+			sink(array, indexes, _comparator, k, n);
 		}
 
 		// Sort down.
-		for (int i = length; --i >= 1;) {
+		for (int i = n; --i >= 1;) {
 			swap(indexes, 0, i);
 			sink(array, indexes, _comparator, 0, i);
 		}
