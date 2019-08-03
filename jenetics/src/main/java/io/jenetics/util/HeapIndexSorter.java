@@ -25,6 +25,8 @@ import static io.jenetics.internal.util.array.swap;
 import java.util.function.ToIntFunction;
 
 /**
+ * Implementing the index sorter with the heap sort algorithm.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -42,19 +44,37 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 		_comparator = requireNonNull(comparator);
 	}
 
+	@Override
 	public int[] sort(final T array) {
-		final int n = _length.applyAsInt(array);
+		return sort(array, _length, _comparator);
+	}
+
+	/**
+	 * Implementation of the heap index sort algorithm.
+	 *
+	 * @param array the array which is sorted
+	 * @param length the array length
+	 * @param comp the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 */
+	static <T> int[] sort(
+		final T array,
+		final ToIntFunction<? super T> length,
+		final Comp<? super T> comp
+	) {
+		final int n = length.applyAsInt(array);
 		final int[] indexes = IndexSorters.indexes(n);
 
 		// Heapify
 		for (int k = n/2; k >= 0; --k) {
-			sink(array, indexes, _comparator, k, n);
+			sink(array, indexes, comp, k, n);
 		}
 
 		// Sort down.
 		for (int i = n; --i >= 1;) {
 			swap(indexes, 0, i);
-			sink(array, indexes, _comparator, 0, i);
+			sink(array, indexes, comp, 0, i);
 		}
 
 		return indexes;
