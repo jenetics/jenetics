@@ -23,6 +23,7 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -153,9 +154,9 @@ public final class Regression<T>
 	 */
 	public double error(final Tree<Op<T>, ?> program) {
 		@SuppressWarnings("unchecked")
-		final T[] calculated = (T[])Stream.of(_samples.arguments())
+		final T[] calculated = Stream.of(_samples.arguments())
 			.map(args -> Program.eval(program, args))
-			.toArray();
+			.toArray(size -> (T[])Array.newInstance(_samples.type(), size));
 
 		return _error.apply(program, calculated, _samples.results());
 	}

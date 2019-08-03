@@ -1,5 +1,12 @@
 ## Release notes
 
+### [5.0.1](https://github.com/jenetics/jenetics/releases/tag/v5.0.1)
+
+#### Bugs
+
+* [#550](https://github.com/jenetics/jenetics/issues/550): Erroneous index check for `Sample.argAt(int)` method in `io.jenetics.prog.regression` package. 
+* [#554](https://github.com/jenetics/jenetics/issues/550): `ClassCastException` in `io.jenetics.prog.regression.Regression` class. 
+
 ### [5.0.0](https://github.com/jenetics/jenetics/releases/tag/v5.0.0)
 
 #### Improvements
