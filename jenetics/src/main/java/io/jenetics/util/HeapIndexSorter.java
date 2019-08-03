@@ -46,7 +46,7 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 
 	@Override
 	public int[] sort(final T array) {
-		return sort(array, _length, _comparator);
+		return sort(array, _length.applyAsInt(array), _comparator);
 	}
 
 	/**
@@ -60,19 +60,18 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 	 */
 	static <T> int[] sort(
 		final T array,
-		final ToIntFunction<? super T> length,
+		final int length,
 		final Comp<? super T> comp
 	) {
-		final int n = length.applyAsInt(array);
-		final int[] indexes = IndexSorters.indexes(n);
+		final int[] indexes = IndexSorters.indexes(length);
 
 		// Heapify
-		for (int k = n/2; k >= 0; --k) {
-			sink(array, indexes, comp, k, n);
+		for (int k = length/2; k >= 0; --k) {
+			sink(array, indexes, comp, k, length);
 		}
 
 		// Sort down.
-		for (int i = n; --i >= 1;) {
+		for (int i = length; --i >= 1;) {
 			swap(indexes, 0, i);
 			sink(array, indexes, comp, 0, i);
 		}

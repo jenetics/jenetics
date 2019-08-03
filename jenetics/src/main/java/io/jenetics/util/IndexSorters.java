@@ -19,13 +19,39 @@
  */
 package io.jenetics.util;
 
+import io.jenetics.util.IndexSorter.Comp;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 final class IndexSorters {
+
+	// This value has been chosen after JMH benchmarking.
+	//	Benchmark                                   Mode  Samples      Score  Score error  Units
+	//	o.j.i.u.IndexSorterPerf.heapSort160         avgt       14   5560.895       80.158  ns/op
+	//	o.j.i.u.IndexSorterPerf.heapSort250         avgt       14   9516.441      119.648  ns/op
+	//	o.j.i.u.IndexSorterPerf.heapSort320         avgt       14  12722.461      103.487  ns/op
+	//	o.j.i.u.IndexSorterPerf.heapSort80          avgt       14   2473.058       27.884  ns/op
+	//	o.j.i.u.IndexSorterPerf.insertionSort160    avgt       14  10877.158      550.338  ns/op
+	//	o.j.i.u.IndexSorterPerf.insertionSort250    avgt       14  25731.100      925.196  ns/op
+	//	o.j.i.u.IndexSorterPerf.insertionSort320    avgt       14  41864.108     1801.247  ns/op
+	//	o.j.i.u.IndexSorterPerf.insertionSort80     avgt       14   2643.726      165.315  ns/op
+	//private static final int INSERTION_SORT_THRESHOLD = 80;
+	private static final int INSERTION_SORT_THRESHOLD = 80;
+
 	private IndexSorters() {
+	}
+
+	static <T> int[] sort(
+		final T array,
+		final int length,
+		final Comp<? super T> comp
+	) {
+		return length < INSERTION_SORT_THRESHOLD
+			? InsertionIndexSorter.sort(array, length, comp)
+			: HeapIndexSorter.sort(array, length, comp);
 	}
 
 	/**

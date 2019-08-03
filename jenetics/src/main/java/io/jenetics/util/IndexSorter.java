@@ -134,6 +134,23 @@ public interface IndexSorter<T> {
 	 */
 	public int[] sort(final T array);
 
+	/**
+	 * General array sort algorithm.
+	 *
+	 * @param array the array which is sorted
+	 * @param length the array length
+	 * @param comp the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 */
+	public static <T> int[] sort(
+		final T array,
+		final int length,
+		final Comp<? super T> comp
+	) {
+		return IndexSorters.sort(array, length, comp);
+	}
+
 
 	/* *************************************************************************
 	 * Static helper methods.
@@ -163,30 +180,24 @@ public interface IndexSorter<T> {
 		requireNonNull(length);
 		requireNonNull(comparator);
 
-		final int insertionSortThreshold = 80;
-		return a -> {
-			final int size = length.applyAsInt(a);
-			return size < insertionSortThreshold
-				? InsertionIndexSorter.sort(a, length, comparator)
-				: new HeapIndexSorter<>(length, comparator).sort(a);
-		};
+		return a -> sort(a, length.applyAsInt(a), comparator);
 	}
 
-	/**
-	 * Return an index sorter for object arrays of type {@code T}.
-	 *
-	 * @param comparator the array element comparator
-	 * @param <T> the element type
-	 * @return an index sorter for object arrays of type {@code T}
-	 */
-	public static <T> IndexSorter<T[]>
-	ofArray(final Comparator<? super T> comparator) {
-		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
-	}
-
-	public static <T> IndexSorter<Seq<T>>
-	ofSeq(final Comparator<? super T> comparator) {
-		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
-	}
+//	/**
+//	 * Return an index sorter for object arrays of type {@code T}.
+//	 *
+//	 * @param comparator the array element comparator
+//	 * @param <T> the element type
+//	 * @return an index sorter for object arrays of type {@code T}
+//	 */
+//	public static <T> IndexSorter<T[]>
+//	ofArray(final Comparator<? super T> comparator) {
+//		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
+//	}
+//
+//	public static <T> IndexSorter<Seq<T>>
+//	ofSeq(final Comparator<? super T> comparator) {
+//		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
+//	}
 
 }
