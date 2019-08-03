@@ -25,6 +25,8 @@ import static io.jenetics.internal.util.array.swap;
 import java.util.function.ToIntFunction;
 
 /**
+ * Implementing the index sorter with the insertion sort algorithm.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -47,10 +49,19 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 		return sort(array, _length, _comparator);
 	}
 
+	/**
+	 * Implementation of the insertion index sort algorithm.
+	 *
+	 * @param array the array which is sorted
+	 * @param length the array length
+	 * @param comp the array element comparator
+	 * @param <T> the array type
+	 * @return the sorted index array
+	 */
 	static <T> int[] sort(
 		final T array,
 		final ToIntFunction<? super T> length,
-		final Comp<? super T> comparator
+		final Comp<? super T> comp
 	) {
 		final int n = length.applyAsInt(array);
 		final int[] indexes = IndexSorters.indexes(n);
@@ -58,7 +69,7 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 		for (int i = 1; i < n; ++i) {
 			int j = i;
 			while (j > 0) {
-				if (comparator.compare(array, indexes[j - 1], indexes[j]) > 0) {
+				if (comp.compare(array, indexes[j - 1], indexes[j]) > 0) {
 					swap(indexes, j - 1, j);
 				} else {
 					break;
