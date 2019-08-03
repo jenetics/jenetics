@@ -58,15 +58,15 @@ import java.util.function.ToIntFunction;
 @FunctionalInterface
 public interface IndexSorter<T> {
 
-	/**
-	 * Index sorter for {@code int[]} arrays.
-	 */
-	public static final IndexSorter<int[]> INT = of(a -> a.length, Comp.INT);
-
-	/**
-	 * Index sorter for {@code double[]} arrays.
-	 */
-	public static final IndexSorter<double[]> DOUBLE = of(a -> a.length, Comp.DOUBLE);
+//	/**
+//	 * Index sorter for {@code int[]} arrays.
+//	 */
+//	public static final IndexSorter<int[]> INT = of(a -> a.length, Comp.INT);
+//
+//	/**
+//	 * Index sorter for {@code double[]} arrays.
+//	 */
+//	public static final IndexSorter<double[]> DOUBLE = of(a -> a.length, Comp.DOUBLE);
 
 	/**
 	 * The comparator used for comparing two array elements at the specified
@@ -149,6 +149,17 @@ public interface IndexSorter<T> {
 		final Comp<? super T> comp
 	) {
 		return IndexSorters.sort(array, length, comp);
+	}
+
+	public static <T> int[] sort(
+		final Seq<? extends T> array,
+		final Comparator<? super T> comparator
+	) {
+		final IndexSorter<Seq<? extends T>> sorter = of(
+			Seq::length,
+			(s, i, j) -> comparator.compare(s.get(i), s.get(j))
+		);
+		return sorter.sort(array);
 	}
 
 
