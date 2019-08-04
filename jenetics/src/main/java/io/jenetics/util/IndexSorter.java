@@ -48,25 +48,11 @@ import java.util.function.ToIntFunction;
  * }
  * }</pre>
  *
- * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
- *            {@code Seq<String>}
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-@FunctionalInterface
-public interface IndexSorter<T> {
-
-//	/**
-//	 * Index sorter for {@code int[]} arrays.
-//	 */
-//	public static final IndexSorter<int[]> INT = of(a -> a.length, Comp.INT);
-//
-//	/**
-//	 * Index sorter for {@code double[]} arrays.
-//	 */
-//	public static final IndexSorter<double[]> DOUBLE = of(a -> a.length, Comp.DOUBLE);
+public interface IndexSorter {
 
 	/**
 	 * The comparator used for comparing two array elements at the specified
@@ -124,15 +110,6 @@ public interface IndexSorter<T> {
 
 	}
 
-	/**
-	 * Sorting the given {@code array} by changing the given {@code indexes}.
-	 * The order of the original {@code array} stays unchanged.
-	 *
-	 * @param array the array to sort
-	 * @return the index lookup array - &forall; i &isin; [0, N): index[i] = i
-	 * @throws NullPointerException if one of the array is {@code null}
-	 */
-	public int[] sort(final T array);
 
 	/**
 	 * General array sort algorithm.
@@ -143,23 +120,39 @@ public interface IndexSorter<T> {
 	 * @param <T> the array type
 	 * @return the sorted index array
 	 */
-	public static <T> int[] sort(
+	public <T> int[] sort(
 		final T array,
 		final int length,
 		final Comp<? super T> comp
-	) {
-		return IndexSorters.sort(array, length, comp);
+	);
+
+	/**
+	 * Sorting the given {@code array} by changing the given {@code indexes}.
+	 * The order of the original {@code array} stays unchanged.
+	 *
+	 * @param array the array to sort
+	 * @return the index lookup array - &forall; i &isin; [0, N): index[i] = i
+	 * @throws NullPointerException if one of the array is {@code null}
+	 */
+	public default int[] sort(final int[] array) {
+		return sort(array, array.length, (a, i, j) -> Integer.compare(a[i], a[j]));
 	}
 
-	public static <T> int[] sort(
+
+
+	public default <T> int[] sort(
 		final Seq<? extends T> array,
 		final Comparator<? super T> comparator
 	) {
-		final IndexSorter<Seq<? extends T>> sorter = of(
-			Seq::length,
-			(s, i, j) -> comparator.compare(s.get(i), s.get(j))
+		return sort(
+			array,
+			array.size(),
+			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
 		);
-		return sorter.sort(array);
+	}
+
+	public default int[] sort(final double[] array) {
+		return sort(array, array.length, (a, i, j) -> Double.compare(a[i], a[j]));
 	}
 
 
@@ -167,48 +160,48 @@ public interface IndexSorter<T> {
 	 * Static helper methods.
 	 * ************************************************************************/
 
-	/**
-	 * Create a new index sorter with the given {@code length} function and
-	 * array element {@code comparator}.
-	 *
-	 * <pre>{@code
-	 * final IndexSorter<int[]> sorter = of(
-	 *     a -> a.length,
-	 *     (a, i, j) -> Integer.compare(a[i], a[j])
-	 * );
-	 * }</pre>
-	 *
-	 * @param length the array length function
-	 * @param comparator the array element index comparator
-	 * @param <T> the array type
-	 * @return a index sorter with the given parameter
-	 * @throws NullPointerException if one of the arguments is {@code null}
-	 */
-	public static <T> IndexSorter<T> of(
-		final ToIntFunction<? super T> length,
-		final Comp<? super T> comparator
-	) {
-		requireNonNull(length);
-		requireNonNull(comparator);
-
-		return a -> sort(a, length.applyAsInt(a), comparator);
-	}
-
 //	/**
-//	 * Return an index sorter for object arrays of type {@code T}.
+//	 * Create a new index sorter with the given {@code length} function and
+//	 * array element {@code comparator}.
 //	 *
-//	 * @param comparator the array element comparator
-//	 * @param <T> the element type
-//	 * @return an index sorter for object arrays of type {@code T}
+//	 * <pre>{@code
+//	 * final IndexSorter<int[]> sorter = of(
+//	 *     a -> a.length,
+//	 *     (a, i, j) -> Integer.compare(a[i], a[j])
+//	 * );
+//	 * }</pre>
+//	 *
+//	 * @param length the array length function
+//	 * @param comparator the array element index comparator
+//	 * @param <T> the array type
+//	 * @return a index sorter with the given parameter
+//	 * @throws NullPointerException if one of the arguments is {@code null}
 //	 */
-//	public static <T> IndexSorter<T[]>
-//	ofArray(final Comparator<? super T> comparator) {
-//		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
+//	public static <T> IndexSorter<T> of(
+//		final ToIntFunction<? super T> length,
+//		final Comp<? super T> comparator
+//	) {
+//		requireNonNull(length);
+//		requireNonNull(comparator);
+//
+//		return a -> null;//sort(a, length.applyAsInt(a), comparator);
 //	}
 //
-//	public static <T> IndexSorter<Seq<T>>
-//	ofSeq(final Comparator<? super T> comparator) {
-//		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
-//	}
+////	/**
+////	 * Return an index sorter for object arrays of type {@code T}.
+////	 *
+////	 * @param comparator the array element comparator
+////	 * @param <T> the element type
+////	 * @return an index sorter for object arrays of type {@code T}
+////	 */
+////	public static <T> IndexSorter<T[]>
+////	ofArray(final Comparator<? super T> comparator) {
+////		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
+////	}
+////
+////	public static <T> IndexSorter<Seq<T>>
+////	ofSeq(final Comparator<? super T> comparator) {
+////		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
+////	}
 
 }

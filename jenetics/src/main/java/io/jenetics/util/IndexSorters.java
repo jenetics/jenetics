@@ -50,8 +50,8 @@ final class IndexSorters {
 		final Comp<? super T> comp
 	) {
 		return length < INSERTION_SORT_THRESHOLD
-			? InsertionIndexSorter.sort(array, length, comp)
-			: HeapIndexSorter.sort(array, length, comp);
+			? InsertionIndexSorter.INSTANCE.sort(array, length, comp)
+			: HeapIndexSorter.INSTANCE.sort(array, length, comp);
 	}
 
 	/**

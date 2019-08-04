@@ -19,10 +19,7 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.array.swap;
-
-import java.util.function.ToIntFunction;
 
 /**
  * Implementing the index sorter with the heap sort algorithm.
@@ -31,23 +28,9 @@ import java.util.function.ToIntFunction;
  * @version !__version__!
  * @since !__version__!
  */
-final class HeapIndexSorter<T> implements IndexSorter<T> {
+enum HeapIndexSorter implements IndexSorter {
 
-	private final ToIntFunction<? super T> _length;
-	private final Comp<? super T> _comparator;
-
-	HeapIndexSorter(
-		final ToIntFunction<? super T> length,
-		final Comp<? super T> comparator
-	) {
-		_length = requireNonNull(length);
-		_comparator = requireNonNull(comparator);
-	}
-
-	@Override
-	public int[] sort(final T array) {
-		return sort(array, _length.applyAsInt(array), _comparator);
-	}
+	INSTANCE;
 
 	/**
 	 * Implementation of the heap index sort algorithm.
@@ -58,7 +41,8 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 	 * @param <T> the array type
 	 * @return the sorted index array
 	 */
-	static <T> int[] sort(
+	@Override
+	public <T> int[] sort(
 		final T array,
 		final int length,
 		final Comp<? super T> comp
@@ -81,17 +65,17 @@ final class HeapIndexSorter<T> implements IndexSorter<T> {
 
 	private static <T> void sink(
 		final T array,
-		final int[] indexes,
-		final Comp<T> comp,
+		final int[] idx,
+		final Comp<T> cmp,
 		final int start,
 		final int end
 	) {
 		int m = start;
 		while (2*m < end) {
 			int j = 2*m;
-			if (j < end - 1 && comp.compare(array, indexes[j], indexes[j + 1]) < 0) ++j;
-			if (comp.compare(array, indexes[m], indexes[j]) >= 0) break;
-			swap(indexes, m, j);
+			if (j < end - 1 && cmp.compare(array, idx[j], idx[j + 1]) < 0) ++j;
+			if (cmp.compare(array, idx[m], idx[j]) >= 0) break;
+			swap(idx, m, j);
 			m = j;
 		}
 	}

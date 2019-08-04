@@ -19,10 +19,7 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.array.swap;
-
-import java.util.function.ToIntFunction;
 
 /**
  * Implementing the index sorter with the insertion sort algorithm.
@@ -31,45 +28,31 @@ import java.util.function.ToIntFunction;
  * @version !__version__!
  * @since !__version__!
  */
-final class InsertionIndexSorter<T> implements IndexSorter<T> {
+enum InsertionIndexSorter implements IndexSorter {
 
-	private final ToIntFunction<? super T> _length;
-	private final Comp<? super T> _comparator;
-
-	InsertionIndexSorter(
-		final ToIntFunction<? super T> length,
-		final Comp<? super T> comparator
-	) {
-		_length = requireNonNull(length);
-		_comparator = requireNonNull(comparator);
-	}
-
-	@Override
-	public int[] sort(final T array) {
-		return sort(array, _length.applyAsInt(array), _comparator);
-	}
+	INSTANCE;
 
 	/**
 	 * Implementation of the insertion index sort algorithm.
 	 *
 	 * @param array the array which is sorted
 	 * @param length the array length
-	 * @param comp the array element comparator
+	 * @param cmp the array element comparator
 	 * @param <T> the array type
 	 * @return the sorted index array
 	 */
-	static <T> int[] sort(
+	public <T> int[] sort(
 		final T array,
 		final int length,
-		final Comp<? super T> comp
+		final Comp<? super T> cmp
 	) {
-		final int[] indexes = IndexSorters.indexes(length);
+		final int[] idx = IndexSorters.indexes(length);
 
 		for (int i = 1; i < length; ++i) {
 			int j = i;
 			while (j > 0) {
-				if (comp.compare(array, indexes[j - 1], indexes[j]) > 0) {
-					swap(indexes, j - 1, j);
+				if (cmp.compare(array, idx[j - 1], idx[j]) > 0) {
+					swap(idx, j - 1, j);
 				} else {
 					break;
 				}
@@ -77,7 +60,7 @@ final class InsertionIndexSorter<T> implements IndexSorter<T> {
 			}
 		}
 
-		return indexes;
+		return idx;
 	}
 
 }

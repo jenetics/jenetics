@@ -31,18 +31,9 @@ import org.testng.annotations.Test;
  */
 public class IndexSorterTest {
 
-	final IndexSorter<int[]> HEAP_SORTER = new HeapIndexSorter<>(
-		a -> a.length,
-		(a, i, j) -> Integer.compare(a[i], a[j])
-	);
-
-	final IndexSorter<int[]> INSERTION_SORTER = new InsertionIndexSorter<>(
-		a -> a.length,
-		(a, i, j) -> Integer.compare(a[i], a[j])
-	);
 
 	@Test(dataProvider = "sorters")
-	public void sort(final IndexSorter<int[]> sorter, final int size) {
+	public void sort(final IndexSorter sorter, final int size) {
 		final int[] array = new Random().ints(1000).toArray();
 
 		final int[] indexes = sorter.sort(array);
@@ -66,20 +57,20 @@ public class IndexSorterTest {
 	@DataProvider(name = "sorters")
 	public Object[][] sorters() {
 		return new Object[][] {
-			{INSERTION_SORTER, 1},
-			{INSERTION_SORTER, 2},
-			{INSERTION_SORTER, 3},
-			{INSERTION_SORTER, 5},
-			{INSERTION_SORTER, 33},
-			{INSERTION_SORTER, 1_000},
-			{INSERTION_SORTER, 10_000},
-			{HEAP_SORTER, 1},
-			{HEAP_SORTER, 2},
-			{HEAP_SORTER, 3},
-			{HEAP_SORTER, 5},
-			{HEAP_SORTER, 11},
-			{HEAP_SORTER, 1_000},
-			{HEAP_SORTER, 10_000}
+			{InsertionIndexSorter.INSTANCE, 1},
+			{InsertionIndexSorter.INSTANCE, 2},
+			{InsertionIndexSorter.INSTANCE, 3},
+			{InsertionIndexSorter.INSTANCE, 5},
+			{InsertionIndexSorter.INSTANCE, 33},
+			{InsertionIndexSorter.INSTANCE, 1_000},
+			{InsertionIndexSorter.INSTANCE, 10_000},
+			{HeapIndexSorter.INSTANCE, 1},
+			{HeapIndexSorter.INSTANCE, 2},
+			{HeapIndexSorter.INSTANCE, 3},
+			{HeapIndexSorter.INSTANCE, 5},
+			{HeapIndexSorter.INSTANCE, 11},
+			{HeapIndexSorter.INSTANCE, 1_000},
+			{HeapIndexSorter.INSTANCE, 10_000}
 		};
 	}
 
