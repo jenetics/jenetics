@@ -37,7 +37,7 @@ final class IndexSorters {
 	//	o.j.i.u.IndexSorterPerf.insertionSort320    avgt       14  41864.108     1801.247  ns/op
 	//	o.j.i.u.IndexSorterPerf.insertionSort80     avgt       14   2643.726      165.315  ns/op
 	//private static final int INSERTION_SORT_THRESHOLD = 80;
-	private static final int INSERTION_SORT_THRESHOLD = 80;
+	static final int INSERTION_SORT_THRESHOLD = 80;
 
 	private IndexSorters() {
 	}

@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.util.IndexSorters.INSERTION_SORT_THRESHOLD;
 
 import java.util.Comparator;
 
@@ -57,15 +58,20 @@ public interface IndexSorter {
 	 *
 	 * @param array the array which is sorted
 	 * @param length the array length
-	 * @param comp the array element comparator
+	 * @param comparator the array element comparator
 	 * @param <T> the array type
 	 * @return the sorted index array
 	 */
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final IndexComparator<? super T> comp
+		final IndexComparator<? super T> comparator
 	);
+
+
+	/* *************************************************************************
+	 * Default implementations for common array types.
+	 * ************************************************************************/
 
 	/**
 	 * Sorting the given {@code array} by changing the given {@code indexes}.
@@ -79,6 +85,17 @@ public interface IndexSorter {
 		return sort(array, array.length, (a, i, j) -> Integer.compare(a[i], a[j]));
 	}
 
+	/**
+	 * Sorting the given {@code array} by changing the given {@code indexes}.
+	 * The order of the original {@code array} stays unchanged.
+	 *
+	 * @param array the array to sort
+	 * @return the index lookup array - &forall; i &isin; [0, N): index[i] = i
+	 * @throws NullPointerException if one of the array is {@code null}
+	 */
+	public default int[] sort(final double[] array) {
+		return sort(array, array.length, (a, i, j) -> Double.compare(a[i], a[j]));
+	}
 
 
 	public default <T> int[] sort(
@@ -92,14 +109,18 @@ public interface IndexSorter {
 		);
 	}
 
-	public default int[] sort(final double[] array) {
-		return sort(array, array.length, (a, i, j) -> Double.compare(a[i], a[j]));
-	}
+
 
 
 	/* *************************************************************************
 	 * Static helper methods.
 	 * ************************************************************************/
+
+	public static IndexSorter sorter(final int size) {
+		return size < INSERTION_SORT_THRESHOLD
+			? InsertionIndexSorter.INSTANCE
+			: HeapIndexSorter.INSTANCE;
+	}
 
 //	/**
 //	 * Create a new index sorter with the given {@code length} function and
