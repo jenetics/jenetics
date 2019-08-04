@@ -103,8 +103,7 @@ public interface IndexSorter {
 		final Comparator<? super T> comparator
 	) {
 		return sort(
-			array,
-			array.size(),
+			array, array.size(),
 			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
 		);
 	}
