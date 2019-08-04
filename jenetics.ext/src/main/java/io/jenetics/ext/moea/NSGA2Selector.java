@@ -20,7 +20,6 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.IndexSorter.init;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,8 +31,8 @@ import io.jenetics.Gene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IndexSorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -119,8 +118,8 @@ public class NSGA2Selector<
 		final IndexSorter sorter = IndexSorter.sorter(population.size());
 		final int[] idx = sorter.sort(
 			init(new int[population.size()]),
-			init(new int[population.size()]),
-			cc
+			population.size(),
+			(a, i, j) -> cc.compare(a[j], a[i])
 		);
 
 		final List<Phenotype<G, C>> result = new ArrayList<>();
@@ -132,6 +131,11 @@ public class NSGA2Selector<
 		}
 
 		return ISeq.of(result);
+	}
+
+	private static int[] init(final int[] indexes) {
+		for (int i = 0; i < indexes.length; ++i) indexes[i] = i;
+		return indexes;
 	}
 
 	/**
