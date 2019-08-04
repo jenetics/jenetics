@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import io.jenetics.util.IndexSorter.Comp;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -47,7 +45,7 @@ final class IndexSorters {
 	static <T> int[] sort(
 		final T array,
 		final int length,
-		final Comp<? super T> comp
+		final IndexComparator<? super T> comp
 	) {
 		return length < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE.sort(array, length, comp)

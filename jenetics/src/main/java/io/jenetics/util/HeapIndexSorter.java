@@ -45,7 +45,7 @@ enum HeapIndexSorter implements IndexSorter {
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final Comp<? super T> comp
+		final IndexComparator<? super T> comp
 	) {
 		final int[] indexes = IndexSorters.indexes(length);
 
@@ -66,7 +66,7 @@ enum HeapIndexSorter implements IndexSorter {
 	private static <T> void sink(
 		final T array,
 		final int[] idx,
-		final Comp<T> cmp,
+		final IndexComparator<T> cmp,
 		final int start,
 		final int end
 	) {

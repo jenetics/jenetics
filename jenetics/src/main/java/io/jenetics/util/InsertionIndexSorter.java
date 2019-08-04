@@ -44,7 +44,7 @@ enum InsertionIndexSorter implements IndexSorter {
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final Comp<? super T> cmp
+		final IndexComparator<? super T> cmp
 	) {
 		final int[] idx = IndexSorters.indexes(length);
 
