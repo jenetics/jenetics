@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.base.pow;
 import static io.jenetics.internal.math.base.ulpDistance;
-import static io.jenetics.internal.util.IndexSorter.sort;
 
 import java.util.Comparator;
 import java.util.Random;
@@ -33,6 +32,7 @@ import java.util.function.Function;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.util.array;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.IndexSorter;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -157,12 +157,12 @@ public abstract class ProbabilitySelector<
 
 	// Package private for testing.
 	static double[] sortAndRevert(final double[] array) {
-		final int[] indexes = sort(array);
+		final int[] indexes = IndexSorter.sorter(array.length).sort(array);
 
 		// Copy the elements in reversed order.
 		final double[] result = new double[array.length];
 		for (int i = 0; i < result.length; ++i) {
-			result[indexes[result.length - 1 - i]] = array[indexes[i]];
+			result[indexes[i]] = array[indexes[result.length - 1 - i]];
 		}
 
 		return result;
