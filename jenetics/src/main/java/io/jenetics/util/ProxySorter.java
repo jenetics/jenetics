@@ -24,12 +24,13 @@ import static io.jenetics.util.IndexSorters.INSERTION_SORT_THRESHOLD;
 import java.util.Comparator;
 
 /**
- * An {@code IndexSorter} doesn't touch the original array type, instead
+ * An {@code ProxySort} doesn't sort a given array directly, instead
  * an index lookup array is returned which allows to access the array in
- * an sorted order. The arrays are sorted in ascending order.
+ * an sorted order.
  *
  * <pre>{@code
  * final double[] array = new Random().doubles(100).toArray();
+ * final ProxySorter sorter = ProxySorter.heapSorter();
  * final int[] indexes = sorter.sort(array);
  *
  * // 'Classical' array sort.
@@ -47,14 +48,30 @@ import java.util.Comparator;
  * @since !__version__!
  */
 public interface ProxySorter {
+
 	/**
-	 * General array sort algorithm.
+	 * Sorting the given array by creating an index lookup array. The original
+	 * array is not touched and the returned array can then be used for
+	 * iterating the array in ascending order.
+	 *
+	 * <pre>{@code
+	 * final ProxySorter sorter = ...;
+	 * final double[] array = ...;
+	 * final int[] sorted = sorter.sort(
+	 *     array, array.length,
+	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
+	 * );
+	 * for (int i : sorted) {
+	 *     System.out.println(array[i]);
+	 * }
+	 * }</pre>
 	 *
 	 * @param array the array which is sorted
 	 * @param length the array length
 	 * @param comparator the array element comparator
 	 * @param <T> the array type
 	 * @return the sorted index array
+	 * @throws NullPointerException if one of the array is {@code null}
 	 */
 	public <T> int[] sort(
 		final T array,
@@ -68,11 +85,12 @@ public interface ProxySorter {
 	 * ************************************************************************/
 
 	/**
-	 * Sorting the given {@code array} by changing the given {@code indexes}.
-	 * The order of the original {@code array} stays unchanged.
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
 	 *
 	 * @param array the array to sort
-	 * @return the index lookup array - &forall; i &isin; [0, N): index[i] = i
+	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the array is {@code null}
 	 */
 	public default int[] sort(final int[] array) {
@@ -80,11 +98,12 @@ public interface ProxySorter {
 	}
 
 	/**
-	 * Sorting the given {@code array} by changing the given {@code indexes}.
-	 * The order of the original {@code array} stays unchanged.
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
 	 *
 	 * @param array the array to sort
-	 * @return the index lookup array - &forall; i &isin; [0, N): index[i] = i
+	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the array is {@code null}
 	 */
 	public default int[] sort(final double[] array) {
@@ -103,17 +122,15 @@ public interface ProxySorter {
 	}
 
 
-
-
 	/* *************************************************************************
 	 * Static helper methods.
 	 * ************************************************************************/
 
-	public static ProxySorter heap() {
+	public static ProxySorter heapSorter() {
 		return HeapProxySorter.INSTANCE;
 	}
 
-	public static ProxySorter insertion() {
+	public static ProxySorter insertionSorter() {
 		return InsertionProxySorter.INSTANCE;
 	}
 
