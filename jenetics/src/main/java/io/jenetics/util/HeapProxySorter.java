@@ -32,32 +32,23 @@ enum HeapProxySorter implements ProxySorter {
 
 	INSTANCE;
 
-	/**
-	 * Implementation of the heap index sort algorithm.
-	 *
-	 * @param array the array which is sorted
-	 * @param length the array length
-	 * @param comp the array element comparator
-	 * @param <T> the array type
-	 * @return the sorted index array
-	 */
 	@Override
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxyComparator<? super T> comp
+		final ProxyComparator<? super T> cmp
 	) {
 		final int[] indexes = ProxySorters.indexes(length);
 
 		// Heapify
 		for (int k = length/2; k >= 0; --k) {
-			sink(array, indexes, comp, k, length);
+			sink(array, indexes, cmp, k, length);
 		}
 
 		// Sort down.
 		for (int i = length; --i >= 1;) {
 			swap(indexes, 0, i);
-			sink(array, indexes, comp, 0, i);
+			sink(array, indexes, cmp, 0, i);
 		}
 
 		return indexes;

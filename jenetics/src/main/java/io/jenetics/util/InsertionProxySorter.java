@@ -32,15 +32,7 @@ enum InsertionProxySorter implements ProxySorter {
 
 	INSTANCE;
 
-	/**
-	 * Implementation of the insertion index sort algorithm.
-	 *
-	 * @param array the array which is sorted
-	 * @param length the array length
-	 * @param cmp the array element comparator
-	 * @param <T> the array type
-	 * @return the sorted index array
-	 */
+	@Override
 	public <T> int[] sort(
 		final T array,
 		final int length,
