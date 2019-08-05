@@ -63,4 +63,9 @@ enum InsertionProxySorter implements ProxySorter {
 		return idx;
 	}
 
+	@Override
+	public String toString() {
+		return "InsertionProxySorter";
+	}
+
 }

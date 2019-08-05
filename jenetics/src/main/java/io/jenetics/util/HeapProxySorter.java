@@ -80,4 +80,10 @@ enum HeapProxySorter implements ProxySorter {
 		}
 	}
 
+
+	@Override
+	public String toString() {
+		return "HeapProxySorter";
+	}
+
 }
