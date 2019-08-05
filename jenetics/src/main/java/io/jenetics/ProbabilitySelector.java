@@ -32,7 +32,7 @@ import java.util.function.Function;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.util.array;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IndexSorter;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
@@ -157,7 +157,7 @@ public abstract class ProbabilitySelector<
 
 	// Package private for testing.
 	static double[] sortAndRevert(final double[] array) {
-		final int[] indexes = IndexSorter.sorter(array.length).sort(array);
+		final int[] indexes = ProxySorter.sorter(array.length).sort(array);
 
 		// Copy the elements in reversed order.
 		final double[] result = new double[array.length];

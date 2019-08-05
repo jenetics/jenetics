@@ -29,11 +29,11 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class IndexSorterTest {
+public class ProxySorterTest {
 
 
 	@Test(dataProvider = "sorters")
-	public void sort(final IndexSorter sorter, final int size) {
+	public void sort(final ProxySorter sorter, final int size) {
 		final int[] array = new Random().ints(1000).toArray();
 
 		final int[] indexes = sorter.sort(array);

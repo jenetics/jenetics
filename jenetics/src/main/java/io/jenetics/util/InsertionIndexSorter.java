@@ -28,7 +28,7 @@ import static io.jenetics.internal.util.array.swap;
  * @version !__version__!
  * @since !__version__!
  */
-enum InsertionIndexSorter implements IndexSorter {
+enum InsertionIndexSorter implements ProxySorter {
 
 	INSTANCE;
 

@@ -32,7 +32,7 @@ import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IndexSorter;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -115,7 +115,7 @@ public class NSGA2Selector<
 			_dimension
 		);
 
-		final IndexSorter sorter = IndexSorter.sorter(population.size());
+		final ProxySorter sorter = ProxySorter.sorter(population.size());
 		final int[] idx = sorter.sort(
 			init(new int[population.size()]),
 			population.size(),

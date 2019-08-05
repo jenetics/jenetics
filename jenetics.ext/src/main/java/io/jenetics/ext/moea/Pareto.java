@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IndexSorter;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
@@ -118,7 +118,7 @@ public final class Pareto {
 		if (set.size() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final IndexSorter sorter = IndexSorter.sorter(set.size());
+			final ProxySorter sorter = ProxySorter.sorter(set.size());
 
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
 				final int[] idx = sorter.sort(set, comparator.ofIndex(m).reversed());

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IndexSorter;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -182,7 +182,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 				distance,
 				dimension
 			);
-			final IndexSorter sorter = IndexSorter.sorter(distances.length);
+			final ProxySorter sorter = ProxySorter.sorter(distances.length);
 			final int[] indexes = sorter.sort(distances);
 			revert(indexes);
 

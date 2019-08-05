@@ -46,7 +46,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-public interface IndexSorter {
+public interface ProxySorter {
 	/**
 	 * General array sort algorithm.
 	 *
@@ -109,19 +109,19 @@ public interface IndexSorter {
 	 * Static helper methods.
 	 * ************************************************************************/
 
-	public static IndexSorter heap() {
+	public static ProxySorter heap() {
 		return HeapIndexSorter.INSTANCE;
 	}
 
-	public static IndexSorter insertion() {
+	public static ProxySorter insertion() {
 		return InsertionIndexSorter.INSTANCE;
 	}
 
-	public static IndexSorter sorter() {
+	public static ProxySorter sorter() {
 		return InsertionIndexSorter.INSTANCE;
 	}
 
-	public static IndexSorter sorter(final int size) {
+	public static ProxySorter sorter(final int size) {
 		return size < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE
 			: HeapIndexSorter.INSTANCE;
