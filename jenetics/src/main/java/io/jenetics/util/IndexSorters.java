@@ -45,7 +45,7 @@ final class IndexSorters {
 	static <T> int[] sort(
 		final T array,
 		final int length,
-		final IndexComparator<? super T> comp
+		final ProxyComparator<? super T> comp
 	) {
 		return length < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE.sort(array, length, comp)

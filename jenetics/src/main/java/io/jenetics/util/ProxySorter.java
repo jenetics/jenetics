@@ -59,7 +59,7 @@ public interface ProxySorter {
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final IndexComparator<? super T> comparator
+		final ProxyComparator<? super T> comparator
 	);
 
 

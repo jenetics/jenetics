@@ -45,7 +45,7 @@ enum HeapIndexSorter implements ProxySorter {
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final IndexComparator<? super T> comp
+		final ProxyComparator<? super T> comp
 	) {
 		final int[] indexes = IndexSorters.indexes(length);
 
@@ -66,7 +66,7 @@ enum HeapIndexSorter implements ProxySorter {
 	private static <T> void sink(
 		final T array,
 		final int[] idx,
-		final IndexComparator<T> cmp,
+		final ProxyComparator<T> cmp,
 		final int start,
 		final int end
 	) {

@@ -37,7 +37,7 @@ package io.jenetics.util;
  * @since !__version__!
  */
 @FunctionalInterface
-public interface IndexComparator<T> {
+public interface ProxyComparator<T> {
 
 	/**
 	 * Compares the two array elements, specified by its indices, for order.
@@ -63,7 +63,7 @@ public interface IndexComparator<T> {
 	 * @return a comparator that imposes the reverse ordering of this
 	 *         comparator.
 	 */
-	public default IndexComparator<T> reversed() {
+	public default ProxyComparator<T> reversed() {
 		return (a, i, j) -> compare(a, j, i);
 	}
 

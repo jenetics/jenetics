@@ -44,7 +44,7 @@ enum InsertionIndexSorter implements ProxySorter {
 	public <T> int[] sort(
 		final T array,
 		final int length,
-		final IndexComparator<? super T> cmp
+		final ProxyComparator<? super T> cmp
 	) {
 		final int[] idx = IndexSorters.indexes(length);
 
