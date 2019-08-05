@@ -47,7 +47,7 @@ enum HeapProxySorter implements ProxySorter {
 		final int length,
 		final ProxyComparator<? super T> comp
 	) {
-		final int[] indexes = IndexSorters.indexes(length);
+		final int[] indexes = ProxySorters.indexes(length);
 
 		// Heapify
 		for (int k = length/2; k >= 0; --k) {

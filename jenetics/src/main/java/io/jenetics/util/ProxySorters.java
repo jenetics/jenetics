@@ -24,7 +24,7 @@ package io.jenetics.util;
  * @version !__version__!
  * @since !__version__!
  */
-final class IndexSorters {
+final class ProxySorters {
 
 	// This value has been chosen after JMH benchmarking.
 	//	Benchmark                                   Mode  Samples      Score  Score error  Units
@@ -39,7 +39,7 @@ final class IndexSorters {
 	//private static final int INSERTION_SORT_THRESHOLD = 80;
 	static final int INSERTION_SORT_THRESHOLD = 80;
 
-	private IndexSorters() {
+	private ProxySorters() {
 	}
 
 	static <T> int[] sort(
