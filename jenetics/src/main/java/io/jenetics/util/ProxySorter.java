@@ -44,6 +44,8 @@ import java.util.List;
  * }
  * }</pre>
  *
+ * @see ProxyComparator
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!

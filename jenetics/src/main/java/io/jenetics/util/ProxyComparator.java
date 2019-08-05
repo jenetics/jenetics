@@ -23,11 +23,13 @@ package io.jenetics.util;
  * The comparator used for comparing two array elements at the specified
  * indexes.
  * <pre>{@code
- * final Comp<double[]> comparator =
+ * final ProxyComparator<double[]> comparator =
  *     (a, i, j) -> Double.compare(a[i], a[j]);
  * }</pre>
  * The example above shows how to create a comparator for {@code double[]}
  * arrays.
+ *
+ * @see ProxySorter
  *
  * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
  *            {@code Seq<String>}
