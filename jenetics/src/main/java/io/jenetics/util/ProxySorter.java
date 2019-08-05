@@ -236,6 +236,7 @@ public interface ProxySorter {
 
 	public static ProxySorter instance() {
 		// TODO: See ParetoTest and ProbabilitySelectorTest
+		/*
 		return new ProxySorter() {
 			@Override
 			public <T> int[] sort(T a, int l, ProxyComparator<? super T> c) {
@@ -244,7 +245,8 @@ public interface ProxySorter {
 					: HeapProxySorter.INSTANCE.sort(a, l, c);
 			}
 		};
-
+		 */
+		return InsertionProxySorter.INSTANCE;
 	}
 
 }
