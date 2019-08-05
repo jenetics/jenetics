@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
 import static io.jenetics.util.IndexSorters.INSERTION_SORT_THRESHOLD;
 
 import java.util.Comparator;
@@ -30,11 +29,6 @@ import java.util.Comparator;
  * an sorted order. The arrays are sorted in ascending order.
  *
  * <pre>{@code
- * final IndexSorter<double[]> sorter = IndexSorter.of(
- *     a -> a.length,
- *     (a, i, j) -> Double.compare(a[i], a[j])
- * );
- *
  * final double[] array = new Random().doubles(100).toArray();
  * final int[] indexes = sorter.sort(array);
  *
@@ -115,54 +109,22 @@ public interface IndexSorter {
 	 * Static helper methods.
 	 * ************************************************************************/
 
+	public static IndexSorter heap() {
+		return HeapIndexSorter.INSTANCE;
+	}
+
+	public static IndexSorter insertion() {
+		return InsertionIndexSorter.INSTANCE;
+	}
+
+	public static IndexSorter sorter() {
+		return InsertionIndexSorter.INSTANCE;
+	}
+
 	public static IndexSorter sorter(final int size) {
 		return size < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE
 			: HeapIndexSorter.INSTANCE;
 	}
-
-//	/**
-//	 * Create a new index sorter with the given {@code length} function and
-//	 * array element {@code comparator}.
-//	 *
-//	 * <pre>{@code
-//	 * final IndexSorter<int[]> sorter = of(
-//	 *     a -> a.length,
-//	 *     (a, i, j) -> Integer.compare(a[i], a[j])
-//	 * );
-//	 * }</pre>
-//	 *
-//	 * @param length the array length function
-//	 * @param comparator the array element index comparator
-//	 * @param <T> the array type
-//	 * @return a index sorter with the given parameter
-//	 * @throws NullPointerException if one of the arguments is {@code null}
-//	 */
-//	public static <T> IndexSorter<T> of(
-//		final ToIntFunction<? super T> length,
-//		final Comp<? super T> comparator
-//	) {
-//		requireNonNull(length);
-//		requireNonNull(comparator);
-//
-//		return a -> null;//sort(a, length.applyAsInt(a), comparator);
-//	}
-//
-////	/**
-////	 * Return an index sorter for object arrays of type {@code T}.
-////	 *
-////	 * @param comparator the array element comparator
-////	 * @param <T> the element type
-////	 * @return an index sorter for object arrays of type {@code T}
-////	 */
-////	public static <T> IndexSorter<T[]>
-////	ofArray(final Comparator<? super T> comparator) {
-////		return of(a -> a.length, (a, i, j) -> comparator.compare(a[i], a[j]));
-////	}
-////
-////	public static <T> IndexSorter<Seq<T>>
-////	ofSeq(final Comparator<? super T> comparator) {
-////		return of(Seq::length, (a, i, j) -> comparator.compare(a.get(i), a.get(j)));
-////	}
 
 }
