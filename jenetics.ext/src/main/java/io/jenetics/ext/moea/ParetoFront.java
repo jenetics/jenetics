@@ -182,7 +182,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 				distance,
 				dimension
 			);
-			final ProxySorter sorter = ProxySorter.sorter(distances.length);
+			final ProxySorter sorter = ProxySorter.instance();
 			final int[] indexes = sorter.sort(distances);
 			revert(indexes);
 

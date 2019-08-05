@@ -231,25 +231,20 @@ public interface ProxySorter {
 
 
 	/* *************************************************************************
-	 * Static helper methods.
+	 * Static factory method.
 	 * ************************************************************************/
 
-	public static ProxySorter heapSorter() {
-		return HeapProxySorter.INSTANCE;
-	}
+	public static ProxySorter instance() {
+		// TODO: See ParetoTest and ProbabilitySelectorTest
+		return new ProxySorter() {
+			@Override
+			public <T> int[] sort(T a, int l, ProxyComparator<? super T> c) {
+				return l < INSERTION_SORT_THRESHOLD
+					? InsertionProxySorter.INSTANCE.sort(a, l, c)
+					: HeapProxySorter.INSTANCE.sort(a, l, c);
+			}
+		};
 
-	public static ProxySorter insertionSorter() {
-		return InsertionProxySorter.INSTANCE;
-	}
-
-	public static ProxySorter sorter() {
-		return InsertionProxySorter.INSTANCE;
-	}
-
-	public static ProxySorter sorter(final int size) {
-		return size < INSERTION_SORT_THRESHOLD
-			? InsertionProxySorter.INSTANCE
-			: HeapProxySorter.INSTANCE;
 	}
 
 }
