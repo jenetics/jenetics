@@ -110,7 +110,7 @@ public interface ProxySorter {
 	 * ************************************************************************/
 
 	public static ProxySorter heap() {
-		return HeapIndexSorter.INSTANCE;
+		return HeapProxySorter.INSTANCE;
 	}
 
 	public static ProxySorter insertion() {
@@ -124,7 +124,7 @@ public interface ProxySorter {
 	public static ProxySorter sorter(final int size) {
 		return size < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE
-			: HeapIndexSorter.INSTANCE;
+			: HeapProxySorter.INSTANCE;
 	}
 
 }

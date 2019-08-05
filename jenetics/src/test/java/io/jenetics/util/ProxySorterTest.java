@@ -64,13 +64,13 @@ public class ProxySorterTest {
 			{InsertionIndexSorter.INSTANCE, 33},
 			{InsertionIndexSorter.INSTANCE, 1_000},
 			{InsertionIndexSorter.INSTANCE, 10_000},
-			{HeapIndexSorter.INSTANCE, 1},
-			{HeapIndexSorter.INSTANCE, 2},
-			{HeapIndexSorter.INSTANCE, 3},
-			{HeapIndexSorter.INSTANCE, 5},
-			{HeapIndexSorter.INSTANCE, 11},
-			{HeapIndexSorter.INSTANCE, 1_000},
-			{HeapIndexSorter.INSTANCE, 10_000}
+			{HeapProxySorter.INSTANCE, 1},
+			{HeapProxySorter.INSTANCE, 2},
+			{HeapProxySorter.INSTANCE, 3},
+			{HeapProxySorter.INSTANCE, 5},
+			{HeapProxySorter.INSTANCE, 11},
+			{HeapProxySorter.INSTANCE, 1_000},
+			{HeapProxySorter.INSTANCE, 10_000}
 		};
 	}
 

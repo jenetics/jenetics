@@ -49,7 +49,7 @@ final class IndexSorters {
 	) {
 		return length < INSERTION_SORT_THRESHOLD
 			? InsertionIndexSorter.INSTANCE.sort(array, length, comp)
-			: HeapIndexSorter.INSTANCE.sort(array, length, comp);
+			: HeapProxySorter.INSTANCE.sort(array, length, comp);
 	}
 
 	/**
