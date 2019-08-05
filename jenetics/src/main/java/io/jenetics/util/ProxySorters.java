@@ -77,4 +77,17 @@ final class ProxySorters {
 		return indexes;
 	}
 
+
+	/* *************************************************************************
+	 * Some proxy-comparator methods.
+	 * ************************************************************************/
+
+	static int compare(final int[] a, final int i, final int j) {
+		return Integer.compare(a[i], a[j]);
+	}
+
+	static int compare(final double[] a, final int i, final int j) {
+		return Double.compare(a[i], a[j]);
+	}
+
 }

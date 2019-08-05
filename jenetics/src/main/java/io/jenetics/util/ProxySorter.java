@@ -22,6 +22,7 @@ package io.jenetics.util;
 import static io.jenetics.util.ProxySorters.INSERTION_SORT_THRESHOLD;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * An {@code ProxySort} doesn't sort a given array directly, instead
@@ -91,10 +92,10 @@ public interface ProxySorter {
 	 *
 	 * @param array the array to sort
 	 * @return the <em>sorted</em> index lookup array
-	 * @throws NullPointerException if one of the array is {@code null}
+	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public default int[] sort(final int[] array) {
-		return sort(array, array.length, (a, i, j) -> Integer.compare(a[i], a[j]));
+		return sort(array, array.length, ProxySorters::compare);
 	}
 
 	/**
@@ -104,13 +105,61 @@ public interface ProxySorter {
 	 *
 	 * @param array the array to sort
 	 * @return the <em>sorted</em> index lookup array
-	 * @throws NullPointerException if one of the array is {@code null}
+	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public default int[] sort(final double[] array) {
-		return sort(array, array.length, (a, i, j) -> Double.compare(a[i], a[j]));
+		return sort(array, array.length, ProxySorters::compare);
 	}
 
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public default <T> int[] sort(
+		final T[] array,
+		final Comparator<? super T> comparator
+	) {
+		return sort(
+			array, array.length,
+			(a, i, j) -> comparator.compare(a[i], a[j])
+		);
+	}
 
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 */
+	public default <T extends Comparable<? super T>> int[] sort(final T[] array) {
+		return sort(
+			array, array.length,
+			(a, i, j) -> a[i].compareTo(a[j])
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public default <T> int[] sort(
 		final Seq<? extends T> array,
 		final Comparator<? super T> comparator
@@ -118,6 +167,63 @@ public interface ProxySorter {
 		return sort(
 			array, array.size(),
 			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 */
+	public default <T extends Comparable<? super T>>
+	int[] sort(final Seq<? extends T> array) {
+		return sort(
+			array, array.size(),
+			(a, i, j) -> a.get(i).compareTo(a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @param comparator the array element comparator
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public default <T> int[] sort(
+		final List<? extends T> array,
+		final Comparator<? super T> comparator
+	) {
+		return sort(
+			array, array.size(),
+			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
+		);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, ProxyComparator)
+	 *
+	 * @param <T> the array element type
+	 * @param array the array to sort
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 */
+	public default <T extends Comparable<? super T>>
+	int[] sort(final List<? extends T> array) {
+		return sort(
+			array, array.size(),
+			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
 	}
 
