@@ -48,7 +48,7 @@ final class IndexSorters {
 		final ProxyComparator<? super T> comp
 	) {
 		return length < INSERTION_SORT_THRESHOLD
-			? InsertionIndexSorter.INSTANCE.sort(array, length, comp)
+			? InsertionProxySorter.INSTANCE.sort(array, length, comp)
 			: HeapProxySorter.INSTANCE.sort(array, length, comp);
 	}
 

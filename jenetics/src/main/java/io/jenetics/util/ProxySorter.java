@@ -114,16 +114,16 @@ public interface ProxySorter {
 	}
 
 	public static ProxySorter insertion() {
-		return InsertionIndexSorter.INSTANCE;
+		return InsertionProxySorter.INSTANCE;
 	}
 
 	public static ProxySorter sorter() {
-		return InsertionIndexSorter.INSTANCE;
+		return InsertionProxySorter.INSTANCE;
 	}
 
 	public static ProxySorter sorter(final int size) {
 		return size < INSERTION_SORT_THRESHOLD
-			? InsertionIndexSorter.INSTANCE
+			? InsertionProxySorter.INSTANCE
 			: HeapProxySorter.INSTANCE;
 	}
 

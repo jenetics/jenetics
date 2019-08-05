@@ -57,13 +57,13 @@ public class ProxySorterTest {
 	@DataProvider(name = "sorters")
 	public Object[][] sorters() {
 		return new Object[][] {
-			{InsertionIndexSorter.INSTANCE, 1},
-			{InsertionIndexSorter.INSTANCE, 2},
-			{InsertionIndexSorter.INSTANCE, 3},
-			{InsertionIndexSorter.INSTANCE, 5},
-			{InsertionIndexSorter.INSTANCE, 33},
-			{InsertionIndexSorter.INSTANCE, 1_000},
-			{InsertionIndexSorter.INSTANCE, 10_000},
+			{InsertionProxySorter.INSTANCE, 1},
+			{InsertionProxySorter.INSTANCE, 2},
+			{InsertionProxySorter.INSTANCE, 3},
+			{InsertionProxySorter.INSTANCE, 5},
+			{InsertionProxySorter.INSTANCE, 33},
+			{InsertionProxySorter.INSTANCE, 1_000},
+			{InsertionProxySorter.INSTANCE, 10_000},
 			{HeapProxySorter.INSTANCE, 1},
 			{HeapProxySorter.INSTANCE, 2},
 			{HeapProxySorter.INSTANCE, 3},
