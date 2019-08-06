@@ -29,8 +29,7 @@ import java.util.List;
  *
  * <pre>{@code
  * final double[] array = new Random().doubles(100).toArray();
- * final ProxySorter sorter = ProxySorter.heapSorter();
- * final int[] indexes = sorter.sort(array);
+ * final int[] indexes = ProxySorter.instance().sort(array);
  *
  * // 'Classical' array sort.
  * final double[] sorted = array.clone();
@@ -233,8 +232,12 @@ public interface ProxySorter {
 	 * ************************************************************************/
 
 	/**
-	 * Return the default implementation of the {@code ProxySorter}. The return
-	 * class is thread-safe and can be used in different threads.
+	 * Return the default implementation of the {@code ProxySorter}.
+	 *
+	 * @apiNote
+	 * The return class is thread-safe and can be used in different threads. It
+	 * is also very cheap to obtain a sorter instance and it is not necessary to
+	 * store it in a variable.
 	 *
 	 * @return the default implementation of the {@code ProxySorter}
 	 */
