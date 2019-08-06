@@ -61,16 +61,29 @@ public class ProxySorterTest {
 			{InsertionProxySorter.INSTANCE, 2},
 			{InsertionProxySorter.INSTANCE, 3},
 			{InsertionProxySorter.INSTANCE, 5},
+			{InsertionProxySorter.INSTANCE, 11},
 			{InsertionProxySorter.INSTANCE, 33},
 			{InsertionProxySorter.INSTANCE, 1_000},
-			{InsertionProxySorter.INSTANCE, 10_000},
 			{HeapProxySorter.INSTANCE, 1},
 			{HeapProxySorter.INSTANCE, 2},
 			{HeapProxySorter.INSTANCE, 3},
 			{HeapProxySorter.INSTANCE, 5},
 			{HeapProxySorter.INSTANCE, 11},
+			{HeapProxySorter.INSTANCE, 33},
 			{HeapProxySorter.INSTANCE, 1_000},
-			{HeapProxySorter.INSTANCE, 10_000}
+			{HeapProxySorter.INSTANCE, 10_000},
+			{HeapProxySorter.INSTANCE, 100_000},
+			{HeapProxySorter.INSTANCE, 1_000_000},
+			{TimProxySorter.INSTANCE, 1},
+			{TimProxySorter.INSTANCE, 2},
+			{TimProxySorter.INSTANCE, 3},
+			{TimProxySorter.INSTANCE, 5},
+			{TimProxySorter.INSTANCE, 11},
+			{TimProxySorter.INSTANCE, 33},
+			{TimProxySorter.INSTANCE, 1_000},
+			{TimProxySorter.INSTANCE, 10_000},
+			{TimProxySorter.INSTANCE, 100_000},
+			{TimProxySorter.INSTANCE, 1_000_000}
 		};
 	}
 
