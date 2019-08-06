@@ -118,7 +118,7 @@ public final class Pareto {
 		if (set.size() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final ProxySorter sorter = ProxySorter.instance();
+			final ProxySorter sorter = ProxySorter.sorter();
 
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
 				final int[] idx = sorter.sort(set, comparator.ofIndex(m).reversed());

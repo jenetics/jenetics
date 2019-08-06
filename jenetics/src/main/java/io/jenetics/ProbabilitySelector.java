@@ -157,7 +157,7 @@ public abstract class ProbabilitySelector<
 
 	// Package private for testing.
 	static double[] sortAndRevert(final double[] array) {
-		final int[] indexes = ProxySorter.instance().sort(array);
+		final int[] indexes = ProxySorter.sorter().sort(array);
 
 		// Copy the elements in reversed order.
 		final double[] result = new double[array.length];

@@ -241,7 +241,7 @@ public interface ProxySorter {
 	 *
 	 * @return the default implementation of the {@code ProxySorter}
 	 */
-	public static ProxySorter instance() {
+	public static ProxySorter sorter() {
 		return TimProxySorter.INSTANCE;
 	}
 
