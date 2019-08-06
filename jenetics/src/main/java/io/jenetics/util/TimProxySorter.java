@@ -22,7 +22,12 @@ package io.jenetics.util;
 import static java.lang.Math.min;
 
 /**
- * Implementing the index sorter with the Tim sort algorithm.
+ * Implementing the index sorter with the (quasi) Tim sort algorithm.
+ *
+ * @implNote
+ * To be precise, this is not the exact Timsort algorithm. The scan for the
+ * longest sorted run is not implemented. It does an insertion sort for small
+ * sub-arrays and merges them back into the bigger array.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

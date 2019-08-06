@@ -232,19 +232,14 @@ public interface ProxySorter {
 	 * Static factory method.
 	 * ************************************************************************/
 
+	/**
+	 * Return the default implementation of the {@code ProxySorter}. The return
+	 * class is thread-safe and can be used in different threads.
+	 *
+	 * @return the default implementation of the {@code ProxySorter}
+	 */
 	public static ProxySorter instance() {
-		// TODO: See ParetoTest and ProbabilitySelectorTest
-		/*
-		return new ProxySorter() {
-			@Override
-			public <T> int[] sort(T a, int l, ProxyComparator<? super T> c) {
-				return l < INSERTION_SORT_THRESHOLD
-					? InsertionProxySorter.INSTANCE.sort(a, l, c)
-					: HeapProxySorter.INSTANCE.sort(a, l, c);
-			}
-		};
-		 */
-		return InsertionProxySorter.INSTANCE;
+		return TimProxySorter.INSTANCE;
 	}
 
 }
