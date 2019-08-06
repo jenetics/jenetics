@@ -32,8 +32,8 @@ import java.util.function.Function;
 import io.jenetics.internal.math.DoubleAdder;
 import io.jenetics.internal.util.array;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.RandomRegistry;
 import io.jenetics.util.Seq;
 

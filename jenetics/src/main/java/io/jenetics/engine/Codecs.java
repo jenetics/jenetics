@@ -19,7 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;

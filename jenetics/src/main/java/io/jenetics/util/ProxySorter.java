@@ -19,8 +19,6 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.util.ProxySorters.INSERTION_SORT_THRESHOLD;
-
 import java.util.Comparator;
 import java.util.List;
 
