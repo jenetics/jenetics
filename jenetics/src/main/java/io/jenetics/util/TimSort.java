@@ -242,8 +242,8 @@ class TimSort<T> {
 	 *        not already known to be sorted (@code lo <= start <= hi}
 	 * @param c comparator to used for the sort
 	 */
-	@SuppressWarnings("fallthrough")
-	private static <T> void binarySort(Arr<T> a, int lo, int hi, int start, ProxySorter.Comparator<? super T> c) {
+	@SuppressWarnings("fallthrough") // OK
+	static <T> void binarySort(Arr<T> a, int lo, int hi, int start, ProxySorter.Comparator<? super T> c) {
 		assert lo <= start && start <= hi;
 		if (start == lo)
 			start++;
@@ -324,13 +324,15 @@ class TimSort<T> {
 		//if (c.compare(a[runHi++], a[lo]) < 0) { // Descending
 		if (c.compare(a.array, runHi++, lo) < 0) {
 			//while(runHi < hi && c.compare(a[runHi], a[runHi - 1]) < 0)
-			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) < 0)
+			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) < 0) {
 				runHi++;
+			}
 			reverseRange(a, lo, runHi);
 		} else {                              // Ascending
 			//while (runHi < hi && c.compare(a[runHi], a[runHi - 1]) >= 0)
-			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) >= 0)
+			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) >= 0) {
 				runHi++;
+			}
 		}
 
 		return runHi - lo;
@@ -741,7 +743,7 @@ class TimSort<T> {
 				assert len1 > 1 && len2 > 0;
 				count1 = gallopRight(a, a.indexes[cursor2], tmp, cursor1, len1, 0, c);
 				if (count1 != 0) {
-					System.arraycopy(tmp, cursor1, a, dest, count1);
+					System.arraycopy(tmp, cursor1, a.indexes, dest, count1);
 					dest += count1;
 					cursor1 += count1;
 					len1 -= count1;
@@ -754,7 +756,7 @@ class TimSort<T> {
 
 				count2 = gallopLeft(a, tmp[cursor1], a.indexes, cursor2, len2, 0, c);
 				if (count2 != 0) {
-					System.arraycopy(a, cursor2, a, dest, count2);
+					System.arraycopy(a.indexes, cursor2, a.indexes, dest, count2);
 					dest += count2;
 					cursor2 += count2;
 					len2 -= count2;
@@ -774,7 +776,7 @@ class TimSort<T> {
 
 		if (len1 == 1) {
 			assert len2 > 0;
-			System.arraycopy(a, cursor2, a, dest, len2);
+			System.arraycopy(a.indexes, cursor2, a.indexes, dest, len2);
 			a.indexes[dest + len2] = tmp[cursor1]; //  Last elt of run 1 to end of merge
 		} else if (len1 == 0) {
 			throw new IllegalArgumentException(
@@ -782,7 +784,7 @@ class TimSort<T> {
 		} else {
 			assert len2 == 0;
 			assert len1 > 1;
-			System.arraycopy(tmp, cursor1, a, dest, len1);
+			System.arraycopy(tmp, cursor1, a.indexes, dest, len1);
 		}
 	}
 
