@@ -45,7 +45,7 @@ final class TimProxySorter {
 		final int length,
 		final ProxyComparator<? super T> comparator
 	) {
-		final int[] proxy = ProxySorters.indexes(length);
+		final int[] proxy = ProxySorter.indexes(length);
 
 		// Sorting the sub-arrays with insertion-sort.
 		for (int i = 0; i < length; i += RUN) {

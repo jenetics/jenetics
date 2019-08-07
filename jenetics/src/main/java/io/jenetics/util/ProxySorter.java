@@ -98,7 +98,11 @@ public final class ProxySorter {
 	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public static int[] sort(final int[] array) {
-		return sort(array, array.length, ProxySorters::compare);
+		return sort(array, array.length, ProxySorter::compare);
+	}
+
+	private static int compare(final int[] a, final int i, final int j) {
+		return Integer.compare(a[i], a[j]);
 	}
 
 	/**
@@ -111,7 +115,11 @@ public final class ProxySorter {
 	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public static int[] sort(final double[] array) {
-		return sort(array, array.length, ProxySorters::compare);
+		return sort(array, array.length, ProxySorter::compare);
+	}
+
+	private static int compare(final double[] a, final int i, final int j) {
+		return Double.compare(a[i], a[j]);
 	}
 
 	/**
@@ -228,6 +236,35 @@ public final class ProxySorter {
 			array, array.size(),
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
+	}
+
+	/* *************************************************************************
+	 * Some helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Create an initial indexes array of the given {@code length}.
+	 *
+	 * @param length the length of the indexes array
+	 * @return the initialized indexes array
+	 */
+	static int[] indexes(final int length) {
+		return init(new int[length]);
+	}
+
+	/**
+	 * Initializes the given {@code indexes} array.
+	 *
+	 * @param indexes the indexes array to initialize
+	 * @return the initialized indexes array
+	 * @throws NullPointerException if the given {@code indexes} array is
+	 *         {@code null}
+	 */
+	static int[] init(final int[] indexes) {
+		for (int i = 0; i < indexes.length; ++i) {
+			indexes[i] = i;
+		}
+		return indexes;
 	}
 
 }
