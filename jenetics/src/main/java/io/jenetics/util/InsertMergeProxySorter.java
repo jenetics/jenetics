@@ -35,9 +35,9 @@ import io.jenetics.util.ProxySorter.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class TimProxySorter {
+final class InsertMergeProxySorter {
 
-	private TimProxySorter() {
+	private InsertMergeProxySorter() {
 	}
 
 	private final static int RUN = 32;
