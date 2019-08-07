@@ -21,6 +21,8 @@ package io.jenetics.util;
 
 import static io.jenetics.internal.util.array.swap;
 
+import io.jenetics.util.ProxySorter.Comparator;
+
 /**
  * Implementing the index sorter with the insertion sort algorithm.
  *
@@ -36,7 +38,7 @@ final class InsertionProxySorter {
 	public static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxySorter.ProxyComparator<? super T> cmp
+		final Comparator<? super T> cmp
 	) {
 		final int[] idx = ProxySorters.indexes(length);
 

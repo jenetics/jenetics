@@ -21,6 +21,8 @@ package io.jenetics.util;
 
 import static io.jenetics.internal.util.array.swap;
 
+import io.jenetics.util.ProxySorter.Comparator;
+
 /**
  * Implementing the index sorter with the heap sort algorithm.
  *
@@ -36,7 +38,7 @@ final class HeapProxySorter {
 	public static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxySorter.ProxyComparator<? super T> cmp
+		final Comparator<? super T> cmp
 	) {
 		final int[] indexes = ProxySorters.indexes(length);
 
@@ -57,7 +59,7 @@ final class HeapProxySorter {
 	private static <T> void sink(
 		final T array,
 		final int[] idx,
-		final ProxySorter.ProxyComparator<T> cmp,
+		final Comparator<T> cmp,
 		final int start,
 		final int end
 	) {

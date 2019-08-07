@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ import java.util.List;
  * }
  * }</pre>
  *
- * @see ProxyComparator
+ * @see Comparator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -53,7 +52,7 @@ public final class ProxySorter {
 	 * The comparator used for comparing two array elements at the specified
 	 * indexes.
 	 * <pre>{@code
-	 * final ProxyComparator<double[]> comparator =
+	 * final ProxySorter.Comparator<double[]> comparator =
 	 *     (a, i, j) -> Double.compare(a[i], a[j]);
 	 * }</pre>
 	 * The example above shows how to create a comparator for {@code double[]}
@@ -69,14 +68,14 @@ public final class ProxySorter {
 	 * @since !__version__!
 	 */
 	@FunctionalInterface
-	public static interface ProxyComparator<T> {
+	public static interface Comparator<T> {
 
 		/**
 		 * Compares the two array elements, specified by its indices, for order.
 		 * Returns a negative integer, zero, or a positive integer as the first
 		 * argument is less than, equal to, or greater than the second.
 		 *
-		 * @see Comparator#compare(Object, Object)
+		 * @see java.util.Comparator#compare(Object, Object)
 		 *
 		 * @param array the array where the two comparing elements are fetched
 		 * @param i the index of the first array element
@@ -95,7 +94,7 @@ public final class ProxySorter {
 		 * @return a comparator that imposes the reverse ordering of this
 		 *         comparator.
 		 */
-		public default ProxyComparator<T> reversed() {
+		public default Comparator<T> reversed() {
 			return (a, i, j) -> compare(a, j, i);
 		}
 
@@ -130,7 +129,7 @@ public final class ProxySorter {
 	public static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxyComparator<? super T> comparator
+		final Comparator<? super T> comparator
 	) {
 		return TimProxySorter.sort(array, length, comparator);
 	}
@@ -143,7 +142,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param array the array to sort
 	 * @return the <em>sorted</em> index lookup array
@@ -160,7 +159,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param array the array to sort
 	 * @return the <em>sorted</em> index lookup array
@@ -177,7 +176,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -187,7 +186,7 @@ public final class ProxySorter {
 	 */
 	public static <T> int[] sort(
 		final T[] array,
-		final Comparator<? super T> comparator
+		final java.util.Comparator<? super T> comparator
 	) {
 		return sort(
 			array, array.length,
@@ -198,7 +197,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -215,7 +214,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -225,7 +224,7 @@ public final class ProxySorter {
 	 */
 	public static <T> int[] sort(
 		final Seq<? extends T> array,
-		final Comparator<? super T> comparator
+		final java.util.Comparator<? super T> comparator
 	) {
 		return sort(
 			array, array.size(),
@@ -236,7 +235,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -254,7 +253,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort
@@ -264,7 +263,7 @@ public final class ProxySorter {
 	 */
 	public static <T> int[] sort(
 		final List<? extends T> array,
-		final Comparator<? super T> comparator
+		final java.util.Comparator<? super T> comparator
 	) {
 		return sort(
 			array, array.size(),
@@ -275,7 +274,7 @@ public final class ProxySorter {
 	/**
 	 * Sorting the given array by creating an index lookup array.
 	 *
-	 * @see #sort(Object, int, ProxyComparator)
+	 * @see #sort(Object, int, Comparator)
 	 *
 	 * @param <T> the array element type
 	 * @param array the array to sort

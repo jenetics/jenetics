@@ -21,6 +21,8 @@ package io.jenetics.util;
 
 import static java.lang.Math.min;
 
+import io.jenetics.util.ProxySorter.Comparator;
+
 /**
  * Implementing the index sorter with the (quasi) Tim sort algorithm.
  *
@@ -43,7 +45,7 @@ final class TimProxySorter {
 	static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxySorter.ProxyComparator<? super T> comparator
+		final Comparator<? super T> comparator
 	) {
 		final int[] proxy = ProxySorter.indexes(length);
 
@@ -76,7 +78,7 @@ final class TimProxySorter {
 		final int begin,
 		final int end,
 		final int[] proxy,
-		final ProxySorter.ProxyComparator<? super T> cmp
+		final Comparator<? super T> cmp
 	) {
 		for (int i = begin + 1; i <= end; ++i) {
 			final int temp = proxy[i];
@@ -98,7 +100,7 @@ final class TimProxySorter {
 		final int begin,
 		final int mid,
 		final int end,
-		final ProxySorter.ProxyComparator<? super T> cmp
+		final Comparator<? super T> cmp
 	) {
 		final int[] left = new int[mid - begin + 1];
 		System.arraycopy(proxy, begin, left, 0, left.length);
