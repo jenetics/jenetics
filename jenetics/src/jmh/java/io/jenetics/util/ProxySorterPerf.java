@@ -19,6 +19,7 @@
  */
 package io.jenetics.util;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -35,16 +36,35 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
- * Benchmark                            Mode  Cnt      Score      Error  Units
- * ProxySorterPerf.heap_sort_10         avgt    5    115.528 ±    0.492  ns/op
- * ProxySorterPerf.heap_sort_100        avgt    5   1897.558 ±   23.744  ns/op
- * ProxySorterPerf.heap_sort_1000       avgt    5  67898.955 ±  321.160  ns/op
- * ProxySorterPerf.old_index_sort_10    avgt    5     76.479 ±    1.021  ns/op
- * ProxySorterPerf.old_index_sort_100   avgt    5   2765.186 ±   55.576  ns/op
- * ProxySorterPerf.old_index_sort_1000  avgt    5  75128.993 ± 1665.751  ns/op
- * ProxySorterPerf.tim_sort_10          avgt    5     74.174 ±    0.854  ns/op
- * ProxySorterPerf.tim_sort_100         avgt    5   1573.028 ±    4.969  ns/op
- * ProxySorterPerf.tim_sort_1000        avgt    5  46181.516 ±  594.498  ns/op
+ * Java 8
+ * Benchmark                             Mode  Cnt      Score       Error  Units
+ * ProxySorterPerf.heap_sort_10          avgt    5    118.336 ±     7.764  ns/op
+ * ProxySorterPerf.heap_sort_100         avgt    5   2002.145 ±   158.991  ns/op
+ * ProxySorterPerf.heap_sort_1000        avgt    5  72283.465 ± 10795.387  ns/op
+ * ProxySorterPerf.java_index_sort_10    avgt    5     10.324 ±     0.407  ns/op
+ * ProxySorterPerf.java_index_sort_100   avgt    5    103.452 ±     3.592  ns/op
+ * ProxySorterPerf.java_index_sort_1000  avgt    5    343.679 ±    12.527  ns/op
+ * ProxySorterPerf.old_index_sort_10     avgt    5     71.901 ±     3.603  ns/op
+ * ProxySorterPerf.old_index_sort_100    avgt    5   3005.035 ±   101.993  ns/op
+ * ProxySorterPerf.old_index_sort_1000   avgt    5  75792.042 ±  2633.823  ns/op
+ * ProxySorterPerf.tim_sort_10           avgt    5     79.485 ±     2.863  ns/op
+ * ProxySorterPerf.tim_sort_100          avgt    5   1591.106 ±   162.232  ns/op
+ * ProxySorterPerf.tim_sort_1000         avgt    5  52207.042 ±  1775.293  ns/op
+ *
+ * Java 11
+ * Benchmark                             Mode  Cnt      Score      Error  Units
+ * ProxySorterPerf.heap_sort_10          avgt    5    138.540 ±   17.232  ns/op
+ * ProxySorterPerf.heap_sort_100         avgt    5   2433.890 ±  250.078  ns/op
+ * ProxySorterPerf.heap_sort_1000        avgt    5  68613.191 ± 5128.302  ns/op
+ * ProxySorterPerf.java_index_sort_10    avgt    5     13.087 ±    0.993  ns/op
+ * ProxySorterPerf.java_index_sort_100   avgt    5    100.869 ±    2.555  ns/op
+ * ProxySorterPerf.java_index_sort_1000  avgt    5    272.506 ±   20.439  ns/op
+ * ProxySorterPerf.old_index_sort_10     avgt    5     63.236 ±    8.195  ns/op
+ * ProxySorterPerf.old_index_sort_100    avgt    5   2235.945 ±  135.744  ns/op
+ * ProxySorterPerf.old_index_sort_1000   avgt    5  73539.263 ± 8230.531  ns/op
+ * ProxySorterPerf.tim_sort_10           avgt    5     47.301 ±    1.298  ns/op
+ * ProxySorterPerf.tim_sort_100          avgt    5   1542.740 ±   93.445  ns/op
+ * ProxySorterPerf.tim_sort_1000         avgt    5  48419.026 ± 1429.150  ns/op
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -122,6 +142,24 @@ public class ProxySorterPerf {
 	@Benchmark
 	public int[] old_index_sort_1000(final Array array, final Blackhole black) {
 		return IndexSorter.sort(array.array_1000);
+	}
+
+	@Benchmark
+	public int[] java_index_sort_10(final Array array, final Blackhole black) {
+		Arrays.sort(array.array_10);
+		return array.array_10;
+	}
+
+	@Benchmark
+	public int[] java_index_sort_100(final Array array, final Blackhole black) {
+		Arrays.sort(array.array_100);
+		return array.array_100;
+	}
+
+	@Benchmark
+	public int[] java_index_sort_1000(final Array array, final Blackhole black) {
+		Arrays.sort(array.array_1000);
+		return array.array_1000;
 	}
 
 	public static void main(String[] args) throws RunnerException {
