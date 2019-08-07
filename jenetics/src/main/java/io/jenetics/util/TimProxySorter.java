@@ -33,14 +33,14 @@ import static java.lang.Math.min;
  * @version !__version__!
  * @since !__version__!
  */
-enum TimProxySorter implements ProxySorter {
+final class TimProxySorter {
 
-	INSTANCE;
+	private TimProxySorter() {
+	}
 
 	private final static int RUN = 32;
 
-	@Override
-	public <T> int[] sort(
+	static <T> int[] sort(
 		final T array,
 		final int length,
 		final ProxyComparator<? super T> comparator

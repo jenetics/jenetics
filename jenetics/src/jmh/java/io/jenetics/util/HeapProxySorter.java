@@ -28,12 +28,12 @@ import static io.jenetics.internal.util.array.swap;
  * @version !__version__!
  * @since !__version__!
  */
-enum HeapProxySorter implements ProxySorter {
+final class HeapProxySorter {
 
-	INSTANCE;
+	private HeapProxySorter() {
+	}
 
-	@Override
-	public <T> int[] sort(
+	public static <T> int[] sort(
 		final T array,
 		final int length,
 		final ProxyComparator<? super T> cmp
@@ -69,12 +69,6 @@ enum HeapProxySorter implements ProxySorter {
 			swap(idx, m, j);
 			m = j;
 		}
-	}
-
-
-	@Override
-	public String toString() {
-		return "HeapProxySorter";
 	}
 
 }

@@ -118,10 +118,11 @@ public final class Pareto {
 		if (set.size() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final ProxySorter sorter = ProxySorter.sorter();
-
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
-				final int[] idx = sorter.sort(set, comparator.ofIndex(m).reversed());
+				final int[] idx = ProxySorter.sort(
+					set,
+					comparator.ofIndex(m).reversed()
+				);
 
 				result[idx[0]] = POSITIVE_INFINITY;
 				result[idx[set.size() - 1]] = POSITIVE_INFINITY;

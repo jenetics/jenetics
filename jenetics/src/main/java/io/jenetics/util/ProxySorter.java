@@ -29,7 +29,7 @@ import java.util.List;
  *
  * <pre>{@code
  * final double[] array = new Random().doubles(100).toArray();
- * final int[] indexes = ProxySorter.instance().sort(array);
+ * final int[] indexes = ProxySorter.sort(array);
  *
  * // 'Classical' array sort.
  * final double[] sorted = array.clone();
@@ -47,7 +47,10 @@ import java.util.List;
  * @version !__version__!
  * @since !__version__!
  */
-public interface ProxySorter {
+public final class ProxySorter {
+
+	private ProxySorter() {
+	}
 
 	/**
 	 * Sorting the given array by creating an index lookup array. The original
@@ -55,9 +58,8 @@ public interface ProxySorter {
 	 * iterating the array in ascending order.
 	 *
 	 * <pre>{@code
-	 * final ProxySorter sorter = ...;
 	 * final double[] array = ...;
-	 * final int[] sorted = sorter.sort(
+	 * final int[] sorted = ProxySorter.sort(
 	 *     array, array.length,
 	 *     (a, i, j) -> Doubler.compare(a[i], a[j])
 	 * );
@@ -73,15 +75,17 @@ public interface ProxySorter {
 	 * @return the sorted index array
 	 * @throws NullPointerException if one of the array is {@code null}
 	 */
-	public <T> int[] sort(
+	public static <T> int[] sort(
 		final T array,
 		final int length,
 		final ProxyComparator<? super T> comparator
-	);
+	) {
+		return TimProxySorter.sort(array, length, comparator);
+	}
 
 
 	/* *************************************************************************
-	 * Default implementations for common array types.
+	 * Derived sorting methods.
 	 * ************************************************************************/
 
 	/**
@@ -93,7 +97,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
-	public default int[] sort(final int[] array) {
+	public static int[] sort(final int[] array) {
 		return sort(array, array.length, ProxySorters::compare);
 	}
 
@@ -106,7 +110,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
-	public default int[] sort(final double[] array) {
+	public static int[] sort(final double[] array) {
 		return sort(array, array.length, ProxySorters::compare);
 	}
 
@@ -121,7 +125,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public default <T> int[] sort(
+	public static <T> int[] sort(
 		final T[] array,
 		final Comparator<? super T> comparator
 	) {
@@ -141,7 +145,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
-	public default <T extends Comparable<? super T>> int[] sort(final T[] array) {
+	public static <T extends Comparable<? super T>> int[] sort(final T[] array) {
 		return sort(
 			array, array.length,
 			(a, i, j) -> a[i].compareTo(a[j])
@@ -159,7 +163,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public default <T> int[] sort(
+	public static <T> int[] sort(
 		final Seq<? extends T> array,
 		final Comparator<? super T> comparator
 	) {
@@ -179,7 +183,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
-	public default <T extends Comparable<? super T>>
+	public static <T extends Comparable<? super T>>
 	int[] sort(final Seq<? extends T> array) {
 		return sort(
 			array, array.size(),
@@ -198,7 +202,7 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public default <T> int[] sort(
+	public static <T> int[] sort(
 		final List<? extends T> array,
 		final Comparator<? super T> comparator
 	) {
@@ -218,31 +222,12 @@ public interface ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
-	public default <T extends Comparable<? super T>>
+	public static <T extends Comparable<? super T>>
 	int[] sort(final List<? extends T> array) {
 		return sort(
 			array, array.size(),
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
-	}
-
-
-	/* *************************************************************************
-	 * Static factory method.
-	 * ************************************************************************/
-
-	/**
-	 * Return the default implementation of the {@code ProxySorter}.
-	 *
-	 * @apiNote
-	 * The return class is thread-safe and can be used in different threads. It
-	 * is also very cheap to obtain a sorter instance and it is not necessary to
-	 * store it in a variable.
-	 *
-	 * @return the default implementation of the {@code ProxySorter}
-	 */
-	public static ProxySorter sorter() {
-		return TimProxySorter.INSTANCE;
 	}
 
 }

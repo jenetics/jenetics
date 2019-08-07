@@ -115,8 +115,7 @@ public class NSGA2Selector<
 			_dimension
 		);
 
-		final ProxySorter sorter = ProxySorter.sorter();
-		final int[] idx = sorter.sort(
+		final int[] idx = ProxySorter.sort(
 			init(new int[population.size()]),
 			population.size(),
 			(a, i, j) -> cc.compare(a[j], a[i])

@@ -101,32 +101,17 @@ public class ProxySorterPerf {
 
 	@Benchmark
 	public int[] tim_sort_10(final Array array, final Blackhole black) {
-		return TimProxySorter.INSTANCE.sort(array.array_10);
+		return ProxySorter.sort(array.array_10);
 	}
 
 	@Benchmark
 	public int[] tim_sort_100(final Array array, final Blackhole black) {
-		return TimProxySorter.INSTANCE.sort(array.array_100);
+		return ProxySorter.sort(array.array_100);
 	}
 
 	@Benchmark
 	public int[] tim_sort_1000(final Array array, final Blackhole black) {
-		return TimProxySorter.INSTANCE.sort(array.array_1000);
-	}
-
-	@Benchmark
-	public int[] heap_sort_10(final Array array, final Blackhole black) {
-		return HeapProxySorter.INSTANCE.sort(array.array_10);
-	}
-
-	@Benchmark
-	public int[] heap_sort_100(final Array array, final Blackhole black) {
-		return HeapProxySorter.INSTANCE.sort(array.array_100);
-	}
-
-	@Benchmark
-	public int[] heap_sort_1000(final Array array, final Blackhole black) {
-		return HeapProxySorter.INSTANCE.sort(array.array_1000);
+		return ProxySorter.sort(array.array_1000);
 	}
 
 	@Benchmark

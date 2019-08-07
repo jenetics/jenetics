@@ -28,12 +28,12 @@ import static io.jenetics.internal.util.array.swap;
  * @version !__version__!
  * @since !__version__!
  */
-enum InsertionProxySorter implements ProxySorter {
+final class InsertionProxySorter {
 
-	INSTANCE;
+	private InsertionProxySorter() {
+	}
 
-	@Override
-	public <T> int[] sort(
+	public static <T> int[] sort(
 		final T array,
 		final int length,
 		final ProxyComparator<? super T> cmp
@@ -53,11 +53,6 @@ enum InsertionProxySorter implements ProxySorter {
 		}
 
 		return idx;
-	}
-
-	@Override
-	public String toString() {
-		return "InsertionProxySorter";
 	}
 
 }

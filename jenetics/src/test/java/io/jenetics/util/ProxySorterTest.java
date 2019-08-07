@@ -32,10 +32,10 @@ import org.testng.annotations.Test;
 public class ProxySorterTest {
 
 	@Test(dataProvider = "sorters")
-	public void sort(final ProxySorter sorter, final int size) {
+	public void sort(final int size) {
 		final int[] array = new Random().ints(1000).toArray();
 
-		final int[] indexes = sorter.sort(array);
+		final int[] indexes = ProxySorter.sort(array);
 		Assert.assertEquals(sorted(array, indexes), expected(array));
 	}
 
@@ -56,19 +56,19 @@ public class ProxySorterTest {
 	@DataProvider(name = "sorters")
 	public Object[][] sorters() {
 		return new Object[][] {
-			{TimProxySorter.INSTANCE, 0},
-			{TimProxySorter.INSTANCE, 1},
-			{TimProxySorter.INSTANCE, 2},
-			{TimProxySorter.INSTANCE, 3},
-			{TimProxySorter.INSTANCE, 5},
-			{TimProxySorter.INSTANCE, 11},
-			{TimProxySorter.INSTANCE, 32},
-			{TimProxySorter.INSTANCE, 33},
-			{TimProxySorter.INSTANCE, 1_000},
-			{TimProxySorter.INSTANCE, 10_000},
-			{TimProxySorter.INSTANCE, 100_000},
-			{TimProxySorter.INSTANCE, 1_000_000},
-			{TimProxySorter.INSTANCE, 10_000_000}
+			{0},
+			{1},
+			{2},
+			{3},
+			{5},
+			{11},
+			{32},
+			{33},
+			{1_000},
+			{10_000},
+			{100_000},
+			{1_000_000},
+			{10_000_000}
 		};
 	}
 
