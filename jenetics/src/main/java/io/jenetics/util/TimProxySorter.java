@@ -43,7 +43,7 @@ final class TimProxySorter {
 	static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxyComparator<? super T> comparator
+		final ProxySorter.ProxyComparator<? super T> comparator
 	) {
 		final int[] proxy = ProxySorter.indexes(length);
 
@@ -76,7 +76,7 @@ final class TimProxySorter {
 		final int begin,
 		final int end,
 		final int[] proxy,
-		final ProxyComparator<? super T> cmp
+		final ProxySorter.ProxyComparator<? super T> cmp
 	) {
 		for (int i = begin + 1; i <= end; ++i) {
 			final int temp = proxy[i];
@@ -98,7 +98,7 @@ final class TimProxySorter {
 		final int begin,
 		final int mid,
 		final int end,
-		final ProxyComparator<? super T> cmp
+		final ProxySorter.ProxyComparator<? super T> cmp
 	) {
 		final int[] left = new int[mid - begin + 1];
 		System.arraycopy(proxy, begin, left, 0, left.length);

@@ -36,7 +36,7 @@ final class InsertionProxySorter {
 	public static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxyComparator<? super T> cmp
+		final ProxySorter.ProxyComparator<? super T> cmp
 	) {
 		final int[] idx = ProxySorters.indexes(length);
 

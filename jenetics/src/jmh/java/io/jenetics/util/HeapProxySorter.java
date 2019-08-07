@@ -36,7 +36,7 @@ final class HeapProxySorter {
 	public static <T> int[] sort(
 		final T array,
 		final int length,
-		final ProxyComparator<? super T> cmp
+		final ProxySorter.ProxyComparator<? super T> cmp
 	) {
 		final int[] indexes = ProxySorters.indexes(length);
 
@@ -57,7 +57,7 @@ final class HeapProxySorter {
 	private static <T> void sink(
 		final T array,
 		final int[] idx,
-		final ProxyComparator<T> cmp,
+		final ProxySorter.ProxyComparator<T> cmp,
 		final int start,
 		final int end
 	) {

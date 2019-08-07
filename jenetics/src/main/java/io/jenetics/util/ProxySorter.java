@@ -49,6 +49,58 @@ import java.util.List;
  */
 public final class ProxySorter {
 
+	/**
+	 * The comparator used for comparing two array elements at the specified
+	 * indexes.
+	 * <pre>{@code
+	 * final ProxyComparator<double[]> comparator =
+	 *     (a, i, j) -> Double.compare(a[i], a[j]);
+	 * }</pre>
+	 * The example above shows how to create a comparator for {@code double[]}
+	 * arrays.
+	 *
+	 * @see ProxySorter
+	 *
+	 * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
+	 *            {@code Seq<String>}
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface ProxyComparator<T> {
+
+		/**
+		 * Compares the two array elements, specified by its indices, for order.
+		 * Returns a negative integer, zero, or a positive integer as the first
+		 * argument is less than, equal to, or greater than the second.
+		 *
+		 * @see Comparator#compare(Object, Object)
+		 *
+		 * @param array the array where the two comparing elements are fetched
+		 * @param i the index of the first array element
+		 * @param j the index of the second array element
+		 * @return a negative integer, zero, or a positive integer as the first
+		 *         argument is less than, equal to, or greater than the second.
+		 * @throws NullPointerException if an argument is null and this
+		 *         comparator does not permit null arguments
+		 */
+		public int compare(final T array, final int i, final int j);
+
+		/**
+		 * Returns a comparator that imposes the reverse ordering of this
+		 * comparator.
+		 *
+		 * @return a comparator that imposes the reverse ordering of this
+		 *         comparator.
+		 */
+		public default ProxyComparator<T> reversed() {
+			return (a, i, j) -> compare(a, j, i);
+		}
+
+	}
+
 	private ProxySorter() {
 	}
 
