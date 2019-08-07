@@ -257,8 +257,9 @@ class TimSort<T> {
 		assert lo <= begin && begin <= hi;
 
 		int start = begin;
-		if (start == lo)
+		if (start == lo) {
 			start++;
+		}
 
 		for (; start < hi; start++) {
 			final int pivot = start;
@@ -269,18 +270,23 @@ class TimSort<T> {
 
 			while (left < right) {
 				final int mid = (left + right) >>> 1;
-				if (a.compare(pivot, mid) < 0) right = mid;
-				else left = mid + 1;
+
+				if (a.compare(pivot, mid) < 0) {
+					right = mid;
+				} else {
+					left = mid + 1;
+				}
 			}
 			assert left == right;
 
-			int n = start - left;  // The number of elements to move
+			final int n = start - left;  // The number of elements to move
 			switch(n) {
 				case 2:  a.indexes[left + 2] = a.indexes[left + 1];
 				case 1:  a.indexes[left + 1] = a.indexes[left];
 					break;
 				default: System.arraycopy(a.indexes, left, a.indexes, left + 1, n);
 			}
+
 			a.indexes[left] = pivot;
 		}
 	}
@@ -303,45 +309,53 @@ class TimSort<T> {
 	 * reverse a descending sequence without violating stability.
 	 *
 	 * @param a the array in which a run is to be counted and possibly reversed
-	 * @param lo index of the first element in the run
-	 * @param hi index after the last element that may be contained in the run.
-	It is required that @code{lo < hi}.
+	 * @param low index of the first element in the run
+	 * @param high index after the last element that may be contained in the run.
+	 *           It is required that @code{lo < hi}.
 	 * @return  the length of the run beginning at the specified position in
 	 *          the specified array
 	 */
-	private static <T> int countRunAndMakeAscending(Arr<T> a, int lo, int hi) {
-		assert lo < hi;
-		int runHi = lo + 1;
-		if (runHi == hi)
-			return 1;
+	private static <T> int countRunAndMakeAscending(
+		final Arr<T> a,
+		final int low,
+		final int high
+	) {
+		assert low < high;
 
-		// Find end of run, and reverse range if descending
-		//if (c.compare(a[runHi++], a[lo]) < 0) { // Descending
-		if (a.compare(runHi++, lo) < 0) {
-			//while(runHi < hi && c.compare(a[runHi], a[runHi - 1]) < 0)
-			while (runHi < hi && a.compare(runHi, runHi - 1) < 0) {
+		int runHi = low + 1;
+		if (runHi == high) {
+			return 1;
+		}
+
+		if (a.compare(runHi++, low) < 0) {
+			while (runHi < high && a.compare(runHi, runHi - 1) < 0) {
 				runHi++;
 			}
-			reverseRange(a, lo, runHi);
-		} else {                              // Ascending
-			//while (runHi < hi && c.compare(a[runHi], a[runHi - 1]) >= 0)
-			while (runHi < hi && a.compare(runHi, runHi - 1) >= 0) {
+			reverseRange(a, low, runHi);
+		} else {
+			while (runHi < high && a.compare(runHi, runHi - 1) >= 0) {
 				runHi++;
 			}
 		}
 
-		return runHi - lo;
+		return runHi - low;
 	}
 
 	/**
 	 * Reverse the specified range of the specified array.
 	 *
 	 * @param a the array in which a range is to be reversed
-	 * @param lo the index of the first element in the range to be reversed
-	 * @param hi the index after the last element in the range to be reversed
+	 * @param low the index of the first element in the range to be reversed
+	 * @param high the index after the last element in the range to be reversed
 	 */
-	private static void reverseRange(Arr<?> a, int lo, int hi) {
-		hi--;
+	private static void reverseRange(
+		final Arr<?> a,
+		final int low,
+		final int high
+	) {
+		int lo = low;
+		int hi = high - 1;
+
 		while (lo < hi) {
 			int t = a.indexes[lo];
 			a.indexes[lo++] = a.indexes[hi];
