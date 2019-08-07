@@ -20,6 +20,7 @@
 package io.jenetics.util;
 
 
+import java.security.KeyStore.PasswordProtection;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -79,12 +80,12 @@ class TimSort<T> {
 	/**
 	 * The array being sorted.
 	 */
-	private final T[] a;
+	private final Arr<T> a;
 
 	/**
 	 * The comparator for this sort.
 	 */
-	private final Comparator<? super T> c;
+	private final ProxySorter.Comparator<? super T> c;
 
 	/**
 	 * When we get into galloping mode, we stay there until both runs win less
@@ -111,7 +112,7 @@ class TimSort<T> {
 	/**
 	 * Temp storage for merges.
 	 */
-	private T[] tmp; // Actual runtime type will be Object[], regardless of T
+	private int[] tmp; // Actual runtime type will be Object[], regardless of T
 
 	/**
 	 * A stack of pending runs yet to be merged.  Run i starts at
@@ -133,14 +134,13 @@ class TimSort<T> {
 	 * @param a the array to be sorted
 	 * @param c the comparator to determine the order of the sort
 	 */
-	private TimSort(T[] a, Comparator<? super T> c) {
+	private TimSort(Arr<T> a, ProxySorter.Comparator<? super T> c) {
 		this.a = a;
 		this.c = c;
 
 		// Allocate temp storage (which may be increased later if necessary)
 		int len = a.length;
-		@SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
-		T[] newArray = (T[]) new Object[len < 2 * INITIAL_TMP_STORAGE_LENGTH ?
+		int[] newArray = new int[len < 2 * INITIAL_TMP_STORAGE_LENGTH ?
 			len >>> 1 : INITIAL_TMP_STORAGE_LENGTH];
 		tmp = newArray;
 
@@ -167,15 +167,17 @@ class TimSort<T> {
 	 * of the public method with the same signature in java.util.Arrays.
 	 */
 
-	static <T> void sort(T[] a, Comparator<? super T> c) {
+	static <T> void sort(Arr<T> a, ProxySorter.Comparator<? super T> c) {
 		sort(a, 0, a.length, c);
 	}
 
-	static <T> void sort(T[] a, int lo, int hi, Comparator<? super T> c) {
+	static <T> void sort(Arr<T> a, int lo, int hi, ProxySorter.Comparator<? super T> c) {
+		/*
 		if (c == null) {
 			Arrays.sort(a, lo, hi);
 			return;
 		}
+		 */
 
 		rangeCheck(a.length, lo, hi);
 		int nRemaining  = hi - lo;
@@ -241,13 +243,13 @@ class TimSort<T> {
 	 * @param c comparator to used for the sort
 	 */
 	@SuppressWarnings("fallthrough")
-	private static <T> void binarySort(T[] a, int lo, int hi, int start,
-		Comparator<? super T> c) {
+	private static <T> void binarySort(Arr<T> a, int lo, int hi, int start, ProxySorter.Comparator<? super T> c) {
 		assert lo <= start && start <= hi;
 		if (start == lo)
 			start++;
 		for ( ; start < hi; start++) {
-			T pivot = a[start];
+			//T pivot = a[start];
+			int pivot = start;
 
 			// Set left (and right) to the index where a[start] (pivot) belongs
 			int left = lo;
@@ -260,7 +262,8 @@ class TimSort<T> {
 			 */
 			while (left < right) {
 				int mid = (left + right) >>> 1;
-				if (c.compare(pivot, a[mid]) < 0)
+				//if (c.compare(pivot, a[mid]) < 0)
+				if (c.compare(a.array, pivot, mid) < 0)
 					right = mid;
 				else
 					left = mid + 1;
@@ -277,12 +280,12 @@ class TimSort<T> {
 			int n = start - left;  // The number of elements to move
 			// Switch is just an optimization for arraycopy in default case
 			switch(n) {
-				case 2:  a[left + 2] = a[left + 1];
-				case 1:  a[left + 1] = a[left];
+				case 2:  a.indexes[left + 2] = a.indexes[left + 1];
+				case 1:  a.indexes[left + 1] = a.indexes[left];
 					break;
-				default: System.arraycopy(a, left, a, left + 1, n);
+				default: System.arraycopy(a.indexes, left, a.indexes, left + 1, n);
 			}
-			a[left] = pivot;
+			a.indexes[left] = pivot;
 		}
 	}
 
@@ -311,20 +314,22 @@ class TimSort<T> {
 	 * @return  the length of the run beginning at the specified position in
 	 *          the specified array
 	 */
-	private static <T> int countRunAndMakeAscending(T[] a, int lo, int hi,
-		Comparator<? super T> c) {
+	private static <T> int countRunAndMakeAscending(Arr<T> a, int lo, int hi, ProxySorter.Comparator<? super T> c) {
 		assert lo < hi;
 		int runHi = lo + 1;
 		if (runHi == hi)
 			return 1;
 
 		// Find end of run, and reverse range if descending
-		if (c.compare(a[runHi++], a[lo]) < 0) { // Descending
-			while(runHi < hi && c.compare(a[runHi], a[runHi - 1]) < 0)
+		//if (c.compare(a[runHi++], a[lo]) < 0) { // Descending
+		if (c.compare(a.array, runHi++, lo) < 0) {
+			//while(runHi < hi && c.compare(a[runHi], a[runHi - 1]) < 0)
+			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) < 0)
 				runHi++;
 			reverseRange(a, lo, runHi);
 		} else {                              // Ascending
-			while (runHi < hi && c.compare(a[runHi], a[runHi - 1]) >= 0)
+			//while (runHi < hi && c.compare(a[runHi], a[runHi - 1]) >= 0)
+			while (runHi < hi && c.compare(a.array, runHi, runHi - 1) >= 0)
 				runHi++;
 		}
 
@@ -338,12 +343,12 @@ class TimSort<T> {
 	 * @param lo the index of the first element in the range to be reversed
 	 * @param hi the index after the last element in the range to be reversed
 	 */
-	private static void reverseRange(Object[] a, int lo, int hi) {
+	private static void reverseRange(Arr<?> a, int lo, int hi) {
 		hi--;
 		while (lo < hi) {
-			Object t = a[lo];
-			a[lo++] = a[hi];
-			a[hi--] = t;
+			int t = a.indexes[lo];
+			a.indexes[lo++] = a.indexes[hi];
+			a.indexes[hi--] = t;
 		}
 	}
 
@@ -937,4 +942,19 @@ class TimSort<T> {
 		if (toIndex > arrayLen)
 			throw new ArrayIndexOutOfBoundsException(toIndex);
 	}
+}
+
+class Arr<T> {
+	final T array;
+	final int length;
+	final int[] indexes;
+	//final ProxySorter.Comparator<T> comparator;
+
+	Arr(final T array, final int length) {
+		this.array = array;
+		this.length = length;
+		this.indexes = ProxySorter.indexes(length);
+		//this.comparator = comparator;
+	}
+
 }
