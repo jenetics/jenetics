@@ -40,7 +40,7 @@ final class InsertionProxySorter {
 		final int length,
 		final Comparator<? super T> cmp
 	) {
-		final int[] idx = ProxySorters.indexes(length);
+		final int[] idx = ProxySorter.indexes(length);
 
 		for (int i = 1; i < length; ++i) {
 			int j = i;

@@ -40,7 +40,7 @@ final class HeapProxySorter {
 		final int length,
 		final Comparator<? super T> cmp
 	) {
-		final int[] indexes = ProxySorters.indexes(length);
+		final int[] indexes = ProxySorter.indexes(length);
 
 		// Heapify
 		for (int k = length/2; k >= 0; --k) {
