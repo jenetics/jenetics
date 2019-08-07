@@ -244,47 +244,37 @@ class TimSort<T> {
 	 * @param a the array in which a range is to be sorted
 	 * @param lo the index of the first element in the range to be sorted
 	 * @param hi the index after the last element in the range to be sorted
-	 * @param start the index of the first element in the range that is
+	 * @param begin the index of the first element in the range that is
 	 *        not already known to be sorted (@code lo <= start <= hi}
 	 */
 	@SuppressWarnings("fallthrough") // OK
-	static <T> void binarySort(Arr<T> a, int lo, int hi, int start) {
-		assert lo <= start && start <= hi;
+	static <T> void binarySort(
+		final Arr<T> a,
+		final int lo,
+		final int hi,
+		final int begin
+	) {
+		assert lo <= begin && begin <= hi;
+
+		int start = begin;
 		if (start == lo)
 			start++;
 
 		for (; start < hi; start++) {
-			//T pivot = a[start];
 			final int pivot = start;
 
-			// Set left (and right) to the index where a[start] (pivot) belongs
 			int left = lo;
 			int right = start;
 			assert left <= right;
-			/*
-			 * Invariants:
-			 *   pivot >= all in [lo, left).
-			 *   pivot <  all in [right, start).
-			 */
+
 			while (left < right) {
-				int mid = (left + right) >>> 1;
-				//if (c.compare(pivot, a[mid]) < 0)
-				if (a.compare(pivot, mid) < 0)
-					right = mid;
-				else
-					left = mid + 1;
+				final int mid = (left + right) >>> 1;
+				if (a.compare(pivot, mid) < 0) right = mid;
+				else left = mid + 1;
 			}
 			assert left == right;
 
-			/*
-			 * The invariants still hold: pivot >= all in [lo, left) and
-			 * pivot < all in [left, start), so pivot belongs at left.  Note
-			 * that if there are elements equal to pivot, left points to the
-			 * first slot after them -- that's why this sort is stable.
-			 * Slide elements over to make room to make room for pivot.
-			 */
 			int n = start - left;  // The number of elements to move
-			// Switch is just an optimization for arraycopy in default case
 			switch(n) {
 				case 2:  a.indexes[left + 2] = a.indexes[left + 1];
 				case 1:  a.indexes[left + 1] = a.indexes[left];
