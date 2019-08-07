@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * An {@code ProxySort} doesn't sort a given array directly, instead
+ * This sorting methods doesn't sort a given array directly, instead
  * an index lookup array is returned which allows to access the array in
  * an sorted order.
  *
