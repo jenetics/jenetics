@@ -51,7 +51,7 @@ final class InsertMergeProxySorter {
 			return proxy;
 		}
 
-		// Sorting the sub-arrays with insertion-sort.
+		// Sorting the sub-arrays with binary insertion sort.
 		for (int i = 0; i < length; i += RUN) {
 			BinaryInsertionSort.sort(
 				array, i,

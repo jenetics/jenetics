@@ -20,6 +20,14 @@
 package io.jenetics.util;
 
 /**
+ * Sorts a specified portion of the specified array using a binary insertion
+ * sort. This is the best method for sorting small numbers of elements. It
+ * requires O(n log n) compares, but O(n^2) data movement (worst case).
+ *
+ * If the initial part of the specified range is already sorted, this method can
+ * take advantage of it: the method assumes that the elements from index
+ * {@code lo}, inclusive, to {@code start}, exclusive are already sorted.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -90,7 +98,7 @@ final class BinaryInsertionSort {
 			}
 			assert left == right;
 
-			int n = start - left;  // The number of elements to move
+			int n = start - left;
 			switch(n) {
 				case 2:
 					proxy[left + 2] = proxy[left + 1];
@@ -123,7 +131,7 @@ final class BinaryInsertionSort {
 				runHi++;
 			}
 
-			reverseRange(proxy, lo, runHi);
+			reverse(proxy, lo, runHi);
 		} else {
 			while (runHi < hi && c.compare(array, proxy[runHi], proxy[runHi - 1]) >= 0) {
 				runHi++;
@@ -133,7 +141,7 @@ final class BinaryInsertionSort {
 		return runHi - lo;
 	}
 
-	private static void reverseRange(final int[] proxy, int lo, int hi) {
+	private static void reverse(final int[] proxy, int lo, int hi) {
 		hi--;
 		while (lo < hi) {
 			final int t = proxy[lo];
