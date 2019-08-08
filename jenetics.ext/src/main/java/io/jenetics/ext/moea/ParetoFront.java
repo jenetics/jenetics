@@ -20,6 +20,7 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.array.revert;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 /**
@@ -181,8 +182,10 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 				distance,
 				dimension
 			);
+			final int[] indexes = ProxySorter.sort(distances);
+			revert(indexes);
 
-			final List<T> list = IntStream.of(IndexSorter.sort(distances))
+			final List<T> list = IntStream.of(indexes)
 				.limit(size)
 				.mapToObj(_population::get)
 				.collect(Collectors.toList());
