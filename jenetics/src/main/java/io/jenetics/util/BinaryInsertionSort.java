@@ -112,33 +112,37 @@ final class BinaryInsertionSort {
 		}
 	}
 
-	static <T> int countRunAndMakeAscending(
+	private static <T> int countRunAndMakeAscending(
 		final T array,
-		final int lo,
-		final int hi,
+		final int low,
+		final int high,
 		final int[] proxy,
-		final ProxySorter.Comparator<? super T> c
+		final ProxySorter.Comparator<? super T> cmp
 	) {
-		assert lo < hi;
+		assert low < high;
 
-		int runHi = lo + 1;
-		if (runHi == hi) {
+		int runHi = low + 1;
+		if (runHi == high) {
 			return 1;
 		}
 
-		if (c.compare(array, proxy[runHi++], proxy[lo]) < 0) {
-			while (runHi < hi && c.compare(array, proxy[runHi], proxy[runHi - 1]) < 0) {
+		if (cmp.compare(array, proxy[runHi++], proxy[low]) < 0) {
+			while (runHi < high &&
+				cmp.compare(array, proxy[runHi], proxy[runHi - 1]) < 0)
+			{
 				runHi++;
 			}
 
-			reverse(proxy, lo, runHi);
+			reverse(proxy, low, runHi);
 		} else {
-			while (runHi < hi && c.compare(array, proxy[runHi], proxy[runHi - 1]) >= 0) {
+			while (runHi < high &&
+				cmp.compare(array, proxy[runHi], proxy[runHi - 1]) >= 0)
+			{
 				runHi++;
 			}
 		}
 
-		return runHi - lo;
+		return runHi - low;
 	}
 
 	private static void reverse(final int[] proxy, int lo, int hi) {
