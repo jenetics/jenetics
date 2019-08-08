@@ -40,6 +40,11 @@ import java.util.List;
  * }
  * }</pre>
  *
+ * @apiNote
+ * The most general sorting method is {@link #sort(Object, int, Comparator)}.
+ * All other sorting methods can be created with this method.
+ *
+ * @see #sort(Object, int, Comparator)
  * @see Comparator
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -58,6 +63,7 @@ public final class ProxySorter {
 	 * The example above shows how to create a comparator for {@code double[]}
 	 * arrays.
 	 *
+	 * @see ProxySorter#sort(Object, int, Comparator)
 	 * @see ProxySorter
 	 *
 	 * @param <T> the array type, e.g. {@code int[]}, {@code double[]} or
