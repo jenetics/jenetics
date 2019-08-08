@@ -22,7 +22,7 @@ package io.jenetics.util;
 import static java.lang.Math.min;
 
 /**
- * Implementing the index sorter with the (quasi) Tim sort algorithm.
+ * Implementing the Tim sort algorithm.
  *
  * @implNote
  * To be precise, this is not the exact Timsort algorithm. The scan for the
@@ -33,9 +33,9 @@ import static java.lang.Math.min;
  * @version !__version__!
  * @since !__version__!
  */
-final class InsertMergeProxySorter {
+final class TimProxySorter {
 
-	private InsertMergeProxySorter() {
+	private TimProxySorter() {
 	}
 
 	private final static int RUN = 32;

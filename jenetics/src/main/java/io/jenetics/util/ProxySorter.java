@@ -131,7 +131,7 @@ public final class ProxySorter {
 		final int length,
 		final Comparator<? super T> comparator
 	) {
-		return InsertMergeProxySorter.sort(array, length, comparator);
+		return TimProxySorter.sort(array, length, comparator);
 	}
 
 
