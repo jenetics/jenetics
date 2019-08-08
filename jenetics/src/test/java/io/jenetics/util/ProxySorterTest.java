@@ -31,12 +31,67 @@ import org.testng.annotations.Test;
  */
 public class ProxySorterTest {
 
-	@Test(dataProvider = "sorters")
-	public void sort(final int size) {
-		final int[] array = new Random().ints(1000).toArray();
+	/* *************************************************************************
+	 * Test binary insertion sort.
+	 * ************************************************************************/
+
+	@Test(dataProvider = "arrays")
+	public void binaryInsertionSortArrays(final int[] array) {
+		final int[] indexes = BinaryInsertionSort.sort(
+			array, array.length,
+			(a, i, j) -> Integer.compare(a[i], a[j])
+		);
+
+		Assert.assertEquals(sorted(array, indexes), expected(array));
+	}
+
+	@Test(dataProvider = "arrayLengths")
+	public void binaryInsertionSortSize(final int size) {
+		final int[] array = new Random().ints(size).toArray();
+
+		final int[] indexes = BinaryInsertionSort.sort(
+			array, array.length,
+			(a, i, j) -> Integer.compare(a[i], a[j])
+		);
+		Assert.assertEquals(sorted(array, indexes), expected(array));
+	}
+
+	/* *************************************************************************
+	 * Test tim sort.
+	 * ************************************************************************/
+
+	@Test(dataProvider = "arrayLengths")
+	public void timSortArraySize(final int size) {
+		final int[] array = new Random().ints(size).toArray();
 
 		final int[] indexes = ProxySorter.sort(array);
 		Assert.assertEquals(sorted(array, indexes), expected(array));
+	}
+
+
+	@DataProvider(name = "arrays")
+	public Object[][] arrays() {
+		return new Object[][] {
+			{1, 2, 3, 9, 8, 7, 4, 5, 6},
+			{5, 4, 3, 2, 1},
+			{1, 2, 3, 4, 56, 45, 34, 65, 34, 9, 8, 7, 6, 5}
+		};
+	}
+
+	@DataProvider(name = "arrayLengths")
+	public Object[][] arrayLengths() {
+		return new Object[][] {
+			{0},
+			{1},
+			{2},
+			{3},
+			{5},
+			{11},
+			{32},
+			{33},
+			{1_000},
+			{10_000}
+		};
 	}
 
 	private static int[] sorted(final int[] array, final int[] indexes) {
@@ -51,25 +106,6 @@ public class ProxySorterTest {
 		final int[] result = array.clone();
 		Arrays.sort(result);
 		return result;
-	}
-
-	@DataProvider(name = "sorters")
-	public Object[][] sorters() {
-		return new Object[][] {
-			{0},
-			{1},
-			{2},
-			{3},
-			{5},
-			{11},
-			{32},
-			{33},
-			{1_000},
-			{10_000},
-			{100_000},
-			{1_000_000},
-			{10_000_000}
-		};
 	}
 
 }
