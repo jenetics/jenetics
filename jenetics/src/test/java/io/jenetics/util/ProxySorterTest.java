@@ -60,6 +60,12 @@ public class ProxySorterTest {
 	 * Test tim sort.
 	 * ************************************************************************/
 
+	@Test(dataProvider = "arrays")
+	public void timSortArrays(final int[] array) {
+		final int[] indexes = ProxySorter.sort(array);
+		Assert.assertEquals(sorted(array, indexes), expected(array));
+	}
+
 	@Test(dataProvider = "arrayLengths")
 	public void timSortArraySize(final int size) {
 		final int[] array = new Random().ints(size).toArray();

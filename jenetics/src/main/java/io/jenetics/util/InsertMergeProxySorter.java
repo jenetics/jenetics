@@ -21,8 +21,6 @@ package io.jenetics.util;
 
 import static java.lang.Math.min;
 
-import io.jenetics.util.ProxySorter.Comparator;
-
 /**
  * Implementing the index sorter with the (quasi) Tim sort algorithm.
  *
@@ -42,12 +40,16 @@ final class InsertMergeProxySorter {
 
 	private final static int RUN = 32;
 
+	// Main sort method.
 	static <T> int[] sort(
 		final T array,
 		final int length,
-		final Comparator<? super T> comparator
+		final ProxySorter.Comparator<? super T> comparator
 	) {
 		final int[] proxy = ProxySorter.indexes(length);
+		if (length < 2) {
+			return proxy;
+		}
 
 		// Sorting the sub-arrays with insertion-sort.
 		for (int i = 0; i < length; i += RUN) {
@@ -75,16 +77,16 @@ final class InsertMergeProxySorter {
 	// Insertion sort for sub-arrays.
 	private static <T> void sort(
 		final T array,
-		final int begin,
-		final int end,
+		final int low,
+		final int high,
 		final int[] proxy,
-		final Comparator<? super T> cmp
+		final ProxySorter.Comparator<? super T> cmp
 	) {
-		for (int i = begin + 1; i <= end; ++i) {
+		for (int i = low + 1; i <= high; ++i) {
 			final int temp = proxy[i];
 
 			int j = i - 1;
-			while (j >= begin && cmp.compare(array, proxy[j], temp) > 0) {
+			while (j >= low && cmp.compare(array, proxy[j], temp) > 0) {
 				proxy[j + 1] = proxy[j];
 				--j;
 			}
@@ -100,7 +102,7 @@ final class InsertMergeProxySorter {
 		final int begin,
 		final int mid,
 		final int end,
-		final Comparator<? super T> cmp
+		final ProxySorter.Comparator<? super T> cmp
 	) {
 		final int[] left = new int[mid - begin + 1];
 		System.arraycopy(proxy, begin, left, 0, left.length);
