@@ -47,9 +47,9 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * ProxySorterPerf.old_index_sort_10     avgt    5     71.901 ±     3.603  ns/op
  * ProxySorterPerf.old_index_sort_100    avgt    5   3005.035 ±   101.993  ns/op
  * ProxySorterPerf.old_index_sort_1000   avgt    5  75792.042 ±  2633.823  ns/op
- * ProxySorterPerf.tim_sort_10           avgt    5     79.485 ±     2.863  ns/op
- * ProxySorterPerf.tim_sort_100          avgt    5   1591.106 ±   162.232  ns/op
- * ProxySorterPerf.tim_sort_1000         avgt    5  52207.042 ±  1775.293  ns/op
+ * ProxySorterPerf.tim_sort_10           avgt    5    117.133 ±   0.515  ns/op
+ * ProxySorterPerf.tim_sort_100          avgt    5   1679.416 ±   8.250  ns/op
+ * ProxySorterPerf.tim_sort_1000         avgt    5  68428.429 ± 189.250  ns/op
  *
  * Java 11
  * Benchmark                             Mode  Cnt      Score      Error  Units
@@ -114,38 +114,38 @@ public class ProxySorterPerf {
 		return ProxySorter.sort(array.array_1000);
 	}
 
-	@Benchmark
-	public int[] old_index_sort_10(final Array array, final Blackhole black) {
-		return IndexSorter.sort(array.array_10);
-	}
-
-	@Benchmark
-	public int[] old_index_sort_100(final Array array, final Blackhole black) {
-		return IndexSorter.sort(array.array_100);
-	}
-
-	@Benchmark
-	public int[] old_index_sort_1000(final Array array, final Blackhole black) {
-		return IndexSorter.sort(array.array_1000);
-	}
-
-	@Benchmark
-	public int[] java_index_sort_10(final Array array, final Blackhole black) {
-		Arrays.sort(array.array_10);
-		return array.array_10;
-	}
-
-	@Benchmark
-	public int[] java_index_sort_100(final Array array, final Blackhole black) {
-		Arrays.sort(array.array_100);
-		return array.array_100;
-	}
-
-	@Benchmark
-	public int[] java_index_sort_1000(final Array array, final Blackhole black) {
-		Arrays.sort(array.array_1000);
-		return array.array_1000;
-	}
+//	@Benchmark
+//	public int[] old_index_sort_10(final Array array, final Blackhole black) {
+//		return IndexSorter.sort(array.array_10);
+//	}
+//
+//	@Benchmark
+//	public int[] old_index_sort_100(final Array array, final Blackhole black) {
+//		return IndexSorter.sort(array.array_100);
+//	}
+//
+//	@Benchmark
+//	public int[] old_index_sort_1000(final Array array, final Blackhole black) {
+//		return IndexSorter.sort(array.array_1000);
+//	}
+//
+//	@Benchmark
+//	public int[] java_index_sort_10(final Array array, final Blackhole black) {
+//		Arrays.sort(array.array_10);
+//		return array.array_10;
+//	}
+//
+//	@Benchmark
+//	public int[] java_index_sort_100(final Array array, final Blackhole black) {
+//		Arrays.sort(array.array_100);
+//		return array.array_100;
+//	}
+//
+//	@Benchmark
+//	public int[] java_index_sort_1000(final Array array, final Blackhole black) {
+//		Arrays.sort(array.array_1000);
+//		return array.array_1000;
+//	}
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
