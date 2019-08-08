@@ -165,6 +165,23 @@ public final class ProxySorter {
 	 * @return the <em>sorted</em> index lookup array
 	 * @throws NullPointerException if the array is {@code null}
 	 */
+	public static int[] sort(final long[] array) {
+		return sort(array, array.length, ProxySorter::compare);
+	}
+
+	private static int compare(final long[] a, final int i, final int j) {
+		return Long.compare(a[i], a[j]);
+	}
+
+	/**
+	 * Sorting the given array by creating an index lookup array.
+	 *
+	 * @see #sort(Object, int, Comparator)
+	 *
+	 * @param array the array to sort
+	 * @return the <em>sorted</em> index lookup array
+	 * @throws NullPointerException if the array is {@code null}
+	 */
 	public static int[] sort(final double[] array) {
 		return sort(array, array.length, ProxySorter::compare);
 	}
