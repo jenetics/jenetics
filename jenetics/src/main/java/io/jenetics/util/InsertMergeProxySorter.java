@@ -53,9 +53,9 @@ final class InsertMergeProxySorter {
 
 		// Sorting the sub-arrays with insertion-sort.
 		for (int i = 0; i < length; i += RUN) {
-			sort(
+			BinaryInsertionSort.sort(
 				array, i,
-				min(i + RUN - 1, length - 1),
+				min(i + RUN, length),
 				proxy,
 				comparator
 			);
@@ -72,27 +72,6 @@ final class InsertMergeProxySorter {
 		}
 
 		return proxy;
-	}
-
-	// Insertion sort for sub-arrays.
-	private static <T> void sort(
-		final T array,
-		final int low,
-		final int high,
-		final int[] proxy,
-		final ProxySorter.Comparator<? super T> cmp
-	) {
-		for (int i = low + 1; i <= high; ++i) {
-			final int temp = proxy[i];
-
-			int j = i - 1;
-			while (j >= low && cmp.compare(array, proxy[j], temp) > 0) {
-				proxy[j + 1] = proxy[j];
-				--j;
-			}
-
-			proxy[j + 1] = temp;
-		}
 	}
 
 	// Merges the sorted runs.

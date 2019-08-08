@@ -38,6 +38,7 @@ public class ProxySorterTest {
 	@Test(dataProvider = "arrays")
 	public void binaryInsertionSortArrays(final int[] array) {
 		final int[] indexes = BinaryInsertionSort.sort(
+		//final int[] indexes = InsertMergeProxySorter.bsort(
 			array, array.length,
 			(a, i, j) -> Integer.compare(a[i], a[j])
 		);

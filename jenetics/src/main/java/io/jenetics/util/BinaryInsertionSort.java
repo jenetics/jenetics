@@ -53,7 +53,7 @@ final class BinaryInsertionSort {
 		final ProxySorter.Comparator<? super T> cmp
 	) {
 		final int begin = countRunAndMakeAscending(array, low, high, proxy, cmp);
-		binarySort(array, low, high, 0, proxy, cmp);
+		binarySort(array, low, high, low + begin, proxy, cmp);
 	}
 
 	@SuppressWarnings("fallthrough")
@@ -65,7 +65,8 @@ final class BinaryInsertionSort {
 		final int[] proxy,
 		final ProxySorter.Comparator<? super T> cmp
 	) {
-		assert low <= begin && begin <= high;
+		assert low <= begin;
+		assert begin <= high;
 
 		int start = begin;
 		if (start == low) {
