@@ -55,18 +55,22 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  *
  * Java 11
  * Benchmark                             Mode  Cnt      Score      Error  Units
- * ProxySorterPerf.heap_sort_10          avgt    5    138.540 ±   17.232  ns/op
- * ProxySorterPerf.heap_sort_100         avgt    5   2433.890 ±  250.078  ns/op
- * ProxySorterPerf.heap_sort_1000        avgt    5  68613.191 ± 5128.302  ns/op
- * ProxySorterPerf.java_index_sort_10    avgt    5     13.087 ±    0.993  ns/op
- * ProxySorterPerf.java_index_sort_100   avgt    5    100.869 ±    2.555  ns/op
- * ProxySorterPerf.java_index_sort_1000  avgt    5    272.506 ±   20.439  ns/op
- * ProxySorterPerf.old_index_sort_10     avgt    5     63.236 ±    8.195  ns/op
- * ProxySorterPerf.old_index_sort_100    avgt    5   2235.945 ±  135.744  ns/op
- * ProxySorterPerf.old_index_sort_1000   avgt    5  73539.263 ± 8230.531  ns/op
- * ProxySorterPerf.tim_sort_10           avgt    5     47.301 ±    1.298  ns/op
- * ProxySorterPerf.tim_sort_100          avgt    5   1542.740 ±   93.445  ns/op
- * ProxySorterPerf.tim_sort_1000         avgt    5  48419.026 ± 1429.150  ns/op
+ * Benchmark                               Mode  Cnt         Score        Error  Units
+ * ProxySorterPerf.java_index_sort_10      avgt    7        48.008 ±      1.762  ns/op
+ * ProxySorterPerf.java_index_sort_100     avgt    7       980.397 ±      8.253  ns/op
+ * ProxySorterPerf.java_index_sort_1000    avgt    7     18456.929 ±    145.767  ns/op
+ * ProxySorterPerf.java_index_sort_10000   avgt    7    511886.525 ±   3069.608  ns/op
+ * ProxySorterPerf.java_index_sort_100000  avgt    7   6310973.816 ±  39347.962  ns/op
+ * ProxySorterPerf.old_index_sort_10       avgt    7        47.927 ±      0.228  ns/op
+ * ProxySorterPerf.old_index_sort_100      avgt    7      1964.011 ±     20.086  ns/op
+ * ProxySorterPerf.old_index_sort_1000     avgt    7     67914.520 ±    521.145  ns/op
+ * ProxySorterPerf.old_index_sort_10000    avgt    7   1012470.153 ±  24962.083  ns/op
+ * ProxySorterPerf.old_index_sort_100000   avgt    7  16398207.780 ± 204541.915  ns/op
+ * ProxySorterPerf.tim_sort_10             avgt    7       109.839 ±      1.005  ns/op
+ * ProxySorterPerf.tim_sort_100            avgt    7      1706.782 ±     21.053  ns/op
+ * ProxySorterPerf.tim_sort_1000           avgt    7     70038.724 ±    782.876  ns/op
+ * ProxySorterPerf.tim_sort_10000          avgt    7   1113895.056 ±   5232.171  ns/op
+ * ProxySorterPerf.tim_sort_100000         avgt    7  12965362.037 ± 229966.522  ns/op
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
