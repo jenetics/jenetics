@@ -96,27 +96,20 @@ final class TimProxySorter {
 		// After comparing, merge the two arrays in larger sub-array.
 		while (i < left.length && j < right.length) {
 			if (cmp.compare(array, left[i], right[j]) <= 0) {
-				proxy[k] = left[i];
-				++i;
+				proxy[k++] = left[i++];
 			} else {
-				proxy[k] = right[j];
-				++j;
+				proxy[k++] = right[j++];
 			}
-			++k;
 		}
 
 		// Copy remaining elements from the left.
 		while (i < left.length) {
-			proxy[k] = left[i];
-			++k;
-			++i;
+			proxy[k++] = left[i++];
 		}
 
 		// Copy remaining elements from the right.
 		while (j < right.length) {
-			proxy[k] = right[j];
-			++k;
-			++j;
+			proxy[k++] = right[j++];
 		}
 	}
 

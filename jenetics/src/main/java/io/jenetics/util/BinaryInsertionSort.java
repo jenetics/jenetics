@@ -133,7 +133,7 @@ final class BinaryInsertionSort {
 				runHi++;
 			}
 
-			reverse(proxy, low, runHi);
+			reverse(proxy, low, runHi - 1);
 		} else {
 			while (runHi < high &&
 				cmp.compare(array, proxy[runHi], proxy[runHi - 1]) >= 0)
@@ -146,7 +146,6 @@ final class BinaryInsertionSort {
 	}
 
 	private static void reverse(final int[] proxy, int lo, int hi) {
-		hi--;
 		while (lo < hi) {
 			final int t = proxy[lo];
 			proxy[lo++] = proxy[hi];
