@@ -78,11 +78,11 @@ final class BinaryInsertionSort {
 
 		int start = begin;
 		if (start == low) {
-			start++;
+			++start;
 		}
 
-		for ( ; start < high; start++) {
-			int pivot = proxy[start];
+		for (; start < high; start++) {
+			final int pivot = proxy[start];
 
 			int left = low;
 			int right = start;
@@ -130,7 +130,7 @@ final class BinaryInsertionSort {
 			while (runHi < high &&
 				cmp.compare(array, proxy[runHi], proxy[runHi - 1]) < 0)
 			{
-				runHi++;
+				++runHi;
 			}
 
 			reverse(proxy, low, runHi - 1);
@@ -138,7 +138,7 @@ final class BinaryInsertionSort {
 			while (runHi < high &&
 				cmp.compare(array, proxy[runHi], proxy[runHi - 1]) >= 0)
 			{
-				runHi++;
+				++runHi;
 			}
 		}
 
