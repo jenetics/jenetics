@@ -146,7 +146,7 @@ public interface EvolutionStream<
 	 * }</pre>
 	 *
 	 *
-	 * @since !__version__!
+	 * @since 3.1
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -166,7 +166,7 @@ public interface EvolutionStream<
 	}
 
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> of(
+	EvolutionStream<G, C> adaptive(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, Evolution<G, C>> evolution
 	) {
