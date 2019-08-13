@@ -31,9 +31,14 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 
 /**
+ * The {@code Spliterator} implementation of the {@code EvolutionStream}.
+ *
+ * @param <G> the gene type
+ * @param <C> the evolution result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 5.1
  */
 public final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -58,6 +63,15 @@ public final class EvolutionSpliterator<
 		_estimate = estimate;
 	}
 
+	/**
+	 * Create a new evolution spliterator with the given {@code start} element
+	 * and the {@code evolution} function.
+	 *
+	 *
+	 * @param start the start element
+	 * @param evolution the evolution function
+	 * @throws NullPointerException if one of the argument is {@code null}
+	 */
 	public EvolutionSpliterator(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
@@ -93,6 +107,31 @@ public final class EvolutionSpliterator<
 	@Override
 	public int characteristics() {
 		return NONNULL | IMMUTABLE | ORDERED;
+	}
+
+	/**
+	 * Create a new spliterator with the given {@code start} element and the
+	 * {@code evolution} function-function.
+	 *
+	 * @since 5.1
+	 *
+	 * @param start the start element
+	 * @param evolution the evolution function-function
+	 * @param <G> the gene type
+	 * @param <C> the evolution result type
+	 * @return a new evolution spliterator
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionSpliterator<G, C> of(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<
+			? super EvolutionStart<G, C>,
+			Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>>> evolution
+	) {
+		return new EvolutionSpliterator<G, C>(
+			start,
+			result -> evolution.apply(result).apply(result)
+		);
 	}
 
 }

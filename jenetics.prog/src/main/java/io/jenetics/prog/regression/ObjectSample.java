@@ -62,7 +62,7 @@ final class ObjectSample<T> implements Sample<T>, Serializable {
 
 	@Override
 	public T argAt(final int index) {
-		if (index < 0 || index >= arity() - 1) {
+		if (index < 0 || index >= arity()) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Argument index out or range [0, %s): %s", arity(), index
 			));

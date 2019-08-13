@@ -1,3 +1,11 @@
+Jenetics-5.0.1
+
+- Bug fixes
+
+* https://github.com/jenetics/jenetics/issues/550: Erroneous index check for `Sample.argAt(int)` method in `io.jenetics.prog.regression` package.
+* https://github.com/jenetics/jenetics/issues/550: `ClassCastException` in `io.jenetics.prog.regression.Regression` class.
+
+
 Jenetics-5.0.0
 
 - Improvements
