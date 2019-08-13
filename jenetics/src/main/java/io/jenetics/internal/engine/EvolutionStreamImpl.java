@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
 import io.jenetics.Gene;
+import io.jenetics.engine.Evolution;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
@@ -35,7 +36,7 @@ import io.jenetics.internal.util.StreamProxy;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version !__version__!
  */
 public final class EvolutionStreamImpl<
 	G extends Gene<?, G>,
@@ -57,7 +58,7 @@ public final class EvolutionStreamImpl<
 
 	public EvolutionStreamImpl(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+		final Evolution<G, C> evolution
 	) {
 		this(new EvolutionSpliterator<>(start, evolution), false);
 	}
@@ -68,6 +69,17 @@ public final class EvolutionStreamImpl<
 		return new EvolutionStreamImpl<>(
 			LimitSpliterator.of(_spliterator, proceed),
 			isParallel()
+		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStreamImpl<G, C> of(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, Evolution<G, C>> evolution
+	) {
+		return new EvolutionStreamImpl<G, C>(
+			EvolutionSpliterator.of(start, evolution),
+			false
 		);
 	}
 
