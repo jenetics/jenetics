@@ -75,7 +75,9 @@ public final class EvolutionStreamImpl<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStreamImpl<G, C> of(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, Evolution<G, C>> evolution
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
 	) {
 		return new EvolutionStreamImpl<G, C>(
 			EvolutionSpliterator.of(start, evolution),

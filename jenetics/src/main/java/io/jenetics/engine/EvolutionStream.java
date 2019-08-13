@@ -168,7 +168,9 @@ public interface EvolutionStream<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> adaptive(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, Evolution<G, C>> evolution
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
 	) {
 		return EvolutionStreamImpl.of(start, evolution);
 	}

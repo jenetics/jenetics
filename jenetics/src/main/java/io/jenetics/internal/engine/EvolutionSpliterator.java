@@ -125,7 +125,9 @@ public final class EvolutionSpliterator<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionSpliterator<G, C> of(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, Evolution<G, C>> evolution
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
 	) {
 		return new EvolutionSpliterator<G, C>(
 			start,
