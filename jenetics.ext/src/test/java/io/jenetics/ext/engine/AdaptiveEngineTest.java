@@ -49,6 +49,7 @@ import io.jenetics.util.ISeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("deprecation")
 public class AdaptiveEngineTest {
 
 	@Test
