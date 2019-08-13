@@ -38,7 +38,7 @@ import io.jenetics.engine.EvolutionStart;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.1
  */
 public final class EvolutionSpliterator<
 	G extends Gene<?, G>,
@@ -113,7 +113,7 @@ public final class EvolutionSpliterator<
 	 * Create a new spliterator with the given {@code start} element and the
 	 * {@code evolution} function-function.
 	 *
-	 * @since !__version__!
+	 * @since 5.1
 	 *
 	 * @param start the start element
 	 * @param evolution the evolution function-function
