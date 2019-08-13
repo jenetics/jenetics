@@ -113,6 +113,8 @@ public final class EvolutionSpliterator<
 	 * Create a new spliterator with the given {@code start} element and the
 	 * {@code evolution} function-function.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param start the start element
 	 * @param evolution the evolution function-function
 	 * @param <G> the gene type
