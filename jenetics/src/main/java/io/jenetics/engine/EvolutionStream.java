@@ -148,6 +148,8 @@ public interface EvolutionStream<
 	 *
 	 * @since 3.1
 	 *
+	 * @see #adaptive(Supplier, Function)
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @param start the evolution start
@@ -165,6 +167,21 @@ public interface EvolutionStream<
 		return new EvolutionStreamImpl<>(start, evolution);
 	}
 
+	/**
+	 * Create a new evolution stream with an <em>adaptable</em> evolution
+	 * function.
+	 *
+	 * @see #of(Supplier, Evolution)
+	 *
+	 * @param start the evolution start object
+	 * @param evolution the adaptable evolution function
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a new {@code EvolutionStream} with the given {@code start} and
+	 *         {@code evolution} function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> adaptive(
 		final Supplier<EvolutionStart<G, C>> start,
