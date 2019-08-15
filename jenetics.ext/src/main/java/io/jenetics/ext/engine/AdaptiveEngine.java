@@ -114,7 +114,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.1
  * @since 4.1
  *
  * @deprecated Use {@link io.jenetics.engine.EvolutionStream#ofAdjustableEvolution(Supplier, Function)}

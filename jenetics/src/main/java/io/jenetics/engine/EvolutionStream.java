@@ -47,7 +47,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 5.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -177,7 +177,7 @@ public interface EvolutionStream<
 	 * }</pre>
 	 *
 	 *
-	 * @since !__version__!
+	 * @since 5.1
 	 *
 	 * @see #ofAdjustableEvolution(Supplier, Function)
 	 *
