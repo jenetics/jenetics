@@ -56,7 +56,7 @@ public final class SpecialEngine {
 
 	public static void main(final String[] args) {
 		final Genotype<DoubleGene> best = EvolutionStream
-			.of(() -> start(50, 0), SpecialEngine::evolve)
+			.ofEvolution(() -> start(50, 0), SpecialEngine::evolve)
 			.limit(Limits.bySteadyFitness(10))
 			.limit(1000)
 			.collect(EvolutionResult.toBestGenotype());
