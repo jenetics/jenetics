@@ -205,7 +205,9 @@ public final class Engine<
 	 *
 	 * @since 3.1
 	 *
-	 * @deprecated Will be removed.
+	 * @see Evolution
+	 *
+	 * @deprecated Will be removed and superseded by {@link #evolve(EvolutionStart)}
 	 */
 	@Deprecated
 	@Override
@@ -417,7 +419,7 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.of(evolutionStart(start), (Evolution<G, C>) this);
+		return EvolutionStream.ofEvolution(evolutionStart(start), this);
 	}
 
 	@Override
