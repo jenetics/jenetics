@@ -33,6 +33,7 @@ import io.jenetics.prog.regression.Sample;
  * @version !__version__!
  * @since !__version__!
  */
+@SuppressWarnings("rawtypes")
 public final class SampleBuffer {
 	private final int _dim;
 	private final Sample[] _buffer;
