@@ -119,6 +119,7 @@ public final class Engine<
 	C extends Comparable<? super C>
 >
 	implements
+		Evolution<G, C>,
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
 		EvolutionStreamable<G, C>
 {
@@ -203,35 +204,15 @@ public final class Engine<
 	 * method.
 	 *
 	 * @since 3.1
+	 *
+	 * @see Evolution
+	 *
+	 * @deprecated Will be removed and superseded by {@link #evolve(EvolutionStart)}
 	 */
+	@Deprecated
 	@Override
 	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
 		return evolve(start);
-	}
-
-	/**
-	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
-	 *
-	 * @see #evolve(EvolutionStart)
-	 *
-	 * @param population the population to evolve
-	 * @param generation the current generation; used for calculating the
-	 *        phenotype age.
-	 * @return the evolution result
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}
-	 * @throws IllegalArgumentException if the given {@code generation} is
-	 *         smaller then one
-	 */
-	public EvolutionResult<G, C> evolve(
-		final ISeq<Phenotype<G, C>> population,
-		final long generation
-	) {
-		return evolve(EvolutionStart.of(population, generation));
 	}
 
 	/**
@@ -249,6 +230,7 @@ public final class Engine<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}
 	 */
+	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
 		timing.evolve.start();
@@ -437,7 +419,7 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.of(evolutionStart(start), this::evolve);
+		return EvolutionStream.ofEvolution(evolutionStart(start), this);
 	}
 
 	@Override
@@ -454,7 +436,8 @@ public final class Engine<
 
 			final Stream<Phenotype<G, C>> stream = Stream.concat(
 				population.stream(),
-				_genotypeFactory.instances().map(gt -> Phenotype.of(gt, gen))
+				_genotypeFactory.instances()
+					.map(gt -> Phenotype.of(gt, gen))
 			);
 
 			final ISeq<Phenotype<G, C>> pop = stream

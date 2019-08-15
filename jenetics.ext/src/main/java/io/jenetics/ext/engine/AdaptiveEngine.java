@@ -114,9 +114,13 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 4.1
+ *
+ * @deprecated Use {@link io.jenetics.engine.EvolutionStream#ofAdjustableEvolution(Supplier, Function)}
+ *             instead.
  */
+@Deprecated
 public final class AdaptiveEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
