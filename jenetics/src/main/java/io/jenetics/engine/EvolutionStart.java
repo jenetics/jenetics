@@ -29,6 +29,7 @@ import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.internal.util.require;
+import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
 /**
@@ -167,6 +168,16 @@ public final class EvolutionStart<
 			population.map(gt -> Phenotype.of(gt, generation)),
 			generation
 		);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStart<G, C>
+	initial(final Factory<Genotype<G>> gtf, final int populationSize) {
+		final ISeq<Phenotype<G, C>> population = gtf.instances()
+			.map(gt -> Phenotype.<G, C>of(gt, 1))
+			.collect(ISeq.toISeq());
+
+		return of(population, 1);
 	}
 
 }
