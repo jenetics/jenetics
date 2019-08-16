@@ -198,6 +198,14 @@ public interface EvolutionStream<
 		return new EvolutionStreamImpl<>(start, evolution);
 	}
 
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> ofEvolution(
+		final EvolutionStart<G, C> start,
+		final Evolution<G, C> evolution
+	) {
+		return ofEvolution(() -> start, evolution);
+	}
+
 	/**
 	 * Create a new evolution stream with an <em>adaptable</em> evolution
 	 * function.
@@ -223,6 +231,16 @@ public interface EvolutionStream<
 			? extends Evolution<G, C>> evolution
 	) {
 		return EvolutionStreamImpl.of(start, evolution);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> ofAdaptableEvolution(
+		final EvolutionStart<G, C> start,
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
+	) {
+		return ofAdaptableEvolution(() -> start, evolution);
 	}
 
 }
