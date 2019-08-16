@@ -31,7 +31,7 @@ import io.jenetics.engine.EvolutionStart;
  * @version !__version__!
  * @since !__version__!
  */
-public final class UpdatableEngine<
+public final class UpdatableEvolution<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -43,7 +43,7 @@ public final class UpdatableEngine<
 	private Evolution<G, C> _evolution;
 	private boolean _reset;
 
-	public UpdatableEngine(final Evolution<G, C> evolution) {
+	public UpdatableEvolution(final Evolution<G, C> evolution) {
 		_evolution = requireNonNull(evolution);
 		_reset = false;
 	}
