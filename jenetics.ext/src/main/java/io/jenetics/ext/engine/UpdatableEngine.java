@@ -35,11 +35,13 @@ import io.jenetics.engine.EvolutionStreamable;
  * @version !__version__!
  * @since !__version__!
  */
-public final class UpdatableEvolution<
+public final class UpdatableEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evolution<G, C>, EvolutionStreamable<G, C>
+	implements
+		Evolution<G, C>,
+		EvolutionStreamable<G, C>
 {
 
 	private final Object _lock = new Object();
@@ -47,7 +49,7 @@ public final class UpdatableEvolution<
 	private Evolution<G, C> _evolution;
 	private boolean _reset;
 
-	public UpdatableEvolution(final Evolution<G, C> evolution) {
+	public UpdatableEngine(final Evolution<G, C> evolution) {
 		_evolution = requireNonNull(evolution);
 		_reset = false;
 	}
