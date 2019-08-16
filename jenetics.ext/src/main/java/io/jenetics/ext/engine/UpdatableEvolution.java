@@ -21,10 +21,14 @@ package io.jenetics.ext.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Supplier;
+
 import io.jenetics.Gene;
 import io.jenetics.engine.Evolution;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
+import io.jenetics.engine.EvolutionStreamable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,7 +39,7 @@ public final class UpdatableEvolution<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements Evolution<G, C>
+	implements Evolution<G, C>, EvolutionStreamable<G, C>
 {
 
 	private final Object _lock = new Object();
@@ -68,4 +72,9 @@ public final class UpdatableEvolution<
 		}
 	}
 
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		return EvolutionStream.ofEvolution(start, this);
+	}
 }
