@@ -51,7 +51,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.0
+ * @version !__version__!
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -117,8 +117,7 @@ public final class Phenotype<
 	 * This method returns a copy of the {@code Genotype}, to guarantee a
 	 * immutable class.
 	 *
-	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @return the {@code Genotype} of {@code this} phenotype
 	 */
 	public Genotype<G> getGenotype() {
 		return _genotype;
@@ -263,7 +262,7 @@ public final class Phenotype<
 	 *
 	 * @return a (new) phenotype with an unset fitness value
 	 */
-	public Phenotype<G, C> reset() {
+	public Phenotype<G, C> withoutFitness() {
 		return isEvaluated()
 			? Phenotype.of(_genotype, _generation)
 			: this;

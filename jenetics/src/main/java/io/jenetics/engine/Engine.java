@@ -112,13 +112,14 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements
+		Evaluator<G, C>,
 		Evolution<G, C>,
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
 		EvolutionStreamable<G, C>
@@ -237,7 +238,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(start.getPopulation())
+			eval(start.getPopulation())
 		);
 
 		// Select the offspring population.
@@ -296,7 +297,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = population.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
-			evaluate(pop)
+			eval(pop)
 		);
 
 		final int killCount =
@@ -321,7 +322,7 @@ public final class Engine<
 		if (!UnaryOperator.identity().equals(_mapper)) {
 			final EvolutionResult<G, C> mapped = _mapper.apply(er);
 			er = er.with(timing.evaluation.timing(() ->
-				evaluate(mapped.getPopulation())
+				eval(mapped.getPopulation())
 			));
 		}
 
@@ -379,7 +380,7 @@ public final class Engine<
 	 * {@link Evaluator} of this engine and returns a new population
 	 * with its fitness value assigned.
 	 *
-	 * @since 5.0
+	 * @since !__version__!
 	 *
 	 * @see Evaluator
 	 * @see Evaluator#eval(Seq)
@@ -391,7 +392,8 @@ public final class Engine<
 	 *         This exception is also thrown if one of the populations
 	 *         phenotype has no fitness value assigned.
 	 */
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	@Override
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final ISeq<Phenotype<G, C>> evaluated = _evaluator.eval(population);
 
 		if (population.size() != evaluated.size()) {
@@ -411,6 +413,29 @@ public final class Engine<
 		return evaluated;
 	}
 
+	/**
+	 * Evaluates the fitness function of the given population with the configured
+	 * {@link Evaluator} of this engine and returns a new population
+	 * with its fitness value assigned.
+	 *
+	 * @since 5.0
+	 *
+	 * @see Evaluator
+	 * @see Evaluator#eval(Seq)
+	 *
+	 * @param population the population to evaluate
+	 * @return a new population with assigned fitness values
+	 * @throws IllegalStateException if the configured fitness function doesn't
+	 *         return a population with the same size as the input population.
+	 *         This exception is also thrown if one of the populations
+	 *         phenotype has no fitness value assigned.
+	 * @deprecated Will be removed, use {@link #eval(Seq)} instead
+	 */
+	@Deprecated
+	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+		return eval(population);
+	}
+
 
 	/* *************************************************************************
 	 * Evolution Stream creation.
@@ -425,6 +450,10 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
 		return stream(evolutionStart(init));
+	}
+
+	public Supplier<EvolutionStart<G, C>> start() {
+		return null;
 	}
 
 	private Supplier<EvolutionStart<G, C>>

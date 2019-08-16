@@ -22,6 +22,8 @@ package io.jenetics.example.timeseries;
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.EvolutionStream;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -99,7 +101,13 @@ public class TimeSeries {
 				new Mutator<>())
 			.build();
 
-		final ProgramGene<Double> program = engine.stream()
+		final EvolutionStream<ProgramGene<Double>, Double> stream =
+			EvolutionStream.ofAdaptableEvolution(
+					engine.start(),
+					r -> engine
+				);
+
+		final ProgramGene<Double> program = stream
 			.limit(3000)
 			.collect(EvolutionResult.toBestGenotype())
 			.getGene();

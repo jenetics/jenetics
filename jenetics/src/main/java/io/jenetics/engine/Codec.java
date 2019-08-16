@@ -21,11 +21,13 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.Phenotype;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
@@ -109,6 +111,10 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return genotype decoder
 	 */
 	public Function<Genotype<G>, T> decoder();
+
+	public default <C extends Comparable<? super C>> ISeq<Phenotype<G, C>> population(final int size) {
+		return null;
+	}
 
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is

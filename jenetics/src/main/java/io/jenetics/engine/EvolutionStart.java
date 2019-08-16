@@ -26,8 +26,10 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.util.Objects;
 
 import io.jenetics.Gene;
+import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.internal.util.require;
+import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
 /**
@@ -45,7 +47,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 4.0
+ * @version !__version__!
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -79,6 +81,20 @@ public final class EvolutionStart<
 	 */
 	public long getGeneration() {
 		return _generation;
+	}
+
+	/**
+	 * Return a new evolution-start object where the fitness values of the
+	 * population has been reset. The {@link Evolution} strategy is therefor
+	 * forced to re-evaluate the fitness values.
+	 *
+	 * @return a new evolution-start object with a non-evaluated population
+	 */
+	public EvolutionStart<G, C> withoutFitness() {
+		return of(
+			_population.map(Phenotype::withoutFitness),
+			_generation
+		);
 	}
 
 	@Override
@@ -122,6 +138,28 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		return new EvolutionStart<>(population, generation);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStart<G, C> of(
+		final Factory<Genotype<G>> gtf,
+		final int populationSize,
+		final long generation
+	) {
+		final ISeq<Phenotype<G, C>> population = gtf.instances()
+			.limit(populationSize)
+			.map(gt -> Phenotype.<G, C>of(gt, generation))
+			.collect(ISeq.toISeq());
+
+		return new EvolutionStart<>(population, generation);
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStart<G, C> of(
+		final Factory<Genotype<G>> gtf,
+		final int populationSize
+	) {
+		return of(gtf, populationSize, 1);
 	}
 
 }
