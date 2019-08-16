@@ -44,7 +44,10 @@ import io.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 4.1
  * @since 4.1
+ *
+ * @deprecated Is replaced by {@link EvolutionStart} and will be removed
  */
+@Deprecated
 public final class EvolutionInit<G extends Gene<?, G>> {
 
 	private final ISeq<Genotype<G>> _population;

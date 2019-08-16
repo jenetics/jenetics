@@ -94,14 +94,13 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.
  *
- * @see AdaptiveEngine
  * @see ConcatEngine
  *
  * @param <G> the gene type
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public final class CyclicEngine<
@@ -131,7 +130,7 @@ public final class CyclicEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
@@ -156,43 +155,6 @@ public final class CyclicEngine<
 		final AtomicReference<EvolutionStart<G, C>> other
 	) {
 		return other.get() != null ? other.get() : first.get();
-	}
-
-	@Override
-	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		final AtomicBoolean first = new AtomicBoolean(true);
-		final AtomicReference<EvolutionStart<G, C>> other =
-			new AtomicReference<>(null);
-
-		return new EvolutionStreamImpl<G, C>(
-			new CyclicSpliterator<>(
-				_engines.stream()
-					.map(engine -> toSpliterator(engine, init, other, first))
-					.collect(Collectors.toList())
-			),
-			false
-		);
-	}
-
-	private Supplier<Spliterator<EvolutionResult<G, C>>> toSpliterator(
-		final EvolutionStreamable<G, C> engine,
-		final EvolutionInit<G> init,
-		final AtomicReference<EvolutionStart<G, C>> other,
-		final AtomicBoolean first
-	) {
-		return () -> {
-			if (first.get()) {
-				first.set(false);
-				return engine.stream(init)
-					.peek(result -> other.set(result.toEvolutionStart()))
-					.spliterator();
-			} else {
-				return engine.stream(other::get)
-					.peek(result -> other.set(result.toEvolutionStart()))
-					.spliterator();
-			}
-		};
-
 	}
 
 	/**

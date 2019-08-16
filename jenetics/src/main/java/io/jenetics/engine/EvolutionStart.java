@@ -29,14 +29,12 @@ import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.internal.util.require;
-import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 
 /**
  * Represents a state of the GA at the start of an evolution step.
  *
  * @see EvolutionResult
- * @see EvolutionInit
  * @see EvolutionStreamable#stream(EvolutionStart)
  *
  * @param <G> the gene type
@@ -122,6 +120,8 @@ public final class EvolutionStart<
 	 * Create a new evolution start object with the given population and for the
 	 * given generation.
 	 *
+	 * @see #ofGenotypes(ISeq, long)
+	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @param population the start population.
@@ -140,26 +140,33 @@ public final class EvolutionStart<
 		return new EvolutionStart<>(population, generation);
 	}
 
+	/**
+	 * Create a new evolution start object with the given population and for the
+	 * given generation.
+	 *
+	 * @see #of(ISeq, long)
+	 *
+	 * @since !__version__!
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @param population the start population.
+	 * @param generation the start generation of the population
+	 * @return a new evolution start object
+	 * @throws java.lang.NullPointerException if the given {@code population} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if the given {@code generation} is
+	 *         smaller then one
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStart<G, C> of(
-		final Factory<Genotype<G>> gtf,
-		final int populationSize,
+	EvolutionStart<G, C> ofGenotypes(
+		final ISeq<Genotype<G>> population,
 		final long generation
 	) {
-		final ISeq<Phenotype<G, C>> population = gtf.instances()
-			.limit(populationSize)
-			.map(gt -> Phenotype.<G, C>of(gt, generation))
-			.collect(ISeq.toISeq());
-
-		return new EvolutionStart<>(population, generation);
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStart<G, C> of(
-		final Factory<Genotype<G>> gtf,
-		final int populationSize
-	) {
-		return of(gtf, populationSize, 1);
+		return of(
+			population.map(gt -> Phenotype.of(gt, generation)),
+			generation
+		);
 	}
 
 }

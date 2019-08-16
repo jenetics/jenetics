@@ -202,6 +202,8 @@ public interface EvolutionStream<
 	 * Create a new evolution stream with an <em>adaptable</em> evolution
 	 * function.
 	 *
+	 * @since !__version__!
+	 *
 	 * @see #ofEvolution(Supplier, Evolution)
 	 *
 	 * @param start the evolution start object

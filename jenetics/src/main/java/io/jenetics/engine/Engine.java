@@ -447,12 +447,7 @@ public final class Engine<
 		return EvolutionStream.ofEvolution(evolutionStart(start), this);
 	}
 
-	@Override
-	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return stream(evolutionStart(init));
-	}
-
-	public Supplier<EvolutionStart<G, C>> start() {
+	public Supplier<EvolutionStart<G, C>> evolutionStart() {
 		return null;
 	}
 
@@ -475,15 +470,6 @@ public final class Engine<
 
 			return EvolutionStart.of(pop, gen);
 		};
-	}
-
-	private Supplier<EvolutionStart<G, C>>
-	evolutionStart(final EvolutionInit<G> init) {
-		return evolutionStart(() -> EvolutionStart.of(
-			init.getPopulation()
-				.map(gt -> Phenotype.of(gt, init.getGeneration())),
-			init.getGeneration())
-		);
 	}
 
 	/* *************************************************************************

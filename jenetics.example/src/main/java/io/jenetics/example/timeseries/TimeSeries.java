@@ -22,7 +22,6 @@ package io.jenetics.example.timeseries;
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
@@ -103,7 +102,7 @@ public class TimeSeries {
 
 		final EvolutionStream<ProgramGene<Double>, Double> stream =
 			EvolutionStream.ofAdaptableEvolution(
-					engine.start(),
+					engine.evolutionStart(),
 					r -> engine
 				);
 

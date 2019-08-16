@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @see EvolutionStream
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public interface EvolutionStreamable<
@@ -63,6 +63,11 @@ public interface EvolutionStreamable<
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start);
 
+
+	/* *************************************************************************
+	 * Default interface methods.
+	 * ************************************************************************/
+
 	/**
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
 	 * initial value. If an empty {@code Population} is given, the engines genotype
@@ -75,13 +80,18 @@ public interface EvolutionStreamable<
 	 * @return a new <b>infinite</b> evolution stream
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
+	 *
+	 * @deprecated Is replaced by {@link EvolutionStart} and will be removed
 	 */
-	public EvolutionStream<G, C> stream(final EvolutionInit<G> init);
-
-
-	/* *************************************************************************
-	 * Default interface methods.
-	 * ************************************************************************/
+	@Deprecated
+	public default EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		return stream(() ->
+			EvolutionStart.ofGenotypes(
+				init.getPopulation(),
+				init.getGeneration()
+			)
+		);
+	}
 
 	/**
 	 * Create a new, possibly <em>infinite</em>, evolution stream with a newly
@@ -237,7 +247,12 @@ public interface EvolutionStreamable<
 		final Iterable<Genotype<G>> genotypes,
 		final long generation
 	) {
-		return stream(EvolutionInit.of(ISeq.of(genotypes), generation));
+		return stream(() ->
+			EvolutionStart.ofGenotypes(
+				ISeq.of(genotypes),
+				generation
+			)
+		);
 	}
 
 	/**
@@ -271,18 +286,7 @@ public interface EvolutionStreamable<
 	limit(final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed) {
 		requireNonNull(proceed);
 
-		return new EvolutionStreamable<G, C>() {
-			@Override
-			public EvolutionStream<G, C>
-			stream(final Supplier<EvolutionStart<G, C>> start) {
-				return EvolutionStreamable.this.stream(start).limit(proceed.get());
-			}
-
-			@Override
-			public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-				return EvolutionStreamable.this.stream(init).limit(proceed.get());
-			}
-		};
+		return start -> stream(start).limit(proceed.get());
 	}
 
 	/**
