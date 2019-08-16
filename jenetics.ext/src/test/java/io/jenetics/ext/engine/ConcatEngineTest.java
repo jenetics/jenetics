@@ -36,8 +36,8 @@ import io.jenetics.Phenotype;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
@@ -91,7 +91,7 @@ public class ConcatEngineTest {
 
 	@Test
 	public void concat1b() {
-		EvolutionInit<IntegerGene> init = EvolutionInit.of(
+		EvolutionStart<IntegerGene, Integer> init = EvolutionStart.ofGenotypes(
 			EvolutionStreams.result(5)
 				.toEvolutionStart()
 				.getPopulation().stream()
@@ -179,7 +179,7 @@ public class ConcatEngineTest {
 	public void concatInit() {
 		final Chromosome<IntegerGene> ch = IntegerChromosome.of(IntegerGene.of(5, 0, 1000));
 		final Genotype<IntegerGene> gt = Genotype.of(ch);
-		final EvolutionInit<IntegerGene> init = EvolutionInit.of(
+		final EvolutionStart<IntegerGene, Integer> init = EvolutionStart.ofGenotypes(
 			ISeq.<Genotype<IntegerGene>>of(gt),
 			1L
 		);

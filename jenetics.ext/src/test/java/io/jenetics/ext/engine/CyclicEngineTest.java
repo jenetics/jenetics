@@ -35,8 +35,8 @@ import io.jenetics.Mutator;
 import io.jenetics.RouletteWheelSelector;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
@@ -117,7 +117,7 @@ public class CyclicEngineTest {
 	public void cycleInit() {
 		final Chromosome<IntegerGene> ch = IntegerChromosome.of(IntegerGene.of(5, 0, 1000));
 		final Genotype<IntegerGene> gt = Genotype.of(ch);
-		final EvolutionInit<IntegerGene> init = EvolutionInit.of(
+		final EvolutionStart<IntegerGene, Integer> init = EvolutionStart.ofGenotypes(
 			ISeq.<Genotype<IntegerGene>>of(gt),
 			1L
 		);

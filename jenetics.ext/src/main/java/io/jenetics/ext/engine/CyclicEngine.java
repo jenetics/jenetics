@@ -22,13 +22,11 @@ package io.jenetics.ext.engine;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import io.jenetics.Gene;
-import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;

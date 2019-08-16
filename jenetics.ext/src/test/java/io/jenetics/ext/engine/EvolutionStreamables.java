@@ -23,9 +23,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import io.jenetics.IntegerGene;
-import io.jenetics.engine.EvolutionInit;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 
 import io.jenetics.ext.EvolutionStreams;
@@ -38,57 +35,28 @@ final class EvolutionStreamables {
 	}
 
 	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
-		return new EvolutionStreamable<IntegerGene, Integer>() {
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final Supplier<EvolutionStart<IntegerGene, Integer>> start) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
+		return start -> EvolutionStreams.stream(
+			Stream.generate(new Supplier<Integer>() {
+				Integer value = null;
 
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = start.get().getPopulation().isEmpty()
-									? 0
-									: start.get()
-										.getPopulation()
-										.get(0)
-										.getGenotype()
-										.getGene()
-										.intValue();
-							}
-							value += 1;
+				@Override
+				public Integer get() {
+					if (value == null) {
+						value  = start.get().getPopulation().isEmpty()
+							? 0
+							: start.get()
+								.getPopulation()
+								.get(0)
+								.getGenotype()
+								.getGene()
+								.intValue();
+					}
+					value += 1;
 
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final EvolutionInit<IntegerGene> init) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
-
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = init.getPopulation()
-									.get(0)
-									.getGene()
-									.intValue();
-							}
-							value += 1;
-
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-		};
+					return value;
+				}
+			}).limit(size)
+		);
 	}
 
 }

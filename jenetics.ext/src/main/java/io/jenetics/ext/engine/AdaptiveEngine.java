@@ -28,7 +28,6 @@ import java.util.function.Supplier;
 import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
@@ -168,28 +167,6 @@ public final class AdaptiveEngine<
 		return _engine.apply(result)
 			.stream(es)
 			.spliterator();
-	}
-
-	@Override
-	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return new EvolutionStreamImpl<G, C>(
-			new GeneratorSpliterator<>(result -> generate(init, result)),
-			false
-		);
-	}
-
-	private Spliterator<EvolutionResult<G, C>>
-	generate(
-		final EvolutionInit<G> init,
-		final EvolutionResult<G, C> result
-	) {
-		return result == null
-			? _engine.apply(null)
-				.stream(init)
-				.spliterator()
-			: _engine.apply(result)
-				.stream(result.toEvolutionStart())
-				.spliterator();
 	}
 
 	/**

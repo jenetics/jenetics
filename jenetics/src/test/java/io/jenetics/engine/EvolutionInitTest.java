@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
+@SuppressWarnings("deprecation")
 public class EvolutionInitTest {
 
 	@Test
