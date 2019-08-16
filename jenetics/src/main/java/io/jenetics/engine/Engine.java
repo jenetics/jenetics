@@ -460,8 +460,7 @@ public final class Engine<
 
 			final Stream<Phenotype<G, C>> stream = Stream.concat(
 				population.stream(),
-				_genotypeFactory.instances()
-					.map(gt -> Phenotype.of(gt, gen))
+				_genotypeFactory.instances().map(gt -> Phenotype.of(gt, gen))
 			);
 
 			final ISeq<Phenotype<G, C>> pop = stream
