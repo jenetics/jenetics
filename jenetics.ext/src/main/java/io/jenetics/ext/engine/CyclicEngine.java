@@ -118,9 +118,7 @@ public final class CyclicEngine<
 	 * @throws NullPointerException if the {@code engines} or one of it's
 	 *         elements is {@code null}
 	 */
-	public CyclicEngine(
-		final List<? extends EvolutionStreamable<G, C>> engines
-	) {
+	public CyclicEngine(final List<? extends EvolutionStreamable<G, C>> engines) {
 		super(engines);
 	}
 
