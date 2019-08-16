@@ -24,6 +24,14 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
 
 /**
+ * This interface represents the evolution function, which takes an
+ * {@link EvolutionStart} object, evolves it, and returns the
+ * {@link EvolutionResult}.
+ *
+ * @apiNote
+ * The implementation of the evolution must be thread-safe and able to handle
+ * concurrent <em>evolution</em> requests.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
  * @since 5.1
@@ -34,15 +42,28 @@ public interface Evolution<
 	C extends Comparable<? super C>
 > {
 
+	/**
+	 * Perform one evolution step with the given evolution {@code start} and
+	 *
+	 * @apiNote
+	 * The implementation of this method must be thread-safe.
+	 *
+	 * @see #evolve(EvolutionStart)
+	 *
+	 * @param start the evolution start object
+	 * @return the evolution result
+	 * @throws java.lang.NullPointerException if the given evolution
+	 *         {@code start} is {@code null}
+	 */
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
 
 
 	/**
 	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
+	 * {@code generation}.
+	 *
+	 * @apiNote
+	 * The implementation of this method must be thread-safe.
 	 *
 	 * @see #evolve(EvolutionStart)
 	 *
