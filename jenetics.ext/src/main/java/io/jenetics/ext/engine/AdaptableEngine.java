@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.Evolution;
+import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
@@ -39,7 +40,9 @@ public final class AdaptableEngine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements EvolutionStreamable<G, C>
+	implements
+		Evolution<G, C>,
+		EvolutionStreamable<G, C>
 {
 
 	private final Function<
@@ -55,13 +58,14 @@ public final class AdaptableEngine<
 	}
 
 	@Override
-	public EvolutionStream<G, C>
-	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.ofEvolution(
-			start,
-			es -> _evolution.apply(es).evolve(es)
-		);
+	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		return _evolution.apply(start).evolve(start);
 	}
 
+	@Override
+	public EvolutionStream<G, C>
+	stream(final Supplier<EvolutionStart<G, C>> start) {
+		return EvolutionStream.ofEvolution(start, this);
+	}
 
 }
