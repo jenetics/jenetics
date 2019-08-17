@@ -179,7 +179,7 @@ public interface EvolutionStream<
 	 *
 	 * @since 5.1
 	 *
-	 * @see #ofAdaptableEvolution(Supplier, Function)
+	 * @see #ofEvolution(EvolutionStart, Evolution)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -204,43 +204,6 @@ public interface EvolutionStream<
 		final Evolution<G, C> evolution
 	) {
 		return ofEvolution(() -> start, evolution);
-	}
-
-	/**
-	 * Create a new evolution stream with an <em>adaptable</em> evolution
-	 * function.
-	 *
-	 * @since !__version__!
-	 *
-	 * @see #ofEvolution(Supplier, Evolution)
-	 *
-	 * @param start the evolution start object
-	 * @param evolution the adaptable evolution function
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 * @return a new {@code EvolutionStream} with the given {@code start} and
-	 *         {@code evolution} function
-	 * @throws java.lang.NullPointerException if one of the arguments is
-	 *         {@code null}
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> ofAdaptableEvolution(
-		final Supplier<EvolutionStart<G, C>> start,
-		final Function<
-			? super EvolutionStart<G, C>,
-			? extends Evolution<G, C>> evolution
-	) {
-		return EvolutionStreamImpl.of(start, evolution);
-	}
-
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> ofAdaptableEvolution(
-		final EvolutionStart<G, C> start,
-		final Function<
-			? super EvolutionStart<G, C>,
-			? extends Evolution<G, C>> evolution
-	) {
-		return ofAdaptableEvolution(() -> start, evolution);
 	}
 
 }
