@@ -116,8 +116,7 @@ import io.jenetics.ext.internal.GeneratorSpliterator;
  * @version 5.1
  * @since 4.1
  *
- * @deprecated Use {@link io.jenetics.engine.EvolutionStream#ofAdaptableEvolution(Supplier, Function)}
- *             instead.
+ * @deprecated Use {@link AdaptableEngine} instead.
  */
 @Deprecated
 public final class AdaptiveEngine<
