@@ -55,6 +55,11 @@ public interface EvolutionStreamable<
 	 * The fitness function and the fitness scaler are replaced by the one
 	 * defined for this engine.
 	 *
+	 * @apiNote
+	 * The population of the evolution start might be empty. In this case, the
+	 * implementation is responsible for creating the initial population with
+	 * the desired size.
+	 *
 	 * @param start the data the evolution stream starts with
 	 * @return a new <b>infinite</b> evolution stream
 	 * @throws java.lang.NullPointerException if the given evolution
