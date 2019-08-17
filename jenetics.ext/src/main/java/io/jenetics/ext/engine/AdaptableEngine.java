@@ -32,6 +32,28 @@ import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 
 /**
+ * The {@code AdaptableEngine} allows you to create evolution streams, which
+ * can evaluate each generation with a different {@link Evolution} engine
+ * and/or configuration.
+ *
+ * <pre> {@code
+ *                                           +----------+
+ *                                           |   ES[i]  |
+ *           +-------------------------------+------+   |
+ *           |                                      +---+
+ *   (Start) |  EvolutionResult[i-1] -> Engine[i]   |-----------+-->
+ *  -----+-->|           ^                          |  Result   |
+ *       ^   +-----------|--------------------------+           |
+ *       |               |                                      |
+ *       +---------------+--------------<-----------------------+
+ * }</pre>
+ *
+ * @see ConcatEngine
+ * @see CyclicEngine
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -49,6 +71,13 @@ public final class AdaptableEngine<
 		? super EvolutionStart<G, C>,
 		? extends Evolution<G, C>> _evolution;
 
+	/**
+	 * Create a new adaptable evolution engine with the given {@code evolution}
+	 * function. It allows you to evaluate the a generation, depending on the
+	 * actual evolution start.
+	 *
+	 * @param evolution the <em>adaptable</em> {@code evolution} function
+	 */
 	public AdaptableEngine(
 		final Function<
 			? super EvolutionStart<G, C>,
