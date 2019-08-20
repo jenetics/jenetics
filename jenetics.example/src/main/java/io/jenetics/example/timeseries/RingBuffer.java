@@ -19,50 +19,12 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
-
-/**
- * A circular array buffer with a copy-and-swap cursor.
- *
- * <p>This class provides an list of T objects who's size is <em>unstable</em>.
- * It's intended for capturing data where the frequency of sampling greatly
- * outweighs the frequency of inspection (for instance, monitoring).</p>
- *
- * <p>This object keeps in memory a fixed size buffer which is used for
- * capturing objects.  It copies the objects to a snapshot array which may be
- * worked with.  The size of the snapshot array will vary based on the
- * stability of the array during the copy operation.</p>
- *
- * <p>Adding buffer to the buffer is <em>O(1)</em>, and lockless.  Taking a
- * stable copy of the sample is <em>O(n)</em>.</p>
- */
 public class RingBuffer <T> {
 
+	private final Object[] _buffer;
 
-	static final class Cursor {
-		private final int _max;
-
-		int _size = 0;
-		int _cursor = -1;
-
-		Cursor(final int max) {
-			_max = max;
-		}
-
-		int next() {
-			_cursor = (_cursor + 1)%_max;
-			if (_size < _max) ++_size;
-			return _cursor;
-		}
-
-	}
-
-
-	final Object[] _buffer;
-	final Cursor _cursor;
-
+	private int _cursor = -1;
+	private int _size = 0;
 
 	public RingBuffer (final int size) {
 		if (size < 1) {
@@ -72,30 +34,33 @@ public class RingBuffer <T> {
 		}
 
 		_buffer = new Object[size];
-		_cursor = new Cursor(size);
 	}
 
 	public void add (final T sample) {
-		_buffer[_cursor.next()] = sample;
+		_buffer[next()] = sample;
 	}
 
+	private int next() {
+		_cursor = (_cursor + 1)%_buffer.length;
+		if (_size < _buffer.length) ++_size;
+		return _cursor;
+	}
 
-	public Object[] snapshot () {
-		if (_cursor._size < _buffer.length) {
-			final Object[] result = new Object[_cursor._size];
-			System.arraycopy(_buffer, 0, result, 0, _cursor._size);
-			return result;
+	public Object[] snapshot() {
+		final Object[] result = new Object[_size];
+
+		if (_size < _buffer.length) {
+			System.arraycopy(_buffer, 0, result, 0, _size);
+		} else {
+			System.arraycopy(
+				_buffer, _cursor + 1,
+				result, 0, _buffer.length - _cursor - 1
+			);
+			System.arraycopy(
+				_buffer, 0,
+				result, _buffer.length - _cursor - 1, _cursor + 1
+			);
 		}
-
-		final Object[] result = new Object[_buffer.length];
-		System.arraycopy(
-			_buffer, _cursor._cursor + 1,
-			result, 0, _buffer.length - _cursor._cursor - 1
-		);
-		System.arraycopy(
-			_buffer, 0,
-			result, _buffer.length - _cursor._cursor - 1, _cursor._cursor + 1
-		);
 
 		return result;
 	}
