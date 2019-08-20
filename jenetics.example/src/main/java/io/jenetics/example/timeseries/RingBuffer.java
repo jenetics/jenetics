@@ -19,6 +19,8 @@
  */
 package io.jenetics.example.timeseries;
 
+import java.util.Collection;
+
 public class RingBuffer <T> {
 
 	private final Object[] _buffer;
@@ -26,29 +28,41 @@ public class RingBuffer <T> {
 	private int _cursor = -1;
 	private int _size = 0;
 
-	public RingBuffer (final int size) {
+	private Object[] _snapshot = null;
+
+	public RingBuffer(final int size) {
 		if (size < 1) {
 			throw new IllegalArgumentException(
-				"Buffer size must be a positive value"
+				"Buffer size must be a positive: " + size
 			);
 		}
 
 		_buffer = new Object[size];
 	}
 
-	public void add (final T sample) {
-		_buffer[next()] = sample;
+	public synchronized void add (final T element) {
+		_buffer[next()] = element;
+		_snapshot = null;
 	}
 
 	private int next() {
-		_cursor = (_cursor + 1)%_buffer.length;
 		if (_size < _buffer.length) ++_size;
-		return _cursor;
+		return _cursor = (_cursor + 1 < _buffer.length) ? _cursor + 1 : 0;
 	}
 
-	public Object[] snapshot() {
-		final Object[] result = new Object[_size];
+	public synchronized void addAll(final Collection<? extends T> elements) {
+		for (T element : elements) {
+			_buffer[next()] = element;
+		}
+		_snapshot = null;
+	}
 
+	public synchronized Object[] snapshot() {
+		if (_snapshot != null) {
+			return _snapshot;
+		}
+
+		final Object[] result = new Object[_size];
 		if (_size < _buffer.length) {
 			System.arraycopy(_buffer, 0, result, 0, _size);
 		} else {
@@ -62,7 +76,7 @@ public class RingBuffer <T> {
 			);
 		}
 
-		return result;
+		return _snapshot = result;
 	}
 
 	public int size () {
