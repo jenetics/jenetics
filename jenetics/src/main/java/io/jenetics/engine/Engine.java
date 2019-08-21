@@ -130,6 +130,7 @@ public final class Engine<
 	// Problem definition.
 	private final Evaluator<G, C> _evaluator;
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Constraint<G, C> _constraint;
 
 	// Evolution parameters.
 	private final Selector<G, C> _survivorsSelector;
@@ -145,26 +146,25 @@ public final class Engine<
 	private final Clock _clock;
 
 	// Additional parameters.
-	private final Constraint<G, C> _constraint;
 	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
 
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
+	 * @param evaluator the population fitness evaluator
 	 * @param genotypeFactory the genotype factory this GA is working with.
-	 * @param survivorsSelector the selector used for selecting the survivors
-	 * @param offspringSelector the selector used for selecting the offspring
-	 * @param alterer the alterer used for altering the offspring
 	 * @param constraint phenotype constraint which can override the default
 	 *        implementation the {@link Phenotype#isValid()} method and repairs
 	 *        invalid phenotypes when needed.
+	 * @param survivorsSelector the selector used for selecting the survivors
+	 * @param offspringSelector the selector used for selecting the offspring
+	 * @param alterer the alterer used for altering the offspring
 	 * @param optimize the kind of optimization (minimize or maximize)
 	 * @param offspringCount the number of the offspring individuals
 	 * @param survivorsCount the number of the survivor individuals
 	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
-	 * @param evaluator the population fitness evaluator
 	 * @param clock the clock used for calculating the timing results
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
@@ -173,10 +173,10 @@ public final class Engine<
 	Engine(
 		final Evaluator<G, C> evaluator,
 		final Factory<Genotype<G>> genotypeFactory,
+		final Constraint<G, C> constraint,
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final Constraint<G, C> constraint,
 		final Optimize optimize,
 		final int offspringCount,
 		final int survivorsCount,
@@ -745,6 +745,7 @@ public final class Engine<
 		// No default values for this properties.
 		private final Evaluator<G, C> _evaluator;
 		private final Factory<Genotype<G>> _genotypeFactory;
+		private Constraint<G, C> _constraint;
 
 		// This are the properties which default values.
 		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
@@ -753,7 +754,6 @@ public final class Engine<
 			new SinglePointCrossover<G, C>(0.2),
 			new Mutator<>(0.15)
 		);
-		private Constraint<G, C> _constraint;
 		private Optimize _optimize = Optimize.MAXIMUM;
 		private double _offspringFraction = 0.6;
 		private int _populationSize = 50;
@@ -1086,12 +1086,11 @@ public final class Engine<
 					? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
 					: _evaluator,
 				_genotypeFactory,
-				_survivorsSelector,
-				_offspringSelector,
-				_alterer,
 				_constraint == null
 					? RetryConstraint.of(_genotypeFactory)
-					: _constraint,
+					: _constraint, _survivorsSelector,
+				_offspringSelector,
+				_alterer,
 				_optimize,
 				getOffspringCount(),
 				getSurvivorsCount(),
