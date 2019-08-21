@@ -36,6 +36,13 @@ import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
 
 /**
+ * This class collects the parameters which control the behaviour of the
+ * evolution process. This doesn't include the parameters for the
+ * <em>technical</em> execution like the used execution service.
+ *
+ * @see Engine
+ * @see Engine.Builder
+ *
  * @param <G> the gene type
  * @param <C> the fitness function result type
  *
