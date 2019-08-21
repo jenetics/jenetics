@@ -21,10 +21,7 @@ package io.jenetics.example.timeseries;
 
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
-import io.jenetics.engine.Evolution;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
-import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
