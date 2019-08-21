@@ -31,13 +31,14 @@ import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.Optimize;
-import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
-import io.jenetics.engine.Engine.Builder;
 
 /**
+ * @param <G> the gene type
+ * @param <C> the fitness function result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -73,26 +74,109 @@ public final class EvolutionParams<
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 	}
 
-	public Builder<G, C> builder() {
+
+	/**
+	 * Return the used survivor {@link Selector} of the GA.
+	 *
+	 * @return the used survivor {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getSurvivorsSelector() {
+		return _survivorsSelector;
+	}
+
+	/**
+	 * Return the used offspring {@link Selector} of the GA.
+	 *
+	 * @return the used offspring {@link Selector} of the GA.
+	 */
+	public Selector<G, C> getOffspringSelector() {
+		return _offspringSelector;
+	}
+
+	/**
+	 * Return the used {@link Alterer} of the GA.
+	 *
+	 * @return the used {@link Alterer} of the GA.
+	 */
+	public Alterer<G, C> getAlterer() {
+		return _alterer;
+	}
+
+	/**
+	 * Return the number of selected offsprings.
+	 *
+	 * @return the number of selected offsprings
+	 */
+	public int getOffspringCount() {
+		return _offspringCount;
+	}
+
+	/**
+	 * The number of selected survivors.
+	 *
+	 * @return the number of selected survivors
+	 */
+	public int getSurvivorsCount() {
+		return _survivorsCount;
+	}
+
+	/**
+	 * Return the number of individuals of a population.
+	 *
+	 * @return the number of individuals of a population
+	 */
+	public int getPopulationSize() {
+		return _offspringCount + _survivorsCount;
+	}
+
+	/**
+	 * Return the maximal allowed phenotype age.
+	 *
+	 * @return the maximal allowed phenotype age
+	 */
+	public long getMaximalPhenotypeAge() {
+		return _maximalPhenotypeAge;
+	}
+
+	/**
+	 * Return the optimization strategy.
+	 *
+	 * @return the optimization strategy
+	 */
+	public Optimize getOptimize() {
+		return _optimize;
+	}
+
+	/**
+	 * Create a new evolution parameter builder.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return a new parameter builder
+	 */
+	public static  <G extends Gene<?, G>, C extends Comparable<? super C>>
+	Builder<G, C> builder() {
 		return new Builder<>();
 	}
 
+	/**
+	 * Return the default evolution parameters.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 * @return the default evolution parameters
+	 */
 	public static  <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionParams<G, C> defaultParams() {
-		return new EvolutionParams<G, C>(
-			new TournamentSelector<G, C>(3),
-			new TournamentSelector<>(3),
-			Alterer.of(
-				new SinglePointCrossover<G, C>(0.2),
-				new Mutator<>(0.15)
-			),
-			Optimize.MAXIMUM,
-			30,
-			20,
-			70
-		);
+		return EvolutionParams.<G, C>builder().build();
 	}
 
+	/**
+	 * Builder class for the evolution parameter.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness function result type
+	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
