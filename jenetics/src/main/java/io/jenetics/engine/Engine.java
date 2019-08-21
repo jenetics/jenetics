@@ -110,6 +110,9 @@ import io.jenetics.util.Seq;
  * @see EvolutionStatistics
  * @see Codec
  *
+ * @param <G> the gene type
+ * @param <C> the fitness function result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version 5.0
