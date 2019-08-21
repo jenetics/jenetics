@@ -149,7 +149,7 @@ public class EngineTest {
 			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		engine.builder()
+		engine.toBuilder()
 			.alterers(new Mutator<>()).build()
 			.stream(interimResult);
 	}

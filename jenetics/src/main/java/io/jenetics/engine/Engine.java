@@ -591,9 +591,11 @@ public final class Engine<
 	 * of the current evolution {@code Engine}. With this method, the evolution
 	 * engine can serve as a template for a new one.
 	 *
+	 * @since !__version__!
+	 *
 	 * @return a new engine builder
 	 */
-	public Builder<G, C> builder() {
+	public Builder<G, C> toBuilder() {
 		return new Builder<>(_evaluator, _genotypeFactory)
 			.alterers(_alterer)
 			.clock(_clock)
@@ -606,6 +608,22 @@ public final class Engine<
 			.populationSize(getPopulationSize())
 			.survivorsSelector(_survivorsSelector)
 			.mapping(_mapper);
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} initialized with the values
+	 * of the current evolution {@code Engine}. With this method, the evolution
+	 * engine can serve as a template for a new one.
+	 *
+	 * @see #toBuilder()
+	 *
+	 * @return a new engine builder
+	 *
+	 * @deprecated Use {@link #toBuilder()} instead.
+	 */
+	@Deprecated
+	public Builder<G, C> builder() {
+		return toBuilder();
 	}
 
 

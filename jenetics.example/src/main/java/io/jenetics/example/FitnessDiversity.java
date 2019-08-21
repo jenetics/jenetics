@@ -54,7 +54,7 @@ public class FitnessDiversity {
 			.build();
 
 		// The 'diversity' engine tries to broaden the search space again.
-		final Engine<BitGene, Double> diversityEngine = baseEngine.builder()
+		final Engine<BitGene, Double> diversityEngine = baseEngine.toBuilder()
 			.alterers(new Mutator<>(0.5))
 			.build();
 
