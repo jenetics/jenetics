@@ -47,7 +47,7 @@ import io.jenetics.prog.regression.Sample;
  * @version !__version__!
  * @since !__version__!
  */
-public class TimeSeries {
+public class SymbolicRegression {
 
 	// Definition of the allowed operations.
 	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
