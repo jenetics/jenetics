@@ -60,13 +60,6 @@ idea {
 	}
 }
 
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.ext',
-	'io.jenetics.ext.engine',
-	'io.jenetics.ext.moea',
-	'io.jenetics.ext.util'
-)
-
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.ext')
 
 javadoc {
