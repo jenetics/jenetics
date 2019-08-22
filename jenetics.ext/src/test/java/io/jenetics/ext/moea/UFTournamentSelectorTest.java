@@ -47,7 +47,7 @@ import io.jenetics.util.ISeq;
  */
 public class UFTournamentSelectorTest {
 
-	static final class Retry extends RetryAnalyzerCount {
+	public static final class Retry extends RetryAnalyzerCount {
 		@Override
 		public boolean retryMethod(ITestResult result) {
 			return getCount() <= 1;

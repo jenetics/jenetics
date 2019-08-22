@@ -19,11 +19,12 @@
  */
 package io.jenetics.prog.op;
 
+import static org.testng.Assert.assertEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -41,9 +42,9 @@ public class MathOpTest {
 		final boolean matches
 	) {
 		final Optional<Const<Double>> c = MathOp.toConst(string);
-		Assert.assertEquals(c.isPresent(), matches);
+		assertEquals(c.isPresent(), matches);
 		if (matches) {
-			Assert.assertEquals(c.orElseThrow(AssertionError::new), constant);
+			assertEquals(c.orElseThrow(AssertionError::new), constant);
 		}
 	}
 
@@ -64,9 +65,9 @@ public class MathOpTest {
 			MathOp::toMathOp
 		);
 
-		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
+		assertEquals(Program.eval(tree, 10.0, 5.0).doubleValue(), 100.0);
 		Var.reindex(tree);
-		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+		assertEquals(Program.eval(tree, 10.0, 5.0).doubleValue(), 45.0);
 	}
 
 	@Test
@@ -76,14 +77,14 @@ public class MathOpTest {
 			MathOp::toMathOp
 		);
 
-		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 100.0);
+		assertEquals(Program.eval(tree, 10.0, 5.0).doubleValue(), 100.0);
 
 		final Map<Var<Double>, Integer> indexes = new HashMap<>();
 		indexes.put(Var.of("x"), 0);
 		indexes.put(Var.of("y"), 1);
 		Var.reindex(tree, indexes);
 
-		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+		assertEquals(Program.eval(tree, 10.0, 5.0).doubleValue(), 45.0);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class MathOpTest {
 			MathOp::toMathOp
 		);
 
-		Assert.assertEquals(Program.eval(tree, 10.0, 5.0), 45.0);
+		assertEquals(Program.eval(tree, 10.0, 5.0).doubleValue(), 45.0);
 	}
 
 }

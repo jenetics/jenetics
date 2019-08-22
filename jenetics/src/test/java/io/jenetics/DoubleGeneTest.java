@@ -77,22 +77,22 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			final DoubleGene b = template.newInstance((i - 100)*3.0);
 			final DoubleGene c = a.mean(b);
 
-			assertEquals(a.getMin(), min);
-			assertEquals(a.getMax(), max);
-			assertEquals(b.getMin(), min);
-			assertEquals(b.getMax(), max);
-			assertEquals(c.getMin(), min);
-			assertEquals(c.getMax(), max);
-			assertEquals(c.getAllele(), ((i - 50) + ((i - 100)*3))/2.0);
+			assertEquals(a.getMin().doubleValue(), min);
+			assertEquals(a.getMax().doubleValue(), max);
+			assertEquals(b.getMin().doubleValue(), min);
+			assertEquals(b.getMax().doubleValue(), max);
+			assertEquals(c.getMin().doubleValue(), min);
+			assertEquals(c.getMax().doubleValue(), max);
+			assertEquals(c.getAllele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
 	}
 
 	@Test
 	public void doubleGeneIntegerIntegerInteger() {
 		DoubleGene gene = DoubleGene.of(1.234, 0.345, 2.123);
-		assertEquals(gene.getAllele(), 1.234);
-		assertEquals(gene.getMin(), 0.345);
-		assertEquals(gene.getMax(), 2.123);
+		assertEquals(gene.getAllele().doubleValue(), 1.234);
+		assertEquals(gene.getMin().doubleValue(), 0.345);
+		assertEquals(gene.getMax().doubleValue(), 2.123);
 
 		try {
 			gene = DoubleGene.of(0.1, 2.1, 4.1);
@@ -105,8 +105,8 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 	@Test
 	public void doubleGeneIntegerInteger() {
 		DoubleGene gene = DoubleGene.of(-10.567, 10.567);
-		assertEquals(gene.getMin(), -10.567);
-		assertEquals(gene.getMax(), 10.567);
+		assertEquals(gene.getMin().doubleValue(), -10.567);
+		assertEquals(gene.getMax().doubleValue(), 10.567);
 	}
 
 	@Test
@@ -115,8 +115,8 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		DoubleGene g2 = gene.newInstance(5.0);
 
 		assertEquals(g2.getAllele().intValue(), 5);
-		assertEquals(g2.getMin(), -1234.1234);
-		assertEquals(g2.getMax(), 1234.1234);
+		assertEquals(g2.getMin().doubleValue(), -1234.1234);
+		assertEquals(g2.getMax().doubleValue(), 1234.1234);
 	}
 
 	@Test
@@ -131,9 +131,9 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		DoubleGene g2 = DoubleGene.of(4.1, 1.1, 7.1);
 		DoubleGene g3 = DoubleGene.of(3.1, 0.1, 5.1);
 
-		assertEquals(g1.getMin(), 0.1);
-		assertEquals(g2.getMin(), 1.1);
-		assertEquals(g3.getMin(), 0.1);
+		assertEquals(g1.getMin().doubleValue(), 0.1);
+		assertEquals(g2.getMin().doubleValue(), 1.1);
+		assertEquals(g3.getMin().doubleValue(), 0.1);
 	}
 
 	@Test
@@ -142,9 +142,9 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		DoubleGene g2 = DoubleGene.of(4.2, 1.2, 7.2);
 		DoubleGene g3 = DoubleGene.of(3.2, 0.2, 5.2);
 
-		assertEquals(g1.getMax(), 5.2);
-		assertEquals(g2.getMax(), 7.2);
-		assertEquals(g3.getMax(), 5.2);
+		assertEquals(g1.getMax().doubleValue(), 5.2);
+		assertEquals(g2.getMax().doubleValue(), 7.2);
+		assertEquals(g3.getMax().doubleValue(), 5.2);
 	}
 
 }
