@@ -204,6 +204,17 @@ public final class EvolutionParams<
 		private Builder() {
 		}
 
+		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
+			survivorsSelector(params.getSurvivorsSelector());
+			offspringSelector(params.getOffspringSelector());
+			alterers(params.getAlterer());
+			optimize(params.getOptimize());
+			offspringFraction(params.getS());
+			populationSize(params.getPopulationSize());
+			maximalPhenotypeAge(params.getMaximalPhenotypeAge());
+			return this;
+		}
+
 		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
