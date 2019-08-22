@@ -43,8 +43,11 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class TreePerf {
 
-	private static final Tree<?, ?> TREE = newTree(4, new Random(123));
-	private static final Tree<?, ?> FLAT_TREE = FlatTreeNode.of(TREE);
+	@State(Scope.Benchmark)
+	public static class Trees {
+		Tree<?, ?> tree = newTree(4, new Random(123));
+		Tree<?, ?> flatTree = FlatTreeNode.of(tree);
+	}
 
 	private static TreeNode<Integer> newTree(final int levels, final Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
@@ -70,23 +73,23 @@ public class TreePerf {
 	}
 
 	@Benchmark
-	public int size() {
-		return TREE.size();
+	public int size(final Trees trees) {
+		return trees.tree.size();
 	}
 
 	@Benchmark
-	public int flatSize() {
-		return FLAT_TREE.size();
+	public int flatSize(final Trees trees) {
+		return trees.flatTree.size();
 	}
 
 	@Benchmark
-	public int count() {
-		return (int)TREE.breadthFirstStream().count();
+	public long count(final Trees trees) {
+		return trees.tree.breadthFirstStream().count();
 	}
 
 	@Benchmark
-	public int flatCount() {
-		return (int)FLAT_TREE.breadthFirstStream().count();
+	public long flatCount(final Trees trees) {
+		return trees.flatTree.breadthFirstStream().count();
 	}
 
 	public static void main(String[] args) throws RunnerException {
