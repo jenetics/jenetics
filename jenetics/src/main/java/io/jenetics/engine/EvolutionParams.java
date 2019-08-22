@@ -438,8 +438,8 @@ public final class EvolutionParams<
 				_offspringSelector,
 				_alterer,
 				_optimize,
-				offspringCount(),
-				survivorsCount(),
+				_populationSize,
+				_offspringFraction,
 				_maximalPhenotypeAge
 			);
 		}
