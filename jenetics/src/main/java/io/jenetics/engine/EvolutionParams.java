@@ -59,8 +59,8 @@ public final class EvolutionParams<
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
 	private final Optimize _optimize;
-	private final int _offspringCount;
-	private final int _survivorsCount;
+	private final int _populationSize;
+	private final double _offspringFraction;
 	private final long _maximalPhenotypeAge;
 
 	private EvolutionParams(
@@ -68,16 +68,16 @@ public final class EvolutionParams<
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
 		final Optimize optimize,
-		final int offspringCount,
-		final int survivorsCount,
+		final int populationSize,
+		final double offspringFraction,
 		final long maximalPhenotypeAge
 	) {
 		_survivorsSelector = survivorsSelector;
 		_offspringSelector = offspringSelector;
 		_alterer = alterer;
 		_optimize = optimize;
-		_offspringCount = offspringCount;
-		_survivorsCount = survivorsCount;
+		_populationSize = populationSize;
+		_offspringFraction = offspringFraction;
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 	}
 
@@ -109,22 +109,14 @@ public final class EvolutionParams<
 		return _alterer;
 	}
 
-	/**
-	 * Return the number of selected offsprings.
-	 *
-	 * @return the number of selected offsprings
-	 */
-	public int getOffspringCount() {
-		return _offspringCount;
-	}
 
 	/**
-	 * The number of selected survivors.
+	 * Return the offspring fraction.
 	 *
-	 * @return the number of selected survivors
+	 * @return the offspring fraction.
 	 */
-	public int getSurvivorsCount() {
-		return _survivorsCount;
+	public double getOffspringFraction() {
+		return _offspringFraction;
 	}
 
 	/**
@@ -133,7 +125,25 @@ public final class EvolutionParams<
 	 * @return the number of individuals of a population
 	 */
 	public int getPopulationSize() {
-		return _offspringCount + _survivorsCount;
+		return _populationSize;
+	}
+
+	/**
+	 * Return the number of selected offsprings.
+	 *
+	 * @return the number of selected offsprings
+	 */
+	public int getOffspringCount() {
+		return (int)Math.round(_populationSize*_offspringFraction);
+	}
+
+	/**
+	 * The number of selected survivors.
+	 *
+	 * @return the number of selected survivors
+	 */
+	public int getSurvivorsCount() {
+		return _populationSize - getOffspringCount();
 	}
 
 	/**
@@ -202,17 +212,6 @@ public final class EvolutionParams<
 
 
 		private Builder() {
-		}
-
-		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
-			survivorsSelector(params.getSurvivorsSelector());
-			offspringSelector(params.getOffspringSelector());
-			alterers(params.getAlterer());
-			optimize(params.getOptimize());
-			offspringFraction(params.getS());
-			populationSize(params.getPopulationSize());
-			maximalPhenotypeAge(params.getMaximalPhenotypeAge());
-			return this;
 		}
 
 		/**
