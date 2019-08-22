@@ -770,6 +770,23 @@ public final class Engine<
 		}
 
 		/**
+		 * The evolution parameters.
+		 *
+		 * @param params the evolution parameters
+		 * @return {@code this} builder, for command chaining
+		 */
+		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
+			survivorsSelector(params.getSurvivorsSelector());
+			offspringSelector(params.getOffspringSelector());
+			alterers(params.getAlterer());
+			optimize(params.getOptimize());
+			populationSize(params.getPopulationSize());
+			offspringFraction(params.getOffspringFraction());
+			maximalPhenotypeAge(params.getMaximalPhenotypeAge());
+			return this;
+		}
+
+		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
