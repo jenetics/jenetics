@@ -39,11 +39,6 @@ dependencies {
 	testImplementation property('include.EqualsVerifier')
 }
 
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.prog',
-	'io.jenetics.prog.op'
-)
-
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
