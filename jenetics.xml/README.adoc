@@ -1,10 +1,12 @@
-# XML marshalling module
+= Module: `io.jenetics.xml`
 
-The `org.jenetics.xml` module allows to write/read chromosomes and genotypes to/from XML. Since the `javax.xml.bind` module is marked as deprecated (and for removal), this module will replace the existing *JAXB* based XML marshalling.
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.xml.svg[Javadoc, link=http://www.javadoc.io/doc/io.jenetics/jenetics.xml]
+
+The `io.jenetics.xml` module allows to write/read chromosomes and genotypes to/from XML. Since the `javax.xml.bind` module is marked as deprecated (and for removal), this module will replace the existing *JAXB* based XML marshalling.
 
 NOTE: The existing *JAXB* XML marshalling of the base classes are marked for removal.
 
-The XML marshalling, implemented in this module, is based on the `javax.xml.stream.XMLStreamReader/Writer` classes and only depends on the `java.xml` module. This classes are used by the `org.jenetics.xml.Reader/Writer` classes which can be easily composed to do XML marshalling for arbitrary complex objects.
+The XML marshalling, implemented in this module, is based on the `javax.xml.stream.XMLStreamReader/Writer` classes and only depends on the `java.xml` module. This classes are used by the `io.jenetics.xml.Reader/Writer` classes which can be easily composed to do XML marshalling for arbitrary complex objects.
 
 ```java
 @FunctionalInterface
@@ -25,7 +27,7 @@ public abstract class Reader<T> {
 
 The XML `Reader` is more complex, but essentially it just contains the corresponding `write` method.
 
-## Writing XML files
+== Writing XML files
 
 A simple example will show you how to create (compose) a writer class for the `IntegerChromosome`.
 
@@ -44,7 +46,7 @@ A simple example will show you how to create (compose) a writer class for the `I
 The snippet above shows the XML structure we want to create with our `Writer`.
 
 ```java
-import static org.jenetics.xml.stream.Writer.*;
+import static io.jenetics.xml.stream.Writer.*;
 
 final Writer<IntegerChromosome> writer =
      elem("int-chromosome",
@@ -75,10 +77,10 @@ try (OutputStream out = new FileOutputStream("chromosome.xml");
 
 The `jenetics.xml` module comes with predefined writers for all existing _Jenetics_ data-classes, up to the `Genotype` class. The `Phenotype` and the `Population` class has been left out, because this classes have references to the fitness function, where no general way exists for marshalling this to XML.
 
-As you can see in the following example, the predefined writers are heavily compossible as well.
+As you can see in the following example, the predefined writers are heavily combinable as well.
 
 ```java
-import org.jenetics.xml.Writers;
+import io.jenetics.xml.Writers;
 
 final Writer<Genotype<BitGene> bgw =
     Writers.Genotype.writer(Writers.BitChromosome.writer()));
@@ -107,14 +109,14 @@ try (OutputStream out = Files.newOutputStream(file)) {
 ```
 
 
-## Reading XML files
+== Reading XML files
 
 Reading XML files uses the same concept as writing files. There is an abstract `Reader` class, which can be easily composed. Additionally, you need to specify a factory function which will create the desired object from the extracted XML data.
 
 A `Reader`, which will read the XML representation of an `IntegerChromosome` can be seen in the following code snippet:
 
 ```java
-import static org.jenetics.xml.stream.Reader.*;
+import static io.jenetics.xml.stream.Reader.*;
 
  final Reader<IntegerChromosome> reader =
      elem(

@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 # Author:
-#    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+#    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
 #
 
 ##
@@ -32,6 +32,7 @@ REPORT_DIR="${SCRIPT_DIR}/../report/performance"
 
 VERSION="@__version__@"
 CLS_PATH="${SCRIPT_DIR}/../lib/jenetics-${VERSION}.jar"
+CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../project/buildSrc/lib/jpx-1.4.0.jar"
 CLS_PATH=${CLS_PATH}:"${SCRIPT_DIR}/../lib/jenetics.example-${VERSION}.jar":.
 
 agent_param() {
@@ -47,14 +48,14 @@ main() {
 
 	opts="-XX:+UseG1GC"
 
-	java ${opts} -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH org.jenetics.example.Knapsack
-	java ${opts} -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH org.jenetics.example.OnesCounting
-	java ${opts} -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH org.jenetics.example.RealFunction
-	java ${opts} -agentpath:`agent_param StringGenerator.jgrind` -cp $CLS_PATH org.jenetics.example.StringGenerator
-	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH org.jenetics.example.TravelingSalesman
+	java ${opts} -agentpath:`agent_param Knapsack.jgrind` -cp $CLS_PATH io.jenetics.example.Knapsack
+	java ${opts} -agentpath:`agent_param OnesCounting.jgrind` -cp $CLS_PATH io.jenetics.example.OnesCounting
+	java ${opts} -agentpath:`agent_param RealFunction.jgrind` -cp $CLS_PATH io.jenetics.example.RealFunction
+	java ${opts} -agentpath:`agent_param StringGenerator.jgrind` -cp $CLS_PATH io.jenetics.example.StringGenerator
+	java ${opts} -agentpath:`agent_param TravelingSalesman.jgrind` -cp $CLS_PATH io.jenetics.example.TravelingSalesman
 }
 
-main $*
+time main $*
 
 
 

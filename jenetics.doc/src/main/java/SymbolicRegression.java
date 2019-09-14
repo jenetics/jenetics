@@ -1,98 +1,90 @@
-import static java.lang.Math.pow;
+import io.jenetics.Mutator;
+import io.jenetics.engine.Engine;
+import io.jenetics.engine.EvolutionResult;
+import io.jenetics.engine.Limits;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
 
-import java.util.Arrays;
+import io.jenetics.ext.SingleNodeCrossover;
+import io.jenetics.ext.util.TreeNode;
 
-import org.jenetics.Genotype;
-import org.jenetics.Mutator;
-import org.jenetics.engine.Codec;
-import org.jenetics.engine.Engine;
-import org.jenetics.engine.EvolutionResult;
-import org.jenetics.ext.SingleNodeCrossover;
-import org.jenetics.ext.util.Tree;
-import org.jenetics.prog.ProgramChromosome;
-import org.jenetics.prog.ProgramGene;
-import org.jenetics.prog.op.EphemeralConst;
-import org.jenetics.prog.op.MathOp;
-import org.jenetics.prog.op.Op;
-import org.jenetics.prog.op.Var;
-import org.jenetics.util.ISeq;
-import org.jenetics.util.RandomRegistry;
+import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.EphemeralConst;
+import io.jenetics.prog.op.MathExpr;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Var;
+import io.jenetics.prog.regression.Error;
+import io.jenetics.prog.regression.LossFunction;
+import io.jenetics.prog.regression.Regression;
+import io.jenetics.prog.regression.Sample;
 
 public class SymbolicRegression {
 
-	// Sample data created with 4*x^3 - 3*x^2 + x
-	static final double[][] SAMPLES = new double[][] {
-		{-1.0, -8.0000},
-		{-0.9, -6.2460},
-		{-0.8, -4.7680},
-		{-0.7, -3.5420},
-		{-0.6, -2.5440},
-		{-0.5, -1.7500},
-		{-0.4, -1.1360},
-		{-0.3, -0.6780},
-		{-0.2, -0.3520},
-		{-0.1, -0.1340},
-		{0.0, 0.0000},
-		{0.1, 0.0740},
-		{0.2, 0.1120},
-		{0.3, 0.1380},
-		{0.4, 0.1760},
-		{0.5, 0.2500},
-		{0.6, 0.3840},
-		{0.7, 0.6020},
-		{0.8, 0.9280},
-		{0.9, 1.3860},
-		{1.0, 2.0000}
-	};
-
-	// Definition of the operations.
-	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
-		MathOp.ADD,
-		MathOp.SUB,
-		MathOp.MUL
-	);
+	// Definition of the allowed operations.
+	private static final ISeq<Op<Double>> OPS =
+		ISeq.of(MathOp.ADD, MathOp.SUB, MathOp.MUL);
 
 	// Definition of the terminals.
-	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
 		EphemeralConst.of(() -> (double)RandomRegistry
 			.getRandom().nextInt(10))
 	);
 
-	static double error(final ProgramGene<Double> program) {
-		return Arrays.stream(SAMPLES)
-			.mapToDouble(sample ->
-				pow(sample[1] - program.eval(sample[0]), 2) +
-					program.size()*0.00001)
-			.sum();
-	}
-
-	static final Codec<ProgramGene<Double>, ProgramGene<Double>>
-	CODEC = Codec.of(
-		Genotype.of(ProgramChromosome.of(
-			5,
-			ch -> ch.getRoot().size() <= 50,
-			OPERATIONS,
-			TERMINALS
-		)),
-		Genotype::getGene
-	);
+	private static final Regression<Double> REGRESSION =
+		Regression.of(
+			Regression.codecOf(
+				OPS, TMS, 5,
+				t -> t.getGene().size() < 30
+			),
+			Error.of(LossFunction::mse),
+			// Lookup table for 4*x^3 - 3*x^2 + x
+			Sample.ofDouble(-1.0, -8.0000),
+			Sample.ofDouble(-0.9, -6.2460),
+			Sample.ofDouble(-0.8, -4.7680),
+			Sample.ofDouble(-0.7, -3.5420),
+			Sample.ofDouble(-0.6, -2.5440),
+			Sample.ofDouble(-0.5, -1.7500),
+			Sample.ofDouble(-0.4, -1.1360),
+			Sample.ofDouble(-0.3, -0.6780),
+			Sample.ofDouble(-0.2, -0.3520),
+			Sample.ofDouble(-0.1, -0.1340),
+			Sample.ofDouble(0.0, 0.0000),
+			Sample.ofDouble(0.1, 0.0740),
+			Sample.ofDouble(0.2, 0.1120),
+			Sample.ofDouble(0.3, 0.1380),
+			Sample.ofDouble(0.4, 0.1760),
+			Sample.ofDouble(0.5, 0.2500),
+			Sample.ofDouble(0.6, 0.3840),
+			Sample.ofDouble(0.7, 0.6020),
+			Sample.ofDouble(0.8, 0.9280),
+			Sample.ofDouble(0.9, 1.3860),
+			Sample.ofDouble(1.0, 2.0000)
+		);
 
 	public static void main(final String[] args) {
 		final Engine<ProgramGene<Double>, Double> engine = Engine
-			.builder(SymbolicRegression::error, CODEC)
+			.builder(REGRESSION)
 			.minimizing()
 			.alterers(
-				new SingleNodeCrossover<>(),
+				new SingleNodeCrossover<>(0.1),
 				new Mutator<>())
 			.build();
 
-		final ProgramGene<Double> program = engine.stream()
-			.limit(100)
-			.collect(EvolutionResult.toBestGenotype())
+		final EvolutionResult<ProgramGene<Double>, Double> er =
+			engine.stream()
+				.limit(Limits.byFitnessThreshold(0.01))
+				.collect(EvolutionResult.toBestEvolutionResult());
+
+		final ProgramGene<Double> program = er.getBestPhenotype()
+			.getGenotype()
 			.getGene();
 
-		System.out.println(Tree.toDottyString(program));
+		final TreeNode<Op<Double>> tree = program.toTreeNode();
+		MathExpr.rewrite(tree);
+		System.out.println("G: " + er.getTotalGenerations());
+		System.out.println("F: " + new MathExpr(tree));
+		System.out.println("E: " + REGRESSION.error(tree));
 	}
-
 }

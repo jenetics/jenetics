@@ -15,14 +15,14 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.5
+ * @version 4.4
  */
 
 apply plugin: 'packaging'
@@ -33,11 +33,13 @@ repositories {
 }
 
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.prog')
-
-	testCompile Include.TestNG
+	implementation project(':jenetics')
+	implementation project(':jenetics.ext')
+	implementation project(':jenetics.prog')
+	implementation project(':jenetics.tool')
 }
+
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.doc')
 
 packaging {
 	name = 'Jenetics doc'

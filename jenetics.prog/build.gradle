@@ -17,37 +17,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * Author:
- *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *   Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  *
  */
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 3.9
+ * @version 4.4
  */
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
-repositories {
-	mavenCentral()
-	jcenter()
-}
-
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
+	api project(':jenetics')
+	api project(':jenetics.ext')
 
-	testCompile Include.TestNG
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
 }
 
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.prog',
-	'org.jenetics.prog.ops'
-)
-
-jar.manifest.attributes('Automatic-Module-Name': 'org.jenetics.prog')
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
 	options {
@@ -57,9 +49,9 @@ javadoc {
 }
 
 packaging {
-	name = 'Jenetics GP'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.io'
+	name = property('jenetics.prog.Name')
+	author = property('jenetics.Author')
+	url = property('jenetics.Url')
 
 	jarjar = false
 	javadoc = true
@@ -69,13 +61,13 @@ modifyPom {
 	project {
 		name 'jentics.prog'
 		description 'Jenetics Genetic Programming Module'
-		url jenetics.url
+		url project.property('jenetics.Url')
 		inceptionYear '2017'
 
 		scm {
-			url jenetics.maven.scm.url
-			connection jenetics.maven.scm.connection
-			developerConnection jenetics.maven.scm.developer_connection
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -88,9 +80,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id 'jenetics'
-				name 'Franz Wilhelmstötter'
-				email 'franz.wilhelmstoetter@gmail.com'
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -103,8 +95,8 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-	snapshotRepository = 'https://oss.sonatype.org/content/repositories/snapshots'
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }
 
 

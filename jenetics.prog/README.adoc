@@ -1,8 +1,10 @@
-# Genetic programming with _Jenetics_
+= Module: `io.jenetics.prog`
 
-Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `org.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.prog.svg[Javadoc, link=http://www.javadoc.io/doc/io.jenetics/jenetics.prog]
 
-The `org.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
+Genetic programming (GP) is a technique where a set of genes are modified (evolved) using an evolutionary algorithm. The `io.jenetics.prog` modules contains a `ProgramGene`, together with its corresponding `ProgramChromosome`, which allows to create operation (`Op`) trees.
+
+The `io.jenetics.prog` module contains the classes which are needed for doing _Genetic programming_ with the _Jenetics_ library. It introduces a new `Chromosome`/`Gene` pair, which are the main entry points.
 
 
 ```java
@@ -17,7 +19,7 @@ public interface Op<T> {
 The generic type of the `Op` enforces data-type constraints for the created program tree and makes the implementation a _strongly typed_ GP algorithm.
 
 
-## Operations
+== Operations
 
 When creating a new program tree, it is not necessary to implement own instance of the `ProgramGene` or `ProgramChromosome` class. The extension point for own programs is the `Op` interface.
 
@@ -27,7 +29,7 @@ When creating a new program tree, it is not necessary to implement own instance 
 
 In the example above, a new operation with the "myop" and arity 3 is defined. Whenever the operation is evaluated, the function _f(x, y, z) = x*y + z_ is executed.
 
-NOTE: The class `MathOp` in the `org.jenetics.prog.op` package defines a set of mathematical standard operations/functions.
+NOTE: The class `MathOp` in the `io.jenetics.prog.op` package defines a set of mathematical standard operations/functions.
 
 When creating a new `ProgramChromosome` we must distinguish two different kind of operations:
 
@@ -69,18 +71,17 @@ final Op<Double> rand1 = EphemeralConst.of(Math::random);
 final Op<Double> rand2 = EphemeralConst.of("R", Math::random);
 ```
 
-## Program trees
+== Program trees
 
-### Program creation
+=== Program creation
 
 The `ProgramChromosome` comes with some factory methods, which lets you easily create program trees with a given depth and a given set of _operations_ and _terminals_.
 
 ```java
-final int depth = 5;
-final Op<Double> operations = ISeq.of(...);
-final Op<Double> terminals = ISeq.of(...);
+final ISeq<Op<Double>> operations = ISeq.of(...);
+final ISeq<Op<Double>> terminals = ISeq.of(...);
 final ProgramChromosome<Double> program =
-    ProgramChromosome.of(5, operations, terminals);
+    ProgramChromosome.of(depth, operations, terminals);
 ```
 
 The code snippet above will create a _perfect_ program tree of depth _5_. All non-leaf nodes will contain operations, randomly selected from the _operations_ set. Whereas all leaf nodes are filled with operations from the _terminals_ set.
@@ -103,15 +104,15 @@ final Engine<ProgramGene<Double>, Double> engine = Engine
 For a detailed description on the correct `Engine` setup have a look at the _Example_ section.
 
 
-### Program repair
+=== Program repair
 
 The specialized `Alterer` classes for the `ProgramChromosome` guarantees that the program tree after the _alter_ operation is still valid. They obey the tree structure of the chromosome, although they are altering the flattened `ProgramGene` sequence. General alterers, not written for `ProgramChromosome`, will most likely destroy the tree property of the altered chromosome. There are essentially two possibility for handling invalid tree chromosomes: 1) marking the chromosome as _invalid_ or 2) try to repair the invalid chromosome. Possibility 1) would be easier, but it would also lead to a possible large number of invalid chromosomes.
 
 NOTE: Jenetics allows the usage of arbitrary `Alterer` implementations. Even alterers not implemented for `ProgramChromosomes`. Chromosomes _destroyed_  by the alterer are repaired.
 
-## Examples
+== Examples
 
-### Symbolic regression
+=== Symbolic regression
 
 > Symbolic regression involves finding a mathematical expression, in symbolic form, that provides a good, best, or perfect fit between a given finite sampling of values of the independent variables and the associated values of the dependent variables.–John R. Koza, Genetic Programming I
 
@@ -150,94 +151,60 @@ static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 
 The chosen _non-terminal_ operation set is sufficient to create any polynomial. For the _terminal_ operations, we added a variable "x", with _index_ zero, and an ephemeral _int_ constant. The purpose of the _ephemeral_ constant is to create constant values, which will differ for every tree, but stay constant within a tree.
 
-In the next step define the fitness function for the GP, which will be an _error_ function we will minimize.
+The `io.jenetics.prog.regression` package contains interfaces and classes, which simplifies the definition of the _error_ function and the implementation of _symbolic regression_ problems.
 
 ```java
-// The lookup table where the data points are stored.
-static final double[][] SAMPLES = new double[][] {
-    {-1.0, -8.0000},
-    {-0.9, -6.2460},
-    ...
-};
+private static final Regression<Double> REGRESSION = Regression.of(
+    Regression.codecOf(OPERATIONS, TERMINALS, 5),
+    Error.of(LossFunction::mse),
+    Sample.ofDouble(-1.0, -8.0000),
+    // ...
+    Sample.ofDouble(0.9, 1.3860),
+    Sample.ofDouble(1.0, 2.0000)
+);
 
-static double error(final ProgramGene<Double> program) {
-    return Arrays.stream(SAMPLES).mapToDouble(sample -> {
-        final double x = sample[0];
-        final double y = sample[1];
-        final double result = program.eval(x);
-        return abs(y - result) + program.size()*0.0001;
-    })
-    .sum();
-}
-```
-The error function calculates the sum of the (absolute) difference between the sample value and the value calculated the by the evolved _program_ (`ProgramGene`). Since we prefer compact programs over complex one, we will add a penalty for the program size (the number of nodes of the program tree).
-
-CAUTION: The penalty for the tree size must be small enough to not dominate the error function. We still want to find an approximating function and not the smallest possible one.
-
-After we have defined the error function, we need to define the proper `Codec`.
-
-```java
-static final Codec<ProgramGene<Double>, ProgramGene<Double>> CODEC =
-    Codec.of(
-        Genotype.of(ProgramChromosome.of(
-            // Program tree depth.
-            5,
-            // Chromosome validator.
-            ch -> ch.getRoot().size() <= 50,
-            OPERATIONS,
-            TERMINALS
-        )),
-        Genotype::getGene
-    );
-```
-
-There are two particularities in the definition of the `ProgramChromosome`:
-
-1. Since we want to narrow the search space, we are limiting the depth of newly created program trees to _5_.
-1. Because of crossover operations performed during evolution, the resulting programs can grow quite big. To prevent an unlimited growth of the program trees
-, we mark programs with more than _50_ nodes as invalid.
-
-Now we are ready to put everything together:
-
-```java
 public static void main(final String[] args) {
     final Engine<ProgramGene<Double>, Double> engine = Engine
-        .builder(Polynomial::error, CODEC)
+        .builder(REGRESSION)
         .minimizing()
         .alterers(
-            new SingleNodeCrossover<>(),
+            new SingleNodeCrossover<>(0.1),
             new Mutator<>())
         .build();
 
-    final ProgramGene<Double> program = engine.stream()
-        .limit(500)
-        .collect(EvolutionResult.toBestGenotype())
+    final EvolutionResult<ProgramGene<Double>, Double> result = engine
+        .stream()
+        .limit(Limits.byFitnessThreshold(0.01))
+        .collect(EvolutionResult.toBestEvolutionResult());
+
+    final ProgramGene<Double> program = result.getBestPhenotype()
+        .getGenotype()
         .getGene();
 
-    System.out.println(Tree.toString(program));
+    final TreeNode<Op<Double>> tree = program.toTreeNode();
+    MathExpr.rewrite(tree); // Simplify result program.
+    System.out.println("Generations: " + result.getTotalGenerations());
+    System.out.println("Function:    " + new MathExpr(tree));
+    System.out.println("Error:       " + REGRESSION.error(tree));
 }
 ```
+The error function uses the _mean square error_ as _loss_ function. It is also possible to define a more advanced error function, which penalizes big program trees.
 
-The GP is capable of finding the polynomial which created the sample data. After a few tries, we got the following (correct) output program:
+```java
+final Error error = Error.of(
+    LossFunction::mse,
+    Complexity.ofMaxNodeCount(50)
+);
+
+```
+The error function above consists of a loss function and a tree complexity function. The definition of the `Codec` is also simplified by the `Regression` class and several factory methods: `Regression.codecOf(OPERATIONS, TERMINALS, 5)`
+
+The GP is capable of finding the polynomial which created the sample data. and we get the following (correct) output program:
 
 
-    add
-    ├── mul
-    │   ├── x
-    │   └── sub
-    │       ├── 0.0
-    │       └── mul
-    │           ├── x
-    │           └── sub
-    │               ├── sub
-    │               │   ├── sub
-    │               │   │   ├── sub
-    │               │   │   │   ├── 3.0
-    │               │   │   │   └── x
-    │               │   │   └── x
-    │               │   └── x
-    │               └── x
-    └── x
+	Generations: 9494
+	Function:    ((x^2.0*4.0 - (x + 5.0)) + (((6.0 - x) - 2.0*x) + x))*x
+	Error:       1.3621827363801722E-31
 
 This program can be reduced to _4*x^3 - 3*x^2 + x_, which is exactly the polynomial, which created the sample data.
 

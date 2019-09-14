@@ -15,32 +15,36 @@
  * limitations under the License.
  *
  * Author:
- *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmx.at)
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmx.at">Franz Wilhelmstötter</a>
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 3.9
+ * @version 4.4
  */
 
 apply plugin: 'packaging'
 
 dependencies {
-	compile project(':jenetics')
-	compile Include.PRNGine
+	implementation project(':jenetics')
+	implementation project(':jenetics.ext')
+	implementation project(':jenetics.prog')
+	implementation property('include.JPX')
+	implementation property('include.PRNGine')
+	implementation "io.reactivex.rxjava2:rxjava:2.1.14"
+
+	testImplementation property('include.TestNG')
 }
 
-jar.manifest.instruction('Export-Package',
-	'org.jenetics.example'
-)
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
 
 packaging {
-	name = 'Jenetics examples'
-	author = 'Franz Wilhelmstötter'
-	url = 'http://jenetics.io'
+	name = property('jenetics.example.Name')
+	author = property('jenetics.Author')
+	url = property('jenetics.Url')
 	jarjar = false
 	javadoc = false
 
