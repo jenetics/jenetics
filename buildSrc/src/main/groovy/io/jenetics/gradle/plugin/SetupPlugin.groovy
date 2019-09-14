@@ -73,6 +73,9 @@ class SetupPlugin extends JeneticsPlugin {
 	}
 
 	private void applyJava() {
+		project.plugins.apply(EclipsePlugin)
+		project.plugins.apply(IdeaPlugin)
+
 		project.clean.doLast {
 			project.file("${project.projectDir}/test-output").deleteDir()
 		}
