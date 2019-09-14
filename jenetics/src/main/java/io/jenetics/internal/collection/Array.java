@@ -31,7 +31,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import io.jenetics.internal.collection.Array.Store.Ref;
-import io.jenetics.internal.util.reflect;
 
 /**
  * Array implementation class. This class manages the actual array (store) and
@@ -45,9 +44,9 @@ import io.jenetics.internal.util.reflect;
 public final class Array<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private transient final Store.Ref<T> _store;
-	private final int _start;
-	private final int _length;
+	private transient /*final*/ Store.Ref<T> _store;
+	private /*final*/ int _start;
+	private /*final*/ int _length;
 
 	/**
 	 * Private <i>primary</i> constructor.
@@ -224,7 +223,7 @@ public final class Array<T> implements Serializable {
 
 	private static int size(final Iterable<?> values) {
 		int size = 0;
-		if (values instanceof Collection<?>) {
+		if (values instanceof Collection) {
 			size = ((Collection<?>)values).size();
 		} else {
 			for (Object value : values) {
@@ -376,9 +375,9 @@ public final class Array<T> implements Serializable {
 		final Store<T> store = (Store<T>) in.readObject();
 		final Store.Ref<T> ref = new Ref<>(store, sealed);
 
-		reflect.setField(this, "_start", 0);
-		reflect.setField(this, "_length", store.length());
-		reflect.setField(this, "_store", ref);
+		_start = 0;
+		_length = store.length();
+		_store = ref;
 	}
 
 	/**

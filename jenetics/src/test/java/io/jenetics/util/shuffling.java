@@ -21,13 +21,11 @@ package io.jenetics.util;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class shuffling {
-	private shuffling() {require.noInstance();}
+	private shuffling() {}
 
 	public static <T> T[] shuffle(final T[] array) {
 		return shuffle(array, RandomRegistry.getRandom());

@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.internal;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,7 +49,7 @@ public class CyclicSpliterator<T> implements Spliterator<T> {
 		if (_spliterators.isEmpty()) {
 			advance = false;
 		} else {
-			if (!spliterator().tryAdvance(action::accept)) {
+			if (!spliterator().tryAdvance(action)) {
 				_concat = null;
 			}
 		}

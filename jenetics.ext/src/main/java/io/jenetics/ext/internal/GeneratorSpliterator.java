@@ -58,6 +58,7 @@ public class GeneratorSpliterator<T> implements Spliterator<T> {
 
 		return true;
 	}
+
 	@Override
 	public Spliterator<T> trySplit() {
 		return new GeneratorSpliterator<>(_generator);

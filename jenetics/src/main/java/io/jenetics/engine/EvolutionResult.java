@@ -20,11 +20,12 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
@@ -226,7 +227,9 @@ public final class EvolutionResult<
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
-		return _best.get() != null ? _best.get().getFitness() : null;
+		return _best.get() != null
+			? _best.get().getFitness()
+			: null;
 	}
 
 	/**
@@ -290,47 +293,44 @@ public final class EvolutionResult<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_optimize) + 17;
-		hash += 31*Objects.hashCode(_population) + 17;
-		hash += 31*Objects.hashCode(_generation) + 17;
-		hash += 31*Objects.hashCode(_totalGenerations) + 17;
-		hash += 31*Objects.hashCode(_durations) + 17;
-		hash += 31*Objects.hashCode(_killCount) + 17;
-		hash += 31*Objects.hashCode(_invalidCount) + 17;
-		hash += 31*Objects.hashCode(_alterCount) + 17;
-		hash += 31*Objects.hashCode(getBestFitness()) + 17;
-		return hash;
+		return
+			hash(_optimize,
+			hash(_population,
+			hash(_generation,
+			hash(_totalGenerations,
+			hash(_durations,
+			hash(_killCount,
+			hash(_invalidCount,
+			hash(_alterCount))))))));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof EvolutionResult<?, ?> &&
+			obj instanceof EvolutionResult &&
 			Objects.equals(_optimize,
-				((EvolutionResult<?, ?>)obj)._optimize) &&
+				((EvolutionResult)obj)._optimize) &&
 			Objects.equals(_population,
-				((EvolutionResult<?, ?>)obj)._population) &&
+				((EvolutionResult)obj)._population) &&
 			Objects.equals(_generation,
-				((EvolutionResult<?, ?>)obj)._generation) &&
+				((EvolutionResult)obj)._generation) &&
 			Objects.equals(_totalGenerations,
-				((EvolutionResult<?, ?>)obj)._totalGenerations) &&
+				((EvolutionResult)obj)._totalGenerations) &&
 			Objects.equals(_durations,
-				((EvolutionResult<?, ?>)obj)._durations) &&
+				((EvolutionResult)obj)._durations) &&
 			Objects.equals(_killCount,
-				((EvolutionResult<?, ?>)obj)._killCount) &&
+				((EvolutionResult)obj)._killCount) &&
 			Objects.equals(_invalidCount,
-				((EvolutionResult<?, ?>)obj)._invalidCount) &&
+				((EvolutionResult)obj)._invalidCount) &&
 			Objects.equals(_alterCount,
-				((EvolutionResult<?, ?>)obj)._alterCount) &&
-			Objects.equals(getBestFitness(),
-				((EvolutionResult<?, ?>)obj).getBestFitness());
+				((EvolutionResult)obj)._alterCount);
 	}
 
 
 	/* *************************************************************************
 	 *  Some static collector/factory methods.
 	 * ************************************************************************/
+
 
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
@@ -538,27 +538,34 @@ public final class EvolutionResult<
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	UnaryOperator<EvolutionResult<G, C>>
 	toUniquePopulation(final Factory<Genotype<G>> factory, final int maxRetries) {
-		requireNonNull(false);
+		requireNonNull(factory);
 
 		return result -> {
 			final Seq<Phenotype<G, C>> population = result.getPopulation();
 			final Seq<Genotype<G>> genotypes = result.getGenotypes();
-			final Set<Genotype<G>> elements = new HashSet<>(genotypes.asList());
+			final Map<Genotype<G>, Phenotype<G, C>> elements =
+				population.stream()
+					.collect(toMap(
+						Phenotype::getGenotype,
+						Function.identity(),
+						(a, b) -> a));
 
 			EvolutionResult<G, C> uniques = result;
 			if (elements.size() < population.size()) {
 				int retries = 0;
 				while (elements.size() < population.size() && retries < maxRetries) {
-					if (!elements.add(factory.newInstance())) {
+					final Genotype<G> gt = factory.newInstance();
+					final Phenotype<G, C> pt = elements
+						.put(gt, Phenotype.of(gt, result.getGeneration()));
+
+					if (pt != null) {
 						++retries;
 					}
 				}
 
 				uniques = result.with(
-					Stream.concat(elements.stream(), genotypes.stream())
+					Stream.concat(elements.values().stream(), population.stream())
 						.limit(population.size())
-						.map(gt -> population.get(0).newInstance(
-							factory.newInstance(), result.getGeneration()))
 						.collect(ISeq.toISeq())
 				);
 			}
@@ -579,6 +586,26 @@ public final class EvolutionResult<
 			getAlterCount()
 		);
 	}
+
+	EvolutionResult<G, C> with(final EvolutionDurations durations) {
+		return EvolutionResult.of(
+			getOptimize(),
+			getPopulation(),
+			getGeneration(),
+			getTotalGenerations(),
+			durations,
+			getKillCount(),
+			getInvalidCount(),
+			getAlterCount()
+		);
+	}
+
+
+	/* *************************************************************************
+	 * Some collectors and mapping functions.
+	 * ************************************************************************/
+
+
 
 	/**
 	 * Return a mapping function, which removes duplicate individuals from the

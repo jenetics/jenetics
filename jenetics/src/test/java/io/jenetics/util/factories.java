@@ -21,13 +21,11 @@ package io.jenetics.util;
 
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.require;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public final class factories {
-	private factories() {require.noInstance();}
+	private factories() {}
 
 	/**
 	 * Return an integer factory which creates an integer sequence starting with

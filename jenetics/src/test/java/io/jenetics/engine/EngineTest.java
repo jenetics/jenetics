@@ -96,7 +96,7 @@ public class EngineTest {
 			.filter(pt -> pt.getFitness() == max)
 			.count();
 
-		Assert.assertTrue(maxCount >= genotypeCount);
+		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);
 	}
 
 	@Test
@@ -217,29 +217,12 @@ public class EngineTest {
 	}
 
 	@Test
-	public void phenotypeValidator() {
+	public void constraint() {
 		final int populationSize = 100;
 
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.phenotypeValidator(pt -> false)
-			.populationSize(populationSize)
-			.build();
-
-		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(10)
-			.collect(EvolutionResult.toBestEvolutionResult());
-
-		Assert.assertEquals(result.getInvalidCount(), populationSize);
-	}
-
-	@Test
-	public void genotypeValidator() {
-		final int populationSize = 100;
-
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.genotypeValidator(pt -> false)
+			.constraint(RetryConstraint.of(pt -> false))
 			.populationSize(populationSize)
 			.build();
 
@@ -436,6 +419,29 @@ public class EngineTest {
 			{new ForkJoinPool(10)}
 		};
 	}
+
+	/*
+	@Test
+	public void populationEvaluator() {
+		final int populationSize = 100;
+		final AtomicInteger count = new AtomicInteger();
+
+		final Engine<DoubleGene, Double> engine = Engine
+			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.populationSize(populationSize)
+			.evaluator((gt, ff) -> {
+				count.compareAndSet(0, gt.length());
+				return gt.stream().map(ff).collect(ISeq.toISeq());
+			})
+			.build();
+
+		engine.stream()
+			.limit(1)
+			.collect(EvolutionResult.toBestGenotype());
+
+		Assert.assertEquals(count.get(), populationSize);
+	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test

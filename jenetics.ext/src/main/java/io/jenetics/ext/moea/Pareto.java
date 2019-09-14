@@ -22,7 +22,7 @@ package io.jenetics.ext.moea;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.IndexSorter.init;
+import static io.jenetics.internal.util.array.revert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +30,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
 
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
 
@@ -60,11 +60,16 @@ public final class Pareto {
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
 	 *
+	 * @apiNote
+	 * Calculating the crowding distance has a time complexity of
+	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
+	 * {@code n} the {@code set} size.
+	 *
 	 * @see #crowdingDistance(Seq, ElementComparator, ElementDistance, ToIntFunction)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
 	 * @param <T> the vector type
-	 * @return the crowded distances fo the {@code set} points
+	 * @return the crowded distances of the {@code set} points
 	 * @throws NullPointerException if the input {@code set} is {@code null}
 	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
 	 */
@@ -83,6 +88,11 @@ public final class Pareto {
 	 * distance</em> value of a particular solution is the average distance of
 	 * its two neighboring solutions.
 	 *
+	 * @apiNote
+	 * Calculating the crowding distance has a time complexity of
+	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
+	 * {@code n} the {@code set} size.
+	 *
 	 * @see #crowdingDistance(Seq)
 	 *
 	 * @param set the point set used for calculating the <em>crowding distance</em>
@@ -91,7 +101,7 @@ public final class Pareto {
 	 * @param distance the distance of two vector elements
 	 * @param dimension the dimension of vector type {@code T}
 	 * @param <T> the vector type
-	 * @return the crowded distances fo the {@code set} points
+	 * @return the crowded distances of the {@code set} points
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> double[] crowdingDistance(
@@ -108,11 +118,11 @@ public final class Pareto {
 		if (set.size() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final int[] idx = new int[set.size()];
-			final IndexSorter sorter = IndexSorter.sorter(set.size());
-
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
-				sorter.sort(set, init(idx), comparator.ofIndex(m));
+				final int[] idx = ProxySorter.sort(
+					set,
+					comparator.ofIndex(m).reversed()
+				);
 
 				result[idx[0]] = POSITIVE_INFINITY;
 				result[idx[set.size() - 1]] = POSITIVE_INFINITY;
@@ -147,6 +157,10 @@ public final class Pareto {
 	 * using the <em>natural</em> order of the elements as <em>dominance</em>
 	 * measure.
 	 *
+	 * @apiNote
+	 * Calculating the rank has a time complexity of {@code O(n^2}, where
+	 * {@code n} the {@code set} size.
+	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
 	 *      Kalyanmoy Deb, Associate Member, IEEE, Amrit Pratap,
@@ -166,6 +180,10 @@ public final class Pareto {
 	/**
 	 * Calculates the <em>non-domination</em> rank of the given input {@code set},
 	 * using the given {@code dominance} comparator.
+	 *
+	 * @apiNote
+	 * Calculating the rank has a time and space complexity of {@code O(n^2},
+	 * where {@code n} the {@code set} size.
 	 *
 	 * <p>
 	 *  <b>Reference:</b><em>
@@ -188,10 +206,8 @@ public final class Pareto {
 		final int[][] d = new int[set.size()][set.size()];
 		for (int i = 0; i < set.size(); ++i) {
 			for (int j = i + 1; j < set.size(); ++j) {
-				if (i != j) {
-					d[i][j] = dominance.compare(set.get(i), set.get(j));
-					d[j][i] = -d[i][j];
-				}
+				d[i][j] = dominance.compare(set.get(i), set.get(j));
+				d[j][i] = -d[i][j];
 			}
 		}
 

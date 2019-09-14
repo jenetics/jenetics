@@ -413,6 +413,45 @@ public class bitTest {
 		Assert.assertTrue(Arrays.equals(data, io.jenetics.internal.util.bit.complement(cdata)));
 	}
 
+	@Test
+	public void increment() {
+		final byte[] data = new byte[4];
+		for (int i = 0; i < Short.MAX_VALUE; ++i) {
+			final int value = toInt(data);
+			Assert.assertEquals(value, i);
+			bit.increment(data);
+		}
+	}
+
+	private static int toInt(final byte[] data) {
+		return
+			((data[3] & 255) << 24) +
+			((data[2] & 255) << 16) +
+			((data[1] & 255) << 8) +
+			(data[0] & 255);
+	}
+
+	private static byte[] toBytes(final int value) {
+		final byte[] bytes = new byte[4];
+		bytes[3] = (byte)(value >>> 24);
+		bytes[2] = (byte)(value >>> 16);
+		bytes[1] = (byte)(value >>>  8);
+		bytes[0] = (byte) value;
+		return bytes;
+	}
+
+	@Test
+	public void increment2() {
+		final Random random = new Random();
+		for (int i = 0; i < 100_000; ++i) {
+			final int value = Math.abs(random.nextInt() - 1);
+			final byte[] data = toBytes(value);
+			bit.increment(data);
+
+			Assert.assertEquals(toInt(data), value + 1);
+		}
+	}
+
 	@DataProvider(name = "toByteArrayData")
 	public Iterator<Object[]> toByteArrayData() {
 		final long seed = System.currentTimeMillis();

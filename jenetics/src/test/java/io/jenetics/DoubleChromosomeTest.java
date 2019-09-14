@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -41,7 +42,7 @@ public class DoubleChromosomeTest
 	extends NumericChromosomeTester<Double, DoubleGene>
 {
 
-	private final DoubleChromosome _factory = new DoubleChromosome(
+	private final DoubleChromosome _factory = DoubleChromosome.of(
 		0.0, Double.MAX_VALUE, 500
 	);
 
@@ -61,7 +62,7 @@ public class DoubleChromosomeTest
 			final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final DoubleChromosome chromosome = new DoubleChromosome(min, max, 500);
+				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
 				for (DoubleGene gene : chromosome) {
 					mm.accept(gene.getAllele());
 					histogram.accept(gene.getAllele());
@@ -96,6 +97,38 @@ public class DoubleChromosomeTest
 			{DoubleChromosome.of(0, 1, IntRange.of(2, 10)), IntRange.of(2, 10)},
 			{DoubleChromosome.of(DoubleRange.of(0, 1), IntRange.of(2, 10)), IntRange.of(2, 10)}
 		};
+	}
+
+	@Test
+	public void doubleStream() {
+		final DoubleChromosome chromosome = DoubleChromosome.of(0, 1, 1000);
+		final double[] values = chromosome.doubleStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
+			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		DoubleChromosome.of(
+			DoubleGene.of(1, 2),
+			DoubleGene.of(3, 4),
+			DoubleGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		DoubleChromosome.of(
+			ISeq.of(
+				DoubleGene.of(1, 2),
+				DoubleGene.of(3, 4),
+				DoubleGene.of(5, 6)
+			)
+		);
 	}
 
 }

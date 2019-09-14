@@ -52,7 +52,7 @@ import io.jenetics.util.IntRange;
  *          new Mutator<>(0.1),
  *          new MeanAlterer<>())
  *      .offspringSelector(new TournamentSelector<>(2))
- *      .survivorsSelector(UFTournamentSelector.vec())
+ *      .survivorsSelector(UFTournamentSelector.ofVec())
  *      .build();
  *
  *  final ISeq<Phenotype<DoubleGene, Vec<double[]>>> result = engine.stream()
@@ -66,6 +66,8 @@ import io.jenetics.util.IntRange;
  * @since 4.1
  */
 public final class MOEA {
+
+	private static final IntRange DEFAULT_SET_RANGE = IntRange.of(75, 100);
 
 	private MOEA() {
 	}
@@ -85,7 +87,7 @@ public final class MOEA {
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	Collector<EvolutionResult<G, V>, ?, ISeq<Phenotype<G, V>>>
 	toParetoSet() {
-		return toParetoSet(IntRange.of(75, 100));
+		return toParetoSet(DEFAULT_SET_RANGE);
 	}
 
 	/**

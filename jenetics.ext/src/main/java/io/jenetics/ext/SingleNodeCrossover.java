@@ -66,7 +66,7 @@ import io.jenetics.ext.util.TreeNode;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.0
  * @since 3.9
  */
 public class SingleNodeCrossover<
@@ -110,8 +110,8 @@ public class SingleNodeCrossover<
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
 			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
 
-			final int i1 = p1.getIndex(n1);
-			final int i2 = p2.getIndex(n2);
+			final int i1 = p1.indexOf(n1);
+			final int i2 = p2.indexOf(n2);
 
 			p1.insert(i1, n2.detach());
 			p2.insert(i2, n1.detach());
@@ -122,22 +122,6 @@ public class SingleNodeCrossover<
 		}
 
 		return changed;
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += 31*SingleNodeCrossover.class.hashCode() + 37;
-		hash += 31*Double.hashCode(_probability) + 37;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof SingleNodeCrossover &&
-			Double.compare(
-				((SingleNodeCrossover) obj)._probability, _probability) == 0;
 	}
 
 	@Override

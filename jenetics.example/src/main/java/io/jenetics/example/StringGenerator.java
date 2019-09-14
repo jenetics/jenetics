@@ -51,7 +51,7 @@ public class StringGenerator {
 				.map(i -> seq.charAt(i) == TARGET_STRING.charAt(i) ? 1 : 0)
 				.sum(),
 			Codec.of(
-				Genotype.of(new CharacterChromosome(
+				Genotype.of(CharacterChromosome.of(
 					CharSeq.of("a-z"), TARGET_STRING.length()
 				)),
 				gt -> (CharSequence)gt.getChromosome()

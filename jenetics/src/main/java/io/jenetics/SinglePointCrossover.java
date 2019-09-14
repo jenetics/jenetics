@@ -24,8 +24,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -51,7 +49,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class SinglePointCrossover<
 	G extends Gene<?, G>,
@@ -101,16 +99,6 @@ public class SinglePointCrossover<
 			);
 
 		that.swap(index, min(that.length(), other.length()), other, index);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(super::equals);
 	}
 
 	@Override

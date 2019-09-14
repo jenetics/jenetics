@@ -20,6 +20,7 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -42,16 +43,14 @@ final class Operation<T> implements Op<T>, Serializable {
 		final int arity,
 		final Function<T[], T> function
 	) {
-		requireNonNull(name);
-		requireNonNull(function);
+		_name = requireNonNull(name);
+		_function = requireNonNull(function);
 		if (arity < 0) {
 			throw new IllegalArgumentException(
 				"Arity smaller than zero: " + arity
 			);
 		}
 
-		_name = name;
-		_function = function;
 		_arity = arity;
 	}
 
@@ -66,23 +65,20 @@ final class Operation<T> implements Op<T>, Serializable {
 	}
 
 	@Override
-	public T apply(final T[] doubles) {
-		return _function.apply(doubles);
+	public T apply(final T[] values) {
+		return _function.apply(values);
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Integer.hashCode(_arity) + 37;
-		return hash;
+		return hash(_name, hash(_arity));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof Operation<?> &&
-			Objects.equals(((Operation) obj)._name, _name) &&
+			obj instanceof Operation &&
+			Objects.equals(((Operation)obj)._name, _name) &&
 			((Operation) obj)._arity == _arity;
 	}
 

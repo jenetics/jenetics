@@ -58,7 +58,7 @@ public class OperationTest {
 		Assert.assertEquals(IO.object.fromByteArray(data), object);
 
 		Assert.assertEquals(
-			op.apply(new Double[]{1.0, 2.0}),
+			op.apply(new Double[]{1.0, 2.0}).doubleValue(),
 			3.0
 		);
 	}

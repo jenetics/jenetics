@@ -42,11 +42,13 @@ import static java.lang.Math.sinh;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.tan;
 import static java.lang.Math.tanh;
+import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
@@ -57,7 +59,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see Math
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.0
  * @since 3.9
  */
 public enum MathOp implements Op<Double> {
@@ -309,8 +311,23 @@ public enum MathOp implements Op<Double> {
 	 *
 	 * @see Math#tanh(double)
 	 */
-	TANH("tanh", 1, v -> tanh(v[0]));
+	TANH("tanh", 1, v -> tanh(v[0])),
 
+	/* *************************************************************************
+	 * Conditional functions
+	 * ************************************************************************/
+
+	/**
+	 * Returns +1.0 if its first argument is greater than its second argument
+	 * and returns -1.0 otherwise.
+	 *
+	 * @since 5.0
+	 */
+	GT("gt", 2, v -> v[0] > v[1] ? 1.0 : -1.0);
+
+	/* *************************************************************************
+	 * Additional mathematical constants.
+	 * ************************************************************************/
 
 	/**
 	 * The double value that is closer than any other to pi, the ratio of the
@@ -354,13 +371,91 @@ public enum MathOp implements Op<Double> {
 	}
 
 	@Override
-	public Double apply(final Double[] doubles) {
-		return _function.apply(doubles);
+	public Double apply(final Double[] args) {
+		return _function.apply(args);
+	}
+
+	/**
+	 * Evaluates the operation with the given arguments.
+	 *
+	 * @since 5.0
+	 *
+	 * @see #apply(Double[])
+	 *
+	 * @param args the operation arguments
+	 * @return the evaluated operation
+	 */
+	public double eval(final double... args) {
+		return apply(
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
 	}
 
 	@Override
 	public String toString() {
 		return _name;
+	}
+
+	/**
+	 * Converts the string representation of an operation to the operation
+	 * object. It is used for converting the string representation of a tree to
+	 * an operation tree. If you use it that way, you should not forget to
+	 * re-index the tree variables.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
+	 *     "add(mul(x,y),sub(y,x))",
+	 *     MathOp::toMathOp
+	 * );
+	 *
+	 * assert Program.eval(tree, 10.0, 5.0) == 100.0;
+	 * Var.reindex(tree);
+	 * assert Program.eval(tree, 10.0, 5.0) == 45.0;
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 *
+	 * @see Var#reindex(TreeNode)
+	 * @see Program#eval(Tree, Object[])
+	 *
+	 * @param string the string representation of an operation which should be
+	 *        converted
+	 * @return the operation, converted from the given string
+	 * @throws IllegalArgumentException if the given {@code value} doesn't
+	 *         represent a mathematical expression
+	 * @throws NullPointerException if the given string {@code value} is
+	 *         {@code null}
+	 */
+	public static Op<Double> toMathOp(final String string) {
+		requireNonNull(string);
+
+		final Op<Double> result;
+		final Optional<Const<Double>> cop = toConst(string);
+		if (cop.isPresent()) {
+			result = cop.orElseThrow(AssertionError::new);
+		} else {
+			final Optional<Op<Double>> mop = toOp(string);
+			result = mop.isPresent()
+				? mop.orElseThrow(AssertionError::new)
+				: Var.parse(string);
+		}
+
+		return result;
+	}
+
+	static Optional<Const<Double>> toConst(final String string) {
+		return Numbers
+			.tryParseDouble(string)
+			.map(Const::of);
+	}
+
+	private static Optional<Op<Double>> toOp(final String string) {
+		return Stream.of(values())
+			.filter(op -> Objects.equals(op._name, string))
+			.map(op -> (Op<Double>)op)
+			.findFirst();
 	}
 
 }
