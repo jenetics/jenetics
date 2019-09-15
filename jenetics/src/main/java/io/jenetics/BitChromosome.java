@@ -23,19 +23,23 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
+import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
@@ -45,9 +49,12 @@ import io.jenetics.util.ISeq;
  *
  * @see BitGene
  *
+ * @implSpec
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class BitChromosome extends Number
 	implements
@@ -170,10 +177,11 @@ public class BitChromosome extends Number
 	/**
 	 * Return the value of the first gene of this chromosome.
 	 *
-	 * @since 2.0
+	 * @since 4.2
+	 *
 	 * @return the first value of this chromosome.
 	 */
-	public boolean get() {
+	public boolean booleanValue() {
 		return bit.get(_genes, 0);
 	}
 
@@ -187,13 +195,14 @@ public class BitChromosome extends Number
 	/**
 	 * Return the value on the specified index.
 	 *
-	 * @since 2.0
+	 * @since 4.2
+	 *
 	 * @param index the gene index
 	 * @return the wanted gene value
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *          (index &lt; 1 || index &gt;= length()).
 	 */
-	public boolean get(final int index) {
+	public boolean booleanValue(final int index) {
 		rangeCheck(index);
 		return bit.get(_genes, index);
 	}
@@ -399,7 +408,7 @@ public class BitChromosome extends Number
 	 *         BitChromosome.
 	 */
 	public String toCanonicalString() {
-		return toSeq().stream()
+		return stream()
 			.map(g -> g.booleanValue() ? "1" : "0")
 			.collect(joining());
 	}
@@ -595,18 +604,16 @@ public class BitChromosome extends Number
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(_genes).value();
+		return hash(_genes, hash(getClass()));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(c -> {
-			boolean equals = length() == c.length();
-			for (int i = 0, n = length(); equals && i < n; ++i) {
-				equals = getGene(i) == c.getGene(i);
-			}
-			return equals;
-		});
+		return obj == this ||
+			obj != null &&
+			getClass() == obj.getClass() &&
+			length() == ((BitChromosome)obj).length() &&
+			Arrays.equals(_genes, ((BitChromosome)obj)._genes);
 	}
 
 	@Override
@@ -614,34 +621,35 @@ public class BitChromosome extends Number
 		return bit.toByteString(_genes);
 	}
 
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
 
-	private void writeObject(final ObjectOutputStream out)
-		throws IOException
-	{
-		out.defaultWriteObject();
+	private Object writeReplace() {
+		return new Serial(Serial.BIT_CHROMOSOME, this);
+	}
 
-		out.writeInt(_length);
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_length, out);
 		out.writeDouble(_p);
-		out.writeInt(_genes.length);
+		writeInt(_genes.length, out);
 		out.write(_genes);
 	}
 
-	private void readObject(final ObjectInputStream in)
-		throws IOException, ClassNotFoundException
-	{
-		in.defaultReadObject();
+	static BitChromosome read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final double p = in.readDouble();
+		final byte[] genes = new byte[readInt(in)];
+		in.readFully(genes);
 
-		_length = in.readInt();
-		_p = in.readDouble();
-
-		final int bytes = in.readInt();
-		_genes = new byte[bytes];
-		in.readFully(_genes);
-
-		_seq = BitGeneISeq.of(_genes, _length);
+		return new BitChromosome(genes, length, p);
 	}
 
 }

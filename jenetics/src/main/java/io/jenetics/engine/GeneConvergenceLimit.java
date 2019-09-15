@@ -43,7 +43,7 @@ import io.jenetics.util.Seq;
  * away from the maximum gene value across the genotypes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 4.2
  * @since 4.0
  */
 final class GeneConvergenceLimit<G extends NumericGene<?, G>>
@@ -71,12 +71,13 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 	public boolean test(final EvolutionResult<G, ?> result) {
 		final ISeq<DoubleMoments> stat = statistics(result.getPopulation());
 
-		return stat.stream()
-			.filter(_convergence)
-			.count() <= _convergenceRate*stat.size();
+		return result.getTotalGenerations() <= 1 ||
+			stat.stream()
+				.filter(_convergence)
+				.count() <= _convergenceRate*stat.size();
 	}
 
-	static <G extends NumericGene<?, G>> ISeq<DoubleMoments>
+	private static <G extends NumericGene<?, G>> ISeq<DoubleMoments>
 	statistics(final Seq<? extends Phenotype<G, ?>> population) {
 		final Map<Long, DoubleMomentStatistics> statistics = new HashMap<>();
 

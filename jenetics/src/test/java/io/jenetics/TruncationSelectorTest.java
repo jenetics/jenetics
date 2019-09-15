@@ -57,7 +57,7 @@ public class TruncationSelectorTest
 			final DoubleChromosome ch = DoubleChromosome.of(gene);
 			final Genotype<DoubleGene> gt = Genotype.of(ch);
 			final Phenotype<DoubleGene, Integer> pt = Phenotype.of(
-				gt, 1, g -> g.getGene().intValue()
+				gt, 1, gt.getGene().intValue()
 			);
 
 			population.set(i, pt);
@@ -96,7 +96,7 @@ public class TruncationSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/TruncationSelector";
+			"/io/jenetics/selector/distribution/TruncationSelector";
 
 		return Arrays.stream(Optimize.values())
 			.map(opt -> {

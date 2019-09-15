@@ -1,6 +1,17 @@
 = Module: `io.jenetics.ext`
 
-This module contains additional genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `io.jenetics.base` module as small as possible.
+image::https://www.javadoc.io/badge/io.jenetics/jenetics.ext.svg[Javadoc, link=http://www.javadoc.io/doc/io.jenetics/jenetics.ext]
+
+This module contains additional algorithms, genes and chromosomes which are somehow _not standard_. The main reason for this division is the desire to keep the `io.jenetics.base` module as small as possible.
+
+
+== Multi-objective optimization
+
+The `io.jenetics.ext.moea` package contains classes and data structures, which allows the optimization of multi-object problems.
+
+== Modifiable Engines
+
+The `io.jenetics.ext.engine` contains classes, which allows the creation of adapting evolution streams. Depending on the actual population statistics, it is possible to change the parameters for the underlying evolution `Engine`.
 
 == Genes and chromosomes
 

@@ -23,6 +23,8 @@ import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -42,6 +44,11 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		return _factory;
 	}
 
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(IntegerGene.class).verify();
+	}
+
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final Integer min = 0;
@@ -51,7 +58,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> IntegerGene.of(min, max).getAllele())
-				.forEach(histogram::accept)
+				.forEach(histogram)
 		);
 
 		assertUniformDistribution(histogram);
@@ -104,7 +111,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 	@Test
 	public void set() {
-		IntegerGene gene = new IntegerGene(5, 0, 10);
+		IntegerGene gene = IntegerGene.of(5, 0, 10);
 		Assert.assertEquals(gene.getAllele().intValue(), 5);
 		Assert.assertEquals(gene.getMin().intValue(), 0);
 		Assert.assertEquals(gene.getMax().intValue(), 10);

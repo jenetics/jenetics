@@ -21,6 +21,7 @@ package io.jenetics.ext;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
+import static java.lang.String.format;
 import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Random;
@@ -44,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.0
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,
@@ -132,6 +133,14 @@ public class SimulatedBinaryCrossover<
 		final double min = that.get(i).getMin().doubleValue();
 		final double max = that.get(i).getMax().doubleValue();
 		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
+	}
+
+	@Override
+	public String toString() {
+		return format(
+			"SimulatedBinaryCrossover[p=%f, c=%f]",
+			_probability, _contiguity
+		);
 	}
 
 }

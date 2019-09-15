@@ -24,8 +24,6 @@ import static io.jenetics.stat.DoubleSummary.min;
 import java.util.Arrays;
 
 import io.jenetics.internal.math.DoubleAdder;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -37,9 +35,10 @@ import io.jenetics.util.Seq;
  * @see <a href="http://en.wikipedia.org/wiki/Roulette_wheel_selection">
  *          Wikipedia: Roulette wheel selection
  *      </a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public class RouletteWheelSelector<
 	G extends Gene<?, G>,
@@ -83,16 +82,6 @@ public class RouletteWheelSelector<
 		}
 
 		return fitness;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.ofType(this, obj);
 	}
 
 	@Override

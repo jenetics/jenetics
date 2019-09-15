@@ -20,8 +20,16 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -43,12 +51,14 @@ import io.jenetics.util.Mean;
  *
  * @see LongChromosome
  *
+ * @implNote
+ * This class is immutable and thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.0
+ * @version 5.0
  */
 public final class LongGene
-	extends AbstractNumericGene<Long, LongGene>
 	implements
 		NumericGene<Long, LongGene>,
 		Mean<LongGene>,
@@ -56,7 +66,11 @@ public final class LongGene
 		Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
+
+	private final long _value;
+	private final long _min;
+	private final long _max;
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
@@ -67,16 +81,132 @@ public final class LongGene
 	 * @param value the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
-	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	LongGene(final Long value, final Long min, final Long max) {
-		super(value, min, max);
+	private LongGene(final long value, final long min, final long max) {
+		_value = value;
+		_min = min;
+		_max = max;
+	}
+
+	@Override
+	public Long getAllele() {
+		return _value;
+	}
+
+	@Override
+	public Long getMin() {
+		return _min;
+	}
+
+	@Override
+	public Long getMax() {
+		return _max;
+	}
+
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public LongRange range() {
+		return LongRange.of(_min, _max);
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte)_value;
+	}
+
+	@Override
+	public short shortValue() {
+		return (short)_value;
+	}
+
+	@Override
+	public int intValue() {
+		return (int)_value;
+	}
+
+	@Override
+	public long longValue() {
+		return _value;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float)_value;
+	}
+
+	@Override
+	public double doubleValue() {
+		return _value;
+	}
+
+	@Override
+	public boolean isValid() {
+		return _value >= _min && _value <= _max;
 	}
 
 	@Override
 	public int compareTo(final LongGene other) {
-		return _value.compareTo(other._value);
+		return Long.compare(_value, other._value);
 	}
+
+	@Override
+	public LongGene mean(final LongGene that) {
+		return LongGene.of(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 5.0
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public LongGene newInstance(final long value) {
+		return LongGene.of(value, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Long number) {
+		return LongGene.of(number, _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance(final Number number) {
+		return LongGene.of(number.longValue(), _min, _max);
+	}
+
+	@Override
+	public LongGene newInstance() {
+		return LongGene.of(nextLong(getRandom(), _min, _max), _min, _max);
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(_value, hash(_min, hash(_max, hash(getClass()))));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof LongGene &&
+			((LongGene)obj)._value == _value &&
+			((LongGene)obj)._min == _min &&
+			((LongGene)obj)._max == _max;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("[%s]", _value);
+	}
+
+	/* *************************************************************************
+	 * Static factory methods.
+	 * ************************************************************************/
 
 	/**
 	 * Create a new random {@code LongGene} with the given value and the
@@ -107,7 +237,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final long value, final LongRange range) {
-		return new LongGene(value, range.getMin(), range.getMax());
+		return LongGene.of(value, range.getMin(), range.getMax());
 	}
 
 	/**
@@ -137,34 +267,14 @@ public final class LongGene
 	}
 
 	static ISeq<LongGene> seq(
-		final Long minimum,
-		final Long maximum,
+		final long min,
+		final long max,
 		final IntRange lengthRange
 	) {
-		final long min = minimum;
-		final long max = maximum;
 		final Random r = getRandom();
-
 		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> new LongGene(nextLong(r, min, max), minimum, maximum))
+			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
 			.toISeq();
-	}
-
-	@Override
-	public LongGene newInstance(final Number number) {
-		return new LongGene(number.longValue(), _min, _max);
-	}
-
-	@Override
-	public LongGene newInstance() {
-		return new LongGene(
-			nextLong(getRandom(), _min, _max), _min, _max
-		);
-	}
-
-	@Override
-	public LongGene mean(final LongGene that) {
-		return new LongGene(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	/**
@@ -237,6 +347,31 @@ public final class LongGene
 		} while (bits - result + (n - 1) < 0);
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLong(_value, out);
+		writeLong(_min, out);
+		writeLong(_max, out);
+	}
+
+	static LongGene read(final DataInput in) throws IOException {
+		return of(readLong(in), readLong(in), readLong(in));
 	}
 
 }

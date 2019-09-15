@@ -42,6 +42,7 @@ import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.util.IO;
+
 import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Reader;
@@ -56,7 +57,6 @@ import io.jenetics.xml.stream.XML;
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@SuppressWarnings("deprecation")
 public class GenotypeReadPerf {
 
 	public static final Writer<Genotype<DoubleGene>> writer = Writers.Genotype

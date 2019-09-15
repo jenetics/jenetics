@@ -19,10 +19,10 @@
  */
 package io.jenetics;
 
+import static java.lang.Double.compare;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -51,7 +51,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class ExponentialRankSelector<
 	G extends Gene<?, G>,
@@ -72,9 +72,9 @@ public final class ExponentialRankSelector<
 	public ExponentialRankSelector(final double c) {
 		super(true);
 
-		if (c < 0.0 || c >= 1.0) {
+		if (compare(c, 0) < 0 || compare(c, 1) >= 0) {
 			throw new IllegalArgumentException(format(
-				"Value %s is out of range [0..1): ", c
+				"Value %f is out of range [0..1): ", c
 			));
 		}
 		_c = c;
@@ -109,17 +109,6 @@ public final class ExponentialRankSelector<
 		}
 
 		return probabilities;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(_c).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof ExponentialRankSelector &&
-			eq(((ExponentialRankSelector)obj)._c, _c);
 	}
 
 	@Override

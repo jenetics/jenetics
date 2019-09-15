@@ -79,11 +79,11 @@ public abstract class GeneTester<G extends Gene<?, G>> extends ObjectTester<G> {
 			final Object other = factory().newInstance().getAllele();
 
 			if (that.equals(other)) {
-				Assert.assertTrue(other.equals(that));
+				Assert.assertEquals(other, that);
 				Assert.assertEquals(that.hashCode(), other.hashCode());
 			} else {
-				Assert.assertFalse(other.equals(that));
-				Assert.assertFalse(that.equals(other));
+				Assert.assertNotEquals(other, that);
+				Assert.assertNotEquals(that, other);
 			}
 		}
 	}

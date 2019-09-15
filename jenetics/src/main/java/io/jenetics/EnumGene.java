@@ -20,12 +20,11 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -55,6 +54,9 @@ import io.jenetics.util.RandomRegistry;
  *
  * @see PermutationChromosome
  * @see PartiallyMatchedCrossover
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
@@ -164,16 +166,15 @@ public final class EnumGene<A>
 
 	@Override
 	public int hashCode() {
-		return Hash.of(EnumGene.class)
-				.and(_alleleIndex)
-				.and(_validAlleles).value();
+		return hash(_alleleIndex, hash(_validAlleles));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EnumGene &&
-			eq(((EnumGene)obj)._alleleIndex, _alleleIndex) &&
-			eq(((EnumGene)obj)._validAlleles, _validAlleles);
+		return obj == this ||
+			obj instanceof EnumGene &&
+			Objects.equals(((EnumGene)obj)._alleleIndex, _alleleIndex) &&
+			Objects.equals(((EnumGene)obj)._validAlleles, _validAlleles);
 	}
 
 	@Override

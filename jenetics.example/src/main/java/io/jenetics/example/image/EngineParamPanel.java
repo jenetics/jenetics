@@ -24,7 +24,9 @@ import javax.swing.SpinnerNumberModel;
 /**
  * Panel for showing/changing the engine parameters.
  */
-public final class EngineParamPanel extends JPanel {
+public class EngineParamPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates new form EngineParamPanel

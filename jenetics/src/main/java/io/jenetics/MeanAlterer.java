@@ -24,7 +24,6 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -38,9 +37,9 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.4
  */
-public final class MeanAlterer<
+public class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
 	C extends Comparable<? super C>
 >
@@ -91,11 +90,7 @@ public final class MeanAlterer<
 		);
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
-
-		population.set(
-			individuals[0],
-			pt1.newInstance(gt1.newInstance(c1.toISeq()), generation)
-		);
+		population.set(individuals[0], Phenotype.of(Genotype.of(c1), generation));
 
 		return 1;
 	}
@@ -106,16 +101,6 @@ public final class MeanAlterer<
 			a.set(i, a.get(i).mean(b.get(i)));
 		}
 		return a;
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(super.hashCode()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof MeanAlterer && super.equals(obj);
 	}
 
 	@Override

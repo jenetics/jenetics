@@ -22,7 +22,6 @@ package io.jenetics;
 import java.util.Random;
 import java.util.function.Function;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -32,7 +31,7 @@ import io.jenetics.util.Seq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 class TestUtils {
-	private TestUtils() {require.noInstance();}
+	private TestUtils() {}
 
 	/**
 	 * Data for alter count tests.
@@ -129,7 +128,7 @@ class TestUtils {
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, FF).evaluate());
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -159,7 +158,7 @@ class TestUtils {
 			MSeq.ofLength(npopulation);
 
 		for (int i = 0; i < npopulation; ++i) {
-			population.set(i, Phenotype.of(genotype.newInstance(), 0, PFF));
+			population.set(i, Phenotype.of(genotype.newInstance(), 0));
 		}
 
 		return population.toISeq();
@@ -202,9 +201,13 @@ class TestUtils {
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {
-		return Phenotype.of(Genotype.of(
-			DoubleChromosome.of(DoubleGene.of(value, 0, 10))), 0, FF
-		).evaluate();
+		return Phenotype.of(
+			Genotype.of(
+				DoubleChromosome.of(DoubleGene.of(value, 0, 10))
+			),
+			0,
+			value
+		);
 	}
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(

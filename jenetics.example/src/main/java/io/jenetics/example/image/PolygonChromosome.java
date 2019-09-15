@@ -33,11 +33,11 @@ import io.jenetics.util.ISeq;
 final class PolygonChromosome extends AbstractChromosome<PolygonGene> {
 	private static final long serialVersionUID = 1L;
 
-	public PolygonChromosome(final ISeq<PolygonGene> genes) {
+	PolygonChromosome(final ISeq<PolygonGene> genes) {
 		super(genes);
 	}
 
-	public PolygonChromosome(final int polygonCount, final int polygonLength) {
+	PolygonChromosome(final int polygonCount, final int polygonLength) {
 		super(PolygonGene.seq(polygonCount, polygonLength));
 	}
 

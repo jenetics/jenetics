@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
 import io.jenetics.Optimize;
+import io.jenetics.internal.engine.EvolutionStreamImpl;
 import io.jenetics.util.ISeq;
 
 /**
@@ -61,12 +62,12 @@ public class ExecutionTimeLimitTest {
 			.limit(Limits.byExecutionTime(duration, clock))
 			.forEach(s -> count.incrementAndGet());
 
-		Assert.assertEquals(count.get(), millis + 1);
-		Assert.assertEquals(clock.count, count.get());
+		Assert.assertEquals(count.get(), millis.intValue());
+		Assert.assertEquals(clock.count, count.get() + 1);
 	}
 
 	private static EvolutionStream<DoubleGene, Double> stream() {
-		final Function<EvolutionStart<DoubleGene, Double>, EvolutionResult<DoubleGene, Double>> ff =
+		final Evolution<DoubleGene, Double> evolution =
 			s -> EvolutionResult.of(
 				Optimize.MAXIMUM,
 				ISeq.empty(),
@@ -75,7 +76,7 @@ public class ExecutionTimeLimitTest {
 
 		return new EvolutionStreamImpl<DoubleGene, Double>(
 			() -> EvolutionStart.of(ISeq.empty(), 1),
-			ff
+			evolution
 		);
 	}
 

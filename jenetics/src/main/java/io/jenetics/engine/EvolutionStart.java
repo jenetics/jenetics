@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.util.Objects;
 
@@ -33,9 +34,14 @@ import io.jenetics.util.ISeq;
  * Represents a state of the GA at the start of an evolution step.
  *
  * @see EvolutionResult
+ * @see EvolutionInit
+ * @see EvolutionStreamable#stream(EvolutionStart)
  *
  * @param <G> the gene type
  * @param <C> the fitness type
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
@@ -44,8 +50,7 @@ import io.jenetics.util.ISeq;
 public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
@@ -78,17 +83,15 @@ public final class EvolutionStart<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_generation + 17;
-		hash += 31*Objects.hashCode(_population) + 17;
-		return hash;
+		return hash(_generation, hash(_population, hash(getClass())));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof EvolutionStart<?, ?> &&
-			_generation == ((EvolutionStart<?, ?>)obj)._generation &&
-			Objects.equals(_population, ((EvolutionStart<?, ?>)obj)._population);
+		return obj == this ||
+			obj instanceof EvolutionStart &&
+			_generation == ((EvolutionStart)obj)._generation &&
+			Objects.equals(_population, ((EvolutionStart)obj)._population);
 	}
 
 	@Override

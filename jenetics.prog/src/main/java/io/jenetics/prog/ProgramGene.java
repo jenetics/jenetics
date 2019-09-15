@@ -26,11 +26,14 @@ import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.Gene;
-import io.jenetics.ext.AbstractTreeGene;
-import io.jenetics.prog.op.Op;
-import io.jenetics.prog.op.Program;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.AbstractTreeGene;
+import io.jenetics.ext.util.TreeNode;
+
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 
 /**
  * This gene represents a program, build upon an AST of {@link Op} functions.
@@ -56,6 +59,8 @@ public final class ProgramGene<A>
 	extends AbstractTreeGene<Op<A>, ProgramGene<A>>
 	implements Gene<Op<A>, ProgramGene<A>>, Function<A[], A>
 {
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<? extends Op<A>> _operations;
 	private final ISeq<? extends Op<A>> _terminals;
@@ -132,6 +137,17 @@ public final class ProgramGene<A>
 		return _terminals;
 	}
 
+	/**
+	 * Creates a new {@link TreeNode} from this program gene.
+	 *
+	 * @since 5.0
+	 *
+	 * @return a new tree node value build from this program gene
+	 */
+	public TreeNode<Op<A>> toTreeNode() {
+		return TreeNode.ofTree(this);
+	}
+
 	@Override
 	public ProgramGene<A> newInstance() {
 		final Random random = RandomRegistry.getRandom();
@@ -142,7 +158,6 @@ public final class ProgramGene<A>
 		} else {
 			final ISeq<Op<A>> operations = _operations.stream()
 				.filter(op -> op.arity() == getValue().arity())
-				.map(op -> (Op<A>)op)
 				.collect(ISeq.toISeq());
 
 			if (operations.length() > 1) {

@@ -23,10 +23,12 @@ import java.util.Random;
 
 import org.testng.annotations.Test;
 
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
+import io.jenetics.ext.util.TreeNodeTest;
 import io.jenetics.ext.util.TreeTestBase;
-import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -37,7 +39,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 	@Override
 	public IntTreeGene newTree(int levels, Random random) {
 		final TreeNode<Integer> root = TreeNode.of(0);
-		fill(root, levels, random);
+		TreeNodeTest.fill(root, levels, random);
 
 		final FlatTreeNode<Integer> flattened = FlatTreeNode.of(root);
 		final ISeq<IntTreeGene> genes = flattened.stream()
@@ -45,23 +47,6 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 			.collect(ISeq.toISeq());
 
 		return new IntTreeChromosome(genes).getRoot();
-	}
-
-	private static void fill(
-		final TreeNode<Integer> node,
-		final int level,
-		final Random random
-	) {
-		for (int i = 0, n = random.nextInt(3); i < n; ++i) {
-			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
-
-			if (random.nextDouble() < 0.8 && level > 0) {
-				fill(child, level - 1, random);
-			}
-
-			node.attach(child);
-		}
 	}
 
 }

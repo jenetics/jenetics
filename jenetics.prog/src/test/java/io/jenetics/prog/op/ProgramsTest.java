@@ -22,16 +22,17 @@ package io.jenetics.prog.op;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
-import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ProgramsTest {
 
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
 		MathOp.SUB,
 		MathOp.MUL,
@@ -41,7 +42,7 @@ public class ProgramsTest {
 		MathOp.COS
 	);
 
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
@@ -49,7 +50,7 @@ public class ProgramsTest {
 		Const.of(1.0)
 	);
 
-	@Test
+	//@Test
 	public void program() {
 		final TreeNode<Op<Double>> tree = Program.of(
 			5,

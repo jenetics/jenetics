@@ -20,15 +20,20 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 4.1
  * @since 3.9
  */
-final class Operation<T> implements Op<T> {
+final class Operation<T> implements Op<T>, Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private final String _name;
 	private final int _arity;
 	private final Function<T[], T> _function;
@@ -38,16 +43,14 @@ final class Operation<T> implements Op<T> {
 		final int arity,
 		final Function<T[], T> function
 	) {
-		requireNonNull(name);
-		requireNonNull(function);
+		_name = requireNonNull(name);
+		_function = requireNonNull(function);
 		if (arity < 0) {
 			throw new IllegalArgumentException(
 				"Arity smaller than zero: " + arity
 			);
 		}
 
-		_name = name;
-		_function = function;
 		_arity = arity;
 	}
 
@@ -62,8 +65,21 @@ final class Operation<T> implements Op<T> {
 	}
 
 	@Override
-	public T apply(final T[] doubles) {
-		return _function.apply(doubles);
+	public T apply(final T[] values) {
+		return _function.apply(values);
+	}
+
+	@Override
+	public int hashCode() {
+		return hash(_name, hash(_arity));
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Operation &&
+			Objects.equals(((Operation)obj)._name, _name) &&
+			((Operation) obj)._arity == _arity;
 	}
 
 	@Override

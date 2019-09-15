@@ -19,10 +19,8 @@
  */
 package io.jenetics.internal.collection;
 
-import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -33,7 +31,6 @@ import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -41,19 +38,15 @@ import io.jenetics.util.MSeq;
  * Contains static {@code Seq} definitions.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 4.1
  * @since 3.4
  */
 public final class Empty {
-	private Empty() {require.noInstance();}
+	private Empty() {}
 
-	/**
-	 * Empty {@code MSeq} implementation.
-	 */
-	public static final MSeq<Object> MSEQ = new EmptyMSeq();
+	public static enum EmptyMSeq implements MSeq<Object> {
 
-	private static final class EmptyMSeq implements MSeq<Object>, Serializable {
-		private static final long serialVersionUID = 1L;
+		INSTANCE;
 
 		@Override
 		public void set(final int index, final Object value) {
@@ -66,17 +59,7 @@ public final class Empty {
 			final int end,
 			final Comparator<? super Object> comparator
 		) {
-			if (start > end) {
-				throw new ArrayIndexOutOfBoundsException(format(
-					"start[%d] > end[%d]", start, end
-				));
-			}
-			if (start < 0 || end > length()) {
-				throw new ArrayIndexOutOfBoundsException(format(
-					"Indexes (%d, %d) range: [%d..%d)", start, end, 0, length()
-				));
-			}
-
+			Array.checkIndex(start, end, length());
 			return this;
 		}
 
@@ -87,12 +70,14 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> subSeq(final int start, final int end) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			Array.checkIndex(start, end, length());
+			return this;
 		}
 
 		@Override
 		public MSeq<Object> subSeq(final int start) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			Array.checkIndex(start, 0, length());
+			return this;
 		}
 
 		@Override
@@ -138,7 +123,7 @@ public final class Empty {
 
 		@Override
 		public ISeq<Object> toISeq() {
-			return ISEQ;
+			return EmptyISeq.INSTANCE;
 		}
 
 		@Override
@@ -167,25 +152,17 @@ public final class Empty {
 		}
 
 		@Override
-		public int hashCode() {
-			return getClass().hashCode();
+		public String toString() {
+			return "[]";
 		}
 
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof EmptyMSeq;
-		}
-
-	}
+	};
 
 
-	/**
-	 * Empty {@code ISeq} implementation.
-	 */
-	public static final ISeq<Object> ISEQ = new EmptyISeq();
 
-	private static final class EmptyISeq implements ISeq<Object>, Serializable {
-		private static final long serialVersionUID = 1L;
+	public static enum EmptyISeq implements ISeq<Object> {
+
+		INSTANCE;
 
 		@Override
 		public Iterator<Object> iterator() {
@@ -194,12 +171,14 @@ public final class Empty {
 
 		@Override
 		public ISeq<Object> subSeq(final int start, final int end) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			Array.checkIndex(start, end, length());
+			return this;
 		}
 
 		@Override
 		public ISeq<Object> subSeq(final int start) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			Array.checkIndex(start, 0, length());
+			return this;
 		}
 
 		@Override
@@ -260,29 +239,24 @@ public final class Empty {
 
 		@Override
 		public MSeq<Object> copy() {
-			return MSEQ;
+			return EmptyMSeq.INSTANCE;
 		}
 
 		@Override
-		public int hashCode() {
-			return getClass().hashCode();
+		public String toString() {
+			return "[]";
 		}
 
-		@Override
-		public boolean equals(final Object obj) {
-			return obj instanceof EmptyISeq;
-		}
-
-	}
+	};
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {
-		return (MSeq<T>)MSEQ;
+		return (MSeq<T>)EmptyMSeq.INSTANCE;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> ISeq<T> iseq() {
-		return (ISeq<T>)ISEQ;
+		return (ISeq<T>)EmptyISeq.INSTANCE;
 	}
 
 }

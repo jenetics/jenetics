@@ -30,16 +30,19 @@ import javax.swing.JPanel;
  * Draws the given {@code PolygonChromosome}.
  */
 final class PolygonPanel extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+
 	private int _width;
 	private int _height;
 	private PolygonChromosome _chromosome;
 
-	public PolygonPanel(int width, int height) {
+	PolygonPanel(int width, int height) {
 		_width = width;
 		_height = height;
 	}
 
-	public PolygonPanel() {
+	PolygonPanel() {
 		this(10, 10);
 	}
 
@@ -71,9 +74,9 @@ final class PolygonPanel extends JPanel {
 		}
 	}
 
-	private double scaleFactor() {
-		final double sw = getWidth()/(double)_width;
-		final double sh = getHeight()/(double)_height;
+	private float scaleFactor() {
+		final float sw = getWidth()/(float)_width;
+		final float sh = getHeight()/(float)_height;
 		return min(sw, sh);
 	}
 

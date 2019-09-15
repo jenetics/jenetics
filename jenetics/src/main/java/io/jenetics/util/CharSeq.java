@@ -20,7 +20,6 @@
 package io.jenetics.util;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Equality.eq;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -30,8 +29,6 @@ import java.util.stream.Collector;
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayISeq;
 import io.jenetics.internal.collection.CharStore;
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 
 /**
  * This class is used for holding the valid characters of an
@@ -166,14 +163,14 @@ public final class CharSeq
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass()).and(array).value();
+		return 17 + 31*Arrays.hashCode(array);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(ch ->
-			eq(array, ch.array)
-		);
+		return obj == this ||
+			obj instanceof CharSeq &&
+			Arrays.equals(((CharSeq)obj).array, array);
 	}
 
 	@Override

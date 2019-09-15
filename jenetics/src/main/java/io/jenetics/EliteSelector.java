@@ -48,7 +48,7 @@ import io.jenetics.util.Seq;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 5.0
  * @since 4.0
  */
 public class EliteSelector<
@@ -145,21 +145,6 @@ public class EliteSelector<
 		}
 
 		return result;
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += 31*_eliteCount + 37;
-		hash += 31*_nonEliteSelector.hashCode() + 37;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj instanceof EliteSelector<?, ?> &&
-			((EliteSelector)obj)._eliteCount == _eliteCount &&
-			((EliteSelector)obj)._nonEliteSelector.equals(_nonEliteSelector);
 	}
 
 	@Override

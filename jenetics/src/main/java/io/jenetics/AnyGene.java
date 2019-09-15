@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
 import java.util.Objects;
@@ -60,6 +61,9 @@ import io.jenetics.util.MSeq;
  * of the existing alterers.
  *
  * @see AnyChromosome
+ *
+ * @implNote
+ * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 3.3
@@ -103,13 +107,14 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(_allele);
+		return hash(_allele, hash(AnyGene.class));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof AnyGene<?> &&
-			Objects.equals(((AnyGene<?>)obj)._allele, _allele);
+		return obj == this ||
+			obj instanceof AnyGene &&
+			Objects.equals(((AnyGene)obj)._allele, _allele);
 	}
 
 	@Override

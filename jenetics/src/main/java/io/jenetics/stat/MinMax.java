@@ -24,8 +24,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collector;
+import java.util.stream.Stream;
 
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
@@ -42,13 +45,12 @@ import java.util.stream.Collector;
  *     );
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use on a
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use on a
  * parallel stream, because the parallel implementation of
  * {@link java.util.stream.Stream#collect Stream.collect()}provides the
  * necessary partitioning, isolation, and merging of results for safe and
- * efficient parallel execution.</i>
+ * efficient parallel execution.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -150,7 +152,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final MinMax<C> other) {
-		return Objects.equals(_min, other._min) &&
+		return this == other ||
+			Objects.equals(_min, other._min) &&
 			Objects.equals(_max, other._max);
 	}
 
@@ -271,6 +274,94 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>> MinMax<C> of() {
 		return of(Comparator.naturalOrder());
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly increasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyIncreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyIncreasing() {
+		return toStrictly(MinMax::max);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly decreasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyDecreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [45,32,15,12,3,1]
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyDecreasing() {
+		return toStrictly(MinMax::min);
+	}
+
+	private static <C>
+	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
+		return new Function<C, Stream<C>>() {
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C result) {
+				final C best = comp.apply(_best, result);
+
+				final Stream<C> stream = best == _best
+					? Stream.empty()
+					: Stream.of(best);
+
+				_best = best;
+
+				return stream;
+			}
+		};
+	}
+
+	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
+		if (a == null && b == null) return null;
+		if (a == null) return b;
+		if (b == null) return a;
+		return a.compareTo(b) >= 0 ? a : b;
+	}
+
+	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
+		if (a == null && b == null) return null;
+		if (a == null) return b;
+		if (b == null) return a;
+		return a.compareTo(b) <= 0 ? a : b;
 	}
 
 }

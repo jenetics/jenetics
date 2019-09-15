@@ -38,19 +38,24 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
+ * This example shows how to write intermediate evolution results to disk and
+ * continue the evolution with the stored population.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.8
+ * @version 4.1
  * @since 3.8
  */
 public class EvolutionResume {
+
 	// The problem definition.
-	private final Problem<ISeq<Item>, BitGene, Double> knapsack =
+	private static final Problem<ISeq<Item>, BitGene, Double> KNAPSACK =
 		Knapsack.of(250, RandomRegistry.getRandom());
 
 	// The evolution engine.
-	private final Engine<BitGene, Double> engine = Engine.builder(knapsack)
-		.populationSize(100)
-		.build();
+	private static final Engine<BitGene, Double> ENGINE =
+		Engine.builder(KNAPSACK)
+			.populationSize(100)
+			.build();
 
 	// Run the evolution.
 	private EvolutionResult<BitGene, Double> run(
@@ -59,7 +64,7 @@ public class EvolutionResume {
 	) {
 		System.out.println("Starting evolution with existing result.");
 
-		return (last != null ? engine.stream(last) : engine.stream())
+		return (last != null ? ENGINE.stream(last) : ENGINE.stream())
 			.limit(r -> proceed.get())
 			.collect(EvolutionResult.toBestEvolutionResult());
 	}

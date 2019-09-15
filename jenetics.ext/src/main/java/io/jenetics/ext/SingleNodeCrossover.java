@@ -19,11 +19,14 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.String.format;
+
 import java.util.Random;
 
-import io.jenetics.ext.util.TreeNode;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Swaps two, randomly chosen, nodes (sub-trees) from two given trees.
@@ -63,7 +66,7 @@ import io.jenetics.util.RandomRegistry;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.0
  * @since 3.9
  */
 public class SingleNodeCrossover<
@@ -107,8 +110,8 @@ public class SingleNodeCrossover<
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
 			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
 
-			final int i1 = p1.getIndex(n1);
-			final int i2 = p2.getIndex(n2);
+			final int i1 = p1.indexOf(n1);
+			final int i2 = p2.indexOf(n2);
 
 			p1.insert(i1, n2.detach());
 			p2.insert(i2, n1.detach());
@@ -120,4 +123,10 @@ public class SingleNodeCrossover<
 
 		return changed;
 	}
+
+	@Override
+	public String toString() {
+		return format("SingleNodeCrossover[%f]", _probability);
+	}
+
 }

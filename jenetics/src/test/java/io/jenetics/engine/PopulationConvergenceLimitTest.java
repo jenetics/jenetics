@@ -19,6 +19,9 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.engine.EvolutionResult.toBestEvolutionResult;
+
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
@@ -32,6 +35,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 /**
@@ -45,7 +49,7 @@ public class PopulationConvergenceLimitTest {
 			Limits.byPopulationConvergence(0.015);
 
 		int g = 0;
-		while (l.test(result(10 + g, 100 + g, Optimize.MAXIMUM))) {
+		while (l.test(result(10 + g, 100 + g, g + 1, Optimize.MAXIMUM))) {
 			++g;
 		}
 
@@ -55,12 +59,13 @@ public class PopulationConvergenceLimitTest {
 	private static EvolutionResult<DoubleGene, Double> result(
 		final int min,
 		final int max,
+		final int generation,
 		final Optimize opt
 	) {
 		return EvolutionResult.of(
 			opt,
 			population(min, max),
-			1L,
+			generation,
 			EvolutionDurations.ZERO,
 			1,
 			1,
@@ -82,7 +87,7 @@ public class PopulationConvergenceLimitTest {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0.0, 1000.0))),
 			1,
-			a -> a.getGene().getAllele()
+			value
 		);
 	}
 
@@ -101,12 +106,35 @@ public class PopulationConvergenceLimitTest {
 
 		final EvolutionResult<BitGene, Integer> result = engine.stream()
 			.limit(Limits.byPopulationConvergence(0.015))
-			.collect(EvolutionResult.toBestEvolutionResult());
+			.collect(toBestEvolutionResult());
 
 		Assert.assertTrue(
 			result.getTotalGenerations() < 2901,
 			"Gen: " + result.getTotalGenerations()
 		);
+	}
+
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialPopulationConvergence() {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			d -> 1.0,
+			Codecs.ofScalar(DoubleRange.of(0, 1))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+		final AtomicInteger count = new AtomicInteger();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byPopulationConvergence(0.03))
+			.peek(er -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(count.get(), 1);
+		Assert.assertEquals(result.getTotalGenerations(), 1);
+		Assert.assertEquals(result.getGeneration(), 1);
 	}
 
 }

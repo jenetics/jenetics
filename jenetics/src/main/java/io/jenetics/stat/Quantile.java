@@ -52,18 +52,16 @@ import java.util.stream.Collector;
  *     );
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use on a
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use on a
  * parallel stream, because the parallel implementation of
- * {@link java.util.stream.Stream#collect Stream.collect()}provides the
+ * {@link java.util.stream.Stream#collect Stream.collect()} provides the
  * necessary partitioning, isolation, and merging of results for safe and
- * efficient parallel execution.</i>
- * <br>
- * <i>Using this class in the {@code collect} method of an parallel stream can
+ * efficient parallel execution.
+ * Using this class in the {@code collect} method of an parallel stream can
  * lead to an reduced accuracy of the quantile value. Since this implementation
  * is an estimation algorithm, combining the estimations will only work for
- * large streams ({@code size >> 1000}).</i>
+ * large streams ({@code size >> 1000}).
  *
  * @see <a href="http://en.wikipedia.org/wiki/Quantile">Wikipedia: Quantile</a>
  *
@@ -192,7 +190,7 @@ public class Quantile implements DoubleConsumer {
 	 *         of the {@code other} object differs from {@code this} one.
 	 */
 	public Quantile combine(final Quantile other) {
-		if (_quantile != other._quantile) {
+		if (Double.compare(_quantile, other._quantile) != 0) {
 			throw new IllegalArgumentException(format(
 				"Can't perform combine, the quantile are not equal: %s != %s",
 				_quantile, other._quantile
@@ -342,9 +340,10 @@ public class Quantile implements DoubleConsumer {
 		final double q1,
 		final double q2
 	) {
-		double result = q1 +
-					((mp - m0)*(q2 - q1)/(m2 - m1) +
-					(m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+		double result =
+			q1 +
+			((mp - m0)*(q2 - q1)/(m2 - m1) +
+			(m2 - mp)*(q1 - q0)/(m1 - m0))/(m2 - m0);
 
 		if (result > q2) {
 			result = q1 + (q2 - q1)/(m2 - m1);
@@ -362,9 +361,10 @@ public class Quantile implements DoubleConsumer {
 		final double q1,
 		final double q2
 	) {
-		double result = q1 -
-					((mm - m0)*(q2 - q1)/(m2 - m1) +
-					(m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
+		double result =
+			q1 -
+			((mm - m0)*(q2 - q1)/(m2 - m1) +
+			(m2 - mm)*(q1 - q0)/(m1 - m0))/(m2 - m0);
 
 		if (q0 > result) {
 			result = q1 + (q0 - q1)/(m0 - m1);

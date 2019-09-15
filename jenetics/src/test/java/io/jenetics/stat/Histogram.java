@@ -24,7 +24,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.math.base.normalize;
-import static io.jenetics.internal.util.Equality.eq;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,9 +33,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
-
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class
@@ -122,7 +119,7 @@ public class Histogram<C> implements Consumer<C> {
 	 * @throws NullPointerException if the given {@code histogram} is {@code null}.
 	 */
 	public void combine(final Histogram<C> other) {
-		if (!eq(_separators, other._separators)) {
+		if (!Arrays.equals(_separators, other._separators)) {
 			throw new IllegalArgumentException(
 				"The histogram separators are not equals."
 			);
@@ -331,19 +328,15 @@ public class Histogram<C> implements Consumer<C> {
 
 	@Override
 	public int hashCode() {
-		return Hash.of(getClass())
-			.and(super.hashCode())
-			.and(_separators)
-			.and(_histogram).value();
+		return hash(super.hashCode(), hash(_separators, hash(_histogram)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return Equality.of(this, obj).test(histogram ->
-				eq(_separators, histogram._separators) &&
-					eq(_histogram, histogram._histogram) &&
-					super.equals(obj)
-		);
+		return obj == this ||
+			obj instanceof Histogram &&
+			Arrays.equals(_separators, ((Histogram) obj)._separators) &&
+			Arrays.equals(_histogram, ((Histogram) obj)._histogram);
 	}
 
 	@Override

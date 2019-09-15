@@ -20,7 +20,7 @@ output/**
 gradle-app.setting
 
 ## Eclipse
-.settings/**
+**/.settings/**
 
 ## Wiki
 wiki/**

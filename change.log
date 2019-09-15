@@ -1,3 +1,163 @@
+Jenetics-5.0.1
+
+- Bug fixes
+
+* https://github.com/jenetics/jenetics/issues/550: Erroneous index check for `Sample.argAt(int)` method in `io.jenetics.prog.regression` package.
+* https://github.com/jenetics/jenetics/issues/550: `ClassCastException` in `io.jenetics.prog.regression.Regression` class.
+
+
+Jenetics-5.0.0
+
+- Improvements
+
+* https://github.com/jenetics/jenetics/issues/534: Generify `Regression` classes so it can be used for regression analysis of arbitrary types.
+* https://github.com/jenetics/jenetics/issues/529: Implementation of Hybridizing PSM and RSM mutation operator (HPRM)
+* https://github.com/jenetics/jenetics/issues/518: Implementation of Symbolic Regression classes. This makes it easier to solve such optimization problems.
+* https://github.com/jenetics/jenetics/issues/515: Rename `Tree.getIndex(Tree)` to `Tree.indexOf(Tree)`.
+* https://github.com/jenetics/jenetics/issues/509: Allow to collect the nth best optimization results.
+* https://github.com/jenetics/jenetics/issues/504: Rename `Tree.getChild(int)` to `Tree.childAt(int)`.
+* https://github.com/jenetics/jenetics/issues/500: Implementation of Reverse Sequence mutation operator (RSM).
+* https://github.com/jenetics/jenetics/issues/497: Implement Boolean operators for GP.
+* https://github.com/jenetics/jenetics/issues/496: Implement `GT` operator for GP.
+* https://github.com/jenetics/jenetics/issues/493: Add dotty tree formatter
+* https://github.com/jenetics/jenetics/issues/488: Implement new tree formatter `TreeFormatter.LISP`. This allows to create a Lisp string representation from a given `Tree`.
+* https://github.com/jenetics/jenetics/issues/487: Re-implementation of 'MathTreePruneAlterer'. The new implementation uses the newly introduced Tree Rewriting API, implemented in #442.
+* https://github.com/jenetics/jenetics/issues/486: Implement `TreeRewriteAlterer`, based on the new Tree Rewriting API.
+* https://github.com/jenetics/jenetics/issues/485: Cleanup of `MathExpr` class.
+* https://github.com/jenetics/jenetics/issues/484: The `Tree.toString()` now returns a parentheses string.
+* https://github.com/jenetics/jenetics/issues/481: The parentheses tree representation now only escapes "protected" characters.
+* https://github.com/jenetics/jenetics/issues/469: Implementation of additional `Evaluator` factory methods.
+* https://github.com/jenetics/jenetics/issues/465: Remove fitness scaler classes. The fitness scaler doesn't carry its weight.
+* https://github.com/jenetics/jenetics/issues/455: Implementation of `CompletableFutureEvaluator`.
+* https://github.com/jenetics/jenetics/issues/450: Improvement of `FutureEvaluator` class.
+* https://github.com/jenetics/jenetics/issues/449: The `Engine.Builder` constructor is now public and is the most generic way for creating engine builder instances. All other builder factory methods are calling this _primary_ constructor.
+* https://github.com/jenetics/jenetics/issues/447: Remove evolution iterators. The whole evolution is no performed via streams.
+* https://github.com/jenetics/jenetics/issues/442: Introduce Tree Rewriting API, which allows to define own rewrite rules/system. This is very helpful when solving GP related problems.
+* https://github.com/jenetics/jenetics/issues/368: Remove deprecated code.
+* https://github.com/jenetics/jenetics/issues/364: Clean implementation of async fitness functions.
+* https://github.com/jenetics/jenetics/issues/342: The `Tree` accessor names are no longer in a Java Bean style: `getChild(int)` -> `childAt(int)`. This corresponds to the `childAtPath(path)` methods.
+* https://github.com/jenetics/jenetics/issues/331: Remove `hashCode` and `equals` method from `Selector` and `Alterer`.
+* https://github.com/jenetics/jenetics/issues/314: Add factory method for `AdaptiveEngine`, which simplifies its creation.
+* https://github.com/jenetics/jenetics/issues/308: General improvement of object serialization.
+* https://github.com/jenetics/jenetics/issues/50: Improve Genotype validation. The new `Constraint` interface, and its implementation `RetryConstraint`, now allows a finer control of the validation and recreation of individuals.
+
+
+- Bug fixes
+
+* https://github.com/jenetics/jenetics/issues/520: Fix tree-rewriting for `Const` values. This leads to non-matching nodes when trying to simplify the GP tree.
+* https://github.com/jenetics/jenetics/issues/475: Level function returns different results depending on whether the iterator is iterating through a `ProgramGene` or `TreeNode`.
+* https://github.com/jenetics/jenetics/issues/473: `DynamicGenotype` example causes `IllegalArgumentException`.
+
+Jenetics-4.4.0
+
+- Improvements
+
+	* https://github.com/jenetics/jenetics/issues/316: Improve implementation of tree rewriting. This is a preparations tep for https://github.com/jenetics/jenetics/issues/442).
+	* https://github.com/jenetics/jenetics/issues/414: Use Gradle 'implementation' instead of 'compile' dependency
+	* https://github.com/jenetics/jenetics/issues/426: Relax `final` restriction on some `Alterer` implementations. All alterers can now be sub-classed.
+	* https://github.com/jenetics/jenetics/issues/430: Codec for numeric 2d matrices.
+	* https://github.com/jenetics/jenetics/issues/433: Upgrade Gradle to 5.x.
+	* https://github.com/jenetics/jenetics/issues/443: Precondition check for `XXXChromosome.of(Gene...)` factory methods.
+	* https://github.com/jenetics/jenetics/issues/445: Mark `Phenotype.newInstance` methods as deprecated.
+	* https://github.com/jenetics/jenetics/issues/457: Add `<A> A[] Seq.toArray(IntFunction<A[]> generator)` method.
+
+- Bugs
+
+	* https://github.com/jenetics/jenetics/issues/425: Manual fixes.
+
+
+Jenetics-4.3.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/347: Improve `hashCode` and `equals` methods.
+    * https://github.com/jenetics/jenetics/issues/349: Cleanup of chromosome constructors. Make the constructors more regular.
+    * https://github.com/jenetics/jenetics/issues/355: Simplify implementation of numeric genes.
+    * https://github.com/jenetics/jenetics/issues/361: Add `NumericChromosome.primitiveStream()` methods.
+    * https://github.com/jenetics/jenetics/issues/366: Deprecate reference to fitness function property from `Phenotype`. Preparation step for generalizing the fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/377: Add `Tree.childAt` method. Lets you fetch deeply nested child nodes.
+    * https://github.com/jenetics/jenetics/issues/378: Convert tree to parentheses tree string.
+    * https://github.com/jenetics/jenetics/issues/379: Parse parentheses tree string to tree object.
+    * https://github.com/jenetics/jenetics/issues/380: Add `TreeNode.map` method.
+    * https://github.com/jenetics/jenetics/issues/400: Codec for mapping source- and target objects.
+    * https://github.com/jenetics/jenetics/issues/406: Make the library compilable under Java 11.
+    * https://github.com/jenetics/jenetics/issues/411: Improve the behaviour of the `MathExpr.format` method.
+
+- Bug fixes
+
+    * https://github.com/jenetics/jenetics/issues/357: Invalid length of selected population in `MonteCarloSelector`.
+    * https://github.com/jenetics/jenetics/issues/420: `Limits.byFitnessThreshold` termination strategy is missing _best_ generation.
+
+Jenetics-4.2.1
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/416: Method internal `comb.subset` doesn't create all possible combinations. The `PermutationChromosome` is therefore not able to create solutions for the whole search space.
+
+
+Jenetics-4.2.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/325: **Allow customization of fitness evaluation execution for bundling calculations**
+    * https://github.com/jenetics/jenetics/issues/327: Improve CPU utilization during fitness evaluation.
+    * https://github.com/jenetics/jenetics/issues/335: Seq view wrapper for List<T> and T[] types.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/317: Fix links of Javadoc images.
+    * https://github.com/jenetics/jenetics/issues/318: NULL result from engine.stream() after upgrade from 4.0.0 to 4.1.0.
+    * https://github.com/jenetics/jenetics/issues/336: Errornous default implementation of 'Seq.indexWhere'.
+    * https://github.com/jenetics/jenetics/issues/341: Error in internal 'bit.increment' method.
+    * https://github.com/jenetics/jenetics/issues/345: Assumption for 'Genotype.newInstance(ISeq)' no longer holds.
+
+
+Jenetics-4.1.0
+
+- Improvements
+    * https://github.com/jenetics/jenetics/issues/223: **Implementation of Multi-Objective Optimization.**
+    * https://github.com/jenetics/jenetics/issues/259: Pruning GP program tree.
+    * https://github.com/jenetics/jenetics/issues/285: Population exchange between different Engines.
+    * https://github.com/jenetics/jenetics/issues/294: Cleanup of Jenetics examples.
+    * https://github.com/jenetics/jenetics/issues/295: Upgrade Gradle version 4.5.
+    * https://github.com/jenetics/jenetics/issues/297: Compile JMH test on test execution.
+    * https://github.com/jenetics/jenetics/issues/306: Improve Javadoc on how to extend chromosomes.
+    * https://github.com/jenetics/jenetics/issues/307: Enable @apiNote, @implSpec and @implNote Javadoc tag.
+
+- Bug fixes
+    * https://github.com/jenetics/jenetics/issues/290: User's manual fixes.
+    * https://github.com/jenetics/jenetics/issues/298: Fix GP load/save of generated tree.
+
+
+Jenetics-4.0.0
+
+- Improvements
+
+    * https://github.com/jenetics/jenetics/issues/28: Immutable population class. The original `Population` class has been replaced by `Seq<Phenotype<G, C>>`. This points to a more _functional_ implementation of the library.
+    * https://github.com/jenetics/jenetics/issues/119: `Chromosome` implementations are now fully immutable. This is an internal change only.
+    * https://github.com/jenetics/jenetics/issues/121: `Mutator` class is easier now to extend. It has been extended with additional `mutate` methods which serves as extension points for onw `Mutator` implementations.
+    * https://github.com/jenetics/jenetics/issues/123: `Chromosome` with variable number of genes: Most chromosomes can now be created with a variable number of genes. `DoubleChromosome.of(0.0, 1.0, IntRange.of(5, 16))`.
+    * https://github.com/jenetics/jenetics/issues/172: [`io.jenetics.prngine`](https://github.com/jenetics/prngine) library replaces the existing PRNG implementations in the `io.jenetics.base` module.
+    * https://github.com/jenetics/jenetics/issues/175: Align random int range generation with `io.jenetics.prngine` library. This is an internal change only.
+    * https://github.com/jenetics/jenetics/issues/180: Change library namespace from `org.jenetics` to `io.jenetics`. This is the **most** invasive change of this release. Users have to adopt the imports in all their code.
+    * https://github.com/jenetics/jenetics/issues/183: Change copyright email address to ...@gmail.com
+    * https://github.com/jenetics/jenetics/issues/200: Implementation of gene convergence termination: _A termination method that stops the evolution when a user-specified percentage of the genes that make up a `Genotype` are deemed as converged. A gene is deemed as converged when the average value of that gene across all of the genotypes in the current population is less than a user-specified percentage away from the maximum gene value across the genotypes._
+    * https://github.com/jenetics/jenetics/issues/253: Removal of deprecated code and classes: mainly `JAXB` marshalling and the `LCG64ShiftRandom` class.
+    * https://github.com/jenetics/jenetics/issues/260: Clean room implementation of internal `subset` function. This method was a port from the [C++ source](https://people.scs.fsu.edu/~burkardt/c_src/subset/subset.html) written by John Burkardt. The original source has been published under the LGPL licence, which is not compatible to tha Apache 2 licence. To avoid legal issues, the affected method has been reimplemented using the [Clean Room](http://wiki.c2.com/?CleanRoomImplementation) method, based on the original book, [Combinatorial Algorithms for Computers and Calculators](https://www.math.upenn.edu/%7Ewilf/website/CombinatorialAlgorithms.pdf), by Albert Nijenhuis and Herbert Wilf. The `io.jenetics.internal.math.comb.subset` method is now fully compatible with the Apache 2 licence.
+    * https://github.com/jenetics/jenetics/issues/262: Filter for duplicate individuals: It is now possible to intercept the stream of `EvolutionResult`s of the evolution `Engine`:
+```java
+final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
+	.mapping(EvolutionResult.toUniquePopulation())
+	.build();
+```
+    * https://github.com/jenetics/jenetics/issues/264: Upgrade Gradle to version 4.3.
+    * https://github.com/jenetics/jenetics/issues/266: The `Seq` serialization should be more robust in the case of implementation changes.
+    * https://github.com/jenetics/jenetics/issues/269: Implementation of an [`EliteSelector`](https://en.wikipedia.org/wiki/Selection_(genetic_algorithm)).
+    * https://github.com/jenetics/jenetics/issues/269: Cleanup of internal, mathematical helper functions.
+    * https://github.com/jenetics/jenetics/issues/272: Obey Java naming convention. Two helper classes have been renamed to obey the Java naming conventions. `codecs` -> `Codecs` and `limits` -> `Limits`.
+    * https://github.com/jenetics/jenetics/issues/279: Additional `MSeq.swap` method.
+
+- Bugs
+
+    * (https://github.com/jenetics/jenetics/issues/247: Fix the classpath of the `jrun` helper script.
+    * https://github.com/jenetics/jenetics/issues/256: Buggy type signature of `AnyChromosome.of` method.
+
 Jenetics-3.9.0
 
 - Improvements

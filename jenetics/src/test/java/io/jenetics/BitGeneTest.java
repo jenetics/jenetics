@@ -20,7 +20,10 @@
 package io.jenetics;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.testng.annotations.Test;
 
@@ -38,11 +41,16 @@ public class BitGeneTest extends GeneTester<BitGene> {
 	}
 
 	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(BitGene.class).verify();
+	}
+
+	@Test
 	public void testGetValue() {
-		assertEquals(BitGene.FALSE.getBit(), false);
-		assertEquals(BitGene.ZERO.getBit(), false);
-		assertEquals(BitGene.TRUE.getBit(), true);
-		assertEquals(BitGene.ONE.getBit(), true);
+		assertFalse(BitGene.FALSE.getBit());
+		assertFalse(BitGene.ZERO.getBit());
+		assertTrue(BitGene.TRUE.getBit());
+		assertTrue(BitGene.ONE.getBit());
 	}
 
 	@Test

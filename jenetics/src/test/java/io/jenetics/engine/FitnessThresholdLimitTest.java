@@ -19,6 +19,10 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.String.format;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
@@ -28,8 +32,11 @@ import org.testng.annotations.Test;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
+import io.jenetics.IntegerChromosome;
+import io.jenetics.IntegerGene;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 
 /**
@@ -47,6 +54,8 @@ public class FitnessThresholdLimitTest {
 	) {
 		final FitnessThresholdLimit<Double> limit =
 			new FitnessThresholdLimit<>(threshold);
+
+		limit.test(result(min, max, opt));
 
 		Assert.assertEquals(
 			limit.test(result(min, max, opt)),
@@ -77,7 +86,7 @@ public class FitnessThresholdLimitTest {
 		return EvolutionResult.of(
 			opt,
 			population(min, max),
-			1L,
+			2L,
 			EvolutionDurations.ZERO,
 			1,
 			1,
@@ -99,7 +108,51 @@ public class FitnessThresholdLimitTest {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0.0, 1000.0))),
 			1,
-			a -> a.getGene().getAllele()
+			value
+		);
+	}
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/318
+	public void initialFitnessConvergence() {
+		final Problem<Double, DoubleGene, Double> problem = Problem.of(
+			d -> 1.0,
+			Codecs.ofScalar(DoubleRange.of(0, 1))
+		);
+
+		final Engine<DoubleGene, Double> engine = Engine.builder(problem).build();
+
+		final AtomicInteger count = new AtomicInteger();
+		final EvolutionResult<DoubleGene, Double> result = engine.stream()
+			.limit(Limits.byFitnessThreshold(0.3))
+			.peek(er -> count.incrementAndGet())
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertNotNull(result);
+		Assert.assertEquals(count.get(), 1);
+		Assert.assertEquals(result.getTotalGenerations(), 1);
+		Assert.assertEquals(result.getGeneration(), 1);
+	}
+
+	@Test
+	// https://github.com/jenetics/jenetics/issues/420
+	public void bestFitnessResult() {
+		final Genotype<IntegerGene> genotype = Genotype.of(IntegerChromosome.of(0, 10));
+		final AtomicInteger ai = new AtomicInteger();
+		final Function<Genotype<IntegerGene>, Integer> ff = x -> ai.incrementAndGet();
+
+		final int threshold = 100;
+		final Integer result = Engine.builder(ff, genotype)
+			.build()
+			.stream()
+			.limit(Limits.byFitnessThreshold(threshold))
+			.collect(EvolutionResult.toBestEvolutionResult())
+			.getBestFitness();
+
+		Assert.assertNotNull(result);
+		Assert.assertTrue(
+			result >= 100,
+			format("Expected value >= %s, but got %s", threshold, result)
 		);
 	}
 

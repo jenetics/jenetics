@@ -23,6 +23,8 @@ import static org.testng.Assert.assertEquals;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -42,6 +44,11 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		return _factory;
 	}
 
+	@Test
+	public void equalsVerifier() {
+		EqualsVerifier.forClass(LongGene.class).verify();
+	}
+
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void newInstanceDistribution() {
 		final Long min = 0L;
@@ -51,7 +58,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
 				.mapToObj(i -> LongGene.of(min, max).getAllele())
-				.forEach(histogram::accept)
+				.forEach(histogram)
 		);
 
 		assertUniformDistribution(histogram);
@@ -96,7 +103,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 	@Test
 	public void set() {
-		LongGene gene = new LongGene(5L, 0L, 10L);
+		LongGene gene = LongGene.of(5L, 0L, 10L);
 		Assert.assertEquals(gene.getAllele().longValue(), 5L);
 		Assert.assertEquals(gene.getMin().longValue(), 0L);
 		Assert.assertEquals(gene.getMax().longValue(), 10L);

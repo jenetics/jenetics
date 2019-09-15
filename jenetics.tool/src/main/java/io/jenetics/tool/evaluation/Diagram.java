@@ -45,6 +45,7 @@ import io.jenetics.tool.trial.IO;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.SampleSummary;
 import io.jenetics.tool.trial.TrialMeter;
+
 import io.jenetics.xml.stream.Reader;
 
 /**
@@ -106,7 +107,7 @@ public class Diagram {
 
 		private Template(final String name) {
 			_name = requireNonNull(name);
-			_path = "/org/jenetics/tool/evaluation/" +
+			_path = "/io/jenetics/tool/evaluation/" +
 				requireNonNull(name) + ".gp";
 		}
 

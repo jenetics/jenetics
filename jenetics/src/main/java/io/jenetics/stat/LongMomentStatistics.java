@@ -49,13 +49,12 @@ import java.util.stream.Collector;
  *     .collect(toLongMomentStatistics(v -> v.longValue()));
  * }</pre>
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. However, it is safe to use
+ * @implNote
+ * This implementation is not thread safe. However, it is safe to use
  * {@link #toLongMomentStatistics(ToLongFunction)}  on a parallel stream, because the parallel
  * implementation of {@link java.util.stream.Stream#collect Stream.collect()}
  * provides the necessary partitioning, isolation, and merging of results for
- * safe and efficient parallel execution.</i>
+ * safe and efficient parallel execution.
  *
  * @see java.util.LongSummaryStatistics
  * @see io.jenetics.stat.LongMoments
@@ -179,7 +178,8 @@ public class LongMomentStatistics
 	 *         the same state, {@code false} otherwise
 	 */
 	public boolean sameState(final LongMomentStatistics other) {
-		return _min == other._min &&
+		return this == other ||
+			_min == other._min &&
 			_max == other._max &&
 			_sum == other._sum &&
 			super.sameState(other);

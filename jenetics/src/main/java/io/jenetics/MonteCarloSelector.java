@@ -24,8 +24,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -39,7 +37,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
@@ -66,10 +64,9 @@ public final class MonteCarloSelector<
 			));
 		}
 
-		final MSeq<Phenotype<G, C>> selection = MSeq
-			.ofLength(population.isEmpty() ? 0 : count);
-
+		final MSeq<Phenotype<G, C>> selection;
 		if (count > 0 && !population.isEmpty()) {
+			selection = MSeq.ofLength(count);
 			final Random random = RandomRegistry.getRandom();
 			final int size = population.size();
 
@@ -77,19 +74,11 @@ public final class MonteCarloSelector<
 				final int pos = random.nextInt(size);
 				selection.set(i, population.get(pos));
 			}
+		} else {
+			selection = MSeq.empty();
 		}
 
 		return selection.toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.ofType(this, obj);
 	}
 
 	@Override

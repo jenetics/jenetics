@@ -60,8 +60,10 @@ public class RouletteWheelSelectorTest
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.getChromosome().getGene().getAllele();
 
-			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
+				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
+				return Phenotype.of(gt, 1, gt.getGene().intValue());
+			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =
 				IntStream.range(0, 1000)
@@ -82,8 +84,10 @@ public class RouletteWheelSelectorTest
 			final Function<Genotype<IntegerGene>, Integer> ff =
 				g -> g.getChromosome().getGene().getAllele();
 
-			final Factory<Phenotype<IntegerGene, Integer>> ptf = () ->
-				Phenotype.of(Genotype.of(IntegerChromosome.of(0, 100)), 1, ff);
+			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
+				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
+				return Phenotype.of(gt, 1, gt.getGene().intValue());
+			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =
 				IntStream.range(0, 1000)
@@ -121,7 +125,7 @@ public class RouletteWheelSelectorTest
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
 		final String resource =
-			"/org/jenetics/selector/distribution/RouletteWheelSelector";
+			"/io/jenetics/selector/distribution/RouletteWheelSelector";
 
 		return Arrays.stream(Optimize.values())
 			.map(opt -> {

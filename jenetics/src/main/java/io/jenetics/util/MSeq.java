@@ -38,23 +38,23 @@ import java.util.stream.Stream;
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.Empty;
+import io.jenetics.internal.collection.Empty.EmptyMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
  * Mutable, ordered, fixed sized sequence.
  *
- * <p>
- * <b>Implementation note:</b>
- * <i>This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
+ * @implNote
+ * This implementation is not thread safe. All {@link ISeq} and {@link MSeq}
  * instances created by {@link MSeq#toISeq} and {@link MSeq#subSeq(int)},
  * respectively, must be protected by the same lock, when they are accessed
- * (get/set) by different threads.</i>
+ * (get/set) by different threads.
  *
  * @see ISeq
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.4
+ * @version 4.2
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
@@ -399,13 +399,78 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 
 	/* *************************************************************************
+	 *  Some static helper methods.
+	 * ************************************************************************/
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * element followed by all the elements of the sequence.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first element
+	 * @param b the appending sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the second arguments is
+	 *         {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> concat(
+		final T a,
+		final MSeq<? extends T> b
+	) {
+		return ((MSeq<T>)b).prepend(a);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the vararg array.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first sequence
+	 * @param b the vararg elements
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two inputs
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> concat(
+		final MSeq<? extends T> a,
+		final T... b
+	) {
+		return ((MSeq<T>)a).append(b);
+	}
+
+	/**
+	 * Return a sequence whose elements are all the elements of the first
+	 * sequence followed by all the elements of the second sequence.
+	 *
+	 * @since 5.0
+	 *
+	 * @param a the first sequence
+	 * @param b the second sequence
+	 * @param <T> the type of the sequence elements
+	 * @return the concatenation of the two input sequences
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> MSeq<T> concat(
+		final MSeq<? extends T> a,
+		final MSeq<? extends T> b
+	) {
+		return ((MSeq<T>)a).append(b);
+	}
+
+	/* *************************************************************************
 	 *  Some static factory methods.
 	 * ************************************************************************/
 
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY = Empty.MSEQ;
+	public static final MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code MSeq}.
@@ -476,13 +541,13 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
 		final MSeq<T> mseq;
-		if (values instanceof ISeq<?>) {
+		if (values instanceof ISeq) {
 			final ISeq<T> seq = (ISeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : seq.copy();
-		} else if (values instanceof MSeq<?>) {
+		} else if (values instanceof MSeq) {
 			final MSeq<T> seq = (MSeq<T>)values;
 			mseq = seq.isEmpty() ? empty() : MSeq.of(seq);
-		} else if (values instanceof Collection<?>) {
+		} else if (values instanceof Collection) {
 			final Collection<T> collection = (Collection<T>)values;
 			mseq = collection.isEmpty()
 				? empty()
@@ -559,9 +624,15 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> of(final Seq<? extends T> values) {
-		return values instanceof MSeq<?>
-			? ((MSeq<T>)values).copy()
-			: MSeq.<T>ofLength(values.length()).setAll(values);
+		final MSeq<T> result;
+		if (values instanceof MSeq) {
+			result = ((MSeq<T>)values).copy();
+		} else if (values instanceof ISeq) {
+			result = ((ISeq<T>)values).copy();
+		} else {
+			result = MSeq.<T>ofLength(values.length()).setAll(values);
+		}
+		return result;
 	}
 
 }

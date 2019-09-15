@@ -27,12 +27,13 @@ import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.Recombinator;
-import io.jenetics.ext.util.FlatTree;
-import io.jenetics.ext.util.FlatTreeNode;
-import io.jenetics.ext.util.TreeNode;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.util.FlatTree;
+import io.jenetics.ext.util.FlatTreeNode;
+import io.jenetics.ext.util.TreeNode;
 
 /**
  * Abstract implementation of tree base crossover recombinator. This class
@@ -87,11 +88,11 @@ public abstract class TreeCrossover<
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.of(c1.toISeq()), generation)
+			Phenotype.of(Genotype.of(c1.toISeq()), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(Genotype.of(c2.toISeq()), generation)
+			Phenotype.of(Genotype.of(c2.toISeq()), generation)
 		);
 
 		return getOrder();

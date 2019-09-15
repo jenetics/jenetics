@@ -23,8 +23,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
 
-import io.jenetics.AltererResult;
 import io.jenetics.Alterer;
+import io.jenetics.AltererResult;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
@@ -70,9 +70,7 @@ public final class RepairingAlterer<
 	private Phenotype<G, C> repair(final Phenotype<G, C> pt) {
 		return Phenotype.of(
 			_repair.apply(pt.getGenotype()),
-			pt.getGeneration(),
-			pt.getFitnessFunction(),
-			pt.getFitnessScaler()
+			pt.getGeneration()
 		);
 	}
 

@@ -19,6 +19,8 @@
  */
 package io.jenetics.tool.trial;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class IO {
 		throws IOException
 	{
 		try (OutputStream out = new FileOutputStream(path.toFile())) {
-			out.write(value.getBytes("UTF-8"));
+			out.write(value.getBytes(UTF_8));
 		}
 	}
 

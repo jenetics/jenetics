@@ -19,26 +19,31 @@
  */
 package io.jenetics.prog;
 
+import java.io.IOException;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.IO;
+import io.jenetics.util.ISeq;
+
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
+
 import io.jenetics.prog.op.Const;
 import io.jenetics.prog.op.MathOp;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.op.Program;
 import io.jenetics.prog.op.Var;
-import io.jenetics.util.ISeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class ProgramChromosomeTest {
 
-	private static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
+	static final ISeq<Op<Double>> OPERATIONS = ISeq.of(
 		MathOp.ADD,
 		MathOp.SUB,
 		MathOp.MUL,
@@ -48,7 +53,7 @@ public class ProgramChromosomeTest {
 		MathOp.COS
 	);
 
-	private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
+	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
 		Var.of("y", 1),
 		Var.of("z", 2),
@@ -144,7 +149,31 @@ public class ProgramChromosomeTest {
 		);
 
 		System.out.println(tree);
-		System.out.println(Tree.toCompactString(tree));
+		System.out.println(tree.toParenthesesString());
+	}
+
+	@Test
+	public void sameRootAndFirstGene() {
+		final ProgramChromosome<Double> ch = ProgramChromosome.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+		Assert.assertSame(ch.getRoot(), ch.getGene());
+	}
+
+	@Test
+	public void serialize() throws IOException {
+		final TreeNode<Op<Double>> tree = Program.of(
+			6,
+			OPERATIONS,
+			TERMINALS
+		);
+		final ProgramChromosome<Double> object =
+			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
+
+		final byte[] data = IO.object.toByteArray(object);
+		Assert.assertEquals(IO.object.fromByteArray(data), object);
 	}
 
 }

@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -40,7 +41,7 @@ public class IntegerChromosomeTest
 	extends NumericChromosomeTester<Integer, IntegerGene>
 {
 
-	private final IntegerChromosome _factory = new IntegerChromosome(
+	private final IntegerChromosome _factory = IntegerChromosome.of(
 		0, Integer.MAX_VALUE, 500
 	);
 
@@ -59,7 +60,7 @@ public class IntegerChromosomeTest
 			final Histogram<Integer> histogram = Histogram.ofInteger(min, max, 10);
 
 			for (int i = 0; i < 1000; ++i) {
-				final IntegerChromosome chromosome = new IntegerChromosome(min, max, 500);
+				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
 				chromosome.toSeq().forEach(g -> {
 					mm.accept(g.getAllele());
@@ -95,6 +96,38 @@ public class IntegerChromosomeTest
 			{IntegerChromosome.of(0, 1000, IntRange.of(2, 10)), IntRange.of(2, 10)},
 			{IntegerChromosome.of(IntRange.of(0, 1000), IntRange.of(2, 10)), IntRange.of(2, 10)}
 		};
+	}
+
+	@Test
+	public void intStream() {
+		final IntegerChromosome chromosome = IntegerChromosome.of(0, 10_000, 1000);
+		final int[] values = chromosome.intStream().toArray();
+
+		Assert.assertEquals(values.length, 1000);
+		for (int i = 0; i < values.length; ++i) {
+			Assert.assertEquals(chromosome.getGene(i).intValue(), values[i]);
+			Assert.assertEquals(chromosome.intValue(i), values[i]);
+		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		IntegerChromosome.of(
+			IntegerGene.of(1, 2),
+			IntegerGene.of(3, 4),
+			IntegerGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		IntegerChromosome.of(
+			ISeq.of(
+				IntegerGene.of(1, 2),
+				IntegerGene.of(3, 4),
+				IntegerGene.of(5, 6)
+			)
+		);
 	}
 
 }

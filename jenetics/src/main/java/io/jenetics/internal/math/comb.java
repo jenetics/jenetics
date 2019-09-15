@@ -25,7 +25,6 @@ import static io.jenetics.internal.math.base.isMultiplicationSave;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -36,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * @since 4.0
  */
 public final class comb {
-	private comb() {require.noInstance();}
+	private comb() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
@@ -85,6 +84,44 @@ public final class comb {
 	}
 
 	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the subset array
+	 */
+	public static int[] subset(final int[] set, final int k) {
+		return subset(set, k, RandomRegistry.getRandom());
+	}
+
+	/**
+	 * Selects a random subset of size {@code k} from the given base {@code set}.
+	 *
+	 * @param set the base set
+	 * @param k the size of the subset
+	 * @param random the random number generator used
+	 * @throws NullPointerException if {@code set} or {@code random} is
+	 *         {@code null}.
+	 * @throws IllegalArgumentException if {@code set.length < k},
+	 *         {@code k == 0} or if {@code set.length*k} will cause an integer
+	 *         overflow.
+	 * @return the subset array
+	 */
+	public static int[] subset(final int[] set, final int k, final Random random) {
+		final int[] sub = subset(set.length, new int[k], random);
+		for (int i = 0; i < k; ++i) {
+			sub[i] = set[sub[i]];
+		}
+
+		return sub;
+	}
+
+	/**
 	 * <p>
 	 * Selects a random subset of size {@code sub.length} from a set of size
 	 * {@code n}.
@@ -98,8 +135,8 @@ public final class comb {
 	 *         {@code sub.length == 0} or {@code n*sub.length} will cause an
 	 *         integer overflow.
 	 */
-	public static void subset(final int n, final int sub[]) {
-		subset(n, sub, RandomRegistry.getRandom());
+	public static int[] subset(final int n, final int[] sub) {
+		return subset(n, sub, RandomRegistry.getRandom());
 	}
 
 	/**
@@ -129,7 +166,7 @@ public final class comb {
 	 *         {@code a.length == 0} or {@code n*a.length} will cause an
 	 *         integer overflow.
 	 */
-	public static int[] subset(final int n, final int a[], final Random random) {
+	public static int[] subset(final int n, final int[] a, final Random random) {
 		requireNonNull(random, "Random");
 		requireNonNull(a, "Sub set array");
 
@@ -212,6 +249,8 @@ public final class comb {
 			--m;
 		}
 
+		// Convert to zero based indexed arrays.
+		for (int i = 0; i < a.length; ++i) a[i] -= 1;
 		return a;
 	}
 
@@ -235,7 +274,7 @@ public final class comb {
 	}
 
 	private static int nextX(final Random random, final int m) {
-		return m > 0 ? random.nextInt(m) : m - 1;
+		return random.nextInt(m + 1);
 	}
 
 }

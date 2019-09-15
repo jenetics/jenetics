@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
+
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 
@@ -112,8 +113,8 @@ public final class Params<T> implements Iterable<T>, Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof Params<?> &&
-			_params.equals(((Params<?>)obj)._params);
+		return obj instanceof Params &&
+			_params.equals(((Params)obj)._params);
 	}
 
 	@Override

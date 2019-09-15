@@ -30,7 +30,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
 
@@ -47,7 +46,18 @@ import io.jenetics.util.NanoClock;
  * @version 3.7
  */
 public final class Limits {
-	private Limits() {require.noInstance();}
+	private Limits() {}
+
+	/**
+	 * Return a predicate which always return {@code true}.
+	 *
+	 * @since 4.1
+	 *
+	 * @return a predicate which always return {@code true}
+	 */
+	public static Predicate<Object> infinite() {
+		return result -> true;
+	}
 
 	/**
 	 * Return a predicate, which will truncate the evolution stream after the
@@ -76,7 +86,7 @@ public final class Limits {
 			private final AtomicLong _current = new AtomicLong();
 			@Override
 			public boolean test(final Object o) {
-				return _current.incrementAndGet() < generation;
+				return _current.incrementAndGet() <= generation;
 			}
 		};
 	}
@@ -205,7 +215,7 @@ public final class Limits {
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
 	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
-	 *          return esp >= 10E-5
+	 *          return eps >= 10E-5
 	 *     }))
 	 *     .collect(toBestPhenotype());
 	 * }</pre>
@@ -213,10 +223,9 @@ public final class Limits {
 	 * In the example above, the moving average of the short- and long filter
 	 * is used for determining the fitness convergence.
 	 *
-	 * <p>
-	 * <b>API note: </b><em>The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
-	 * of the {@code test} method.</em>
+	 * of the {@code test} method.
 	 *
 	 * @since 3.7
 	 *
@@ -266,10 +275,9 @@ public final class Limits {
 	 * generations. The long filter uses the best fitness values of the last 15
 	 * generations.
 	 *
-	 * <p>
-	 * <b>API note: </b><em>The returned predicate maintains mutable state.
+	 * @apiNote The returned predicate maintains mutable state.
 	 * Using it in a parallel evolution streams needs external synchronization
-	 * of the {@code test} method.</em>
+	 * of the {@code test} method.
 	 *
 	 * @since 3.7
 	 *
