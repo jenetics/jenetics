@@ -33,6 +33,8 @@ import io.jenetics.jpx.Route;
  */
 public class MapPanel extends javax.swing.JPanel {
 
+	private static final long serialVersionUID = 1;
+
 	private Route _route;
 
 	/**

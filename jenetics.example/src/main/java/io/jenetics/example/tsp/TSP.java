@@ -34,6 +34,8 @@ import io.jenetics.jpx.Point;
  */
 public class TSP extends javax.swing.JFrame {
 
+	private static final long serialVersionUID = 1;
+
 	/**
 	 * Creates new form TSP
 	 */
