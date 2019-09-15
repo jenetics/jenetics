@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="47.84637" lon="16.52796">
+        <ele>169.0</ele>
+        <name>Eisenstadt</name>
+    </wpt>
+    <wpt lat="47.05932" lon="16.32449">
+        <ele>226.0</ele>
+        <name>Güssing</name>
+    </wpt>
+    <wpt lat="46.93712" lon="16.12961">
+        <ele>247.0</ele>
+        <name>Jennersdorf</name>
+    </wpt>
+    <wpt lat="47.73625" lon="16.39663">
+        <ele>238.0</ele>
+        <name>Mattersburg</name>
+    </wpt>
+    <wpt lat="47.94736" lon="16.84537">
+        <ele>125.0</ele>
+        <name>Neusiedl am See</name>
+    </wpt>
+    <wpt lat="47.49497" lon="16.50879">
+        <ele>242.0</ele>
+        <name>Oberpullendorf</name>
+    </wpt>
+    <wpt lat="47.29482" lon="16.19914">
+        <ele>319.0</ele>
+        <name>Oberwart</name>
+    </wpt>
+    <wpt lat="47.80238" lon="16.67218">
+        <ele>122.0</ele>
+        <name>Rust</name>
+    </wpt>
+</gpx>
