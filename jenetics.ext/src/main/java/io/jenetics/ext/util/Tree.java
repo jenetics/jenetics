@@ -95,7 +95,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return an iterator of the children of this {@code Tree} node.
 	 */
 	public default Iterator<T> childIterator() {
-		return new TreeChildIterator<V, T>(Trees.<V, T>self(this));
+		return new TreeChildIterator<V, T>(Trees.self(this));
 	}
 
 	/**
@@ -293,7 +293,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 		T ancestor = null;
 		if (node.identical(this)) {
-			ancestor = Trees.<V, T>self(this);
+			ancestor = Trees.self(this);
 		} else {
 			final int level1 = level();
 			final int level2 = node.level();
@@ -304,10 +304,10 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			if (level2 > level1) {
 				diff = level2 - level1;
 				node1 = node;
-				node2 = Trees.<V, T>self(this);
+				node2 = Trees.self(this);
 			} else {
 				diff = level1 - level2;
-				node1 = Trees.<V, T>self(this);
+				node1 = Trees.self(this);
 				node2 = node;
 			}
 
@@ -318,7 +318,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 			do {
 				if (node1 != null && node1.identical(node2)) {
-					ancestor = Trees.<V, T>self(node1);
+					ancestor = Trees.self(node1);
 				}
 				node1 = node1 != null
 					? node1.getParent().orElse(null)
@@ -477,7 +477,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		Optional<T> next = Optional.empty();
 
 		if (childCount() == 0) {
-			T node = Trees.<V, T>self(this);
+			T node = Trees.self(this);
 			while (node != null && !(next = node.nextSibling()).isPresent()) {
 				node = node.getParent().orElse(null);
 			}
@@ -596,7 +596,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the first leaf in the subtree rooted at this node
 	 */
 	public default T firstLeaf() {
-		T leaf = Trees.<V, T>self(this);
+		T leaf = Trees.self(this);
 		while (!leaf.isLeaf()) {
 			leaf = leaf.firstChild().orElseThrow(AssertionError::new);
 		}
@@ -614,7 +614,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the last leaf in this subtree
 	 */
 	public default T lastLeaf() {
-		T leaf = Trees.<V, T>self(this);
+		T leaf = Trees.self(this);
 		while (!leaf.isLeaf()) {
 			leaf = leaf.lastChild().orElseThrow(AssertionError::new);
 		}
