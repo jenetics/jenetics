@@ -21,7 +21,7 @@ package io.jenetics.util;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 final class Buffer<T> {
@@ -36,8 +36,17 @@ final class Buffer<T> {
 
 	void add(final T value) {
 		_buffer[_index] = value;
-		_index = (_index + 1)%_buffer.length;
-		_size = Math.min(_size + 1, _buffer.length);
+
+		if (++_index == _buffer.length) {
+			_index = 0;
+		}
+		if (_size < _buffer.length) {
+			++_size;
+		}
+	}
+
+	int index() {
+		return _index;
 	}
 
 	void addAll(final Iterable<? extends T> values) {
