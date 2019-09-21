@@ -41,12 +41,23 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class BufferPerf {
 
 
 	private int[] data;
 	private Buffer<Integer> buffer;
+
+	@State(Scope.Benchmark)
+	public static class TestBuffer {
+		Buffer<Integer> buffer = createBuffer();
+	}
+
+	private static Buffer<Integer> createBuffer() {
+		final Buffer<Integer> buffer = new Buffer<>(1_000);
+		new Random().ints(1_500).forEach(buffer::add);
+		return buffer;
+	}
 
 	@Setup
 	public void setup() {
@@ -54,7 +65,7 @@ public class BufferPerf {
 		buffer = new Buffer<>(1_000);
 	}
 
-	@Benchmark
+	//@Benchmark
 	public int add() {
 		for (int i : data) {
 			buffer.add(i);
@@ -62,6 +73,10 @@ public class BufferPerf {
 		return buffer.index();
 	}
 
+	@Benchmark
+	public Object toSeq(final TestBuffer tb) {
+		return tb.buffer.toSeq();
+	}
 
 
 	public static void main(final String[] args) throws RunnerException {
