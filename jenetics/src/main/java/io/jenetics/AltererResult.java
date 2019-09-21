@@ -21,6 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 
@@ -85,10 +86,9 @@ public final class AltererResult<
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*_population.hashCode() + 37;
-		hash += 31*_alterations + 37;
-		return hash;
+		return
+			hash(_population,
+			hash(_alterations));
 	}
 
 	@Override
@@ -134,7 +134,8 @@ public final class AltererResult<
 	 * @throws NullPointerException if the given population is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	AltererResult<G, C> of(final ISeq<Phenotype<G, C>> population) {
+	AltererResult<G, C>
+	of(final ISeq<Phenotype<G, C>> population) {
 		return new AltererResult<>(population, 0);
 	}
 

@@ -20,6 +20,7 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -48,7 +49,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.3
  */
 public final class CharacterGene
 	implements
@@ -56,7 +57,7 @@ public final class CharacterGene
 		Comparable<CharacterGene>,
 		Serializable
 {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 
 	/**
 	 * The default character set used by this gene.
@@ -66,7 +67,7 @@ public final class CharacterGene
 		" !\"$%&/()=?`{[]}\\+~*#';.:,-_<>|@^'"
 	);
 
-	private final Character _character;
+	private final char _character;
 	private final CharSeq _validCharacters;
 
 	private CharacterGene(final CharSeq chars, final int index) {
@@ -82,8 +83,8 @@ public final class CharacterGene
 	 * @param validChars the set of valid characters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	CharacterGene(final Character character, final CharSeq validChars) {
-		_character = requireNonNull(character);
+	private CharacterGene(final char character, final CharSeq validChars) {
+		_character = character;
 		_validCharacters = requireNonNull(validChars);
 	}
 
@@ -137,28 +138,25 @@ public final class CharacterGene
 	 */
 	@Override
 	public int compareTo(final CharacterGene that) {
-		return getAllele().compareTo(that.getAllele());
+		return Character.compare(_character, that._character);
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_character) + 37;
-		hash += 31*Objects.hashCode(_validCharacters) + 37;
-		return hash;
+		return hash(_character, hash(_validCharacters));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof CharacterGene &&
-			Objects.equals(((CharacterGene)obj)._character, _character) &&
+			((CharacterGene)obj)._character == _character &&
 			Objects.equals(((CharacterGene)obj)._validCharacters, _validCharacters);
 	}
 
 	@Override
 	public String toString() {
-		return _character.toString();
+		return Character.toString(_character);
 	}
 
 
@@ -181,6 +179,7 @@ public final class CharacterGene
 	 * @throws NullPointerException if the given {@code character} is
 	 *         {@code null}.
 	 */
+	@Override
 	public CharacterGene newInstance(final Character character) {
 		return of(character, _validCharacters);
 	}
@@ -213,10 +212,8 @@ public final class CharacterGene
 	 *
 	 * @param character the character value of the created gene.
 	 * @return a new character gene.
-	 * @throws NullPointerException if the given {@code character} is
-	 *         {@code null}.
 	 */
-	public static CharacterGene of(final Character character) {
+	public static CharacterGene of(final char character) {
 		return new CharacterGene(character, DEFAULT_CHARACTERS);
 	}
 

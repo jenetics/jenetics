@@ -23,8 +23,6 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.internal.util.Equality;
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Seq;
@@ -41,7 +39,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class TruncationSelector<
 	G extends Gene<?, G>,
@@ -125,16 +123,6 @@ public final class TruncationSelector<
 		}
 
 		return selection.toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return Equality.ofType(this, obj);
 	}
 
 	@Override

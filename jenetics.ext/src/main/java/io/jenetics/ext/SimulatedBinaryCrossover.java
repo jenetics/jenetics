@@ -45,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.0
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,
@@ -133,27 +133,6 @@ public class SimulatedBinaryCrossover<
 		final double min = that.get(i).getMin().doubleValue();
 		final double max = that.get(i).getMax().doubleValue();
 		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += 31*SimulatedBinaryCrossover.class.hashCode() + 37;
-		hash += 31*Double.hashCode(_probability) + 37;
-		hash += 31*Double.hashCode(_contiguity) + 37;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof SimulatedBinaryCrossover &&
-			Double.compare(
-				((SimulatedBinaryCrossover)obj)._probability,
-				_probability) == 0 &&
-			Double.compare(
-				((SimulatedBinaryCrossover)obj)._contiguity,
-				_contiguity) == 0;
 	}
 
 	@Override

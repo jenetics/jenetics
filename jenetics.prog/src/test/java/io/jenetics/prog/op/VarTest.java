@@ -36,12 +36,14 @@ public class VarTest {
 
 	@Test
 	public void equalsVerifier() {
-		EqualsVerifier.forClass(Var.class).verify();
+		EqualsVerifier.forClass(Var.class)
+			.withIgnoredFields("_index")
+			.verify();
 	}
 
 	@Test
 	public void serialize() throws IOException {
-		final Var<Integer> object = Var.of("some name", new Random().nextInt(100));
+		final Var<Integer> object = Var.of("some_name", new Random().nextInt(100));
 		final byte[] data = IO.object.toByteArray(object);
 		Assert.assertEquals(IO.object.fromByteArray(data), object);
 	}

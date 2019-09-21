@@ -21,6 +21,7 @@ package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -127,11 +128,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Integer.hashCode(_arity) + 37;
-		hash += 31*Objects.hashCode(_tree) + 37;
-		return hash;
+		return hash(_name, hash(_arity, hash(_tree)));
 	}
 
 	@Override
@@ -184,7 +181,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@SafeVarargs
 	private static <T> T eval(final Op<T> op, final T... variables) {
-		if (op instanceof Var && ((Var) op).index() >= variables.length) {
+		if (op instanceof Var && ((Var)op).index() >= variables.length) {
 			throw new IllegalArgumentException(format(
 				"No value for variable '%s' given.", op
 			));

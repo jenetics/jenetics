@@ -168,7 +168,8 @@ public final class CharSeq
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof CharSeq &&
+		return obj == this ||
+			obj instanceof CharSeq &&
 			Arrays.equals(((CharSeq)obj).array, array);
 	}
 

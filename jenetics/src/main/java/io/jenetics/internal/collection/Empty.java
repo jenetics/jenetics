@@ -31,7 +31,6 @@ import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 
@@ -43,7 +42,7 @@ import io.jenetics.util.MSeq;
  * @since 3.4
  */
 public final class Empty {
-	private Empty() {require.noInstance();}
+	private Empty() {}
 
 	public static enum EmptyMSeq implements MSeq<Object> {
 
@@ -152,7 +151,13 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
+
 
 
 	public static enum EmptyISeq implements ISeq<Object> {
@@ -237,7 +242,12 @@ public final class Empty {
 			return EmptyMSeq.INSTANCE;
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {

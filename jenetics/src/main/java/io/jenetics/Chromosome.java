@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import io.jenetics.util.Factory;
@@ -35,7 +36,7 @@ import io.jenetics.util.Verifiable;
  * and guarantee an efficient random access ({@code O(1)}) to the genes. A
  * {@code Chromosome} must contains at least one {@code Gene}.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipdida: Chromosome</a>
+ * @see <a href="http://en.wikipedia.org/wiki/Chromosome">Wikipedia: Chromosome</a>
  * @see Genotype
  * @see Gene
  *
@@ -136,7 +137,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return a sequential {@code Stream} of genes
 	 */
 	public default Stream<G> stream() {
-		return toSeq().stream();
+		return IntStream.range(0, length()).mapToObj(this::getGene);
 	}
 
 }

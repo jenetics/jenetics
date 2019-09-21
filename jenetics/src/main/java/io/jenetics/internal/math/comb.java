@@ -25,7 +25,6 @@ import static io.jenetics.internal.math.base.isMultiplicationSave;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -36,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * @since 4.0
  */
 public final class comb {
-	private comb() {require.noInstance();}
+	private comb() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
@@ -250,6 +249,8 @@ public final class comb {
 			--m;
 		}
 
+		// Convert to zero based indexed arrays.
+		for (int i = 0; i < a.length; ++i) a[i] -= 1;
 		return a;
 	}
 
@@ -273,7 +274,7 @@ public final class comb {
 	}
 
 	private static int nextX(final Random random, final int m) {
-		return m > 0 ? random.nextInt(m) : m - 1;
+		return random.nextInt(m + 1);
 	}
 
 }

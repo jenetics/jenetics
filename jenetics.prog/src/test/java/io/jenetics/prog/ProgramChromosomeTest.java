@@ -149,7 +149,17 @@ public class ProgramChromosomeTest {
 		);
 
 		System.out.println(tree);
-		System.out.println(Tree.toCompactString(tree));
+		System.out.println(tree.toParenthesesString());
+	}
+
+	@Test
+	public void sameRootAndFirstGene() {
+		final ProgramChromosome<Double> ch = ProgramChromosome.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+		Assert.assertSame(ch.getRoot(), ch.getGene());
 	}
 
 	@Test

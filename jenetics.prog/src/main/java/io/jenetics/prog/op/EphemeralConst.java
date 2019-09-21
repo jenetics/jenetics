@@ -21,7 +21,14 @@ package io.jenetics.prog.op;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readNullableString;
+import static io.jenetics.internal.util.SerialIO.writeNullableString;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -37,35 +44,35 @@ import io.jenetics.internal.util.Lazy;
  *
  * <pre>{@code
  * final Random random = ...;
- * final Op<Double> val = EphemeralConst.of(random::nextDouble());
+ * final Op<Double> val = EphemeralConst.of(random::nextDouble);
  * }</pre>
  *
  *  @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 3.9
  */
-public final class EphemeralConst<T> implements Op<T>, Serializable {
+public final class EphemeralConst<T>
+	extends Val<T>
+	implements Op<T>, Serializable
+{
 
 	private static final long serialVersionUID = 1L;
 
-	private final String _name;
-	private final Supplier<T> _supplier;
 	private final Lazy<T> _value;
+	private final Supplier<T> _supplier;
+
+	private EphemeralConst(
+		final String name,
+		final Lazy<T> value,
+		final Supplier<T> supplier
+	) {
+		super(name);
+		_value = requireNonNull(value);
+		_supplier = requireNonNull(supplier);
+	}
 
 	private EphemeralConst(final String name, final Supplier<T> supplier) {
-		_name = name;
-		_supplier = requireNonNull(supplier);
-		_value = Lazy.of(_supplier);
-	}
-
-	@Override
-	public String name() {
-		return _name;
-	}
-
-	@Override
-	public int arity() {
-		return 0;
+		this(name, Lazy.of(supplier), supplier);
 	}
 
 	/**
@@ -75,35 +82,26 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 	 */
 	@Override
 	public Op<T> get() {
-		return new EphemeralConst<>(_name, _supplier);
+		return new EphemeralConst<>(name(), _supplier);
 	}
 
+	/**
+	 * Fixes and returns the constant value.
+	 *
+	 * @since 5.0
+	 *
+	 * @return the constant value
+	 */
 	@Override
-	public T apply(final T[] ts) {
+	public T value() {
 		return _value.get();
 	}
 
 	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += 31*Objects.hashCode(_name) + 37;
-		hash += 31*Objects.hashCode(_value) + 37;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof EphemeralConst &&
-			Objects.equals(((EphemeralConst)obj)._name, _name) &&
-			Objects.equals(((EphemeralConst)obj)._value, _value);
-	}
-
-	@Override
 	public String toString() {
-		return _name != null
-			? format("%s(%s)", _name, _value.get())
-			: Objects.toString(_value.get());
+		return name() != null
+			? format("%s(%s)", name(), value())
+			: Objects.toString(value());
 	}
 
 	/**
@@ -137,6 +135,42 @@ public final class EphemeralConst<T> implements Op<T>, Serializable {
 	 */
 	public static <T> EphemeralConst<T> of(final Supplier<T> supplier) {
 		return new EphemeralConst<>(null, supplier);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EPHEMERAL_CONST, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		final Supplier<T> supplier = _supplier instanceof Serializable
+			? _supplier
+			: (Supplier<T> & Serializable)_supplier::get;
+
+		writeNullableString(name(), out);
+		out.writeObject(value());
+		out.writeObject(supplier);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EphemeralConst read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final String name = readNullableString(in);
+		final Object value = in.readObject();
+		final Supplier supplier = (Supplier)in.readObject();
+
+		return new EphemeralConst(name, Lazy.ofValue(value), supplier);
 	}
 
 }

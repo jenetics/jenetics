@@ -49,7 +49,7 @@ public class CyclicSpliterator<T> implements Spliterator<T> {
 		if (_spliterators.isEmpty()) {
 			advance = false;
 		} else {
-			if (!spliterator().tryAdvance(action::accept)) {
+			if (!spliterator().tryAdvance(action)) {
 				_concat = null;
 			}
 		}

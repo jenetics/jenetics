@@ -32,7 +32,7 @@ public class OptimizeTest {
 	private static Phenotype<DoubleGene, Double> pt(double value) {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, value
 		);
 	}
 
@@ -54,15 +54,15 @@ public class OptimizeTest {
 	public void compare() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 5.0
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 
 		Assert.assertTrue(Optimize.MINIMUM.compare(pt1, pt2) > 0);
@@ -75,15 +75,15 @@ public class OptimizeTest {
 	public void best() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 5.0
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 
 		Assert.assertSame(Optimize.MINIMUM.best(pt1, pt2), pt1);
@@ -95,15 +95,15 @@ public class OptimizeTest {
 	public void worst() {
 		final Phenotype<DoubleGene, Double> pt1 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(5, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 5.0
 		);
 		final Phenotype<DoubleGene, Double> pt2 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 		final Phenotype<DoubleGene, Double> pt3 = Phenotype.of(Genotype.of(
 			DoubleChromosome.of(DoubleGene.of(7, 0, 10))),
-			0, gt -> gt.getGene().getAllele()
+			0, 7.0
 		);
 
 		Assert.assertSame(Optimize.MINIMUM.worst(pt1, pt2), pt2);

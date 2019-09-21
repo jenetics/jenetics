@@ -25,7 +25,6 @@ import static io.jenetics.internal.math.base.normalize;
 
 import java.util.Arrays;
 
-import io.jenetics.internal.util.Hash;
 import io.jenetics.util.Seq;
 
 /**
@@ -57,7 +56,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class BoltzmannSelector<
 	G extends Gene<?, G>,
@@ -124,18 +123,6 @@ public final class BoltzmannSelector<
 		}
 
 		return normalize(fitness);
-	}
-
-	@Override
-	public int hashCode() {
-		return Hash.of(getClass()).and(_b).value();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof BoltzmannSelector &&
-			Double.compare(((BoltzmannSelector)obj)._b, _b) == 0;
 	}
 
 	@Override

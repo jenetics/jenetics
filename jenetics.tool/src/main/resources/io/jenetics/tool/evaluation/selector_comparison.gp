@@ -7,7 +7,7 @@
 ################################################################################
 # Output definition
 ################################################################################
-set terminal svg size 700, 500 fname "Serif" fsize 16
+set terminal svg size 700, 500 font "Serif,16"
 set output output
 
 set grid

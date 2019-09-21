@@ -62,7 +62,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.0
  */
 public class WeaselMutator<
 	G extends Gene<?, G>,
@@ -105,22 +105,6 @@ public class WeaselMutator<
 			Genotype.of(result.map(MutatorResult::getResult)),
 			result.stream().mapToInt(MutatorResult::getMutations).sum()
 		);
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 17;
-		hash += 31*WeaselMutator.class.hashCode() + 37;
-		hash += 31*Double.hashCode(_probability) + 37;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof WeaselMutator &&
-			Double.compare(
-				((WeaselMutator) obj)._probability, _probability) == 0;
 	}
 
 	@Override
