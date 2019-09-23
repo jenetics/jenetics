@@ -27,31 +27,63 @@ import org.testng.annotations.Test;
  */
 public class BufferTest {
 
+
 	@Test
 	public void add() {
-		final Buffer<Integer> buffer = new Buffer<>(10);
+		final Buffer<Integer> buffer = Buffer.ofCapacity(10);
 		buffer.add(1);
 		buffer.add(2);
 		buffer.add(3);
+
 		Assert.assertEquals(buffer.toSeq(), ISeq.of(1, 2, 3));
+		Assert.assertEquals(
+			ISeq.of(buffer.toArray(Integer[]::new)),
+			ISeq.of(1, 2, 3)
+		);
+	}
+
+	@Test
+	public void add1() {
+		final Buffer<Integer> buffer = Buffer.ofCapacity(10);
+		buffer.add(1);
+		Assert.assertEquals(buffer.toSeq(), ISeq.of(1));
+		Assert.assertEquals(
+			ISeq.of(buffer.toArray(Integer[]::new)),
+			ISeq.of(1)
+		);
 	}
 
 	@Test
 	public void add2() {
-		final Buffer<Integer> buffer = new Buffer<>(10);
+		final Buffer<Integer> buffer = Buffer.ofCapacity(10);
 		for (int i = 0; i < 7; ++i) {
 			buffer.add(i);
 		}
 		Assert.assertEquals(buffer.toSeq(), ISeq.of(0, 1, 2, 3, 4, 5, 6));
+		Assert.assertEquals(
+			ISeq.of(buffer.toArray(Integer[]::new)),
+			ISeq.of(0, 1, 2, 3, 4, 5, 6)
+		);
 	}
 
 	@Test
 	public void add3() {
-		final Buffer<Integer> buffer = new Buffer<>(10);
+		final Buffer<Integer> buffer = Buffer.ofCapacity(10);
 		for (int i = 0; i < 19; ++i) {
 			buffer.add(i);
 		}
 		Assert.assertEquals(buffer.toSeq(), ISeq.of(9,10,11,12,13,14,15,16,17,18));
+		Assert.assertEquals(
+			ISeq.of(buffer.toArray(Integer[]::new)),
+			ISeq.of(9,10,11,12,13,14,15,16,17,18)
+		);
+	}
+
+	@Test
+	public void toArray() {
+		final Buffer<Integer> buffer = Buffer.ofCapacity(5);
+		final Object[] array = buffer.toArray(Integer[]::new);
+		Assert.assertEquals(array.length, 0);
 	}
 
 }

@@ -19,6 +19,14 @@
  */
 package io.jenetics.util;
 
+import static java.lang.System.arraycopy;
+
+import java.util.function.IntFunction;
+
+import io.jenetics.internal.collection.Array;
+import io.jenetics.internal.collection.ArrayMSeq;
+import io.jenetics.internal.collection.ObjectStore;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
@@ -30,7 +38,7 @@ final class Buffer<T> {
 	private int _index;
 	private int _size;
 
-	Buffer(final int capacity) {
+	private Buffer(final int capacity) {
 		_buffer = new Object[capacity];
 	}
 
@@ -55,16 +63,28 @@ final class Buffer<T> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	ISeq<T> toSeq() {
-		final MSeq<T> seq = MSeq.ofLength(_size);
-		final int start = (_buffer.length + _index - _size)%_buffer.length;
+	Object[] toArray() {
+		return toArray(Object[]::new);
+	}
 
-		for (int i = 0; i < _size; ++i) {
-			seq.set(i, (T)_buffer[(start + i)%_buffer.length]);
+	<A> A[] toArray(final IntFunction<A[]> generator) {
+		final A[] result = generator.apply(_size);
+		if (_size < _buffer.length || _index == 0) {
+			arraycopy(_buffer, 0, result, 0, _size);
+		} else {
+			arraycopy(_buffer, _index, result, 0, _buffer.length - _index);
+			arraycopy(_buffer, 0, result, _buffer.length - _index, _index);
 		}
 
-		return seq.toISeq();
+		return result;
+	}
+
+	ISeq<T> toSeq() {
+		return new ArrayMSeq<T>(Array.of(ObjectStore.of(toArray()))).toISeq();
+	}
+
+	static <T> Buffer<T> ofCapacity(final int capacity) {
+		return new Buffer<T>(capacity);
 	}
 
 }

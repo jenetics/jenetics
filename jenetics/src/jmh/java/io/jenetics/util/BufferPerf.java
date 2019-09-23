@@ -54,7 +54,7 @@ public class BufferPerf {
 	}
 
 	private static Buffer<Integer> createBuffer() {
-		final Buffer<Integer> buffer = new Buffer<>(1_000);
+		final Buffer<Integer> buffer = Buffer.ofCapacity(1_000);
 		new Random().ints(1_500).forEach(buffer::add);
 		return buffer;
 	}
@@ -62,10 +62,10 @@ public class BufferPerf {
 	@Setup
 	public void setup() {
 		data = new Random().ints(1_000_000).toArray();
-		buffer = new Buffer<>(1_000);
+		buffer = Buffer.ofCapacity(1_000);
 	}
 
-	//@Benchmark
+	@Benchmark
 	public int add() {
 		for (int i : data) {
 			buffer.add(i);
@@ -78,12 +78,22 @@ public class BufferPerf {
 		return tb.buffer.toSeq();
 	}
 
+	@Benchmark
+	public Object toArray(final TestBuffer tb) {
+		return tb.buffer.toArray();
+	}
+
+	@Benchmark
+	public Object toTypedArray(final TestBuffer tb) {
+		return tb.buffer.toArray(Integer[]::new);
+	}
+
 
 	public static void main(final String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()
 			.include(".*" + BufferPerf.class.getSimpleName() + ".*")
 			.warmupIterations(4)
-			.measurementIterations(7)
+			.measurementIterations(5)
 			.threads(1)
 			.forks(1)
 			.build();

@@ -48,7 +48,7 @@ jmh {
 	//duplicateClassesStrategy = 'include'
 	warmupIterations = 5
 	iterations = 5
-	include = ['.*ProxySortPerf.*']
+	include = ['.*BufferPerf.*']
 }
 
 idea {
