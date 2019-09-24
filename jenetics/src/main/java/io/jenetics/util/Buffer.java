@@ -28,6 +28,8 @@ import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.collection.ObjectStore;
 
 /**
+ * Ring buffer implementation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since 5.0
@@ -38,6 +40,11 @@ final class Buffer<T> {
 	private int _index;
 	private int _size;
 
+	/**
+	 * Create a new ring buffer with the given {@code capacity}.
+	 *
+	 * @param capacity the buffer capacity
+	 */
 	private Buffer(final int capacity) {
 		_buffer = new Object[capacity];
 	}
@@ -63,10 +70,23 @@ final class Buffer<T> {
 		}
 	}
 
+	/**
+	 * Return a snapshot of the current buffer content.
+	 *
+	 * @return the buffer snapshot
+	 */
 	Object[] toArray() {
 		return toArray(Object[]::new);
 	}
 
+	/**
+	 * Return a snapshot of the current buffer content.
+	 *
+	 * @param generator a function which produces a new array of the desired
+	 *        type and the provided length
+	 * @param <A> the element type of the resulting array
+	 * @return the buffer snapshot
+	 */
 	<A> A[] toArray(final IntFunction<A[]> generator) {
 		final A[] result = generator.apply(_size);
 		if (_size < _buffer.length || _index == 0) {
@@ -79,10 +99,21 @@ final class Buffer<T> {
 		return result;
 	}
 
+	/**
+	 * Return a snapshot of the current buffer content.
+	 *
+	 * @return the buffer snapshot
+	 */
 	ISeq<T> toSeq() {
 		return new ArrayMSeq<T>(Array.of(ObjectStore.of(toArray()))).toISeq();
 	}
 
+	/**
+	 * Create a new ring buffer with the given {@code capacity}.
+	 *
+	 * @param capacity the buffer capacity
+	 * @return a new ring buffer with the given capacity
+	 */
 	static <T> Buffer<T> ofCapacity(final int capacity) {
 		return new Buffer<T>(capacity);
 	}
