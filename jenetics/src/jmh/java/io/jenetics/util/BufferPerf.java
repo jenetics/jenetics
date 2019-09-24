@@ -66,14 +66,6 @@ public class BufferPerf {
 	}
 
 	@Benchmark
-	public int add() {
-		for (int i : data) {
-			buffer.add(i);
-		}
-		return buffer.index();
-	}
-
-	@Benchmark
 	public Object toSeq(final TestBuffer tb) {
 		return tb.buffer.toSeq();
 	}
