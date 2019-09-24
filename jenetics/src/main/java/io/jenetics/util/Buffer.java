@@ -73,24 +73,32 @@ final class Buffer<T> {
 	 */
 	@SafeVarargs
 	final void addAll(final T... values) {
-		if (values.length >= _buffer.length) {
+		addAll(values, 0, values.length);
+	}
+
+	void addArray(final Object[] values) {
+		addAll(values, 0, values.length);
+	}
+
+	void addAll(final Object[] values, final int start, final int length) {
+		if (length >= _buffer.length) {
 			arraycopy(
-				values, values.length - _buffer.length,
+				values, values.length - _buffer.length + start,
 				_buffer, 0, _buffer.length
 			);
 			_size = _buffer.length;
 			_index = 0;
 		} else {
 			final int remaining = _buffer.length - _index;
-			_size = min(_size + values.length, _buffer.length);
+			_size = min(_size + length, _buffer.length);
 
-			if (values.length <= remaining) {
-				arraycopy(values, 0, _buffer, _index, values.length);
-				_index += values.length;
+			if (length <= remaining) {
+				arraycopy(values, start, _buffer, _index, length);
+				_index += length;
 			} else {
-				arraycopy(values, 0, _buffer, _index, remaining);
-				arraycopy(values, remaining, _buffer, 0, values.length - remaining);
-				_index = values.length - remaining;
+				arraycopy(values, start, _buffer, _index, remaining);
+				arraycopy(values, remaining + start, _buffer, 0, length - remaining);
+				_index = length - remaining;
 			}
 		}
 	}
