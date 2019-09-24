@@ -49,6 +49,11 @@ final class Buffer<T> {
 		_buffer = new Object[capacity];
 	}
 
+	/**
+	 * Add a new element to te ring buffer.
+	 *
+	 * @param value the value to add
+	 */
 	void add(final T value) {
 		_buffer[_index] = value;
 
@@ -64,6 +69,11 @@ final class Buffer<T> {
 		return _index;
 	}
 
+	/**
+	 * Add the given values to the ring buffer.
+	 *
+	 * @param values the values being added to the ring buffer
+	 */
 	void addAll(final Iterable<? extends T> values) {
 		for (T value : values) {
 			add(value);
