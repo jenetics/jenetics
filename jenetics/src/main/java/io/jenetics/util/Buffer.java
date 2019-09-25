@@ -51,6 +51,24 @@ final class Buffer<T> {
 	}
 
 	/**
+	 * Return the capacity of {@code this} buffer.
+	 *
+	 * @return the capacity of {@code this} buffer
+	 */
+	int capacity() {
+		return _buffer.length;
+	}
+
+	/**
+	 * Return the current buffer size.
+	 *
+	 * @return the current buffer size
+	 */
+	int size() {
+		return _size;
+	}
+
+	/**
 	 * Add a new element to te ring buffer.
 	 *
 	 * @param value the value to add
@@ -67,20 +85,28 @@ final class Buffer<T> {
 	}
 
 	/**
-	 * Add the given values to the ring buffer.
+	 * Add the given {@code values} to {@code this} buffer.
 	 *
-	 * @param values the values being added to the ring buffer
+	 * @param values the values to add
 	 */
-	@SafeVarargs
-	final void addAll(final T... values) {
-		addAll(values, 0, values.length);
+	void add(final T[] values) {
+		add(values, 0, values.length);
 	}
 
-	void addArray(final Object[] values) {
-		addAll(values, 0, values.length);
-	}
-
-	void addAll(final Object[] values, final int start, final int length) {
+	/**
+	 * Add the {@code values} of the given array to {@code this} buffer. The
+	 * values are added at the given {@code start} index and the given
+	 * {@code length}.
+	 *
+	 * @param values the array which contains the values to add
+	 * @param start the start index of the source array
+	 * @param length the number of elements to copy
+	 * @throws IndexOutOfBoundsException if copying would cause access of data
+	 *         outside array bounds
+	 * @throws ArrayStoreException if an element in the {@code value} array
+	 *         could not be stored into the dest array because of a type mismatch
+	 */
+	private void add(final Object[] values, final int start, final int length) {
 		if (length >= _buffer.length) {
 			arraycopy(
 				values, values.length - _buffer.length + start,
@@ -97,10 +123,23 @@ final class Buffer<T> {
 				_index += length;
 			} else {
 				arraycopy(values, start, _buffer, _index, remaining);
-				arraycopy(values, remaining + start, _buffer, 0, length - remaining);
+				arraycopy(
+					values, remaining + start,
+					_buffer, 0, length - remaining
+				);
 				_index = length - remaining;
 			}
 		}
+	}
+
+	/**
+	 * Add the given values to the ring buffer.
+	 *
+	 * @param values the values being added to the ring buffer
+	 */
+	@SafeVarargs
+	final void addAll(final T... values) {
+		add(values, 0, values.length);
 	}
 
 	/**
@@ -112,6 +151,18 @@ final class Buffer<T> {
 		for (T value : values) {
 			add(value);
 		}
+	}
+
+	/**
+	 * Adds the values of the given buffer to {@code this} buffer.
+	 *
+	 * @param o the other buffer
+	 * @return {@code this} buffer
+	 */
+	Buffer<T> combine(final Buffer<? extends T> o) {
+		final Object[] array = o.toArray();
+		add(array, 0, array.length);
+		return this;
 	}
 
 	/**
@@ -130,17 +181,24 @@ final class Buffer<T> {
 	 *        type and the provided length
 	 * @param <A> the element type of the resulting array
 	 * @return the buffer snapshot
+	 * @throws ArrayStoreException if an element in the {@code value} array
+	 *         could not be stored into the dest array because of a type mismatch
 	 */
 	<A> A[] toArray(final IntFunction<A[]> generator) {
 		final A[] result = generator.apply(_size);
-		if (_size < _buffer.length || _index == 0) {
-			arraycopy(_buffer, 0, result, 0, _size);
-		} else {
-			arraycopy(_buffer, _index, result, 0, _buffer.length - _index);
-			arraycopy(_buffer, 0, result, _buffer.length - _index, _index);
-		}
-
+		copyTo(result);
 		return result;
+	}
+
+	private <A> void copyTo(final A[] array) {
+		assert array.length >= _size;
+
+		if (_size < _buffer.length || _index == 0) {
+			arraycopy(_buffer, 0, array, 0, _size);
+		} else {
+			arraycopy(_buffer, _index, array, 0, _buffer.length - _index);
+			arraycopy(_buffer, 0, array, _buffer.length - _index, _index);
+		}
 	}
 
 	/**
