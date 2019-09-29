@@ -57,7 +57,7 @@ final class Seqs {
 			? Collector.of(
 				() -> Buffer.ofCapacity(maxSize),
 				Buffer::add,
-				Buffer::combine,
+				(l, r) -> {l.addAll(r); return l;},
 				finisher)
 			: Collector.of(
 				() -> null,

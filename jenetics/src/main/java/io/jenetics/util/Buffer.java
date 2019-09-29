@@ -22,6 +22,7 @@ package io.jenetics.util;
 import static java.lang.Math.min;
 import static java.lang.System.arraycopy;
 
+import java.util.Iterator;
 import java.util.function.IntFunction;
 
 import io.jenetics.internal.collection.Array;
@@ -35,7 +36,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * @version !__version__!
  * @since 5.0
  */
-final class Buffer<T> {
+public final class Buffer<T> implements Iterable<T> {
 	private final Object[] _buffer;
 
 	private int _index;
@@ -55,7 +56,7 @@ final class Buffer<T> {
 	 *
 	 * @return the capacity of {@code this} buffer
 	 */
-	int capacity() {
+	public int capacity() {
 		return _buffer.length;
 	}
 
@@ -64,7 +65,7 @@ final class Buffer<T> {
 	 *
 	 * @return the current buffer size
 	 */
-	int size() {
+	public int size() {
 		return _size;
 	}
 
@@ -73,7 +74,7 @@ final class Buffer<T> {
 	 *
 	 * @param value the value to add
 	 */
-	void add(final T value) {
+	public void add(final T value) {
 		_buffer[_index] = value;
 
 		if (++_index == _buffer.length) {
@@ -89,8 +90,25 @@ final class Buffer<T> {
 	 *
 	 * @param values the values to add
 	 */
-	void add(final T[] values) {
-		add(values, 0, values.length);
+	@SafeVarargs
+	public final void addAll(final T... values) {
+		addAll(values, 0, values.length);
+	}
+
+	/**
+	 * Add the given values to the ring buffer.
+	 *
+	 * @param values the values being added to the ring buffer
+	 */
+	public void addAll(final Iterable<? extends T> values) {
+		if (values instanceof Buffer) {
+			final Object[] array = ((Buffer<?>)values).toArray();
+			addAll(array, 0, array.length);
+		} else {
+			for (T value : values) {
+				add(value);
+			}
+		}
 	}
 
 	/**
@@ -106,7 +124,7 @@ final class Buffer<T> {
 	 * @throws ArrayStoreException if an element in the {@code value} array
 	 *         could not be stored into the dest array because of a type mismatch
 	 */
-	private void add(final Object[] values, final int start, final int length) {
+	private void addAll(final Object[] values, final int start, final int length) {
 		if (length >= _buffer.length) {
 			arraycopy(
 				values, values.length - _buffer.length + start,
@@ -132,37 +150,9 @@ final class Buffer<T> {
 		}
 	}
 
-	/**
-	 * Add the given values to the ring buffer.
-	 *
-	 * @param values the values being added to the ring buffer
-	 */
-	@SafeVarargs
-	final void addAll(final T... values) {
-		add(values, 0, values.length);
-	}
-
-	/**
-	 * Add the given values to the ring buffer.
-	 *
-	 * @param values the values being added to the ring buffer
-	 */
-	void addAll(final Iterable<? extends T> values) {
-		for (T value : values) {
-			add(value);
-		}
-	}
-
-	/**
-	 * Adds the values of the given buffer to {@code this} buffer.
-	 *
-	 * @param o the other buffer
-	 * @return {@code this} buffer
-	 */
-	Buffer<T> combine(final Buffer<? extends T> o) {
-		final Object[] array = o.toArray();
-		add(array, 0, array.length);
-		return this;
+	@Override
+	public Iterator<T> iterator() {
+		return toSeq().iterator();
 	}
 
 	/**
@@ -170,7 +160,7 @@ final class Buffer<T> {
 	 *
 	 * @return the buffer snapshot
 	 */
-	Object[] toArray() {
+	public Object[] toArray() {
 		return toArray(Object[]::new);
 	}
 
@@ -184,7 +174,7 @@ final class Buffer<T> {
 	 * @throws ArrayStoreException if an element in the {@code value} array
 	 *         could not be stored into the dest array because of a type mismatch
 	 */
-	<A> A[] toArray(final IntFunction<A[]> generator) {
+	public <A> A[] toArray(final IntFunction<A[]> generator) {
 		final A[] result = generator.apply(_size);
 		copyTo(result);
 		return result;
@@ -206,17 +196,18 @@ final class Buffer<T> {
 	 *
 	 * @return the buffer snapshot
 	 */
-	ISeq<T> toSeq() {
+	public ISeq<T> toSeq() {
 		return new ArrayMSeq<T>(Array.of(ObjectStore.of(toArray()))).toISeq();
 	}
 
 	/**
 	 * Create a new ring buffer with the given {@code capacity}.
 	 *
+	 * @param <T> the element type
 	 * @param capacity the buffer capacity
 	 * @return a new ring buffer with the given capacity
 	 */
-	static <T> Buffer<T> ofCapacity(final int capacity) {
+	public static <T> Buffer<T> ofCapacity(final int capacity) {
 		return new Buffer<T>(capacity);
 	}
 
