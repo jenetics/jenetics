@@ -85,6 +85,15 @@ public final class Buffer<T> implements Iterable<T> {
 	}
 
 	/**
+	 * Returns {@code true} if this buffer contains no elements.
+	 *
+	 * @return {@code true} if this buffer contains no elements
+	 */
+	public boolean isEmpty() {
+		return _size == 0;
+	}
+
+	/**
 	 * Add a new element to the buffer.
 	 *
 	 * @param value the value to add
@@ -224,7 +233,9 @@ public final class Buffer<T> implements Iterable<T> {
 	 * @return the buffer snapshot
 	 */
 	public ISeq<T> toSeq() {
-		return new ArrayMSeq<T>(Array.of(ObjectStore.of(toArray()))).toISeq();
+		return isEmpty()
+			? ISeq.empty()
+			: new ArrayMSeq<T>(Array.of(ObjectStore.of(toArray()))).toISeq();
 	}
 
 	@Override
