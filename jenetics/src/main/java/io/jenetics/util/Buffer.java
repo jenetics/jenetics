@@ -48,7 +48,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * @version !__version__!
  * @since 5.0
  */
-public final class Buffer<T> implements Iterable<T> {
+final class Buffer<T> implements Iterable<T> {
 	private final Object[] _buffer;
 
 	private int _index;
