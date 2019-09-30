@@ -66,50 +66,53 @@ public final class Codecs {
 	private Codecs() {}
 
 	/**
-	 * Return a scalar {@code Codec} for the given range.
+	 * Return a scalar {@code Encodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Codec<Integer, IntegerGene> ofScalar(final IntRange domain) {
+	public static Encodec<Integer, IntegerGene> ofScalar(final IntRange domain) {
 		requireNonNull(domain);
 
-		return Codec.of(
+		return Encodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
-			gt -> gt.getChromosome().getGene().getAllele()
+			gt -> gt.getChromosome().getGene().getAllele(),
+			v -> Genotype.of(IntegerChromosome.of(IntegerGene.of(v, domain)))
 		);
 	}
 
 	/**
-	 * Return a scalar {@code Codec} for the given range.
+	 * Return a scalar {@code Encodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Codec<Long, LongGene> ofScalar(final LongRange domain) {
+	public static Encodec<Long, LongGene> ofScalar(final LongRange domain) {
 		requireNonNull(domain);
 
-		return Codec.of(
+		return Encodec.of(
 			Genotype.of(LongChromosome.of(domain)),
-			gt -> gt.getGene().getAllele()
+			gt -> gt.getGene().getAllele(),
+			v -> Genotype.of(LongChromosome.of(LongGene.of(v, domain)))
 		);
 	}
 
 	/**
-	 * Return a scalar {@code Codec} for the given range.
+	 * Return a scalar {@code Encodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Codec<Double, DoubleGene> ofScalar(final DoubleRange domain) {
+	public static Encodec<Double, DoubleGene> ofScalar(final DoubleRange domain) {
 		requireNonNull(domain);
 
-		return Codec.of(
+		return Encodec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
-			gt -> gt.getGene().getAllele()
+			gt -> gt.getGene().getAllele(),
+			v -> Genotype.of(DoubleChromosome.of(DoubleGene.of(v, domain)))
 		);
 	}
 
