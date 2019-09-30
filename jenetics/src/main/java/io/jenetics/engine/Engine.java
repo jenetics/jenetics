@@ -215,21 +215,6 @@ public final class Engine<
 		return evolve(start);
 	}
 
-	/**
-	 * Perform one evolution step with the given evolution {@code start} object
-	 * New phenotypes are created with the fitness function and fitness scaler
-	 * defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
-	 *
-	 * @since 3.1
-	 * @see #evolve(ISeq, long)
-	 *
-	 * @param start the evolution start object
-	 * @return the evolution result
-	 * @throws java.lang.NullPointerException if the given evolution
-	 *         {@code start} is {@code null}
-	 */
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
