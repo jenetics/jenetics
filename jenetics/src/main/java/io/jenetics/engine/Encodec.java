@@ -19,10 +19,13 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.util.Factory;
 
 /**
  * This interface extends the {@link Codec} and allows to encode an object from
@@ -41,6 +44,33 @@ public interface Encodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 
 	public default Genotype<G> encode(final T value) {
 		return encoder().apply(value);
+	}
+
+	public static <T, G extends Gene<?, G>> Encodec<T, G> of(
+		final Factory<Genotype<G>> encoding,
+		final Function<Genotype<G>, T> decoder,
+		final Function<T, Genotype<G>> encoder
+	) {
+		requireNonNull(encoding);
+		requireNonNull(decoder);
+		requireNonNull(encoder);
+
+		return new Encodec<T, G>() {
+			@Override
+			public Function<T, Genotype<G>> encoder() {
+				return encoder;
+			}
+
+			@Override
+			public Factory<Genotype<G>> encoding() {
+				return encoding;
+			}
+
+			@Override
+			public Function<Genotype<G>, T> decoder() {
+				return decoder;
+			}
+		};
 	}
 
 }
