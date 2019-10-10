@@ -22,15 +22,11 @@
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  */
-module io.jenetics.ext {
+module io.jenetics.prog {
 	requires io.jenetics.base;
+	requires io.jenetics.ext;
 
-	exports io.jenetics.ext;
-	exports io.jenetics.ext.engine;
-	exports io.jenetics.ext.moea;
-	exports io.jenetics.ext.rewriting;
-	exports io.jenetics.ext.util;
-
-	exports io.jenetics.ext.internal
-		to io.jenetics.prog, io.jenetics.xml;
+	exports io.jenetics.prog;
+	exports io.jenetics.prog.op;
+	exports io.jenetics.prog.regression;
 }

@@ -27,4 +27,13 @@ module io.jenetics.base {
 	exports io.jenetics.util;
 	exports io.jenetics.stat;
 	exports io.jenetics.engine;
+
+	exports io.jenetics.internal.collection
+		to io.jenetics.ext, io.jenetics.prog, io.jenetics.xml;
+	exports io.jenetics.internal.engine
+		to io.jenetics.ext, io.jenetics.prog, io.jenetics.xml;
+	exports io.jenetics.internal.math
+		to io.jenetics.ext, io.jenetics.prog, io.jenetics.xml;
+	exports io.jenetics.internal.util
+		to io.jenetics.ext, io.jenetics.prog, io.jenetics.xml;
 }

@@ -151,45 +151,55 @@ task zip(type: Zip) {
 }
 
 
-subprojects {
-	afterEvaluate {
-		repositories {
-			jcenter()
-		}
+subprojects { Project prj ->
+	def MODULES = [
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	]
 
-		compileJava {
-			inputs.property("moduleName", moduleName)
-			doFirst {
-				options.compilerArgs = [
-					'--module-path', classpath.asPath,
-				]
-				classpath = files()
+	if (MODULES.contains(prj.name)) {
+		afterEvaluate {
+			repositories {
+				mavenCentral()
+				jcenter()
 			}
-		}
 
-		compileTestJava {
-			inputs.property("moduleName", moduleName)
-			doFirst {
-				options.compilerArgs = [
-					'--module-path', classpath.asPath,
-					'--add-modules', 'junit',
-					'--add-reads', "$moduleName=junit",
-					'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-				]
-				classpath = files()
+			compileJava {
+				inputs.property("moduleName", moduleName)
+				doFirst {
+					options.compilerArgs = [
+						'--module-path', classpath.asPath,
+					]
+					classpath = files()
+				}
 			}
-		}
 
-		test {
-			inputs.property("moduleName", moduleName)
-			doFirst {
-				jvmArgs = [
-					'--module-path', classpath.asPath,
-					'--add-modules', 'ALL-MODULE-PATH',
-					'--add-reads', "$moduleName=junit",
-					'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-				]
-				classpath = files()
+			compileTestJava {
+				inputs.property("moduleName", moduleName)
+				doFirst {
+					options.compilerArgs = [
+						'--module-path', classpath.asPath,
+						'--add-modules', 'junit',
+						'--add-reads', "$moduleName=junit",
+						'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+					]
+					classpath = files()
+				}
+			}
+
+			test {
+				inputs.property("moduleName", moduleName)
+				doFirst {
+					jvmArgs = [
+						'--module-path', classpath.asPath,
+						'--add-modules', 'ALL-MODULE-PATH',
+						'--add-reads', "$moduleName=junit",
+						'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+					]
+					classpath = files()
+				}
 			}
 		}
 	}
