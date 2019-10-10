@@ -25,14 +25,15 @@
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.5"
+	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
 }
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	implementation project(':jenetics')
+	api project(':jenetics')
 
 	testImplementation property('include.TestNG')
 	testImplementation property('include.PRNGine')
@@ -49,11 +50,6 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.xml',
-	'io.jenetics.xml.stream'
-)
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.xml')
 

@@ -107,7 +107,7 @@ public class Diagram {
 
 		private Template(final String name) {
 			_name = requireNonNull(name);
-			_path = "/org/jenetics/tool/evaluation/" +
+			_path = "/io/jenetics/tool/evaluation/" +
 				requireNonNull(name) + ".gp";
 		}
 

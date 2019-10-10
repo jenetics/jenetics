@@ -40,7 +40,7 @@ public final class SpecialEngine {
 	start(final int populationSize, final long generation) {
 		final ISeq<Phenotype<DoubleGene, Double>> population =
 			Genotype.of(DoubleChromosome.of(0, 1)).instances()
-				.map(gt -> Phenotype.of(gt, generation, SpecialEngine::fitness))
+				.map(gt -> Phenotype.<DoubleGene, Double>of(gt, generation))
 				.limit(populationSize)
 				.collect(ISeq.toISeq());
 
@@ -56,7 +56,7 @@ public final class SpecialEngine {
 
 	public static void main(final String[] args) {
 		final Genotype<DoubleGene> best = EvolutionStream
-			.of(() -> start(50, 0), SpecialEngine::evolve)
+			.ofEvolution(() -> start(50, 0), SpecialEngine::evolve)
 			.limit(Limits.bySteadyFitness(10))
 			.limit(1000)
 			.collect(EvolutionResult.toBestGenotype());

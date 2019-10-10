@@ -20,12 +20,12 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
@@ -227,7 +227,9 @@ public final class EvolutionResult<
 	 * @return The best population fitness.
 	 */
 	public C getBestFitness() {
-		return _best.get() != null ? _best.get().getFitness() : null;
+		return _best.get() != null
+			? _best.get().getFitness()
+			: null;
 	}
 
 	/**
@@ -299,9 +301,7 @@ public final class EvolutionResult<
 			hash(_durations,
 			hash(_killCount,
 			hash(_invalidCount,
-			hash(_alterCount,
-			hash(getBestFitness(),
-			hash(EvolutionResult.class))))))))));
+			hash(_alterCount))))))));
 	}
 
 	@Override
@@ -323,15 +323,14 @@ public final class EvolutionResult<
 			Objects.equals(_invalidCount,
 				((EvolutionResult)obj)._invalidCount) &&
 			Objects.equals(_alterCount,
-				((EvolutionResult)obj)._alterCount) &&
-			Objects.equals(getBestFitness(),
-				((EvolutionResult)obj).getBestFitness());
+				((EvolutionResult)obj)._alterCount);
 	}
 
 
 	/* *************************************************************************
 	 *  Some static collector/factory methods.
 	 * ************************************************************************/
+
 
 	/**
 	 * Return a collector which collects the best result of an evolution stream.
@@ -536,31 +535,37 @@ public final class EvolutionResult<
 	 * @throws NullPointerException if the given genotype {@code factory} is
 	 *         {@code null}
 	 */
-	@SuppressWarnings("deprecation")
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	UnaryOperator<EvolutionResult<G, C>>
 	toUniquePopulation(final Factory<Genotype<G>> factory, final int maxRetries) {
-		requireNonNull(false);
+		requireNonNull(factory);
 
 		return result -> {
 			final Seq<Phenotype<G, C>> population = result.getPopulation();
 			final Seq<Genotype<G>> genotypes = result.getGenotypes();
-			final Set<Genotype<G>> elements = new HashSet<>(genotypes.asList());
+			final Map<Genotype<G>, Phenotype<G, C>> elements =
+				population.stream()
+					.collect(toMap(
+						Phenotype::getGenotype,
+						Function.identity(),
+						(a, b) -> a));
 
 			EvolutionResult<G, C> uniques = result;
 			if (elements.size() < population.size()) {
 				int retries = 0;
 				while (elements.size() < population.size() && retries < maxRetries) {
-					if (!elements.add(factory.newInstance())) {
+					final Genotype<G> gt = factory.newInstance();
+					final Phenotype<G, C> pt = elements
+						.put(gt, Phenotype.of(gt, result.getGeneration()));
+
+					if (pt != null) {
 						++retries;
 					}
 				}
 
 				uniques = result.with(
-					Stream.concat(elements.stream(), genotypes.stream())
+					Stream.concat(elements.values().stream(), population.stream())
 						.limit(population.size())
-						.map(gt -> population.get(0).newInstance(
-							factory.newInstance(), result.getGeneration()))
 						.collect(ISeq.toISeq())
 				);
 			}
@@ -581,6 +586,26 @@ public final class EvolutionResult<
 			getAlterCount()
 		);
 	}
+
+	EvolutionResult<G, C> with(final EvolutionDurations durations) {
+		return EvolutionResult.of(
+			getOptimize(),
+			getPopulation(),
+			getGeneration(),
+			getTotalGenerations(),
+			durations,
+			getKillCount(),
+			getInvalidCount(),
+			getAlterCount()
+		);
+	}
+
+
+	/* *************************************************************************
+	 * Some collectors and mapping functions.
+	 * ************************************************************************/
+
+
 
 	/**
 	 * Return a mapping function, which removes duplicate individuals from the

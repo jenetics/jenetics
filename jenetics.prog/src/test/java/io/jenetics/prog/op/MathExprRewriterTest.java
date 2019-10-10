@@ -23,6 +23,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.ext.rewriting.TreePattern;
+import io.jenetics.ext.rewriting.TreeRewriteRule;
+import io.jenetics.ext.rewriting.TreeRewriter;
+import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
 /**
@@ -30,21 +34,25 @@ import io.jenetics.ext.util.TreeNode;
  */
 public class MathExprRewriterTest {
 
+	@Test
+	public void rewriting() {
+		final TreeRewriter<Op<Double>> rewriter = TreeRewriteRule
+			.parse("div($x,$x) -> 1", MathOp::toMathOp);
+
+		final TreePattern<Op<Double>> pattern = TreePattern
+			.compile("div($x,$x)", MathOp::toMathOp);
+
+		final Tree<Op<Double>, ?> expr = MathExpr.parse("2/2").toTree();
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr);
+		rewriter.rewrite(tree);
+	}
+
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final String simplified) {
 		Assert.assertEquals(
 			MathExpr.parse(expr).simplify(),
 			MathExpr.parse(simplified)
 		);
-	}
-
-	@Test
-	public void foo() {
-		final MathExpr expr = MathExpr.parse("cos(z)*sin(0)");
-		System.out.println(expr.simplify());
-
-		final TreeNode<Op<Double>> tree = TreeNode.ofTree(expr.toTree());
-		System.out.println(ConstExprRewriter.REWRITER.rewrite(tree));
 	}
 
 	@DataProvider
@@ -84,6 +92,8 @@ public class MathExprRewriterTest {
 			{"x * 1", "x"},
 			{"1 * x", "x"},
 			{"1 * x * 1", "x"},
+			{"1.0*((x - ((x - x*x) - (x - x*x)*(x - x*x))*x) - (x - x*x)*x)",
+				"(x - ((x - x^2.0) - (x - x^2.0)^2.0)*x) - (x - x^2.0)*x"},
 			{"sin(x) - y * 1 + tan(z) + 0", "sin(x) - y + tan(z)"},
 
 			// X_MUL_X
@@ -107,7 +117,12 @@ public class MathExprRewriterTest {
 			{"sin(PI/2)", "1"},
 			{"sin(π/2)", "1"},
 			{"sin(x - x)", "0"},
-			{"3*4*x", "12*x"}
+			{"3*4*x", "12*x"},
+			{"x + x*(((7.0 - 3.0) - (7.0 - (8.0 - 4.0)*x))*x)",
+				"x + x*((4.0 - (7.0 - 4.0*x))*x)"},
+			{"((x - 0.0) - ((x + 8.0) - (4.0 - x))) + (((5.0 - 4.0)*(6.0 - 6.0) + 1.0) - " +
+				"((((x + x) + 5.0) - (9.0 - 2.0)) - ((4.0 - x)*x + (x + x))))",
+				"(x - ((x + 8.0) - (4.0 - x))) + (1.0 - (((2.0*x + 5.0) - 7.0) - ((4.0 - x)*x + 2.0*x)))"}
 		};
 	}
 

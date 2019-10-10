@@ -87,7 +87,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		final DefaultMutableTreeNode stree = newSwingTree(5, random);
 		final DefaultMutableTreeNode stree1 = newSwingTree(2, random);
 
-		tree.getChild(1).insert(0, tree1);
+		tree.childAt(1).insert(0, tree1);
 		Assert.assertFalse(equals(tree, stree));
 
 		((DefaultMutableTreeNode)stree.getChildAt(1)).insert(stree1, 0);
@@ -106,7 +106,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 		Assert.assertNotEquals(child, tree1);
 
 		child.replace(0, tree1);
-		Assert.assertEquals(child.getChild(0), tree1);
+		Assert.assertEquals(child.childAt(0), tree1);
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		Assert.assertEquals(tree.size(), 7);
 
-		final TreeNode<Integer> detached = tree.getChild(1).detach();
+		final TreeNode<Integer> detached = tree.childAt(1).detach();
 		Assert.assertEquals(tree.size(), 4);
 		Assert.assertEquals(detached.size(), 3);
 	}
@@ -176,8 +176,9 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 	@Test
 	public void serialize() throws IOException {
-		final TreeNode<Integer> tree = newTree(6, new Random());
+		final TreeNode<Integer> tree = newTree(6, new Random(345));
 		final byte[] data = IO.object.toByteArray(tree);
+		System.out.println(data.length);
 		Assert.assertEquals(IO.object.fromByteArray(data), tree);
 	}
 

@@ -57,7 +57,7 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 			final Spliterator<T> spliterator = _spliterators.peek();
 			assert spliterator != null;
 
-			if (!spliterator.tryAdvance(action::accept)) {
+			if (!spliterator.tryAdvance(action)) {
 				_spliterators.removeFirst();
 				advance = !_spliterators.isEmpty();
 			}
@@ -97,8 +97,8 @@ public class ConcatSpliterator<T> implements Spliterator<T> {
 	public int characteristics() {
 		return _spliterators.stream()
 			.mapToInt(Spliterator::characteristics)
-			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2)
-			& ~Spliterator.SORTED;
+			.reduce(0xFFFFFFFF, (i1, i2) -> i1 & i2) &
+			~Spliterator.SORTED;
 	}
 
 }

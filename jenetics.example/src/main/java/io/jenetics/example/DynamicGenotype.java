@@ -65,14 +65,13 @@ public class DynamicGenotype {
 	}
 
 	// The special mutator also variates the chromosome/genotype length.
-	@SuppressWarnings("deprecation")
 	private static final class DynamicMutator<
 		G extends Gene<?, G>,
 		C extends Comparable<? super C>
 	>
 		extends AbstractAlterer<G, C>
 	{
-		public DynamicMutator(double probability) {
+		DynamicMutator(double probability) {
 			super(probability);
 		}
 
@@ -91,7 +90,7 @@ public class DynamicGenotype {
 				final Genotype<G> gt = pt.getGenotype();
 				final Genotype<G> mgt = mutate(gt, p, alterations);
 
-				final Phenotype<G, C> mpt = pt.newInstance(mgt, generation);
+				final Phenotype<G, C> mpt = Phenotype.of(mgt, generation);
 				pop.set(i, mpt);
 			});
 
@@ -136,20 +135,10 @@ public class DynamicGenotype {
 
 		private int mutate(final List<G> genes, final double p) {
 			final Random random = RandomRegistry.getRandom();
-
-			// Add/remove Gene from chromosome.
-			final double rd = random.nextDouble();
-			if (rd < 1/3.0) {
-				genes.remove(0);
-			} else if (rd < 2/3.0) {
-				genes.add(genes.get(0).newInstance());
-			}
-
 			return (int)indexes(random, genes.size(), p)
 				.peek(i -> genes.set(i, genes.get(i).newInstance()))
 				.count();
 		}
-
 	}
 
 	public static void main(final String[] args) {

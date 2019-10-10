@@ -21,8 +21,15 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -49,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version 5.0
  */
 public final class LongGene
 	implements
@@ -148,6 +155,22 @@ public final class LongGene
 	}
 
 	@Override
+	public LongGene mean(final LongGene that) {
+		return LongGene.of(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 5.0
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public LongGene newInstance(final long value) {
+		return LongGene.of(value, _min, _max);
+	}
+
+	@Override
 	public LongGene newInstance(final Long number) {
 		return LongGene.of(number, _min, _max);
 	}
@@ -160,11 +183,6 @@ public final class LongGene
 	@Override
 	public LongGene newInstance() {
 		return LongGene.of(nextLong(getRandom(), _min, _max), _min, _max);
-	}
-
-	@Override
-	public LongGene mean(final LongGene that) {
-		return LongGene.of(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	@Override
@@ -254,7 +272,6 @@ public final class LongGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-
 		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
 			.toISeq();
@@ -330,6 +347,31 @@ public final class LongGene
 		} while (bits - result + (n - 1) < 0);
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLong(_value, out);
+		writeLong(_min, out);
+		writeLong(_max, out);
+	}
+
+	static LongGene read(final DataInput in) throws IOException {
+		return of(readLong(in), readLong(in), readLong(in));
 	}
 
 }

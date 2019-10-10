@@ -45,7 +45,7 @@ final class Numbers {
 
 	private static final String FP_REGEX =
 		"[\\x00-\\x20]*"+  // Optional leading "whitespace"
-		"[+-]?(" + // Optional sign character
+		"[+-]?(" +         // Optional sign character
 		"NaN|" +           // "NaN" string
 		"Infinity|" +      // "Infinity" string
 

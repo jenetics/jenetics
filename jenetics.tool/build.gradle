@@ -35,13 +35,6 @@ dependencies {
 	testImplementation property('include.TestNG')
 }
 
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.tool',
-	'io.jenetics.tool.evaluation',
-	'io.jenetics.tool.problem',
-	'io.jenetics.tool.trial'
-)
-
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
 
 javadoc {

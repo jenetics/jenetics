@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.3
+ * @version !__version__!
  */
 rootProject.version = Version.parse(property('jenetics.Version'))
 
@@ -61,7 +61,7 @@ allprojects {
 subprojects { Project prj ->
 	prj.plugins.apply(SetupPlugin.class)
 
-	// The Javadoc doesn't work for 
+	// The Javadoc doesn't work for
 	//     openjdk version "11.0.2" 2018-10-16
 	//     OpenJDK Runtime Environment 18.9 (build 11.0.2+7)
 	//     OpenJDK 64-Bit Server VM 18.9 (build 11.0.2+7, mixed mode
@@ -93,25 +93,45 @@ task updateGradle(type: Wrapper) {
 	gradleVersion = project.property('build.GradleVersion')
 }
 
-task alljavadoc(type: Javadoc) {
-	options.encoding = 'UTF-8'
-	def jeneticsProjects = subprojects.findAll { project ->
-		project.name.startsWith('jenetics') &&
-		project.name != 'jenetics.doc'
-	}
-	configure(jeneticsProjects) {
-		apply plugin: 'java'
-	}
+rootProject.gradle.projectsEvaluated {
+	def PROJECTS = [
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	]
 
-	source jeneticsProjects.collect { p ->
-		p.sourceSets.main.allJava
-	}
-	destinationDir = file("${buildDir}/alljavadoc")
+	final Set<Project> projects = project.subprojects
+		.findAll { prj -> PROJECTS.contains(prj.name) }
 
-	// Might need a classpath
-	classpath = files(jeneticsProjects.collect { project ->
-		project.sourceSets.main.compileClasspath
-	})
+	if (!projects.isEmpty()) {
+		rootProject.task('alljavadoc', type: Javadoc) {
+			description = 'Aggregates Javadoc API documentation of all subprojects.'
+			group = JavaBasePlugin.DOCUMENTATION_GROUP
+
+			source = projects.javadoc.source
+			exclude '**/internal/**'
+			destinationDir rootProject.file("$project.buildDir/docs/javadoc")
+			classpath = rootProject.files(projects.javadoc.classpath)
+			title = "${project.name} documentation"
+
+			options {
+				memberLevel = JavadocMemberLevel.PROTECTED
+				version = true
+				author = true
+				docEncoding = 'UTF-8'
+				charSet = 'UTF-8'
+				windowTitle = "${project.name} ${project.version}"
+				docTitle = "<h1>${project.name} ${project.version}</h1>"
+
+				tags 'apiNote:a:API Note:',
+					'implSpec:a:Implementation Requirements:',
+					'implNote:a:Implementation Note:'
+
+				links 'https://docs.oracle.com/javase/8/docs/api'
+			}
+		}
+	}
 }
 
 // Create a zip file from the export directory.

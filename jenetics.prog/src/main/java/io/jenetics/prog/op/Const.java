@@ -20,8 +20,14 @@
 package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readNullableString;
+import static io.jenetics.internal.util.SerialIO.writeNullableString;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,73 +43,28 @@ import java.util.Objects;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 3.9
  */
-public final class Const<T> implements Op<T>, Serializable {
+public final class Const<T> extends Val<T> implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
-	private final String _name;
 	private final T _const;
 
 	private Const(final String name, final T constant) {
-		_name = name;
+		super(name);
 		_const = constant;
 	}
 
 	@Override
-	public T apply(final T[] value) {
-		return _const;
-	}
-
-	/**
-	 * Return the constant value.
-	 *
-	 * @since 4.1
-	 *
-	 * @return the constant value
-	 */
 	public T value() {
 		return _const;
 	}
 
 	@Override
-	public String name() {
-		return _name;
-	}
-
-	@Override
-	public int arity() {
-		return 0;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_name, hash(_const));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Const &&
-			Objects.equals(((Const)obj)._name, _name) &&
-			equal(((Const)obj)._const, _const);
-	}
-
-	private static boolean equal(final Object a, final Object b) {
-		if (a instanceof Double && b instanceof Double) {
-			return ((Double)a).doubleValue() == ((Double)b).doubleValue();
-		} else if (a instanceof Float && b instanceof Float) {
-			return ((Float)a).floatValue() == ((Float)b).floatValue();
-		}
-
-		return Objects.equals(a, b);
-	}
-
-	@Override
 	public String toString() {
-		return _name != null ? _name : Objects.toString(_const);
+		return name() != null ? name() : Objects.toString(_const);
 	}
 
 	/**
@@ -129,6 +90,35 @@ public final class Const<T> implements Op<T>, Serializable {
 	 */
 	public static <T> Const<T> of(final T value) {
 		return new Const<>(null, value);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.CONST, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeNullableString(name(), out);
+		out.writeObject(_const);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Const read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final String name = readNullableString(in);
+		final Object value = in.readObject();
+		return new Const(name, value);
 	}
 
 }

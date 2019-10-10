@@ -194,4 +194,28 @@ public class SeqTest {
 		Assert.assertEquals(array[1], mseq.get(1));
 	}
 
+	@Test
+	public void collectLimitedSeq() {
+		final Seq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(Seq.toSeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(Seq.toSeq(25)),
+			seq.subSeq(75)
+		);
+	}
+
+	@Test
+	public void collectEmptySeq() {
+		final Seq<Integer> seq = new Random().ints().boxed()
+			.limit(100)
+			.collect(Seq.toSeq());
+
+		Assert.assertEquals(
+			seq.stream().collect(Seq.toSeq(0)),
+			Seq.empty()
+		);
+	}
+
 }

@@ -133,7 +133,7 @@ public final class Empty {
 
 		@Override
 		public Object get(final int index) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty: " + index);
 		}
 
 		@Override
@@ -151,7 +151,13 @@ public final class Empty {
 			return asList().iterator();
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
+
 
 
 	public static enum EmptyISeq implements ISeq<Object> {
@@ -177,7 +183,7 @@ public final class Empty {
 
 		@Override
 		public Object get(final int index) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			throw new ArrayIndexOutOfBoundsException("ISeq is empty: " + index);
 		}
 
 		@Override
@@ -236,7 +242,12 @@ public final class Empty {
 			return EmptyMSeq.INSTANCE;
 		}
 
-	}
+		@Override
+		public String toString() {
+			return "[]";
+		}
+
+	};
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {

@@ -65,7 +65,6 @@ public class EngineBuilderTest {
 			.maximalPhenotypeAge(phenotypeAge)
 			.build();
 
-		Assert.assertEquals(engine.getFitnessFunction(), fitnessFunction);
 		Assert.assertEquals(engine.getOffspringSelector(), offspringSelector);
 		Assert.assertEquals(engine.getSurvivorsSelector(), survivorsSelector);
 		Assert.assertEquals(engine.getAlterer(), alterer);

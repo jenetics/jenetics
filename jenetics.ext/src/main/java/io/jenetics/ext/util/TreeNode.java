@@ -22,9 +22,13 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -49,7 +53,7 @@ public final class TreeNode<T>
 		Copyable<TreeNode<T>>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private T _value;
 	private TreeNode<T> _parent;
@@ -120,7 +124,7 @@ public final class TreeNode<T>
 	 *         bounds
 	 */
 	@Override
-	public TreeNode<T> getChild(final int index) {
+	public TreeNode<T> childAt(final int index) {
 		if (_children == null) {
 			throw new ArrayIndexOutOfBoundsException(format(
 				"Child index is out of bounds: %s", index
@@ -133,22 +137,6 @@ public final class TreeNode<T>
 	@Override
 	public int childCount() {
 		return _children != null ? _children.size() : 0;
-	}
-
-	/**
-	 * Return an iterator that traverses the subtree rooted at {@code this} node
-	 * in pre-order. The first node returned by the iterator is {@code this}
-	 * node.
-	 * <p>
-	 * Modifying the tree by inserting, removing, or moving a node invalidates
-	 * any iterator created before the modification.
-	 *
-	 * @see #postorderIterator
-	 * @return an iterator for traversing the tree in pre-order
-	 */
-	@Override
-	public Iterator<TreeNode<T>> iterator() {
-		return preorderIterator();
 	}
 
 	/**
@@ -340,7 +328,7 @@ public final class TreeNode<T>
 		if (!isChild(child)) {
 			throw new IllegalArgumentException("The given child is not a child.");
 		}
-		remove(getIndex(child));
+		remove(indexOf(child));
 	}
 
 	/**
@@ -438,7 +426,7 @@ public final class TreeNode<T>
 
 	@Override
 	public String toString() {
-		return Tree.toString(this);
+		return toParenthesesString();
 	}
 
 
@@ -517,8 +505,19 @@ public final class TreeNode<T>
 	 * Parses a (parentheses) tree string, created with
 	 * {@link Tree#toParenthesesString()}. The tree string might look like this:
 	 * <pre>
-	 *  mul(div(cos(1.0), cos(π)), sin(mul(1.0, z)))
+	 *  mul(div(cos(1.0),cos(π)),sin(mul(1.0,z)))
 	 * </pre>
+	 *
+	 * The parse method doesn't strip the whitespace between the parentheses and
+	 * the commas. If you want to remove this <em>formatting</em> whitespaces,
+	 * you should do the parsing with an addition <em>mapper</em> function.
+	 * <pre>{@code
+	 * final TreeNode<String> tree = TreeNode.parse(
+	 *     "mul(  div(cos( 1.0) , cos(π )), sin(mul(1.0, z) ) )",
+	 *     String::trim
+	 * );
+	 * }</pre>
+	 * The code above will trim all tree nodes during the parsing process.
 	 *
 	 * @see Tree#toParenthesesString(Function)
 	 * @see Tree#toParenthesesString()
@@ -571,6 +570,33 @@ public final class TreeNode<T>
 		final Function<? super String, ? extends B> mapper
 	) {
 		return TreeParser.parse(tree, mapper);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.TREE_NODE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+
+	void write(final ObjectOutput out) throws IOException {
+		FlatTreeNode.of(this).write(out);
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	static TreeNode read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return TreeNode.ofTree(FlatTreeNode.read(in));
 	}
 
 }

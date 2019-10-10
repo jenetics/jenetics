@@ -19,7 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.reflect.Array.newInstance;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -480,11 +479,6 @@ public final class Codecs {
 				.mapToInt(EnumGene::getAllele)
 				.toArray()
 		);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] newArray(final Class<?> type, final int length) {
-		return (T[])newInstance(type, length);
 	}
 
 	/**

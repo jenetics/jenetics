@@ -19,8 +19,6 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.util.Hashes.hash;
-
 import io.jenetics.internal.util.require;
 
 /**
@@ -60,19 +58,6 @@ public abstract class AbstractAlterer<
 	 */
 	public double getProbability() {
 		return _probability;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_probability);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj != null &&
-			getClass() == obj.getClass() &&
-			Double.compare(_probability, ((AbstractAlterer)obj)._probability) == 0;
 	}
 
 }
