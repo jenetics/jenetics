@@ -33,8 +33,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.internal.math.Histogram;
 import io.jenetics.internal.math.random;
-import io.jenetics.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

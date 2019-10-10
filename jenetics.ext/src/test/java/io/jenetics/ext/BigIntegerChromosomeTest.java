@@ -24,7 +24,6 @@ import java.math.BigInteger;
 import org.testng.annotations.Test;
 
 import io.jenetics.Chromosome;
-import io.jenetics.NumericChromosomeTester;
 import io.jenetics.util.Factory;
 
 /**

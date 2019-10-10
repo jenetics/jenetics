@@ -176,31 +176,31 @@ subprojects { Project prj ->
 				}
 			}
 
-			compileTestJava {
-				inputs.property("moduleName", moduleName)
-				doFirst {
-					options.compilerArgs = [
-						'--module-path', classpath.asPath,
-						'--add-modules', 'org.testng',
-						'--add-reads', "$moduleName=org.testng",
-						'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
-					]
-					classpath = files()
-				}
-			}
+//			compileTestJava {
+//				inputs.property("moduleName", moduleName)
+//				doFirst {
+//					options.compilerArgs = [
+//						'--module-path', classpath.asPath,
+//						'--add-modules', 'org.testng,java.desktop,io.jenetics.prngine',
+//						'--add-reads', "$moduleName=org.testng,java.desktop,io.jenetics.prngine",
+//						'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+//					]
+//					classpath = files()
+//				}
+//			}
 
-			test {
-				inputs.property("moduleName", moduleName)
-				doFirst {
-					jvmArgs = [
-						'--module-path', classpath.asPath,
-						'--add-modules', 'ALL-MODULE-PATH',
-						'--add-reads', "$moduleName=org.testng",
-						'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
-					]
-					classpath = files()
-				}
-			}
+//			test {
+//				inputs.property("moduleName", moduleName)
+//				doFirst {
+//					jvmArgs = [
+//						'--module-path', classpath.asPath,
+//						'--add-modules', 'ALL-MODULE-PATH',
+//						'--add-reads', "$moduleName=org.testng,java.desktop,io.jenetics.prngine",
+//						'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+//					]
+//					classpath = files()
+//				}
+//			}
 		}
 	}
 }

@@ -19,19 +19,15 @@
  */
 package io.jenetics.internal.math;
 
-import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.IntStream;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -109,20 +105,20 @@ public class combTest {
 		return sorted;
 	}
 
-	@Test(invocationCount = 20, successPercentage = 95)
-	public void subSetDistribution() {
-		final int[] sub = new int[3];
-		final int n = 100_000;
-
-		final Random random = new Random();
-		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
-
-		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(comb.subset(n, sub, random)))
-			.forEach(histogram::accept);
-
-		assertUniformDistribution(histogram);
-	}
+//	@Test(invocationCount = 20, successPercentage = 95)
+//	public void subSetDistribution() {
+//		final int[] sub = new int[3];
+//		final int n = 100_000;
+//
+//		final Random random = new Random();
+//		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
+//
+//		IntStream.range(0, 10_000)
+//			.flatMap(i -> IntStream.of(comb.subset(n, sub, random)))
+//			.forEach(histogram::accept);
+//
+//		assertUniformDistribution(histogram);
+//	}
 
 
 	private static int[] subset(final int n, final int sub[], final Random random) {

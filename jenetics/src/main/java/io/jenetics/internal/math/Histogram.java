@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.stat;
+package io.jenetics.internal.math;
 
 import static java.lang.Math.max;
 import static java.lang.Math.round;
@@ -33,6 +33,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
+
+import io.jenetics.stat.LongSummary;
 
 /**
  * To create an <i>Histogram Accumulator</i> you have to define the <i>class

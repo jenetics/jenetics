@@ -25,7 +25,6 @@ import java.math.BigInteger;
 
 import org.testng.annotations.Test;
 
-import io.jenetics.NumericGeneTester;
 import io.jenetics.util.Factory;
 
 /**

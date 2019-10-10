@@ -28,9 +28,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import io.jenetics.internal.math.Histogram;
 import io.jenetics.internal.math.probability;
 import io.jenetics.internal.util.IntRef;
-import io.jenetics.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
 
 /**

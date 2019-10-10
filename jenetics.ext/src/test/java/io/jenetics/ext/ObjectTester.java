@@ -17,7 +17,7 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.ext;
 
 import static io.jenetics.util.MSeq.toMSeq;
 import static io.jenetics.util.RandomRegistry.with;
@@ -29,6 +29,11 @@ import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import io.jenetics.util.Copyable;
+import io.jenetics.util.Factory;
+import io.jenetics.util.MSeq;
+import io.jenetics.util.Verifiable;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

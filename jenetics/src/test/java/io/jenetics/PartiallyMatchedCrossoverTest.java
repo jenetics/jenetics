@@ -19,18 +19,14 @@
  */
 package io.jenetics;
 
-import static io.jenetics.TestUtils.newPermutationDoubleGenePopulation;
 import static io.jenetics.util.factories.Int;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.Histogram;
-import io.jenetics.stat.LongMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Range;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -85,42 +81,42 @@ public class PartiallyMatchedCrossoverTest {
 
 	}
 
-	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
-	public void alterProbability(
-		final Integer ngenes,
-		final Integer nchromosomes,
-		final Integer npopulation,
-		final Double p
-	) {
-		final ISeq<Phenotype<EnumGene<Double>, Double>> population =
-			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
-
-		// The mutator to test.
-		final PartiallyMatchedCrossover<Double, Double> crossover = new PartiallyMatchedCrossover<>(p);
-
-		final long nallgenes = ngenes*nchromosomes*npopulation;
-		final long N = 100;
-		final double mean = crossover.getOrder()*npopulation*p;
-
-		final long min = 0;
-		final long max = nallgenes;
-		final Range<Long> domain = new Range<>(min, max);
-
-		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
-		final LongMomentStatistics variance = new LongMomentStatistics();
-
-		for (int i = 0; i < N; ++i) {
-			final long alterations = crossover
-				.alter(population, 1)
-				.getAlterations();
-			histogram.accept(alterations);
-			variance.accept(alterations);
-		}
-
-		// Normal distribution as approximation for binomial distribution.
-		// TODO: Implement test
-		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
-	}
+//	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
+//	public void alterProbability(
+//		final Integer ngenes,
+//		final Integer nchromosomes,
+//		final Integer npopulation,
+//		final Double p
+//	) {
+//		final ISeq<Phenotype<EnumGene<Double>, Double>> population =
+//			newPermutationDoubleGenePopulation(ngenes, nchromosomes, npopulation);
+//
+//		// The mutator to test.
+//		final PartiallyMatchedCrossover<Double, Double> crossover = new PartiallyMatchedCrossover<>(p);
+//
+//		final long nallgenes = ngenes*nchromosomes*npopulation;
+//		final long N = 100;
+//		final double mean = crossover.getOrder()*npopulation*p;
+//
+//		final long min = 0;
+//		final long max = nallgenes;
+//		final Range<Long> domain = new Range<>(min, max);
+//
+//		final Histogram<Long> histogram = Histogram.ofLong(min, max, 10);
+//		final LongMomentStatistics variance = new LongMomentStatistics();
+//
+//		for (int i = 0; i < N; ++i) {
+//			final long alterations = crossover
+//				.alter(population, 1)
+//				.getAlterations();
+//			histogram.accept(alterations);
+//			variance.accept(alterations);
+//		}
+//
+//		// Normal distribution as approximation for binomial distribution.
+//		// TODO: Implement test
+//		//assertDistribution(histogram, new NormalDistribution<>(domain, mean, variance.getVariance()));
+//	}
 
 	@DataProvider(name = "alterProbabilityParameters")
 	public Object[][] alterProbabilityParameters() {
