@@ -31,6 +31,8 @@ apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+ext.moduleName = 'io.jenetics.prog'
+
 dependencies {
 	api project(':jenetics')
 	api project(':jenetics.ext')
@@ -38,8 +40,6 @@ dependencies {
 	testImplementation property('include.TestNG')
 	testImplementation property('include.EqualsVerifier')
 }
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
 	options {
