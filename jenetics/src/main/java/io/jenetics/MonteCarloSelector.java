@@ -37,7 +37,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.0
  */
 public final class MonteCarloSelector<
 	G extends Gene<?, G>,
@@ -79,16 +79,6 @@ public final class MonteCarloSelector<
 		}
 
 		return selection.toISeq();
-	}
-
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this || obj instanceof MonteCarloSelector;
 	}
 
 	@Override

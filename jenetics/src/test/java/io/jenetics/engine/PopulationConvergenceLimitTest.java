@@ -87,7 +87,7 @@ public class PopulationConvergenceLimitTest {
 		return Phenotype.of(
 			Genotype.of(DoubleChromosome.of(DoubleGene.of(value, 0.0, 1000.0))),
 			1,
-			a -> a.getGene().getAllele()
+			value
 		);
 	}
 

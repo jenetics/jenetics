@@ -36,7 +36,6 @@ import io.jenetics.util.ISeq;
  * @see EvolutionResult
  * @see EvolutionInit
  * @see EvolutionStreamable#stream(EvolutionStart)
- * @see EvolutionIterable#iterator(EvolutionStart)
  *
  * @param <G> the gene type
  * @param <C> the fitness type
@@ -51,8 +50,7 @@ import io.jenetics.util.ISeq;
 public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
@@ -85,7 +83,7 @@ public final class EvolutionStart<
 
 	@Override
 	public int hashCode() {
-		return hash(_generation, hash(_population));
+		return hash(_generation, hash(_population, hash(getClass())));
 	}
 
 	@Override

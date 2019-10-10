@@ -52,8 +52,8 @@ public class TreeParserTest {
 	public Object[][] tokens() {
 		return new Object[][] {
 			{"a", new String[]{"a"}},
-			{"a\\", new String[]{"a"}},
-			{"a\\\\", new String[]{"a\\"}},
+			{"a\\", new String[]{"a\\"}},
+			{"a\\\\", new String[]{"a\\\\"}},
 			{"a(b)", new String[]{"a", "(", "b", ")"}},
 			{"a(b,c)", new String[]{"a", "(", "b", ",", "c", ")"}},
 			{"a(b\\))", new String[]{"a", "(", "b)", ")"}},
@@ -104,7 +104,7 @@ public class TreeParserTest {
 	@Test
 	public void oneLevelThreeThreeTree() {
 		Assert.assertEquals(
-			parse("a(b,c,d(1,2))", Function.identity()),
+			parse("a  ( b , c  ,  d ( 1 , 2  )  )", String::trim),
 			TreeNode.of("a")
 				.attach("b", "c")
 				.attach(TreeNode.of("d")

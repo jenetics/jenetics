@@ -153,6 +153,16 @@ public class ProgramChromosomeTest {
 	}
 
 	@Test
+	public void sameRootAndFirstGene() {
+		final ProgramChromosome<Double> ch = ProgramChromosome.of(
+			3,
+			OPERATIONS,
+			TERMINALS
+		);
+		Assert.assertSame(ch.getRoot(), ch.getGene());
+	}
+
+	@Test
 	public void serialize() throws IOException {
 		final TreeNode<Op<Double>> tree = Program.of(
 			6,

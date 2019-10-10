@@ -21,8 +21,10 @@ package io.jenetics.engine;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.DoubleGene;
@@ -38,6 +40,106 @@ import io.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class CompositeCodecTest {
+
+	@Test(dataProvider = "scalarCodecCount")
+	public void minimalScalarCodec(final Integer scalars) {
+		final ISeq<Codec<Double,DoubleGene>> seq = Stream
+			.generate(() -> Codecs.ofScalar(DoubleRange.of(0, 1)))
+			.limit(scalars)
+			.collect(ISeq.toISeq());
+
+		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
+			seq, values -> 10.0
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		Assert.assertEquals(gt.length(), scalars.intValue());
+	}
+
+	@DataProvider(name = "scalarCodecCount")
+	public Object[][] scalarCodecCount() {
+		return new Object[][] {
+			{1}, {2}, {5}, {10}, {100}
+		};
+	}
+
+	@Test
+	public void minimalScalarVectorCodec() {
+		final Codec<Double, DoubleGene> codec = new CompositeCodec<>(
+			ISeq.of(
+				Codecs.ofScalar(DoubleRange.of(0, 1)),
+				Codecs.ofVector(DoubleRange.of(10, 100), 3),
+				Codecs.ofScalar(DoubleRange.of(2, 3)),
+				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+			),
+			values -> 10.0
+		);
+
+		final Genotype<DoubleGene> gt = codec.encoding().newInstance();
+		Assert.assertEquals(gt.length(), 5);
+	}
+
+	@Test
+	public void minimalNestedCodec() {
+		final Codec<Double, DoubleGene> codec1 = new CompositeCodec<>(
+			ISeq.of(
+				Codecs.ofScalar(DoubleRange.of(0, 1)),
+				Codecs.ofVector(DoubleRange.of(10, 100), 3),
+				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+			),
+			values ->  {
+				final Double v1 = (Double)values[0];
+				final double[] v2 = (double[])values[1];
+				final double[] v3 = (double[])values[2];
+
+				return v1 + DoubleAdder.sum(v2) + DoubleAdder.sum(v3);
+			}
+		);
+
+		final Codec<Double, DoubleGene> codec2 = new CompositeCodec<>(
+			ISeq.of(
+				Codecs.ofVector(DoubleRange.of(10, 100), 3),
+				Codecs.ofScalar(DoubleRange.of(0, 1)),
+				Codecs.ofVector(DoubleRange.of(200, 500), DoubleRange.of(200, 500))
+			),
+			values ->  {
+				final double[] v1 = (double[])values[0];
+				final Double v2 = (Double)values[1];
+				final double[] v3 = (double[])values[2];
+
+				return DoubleAdder.sum(v1) + v2 + DoubleAdder.sum(v3);
+			}
+		);
+
+		final Codec<Double, DoubleGene> codec3 = new CompositeCodec<>(
+			ISeq.of(codec1, codec2),
+			values ->  {
+				final Double v1 = (Double)values[0];
+				final Double v2 = (Double)values[1];
+
+				return v1 + v2;
+			}
+		);
+
+		final Genotype<DoubleGene> gt3 = codec3.encoding().newInstance();
+		Assert.assertEquals(gt3.length(), 8);
+
+		final Codec<Double, DoubleGene> codec4 = new CompositeCodec<>(
+			ISeq.of(codec3),
+			values -> (double)values[0]
+		);
+
+		final Genotype<DoubleGene> gt4 = codec3.encoding().newInstance();
+		Assert.assertEquals(gt4.length(), 8);
+
+		final double sum = gt4.stream()
+			.mapToDouble(c -> c.stream()
+				.mapToDouble(DoubleGene::doubleValue)
+				.sum())
+			.sum();
+
+		Assert.assertEquals(sum, codec4.decoder().apply(gt4), 0.000001);
+	}
 
 	@Test
 	public void encoding() {

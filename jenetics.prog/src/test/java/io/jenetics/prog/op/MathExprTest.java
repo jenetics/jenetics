@@ -55,6 +55,24 @@ public class MathExprTest {
 	);
 
 	@Test
+	public void vars() {
+		final MathExpr expr = MathExpr.parse("a*b*c + a/4 - sin(b*a) + d*d*b");
+		Assert.assertEquals(expr.vars().map(Var::name), ISeq.of("a", "b", "c", "d"));
+	}
+
+	@Test
+	public void format() {
+		final String expr = "(((5.0 - 6.0*x) - (3.0 + 4.0)) + sin(x)^34.0) + (1.0 + sin(x*5.0)/4.0)/6.0";
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+	}
+
+	@Test
+	public void format1() {
+		final String expr = "(asin(z)*x)/1.0";
+		Assert.assertEquals(MathExpr.format(MathExpr.parse(expr).toTree()), expr);
+	}
+
+	@Test
 	public void parse() {
 		Assert.assertEquals(
 			MathExpr.eval("3*4"),
@@ -115,6 +133,7 @@ public class MathExprTest {
 	@Test
 	public void specialEval3() {
 		final String expr = "5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6";
+
 		Assert.assertEquals(
 			MathExpr.eval(expr, 4.32),
 			31.170600453465315
@@ -178,83 +197,11 @@ public class MathExprTest {
 
 	@DataProvider(name = "ast")
 	public Object[][] ast() {
-		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, new Random(125)))
-			.limit(10)
+		final Random random = new Random(1233);
+		return Stream.generate(() -> Program.of(20, OPERATIONS, TERMINALS, random))
+			.limit(13)
 			.map(p -> new Object[]{p})
 			.toArray(Object[][]::new);
-	}
-
-	@Test(dataProvider = "simplifiedExpressions")
-	public void simplify(final String expr, final String simplified) {
-		Assert.assertEquals(
-			MathExpr.parse(expr).simplify(),
-			MathExpr.parse(simplified)
-		);
-	}
-
-	@DataProvider(name = "simplifiedExpressions")
-	public Object[][] simplifiedExpressions() {
-		return new Object[][] {
-			// X_DIV_X
-			{"x/x", "1.0"},
-			{"sin(pow(x, y))/sin(pow(x, y))", "1.0"},
-
-			// X_SUB_X
-			{"x-x", "0.0"},
-			{"sin(pow(x, y)) - sin(pow(x, y))", "0.0"},
-
-			// X_ADD_X
-			{"x+x", "2*x"},
-			{"sin(x)*tan(y) + sin(x)*tan(y)", "2*(sin(x)*tan(y))"},
-
-			// SUB_ZERO
-			{"x - 0", "x"},
-			{"sin(x) - y - 0 + tan(z) - 0", "sin(x) - y + tan(z)"},
-
-			// ADD_ZERO
-			{"x + 0", "x"},
-			{"0 + x", "x"},
-			{"0 + x + 0", "x"},
-			{"sin(x) - y + 0 + tan(z) + 0", "sin(x) - y + tan(z)"},
-
-			// MUL_ZERO
-			{"tan(x)*0", "0.0"},
-			{"0*pow(x, x)", "0.0"},
-			{"y*(pow(x, 0) - 1)", "0.0"},
-			{"(pow(x, 0) - 1)*sin(43)", "0.0"},
-			{"(pow(x, 0) - 1)*sin(y)", "0.0"},
-			{"cos(z)*sin(0)", "0.0"},
-
-			// MUL_ONE
-			{"x * 1", "x"},
-			{"1 * x", "x"},
-			{"1 * x * 1", "x"},
-			{"sin(x) - y * 1 + tan(z) + 0", "sin(x) - y + tan(z)"},
-
-			// X_MUL_X
-			{"x*x", "x^2"},
-			{"(sin(x)*tan(y))*(sin(x)*tan(y))", "(sin(x)*tan(y))^2"},
-
-			// POW_ZERO
-			{"pow(x*y, 0)", "1.0"},
-			{"pow(sin(x*y)*cos(z), 0)", "1.0"},
-			{"pow(sin(x*y)*cos(k), x - x)", "1.0"},
-			{"pow(sin(x*y)*cos(k), sin(x - x*1 - 0 + 0)/1 + 0 - sin(0)) + 1", "2.0"},
-
-			// POW_ONE
-			{"pow(x*y, 1)", "x*y"},
-			{"pow(sin(x*y)*cos(z), 1)", "sin(x*y)*cos(z)"},
-			{"pow(sin(x*y)*cos(k), x/x)", "sin(x*y)*cos(k)"},
-
-			// Constant
-			{"4.0 + 4.0 + x*(5.0 + 13.0)", "8.0 + (x*18.0)"},
-			{"sin(0)", "0"},
-			{"sin(PI/2)", "1"},
-			{"sin(π/2)", "1"},
-			{"sin(x - x)", "0"},
-			{"3*4*x", "12*x"}
-		};
-
 	}
 
 	@Test(dataProvider = "ast")
@@ -272,6 +219,13 @@ public class MathExprTest {
 				expr.eval(args)
 			);
 		}
+	}
+
+	@Test
+	public void evalSimplifiedFromString() {
+		final MathExpr expr = MathExpr.parse("x + 0 - y*1");
+		System.out.println(expr.eval(10, 1));
+		System.out.println(expr.simplify().eval(10, 1));
 	}
 
 	@Test(dataProvider = "ast")

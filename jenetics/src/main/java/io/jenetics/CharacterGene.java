@@ -212,23 +212,6 @@ public final class CharacterGene
 	 *
 	 * @param character the character value of the created gene.
 	 * @return a new character gene.
-	 * @throws NullPointerException if the given {@code character} is
-	 *         {@code null}.
-	 *
-	 * @deprecated Use {@link #of(char)} instead
-	 */
-	@Deprecated
-	public static CharacterGene of(final Character character) {
-		return new CharacterGene(character, DEFAULT_CHARACTERS);
-	}
-
-	/**
-	 * Create a new character gene from the given character. If the character
-	 * is not within the {@link #DEFAULT_CHARACTERS}, an invalid gene will be
-	 * created.
-	 *
-	 * @param character the character value of the created gene.
-	 * @return a new character gene.
 	 */
 	public static CharacterGene of(final char character) {
 		return new CharacterGene(character, DEFAULT_CHARACTERS);

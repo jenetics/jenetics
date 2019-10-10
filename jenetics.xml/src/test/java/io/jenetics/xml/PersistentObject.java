@@ -21,10 +21,10 @@ package io.jenetics.xml;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.math.random.nextASCIIString;
 import static io.jenetics.internal.math.random.nextByte;
 import static io.jenetics.internal.math.random.nextChar;
 import static io.jenetics.internal.math.random.nextShort;
-import static io.jenetics.internal.math.random.nextASCIIString;
 import static io.jenetics.util.RandomRegistry.using;
 import static io.jenetics.xml.stream.Reader.text;
 

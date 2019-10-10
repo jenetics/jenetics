@@ -21,7 +21,9 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
@@ -103,6 +105,13 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 		}
 
 		return groups;
+	}
+
+	@Override
+	public String toString() {
+		return _codecs.stream()
+			.map(Objects::toString)
+			.collect(Collectors.joining(",", "CompositeCodec[", "]"));
 	}
 
 }

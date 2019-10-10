@@ -21,21 +21,24 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.3
+ * @version 4.4
  */
 
 plugins {
-	id "me.champeau.gradle.jmh" version "0.4.5"
+	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
 }
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 dependencies {
-	compile project(':jenetics')
+	api project(':jenetics')
 
-	testCompile property('include.TestNG')
-	testCompile property('include.PRNGine')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.PRNGine')
+
+	jmh project(':jenetics')
 }
 
 jmh {
@@ -47,11 +50,6 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.xml',
-	'io.jenetics.xml.stream'
-)
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.xml')
 
@@ -76,13 +74,13 @@ modifyPom {
 	project {
 		name 'jenetics.xml'
 		description 'Jenetics XML marshalling module'
-		url property('jenetics.Url')
+		url project.property('jenetics.Url')
 		inceptionYear '2017'
 
 		scm {
-			url property('jenetics.MavenScmUrl')
-			connection property('jenetics.MavenScmConnection')
-			developerConnection property('jenetics.MavenScmDeveloperConnection')
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -95,9 +93,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id property('jenetics.Id')
-				name property('jenetics.Author')
-				email property('jenetics.Email')
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -110,6 +108,6 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = property('build.MavenRepository')
-	snapshotRepository = property('build.MavenSnapshotRepository')
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }

@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -107,6 +108,26 @@ public class IntegerChromosomeTest
 			Assert.assertEquals(chromosome.getGene(i).intValue(), values[i]);
 			Assert.assertEquals(chromosome.intValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		IntegerChromosome.of(
+			IntegerGene.of(1, 2),
+			IntegerGene.of(3, 4),
+			IntegerGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		IntegerChromosome.of(
+			ISeq.of(
+				IntegerGene.of(1, 2),
+				IntegerGene.of(3, 4),
+				IntegerGene.of(5, 6)
+			)
+		);
 	}
 
 }

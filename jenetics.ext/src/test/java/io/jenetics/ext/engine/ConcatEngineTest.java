@@ -19,8 +19,7 @@
  */
 package io.jenetics.ext.engine;
 
-import java.util.function.Supplier;
-import java.util.stream.Stream;
+import static io.jenetics.ext.engine.EvolutionStreamables.streamable;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -39,9 +38,7 @@ import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionInit;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.EvolutionStreamable;
 import io.jenetics.engine.Limits;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.DoubleRange;
@@ -202,53 +199,6 @@ public class ConcatEngineTest {
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17});
-	}
-
-	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
-		return new EvolutionStreamable<IntegerGene, Integer>() {
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final Supplier<EvolutionStart<IntegerGene, Integer>> start) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
-
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = start.get().getPopulation().isEmpty()
-									? 0
-									: start.get().getPopulation()
-									.get(0).getGenotype().getGene().intValue();
-							}
-							value += 1;
-
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-
-			@Override
-			public EvolutionStream<IntegerGene, Integer>
-			stream(final EvolutionInit<IntegerGene> init) {
-				return EvolutionStreams.stream(
-					Stream.generate(new Supplier<Integer>() {
-						Integer value = null;
-
-						@Override
-						public Integer get() {
-							if (value == null) {
-								value  = init.getPopulation().get(0).getGene().intValue();
-							}
-							value += 1;
-
-							return value;
-						}
-					}).limit(size)
-				);
-			}
-		};
 	}
 
 

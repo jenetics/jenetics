@@ -32,7 +32,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -97,7 +96,7 @@ public class EngineTest {
 			.filter(pt -> pt.getFitness() == max)
 			.count();
 
-		Assert.assertTrue(maxCount >= genotypeCount);
+		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);
 	}
 
 	@Test
@@ -218,29 +217,12 @@ public class EngineTest {
 	}
 
 	@Test
-	public void phenotypeValidator() {
+	public void constraint() {
 		final int populationSize = 100;
 
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.phenotypeValidator(pt -> false)
-			.populationSize(populationSize)
-			.build();
-
-		final EvolutionResult<DoubleGene, Double> result = engine.stream()
-			.limit(10)
-			.collect(EvolutionResult.toBestEvolutionResult());
-
-		Assert.assertEquals(result.getInvalidCount(), populationSize);
-	}
-
-	@Test
-	public void genotypeValidator() {
-		final int populationSize = 100;
-
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
-			.genotypeValidator(pt -> false)
+			.constraint(RetryConstraint.of(pt -> false))
 			.populationSize(populationSize)
 			.build();
 
@@ -438,6 +420,7 @@ public class EngineTest {
 		};
 	}
 
+	/*
 	@Test
 	public void populationEvaluator() {
 		final int populationSize = 100;
@@ -458,6 +441,7 @@ public class EngineTest {
 
 		Assert.assertEquals(count.get(), populationSize);
 	}
+	*/
 
 	// https://github.com/jenetics/jenetics/issues/234
 	@Test

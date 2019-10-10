@@ -47,7 +47,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 5.1
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -98,6 +98,37 @@ public interface EvolutionStream<
 	 * factory method is to simplify the creation of an {@code EvolutionStream}
 	 * from an own evolution (GA) engine.
 	 *
+	 * @since 3.1
+	 *
+	 * @see #ofEvolution(Supplier, Evolution)
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @param start the evolution start
+	 * @param evolution the evolution function
+	 * @return a new {@code EvolutionStream} with the given {@code start} and
+	 *         {@code evolution} function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 *
+	 * @deprecated Will be removed, use {@link #ofEvolution(Supplier, Evolution)}
+	 *             instead
+	 */
+	@Deprecated
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> of(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+	) {
+		return new EvolutionStreamImpl<>(start, evolution::apply);
+	}
+
+	/**
+	 * Create a new {@code EvolutionStream} from the given {@code start}
+	 * population and {@code evolution} function. The main purpose of this
+	 * factory method is to simplify the creation of an {@code EvolutionStream}
+	 * from an own evolution (GA) engine.
+	 *
 	 * <pre>{@code
 	 * final Supplier<EvolutionStart<DoubleGene, Double>> start = ...
 	 * final EvolutionStream<DoubleGene, Double> stream =
@@ -135,7 +166,7 @@ public interface EvolutionStream<
 	 *
 	 *     public static void main(final String[] args) {
 	 *         final Genotype<DoubleGene> best = EvolutionStream
-	 *             .of(() -> start(50, 0), SpecialEngine::evolve)
+	 *             .ofEvolution(() -> start(50, 0), SpecialEngine::evolve)
 	 *             .limit(Limits.bySteadyFitness(10))
 	 *             .limit(1000)
 	 *             .collect(EvolutionResult.toBestGenotype());
@@ -146,7 +177,9 @@ public interface EvolutionStream<
 	 * }</pre>
 	 *
 	 *
-	 * @since 3.1
+	 * @since 5.1
+	 *
+	 * @see #ofAdjustableEvolution(Supplier, Function)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
@@ -158,11 +191,36 @@ public interface EvolutionStream<
 	 *         {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> of(
+	EvolutionStream<G, C> ofEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
+		final Evolution<G, C> evolution
 	) {
 		return new EvolutionStreamImpl<>(start, evolution);
+	}
+
+	/**
+	 * Create a new evolution stream with an <em>adaptable</em> evolution
+	 * function.
+	 *
+	 * @see #ofEvolution(Supplier, Evolution)
+	 *
+	 * @param start the evolution start object
+	 * @param evolution the adaptable evolution function
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return a new {@code EvolutionStream} with the given {@code start} and
+	 *         {@code evolution} function
+	 * @throws java.lang.NullPointerException if one of the arguments is
+	 *         {@code null}
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStream<G, C> ofAdjustableEvolution(
+		final Supplier<EvolutionStart<G, C>> start,
+		final Function<
+			? super EvolutionStart<G, C>,
+			? extends Evolution<G, C>> evolution
+	) {
+		return EvolutionStreamImpl.of(start, evolution);
 	}
 
 }

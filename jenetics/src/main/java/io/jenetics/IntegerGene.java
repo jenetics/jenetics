@@ -21,8 +21,15 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -48,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 4.3
+ * @version 5.0
  */
 public final class IntegerGene
 	implements
@@ -95,6 +102,17 @@ public final class IntegerGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public IntRange range() {
+		return IntRange.of(_min, _max);
+	}
+
 	@Override
 	public byte byteValue() {
 		return (byte)_value;
@@ -136,6 +154,22 @@ public final class IntegerGene
 	}
 
 	@Override
+	public IntegerGene mean(final IntegerGene that) {
+		return IntegerGene.of(_value + (that._value - _value)/2, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 5.0
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public IntegerGene newInstance(final int value) {
+		return IntegerGene.of(value, _min, _max);
+	}
+
+	@Override
 	public IntegerGene newInstance(final Integer number) {
 		return IntegerGene.of(number, _min, _max);
 	}
@@ -148,11 +182,6 @@ public final class IntegerGene
 	@Override
 	public IntegerGene newInstance() {
 		return IntegerGene.of(nextInt(getRandom(), _min, _max), _min, _max);
-	}
-
-	@Override
-	public IntegerGene mean(final IntegerGene that) {
-		return IntegerGene.of(_value + (that._value - _value)/2, _min, _max);
 	}
 
 	@Override
@@ -242,7 +271,6 @@ public final class IntegerGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-
 		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
@@ -284,6 +312,31 @@ public final class IntegerGene
 		}
 
 		return result;
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.INTEGER_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(_value, out);
+		writeInt(_min, out);
+		writeInt(_max, out);
+	}
+
+	static IntegerGene read(final DataInput in) throws IOException {
+		return of(readInt(in), readInt(in), readInt(in));
 	}
 
 }

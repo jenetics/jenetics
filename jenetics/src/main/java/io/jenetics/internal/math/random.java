@@ -19,15 +19,19 @@
  */
 package io.jenetics.internal.math;
 
+import static java.lang.Double.compare;
+import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.longBitsToDouble;
+import static java.lang.Float.compare;
+import static java.lang.Float.floatToIntBits;
+import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
-import static java.lang.Math.nextDown;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.require.probability;
 
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.util.IntRange;
 
 /**
@@ -38,7 +42,7 @@ import io.jenetics.util.IntRange;
  * @version 3.0
  */
 public final class random {
-	private random() {require.noInstance();}
+	private random() {}
 
 	public static byte nextByte(final Random random) {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
@@ -133,18 +137,15 @@ public final class random {
 		final float max,
 		final Random random
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
 		}
 
-		float value = random.nextFloat();
-		if (min < max) {
-			value = value*(max - min) + min;
-			if (value >= max) {
-				value = nextDown(value);
-			}
+		float value = random.nextFloat()*(max - min) + min;
+		if (compare(value, max) >= 0) {
+			value = intBitsToFloat(floatToIntBits(max) - 1);
 		}
 
 		return value;
@@ -167,18 +168,15 @@ public final class random {
 		final double max,
 		final Random random
 	) {
-		if (min >= max) {
+		if (compare(min, max) >= 0) {
 			throw new IllegalArgumentException(format(
 				"min >= max: %f >= %f.", min, max
 			));
 		}
 
-		double value = random.nextDouble();
-		if (min < max) {
-			value = value*(max - min) + min;
-			if (value >= max) {
-				value = nextDown(value);
-			}
+		double value = random.nextDouble()*(max - min) + min;
+		if (compare(value, max) >= 0) {
+			value = longBitsToDouble(doubleToLongBits(max) - 1);
 		}
 
 		return value;
