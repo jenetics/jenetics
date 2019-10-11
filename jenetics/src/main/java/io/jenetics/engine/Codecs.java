@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 
 import java.util.HashMap;
