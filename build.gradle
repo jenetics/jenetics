@@ -70,6 +70,7 @@ subprojects { Project prj ->
 			enabled = false
 		}
 	}
+
 }
 
 allprojects { Project prj ->
@@ -148,3 +149,78 @@ task zip(type: Zip) {
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
+
+
+subprojects { Project prj ->
+	def MODULES = [
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	]
+
+	if (MODULES.contains(prj.name)) {
+		afterEvaluate {
+			repositories {
+				mavenCentral()
+				jcenter()
+			}
+
+			compileJava {
+				inputs.property("moduleName", moduleName)
+				doFirst {
+					options.compilerArgs = [
+						'--module-path', classpath.asPath,
+					]
+					classpath = files()
+				}
+			}
+
+			jar {
+				manifest {
+					attributes(
+						'Project': prj.name,
+						'Project-Version': prj.version,
+						'Built-By': System.properties['user.name'],
+						'Build-Timestamp': dateformat.format(now),
+						'Created-By': "Gradle ${gradle.gradleVersion}",
+						'Build-Jdk': "${System.properties['java.vm.name']} " +
+							"(${System.properties['java.vm.vendor']} " +
+							"${System.properties['java.vm.version']})",
+						'Build-OS': "${System.properties['os.name']} " +
+							"${System.properties['os.arch']} " +
+							"${System.properties['os.version']}"
+					)
+				}
+			}
+
+//			compileTestJava {
+//				inputs.property("moduleName", moduleName)
+//				doFirst {
+//					options.compilerArgs = [
+//						'--module-path', classpath.asPath,
+//						'--add-modules', 'org.testng,java.desktop,io.jenetics.prngine',
+//						'--add-reads', "$moduleName=org.testng,java.desktop,io.jenetics.prngine",
+//						'--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
+//					]
+//					classpath = files()
+//				}
+//			}
+
+//			test {
+//				inputs.property("moduleName", moduleName)
+//				doFirst {
+//					jvmArgs = [
+//						'--module-path', classpath.asPath,
+//						'--add-modules', 'ALL-MODULE-PATH',
+//						'--add-reads', "$moduleName=org.testng,java.desktop,io.jenetics.prngine",
+//						'--patch-module', "$moduleName=" + files(sourceSets.test.java.outputDir).asPath,
+//					]
+//					classpath = files()
+//				}
+//			}
+		}
+	}
+}
+
+

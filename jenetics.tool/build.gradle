@@ -25,6 +25,8 @@
 
 apply plugin: 'packaging'
 
+ext.moduleName = 'io.jenetics.tool'
+
 dependencies {
 	implementation project(':jenetics')
 	implementation project(':jenetics.example')
@@ -34,8 +36,6 @@ dependencies {
 
 	testImplementation property('include.TestNG')
 }
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
 
 javadoc {
 	options {

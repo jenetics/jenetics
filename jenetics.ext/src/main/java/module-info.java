@@ -20,13 +20,17 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.9
+ * @since !__version__!
  */
+module io.jenetics.ext {
+	requires io.jenetics.base;
 
-apply plugin: 'java'
+	exports io.jenetics.ext;
+	exports io.jenetics.ext.engine;
+	exports io.jenetics.ext.moea;
+	exports io.jenetics.ext.rewriting;
+	exports io.jenetics.ext.util;
 
-project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 11
-	targetCompatibility = 11
+	exports io.jenetics.ext.internal
+		to io.jenetics.prog, io.jenetics.xml;
 }

@@ -20,13 +20,13 @@
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.9
+ * @since !__version__!
  */
+module io.jenetics.prog {
+	requires io.jenetics.base;
+	requires io.jenetics.ext;
 
-apply plugin: 'java'
-
-project.tasks.withType(JavaCompile) { JavaCompile compile ->
-	sourceCompatibility = 11
-	targetCompatibility = 11
+	exports io.jenetics.prog;
+	exports io.jenetics.prog.op;
+	exports io.jenetics.prog.regression;
 }
