@@ -135,7 +135,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				writer().write(xml, data);
 			}
 		}
@@ -208,7 +208,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -392,7 +392,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -511,7 +511,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -635,7 +635,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -797,7 +797,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer().write(writer, data);
 			}
 		}
@@ -828,7 +828,7 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer(alleleWriter)
 					.write(xml, data);
 			}
@@ -994,7 +994,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
@@ -1031,7 +1031,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1152,7 +1152,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1189,7 +1189,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}

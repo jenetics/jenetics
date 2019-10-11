@@ -372,7 +372,7 @@ public final class Readers {
 		public static io.jenetics.LongChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
-			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+			try (var reader = XML.reader(in)) {
 				reader.next();
 				return reader().read(reader);
 			}
@@ -435,7 +435,7 @@ public final class Readers {
 		public static io.jenetics.DoubleChromosome read(final InputStream in)
 			throws XMLStreamException
 		{
-			try (AutoCloseableXMLStreamReader reader = XML.reader(in)) {
+			try (var reader = XML.reader(in)) {
 				reader.next();
 				return reader().read(reader);
 			}
@@ -521,7 +521,7 @@ public final class Readers {
 			requireNonNull(alleleReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return PermutationChromosome.<A>reader(alleleReader).read(xml);
 			}
@@ -632,7 +632,7 @@ public final class Readers {
 			requireNonNull(chromosomeReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return reader(chromosomeReader).read(xml);
 			}
@@ -721,7 +721,7 @@ public final class Readers {
 			requireNonNull(chromosomeReader);
 			requireNonNull(in);
 
-			try (AutoCloseableXMLStreamReader xml = XML.reader(in)) {
+			try (var xml = XML.reader(in)) {
 				xml.next();
 				return reader(chromosomeReader).read(xml);
 			}
