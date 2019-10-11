@@ -44,6 +44,7 @@ dependencies {
 	testImplementation property('include.ApacheCommonsMath')
 	testImplementation property('include.TestNG')
 	testImplementation property('include.EqualsVerifier')
+	testImplementation project(':jenetics').sourceSets.test.output
 }
 
 jmh {
