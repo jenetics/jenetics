@@ -250,7 +250,7 @@ public final class CharacterGene
 		final CharSeq chars,
 		final IntRange lengthRange
 	) {
-		final Random r = RandomRegistry.getRandom();
+		final var r = RandomRegistry.getRandom();
 
 		return MSeq.<CharacterGene>ofLength(random.nextInt(lengthRange, r))
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))

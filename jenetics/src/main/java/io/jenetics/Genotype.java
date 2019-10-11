@@ -360,7 +360,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	void write(final ObjectOutput out) throws IOException {
 		writeInt(_chromosomes.length(), out);
-		for (Chromosome<G> ch : _chromosomes) {
+		for (var ch : _chromosomes) {
 			out.writeObject(ch);
 		}
 	}

@@ -306,10 +306,10 @@ public class DoubleChromosome
 	}
 
 	static DoubleChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final double min = in.readDouble();
-		final double max = in.readDouble();
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = in.readDouble();
+		final var max = in.readDouble();
 
 		final MSeq<DoubleGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
