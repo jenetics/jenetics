@@ -176,6 +176,25 @@ subprojects { Project prj ->
 				}
 			}
 
+			jar {
+				manifest {
+					attributes(
+						'Project': prj.name,
+						'Project-Version': prj.version,
+						'Built-By': System.properties['user.name'],
+						'Build-Timestamp': dateformat.format(now),
+						'Created-By': "Gradle ${gradle.gradleVersion}",
+						'Build-Jdk': "${System.properties['java.version']} " +
+							"(${System.properties['java.vendor']} " +
+							"${System.properties['java.vm.version']})",
+						'Build-OS': "${System.properties['os.name']} " +
+							"${System.properties['os.arch']} " +
+							"${System.properties['os.version']}",
+						'Automatic-Module-Name': moduleName
+					)
+				}
+			}
+
 //			compileTestJava {
 //				inputs.property("moduleName", moduleName)
 //				doFirst {
