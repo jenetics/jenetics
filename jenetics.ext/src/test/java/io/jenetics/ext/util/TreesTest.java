@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.util;
 
-import java.util.List;
-
 import org.testng.annotations.Test;
 
 /**

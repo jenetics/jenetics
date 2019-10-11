@@ -23,6 +23,11 @@ import static io.jenetics.internal.math.random.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -49,7 +54,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version 5.0
  */
 public final class DoubleGene
 	implements
@@ -96,6 +101,17 @@ public final class DoubleGene
 		return _max;
 	}
 
+	/**
+	 * Return the range of {@code this} gene.
+	 *
+	 * @since 4.4
+	 *
+	 * @return the range of {@code this} gene
+	 */
+	public DoubleRange range() {
+		return DoubleRange.of(_min, _max);
+	}
+
 	@Override
 	public byte byteValue() {
 		return (byte)_value;
@@ -140,6 +156,17 @@ public final class DoubleGene
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
 		return of(_value + (that._value - _value)/2.0, _min, _max);
+	}
+
+	/**
+	 * Create a new gene from the given {@code value} and the gene context.
+	 *
+	 * @since 5.0
+	 * @param value the value of the new gene.
+	 * @return a new gene with the given value.
+	 */
+	public DoubleGene newInstance(final double value) {
+		return DoubleGene.of(value, _min, _max);
 	}
 
 	@Override
@@ -249,10 +276,34 @@ public final class DoubleGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-
 		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
-			.fill(() -> of(nextDouble(min, max, r), min, max))
+			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.DOUBLE_GENE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		out.writeDouble(_value);
+		out.writeDouble(_min);
+		out.writeDouble(_max);
+	}
+
+	static DoubleGene read(final DataInput in) throws IOException {
+		return of(in.readDouble(), in.readDouble(), in.readDouble());
 	}
 
 }

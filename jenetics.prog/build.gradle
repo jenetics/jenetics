@@ -24,26 +24,22 @@
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.9
- * @version 4.3
+ * @version 4.4
  */
 
+apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+ext.moduleName = 'io.jenetics.prog'
+
 dependencies {
-	compile project(':jenetics')
-	compile project(':jenetics.ext')
+	api project(':jenetics')
+	api project(':jenetics.ext')
 
-	testCompile property('include.TestNG')
-	testCompile property('include.EqualsVerifier')
+	testImplementation property('include.TestNG')
+	testImplementation property('include.EqualsVerifier')
 }
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.prog',
-	'io.jenetics.prog.op'
-)
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
 
 javadoc {
 	options {
@@ -65,13 +61,13 @@ modifyPom {
 	project {
 		name 'jentics.prog'
 		description 'Jenetics Genetic Programming Module'
-		url jenetics.url
+		url project.property('jenetics.Url')
 		inceptionYear '2017'
 
 		scm {
-			url property('jenetics.MavenScmUrl')
-			connection property('jenetics.MavenScmConnection')
-			developerConnection property('jenetics.MavenScmDeveloperConnection')
+			url project.property('jenetics.MavenScmUrl')
+			connection project.property('jenetics.MavenScmConnection')
+			developerConnection project.property('jenetics.MavenScmDeveloperConnection')
 		}
 
 		licenses {
@@ -84,9 +80,9 @@ modifyPom {
 
 		developers {
 			developer {
-				id property('jenetics.Id')
-				name property('jenetics.Author')
-				email property('jenetics.Email')
+				id project.property('jenetics.Id')
+				name project.property('jenetics.Author')
+				email project.property('jenetics.Email')
 			}
 		}
 	}
@@ -99,8 +95,8 @@ nexus {
 	attachTests = false
 	attachJavadoc = true
 	sign = true
-	repository = property('build.MavenRepository')
-	snapshotRepository = property('build.MavenSnapshotRepository')
+	repository = project.property('build.MavenRepository')
+	snapshotRepository = project.property('build.MavenSnapshotRepository')
 }
 
 

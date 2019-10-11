@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Jenetics TSP">
+    <wpt lat="48.12502" lon="14.86934">
+        <ele>287.0</ele>
+        <name>Amstetten</name>
+    </wpt>
+    <wpt lat="48.00214" lon="16.23091">
+        <ele>229.0</ele>
+        <name>Baden</name>
+    </wpt>
+    <wpt lat="48.02375" lon="16.77534">
+        <ele>156.0</ele>
+        <name>Bruck an der Leitha</name>
+    </wpt>
+    <wpt lat="48.34067" lon="16.71754">
+        <ele>164.0</ele>
+        <name>Gänserndorf</name>
+    </wpt>
+    <wpt lat="48.77156" lon="14.98511">
+        <ele>490.0</ele>
+        <name>Gmünd</name>
+    </wpt>
+    <wpt lat="48.5625696" lon="16.0787228">
+        <ele>224.0</ele>
+        <name>Hollabrunn</name>
+    </wpt>
+    <wpt lat="48.66607" lon="15.65716">
+        <ele>313.0</ele>
+        <name>Horn</name>
+    </wpt>
+    <wpt lat="48.34472" lon="16.33149">
+        <ele>169.0</ele>
+        <name>Korneuburg</name>
+    </wpt>
+    <wpt lat="48.40999" lon="15.60384">
+        <ele>199.0</ele>
+        <name>Krems an der Donau</name>
+    </wpt>
+    <wpt lat="48.0180638" lon="15.5945498">
+        <ele>400.0</ele>
+        <name>Lilienfeld</name>
+    </wpt>
+    <wpt lat="48.22647" lon="15.34996">
+        <ele>251.0</ele>
+        <name>Melk</name>
+    </wpt>
+    <wpt lat="48.56743" lon="16.5722">
+        <ele>200.0</ele>
+        <name>Mistelbach</name>
+    </wpt>
+    <wpt lat="48.08255" lon="16.2869">
+        <ele>220.0</ele>
+        <name>Mödling</name>
+    </wpt>
+    <wpt lat="47.72607" lon="16.08121">
+        <ele>366.0</ele>
+        <name>Neunkirchen</name>
+    </wpt>
+    <wpt lat="48.20353" lon="15.63817">
+        <ele>268.0</ele>
+        <name>St. Pölten</name>
+    </wpt>
+    <wpt lat="48.00804" lon="15.16781">
+        <ele>338.0</ele>
+        <name>Scheibbs</name>
+    </wpt>
+    <wpt lat="48.3314949" lon="16.060737">
+        <ele>178.0</ele>
+        <name>Tulln an der Donau</name>
+    </wpt>
+    <wpt lat="48.81547" lon="15.2833">
+        <ele>501.0</ele>
+        <name>Waidhofen an der Thaya</name>
+    </wpt>
+    <wpt lat="47.96023" lon="14.77283">
+        <ele>360.0</ele>
+        <name>Waidhofen an der Ybbs</name>
+    </wpt>
+    <wpt lat="47.80279" lon="16.23318">
+        <ele>271.0</ele>
+        <name>Wiener Neustadt</name>
+    </wpt>
+    <wpt lat="48.6058353" lon="15.1662692">
+        <ele>531.0</ele>
+        <name>Zwettl</name>
+    </wpt>
+</gpx>

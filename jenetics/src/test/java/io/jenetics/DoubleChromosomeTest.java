@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.MinMax;
 import io.jenetics.util.DoubleRange;
+import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 
 /**
@@ -108,6 +109,26 @@ public class DoubleChromosomeTest
 			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
 			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
 		}
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes1() {
+		DoubleChromosome.of(
+			DoubleGene.of(1, 2),
+			DoubleGene.of(3, 4),
+			DoubleGene.of(5, 6)
+		);
+	}
+
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void ofAmbiguousGenes2() {
+		DoubleChromosome.of(
+			ISeq.of(
+				DoubleGene.of(1, 2),
+				DoubleGene.of(3, 4),
+				DoubleGene.of(5, 6)
+			)
+		);
 	}
 
 }

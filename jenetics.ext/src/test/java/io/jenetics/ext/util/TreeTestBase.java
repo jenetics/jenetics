@@ -142,7 +142,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 		Assert.assertEquals(tree.childCount(), stree.getChildCount());
 		Assert.assertEquals(
-			tree.getChild(1).getValue(),
+			tree.childAt(1).getValue(),
 			((DefaultMutableTreeNode)stree.getChildAt(1)).getUserObject()
 		);
 	}
@@ -419,7 +419,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			Objects.equals(t1.getValue(), t2.getUserObject()) &&
 			IntStream.range(0, t1.childCount())
 				.allMatch(i -> equals(
-					t1.getChild(i),
+					t1.childAt(i),
 					(DefaultMutableTreeNode) t2.getChildAt(i)));
 	}
 

@@ -21,6 +21,8 @@ package io.jenetics.prog.op;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -29,16 +31,17 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
 
+import io.jenetics.ext.rewriting.TreeRewriteRule;
+import io.jenetics.ext.rewriting.TreeRewriter;
 import io.jenetics.ext.util.Tree;
 import io.jenetics.ext.util.TreeNode;
 
@@ -60,7 +63,7 @@ import io.jenetics.ext.util.TreeNode;
  * @see MathOp
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.0
  * @since 4.1
  */
 public final class MathExpr
@@ -71,21 +74,93 @@ public final class MathExpr
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
-	static {
-		INFIX_OPS.put(MathOp.ADD, " + ");
-		INFIX_OPS.put(MathOp.SUB, " - ");
-		INFIX_OPS.put(MathOp.MUL, "*");
-		INFIX_OPS.put(MathOp.DIV, "/");
-		INFIX_OPS.put(MathOp.MOD, "%");
-		INFIX_OPS.put(MathOp.POW, "^");
+	/**
+	 * This tree-rewriter rewrites constant expressions to its single value.
+	 *
+	 * <pre>{@code
+	 * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2*(6 + 7)");
+	 * MathExpr.CONST_REWRITER.rewrite(tree);
+	 * assertEquals(tree.getValue(), Const.of(27.0));
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 */
+	public static final TreeRewriter<Op<Double>> CONST_REWRITER =
+		new ConstExprRewriter();
+
+	/**
+	 * This rewriter implements some common arithmetic identities, in exactly
+	 * this order.
+	 * <pre> {@code
+	 *     sub($x,$x) ->  0
+	 *     sub($x,0)  ->  $x
+	 *     add($x,0)  ->  $x
+	 *     add(0,$x)  ->  $x
+	 *     add($x,$x) ->  mul(2,$x)
+	 *     div($x,$x) ->  1
+	 *     div(0,$x)  ->  0
+	 *     mul($x,0)  ->  0
+	 *     mul(0,$x)  ->  0
+	 *     mul($x,1)  ->  $x
+	 *     mul(1,$x)  ->  $x
+	 *     mul($x,$x) ->  pow($x,2)
+	 *     pow($x,0)  ->  1
+	 *     pow(0,$x)  ->  0
+	 *     pow($x,1)  ->  $x
+	 *     pow(1,$x)  ->  1
+	 * }</pre>
+	 *
+	 * @since 5.0
+	 */
+	public static final TreeRewriter<Op<Double>> ARITHMETIC_REWRITER =
+		TreeRewriter.concat(
+			compile("sub($x,$x) -> 0"),
+			compile("sub($x,0) -> $x"),
+			compile("add($x,0) -> $x"),
+			compile("add(0,$x) -> $x"),
+			compile("add($x,$x) -> mul(2,$x)"),
+			compile("div($x,$x) -> 1"),
+			compile("div(0,$x) -> 0"),
+			compile("mul($x,0) -> 0"),
+			compile("mul(0,$x) -> 0"),
+			compile("mul($x,1) -> $x"),
+			compile("mul(1,$x) -> $x"),
+			compile("mul($x,$x) -> pow($x,2)"),
+			compile("pow($x,0) -> 1"),
+			compile("pow(0,$x) -> 0"),
+			compile("pow($x,1) -> $x"),
+			compile("pow(1,$x) -> 1")
+		);
+
+	private static TreeRewriter<Op<Double>> compile(final String rule) {
+		return TreeRewriteRule.parse(rule, MathOp::toMathOp);
 	}
 
+	/**
+	 * Combination of the {@link #ARITHMETIC_REWRITER} and the
+	 * {@link #CONST_REWRITER}, in this specific order.
+	 *
+	 * @since 5.0
+	 */
+	public static final TreeRewriter<Op<Double>> REWRITER = TreeRewriter.concat(
+		ARITHMETIC_REWRITER,
+		CONST_REWRITER
+	);
+
 	private final Tree<? extends Op<Double>, ?> _tree;
+
+	private final Lazy<ISeq<Var<Double>>> _vars;
 
 	// Primary constructor.
 	private MathExpr(final Tree<? extends Op<Double>, ?> tree, boolean primary) {
 		_tree = requireNonNull(tree);
+		_vars = Lazy.of(() -> ISeq.of(
+			_tree.stream()
+				.filter(node -> node.getValue() instanceof Var)
+				.map(node -> (Var<Double>)node.getValue())
+				.collect(Collectors.toCollection(() ->
+					new TreeSet<>(Comparator.comparing(Var::name))))
+		));
 	}
 
 	/**
@@ -108,13 +183,7 @@ public final class MathExpr
 	 * @return the variable list of this <em>math</em> expression
 	 */
 	public ISeq<Var<Double>> vars() {
-		return ISeq.of(
-			_tree.stream()
-				.filter(node -> node.getValue() instanceof Var)
-				.map(node -> (Var<Double>)node.getValue())
-				.collect(Collectors.toCollection(() ->
-					new TreeSet<>(Comparator.comparing(Var::name))))
-		);
+		return _vars.get();
 	}
 
 	/**
@@ -122,7 +191,7 @@ public final class MathExpr
 	 *
 	 * @return a new expression tree
 	 */
-	public Tree<? extends Op<Double>, ?> toTree() {
+	public TreeNode<Op<Double>> toTree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -154,7 +223,12 @@ public final class MathExpr
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		return apply(DoubleStream.of(args).boxed().toArray(Double[]::new));
+		final double val = apply(
+			DoubleStream.of(args)
+				.boxed()
+				.toArray(Double[]::new)
+		);
+		return val == -0.0 ? 0.0 : val;
 	}
 
 	@Override
@@ -166,7 +240,7 @@ public final class MathExpr
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof MathExpr &&
-			Objects.equals(((MathExpr) obj)._tree, _tree);
+			Objects.equals(((MathExpr)obj)._tree, _tree);
 	}
 
 	/**
@@ -183,65 +257,48 @@ public final class MathExpr
 	 */
 	@Override
 	public String toString() {
-		return toString(_tree);
-	}
-
-	private static String toString(
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final Op<Double> op = tree.getValue();
-		if (INFIX_OPS.containsKey(op)) {
-			infix(INFIX_OPS.get(op), tree, out);
-		} else {
-			out.append(op);
-			if (!tree.isLeaf()) {
-				final boolean brackets = true;
-
-				if (brackets) out.append("(");
-				toString(tree.getChild(0), out);
-				for (int i = 1; i < tree.childCount(); ++i) {
-					out.append(", ");
-					toString(tree.getChild(i), out);
-				}
-				if (brackets) out.append(")");
-			}
-		}
-
-		return out.toString();
-	}
-
-	private static void infix(
-		final String op,
-		final Tree<? extends Op<Double>, ?> tree,
-		final StringBuilder out
-	) {
-		final boolean brackets = true;
-
-		if (brackets) out.append("(");
-		toString(tree.getChild(0), out);
-		out.append(op);
-		toString(tree.getChild(1), out);
-		if (brackets) out.append(")");
+		return format(_tree);
 	}
 
 	/**
-	 * Tries to simplify {@code this} math expression.
+	 * Simplifying {@code this} expression by applying the given {@code rewriter}
+	 * and the given rewrite {@code limit}.
 	 *
-	 * <pre>{@code
-	 * final MathExpr expr = MathExpr.parse("4.0 + 4.0 + x*(5.0 + 13.0)");
-	 * final MathExpr simplified = expr.simplify()
-	 * System.out.println(simplified);
-	 * }</pre>
-	 * The simplified expression will be look like this: {@code 8.0 + (x*18.0)}.
+	 * @param rewriter the rewriter used for simplifying {@code this} expression
+	 * @param limit the rewrite limit
+	 * @return a newly created math expression object
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 * @throws IllegalArgumentException if the {@code limit} is smaller than
+	 *         zero
+	 */
+	public MathExpr simplify(
+		final TreeRewriter<Op<Double>> rewriter,
+		final int limit
+	) {
+		final TreeNode<Op<Double>> tree = toTree();
+		rewriter.rewrite(tree, limit);
+		return new MathExpr(tree, true);
+	}
+
+	/**
+	 * Simplifying {@code this} expression by applying the given {@code rewriter}.
 	 *
-	 * @see #prune(TreeNode)
-	 * @see #simplify(Tree)
+	 * @param rewriter the rewriter used for simplifying {@code this} expression
+	 * @return a newly created math expression object
+	 * @throws NullPointerException if the {@code rewriter} is {@code null}
+	 */
+	public MathExpr simplify(final TreeRewriter<Op<Double>> rewriter) {
+		return simplify(rewriter, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Simplifies {@code this} expression by applying the default
+	 * {@link #REWRITER}.
 	 *
-	 * @return a new simplified math expression
+	 * @return a newly created math expression object
 	 */
 	public MathExpr simplify() {
-		return new MathExpr(simplify(_tree));
+		return simplify(REWRITER);
 	}
 
 
@@ -261,12 +318,12 @@ public final class MathExpr
 
 	void write(final DataOutput out) throws IOException {
 		final byte[] data = toString().getBytes(UTF_8);
-		out.writeInt(data.length);
+		writeInt(data.length, out);
 		out.write(data);
 	}
 
 	static MathExpr read(final DataInput in) throws IOException {
-		final byte[] data = new byte[in.readInt()];
+		final byte[] data = new byte[readInt(in)];
 		in.readFully(data);
 		return parse(new String(data, UTF_8));
 	}
@@ -283,15 +340,17 @@ public final class MathExpr
 	 * <pre>{@code
 	 *  final String expr = "5.0 + 6.0*x + sin(x)^34.0 + (1.0 + sin(x*5.0)/4.0) + 6.5";
 	 *  final MathExpr tree = MathExpr.parse(expr);
-	 *  assert MathExpr.toString(tree.tree()).equals(expr);
+	 *  assert MathExpr.format(tree.tree()).equals(expr);
 	 * }</pre>
+	 *
+	 * @since 4.3
 	 *
 	 * @param tree the tree object to convert to a string
 	 * @return a new expression string
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static String toString(final Tree<? extends Op<Double>, ?> tree) {
-		return toString(tree, new StringBuilder());
+	public static String format(final Tree<? extends Op<Double>, ?> tree) {
+		return MathExprFormatter.format(tree);
 	}
 
 	/**
@@ -314,7 +373,7 @@ public final class MathExpr
 	 * mathematical expression tree. The expression may contain all functions
 	 * defined in {@link MathOp}.
 	 * <pre>{@code
-	 * final TreeNode<Op<Double>> tree = MathExpr
+	 * final Tree<? extends Op<Double>, ?> tree = MathExpr
 	 *     .parseTree("5 + 6*x + sin(x)^34 + (1 + sin(x*5)/4)/6");
 	 * }</pre>
 	 * The example above will lead to the following tree:
@@ -348,8 +407,7 @@ public final class MathExpr
 	 * @throws IllegalArgumentException if the given expression is invalid or
 	 *         can't be parsed.
 	 */
-	public static Tree<? extends Op<Double>, ?>
-	parseTree(final String expression) {
+	public static TreeNode<Op<Double>> parseTree(final String expression) {
 		return MathExprParser.parse(expression);
 	}
 
@@ -367,7 +425,8 @@ public final class MathExpr
 	 * @param expression the expression to evaluate
 	 * @param args the expression arguments, in alphabetical order
 	 * @return the evaluation result
-	 * @throws NullPointerException if the given {@code program} is {@code null}
+	 * @throws NullPointerException if the given {@code expression} is
+	 *         {@code null}
 	 * @throws IllegalArgumentException if the given operation tree is invalid,
 	 *         which means there is at least one node where the operation arity
 	 *         and the node child count differ.
@@ -377,46 +436,64 @@ public final class MathExpr
 	}
 
 	/**
-	 * Tries to simplify the given math tree.
+	 * Evaluates the given {@code expression} with the given arguments.
 	 *
-	 * <pre>{@code
-	 * final Tree<? extends Op<Double>, ?> tree =
-	 *     MathExpr.parseTree("4.0 + 4.0 + x*(5.0 + 13.0)");
-	 * final Tree<? extends Op<Double>, ?> simplified = MathExpr.simplify(tree)
-	 * System.out.println(simplified);
-	 * }</pre>
-	 * The simplified tree will be look like this:
-	 * <pre> {@code
-	 *  add
-	 *  ├── 8.0
-	 *  └── mul
-	 *      ├── x
-	 *      └── 18.0
-	 * }</pre>
+	 * @see #apply(Double[])
+	 * @see #eval(double...)
+	 * @see #eval(String, double...)
 	 *
-	 * @see #prune(TreeNode)
-	 * @see #simplify()
+	 * @since 4.4
 	 *
-	 * @param tree the math tree to simplify
-	 * @return the new simplified tree
-	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 * @param expression the expression to evaluate
+	 * @param args the expression arguments, in alphabetical order
+	 * @return the evaluation result
+	 * @throws NullPointerException if the given {@code expression} is
+	 *         {@code null}
 	 */
-	public static Tree<? extends Op<Double>, ?>
-	simplify(final Tree<? extends Op<Double>, ?> tree) {
-		return MathExprSimplifier.prune(TreeNode.ofTree(tree));
+	public static double eval(
+		final Tree<? extends Op<Double>, ?> expression,
+		final double... args
+	) {
+		return new MathExpr(expression, true).eval(args);
 	}
 
 	/**
-	 * Tries to simplify the given math tree in place.
+	 * Applies the {@link #REWRITER} to the given (mutable) {@code tree}. The
+	 * tree rewrite is done in place.
 	 *
-	 * @see #simplify(Tree)
-	 * @see #simplify()
+	 * @see TreeRewriter#rewrite(TreeNode, int)
 	 *
-	 * @param tree the math tree to simplify
+	 * @since 5.0
+	 *
+	 * @param tree the tree to be rewritten
+	 * @param limit the maximal number this rewrite rule is applied to the given
+	 *        tree. This guarantees the termination of the rewrite method.
+	 * @return the number of rewrites applied to the input {@code tree}
+	 * @throws NullPointerException if the given {@code tree} is {@code null}
+	 * @throws IllegalArgumentException if the {@code limit} is smaller than
+	 *         one
+	 */
+	public static int rewrite(final TreeNode<Op<Double>> tree, final int limit) {
+		return REWRITER.rewrite(tree, limit);
+	}
+
+	/**
+	 * Applies the {@link #REWRITER} to the given (mutable) {@code tree}. The
+	 * tree rewrite is done in place. The limit of the applied rewrites is set
+	 * unlimited ({@link Integer#MAX_VALUE}).
+	 *
+	 * @see #rewrite(TreeNode, int)
+	 * @see TreeRewriter#rewrite(TreeNode)
+	 *
+	 * @since 5.0
+	 *
+	 * @param tree the tree to be rewritten
+	 * @return {@code true} if the tree has been changed (rewritten) by this
+	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public static void prune(final TreeNode<Op<Double>> tree) {
-		MathExprSimplifier.prune(tree);
+	public static int rewrite(final TreeNode<Op<Double>> tree) {
+		return rewrite(tree, Integer.MAX_VALUE);
 	}
 
 }

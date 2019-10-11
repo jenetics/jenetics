@@ -21,7 +21,6 @@ package io.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
 
-import io.jenetics.internal.util.require;
 import io.jenetics.stat.LongSummary;
 
 /**
@@ -32,7 +31,7 @@ import io.jenetics.stat.LongSummary;
  * @version 3.0
  */
 public final class base {
-	private base() {require.noInstance();}
+	private base() {}
 
 	/**
 	 * Normalize the given double array, so that it sum to one. The

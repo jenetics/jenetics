@@ -69,7 +69,7 @@ public abstract class Crossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.getRandom();
+		final var random = RandomRegistry.getRandom();
 
 		final var pt1 = population.get(individuals[0]);
 		final var pt2 = population.get(individuals[1]);
@@ -79,10 +79,10 @@ public abstract class Crossover<
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+		final var c1 = gt1.toSeq().copy();
+		final var c2 = gt2.toSeq().copy();
+		final var genes1 = c1.get(chIndex).toSeq().copy();
+		final var genes2 = c2.get(chIndex).toSeq().copy();
 
 		crossover(genes1, genes2);
 
@@ -92,11 +92,11 @@ public abstract class Crossover<
 		//Creating two new Phenotypes and exchanging it with the old.
 		population.set(
 			individuals[0],
-			pt1.newInstance(Genotype.of(c1), generation)
+			Phenotype.of(Genotype.of(c1), generation)
 		);
 		population.set(
 			individuals[1],
-			pt2.newInstance(Genotype.of(c2), generation)
+			Phenotype.of(Genotype.of(c2), generation)
 		);
 
 		return getOrder();

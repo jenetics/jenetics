@@ -22,8 +22,8 @@ package io.jenetics.ext.util;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
@@ -39,7 +39,7 @@ import java.util.Queue;
 final class TreeNodeBreadthFirstIterator<V, T extends Tree<V, T>>
 	implements Iterator<T>
 {
-	private final Queue<Iterator<T>> _queue = new LinkedList<>();
+	private final Queue<Iterator<T>> _queue = new ArrayDeque<>();
 
 	/**
 	 * Create a new breath-first iterator from the given {@code root} element.

@@ -30,7 +30,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
 import io.jenetics.stat.DoubleMoments;
 import io.jenetics.util.NanoClock;
 
@@ -47,7 +46,7 @@ import io.jenetics.util.NanoClock;
  * @version 3.7
  */
 public final class Limits {
-	private Limits() {require.noInstance();}
+	private Limits() {}
 
 	/**
 	 * Return a predicate which always return {@code true}.
@@ -216,7 +215,7 @@ public final class Limits {
 	 *     .limit(byFitnessConvergence(5, 15, (s, l) -> {
 	 *          final double div = max(abs(s.getMean()), abs(l.getMean()));
 	 *          final eps = abs(s.getMean() - l.getMean())/(div <= 10E-20 ? 1.0 : div);
-	 *          return esp >= 10E-5
+	 *          return eps >= 10E-5
 	 *     }))
 	 *     .collect(toBestPhenotype());
 	 * }</pre>
