@@ -113,9 +113,9 @@ public class Mutator<
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
-		final Random random = RandomRegistry.getRandom();
-		final double p = pow(_probability, 1.0/3.0);
-		final int P = probability.toInt(p);
+		final var random = RandomRegistry.getRandom();
+		final var p = pow(_probability, 1.0/3.0);
+		final var P = probability.toInt(p);
 
 		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> random.nextInt() < P

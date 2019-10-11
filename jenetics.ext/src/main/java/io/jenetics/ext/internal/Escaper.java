@@ -49,7 +49,7 @@ public final class Escaper {
 	}
 
 	private boolean isProtectedChar(final char c) {
-		for (char c1 : _protect) {
+		for (var c1 : _protect) {
 			if (c == c1) return true;
 		}
 		return false;

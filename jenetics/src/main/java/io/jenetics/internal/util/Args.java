@@ -69,13 +69,9 @@ public class Args {
 	}
 
 	public ISeq<Integer> intArgs(final String name) {
-		return  arg(name)
-			.map(Stream::of)
-			.orElseGet(Stream::empty)
+		return  arg(name).stream()
 			.flatMap(a -> Stream.of(a.split("@")))
-			.flatMap(s -> parse(s, Integer::valueOf)
-				.map(Stream::of)
-				.orElseGet(Stream::empty))
+			.flatMap(s -> parse(s, Integer::valueOf).stream())
 			.collect(ISeq.toISeq());
 	}
 

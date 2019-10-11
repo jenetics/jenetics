@@ -19,6 +19,8 @@
  */
 package io.jenetics.internal.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -46,7 +48,7 @@ public final class SerialIO {
 	 * @param <T> the object type
 	 */
 	@FunctionalInterface
-	interface Writer<T> {
+	public interface Writer<T> {
 		void write(final T value, final DataOutput out) throws IOException;
 	}
 
@@ -56,7 +58,7 @@ public final class SerialIO {
 	 * @param <T> the object type
 	 */
 	@FunctionalInterface
-	interface Reader<T> {
+	public interface Reader<T> {
 		T read(final DataInput in) throws IOException;
 	}
 
@@ -120,7 +122,7 @@ public final class SerialIO {
 	public static void writeString(final String value, final DataOutput out)
 		throws IOException
 	{
-		final byte[] bytes = value.getBytes("UTF-8");
+		final byte[] bytes = value.getBytes(UTF_8);
 		writeInt(bytes.length, out);
 		out.write(bytes);
 	}
@@ -136,7 +138,7 @@ public final class SerialIO {
 	public static String readString(final DataInput in) throws IOException {
 		final byte[] bytes = new byte[readInt(in)];
 		in.readFully(bytes);
-		return new String(bytes, "UTF-8");
+		return new String(bytes, UTF_8);
 	}
 
 	/**

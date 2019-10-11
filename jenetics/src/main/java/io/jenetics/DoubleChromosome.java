@@ -115,7 +115,10 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public double[] toArray(final double[] array) {
-		final double[] a = array.length >= length() ? array : new double[length()];
+		final double[] a = array.length >= length()
+			? array
+			: new double[length()];
+
 		for (int i = length(); --i >= 0;) {
 			a[i] = doubleValue(i);
 		}
@@ -303,10 +306,10 @@ public class DoubleChromosome
 	}
 
 	static DoubleChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final double min = in.readDouble();
-		final double max = in.readDouble();
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = in.readDouble();
+		final var max = in.readDouble();
 
 		final MSeq<DoubleGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

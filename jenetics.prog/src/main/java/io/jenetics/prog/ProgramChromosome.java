@@ -421,7 +421,7 @@ public class ProgramChromosome<A>
 		out.writeObject(_operations);
 		out.writeObject(_terminals);
 
-		for (ProgramGene<A> gene : _genes) {
+		for (var gene : _genes) {
 			out.writeObject(gene.getAllele());
 			writeInt(gene.childOffset(), out);
 		}
@@ -431,9 +431,9 @@ public class ProgramChromosome<A>
 	static ProgramChromosome read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final int length = readInt(in);
-		final ISeq operations = (ISeq)in.readObject();
-		final ISeq terminals = (ISeq)in.readObject();
+		final var length = readInt(in);
+		final var operations = (ISeq)in.readObject();
+		final var terminals = (ISeq)in.readObject();
 
 		final MSeq genes = MSeq.ofLength(length);
 		for (int i = 0; i < genes.length(); ++i) {

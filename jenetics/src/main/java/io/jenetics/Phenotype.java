@@ -369,9 +369,9 @@ public final class Phenotype<
 	static Phenotype read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final long generation = readLong(in);
-		final Genotype genotype = (Genotype)in.readObject();
-		final Comparable fitness = (Comparable)in.readObject();
+		final var generation = readLong(in);
+		final var genotype = (Genotype)in.readObject();
+		final var fitness = (Comparable)in.readObject();
 
 		return new Phenotype(
 			genotype,

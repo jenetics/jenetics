@@ -82,7 +82,7 @@ public final class Limits {
 			));
 		}
 
-		return new Predicate<Object>() {
+		return new Predicate<>() {
 			private final AtomicLong _current = new AtomicLong();
 			@Override
 			public boolean test(final Object o) {
