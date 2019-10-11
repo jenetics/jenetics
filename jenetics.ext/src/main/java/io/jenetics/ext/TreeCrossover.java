@@ -72,16 +72,16 @@ public abstract class TreeCrossover<
 		assert individuals.length == 2 : "Required order of 2";
 		final Random random = RandomRegistry.getRandom();
 
-		final Phenotype<G, C> pt1 = population.get(individuals[0]);
-		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
+		final var pt1 = population.get(individuals[0]);
+		final var pt2 = population.get(individuals[1]);
+		final var gt1 = pt1.getGenotype();
+		final var gt2 = pt2.getGenotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+		final var c1 = gt1.toSeq().copy();
+		final var c2 = gt2.toSeq().copy();
 
 		crossover(c1, c2, chIndex);
 
@@ -107,20 +107,20 @@ public abstract class TreeCrossover<
 		final int index
 	) {
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).getGene());
+		final var tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).getGene());
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).getGene());
+		final var tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).getGene());
 
 		crossover(tree1, tree2);
 
-		final FlatTreeNode<A> flat1 = FlatTreeNode.of(tree1);
-		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
+		final var flat1 = FlatTreeNode.of(tree1);
+		final var flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
-		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).getGene();
+		final var template = (TreeGene<A, ?>)c1.get(0).getGene();
 
-		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
-		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));
+		final var genes1 = flat1.map(tree -> gene(template, tree));
+		final var genes2 = flat2.map(tree -> gene(template, tree));
 
 		c1.set(index, c1.get(index).newInstance(genes1));
 		c2.set(index, c2.get(index).newInstance(genes2));

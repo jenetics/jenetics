@@ -94,13 +94,9 @@ public class SingleNodeCrossover<
 		assert that != null;
 		assert other != null;
 
-		final Random random = RandomRegistry.getRandom();
-
-		final ISeq<TreeNode<A>> seq1 = that.breadthFirstStream()
-			.collect(ISeq.toISeq());
-
-		final ISeq<TreeNode<A>> seq2 = other.breadthFirstStream()
-			.collect(ISeq.toISeq());
+		final var random = RandomRegistry.getRandom();
+		final var seq1 = that.breadthFirstStream().collect(ISeq.toISeq());
+		final var seq2 = other.breadthFirstStream().collect(ISeq.toISeq());
 
 		final int changed;
 		if (seq1.length() > 1 && seq2.length() > 1) {
