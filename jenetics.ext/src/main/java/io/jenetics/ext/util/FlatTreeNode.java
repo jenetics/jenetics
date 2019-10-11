@@ -261,7 +261,7 @@ public final class FlatTreeNode<T>
 		int childOffset = 1;
 		int index = 0;
 
-		final Iterator<? extends Tree<?, ?>> it = tree.breadthFirstIterator();
+		final var it = tree.breadthFirstIterator();
 		while (it.hasNext()) {
 			final Tree<?, ?> node = it.next();
 
