@@ -20,7 +20,14 @@
 package io.jenetics;
 
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Objects;
@@ -29,7 +36,6 @@ import java.util.stream.Stream;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-import io.jenetics.util.Seq;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -95,14 +101,6 @@ public final class Genotype<G extends Gene<?, G>>
 		}
 
 		_chromosomes = ISeq.upcast(chromosomes);
-	}
-
-	private static int ngenes(final Seq<? extends Chromosome<?>> chromosomes) {
-		int count = 0;
-		for (int i = 0, n = chromosomes.length(); i < n; ++i) {
-			count += chromosomes.get(i).length();
-		}
-		return count;
 	}
 
 	/**
@@ -260,14 +258,14 @@ public final class Genotype<G extends Gene<?, G>>
 
 	@Override
 	public int hashCode() {
-		return hash(_chromosomes);
+		return hash(_chromosomes, hash(getClass()));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Genotype &&
-			Objects.equals(_chromosomes, ((Genotype<?>) obj)._chromosomes);
+			Objects.equals(_chromosomes, ((Genotype)obj)._chromosomes);
 	}
 
 	@Override
@@ -343,6 +341,41 @@ public final class Genotype<G extends Gene<?, G>>
 	public static <G extends Gene<?, G>> Genotype<G>
 	of(final Iterable<? extends Chromosome<G>> chromosomes) {
 		return new Genotype<>(ISeq.of(chromosomes));
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.GENOTYPE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeInt(_chromosomes.length(), out);
+		for (Chromosome<G> ch : _chromosomes) {
+			out.writeObject(ch);
+		}
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static Genotype read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		final int length = readInt(in);
+		final MSeq<Chromosome> chromosomes = MSeq.ofLength(length);
+		for (int i = 0; i < length; ++i) {
+			chromosomes.set(i, (Chromosome)in.readObject());
+		}
+
+		return new Genotype(chromosomes.asISeq());
 	}
 
 }

@@ -124,7 +124,12 @@ public final class LongSummary implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_count, hash(_sum, hash(_min, hash(_max, hash(_mean)))));
+		return
+			hash(_count,
+			hash(_sum,
+			hash(_min,
+			hash(_max,
+			hash(_mean)))));
 	}
 
 	@Override

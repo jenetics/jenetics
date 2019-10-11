@@ -22,10 +22,13 @@ package io.jenetics.internal.math;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.stat.Histogram;
@@ -51,6 +54,39 @@ public class combTest {
 
 			Assert.assertTrue(Arrays.equals(sub2, sub1), "K: " + i);
 		}
+	}
+
+	@Test(dataProvider = "combinations")
+	public void allCombinations(final int n, final int k) {
+		final Random random = new Random();
+
+		final Set<String> subsets = new HashSet<>();
+		for (int i = 0; i < 3000; ++i) {
+			subsets.add(Arrays.toString(comb.subset(n, new int[k], random)));
+		}
+		Assert.assertEquals(subsets.size(), binomial(n, k));
+	}
+
+	private static long binomial(int n, int k) {
+		return (n == k) || (k == 0)
+			? 1
+			: binomial(n - 1, k) + binomial(n - 1, k - 1);
+	}
+
+	@DataProvider
+	public Object[][] combinations() {
+		return new Object[][] {
+			{2, 1},
+			{3, 2},
+			{4, 2},
+			{4, 3},
+			{5, 1},
+			{5, 2},
+			{5, 3},
+			{5, 4},
+			{5, 5},
+			{9, 4}
+		};
 	}
 
 	@Test
@@ -162,11 +198,12 @@ public class combTest {
 			--m;
 		}
 
+		for (int i = 0; i < sub.length; ++i) sub[i] -= 1;
 		return sub;
 	}
 
-	private static int nextInt(final Random random, final int a, final int b) {
-		return a == b ? a - 1 : random.nextInt(b - a) + a;
+	private static int nextInt(final Random r, final int a, final int b) {
+		return random.nextInt(a, b + 1, r);
 	}
 
 }

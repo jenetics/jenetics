@@ -40,9 +40,9 @@ import java.util.Random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 4.4
  */
-public final class GaussianMutator<
+public class GaussianMutator<
 	G extends NumericGene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -70,11 +70,7 @@ public final class GaussianMutator<
 
 	@Override
 	public String toString() {
-		return format(
-			"%s[p=%f]",
-			getClass().getSimpleName(),
-			_probability
-		);
+		return format("%s[p=%f]", getClass().getSimpleName(), _probability);
 	}
 
 }

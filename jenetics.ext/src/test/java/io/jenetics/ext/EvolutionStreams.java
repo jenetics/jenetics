@@ -56,7 +56,7 @@ public class EvolutionStreams {
 
 		return EvolutionResult.<IntegerGene, Integer>of(
 			Optimize.MINIMUM,
-			ISeq.of(Phenotype.of(genotype, 1, gt -> gt.getGene().getAllele())),
+			ISeq.of(Phenotype.of(genotype, 1)),
 			1,
 			1,
 			EvolutionDurations.ZERO,

@@ -120,11 +120,13 @@ public class ParetoFrontTest {
 		set.trim(trimmedSize, Vec::compare, Vec::distance, Vec::length);
 		Assert.assertEquals(set.size(), trimmedSize);
 
+		/*
 		final List<Vec<double[]>> missing = set.stream()
 			.filter(v -> !front.contains(v))
 			.collect(Collectors.toList());
 
 		System.out.println(missing);
+		*/
 	}
 
 	private static Vec<double[]> circle(final Random random) {
