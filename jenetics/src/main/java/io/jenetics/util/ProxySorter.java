@@ -334,7 +334,7 @@ public final class ProxySorter {
 	 * @throws NullPointerException if the given {@code indexes} array is
 	 *         {@code null}
 	 */
-	static int[] init(final int[] indexes) {
+	private static int[] init(final int[] indexes) {
 		for (int i = 0; i < indexes.length; ++i) {
 			indexes[i] = i;
 		}
