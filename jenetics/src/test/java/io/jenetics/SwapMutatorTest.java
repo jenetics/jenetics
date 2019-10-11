@@ -65,16 +65,16 @@ public class SwapMutatorTest extends MutatorTester {
 		}
 	}
 
-//	@Override
-//	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
-//	public void alterProbability(
-//		final Integer ngenes,
-//		final Integer nchromosomes,
-//		final Integer npopulation,
-//		final Double p
-//	) {
-//		super.alterProbability(ngenes, nchromosomes, npopulation, p);
-//	}
+	@Override
+	@Test(dataProvider = "alterProbabilityParameters", groups = {"statistics"})
+	public void alterProbability(
+		final Integer ngenes,
+		final Integer nchromosomes,
+		final Integer npopulation,
+		final Double p
+	) {
+		super.alterProbability(ngenes, nchromosomes, npopulation, p);
+	}
 
 	@Override
 	@DataProvider(name = "alterProbabilityParameters")

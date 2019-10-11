@@ -34,7 +34,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.Histogram;
+import io.jenetics.stat.Histogram;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.Factory;
 

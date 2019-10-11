@@ -17,35 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
-
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import java.math.BigInteger;
-
-import org.testng.annotations.Test;
-
-import io.jenetics.NumericGeneTester;
-import io.jenetics.util.Factory;
+package io.jenetics.test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-@Test
-public class BigIntegerGeneTest
-	extends NumericGeneTester<BigInteger, BigIntegerGene>
-{
+public abstract class Retry {
 
-	private final BigIntegerGene _factory = BigIntegerGene
-		.of(BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE));
-
-	@Override protected Factory<BigIntegerGene> factory() {
-		return _factory;
+	public static interface Block<E extends Exception> {
+		public void call() throws E;
 	}
 
-	@Test
-	public void equalsVerifier() {
-		EqualsVerifier.forClass(BigIntegerGene.class).verify();
+	protected <E extends Exception>
+	void retry(final int count, final Block<E> block) throws E {
+		if (count > 1) {
+			try {
+				block.call();
+			} catch (Throwable e) {
+				retry(count - 1, block);
+			}
+		} else {
+			block.call();
+		}
 	}
 
 }

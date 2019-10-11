@@ -17,38 +17,37 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import org.testng.Assert;
-
-import io.jenetics.util.IO;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class Serialize {
+public class RetryTest extends Retry {
 
-	private final IO _io;
+	private final AtomicInteger _retryCount = new AtomicInteger();
 
-	Serialize(final IO io) {
-		_io = io;
+	@Test
+	public void method() throws IOException {
+		retry(5, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
 	}
 
-	public static final Serialize object = new Serialize(IO.object);
-
-	public void test(final Object object) throws IOException {
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		_io.write(object, out);
-
-		final byte[] data = out.toByteArray();
-		final ByteArrayInputStream in = new ByteArrayInputStream(data);
-		final Object copy = _io.read(in);
-
-		Assert.assertEquals(copy, object);
+	@Test(expectedExceptions = IOException.class, dependsOnMethods = "method")
+	public void retryFailed() throws Exception {
+		_retryCount.set(0);
+		retry(2, () -> {
+			if (_retryCount.incrementAndGet() < 3) {
+				throw new IOException("io-error");
+			}
+		});
 	}
 
 }

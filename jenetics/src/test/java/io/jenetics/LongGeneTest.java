@@ -31,7 +31,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.Histogram;
+import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 
 /**

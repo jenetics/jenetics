@@ -19,6 +19,7 @@
  */
 package io.jenetics;
 
+import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
@@ -29,6 +30,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.util.Named;
+import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -71,25 +73,25 @@ public class TruncationSelectorTest
 		}
 	}
 
-//	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
-//	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
-//		retry(3, () -> {
-//			final int loops = 50;
-//			final int npopulation = POPULATION_COUNT;
-//
-//			final Random random = new Random();
-//			using(random, r -> {
-//				final Histogram<Double> distribution = SelectorTester.distribution(
-//					new TruncationSelector<>(),
-//					opt,
-//					npopulation,
-//					loops
-//				);
-//
-//				assertDistribution(distribution, expected.value, 0.001, 10);
-//			});
-//		});
-//	}
+	@Test(dataProvider = "expectedDistribution", groups = {"statistics"})
+	public void selectDistribution(final Named<double[]> expected, final Optimize opt) {
+		retry(3, () -> {
+			final int loops = 50;
+			final int npopulation = POPULATION_COUNT;
+
+			final Random random = new Random();
+			using(random, r -> {
+				final Histogram<Double> distribution = SelectorTester.distribution(
+					new TruncationSelector<>(),
+					opt,
+					npopulation,
+					loops
+				);
+
+				assertDistribution(distribution, expected.value, 0.001, 10);
+			});
+		});
+	}
 
 	@DataProvider(name = "expectedDistribution")
 	public Object[][] expectedDistribution() {
