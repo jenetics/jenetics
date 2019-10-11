@@ -45,7 +45,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprParser {
 
-	static final Map<String, Const<Double>> CONST = Map.of(
+	private static final Map<String, Const<Double>> CONST = Map.of(
 		"PI", MathOp.PI,
 		"π", MathOp.PI
 	);
