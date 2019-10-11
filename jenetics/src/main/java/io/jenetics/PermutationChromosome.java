@@ -178,7 +178,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		return _genes.asList().stream()
+		return _genes.stream()
 			.map(g -> g.getAllele().toString())
 			.collect(Collectors.joining("|"));
 	}

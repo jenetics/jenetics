@@ -69,20 +69,20 @@ public abstract class Crossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.getRandom();
+		final var random = RandomRegistry.getRandom();
 
-		final Phenotype<G, C> pt1 = population.get(individuals[0]);
-		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
+		final var pt1 = population.get(individuals[0]);
+		final var pt2 = population.get(individuals[1]);
+		final var gt1 = pt1.getGenotype();
+		final var gt2 = pt2.getGenotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+		final var c1 = gt1.toSeq().copy();
+		final var c2 = gt2.toSeq().copy();
+		final var genes1 = c1.get(chIndex).toSeq().copy();
+		final var genes2 = c2.get(chIndex).toSeq().copy();
 
 		crossover(genes1, genes2);
 
