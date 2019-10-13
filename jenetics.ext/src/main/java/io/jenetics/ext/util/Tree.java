@@ -260,7 +260,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
-				(ancestor = ancestor.flatMap(Tree::getParent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
 
 		return result;
 	}
