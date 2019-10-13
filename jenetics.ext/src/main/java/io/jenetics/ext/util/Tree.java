@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.1
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -362,7 +362,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * Returns the path from the root, to get to this node. The last element in
 	 * the path is this node.
 	 *
-	 * @since !__version__!
+	 * @since 5.1
 	 *
 	 * @return an array of TreeNode objects giving the path, where the
 	 *         first element in the path is the root and the last
@@ -382,7 +382,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *     .orElse(null);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.1
 	 *
 	 * @return the path from the root element to {@code this} node.
 	 */
