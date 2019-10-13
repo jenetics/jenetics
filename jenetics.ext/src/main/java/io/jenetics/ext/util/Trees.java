@@ -48,7 +48,7 @@ final class Trees {
 	 * @return an array of nodes giving the path from the root to the specified
 	 *         node
 	 */
-	static <V, T extends Tree<V, T>> MSeq<T> pathToRoot(
+	static <V, T extends Tree<V, T>> MSeq<T> pathElementsFromRoot(
 		final T node,
 		final int depth
 	) {
@@ -56,8 +56,34 @@ final class Trees {
 		if (node == null) {
 			path = MSeq.ofLength(depth);
 		} else {
-			path = pathToRoot(node.getParent().orElse(null), depth + 1);
+			path = pathElementsFromRoot(
+				node.getParent().orElse(null),
+				depth + 1
+			);
 			path.set(path.length() - depth - 1, node);
+		}
+
+		return path;
+	}
+
+	static <V, T extends Tree<V, T>> int[] pathFromRoot(
+		final T node,
+		final int depth
+	) {
+		final int[] path;
+		if (node == null) {
+			path = new int[depth - 1];
+		} else {
+			final T parent = node.getParent().orElse(null);
+			path = pathFromRoot(parent, depth + 1);
+
+			if (parent != null) {
+				final int index = node.getParent()
+					.map(p -> p.indexOf(node))
+					.orElseThrow(AssertionError::new);
+
+				path[path.length - depth - 1] = index;
+			}
 		}
 
 		return path;
