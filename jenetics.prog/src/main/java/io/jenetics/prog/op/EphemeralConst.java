@@ -153,13 +153,9 @@ public final class EphemeralConst<T>
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		final Supplier<T> supplier = _supplier instanceof Serializable
-			? _supplier
-			: (Supplier<T> & Serializable)_supplier::get;
-
 		writeNullableString(name(), out);
 		out.writeObject(value());
-		out.writeObject(supplier);
+		out.writeObject(_supplier);
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
