@@ -47,7 +47,41 @@ import io.jenetics.internal.util.Lazy;
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
  * }</pre>
  *
- *  @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * <h3>Serialization</h3>
+ * Although the {@code EphemeralConst} class implements the {@link Serializable}
+ * interface, the serialization will fail if the <em>const</em> supplier is not
+ * <em>serializable</em> as well. This can be achieved by <em>casting</em> the
+ * supplier to a {@link Serializable}.
+ * <pre>{@code
+ * final Random random = new Random();
+ * final EphemeralConst<Integer> object = EphemeralConst.of(
+ *     "R",
+ *     (Supplier<Integer> & Serializable)random::nextInt
+ * );
+ * }</pre>
+ * The serialization of the <em>constant</em> will fail, if the lambda has to
+ * capture variables form a <em>non</em>-serializable context (class). In such a
+ * case it is advisable to create a dedicated supplier class.
+ * <pre>{@code
+ * final class RandomInt implements Supplier<Integer>, Serializable {
+ *     private final Random rnd = new Random();
+ *     private final int min;
+ *     private final int max;
+ *
+ *     private RandomInt(final int min, final int max) {
+ *         this.min = min;
+ *         this.max = max;
+ *     }
+ *
+ *     \@Override
+ *     public Integer get() {
+ *         return rnd.nextInt(max - min) + min;
+ *     }
+ * }
+ * }</pre>
+ *
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 3.9
  */
@@ -153,13 +187,9 @@ public final class EphemeralConst<T>
 	}
 
 	void write(final ObjectOutput out) throws IOException {
-		final Supplier<T> supplier = _supplier instanceof Serializable
-			? _supplier
-			: (Supplier<T> & Serializable)_supplier::get;
-
 		writeNullableString(name(), out);
 		out.writeObject(value());
-		out.writeObject(supplier);
+		out.writeObject(_supplier);
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
