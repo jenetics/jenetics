@@ -115,7 +115,8 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * Inserts an {@code element} to this pareto front.
 	 *
 	 * @apiNote
-	 * Inserting a new element has a time complexity of {@code O(n)}.
+	 * Inserting a new element has a time complexity of {@code O(n)}, where
+	 * <em>n</em> is the number of elements of {@code this} pareto-front.
 	 *
 	 * @param element the element to add
 	 * @return {@code true} if this set did not already contain the specified
