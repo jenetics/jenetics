@@ -73,7 +73,7 @@ import io.jenetics.util.Seq;
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.1
  * @since 4.1
  */
 public final class ParetoFront<T> extends AbstractSet<T> {
@@ -85,7 +85,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	/**
 	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
 	 *
-	 * @since !__version__!
+	 * @since 5.1
 	 *
 	 * @param dominance the <em>Pareto</em> dominance measure
 	 * @param equals the equals predicate used for keeping the set distinct
