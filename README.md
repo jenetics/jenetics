@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.0.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
 
 
 ## Requirements
@@ -28,16 +28,12 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5
 *  **Gradle 5.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.4.0/jenetics-4.4.0.zip) and extract it to some build directory.
-
-    $ unzip jenetics-<version>.zip -d <builddir>
-
-`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the master branch from Github.
+Check out the master branch from Github.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
