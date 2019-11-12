@@ -24,6 +24,7 @@ import static java.util.Objects.requireNonNull;
 import static io.jenetics.ext.moea.Pareto.front;
 
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 
@@ -62,7 +63,7 @@ import io.jenetics.util.IntRange;
  *
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public final class MOEA {
@@ -205,7 +206,7 @@ public final class MOEA {
 		void add(final EvolutionResult<G, C> result) {
 			if (_front == null) {
 				_optimize = result.getOptimize();
-				_front = new ParetoFront<>(this::dominance);
+				_front = new ParetoFront<>(this::dominance, this::equals);
 			}
 
 			final ISeq<Phenotype<G, C>> front = front(
@@ -220,6 +221,10 @@ public final class MOEA {
 			return _optimize == Optimize.MAXIMUM
 				? _dominance.compare(a.getFitness(), b.getFitness())
 				: _dominance.compare(b.getFitness(), a.getFitness());
+		}
+
+		private boolean equals(final Phenotype<?, ?> a, final Phenotype<?, ?> b) {
+			return Objects.equals(a.getGenotype(), b.getGenotype());
 		}
 
 		private void trim() {
