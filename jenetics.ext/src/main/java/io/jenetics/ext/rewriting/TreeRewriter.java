@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.ext.util.TreeNode;
 
