@@ -15166,6 +15166,21 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 \begin_layout Plain Layout
 
 }
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Adjustable evolution stream"
+
+\end_inset
+
+Adjustable evolution stream
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
