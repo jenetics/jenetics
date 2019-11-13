@@ -94,7 +94,7 @@ public interface EvolutionStreamable<
 	 * @return a new evolution stream.
 	 */
 	public default EvolutionStream<G, C> stream() {
-		return stream(() -> EvolutionStart.of(ISeq.empty(), 1));
+		return stream((Supplier<EvolutionStart<G, C>>)EvolutionStart::empty);
 	}
 
 	/**
