@@ -45,13 +45,13 @@ public class EvolutionStreamTest {
 			.builder(problem)
 			.minimizing();
 
-		// Evolution used for low population variance.
+		// Evolution used for low fitness variance.
 		final Evolution<DoubleGene, Double> lowVar = builder.copy()
 			.alterers(new Mutator<>(0.5))
 			.selector(new MonteCarloSelector<>())
 			.build();
 
-		// Evolution used for high population variance.
+		// Evolution used for high fitness variance.
 		final Evolution<DoubleGene, Double> highVar = builder.copy()
 			.alterers(
 				new Mutator<>(0.05),
