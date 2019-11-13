@@ -218,7 +218,7 @@ public final class Engine<
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
-			? evolutionStart(() -> start).get()
+			? evolutionStart(start)
 			: start;
 
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
@@ -408,7 +408,10 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.ofEvolution(evolutionStart(start), this);
+		return EvolutionStream.ofEvolution(
+			() -> evolutionStart(start.get()),
+			this
+		);
 	}
 
 	@Override
@@ -416,30 +419,27 @@ public final class Engine<
 		return stream(evolutionStart(init));
 	}
 
-	private Supplier<EvolutionStart<G, C>>
-	evolutionStart(final Supplier<EvolutionStart<G, C>> start) {
-		return () -> {
-			final EvolutionStart<G, C> es = start.get();
-			final ISeq<Phenotype<G, C>> population = es.getPopulation();
-			final long gen = es.getGeneration();
+	private EvolutionStart<G, C>
+	evolutionStart(final EvolutionStart<G, C> start) {
+		final ISeq<Phenotype<G, C>> population = start.getPopulation();
+		final long gen = start.getGeneration();
 
-			final Stream<Phenotype<G, C>> stream = Stream.concat(
-				population.stream(),
-				_genotypeFactory.instances()
-					.map(gt -> Phenotype.of(gt, gen))
-			);
+		final Stream<Phenotype<G, C>> stream = Stream.concat(
+			population.stream(),
+			_genotypeFactory.instances()
+				.map(gt -> Phenotype.of(gt, gen))
+		);
 
-			final ISeq<Phenotype<G, C>> pop = stream
-				.limit(getPopulationSize())
-				.collect(ISeq.toISeq());
+		final ISeq<Phenotype<G, C>> pop = stream
+			.limit(getPopulationSize())
+			.collect(ISeq.toISeq());
 
-			return EvolutionStart.of(pop, gen);
-		};
+		return EvolutionStart.of(pop, gen);
 	}
 
-	private Supplier<EvolutionStart<G, C>>
+	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		return evolutionStart(() -> EvolutionStart.of(
+		return evolutionStart(EvolutionStart.of(
 			init.getPopulation()
 				.map(gt -> Phenotype.of(gt, init.getGeneration())),
 			init.getGeneration())
