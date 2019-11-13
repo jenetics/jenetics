@@ -31,8 +31,6 @@ import io.jenetics.util.DoubleRange;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
  */
 public class EvolutionStreamTest {
 
@@ -61,10 +59,10 @@ public class EvolutionStreamTest {
 			.selector(new RouletteWheelSelector<>())
 			.build();
 
-		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream
-			.ofAdjustableEvolution(
+		final EvolutionStream<DoubleGene, Double> stream =
+			EvolutionStream.ofAdjustableEvolution(
 				EvolutionStart::empty,
-				er -> engine(er, lowVar, highVar)
+				er -> var(er) < 0.2 ? lowVar : highVar
 			);
 
 		final Genotype<DoubleGene> result = stream
@@ -73,16 +71,6 @@ public class EvolutionStreamTest {
 
 		System.out.println(result + ": " +
 			problem.fitness().apply(problem.codec().decode(result)));
-	}
-
-	private static Evolution<DoubleGene, Double> engine(
-		final EvolutionStart<DoubleGene, Double> result,
-		final Evolution<DoubleGene, Double> lowVarEngine,
-		final Evolution<DoubleGene, Double> highVarEngine
-	) {
-		return var(result) < 0.2
-			? lowVarEngine
-			: highVarEngine;
 	}
 
 	private static double var(final EvolutionStart<DoubleGene, Double> result) {
