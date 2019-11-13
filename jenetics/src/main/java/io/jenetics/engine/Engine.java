@@ -112,7 +112,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 5.1
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -217,6 +217,7 @@ public final class Engine<
 
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		// Create initial population if `start` is empty.
 		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
 			? evolutionStart(start)
 			: start;
@@ -705,7 +706,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.0
+	 * @version 5.1
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
