@@ -202,6 +202,56 @@ public interface EvolutionStream<
 	 * Create a new evolution stream with an <em>adjustable</em> evolution
 	 * function.
 	 *
+	 * <pre>{@code
+	 * public static void main(final String[] args) {
+	 *     final Problem<double[], DoubleGene, Double> problem = Problem.of(
+	 *         v -> Math.sin(v[0])*Math.cos(v[1]),
+	 *         Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
+	 *     );
+	 *
+	 *     // Engine builder template.
+	 *     final Engine.Builder<DoubleGene, Double> builder = Engine
+	 *         .builder(problem)
+	 *         .minimizing();
+	 *
+	 *     // Evolution used for low fitness variance.
+	 *     final Evolution<DoubleGene, Double> lowVar = builder.copy()
+	 *         .alterers(new Mutator<>(0.5))
+	 *         .selector(new MonteCarloSelector<>())
+	 *         .build();
+	 *
+	 *     // Evolution used for high fitness variance.
+	 *     final Evolution<DoubleGene, Double> highVar = builder.copy()
+	 *         .alterers(
+	 *             new Mutator<>(0.05),
+	 *             new MeanAlterer<>())
+	 *         .selector(new RouletteWheelSelector<>())
+	 *         .build();
+	 *
+	 *     final EvolutionStream<DoubleGene, Double> stream =
+	 *         EvolutionStream.ofAdjustableEvolution(
+	 *             EvolutionStart::empty,
+	 *             er -> var(er) < 0.2 ? lowVar : highVar
+	 *         );
+	 *
+	 *     final Genotype<DoubleGene> result = stream
+	 *         .limit(Limits.bySteadyFitness(50))
+	 *         .collect(EvolutionResult.toBestGenotype());
+	 *
+	 *     System.out.println(result + ": " +
+	 *         problem.fitness().apply(problem.codec().decode(result)));
+	 * }
+	 *
+	 * private static double var(final EvolutionStart<DoubleGene, Double> result) {
+	 *     return result != null
+	 *         ? result.getPopulation().stream()
+	 *             .map(Phenotype::getFitness)
+	 *             .collect(DoubleMoments.toDoubleMoments())
+	 *             .getVariance()
+	 *         : 0.0;
+	 * }
+	 * }</pre>
+	 *
 	 * @see #ofEvolution(Supplier, Evolution)
 	 *
 	 * @param start the evolution start object
