@@ -19,6 +19,9 @@
  */
 package io.jenetics.engine;
 
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.MeanAlterer;
@@ -34,7 +37,8 @@ import io.jenetics.util.DoubleRange;
  */
 public class EvolutionStreamTest {
 
-	public static void main(final String[] args) {
+	@Test
+	public void ofAdjustableEvolution() {
 		final Problem<double[], DoubleGene, Double> problem = Problem.of(
 			v -> Math.sin(v[0])*Math.cos(v[1]),
 			Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
@@ -69,8 +73,13 @@ public class EvolutionStreamTest {
 			.limit(Limits.bySteadyFitness(50))
 			.collect(EvolutionResult.toBestGenotype());
 
-		System.out.println(result + ": " +
-			problem.fitness().apply(problem.codec().decode(result)));
+		Assert.assertTrue(
+			problem.fitness(result) < -0.99,
+			"Fitness: " + problem.fitness(result)
+		);
+
+		//System.out.println(result + ": " +
+		//	problem.fitness().apply(problem.codec().decode(result)));
 	}
 
 	private static double var(final EvolutionStart<DoubleGene, Double> result) {
