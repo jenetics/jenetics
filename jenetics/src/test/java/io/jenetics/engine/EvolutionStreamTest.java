@@ -42,16 +42,19 @@ public class EvolutionStreamTest {
 			Codecs.ofVector(DoubleRange.of(0, 2*Math.PI), 2)
 		);
 
+		// Engine builder template.
 		final Engine.Builder<DoubleGene, Double> builder = Engine
 			.builder(problem)
 			.minimizing();
 
-		final Engine<DoubleGene, Double> lowVarEngine = builder.copy()
+		// Evolution used for low population variance.
+		final Evolution<DoubleGene, Double> lowVar = builder.copy()
 			.alterers(new Mutator<>(0.5))
 			.selector(new MonteCarloSelector<>())
 			.build();
 
-		final Engine<DoubleGene, Double> highVarEngine = builder.copy()
+		// Evolution used for high population variance.
+		final Evolution<DoubleGene, Double> highVar = builder.copy()
 			.alterers(
 				new Mutator<>(0.05),
 				new MeanAlterer<>())
@@ -61,7 +64,7 @@ public class EvolutionStreamTest {
 		final EvolutionStream<DoubleGene, Double> stream = EvolutionStream
 			.ofAdjustableEvolution(
 				EvolutionStart::empty,
-				er -> engine(er, lowVarEngine, highVarEngine)
+				er -> engine(er, lowVar, highVar)
 			);
 
 		final Genotype<DoubleGene> result = stream
