@@ -217,12 +217,16 @@ public final class Engine<
 
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
+			? evolutionStart(() -> start).get()
+			: start;
+
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
 		timing.evolve.start();
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(start.getPopulation())
+			evaluate(es.getPopulation())
 		);
 
 		// Select the offspring population.
@@ -247,7 +251,7 @@ public final class Engine<
 		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
 			offspring.thenApplyAsync(off ->
 				timing.offspringAlter.timing(() ->
-					_alterer.alter(off, start.getGeneration())
+					_alterer.alter(off, es.getGeneration())
 				),
 				_executor
 			);
@@ -256,7 +260,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
 			survivors.thenApplyAsync(sur ->
 				timing.survivorFilter.timing(() ->
-					filter(sur, start.getGeneration())
+					filter(sur, es.getGeneration())
 				),
 				_executor
 			);
@@ -265,7 +269,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.getPopulation(), start.getGeneration())
+					filter(off.getPopulation(), es.getGeneration())
 				),
 				_executor
 			);
@@ -297,7 +301,7 @@ public final class Engine<
 		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,
 			result,
-			start.getGeneration(),
+			es.getGeneration(),
 			timing.toDurations(),
 			killCount,
 			invalidCount,
@@ -836,11 +840,9 @@ public final class Engine<
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
 		 *        invalid phenotypes when needed.
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.NullPointerException if the {@code validator} is
-		 *         {@code null}.
 		 */
 		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
-			_constraint = requireNonNull(constraint);
+			_constraint = constraint;
 			return this;
 		}
 
