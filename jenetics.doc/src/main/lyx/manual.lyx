@@ -14943,6 +14943,236 @@ reference "lis:Special-evolution-engine"
 .
 \end_layout
 
+\begin_layout Standard
+It is also possible to change the used evolution function, depending on
+ the actual population.
+ The 
+\family typewriter
+Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.of\SpecialChar softhyphen
+Adjust\SpecialChar softhyphen
+able\SpecialChar softhyphen
+Evo\SpecialChar softhyphen
+lution
+\family default
+ give you this possibility.
+ In the following example two evolution functions are used, depending on
+ the fitness variance of the previous population.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Problem<double[], DoubleGene, Double> problem = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Engine.Builder template.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> bld = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution used for low fitness variance.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evolution<DoubleGene, Double> lowVar = builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new MonteCarloSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution used for high fitness variance.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evolution<DoubleGene, Double> highVar = builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Mutator<>(0.05),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new MeanAlterer<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    final EvolutionStream<DoubleGene, Double> stream =
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionStream.ofAdjustableEvolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+            EvolutionStart::empty,
+\end_layout
+
+\begin_layout Plain Layout
+
+            er -> var(er) < 0.2 ? lowVar : highVar
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static double var(final EvolutionResult<DoubleGene, Double> er) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return er != null
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? er.getPopulation().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(Phenotype::getFitness)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toDoubleMoments())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .getVariance()
+\end_layout
+
+\begin_layout Plain Layout
+
+        : 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Encoding
 \begin_inset CommandInset label
