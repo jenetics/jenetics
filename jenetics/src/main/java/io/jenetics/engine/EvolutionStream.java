@@ -199,7 +199,7 @@ public interface EvolutionStream<
 	}
 
 	/**
-	 * Create a new evolution stream with an <em>adaptable</em> evolution
+	 * Create a new evolution stream with an <em>adjustable</em> evolution
 	 * function.
 	 *
 	 * @see #ofEvolution(Supplier, Evolution)
