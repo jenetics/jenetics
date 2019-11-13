@@ -439,10 +439,14 @@ public final class Engine<
 
 	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		return evolutionStart(EvolutionStart.of(
-			init.getPopulation()
-				.map(gt -> Phenotype.of(gt, init.getGeneration())),
-			init.getGeneration())
+		final ISeq<Genotype<G>> pop = init.getPopulation();
+		final long gen = init.getGeneration();
+
+		return evolutionStart(
+			EvolutionStart.of(
+				pop.map(gt -> Phenotype.of(gt, gen)),
+				gen
+			)
 		);
 	}
 
