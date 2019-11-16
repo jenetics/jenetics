@@ -12650,6 +12650,61 @@ The
 \family typewriter
 ProxySorter
 \family default
+ also extends the set of sortable objects.
+ It is even possible to sort objects where you only know the access function
+ to the elements and the number of elements.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final IntFunction<String> access = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final int length = 100;
+\end_layout
+
+\begin_layout Plain Layout
+
+final int[] proxy = ProxySorter.sort(
+\end_layout
+
+\begin_layout Plain Layout
+
+    access, length,
+\end_layout
+
+\begin_layout Plain Layout
+
+	(a, i, j) -> a.apply(i).compareTo(a.apply(j))
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The code snipped above shows how to sort an 
+\family typewriter
+Int\SpecialChar softhyphen
+Function
+\family default
+.
+ With the proxy array you are now able to access the 
+\family typewriter
+access
+\family default
+ function in ascending order.
+ The 
+\family typewriter
+ProxySorter
+\family default
  uses the Timsort
 \begin_inset Foot
 status collapsed
