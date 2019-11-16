@@ -12501,10 +12501,6 @@ assert(a2.equals(a3) && a2 != a3);
 assert(a3.equals(a4) && a3 != a4);
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -12535,6 +12531,150 @@ literal "false"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+io.jenetics.util.ProxySorter
+\end_layout
+
+\begin_layout Standard
+This is a special sorter, which allows you to sort even an immutable collection.
+ As the name suggests, it doesn't sort a given sequence directly.
+ Instead it 
+\emph on
+sorts
+\emph default
+ or rearranges a proxy
+\family typewriter
+ int[]
+\family default
+ array, which can then be used for accessing the original sequence in a
+ sorted order.
+ The main usage for this special sorter in 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is, where you need to access of the population in sorted order, but have
+ to preserve the original order of the population.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For this specific problem you could also do this by copying the population
+ and sorting the copy instead of the original.
+ But using a sorted 
+\emph on
+proxy
+\emph default
+ array can lead to simpler code.
+\end_layout
+
+\end_inset
+
+ Many of the algorithms, implemented in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext\SpecialChar softhyphen
+.moea
+\family default
+ package, uses the proxy sorter, which leads to simpler code at this places.
+ How the proxy sorter is used can be seen in the following code snippet.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final double[] array = new Random().doubles(100).toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+final int[] proxy = ProxySorter.sort(array);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Doing 'Classical' array sort.
+\end_layout
+
+\begin_layout Plain Layout
+
+final double[] sorted = array.clone();
+\end_layout
+
+\begin_layout Plain Layout
+
+Arrays.sort(sorted);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Iterating the array in ascending order.
+\end_layout
+
+\begin_layout Plain Layout
+
+for (int i = 0; i < array.length; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    assert sorted[i] == array[proxy[i]];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+ProxySorter
+\family default
+ uses the Timsort
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Timsort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ algorithm for sorting the proxy 
+\family typewriter
+int[]
+\family default
+ array.
 \end_layout
 
 \begin_layout Paragraph
