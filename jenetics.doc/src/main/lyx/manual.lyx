@@ -21059,6 +21059,337 @@ Engine\SpecialChar softhyphen
 .
 \end_layout
 
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The behavior of the 
+\family typewriter
+Phenotype::isValid
+\family sans
+ method is overridden by the 
+\family typewriter
+Constraint
+\family sans
+ interface.
+ A phenotype is treated as invalid if the 
+\family typewriter
+Constraint::tes
+\family sans
+t method returns false, even if the 
+\family typewriter
+Phenotype::isValid
+\family sans
+ method returns true.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Although the RetryConstraint is the default implementation of the Constraint
+ interface, it might not be best one.
+ If it is possible, it is better to try to repair an invalid phenotype instead
+ of creating a new one.
+ Suppose you need to optimize the fitness function, 
+\begin_inset Formula $f:\mathbb{R}^{3}\rightarrow\mathbb{R}$
+\end_inset
+
+, with the following constraints:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+x_{1}+x_{2} & \leq & 1\\
+x_{2}\cdot x_{3} & \leq & 0.5.
+\end{eqnarray*}
+
+\end_inset
+
+A repairing 
+\family typewriter
+Constraint
+\family default
+ implementation checks the validity of a phenotype and repairs it, if it's
+ invalid.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class RepairingConstraint
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Constraint<DoubleGene, Double> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean test(Phenotype<DoubleGene, Double> pt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return isValid(
+\end_layout
+
+\begin_layout Plain Layout
+
+            pt.getGenotype().getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray()
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    static boolean isValid(double[] x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return x[0] + x[1] <= 1 && x[1]*x[2] <= 0.5;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Phenotype<DoubleGene, Double> repair(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<DoubleGene, Double> pt,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final long generation
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final double[] x = pt.getGenotype().getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return newPhenotype(repair(x), generation);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double[] repair(final double[] x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (x[0] + x[1] > 1) x[0] = 1 - x[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (x[1]*x[2] > 0.5) x[2] = 0.5/x[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        return x;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The implementation of the new depends on your actual encoding and might
+ look like this
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> gt = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        DoubleChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleStream.of(r).boxed()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .map(v -> DoubleGene
+\end_layout
+
+\begin_layout Plain Layout
+
+                    .of(v, DoubleRange.of(0, 1)))
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Phenotype.of(gt, gen);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Termination
 \begin_inset CommandInset label
