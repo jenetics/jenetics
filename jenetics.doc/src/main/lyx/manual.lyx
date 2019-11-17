@@ -7730,12 +7730,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    implements Function<EvolutionStart<G,C>, 
-\end_layout
-
-\begin_layout Plain Layout
-
-        EvolutionResult<G,C>>, 
+    implements Evolution<G, C>, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -8408,6 +8403,144 @@ Predicate
 \end_layout
 
 \begin_layout Subsubsection
+Evolution
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Evolution"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This functional interface represents the 
+\emph on
+evolution
+\emph default
+ function, which is implemented by the 
+\family typewriter
+Engine
+\family default
+ class.
+ An EvolutionStream (described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsubsec:EvolutionStream"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) can be created by a given start value and an evolution function.
+ The main purpose of the 
+\family typewriter
+Evolution
+\family default
+ interface is to decouple the evolution function/strategy from the actual
+ evolution process, represented by the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Evolution-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the definition of the 
+\family typewriter
+Evolution
+\family default
+ interface.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Evolution<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+>
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Stream<EvolutionResult<G, C>>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionResult<G, C> evolve(EvolutionStart<G, C> start);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Evolution
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Evolution-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 EvolutionStream
 \begin_inset CommandInset label
 LatexCommand label
@@ -8527,7 +8660,7 @@ public interface EvolutionStream<
 
 \begin_layout Plain Layout
 
-    public EvolutionStream<G, C>
+    EvolutionStream<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -8545,7 +8678,7 @@ public interface EvolutionStream<
 \family typewriter
 EvolutionStream
 \family default
- class
+ interface
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:EvolutionStream-class"
