@@ -39167,7 +39167,7 @@ Version
 \series default
 :
 \emph on
- 6.14.3
+ 7.0
 \end_layout
 
 \begin_layout Itemize
@@ -39593,7 +39593,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 5.2.1
+: 6.0
 \end_layout
 
 \begin_layout Itemize
@@ -39605,7 +39605,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -39626,11 +39626,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-5.2.1-bin.zip
+http://services.gradle.org/distributions/gradle-6.0-bin.zip
 \end_layout
 
 \end_inset
