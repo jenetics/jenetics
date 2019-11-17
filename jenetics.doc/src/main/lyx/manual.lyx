@@ -8492,17 +8492,7 @@ public interface Evolution<
 
 \begin_layout Plain Layout
 
->
-\end_layout
-
-\begin_layout Plain Layout
-
-    extends Stream<EvolutionResult<G, C>>
-\end_layout
-
-\begin_layout Plain Layout
-
-{
+> {
 \end_layout
 
 \begin_layout Plain Layout
