@@ -21095,7 +21095,7 @@ height "1pt"
 \family sans
 The behavior of the 
 \family typewriter
-Phenotype::isValid
+Phenotype.isValid
 \family sans
  method is overridden by the 
 \family typewriter
@@ -21104,11 +21104,11 @@ Constraint
  interface.
  A phenotype is treated as invalid if the 
 \family typewriter
-Constraint::tes
+Constraint.tes
 \family sans
 t method returns false, even if the 
 \family typewriter
-Phenotype::isValid
+Phenotype.isValid
 \family sans
  method returns true.
  
