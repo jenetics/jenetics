@@ -109,7 +109,7 @@ allprojects { Project prj ->
 	}
 	if (prj.plugins.hasPlugin('jacoco')) {
 		prj.jacoco {
-			toolVersion = '0.8.2'
+			toolVersion = '0.8.5'
 		}
 	}
 }
