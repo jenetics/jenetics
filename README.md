@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
 
 
 ## Requirements
