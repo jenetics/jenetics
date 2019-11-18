@@ -172,7 +172,9 @@ final class TreeParser {
 		}
 
 		if (!parents.isEmpty()) {
-			throw new IllegalArgumentException("Unbalanced parentheses.");
+			throw new IllegalArgumentException(
+				"Unbalanced parentheses: " + value
+			);
 		}
 
 		return root;

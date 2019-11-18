@@ -47,6 +47,9 @@ import io.jenetics.ext.util.TreeNode;
  * </em>
  * </p>
  *
+ * @apiNote
+ * The rewriting is done in place, to a mutable {@link TreeNode} object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
@@ -56,7 +59,8 @@ public interface TreeRewriter<V> {
 
 	/**
 	 * Applies the rewriting to the given (mutable) {@code tree}. The tree
-	 * rewrite is done in place.
+	 * rewrite is done in place. Via the {@code limit} parameter, the termination
+	 * of the tree-rewrite process can be guaranteed.
 	 *
 	 * @param tree the tree to be rewritten
 	 * @param limit the maximal number this rewrite rule is applied to the given

@@ -406,7 +406,7 @@ public final class TreeNode<T>
 	 *         {@code null}
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
-		final TreeNode<B> target = of(mapper.apply(getValue()));
+		final TreeNode<B> target = TreeNode.of(mapper.apply(getValue()));
 		fill(this, target, mapper);
 		return target;
 	}
@@ -442,7 +442,7 @@ public final class TreeNode<T>
 	 * @return a new tree-node
 	 */
 	public static <T> TreeNode<T> of() {
-		return of(null);
+		return TreeNode.of(null);
 	}
 
 	/**
