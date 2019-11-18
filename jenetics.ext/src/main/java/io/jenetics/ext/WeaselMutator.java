@@ -87,8 +87,12 @@ public class WeaselMutator<
 			.map(pt -> mutate(pt, generation, _probability, random));
 
 		return AltererResult.of(
-			result.map(MutatorResult::getResult).asISeq(),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			result
+				.map(MutatorResult::getResult)
+				.asISeq(),
+			result.stream()
+				.mapToInt(MutatorResult::getMutations)
+				.sum()
 		);
 	}
 

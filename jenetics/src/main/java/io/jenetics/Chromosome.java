@@ -19,6 +19,8 @@
  */
 package io.jenetics;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -97,6 +99,29 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
+
+	@Override
+	public default Iterator<G> iterator() {
+		return new Iterator<G>() {
+			private int cursor = 0;
+
+			@Override
+			public boolean hasNext() {
+				return cursor != length();
+			}
+
+			@Override
+			public G next() {
+				final int i = cursor;
+				if (cursor >= length()) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i + 1;
+				return getGene(i);
+			}
+		};
+	}
 
 	/**
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.

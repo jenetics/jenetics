@@ -91,6 +91,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 
 		final Set<Var<V>> undefined = new HashSet<>(_right.vars());
 		undefined.removeAll(_left.vars());
+
 		if (!undefined.isEmpty()) {
 			throw new IllegalArgumentException(format(
 				"Some template variables are not defined in the matcher '%s': %s",

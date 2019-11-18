@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 4.0
+ * @version 5.1
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -122,6 +122,22 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		return new EvolutionStart<>(population, generation);
+	}
+
+	/**
+	 * An empty evolution start object, which can be used as initial evolution
+	 * value. The evolution {@link Engine} is then responsible for creating the
+	 * proper initial population,
+	 *
+	 * @since 5.1
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return an empty evolution start object
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStart<G, C> empty() {
+		return new EvolutionStart<>(ISeq.empty(), 1);
 	}
 
 }
