@@ -36,8 +36,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.1
+ * @since 5.1
  */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)

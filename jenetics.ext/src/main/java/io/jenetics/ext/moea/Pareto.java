@@ -22,7 +22,6 @@ package io.jenetics.ext.moea;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.array.revert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +30,8 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 import io.jenetics.ext.internal.IntList;

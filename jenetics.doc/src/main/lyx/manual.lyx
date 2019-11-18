@@ -7730,12 +7730,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    implements Function<EvolutionStart<G,C>, 
-\end_layout
-
-\begin_layout Plain Layout
-
-        EvolutionResult<G,C>>, 
+    implements Evolution<G, C>, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -8408,6 +8403,134 @@ Predicate
 \end_layout
 
 \begin_layout Subsubsection
+Evolution
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Evolution"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Evolution
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This functional interface represents the 
+\emph on
+evolution
+\emph default
+ function, which is implemented by the 
+\family typewriter
+Engine
+\family default
+ class.
+ An EvolutionStream (described in section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsubsec:EvolutionStream"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) can be created by a given start value and an evolution function.
+ The main purpose of the 
+\family typewriter
+Evolution
+\family default
+ interface is to decouple the evolution function/strategy from the actual
+ evolution process, represented by the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Evolution-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the definition of the 
+\family typewriter
+Evolution
+\family default
+ interface.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface Evolution<
+\end_layout
+
+\begin_layout Plain Layout
+
+    G extends Gene<?, G>,
+\end_layout
+
+\begin_layout Plain Layout
+
+    C extends Comparable<? super C>
+\end_layout
+
+\begin_layout Plain Layout
+
+> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    EvolutionResult<G, C> evolve(EvolutionStart<G, C> start);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+Evolution
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Evolution-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 EvolutionStream
 \begin_inset CommandInset label
 LatexCommand label
@@ -8527,7 +8650,7 @@ public interface EvolutionStream<
 
 \begin_layout Plain Layout
 
-    public EvolutionStream<G, C>
+    EvolutionStream<G, C>
 \end_layout
 
 \begin_layout Plain Layout
@@ -8545,7 +8668,7 @@ public interface EvolutionStream<
 \family typewriter
 EvolutionStream
 \family default
- class
+ interface
 \begin_inset CommandInset label
 LatexCommand label
 name "lis:EvolutionStream-class"
@@ -12501,10 +12624,6 @@ assert(a2.equals(a3) && a2 != a3);
 assert(a3.equals(a4) && a3 != a4);
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
@@ -12535,6 +12654,205 @@ literal "false"
 \end_inset
 
 .
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+io.jenetics.util.ProxySorter
+\end_layout
+
+\begin_layout Standard
+This is a special sorter, which allows you to sort even an immutable collection.
+ As the name suggests, it doesn't sort a given sequence directly.
+ Instead it 
+\emph on
+sorts
+\emph default
+ or rearranges a proxy
+\family typewriter
+ int[]
+\family default
+ array, which can then be used for accessing the original sequence in a
+ sorted order.
+ The main usage for this special sorter in 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ is, where you need to access of the population in sorted order, but have
+ to preserve the original order of the population.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For this specific problem you could also do this by copying the population
+ and sorting the copy instead of the original.
+ But using a sorted 
+\emph on
+proxy
+\emph default
+ array can lead to simpler code.
+\end_layout
+
+\end_inset
+
+ Many of the algorithms, implemented in the 
+\family typewriter
+io\SpecialChar softhyphen
+.jenetics\SpecialChar softhyphen
+.ext\SpecialChar softhyphen
+.moea
+\family default
+ package, uses the proxy sorter, which leads to simpler code at this places.
+ How the proxy sorter is used can be seen in the following code snippet.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final double[] array = new Random().doubles(100).toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+final int[] proxy = ProxySorter.sort(array);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Doing 'Classical' array sort.
+\end_layout
+
+\begin_layout Plain Layout
+
+final double[] sorted = array.clone();
+\end_layout
+
+\begin_layout Plain Layout
+
+Arrays.sort(sorted);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+// Iterating the array in ascending order.
+\end_layout
+
+\begin_layout Plain Layout
+
+for (int i = 0; i < array.length; ++i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    assert sorted[i] == array[proxy[i]];
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The 
+\family typewriter
+ProxySorter
+\family default
+ also extends the set of sortable objects.
+ It is even possible to sort objects where you only know the access function
+ to the elements and the number of elements.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final IntFunction<String> access = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+final int length = 100;
+\end_layout
+
+\begin_layout Plain Layout
+
+final int[] proxy = ProxySorter.sort(
+\end_layout
+
+\begin_layout Plain Layout
+
+    access, length,
+\end_layout
+
+\begin_layout Plain Layout
+
+	(a, i, j) -> a.apply(i).compareTo(a.apply(j))
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+The code snipped above shows how to sort an 
+\family typewriter
+Int\SpecialChar softhyphen
+Function
+\family default
+.
+ With the proxy array you are now able to access the 
+\family typewriter
+access
+\family default
+ function in ascending order.
+ The 
+\family typewriter
+ProxySorter
+\family default
+ uses the Timsort
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://en.wikipedia.org/wiki/Timsort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ algorithm for sorting the proxy 
+\family typewriter
+int[]
+\family default
+ array.
 \end_layout
 
 \begin_layout Paragraph
@@ -14941,6 +15259,251 @@ reference "lis:Special-evolution-engine"
  Function
 \family default
 .
+\end_layout
+
+\begin_layout Standard
+It is also possible to change the used evolution function, depending on
+ the actual population.
+ The 
+\family typewriter
+Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+.of\SpecialChar softhyphen
+Adjust\SpecialChar softhyphen
+able\SpecialChar softhyphen
+Evo\SpecialChar softhyphen
+lution
+\family default
+ give you this possibility.
+ In the following example two evolution functions are used, depending on
+ the fitness variance of the previous population.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static void main(final String[] args) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Problem<double[], DoubleGene, Double> problem = ...;
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Engine.Builder template.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Engine.Builder<DoubleGene, Double> bld = Engine
+\end_layout
+
+\begin_layout Plain Layout
+
+        .builder(problem)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .minimizing();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution used for low fitness variance.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evolution<DoubleGene, Double> lowVar = builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(new Mutator<>(0.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new MonteCarloSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    // Evolution used for high fitness variance.
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Evolution<DoubleGene, Double> highVar = builder.copy()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .alterers(
+\end_layout
+
+\begin_layout Plain Layout
+
+            new Mutator<>(0.05),
+\end_layout
+
+\begin_layout Plain Layout
+
+            new MeanAlterer<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .selector(new RouletteWheelSelector<>())
+\end_layout
+
+\begin_layout Plain Layout
+
+        .build();
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    final EvolutionStream<DoubleGene, Double> stream =
+\end_layout
+
+\begin_layout Plain Layout
+
+        EvolutionStream.ofAdjustableEvolution(
+\end_layout
+
+\begin_layout Plain Layout
+
+            EvolutionStart::empty,
+\end_layout
+
+\begin_layout Plain Layout
+
+            er -> var(er) < 0.2 ? lowVar : highVar
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+    
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> result = stream
+\end_layout
+
+\begin_layout Plain Layout
+
+        .limit(Limits.bySteadyFitness(50))
+\end_layout
+
+\begin_layout Plain Layout
+
+        .collect(EvolutionResult.toBestGenotype());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+static double var(final EvolutionResult<DoubleGene, Double> er) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return er != null
+\end_layout
+
+\begin_layout Plain Layout
+
+        ? er.getPopulation().stream()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .map(Phenotype::getFitness)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .collect(toDoubleMoments())
+\end_layout
+
+\begin_layout Plain Layout
+
+            .getVariance()
+\end_layout
+
+\begin_layout Plain Layout
+
+        : 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Adjustable evolution stream"
+
+\end_inset
+
+Adjustable evolution stream
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -20484,6 +21047,337 @@ Engine\SpecialChar softhyphen
 .Builder
 \family default
 .
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+The behavior of the 
+\family typewriter
+Phenotype.isValid
+\family sans
+ method is overridden by the 
+\family typewriter
+Constraint
+\family sans
+ interface.
+ A phenotype is treated as invalid if the 
+\family typewriter
+Constraint.tes
+\family sans
+t method returns false, even if the 
+\family typewriter
+Phenotype.isValid
+\family sans
+ method returns true.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Although the RetryConstraint is the default implementation of the Constraint
+ interface, it might not be best one.
+ If it is possible, it is better to try to repair an invalid phenotype instead
+ of creating a new one.
+ Suppose you need to optimize the fitness function, 
+\begin_inset Formula $f:\mathbb{R}^{3}\rightarrow\mathbb{R}$
+\end_inset
+
+, with the following constraints:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+x_{1}+x_{2} & \leq & 1\\
+x_{2}\cdot x_{3} & \leq & 0.5.
+\end{eqnarray*}
+
+\end_inset
+
+A repairing 
+\family typewriter
+Constraint
+\family default
+ implementation checks the validity of a phenotype and repairs it, if it's
+ invalid.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public class RepairingConstraint
+\end_layout
+
+\begin_layout Plain Layout
+
+    implements Constraint<DoubleGene, Double> 
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public boolean test(Phenotype<DoubleGene, Double> pt) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return isValid(
+\end_layout
+
+\begin_layout Plain Layout
+
+            pt.getGenotype().getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+                .toArray()
+\end_layout
+
+\begin_layout Plain Layout
+
+        );
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    static boolean isValid(double[] x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return x[0] + x[1] <= 1 && x[1]*x[2] <= 0.5;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+    @Override
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Phenotype<DoubleGene, Double> repair(
+\end_layout
+
+\begin_layout Plain Layout
+
+        final Phenotype<DoubleGene, Double> pt,
+\end_layout
+
+\begin_layout Plain Layout
+
+        final long generation
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        final double[] x = pt.getGenotype().getChromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+            .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+            .toArray();
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+        return newPhenotype(repair(x), generation);
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    static double[] repair(final double[] x) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (x[0] + x[1] > 1) x[0] = 1 - x[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (x[1]*x[2] > 0.5) x[2] = 0.5/x[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+        return x;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The implementation of the new depends on your actual encoding and might
+ look like this
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final Genotype<DoubleGene> gt = Genotype.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+        DoubleChromosome.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+            DoubleStream.of(r).boxed()
+\end_layout
+
+\begin_layout Plain Layout
+
+                .map(v -> DoubleGene
+\end_layout
+
+\begin_layout Plain Layout
+
+                    .of(v, DoubleRange.of(0, 1)))
+\end_layout
+
+\begin_layout Plain Layout
+
+                .collect(ISeq.toISeq())
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+    );
+\end_layout
+
+\begin_layout Plain Layout
+
+    return Phenotype.of(gt, gen);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -37461,7 +38355,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 73col%
+	width 70col%
 
 \end_inset
 
@@ -37645,10 +38539,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/dtlz1.png
-	lyxscale 30
-	width 60col%
-	clip
+	filename ../resources/diagram/dtlz1.svg
+	width 100col%
 
 \end_inset
 
@@ -38273,7 +39165,7 @@ Version
 \series default
 :
 \emph on
- 6.14.3
+ 7.0
 \end_layout
 
 \begin_layout Itemize
@@ -38699,7 +39591,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 5.2.1
+: 6.0
 \end_layout
 
 \begin_layout Itemize
@@ -38711,7 +39603,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
@@ -38732,11 +39624,11 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-5.2.1-bin.zip
+http://services.gradle.org/distributions/gradle-6.0-bin.zip
 \end_layout
 
 \end_inset

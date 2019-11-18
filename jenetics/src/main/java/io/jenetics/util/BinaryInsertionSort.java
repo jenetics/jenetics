@@ -81,7 +81,7 @@ final class BinaryInsertionSort {
 			++start;
 		}
 
-		for (; start < high; start++) {
+		for (; start < high; ++start) {
 			final int pivot = proxy[start];
 
 			int left = low;

@@ -231,6 +231,11 @@ public class BitChromosome extends Number
 		return _seq.iterator();
 	}
 
+	/**
+	 * Return a list iterator over the bit-genes of this chromosome.
+	 *
+	 * @return a list iterator over the bit-genes of this chromosome
+	 */
 	public ListIterator<BitGene> listIterator() {
 		return _seq.listIterator();
 	}
@@ -275,6 +280,11 @@ public class BitChromosome extends Number
 		return longValue();
 	}
 
+	/**
+	 * Return always {@code true}.
+	 *
+	 * @return {@code true}, always
+	 */
 	@Override
 	public boolean isValid() {
 		return true;

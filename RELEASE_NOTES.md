@@ -1,5 +1,22 @@
 ## Release notes
 
+### [5.1.0](https://github.com/jenetics/jenetics/releases/tag/v5.1.0)
+
+#### Improvements
+
+* [#522](https://github.com/jenetics/jenetics/issues/522): Replace `io.jenetics.ext.engine.AdaptiveEngine` with `io.jenetics.ext.engine.UpdatableEngine`. The `AdaptiveEngine` has been marked as deprecated.
+* [#557](https://github.com/jenetics/jenetics/issues/557): Implementation `io.jenetics.util.ProxySorter` class, which sorts a proxy array instead of an sequence itself.
+* [#563](https://github.com/jenetics/jenetics/issues/563): Introduction of `Evolution` interface, which makes the _concept_ of an _evolution_ function more explicit.
+* [#579](https://github.com/jenetics/jenetics/issues/579): Improve internal `RingBuffer` implementation.
+* [#585](https://github.com/jenetics/jenetics/issues/585): Improve `EphemeralConst` serialization.
+* [#592](https://github.com/jenetics/jenetics/issues/592): Add `Tree.path()` and `Tree.pathElements()` methods.
+
+#### Bugs
+
+* [#539](https://github.com/jenetics/jenetics/issues/539): Fix JHM tests.
+* [#599](https://github.com/jenetics/jenetics/issues/599): `Recombinator` performs `recombine` on an individual with itself.
+* [#600](https://github.com/jenetics/jenetics/issues/600): Duplicates in Pareto set owing to the `equals` method in `Phenotype` class.
+
 ### [5.0.1](https://github.com/jenetics/jenetics/releases/tag/v5.0.1)
 
 #### Bugs

@@ -28,7 +28,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -71,13 +73,32 @@ import io.jenetics.util.Seq;
  * Inserting a new element has a time complexity of {@code O(n)}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.1
  * @since 4.1
  */
 public final class ParetoFront<T> extends AbstractSet<T> {
 
 	private final Comparator<? super T> _dominance;
+	private final BiPredicate<? super T, ? super T> _equals;
 	private final List<T> _population = new ArrayList<>();
+
+	/**
+	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
+	 *
+	 * @since 5.1
+	 *
+	 * @param dominance the <em>Pareto</em> dominance measure
+	 * @param equals the equals predicate used for keeping the set distinct
+	 * @throws NullPointerException if the given {@code dominance} measure is
+	 *         {@code null}
+	 */
+	public ParetoFront(
+		final Comparator<? super T> dominance,
+		final BiPredicate<? super T, ? super T> equals
+	) {
+		_dominance = requireNonNull(dominance);
+		_equals = requireNonNull(equals);
+	}
 
 	/**
 	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
@@ -87,14 +108,15 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 *         {@code null}
 	 */
 	public ParetoFront(final Comparator<? super T> dominance) {
-		_dominance = requireNonNull(dominance);
+		this(dominance, Objects::equals);
 	}
 
 	/**
 	 * Inserts an {@code element} to this pareto front.
 	 *
-	 * @apiNote
-	 * Inserting a new element has a time complexity of {@code O(n)}.
+	 * @implNote
+	 * Inserting a new element has a time complexity of {@code O(n)}, where
+	 * <em>n</em> is the number of elements of {@code this} pareto-front.
 	 *
 	 * @param element the element to add
 	 * @return {@code true} if this set did not already contain the specified
@@ -113,7 +135,7 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 			if (cmp > 0) {
 				iterator.remove();
 				updated = true;
-			} else if (cmp < 0 || element.equals(existing)) {
+			} else if (cmp < 0 || _equals.test(element, existing)) {
 				return updated;
 			}
 		}

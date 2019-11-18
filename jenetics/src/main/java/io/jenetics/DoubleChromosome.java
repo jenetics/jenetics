@@ -150,6 +150,8 @@ public class DoubleChromosome
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty or the given {@code genes} doesn't have the same range.
+	 * @throws NullPointerException if the given {@code genes} array is
+	 *         {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		checkGeneRange(Stream.of(genes).map(DoubleGene::range));

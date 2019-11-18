@@ -45,7 +45,7 @@ import io.jenetics.internal.collection.ObjectStore;
  * concurrently it must be <em>synchronized</em> externally.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.1
  * @since 5.0
  */
 final class Buffer<T> implements Iterable<T> {

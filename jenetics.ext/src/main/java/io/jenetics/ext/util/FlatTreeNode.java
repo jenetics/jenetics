@@ -32,7 +32,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -261,10 +260,7 @@ public final class FlatTreeNode<T>
 		int childOffset = 1;
 		int index = 0;
 
-		final var it = tree.breadthFirstIterator();
-		while (it.hasNext()) {
-			final Tree<?, ?> node = it.next();
-
+		for (Tree<?, ?> node : tree) {
 			elements[index] = node.getValue();
 			childCounts[index] = node.childCount();
 			childOffsets[index] = node.isLeaf() ? -1 : childOffset;

@@ -22,7 +22,6 @@ package io.jenetics.ext;
 import java.util.Random;
 
 import io.jenetics.Chromosome;
-import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
 import io.jenetics.internal.math.probability;

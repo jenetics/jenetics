@@ -145,7 +145,7 @@ public final class TreePattern<V> implements Serializable {
 					));
 				}
 
-				variables.add((Var<V>) n.getValue());
+				variables.add((Var<V>)n.getValue());
 			}
 		}
 
