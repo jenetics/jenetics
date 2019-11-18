@@ -145,7 +145,7 @@ public final class TreePattern<V> implements Serializable {
 					));
 				}
 
-				variables.add((Var<V>) n.getValue());
+				variables.add((Var<V>)n.getValue());
 			}
 		}
 
@@ -287,8 +287,6 @@ public final class TreePattern<V> implements Serializable {
 		for (Map.Entry<Path, Var<V>> var : paths.entrySet()) {
 			final Path path = var.getKey();
 			final Var<V> decl = var.getValue();
-			final TreeNode<V> child = tree.childAtPath(path)
-				.orElseThrow(AssertionError::new);
 
 			final Tree<? extends V, ?> replacement = vars.get(decl);
 			if (replacement != null) {

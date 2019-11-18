@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id 'me.champeau.gradle.jmh' version '0.4.8'
+	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
 }
 
 apply plugin: 'java-library'
@@ -48,7 +48,7 @@ jmh {
 	//duplicateClassesStrategy = 'include'
 	warmupIterations = 5
 	iterations = 5
-	include = ['.*ThreadIDPerf.*']
+	include = ['.*BufferPerf.*']
 }
 
 idea {
@@ -56,13 +56,6 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics',
-	'io.jenetics.engine',
-	'io.jenetics.util',
-	'io.jenetics.stat'
-)
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
 

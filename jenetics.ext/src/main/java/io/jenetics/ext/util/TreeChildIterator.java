@@ -36,7 +36,6 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 	private final T _tree;
 
 	private int cursor = 0;
-	private int lastElement = -1;
 
 	TreeChildIterator(final T tree) {
 		_tree = requireNonNull(tree, "Tree must not be null.");
@@ -55,7 +54,7 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 		}
 
 		cursor = i + 1;
-		return _tree.childAt(lastElement = i);
+		return _tree.childAt(i);
 	}
 
 	@Override
@@ -76,7 +75,7 @@ final class TreeChildIterator<V, T extends Tree<V, T>>
 		}
 
 		cursor = i;
-		return _tree.childAt(lastElement = i);
+		return _tree.childAt(i);
 	}
 
 	@Override

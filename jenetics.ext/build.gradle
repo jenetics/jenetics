@@ -25,7 +25,7 @@
  */
 
 plugins {
-    id "me.champeau.gradle.jmh" version "0.4.8"
+	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
 }
 
 apply plugin: 'java-library'
@@ -59,13 +59,6 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.ext',
-	'io.jenetics.ext.engine',
-	'io.jenetics.ext.moea',
-	'io.jenetics.ext.util'
-)
 
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.ext')
 

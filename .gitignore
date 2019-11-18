@@ -53,3 +53,4 @@ nbproject/**
 nbbuild/**
 build.xml
 manifest.mf
+/build/

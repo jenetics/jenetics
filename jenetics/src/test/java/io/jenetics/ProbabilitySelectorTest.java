@@ -47,7 +47,7 @@ public class ProbabilitySelectorTest {
 	@DataProvider(name = "arraySize")
 	public Object[][] arraySize() {
 		return new Object[][]{
-			{6}, {100}, {1000}, {10_000}, {100_000}, {500_000}
+			{6}, {100}, {1000}, {10_000} //, {100_000}, {500_000}
 		};
 	}
 

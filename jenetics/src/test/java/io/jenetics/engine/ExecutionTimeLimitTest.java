@@ -24,7 +24,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -67,7 +66,7 @@ public class ExecutionTimeLimitTest {
 	}
 
 	private static EvolutionStream<DoubleGene, Double> stream() {
-		final Function<EvolutionStart<DoubleGene, Double>, EvolutionResult<DoubleGene, Double>> ff =
+		final Evolution<DoubleGene, Double> evolution =
 			s -> EvolutionResult.of(
 				Optimize.MAXIMUM,
 				ISeq.empty(),
@@ -76,7 +75,7 @@ public class ExecutionTimeLimitTest {
 
 		return new EvolutionStreamImpl<DoubleGene, Double>(
 			() -> EvolutionStart.of(ISeq.empty(), 1),
-			ff
+			evolution
 		);
 	}
 

@@ -24,7 +24,6 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.osgi.OsgiPlugin
 import org.gradle.api.plugins.scala.ScalaPlugin
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
@@ -82,33 +81,8 @@ class SetupPlugin extends JeneticsPlugin {
 		}
 
 		if (!isBuildSrc()) {
-			configureOsgi()
 			configureTestReporting()
 			configureJavadoc()
-		}
-	}
-
-	private void configureOsgi() {
-		project.plugins.apply(OsgiPlugin)
-		project.jar {
-			manifest {
-				version = version
-				symbolicName = project.name
-				name = project.name
-				instruction 'Bundle-Vendor', project.property('jenetics.Author')
-				instruction 'Bundle-Description', project.property('jenetics.Description')
-				instruction 'Bundle-DocURL', project.property('jenetics.Url')
-
-				attributes(
-					'Implementation-Title': project.name,
-					'Implementation-Version': project.version,
-					'Implementation-URL': project.property('jenetics.Url'),
-					'Implementation-Vendor': project.property('jenetics.Name'),
-					'ProjectName': project.property('jenetics.Name'),
-					'Version': project.version,
-					'Maintainer': project.property('jenetics.Author')
-				)
-			}
 		}
 	}
 

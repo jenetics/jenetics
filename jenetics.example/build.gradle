@@ -39,10 +39,6 @@ dependencies {
 	testImplementation property('include.TestNG')
 }
 
-jar.manifest.instruction('Export-Package',
-	'io.jenetics.example'
-)
-
 jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
 
 packaging {

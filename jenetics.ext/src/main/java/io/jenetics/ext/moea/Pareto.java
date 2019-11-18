@@ -22,7 +22,6 @@ package io.jenetics.ext.moea;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.IndexSorter.init;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,9 +29,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.ToIntFunction;
 
-import io.jenetics.internal.util.IndexSorter;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 import io.jenetics.ext.internal.IntList;
@@ -118,11 +117,11 @@ public final class Pareto {
 		if (set.size() < 3) {
 			Arrays.fill(result, POSITIVE_INFINITY);
 		} else {
-			final int[] idx = new int[set.size()];
-			final IndexSorter sorter = IndexSorter.sorter(set.size());
-
 			for (int m = 0, d = dimension.applyAsInt(set.get(0)); m < d; ++m) {
-				sorter.sort(set, init(idx), comparator.ofIndex(m));
+				final int[] idx = ProxySorter.sort(
+					set,
+					comparator.ofIndex(m).reversed()
+				);
 
 				result[idx[0]] = POSITIVE_INFINITY;
 				result[idx[set.size() - 1]] = POSITIVE_INFINITY;

@@ -24,7 +24,6 @@ import static io.jenetics.internal.math.comb.subset;
 import static io.jenetics.internal.math.random.indexes;
 
 import java.util.Random;
-import java.util.function.IntFunction;
 
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
@@ -52,7 +51,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.1
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -103,17 +102,10 @@ public abstract class Recombinator<
 			final Random random = RandomRegistry.getRandom();
 			final int order = Math.min(_order, population.size());
 
-			// Selection of the individuals for recombination.
-			final IntFunction<int[]> individuals = i -> {
-				final int[] ind = subset(population.size(), order, random);
-				ind[0] = i;
-				return ind;
-			};
-
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 			final int count = indexes(random, population.size(), _probability)
-				.mapToObj(individuals)
-				.mapToInt(i -> recombine(pop, i, generation))
+				.mapToObj(i -> individuals(i, population.size(), order, random))
+				.mapToInt(ind -> recombine(pop, ind, generation))
 				.sum();
 
 			result = AltererResult.of(pop.toISeq(), count);
@@ -122,6 +114,25 @@ public abstract class Recombinator<
 		}
 
 		return result;
+	}
+
+	static int[] individuals(
+		final int index,
+		final int size,
+		final int order,
+		final Random random
+	) {
+		final int[] ind = subset(size, order, random);
+
+		// Find the correct slot for the "master" individual.
+		// This prevents duplicate index entries.
+		int i = 0;
+		while (ind[i] < index && i < ind.length - 1) {
+			++i;
+		}
+		ind[i] = index;
+
+		return ind;
 	}
 
 	/**

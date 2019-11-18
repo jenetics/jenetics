@@ -112,13 +112,14 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 5.1
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements
+		Evolution<G, C>,
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
 		EvolutionStreamable<G, C>
 {
@@ -203,59 +204,30 @@ public final class Engine<
 	 * method.
 	 *
 	 * @since 3.1
+	 *
+	 * @see Evolution
+	 *
+	 * @deprecated Will be removed and superseded by {@link #evolve(EvolutionStart)}
 	 */
+	@Deprecated
 	@Override
 	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
 		return evolve(start);
 	}
 
-	/**
-	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
-	 *
-	 * @see #evolve(EvolutionStart)
-	 *
-	 * @param population the population to evolve
-	 * @param generation the current generation; used for calculating the
-	 *        phenotype age.
-	 * @return the evolution result
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}
-	 * @throws IllegalArgumentException if the given {@code generation} is
-	 *         smaller then one
-	 */
-	public EvolutionResult<G, C> evolve(
-		final ISeq<Phenotype<G, C>> population,
-		final long generation
-	) {
-		return evolve(EvolutionStart.of(population, generation));
-	}
-
-	/**
-	 * Perform one evolution step with the given evolution {@code start} object
-	 * New phenotypes are created with the fitness function and fitness scaler
-	 * defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
-	 *
-	 * @since 3.1
-	 * @see #evolve(ISeq, long)
-	 *
-	 * @param start the evolution start object
-	 * @return the evolution result
-	 * @throws java.lang.NullPointerException if the given evolution
-	 *         {@code start} is {@code null}
-	 */
+	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		// Create initial population if `start` is empty.
+		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
+			? evolutionStart(start)
+			: start;
+
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
 		timing.evolve.start();
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(start.getPopulation())
+			evaluate(es.getPopulation())
 		);
 
 		// Select the offspring population.
@@ -280,7 +252,7 @@ public final class Engine<
 		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
 			offspring.thenApplyAsync(off ->
 				timing.offspringAlter.timing(() ->
-					_alterer.alter(off, start.getGeneration())
+					_alterer.alter(off, es.getGeneration())
 				),
 				_executor
 			);
@@ -289,7 +261,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
 			survivors.thenApplyAsync(sur ->
 				timing.survivorFilter.timing(() ->
-					filter(sur, start.getGeneration())
+					filter(sur, es.getGeneration())
 				),
 				_executor
 			);
@@ -298,7 +270,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.getPopulation(), start.getGeneration())
+					filter(off.getPopulation(), es.getGeneration())
 				),
 				_executor
 			);
@@ -330,7 +302,7 @@ public final class Engine<
 		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,
 			result,
-			start.getGeneration(),
+			es.getGeneration(),
 			timing.toDurations(),
 			killCount,
 			invalidCount,
@@ -437,7 +409,10 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.of(evolutionStart(start), this::evolve);
+		return EvolutionStream.ofEvolution(
+			() -> evolutionStart(start.get()),
+			this
+		);
 	}
 
 	@Override
@@ -445,32 +420,34 @@ public final class Engine<
 		return stream(evolutionStart(init));
 	}
 
-	private Supplier<EvolutionStart<G, C>>
-	evolutionStart(final Supplier<EvolutionStart<G, C>> start) {
-		return () -> {
-			final EvolutionStart<G, C> es = start.get();
-			final ISeq<Phenotype<G, C>> population = es.getPopulation();
-			final long gen = es.getGeneration();
+	private EvolutionStart<G, C>
+	evolutionStart(final EvolutionStart<G, C> start) {
+		final ISeq<Phenotype<G, C>> population = start.getPopulation();
+		final long gen = start.getGeneration();
 
-			final Stream<Phenotype<G, C>> stream = Stream.concat(
-				population.stream(),
-				_genotypeFactory.instances().map(gt -> Phenotype.of(gt, gen))
-			);
+		final Stream<Phenotype<G, C>> stream = Stream.concat(
+			population.stream(),
+			_genotypeFactory.instances()
+				.map(gt -> Phenotype.of(gt, gen))
+		);
 
-			final ISeq<Phenotype<G, C>> pop = stream
-				.limit(getPopulationSize())
-				.collect(ISeq.toISeq());
+		final ISeq<Phenotype<G, C>> pop = stream
+			.limit(getPopulationSize())
+			.collect(ISeq.toISeq());
 
-			return EvolutionStart.of(pop, gen);
-		};
+		return EvolutionStart.of(pop, gen);
 	}
 
-	private Supplier<EvolutionStart<G, C>>
+	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		return evolutionStart(() -> EvolutionStart.of(
-			init.getPopulation()
-				.map(gt -> Phenotype.of(gt, init.getGeneration())),
-			init.getGeneration())
+		final ISeq<Genotype<G>> pop = init.getPopulation();
+		final long gen = init.getGeneration();
+
+		return evolutionStart(
+			EvolutionStart.of(
+				pop.map(gt -> Phenotype.of(gt, gen)),
+				gen
+			)
 		);
 	}
 
@@ -729,7 +706,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.0
+	 * @version 5.1
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -868,11 +845,9 @@ public final class Engine<
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
 		 *        invalid phenotypes when needed.
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.NullPointerException if the {@code validator} is
-		 *         {@code null}.
 		 */
 		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
-			_constraint = requireNonNull(constraint);
+			_constraint = constraint;
 			return this;
 		}
 
