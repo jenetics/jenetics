@@ -1,7 +1,7 @@
 ################################################################################
 # Output definition
 ################################################################################
-set terminal svg size 500, 500 fname "Serif" fsize 16
+set terminal svg size 700, 600 font "Serif,16"
 set output output
 
 # color definitions

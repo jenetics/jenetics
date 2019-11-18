@@ -38539,9 +38539,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename ../resources/diagram/dtlz1.png
-	lyxscale 30
-	width 60col%
+	filename ../resources/diagram/dtlz1.svg
+	width 100col%
 	clip
 
 \end_inset
