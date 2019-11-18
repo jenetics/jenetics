@@ -38355,7 +38355,7 @@ status open
 \begin_inset Graphics
 	filename ../resources/code/SymbolicRegression.svg
 	lyxscale 70
-	width 73col%
+	width 70col%
 
 \end_inset
 
@@ -38541,7 +38541,6 @@ status open
 \begin_inset Graphics
 	filename ../resources/diagram/dtlz1.svg
 	width 100col%
-	clip
 
 \end_inset
 

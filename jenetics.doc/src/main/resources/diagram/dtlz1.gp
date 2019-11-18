@@ -1,7 +1,7 @@
 ################################################################################
 # Output definition
 ################################################################################
-set terminal svg size 700, 600 font "Serif,16"
+set terminal svg size 700, 700 font "Serif,16"
 set output output
 
 # color definitions
@@ -14,7 +14,7 @@ set xlabel "f_1"
 set ylabel "f_2"
 set zlabel "f_3"
 set ticslevel 0
-set view 65,75
+set view 60,75
 
 set xrange [0:0.5]
 set yrange [0:0.5]
