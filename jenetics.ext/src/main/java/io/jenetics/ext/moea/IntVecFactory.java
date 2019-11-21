@@ -31,17 +31,13 @@ import io.jenetics.Optimize;
 final class IntVecFactory implements VecFactory<int[]> {
 	private final Optimize[] _optimizes;
 
-	private final ElementComparator<int[]> _comparator;
-	private final ElementDistance<int[]> _distance;
-	private final Comparator<int[]> _dominance;
+	private final ElementComparator<int[]> _comparator = this::cmp;
+	private final ElementDistance<int[]> _distance = this::dst;
+	private final Comparator<int[]> _dominance = this::dom;
 
 	IntVecFactory(final Optimize[] optimizes) {
 		Vecs.checkVecLength(optimizes.length);
 		_optimizes = optimizes.clone();
-
-		_comparator = this::cmp;
-		_distance = this::dst;
-		_dominance = this::dom;
 	}
 
 	private int cmp(final int[] u, final int[] v, final int i) {
