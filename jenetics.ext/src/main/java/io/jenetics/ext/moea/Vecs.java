@@ -21,7 +21,6 @@ package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
