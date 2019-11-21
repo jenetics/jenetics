@@ -321,10 +321,6 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		return null;
 	}
 
-	public static Vec<int[]> of(final Object context, final int... array) {
-		return null;
-	}
-
 	/**
 	 * Wraps the given array into a {@code Vec} object.
 	 *
