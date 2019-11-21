@@ -21,7 +21,6 @@ package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -30,8 +29,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class IntVec implements Vec<int[]>, Serializable {
-	private static final long serialVersionUID = 1L;
+final class IntVec implements Vec<int[]> {
 
 	private final int[] _data;
 	private final ElementComparator<int[]> _comparator;
