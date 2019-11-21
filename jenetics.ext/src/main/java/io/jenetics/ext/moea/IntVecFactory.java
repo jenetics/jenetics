@@ -28,19 +28,20 @@ import io.jenetics.Optimize;
  * @version !__version__!
  * @since !__version__!
  */
-public class VecBuilder {
-
+final class IntVecFactory implements VecFactory<int[]> {
 	private final Optimize[] _optimizes;
 
+	private final ElementComparator<int[]> _comparator;
+	private final ElementDistance<int[]> _distance;
+	private final Comparator<int[]> _dominance;
 
-	private ElementComparator<int[]> _comparator;
-	private ElementDistance<int[]> _distance;
-	private Comparator<int[]> _dominance;
-
-	private VecBuilder(final Optimize[] optimizes) {
+	IntVecFactory(final Optimize[] optimizes) {
+		Vecs.checkVecLength(optimizes.length);
 		_optimizes = optimizes.clone();
 
 		_comparator = this::cmp;
+		_distance = this::dist;
+		_dominance = this::dom;
 	}
 
 	private int cmp(final int[] u, final int[] v, final int i) {
@@ -49,13 +50,19 @@ public class VecBuilder {
 			: Integer.compare(v[i], u[i]);
 	}
 
-	public Vec<int[]> newVec(final int... array) {
-		return new IntVec(array, _comparator, _distance, _dominance);
+	private double dist(final int[] u, final int[] v, final int i) {
+		return _optimizes[i] == Optimize.MAXIMUM
+			? u[i] - v[i]
+			: v[i] - u[i];
 	}
 
+	private int dom(final int[] u, final int[] v) {
+		return Pareto.dominance(u, v, _optimizes.length, this::cmp);
+	}
 
-	public static VecBuilder builder(final Optimize... optimizes) {
-		return new VecBuilder(optimizes);
+	@Override
+	public Vec<int[]> create(final int[] array) {
+		return new IntVec(array, _comparator, _distance, _dominance);
 	}
 
 }
