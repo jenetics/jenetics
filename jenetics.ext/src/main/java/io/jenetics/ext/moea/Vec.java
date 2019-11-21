@@ -311,16 +311,6 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		return new ObjectVec<>(array, comparator, distance);
 	}
 
-	public static <A> Vec<A> of(
-		final A array,
-		final int length,
-		final ElementComparator<? super A> comparator,
-		final ElementDistance<? super A> distance,
-		final Comparator<? super A> dominance
-	) {
-		return null;
-	}
-
 	/**
 	 * Wraps the given array into a {@code Vec} object.
 	 *
