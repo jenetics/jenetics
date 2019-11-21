@@ -23,9 +23,6 @@ import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Comparator;
 
-import io.jenetics.ext.moea.Vecs.DoubleVec;
-import io.jenetics.ext.moea.Vecs.IntVec;
-import io.jenetics.ext.moea.Vecs.LongVec;
 import io.jenetics.ext.moea.Vecs.ObjectVec;
 
 /**
@@ -312,6 +309,20 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		final ElementDistance<T[]> distance
 	) {
 		return new ObjectVec<>(array, comparator, distance);
+	}
+
+	public static <A> Vec<A> of(
+		final A array,
+		final int length,
+		final ElementComparator<? super A> comparator,
+		final ElementDistance<? super A> distance,
+		final Comparator<? super A> dominance
+	) {
+		return null;
+	}
+
+	public static Vec<int[]> of(final Object context, final int... array) {
+		return null;
 	}
 
 	/**

@@ -19,28 +19,16 @@
  */
 package io.jenetics.ext.moea;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
-import org.testng.annotations.Test;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
  */
-public class VecsTest {
+public class Opt {
 
-	@Test
-	public void intVecEqualsVerifier() {
-		EqualsVerifier.forClass(IntVec.class).verify();
-	}
 
-	@Test
-	public void longVecEqualsVerifier() {
-		EqualsVerifier.forClass(LongVec.class).verify();
-	}
-
-	@Test
-	public void doubleVecEqualsVerifier() {
-		EqualsVerifier.forClass(DoubleVec.class).verify();
+	public Vec<int[]> of(final int... array) {
+		return null;
 	}
 
 }
