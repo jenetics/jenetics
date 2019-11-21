@@ -19,16 +19,22 @@
  */
 package io.jenetics.ext.moea;
 
+import io.jenetics.Optimize;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Opt {
-
+public class VecBuilder {
 
 	public Vec<int[]> of(final int... array) {
 		return null;
+	}
+
+
+	public static VecBuilder builder(final Optimize... optimizes) {
+		return new VecBuilder();
 	}
 
 }
