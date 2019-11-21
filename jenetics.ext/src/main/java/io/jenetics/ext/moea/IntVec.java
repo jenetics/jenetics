@@ -57,17 +57,25 @@ final class IntVec implements Vec<int[]>, Serializable {
 
 	@Override
 	public ElementComparator<int[]> comparator() {
-		return (u, v, i) -> Integer.compare(u[i], v[i]);
+		return IntVec::cmp;
+	}
+
+	private static int cmp(final int[] u, final int[] v, final int i) {
+		return Integer.compare(u[i], v[i]);
 	}
 
 	@Override
 	public ElementDistance<int[]> distance() {
-		return (u, v, i) -> u[i] - v[i];
+		return IntVec::dist;
+	}
+
+	private static double dist(final int[] u, final int[] v, final int i) {
+		return u[i] - v[i];
 	}
 
 	@Override
 	public Comparator<int[]> dominance() {
-		return Vec::dominance;
+		return Pareto::dominance;
 	}
 
 	@Override

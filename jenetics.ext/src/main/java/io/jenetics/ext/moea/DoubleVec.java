@@ -57,17 +57,25 @@ final class DoubleVec implements Vec<double[]>, Serializable {
 
 	@Override
 	public ElementComparator<double[]> comparator() {
-		return (u, v, i) -> Double.compare(u[i], v[i]);
+		return DoubleVec::cmp;
+	}
+
+	private static int cmp(final double[] u, final double[] v, final int i) {
+		return Double.compare(u[i], v[i]);
 	}
 
 	@Override
 	public ElementDistance<double[]> distance() {
-		return (u, v, i) -> u[i] - v[i];
+		return DoubleVec::dist;
+	}
+
+	private static double dist(final double[] u, final double[] v, final int i) {
+		return u[i] - v[i];
 	}
 
 	@Override
 	public Comparator<double[]> dominance() {
-		return Vec::dominance;
+		return Pareto::dominance;
 	}
 
 	@Override

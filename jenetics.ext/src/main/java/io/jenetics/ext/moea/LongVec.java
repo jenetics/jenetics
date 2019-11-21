@@ -57,17 +57,25 @@ final class LongVec implements Vec<long[]>, Serializable {
 
 	@Override
 	public ElementComparator<long[]> comparator() {
-		return (u, v, i) -> Long.compare(u[i], v[i]);
+		return LongVec::cmp;
+	}
+
+	private static int cmp(final long[] u, final long[] v, final int i) {
+		return Long.compare(u[i], v[i]);
 	}
 
 	@Override
 	public ElementDistance<long[]> distance() {
-		return (u, v, i) -> u[i] - v[i];
+		return LongVec::dist;
+	}
+
+	private static double dist(final long[] u, final long[] v, final int i) {
+		return u[i] - v[i];
 	}
 
 	@Override
 	public Comparator<long[]> dominance() {
-		return Vec::dominance;
+		return Pareto::dominance;
 	}
 
 	@Override
