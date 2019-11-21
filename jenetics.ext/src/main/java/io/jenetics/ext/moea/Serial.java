@@ -70,6 +70,8 @@ final class Serial implements Externalizable {
 		out.writeByte(_type);
 		switch (_type) {
 			case INT_VEC: ((IntVec)_object).write(out); break;
+			case LONG_VEC: ((LongVec)_object).write(out); break;
+			case DOUBLE_VEC: ((DoubleVec)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -82,6 +84,8 @@ final class Serial implements Externalizable {
 		_type = in.readByte();
 		switch (_type) {
 			case INT_VEC: _object = IntVec.read(in); break;
+			case LONG_VEC: _object = LongVec.read(in); break;
+			case DOUBLE_VEC: _object = DoubleVec.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

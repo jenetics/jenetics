@@ -19,6 +19,14 @@
  */
 package io.jenetics.ext.moea;
 
+import static io.jenetics.internal.util.SerialIO.readLongArray;
+import static io.jenetics.internal.util.SerialIO.writeLongArray;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -77,5 +85,28 @@ final class LongVec implements Vec<long[]>, Serializable {
 	@Override
 	public String toString() {
 		return Arrays.toString(_data);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_VEC, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLongArray(_data, out);
+	}
+
+	static LongVec read(final DataInput in) throws IOException {
+		return new LongVec(readLongArray(in));
 	}
 }
