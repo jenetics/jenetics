@@ -40,7 +40,7 @@ final class IntVecFactory implements VecFactory<int[]> {
 		_optimizes = optimizes.clone();
 
 		_comparator = this::cmp;
-		_distance = this::dist;
+		_distance = this::dst;
 		_dominance = this::dom;
 	}
 
@@ -50,7 +50,7 @@ final class IntVecFactory implements VecFactory<int[]> {
 			: Integer.compare(v[i], u[i]);
 	}
 
-	private double dist(final int[] u, final int[] v, final int i) {
+	private double dst(final int[] u, final int[] v, final int i) {
 		return _optimizes[i] == Optimize.MAXIMUM
 			? u[i] - v[i]
 			: v[i] - u[i];
