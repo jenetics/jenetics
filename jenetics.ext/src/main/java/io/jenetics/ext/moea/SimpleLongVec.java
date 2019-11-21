@@ -36,11 +36,11 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class LongVec implements Vec<long[]>, Serializable {
+final class SimpleLongVec implements Vec<long[]>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private final long[] _data;
 
-	LongVec(final long[] data) {
+	SimpleLongVec(final long[] data) {
 		Vecs.checkVecLength(data.length);
 		_data = data;
 	}
@@ -57,7 +57,7 @@ final class LongVec implements Vec<long[]>, Serializable {
 
 	@Override
 	public ElementComparator<long[]> comparator() {
-		return LongVec::cmp;
+		return SimpleLongVec::cmp;
 	}
 
 	private static int cmp(final long[] u, final long[] v, final int i) {
@@ -66,7 +66,7 @@ final class LongVec implements Vec<long[]>, Serializable {
 
 	@Override
 	public ElementDistance<long[]> distance() {
-		return LongVec::dist;
+		return SimpleLongVec::dist;
 	}
 
 	private static double dist(final long[] u, final long[] v, final int i) {
@@ -86,8 +86,8 @@ final class LongVec implements Vec<long[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof LongVec &&
-				Arrays.equals(((LongVec) obj)._data, _data);
+			obj instanceof SimpleLongVec &&
+				Arrays.equals(((SimpleLongVec) obj)._data, _data);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ final class LongVec implements Vec<long[]>, Serializable {
 		writeLongArray(_data, out);
 	}
 
-	static LongVec read(final DataInput in) throws IOException {
-		return new LongVec(readLongArray(in));
+	static SimpleLongVec read(final DataInput in) throws IOException {
+		return new SimpleLongVec(readLongArray(in));
 	}
 }

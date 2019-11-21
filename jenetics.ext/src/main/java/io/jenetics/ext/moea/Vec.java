@@ -330,7 +330,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<int[]> of(final int... array) {
-		return new IntVec(array);
+		return new SimpleIntVec(array);
 	}
 
 	/**
@@ -342,7 +342,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<long[]> of(final long... array) {
-		return new LongVec(array);
+		return new SimpleLongVec(array);
 	}
 
 	/**
@@ -354,7 +354,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<double[]> of(final double... array) {
-		return new DoubleVec(array);
+		return new SimpleDoubleVec(array);
 	}
 
 }

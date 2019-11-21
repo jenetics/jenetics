@@ -36,11 +36,11 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class IntVec implements Vec<int[]>, Serializable {
+final class SimpleIntVec implements Vec<int[]>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private final int[] _data;
 
-	IntVec(final int[] data) {
+	SimpleIntVec(final int[] data) {
 		Vecs.checkVecLength(data.length);
 		_data = data;
 	}
@@ -57,7 +57,7 @@ final class IntVec implements Vec<int[]>, Serializable {
 
 	@Override
 	public ElementComparator<int[]> comparator() {
-		return IntVec::cmp;
+		return SimpleIntVec::cmp;
 	}
 
 	private static int cmp(final int[] u, final int[] v, final int i) {
@@ -66,7 +66,7 @@ final class IntVec implements Vec<int[]>, Serializable {
 
 	@Override
 	public ElementDistance<int[]> distance() {
-		return IntVec::dist;
+		return SimpleIntVec::dist;
 	}
 
 	private static double dist(final int[] u, final int[] v, final int i) {
@@ -86,8 +86,8 @@ final class IntVec implements Vec<int[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntVec &&
-			Arrays.equals(((IntVec) obj)._data, _data);
+			obj instanceof SimpleIntVec &&
+			Arrays.equals(((SimpleIntVec) obj)._data, _data);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ final class IntVec implements Vec<int[]>, Serializable {
 		writeIntArray(_data, out);
 	}
 
-	static IntVec read(final DataInput in) throws IOException {
-		return new IntVec(readIntArray(in));
+	static SimpleIntVec read(final DataInput in) throws IOException {
+		return new SimpleIntVec(readIntArray(in));
 	}
 }

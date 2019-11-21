@@ -30,17 +30,17 @@ public class VecsTest {
 
 	@Test
 	public void intVecEqualsVerifier() {
-		EqualsVerifier.forClass(IntVec.class).verify();
+		EqualsVerifier.forClass(SimpleIntVec.class).verify();
 	}
 
 	@Test
 	public void longVecEqualsVerifier() {
-		EqualsVerifier.forClass(LongVec.class).verify();
+		EqualsVerifier.forClass(SimpleLongVec.class).verify();
 	}
 
 	@Test
 	public void doubleVecEqualsVerifier() {
-		EqualsVerifier.forClass(DoubleVec.class).verify();
+		EqualsVerifier.forClass(SimpleDoubleVec.class).verify();
 	}
 
 }

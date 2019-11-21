@@ -36,11 +36,11 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class DoubleVec implements Vec<double[]>, Serializable {
+final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	private static final long serialVersionUID = 1L;
 	private final double[] _data;
 
-	DoubleVec(final double[] data) {
+	SimpleDoubleVec(final double[] data) {
 		Vecs.checkVecLength(data.length);
 		_data = data;
 	}
@@ -57,7 +57,7 @@ final class DoubleVec implements Vec<double[]>, Serializable {
 
 	@Override
 	public ElementComparator<double[]> comparator() {
-		return DoubleVec::cmp;
+		return SimpleDoubleVec::cmp;
 	}
 
 	private static int cmp(final double[] u, final double[] v, final int i) {
@@ -66,7 +66,7 @@ final class DoubleVec implements Vec<double[]>, Serializable {
 
 	@Override
 	public ElementDistance<double[]> distance() {
-		return DoubleVec::dist;
+		return SimpleDoubleVec::dist;
 	}
 
 	private static double dist(final double[] u, final double[] v, final int i) {
@@ -86,8 +86,8 @@ final class DoubleVec implements Vec<double[]>, Serializable {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof DoubleVec &&
-				Arrays.equals(((DoubleVec) obj)._data, _data);
+			obj instanceof SimpleDoubleVec &&
+				Arrays.equals(((SimpleDoubleVec) obj)._data, _data);
 	}
 
 	@Override
@@ -117,11 +117,11 @@ final class DoubleVec implements Vec<double[]>, Serializable {
 		}
 	}
 
-	static DoubleVec read(final DataInput in) throws IOException {
+	static SimpleDoubleVec read(final DataInput in) throws IOException {
 		final double[] data = new double[readInt(in)];
 		for (int i = 0; i < data.length; ++i) {
 			data[i] = in.readDouble();
 		}
-		return new DoubleVec(data);
+		return new SimpleDoubleVec(data);
 	}
 }
