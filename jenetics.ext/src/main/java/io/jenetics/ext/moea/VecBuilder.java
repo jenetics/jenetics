@@ -19,6 +19,8 @@
  */
 package io.jenetics.ext.moea;
 
+import java.util.Comparator;
+
 import io.jenetics.Optimize;
 
 /**
@@ -28,13 +30,32 @@ import io.jenetics.Optimize;
  */
 public class VecBuilder {
 
-	public Vec<int[]> of(final int... array) {
-		return null;
+	private final Optimize[] _optimizes;
+
+
+	private ElementComparator<int[]> _comparator;
+	private ElementDistance<int[]> _distance;
+	private Comparator<int[]> _dominance;
+
+	private VecBuilder(final Optimize[] optimizes) {
+		_optimizes = optimizes.clone();
+
+		_comparator = this::cmp;
+	}
+
+	private int cmp(final int[] u, final int[] v, final int i) {
+		return _optimizes[i] == Optimize.MAXIMUM
+			? Integer.compare(u[i], v[i])
+			: Integer.compare(v[i], u[i]);
+	}
+
+	public Vec<int[]> newVec(final int... array) {
+		return new IntVec(array, _comparator, _distance, _dominance);
 	}
 
 
 	public static VecBuilder builder(final Optimize... optimizes) {
-		return new VecBuilder();
+		return new VecBuilder(optimizes);
 	}
 
 }
