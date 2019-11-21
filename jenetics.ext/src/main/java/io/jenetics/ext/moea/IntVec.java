@@ -22,6 +22,7 @@ package io.jenetics.ext.moea;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -73,6 +74,23 @@ final class IntVec implements Vec<int[]>, Serializable {
 	@Override
 	public Comparator<int[]> dominance() {
 		return _dominance;
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_data);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof IntVec &&
+			Arrays.equals(((IntVec)obj)._data, _data);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(_data);
 	}
 
 }
