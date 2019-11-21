@@ -38,6 +38,7 @@ import java.util.Comparator;
  */
 final class SimpleIntVec implements Vec<int[]>, Serializable {
 	private static final long serialVersionUID = 1L;
+
 	private final int[] _data;
 
 	SimpleIntVec(final int[] data) {
@@ -101,7 +102,7 @@ final class SimpleIntVec implements Vec<int[]>, Serializable {
 	 * ************************************************************************/
 
 	private Object writeReplace() {
-		return new Serial(Serial.INT_VEC, this);
+		return new Serial(Serial.SIMPLE_INT_VEC, this);
 	}
 
 	private void readObject(final ObjectInputStream stream)

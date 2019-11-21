@@ -38,6 +38,7 @@ import java.util.Comparator;
  */
 final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	private static final long serialVersionUID = 1L;
+
 	private final double[] _data;
 
 	SimpleDoubleVec(final double[] data) {
@@ -101,7 +102,7 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	 * ************************************************************************/
 
 	private Object writeReplace() {
-		return new Serial(Serial.DOUBLE_VEC, this);
+		return new Serial(Serial.SIMPLE_DOUBLE_VEC, this);
 	}
 
 	private void readObject(final ObjectInputStream stream)
