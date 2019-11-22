@@ -35,18 +35,42 @@ import io.jenetics.Optimize;
 public class VecsTest {
 
 	@Test
-	public void intVecEqualsVerifier() {
+	public void simpleIntVecEqualsVerifier() {
 		EqualsVerifier.forClass(SimpleIntVec.class).verify();
 	}
 
 	@Test
-	public void longVecEqualsVerifier() {
+	public void simpleLongVecEqualsVerifier() {
 		EqualsVerifier.forClass(SimpleLongVec.class).verify();
 	}
 
 	@Test
-	public void doubleVecEqualsVerifier() {
+	public void simpleDoubleVecEqualsVerifier() {
 		EqualsVerifier.forClass(SimpleDoubleVec.class).verify();
+	}
+
+	@Test
+	public void generalIntVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralIntVec.class)
+			.withPrefabValues(Object.class, new int[]{1, 3, 2}, new int[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void generalLongVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralLongVec.class)
+			.withPrefabValues(Object.class, new long[]{1, 3, 2}, new long[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
+	public void generalDoubleVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralDoubleVec.class)
+			.withPrefabValues(Object.class, new double[]{1, 3, 2}, new double[]{1})
+			.withOnlyTheseFields("_data")
+			.verify();
 	}
 
 	@Test
