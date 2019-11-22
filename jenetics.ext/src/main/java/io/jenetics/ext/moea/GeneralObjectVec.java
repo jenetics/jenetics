@@ -19,38 +19,37 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 import java.util.Comparator;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-final class IntVec implements Vec<int[]> {
+final class GeneralObjectVec<T> implements Vec<T[]> {
 
-	private final int[] _data;
-	private final ElementComparator<int[]> _comparator;
-	private final ElementDistance<int[]> _distance;
-	private final Comparator<int[]> _dominance;
+	private final T[] _data;
+	private final ElementComparator<T[]> _comparator;
+	private final ElementDistance<T[]> _distance;
+	private final Comparator<T[]> _dominance;
 
-	IntVec(
-		final int[] data,
-		final ElementComparator<int[]> comparator,
-		final ElementDistance<int[]> distance,
-		final Comparator<int[]> dominance
+	GeneralObjectVec(
+		final T[] data,
+		final ElementComparator<T[]> comparator,
+		final ElementDistance<T[]> distance,
+		final Comparator<T[]> dominance
 	) {
-		Vecs.checkVecLength(data.length);
-		_data = data;
+		_data = requireNonNull(data);
 		_comparator = requireNonNull(comparator);
 		_distance = requireNonNull(distance);
 		_dominance = requireNonNull(dominance);
 	}
 
 	@Override
-	public int[] data() {
+	public T[] data() {
 		return _data;
 	}
 
@@ -60,17 +59,17 @@ final class IntVec implements Vec<int[]> {
 	}
 
 	@Override
-	public ElementComparator<int[]> comparator() {
+	public ElementComparator<T[]> comparator() {
 		return _comparator;
 	}
 
 	@Override
-	public ElementDistance<int[]> distance() {
+	public ElementDistance<T[]> distance() {
 		return _distance;
 	}
 
 	@Override
-	public Comparator<int[]> dominance() {
+	public Comparator<T[]> dominance() {
 		return _dominance;
 	}
 
@@ -82,8 +81,8 @@ final class IntVec implements Vec<int[]> {
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
-			obj instanceof IntVec &&
-			Arrays.equals(((IntVec)obj)._data, _data);
+			obj instanceof GeneralObjectVec &&
+			Arrays.equals(((GeneralObjectVec)obj)._data, _data);
 	}
 
 	@Override

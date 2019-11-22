@@ -19,10 +19,11 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.Optimize;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.List;
+
+import static java.lang.String.format;
 
 /**
  * {@link Vec} implementations for basic array types.
@@ -42,63 +43,21 @@ final class Vecs {
 		}
 	}
 
-	static final class ObjectVec<T> implements Vec<T[]> {
-		private final T[] _data;
-		private final Comparator<? super T> _comparator;
-		private final ElementDistance<T[]> _distance;
-
-		ObjectVec(
-			final T[] data,
-			final Comparator<? super T> comparator,
-			final ElementDistance<T[]> distance
-		) {
-			checkVecLength(data.length);
-			_data = data;
-			_comparator = requireNonNull(comparator);
-			_distance = requireNonNull(distance);
+	static void requireVecLength(final int expected, final int length) {
+		if (expected != length) {
+			throw new IllegalArgumentException(format(
+				"Expected Vec.length of %d, but got %d.",
+				expected, length
+			));
 		}
-
-		@Override
-		public T[] data() {
-			return _data;
-		}
-
-		@Override
-		public int length() {
-			return _data.length;
-		}
-
-		@Override
-		public ElementComparator<T[]> comparator() {
-			return (u, v, i) -> _comparator.compare(u[i], v[i]);
-		}
-
-		@Override
-		public ElementDistance<T[]> distance() {
-			return _distance;
-		}
-
-		@Override
-		public Comparator<T[]> dominance() {
-			return (u, v) -> Vec.dominance(u, v, _comparator);
-		}
-
-		@Override
-		public int hashCode() {
-			return Arrays.hashCode(_data);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return obj == this ||
-				obj instanceof ObjectVec &&
-				Arrays.equals(((ObjectVec)obj)._data, _data);
-		}
-
-		@Override
-		public String toString() {
-			return Arrays.toString(_data);
-		}
-
 	}
+
+	static boolean[] toFlags(final List<Optimize> optimizes) {
+		final boolean[] flags = new boolean[optimizes.size()];
+		for (int i = 0; i < optimizes.size(); ++i) {
+			flags[i] = optimizes.get(0) == Optimize.MAXIMUM;
+		}
+		return flags;
+	}
+
 }
