@@ -23,11 +23,6 @@ import static io.jenetics.internal.math.base.clamp;
 
 import java.util.Comparator;
 
-import io.jenetics.ext.moea.Vecs.DoubleVec;
-import io.jenetics.ext.moea.Vecs.IntVec;
-import io.jenetics.ext.moea.Vecs.LongVec;
-import io.jenetics.ext.moea.Vecs.ObjectVec;
-
 /**
  * The {@code Vec} interface represents the fitness result of a multi-objective
  * fitness function. It also defines a set of static factory methods which
@@ -53,6 +48,7 @@ import io.jenetics.ext.moea.Vecs.ObjectVec;
  *
  * @param <T> the underlying array type, like {@code int[]} or {@code double[]}
  *
+ * @see VecFactory
  * @see <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
  *     Pareto efficiency</a>
  *
@@ -98,6 +94,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return the comparator which defines the (Pareto) dominance measure
 	 */
 	public Comparator<T> dominance();
+
 
 	/* *************************************************************************
 	 * Default methods derived from the methods above.
@@ -161,6 +158,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	public default int compareTo(final Vec<T> other) {
 		return dominance(other);
 	}
+
 
 	/* *************************************************************************
 	 * Common 'dominance' methods.
@@ -311,7 +309,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 		final Comparator<? super T> comparator,
 		final ElementDistance<T[]> distance
 	) {
-		return new ObjectVec<>(array, comparator, distance);
+		return new SimpleObjectVec<>(array, comparator, distance);
 	}
 
 	/**
@@ -323,7 +321,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<int[]> of(final int... array) {
-		return new IntVec(array);
+		return new SimpleIntVec(array);
 	}
 
 	/**
@@ -335,7 +333,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<long[]> of(final long... array) {
-		return new LongVec(array);
+		return new SimpleLongVec(array);
 	}
 
 	/**
@@ -347,7 +345,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
 	public static Vec<double[]> of(final double... array) {
-		return new DoubleVec(array);
+		return new SimpleDoubleVec(array);
 	}
 
 }

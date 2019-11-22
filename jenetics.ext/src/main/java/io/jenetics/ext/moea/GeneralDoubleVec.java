@@ -19,45 +19,45 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.lang.String.format;
-
-import java.util.List;
-
-import io.jenetics.Optimize;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
- * Some vector helper methods.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
- * @since 4.1
+ * @since !__version__!
  */
-final class Vecs {
+final class GeneralDoubleVec extends GeneralVec<double[]> {
 
-	private Vecs() {
+	GeneralDoubleVec(
+		final double[] data,
+		final ElementComparator<double[]> comparator,
+		final ElementDistance<double[]> distance,
+		final Comparator<double[]> dominance
+	) {
+		super(data, comparator, distance, dominance);
 	}
 
-	static void checkVecLength(final int length) {
-		if (length <= 0) {
-			throw new IllegalArgumentException("Array length must greater zero.");
-		}
+	@Override
+	public int length() {
+		return _data.length;
 	}
 
-	static void requireVecLength(final int expected, final int length) {
-		if (expected != length) {
-			throw new IllegalArgumentException(format(
-				"Expected Vec.length of %d, but got %d.",
-				expected, length
-			));
-		}
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(_data);
 	}
 
-	static boolean[] toFlags(final List<Optimize> optimizes) {
-		final boolean[] flags = new boolean[optimizes.size()];
-		for (int i = 0; i < optimizes.size(); ++i) {
-			flags[i] = optimizes.get(i) == Optimize.MAXIMUM;
-		}
-		return flags;
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof GeneralDoubleVec &&
+			Arrays.equals(((GeneralDoubleVec)obj)._data, _data);
+	}
+
+	@Override
+	public String toString() {
+		return Arrays.toString(_data);
 	}
 
 }
