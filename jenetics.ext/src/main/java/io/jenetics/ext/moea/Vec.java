@@ -95,6 +95,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 */
 	public Comparator<T> dominance();
 
+
 	/* *************************************************************************
 	 * Default methods derived from the methods above.
 	 * ************************************************************************/
@@ -157,6 +158,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	public default int compareTo(final Vec<T> other) {
 		return dominance(other);
 	}
+
 
 	/* *************************************************************************
 	 * Common 'dominance' methods.

@@ -26,10 +26,10 @@ import java.util.List;
 import io.jenetics.Optimize;
 
 /**
- * {@link Vec} implementations for basic array types.
+ * Some vector helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 final class Vecs {

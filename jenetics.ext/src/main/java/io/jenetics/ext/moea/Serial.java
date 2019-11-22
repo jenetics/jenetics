@@ -79,7 +79,7 @@ final class Serial implements Externalizable {
 
 	@Override
 	public void readExternal(final ObjectInput in)
-		throws IOException, ClassNotFoundException
+		throws IOException
 	{
 		_type = in.readByte();
 		switch (_type) {
