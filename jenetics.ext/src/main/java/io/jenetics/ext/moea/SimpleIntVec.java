@@ -33,8 +33,8 @@ import java.util.Comparator;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.2
+ * @since 5.2
  */
 final class SimpleIntVec implements Vec<int[]>, Serializable {
 	private static final long serialVersionUID = 1L;

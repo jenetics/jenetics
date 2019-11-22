@@ -29,7 +29,7 @@ import io.jenetics.Optimize;
  * Some vector helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 4.1
  */
 final class Vecs {

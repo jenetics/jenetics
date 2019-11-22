@@ -470,7 +470,7 @@ public final class Pareto {
 	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
 	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @param u the first vector
 	 * @param v the second vector
