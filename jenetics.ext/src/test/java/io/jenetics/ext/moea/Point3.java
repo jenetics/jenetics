@@ -21,14 +21,12 @@ package io.jenetics.ext.moea;
 
 import static java.lang.String.format;
 
-import java.util.Arrays;
+import java.util.Comparator;
 
 /**
- * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * Sample implementation of a 3D double point.
  */
-public final class Point3 {
+public final class Point3 implements Vec<Point3> {
 	private final double _x;
 	private final double _y;
 	private final double _z;
@@ -52,8 +50,59 @@ public final class Point3 {
 	}
 
 	@Override
+	public Point3 data() {
+		return this;
+	}
+
+	@Override
+	public int length() {
+		return 3;
+	}
+
+	@Override
+	public ElementComparator<Point3> comparator() {
+		return Point3::cmp;
+	}
+
+	private static int cmp(final Point3 u, final Point3 v, final int i) {
+		switch (i) {
+			case 0: return Double.compare(u._x, v._x);
+			case 1: return Double.compare(u._y, v._y);
+			case 2: return Double.compare(u._z, v._z);
+			default: throw new IllegalArgumentException("Illegal index: " + i);
+		}
+	}
+
+	@Override
+	public ElementDistance<Point3> distance() {
+		return Point3::dst;
+	}
+
+	private static double dst(final Point3 u, final Point3 v, final int i) {
+		switch (i) {
+			case 0: return u._x - v._x;
+			case 1: return u._y - v._y;
+			case 2: return u._z - v._z;
+			default: throw new IllegalArgumentException("Illegal index: " + i);
+		}
+	}
+
+	@Override
+	public Comparator<Point3> dominance() {
+		return Point3::dom;
+	}
+
+	private static int dom(final Point3 u, final Point3 v) {
+		return Pareto.dominance(u, v, 3, Point3::cmp);
+	}
+
+	@Override
 	public int hashCode() {
-		return Arrays.hashCode(new double[] {_x, _y, _z});
+		int hash = 37;
+		hash += 31*Double.hashCode(_x) + 17;
+		hash += 31*Double.hashCode(_y) + 17;
+		hash += 31*Double.hashCode(_z) + 17;
+		return hash;
 	}
 
 	@Override
@@ -73,5 +122,4 @@ public final class Point3 {
 	public static Point3 of(final double x, final double y, final double z) {
 		return new Point3(x, y, z);
 	}
-
 }
