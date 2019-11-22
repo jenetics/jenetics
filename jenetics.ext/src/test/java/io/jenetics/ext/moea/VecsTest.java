@@ -21,7 +21,13 @@ package io.jenetics.ext.moea;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
+import java.util.Arrays;
+import java.util.Random;
+
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import io.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -41,6 +47,24 @@ public class VecsTest {
 	@Test
 	public void doubleVecEqualsVerifier() {
 		EqualsVerifier.forClass(SimpleDoubleVec.class).verify();
+	}
+
+	@Test
+	public void toFlags() {
+		final Random random = new Random();
+
+		final boolean[] flags = new boolean[100];
+		final Optimize[] opts = new Optimize[flags.length];
+		for (int i = 0; i < flags.length; ++i) {
+			flags[i]  = random.nextBoolean();
+			if (flags[i]) {
+				opts[i] = Optimize.MAXIMUM;
+			} else {
+				opts[i] = Optimize.MINIMUM;
+			}
+		}
+
+		Assert.assertEquals(Vecs.toFlags(Arrays.asList(opts)), flags);
 	}
 
 }

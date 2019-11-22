@@ -55,7 +55,7 @@ final class Vecs {
 	static boolean[] toFlags(final List<Optimize> optimizes) {
 		final boolean[] flags = new boolean[optimizes.size()];
 		for (int i = 0; i < optimizes.size(); ++i) {
-			flags[i] = optimizes.get(0) == Optimize.MAXIMUM;
+			flags[i] = optimizes.get(i) == Optimize.MAXIMUM;
 		}
 		return flags;
 	}
