@@ -88,7 +88,7 @@ final class SimpleIntVec implements Vec<int[]>, Serializable {
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof SimpleIntVec &&
-			Arrays.equals(((SimpleIntVec) obj)._data, _data);
+			Arrays.equals(((SimpleIntVec)obj)._data, _data);
 	}
 
 	@Override
