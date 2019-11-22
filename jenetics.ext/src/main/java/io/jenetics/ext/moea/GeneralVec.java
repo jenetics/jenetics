@@ -19,7 +19,8 @@
  */
 package io.jenetics.ext.moea;
 
-import java.util.Arrays;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Comparator;
 
 /**
@@ -27,37 +28,43 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class GeneralLongVec extends GeneralVec<long[]> {
+abstract class GeneralVec<T> implements Vec<T> {
 
-	GeneralLongVec(
-		final long[] data,
-		final ElementComparator<long[]> comparator,
-		final ElementDistance<long[]> distance,
-		final Comparator<long[]> dominance
+	final T _data;
+	final ElementComparator<T> _comparator;
+	final ElementDistance<T> _distance;
+	final Comparator<T> _dominance;
+
+	GeneralVec(
+		final T data,
+		final ElementComparator<T> comparator,
+		final ElementDistance<T> distance,
+		final Comparator<T> dominance
 	) {
-		super(data, comparator, distance, dominance);
+		_data = requireNonNull(data);
+		_comparator = requireNonNull(comparator);
+		_distance = requireNonNull(distance);
+		_dominance = requireNonNull(dominance);
 	}
 
 	@Override
-	public int length() {
-		return _data.length;
+	public T data() {
+		return _data;
 	}
 
 	@Override
-	public int hashCode() {
-		return Arrays.hashCode(_data);
+	public ElementComparator<T> comparator() {
+		return _comparator;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof GeneralLongVec &&
-			Arrays.equals(((GeneralLongVec)obj)._data, _data);
+	public ElementDistance<T> distance() {
+		return _distance;
 	}
 
 	@Override
-	public String toString() {
-		return Arrays.toString(_data);
+	public Comparator<T> dominance() {
+		return _dominance;
 	}
 
 }

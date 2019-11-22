@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -29,12 +27,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class GeneralIntVec implements Vec<int[]> {
-
-	private final int[] _data;
-	private final ElementComparator<int[]> _comparator;
-	private final ElementDistance<int[]> _distance;
-	private final Comparator<int[]> _dominance;
+final class GeneralIntVec extends GeneralVec<int[]> {
 
 	GeneralIntVec(
 		final int[] data,
@@ -42,35 +35,12 @@ final class GeneralIntVec implements Vec<int[]> {
 		final ElementDistance<int[]> distance,
 		final Comparator<int[]> dominance
 	) {
-		_data = requireNonNull(data);
-		_comparator = requireNonNull(comparator);
-		_distance = requireNonNull(distance);
-		_dominance = requireNonNull(dominance);
-	}
-
-	@Override
-	public int[] data() {
-		return _data;
+		super(data, comparator, distance, dominance);
 	}
 
 	@Override
 	public int length() {
 		return _data.length;
-	}
-
-	@Override
-	public ElementComparator<int[]> comparator() {
-		return _comparator;
-	}
-
-	@Override
-	public ElementDistance<int[]> distance() {
-		return _distance;
-	}
-
-	@Override
-	public Comparator<int[]> dominance() {
-		return _dominance;
 	}
 
 	@Override

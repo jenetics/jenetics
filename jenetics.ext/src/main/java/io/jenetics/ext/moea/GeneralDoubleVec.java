@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -29,12 +27,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class GeneralDoubleVec implements Vec<double[]> {
-
-	private final double[] _data;
-	private final ElementComparator<double[]> _comparator;
-	private final ElementDistance<double[]> _distance;
-	private final Comparator<double[]> _dominance;
+final class GeneralDoubleVec extends GeneralVec<double[]> {
 
 	GeneralDoubleVec(
 		final double[] data,
@@ -42,35 +35,12 @@ final class GeneralDoubleVec implements Vec<double[]> {
 		final ElementDistance<double[]> distance,
 		final Comparator<double[]> dominance
 	) {
-		_data = requireNonNull(data);
-		_comparator = requireNonNull(comparator);
-		_distance = requireNonNull(distance);
-		_dominance = requireNonNull(dominance);
-	}
-
-	@Override
-	public double[] data() {
-		return _data;
+		super(data, comparator, distance, dominance);
 	}
 
 	@Override
 	public int length() {
 		return _data.length;
-	}
-
-	@Override
-	public ElementComparator<double[]> comparator() {
-		return _comparator;
-	}
-
-	@Override
-	public ElementDistance<double[]> distance() {
-		return _distance;
-	}
-
-	@Override
-	public Comparator<double[]> dominance() {
-		return _dominance;
 	}
 
 	@Override

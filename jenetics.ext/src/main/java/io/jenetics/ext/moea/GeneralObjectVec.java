@@ -19,8 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -29,12 +27,7 @@ import java.util.Comparator;
  * @version !__version__!
  * @since !__version__!
  */
-final class GeneralObjectVec<T> implements Vec<T[]> {
-
-	private final T[] _data;
-	private final ElementComparator<T[]> _comparator;
-	private final ElementDistance<T[]> _distance;
-	private final Comparator<T[]> _dominance;
+final class GeneralObjectVec<T> extends GeneralVec<T[]> {
 
 	GeneralObjectVec(
 		final T[] data,
@@ -42,35 +35,12 @@ final class GeneralObjectVec<T> implements Vec<T[]> {
 		final ElementDistance<T[]> distance,
 		final Comparator<T[]> dominance
 	) {
-		_data = requireNonNull(data);
-		_comparator = requireNonNull(comparator);
-		_distance = requireNonNull(distance);
-		_dominance = requireNonNull(dominance);
-	}
-
-	@Override
-	public T[] data() {
-		return _data;
+		super(data, comparator, distance, dominance);
 	}
 
 	@Override
 	public int length() {
 		return _data.length;
-	}
-
-	@Override
-	public ElementComparator<T[]> comparator() {
-		return _comparator;
-	}
-
-	@Override
-	public ElementDistance<T[]> distance() {
-		return _distance;
-	}
-
-	@Override
-	public Comparator<T[]> dominance() {
-		return _dominance;
 	}
 
 	@Override
@@ -82,7 +52,7 @@ final class GeneralObjectVec<T> implements Vec<T[]> {
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof GeneralObjectVec &&
-			Arrays.equals(((GeneralObjectVec)obj)._data, _data);
+			Arrays.equals((Object[])((GeneralObjectVec)obj)._data, _data);
 	}
 
 	@Override
