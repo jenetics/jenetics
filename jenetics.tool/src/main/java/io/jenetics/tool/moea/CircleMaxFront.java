@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
+import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
@@ -45,6 +46,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.moea.MOEA;
 import io.jenetics.ext.moea.UFTournamentSelector;
 import io.jenetics.ext.moea.Vec;
+import io.jenetics.ext.moea.VecFactory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -53,8 +55,12 @@ import io.jenetics.ext.moea.Vec;
  */
 public class CircleMaxFront {
 
+	static final VecFactory<double[]> FACTORY = VecFactory.ofDoubleVec(
+		//Optimize.MINIMUM, Optimize.MAXIMUM
+	);
+
 	static final Problem<double[], DoubleGene, Vec<double[]>> PROBLEM = Problem.of(
-		v -> Vec.of(v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1),
+		v -> FACTORY.newVec(new double[]{v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1}),
 		Codecs.ofVector(
 			DoubleRange.of(0, 1),
 			DoubleRange.of(0, 2*PI)
