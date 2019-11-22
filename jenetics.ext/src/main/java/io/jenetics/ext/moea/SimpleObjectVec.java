@@ -1,9 +1,9 @@
 package io.jenetics.ext.moea;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Comparator;
-
-import static java.util.Objects.requireNonNull;
 
 final class SimpleObjectVec<T> implements Vec<T[]> {
 	private final T[] _data;

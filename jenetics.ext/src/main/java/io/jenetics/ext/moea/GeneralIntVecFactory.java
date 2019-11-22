@@ -19,14 +19,14 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.lang.String.format;
+import static io.jenetics.ext.moea.Vecs.requireVecLength;
+import static io.jenetics.ext.moea.Vecs.toFlags;
+
 import java.util.Comparator;
 import java.util.List;
 
 import io.jenetics.Optimize;
-
-import static io.jenetics.ext.moea.Vecs.requireVecLength;
-import static io.jenetics.ext.moea.Vecs.toFlags;
-import static java.lang.String.format;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

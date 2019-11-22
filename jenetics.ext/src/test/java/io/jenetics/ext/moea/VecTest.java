@@ -21,10 +21,11 @@ package io.jenetics.ext.moea;
 
 import java.util.Random;
 
-import io.jenetics.Optimize;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

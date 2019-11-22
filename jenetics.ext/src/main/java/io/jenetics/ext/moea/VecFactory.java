@@ -19,11 +19,11 @@
  */
 package io.jenetics.ext.moea;
 
-import io.jenetics.Optimize;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import io.jenetics.Optimize;
 
 /**
  * This interface allows to create vector object from a given array type

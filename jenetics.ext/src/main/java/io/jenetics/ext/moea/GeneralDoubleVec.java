@@ -19,10 +19,10 @@
  */
 package io.jenetics.ext.moea;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Comparator;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

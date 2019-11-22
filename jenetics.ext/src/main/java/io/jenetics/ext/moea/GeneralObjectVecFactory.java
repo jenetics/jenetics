@@ -19,15 +19,15 @@
  */
 package io.jenetics.ext.moea;
 
-import io.jenetics.Optimize;
+import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.ext.moea.Vecs.requireVecLength;
+import static io.jenetics.ext.moea.Vecs.toFlags;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static io.jenetics.ext.moea.Vecs.requireVecLength;
-import static io.jenetics.ext.moea.Vecs.toFlags;
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
+import io.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

@@ -19,11 +19,11 @@
  */
 package io.jenetics.ext.moea;
 
-import io.jenetics.Optimize;
+import static java.lang.String.format;
 
 import java.util.List;
 
-import static java.lang.String.format;
+import io.jenetics.Optimize;
 
 /**
  * {@link Vec} implementations for basic array types.
