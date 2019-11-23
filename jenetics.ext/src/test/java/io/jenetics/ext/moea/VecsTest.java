@@ -74,6 +74,14 @@ public class VecsTest {
 	}
 
 	@Test
+	public void generalObjectVecEqualsVerifier() {
+		EqualsVerifier.forClass(GeneralObjectVec.class)
+			.withPrefabValues(Object.class, new String[]{"1", "3", "2"}, new String[]{"1"})
+			.withOnlyTheseFields("_data")
+			.verify();
+	}
+
+	@Test
 	public void toFlags() {
 		final Random random = new Random();
 
