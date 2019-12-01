@@ -37,7 +37,7 @@ import java.util.Comparator;
  * @since 5.2
  */
 final class SimpleDoubleVec implements Vec<double[]>, Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final double[] _data;
 
