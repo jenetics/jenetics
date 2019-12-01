@@ -494,15 +494,15 @@ public final class Pareto {
 			final int cmp = comparator.compare(u, v, i);
 
 			if (cmp > 0) {
-				udominated = true;
 				if (vdominated) {
 					return 0;
 				}
+				udominated = true;
 			} else if (cmp < 0) {
-				vdominated = true;
 				if (udominated) {
 					return 0;
 				}
+				vdominated = true;
 			}
 		}
 
