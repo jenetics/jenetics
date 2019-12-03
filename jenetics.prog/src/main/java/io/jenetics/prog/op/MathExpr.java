@@ -86,7 +86,7 @@ public final class MathExpr
 	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> CONST_REWRITER =
-		new ConstExprRewriter();
+		new ConstExprRewriter<>(Double.class);
 
 	/**
 	 * This rewriter implements some common arithmetic identities, in exactly

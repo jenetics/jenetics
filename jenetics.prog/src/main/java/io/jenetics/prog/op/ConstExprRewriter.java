@@ -21,6 +21,7 @@ package io.jenetics.prog.op;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.reflect.Array;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -32,38 +33,41 @@ import io.jenetics.ext.util.TreeNode;
  * This class rewrites constant expressions to its single value.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 5.2
  * @since 5.0
  */
-final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
+final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 
-	ConstExprRewriter() {
+	private final Class<T> _type;
+
+	ConstExprRewriter(final Class<T> type) {
+		_type = requireNonNull(type);
 	}
 
 	@Override
-	public int rewrite(final TreeNode<Op<Double>> node, final int limit) {
+	public int rewrite(final TreeNode<Op<T>> node, final int limit) {
 		requireNonNull(node);
 
 		int rewritten = 0;
 		int res;
-		Optional<TreeNode<Op<Double>>> result;
+		Optional<TreeNode<Op<T>>> result;
 		do {
 			result = results(node).findFirst();
 
-			res = result.map(ConstExprRewriter::rewriting).orElse(0);
+			res = result.map(this::rewriting).orElse(0);
 			rewritten += res;
 		} while(result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
 
-	private static int rewriting(final TreeNode<Op<Double>> node) {
+	private int rewriting(final TreeNode<Op<T>> node) {
 		if (matches(node)) {
-			final Double[] args = node.childStream()
-				.map(child -> ((Val<Double>)child.getValue()).value())
-				.toArray(Double[]::new);
+			final T[] args = node.childStream()
+				.map(child -> ((Val<T>)child.getValue()).value())
+				.toArray(size -> (T[])Array.newInstance(_type, size));
 
-			final double value = node.getValue().apply(args);
+			final T value = node.getValue().apply(args);
 			node.removeAllChildren();
 			node.setValue(Const.of(value));
 
@@ -73,17 +77,18 @@ final class ConstExprRewriter implements TreeRewriter<Op<Double>> {
 		return 0;
 	}
 
-	private static Stream<TreeNode<Op<Double>>>
-	results(final TreeNode<Op<Double>> node) {
+	private static <T> Stream<TreeNode<Op<T>>>
+	results(final TreeNode<Op<T>> node) {
 		return node.stream()
 			.filter(ConstExprRewriter::matches);
 	}
 
-	private static boolean matches(final Tree<Op<Double>, ?> node) {
+	private static <T> boolean matches(final Tree<Op<T>, ?> node) {
 		return
-			node.getValue() instanceof MathOp &&
-				node.childStream()
-					.allMatch(child -> child.getValue() instanceof Val);
+			!(node.getValue() instanceof Val) &&
+			!(node.getValue() instanceof Var) &&
+			node.childStream()
+				.allMatch(child -> child.getValue() instanceof Val);
 	}
 
 	@Override
