@@ -39,11 +39,11 @@ import io.jenetics.ext.util.TreeNode;
  * @version 5.2
  * @since 5.2
  */
-public final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
+public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private final Class<T> _type;
 
-	private ConstExprRewriter(final Class<T> type) {
+	private ConstRewriter(final Class<T> type) {
 		_type = requireNonNull(type);
 	}
 
@@ -97,7 +97,7 @@ public final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 	private static <T> Stream<TreeNode<Op<T>>>
 	results(final TreeNode<Op<T>> node) {
 		return node.stream()
-			.filter(ConstExprRewriter::matches);
+			.filter(ConstRewriter::matches);
 	}
 
 	private static <T> boolean matches(final Tree<Op<T>, ?> node) {
@@ -121,8 +121,8 @@ public final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 	 * @return a new rewriter for constant operation sub-trees (expressions)
 	 * @throws NullPointerException if the given {@code type} is {@code null}
 	 */
-	public static <T> ConstExprRewriter<T> ofType(final Class<T> type) {
-		return new ConstExprRewriter<>(type);
+	public static <T> ConstRewriter<T> ofType(final Class<T> type) {
+		return new ConstRewriter<>(type);
 	}
 
 }
