@@ -32,6 +32,14 @@ import io.jenetics.ext.util.TreeNode;
 
 /**
  * This class rewrites constant expressions to its single value.
+ * <p>
+ * The following example show how to use the rewriter for a double operation
+ * tree:
+ * <pre>{@code
+ * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2 + 3 + 4");
+ * ConstRewriter.ofType(Double.class).rewrite(tree);
+ * assert tree.getValue().equals(Const.of(10.0));
+ * }</pre>
  *
  * @param <T> the operation type the rewriter is working on
  *
@@ -100,7 +108,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 			.filter(ConstRewriter::matches);
 	}
 
-	private static <T> boolean matches(final Tree<Op<T>, ?> node) {
+	private static <T> boolean matches(final Tree<?, ?> node) {
 		return
 			!(node.getValue() instanceof Val) &&
 			!(node.getValue() instanceof Var) &&
@@ -110,7 +118,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	@Override
 	public String toString() {
-		return format("ConstExprRewriter<%s>", _type.getSimpleName());
+		return format("ConstRewriter<%s>", _type.getSimpleName());
 	}
 
 	/**
