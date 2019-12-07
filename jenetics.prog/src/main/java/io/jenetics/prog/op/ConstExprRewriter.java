@@ -19,6 +19,7 @@
  */
 package io.jenetics.prog.op;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Array;
@@ -32,16 +33,27 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * This class rewrites constant expressions to its single value.
  *
+ * @param <T> the operation type the rewriter is working on
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.2
- * @since 5.0
+ * @since 5.2
  */
-final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
+public final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private final Class<T> _type;
 
-	ConstExprRewriter(final Class<T> type) {
+	private ConstExprRewriter(final Class<T> type) {
 		_type = requireNonNull(type);
+	}
+
+	/**
+	 * Return the operation type this rewriter is working on.
+	 *
+	 * @return the operation type this rewriter is working on
+	 */
+	public Class<T> type() {
+		return _type;
 	}
 
 	@Override
@@ -65,7 +77,7 @@ final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 		if (matches(node)) {
 			final T[] args = node.childStream()
 				.map(child -> ((Val<T>)child.getValue()).value())
-				.toArray(size -> (T[])Array.newInstance(_type, size));
+				.toArray(this::newArray);
 
 			final T value = node.getValue().apply(args);
 			node.removeAllChildren();
@@ -75,6 +87,11 @@ final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 		}
 
 		return 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	private T[] newArray(final int length) {
+		return (T[])Array.newInstance(_type, length);
 	}
 
 	private static <T> Stream<TreeNode<Op<T>>>
@@ -93,7 +110,19 @@ final class ConstExprRewriter<T> implements TreeRewriter<Op<T>> {
 
 	@Override
 	public String toString() {
-		return "ConstExprRewriter";
+		return format("ConstExprRewriter<%s>", _type.getSimpleName());
+	}
+
+	/**
+	 * Create a new rewriter for constant operation sub-trees (expressions).
+	 *
+	 * @param type the type of the operation tree
+	 * @param <T> the type of the operation tree
+	 * @return a new rewriter for constant operation sub-trees (expressions)
+	 * @throws NullPointerException if the given {@code type} is {@code null}
+	 */
+	public static <T> ConstExprRewriter<T> ofType(final Class<T> type) {
+		return new ConstExprRewriter<>(type);
 	}
 
 }

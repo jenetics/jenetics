@@ -33,7 +33,7 @@ public class ConstExprRewriterTest {
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final double value) {
 		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
-		new ConstExprRewriter<>(Double.class).rewrite(tree);
+		ConstExprRewriter.ofType(Double.class).rewrite(tree);
 
 		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
@@ -58,7 +58,7 @@ public class ConstExprRewriterTest {
 				? EphemeralConst.of(((Const<Double>) n)::value)
 				: n);
 
-		new ConstExprRewriter<>(Double.class).rewrite(tree);
+		ConstExprRewriter.ofType(Double.class).rewrite(tree);
 		Assert.assertEquals(tree.getValue(), Const.of(6.0));
 	}
 
