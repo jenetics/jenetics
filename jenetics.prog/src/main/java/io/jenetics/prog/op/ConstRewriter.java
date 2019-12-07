@@ -37,7 +37,7 @@ import io.jenetics.ext.util.TreeNode;
  * tree:
  * <pre>{@code
  * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2 + 3 + 4");
- * ConstRewriter.ofType(Double.class).rewrite(tree);
+ * ConstRewriter.DOUBLE.rewrite(tree);
  * assert tree.getValue().equals(Const.of(10.0));
  * }</pre>
  *
@@ -48,6 +48,11 @@ import io.jenetics.ext.util.TreeNode;
  * @since 5.2
  */
 public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
+
+	/**
+	 * Const rewriter for double operation trees.
+	 */
+	public static final ConstRewriter<Double> DOUBLE = ofType(Double.class);
 
 	private final Class<T> _type;
 
