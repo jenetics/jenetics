@@ -62,4 +62,14 @@ public class ConstRewriterTest {
 		Assert.assertEquals(tree.getValue(), Const.of(6.0));
 	}
 
+	@Test
+	public void constStringExpr() {
+		final Op<String> concat = Op.of("++", String::concat);
+		final TreeNode<Op<String>> ops = TreeNode.of(concat);
+		ops.attach(Const.of("a"), Const.of("b"));
+
+		ConstRewriter.ofType(String.class).rewrite(ops);
+		Assert.assertEquals(ops.getValue(), Const.of("ab"));
+	}
+
 }
