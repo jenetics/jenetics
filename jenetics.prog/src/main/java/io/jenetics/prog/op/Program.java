@@ -93,7 +93,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 *
 	 * @return the underlying expression tree
 	 */
-	public Tree<? extends Op<T>, ?> tree() {
+	public Tree<Op<T>, ?> tree() {
 		return TreeNode.ofTree(_tree);
 	}
 
