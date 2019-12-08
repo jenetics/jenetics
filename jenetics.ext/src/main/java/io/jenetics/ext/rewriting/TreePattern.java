@@ -334,6 +334,18 @@ public final class TreePattern<V> implements Serializable {
 		return compile(pattern, Function.identity());
 	}
 
+	/**
+	 * Compiles the given tree pattern string.
+	 *
+	 * @param pattern the tree pattern string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @return the compiled pattern
+	 * @throws NullPointerException if the given pattern is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid pattern tree or one of the variable
+	 *         name is not a valid (Java) identifier
+	 */
 	public static <V> TreePattern<V> compile(
 		final String pattern,
 		final Function<? super String, ? extends V> mapper
@@ -546,7 +558,7 @@ public final class TreePattern<V> implements Serializable {
 
 		@Override
 		<B> Val<B> map(final Function<? super V, ? extends B> mapper) {
-			return of(mapper.apply(_value));
+			return Val.of(mapper.apply(_value));
 		}
 
 		@Override
