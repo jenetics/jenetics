@@ -37,7 +37,7 @@ import io.jenetics.ext.util.TreeNode;
  * tree:
  * <pre>{@code
  * final TreeNode<Op<Double>> tree = MathExpr.parseTree("1 + 2 + 3 + 4");
- * ConstRewriter.DOUBLE.rewrite(tree);
+ * ConstRewriter.ofType(Double.class).rewrite(tree);
  * assert tree.getValue().equals(Const.of(10.0));
  * }</pre>
  *
@@ -113,7 +113,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 			.filter(ConstRewriter::matches);
 	}
 
-	private static <T> boolean matches(final Tree<?, ?> node) {
+	private static boolean matches(final Tree<?, ?> node) {
 		return
 			!(node.getValue() instanceof Val) &&
 			!(node.getValue() instanceof Var) &&
