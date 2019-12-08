@@ -81,7 +81,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 			res = result.map(this::rewriting).orElse(0);
 			rewritten += res;
-		} while(result.isPresent() && rewritten < limit);
+		} while (result.isPresent() && rewritten < limit);
 
 		return rewritten;
 	}
