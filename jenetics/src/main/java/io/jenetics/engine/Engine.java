@@ -382,23 +382,34 @@ public final class Engine<
 	 *         phenotype has no fitness value assigned.
 	 */
 	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		final ISeq<Phenotype<G, C>> evaluated = _evaluator.eval(population);
+		final ISeq<Phenotype<G, C>> evaluated;
+		if (!population.forAll(Phenotype::isEvaluated)) {
+			evaluated = _evaluator.eval(population);
+			checkEvaluate(population.size(), evaluated);
+		} else {
+			evaluated = population.asISeq();
+		}
 
-		if (population.size() != evaluated.size()) {
+		return evaluated;
+	}
+
+	private void checkEvaluate(
+		final int expectedSize,
+		final ISeq<Phenotype<G, C>> evaluated
+	) {
+		if (expectedSize != evaluated.size()) {
 			throw new IllegalStateException(format(
 				"Expected %d individuals, but got %d. " +
-					"Check your evaluator function.",
-				population.size(), evaluated.size()
+				"Check your evaluator function.",
+				expectedSize, evaluated.size()
 			));
 		}
 		if (!evaluated.forAll(Phenotype::isEvaluated)) {
 			throw new IllegalStateException(
 				"Some phenotypes have no assigned fitness value. " +
-					"Check your evaluator function."
+				"Check your evaluator function."
 			);
 		}
-
-		return evaluated;
 	}
 
 
