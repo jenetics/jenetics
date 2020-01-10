@@ -597,9 +597,12 @@ public class CodecsTest {
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void inversion(final InvertibleCodec codec) {
 		final Genotype gt1 = (Genotype)codec.encoding().newInstance();
-		final Object value = codec.decode(gt1);
-		final Genotype gt2 = codec.encode(value);
+		Assert.assertNotNull(gt1);
 
+		final Object value = codec.decode(gt1);
+		Assert.assertNotNull(value);
+
+		final Genotype gt2 = codec.encode(value);
 		Assert.assertEquals(gt2, gt1);
 	}
 
@@ -608,7 +611,22 @@ public class CodecsTest {
 		return new Object[][] {
 			{Codecs.ofScalar(IntRange.of(10, 10_000))},
 			{Codecs.ofScalar(LongRange.of(10, 100_000))},
-			{Codecs.ofScalar(DoubleRange.of(10, 10_000))}
+			{Codecs.ofScalar(DoubleRange.of(10, 10_000))},
+
+			{Codecs.ofVector(IntRange.of(10, 10_000), 10)},
+			{Codecs.ofVector(LongRange.of(10, 100_000), 10)},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), 10)},
+
+			{Codecs.ofVector(IntRange.of(10, 10_000), IntRange.of(60, 100), IntRange.of(1, 10))},
+			{Codecs.ofVector(LongRange.of(10, 10_000), LongRange.of(60, 100), LongRange.of(1, 10))},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), DoubleRange.of(60, 100), DoubleRange.of(1, 10))},
+
+			{Codecs.ofPermutation(100)},
+			{Codecs.ofPermutation(ISeq.of("a", "b", "c", "d", "e", "f", "end"))},
+
+			{Codecs.ofMatrix(IntRange.of(10, 10_000), 10, 100)},
+			{Codecs.ofMatrix(LongRange.of(10, 10_000), 10, 100)},
+			{Codecs.ofMatrix(DoubleRange.of(10, 10_000), 10, 100)}
 		};
 	}
 

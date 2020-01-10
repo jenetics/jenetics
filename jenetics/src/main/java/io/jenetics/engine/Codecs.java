@@ -20,6 +20,7 @@
 package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
@@ -29,7 +30,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import io.jenetics.AnyChromosome;
@@ -79,7 +82,7 @@ public final class Codecs {
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
 			gt -> gt.getChromosome().getGene().getAllele(),
-			v -> Genotype.of(IntegerChromosome.of(IntegerGene.of(v, domain)))
+			val -> Genotype.of(IntegerChromosome.of(IntegerGene.of(val, domain)))
 		);
 	}
 
@@ -90,13 +93,14 @@ public final class Codecs {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static InvertibleCodec<Long, LongGene> ofScalar(final LongRange domain) {
+	public static InvertibleCodec<Long, LongGene>
+	ofScalar(final LongRange domain) {
 		requireNonNull(domain);
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain)),
 			gt -> gt.getGene().getAllele(),
-			v -> Genotype.of(LongChromosome.of(LongGene.of(v, domain)))
+			val -> Genotype.of(LongChromosome.of(LongGene.of(val, domain)))
 		);
 	}
 
@@ -107,13 +111,14 @@ public final class Codecs {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static InvertibleCodec<Double, DoubleGene> ofScalar(final DoubleRange domain) {
+	public static InvertibleCodec<Double, DoubleGene>
+	ofScalar(final DoubleRange domain) {
 		requireNonNull(domain);
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
 			gt -> gt.getGene().getAllele(),
-			v -> Genotype.of(DoubleChromosome.of(DoubleGene.of(v, domain)))
+			val -> Genotype.of(DoubleChromosome.of(DoubleGene.of(val, domain)))
 		);
 	}
 
@@ -193,16 +198,23 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	public static Codec<int[], IntegerGene> ofVector(
+	public static InvertibleCodec<int[], IntegerGene> ofVector(
 		final IntRange domain,
 		final int length
 	) {
 		requireNonNull(domain);
 		require.positive(length);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+			gt -> gt.getChromosome().as(IntegerChromosome.class).toArray(),
+			val -> Genotype.of(
+				IntegerChromosome.of(
+					IntStream.of(val)
+						.mapToObj(i -> IntegerGene.of(i, domain))
+						.collect(ISeq.toISeq())
+				)
+			)
 		);
 	}
 
@@ -217,16 +229,23 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	public static Codec<long[], LongGene> ofVector(
+	public static InvertibleCodec<long[], LongGene> ofVector(
 		final LongRange domain,
 		final int length
 	) {
 		requireNonNull(domain);
 		require.positive(length);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(LongChromosome.class).toArray()
+			gt -> gt.getChromosome().as(LongChromosome.class).toArray(),
+			val -> Genotype.of(
+				LongChromosome.of(
+					LongStream.of(val)
+						.mapToObj(l -> LongGene.of(l, domain))
+						.collect(ISeq.toISeq())
+				)
+			)
 		);
 	}
 
@@ -241,16 +260,23 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	public static Codec<double[], DoubleGene> ofVector(
+	public static InvertibleCodec<double[], DoubleGene> ofVector(
 		final DoubleRange domain,
 		final int length
 	) {
 		requireNonNull(domain);
 		require.positive(length);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(DoubleChromosome.class).toArray()
+			gt -> gt.getChromosome().as(DoubleChromosome.class).toArray(),
+			val -> Genotype.of(
+				DoubleChromosome.of(
+					DoubleStream.of(val)
+						.mapToObj(d -> DoubleGene.of(d, domain))
+						.collect(ISeq.toISeq())
+				)
+			)
 		);
 	}
 
@@ -264,7 +290,8 @@ public final class Codecs {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
-	public static Codec<int[], IntegerGene> ofVector(final IntRange... domains) {
+	public static InvertibleCodec<int[], IntegerGene>
+	ofVector(final IntRange... domains) {
 		if (domains.length == 0) {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
@@ -275,7 +302,7 @@ public final class Codecs {
 			.map(IntegerChromosome::of)
 			.collect(ISeq.toISeq());
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(chromosomes),
 			gt -> {
 				final int[] args = new int[gt.length()];
@@ -283,7 +310,13 @@ public final class Codecs {
 					args[i] = gt.getChromosome(i).getGene().intValue();
 				}
 				return args;
-			}
+			},
+			val -> Genotype.of(
+				IntStream.range(0, val.length)
+					.mapToObj(i ->
+						IntegerChromosome.of(IntegerGene.of(val[i], domains[i])))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
@@ -297,7 +330,8 @@ public final class Codecs {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
-	public static Codec<long[], LongGene> ofVector(final LongRange... domains) {
+	public static InvertibleCodec<long[], LongGene>
+	ofVector(final LongRange... domains) {
 		if (domains.length == 0) {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
@@ -308,7 +342,7 @@ public final class Codecs {
 			.map(LongChromosome::of)
 			.collect(ISeq.toISeq());
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(chromosomes),
 			gt -> {
 				final long[] args = new long[gt.length()];
@@ -316,7 +350,13 @@ public final class Codecs {
 					args[i] = gt.getChromosome(i).getGene().longValue();
 				}
 				return args;
-			}
+			},
+			val -> Genotype.of(
+				IntStream.range(0, val.length)
+					.mapToObj(i ->
+						LongChromosome.of(LongGene.of(val[i], domains[i])))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
@@ -330,9 +370,8 @@ public final class Codecs {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code domains} array is empty
 	 */
-	public static Codec<double[], DoubleGene> ofVector(
-		final DoubleRange... domains
-	) {
+	public static InvertibleCodec<double[], DoubleGene>
+	ofVector(final DoubleRange... domains) {
 		if (domains.length == 0) {
 			throw new IllegalArgumentException("Domains must not be empty.");
 		}
@@ -343,7 +382,7 @@ public final class Codecs {
 			.map(DoubleChromosome::of)
 			.collect(ISeq.toISeq());
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(chromosomes),
 			gt -> {
 				final double[] args = new double[gt.length()];
@@ -351,7 +390,13 @@ public final class Codecs {
 					args[i] = gt.getChromosome(i).getGene().doubleValue();
 				}
 				return args;
-			}
+			},
+			val -> Genotype.of(
+				IntStream.range(0, val.length)
+					.mapToObj(i ->
+						DoubleChromosome.of(DoubleGene.of(val[i], domains[i])))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
@@ -474,14 +519,66 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code length} is smaller than
 	 *         one.
 	 */
-	public static Codec<int[], EnumGene<Integer>> ofPermutation(final int length) {
+	public static InvertibleCodec<int[], EnumGene<Integer>>
+	ofPermutation(final int length) {
 		require.positive(length);
 
-		return Codec.of(
-			Genotype.of(PermutationChromosome.ofInteger(length)),
+		final PermutationChromosome<Integer> chromosome =
+			PermutationChromosome.ofInteger(length);
+
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
+			.stream()
+			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+
+		return InvertibleCodec.of(
+			Genotype.of(chromosome),
 			gt -> gt.getChromosome().stream()
 				.mapToInt(EnumGene::getAllele)
-				.toArray()
+				.toArray(),
+			val -> Genotype.of(
+				new PermutationChromosome<>(
+					IntStream.of(val)
+						.mapToObj(genes::get)
+						.collect(ISeq.toISeq())
+				)
+			)
+		);
+	}
+
+	/**
+	 * Create a permutation {@code Codec} with the given alleles.
+	 *
+	 * @param alleles the alleles of the permutation
+	 * @param <T> the allele type
+	 * @return a new permutation {@code Codec}
+	 * @throws IllegalArgumentException if the given allele array is empty
+	 * @throws NullPointerException if one of the alleles is {@code null}
+	 */
+	public static <T> InvertibleCodec<ISeq<T>, EnumGene<T>>
+	ofPermutation(final ISeq<? extends T> alleles) {
+		if (alleles.isEmpty()) {
+			throw new IllegalArgumentException(
+				"Empty allele array is not allowed."
+			);
+		}
+
+		final Map<T, EnumGene<T>> genes =
+			IntStream.range(0, alleles.length())
+				.mapToObj(i -> EnumGene.<T>of(i, alleles))
+				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+
+		return InvertibleCodec.of(
+			Genotype.of(new PermutationChromosome<>(ISeq.of(genes.values()))),
+			gt -> gt.getChromosome().stream()
+				.map(EnumGene::getAllele)
+				.collect(ISeq.toISeq()),
+			val -> Genotype.of(
+				new PermutationChromosome<>(
+					val.stream()
+						.map(genes::get)
+						.collect(ISeq.toISeq())
+				)
+			)
 		);
 	}
 
@@ -500,7 +597,7 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
 	 *         smaller than one.
 	 */
-	public static Codec<int[][], IntegerGene> ofMatrix(
+	public static InvertibleCodec<int[][], IntegerGene> ofMatrix(
 		final IntRange domain,
 		final int rows,
 		final int cols
@@ -509,7 +606,7 @@ public final class Codecs {
 		require.positive(rows);
 		require.positive(cols);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(
 				IntegerChromosome.of(domain, cols).instances()
 					.limit(rows)
@@ -519,7 +616,17 @@ public final class Codecs {
 				.map(ch -> ch.stream()
 					.mapToInt(IntegerGene::intValue)
 					.toArray())
-				.toArray(int[][]::new)
+				.toArray(int[][]::new),
+			matrix -> Genotype.of(
+				Stream.of(matrix)
+					.map(row ->
+						IntegerChromosome.of(
+							IntStream.of(row)
+								.mapToObj(v -> IntegerGene.of(v, domain))
+								.collect(ISeq.toISeq())
+						))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
@@ -538,7 +645,7 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
 	 *         smaller than one.
 	 */
-	public static Codec<long[][], LongGene> ofMatrix(
+	public static InvertibleCodec<long[][], LongGene> ofMatrix(
 		final LongRange domain,
 		final int rows,
 		final int cols
@@ -547,7 +654,7 @@ public final class Codecs {
 		require.positive(rows);
 		require.positive(cols);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(
 				LongChromosome.of(domain, cols).instances()
 					.limit(rows)
@@ -557,7 +664,17 @@ public final class Codecs {
 				.map(ch -> ch.stream()
 					.mapToLong(LongGene::longValue)
 					.toArray())
-				.toArray(long[][]::new)
+				.toArray(long[][]::new),
+			matrix -> Genotype.of(
+				Stream.of(matrix)
+					.map(row ->
+						LongChromosome.of(
+							LongStream.of(row)
+								.mapToObj(v -> LongGene.of(v, domain))
+								.collect(ISeq.toISeq())
+						))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
@@ -576,7 +693,7 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code rows} or {@code cols} are
 	 *         smaller than one.
 	 */
-	public static Codec<double[][], DoubleGene> ofMatrix(
+	public static InvertibleCodec<double[][], DoubleGene> ofMatrix(
 		final DoubleRange domain,
 		final int rows,
 		final int cols
@@ -585,7 +702,7 @@ public final class Codecs {
 		require.positive(rows);
 		require.positive(cols);
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(
 				DoubleChromosome.of(domain, cols).instances()
 					.limit(rows)
@@ -595,32 +712,17 @@ public final class Codecs {
 				.map(ch -> ch.stream()
 					.mapToDouble(DoubleGene::doubleValue)
 					.toArray())
-				.toArray(double[][]::new)
-		);
-	}
-
-	/**
-	 * Create a permutation {@code Codec} with the given alleles.
-	 *
-	 * @param alleles the alleles of the permutation
-	 * @param <T> the allele type
-	 * @return a new permutation {@code Codec}
-	 * @throws IllegalArgumentException if the given allele array is empty
-	 * @throws NullPointerException if one of the alleles is {@code null}
-	 */
-	public static <T> Codec<ISeq<T>, EnumGene<T>>
-	ofPermutation(final ISeq<? extends T> alleles) {
-		if (alleles.isEmpty()) {
-			throw new IllegalArgumentException(
-				"Empty allele array is not allowed."
-			);
-		}
-
-		return Codec.of(
-			Genotype.of(PermutationChromosome.of(alleles)),
-			gt -> gt.getChromosome().stream()
-				.map(EnumGene::getAllele)
-				.collect(ISeq.toISeq())
+				.toArray(double[][]::new),
+			matrix -> Genotype.of(
+				Stream.of(matrix)
+					.map(row ->
+						DoubleChromosome.of(
+							DoubleStream.of(row)
+								.mapToObj(v -> DoubleGene.of(v, domain))
+								.collect(ISeq.toISeq())
+						))
+					.collect(ISeq.toISeq())
+			)
 		);
 	}
 
