@@ -59,7 +59,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version 4.4
+ * @version !__version__!
  */
 public final class Codecs {
 
@@ -72,10 +72,11 @@ public final class Codecs {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Encodec<Integer, IntegerGene> ofScalar(final IntRange domain) {
+	public static InvertibleCodec<Integer, IntegerGene>
+	ofScalar(final IntRange domain) {
 		requireNonNull(domain);
 
-		return Encodec.of(
+		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
 			gt -> gt.getChromosome().getGene().getAllele(),
 			v -> Genotype.of(IntegerChromosome.of(IntegerGene.of(v, domain)))
@@ -89,10 +90,10 @@ public final class Codecs {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Encodec<Long, LongGene> ofScalar(final LongRange domain) {
+	public static InvertibleCodec<Long, LongGene> ofScalar(final LongRange domain) {
 		requireNonNull(domain);
 
-		return Encodec.of(
+		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain)),
 			gt -> gt.getGene().getAllele(),
 			v -> Genotype.of(LongChromosome.of(LongGene.of(v, domain)))
@@ -106,10 +107,10 @@ public final class Codecs {
 	 * @return a new scalar {@code Codec} with the given domain.
 	 * @throws NullPointerException if the given {@code domain} is {@code null}
 	 */
-	public static Encodec<Double, DoubleGene> ofScalar(final DoubleRange domain) {
+	public static InvertibleCodec<Double, DoubleGene> ofScalar(final DoubleRange domain) {
 		requireNonNull(domain);
 
-		return Encodec.of(
+		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
 			gt -> gt.getGene().getAllele(),
 			v -> Genotype.of(DoubleChromosome.of(DoubleGene.of(v, domain)))

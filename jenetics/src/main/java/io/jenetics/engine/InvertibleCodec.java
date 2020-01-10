@@ -29,7 +29,8 @@ import io.jenetics.util.Factory;
 
 /**
  * This interface extends the {@link Codec} and allows to encode an object from
- * the problem space to a corresponding {@link Genotype}.
+ * the problem space to a corresponding {@link Genotype}, which is the
+ * <em>inverse</em> functionality of the codec.
  *
  * @param <T> the argument type of a given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
@@ -38,15 +39,28 @@ import io.jenetics.util.Factory;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Encodec<T, G extends Gene<?, G>> extends Codec<T, G> {
+public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 
+	/**
+	 * Return the <em>encoder</em> function which transforms a value from the
+	 * <em>native</em> problem domain back to the genotype. This is the
+	 * <em>inverse</em> of the {@link #decoder()} function.
+	 *
+	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt =
+	 * }</pre>
+	 *
+	 * @see #encoding()
+	 *
+	 * @return genotype decoder
+	 */
 	public Function<T, Genotype<G>> encoder();
 
 	public default Genotype<G> encode(final T value) {
 		return encoder().apply(value);
 	}
 
-	public static <T, G extends Gene<?, G>> Encodec<T, G> of(
+	public static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<Genotype<G>, T> decoder,
 		final Function<T, Genotype<G>> encoder
@@ -55,7 +69,7 @@ public interface Encodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 		requireNonNull(decoder);
 		requireNonNull(encoder);
 
-		return new Encodec<T, G>() {
+		return new InvertibleCodec<T, G>() {
 			@Override
 			public Function<T, Genotype<G>> encoder() {
 				return encoder;
