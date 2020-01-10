@@ -593,4 +593,23 @@ public class CodecsTest {
 		}
 	}
 
+	@Test(dataProvider = "invertibleCodecs")
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public void inversion(final InvertibleCodec codec) {
+		final Genotype gt1 = (Genotype)codec.encoding().newInstance();
+		final Object value = codec.decode(gt1);
+		final Genotype gt2 = codec.encode(value);
+
+		Assert.assertEquals(gt2, gt1);
+	}
+
+	@DataProvider
+	public Object[][] invertibleCodecs() {
+		return new Object[][] {
+			{Codecs.ofScalar(IntRange.of(10, 10_000))},
+			{Codecs.ofScalar(LongRange.of(10, 100_000))},
+			{Codecs.ofScalar(DoubleRange.of(10, 10_000))}
+		};
+	}
+
 }
