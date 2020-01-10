@@ -133,7 +133,7 @@ public final class Empty {
 
 		@Override
 		public Object get(final int index) {
-			throw new ArrayIndexOutOfBoundsException("MSeq is empty.");
+			throw new ArrayIndexOutOfBoundsException("MSeq is empty: " + index);
 		}
 
 		@Override
@@ -183,7 +183,7 @@ public final class Empty {
 
 		@Override
 		public Object get(final int index) {
-			throw new ArrayIndexOutOfBoundsException("ISeq is empty.");
+			throw new ArrayIndexOutOfBoundsException("ISeq is empty: " + index);
 		}
 
 		@Override

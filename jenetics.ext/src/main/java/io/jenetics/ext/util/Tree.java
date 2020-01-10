@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 5.1
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -351,9 +351,44 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return an array of TreeNode objects giving the path, where the
 	 *         first element in the path is the root and the last
 	 *         element is this node.
+	 * @deprecated Use {@link #pathElements()} instead
 	 */
+	@Deprecated
 	public default ISeq<T> getPath() {
-		return Trees.pathToRoot(Trees.<V, T>self(this), 0).toISeq();
+		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
+	}
+
+	/**
+	 * Returns the path from the root, to get to this node. The last element in
+	 * the path is this node.
+	 *
+	 * @since 5.1
+	 *
+	 * @return an array of TreeNode objects giving the path, where the
+	 *         first element in the path is the root and the last
+	 *         element is this node.
+	 */
+	public default ISeq<T> pathElements() {
+		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
+	}
+
+	/**
+	 * Return the {@link Path} of {@code this} tree, such that
+	 * <pre>{@code
+	 * final Tree<Integer, ?> tree = ...;
+	 * final Tree.Path path = tree.path();
+	 * assert tree == tree.getRoot()
+	 *     .childAtPath(path)
+	 *     .orElse(null);
+	 * }</pre>
+	 *
+	 * @since 5.1
+	 *
+	 * @return the path from the root element to {@code this} node.
+	 */
+	public default Path path() {
+		final int[] p = Trees.pathFromRoot(Trees.<V, T>self(this), 0);
+		return Path.of(p);
 	}
 
 	/**

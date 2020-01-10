@@ -129,4 +129,15 @@ public class TreeTest {
 		});
 	}
 
+	@Test(dataProvider = "paths")
+	public void path(final int[] path, final String result) {
+		final Tree<String, ?> child = TREE.childAtPath(path).orElse(null);
+
+		if (result == null) {
+			Assert.assertNull(child);
+		} else {
+			Assert.assertSame(TREE.childAtPath(child.path()).get(), child);
+		}
+	}
+
 }

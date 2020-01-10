@@ -28,7 +28,7 @@ import java.util.List;
  *
  * <pre>{@code
  * final double[] array = new Random().doubles(100).toArray();
- * final int[] indexes = ProxySorter.sort(array);
+ * final int[] proxy = ProxySorter.sort(array);
  *
  * // 'Classical' array sort.
  * final double[] sorted = array.clone();
@@ -36,10 +36,20 @@ import java.util.List;
  *
  * // Iterating the array in ascending order.
  * for (int i = 0; i < array.length; ++i) {
- *     assert sorted[i] == array[indexes[i]];
+ *     assert sorted[i] == array[proxy[i]];
  * }
  * }</pre>
  *
+ * The minimal requirement of the proxy-sorter will be an access function and
+ * the number of elements you want to sort.
+ * <pre>{@code
+ * final IntFunction<String> access = ...;
+ * final int length = 100;
+ * final int[] proxy = ProxySorter.sort(
+ *     access, length,
+ *     (a, i, j) -> a.apply(i).compareTo(a.apply(j))
+ * );
+ * }</pre>
  * @apiNote
  * The most general sorting method is {@link #sort(Object, int, Comparator)}.
  * All other sorting methods can be created with this method.

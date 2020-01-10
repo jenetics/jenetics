@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version !__version__!
+ * @version 5.1
  */
 rootProject.version = Version.parse(property('jenetics.Version'))
 
@@ -81,10 +81,35 @@ allprojects { Project prj ->
 	if (prj.plugins.hasPlugin('java')) {
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion
+
+		jar {
+			manifest {
+				attributes(
+					'Implementation-Title': prj.name,
+					'Implementation-Version': prj.version,
+					'Implementation-URL': project.property('jenetics.Url'),
+					'Implementation-Vendor': project.property('jenetics.Name'),
+					'ProjectName': project.property('jenetics.Name'),
+					'Version': project.version,
+					'Maintainer': project.property('jenetics.Author'),
+					'Project': prj.name,
+					'Project-Version': prj.version,
+					'Built-By': System.properties['user.name'],
+					'Build-Timestamp': dateformat.format(now),
+					'Created-By': "Gradle ${gradle.gradleVersion}",
+					'Build-Jdk': "${System.properties['java.vm.name']} " +
+						"(${System.properties['java.vm.vendor']} " +
+						"${System.properties['java.vm.version']})",
+					'Build-OS': "${System.properties['os.name']} " +
+						"${System.properties['os.arch']} " +
+						"${System.properties['os.version']}"
+				)
+			}
+		}
 	}
 	if (prj.plugins.hasPlugin('jacoco')) {
 		prj.jacoco {
-			toolVersion = '0.8.2'
+			toolVersion = '0.8.5'
 		}
 	}
 }
@@ -148,3 +173,4 @@ task zip(type: Zip) {
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
+

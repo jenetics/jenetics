@@ -179,8 +179,7 @@ public final class DoubleMoments implements Serializable {
 			hash(_mean,
 			hash(_variance,
 			hash(_skewness,
-			hash(_kurtosis,
-			hash(getClass())))))))));
+			hash(_kurtosis))))))));
 	}
 
 	@Override

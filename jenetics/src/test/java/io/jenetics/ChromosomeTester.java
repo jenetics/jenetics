@@ -38,9 +38,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 		final ISeq<G> genes = c.toSeq();
 
 		Assert.assertEquals(c.getGene(), genes.get(0));
-		for (int i = 0; i < genes.length(); ++i) {
-			Assert.assertSame(c.getGene(i), genes.get(i));
-		}
+		Assert.assertEquals(genes.get(0), c.getGene());
 	}
 
 	@Test
