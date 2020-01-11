@@ -168,7 +168,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws NullPointerException if the given {@code encoder} is {@code null}
 	 */
 	public default InvertibleCodec<T, G>
-	invert(final Function<? super T, Genotype<G>> encoder) {
+	toInvertibleCodec(final Function<? super T, Genotype<G>> encoder) {
 		return InvertibleCodec.of(
 			encoding(),
 			decoder(),

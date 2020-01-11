@@ -800,7 +800,7 @@ public final class Codecs {
 
 		return codec
 			.map(permutation -> toMapping(permutation, source, target, mapSupplier))
-			.invert(mapping -> toEncoding(mapping, smap,tmap, genes));
+			.toInvertibleCodec(mapping -> toEncoding(mapping, smap,tmap, genes));
 	}
 
 	private static <A, B> Map.Entry<A, B> entry(final A a, final B b) {
