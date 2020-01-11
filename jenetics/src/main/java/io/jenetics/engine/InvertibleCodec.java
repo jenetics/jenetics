@@ -62,8 +62,8 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 
 	public static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
 		final Factory<Genotype<G>> encoding,
-		final Function<Genotype<G>, T> decoder,
-		final Function<T, Genotype<G>> encoder
+		final Function<? super Genotype<G>, ? extends T> decoder,
+		final Function<? super T, Genotype<G>> encoder
 	) {
 		requireNonNull(encoding);
 		requireNonNull(decoder);
@@ -71,18 +71,20 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 
 		return new InvertibleCodec<T, G>() {
 			@Override
-			public Function<T, Genotype<G>> encoder() {
-				return encoder;
-			}
-
-			@Override
 			public Factory<Genotype<G>> encoding() {
 				return encoding;
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return decoder;
+				return (Function<Genotype<G>, T>)decoder;
+			}
+
+			@Override
+			@SuppressWarnings("unchecked")
+			public Function<T, Genotype<G>> encoder() {
+				return (Function<T, Genotype<G>>)encoder;
 			}
 		};
 	}

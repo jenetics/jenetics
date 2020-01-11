@@ -159,6 +159,15 @@ public interface Codec<T, G extends Gene<?, G>> {
 		);
 	}
 
+	public default InvertibleCodec<T, G>
+	invert(final Function<? super T, Genotype<G>> encoder) {
+		return InvertibleCodec.of(
+			encoding(),
+			decoder(),
+			encoder
+		);
+	}
+
 	/**
 	 * Create a new {@code Codec} object with the given {@code encoding} and
 	 * {@code decoder} function.

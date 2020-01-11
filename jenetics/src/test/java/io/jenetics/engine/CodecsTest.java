@@ -595,38 +595,47 @@ public class CodecsTest {
 
 	@Test(dataProvider = "invertibleCodecs")
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	public void inversion(final InvertibleCodec codec) {
+	public void inversion(final InvertibleCodec codec, final boolean unique) {
 		final Genotype gt1 = (Genotype)codec.encoding().newInstance();
 		Assert.assertNotNull(gt1);
 
-		final Object value = codec.decode(gt1);
-		Assert.assertNotNull(value);
+		final Object v1 = codec.decode(gt1);
+		Assert.assertNotNull(v1);
 
-		final Genotype gt2 = codec.encode(value);
-		Assert.assertEquals(gt2, gt1);
+		final Genotype gt2 = codec.encode(v1);
+		if (unique) {
+			Assert.assertEquals(gt2, gt1);
+		}
+
+		final Object v2 = codec.decode(gt2);
+		Assert.assertEquals(v2, v1);
 	}
 
 	@DataProvider
 	public Object[][] invertibleCodecs() {
 		return new Object[][] {
-			{Codecs.ofScalar(IntRange.of(10, 10_000))},
-			{Codecs.ofScalar(LongRange.of(10, 100_000))},
-			{Codecs.ofScalar(DoubleRange.of(10, 10_000))},
+			{Codecs.ofScalar(IntRange.of(10, 10_000)), true},
+			{Codecs.ofScalar(LongRange.of(10, 100_000)), true},
+			{Codecs.ofScalar(DoubleRange.of(10, 10_000)), true},
 
-			{Codecs.ofVector(IntRange.of(10, 10_000), 10)},
-			{Codecs.ofVector(LongRange.of(10, 100_000), 10)},
-			{Codecs.ofVector(DoubleRange.of(10, 10_000), 10)},
+			{Codecs.ofVector(IntRange.of(10, 10_000), 10), true},
+			{Codecs.ofVector(LongRange.of(10, 100_000), 10), true},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), 10), true},
 
-			{Codecs.ofVector(IntRange.of(10, 10_000), IntRange.of(60, 100), IntRange.of(1, 10))},
-			{Codecs.ofVector(LongRange.of(10, 10_000), LongRange.of(60, 100), LongRange.of(1, 10))},
-			{Codecs.ofVector(DoubleRange.of(10, 10_000), DoubleRange.of(60, 100), DoubleRange.of(1, 10))},
+			{Codecs.ofVector(IntRange.of(10, 10_000), IntRange.of(60, 100), IntRange.of(1, 10)), true},
+			{Codecs.ofVector(LongRange.of(10, 10_000), LongRange.of(60, 100), LongRange.of(1, 10)), true},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), DoubleRange.of(60, 100), DoubleRange.of(1, 10)), true},
 
-			{Codecs.ofPermutation(100)},
-			{Codecs.ofPermutation(ISeq.of("a", "b", "c", "d", "e", "f", "end"))},
+			{Codecs.ofPermutation(100), true},
+			{Codecs.ofPermutation(ISeq.of("a", "b", "c", "d", "e", "f", "end")), true},
 
-			{Codecs.ofMatrix(IntRange.of(10, 10_000), 10, 100)},
-			{Codecs.ofMatrix(LongRange.of(10, 10_000), 10, 100)},
-			{Codecs.ofMatrix(DoubleRange.of(10, 10_000), 10, 100)}
+			{Codecs.ofMatrix(IntRange.of(10, 10_000), 10, 100), true},
+			{Codecs.ofMatrix(LongRange.of(10, 10_000), 10, 100), true},
+			{Codecs.ofMatrix(DoubleRange.of(10, 10_000), 10, 100), true},
+
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D"), ISeq.of(1, 2, 3, 4)), true},
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E", "F", "G"), ISeq.of(1, 2, 3, 4)), true},
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E"), ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9)), false}
 		};
 	}
 

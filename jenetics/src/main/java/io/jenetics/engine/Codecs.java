@@ -21,12 +21,16 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
+import static io.jenetics.internal.util.array.swap;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -762,15 +766,45 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
 	 * @throws NullPointerException if one of the argument is {@code null}
 	 */
-	public static <A, B, M extends Map<A, B>> Codec<M, EnumGene<Integer>>
+	public static <A, B, M extends Map<A, B>> InvertibleCodec<M, EnumGene<Integer>>
 	ofMapping(
 		final ISeq<? extends A> source,
 		final ISeq<? extends B> target,
 		final Supplier<M> mapSupplier
 	) {
+		requireNonNull(source);
+		requireNonNull(target);
 		requireNonNull(mapSupplier);
-		return ofPermutation(target.size())
-			.map(perm -> toMapping(perm, source, target, mapSupplier));
+
+		final Map<A, Integer> smap = IntStream.range(0, source.length())
+			.mapToObj(i -> entry(source.get(i), i))
+			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+		final Map<B, Integer> tmap = IntStream.range(0, target.length())
+			.mapToObj(i -> entry(target.get(i), i))
+			.collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+		final PermutationChromosome<Integer> chromosome =
+			PermutationChromosome.ofInteger(target.size());
+
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
+			.stream()
+			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+
+		final Codec<int[], EnumGene<Integer>> codec = Codec.of(
+			Genotype.of(chromosome),
+			gt -> gt.getChromosome().stream()
+				.mapToInt(EnumGene::getAllele)
+				.toArray()
+		);
+
+		return codec
+			.map(permutation -> toMapping(permutation, source, target, mapSupplier))
+			.invert(mapping -> toEncoding(mapping, smap,tmap, genes));
+	}
+
+	private static <A, B> Map.Entry<A, B> entry(final A a, final B b) {
+		return new SimpleImmutableEntry<>(a, b);
 	}
 
 	private static <A, B, M extends Map<A, B>> M toMapping(
@@ -780,13 +814,53 @@ public final class Codecs {
 		final Supplier<M> mapSupplier
 	) {
 		return IntStream.range(0, source.size())
-			.mapToObj(i -> new SimpleImmutableEntry<>(
-				source.get(i), target.get(perm[i%perm.length])))
+			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
 				Entry::getKey,
 				Entry::getValue,
 				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
+	}
+
+	private static <A, B> Genotype<EnumGene<Integer>> toEncoding(
+		final Map<A, B> mapping,
+		final Map<A, Integer> source,
+		final Map<B, Integer> target,
+		final Map<Integer, EnumGene<Integer>> genes
+	) {
+		final int[] perm = new int[target.size()];
+		for (Map.Entry<A, Integer> sm : source.entrySet()) {
+			final int i = sm.getValue();
+			final int j = target.get(mapping.get(sm.getKey()));
+			perm[i%perm.length] = j;
+		}
+
+		// Fill the rest of the 'perm' array, without duplicates.
+		// TODO: can be done more efficiently
+		if (target.size() > source.size()) {
+			final Set<Integer> indexes = new HashSet<>();
+			for (int i = 0; i < target.size(); ++i) {
+				indexes.add(i);
+			}
+
+			for (int i = 0; i < source.size(); ++i) {
+				indexes.remove(perm[i]);
+			}
+
+			final Iterator<Integer> it = indexes.iterator();
+			for (int i = source.size(); i < target.size(); ++i) {
+				perm[i] = it.next();
+				it.remove();
+			}
+		}
+
+		return  Genotype.of(
+			new PermutationChromosome<>(
+				IntStream.of(perm)
+					.mapToObj(genes::get)
+					.collect(ISeq.toISeq())
+			)
+		);
 	}
 
 	/**
@@ -822,7 +896,7 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code target} sequences are empty
 	 * @throws NullPointerException if one of the argument is {@code null}
 	 */
-	public static <A, B> Codec<Map<A, B>, EnumGene<Integer>>
+	public static <A, B> InvertibleCodec<Map<A, B>, EnumGene<Integer>>
 	ofMapping(final ISeq<? extends A> source, final ISeq<? extends B> target) {
 		return ofMapping(source, target, HashMap::new);
 	}
