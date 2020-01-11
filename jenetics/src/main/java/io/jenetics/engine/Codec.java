@@ -173,12 +173,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * {@code decoder} function.
 	 *
 	 * @param encoding the genotype factory used for creating new
-	 *        {@code Genotypes}.
+	 *        {@code Genotypes}
 	 * @param decoder decoder function, which converts a {@code Genotype} to a
-	 *        value in the problem domain.
+	 *        value in the problem domain
 	 * @param <G> the {@code Gene} type
 	 * @param <T> the fitness function argument type in the problem domain
-	 * @return a new {@code Codec} object with the given parameters.
+	 * @return a new {@code Codec} object with the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <T, G extends Gene<?, G>> Codec<T, G> of(
