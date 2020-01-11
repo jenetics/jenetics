@@ -28,12 +28,12 @@ import io.jenetics.ext.util.TreeNode;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ConstExprRewriterTest {
+public class ConstRewriterTest {
 
 	@Test(dataProvider = "expressions")
 	public void rewrite(final String expr, final double value) {
 		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
-		new ConstExprRewriter().rewrite(tree);
+		ConstRewriter.ofType(Double.class).rewrite(tree);
 
 		Assert.assertEquals(tree.getValue(), Const.of(value));
 	}
@@ -58,8 +58,18 @@ public class ConstExprRewriterTest {
 				? EphemeralConst.of(((Const<Double>) n)::value)
 				: n);
 
-		new ConstExprRewriter().rewrite(tree);
+		ConstRewriter.ofType(Double.class).rewrite(tree);
 		Assert.assertEquals(tree.getValue(), Const.of(6.0));
+	}
+
+	@Test
+	public void constStringExpr() {
+		final Op<String> concat = Op.of("++", String::concat);
+		final TreeNode<Op<String>> ops = TreeNode.of(concat);
+		ops.attach(Const.of("a"), Const.of("b"));
+
+		ConstRewriter.ofType(String.class).rewrite(ops);
+		Assert.assertEquals(ops.getValue(), Const.of("ab"));
 	}
 
 }

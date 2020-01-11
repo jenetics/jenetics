@@ -79,7 +79,7 @@ final class Operation<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof Operation &&
 			Objects.equals(((Operation)obj)._name, _name) &&
-			((Operation) obj)._arity == _arity;
+			((Operation)obj)._arity == _arity;
 	}
 
 	@Override
