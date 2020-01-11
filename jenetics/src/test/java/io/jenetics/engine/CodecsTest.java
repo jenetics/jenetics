@@ -23,7 +23,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -552,7 +551,7 @@ public class CodecsTest {
 		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
 			Codecs.ofVector(
 				() -> RandomRegistry.getRandom().nextInt(1000),
-				(Predicate<Integer>) i -> i < 100,
+				i -> i < 100,
 				length
 			);
 
