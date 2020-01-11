@@ -21,7 +21,6 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
-import static io.jenetics.internal.util.array.swap;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
