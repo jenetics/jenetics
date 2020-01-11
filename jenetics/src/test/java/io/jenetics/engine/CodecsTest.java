@@ -20,6 +20,8 @@
 package io.jenetics.engine;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -438,9 +440,9 @@ public class CodecsTest {
 				.collect(EvolutionResult.toBestGenotype())
 		);
 
-		Assert.assertTrue(best.containsKey(3));
-		Assert.assertTrue(best.containsKey(4));
-		Assert.assertTrue(best.containsKey(5));
+		assertTrue(best.containsKey(3));
+		assertTrue(best.containsKey(4));
+		assertTrue(best.containsKey(5));
 	}
 
 	@Test
@@ -463,9 +465,9 @@ public class CodecsTest {
 				.collect(EvolutionResult.toBestGenotype())
 		);
 
-		Assert.assertTrue(best.containsValue(3));
-		Assert.assertTrue(best.containsValue(4));
-		Assert.assertTrue(best.containsValue(5));
+		assertTrue(best.containsValue(3));
+		assertTrue(best.containsValue(4));
+		assertTrue(best.containsValue(5));
 	}
 
 
@@ -524,8 +526,8 @@ public class CodecsTest {
 				.newInstance().getGene();
 
 			assertEquals(gene.isValid(), gene.getAllele() < 100);
-			Assert.assertTrue(gene.getAllele() < 1000);
-			Assert.assertTrue(gene.getAllele() >= 0);
+			assertTrue(gene.getAllele() < 1000);
+			assertTrue(gene.getAllele() >= 0);
 		}
 	}
 
@@ -539,9 +541,9 @@ public class CodecsTest {
 			final AnyGene<Integer> gene = codec.encoding()
 				.newInstance().getGene();
 
-			Assert.assertTrue(gene.isValid());
-			Assert.assertTrue(gene.getAllele() < 1000);
-			Assert.assertTrue(gene.getAllele() >= 0);
+			assertTrue(gene.isValid());
+			assertTrue(gene.getAllele() < 1000);
+			assertTrue(gene.getAllele() >= 0);
 		}
 	}
 
@@ -568,8 +570,8 @@ public class CodecsTest {
 					Assert.assertFalse(ch.isValid());
 				}
 
-				Assert.assertTrue(gene.getAllele() < 1000);
-				Assert.assertTrue(gene.getAllele() >= 0);
+				assertTrue(gene.getAllele() < 1000);
+				assertTrue(gene.getAllele() >= 0);
 			}
 		}
 	}
@@ -585,7 +587,7 @@ public class CodecsTest {
 			final Chromosome<EnumGene<String>> ch = gt.getChromosome();
 
 			assertEquals(ch.length(), 3);
-			Assert.assertTrue(ch.isValid());
+			assertTrue(ch.isValid());
 
 			final ISeq<String> permutation = codec.decoder().apply(gt);
 			assertEquals(permutation.length(), 3);
@@ -596,18 +598,18 @@ public class CodecsTest {
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void inversion(final InvertibleCodec codec, final boolean unique) {
 		final Genotype gt1 = (Genotype)codec.encoding().newInstance();
-		Assert.assertNotNull(gt1);
+		assertNotNull(gt1);
 
 		final Object v1 = codec.decode(gt1);
-		Assert.assertNotNull(v1);
+		assertNotNull(v1);
 
 		final Genotype gt2 = codec.encode(v1);
 		if (unique) {
-			Assert.assertEquals(gt2, gt1);
+			assertEquals(gt2, gt1);
 		}
 
 		final Object v2 = codec.decode(gt2);
-		Assert.assertEquals(v2, v1);
+		assertEquals(v2, v1);
 	}
 
 	@DataProvider
