@@ -159,6 +159,14 @@ public interface Codec<T, G extends Gene<?, G>> {
 		);
 	}
 
+	/**
+	 * Converts this codec into an <em>invertible</em> codec, by using the given
+	 * {@code encoder} (inversion) function.
+	 *
+	 * @param encoder the (inverse) encoder function
+	 * @return a new invertible codec
+	 * @throws NullPointerException if the given {@code encoder} is {@code null}
+	 */
 	public default InvertibleCodec<T, G>
 	invert(final Function<? super T, Genotype<G>> encoder) {
 		return InvertibleCodec.of(
@@ -183,7 +191,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 */
 	public static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
-		final Function<Genotype<G>, T> decoder
+		final Function<? super Genotype<G>, ? extends T> decoder
 	) {
 		requireNonNull(encoding);
 		requireNonNull(decoder);
@@ -195,8 +203,9 @@ public interface Codec<T, G extends Gene<?, G>> {
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return decoder;
+				return (Function<Genotype<G>, T>)decoder;
 			}
 		};
 	}
