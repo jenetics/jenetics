@@ -340,6 +340,7 @@ public final class TreePattern<V> implements Serializable {
 	 * @param pattern the tree pattern string
 	 * @param mapper the mapper which converts the serialized string value to
 	 *        the desired type
+	 * @param <V> the value type of the tree than can be matched by the pattern
 	 * @return the compiled pattern
 	 * @throws NullPointerException if the given pattern is {@code null}
 	 * @throws IllegalArgumentException if the given parentheses tree string
