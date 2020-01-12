@@ -130,6 +130,7 @@ public final class RetryConstraint<
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
 	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code validator} is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	RetryConstraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
@@ -151,6 +152,8 @@ public final class RetryConstraint<
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
 	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code codec} or {@code validator} is
+	 *         {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	RetryConstraint<G, C> of(
@@ -200,6 +203,8 @@ public final class RetryConstraint<
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
 	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code codec} or {@code validator} is
+	 *         {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	RetryConstraint<G, C> of(
