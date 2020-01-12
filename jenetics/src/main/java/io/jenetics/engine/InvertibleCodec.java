@@ -81,6 +81,30 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	}
 
 	/**
+	 * Create a new {@code InvertibleCodec} with the mapped result type.
+	 *
+	 * @param mapper the mapper function
+	 * @param inverseMapper the inverse function of the {@code mapper}
+	 * @param <B> the new argument type of the given problem
+	 * @return a new {@code Codec} with the mapped result type
+	 * @throws NullPointerException if one the mapper is {@code null}.
+	 */
+	public default <B>
+	InvertibleCodec<B, G> map(
+		final Function<? super T, ? extends B> mapper,
+		final Function<? super B, ? extends T> inverseMapper
+	) {
+		requireNonNull(mapper);
+		requireNonNull(inverseMapper);
+
+		return InvertibleCodec.of(
+			encoding(),
+			mapper.compose(decoder()),
+			encoder().compose(inverseMapper)
+		);
+	}
+
+	/**
 	 * Create a new invertible codec from the given parameters.
 	 *
 	 * @param encoding the genotype factory used for creating new
