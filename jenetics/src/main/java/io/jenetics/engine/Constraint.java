@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
@@ -141,6 +142,15 @@ public interface Constraint<
 			validator,
 			(pt, gen) -> Phenotype.of(pt.getGenotype().newInstance(), gen)
 		);
+	}
+
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Constraint<G, C> of(
+		final InvertibleCodec<T, G> encodec,
+		final Predicate<? super T> validator,
+		final Function<? super T, ? extends T> repairer
+	) {
+		return null;
 	}
 
 }
