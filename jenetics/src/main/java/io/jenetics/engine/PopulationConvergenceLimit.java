@@ -44,7 +44,7 @@ final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>
 
 	@Override
 	public boolean test(final EvolutionResult<?, N> result) {
-		final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
+		final var fitness = new DoubleMomentStatistics();
 		result.getPopulation()
 			.forEach(p -> fitness.accept(p.getFitness().doubleValue()));
 

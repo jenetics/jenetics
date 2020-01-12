@@ -34,6 +34,8 @@ apply plugin: 'nexus'
 
 description = property('jenetics.Description')
 
+ext.moduleName = 'io.jenetics.base'
+
 dependencies {
 	testImplementation property('include.ApacheCommonsMath')
 	testImplementation property('include.TestNG')
@@ -44,8 +46,6 @@ dependencies {
 }
 
 jmh {
-	//jmhVersion = '1.20'
-	//duplicateClassesStrategy = 'include'
 	warmupIterations = 5
 	iterations = 5
 	include = ['.*BufferPerf.*']
@@ -56,8 +56,6 @@ idea {
 		scopes.COMPILE.plus += [configurations.jmh]
 	}
 }
-
-jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
 
 test.dependsOn(compileJmhJava)
 

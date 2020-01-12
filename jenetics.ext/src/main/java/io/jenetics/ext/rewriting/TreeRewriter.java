@@ -22,7 +22,7 @@ package io.jenetics.ext.rewriting;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
+import java.util.List;
 
 import io.jenetics.ext.util.TreeNode;
 
@@ -177,6 +177,6 @@ public interface TreeRewriter<V> {
 			);
 		}
 
-		return (tree, limit) -> rewrite(tree, limit, Arrays.asList(rewriters));
+		return (tree, limit) -> rewrite(tree, limit, List.of(rewriters));
 	}
 }

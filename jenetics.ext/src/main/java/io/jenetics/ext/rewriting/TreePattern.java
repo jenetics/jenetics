@@ -277,7 +277,7 @@ public final class TreePattern<V> implements Serializable {
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
 			.filter((Tree<Decl<V>, ?> n) -> n.getValue() instanceof Var)
-			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.getValue()));
+			.collect(toMap(Tree::childPath, t -> (Var<V>)t.getValue()));
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
@@ -378,7 +378,7 @@ public final class TreePattern<V> implements Serializable {
 	static TreePattern read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final TreeNode pattern = (TreeNode)in.readObject();
+		final var pattern = (TreeNode)in.readObject();
 		return new TreePattern(pattern);
 	}
 
@@ -525,7 +525,7 @@ public final class TreePattern<V> implements Serializable {
 			out.writeObject(_name);
 		}
 
-		@SuppressWarnings({"unchecked", "rawtypes"})
+		@SuppressWarnings({"rawtypes"})
 		static Var read(final ObjectInput in)
 			throws IOException, ClassNotFoundException
 		{

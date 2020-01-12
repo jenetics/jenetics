@@ -65,9 +65,9 @@ final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 	) {
 		if (other instanceof BitGeneMSeq) {
 			checkIndex(start, end, otherStart, other.length());
-			final BitGeneMSeq otherMSeq = (BitGeneMSeq)other;
-			final BitGeneStore thisStore = (BitGeneStore)array.store();
-			final BitGeneStore otherStore = (BitGeneStore)otherMSeq.array.store();
+			final var otherMSeq = (BitGeneMSeq)other;
+			final var thisStore = (BitGeneStore)array.store();
+			final var otherStore = (BitGeneStore)otherMSeq.array.store();
 
 			array.copyIfSealed();
 			otherMSeq.array.copyIfSealed();

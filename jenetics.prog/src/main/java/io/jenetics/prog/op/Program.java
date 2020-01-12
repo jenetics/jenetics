@@ -324,7 +324,7 @@ public class Program<T> implements Op<T>, Serializable {
 				"Operation list contains terminal op."
 			);
 		}
-		if (!terminals.forAll(o -> o.isTerminal())) {
+		if (!terminals.forAll(Op::isTerminal)) {
 			throw new IllegalArgumentException(
 				"Terminal list contains non-terminal op."
 			);
@@ -404,8 +404,8 @@ public class Program<T> implements Op<T>, Serializable {
 		final Random random
 	) {
 		if (index < nodes.size()) {
-			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);
-			final Op<A> op = node.getValue();
+			final var node = nodes.get(index);
+			final var op = node.getValue();
 
 			for (int i  = 0; i < op.arity(); ++i) {
 				assert offsets[index] != -1;

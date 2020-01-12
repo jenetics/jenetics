@@ -307,10 +307,10 @@ public class LongChromosome
 	}
 
 	static LongChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final long min = readLong(in);
-		final long max = readLong(in);
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = readLong(in);
+		final var max = readLong(in);
 
 		final MSeq<LongGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

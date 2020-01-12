@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.1
+ * @version !__version__!
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -149,7 +149,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	public default int level() {
 		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
-		while ((ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent()) {
+		while ((ancestor = ancestor.flatMap(Tree::getParent)).isPresent()) {
 			++levels;
 		}
 
@@ -260,7 +260,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
-				(ancestor = ancestor.flatMap(Tree<V, T>::getParent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree::getParent)).isPresent());
 
 		return result;
 	}
@@ -541,7 +541,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			if (prev.isPresent()) {
 				node = prev.get().childCount() == 0
 					? prev
-					: prev.map(Tree<V, T>::lastLeaf);
+					: prev.map(Tree::lastLeaf);
 			} else {
 				node = getParent();
 			}
@@ -575,7 +575,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of siblings of {@code this} node
 	 */
 	public default int siblingCount() {
-		return getParent().map(Tree<V, T>::childCount).orElse(1);
+		return getParent().map(Tree::childCount).orElse(1);
 	}
 
 	/**
@@ -675,8 +675,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default Optional<T> nextLeaf() {
 		return nextSibling()
-			.map(s -> Optional.of(s.firstLeaf()))
-			.orElseGet(() -> getParent().flatMap(Tree<V, T>::nextLeaf));
+			.map(Tree::firstLeaf)
+			.or(() -> getParent().flatMap(Tree::nextLeaf));
 	}
 
 	/**
@@ -698,8 +698,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	public default Optional<T> previousLeaf() {
 		return previousSibling()
-			.map(s -> Optional.of(s.lastLeaf()))
-			.orElseGet(() -> getParent().flatMap(Tree<V, T>::previousLeaf));
+			.map(Tree::lastLeaf)
+			.or(() -> getParent().flatMap(Tree::previousLeaf));
 	}
 
 	/**
