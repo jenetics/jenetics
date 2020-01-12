@@ -155,7 +155,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 		return Codec.of(
 			encoding(),
-			gt -> mapper.apply(decode(gt))
+			mapper.compose(decoder())
 		);
 	}
 
