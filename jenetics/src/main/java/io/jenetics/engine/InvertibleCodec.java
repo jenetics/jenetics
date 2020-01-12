@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
@@ -39,6 +40,15 @@ import io.jenetics.util.Factory;
  * Genotype<IntegerGene> gt = codec.encode(value);
  * assert Arrays.equals(value, codec.decode(gt));
  * }</pre>
+ *
+ * The main usage of an invertible codec is to simplify the definition of
+ * {@link Constraint} objects. Instead of working with the GA classes
+ * ({@link io.jenetics.Phenotype} or {@link Genotype}), it is possible to work
+ * in the <em>native</em> problem domain {@code T}.
+ *
+ * @see Constraint#of(InvertibleCodec, Predicate, Function)
+ * @see RetryConstraint#of(InvertibleCodec, Predicate, Function)
+ * @see RetryConstraint#of(InvertibleCodec, Predicate, int)
  *
  * @param <T> the argument type of a given problem
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}

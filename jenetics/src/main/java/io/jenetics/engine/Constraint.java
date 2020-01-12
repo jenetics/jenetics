@@ -22,6 +22,7 @@ package io.jenetics.engine;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import io.jenetics.Gene;
@@ -47,10 +48,12 @@ import io.jenetics.Phenotype;
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
- * cases.
+ * cases. If the {@link Engine} is created with an explicit constraint
+ * ({@link Engine.Builder#constraint(Constraint)}), the <em>default</em>
+ * validation mechanism via {@link Phenotype#isValid()} is overridden.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 public interface Constraint<
@@ -140,6 +143,42 @@ public interface Constraint<
 		return of(
 			validator,
 			(pt, gen) -> Phenotype.of(pt.getGenotype().newInstance(), gen)
+		);
+	}
+
+	/**
+	 * Return a new constraint object with the given {@code validator} and
+	 * {@code repairer}. The given invertible codec allows to simplify the
+	 * needed validator and repairer.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codec the invertible codec used for simplify the needed
+	 *        validator and repairer
+	 * @param validator the phenotype validator used by the constraint
+	 * @param repairer the phenotype repairer used by the constraint
+	 * @param <T> the type of the <em>native</em> problem domain
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	Constraint<G, C> of(
+		final InvertibleCodec<T, G> codec,
+		final Predicate<? super T> validator,
+		final Function<? super T, ? extends T> repairer
+	) {
+		requireNonNull(codec);
+		requireNonNull(validator);
+		requireNonNull(repairer);
+
+		return of(
+			pt -> validator.test(codec.decode(pt.getGenotype())),
+			(pt, gen) -> Phenotype.of(
+				codec.encode(repairer.apply(codec.decode(pt.getGenotype()))),
+				gen
+			)
 		);
 	}
 
