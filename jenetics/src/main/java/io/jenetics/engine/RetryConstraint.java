@@ -37,7 +37,7 @@ import io.jenetics.util.Factory;
  * cases.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 public final class RetryConstraint<
@@ -147,6 +147,8 @@ public final class RetryConstraint<
 	 *
 	 * @since !__version__!
 	 *
+	 * @param codec the invertible codec used for simplify the needed
+	 *        validator
 	 * @param validator the phenotype validator
 	 * @param <T> the type of the <em>native</em> problem domain
 	 * @param <G> the gene type
@@ -194,6 +196,8 @@ public final class RetryConstraint<
 	 *
 	 * @since !__version__!
 	 *
+	 * @param codec the invertible codec used for simplify the needed
+	 *        validator
 	 * @param validator the phenotype validator
 	 * @param retryLimit the limit of the phenotype creation retries. If more
 	 *        re-creation tries are necessary, an invalid phenotype is returned.
