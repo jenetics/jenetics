@@ -141,6 +141,26 @@ public final class RetryConstraint<
 	}
 
 	/**
+	 * Return a new constraint with the given {@code validator} and the
+	 * {@link #DEFAULT_RETRY_COUNT}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param validator the phenotype validator
+	 * @param <T> the type of the <em>native</em> problem domain
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(
+		final InvertibleCodec<T, G> codec,
+		final Predicate<? super T> validator
+	) {
+		return of(pt -> validator.test(codec.decode(pt.getGenotype())));
+	}
+
+	/**
 	 * Return a new constraint with the given {@code validator} and
 	 * {@code retryLimit}.
 	 *
@@ -161,6 +181,34 @@ public final class RetryConstraint<
 		return new RetryConstraint<>(
 			validator,
 			null,
+			retryLimit
+		);
+	}
+
+	/**
+	 * Return a new constraint with the given {@code validator} and
+	 * {@code retryLimit}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param validator the phenotype validator
+	 * @param retryLimit the limit of the phenotype creation retries. If more
+	 *        re-creation tries are necessary, an invalid phenotype is returned.
+	 *        This limit guarantees the termination of the
+	 *        {@link #repair(Phenotype, long)} method.
+	 * @param <T> the type of the <em>native</em> problem domain
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(
+		final InvertibleCodec<T, G> codec,
+		final Predicate<? super T> validator,
+		final int retryLimit
+	) {
+		return of(
+			pt -> validator.test(codec.decode(pt.getGenotype())),
 			retryLimit
 		);
 	}
