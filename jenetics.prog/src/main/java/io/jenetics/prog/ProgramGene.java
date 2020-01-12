@@ -124,8 +124,8 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed operations
 	 */
-	public ISeq<? extends Op<A>> getOperations() {
-		return _operations;
+	public ISeq<Op<A>> getOperations() {
+		return ISeq.upcast(_operations);
 	}
 
 	/**
@@ -133,8 +133,8 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed terminal operations
 	 */
-	public ISeq<? extends Op<A>> getTerminals() {
-		return _terminals;
+	public ISeq<Op<A>> getTerminals() {
+		return ISeq.upcast(_terminals);
 	}
 
 	/**

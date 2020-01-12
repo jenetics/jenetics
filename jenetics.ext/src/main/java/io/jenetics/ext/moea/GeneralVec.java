@@ -19,45 +19,52 @@
  */
 package io.jenetics.ext.moea;
 
-import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-
-import io.jenetics.Optimize;
+import java.util.Comparator;
 
 /**
- * Some vector helper methods.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.2
- * @since 4.1
+ * @since 5.2
  */
-final class Vecs {
+abstract class GeneralVec<T> implements Vec<T> {
 
-	private Vecs() {
+	final T _data;
+	final ElementComparator<T> _comparator;
+	final ElementDistance<T> _distance;
+	final Comparator<T> _dominance;
+
+	GeneralVec(
+		final T data,
+		final ElementComparator<T> comparator,
+		final ElementDistance<T> distance,
+		final Comparator<T> dominance
+	) {
+		_data = requireNonNull(data);
+		_comparator = requireNonNull(comparator);
+		_distance = requireNonNull(distance);
+		_dominance = requireNonNull(dominance);
 	}
 
-	static void checkVecLength(final int length) {
-		if (length <= 0) {
-			throw new IllegalArgumentException("Array length must greater zero.");
-		}
+	@Override
+	public T data() {
+		return _data;
 	}
 
-	static void requireVecLength(final int expected, final int length) {
-		if (expected != length) {
-			throw new IllegalArgumentException(format(
-				"Expected Vec.length of %d, but got %d.",
-				expected, length
-			));
-		}
+	@Override
+	public ElementComparator<T> comparator() {
+		return _comparator;
 	}
 
-	static boolean[] toFlags(final List<Optimize> optimizes) {
-		final boolean[] flags = new boolean[optimizes.size()];
-		for (int i = 0; i < optimizes.size(); ++i) {
-			flags[i] = optimizes.get(i) == Optimize.MAXIMUM;
-		}
-		return flags;
+	@Override
+	public ElementDistance<T> distance() {
+		return _distance;
+	}
+
+	@Override
+	public Comparator<T> dominance() {
+		return _dominance;
 	}
 
 }

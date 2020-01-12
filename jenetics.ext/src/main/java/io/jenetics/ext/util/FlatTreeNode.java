@@ -108,7 +108,7 @@ public final class FlatTreeNode<T>
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getValue() {
-		return (T) _elements[_index];
+		return (T)_elements[_index];
 	}
 
 	@Override

@@ -20,7 +20,9 @@
 package io.jenetics.prog.op;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Comparator.comparing;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toCollection;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 
@@ -30,11 +32,9 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
 import io.jenetics.internal.util.Lazy;
@@ -86,7 +86,7 @@ public final class MathExpr
 	 * @since 5.0
 	 */
 	public static final TreeRewriter<Op<Double>> CONST_REWRITER =
-		new ConstExprRewriter();
+		ConstRewriter.DOUBLE;
 
 	/**
 	 * This rewriter implements some common arithmetic identities, in exactly
@@ -158,8 +158,7 @@ public final class MathExpr
 			_tree.stream()
 				.filter(node -> node.getValue() instanceof Var)
 				.map(node -> (Var<Double>)node.getValue())
-				.collect(Collectors.toCollection(() ->
-					new TreeSet<>(Comparator.comparing(Var::name))))
+				.collect(toCollection(() -> new TreeSet<>(comparing(Var::name))))
 		));
 	}
 

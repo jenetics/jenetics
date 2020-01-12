@@ -93,7 +93,9 @@ public final class EnumGene<A>
 
 		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
 			throw new IndexOutOfBoundsException(format(
-				"Allele index is not in range [0, %d).", alleleIndex
+				"Allele index is not in range [0, %d): %d.",
+				validAlleles.length(),
+				alleleIndex
 			));
 		}
 

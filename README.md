@@ -6,7 +6,7 @@
 [![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/context:java)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/alerts)
 
-**Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm** and **Genetic Programming** library, respectively, written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
+**Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 **Other languages**
 
@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
 
 
 ## Requirements
@@ -153,10 +153,12 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015
 * <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015
 
-
 ## Citations
 
+* Sabrina Appel, Wolfgang Geithner, Stephan Reimann, Mariusz Sapinski, Rahul Singh and Dominik Vilsmeier. <a href="https://www.worldscientific.com/doi/abs/10.1142/S0217751X19420193">Application of nature-inspired optimization algorithms and machine learning for heavy-ion synchrotrons. </a> <em>International Journal of Modern Physics A. </em></a> Dec. 2019.
+* O. M. Elzeki, M. F. Alrahmawy, Samir Elmougy. <a href="http://www.mecs-press.org/ijisa/ijisa-v11-n12/IJISA-V11-N12-3.pdf">A New Hybrid Genetic and Information Gain Algorithm for Imputing Missing Values in Cancer Genes Datasets. </a> <em>PInternational Journal of Intelligent Systems and Applications (IJISA), Vol.11, No.12, pp.20-33, DOI: 10.5815/ijisa.2019.12.03. </em></a> Dec. 2019.
 * Oliver Strauß, Ahmad Almheidat and Holger Kett. <a href="https://pdfs.semanticscholar.org/0a91/c4e03a2acd8c295af398167edf7350ad0662.pdf">Applying Heuristic and Machine Learning Strategies to ProductResolution. </a> <em>Proceedings of the 15th International Conference on Web Information Systems and Technologies (WEBIST 2019), pages 242-249. </em></a> Nov. 2019.
+* Yuanyuan Li, Stefano Carabelli, Edoardo Fadda, Daniele Manerba, Roberto Tadei1 and Olivier Terzo. <a href="http://www.orgroup.polito.it/material/DAUIN-ORO-2019-06.pdf">Integration of Machine Learning and OptimizationTechniques for Flexible Job-Shop Rescheduling inIndustry 4.0. </a> <em>Politecnico di Torino, Operations Research and Optimization Group. </em></a> Oct. 2019.
 * Höttger R., Igel B., Spinczyk O. <a href="https://link.springer.com/chapter/10.1007/978-3-030-30275-7_44">Constrained Software Distribution for Automotive Systems. </a> <em>Communications in Computer and Information Science, vol 1078. </em></a> Oct. 2019.
 * Jin-wooLee, Gwangseon Jang, Hohyun Jung, Jae-Gil Lee, Uichin Lee. <a href="https://doi.org/10.1016/j.pmcj.2019.101082">Maximizing MapReduce job speed and reliability in the mobile cloud by optimizing task allocation. </a> <em>Pervasive and Mobile Computing. </em></a> Oct. 2019.
 * Junio Cezar Ribeiro da Silva, Lorena Leão, Vinicius Petrucci, Abdoulaye Gamatié, Fernando MagnoQuintao Pereira. <a href="https://hal-lirmm.ccsd.cnrs.fr/lirmm-02281112/document">Scheduling in Heterogeneous Architectures via Multivariate Linear Regression on Function Inputs. </a> <em>lirmm-02281112. </em></a> Sep. 2019.
@@ -224,7 +226,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2019 Franz Wilhelmstötter
+	Copyright 2007-2020 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

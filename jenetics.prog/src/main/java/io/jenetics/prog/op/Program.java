@@ -50,7 +50,6 @@ public class Program<T> implements Op<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final String _name;
-	private final int _arity;
 	private final Tree<? extends Op<T>, ?> _tree;
 
 	/**
@@ -69,11 +68,6 @@ public class Program<T> implements Op<T>, Serializable {
 		_name = requireNonNull(name);
 		_tree = requireNonNull(tree);
 		check(tree);
-		_arity = tree.breadthFirstStream()
-			.filter(t -> t.getValue() instanceof Var)
-			.mapToInt(v -> ((Var)v.getValue()).index() + 1)
-			.max()
-			.orElse(0);
 	}
 
 	@Override
@@ -83,7 +77,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public int arity() {
-		return _arity;
+		return 0;
 	}
 
 	/**
@@ -93,7 +87,7 @@ public class Program<T> implements Op<T>, Serializable {
 	 *
 	 * @return the underlying expression tree
 	 */
-	public Tree<? extends Op<T>, ?> tree() {
+	public Tree<Op<T>, ?> tree() {
 		return TreeNode.ofTree(_tree);
 	}
 
@@ -128,7 +122,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return hash(_name, hash(_arity, hash(_tree)));
+		return hash(_name, hash(_tree));
 	}
 
 	@Override
@@ -136,7 +130,6 @@ public class Program<T> implements Op<T>, Serializable {
 		return obj == this ||
 			obj instanceof Program &&
 			Objects.equals(((Program)obj)._name, _name) &&
-			((Program)obj)._arity == _arity &&
 			Objects.equals(((Program)obj)._tree, _tree);
 	}
 

@@ -337,8 +337,12 @@ public final class TreeNode<T>
 	 * nothing.
 	 */
 	public void removeAllChildren() {
-		for (int i = 0, n = childCount(); i < n; ++i) {
-			remove(_children.size() - 1);
+		if (_children != null) {
+			for (TreeNode<T> child : _children) {
+				child.setParent(null);
+			}
+
+			_children = null;
 		}
 	}
 

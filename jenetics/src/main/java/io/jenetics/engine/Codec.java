@@ -155,7 +155,24 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 		return Codec.of(
 			encoding(),
-			gt -> mapper.apply(decode(gt))
+			mapper.compose(decoder())
+		);
+	}
+
+	/**
+	 * Converts this codec into an <em>invertible</em> codec, by using the given
+	 * {@code encoder} (inversion) function.
+	 *
+	 * @param encoder the (inverse) encoder function
+	 * @return a new invertible codec
+	 * @throws NullPointerException if the given {@code encoder} is {@code null}
+	 */
+	public default InvertibleCodec<T, G>
+	toInvertibleCodec(final Function<? super T, Genotype<G>> encoder) {
+		return InvertibleCodec.of(
+			encoding(),
+			decoder(),
+			encoder
 		);
 	}
 
@@ -164,17 +181,17 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * {@code decoder} function.
 	 *
 	 * @param encoding the genotype factory used for creating new
-	 *        {@code Genotypes}.
+	 *        {@code Genotypes}
 	 * @param decoder decoder function, which converts a {@code Genotype} to a
-	 *        value in the problem domain.
+	 *        value in the problem domain
 	 * @param <G> the {@code Gene} type
 	 * @param <T> the fitness function argument type in the problem domain
-	 * @return a new {@code Codec} object with the given parameters.
+	 * @return a new {@code Codec} object with the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
 	public static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
-		final Function<Genotype<G>, T> decoder
+		final Function<? super Genotype<G>, ? extends T> decoder
 	) {
 		requireNonNull(encoding);
 		requireNonNull(decoder);
@@ -186,8 +203,9 @@ public interface Codec<T, G extends Gene<?, G>> {
 			}
 
 			@Override
+			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return decoder;
+				return (Function<Genotype<G>, T>)decoder;
 			}
 		};
 	}
