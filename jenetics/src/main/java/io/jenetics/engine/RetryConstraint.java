@@ -37,7 +37,7 @@ import io.jenetics.util.Factory;
  * cases.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 public final class RetryConstraint<
@@ -130,6 +130,7 @@ public final class RetryConstraint<
 	 * @param <G> the gene type
 	 * @param <C> the fitness value type
 	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code validator} is {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	RetryConstraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
@@ -138,6 +139,30 @@ public final class RetryConstraint<
 			null,
 			DEFAULT_RETRY_COUNT
 		);
+	}
+
+	/**
+	 * Return a new constraint with the given {@code validator} and the
+	 * {@link #DEFAULT_RETRY_COUNT}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codec the invertible codec used for simplify the needed
+	 *        validator
+	 * @param validator the phenotype validator
+	 * @param <T> the type of the <em>native</em> problem domain
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code codec} or {@code validator} is
+	 *         {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(
+		final InvertibleCodec<T, G> codec,
+		final Predicate<? super T> validator
+	) {
+		return of(pt -> validator.test(codec.decode(pt.getGenotype())));
 	}
 
 	/**
@@ -161,6 +186,38 @@ public final class RetryConstraint<
 		return new RetryConstraint<>(
 			validator,
 			null,
+			retryLimit
+		);
+	}
+
+	/**
+	 * Return a new constraint with the given {@code validator} and
+	 * {@code retryLimit}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param codec the invertible codec used for simplify the needed
+	 *        validator
+	 * @param validator the phenotype validator
+	 * @param retryLimit the limit of the phenotype creation retries. If more
+	 *        re-creation tries are necessary, an invalid phenotype is returned.
+	 *        This limit guarantees the termination of the
+	 *        {@link #repair(Phenotype, long)} method.
+	 * @param <T> the type of the <em>native</em> problem domain
+	 * @param <G> the gene type
+	 * @param <C> the fitness value type
+	 * @return a new constraint strategy
+	 * @throws NullPointerException if the {@code codec} or {@code validator} is
+	 *         {@code null}
+	 */
+	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	RetryConstraint<G, C> of(
+		final InvertibleCodec<T, G> codec,
+		final Predicate<? super T> validator,
+		final int retryLimit
+	) {
+		return of(
+			pt -> validator.test(codec.decode(pt.getGenotype())),
 			retryLimit
 		);
 	}
