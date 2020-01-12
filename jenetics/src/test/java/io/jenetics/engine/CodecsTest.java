@@ -20,10 +20,11 @@
 package io.jenetics.engine;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -439,9 +440,9 @@ public class CodecsTest {
 				.collect(EvolutionResult.toBestGenotype())
 		);
 
-		Assert.assertTrue(best.containsKey(3));
-		Assert.assertTrue(best.containsKey(4));
-		Assert.assertTrue(best.containsKey(5));
+		assertTrue(best.containsKey(3));
+		assertTrue(best.containsKey(4));
+		assertTrue(best.containsKey(5));
 	}
 
 	@Test
@@ -464,9 +465,9 @@ public class CodecsTest {
 				.collect(EvolutionResult.toBestGenotype())
 		);
 
-		Assert.assertTrue(best.containsValue(3));
-		Assert.assertTrue(best.containsValue(4));
-		Assert.assertTrue(best.containsValue(5));
+		assertTrue(best.containsValue(3));
+		assertTrue(best.containsValue(4));
+		assertTrue(best.containsValue(5));
 	}
 
 
@@ -525,8 +526,8 @@ public class CodecsTest {
 				.newInstance().getGene();
 
 			assertEquals(gene.isValid(), gene.getAllele() < 100);
-			Assert.assertTrue(gene.getAllele() < 1000);
-			Assert.assertTrue(gene.getAllele() >= 0);
+			assertTrue(gene.getAllele() < 1000);
+			assertTrue(gene.getAllele() >= 0);
 		}
 	}
 
@@ -540,9 +541,9 @@ public class CodecsTest {
 			final AnyGene<Integer> gene = codec.encoding()
 				.newInstance().getGene();
 
-			Assert.assertTrue(gene.isValid());
-			Assert.assertTrue(gene.getAllele() < 1000);
-			Assert.assertTrue(gene.getAllele() >= 0);
+			assertTrue(gene.isValid());
+			assertTrue(gene.getAllele() < 1000);
+			assertTrue(gene.getAllele() >= 0);
 		}
 	}
 
@@ -552,7 +553,7 @@ public class CodecsTest {
 		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
 			Codecs.ofVector(
 				() -> RandomRegistry.getRandom().nextInt(1000),
-				(Predicate<Integer>) i -> i < 100,
+				i -> i < 100,
 				length
 			);
 
@@ -569,8 +570,8 @@ public class CodecsTest {
 					Assert.assertFalse(ch.isValid());
 				}
 
-				Assert.assertTrue(gene.getAllele() < 1000);
-				Assert.assertTrue(gene.getAllele() >= 0);
+				assertTrue(gene.getAllele() < 1000);
+				assertTrue(gene.getAllele() >= 0);
 			}
 		}
 	}
@@ -586,11 +587,60 @@ public class CodecsTest {
 			final Chromosome<EnumGene<String>> ch = gt.getChromosome();
 
 			assertEquals(ch.length(), 3);
-			Assert.assertTrue(ch.isValid());
+			assertTrue(ch.isValid());
 
 			final ISeq<String> permutation = codec.decoder().apply(gt);
 			assertEquals(permutation.length(), 3);
 		}
+	}
+
+	@Test(dataProvider = "invertibleCodecs")
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public void inversion(final InvertibleCodec codec, final boolean unique) {
+		final Genotype gt1 = (Genotype)codec.encoding().newInstance();
+		assertNotNull(gt1);
+
+		final Object v1 = codec.decode(gt1);
+		assertNotNull(v1);
+
+		final Genotype gt2 = codec.encode(v1);
+		if (unique) {
+			assertEquals(gt2, gt1);
+		}
+
+		final Object v2 = codec.decode(gt2);
+		assertEquals(v2, v1);
+	}
+
+	@DataProvider
+	public Object[][] invertibleCodecs() {
+		return new Object[][] {
+			{Codecs.ofScalar(IntRange.of(10, 10_000)), true},
+			{Codecs.ofScalar(LongRange.of(10, 100_000)), true},
+			{Codecs.ofScalar(DoubleRange.of(10, 10_000)), true},
+
+			{Codecs.ofVector(IntRange.of(10, 10_000), 10), true},
+			{Codecs.ofVector(LongRange.of(10, 100_000), 10), true},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), 10), true},
+
+			{Codecs.ofVector(IntRange.of(10, 10_000), IntRange.of(60, 100), IntRange.of(1, 10)), true},
+			{Codecs.ofVector(LongRange.of(10, 10_000), LongRange.of(60, 100), LongRange.of(1, 10)), true},
+			{Codecs.ofVector(DoubleRange.of(10, 10_000), DoubleRange.of(60, 100), DoubleRange.of(1, 10)), true},
+
+			{Codecs.ofPermutation(100), true},
+			{Codecs.ofPermutation(ISeq.of("a", "b", "c", "d", "e", "f", "end")), true},
+
+			{Codecs.ofMatrix(IntRange.of(10, 10_000), 10, 100), true},
+			{Codecs.ofMatrix(LongRange.of(10, 10_000), 10, 100), true},
+			{Codecs.ofMatrix(DoubleRange.of(10, 10_000), 10, 100), true},
+
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D"), ISeq.of(1, 2, 3, 4)), true},
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E", "F", "G"), ISeq.of(1, 2, 3, 4)), true},
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E"), ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9)), false},
+
+			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G")), true},
+			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G"), 3), true}
+		};
 	}
 
 }
