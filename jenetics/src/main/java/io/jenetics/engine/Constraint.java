@@ -48,7 +48,9 @@ import io.jenetics.Phenotype;
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
- * cases.
+ * cases. If the {@link Engine} is created with an explicit constraint
+ * ({@link Engine.Builder#constraint(Constraint)}), the <em>default</em>
+ * validation mechanism via {@link Phenotype#isValid()} is overridden.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
