@@ -19,6 +19,7 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 
@@ -54,6 +55,7 @@ import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.comb;
 import io.jenetics.internal.util.Predicates;
+import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -940,18 +942,30 @@ public final class Codecs {
 	 * @throws IllegalArgumentException if the {@code basicSet} size is smaller
 	 *         than one.
 	 */
-	public static <T> Codec<ISeq<T>, BitGene> ofSubSet(
-		final ISeq<? extends T> basicSet
-	) {
+	public static <T> InvertibleCodec<ISeq<T>, BitGene>
+	ofSubSet(final ISeq<? extends T> basicSet) {
 		requireNonNull(basicSet);
 		require.positive(basicSet.length());
 
-		return Codec.of(
+		return InvertibleCodec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
 			gt -> gt.getChromosome()
 				.as(BitChromosome.class).ones()
 				.<T>mapToObj(basicSet)
-				.collect(ISeq.toISeq())
+				.collect(ISeq.toISeq()),
+			values -> {
+				final byte[] bits = bit.newArray(basicSet.size());
+
+				int i = 0;
+				for (T v : values) {
+					while (i < basicSet.size() && !Objects.equals(basicSet.get(i), v)) {
+						++i;
+					}
+					bit.set(bits, i);
+				}
+
+				return Genotype.of(new BitChromosome(bits, 0, basicSet.size()));
+			}
 		);
 	}
 
@@ -976,18 +990,39 @@ public final class Codecs {
 	 *         {@code size <= 0} or {@code basicSet.size()*size} will cause an
 	 *         integer overflow.
 	 */
-	public static <T> Codec<ISeq<T>, EnumGene<T>> ofSubSet(
+	public static <T> InvertibleCodec<ISeq<T>, EnumGene<T>> ofSubSet(
 		final ISeq<? extends T> basicSet,
 		final int size
 	) {
 		requireNonNull(basicSet);
 		comb.checkSubSet(basicSet.size(), size);
 
-		return Codec.of(
+		final Map<T, EnumGene<T>> genes =
+			IntStream.range(0, basicSet.length())
+				.mapToObj(i -> EnumGene.<T>of(i, basicSet))
+				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+
+		return InvertibleCodec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),
 			gt -> gt.getChromosome().stream()
 				.map(EnumGene::getAllele)
-				.collect(ISeq.toISeq())
+				.collect(ISeq.toISeq()),
+			values -> {
+				if (values.size() != size) {
+					throw new IllegalArgumentException(format(
+						"Expected sub-set size of %d, but got %d,",
+						size, values.size()
+					));
+				}
+
+				return Genotype.of(
+					new PermutationChromosome<>(
+						values.stream()
+							.map(genes::get)
+							.collect(ISeq.toISeq())
+					)
+				);
+			}
 		);
 	}
 

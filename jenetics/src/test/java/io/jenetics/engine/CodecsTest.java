@@ -636,7 +636,10 @@ public class CodecsTest {
 
 			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D"), ISeq.of(1, 2, 3, 4)), true},
 			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E", "F", "G"), ISeq.of(1, 2, 3, 4)), true},
-			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E"), ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9)), false}
+			{Codecs.ofMapping(ISeq.of("A", "B", "C", "D", "E"), ISeq.of(1, 2, 3, 4, 5, 6, 7, 8, 9)), false},
+
+			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G")), true},
+			{Codecs.ofSubSet(ISeq.of("A", "B", "C", "D", "E", "F", "G"), 3), true}
 		};
 	}
 
