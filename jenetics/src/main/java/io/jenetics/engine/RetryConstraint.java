@@ -31,6 +31,27 @@ import io.jenetics.util.Factory;
 /**
  * This simple {@code Constraint} implementation <em>repairs</em> an invalid
  * phenotype by creating new individuals until a valid one has been created.
+ * If the probability of creating invalid individuals isn't to high, this is the
+ * preferred constraint implementation. E.g. if the probability of creating an
+ * invalid individual is 0.1, then the probability of creating an invalid
+ * phenotype after <em>n</em> retries, is 0.1<sup>n</sup>.
+ * <p>
+ * The following example constraint checks a 2-dimensional point for validity.
+ * In this example, a point is considered as valid, if it lies within the unit
+ * circle.
+ * <pre>{@code
+ * InvertibleCodec<double[], DoubleGene> codec = Codecs.ofVector(DoubleRange.of(-1, 1), 2);
+ * Constraint<DoubleGene, Double> constraint = RetryConstraint.of(
+ *     codec,
+ *     p -> p[0]*p[0] + p[1]*p[1] <= 1
+ * );
+ * }</pre>
+ * The probability that a randomly created point lies outside the unit circle is
+ * <em>1 - π/4 &asymp; 0.2146</em>. This leads to a failure probability after 10
+ * tries of <em>0.2146<sup>10</sup> &asymp; 0.000000207173567</em>. Since we are
+ * using an {@link InvertibleCodec}, it is much easier to implement our
+ * constraint. Otherwise we would need to check the validity on the
+ * {@link Phenotype} directly
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
@@ -158,7 +179,7 @@ public final class RetryConstraint<
 	 *         {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	RetryConstraint<G, C> of(
+	Constraint<G, C> of(
 		final InvertibleCodec<T, G> codec,
 		final Predicate<? super T> validator
 	) {
@@ -211,7 +232,7 @@ public final class RetryConstraint<
 	 *         {@code null}
 	 */
 	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
-	RetryConstraint<G, C> of(
+	Constraint<G, C> of(
 		final InvertibleCodec<T, G> codec,
 		final Predicate<? super T> validator,
 		final int retryLimit

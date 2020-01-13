@@ -44,13 +44,79 @@ import io.jenetics.Phenotype;
  * }
  * }</pre>
  *
+ * The following example illustrates how a constraint which its repair function
+ * can be look like. Imagine that your problem domain consists of double values
+ * between <em>[0, 2)</em> and <em>[8, 10)</em>. Since it is not possible
+ * <pre>{@code
+ *   +--+--+--+--+--+--+--+--+--+--+
+ *   |  |  |  |  |  |  |  |  |  |  |
+ *   0  1  2  3  4  5  6  7  8  9  10
+ *   |-----|xxxxxxxxxxxxxxxxx|-----|
+ *      ^  |llllllll|rrrrrrrr|  ^
+ *      |       |        |      |
+ *      +-------+        +------+
+ *
+ * }</pre>
+ * The invalid range is marked with {@code x}. Repairing an invalid value will
+ * map values in the {@code l} range on the valid range <em>[0, 2)</em>, and
+ * value in the {@code r} range on the valid range <em>[8, 10)</em>. This mapping
+ * guarantees an evenly distribution of the values in the valid ranges, which is
+ * an important characteristic of the repair function.
+ *
+ * <pre>{@code
+ * final InvertibleCodec<Double, DoubleGene> codec = Codecs.ofScalar(DoubleRange.of(0, 10));
+ * final Constraint<DoubleGene, Double> constraint = Constraint.of(
+ *     codec,
+ *     v -> v < 2 || v >= 8,
+ *     v -> {
+ *         if (v >= 2 && v < 8) {
+ *             return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *         }
+ *         return v;
+ *     }
+ * );
+ * }</pre>
+ *
+ * <b>Alternative solution</b><br>
+ * Instead of repairing individuals, it is better to not create invalid one in
+ * the first place. Once you have a proper <em>repair</em> strategy, you can use
+ * it to create a {@link Codec} which only creates valid individuals, using your
+ * repair method.
+ * <pre>{@code
+ * final Codec<Double, DoubleGene> codec = Codecs
+ *     .ofScalar(DoubleRange.of(0, 10))
+ *     .map(v -> {
+ *             if (v >= 2 && v < 8) {
+ *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *             }
+ *             return v;
+ *         });
+ * }</pre>
+ * The same example with an {@link InvertibleCodec} will look like this:
+ * <pre>{@code
+ * final InvertibleCodec<Double, DoubleGene> codec = Codecs
+ *     .ofScalar(DoubleRange.of(0, 10))
+ *     .map(v -> {
+ *             if (v >= 2 && v < 8) {
+ *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *             }
+ *             return v;
+ *         },
+ *         Function.identity());
+ * }</pre>
+ *
  * @see Engine.Builder#constraint(Constraint)
+ * @see RetryConstraint
  *
  * @apiNote
  * This class is part of the more advanced API and is not needed for default use
  * cases. If the {@link Engine} is created with an explicit constraint
  * ({@link Engine.Builder#constraint(Constraint)}), the <em>default</em>
- * validation mechanism via {@link Phenotype#isValid()} is overridden.
+ * validation mechanism via {@link Phenotype#isValid()} is overridden. Also keep
+ * in mind, that a defined constraint doesn't protect the fitness function from
+ * <em>invalid</em> values. It is still necessary that the fitness function must
+ * handle invalid values accordingly. The constraint <em>only</em> filters
+ * invalid individuals after the selection and altering step.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!

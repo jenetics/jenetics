@@ -142,7 +142,34 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *      .map(Math::exp);
 	 * }</pre>
 	 *
+	 * This method can also be used for creating non-trivial codes like split
+	 * ranges, as shown in the following example, where only values between
+	 * <em>[0, 2)</em> and <em>[8, 10)</em> are valid.
+	 * <pre>{@code
+	 *   +--+--+--+--+--+--+--+--+--+--+
+	 *   |  |  |  |  |  |  |  |  |  |  |
+	 *   0  1  2  3  4  5  6  7  8  9  10
+	 *   |-----|xxxxxxxxxxxxxxxxx|-----|
+	 *      ^  |llllllll|rrrrrrrr|  ^
+	 *      |       |        |      |
+	 *      +-------+        +------+
+	 *
+	 * }</pre>
+	 *
+	 * <pre>{@code
+	 * final Codec<Double, DoubleGene> codec = Codecs
+	 *     .ofScalar(DoubleRange.of(0, 10))
+	 *     .map(v -> {
+	 *             if (v >= 2 && v < 8) {
+	 *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+	 *             }
+	 *             return v;
+	 *         });
+	 * }</pre>
+	 *
 	 * @since 4.0
+	 *
+	 * @see InvertibleCodec#map(Function, Function)
 	 *
 	 * @param mapper the mapper function
 	 * @param <B> the new argument type of the given problem
