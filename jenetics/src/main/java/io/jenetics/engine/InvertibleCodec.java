@@ -35,9 +35,10 @@ import io.jenetics.util.Factory;
  * relation between <em>encoder</em> and <em>decoder</em> function must fulfill.
  *
  * <pre>{@code
- * InvertibleCodec<int[], IntegerGene> codec = Codecs.ofVector(IntRange.of(0, 100), 6);
- * int[] value = new int[]{3, 4, 6, 7, 8, 3};
- * Genotype<IntegerGene> gt = codec.encode(value);
+ * final InvertibleCodec<int[], IntegerGene> codec =
+ *     Codecs.ofVector(IntRange.of(0, 100), 6);
+ * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
+ * final Genotype<IntegerGene> gt = codec.encode(value);
  * assert Arrays.equals(value, codec.decode(gt));
  * }</pre>
  *
@@ -66,9 +67,10 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * snippet shows how a given value in the <em>native</em> problem domain
 	 * can be converted into a {@link Genotype} and transformed back.
 	 * <pre>{@code
-	 * InvertibleCodec<int[], IntegerGene> codec = Codecs.ofVector(IntRange.of(0, 100), 6);
-	 * int[] value = new int[]{3, 4, 6, 7, 8, 3};
-	 * Genotype<IntegerGene> gt = codec.encode(value);
+	 * final InvertibleCodec<int[], IntegerGene> codec =
+	 *     Codecs.ofVector(IntRange.of(0, 100), 6);
+	 * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
+	 * final Genotype<IntegerGene> gt = codec.encode(value);
 	 * assert Arrays.equals(value, codec.decode(gt));
 	 * }</pre>
 	 *
