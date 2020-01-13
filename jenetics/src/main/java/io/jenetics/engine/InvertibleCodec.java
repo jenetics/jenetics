@@ -54,8 +54,8 @@ import io.jenetics.util.Factory;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.2
+ * @since 5.2
  */
 public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 

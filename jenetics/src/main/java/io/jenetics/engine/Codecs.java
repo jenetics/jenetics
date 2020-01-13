@@ -67,7 +67,7 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version !__version__!
+ * @version 5.2
  */
 public final class Codecs {
 

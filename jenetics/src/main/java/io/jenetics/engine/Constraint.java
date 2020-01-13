@@ -119,7 +119,7 @@ import io.jenetics.Phenotype;
  * invalid individuals after the selection and altering step.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 5.0
  */
 public interface Constraint<
@@ -217,7 +217,7 @@ public interface Constraint<
 	 * {@code repairer}. The given invertible codec allows to simplify the
 	 * needed validator and repairer.
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @param codec the invertible codec used for simplify the needed
 	 *        validator and repairer

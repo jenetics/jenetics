@@ -58,7 +58,7 @@ import io.jenetics.util.Factory;
  * cases.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 5.0
  */
 public final class RetryConstraint<
@@ -166,7 +166,7 @@ public final class RetryConstraint<
 	 * Return a new constraint with the given {@code validator} and the
 	 * {@link #DEFAULT_RETRY_COUNT}.
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @param codec the invertible codec used for simplify the needed
 	 *        validator
@@ -215,7 +215,7 @@ public final class RetryConstraint<
 	 * Return a new constraint with the given {@code validator} and
 	 * {@code retryLimit}.
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @param codec the invertible codec used for simplify the needed
 	 *        validator
