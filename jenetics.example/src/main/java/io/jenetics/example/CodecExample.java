@@ -24,16 +24,12 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
-import io.jenetics.engine.Constraint;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.EvolutionStream;
-import io.jenetics.engine.InvertibleCodec;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
-
-import java.util.function.Function;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -73,15 +69,22 @@ public class CodecExample {
 		.ofScalar(DoubleRange.of(0, 10))
 		.map((Double v) -> {
 				if (v >= 2 && v < 8) {
-					return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+					return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
 				}
 				return v;
 			});
 
 
+	public static void main(final String[] args) {
+		for (int i = 0; i < 100; ++i) {
+			final Genotype<DoubleGene> gt = CODEC.encoding().newInstance();
+			System.out.println(CODEC.decode(gt));
+		}
+	}
 
 
 	private static double repair(final double v) {
+		/*
 		EvolutionStream<DoubleGene, Double> stream = null;
 
 		final Genotype<DoubleGene> gt = stream
@@ -95,6 +98,9 @@ public class CodecExample {
 			return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
 		}
 		return v;
+
+		 */
+		return 0;
 	}
 
 	// The domain class
@@ -141,25 +147,25 @@ public class CodecExample {
 		);
 	}
 
-	public static void main(final String[] args) {
-		// The domain of your fitness function.
-		final IntRange domain1 = IntRange.of(0, 100);
-		final LongRange domain2 = LongRange.of(0, 1_000_000_000_000L);
-		final DoubleRange domain3 = DoubleRange.of(0, 1);
-
-		// The problem domain encoder/decoder.
-		final Codec<Tuple, DoubleGene> codec = codec(domain1, domain2, domain3);
-
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(CodecExample::f, codec)
-			.build();
-
-		final Genotype<DoubleGene> gt = engine.stream()
-			.limit(100)
-			.collect(EvolutionResult.toBestGenotype());
-
-		final Tuple param = codec.decoder().apply(gt);
-		System.out.println(String.format("Result: \t%s", param));
-	}
+//	public static void main(final String[] args) {
+//		// The domain of your fitness function.
+//		final IntRange domain1 = IntRange.of(0, 100);
+//		final LongRange domain2 = LongRange.of(0, 1_000_000_000_000L);
+//		final DoubleRange domain3 = DoubleRange.of(0, 1);
+//
+//		// The problem domain encoder/decoder.
+//		final Codec<Tuple, DoubleGene> codec = codec(domain1, domain2, domain3);
+//
+//		final Engine<DoubleGene, Double> engine = Engine
+//			.builder(CodecExample::f, codec)
+//			.build();
+//
+//		final Genotype<DoubleGene> gt = engine.stream()
+//			.limit(100)
+//			.collect(EvolutionResult.toBestGenotype());
+//
+//		final Tuple param = codec.decoder().apply(gt);
+//		System.out.println(String.format("Result: \t%s", param));
+//	}
 
 }

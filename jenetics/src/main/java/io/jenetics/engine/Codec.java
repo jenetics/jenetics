@@ -153,7 +153,6 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *      ^  |llllllll|rrrrrrrr|  ^
 	 *      |       |        |      |
 	 *      +-------+        +------+
-	 *
 	 * }</pre>
 	 *
 	 * <pre>{@code
@@ -161,7 +160,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *     .ofScalar(DoubleRange.of(0, 10))
 	 *     .map(v -> {
 	 *             if (v >= 2 && v < 8) {
-	 *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+	 *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
 	 *             }
 	 *             return v;
 	 *         });

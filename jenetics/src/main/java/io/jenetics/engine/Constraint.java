@@ -55,7 +55,6 @@ import io.jenetics.Phenotype;
  *      ^  |llllllll|rrrrrrrr|  ^
  *      |       |        |      |
  *      +-------+        +------+
- *
  * }</pre>
  * The invalid range is marked with {@code x}. Repairing an invalid value will
  * map values in the {@code l} range on the valid range <em>[0, 2)</em>, and
@@ -70,7 +69,7 @@ import io.jenetics.Phenotype;
  *     v -> v < 2 || v >= 8,
  *     v -> {
  *         if (v >= 2 && v < 8) {
- *             return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *             return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
  *         }
  *         return v;
  *     }
@@ -87,7 +86,7 @@ import io.jenetics.Phenotype;
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
  *             if (v >= 2 && v < 8) {
- *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
  *             }
  *             return v;
  *         });
@@ -98,7 +97,7 @@ import io.jenetics.Phenotype;
  *     .ofScalar(DoubleRange.of(0, 10))
  *     .map(v -> {
  *             if (v >= 2 && v < 8) {
- *                 return v < 5 ? (v/3)*2 : (v/3)*2 + 8;
+ *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
  *             }
  *             return v;
  *         },
