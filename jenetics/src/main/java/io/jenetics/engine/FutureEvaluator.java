@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Iterator;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -72,14 +73,17 @@ final class FutureEvaluator<
 		return evaluated.append(map(population, evaluate));
 	}
 
-	private void join(final ISeq<Future<C>> futures) {
+	private static void join(final Iterable<? extends Future<?>> futures) {
+		final Iterator<? extends Future<?>> it = futures.iterator();
+
 		Exception exception = null;
-		int index = 0;
+		Future<?> future = null;
 		try {
-			while (index < futures.size()) {
-				futures.get(index).get();
-				++index;
+			while (it.hasNext()) {
+				future = it.next();
+				future.get();
 			}
+			future = null;
 		} catch (InterruptedException |
 				ExecutionException |
 				CancellationException e)
@@ -87,9 +91,11 @@ final class FutureEvaluator<
 			exception = e;
 		}
 
-		while (index < futures.size()) {
-			futures.get(index).cancel(true);
-			++index;
+		if (future != null) {
+			future.cancel(true);
+			while (it.hasNext()) {
+				it.next().cancel(true);
+			}
 		}
 
 		if (exception instanceof InterruptedException) {
