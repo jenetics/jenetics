@@ -150,7 +150,6 @@ public interface Problem<
 			public Codec<T, G> codec() {
 				return codec;
 			}
-
 			@Override
 			public Function<T, C> fitness() {
 				return fitness;
