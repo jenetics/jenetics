@@ -29,6 +29,12 @@ import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ProxySorter;
 
+/**
+ * Creating permutation codec with DoubleGene and combining with an other
+ * DoubleGene codec.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ */
 public class DoubleGenePermutationCodec {
 
 	/*
