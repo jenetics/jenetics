@@ -54,7 +54,7 @@ public class DoubleGenePermutationCodec {
 	 * used for solving the TSP, or other permutation problems. One drawback
 	 * with this solution is, that it fixes your gene type to an `EnumGene`.
 	 * This can be overly restricting if you need a second chromosome, with a
-	 * different gene type, e.g. `DoubleGene`. Jenetics allows only one gene
+	 * different gene type, e.g. DoubleGene. Jenetics allows only one gene
 	 * type for a given genotype.
 	 */
 	private static final Codec<int[], EnumGene<Integer>> CODEC_1 = Codecs
