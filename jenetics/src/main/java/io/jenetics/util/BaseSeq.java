@@ -1,17 +1,36 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.util;
 
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.collection.Array.checkIndex;
-
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.RandomAccess;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+/**
+ * General base interface for a ordered, fixed sized, object sequence.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !_version__!
+ */
 public interface BaseSeq<T> extends Iterable<T> {
 
 	/**
@@ -25,109 +44,43 @@ public interface BaseSeq<T> extends Iterable<T> {
 	public T get(final int index);
 
 	/**
-	 * Return the number of elements of this collection.
+	 * Return the length of this sequence. Once the sequence is created, the
+	 * length can't be changed.
 	 *
-	 * @return the number of elements of this collection
+	 * @return the length of this sequence.
 	 */
 	public int length();
 
-	/**
-	 * Returns {@code true} if this sequence contains no elements.
-	 *
-	 * @return {@code true} if this sequence contains no elements
-	 */
-	public default boolean isEmpty() {
-		return length() == 0;
-	}
-
-	/**
-	 * Returns {@code true} if this sequence contains at least one element.
-	 *
-	 * @return {@code true} if this sequence contains at least one element
-	 */
-	public default boolean nonEmpty() {
-		return !isEmpty();
-	}
-
 	@Override
 	public default Iterator<T> iterator() {
-		return listIterator();
-	}
-
-	public default ListIterator<T> listIterator() {
-		return new ListIterator<T>() {
-			private int cursor = 0;
-			private int lastElement = -1;
+		return new Iterator<T>() {
+			private int _cursor = 0;
 
 			@Override
 			public boolean hasNext() {
-				return cursor != length();
+				return _cursor != length();
 			}
 
 			@Override
 			public T next() {
-				final int i = cursor;
-				if (cursor >= length()) {
+				final int i = _cursor;
+				if (_cursor >= length()) {
 					throw new NoSuchElementException();
 				}
 
-				cursor = i + 1;
-				return get(lastElement = i);
+				_cursor = i + 1;
+				return get(i);
 			}
-
-			@Override
-			public int nextIndex() {
-				return cursor;
-			}
-
-			@Override
-			public boolean hasPrevious() {
-				return cursor != 0;
-			}
-
-			@Override
-			public T previous() {
-				final int i = cursor - 1;
-				if (i < 0) {
-					throw new NoSuchElementException();
-				}
-
-				cursor = i;
-				return get(lastElement = i);
-			}
-
-			@Override
-			public int previousIndex() {
-				return cursor - 1;
-			}
-
-			@Override
-			public void set(final T value) {
-				throw new UnsupportedOperationException(
-					"Iterator is immutable."
-				);
-			}
-
-			@Override
-			public void add(final T value) {
-				throw new UnsupportedOperationException(
-					"Can't change Iterator size."
-				);
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException(
-					"Can't change Iterator size."
-				);
-			}
-
 		};
 	}
 
+	/**
+	 * Returns a sequential Stream with this sequence as its source.
+	 *
+	 * @return a sequential Stream over the elements in this sequence
+	 */
 	public default Stream<T> stream() {
 		return IntStream.range(0, length()).mapToObj(this::get);
 	}
 
 }
-
