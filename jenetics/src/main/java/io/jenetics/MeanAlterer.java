@@ -24,11 +24,10 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.util.ISeq;
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.Seq;
 
 /**
  * <p>
@@ -37,7 +36,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.4
+ * @version !__version__!
  */
 public class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,
@@ -80,14 +79,10 @@ public class MeanAlterer<
 		//Choosing the Chromosome index for crossover.
 		final int cindex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
 
 		// Calculate the mean value of the gene array.
-		final MSeq<G> mean = mean(
-			c1.get(cindex).toSeq().copy(),
-			c2.get(cindex).toSeq()
-		);
+		final MSeq<G> mean = mean(c1.get(cindex), gt2.get(cindex));
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 		population.set(individuals[0], Phenotype.of(Genotype.of(c1), generation));
@@ -96,11 +91,12 @@ public class MeanAlterer<
 	}
 
 	private static <G extends Gene<?, G> & Mean<G>>
-	MSeq<G> mean(final MSeq<G> a, final Seq<G> b) {
+	MSeq<G> mean(final BaseSeq<G> a, final BaseSeq<G> b) {
+		final MSeq<G> result = MSeq.ofLength(a.length());
 		for (int i = a.length(); --i >= 0;) {
-			a.set(i, a.get(i).mean(b.get(i)));
+			result.set(i, a.get(i).mean(b.get(i)));
 		}
-		return a;
+		return result;
 	}
 
 	@Override

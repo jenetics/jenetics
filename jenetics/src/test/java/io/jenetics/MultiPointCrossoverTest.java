@@ -285,9 +285,9 @@ public class MultiPointCrossoverTest extends AltererTester {
 	public void reverseCrossover(final Integer npoints) {
 		for (int i = 1; i < 500; ++i) {
 			final CharSeq chars = CharSeq.of("a-zA-Z");
-			final ISeq<Character> a = CharacterChromosome.of(chars, i).toSeq()
+			final ISeq<Character> a = ISeq.of(CharacterChromosome.of(chars, i))
 				.map(CharacterGene::getAllele);
-			final ISeq<Character> b = CharacterChromosome.of(chars, i).toSeq()
+			final ISeq<Character> b = ISeq.of(CharacterChromosome.of(chars, i))
 				.map(CharacterGene::getAllele);
 
 			final MSeq<Character> ma1 = a.copy();
@@ -320,8 +320,8 @@ public class MultiPointCrossoverTest extends AltererTester {
 	@Test
 	public void crossoverAll1() {
 		final CharSeq chars = CharSeq.of("a-zA-Z");
-		final ISeq<CharacterGene> g1 = CharacterChromosome.of(chars, 20).toSeq();
-		final ISeq<CharacterGene> g2 = CharacterChromosome.of(chars, 20).toSeq();
+		final ISeq<CharacterGene> g1 = ISeq.of(CharacterChromosome.of(chars, 20));
+		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of(chars, 20));
 
 		final MultiPointCrossover<CharacterGene, Double> crossover =
 				new MultiPointCrossover<>(2000);

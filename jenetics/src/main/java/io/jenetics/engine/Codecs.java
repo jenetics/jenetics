@@ -531,8 +531,7 @@ public final class Codecs {
 		final PermutationChromosome<Integer> chromosome =
 			PermutationChromosome.ofInteger(length);
 
-		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
-			.stream()
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
 			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
 
 		return InvertibleCodec.of(
@@ -788,8 +787,7 @@ public final class Codecs {
 		final PermutationChromosome<Integer> chromosome =
 			PermutationChromosome.ofInteger(target.size());
 
-		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
-			.stream()
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
 			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
 
 		final Codec<int[], EnumGene<Integer>> codec = Codec.of(

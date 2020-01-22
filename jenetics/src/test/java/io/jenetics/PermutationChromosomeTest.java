@@ -89,8 +89,8 @@ public class PermutationChromosomeTest
 			.ofInteger(IntRange.of(0, 2000), 1000);
 		Assert.assertTrue(c2.isValid());
 
-		final MSeq<EnumGene<Integer>> m1 = c1.toSeq().copy();
-		final MSeq<EnumGene<Integer>> m2 = c2.toSeq().copy();
+		final MSeq<EnumGene<Integer>> m1 = MSeq.of(c1);
+		final MSeq<EnumGene<Integer>> m2 = MSeq.of(c2);
 		assertUnique(m1);
 		assertUnique(m2);
 

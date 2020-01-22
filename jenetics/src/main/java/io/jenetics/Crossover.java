@@ -79,10 +79,10 @@ public abstract class Crossover<
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
-		final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
-		final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
+		final MSeq<Chromosome<G>> c2 = MSeq.of(gt2);
+		final MSeq<G> genes1 = MSeq.of(c1.get(chIndex));
+		final MSeq<G> genes2 = MSeq.of(c2.get(chIndex));
 
 		crossover(genes1, genes2);
 

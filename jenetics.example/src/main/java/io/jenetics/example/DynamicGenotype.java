@@ -103,7 +103,7 @@ public class DynamicGenotype {
 			final IntRef alterations
 		) {
 			final List<Chromosome<G>> chromosomes =
-				new ArrayList<>(genotype.toSeq().asList());
+				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
 			final Random random = RandomRegistry.getRandom();
@@ -124,7 +124,7 @@ public class DynamicGenotype {
 
 		private int mutate(final List<Chromosome<G>> c, final int i, final double p) {
 			final Chromosome<G> chromosome = c.get(i);
-			final List<G> genes = new ArrayList<>(chromosome.toSeq().asList());
+			final List<G> genes = new ArrayList<>(ISeq.of(chromosome).asList());
 
 			final int mutations = mutate(genes, p);
 			if (mutations > 0) {

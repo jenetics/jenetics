@@ -208,6 +208,7 @@ public class BitChromosome extends Number
 	}
 
 	@Override
+	@Deprecated
 	public ISeq<BitGene> toSeq() {
 		return _seq;
 	}

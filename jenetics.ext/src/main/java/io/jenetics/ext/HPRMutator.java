@@ -82,7 +82,7 @@ public class HPRMutator<
 		if (chromosome.length() > 1) {
 			final int P = probability.toInt(p);
 			final int[] points = comb.subset(chromosome.length(), 2);
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final MSeq<G> genes = MSeq.of(chromosome);
 
 			int mutations = (points[1] - points[0] + 1)/2;
 			for (int i = points[0], j = points[1]; i < j; ++i, --j) {

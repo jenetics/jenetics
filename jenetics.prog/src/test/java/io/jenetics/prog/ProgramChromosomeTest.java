@@ -103,7 +103,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> ch1 =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final ISeq<ProgramGene<Double>> genes = ch1.toSeq();
+		final ISeq<ProgramGene<Double>> genes = ISeq.of(ch1);
 		final ProgramChromosome<Double> ch2 =
 			ProgramChromosome.of(genes, OPERATIONS, TERMINALS);
 

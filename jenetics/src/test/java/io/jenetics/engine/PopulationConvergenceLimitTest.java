@@ -97,7 +97,7 @@ public class PopulationConvergenceLimitTest {
 			genes -> (int)genes.stream().filter(BitGene::getBit).count(),
 			Codec.of(
 				Genotype.of(BitChromosome.of(20, 0.125)),
-				gt -> gt.getChromosome().toSeq()
+				gt -> ISeq.of(gt.getChromosome())
 			)
 		);
 

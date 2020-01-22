@@ -62,7 +62,7 @@ public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 	public Codec<ISeq<BitGene>, BitGene> codec() {
 		return Codec.of(
 			Genotype.of(BitChromosome.of(_length, _onesProbability)),
-			gt -> gt.getChromosome().toSeq()
+			gt -> ISeq.of(gt.getChromosome())
 		);
 	}
 

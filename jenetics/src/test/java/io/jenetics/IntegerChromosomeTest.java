@@ -62,7 +62,7 @@ public class IntegerChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
-				chromosome.toSeq().forEach(g -> {
+				chromosome.forEach(g -> {
 					mm.accept(g.getAllele());
 					histogram.accept(g.getAllele());
 				});

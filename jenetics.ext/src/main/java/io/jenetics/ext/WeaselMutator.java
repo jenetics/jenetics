@@ -102,8 +102,9 @@ public class WeaselMutator<
 		final double p,
 		final Random random
 	) {
-		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
-			.map(gt -> mutate(gt, p, random));
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.stream()
+			.map(gt -> mutate(gt, p, random))
+			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
 			Genotype.of(result.map(MutatorResult::getResult)),

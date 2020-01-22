@@ -37,6 +37,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
+import io.jenetics.util.ISeq;
 
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Writer;
@@ -291,7 +292,7 @@ public final class Writers {
 				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.toSeq().map(G::getAllele))
+						.map(ch -> ISeq.of(ch).map(G::getAllele))
 				)
 			);
 		}
@@ -951,7 +952,7 @@ public final class Writers {
 				ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
 				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
-				elems(writer).map(gt -> cast(gt.toSeq()))
+				elems(writer).map(gt -> cast(ISeq.of(gt)))
 			);
 		}
 

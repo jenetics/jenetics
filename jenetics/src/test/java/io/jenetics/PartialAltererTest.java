@@ -168,7 +168,7 @@ public class PartialAltererTest {
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		private Chromosome<G> mapCh(final Chromosome chromosome) {
 			return chromosome.newInstance(
-				chromosome.toSeq().map(g -> mapGene((G)g))
+				ISeq.of(chromosome).map(g -> mapGene((G)g))
 			);
 		}
 
