@@ -91,6 +91,11 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Return an unmodifiable sequence of the genes of this chromosome.
 	 *
 	 * @return an immutable gene sequence.
+	 * @deprecated Since the chromosome itself extends the {@link BaseSeq}, it
+	 *             is no longer necessary to get a sequence with genes. If it is
+	 *             necessary to create an {@link ISeq} from a chromosome, use
+	 *             {@code ISeq.of(chromosome)} instead. This method will be
+	 *             removed in the next major release.
 	 */
 	@Deprecated
 	public ISeq<G> toSeq();

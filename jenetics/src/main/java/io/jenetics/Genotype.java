@@ -185,6 +185,16 @@ public final class Genotype<G extends Gene<?, G>>
 		return getChromosome(chromosomeIndex);
 	}
 
+	/**
+	 * Return an immutable chromosome sequence.
+	 *
+	 * @deprecated Since the genotype itself extends the {@link BaseSeq}, it
+	 *             is no longer necessary to get a sequence with genes. If it is
+	 *             necessary to create an {@link ISeq} from a genotype, use
+	 *             {@code ISeq.of(genotype)} instead. This method will be
+	 *             removed in the next major release.
+	 * @return an immutable chromosome sequence
+	 */
 	@Deprecated
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
