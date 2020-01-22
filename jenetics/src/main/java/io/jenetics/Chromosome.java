@@ -19,11 +19,7 @@
  */
 package io.jenetics;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Verifiable;
@@ -44,14 +40,40 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.7
+ * @version !__version__!
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
-		Iterable<G>,
+		BaseSeq<G>,
 		Factory<Chromosome<G>>
 {
+
+	/**
+	 * Return the gene on the specified index.
+	 *
+	 * @param index The gene index.
+	 * @return the wanted gene.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *          (index &lt; 1 || index &gt;= length()).
+	 */
+	public G getGene(final int index);
+
+	@Override
+	public default G get(final int index) {
+		return getGene(index);
+	}
+
+	/**
+	 * Return the first gene of this chromosome. Each chromosome must contain
+	 * at least one gene.
+	 *
+	 * @return the first gene of this chromosome.
+	 */
+	public default G getGene() {
+		return getGene(0);
+	}
+
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
 	 * and the given {@code genes}.
@@ -66,62 +88,11 @@ public interface Chromosome<G extends Gene<?, G>>
 	public Chromosome<G> newInstance(final ISeq<G> genes);
 
 	/**
-	 * Return the first gene of this chromosome. Each chromosome must contain
-	 * at least one gene.
-	 *
-	 * @return the first gene of this chromosome.
-	 */
-	public default G getGene() {
-		return getGene(0);
-	}
-
-	/**
-	 * Return the gene on the specified index.
-	 *
-	 * @param index The gene index.
-	 * @return the wanted gene.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 1 || index &gt;= length()).
-	 */
-	public G getGene(final int index);
-
-	/**
-	 * Returns the length of the Chromosome. The minimal length of a
-	 * chromosome is one.
-	 *
-	 * @return Length of the Chromosome
-	 */
-	public int length();
-
-	/**
 	 * Return an unmodifiable sequence of the genes of this chromosome.
 	 *
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
-
-	@Override
-	public default Iterator<G> iterator() {
-		return new Iterator<G>() {
-			private int cursor = 0;
-
-			@Override
-			public boolean hasNext() {
-				return cursor != length();
-			}
-
-			@Override
-			public G next() {
-				final int i = cursor;
-				if (cursor >= length()) {
-					throw new NoSuchElementException();
-				}
-
-				cursor = i + 1;
-				return getGene(i);
-			}
-		};
-	}
 
 	/**
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.
@@ -151,18 +122,6 @@ public interface Chromosome<G extends Gene<?, G>>
 	 */
 	public default <C extends Chromosome<G>> C as(final Class<C> type) {
 		return type.cast(this);
-	}
-
-	/**
-	 * Returns a sequential {@code Stream} of genes with this chromosome as
-	 * its source.
-	 *
-	 * @since 3.3
-	 *
-	 * @return a sequential {@code Stream} of genes
-	 */
-	public default Stream<G> stream() {
-		return IntStream.range(0, length()).mapToObj(this::getGene);
 	}
 
 }

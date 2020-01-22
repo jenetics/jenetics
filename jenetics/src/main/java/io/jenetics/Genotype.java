@@ -29,10 +29,9 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Objects;
-import java.util.stream.Stream;
 
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -70,12 +69,12 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version !__version__!
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
 		Factory<Genotype<G>>,
-		Iterable<Chromosome<G>>,
+		BaseSeq<Chromosome<G>>,
 		Verifiable,
 		Serializable
 {
@@ -181,6 +180,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @throws IndexOutOfBoundsException if
 	 *         {@code (index < 0 || index >= _length)}.
 	 */
+	@Override
 	public Chromosome<G> get(final int chromosomeIndex) {
 		return getChromosome(chromosomeIndex);
 	}
@@ -189,28 +189,12 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes;
 	}
 
-	@Override
-	public Iterator<Chromosome<G>> iterator() {
-		return _chromosomes.iterator();
-	}
-
-	/**
-	 * Returns a sequential {@code Stream} of chromosomes with this genotype as
-	 * its source.
-	 *
-	 * @since 3.4
-	 *
-	 * @return a sequential {@code Stream} of chromosomes
-	 */
-	public Stream<Chromosome<G>> stream() {
-		return _chromosomes.stream();
-	}
-
 	/**
 	 * Getting the number of chromosomes of this genotype.
 	 *
 	 * @return number of chromosomes.
 	 */
+	@Override
 	public int length() {
 		return _chromosomes.length();
 	}
