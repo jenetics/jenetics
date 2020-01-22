@@ -237,7 +237,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final long value, final LongRange range) {
-		return LongGene.of(value, range.getMin(), range.getMax());
+		return LongGene.of(value, range.min(), range.max());
 	}
 
 	/**
@@ -263,7 +263,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final LongRange range) {
-		return of(nextLong(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextLong(getRandom(), range.min(), range.max()), range);
 	}
 
 	static ISeq<LongGene> seq(

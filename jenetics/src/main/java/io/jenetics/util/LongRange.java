@@ -32,7 +32,7 @@ import java.util.stream.LongStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version !__version__!
  * @since 3.2
  */
 public final class LongRange implements Serializable {
@@ -58,7 +58,7 @@ public final class LongRange implements Serializable {
 	 *
 	 * @return the minimum value of the long range
 	 */
-	public long getMin() {
+	public long min() {
 		return _min;
 	}
 
@@ -67,19 +67,41 @@ public final class LongRange implements Serializable {
 	 *
 	 * @return the maximum value of the long range
 	 */
+	public long max() {
+		return _max;
+	}
+
+	/**
+	 * Return the minimum value of the long range.
+	 *
+	 * @return the minimum value of the long range
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
+	public long getMin() {
+		return _min;
+	}
+
+	/**
+	 * Return the maximum value of the long range.
+	 *
+	 * @return the maximum value of the long range
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public long getMax() {
 		return _max;
 	}
 
 	/**
-	 * Returns a sequential ordered {@code LongStream} from {@link #getMin()}
-	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * Returns a sequential ordered {@code LongStream} from {@link #min()}
+	 * (inclusive) to {@link #max()} (exclusive) by an incremental step of
 	 * {@code 1}.
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
 	 * <pre>{@code
-	 * for (long i = range.getMin(); i < range.getMax(); ++i) {
+	 * for (long i = range.min(); i < range.max(); ++i) {
 	 *     ...
 	 * }
 	 * }</pre>

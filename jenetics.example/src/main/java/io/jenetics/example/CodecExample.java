@@ -133,7 +133,7 @@ public class CodecExample {
 		return Codec.of(
 			Genotype.of(
 				DoubleChromosome.of(DoubleRange.of(v1Domain.getMin(), v1Domain.getMax())),
-				DoubleChromosome.of(DoubleRange.of(v2Domain.getMin(), v2Domain.getMax())),
+				DoubleChromosome.of(DoubleRange.of(v2Domain.min(), v2Domain.max())),
 				DoubleChromosome.of(v3Domain)
 			),
 			gt -> new Tuple(

@@ -235,7 +235,7 @@ public class LongChromosome
 		final LongRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class LongChromosome
 	 *         one.
 	 */
 	public static LongChromosome of(final LongRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static LongChromosome of(final LongRange range) {
-		return of(range.getMin(), range.getMax());
+		return of(range.min(), range.max());
 	}
 
 

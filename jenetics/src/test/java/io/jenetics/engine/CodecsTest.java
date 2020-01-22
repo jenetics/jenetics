@@ -81,8 +81,8 @@ public class CodecsTest {
 		final Genotype<LongGene> gt = codec.encoding().newInstance();
 		assertEquals(gt.length(), 1);
 		assertEquals(gt.chromosome().length(), 1);
-		assertEquals(gt.gene().getMin().longValue(), domain.getMin());
-		assertEquals(gt.gene().getMax().longValue(), domain.getMax());
+		assertEquals(gt.gene().getMin().longValue(), domain.min());
+		assertEquals(gt.gene().getMax().longValue(), domain.max());
 
 		final Function<Genotype<LongGene>, Long> f = codec.decoder();
 		assertEquals(f.apply(gt).longValue(), gt.gene().longValue());
@@ -167,8 +167,8 @@ public class CodecsTest {
 		assertEquals(gt.length(), 1);
 		assertEquals(gt.chromosome().length(), length);
 		for (LongGene gene : gt.chromosome()) {
-			assertEquals(gene.getMin().longValue(), domain.getMin());
-			assertEquals(gene.getMax().longValue(), domain.getMax());
+			assertEquals(gene.getMin().longValue(), domain.min());
+			assertEquals(gene.getMax().longValue(), domain.max());
 		}
 
 		final Function<Genotype<LongGene>, long[]> f = codec.decoder();
@@ -275,8 +275,8 @@ public class CodecsTest {
 			assertEquals(ch.length(), 1);
 
 			final LongGene gene = ch.gene();
-			assertEquals(gene.getMin().longValue(), domain[i].getMin());
-			assertEquals(gene.getMax().longValue(), domain[i].getMax());
+			assertEquals(gene.getMin().longValue(), domain[i].min());
+			assertEquals(gene.getMax().longValue(), domain[i].max());
 		}
 
 		final Function<Genotype<LongGene>, long[]> f = codec.decoder();
