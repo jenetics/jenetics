@@ -107,9 +107,9 @@ public abstract class TreeCrossover<
 		final int index
 	) {
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).getGene());
+		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).gene());
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).getGene());
+		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).gene());
 
 		crossover(tree1, tree2);
 
@@ -117,7 +117,7 @@ public abstract class TreeCrossover<
 		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
-		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).getGene();
+		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).gene();
 
 		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
 		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));

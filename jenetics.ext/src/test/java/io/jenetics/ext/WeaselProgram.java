@@ -23,7 +23,7 @@ public class WeaselProgram {
 	private static final String TARGET = "METHINKS IT IS LIKE A WEASEL";
 
 	private static int score(final Genotype<CharacterGene> gt) {
-		final CharSequence source = (CharSequence)gt.getChromosome();
+		final CharSequence source = (CharSequence)gt.chromosome();
 
 		return IntStream.range(0, TARGET.length())
 			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)

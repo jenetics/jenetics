@@ -103,7 +103,7 @@ public final class TravelingSalesman
 			.collect(toBestPhenotype());
 
 		final ISeq<WayPoint> path = best.getGenotype()
-			.getChromosome().stream()
+			.chromosome().stream()
 			.map(Gene::getAllele)
 			.collect(ISeq.toISeq());
 

@@ -84,6 +84,12 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
+	public G get(final int index) {
+		return _genes.get(index);
+	}
+
+	@Deprecated
+	@Override
 	public G getGene(final int index) {
 		return _genes.get(index);
 	}

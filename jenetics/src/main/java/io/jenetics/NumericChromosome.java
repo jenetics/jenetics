@@ -50,7 +50,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default byte byteValue(int index) {
-		return getGene(index).getAllele().byteValue();
+		return get(index).getAllele().byteValue();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default short shortValue(int index) {
-		return getGene(index).getAllele().shortValue();
+		return get(index).getAllele().shortValue();
 	}
 
 	/**
@@ -96,7 +96,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default int intValue(int index) {
-		return getGene(index).getAllele().intValue();
+		return get(index).getAllele().intValue();
 	}
 
 	/**
@@ -119,7 +119,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default long longValue(int index) {
-		return getGene(index).getAllele().longValue();
+		return get(index).getAllele().longValue();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default float floatValue(int index) {
-		return getGene(index).getAllele().floatValue();
+		return get(index).getAllele().floatValue();
 	}
 
 	/**
@@ -165,7 +165,7 @@ public interface NumericChromosome<
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
 	public default double doubleValue(int index) {
-		return getGene(index).getAllele().doubleValue();
+		return get(index).getAllele().doubleValue();
 	}
 
 	/**

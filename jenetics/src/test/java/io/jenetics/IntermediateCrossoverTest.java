@@ -67,11 +67,11 @@ public class IntermediateCrossoverTest {
 			for (int i = 0; i < pop.size(); ++i) {
 				final BaseSeq<DoubleGene> genes = pop.get(i)
 					.getGenotype()
-					.getChromosome();
+					.chromosome();
 
 				final BaseSeq<DoubleGene> genesCopy = copy.get(i)
 					.getGenotype()
-					.getChromosome();
+					.chromosome();
 
 				for (int j = 0; j < genes.length(); ++j) {
 					Assert.assertNotEquals(genes.get(j), genesCopy.get(i));

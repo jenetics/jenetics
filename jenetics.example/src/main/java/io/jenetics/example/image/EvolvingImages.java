@@ -433,7 +433,7 @@ public class EvolvingImages extends JFrame {
 
 			bestEvolutionResultPanel.update(best);
 			currentevolutionResultPanel.update(current);
-			_polygonPanel.setChromosome((PolygonChromosome)gt.getChromosome());
+			_polygonPanel.setChromosome((PolygonChromosome)gt.chromosome());
 			_polygonPanel.repaint();
 		});
 	}

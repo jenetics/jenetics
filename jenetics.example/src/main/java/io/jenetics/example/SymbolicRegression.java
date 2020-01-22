@@ -66,7 +66,7 @@ public class SymbolicRegression {
 	);
 
 	private static final Regression<Double> REGRESSION = Regression.of(
-		Regression.codecOf(OPS, TMS, 5, t -> t.getGene().size() < 30),
+		Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30),
 		Error.of(LossFunction::mse),
 		// Lookup table for 4*x^3 - 3*x^2 + x
 		Sample.ofDouble(-1.0, -8.0000),
@@ -107,7 +107,7 @@ public class SymbolicRegression {
 
 		final ProgramGene<Double> program = result.getBestPhenotype()
 			.getGenotype()
-			.getGene();
+			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);

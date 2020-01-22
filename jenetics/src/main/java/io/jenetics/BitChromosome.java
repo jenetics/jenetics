@@ -168,7 +168,7 @@ public class BitChromosome extends Number
 	}
 
 	@Override
-	public BitGene getGene() {
+	public BitGene gene() {
 		assert _genes != null;
 		assert _genes.length > 0;
 		return BitGene.of(bit.get(_genes, 0));
@@ -186,10 +186,16 @@ public class BitChromosome extends Number
 	}
 
 	@Override
-	public BitGene getGene(final int index) {
+	public BitGene get(final int index) {
 		rangeCheck(index);
 		assert _genes != null;
 		return BitGene.of(bit.get(_genes, index));
+	}
+
+	@Deprecated
+	@Override
+	public BitGene getGene(final int index) {
+		return get(index);
 	}
 
 	/**
@@ -345,7 +351,7 @@ public class BitChromosome extends Number
 	public BitSet toBitSet() {
 		final BitSet set = new BitSet(length());
 		for (int i = 0, n = length(); i < n; ++i) {
-			set.set(i, getGene(i).getBit());
+			set.set(i, get(i).getBit());
 		}
 		return set;
 	}

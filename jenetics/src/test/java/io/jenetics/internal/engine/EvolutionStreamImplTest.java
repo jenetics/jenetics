@@ -43,7 +43,7 @@ public class EvolutionStreamImplTest {
 	public void limit() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.getGene().getAllele(),
+				gt -> gt.gene().getAllele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -64,7 +64,7 @@ public class EvolutionStreamImplTest {
 	public void limit0() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.getGene().getAllele(),
+				gt -> gt.gene().getAllele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -82,7 +82,7 @@ public class EvolutionStreamImplTest {
 	public void limit1() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.getGene().getAllele(),
+				gt -> gt.gene().getAllele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -114,7 +114,7 @@ public class EvolutionStreamImplTest {
 	public void spliterator() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.getGene().getAllele(),
+				gt -> gt.gene().getAllele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 

@@ -87,7 +87,7 @@ public class CharacterChromosome
 
 	@Override
 	public char charAt(final int index) {
-		return getGene(index).charValue();
+		return get(index).charValue();
 	}
 
 	@Override

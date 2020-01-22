@@ -181,7 +181,7 @@ public final class Writers {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.CharacterChromosome::length),
 				elem(VALID_ALLELES_NAME,
-					text().map(ch -> ch.getGene().getValidCharacters())),
+					text().map(ch -> ch.gene().getValidCharacters())),
 				elem(ALLELES_NAME,
 					text().map(io.jenetics.CharacterChromosome::toString))
 			);
@@ -732,7 +732,7 @@ public final class Writers {
 		private static String toAlleleTypeName(
 			final io.jenetics.PermutationChromosome<?> ch
 		) {
-			return ch.getGene().getAllele().getClass().getCanonicalName();
+			return ch.gene().getAllele().getClass().getCanonicalName();
 		}
 
 		/**

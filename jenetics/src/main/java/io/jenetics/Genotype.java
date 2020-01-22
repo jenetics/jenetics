@@ -73,8 +73,8 @@ import io.jenetics.util.Verifiable;
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
-		Factory<Genotype<G>>,
 		BaseSeq<Chromosome<G>>,
+		Factory<Genotype<G>>,
 		Verifiable,
 		Serializable
 {
@@ -83,7 +83,7 @@ public final class Genotype<G extends Gene<?, G>>
 	private final ISeq<Chromosome<G>> _chromosomes;
 
 	//Caching isValid value.
-	private volatile byte _valid = -1;
+	private byte _valid = -1;
 
 	/**
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
@@ -106,11 +106,72 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the chromosome at the given index. It is guaranteed, that the
 	 * returned chromosome is not null.
 	 *
+	 * @since 4.0
+	 *
+	 * @param index the chromosome index
+	 * @return the chromosome with the given index
+	 * @throws IndexOutOfBoundsException if
+	 *         {@code (index < 0 || index >= _length)}.
+	 */
+	@Override
+	public Chromosome<G> get(final int index) {
+		return _chromosomes.get(index);
+	}
+
+	/**
+	 * Getting the number of chromosomes of this genotype.
+	 *
+	 * @return number of chromosomes.
+	 */
+	@Override
+	public int length() {
+		return _chromosomes.length();
+	}
+
+	/**
+	 * Return the first chromosome. This is an alias for
+	 * <pre>{@code
+	 * final Genotype<DoubleGene>; gt = ...
+	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @return The first chromosome.
+	 */
+	public Chromosome<G> chromosome() {
+		return get(0);
+	}
+
+	/**
+	 * Return the first {@link Gene} of the first {@link Chromosome} of this
+	 * {@code Genotype}. This is an alias for
+	 * <pre>{@code
+	 * final Genotype<DoubleGene> gt = ...
+	 * final DoubleGene gene = gt.get(0).get(0);
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @return the first {@link Gene} of the first {@link Chromosome} of this
+	 *         {@code Genotype}.
+	 */
+	public G gene() {
+		return get(0).get(0);
+	}
+
+	/**
+	 * Return the chromosome at the given index. It is guaranteed, that the
+	 * returned chromosome is not null.
+	 *
 	 * @param index Chromosome index.
 	 * @return The Chromosome.
 	 * @throws IndexOutOfBoundsException if
 	 *         {@code (index < 0 || index >= _length)}.
+	 * @deprecated Use the getter, {@link #get(int)}, from the {@link BaseSeq}
+	 *             interface.
 	 */
+	@Deprecated
 	public Chromosome<G> getChromosome(final int index) {
 		assert _chromosomes != null;
 		assert _chromosomes.get(index) != null;
@@ -126,7 +187,9 @@ public final class Genotype<G extends Gene<?, G>>
 	 * }</pre>
 	 *
 	 * @return The first chromosome.
+	 * @deprecated Use {@link #chromosome()} instead
 	 */
+	@Deprecated
 	public Chromosome<G> getChromosome() {
 		assert _chromosomes != null;
 		assert _chromosomes.get(0) != null;
@@ -144,12 +207,14 @@ public final class Genotype<G extends Gene<?, G>>
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.
+	 * @deprecated Use {@link #gene()} instead
 	 */
+	@Deprecated
 	public G getGene() {
 		assert _chromosomes != null;
 		assert _chromosomes.get(0) != null;
 
-		return _chromosomes.get(0).getGene();
+		return _chromosomes.get(0).gene();
 	}
 
 	/**
@@ -163,26 +228,11 @@ public final class Genotype<G extends Gene<?, G>>
 	 * @return the gene with the given indexes
 	 * @throws IndexOutOfBoundsException if the given indexes are not within the
 	 *         allowed range
+	 * @deprecated Use {@code get(chromosomeIndex).get(geneIndex)} instead
 	 */
+	@Deprecated
 	public G get(final int chromosomeIndex, final int geneIndex) {
-		return getChromosome(chromosomeIndex).getGene(geneIndex);
-	}
-
-	/**
-	 * Return the chromosome at the given index. It is guaranteed, that the
-	 * returned chromosome is not null.
-	 *
-	 * @see #getChromosome(int)
-	 * @since 4.0
-	 *
-	 * @param chromosomeIndex Chromosome index.
-	 * @return The Chromosome.
-	 * @throws IndexOutOfBoundsException if
-	 *         {@code (index < 0 || index >= _length)}.
-	 */
-	@Override
-	public Chromosome<G> get(final int chromosomeIndex) {
-		return getChromosome(chromosomeIndex);
+		return get(chromosomeIndex).get(geneIndex);
 	}
 
 	/**
@@ -200,15 +250,6 @@ public final class Genotype<G extends Gene<?, G>>
 		return _chromosomes;
 	}
 
-	/**
-	 * Getting the number of chromosomes of this genotype.
-	 *
-	 * @return number of chromosomes.
-	 */
-	@Override
-	public int length() {
-		return _chromosomes.length();
-	}
 
 	/**
 	 * Return the number of genes this genotype consists of. This is the sum of

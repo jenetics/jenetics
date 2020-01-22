@@ -216,7 +216,7 @@ final class EvolvingImagesCmd {
 
 					latest.set(pt);
 					final PolygonChromosome ch =
-						(PolygonChromosome)pt.getGenotype().getChromosome();
+						(PolygonChromosome)pt.getGenotype().chromosome();
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {

@@ -55,7 +55,7 @@ public class CyclicEngineTest {
 				.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{});
@@ -72,7 +72,7 @@ public class CyclicEngineTest {
 			.stream();
 
 		final int[] array = stream.limit(12)
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
@@ -89,7 +89,7 @@ public class CyclicEngineTest {
 
 		final int[] array = stream
 			.limit(Limits.byFixedGeneration(12))
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
@@ -107,7 +107,7 @@ public class CyclicEngineTest {
 		final int[] array = stream
 			.limit(Limits.byFixedGeneration(12))
 			.limit(10)
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
@@ -131,7 +131,7 @@ public class CyclicEngineTest {
 
 		final int[] array = stream
 			.limit(10)
-			.mapToInt(r -> r.getGenotypes().get(0).getGene().intValue())
+			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15});

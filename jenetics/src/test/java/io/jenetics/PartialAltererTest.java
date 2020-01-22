@@ -126,8 +126,8 @@ public class PartialAltererTest {
 			Assert.assertNotEquals(pt1.getGenotype().get(2), pt2.getGenotype().get(2));
 			Assert.assertEquals(pt1.getGenotype().get(3), pt2.getGenotype().get(3));
 
-			Assert.assertEquals(pt2.getGenotype().get(1).getGene().doubleValue(), 0.5);
-			Assert.assertEquals(pt2.getGenotype().get(2).getGene().doubleValue(), 0.5);
+			Assert.assertEquals(pt2.getGenotype().get(1).gene().doubleValue(), 0.5);
+			Assert.assertEquals(pt2.getGenotype().get(2).gene().doubleValue(), 0.5);
 		}
 
 	}
@@ -196,7 +196,7 @@ public class PartialAltererTest {
 
 		// Define the GA engine.
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), gtf)
+			.builder(gt -> gt.gene().doubleValue(), gtf)
 			.selector(new RouletteWheelSelector<>())
 			.alterers(
 				PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),

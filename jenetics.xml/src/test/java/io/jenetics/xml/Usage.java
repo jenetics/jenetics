@@ -40,7 +40,7 @@ public class Usage {
 			BitChromosome::bitCount,
 			Codec.of(
 				Genotype.of(BitChromosome.of(10)),
-				gt -> gt.getChromosome().as(BitChromosome.class)
+				gt -> gt.chromosome().as(BitChromosome.class)
 			)
 		);
 

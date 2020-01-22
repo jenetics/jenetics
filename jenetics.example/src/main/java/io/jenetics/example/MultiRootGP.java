@@ -80,7 +80,7 @@ public class MultiRootGP {
 				)
 			),
 			gt -> gt.stream()
-				.map(Chromosome::getGene)
+				.map(Chromosome::gene)
 				.collect(ISeq.toISeq())
 		);
 

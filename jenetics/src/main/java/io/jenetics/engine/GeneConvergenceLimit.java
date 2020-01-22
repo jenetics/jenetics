@@ -85,13 +85,13 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 			final Genotype<G> gt = pt.getGenotype();
 
 			for (int i = 0; i < gt.length(); ++i) {
-				final Chromosome<G> ch = gt.getChromosome(i);
+				final Chromosome<G> ch = gt.get(i);
 
 				for (int j = 0; j < ch.length(); ++j) {
 					statistics
 						.computeIfAbsent(((long)i << 32) | (j & 0xffffffffL),
 							k -> new DoubleMomentStatistics())
-						.accept(ch.getGene(j).doubleValue());
+						.accept(ch.get(j).doubleValue());
 				}
 			}
 		}

@@ -38,7 +38,7 @@ import io.jenetics.util.RandomRegistry;
 public class RngExample {
 
 	private static Integer count(final Genotype<BitGene> gt) {
-		return ((BitChromosome)gt.getChromosome()).bitCount();
+		return ((BitChromosome)gt.chromosome()).bitCount();
 	}
 
 	public static void main(String[] args) {

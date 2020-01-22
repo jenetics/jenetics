@@ -77,7 +77,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome c3 = c1.invert();
 
 		for (int i = 0; i < c1.length(); ++i) {
-			Assert.assertTrue(c1.getGene(i).getBit() != c3.getGene(i).getBit());
+			Assert.assertTrue(c1.get(i).getBit() != c3.get(i).getBit());
 		}
 
 		BitChromosome c4 = c3.invert();
@@ -117,7 +117,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		BitChromosome c = BitChromosome.of(bits);
 		for (int i = 0; i < bits.length(); ++i) {
-			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
+			assertEquals(c.get(i).getBit(), i % 2 == 0);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		BitChromosome c2 = BitChromosome.of(c1.toBitSet(), 34);
 
 		for (int i = 0; i < c1.length(); ++i) {
-			assertEquals(c1.getGene(i).getBit(), c2.getGene(i).getBit());
+			assertEquals(c1.get(i).getBit(), c2.get(i).getBit());
 		}
 	}
 

@@ -38,7 +38,7 @@ public class PhenotypeTest extends ObjectTester<Phenotype<DoubleGene, Double>> {
 
 	private final Function<Genotype<DoubleGene>, Double> _ff =
 		(Function<Genotype<DoubleGene>, Double>  & Serializable)
-			gt -> sin(toRadians(gt.getGene().getAllele()));
+			gt -> sin(toRadians(gt.gene().getAllele()));
 
 	private final Factory<Genotype<DoubleGene>> _genotype = Genotype.of(
 		DoubleChromosome.of(0, 1, 50),
