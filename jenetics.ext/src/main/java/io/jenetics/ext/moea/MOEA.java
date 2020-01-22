@@ -159,10 +159,10 @@ public final class MOEA {
 		requireNonNull(dominance);
 		requireNonNull(distance);
 
-		if (size.getMin() < 1) {
+		if (size.min() < 1) {
 			throw new IllegalArgumentException(format(
 				"Minimal pareto set size must be greater than zero: %d",
-				size.getMin()
+				size.min()
 			));
 		}
 
@@ -231,9 +231,9 @@ public final class MOEA {
 			assert _front != null;
 			assert _optimize != null;
 
-			if (_front.size() > _size.getMax() - 1) {
+			if (_front.size() > _size.max() - 1) {
 				_front.trim(
-					_size.getMin(),
+					_size.min(),
 					this::compare,
 					_distance.map(Phenotype::getFitness),
 					v -> _dimension.applyAsInt(v.getFitness())

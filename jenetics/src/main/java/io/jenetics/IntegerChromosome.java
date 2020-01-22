@@ -229,7 +229,7 @@ public class IntegerChromosome
 		final IntRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class IntegerChromosome
 	 * @throws IllegalArgumentException if the length is smaller than one
 	 */
 	public static IntegerChromosome of(final IntRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class IntegerChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static IntegerChromosome of(final IntRange range) {
-		return of(range.getMin(), range.getMax(), 1);
+		return of(range.min(), range.max(), 1);
 	}
 
 
@@ -289,8 +289,8 @@ public class IntegerChromosome
 
 	void write(final DataOutput out) throws IOException {
 		writeInt(length(), out);
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		writeInt(_min, out);
 		writeInt(_max, out);
 

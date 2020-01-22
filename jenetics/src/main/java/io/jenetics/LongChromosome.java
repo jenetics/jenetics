@@ -296,8 +296,8 @@ public class LongChromosome
 
 	void write(final DataOutput out) throws IOException {
 		writeInt(length(), out);
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		writeLong(_min, out);
 		writeLong(_max, out);
 

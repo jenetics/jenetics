@@ -300,8 +300,8 @@ public class CharacterChromosome
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		writeString(_validCharacters.toString(), out);
 		writeString(toString(), out);
 	}

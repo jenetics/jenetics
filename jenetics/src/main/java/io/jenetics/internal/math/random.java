@@ -116,8 +116,8 @@ public final class random {
 	 */
 	public static int nextInt(final IntRange range, final Random random) {
 		return range.size() == 1
-			? range.getMin()
-			: nextInt(range.getMin(), range.getMax(), random);
+			? range.min()
+			: nextInt(range.min(), range.max(), random);
 	}
 
 	/**
