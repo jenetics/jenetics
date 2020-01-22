@@ -241,7 +241,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final double value, final DoubleRange range) {
-		return of(value, range.getMin(), range.getMax());
+		return of(value, range.min(), range.max());
 	}
 
 	/**
@@ -267,7 +267,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.getMin(), range.getMax(), getRandom()), range);
+		return of(nextDouble(range.min(), range.max(), getRandom()), range);
 	}
 
 	static ISeq<DoubleGene> seq(

@@ -234,7 +234,7 @@ public class DoubleChromosome
 		final DoubleRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class DoubleChromosome
 	 *         one.
 	 */
 	public static DoubleChromosome of(final DoubleRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleRange range) {
-		return of(range.getMin(), range.getMax());
+		return of(range.min(), range.max());
 	}
 
 
