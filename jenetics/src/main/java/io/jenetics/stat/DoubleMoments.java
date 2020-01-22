@@ -351,9 +351,9 @@ public final class DoubleMoments implements Serializable {
 	public static DoubleMoments of(final DoubleMomentStatistics statistics) {
 		return new DoubleMoments(
 			statistics.getCount(),
-			statistics.getMin(),
-			statistics.getMax(),
-			statistics.getSum(),
+			statistics.min(),
+			statistics.max(),
+			statistics.sum(),
 			statistics.getMean(),
 			statistics.getVariance(),
 			statistics.getSkewness(),

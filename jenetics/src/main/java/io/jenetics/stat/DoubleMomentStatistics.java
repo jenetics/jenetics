@@ -120,6 +120,18 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
 	 */
+	public double min() {
+		return _min;
+	}
+
+	/**
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
 	public double getMin() {
 		return _min;
 	}
@@ -130,6 +142,18 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
 	 */
+	public double max() {
+		return _max;
+	}
+
+	/**
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public double getMax() {
 		return _max;
 	}
@@ -140,6 +164,18 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the sum of values, or zero if none
 	 */
+	public double sum() {
+		return _sum.doubleValue();
+	}
+
+	/**
+	 * Return the sum of values recorded, or zero if no values have been
+	 * recorded.
+	 *
+	 * @return the sum of values, or zero if none
+	 * @deprecated Use {@link #sum()} instead
+	 */
+	@Deprecated
 	public double getSum() {
 		return _sum.doubleValue();
 	}

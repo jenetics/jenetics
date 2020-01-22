@@ -133,8 +133,8 @@ public final class SampleSummary implements Serializable {
 			quantile.quantile(0.5),
 			quantile.quantile(0.25),
 			quantile.quantile(0.75),
-			moment.getMin(),
-			moment.getMax()
+			moment.min(),
+			moment.max()
 		);
 	}
 

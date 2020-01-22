@@ -56,9 +56,9 @@ public class DoubleMomentStatisticsTest {
 			.collect(toDoubleMomentStatistics(Double::doubleValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
+		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
 		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
 		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
@@ -76,9 +76,9 @@ public class DoubleMomentStatisticsTest {
 			.collect(toDoubleMomentStatistics(Double::doubleValue));
 
 		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
+		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
 		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
 		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
 		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
