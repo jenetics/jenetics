@@ -80,8 +80,8 @@ public abstract class TreeCrossover<
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
+		final MSeq<Chromosome<G>> c2 = MSeq.of(gt2);
 
 		crossover(c1, c2, chIndex);
 

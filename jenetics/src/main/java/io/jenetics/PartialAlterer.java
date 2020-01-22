@@ -226,15 +226,13 @@ public final class PartialAlterer<
 			final Phenotype<G, C> section,
 			final Phenotype<G, C> phenotype
 		) {
-			final MSeq<Chromosome<G>> chromosomes = phenotype.getGenotype()
-				.toSeq()
-				.copy();
+			final MSeq<Chromosome<G>> ch = MSeq.of(phenotype.getGenotype());
 
 			for (int i = 0; i < indices.length; ++i) {
-				chromosomes.set(indices[i], section.getGenotype().get(i));
+				ch.set(indices[i], section.getGenotype().get(i));
 			}
 
-			final Genotype<G> genotype = Genotype.of(chromosomes);
+			final Genotype<G> genotype = Genotype.of(ch);
 
 			return phenotype.isEvaluated()
 				? Phenotype.of(

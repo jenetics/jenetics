@@ -952,7 +952,7 @@ public final class Writers {
 				ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
 				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
-				elems(writer).map(gt -> cast(gt.toSeq()))
+				elems(writer).map(gt -> cast(ISeq.of(gt)))
 			);
 		}
 

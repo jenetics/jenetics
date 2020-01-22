@@ -185,6 +185,7 @@ public final class Genotype<G extends Gene<?, G>>
 		return getChromosome(chromosomeIndex);
 	}
 
+	@Deprecated
 	public ISeq<Chromosome<G>> toSeq() {
 		return _chromosomes;
 	}

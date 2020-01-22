@@ -103,7 +103,7 @@ public class DynamicGenotype {
 			final IntRef alterations
 		) {
 			final List<Chromosome<G>> chromosomes =
-				new ArrayList<>(genotype.toSeq().asList());
+				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
 			final Random random = RandomRegistry.getRandom();

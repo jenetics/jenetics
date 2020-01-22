@@ -25,7 +25,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.util.BaseSeq;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
@@ -80,11 +79,10 @@ public class MeanAlterer<
 		//Choosing the Chromosome index for crossover.
 		final int cindex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final ISeq<Chromosome<G>> c2 = gt2.toSeq();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
 
 		// Calculate the mean value of the gene array.
-		final MSeq<G> mean = mean(c1.get(cindex), c2.get(cindex));
+		final MSeq<G> mean = mean(c1.get(cindex), gt2.get(cindex));
 
 		c1.set(cindex, c1.get(cindex).newInstance(mean.toISeq()));
 		population.set(individuals[0], Phenotype.of(Genotype.of(c1), generation));
