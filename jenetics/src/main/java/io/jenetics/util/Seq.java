@@ -28,10 +28,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.RandomAccess;
-import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -126,26 +124,6 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 		return valid;
 	}
 
-	@Override
-	public default Iterator<T> iterator() {
-		return asList().iterator();
-	}
-
-	public default ListIterator<T> listIterator() {
-		return asList().listIterator();
-	}
-
-	/**
-	 * Returns a sequential Stream with this sequence as its source.
-	 *
-	 * @since 3.0
-	 *
-	 * @return a sequential Stream over the elements in this sequence
-	 */
-	public default Stream<T> stream() {
-		return StreamSupport.stream(new SeqSpliterator<>(this), false);
-	}
-
 	/**
 	 * Returns a possibly parallel {@code Stream} with this sequence as its
 	 * source.  It is allowable for this method to return a sequential stream.
@@ -156,12 +134,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * collection
 	 */
 	public default Stream<T> parallelStream() {
-		return StreamSupport.stream(new SeqSpliterator<>(this), true);
-	}
-
-	@Override
-	public default Spliterator<T> spliterator() {
-		return new SeqSpliterator<T>(this);
+		return StreamSupport.stream(spliterator(), true);
 	}
 
 	/**

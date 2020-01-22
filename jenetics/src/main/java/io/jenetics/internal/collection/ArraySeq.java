@@ -22,21 +22,16 @@ package io.jenetics.internal.collection;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.RandomAccess;
-import java.util.Spliterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.4
+ * @version !__version__!
  */
 public abstract class ArraySeq<T>
 	implements
@@ -72,31 +67,6 @@ public abstract class ArraySeq<T>
 		return values instanceof ArraySeq
 			? ((ArraySeq<T>)values).array.append(array)
 			: array.prepend(values);
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return listIterator();
-	}
-
-	@Override
-	public ListIterator<T> listIterator() {
-		return new BaseSeqIterator<>(array);
-	}
-
-	@Override
-	public Stream<T> stream() {
-		return StreamSupport.stream(spliterator(), false);
-	}
-
-	@Override
-	public Stream<T> parallelStream() {
-		return StreamSupport.stream(spliterator(), true);
-	}
-
-	@Override
-	public Spliterator<T> spliterator() {
-		return new ArraySpliterator<T>(array);
 	}
 
 	@Override

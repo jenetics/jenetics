@@ -22,7 +22,7 @@ package io.jenetics.internal.collection;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.4
+ * @version !__version__!
  */
 public class BaseMSeqIterator<T> extends BaseSeqIterator<T, BaseMSeq<T>> {
 

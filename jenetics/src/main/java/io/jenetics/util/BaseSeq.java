@@ -20,9 +20,13 @@
 package io.jenetics.util;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
+import java.util.ListIterator;
+import java.util.Spliterator;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import io.jenetics.internal.collection.BaseSeqIterator;
+import io.jenetics.internal.collection.BaseSeqSpliterator;
 
 /**
  * General base interface for a ordered, fixed sized, object sequence.
@@ -53,25 +57,11 @@ public interface BaseSeq<T> extends Iterable<T> {
 
 	@Override
 	public default Iterator<T> iterator() {
-		return new Iterator<T>() {
-			private int _cursor = 0;
+		return new BaseSeqIterator<>(this);
+	}
 
-			@Override
-			public boolean hasNext() {
-				return _cursor != length();
-			}
-
-			@Override
-			public T next() {
-				final int i = _cursor;
-				if (_cursor >= length()) {
-					throw new NoSuchElementException();
-				}
-
-				_cursor = i + 1;
-				return get(i);
-			}
-		};
+	public default ListIterator<T> listIterator() {
+		return new BaseSeqIterator<>(this);
 	}
 
 	/**
@@ -80,7 +70,12 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 * @return a sequential Stream over the elements in this sequence
 	 */
 	public default Stream<T> stream() {
-		return IntStream.range(0, length()).mapToObj(this::get);
+		return StreamSupport.stream(new BaseSeqSpliterator<>(this), false);
+	}
+
+	@Override
+	public default Spliterator<T> spliterator() {
+		return new BaseSeqSpliterator<T>(this);
 	}
 
 }
