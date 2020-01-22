@@ -28,10 +28,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.RandomAccess;
-import java.util.Spliterator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -49,21 +47,9 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.2
+ * @version !__version__!
  */
-public interface Seq<T> extends Iterable<T>, IntFunction<T> {
-
-	/**
-	 * Return the value at the given {@code index}.
-	 *
-	 * @see #apply(int)
-	 *
-	 * @param index index of the element to return.
-	 * @return the value at the given {@code index}.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         (index &lt; 0 || index &gt;= size()).
-	 */
-	public T get(final int index);
+public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -81,14 +67,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	public default T apply(final int index) {
 		return get(index);
 	}
-
-	/**
-	 * Return the length of this sequence. Once the sequence is created, the
-	 * length can't be changed.
-	 *
-	 * @return the length of this sequence.
-	 */
-	public int length();
 
 	/**
 	 * @see #length()
@@ -146,26 +124,6 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 		return valid;
 	}
 
-	@Override
-	public default Iterator<T> iterator() {
-		return asList().iterator();
-	}
-
-	public default ListIterator<T> listIterator() {
-		return asList().listIterator();
-	}
-
-	/**
-	 * Returns a sequential Stream with this sequence as its source.
-	 *
-	 * @since 3.0
-	 *
-	 * @return a sequential Stream over the elements in this sequence
-	 */
-	public default Stream<T> stream() {
-		return StreamSupport.stream(new SeqSpliterator<>(this), false);
-	}
-
 	/**
 	 * Returns a possibly parallel {@code Stream} with this sequence as its
 	 * source.  It is allowable for this method to return a sequential stream.
@@ -176,12 +134,7 @@ public interface Seq<T> extends Iterable<T>, IntFunction<T> {
 	 * collection
 	 */
 	public default Stream<T> parallelStream() {
-		return StreamSupport.stream(new SeqSpliterator<>(this), true);
-	}
-
-	@Override
-	public default Spliterator<T> spliterator() {
-		return new SeqSpliterator<T>(this);
+		return StreamSupport.stream(spliterator(), true);
 	}
 
 	/**

@@ -17,26 +17,28 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
 
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
+import io.jenetics.util.BaseSeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.4
+ * @version !__version__!
  */
-final class SeqSpliterator<T> implements Spliterator<T> {
+public final class BaseSeqSpliterator<T> implements Spliterator<T> {
 
-	private final Seq<T> _seq;
+	private final BaseSeq<T> _seq;
 	private final int _fence;
 	private int _index;
 
-	SeqSpliterator(
-		final Seq<T> seq,
+	public BaseSeqSpliterator(
+		final BaseSeq<T> seq,
 		final int origin,
 		final int fence
 	) {
@@ -45,7 +47,7 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 		_fence = fence;
 	}
 
-	SeqSpliterator(final Seq<T> seq) {
+	public BaseSeqSpliterator(final BaseSeq<T> seq) {
 		this(seq, 0, seq.length());
 	}
 
@@ -53,7 +55,7 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 	public void forEachRemaining(final Consumer<? super T> action) {
 		requireNonNull(action);
 
-		Seq<T> seq;
+		BaseSeq<T> seq;
 		int i;
 		int hi;
 
@@ -82,7 +84,7 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 
 		return (lo >= mid)
 			? null
-			: new SeqSpliterator<>(_seq, lo, _index = mid);
+			: new BaseSeqSpliterator<>(_seq, lo, _index = mid);
 	}
 
 	@Override
@@ -94,4 +96,5 @@ final class SeqSpliterator<T> implements Spliterator<T> {
 	public int characteristics() {
 		return Spliterator.NONNULL | Spliterator.SIZED | Spliterator.SUBSIZED;
 	}
+
 }

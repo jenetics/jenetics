@@ -256,11 +256,11 @@ public final class ProxySorter {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> int[] sort(
-		final Seq<? extends T> array,
+		final BaseSeq<? extends T> array,
 		final java.util.Comparator<? super T> comparator
 	) {
 		return sort(
-			array, array.size(),
+			array, array.length(),
 			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
 		);
 	}
@@ -276,9 +276,9 @@ public final class ProxySorter {
 	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public static <T extends Comparable<? super T>>
-	int[] sort(final Seq<? extends T> array) {
+	int[] sort(final BaseSeq<? extends T> array) {
 		return sort(
-			array, array.size(),
+			array, array.length(),
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
 	}

@@ -19,23 +19,25 @@
  */
 package io.jenetics.internal.collection;
 
+import io.jenetics.util.BaseSeq;
+
 /**
+ * General base interface for a ordered, fixed sized, mutable, object sequence.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.4
+ * @since !__version__!
+ * @version !_version__!
  */
-public class ArrayMIterator<T> extends ArrayIterator<T> {
+public interface BaseMSeq<T> extends BaseSeq<T> {
 
-	public ArrayMIterator(final Array<T> array) {
-		super(array);
-	}
-
-	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
-		}
-		array.set(lastElement, value);
-	}
+	/**
+	 * Set the {@code value} at the given {@code index}.
+	 *
+	 * @param index the index of the new value.
+	 * @param value the new value.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0 || index >= size())}.
+	 */
+	public void set(final int index, final T value);
 
 }

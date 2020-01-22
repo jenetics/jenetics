@@ -24,19 +24,21 @@ import static java.util.Objects.requireNonNull;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import io.jenetics.util.BaseSeq;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.4
+ * @version !__version__!
  */
-public class ArrayIterator<T> implements ListIterator<T> {
+public class BaseSeqIterator<T, S extends BaseSeq<T>> implements ListIterator<T> {
 
-	public final Array<T> array;
+	public final S array;
 
 	protected int cursor = 0;
 	protected int lastElement = -1;
 
-	public ArrayIterator(final Array<T> array) {
+	public BaseSeqIterator(final S array) {
 		this.array = requireNonNull(array, "Array must not be null.");
 	}
 

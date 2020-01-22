@@ -30,7 +30,7 @@ import io.jenetics.internal.math.random;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ArrayMIteratorTest {
+public class BaseMSeqIteratorTest {
 
 	@Test
 	public void set() {
@@ -45,7 +45,7 @@ public class ArrayMIteratorTest {
 
 		seed = io.jenetics.internal.math.random.seed();
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayMIterator<>(impl);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(impl);
 		while (it.hasNext()) {
 			it.next();
 			it.set(random.nextInt());
@@ -70,7 +70,7 @@ public class ArrayMIteratorTest {
 		}
 
 		int count = 0;
-		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 			it.set(222);
@@ -96,7 +96,7 @@ public class ArrayMIteratorTest {
 			Assert.assertEquals(value, Integer.valueOf(111));
 		}
 
-		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}

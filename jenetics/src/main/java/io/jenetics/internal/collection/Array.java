@@ -38,10 +38,10 @@ import io.jenetics.internal.collection.Array.Store.Ref;
  *
  * @param <T> the array element type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version !__version__!
  * @since 3.4
  */
-public final class Array<T> implements Serializable {
+public final class Array<T> implements BaseMSeq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private transient /*final*/ Store.Ref<T> _store;
@@ -137,6 +137,7 @@ public final class Array<T> implements Serializable {
 	 * @param index the array index
 	 * @return the value at the given index
 	 */
+	@Override
 	public T get(final int index) {
 		return _store.get(index + _start);
 	}
@@ -239,6 +240,7 @@ public final class Array<T> implements Serializable {
 	 *
 	 * @return the array length
 	 */
+	@Override
 	public int length() {
 		return _length;
 	}
