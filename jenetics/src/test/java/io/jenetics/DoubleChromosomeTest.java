@@ -81,7 +81,7 @@ public class DoubleChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}

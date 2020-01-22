@@ -76,12 +76,12 @@ final class FitnessVarianceAdaptiveEngine<
 			result.getPopulation()
 				.forEach(pt -> stat.accept(pt.getFitness().doubleValue()));
 
-			if (stat.getVariance() < _variance.getMin() && _narrowing) {
+			if (stat.getVariance() < _variance.min() && _narrowing) {
 				_engine = _builder
 					.alterers(_enlarge)
 					.build();
 				_narrowing = false;
-			} else if (stat.getVariance() > _variance.getMax() && !_narrowing) {
+			} else if (stat.getVariance() > _variance.max() && !_narrowing) {
 				_engine = _builder
 					.alterers(_narrow)
 					.build();

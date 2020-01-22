@@ -63,14 +63,14 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 
 	static IntRange checkLengthRange(final IntRange lengthRange, final int length) {
 		requireNonNull(lengthRange);
-		if (lengthRange.getMin() <= 0) {
+		if (lengthRange.min() <= 0) {
 			throw new IllegalArgumentException(format(
-				"Minimum length must be positive: %d", lengthRange.getMin()
+				"Minimum length must be positive: %d", lengthRange.min()
 			));
 		}
-		if (lengthRange.getMax() <= 0) {
+		if (lengthRange.max() <= 0) {
 			throw new IllegalArgumentException(format(
-				"Maximum length must be positive: %d", lengthRange.getMin()
+				"Maximum length must be positive: %d", lengthRange.min()
 			));
 		}
 		if (lengthRange.size() <= 0) {
@@ -78,8 +78,8 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 				"Maximal length must be positive: %d", lengthRange.size()
 			));
 		}
-		if (length < lengthRange.getMin() ||
-			length >= lengthRange.getMax())
+		if (length < lengthRange.min() ||
+			length >= lengthRange.max())
 		{
 			throw new IllegalArgumentException(format(
 				"Number of genes (%d) not within the allowed range: %s",

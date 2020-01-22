@@ -236,7 +236,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final int value, final IntRange range) {
-		return IntegerGene.of(value, range.getMin(), range.getMax());
+		return IntegerGene.of(value, range.min(), range.max());
 	}
 
 	/**
@@ -262,7 +262,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextInt(getRandom(), range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
