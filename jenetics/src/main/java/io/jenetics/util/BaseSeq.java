@@ -57,7 +57,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 
 	@Override
 	public default Iterator<T> iterator() {
-		return new BaseSeqIterator<>(this);
+		return listIterator();
 	}
 
 	public default ListIterator<T> listIterator() {
@@ -70,7 +70,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 * @return a sequential Stream over the elements in this sequence
 	 */
 	public default Stream<T> stream() {
-		return StreamSupport.stream(new BaseSeqSpliterator<>(this), false);
+		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override
