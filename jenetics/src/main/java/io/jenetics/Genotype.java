@@ -83,7 +83,7 @@ public final class Genotype<G extends Gene<?, G>>
 	private final ISeq<Chromosome<G>> _chromosomes;
 
 	//Caching isValid value.
-	private volatile Boolean _valid = null;
+	private volatile byte _valid = -1;
 
 	/**
 	 * Create a new Genotype from a given sequence of {@code Chromosomes}.
@@ -218,8 +218,8 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	public int geneCount() {
 		int count = 0;
-		for (int i = 0, n = _chromosomes.length(); i < n; ++i) {
-			count += _chromosomes.get(i).length();
+		for (Chromosome<?> chromosome : this) {
+			count += chromosome.length();
 		}
 		return count;
 	}
@@ -232,13 +232,13 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	@Override
 	public boolean isValid() {
-		Boolean valid = _valid;
-		if (valid == null) {
-			valid = _chromosomes.forAll(Verifiable::isValid);
+		byte valid = _valid;
+		if (valid == -1) {
+			valid = (byte)(_chromosomes.forAll(Verifiable::isValid) ? 1 : 0);
 			_valid = valid;
 		}
 
-		return _valid;
+		return _valid == 1;
 	}
 
 	/**
