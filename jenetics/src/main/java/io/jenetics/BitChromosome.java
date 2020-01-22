@@ -73,15 +73,15 @@ public class BitChromosome extends Number
 	/**
 	 * The length of the chromosomes (number of bits).
 	 */
-	protected int _length;
+	protected final int _length;
 
 	/**
 	 * The boolean array which holds the {@link BitGene}s.
 	 */
-	protected byte[] _genes;
+	protected final byte[] _genes;
 
 	// Wraps the genes byte array into a Seq<BitGene>.
-	private transient BitGeneISeq _seq;
+	private final transient BitGeneISeq _seq;
 
 	// Private primary constructor.
 	private BitChromosome(final byte[] bits, final int length, final double p) {
