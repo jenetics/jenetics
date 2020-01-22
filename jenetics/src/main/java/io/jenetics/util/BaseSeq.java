@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public interface IndexedCollection<T> extends Iterable<T> {
+public interface BaseSeq<T> extends Iterable<T> {
 
 	/**
 	 * Return the value at the given {@code index}.

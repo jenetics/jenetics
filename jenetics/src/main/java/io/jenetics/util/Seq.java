@@ -51,7 +51,7 @@ import java.util.stream.StreamSupport;
  * @since 1.0
  * @version 4.2
  */
-public interface Seq<T> extends IndexedCollection<T>, IntFunction<T> {
+public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
 	/**
 	 * Return the value at the given {@code index}.

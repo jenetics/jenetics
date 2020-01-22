@@ -21,7 +21,7 @@ package io.jenetics;
 
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.IndexedCollection;
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -45,7 +45,7 @@ import io.jenetics.util.Verifiable;
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
-		IndexedCollection<G>,
+	BaseSeq<G>,
 		Factory<Chromosome<G>>
 {
 	/**
