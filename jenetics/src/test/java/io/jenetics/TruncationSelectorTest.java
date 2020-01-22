@@ -57,7 +57,7 @@ public class TruncationSelectorTest
 			final DoubleChromosome ch = DoubleChromosome.of(gene);
 			final Genotype<DoubleGene> gt = Genotype.of(ch);
 			final Phenotype<DoubleGene, Integer> pt = Phenotype.of(
-				gt, 1, gt.getGene().intValue()
+				gt, 1, gt.gene().intValue()
 			);
 
 			population.set(i, pt);

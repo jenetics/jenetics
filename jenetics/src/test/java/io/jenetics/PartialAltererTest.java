@@ -196,7 +196,7 @@ public class PartialAltererTest {
 
 		// Define the GA engine.
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), gtf)
+			.builder(gt -> gt.gene().doubleValue(), gtf)
 			.selector(new RouletteWheelSelector<>())
 			.alterers(
 				PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),

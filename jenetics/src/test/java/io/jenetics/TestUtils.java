@@ -165,7 +165,7 @@ class TestUtils {
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
-	PFF = gt -> gt.getGene().getAllele();
+	PFF = gt -> gt.gene().getAllele();
 
 	/**
 	 * Count the number of different genes.
@@ -180,8 +180,8 @@ class TestUtils {
 			final Genotype<?> gt2 = p2.get(i).getGenotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
-				final Chromosome<?> c1 = gt1.getChromosome(j);
-				final Chromosome<?> c2 = gt2.getChromosome(j);
+				final Chromosome<?> c1 = gt1.get(j);
+				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
 					if (!c1.getGene(k).equals(c2.getGene(k))) {
@@ -197,7 +197,7 @@ class TestUtils {
 	 * 'Identity' fitness function.
 	 */
 	public static final Function<Genotype<DoubleGene>, Double> FF =
-		gt -> gt.getGene().getAllele();
+		gt -> gt.gene().getAllele();
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {

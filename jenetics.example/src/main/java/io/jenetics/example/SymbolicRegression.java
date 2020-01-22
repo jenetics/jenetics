@@ -107,7 +107,7 @@ public class SymbolicRegression {
 
 		final ProgramGene<Double> program = result.getBestPhenotype()
 			.getGenotype()
-			.getGene();
+			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);

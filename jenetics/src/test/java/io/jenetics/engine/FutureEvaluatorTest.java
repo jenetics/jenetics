@@ -39,7 +39,7 @@ import io.jenetics.util.ISeq;
 public class FutureEvaluatorTest {
 
 	static Future<Double> eval(final Genotype<DoubleGene> gt) {
-		return CompletableFuture.completedFuture(gt.getGene().doubleValue());
+		return CompletableFuture.completedFuture(gt.gene().doubleValue());
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class FutureEvaluatorTest {
 
 		evaluated.forEach(pt -> Assert.assertTrue(pt.isEvaluated()));
 		evaluated.forEach(pt ->
-			assertEquals(pt.getGenotype().getGene().doubleValue(), pt.getFitness().doubleValue()));
+			assertEquals(pt.getGenotype().gene().doubleValue(), pt.getFitness().doubleValue()));
 	}
 
 }

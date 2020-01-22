@@ -77,7 +77,7 @@ public class RegressionTest {
 			Sample.ofDouble(1.0, 2.0000)
 		);
 
-		final Tree<Op<Double>, ?> tree = codec.encoding().newInstance().getGene();
+		final Tree<Op<Double>, ?> tree = codec.encoding().newInstance().gene();
 		regression.error(tree);
 	}
 

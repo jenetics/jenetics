@@ -93,8 +93,8 @@ public class CompositeAltererTest {
 			final Genotype<?> gt2 = p2.get(i).getGenotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
-				final Chromosome<?> c1 = gt1.getChromosome(j);
-				final Chromosome<?> c2 = gt2.getChromosome(j);
+				final Chromosome<?> c1 = gt1.get(j);
+				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
 					if (!c1.getGene(k).equals(c2.getGene(k))) {

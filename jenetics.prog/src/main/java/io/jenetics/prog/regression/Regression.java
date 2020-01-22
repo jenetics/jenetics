@@ -260,7 +260,7 @@ public final class Regression<T>
 				operations,
 				terminals
 			)),
-			Genotype::getGene
+			Genotype::gene
 		);
 	}
 

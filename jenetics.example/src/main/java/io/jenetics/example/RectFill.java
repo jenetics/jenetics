@@ -94,7 +94,7 @@ public final class RectFill
 				a -> true,
 				MAX_RECT_COUNT
 			)),
-			gt -> gt.getChromosome().stream()
+			gt -> gt.chromosome().stream()
 						.map(AnyGene::getAllele)
 						.filter(r -> r != Rect.EMPTY)
 						.collect(ISeq.toISeq())

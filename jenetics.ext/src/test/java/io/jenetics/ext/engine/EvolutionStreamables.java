@@ -55,7 +55,7 @@ final class EvolutionStreamables {
 										.getPopulation()
 										.get(0)
 										.getGenotype()
-										.getGene()
+										.gene()
 										.intValue();
 							}
 							value += 1;
@@ -78,7 +78,7 @@ final class EvolutionStreamables {
 							if (value == null) {
 								value  = init.getPopulation()
 									.get(0)
-									.getGene()
+									.gene()
 									.intValue();
 							}
 							value += 1;

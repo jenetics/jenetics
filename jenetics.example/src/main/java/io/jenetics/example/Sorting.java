@@ -44,8 +44,8 @@ public class Sorting {
 	}
 
 	private static int length(final Genotype<EnumGene<Integer>> genotype) {
-		return IntStream.range(1, genotype.getChromosome().length())
-			.map(i -> dist(genotype.getChromosome(), i, i - 1))
+		return IntStream.range(1, genotype.chromosome().length())
+			.map(i -> dist(genotype.chromosome(), i, i - 1))
 			.sum();
 	}
 

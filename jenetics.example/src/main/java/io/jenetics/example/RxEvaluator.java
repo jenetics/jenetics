@@ -92,7 +92,7 @@ public final class RxEvaluator<
 	}
 
 	private static Observable<Double> fitness(final Genotype<DoubleGene> gt) {
-		return Observable.just(gt.getGene().doubleValue());
+		return Observable.just(gt.gene().doubleValue());
 	}
 
 }

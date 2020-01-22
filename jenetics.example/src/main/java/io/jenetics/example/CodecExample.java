@@ -140,9 +140,9 @@ public class CodecExample {
 				DoubleChromosome.of(v3Domain)
 			),
 			gt -> new Tuple(
-				gt.getChromosome(0).getGene().intValue(),
-				gt.getChromosome(1).getGene().longValue(),
-				gt.getChromosome(2).getGene().doubleValue()
+				gt.get(0).getGene().intValue(),
+				gt.get(1).getGene().longValue(),
+				gt.get(2).getGene().doubleValue()
 			)
 		);
 	}

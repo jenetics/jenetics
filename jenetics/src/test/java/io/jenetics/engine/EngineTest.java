@@ -73,7 +73,7 @@ public class EngineTest {
 			a -> a,
 			Codec.of(
 				Genotype.of(IntegerChromosome.of(0, 1000)),
-				g -> g.getGene().getAllele()
+				g -> g.gene().getAllele()
 			)
 		);
 
@@ -157,7 +157,7 @@ public class EngineTest {
 	@Test(dataProvider = "generations")
 	public void generationCount(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
@@ -170,7 +170,7 @@ public class EngineTest {
 	@Test(dataProvider = "generations")
 	public void generationLimit(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
@@ -183,7 +183,7 @@ public class EngineTest {
 	@Test(dataProvider = "generations")
 	public void engineGenerationLimit1(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -197,7 +197,7 @@ public class EngineTest {
 	@Test(dataProvider = "generations")
 	public void engineGenerationLimit2(final Long generations) {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -221,7 +221,7 @@ public class EngineTest {
 		final int populationSize = 100;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.constraint(RetryConstraint.of(pt -> false))
 			.populationSize(populationSize)
 			.build();
@@ -238,7 +238,7 @@ public class EngineTest {
 		final int populationSize = 100;
 
 		final Engine<IntegerGene, Integer> engine = Engine
-			.builder(a -> a.getGene().getAllele(), IntegerChromosome.of(0, 10))
+			.builder(a -> a.gene().getAllele(), IntegerChromosome.of(0, 10))
 			.populationSize(populationSize)
 			.mapping(EvolutionResult.toUniquePopulation(
 				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))))
@@ -265,7 +265,7 @@ public class EngineTest {
 	@Test
 	public void parallelStream() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine
@@ -287,7 +287,7 @@ public class EngineTest {
 			array -> IntStream.of(array).sum(),
 			Codec.of(
 				Genotype.of(IntegerChromosome.of(0, 100, IntRange.of(10, 100))),
-				gt -> gt.getChromosome().as(IntegerChromosome.class).toArray()
+				gt -> gt.chromosome().as(IntegerChromosome.class).toArray()
 			)
 		);
 		final Engine<IntegerGene, Integer> engine = Engine.builder(problem)
@@ -372,7 +372,7 @@ public class EngineTest {
 			} catch (InterruptedException ignore) {
 				Thread.currentThread().interrupt();
 			}
-			return gt.getGene().getAllele();
+			return gt.gene().getAllele();
 		};
 
 		final Engine<DoubleGene, Double> engine = Engine
@@ -393,7 +393,7 @@ public class EngineTest {
 	public void executorDeadLock(final Executor executor) {
 		try {
 			final Engine<DoubleGene, Double> engine = Engine
-				.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+				.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 				.executor(executor)
 				.populationSize(10)
 				.build();
@@ -449,7 +449,7 @@ public class EngineTest {
 		final int populationSize = 20;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 			.populationSize(populationSize)
 			.survivorsSize(0)
 			.build();
@@ -473,7 +473,7 @@ public class EngineTest {
 		final int populationSize = 20;
 
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(gt -> gt.getGene().doubleValue(), DoubleChromosome.of(0, 1))
+			.builder(gt -> gt.gene().doubleValue(), DoubleChromosome.of(0, 1))
 			.populationSize(populationSize)
 			.offspringSize(0)
 			.build();

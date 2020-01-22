@@ -56,7 +56,7 @@ public class StochasticUniversalSelectorTest
 	@Test
 	public void selectMinimum() {
 		final Function<Genotype<IntegerGene>, Integer> ff = gt ->
-			gt.getChromosome().stream()
+			gt.chromosome().stream()
 				.mapToInt(IntegerGene::intValue)
 				.sum();
 
@@ -67,7 +67,7 @@ public class StochasticUniversalSelectorTest
 			IntStream.range(0, 50)
 				.mapToObj(i -> {
 					final Genotype<IntegerGene> gt = gtf.newInstance();
-					return Phenotype.of(gt, 50, gt.getGene().intValue());
+					return Phenotype.of(gt, 50, gt.gene().intValue());
 				})
 				.collect(ISeq.toISeq());
 

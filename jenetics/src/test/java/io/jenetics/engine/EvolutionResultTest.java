@@ -57,7 +57,7 @@ public class EvolutionResultTest
 	protected Factory<EvolutionResult<DoubleGene, Double>> factory() {
 		final Function<Genotype<DoubleGene>, Double> ff =
 			(Function<Genotype<DoubleGene>, Double> & Serializable)
-				a -> a.getGene().getAllele();
+				a -> a.gene().getAllele();
 
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
@@ -68,7 +68,7 @@ public class EvolutionResultTest
 				IntStream.range(0, 100)
 					.mapToObj(i -> {
 						final Genotype<DoubleGene> gt = gtf.newInstance();
-						return Phenotype.of(gt, 1, gt.getGene().doubleValue());
+						return Phenotype.of(gt, 1, gt.gene().doubleValue());
 					})
 					.collect(ISeq.toISeq()),
 				random.nextInt(1000),
@@ -93,7 +93,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectEvolutionResult() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
@@ -107,7 +107,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectPhenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
@@ -121,7 +121,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectGenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.getGene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Genotype<DoubleGene> result = engine.stream()
@@ -164,14 +164,14 @@ public class EvolutionResultTest
 	@Test
 	public void compareTo() {
 		final int length = 100;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().getAllele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> small = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i, 0, length)
 			));
-			small.set(i, Phenotype.of(gt, 1, gt.getGene().intValue()));
+			small.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
 		small.shuffle(RandomRegistry.getRandom());
 
@@ -180,7 +180,7 @@ public class EvolutionResultTest
 			final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(
 				IntegerGene.of(i + length, 0, length)
 			));
-			big.set(i, Phenotype.of(gt, 1, gt.getGene().intValue()));
+			big.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
 		big.shuffle(RandomRegistry.getRandom());
 
@@ -227,7 +227,7 @@ public class EvolutionResultTest
 		final int bestMinValue = IntStream.range(0, 100)
 			.mapToObj(value -> newResult(Optimize.MINIMUM, value))
 			.collect(EvolutionResult.toBestGenotype())
-			.getGene().getAllele();
+			.gene().getAllele();
 
 		Assert.assertEquals(bestMinValue, 0);
 	}
@@ -237,7 +237,7 @@ public class EvolutionResultTest
 		final int value
 	) {
 		final int length = 1000;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.getGene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().getAllele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> pop = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
