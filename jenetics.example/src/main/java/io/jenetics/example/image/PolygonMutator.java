@@ -21,6 +21,7 @@ import java.util.Random;
 import io.jenetics.Chromosome;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
+import io.jenetics.util.ISeq;
 
 /**
  * Polygon mutator class.
@@ -47,7 +48,7 @@ final class PolygonMutator<C extends Comparable<? super C>>
 		final Random random
 	) {
 		return MutatorResult.of(
-			chromosome.newInstance(chromosome.toSeq().map(this::mutate)),
+			chromosome.newInstance(ISeq.of(chromosome).map(this::mutate)),
 			chromosome.length()
 		);
 	}

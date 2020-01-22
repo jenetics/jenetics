@@ -76,7 +76,7 @@ public class RSMutator<
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
 			final int[] points = comb.subset(chromosome.length() + 1, 2);
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 
 			result = MutatorResult.of(

@@ -81,7 +81,7 @@ public class SwapMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final MSeq<G> genes = MSeq.of(chromosome);
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();

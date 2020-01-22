@@ -89,6 +89,7 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 	}
 
 	@Override
+	@Deprecated
 	public ISeq<G> toSeq() {
 		return _genes;
 	}

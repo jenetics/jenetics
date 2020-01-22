@@ -72,15 +72,6 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	}
 
 	@Test
-	public void seqTypes() {
-		final BitChromosome c = BitChromosome.of(100, 0.3);
-
-		Assert.assertEquals(c.toSeq().getClass(), BitGeneISeq.class);
-		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneMSeq.class);
-		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneISeq.class);
-	}
-
-	@Test
 	public void invert() {
 		final BitChromosome c1 = BitChromosome.of(100, 0.3);
 		final BitChromosome c3 = c1.invert();

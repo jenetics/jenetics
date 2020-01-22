@@ -92,6 +92,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *
 	 * @return an immutable gene sequence.
 	 */
+	@Deprecated
 	public ISeq<G> toSeq();
 
 	/**

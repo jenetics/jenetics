@@ -38,7 +38,7 @@ public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>
 
 	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
 		super(genes);
-		genes.forEach(g -> g.bind(toSeq()));
+		genes.forEach(g -> g.bind(this));
 	}
 
 }
