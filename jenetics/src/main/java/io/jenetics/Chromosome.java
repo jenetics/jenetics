@@ -19,6 +19,11 @@
  */
 package io.jenetics;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Verifiable;
@@ -80,10 +85,6 @@ public interface Chromosome<G extends Gene<?, G>>
 	 */
 	public G getGene(final int index);
 
-	public default G get(final int index) {
-		return getGene(index);
-	}
-
 	/**
 	 * Returns the length of the Chromosome. The minimal length of a
 	 * chromosome is one.
@@ -98,6 +99,29 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @return an immutable gene sequence.
 	 */
 	public ISeq<G> toSeq();
+
+	@Override
+	public default Iterator<G> iterator() {
+		return new Iterator<G>() {
+			private int cursor = 0;
+
+			@Override
+			public boolean hasNext() {
+				return cursor != length();
+			}
+
+			@Override
+			public G next() {
+				final int i = cursor;
+				if (cursor >= length()) {
+					throw new NoSuchElementException();
+				}
+
+				cursor = i + 1;
+				return getGene(i);
+			}
+		};
+	}
 
 	/**
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.
@@ -127,6 +151,18 @@ public interface Chromosome<G extends Gene<?, G>>
 	 */
 	public default <C extends Chromosome<G>> C as(final Class<C> type) {
 		return type.cast(this);
+	}
+
+	/**
+	 * Returns a sequential {@code Stream} of genes with this chromosome as
+	 * its source.
+	 *
+	 * @since 3.3
+	 *
+	 * @return a sequential {@code Stream} of genes
+	 */
+	public default Stream<G> stream() {
+		return IntStream.range(0, length()).mapToObj(this::getGene);
 	}
 
 }
