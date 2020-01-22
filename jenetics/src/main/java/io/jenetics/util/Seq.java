@@ -49,7 +49,7 @@ import java.util.stream.StreamSupport;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.2
+ * @version !__version__!
  */
 public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 
@@ -76,6 +76,54 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 */
 	public default int size() {
 		return length();
+	}
+
+	/**
+	 * Returns {@code true} if this sequence contains no elements.
+	 *
+	 * @since 3.3
+	 *
+	 * @return {@code true} if this sequence contains no elements
+	 */
+	public default boolean isEmpty() {
+		return length() == 0;
+	}
+
+	/**
+	 * Returns {@code true} if this sequence contains at least one element.
+	 *
+	 * @since 4.0
+	 *
+	 * @return {@code true} if this sequence contains at least one element
+	 */
+	public default boolean nonEmpty() {
+		return !isEmpty();
+	}
+
+	/**
+	 * Tests whether a predicate holds for all elements of this sequence.
+	 *
+	 * @param predicate the predicate to use to test the elements.
+	 * @return {@code true} if the given predicate p holds for all elements of
+	 *         this sequence, {@code false} otherwise.
+	 * @throws NullPointerException if the given {@code predicate} is
+	 *         {@code null}.
+	 */
+	public default boolean forAll(final Predicate<? super T> predicate) {
+		boolean valid = true;
+
+		if (this instanceof RandomAccess) {
+			for (int i = 0, n = length(); i < n && valid; ++i) {
+				valid = predicate.test(get(i));
+			}
+		} else {
+			final Iterator<T> it = iterator();
+			while (it.hasNext() && valid) {
+				valid = predicate.test(it.next());
+			}
+		}
+
+		return valid;
 	}
 
 	@Override
@@ -114,32 +162,6 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	@Override
 	public default Spliterator<T> spliterator() {
 		return new SeqSpliterator<T>(this);
-	}
-
-	/**
-	 * Tests whether a predicate holds for all elements of this sequence.
-	 *
-	 * @param predicate the predicate to use to test the elements.
-	 * @return {@code true} if the given predicate p holds for all elements of
-	 *         this sequence, {@code false} otherwise.
-	 * @throws NullPointerException if the given {@code predicate} is
-	 *         {@code null}.
-	 */
-	public default boolean forAll(final Predicate<? super T> predicate) {
-		boolean valid = true;
-
-		if (this instanceof RandomAccess) {
-			for (int i = 0, n = length(); i < n && valid; ++i) {
-				valid = predicate.test(get(i));
-			}
-		} else {
-			final Iterator<T> it = iterator();
-			while (it.hasNext() && valid) {
-				valid = predicate.test(it.next());
-			}
-		}
-
-		return valid;
 	}
 
 	/**
