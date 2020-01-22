@@ -75,11 +75,11 @@ public abstract class TreeMutator<
 	}
 
 	private MutatorResult<Chromosome<G>> mutate(final Chromosome<G> chromosome) {
-		final TreeNode<A> tree = TreeNode.ofTree(chromosome.getGene());
+		final TreeNode<A> tree = TreeNode.ofTree(chromosome.gene());
 		mutate(tree);
 
 		final FlatTreeNode<A> flat = FlatTreeNode.of(tree);
-		final ISeq<G> genes = flat.map(t -> gene(chromosome.getGene(), t));
+		final ISeq<G> genes = flat.map(t -> gene(chromosome.gene(), t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
 	}
 

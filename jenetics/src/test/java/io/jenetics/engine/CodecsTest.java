@@ -237,7 +237,7 @@ public class CodecsTest {
 			final Chromosome<IntegerGene> ch = gt.get(i);
 			assertEquals(ch.length(), 1);
 
-			final IntegerGene gene = ch.getGene();
+			final IntegerGene gene = ch.gene();
 			assertEquals(gene.getMin().intValue(), domain[i].getMin());
 			assertEquals(gene.getMax().intValue(), domain[i].getMax());
 		}
@@ -274,7 +274,7 @@ public class CodecsTest {
 			final Chromosome<LongGene> ch = gt.get(i);
 			assertEquals(ch.length(), 1);
 
-			final LongGene gene = ch.getGene();
+			final LongGene gene = ch.gene();
 			assertEquals(gene.getMin().longValue(), domain[i].getMin());
 			assertEquals(gene.getMax().longValue(), domain[i].getMax());
 		}
@@ -311,7 +311,7 @@ public class CodecsTest {
 			final Chromosome<DoubleGene> ch = gt.get(i);
 			assertEquals(ch.length(), 1);
 
-			final DoubleGene gene = ch.getGene();
+			final DoubleGene gene = ch.gene();
 			assertEquals(gene.getMin().doubleValue(), domain[i].getMin());
 			assertEquals(gene.getMax().doubleValue(), domain[i].getMax());
 		}

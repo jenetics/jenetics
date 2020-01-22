@@ -24,9 +24,6 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.engine.Codec;
 import io.jenetics.engine.Codecs;
-import io.jenetics.engine.Engine;
-import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStream;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -140,9 +137,9 @@ public class CodecExample {
 				DoubleChromosome.of(v3Domain)
 			),
 			gt -> new Tuple(
-				gt.get(0).getGene().intValue(),
-				gt.get(1).getGene().longValue(),
-				gt.get(2).getGene().doubleValue()
+				gt.get(0).gene().intValue(),
+				gt.get(1).gene().longValue(),
+				gt.get(2).gene().doubleValue()
 			)
 		);
 	}

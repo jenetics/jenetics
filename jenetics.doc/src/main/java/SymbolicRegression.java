@@ -36,7 +36,7 @@ public class SymbolicRegression {
 		Regression.of(
 			Regression.codecOf(
 				OPS, TMS, 5,
-				t -> t.getGene().size() < 30
+				t -> t.gene().size() < 30
 			),
 			Error.of(LossFunction::mse),
 			// Lookup table for 4*x^3 - 3*x^2 + x

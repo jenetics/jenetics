@@ -91,7 +91,7 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 					statistics
 						.computeIfAbsent(((long)i << 32) | (j & 0xffffffffL),
 							k -> new DoubleMomentStatistics())
-						.accept(ch.getGene(j).doubleValue());
+						.accept(ch.get(j).doubleValue());
 				}
 			}
 		}

@@ -39,15 +39,15 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 * final Tree<A, ?> t1 = getRoot();
 	 * final Tree<?, ?> t2 = getRoot();
 	 * }</pre>
-	 * This method is also an alias for {@link #getGene()}, which returns the
+	 * This method is also an alias for {@link #gene()}, which returns the
 	 * first gene of the chromosome.
 	 *
-	 * @see #getGene()
+	 * @see #gene()
 	 *
 	 * @return the root tree gene of this chromosome
 	 */
 	public default G getRoot() {
-		return getGene();
+		return gene();
 	}
 
 }

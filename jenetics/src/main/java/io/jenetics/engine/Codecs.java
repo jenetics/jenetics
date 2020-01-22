@@ -86,7 +86,7 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
-			gt -> gt.chromosome().getGene().getAllele(),
+			gt -> gt.chromosome().gene().getAllele(),
 			val -> Genotype.of(IntegerChromosome.of(IntegerGene.of(val, domain)))
 		);
 	}
@@ -312,7 +312,7 @@ public final class Codecs {
 			gt -> {
 				final int[] args = new int[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.get(i).getGene().intValue();
+					args[i] = gt.get(i).gene().intValue();
 				}
 				return args;
 			},
@@ -352,7 +352,7 @@ public final class Codecs {
 			gt -> {
 				final long[] args = new long[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.get(i).getGene().longValue();
+					args[i] = gt.get(i).gene().longValue();
 				}
 				return args;
 			},
@@ -392,7 +392,7 @@ public final class Codecs {
 			gt -> {
 				final double[] args = new double[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.get(i).getGene().doubleValue();
+					args[i] = gt.get(i).gene().doubleValue();
 				}
 				return args;
 			},

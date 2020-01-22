@@ -44,20 +44,10 @@ import io.jenetics.util.Verifiable;
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
-		Verifiable,
 		BaseSeq<G>,
-		Factory<Chromosome<G>>
+		Factory<Chromosome<G>>,
+		Verifiable
 {
-
-	/**
-	 * Return the gene on the specified index.
-	 *
-	 * @param index The gene index.
-	 * @return the wanted gene.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 1 || index &gt;= length()).
-	 */
-	public G getGene(final int index);
 
 	@Override
 	public default G get(final int index) {
@@ -68,10 +58,36 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Return the first gene of this chromosome. Each chromosome must contain
 	 * at least one gene.
 	 *
+	 * @since !__version__!
+	 *
 	 * @return the first gene of this chromosome.
 	 */
+	public default G gene() {
+		return get(0);
+	}
+
+	/**
+	 * Return the gene on the specified index.
+	 *
+	 * @param index The gene index.
+	 * @return the wanted gene.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *          (index &lt; 1 || index &gt;= length()).
+	 * @deprecated Use {@link #get(int)} instead. Will be removed.
+	 */
+	@Deprecated
+	public G getGene(final int index);
+
+	/**
+	 * Return the first gene of this chromosome. Each chromosome must contain
+	 * at least one gene.
+	 *
+	 * @return the first gene of this chromosome.
+	 * @deprecated Use {@link #gene()} instead
+	 */
+	@Deprecated
 	public default G getGene() {
-		return getGene(0);
+		return get(0);
 	}
 
 	/**

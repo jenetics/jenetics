@@ -106,7 +106,7 @@ public class DoubleChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).doubleValue(), values[i]);
 			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
 		}
 	}

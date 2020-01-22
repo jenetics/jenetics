@@ -105,7 +105,7 @@ public class LongChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).longValue(), values[i]);
 			Assert.assertEquals(chromosome.longValue(i), values[i]);
 		}
 	}

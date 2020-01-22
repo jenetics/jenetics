@@ -120,7 +120,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> ch =
 			ProgramChromosome.of(tree, OPERATIONS, TERMINALS);
 
-		final TreeNode<Op<Double>> node = TreeNode.ofTree(ch.getGene());
+		final TreeNode<Op<Double>> node = TreeNode.ofTree(ch.gene());
 		System.out.println(node);
 	}
 
@@ -159,7 +159,7 @@ public class ProgramChromosomeTest {
 			OPERATIONS,
 			TERMINALS
 		);
-		Assert.assertSame(ch.getRoot(), ch.getGene());
+		Assert.assertSame(ch.getRoot(), ch.gene());
 	}
 
 	@Test

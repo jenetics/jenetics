@@ -35,8 +35,8 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 	@Test
 	public void getGene() {
 		final Chromosome<G> c = factory().newInstance();
-		Assert.assertEquals(c.getGene(), c.get(0));
-		Assert.assertEquals(c.get(0), c.getGene());
+		Assert.assertEquals(c.gene(), c.get(0));
+		Assert.assertEquals(c.get(0), c.gene());
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public abstract class ChromosomeTester<G extends Gene<?, G>>
 		int index = 0;
 		for (G gene : c) {
 			Assert.assertEquals(gene, a.get(index));
-			Assert.assertEquals(gene, c.getGene(index));
+			Assert.assertEquals(gene, c.get(index));
 
 			++index;
 		}

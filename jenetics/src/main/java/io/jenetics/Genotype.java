@@ -214,7 +214,7 @@ public final class Genotype<G extends Gene<?, G>>
 		assert _chromosomes != null;
 		assert _chromosomes.get(0) != null;
 
-		return _chromosomes.get(0).getGene();
+		return _chromosomes.get(0).gene();
 	}
 
 	/**

@@ -97,7 +97,7 @@ public class CompositeAltererTest {
 				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
-					if (!c1.getGene(k).equals(c2.getGene(k))) {
+					if (!c1.get(k).equals(c2.get(k))) {
 						++count;
 					}
 				}
