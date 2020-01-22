@@ -31,14 +31,14 @@ import io.jenetics.util.BaseSeq;
  * @since 1.4
  * @version !__version__!
  */
-public class ArrayIterator<T, S extends BaseSeq<T>> implements ListIterator<T> {
+public class BaseSeqIterator<T, S extends BaseSeq<T>> implements ListIterator<T> {
 
 	public final S array;
 
 	protected int cursor = 0;
 	protected int lastElement = -1;
 
-	public ArrayIterator(final S array) {
+	public BaseSeqIterator(final S array) {
 		this.array = requireNonNull(array, "Array must not be null.");
 	}
 

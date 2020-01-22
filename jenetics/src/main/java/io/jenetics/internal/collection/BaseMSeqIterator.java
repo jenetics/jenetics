@@ -24,10 +24,10 @@ package io.jenetics.internal.collection;
  * @since 1.4
  * @version 3.4
  */
-public class ArrayMIterator<T> extends ArrayIterator<T> {
+public class BaseMSeqIterator<T> extends BaseSeqIterator<T, BaseMSeq<T>> {
 
-	public ArrayMIterator(final Array<T> array) {
-		super(array);
+	public BaseMSeqIterator(final BaseMSeq<T> seq) {
+		super(seq);
 	}
 
 	@Override

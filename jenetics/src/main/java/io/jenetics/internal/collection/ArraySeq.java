@@ -81,7 +81,7 @@ public abstract class ArraySeq<T>
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return new ArrayIterator<>(array);
+		return new BaseSeqIterator<>(array);
 	}
 
 	@Override
