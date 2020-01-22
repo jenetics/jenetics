@@ -31,7 +31,7 @@ import io.jenetics.util.Seq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 5.2
  */
 public abstract class ArraySeq<T>
 	implements

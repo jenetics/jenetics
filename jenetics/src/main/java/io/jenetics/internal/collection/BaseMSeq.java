@@ -25,7 +25,7 @@ import io.jenetics.util.BaseSeq;
  * General base interface for a ordered, fixed sized, mutable, object sequence.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
+ * @since 5.2
  * @version !_version__!
  */
 public interface BaseMSeq<T> extends BaseSeq<T> {

@@ -29,7 +29,7 @@ import io.jenetics.util.BaseSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 5.2
  */
 public class BaseSeqIterator<T, S extends BaseSeq<T>> implements ListIterator<T> {
 
