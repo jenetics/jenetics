@@ -21,7 +21,6 @@ package io.jenetics;
 
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Verifiable;
 
 /**
@@ -45,7 +44,7 @@ import io.jenetics.util.Verifiable;
 public interface Chromosome<G extends Gene<?, G>>
 	extends
 		Verifiable,
-	BaseSeq<G>,
+		Iterable<G>,
 		Factory<Chromosome<G>>
 {
 	/**
@@ -81,7 +80,6 @@ public interface Chromosome<G extends Gene<?, G>>
 	 */
 	public G getGene(final int index);
 
-	@Override
 	public default G get(final int index) {
 		return getGene(index);
 	}
@@ -92,7 +90,6 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *
 	 * @return Length of the Chromosome
 	 */
-	@Override
 	public int length();
 
 	/**
