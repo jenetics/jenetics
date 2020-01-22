@@ -285,7 +285,7 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"sum=%s; mean=%6.9f",
-			nf.format(statistics.getSum()), statistics.getMean()
+			nf.format(statistics.sum()), statistics.getMean()
 		);
 	}
 
@@ -298,7 +298,7 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"max=%s; mean=%6.6f; var=%6.6f",
-			nf.format(statistics.getMax()),
+			nf.format(statistics.max()),
 			statistics.getMean(),
 			statistics.getVariance()
 		);
