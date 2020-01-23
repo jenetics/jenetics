@@ -39,7 +39,7 @@ import io.jenetics.util.IntRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version 5.2
  */
 public final class Randoms {
 	private Randoms() {}
