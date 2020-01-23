@@ -53,7 +53,7 @@ public class ProgramGeneTest {
 
 	private static final ProgramGene<Double> PROG = ProgramChromosome
 		.of(5, OPERATIONS, TERMINALS)
-		.getRoot();
+		.root();
 
 	private static final TreeNode<Op<Double>> TREE = TreeNode.ofTree(PROG);
 

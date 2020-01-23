@@ -46,7 +46,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 			.map(n -> new IntTreeGene(n.value(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());
 
-		return new IntTreeChromosome(genes).getRoot();
+		return new IntTreeChromosome(genes).root();
 	}
 
 }

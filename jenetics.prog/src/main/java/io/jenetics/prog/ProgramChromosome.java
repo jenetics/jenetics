@@ -158,7 +158,7 @@ public class ProgramChromosome<A>
 	 */
 	@Override
 	public A apply(final A[] args) {
-		return getRoot().apply(args);
+		return root().apply(args);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class ProgramChromosome<A>
 	 */
 	@SafeVarargs
 	public final A eval(final A... args) {
-		return getRoot().eval(args);
+		return root().eval(args);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class ProgramChromosome<A>
 
 	@Override
 	public ProgramChromosome<A> newInstance() {
-		return create(getRoot().depth(), _validator, _operations, _terminals);
+		return create(root().depth(), _validator, _operations, _terminals);
 	}
 
 	/**

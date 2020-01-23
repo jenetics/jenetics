@@ -297,7 +297,7 @@ public final class Regression<T>
 			operations,
 			terminals,
 			depth,
-			ch -> ch.getRoot().size() <= max
+			ch -> ch.root().size() <= max
 		);
 	}
 

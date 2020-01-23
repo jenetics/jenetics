@@ -36,8 +36,8 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 * Return the root gene of this chromosome. Since the gene type is also a
 	 * {@link io.jenetics.ext.util.Tree}, you are able to assign it to one.
 	 * <pre>{@code
-	 * final Tree<A, ?> t1 = getRoot();
-	 * final Tree<?, ?> t2 = getRoot();
+	 * final Tree<A, ?> t1 = root();
+	 * final Tree<?, ?> t2 = root();
 	 * }</pre>
 	 * This method is also an alias for {@link #gene()}, which returns the
 	 * first gene of the chromosome.
@@ -46,6 +46,26 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 *
 	 * @return the root tree gene of this chromosome
 	 */
+	public default G root() {
+		return gene();
+	}
+
+	/**
+	 * Return the root gene of this chromosome. Since the gene type is also a
+	 * {@link io.jenetics.ext.util.Tree}, you are able to assign it to one.
+	 * <pre>{@code
+	 * final Tree<A, ?> t1 = root();
+	 * final Tree<?, ?> t2 = root();
+	 * }</pre>
+	 * This method is also an alias for {@link #gene()}, which returns the
+	 * first gene of the chromosome.
+	 *
+	 * @see #gene()
+	 *
+	 * @return the root tree gene of this chromosome
+	 * @deprecated Use {@link #root()} instead
+	 */
+	@Deprecated
 	public default G getRoot() {
 		return gene();
 	}
