@@ -22,7 +22,7 @@ package io.jenetics;
 import static java.lang.Math.min;
 import static io.jenetics.internal.math.Randoms.indexes;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -75,7 +75,7 @@ public class UniformCrossover<
 		final double swapProbability
 	) {
 		super(crossoverProbability);
-		_swapProbability = require.probability(swapProbability);
+		_swapProbability = Requires.probability(swapProbability);
 	}
 
 	/**

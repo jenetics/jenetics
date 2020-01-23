@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.stream.IntStream;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -170,7 +170,7 @@ public final class PartialAlterer<
 				);
 			}
 			for (int index : indices) {
-				require.nonNegative(index);
+				Requires.nonNegative(index);
 			}
 
 			this.indices = indices;

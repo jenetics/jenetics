@@ -27,7 +27,7 @@ import java.util.Objects;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -55,7 +55,7 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 		final long generation
 	) {
 		_population = requireNonNull(population);
-		_generation = require.positive(generation);
+		_generation = Requires.positive(generation);
 	}
 
 	/**

@@ -41,7 +41,7 @@ import java.util.ListIterator;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.util.Bits;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -520,7 +520,7 @@ public class BitChromosome extends Number
 			}
 		}
 
-		return new BitChromosome(bytes, length, require.probability(p));
+		return new BitChromosome(bytes, length, Requires.probability(p));
 	}
 
 	/**
@@ -560,7 +560,7 @@ public class BitChromosome extends Number
 	 */
 	public static BitChromosome of(final BigInteger value, final double p) {
 		final byte[] bits = value.toByteArray();
-		return new BitChromosome(bits, bits.length*8, require.probability(p));
+		return new BitChromosome(bits, bits.length*8, Requires.probability(p));
 	}
 
 	/**
@@ -593,7 +593,7 @@ public class BitChromosome extends Number
 	 */
 	public static BitChromosome of(final CharSequence value, final double p) {
 		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
-		return new BitChromosome(bits, bits.length*8, require.probability(p));
+		return new BitChromosome(bits, bits.length*8, Requires.probability(p));
 	}
 
 	/**
@@ -616,7 +616,7 @@ public class BitChromosome extends Number
 		final double p
 	) {
 		final byte[] bits = toByteArray(requireNonNull(value, "Input"));
-		return new BitChromosome(bits, length, require.probability(p));
+		return new BitChromosome(bits, length, Requires.probability(p));
 	}
 
 	@Override

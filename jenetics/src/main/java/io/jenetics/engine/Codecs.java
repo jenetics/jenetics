@@ -56,7 +56,7 @@ import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.Bits;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -208,7 +208,7 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
@@ -239,7 +239,7 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
@@ -270,7 +270,7 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
@@ -453,7 +453,7 @@ public final class Codecs {
 		requireNonNull(supplier);
 		requireNonNull(alleleSeqValidator);
 		requireNonNull(alleleSeqValidator);
-		require.positive(length);
+		Requires.positive(length);
 
 		return Codec.of(
 			Genotype.of(AnyChromosome
@@ -526,7 +526,7 @@ public final class Codecs {
 	 */
 	public static InvertibleCodec<int[], EnumGene<Integer>>
 	ofPermutation(final int length) {
-		require.positive(length);
+		Requires.positive(length);
 
 		final PermutationChromosome<Integer> chromosome =
 			PermutationChromosome.ofInteger(length);
@@ -607,8 +607,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -655,8 +655,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -703,8 +703,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -943,7 +943,7 @@ public final class Codecs {
 	public static <T> InvertibleCodec<ISeq<T>, BitGene>
 	ofSubSet(final ISeq<? extends T> basicSet) {
 		requireNonNull(basicSet);
-		require.positive(basicSet.length());
+		Requires.positive(basicSet.length());
 
 		return InvertibleCodec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),

@@ -28,7 +28,7 @@ import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayISeq;
 import io.jenetics.internal.collection.ArrayMSeq;
 import io.jenetics.internal.util.Bits;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 
 /**
@@ -141,7 +141,7 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	// Primary constructor.
 	private BitGeneStore(final byte[] array, final int length) {
 		this.array = requireNonNull(array);
-		this.length = require.nonNegative(length);
+		this.length = Requires.nonNegative(length);
 	}
 
 	@Override

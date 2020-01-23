@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.concurrent.ForkJoinPool.commonPool;
-import static io.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.time.Clock;
 import java.util.Objects;
@@ -46,7 +46,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -190,9 +190,9 @@ public final class Engine<
 		_constraint = requireNonNull(constraint);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.nonNegative(offspringCount);
-		_survivorsCount = require.nonNegative(survivorsCount);
-		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
+		_offspringCount = Requires.nonNegative(offspringCount);
+		_survivorsCount = Requires.nonNegative(survivorsCount);
+		_maximalPhenotypeAge = Requires.positive(maximalPhenotypeAge);
 
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);

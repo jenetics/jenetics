@@ -36,7 +36,7 @@ import java.util.stream.IntStream;
 import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.array;
 import io.jenetics.internal.util.Bits;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -213,7 +213,7 @@ public final class PermutationChromosome<T>
 		final ISeq<? extends T> alleles,
 		final int length
 	) {
-		require.positive(length);
+		Requires.positive(length);
 		if (length > alleles.size()) {
 			throw new IllegalArgumentException(format(
 				"The sub-set size must be be greater then the base-set: %d > %d",
@@ -266,7 +266,7 @@ public final class PermutationChromosome<T>
 	 * @throws IllegalArgumentException if {@code length <= 0}.
 	 */
 	public static PermutationChromosome<Integer> ofInteger(final int length) {
-		return ofInteger(0, require.positive(length));
+		return ofInteger(0, Requires.positive(length));
 	}
 
 	/**

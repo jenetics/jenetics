@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -142,7 +142,7 @@ public final class BigIntegerGene
 		final BigInteger maximum,
 		final int length
 	) {
-		require.positive(length);
+		Requires.positive(length);
 
 		final Random r = getRandom();
 

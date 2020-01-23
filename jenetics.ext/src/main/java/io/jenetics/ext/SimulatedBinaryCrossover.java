@@ -29,7 +29,7 @@ import java.util.Random;
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
 import io.jenetics.internal.math.Randoms;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -74,7 +74,7 @@ public class SimulatedBinaryCrossover<
 		final double contiguity
 	) {
 		super(probability);
-		_contiguity = require.nonNegative(contiguity);
+		_contiguity = Requires.nonNegative(contiguity);
 	}
 
 	/**

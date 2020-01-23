@@ -43,7 +43,7 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
 import io.jenetics.engine.Problem;
 import io.jenetics.example.Knapsack.Item;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -68,8 +68,8 @@ public final class Knapsack implements Problem<ISeq<Item>, BitGene, Double> {
 		private final double _value;
 
 		private Item(final double size, final double value) {
-			_size = require.nonNegative(size);
-			_value = require.nonNegative(value);
+			_size = Requires.nonNegative(size);
+			_value = Requires.nonNegative(value);
 		}
 
 		/**

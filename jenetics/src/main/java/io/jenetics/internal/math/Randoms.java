@@ -27,7 +27,7 @@ import static java.lang.Float.floatToIntBits;
 import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.util.Random;
 import java.util.stream.IntStream;

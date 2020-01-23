@@ -29,7 +29,7 @@ import java.util.stream.Collector;
 
 import io.jenetics.internal.collection.Empty;
 import io.jenetics.internal.collection.Empty.EmptyISeq;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 
 /**
  * Immutable, ordered, fixed sized sequence.
@@ -275,7 +275,7 @@ public interface ISeq<T>
 		final int length
 	) {
 		requireNonNull(supplier);
-		require.nonNegative(length);
+		Requires.nonNegative(length);
 
 		return length == 0
 			? empty()

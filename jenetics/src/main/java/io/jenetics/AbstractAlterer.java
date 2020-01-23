@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 
 /**
  * Abstract implementation of the alterer interface.
@@ -48,7 +48,7 @@ public abstract class AbstractAlterer<
 	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
-		_probability = require.probability(probability);
+		_probability = Requires.probability(probability);
 	}
 
 	/**

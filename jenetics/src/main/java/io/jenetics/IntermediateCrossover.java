@@ -25,7 +25,7 @@ import static io.jenetics.internal.math.Randoms.nextDouble;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -80,7 +80,7 @@ public class IntermediateCrossover<
 	 */
 	public IntermediateCrossover(final double probability, final double p) {
 		super(probability);
-		_p = require.nonNegative(p, "p");
+		_p = Requires.nonNegative(p, "p");
 	}
 
 	/**

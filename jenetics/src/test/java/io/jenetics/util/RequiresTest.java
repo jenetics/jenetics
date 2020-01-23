@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class requireTest {
+public class RequiresTest {
 
 	@Test
 	public void validPredicate() {
