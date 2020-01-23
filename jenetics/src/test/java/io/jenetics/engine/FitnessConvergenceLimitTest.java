@@ -193,8 +193,8 @@ public class FitnessConvergenceLimitTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(
-			result.getTotalGenerations() < 50,
-			"Gen: " + result.getTotalGenerations()
+			result.totalGenerations() < 50,
+			"Gen: " + result.totalGenerations()
 		);
 	}
 
@@ -217,8 +217,8 @@ public class FitnessConvergenceLimitTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(count.get(), 1);
-		Assert.assertEquals(result.getTotalGenerations(), 1);
-		Assert.assertEquals(result.getGeneration(), 1);
+		Assert.assertEquals(result.totalGenerations(), 1);
+		Assert.assertEquals(result.generation(), 1);
 	}
 
 }

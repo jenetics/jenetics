@@ -149,16 +149,16 @@ public class EvolutionResultTest
 			0, 0, EvolutionDurations.ZERO, 0, 0, 0
 		);
 
-		Assert.assertEquals(maxResult.getBestFitness().intValue(), length - 1);
-		Assert.assertEquals(maxResult.getWorstFitness().intValue(), 0);
+		Assert.assertEquals(maxResult.bestFitness().intValue(), length - 1);
+		Assert.assertEquals(maxResult.worstFitness().intValue(), 0);
 
 		final EvolutionResult<IntegerGene, Integer> minResult = EvolutionResult.of(
 				Optimize.MINIMUM, population.toISeq(),
 				0, 0, EvolutionDurations.ZERO, 0, 0, 0
 			);
 
-		Assert.assertEquals(minResult.getBestFitness().intValue(), 0);
-		Assert.assertEquals(minResult.getWorstFitness().intValue(), length - 1);
+		Assert.assertEquals(minResult.bestFitness().intValue(), 0);
+		Assert.assertEquals(minResult.worstFitness().intValue(), length - 1);
 	}
 
 	@Test
@@ -220,7 +220,7 @@ public class EvolutionResultTest
 		final int bestMaxValue = IntStream.range(0, 100)
 			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
 			.collect(toBestEvolutionResult())
-			.getBestFitness();
+			.bestFitness();
 
 		Assert.assertEquals(bestMaxValue, 99);
 
@@ -297,12 +297,12 @@ public class EvolutionResultTest
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertEquals(
-			unified.getGenotypes().stream().collect(Collectors.toSet()).size(),
-			unified.getPopulation().size()
+			unified.genotypes().stream().collect(Collectors.toSet()).size(),
+			unified.population().size()
 		);
 		Assert.assertEquals(
-			result.getPopulation().size(),
-			unified.getPopulation().size()
+			result.population().size(),
+			unified.population().size()
 		);
 	}
 
@@ -322,12 +322,12 @@ public class EvolutionResultTest
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertTrue(
-			unified.getGenotypes().stream().collect(Collectors.toSet()).size() <
-			unified.getPopulation().size()
+			unified.genotypes().stream().collect(Collectors.toSet()).size() <
+			unified.population().size()
 		);
 		Assert.assertEquals(
-			result.getPopulation().size(),
-			unified.getPopulation().size()
+			result.population().size(),
+			unified.population().size()
 		);
 	}
 
@@ -337,7 +337,7 @@ public class EvolutionResultTest
 			.ints(100, 0, 100)
 			.mapToObj(value -> newResult(Optimize.MAXIMUM, value))
 			.flatMap(MinMax.toStrictlyIncreasing())
-			.map(EvolutionResult::getBestFitness)
+			.map(EvolutionResult::bestFitness)
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(results.isSorted());

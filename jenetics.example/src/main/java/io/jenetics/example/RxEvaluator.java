@@ -88,7 +88,7 @@ public final class RxEvaluator<
 			.limit(100)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getBestPhenotype());
+		System.out.println(result.bestPhenotype());
 	}
 
 	private static Observable<Double> fitness(final Genotype<DoubleGene> gt) {

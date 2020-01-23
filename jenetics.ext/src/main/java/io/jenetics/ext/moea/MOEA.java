@@ -205,12 +205,12 @@ public final class MOEA {
 
 		void add(final EvolutionResult<G, C> result) {
 			if (_front == null) {
-				_optimize = result.getOptimize();
+				_optimize = result.optimize();
 				_front = new ParetoFront<>(this::dominance, this::equals);
 			}
 
 			final ISeq<Phenotype<G, C>> front = front(
-				result.getPopulation(),
+				result.population(),
 				this::dominance
 			);
 			_front.addAll(front.asList());

@@ -76,7 +76,7 @@ public class Sorting {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		System.out.println(statistics);
-		System.out.println(result.getBestPhenotype());
+		System.out.println(result.bestPhenotype());
 	}
 
 }

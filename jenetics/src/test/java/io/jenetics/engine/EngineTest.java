@@ -92,7 +92,7 @@ public class EngineTest {
 			.limit(1)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final long maxCount = result.getPopulation().stream()
+		final long maxCount = result.population().stream()
 			.filter(pt -> pt.fitness() == max)
 			.count();
 
@@ -164,7 +164,7 @@ public class EngineTest {
 			.limit(generations)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
@@ -177,7 +177,7 @@ public class EngineTest {
 			.limit(Limits.byFixedGeneration(generations))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
@@ -191,7 +191,7 @@ public class EngineTest {
 			.stream()
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(generations.longValue(), result.getTotalGenerations());
+		Assert.assertEquals(generations.longValue(), result.totalGenerations());
 	}
 
 	@Test(dataProvider = "generations")
@@ -206,7 +206,7 @@ public class EngineTest {
 			.stream()
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(Math.min(generations, 5), result.getTotalGenerations());
+		Assert.assertEquals(Math.min(generations, 5), result.totalGenerations());
 	}
 
 	@DataProvider(name = "generations")
@@ -230,7 +230,7 @@ public class EngineTest {
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(result.getInvalidCount(), populationSize);
+		Assert.assertEquals(result.invalidCount(), populationSize);
 	}
 
 	@Test
@@ -247,19 +247,19 @@ public class EngineTest {
 		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
 			.limit(10)
 			.peek(r -> {
-				if (r.getGenotypes().stream().collect(Collectors.toSet()).size() !=
+				if (r.genotypes().stream().collect(Collectors.toSet()).size() !=
 					populationSize)
 				{
 					throw new AssertionError(format(
 						"Expected unique population size %d, but got %d.",
 						populationSize,
-						r.getGenotypes().stream().collect(Collectors.toSet()).size()
+						r.genotypes().stream().collect(Collectors.toSet()).size()
 					));
 				}
 			})
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		Assert.assertEquals(result.getPopulation().size(), populationSize);
+		Assert.assertEquals(result.population().size(), populationSize);
 	}
 
 	@Test
@@ -275,9 +275,9 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(
-			result.getTotalGenerations() >= 1000,
+			result.totalGenerations() >= 1000,
 			"Total generation must be bigger than 1000: " +
-			result.getTotalGenerations()
+			result.totalGenerations()
 		);
 	}
 
@@ -457,10 +457,10 @@ public class EngineTest {
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(100)
 			.peek(r -> {
-				if (r.getPopulation().size() != populationSize) {
+				if (r.population().size() != populationSize) {
 					throw new AssertionError(format(
 						"Expected population size %d, but got %d.",
-						populationSize, r.getPopulation().size()
+						populationSize, r.population().size()
 					));
 				}
 			})
@@ -481,10 +481,10 @@ public class EngineTest {
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
 			.limit(100)
 			.peek(r -> {
-				if (r.getPopulation().size() != populationSize) {
+				if (r.population().size() != populationSize) {
 					throw new AssertionError(format(
 						"Expected population size %d, but got %d.",
-						populationSize, r.getPopulation().size()
+						populationSize, r.population().size()
 					));
 				}
 			})

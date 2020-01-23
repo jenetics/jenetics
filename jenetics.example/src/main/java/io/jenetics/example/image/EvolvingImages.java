@@ -428,7 +428,7 @@ public class EvolvingImages extends JFrame {
 	) {
 		invokeLater(() -> {
 			final Genotype<PolygonGene> gt = best
-				.getBestPhenotype()
+				.bestPhenotype()
 				.genotype();
 
 			bestEvolutionResultPanel.update(best);

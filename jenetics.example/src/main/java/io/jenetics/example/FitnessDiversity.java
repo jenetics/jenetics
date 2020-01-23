@@ -74,8 +74,8 @@ public class FitnessDiversity {
 			.limit(bySteadyFitness(50))
 			.collect(toBestEvolutionResult());
 
-		System.out.println(best.getTotalGenerations());
-		System.out.println(best.getBestPhenotype());
+		System.out.println(best.totalGenerations());
+		System.out.println(best.bestPhenotype());
 	}
 
 }

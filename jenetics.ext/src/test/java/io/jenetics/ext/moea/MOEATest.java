@@ -73,7 +73,7 @@ public class MOEATest {
 
 		final ISeq<Vec<double[]>> result = engine.stream()
 			.limit(100)
-			.peek(er -> pop.addAll(er.getPopulation()
+			.peek(er -> pop.addAll(er.population()
 				.map(Phenotype::fitness).asList()))
 			.collect(MOEA.toParetoSet(IntRange.of(20, 25)))
 			.map(Phenotype::fitness);

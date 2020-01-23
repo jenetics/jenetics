@@ -151,7 +151,7 @@ public class DynamicGenotype {
 			.limit(20)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getBestFitness());
+		System.out.println(result.bestFitness());
 	}
 
 }

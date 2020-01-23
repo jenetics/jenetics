@@ -73,7 +73,7 @@ final class FitnessVarianceAdaptiveEngine<
 		} else {
 			final DoubleMomentStatistics stat = new DoubleMomentStatistics();
 
-			result.getPopulation()
+			result.population()
 				.forEach(pt -> stat.accept(pt.fitness().doubleValue()));
 
 			if (stat.variance() < _variance.min() && _narrowing) {

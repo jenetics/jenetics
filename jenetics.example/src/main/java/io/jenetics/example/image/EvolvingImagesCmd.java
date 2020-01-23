@@ -195,7 +195,7 @@ final class EvolvingImagesCmd {
 		final AtomicLong time = new AtomicLong(0);
 
 		worker.start((current, best) -> {
-			final long generation = current.getGeneration();
+			final long generation = current.generation();
 
 			if (generation%generationGap == 0 || generation == 1) {
 				final double duration = System.currentTimeMillis() - time.get();
@@ -207,7 +207,7 @@ final class EvolvingImagesCmd {
 					format(IMAGE_PATTERN, generation)
 				);
 
-				final Phenotype<PolygonGene, Double> pt = best.getBestPhenotype();
+				final Phenotype<PolygonGene, Double> pt = best.bestPhenotype();
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
 					log(
 						"Writing '%s': fitness=%1.4f, speed=%1.2f.",

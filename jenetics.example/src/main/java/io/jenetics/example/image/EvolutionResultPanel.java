@@ -47,16 +47,16 @@ public class EvolutionResultPanel extends JPanel {
 	}
 
 	void update(final EvolutionResult<?, Double> result) {
-		final String generation = Long.toString(result.getGeneration());
-		final String bestFitness = _format.format(result.getBestFitness());
-		final double age = result.getPopulation().stream()
-			.collect(averagingLong(p -> p.age(result.getGeneration())));
+		final String generation = Long.toString(result.generation());
+		final String bestFitness = _format.format(result.bestFitness());
+		final double age = result.population().stream()
+			.collect(averagingLong(p -> p.age(result.generation())));
 
 		_generationTextField.setText(generation);
 		_bestFitnessTextField.setText(bestFitness);
 		_populationAgeTextField.setText(_format.format(age));
 		_evaluationTimeTextField.setText(format(
-			result.getDurations().evaluationDuration()
+			result.durations().evaluationDuration()
 		));
 	}
 

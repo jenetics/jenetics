@@ -69,9 +69,9 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 
 	@Override
 	public boolean test(final EvolutionResult<G, ?> result) {
-		final ISeq<DoubleMoments> stat = statistics(result.getPopulation());
+		final ISeq<DoubleMoments> stat = statistics(result.population());
 
-		return result.getTotalGenerations() <= 1 ||
+		return result.totalGenerations() <= 1 ||
 			stat.stream()
 				.filter(_convergence)
 				.count() <= _convergenceRate*stat.size();

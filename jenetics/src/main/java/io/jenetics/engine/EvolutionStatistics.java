@@ -118,14 +118,14 @@ public abstract class EvolutionStatistics<
 
 	@Override
 	public void accept(final EvolutionResult<?, C> result) {
-		accept(result.getDurations());
+		accept(result.durations());
 
-		_killed.accept(result.getKillCount());
-		_invalids.accept(result.getInvalidCount());
-		_altered.accept(result.getAlterCount());
+		_killed.accept(result.killCount());
+		_invalids.accept(result.invalidCount());
+		_altered.accept(result.alterCount());
 
-		result.getPopulation()
-			.forEach(pt -> accept(pt, result.getGeneration()));
+		result.population()
+			.forEach(pt -> accept(pt, result.generation()));
 	}
 
 	void accept(final Phenotype<?, C> pt, final long generation) {
@@ -326,7 +326,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		public void accept(final EvolutionResult<?, C> result) {
 			if (_fitness.max() == null) {
-				_fitness = MinMax.of(result.getOptimize().ascending());
+				_fitness = MinMax.of(result.optimize().ascending());
 			}
 
 			super.accept(result);

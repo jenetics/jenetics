@@ -57,7 +57,7 @@ public class ConcatEngineTest {
 			ConcatEngine.<IntegerGene, Integer>of().stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{});
@@ -70,7 +70,7 @@ public class ConcatEngineTest {
 				.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1});
@@ -83,7 +83,7 @@ public class ConcatEngineTest {
 				.stream(() -> EvolutionStreams.result(5).toEvolutionStart());
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6});
@@ -105,7 +105,7 @@ public class ConcatEngineTest {
 				.stream(init);
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6});
@@ -118,7 +118,7 @@ public class ConcatEngineTest {
 				.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5});
@@ -132,7 +132,7 @@ public class ConcatEngineTest {
 				.limit(Limits.byFixedGeneration(3));
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3});
@@ -149,7 +149,7 @@ public class ConcatEngineTest {
 			.stream();
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12});
@@ -169,7 +169,7 @@ public class ConcatEngineTest {
 			.limit(Limits.byFixedGeneration(15));
 
 		final int[] array = stream
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15});
@@ -195,7 +195,7 @@ public class ConcatEngineTest {
 
 		final int[] array = stream
 			.limit(12)
-			.mapToInt(r -> r.getGenotypes().get(0).gene().intValue())
+			.mapToInt(r -> r.genotypes().get(0).gene().intValue())
 			.toArray();
 
 		Assert.assertEquals(array, new int[]{6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17});

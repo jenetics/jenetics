@@ -109,8 +109,8 @@ public class PopulationConvergenceLimitTest {
 			.collect(toBestEvolutionResult());
 
 		Assert.assertTrue(
-			result.getTotalGenerations() < 2901,
-			"Gen: " + result.getTotalGenerations()
+			result.totalGenerations() < 2901,
+			"Gen: " + result.totalGenerations()
 		);
 	}
 
@@ -133,8 +133,8 @@ public class PopulationConvergenceLimitTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(count.get(), 1);
-		Assert.assertEquals(result.getTotalGenerations(), 1);
-		Assert.assertEquals(result.getGeneration(), 1);
+		Assert.assertEquals(result.totalGenerations(), 1);
+		Assert.assertEquals(result.generation(), 1);
 	}
 
 }
