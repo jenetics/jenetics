@@ -62,7 +62,7 @@ public class LineCrossoverTest {
 			final LineCrossover<DoubleGene, Double> recombinator =
 				new LineCrossover<>(1);
 
-			pop = recombinator.alter(pop, 10).getPopulation();
+			pop = recombinator.alter(pop, 10).population();
 
 			for (int i = 0; i < pop.size(); ++i) {
 				final BaseSeq<DoubleGene> genes = pop.get(i)

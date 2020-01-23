@@ -270,7 +270,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.getPopulation(), es.getGeneration())
+					filter(off.population(), es.getGeneration())
 				),
 				_executor
 			);
@@ -297,7 +297,7 @@ public final class Engine<
 			filteredOffspring.join().invalidCount +
 			filteredSurvivors.join().invalidCount;
 
-		final int alterationCount = alteredOffspring.join().getAlterations();
+		final int alterationCount = alteredOffspring.join().alterations();
 
 		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,

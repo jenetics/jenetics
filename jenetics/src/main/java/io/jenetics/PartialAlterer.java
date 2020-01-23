@@ -95,8 +95,8 @@ public final class PartialAlterer<
 			final AltererResult<G, C> result = _alterer.alter(split, generation);
 
 			return AltererResult.of(
-				_section.merge(result.getPopulation(), population),
-				result.getAlterations()
+				_section.merge(result.population(), population),
+				result.alterations()
 			);
 		} else {
 			return AltererResult.of(population.asISeq(), 0);

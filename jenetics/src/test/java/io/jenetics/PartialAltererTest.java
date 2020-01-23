@@ -119,7 +119,7 @@ public class PartialAltererTest {
 
 		for (int i = 0; i < population.length(); ++i) {
 			final Phenotype<DoubleGene, Double> pt1 = population.get(0);
-			final Phenotype<DoubleGene, Double> pt2 = result.getPopulation().get(0);
+			final Phenotype<DoubleGene, Double> pt2 = result.population().get(0);
 
 			Assert.assertEquals(pt1.genotype().get(0), pt2.genotype().get(0));
 			Assert.assertNotEquals(pt1.genotype().get(1), pt2.genotype().get(1));

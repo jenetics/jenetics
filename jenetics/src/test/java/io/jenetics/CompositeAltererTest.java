@@ -54,8 +54,8 @@ public class CompositeAltererTest {
 		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		Assert.assertEquals(
-			result.getAlterations(),
-			diff(p1, result.getPopulation())
+			result.alterations(),
+			diff(p1, result.population())
 		);
 	}
 
