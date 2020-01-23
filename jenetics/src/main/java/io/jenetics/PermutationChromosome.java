@@ -22,7 +22,7 @@ package io.jenetics;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.internal.util.bit.getAndSet;
+import static io.jenetics.internal.util.Bits.getAndSet;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -35,7 +35,7 @@ import java.util.stream.IntStream;
 
 import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.array;
-import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -156,7 +156,7 @@ public final class PermutationChromosome<T>
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {
-			final byte[] check = bit.newArray(_validAlleles.length());
+			final byte[] check = Bits.newArray(_validAlleles.length());
 			_valid = _genes.forAll(g -> !getAndSet(check, g.alleleIndex()));
 		}
 

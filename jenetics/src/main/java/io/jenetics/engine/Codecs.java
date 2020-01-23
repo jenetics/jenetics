@@ -55,7 +55,7 @@ import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
 import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.Predicates;
-import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.require;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -952,14 +952,14 @@ public final class Codecs {
 				.<T>mapToObj(basicSet)
 				.collect(ISeq.toISeq()),
 			values -> {
-				final byte[] bits = bit.newArray(basicSet.size());
+				final byte[] bits = Bits.newArray(basicSet.size());
 
 				int i = 0;
 				for (T v : values) {
 					while (i < basicSet.size() && !Objects.equals(basicSet.get(i), v)) {
 						++i;
 					}
-					bit.set(bits, i);
+					Bits.set(bits, i);
 				}
 
 				return Genotype.of(new BitChromosome(bits, 0, basicSet.size()));

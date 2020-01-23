@@ -32,7 +32,7 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.Bits;
 import io.jenetics.util.Factory;
 import io.jenetics.util.RandomRegistry;
 
@@ -67,7 +67,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(
 			c.getOneProbability(),
-			(double)bit.count(data)/(double)(data.length*8)
+			(double) Bits.count(data)/(double)(data.length*8)
 		);
 	}
 
@@ -186,10 +186,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
 
-		final String dataString = bit.toByteString(data);
+		final String dataString = Bits.toByteString(data);
 		Reporter.log(dataString);
 
-		final byte[] sdata = bit.fromByteString(dataString);
+		final byte[] sdata = Bits.fromByteString(dataString);
 		Assert.assertEquals(sdata, data);
 	}
 

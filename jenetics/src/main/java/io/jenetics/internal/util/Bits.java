@@ -42,8 +42,8 @@ import io.jenetics.util.RandomRegistry;
  * @since 1.0
  * @version 3.0
  */
-public final class bit {
-	private bit() {}
+public final class Bits {
+	private Bits() {}
 
 	/**
 	 * Lookup table for counting the number of set bits in a {@code byte} value.
