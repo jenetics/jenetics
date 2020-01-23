@@ -24,7 +24,7 @@ import java.util.Random;
 import io.jenetics.Chromosome;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.probability;
+import io.jenetics.internal.math.Probabilities;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.FlatTree;
@@ -68,7 +68,7 @@ public abstract class TreeMutator<
 		final double p,
 		final Random random
 	) {
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 		return random.nextInt() < P
 			? mutate(chromosome)
 			: MutatorResult.of(chromosome);

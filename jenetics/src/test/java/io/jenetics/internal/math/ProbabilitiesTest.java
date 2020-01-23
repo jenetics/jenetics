@@ -29,7 +29,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class probabilityTest {
+public class ProbabilitiesTest {
 
 	@Test
 	public void toIntToFloat() {
@@ -38,19 +38,19 @@ public class probabilityTest {
 		for (int i = 0; i < 100000; ++i) {
 			final float p = random.nextFloat();
 
-			final int ip = probability.toInt(p);
-			final float fip = probability.toFloat(ip);
+			final int ip = Probabilities.toInt(p);
+			final float fip = Probabilities.toFloat(ip);
 			Assert.assertEquals(fip, p, 0.000001F);
 		}
 	}
 
 	@Test
 	public void probabilityToInt() {
-		Assert.assertEquals(probability.toInt(0), Integer.MIN_VALUE);
-		Assert.assertEquals(probability.toInt(1), Integer.MAX_VALUE);
-		Assert.assertEquals(probability.toInt(0.5), 0);
-		Assert.assertEquals(probability.toInt(0.25), Integer.MIN_VALUE/2);
-		Assert.assertEquals(probability.toInt(0.75), Integer.MAX_VALUE/2);
+		Assert.assertEquals(Probabilities.toInt(0), Integer.MIN_VALUE);
+		Assert.assertEquals(Probabilities.toInt(1), Integer.MAX_VALUE);
+		Assert.assertEquals(Probabilities.toInt(0.5), 0);
+		Assert.assertEquals(Probabilities.toInt(0.25), Integer.MIN_VALUE/2);
+		Assert.assertEquals(Probabilities.toInt(0.75), Integer.MAX_VALUE/2);
 	}
 
 }

@@ -258,7 +258,7 @@ public final class Randoms {
 		final double p
 	) {
 		probability(p);
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 
 		return equals(p, 0, 1E-20)
 			? IntStream.empty()

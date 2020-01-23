@@ -28,7 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.probability;
+import io.jenetics.internal.math.Probabilities;
 import io.jenetics.internal.util.IntRef;
 import io.jenetics.stat.Histogram;
 import io.jenetics.stat.LongMomentStatistics;
@@ -174,7 +174,7 @@ public class RandomIndexStreamTest {
 		final Random random
 	) {
 		return new IndexStream() {
-			private final int P = probability.toInt(p);
+			private final int P = Probabilities.toInt(p);
 			private int _pos = -1;
 			@Override public int next() {
 				while (_pos < n && random.nextInt() >= P) {
