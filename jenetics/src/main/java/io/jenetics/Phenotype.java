@@ -130,7 +130,7 @@ public final class Phenotype<
 	 *
 	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @deprecated Use {@link #generation()} instead
+	 * @deprecated Use {@link #genotype()} instead
 	 */
 	@Deprecated
 	public Genotype<G> getGenotype() {
