@@ -20,7 +20,7 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.array.revert;
+import static io.jenetics.internal.util.Arrays.revert;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;

@@ -30,7 +30,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 import io.jenetics.internal.math.DoubleAdder;
-import io.jenetics.internal.util.array;
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.ProxySorter;
@@ -83,7 +83,7 @@ public abstract class ProbabilitySelector<
 	 */
 	protected ProbabilitySelector(final boolean sorted) {
 		_sorted = sorted;
-		_reverter = sorted ? array::revert : ProbabilitySelector::sortAndRevert;
+		_reverter = sorted ? Arrays::revert : ProbabilitySelector::sortAndRevert;
 	}
 
 	/**

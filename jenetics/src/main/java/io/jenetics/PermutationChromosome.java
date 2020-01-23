@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import io.jenetics.internal.math.Combinatorics;
-import io.jenetics.internal.util.array;
+import io.jenetics.internal.util.Arrays;
 import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
@@ -221,7 +221,7 @@ public final class PermutationChromosome<T>
 			));
 		}
 
-		final int[] subset = array.shuffle(Combinatorics.subset(alleles.size(), length));
+		final int[] subset = Arrays.shuffle(Combinatorics.subset(alleles.size(), length));
 		final ISeq<EnumGene<T>> genes = IntStream.of(subset)
 			.mapToObj(i -> EnumGene.<T>of(i, alleles))
 			.collect(ISeq.toISeq());
