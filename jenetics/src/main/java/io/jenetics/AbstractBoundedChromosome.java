@@ -76,12 +76,12 @@ abstract class AbstractBoundedChromosome<
 	}
 
 	@Override
-	public A getMin() {
+	public A min() {
 		return _min;
 	}
 
 	@Override
-	public A getMax() {
+	public A max() {
 		return _max;
 	}
 

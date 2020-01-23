@@ -39,10 +39,10 @@ public class XMLStreamWriterTest {
 		xml.writeStartElement("int-chromosome");
 		xml.writeAttribute("length", Integer.toString(ch.length()));
 		xml.writeStartElement("min");
-		xml.writeCharacters(ch.getMin().toString());
+		xml.writeCharacters(ch.min().toString());
 		xml.writeEndElement();
 		xml.writeStartElement("max");
-		xml.writeCharacters(ch.getMax().toString());
+		xml.writeCharacters(ch.max().toString());
 		xml.writeEndElement();
 		xml.writeStartElement("alleles");
 		for (IntegerGene gene : ch) {

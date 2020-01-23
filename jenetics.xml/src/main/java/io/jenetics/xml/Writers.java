@@ -288,8 +288,8 @@ public final class Writers {
 
 			return elem(rootName,
 				attr(LENGTH_NAME).map(ch -> ch.length()),
-				elem(MIN_NAME, alleleWriter.map(ch -> ch.getMin())),
-				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
+				elem(MIN_NAME, alleleWriter.map(ch -> ch.min())),
+				elem(MAX_NAME, alleleWriter.map(ch -> ch.max())),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
 						.map(ch -> ISeq.of(ch).map(G::allele))

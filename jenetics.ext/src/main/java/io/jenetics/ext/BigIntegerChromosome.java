@@ -104,12 +104,12 @@ public class BigIntegerChromosome
 	}
 
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 

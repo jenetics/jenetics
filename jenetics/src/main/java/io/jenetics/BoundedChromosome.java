@@ -45,8 +45,19 @@ public interface BoundedChromosome<
 	 *
 	 * @return the minimum value of this {@code BoundedChromosome}.
 	 */
-	public default A getMin() {
+	public default A min() {
 		return gene().min();
+	}
+
+	/**
+	 * Return the minimum value of this {@code BoundedChromosome}.
+	 *
+	 * @return the minimum value of this {@code BoundedChromosome}.
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
+	public default A getMin() {
+		return min();
 	}
 
 	/**
@@ -54,8 +65,19 @@ public interface BoundedChromosome<
 	 *
 	 * @return the maximum value of this {@code BoundedChromosome}.
 	 */
-	public default A getMax() {
+	public default A max() {
 		return gene().max();
+	}
+
+	/**
+	 * Return the maximum value of this {@code BoundedChromosome}.
+	 *
+	 * @return the maximum value of this {@code BoundedChromosome}.
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
+	public default A getMax() {
+		return max();
 	}
 
 }
