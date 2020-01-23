@@ -74,8 +74,8 @@ public abstract class TreeCrossover<
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
+		final Genotype<G> gt1 = pt1.genotype();
+		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));

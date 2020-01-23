@@ -58,7 +58,7 @@ public class CompletableFutureEvaluatorTest {
 
 		evaluated.forEach(pt -> Assert.assertTrue(pt.isEvaluated()));
 		evaluated.forEach(pt ->
-			assertEquals(pt.getGenotype().gene().doubleValue(), pt.getFitness().doubleValue()));
+			assertEquals(pt.genotype().gene().doubleValue(), pt.fitness().doubleValue()));
 	}
 
 }

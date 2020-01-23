@@ -75,7 +75,7 @@ public class MathTreePruneAltererTest {
 
 		final ProgramGene<Double> program = result
 			.getPopulation().get(0)
-			.getGenotype()
+			.genotype()
 			.gene();
 
 

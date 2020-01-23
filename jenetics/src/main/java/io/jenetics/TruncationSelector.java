@@ -109,7 +109,7 @@ public final class TruncationSelector<
 		if (count > 0 && !population.isEmpty()) {
 			final MSeq<Phenotype<G, C>> copy = population.asISeq().copy();
 			copy.sort((a, b) ->
-				opt.<C>descending().compare(a.getFitness(), b.getFitness()));
+				opt.<C>descending().compare(a.fitness(), b.fitness()));
 
 			int size = count;
 			do {

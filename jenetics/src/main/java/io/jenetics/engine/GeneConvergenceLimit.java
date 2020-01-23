@@ -82,7 +82,7 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 		final Map<Long, DoubleMomentStatistics> statistics = new HashMap<>();
 
 		for (Phenotype<G, ?> pt : population) {
-			final Genotype<G> gt = pt.getGenotype();
+			final Genotype<G> gt = pt.genotype();
 
 			for (int i = 0; i < gt.length(); ++i) {
 				final Chromosome<G> ch = gt.get(i);

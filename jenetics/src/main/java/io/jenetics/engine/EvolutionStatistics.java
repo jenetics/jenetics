@@ -129,7 +129,7 @@ public abstract class EvolutionStatistics<
 	}
 
 	void accept(final Phenotype<?, C> pt, final long generation) {
-		_age.accept(pt.getAge(generation));
+		_age.accept(pt.age(generation));
 	}
 
 	// Calculate duration statistics
@@ -335,7 +335,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, C> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness());
+			_fitness.accept(pt.fitness());
 		}
 
 		@Override
@@ -362,7 +362,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, N> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness().doubleValue());
+			_fitness.accept(pt.fitness().doubleValue());
 		}
 
 		@Override

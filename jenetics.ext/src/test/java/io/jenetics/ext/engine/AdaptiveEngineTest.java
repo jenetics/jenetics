@@ -159,7 +159,7 @@ public class AdaptiveEngineTest {
 	private static double var(final EvolutionResult<DoubleGene, Double> result) {
 		return result != null
 			? result.getPopulation().stream()
-				.map(Phenotype::getFitness)
+				.map(Phenotype::fitness)
 				.collect(DoubleMoments.toDoubleMoments())
 				.variance()
 			: 0.0;

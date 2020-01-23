@@ -78,7 +78,7 @@ public class SymbolicRegression {
 				.collect(EvolutionResult.toBestEvolutionResult());
 
 		final ProgramGene<Double> program = er.getBestPhenotype()
-			.getGenotype()
+			.genotype()
 			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();

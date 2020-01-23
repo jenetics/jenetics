@@ -87,7 +87,7 @@ public class DynamicGenotype {
 			indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
 				final Phenotype<G, C> pt = pop.get(i);
 
-				final Genotype<G> gt = pt.getGenotype();
+				final Genotype<G> gt = pt.genotype();
 				final Genotype<G> mgt = mutate(gt, p, alterations);
 
 				final Phenotype<G, C> mpt = Phenotype.of(mgt, generation);

@@ -136,13 +136,13 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final double monteCarloSelectionSum =
 					new MonteCarloSelector<DoubleGene, Double>()
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				final double selectionSum =
 					selector
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				if (opt == Optimize.MAXIMUM) {
@@ -317,7 +317,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 			selector.select(population, selectionCount, opt).stream()
-				.map(pt -> pt.getGenotype().gene().allele())
+				.map(pt -> pt.genotype().gene().allele())
 				.forEach(hist);
 
 			return hist;

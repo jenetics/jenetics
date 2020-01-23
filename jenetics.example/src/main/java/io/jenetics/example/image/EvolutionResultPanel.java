@@ -50,7 +50,7 @@ public class EvolutionResultPanel extends JPanel {
 		final String generation = Long.toString(result.getGeneration());
 		final String bestFitness = _format.format(result.getBestFitness());
 		final double age = result.getPopulation().stream()
-			.collect(averagingLong(p -> p.getAge(result.getGeneration())));
+			.collect(averagingLong(p -> p.age(result.getGeneration())));
 
 		_generationTextField.setText(generation);
 		_bestFitnessTextField.setText(bestFitness);

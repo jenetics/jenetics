@@ -211,18 +211,18 @@ final class EvolvingImagesCmd {
 				if (latest.get() == null || latest.get().compareTo(pt) < 0) {
 					log(
 						"Writing '%s': fitness=%1.4f, speed=%1.2f.",
-						file, pt.getFitness(), speed
+						file, pt.fitness(), speed
 					);
 
 					latest.set(pt);
 					final PolygonChromosome ch =
-						(PolygonChromosome)pt.getGenotype().chromosome();
+						(PolygonChromosome)pt.genotype().chromosome();
 
 					writeImage(file, ch, image.getWidth(), image.getHeight());
 				} else {
 					log(
 						"No improvement - %07d: fitness=%1.4f, speed=%1.2f.",
-						generation, pt.getFitness(), speed
+						generation, pt.fitness(), speed
 					);
 				}
 			}

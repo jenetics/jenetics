@@ -350,7 +350,7 @@ public final class Engine<
 			if (!_constraint.test(individual)) {
 				pop.set(i, _constraint.repair(individual, generation));
 				++invalidCount;
-			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
+			} else if (individual.age(generation) > _maximalPhenotypeAge) {
 				pop.set(i, Phenotype.of(_genotypeFactory.newInstance(), generation));
 				++killCount;
 			}

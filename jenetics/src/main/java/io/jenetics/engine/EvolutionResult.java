@@ -145,7 +145,7 @@ public final class EvolutionResult<
 	 */
 	public ISeq<Genotype<G>> getGenotypes() {
 		return _population.stream()
-			.map(Phenotype::getGenotype)
+			.map(Phenotype::genotype)
 			.collect(ISeq.toISeq());
 	}
 
@@ -228,7 +228,7 @@ public final class EvolutionResult<
 	 */
 	public C getBestFitness() {
 		return _best.get() != null
-			? _best.get().getFitness()
+			? _best.get().fitness()
 			: null;
 	}
 
@@ -238,7 +238,7 @@ public final class EvolutionResult<
 	 * @return The worst population fitness.
 	 */
 	public C getWorstFitness() {
-		return _worst.get() != null ? _worst.get().getFitness() : null;
+		return _worst.get() != null ? _worst.get().fitness() : null;
 	}
 
 	/**
@@ -428,7 +428,7 @@ public final class EvolutionResult<
 			MinMax::combine,
 			mm -> mm.max() != null
 				? mm.max().getBestPhenotype() != null
-					? mm.max().getBestPhenotype().getGenotype()
+					? mm.max().getBestPhenotype().genotype()
 					: null
 				: null
 		);
@@ -471,7 +471,7 @@ public final class EvolutionResult<
 			MinMax::combine,
 			mm -> mm.max() != null
 				? mm.max().getBestPhenotype() != null
-					? decoder.apply(mm.max().getBestPhenotype().getGenotype())
+					? decoder.apply(mm.max().getBestPhenotype().genotype())
 					: null
 				: null
 		);
@@ -545,7 +545,7 @@ public final class EvolutionResult<
 			final Map<Genotype<G>, Phenotype<G, C>> elements =
 				population.stream()
 					.collect(toMap(
-						Phenotype::getGenotype,
+						Phenotype::genotype,
 						Function.identity(),
 						(a, b) -> a));
 
@@ -669,7 +669,7 @@ public final class EvolutionResult<
 		return result -> {
 			final Factory<Genotype<G>> factory = result
 				.getPopulation().get(0)
-				.getGenotype();
+				.genotype();
 
 			final UnaryOperator<EvolutionResult<G, C>> unifier =
 				toUniquePopulation(factory, maxRetries);
@@ -708,7 +708,7 @@ public final class EvolutionResult<
 		return result -> {
 			final Factory<Genotype<G>> factory = result
 				.getPopulation().get(0)
-				.getGenotype();
+				.genotype();
 
 			final UnaryOperator<EvolutionResult<G, C>> unifier =
 				toUniquePopulation(factory);

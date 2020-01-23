@@ -69,8 +69,8 @@ public final class RepairingAlterer<
 
 	private Phenotype<G, C> repair(final Phenotype<G, C> pt) {
 		return Phenotype.of(
-			_repair.apply(pt.getGenotype()),
-			pt.getGeneration()
+			_repair.apply(pt.genotype()),
+			pt.generation()
 		);
 	}
 

@@ -93,7 +93,7 @@ public class EngineTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		final long maxCount = result.getPopulation().stream()
-			.filter(pt -> pt.getFitness() == max)
+			.filter(pt -> pt.fitness() == max)
 			.count();
 
 		Assert.assertTrue(maxCount >= genotypeCount, "" + maxCount + " >= " + genotypeCount);

@@ -31,7 +31,6 @@ import java.nio.file.Paths;
 import io.jenetics.DoubleGene;
 import io.jenetics.MeanAlterer;
 import io.jenetics.Mutator;
-import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Codecs;
@@ -89,9 +88,9 @@ public class CircleMaxFront {
 		final StringBuilder out = new StringBuilder();
 		out.append("#x y\n");
 		front.forEach(p -> {
-			out.append(p.getFitness().data()[0]);
+			out.append(p.fitness().data()[0]);
 			out.append(" ");
-			out.append(p.getFitness().data()[1]);
+			out.append(p.fitness().data()[1]);
 			out.append("\n");
 		});
 

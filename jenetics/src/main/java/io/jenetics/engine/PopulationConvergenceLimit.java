@@ -46,7 +46,7 @@ final class PopulationConvergenceLimit<N extends Number & Comparable<? super N>>
 	public boolean test(final EvolutionResult<?, N> result) {
 		final DoubleMomentStatistics fitness = new DoubleMomentStatistics();
 		result.getPopulation()
-			.forEach(p -> fitness.accept(p.getFitness().doubleValue()));
+			.forEach(p -> fitness.accept(p.fitness().doubleValue()));
 
 		return result.getTotalGenerations() <= 1 ||
 			_proceed.test(

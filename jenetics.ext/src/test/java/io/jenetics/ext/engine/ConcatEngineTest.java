@@ -95,7 +95,7 @@ public class ConcatEngineTest {
 			EvolutionStreams.result(5)
 				.toEvolutionStart()
 				.getPopulation().stream()
-				.map(Phenotype::getGenotype)
+				.map(Phenotype::genotype)
 				.collect(ISeq.toISeq()),
 			1
 		);

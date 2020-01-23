@@ -74,9 +74,9 @@ public class MOEATest {
 		final ISeq<Vec<double[]>> result = engine.stream()
 			.limit(100)
 			.peek(er -> pop.addAll(er.getPopulation()
-				.map(Phenotype::getFitness).asList()))
+				.map(Phenotype::fitness).asList()))
 			.collect(MOEA.toParetoSet(IntRange.of(20, 25)))
-			.map(Phenotype::getFitness);
+			.map(Phenotype::fitness);
 
 		Assert.assertTrue(result.size() >= 10, "Expected >= 10, got " + result.size());
 		Assert.assertTrue(result.size() <= 50, "Expected <= 50, got " + result.size());

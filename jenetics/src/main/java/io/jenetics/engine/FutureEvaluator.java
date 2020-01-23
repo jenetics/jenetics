@@ -61,7 +61,7 @@ final class FutureEvaluator<
 	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final ISeq<Future<C>> evaluate = population.stream()
 			.filter(Phenotype::nonEvaluated)
-			.map(pt -> _fitness.apply(pt.getGenotype()))
+			.map(pt -> _fitness.apply(pt.genotype()))
 			.collect(ISeq.toISeq());
 
 		final ISeq<Phenotype<G, C>> evaluated = population.stream()

@@ -199,7 +199,7 @@ public class CompositeCodecTest {
 		//System.out.println(pt);
 
 		final Duration duration = durationCodec.decoder()
-			.apply(pt.getGenotype());
+			.apply(pt.genotype());
 		//System.out.println(duration);
 	}
 
@@ -233,7 +233,7 @@ public class CompositeCodecTest {
 		//System.out.println(pt);
 
 		final Duration duration = durationCodec.decoder()
-			.apply(pt.getGenotype());
+			.apply(pt.genotype());
 		//System.out.println(duration);
 
 	}

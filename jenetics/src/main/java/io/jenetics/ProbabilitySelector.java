@@ -65,7 +65,7 @@ public abstract class ProbabilitySelector<
 	private static final long MAX_ULP_DISTANCE = pow(10, 10);
 
 	protected final Comparator<Phenotype<G, C>> POPULATION_COMPARATOR = (a, b) ->
-		Optimize.MAXIMUM.<C>descending().compare(a.getFitness(), b.getFitness());
+		Optimize.MAXIMUM.<C>descending().compare(a.fitness(), b.fitness());
 
 	protected final boolean _sorted;
 	protected final Function<double[], double[]> _reverter;

@@ -53,8 +53,8 @@ public class EliteSelectorTest
 			selector.select(population, 10, Optimize.MAXIMUM);
 
 		Assert.assertEquals(
-			population.get(population.length() - 1).getGenotype().gene().doubleValue(),
-			selected.get(0).getGenotype().gene().doubleValue()
+			population.get(population.length() - 1).genotype().gene().doubleValue(),
+			selected.get(0).genotype().gene().doubleValue()
 		);
 	}
 
@@ -73,8 +73,8 @@ public class EliteSelectorTest
 			selector.select(population, 10, Optimize.MINIMUM);
 
 		Assert.assertEquals(
-			population.get(0).getGenotype().gene().doubleValue(),
-			selected.get(0).getGenotype().gene().doubleValue()
+			population.get(0).genotype().gene().doubleValue(),
+			selected.get(0).genotype().gene().doubleValue()
 		);
 	}
 
