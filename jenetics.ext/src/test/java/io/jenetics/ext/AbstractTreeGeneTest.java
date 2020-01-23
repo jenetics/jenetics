@@ -43,7 +43,7 @@ public class AbstractTreeGeneTest extends TreeTestBase<Integer, IntTreeGene> {
 
 		final FlatTreeNode<Integer> flattened = FlatTreeNode.of(root);
 		final ISeq<IntTreeGene> genes = flattened.stream()
-			.map(n -> new IntTreeGene(n.getValue(), n.childOffset(), n.childCount()))
+			.map(n -> new IntTreeGene(n.value(), n.childOffset(), n.childCount()))
 			.collect(ISeq.toISeq());
 
 		return new IntTreeChromosome(genes).getRoot();

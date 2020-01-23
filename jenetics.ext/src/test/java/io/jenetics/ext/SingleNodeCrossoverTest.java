@@ -117,8 +117,8 @@ public class SingleNodeCrossoverTest {
 		*/
 
 		Assert.assertEquals(tree1.size() + tree2.size(), size1 + size2);
-		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
-		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.getValue()));
+		tree1.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.value()));
+		tree2.breadthFirstStream().forEach(n -> Objects.requireNonNull(n.value()));
 	}
 
 	@Test(dataProvider = "treeLevels")

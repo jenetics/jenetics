@@ -224,7 +224,7 @@ public class ProgramChromosome<A>
 	) {
 		final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
 			.map(n -> new ProgramGene<>(
-				n.getValue(), n.childOffset(), operations, terminals))
+				n.value(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());
 
 		return new ProgramChromosome<>(genes, validator, operations, terminals);

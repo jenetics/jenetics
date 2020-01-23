@@ -132,7 +132,7 @@ public abstract class TreeCrossover<
 		final FlatTree<? extends A, ?> tree
 	) {
 		return (G)template.newInstance(
-			tree.getValue(),
+			tree.value(),
 			tree.childOffset(),
 			tree.childCount()
 		);

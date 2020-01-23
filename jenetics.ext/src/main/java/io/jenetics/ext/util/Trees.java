@@ -57,7 +57,7 @@ final class Trees {
 			path = MSeq.ofLength(depth);
 		} else {
 			path = pathElementsFromRoot(
-				node.getParent().orElse(null),
+				node.parent().orElse(null),
 				depth + 1
 			);
 			path.set(path.length() - depth - 1, node);
@@ -74,11 +74,11 @@ final class Trees {
 		if (node == null) {
 			path = new int[depth - 1];
 		} else {
-			final T parent = node.getParent().orElse(null);
+			final T parent = node.parent().orElse(null);
 			path = pathFromRoot(parent, depth + 1);
 
 			if (parent != null) {
-				final int index = node.getParent()
+				final int index = node.parent()
 					.map(p -> p.indexOf(node))
 					.orElseThrow(AssertionError::new);
 
@@ -102,7 +102,7 @@ final class Trees {
 		if (!equals && a != null && b != null) {
 			equals = a.childCount() == b.childCount();
 			if (equals) {
-				equals = Objects.equals(a.getValue(), b.getValue());
+				equals = Objects.equals(a.value(), b.value());
 				if (equals && a.childCount() > 0) {
 					equals = equals(a.childIterator(), b.childIterator());
 				}

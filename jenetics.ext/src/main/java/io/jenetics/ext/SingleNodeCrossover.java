@@ -105,10 +105,10 @@ public class SingleNodeCrossover<
 		final int changed;
 		if (seq1.length() > 1 && seq2.length() > 1) {
 			final TreeNode<A> n1 = seq1.get(random.nextInt(seq1.length() - 1) + 1);
-			final TreeNode<A> p1 = n1.getParent().orElseThrow(AssertionError::new);
+			final TreeNode<A> p1 = n1.parent().orElseThrow(AssertionError::new);
 
 			final TreeNode<A> n2 = seq2.get(random.nextInt(seq2.length() - 1) + 1);
-			final TreeNode<A> p2 = n2.getParent().orElseThrow(AssertionError::new);
+			final TreeNode<A> p2 = n2.parent().orElseThrow(AssertionError::new);
 
 			final int i1 = p1.indexOf(n1);
 			final int i2 = p2.indexOf(n2);

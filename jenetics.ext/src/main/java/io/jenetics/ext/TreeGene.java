@@ -39,6 +39,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 {
 
 	@Override
+	@Deprecated
 	public default A getValue() {
 		return allele();
 	}

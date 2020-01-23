@@ -164,7 +164,7 @@ final class TreeParser {
 							token.pos, value
 						));
 					}
-					if (current.getValue() == null) {
+					if (current.value() == null) {
 						current.setValue(mapper.apply(token.seq));
 					}
 					break;

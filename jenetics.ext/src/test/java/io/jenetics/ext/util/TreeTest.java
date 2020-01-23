@@ -97,7 +97,7 @@ public class TreeTest {
 	@Test(dataProvider = "paths")
 	public void childByPath(final int[] path, final String result)  {
 		Assert.assertEquals(
-			TREE.childAtPath(Path.of(path)).map(t -> t.getValue()),
+			TREE.childAtPath(Path.of(path)).map(t -> t.value()),
 			Optional.ofNullable(result)
 		);
 	}

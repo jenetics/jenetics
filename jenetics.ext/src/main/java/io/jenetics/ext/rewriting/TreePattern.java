@@ -137,15 +137,15 @@ public final class TreePattern<V> implements Serializable {
 	extractVars(final TreeNode<Decl<V>> pattern) {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
 		for (Tree<Decl<V>, ?> n : pattern) {
-			if (n.getValue() instanceof Var) {
+			if (n.value() instanceof Var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
 						"Variable node '%s' is not a leaf: %s",
-						n.getValue(), n.toParenthesesString()
+						n.value(), n.toParenthesesString()
 					));
 				}
 
-				variables.add((Var<V>)n.getValue());
+				variables.add((Var<V>)n.value());
 			}
 		}
 
@@ -223,7 +223,7 @@ public final class TreePattern<V> implements Serializable {
 		final Tree<Decl<V>, ?> pattern,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		final Decl<V> decl = pattern.getValue();
+		final Decl<V> decl = pattern.value();
 
 		if (decl instanceof Var) {
 			final Tree<? extends V, ?> tree = vars.get(decl);
@@ -234,8 +234,8 @@ public final class TreePattern<V> implements Serializable {
 
 			return tree.equals(node);
 		} else {
-			final Val<V> p = (Val<V>)pattern.getValue();
-			final V v = node.getValue();
+			final Val<V> p = (Val<V>)pattern.value();
+			final V v = node.value();
 
 			if (Objects.equals(v, p.value())) {
 				if (node.childCount() == pattern.childCount()) {
@@ -276,8 +276,8 @@ public final class TreePattern<V> implements Serializable {
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
-			.filter((Tree<Decl<V>, ?> n) -> n.getValue() instanceof Var)
-			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.getValue()));
+			.filter((Tree<Decl<V>, ?> n) -> n.value() instanceof Var)
+			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.value()));
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,

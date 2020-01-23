@@ -88,7 +88,7 @@ public abstract class TreeMutator<
 		final FlatTree<? extends A, ?> tree
 	) {
 		return template.newInstance(
-			tree.getValue(),
+			tree.value(),
 			tree.childOffset(),
 			tree.childCount()
 		);
