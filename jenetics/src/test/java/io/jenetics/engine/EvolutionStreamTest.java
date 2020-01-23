@@ -87,7 +87,7 @@ public class EvolutionStreamTest {
 			? result.getPopulation().stream()
 				.map(Phenotype::getFitness)
 				.collect(DoubleMoments.toDoubleMoments())
-				.getVariance()
+				.variance()
 			: 0.0;
 	}
 

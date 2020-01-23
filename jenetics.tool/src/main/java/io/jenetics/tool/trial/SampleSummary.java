@@ -126,15 +126,15 @@ public final class SampleSummary implements Serializable {
 		final ExactQuantile quantile
 	) {
 		return SampleSummaryPoint.of(
-			moment.getMean(),
-			moment.getVariance(),
-			moment.getSkewness(),
-			moment.getKurtosis(),
+			moment.mean(),
+			moment.variance(),
+			moment.skewness(),
+			moment.kurtosis(),
 			quantile.quantile(0.5),
 			quantile.quantile(0.25),
 			quantile.quantile(0.75),
-			moment.getMin(),
-			moment.getMax()
+			moment.min(),
+			moment.max()
 		);
 	}
 

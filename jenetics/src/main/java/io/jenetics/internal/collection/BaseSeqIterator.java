@@ -35,8 +35,8 @@ public class BaseSeqIterator<T, S extends BaseSeq<T>> implements ListIterator<T>
 
 	public final S array;
 
-	protected int cursor = 0;
-	protected int lastElement = -1;
+	int cursor = 0;
+	int lastElement = -1;
 
 	public BaseSeqIterator(final S array) {
 		this.array = requireNonNull(array, "Array must not be null.");

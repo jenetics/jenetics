@@ -374,7 +374,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 
 		final boolean sealed = in.readBoolean();
 		@SuppressWarnings("unchecked")
-		final Store<T> store = (Store<T>) in.readObject();
+		final Store<T> store = (Store<T>)in.readObject();
 		final Store.Ref<T> ref = new Ref<>(store, sealed);
 
 		_start = 0;

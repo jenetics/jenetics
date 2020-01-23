@@ -174,7 +174,7 @@ final class EvolvingImagesWorker {
 				.forEach(r -> {
 					waiting();
 					if (callback != null) {
-						callback.accept(r, best.getMax());
+						callback.accept(r, best.max());
 					}
 				});
 		});

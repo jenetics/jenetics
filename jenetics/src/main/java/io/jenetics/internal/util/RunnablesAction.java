@@ -25,11 +25,11 @@ import static java.security.AccessController.doPrivileged;
 import java.security.PrivilegedAction;
 import java.util.concurrent.RecursiveAction;
 
-import io.jenetics.util.Seq;
+import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version !__version__!
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {
@@ -37,12 +37,12 @@ final class RunnablesAction extends RecursiveAction {
 
 	private static final int DEFAULT_THRESHOLD = 7;
 
-	private final Seq<? extends Runnable> _runnables;
+	private final BaseSeq<? extends Runnable> _runnables;
 	private final int _high;
 	private final int _low;
 
 	private RunnablesAction(
-		final Seq<? extends Runnable> runnables,
+		final BaseSeq<? extends Runnable> runnables,
 		final int low,
 		final int high
 	) {
@@ -51,8 +51,8 @@ final class RunnablesAction extends RecursiveAction {
 		_high = high;
 	}
 
-	RunnablesAction(final Seq<? extends Runnable> runnables) {
-		this(runnables, 0, runnables.size());
+	RunnablesAction(final BaseSeq<? extends Runnable> runnables) {
+		this(runnables, 0, runnables.length());
 	}
 
 	@Override

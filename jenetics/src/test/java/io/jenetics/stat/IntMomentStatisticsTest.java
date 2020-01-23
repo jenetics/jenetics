@@ -55,14 +55,14 @@ public class IntMomentStatisticsTest {
 		final IntMomentStatistics summary = numbers.stream()
 			.collect(toIntMomentStatistics(Integer::intValue));
 
-		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
-		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
-		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
-		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
-		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
+		Assert.assertEquals(summary.count(), numbers.size());
+		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
+		assertEqualsDouble(summary.mean(), expected.getMean(), epsilon);
+		assertEqualsDouble(summary.variance(), expected.getVariance(), epsilon);
+		assertEqualsDouble(summary.skewness(), expected.getSkewness(), epsilon);
+		assertEqualsDouble(summary.kurtosis(), expected.getKurtosis(), epsilon);
 	}
 
 	@Test(dataProvider = "parallelSampleCounts")
@@ -75,14 +75,14 @@ public class IntMomentStatisticsTest {
 		final IntMomentStatistics summary = numbers.parallelStream()
 			.collect(toIntMomentStatistics(Integer::intValue));
 
-		Assert.assertEquals(summary.getCount(), numbers.size());
-		assertEqualsDouble(min(summary.getMin()), expected.getMin(), 0.0);
-		assertEqualsDouble(max(summary.getMax()), expected.getMax(), 0.0);
-		assertEqualsDouble(summary.getSum(), expected.getSum(), epsilon);
-		assertEqualsDouble(summary.getMean(), expected.getMean(), epsilon);
-		assertEqualsDouble(summary.getVariance(), expected.getVariance(), epsilon);
-		assertEqualsDouble(summary.getSkewness(), expected.getSkewness(), epsilon);
-		assertEqualsDouble(summary.getKurtosis(), expected.getKurtosis(), epsilon);
+		Assert.assertEquals(summary.count(), numbers.size());
+		assertEqualsDouble(min(summary.min()), expected.getMin(), 0.0);
+		assertEqualsDouble(max(summary.max()), expected.getMax(), 0.0);
+		assertEqualsDouble(summary.sum(), expected.getSum(), epsilon);
+		assertEqualsDouble(summary.mean(), expected.getMean(), epsilon);
+		assertEqualsDouble(summary.variance(), expected.getVariance(), epsilon);
+		assertEqualsDouble(summary.skewness(), expected.getSkewness(), epsilon);
+		assertEqualsDouble(summary.kurtosis(), expected.getKurtosis(), epsilon);
 	}
 
 	private static double min(final int value) {

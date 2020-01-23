@@ -268,7 +268,7 @@ public abstract class EvolutionStatistics<
 			"+---------------------------------------------------------------------------+\n" +
 			"|  Evolution statistics                                                     |\n" +
 			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Generations:", i(_altered.getCount())) +
+			format(cpattern, "Generations:", i(_altered.count())) +
 			format(cpattern, "Altered:", i(_altered)) +
 			format(cpattern, "Killed:", i(_killed)) +
 			format(cpattern, "Invalids:", i(_invalids));
@@ -277,7 +277,7 @@ public abstract class EvolutionStatistics<
 	private static String d(final DoubleMomentStatistics statistics) {
 		return format(
 			"sum=%3.12f s; mean=%3.12f s",
-			statistics.getSum(), statistics.getMean()
+			statistics.sum(), statistics.mean()
 		);
 	}
 
@@ -285,7 +285,7 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"sum=%s; mean=%6.9f",
-			nf.format(statistics.getSum()), statistics.getMean()
+			nf.format(statistics.sum()), statistics.mean()
 		);
 	}
 
@@ -298,9 +298,9 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"max=%s; mean=%6.6f; var=%6.6f",
-			nf.format(statistics.getMax()),
-			statistics.getMean(),
-			statistics.getVariance()
+			nf.format(statistics.max()),
+			statistics.mean(),
+			statistics.variance()
 		);
 	}
 
@@ -308,9 +308,9 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"max=%s; mean=%6.6f; var=%6.6f",
-			nf.format(statistics.getMax()),
-			statistics.getMean(),
-			statistics.getVariance()
+			nf.format(statistics.max()),
+			statistics.mean(),
+			statistics.variance()
 		);
 	}
 
@@ -325,7 +325,7 @@ public abstract class EvolutionStatistics<
 
 		@Override
 		public void accept(final EvolutionResult<?, C> result) {
-			if (_fitness.getMax() == null) {
+			if (_fitness.max() == null) {
 				_fitness = MinMax.of(result.getOptimize().ascending());
 			}
 
@@ -346,8 +346,8 @@ public abstract class EvolutionStatistics<
 				"+---------------------------------------------------------------------------+\n" +
 				format(cpattern, "Age:", p(_age)) +
 				format(cpattern, "Fitness", "") +
-				format(spattern, "min =", _fitness.getMin()) +
-				format(spattern, "max =", _fitness.getMax()) +
+				format(spattern, "min =", _fitness.min()) +
+				format(spattern, "max =", _fitness.max()) +
 				"+---------------------------------------------------------------------------+";
 		}
 	}
@@ -373,11 +373,11 @@ public abstract class EvolutionStatistics<
 				"+---------------------------------------------------------------------------+\n" +
 				format(cpattern, "Age:", p(_age)) +
 				format(cpattern, "Fitness:", "") +
-				format(spattern, "min  =", d(_fitness.getMin())) +
-				format(spattern, "max  =", d(_fitness.getMax())) +
-				format(spattern, "mean =", d(_fitness.getMean())) +
-				format(spattern, "var  =", d(_fitness.getVariance())) +
-				format(spattern, "std  =", d(sqrt(_fitness.getVariance()))) +
+				format(spattern, "min  =", d(_fitness.min())) +
+				format(spattern, "max  =", d(_fitness.max())) +
+				format(spattern, "mean =", d(_fitness.mean())) +
+				format(spattern, "var  =", d(_fitness.variance())) +
+				format(spattern, "std  =", d(sqrt(_fitness.variance()))) +
 				"+---------------------------------------------------------------------------+";
 		}
 

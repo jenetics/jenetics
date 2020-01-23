@@ -67,11 +67,11 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.7
+ * @version !__version__!
  */
 public class Quantile implements DoubleConsumer {
 
-	private long _samples = 0;
+	private long _count = 0;
 
 	// The desired quantile.
 	private final double _quantile;
@@ -116,7 +116,7 @@ public class Quantile implements DoubleConsumer {
 			compare(quantile, 0.0) == 0 ||
 			compare(quantile, 1.0) == 0;
 
-		_samples = 0;
+		_count = 0;
 	}
 
 	private static void check(final double quantile) {
@@ -143,6 +143,21 @@ public class Quantile implements DoubleConsumer {
 	 * @return the <em>quantile</em> {@code this} object has been parametrized
 	 *         with
 	 */
+	public double quantile() {
+		return _quantile;
+	}
+
+	/**
+	 * Return the <em>quantile</em> {@code this} object has been parametrized
+	 * with.
+	 *
+	 * @since 3.1
+	 *
+	 * @return the <em>quantile</em> {@code this} object has been parametrized
+	 *         with
+	 * @deprecated Use {@link #quantile()} instead
+	 */
+	@Deprecated
 	public double getQuantile() {
 		return _quantile;
 	}
@@ -152,6 +167,17 @@ public class Quantile implements DoubleConsumer {
 	 *
 	 * @return the quantile value.
 	 */
+	public double value() {
+		return _q[2];
+	}
+
+	/**
+	 * Return the computed quantile value.
+	 *
+	 * @return the quantile value.
+	 * @deprecated Use {@link #value()} instead
+	 */
+	@Deprecated
 	public double getValue() {
 		return _q[2];
 	}
@@ -162,8 +188,20 @@ public class Quantile implements DoubleConsumer {
 	 *
 	 * @return the number of samples the quantile value  was calculated of
 	 */
+	public long count() {
+		return _count;
+	}
+
+	/**
+	 * Return the number of samples the quantile value  was calculated of.
+	 *
+	 *
+	 * @return the number of samples the quantile value  was calculated of
+	 * @deprecated Use {@link #count()} instead
+	 */
+	@Deprecated
 	public long getSamples() {
-		return _samples;
+		return _count;
 	}
 
 	@Override
@@ -174,7 +212,7 @@ public class Quantile implements DoubleConsumer {
 			update(value);
 		}
 
-		++_samples;
+		++_count;
 	}
 
 	/**
@@ -186,7 +224,7 @@ public class Quantile implements DoubleConsumer {
 	 * @return {@code this}
 	 * @throws java.lang.NullPointerException if the {@code other} object is
 	 *         {@code null}.
-	 * @throws java.lang.IllegalArgumentException if the {@link #getQuantile}
+	 * @throws java.lang.IllegalArgumentException if the {@link #quantile}
 	 *         of the {@code other} object differs from {@code this} one.
 	 */
 	public Quantile combine(final Quantile other) {
@@ -197,7 +235,7 @@ public class Quantile implements DoubleConsumer {
 			));
 		}
 
-		_samples += other._samples;
+		_count += other._count;
 
 		if (_quantile == 0.0) {
 			_q[2] = Math.min(_q[2], other._q[2]);
@@ -411,7 +449,7 @@ public class Quantile implements DoubleConsumer {
 	public String toString() {
 		return format(
 			"%s[samples=%d, quantile=%f]",
-			getClass().getSimpleName(), getSamples(), getValue()
+			getClass().getSimpleName(), count(), value()
 		);
 	}
 
