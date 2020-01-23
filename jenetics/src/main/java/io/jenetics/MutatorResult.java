@@ -79,6 +79,17 @@ public final class MutatorResult<T> implements Serializable {
 	 *
 	 * @return the mutation result
 	 */
+	public T result() {
+		return _result;
+	}
+
+	/**
+	 * Return the mutation result.
+	 *
+	 * @return the mutation result
+	 * @deprecated Use {@link #result()} instead
+	 */
+	@Deprecated
 	public T getResult() {
 		return _result;
 	}
@@ -88,6 +99,17 @@ public final class MutatorResult<T> implements Serializable {
 	 *
 	 * @return the number of mutations
 	 */
+	public int mutations() {
+		return _mutations;
+	}
+
+	/**
+	 * Return the number of mutations for this mutation result.
+	 *
+	 * @return the number of mutations
+	 * @deprecated Use {@link #mutations()} instead
+	 */
+	@Deprecated
 	public int getMutations() {
 		return _mutations;
 	}

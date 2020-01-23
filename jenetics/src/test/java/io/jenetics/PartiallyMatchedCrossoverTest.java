@@ -100,7 +100,7 @@ public class PartiallyMatchedCrossoverTest {
 
 		final long nallgenes = ngenes*nchromosomes*npopulation;
 		final long N = 100;
-		final double mean = crossover.getOrder()*npopulation*p;
+		final double mean = crossover.order()*npopulation*p;
 
 		final long min = 0;
 		final long max = nallgenes;
@@ -112,7 +112,7 @@ public class PartiallyMatchedCrossoverTest {
 		for (int i = 0; i < N; ++i) {
 			final long alterations = crossover
 				.alter(population, 1)
-				.getAlterations();
+				.alterations();
 			histogram.accept(alterations);
 			variance.accept(alterations);
 		}

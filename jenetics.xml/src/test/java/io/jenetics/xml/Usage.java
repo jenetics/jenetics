@@ -50,7 +50,7 @@ public class Usage {
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final ISeq<Genotype<BitGene>> genotypes = result.getGenotypes();
+		final ISeq<Genotype<BitGene>> genotypes = result.genotypes();
 
 		Writers.write(System.out, genotypes.asList(), Writers.BitChromosome.writer());
 		Readers.read(System.in, Readers.BitChromosome.reader());

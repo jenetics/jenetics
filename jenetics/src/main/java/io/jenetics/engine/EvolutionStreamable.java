@@ -119,7 +119,7 @@ public interface EvolutionStreamable<
 	 * Create a new {@code EvolutionStream} starting with a previously evolved
 	 * {@link EvolutionResult}. The stream is initialized with the population
 	 * of the given {@code result} and its total generation
-	 * {@link EvolutionResult#getTotalGenerations()}.
+	 * {@link EvolutionResult#totalGenerations()}.
 	 *
 	 * <pre>{@code
 	 * private static final Problem<Double, DoubleGene, Double>
@@ -151,7 +151,7 @@ public interface EvolutionStreamable<
 	 *         .limit(Limits.bySteadyFitness(20))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
-	 *     System.out.println(result.getBestPhenotype());
+	 *     System.out.println(result.bestPhenotype());
 	 * }
 	 * }</pre>
 	 *
@@ -166,8 +166,8 @@ public interface EvolutionStreamable<
 	public default EvolutionStream<G, C>
 	stream(final EvolutionResult<G, C> result) {
 		return stream(EvolutionStart.of(
-			result.getPopulation(),
-			result.getGeneration()
+			result.population(),
+			result.generation()
 		));
 	}
 

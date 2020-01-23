@@ -156,8 +156,8 @@ public final class MathExpr
 		_tree = requireNonNull(tree);
 		_vars = Lazy.of(() -> ISeq.of(
 			_tree.stream()
-				.filter(node -> node.getValue() instanceof Var)
-				.map(node -> (Var<Double>)node.getValue())
+				.filter(node -> node.value() instanceof Var)
+				.map(node -> (Var<Double>)node.value())
 				.collect(toCollection(() -> new TreeSet<>(comparing(Var::name))))
 		));
 	}

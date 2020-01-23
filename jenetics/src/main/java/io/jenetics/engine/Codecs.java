@@ -86,7 +86,7 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
-			gt -> gt.chromosome().gene().getAllele(),
+			gt -> gt.chromosome().gene().allele(),
 			val -> Genotype.of(IntegerChromosome.of(IntegerGene.of(val, domain)))
 		);
 	}
@@ -104,7 +104,7 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain)),
-			gt -> gt.gene().getAllele(),
+			gt -> gt.gene().allele(),
 			val -> Genotype.of(LongChromosome.of(LongGene.of(val, domain)))
 		);
 	}
@@ -122,7 +122,7 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
-			gt -> gt.gene().getAllele(),
+			gt -> gt.gene().allele(),
 			val -> Genotype.of(DoubleChromosome.of(DoubleGene.of(val, domain)))
 		);
 	}
@@ -164,7 +164,7 @@ public final class Codecs {
 	) {
 		return Codec.of(
 			Genotype.of(AnyChromosome.of(supplier, validator)),
-			gt -> gt.gene().getAllele()
+			gt -> gt.gene().allele()
 		);
 	}
 
@@ -188,7 +188,7 @@ public final class Codecs {
 	) {
 		return Codec.of(
 			Genotype.of(AnyChromosome.of(supplier)),
-			gt -> gt.gene().getAllele()
+			gt -> gt.gene().allele()
 		);
 	}
 
@@ -459,7 +459,7 @@ public final class Codecs {
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
 			gt -> gt.chromosome().stream()
-				.map(Gene::getAllele)
+				.map(Gene::allele)
 				.collect(ISeq.toISeq())
 		);
 	}
@@ -532,12 +532,12 @@ public final class Codecs {
 			PermutationChromosome.ofInteger(length);
 
 		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
-			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+			.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(chromosome),
 			gt -> gt.chromosome().stream()
-				.mapToInt(EnumGene::getAllele)
+				.mapToInt(EnumGene::allele)
 				.toArray(),
 			val -> Genotype.of(
 				new PermutationChromosome<>(
@@ -569,12 +569,12 @@ public final class Codecs {
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, alleles.length())
 				.mapToObj(i -> EnumGene.<T>of(i, alleles))
-				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+				.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(new PermutationChromosome<>(ISeq.of(genes.values()))),
 			gt -> gt.chromosome().stream()
-				.map(EnumGene::getAllele)
+				.map(EnumGene::allele)
 				.collect(ISeq.toISeq()),
 			val -> Genotype.of(
 				new PermutationChromosome<>(
@@ -788,12 +788,12 @@ public final class Codecs {
 			PermutationChromosome.ofInteger(target.size());
 
 		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
-			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+			.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		final Codec<int[], EnumGene<Integer>> codec = Codec.of(
 			Genotype.of(chromosome),
 			gt -> gt.chromosome().stream()
-				.mapToInt(EnumGene::getAllele)
+				.mapToInt(EnumGene::allele)
 				.toArray()
 		);
 
@@ -998,12 +998,12 @@ public final class Codecs {
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, basicSet.length())
 				.mapToObj(i -> EnumGene.<T>of(i, basicSet))
-				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+				.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),
 			gt -> gt.chromosome().stream()
-				.map(EnumGene::getAllele)
+				.map(EnumGene::allele)
 				.collect(ISeq.toISeq()),
 			values -> {
 				if (values.size() != size) {

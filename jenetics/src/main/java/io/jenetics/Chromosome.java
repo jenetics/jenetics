@@ -122,12 +122,12 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * method-chaining. Instead of
 	 * <pre>{@code
 	 * final Genotype<BitGene> gt = ...
-	 * final int count = ((BitChromosome)gt.getChromosome()).bitCount()
+	 * final int count = ((BitChromosome)gt.chromosome()).bitCount()
 	 * }</pre>
 	 * you can write
 	 * <pre>{@code
 	 * final Genotype<BitGene> gt = ...
-	 * final int count = gt.getChromosome()
+	 * final int count = gt.chromosome()
 	 *     .as(BitChromosome.class)
 	 *     .bitCount()
 	 * }</pre>

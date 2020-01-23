@@ -71,6 +71,17 @@ public final class AltererResult<
 	 *
 	 * @return the altered population
 	 */
+	public ISeq<Phenotype<G, C>> population() {
+		return _population;
+	}
+
+	/**
+	 * Return the altered population.
+	 *
+	 * @return the altered population
+	 * @deprecated Use {@link #population()} instead
+	 */
+	@Deprecated
 	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
@@ -80,6 +91,17 @@ public final class AltererResult<
 	 *
 	 * @return the number of altered individuals
 	 */
+	public int alterations() {
+		return _alterations;
+	}
+
+	/**
+	 * Return the number of altered individuals.
+	 *
+	 * @return the number of altered individuals
+	 * @deprecated Use {@link #alterations()} instead
+	 */
+	@Deprecated
 	public int getAlterations() {
 		return _alterations;
 	}

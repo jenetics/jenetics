@@ -89,14 +89,14 @@ public final class PartialAlterer<
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
 		if (!population.isEmpty()) {
-			_section.checkIndices(population.get(0).getGenotype().length());
+			_section.checkIndices(population.get(0).genotype().length());
 
 			final Seq<Phenotype<G, C>> split  = _section.split(population);
 			final AltererResult<G, C> result = _alterer.alter(split, generation);
 
 			return AltererResult.of(
-				_section.merge(result.getPopulation(), population),
-				result.getAlterations()
+				_section.merge(result.population(), population),
+				result.alterations()
 			);
 		} else {
 			return AltererResult.of(population.asISeq(), 0);
@@ -196,7 +196,7 @@ public final class PartialAlterer<
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
 		Phenotype<G, C> split(final Phenotype<G, C> phenotype) {
 			final ISeq<Chromosome<G>> chromosomes = IntStream.of(indices)
-				.mapToObj(phenotype.getGenotype()::get)
+				.mapToObj(phenotype.genotype()::get)
 				.collect(ISeq.toISeq());
 
 			final Genotype<G> genotype = Genotype.of(chromosomes);
@@ -204,9 +204,9 @@ public final class PartialAlterer<
 			return phenotype.isEvaluated()
 				? Phenotype.of(
 					genotype,
-					phenotype.getGeneration(),
-					phenotype.getFitness())
-				: Phenotype.of(genotype, phenotype.getGeneration());
+					phenotype.generation(),
+					phenotype.fitness())
+				: Phenotype.of(genotype, phenotype.generation());
 		}
 
 		<G extends Gene<?, G>, C extends Comparable<? super C>>
@@ -226,10 +226,10 @@ public final class PartialAlterer<
 			final Phenotype<G, C> section,
 			final Phenotype<G, C> phenotype
 		) {
-			final MSeq<Chromosome<G>> ch = MSeq.of(phenotype.getGenotype());
+			final MSeq<Chromosome<G>> ch = MSeq.of(phenotype.genotype());
 
 			for (int i = 0; i < indices.length; ++i) {
-				ch.set(indices[i], section.getGenotype().get(i));
+				ch.set(indices[i], section.genotype().get(i));
 			}
 
 			final Genotype<G> genotype = Genotype.of(ch);
@@ -237,9 +237,9 @@ public final class PartialAlterer<
 			return phenotype.isEvaluated()
 				? Phenotype.of(
 					genotype,
-					phenotype.getGeneration(),
-					phenotype.getFitness())
-				: Phenotype.of(genotype, phenotype.getGeneration());
+					phenotype.generation(),
+					phenotype.fitness())
+				: Phenotype.of(genotype, phenotype.generation());
 		}
 
 		static Section of(final int... indices) {

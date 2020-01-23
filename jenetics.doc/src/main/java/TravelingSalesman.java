@@ -112,7 +112,7 @@ public class TravelingSalesman
 
 		out.println(statistics);
 		out.println("Known min path length: " + minPathLength);
-		out.println("Found min path length: " + best.getFitness());
+		out.println("Found min path length: " + best.fitness());
 	}
 
 }

@@ -54,8 +54,8 @@ public class CompositeAltererTest {
 		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		Assert.assertEquals(
-			result.getAlterations(),
-			diff(p1, result.getPopulation())
+			result.alterations(),
+			diff(p1, result.population())
 		);
 	}
 
@@ -89,8 +89,8 @@ public class CompositeAltererTest {
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
-			final Genotype<?> gt1 = p1.get(i).getGenotype();
-			final Genotype<?> gt2 = p2.get(i).getGenotype();
+			final Genotype<?> gt1 = p1.get(i).genotype();
+			final Genotype<?> gt2 = p2.get(i).genotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
 				final Chromosome<?> c1 = gt1.get(j);

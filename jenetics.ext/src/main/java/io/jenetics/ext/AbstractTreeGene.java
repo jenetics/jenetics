@@ -91,13 +91,14 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
+	@Deprecated
 	public G getRoot() {
 		return _genes.get(0);
 	}
 
 	@Override
 	public boolean isRoot() {
-		return getRoot() == this;
+		return root() == this;
 	}
 
 	@Override
@@ -128,6 +129,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _childOffset;
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _allele;
@@ -141,6 +143,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
+	@Deprecated
 	public Optional<G> getParent() {
 		checkTreeState();
 

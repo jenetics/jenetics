@@ -43,7 +43,7 @@ public class EvolutionStreamImplTest {
 	public void limit() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.gene().getAllele(),
+				gt -> gt.gene().allele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -57,14 +57,14 @@ public class EvolutionStreamImplTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.get(), 10L);
-		Assert.assertEquals(result.getTotalGenerations(), 10L);
+		Assert.assertEquals(result.totalGenerations(), 10L);
 	}
 
 	@Test
 	public void limit0() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.gene().getAllele(),
+				gt -> gt.gene().allele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -82,7 +82,7 @@ public class EvolutionStreamImplTest {
 	public void limit1() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.gene().getAllele(),
+				gt -> gt.gene().allele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 
@@ -93,7 +93,7 @@ public class EvolutionStreamImplTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.get(), 1L);
-		Assert.assertEquals(result.getTotalGenerations(), 1L);
+		Assert.assertEquals(result.totalGenerations(), 1L);
 	}
 
 	private static final class CountLimit implements Predicate<Object> {
@@ -114,7 +114,7 @@ public class EvolutionStreamImplTest {
 	public void spliterator() {
 		final Engine<DoubleGene, Double> engine = Engine
 			.builder(
-				gt -> gt.gene().getAllele(),
+				gt -> gt.gene().allele(),
 				DoubleChromosome.of(0, 1))
 			.build();
 

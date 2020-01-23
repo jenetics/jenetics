@@ -265,8 +265,8 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 	 */
 	public static <V> void reindex(final TreeNode<Op<V>> tree) {
 		final SortedSet<Var<V>> vars = tree.stream()
-			.filter(node -> node.getValue() instanceof Var)
-			.map(node -> (Var<V>)node.getValue())
+			.filter(node -> node.value() instanceof Var)
+			.map(node -> (Var<V>)node.value())
 			.collect(Collectors.toCollection(TreeSet::new));
 
 		int index = 0;
@@ -317,7 +317,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 		final Map<Var<V>, Integer> indexes
 	) {
 		for (TreeNode<Op<V>> node : tree) {
-			final Op<V> op = node.getValue();
+			final Op<V> op = node.value();
 			if (op instanceof Var) {
 				node.setValue(Var.of(op.name(), indexes.get(op)));
 			}

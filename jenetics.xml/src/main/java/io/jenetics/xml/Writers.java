@@ -288,11 +288,11 @@ public final class Writers {
 
 			return elem(rootName,
 				attr(LENGTH_NAME).map(ch -> ch.length()),
-				elem(MIN_NAME, alleleWriter.map(ch -> ch.getMin())),
-				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
+				elem(MIN_NAME, alleleWriter.map(ch -> ch.min())),
+				elem(MAX_NAME, alleleWriter.map(ch -> ch.max())),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ISeq.of(ch).map(G::getAllele))
+						.map(ch -> ISeq.of(ch).map(G::allele))
 				)
 			);
 		}
@@ -724,7 +724,7 @@ public final class Writers {
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
-						.map(g -> Integer.toString(g.getAlleleIndex()))
+						.map(g -> Integer.toString(g.alleleIndex()))
 						.collect(Collectors.joining(" ")))
 			);
 		}
@@ -732,7 +732,7 @@ public final class Writers {
 		private static String toAlleleTypeName(
 			final io.jenetics.PermutationChromosome<?> ch
 		) {
-			return ch.gene().getAllele().getClass().getCanonicalName();
+			return ch.gene().allele().getClass().getCanonicalName();
 		}
 
 		/**

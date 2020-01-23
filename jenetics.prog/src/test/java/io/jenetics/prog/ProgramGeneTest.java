@@ -53,7 +53,7 @@ public class ProgramGeneTest {
 
 	private static final ProgramGene<Double> PROG = ProgramChromosome
 		.of(5, OPERATIONS, TERMINALS)
-		.getRoot();
+		.root();
 
 	private static final TreeNode<Op<Double>> TREE = TreeNode.ofTree(PROG);
 
@@ -77,8 +77,8 @@ public class ProgramGeneTest {
 			{(Function<Tree<?, ?>, Object>)Tree::childCount},
 			{(Function<Tree<?, ?>, Object>)Tree::childPath},
 			{(Function<Tree<?, ?>, Object>)Tree::isLeaf},
-			{(Function<Tree<?, ?>, Object>)t -> t.getRoot().getValue()},
-			{(Function<Tree<?, ?>, Object>)t -> t.getParent().map(t2 -> t2.getValue()).orElse(null)}
+			{(Function<Tree<?, ?>, Object>)t -> t.root().value()},
+			{(Function<Tree<?, ?>, Object>)t -> t.parent().map(t2 -> t2.value()).orElse(null)}
 		};
 	}
 

@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * for <em>crossover</em>.
  * </p>
  * <p>
- * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * The order ({@link #order()}) of this Recombination implementation is two.
  * </p>
  *
  * @param <G> the gene type.
@@ -73,8 +73,8 @@ public abstract class Crossover<
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
+		final Genotype<G> gt1 = pt1.genotype();
+		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
@@ -99,7 +99,7 @@ public abstract class Crossover<
 			Phenotype.of(Genotype.of(c2), generation)
 		);
 
-		return getOrder();
+		return order();
 	}
 
 	/**

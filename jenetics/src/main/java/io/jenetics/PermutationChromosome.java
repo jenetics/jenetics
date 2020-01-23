@@ -121,7 +121,7 @@ public final class PermutationChromosome<T>
 		super(genes);
 
 		assert !genes.isEmpty();
-		_validAlleles = genes.get(0).getValidAlleles();
+		_validAlleles = genes.get(0).validAlleles();
 		_valid = valid;
 	}
 
@@ -157,7 +157,7 @@ public final class PermutationChromosome<T>
 	public boolean isValid() {
 		if (_valid == null) {
 			final byte[] check = bit.newArray(_validAlleles.length());
-			_valid = _genes.forAll(g -> !getAndSet(check, g.getAlleleIndex()));
+			_valid = _genes.forAll(g -> !getAndSet(check, g.alleleIndex()));
 		}
 
 		return _valid;
@@ -179,7 +179,7 @@ public final class PermutationChromosome<T>
 	@Override
 	public String toString() {
 		return _genes.asList().stream()
-			.map(g -> g.getAllele().toString())
+			.map(g -> g.allele().toString())
 			.collect(Collectors.joining("|"));
 	}
 
@@ -312,8 +312,7 @@ public final class PermutationChromosome<T>
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
 		return of(
-			range.stream()
-				.boxed()
+			range.stream().boxed()
 				.collect(ISeq.toISeq()),
 			length
 		);
@@ -336,7 +335,7 @@ public final class PermutationChromosome<T>
 	void write(final ObjectOutput out) throws IOException {
 		out.writeObject(_validAlleles);
 		for (EnumGene<?> gene : _genes) {
-			writeInt(gene.getAlleleIndex(), out);
+			writeInt(gene.alleleIndex(), out);
 		}
 	}
 

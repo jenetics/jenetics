@@ -165,10 +165,10 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		Assert.assertEquals(
 			mapped.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.toArray(String[]::new),
 			tree.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.map(Objects::toString)
 				.toArray(String[]::new)
 		);

@@ -142,7 +142,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 
 		Assert.assertEquals(tree.childCount(), stree.getChildCount());
 		Assert.assertEquals(
-			tree.childAt(1).getValue(),
+			tree.childAt(1).value(),
 			((DefaultMutableTreeNode)stree.getChildAt(1)).getUserObject()
 		);
 	}
@@ -206,7 +206,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final T node = treeIt.next();
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
-			Assert.assertEquals(node.getValue(), snode.getUserObject());
+			Assert.assertEquals(node.value(), snode.getUserObject());
 		}
 	}
 
@@ -222,7 +222,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final T node = treeIt.next();
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
-			Assert.assertEquals(node.getValue(), snode.getUserObject());
+			Assert.assertEquals(node.value(), snode.getUserObject());
 		}
 	}
 
@@ -238,7 +238,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final T node = treeIt.next();
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
-			Assert.assertEquals(node.getValue(), snode.getUserObject());
+			Assert.assertEquals(node.value(), snode.getUserObject());
 		}
 	}
 
@@ -254,7 +254,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final T node = treeIt.next();
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
-			Assert.assertEquals(node.getValue(), snode.getUserObject());
+			Assert.assertEquals(node.value(), snode.getUserObject());
 		}
 	}
 
@@ -273,7 +273,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final T node = treeIt.next();
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
-			Assert.assertEquals(node.getValue(), snode.getUserObject());
+			Assert.assertEquals(node.value(), snode.getUserObject());
 		}
 	}
 
@@ -290,7 +290,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final DefaultMutableTreeNode snode = (DefaultMutableTreeNode)streeIt.nextElement();
 
 			Assert.assertEquals(
-				node.pathElements().map(t -> t.getValue()),
+				node.pathElements().map(t -> t.value()),
 				ISeq.of(snode.getUserObjectPath())
 			);
 		}
@@ -357,10 +357,10 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 	@DataProvider
 	public Object[][] nodeAccessorMethods() {
 		return new Object[][] {
-			{new AccessorMethod("getParent", Tree::getParent, DefaultMutableTreeNode::getParent)},
+			{new AccessorMethod("getParent", Tree::parent, DefaultMutableTreeNode::getParent)},
 			{new AccessorMethod("depth", Tree::depth, DefaultMutableTreeNode::getDepth)},
 			{new AccessorMethod("level", Tree::level, DefaultMutableTreeNode::getLevel)},
-			{new AccessorMethod("getRoot", Tree::getRoot, DefaultMutableTreeNode::getRoot)},
+			{new AccessorMethod("getRoot", Tree::root, DefaultMutableTreeNode::getRoot)},
 			{new AccessorMethod("isRoot", Tree::isRoot, DefaultMutableTreeNode::isRoot)},
 			{new AccessorMethod("nextNode", Tree::nextNode, DefaultMutableTreeNode::getNextNode)},
 			{new AccessorMethod("previousNode", Tree::previousNode, DefaultMutableTreeNode::getPreviousNode)},
@@ -397,7 +397,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 			final Tree n1 = (Tree)uo1;
 			final DefaultMutableTreeNode n2 = (DefaultMutableTreeNode)uo2;
 
-			final Object v1 = n1.getValue();
+			final Object v1 = n1.value();
 			final Object v2 = n2.getUserObject();
 			Assert.assertEquals(v1, v2);
 		} else {
@@ -416,7 +416,7 @@ public abstract class TreeTestBase<V, T extends Tree<? extends V, T>> {
 		final DefaultMutableTreeNode t2
 	) {
 		return t1.childCount() == t2.getChildCount() &&
-			Objects.equals(t1.getValue(), t2.getUserObject()) &&
+			Objects.equals(t1.value(), t2.getUserObject()) &&
 			IntStream.range(0, t1.childCount())
 				.allMatch(i -> equals(
 					t1.childAt(i),

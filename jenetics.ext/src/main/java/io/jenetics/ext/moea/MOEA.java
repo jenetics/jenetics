@@ -205,12 +205,12 @@ public final class MOEA {
 
 		void add(final EvolutionResult<G, C> result) {
 			if (_front == null) {
-				_optimize = result.getOptimize();
+				_optimize = result.optimize();
 				_front = new ParetoFront<>(this::dominance, this::equals);
 			}
 
 			final ISeq<Phenotype<G, C>> front = front(
-				result.getPopulation(),
+				result.population(),
 				this::dominance
 			);
 			_front.addAll(front.asList());
@@ -219,12 +219,12 @@ public final class MOEA {
 
 		private int dominance(final Phenotype<G, C> a, final Phenotype<G, C> b) {
 			return _optimize == Optimize.MAXIMUM
-				? _dominance.compare(a.getFitness(), b.getFitness())
-				: _dominance.compare(b.getFitness(), a.getFitness());
+				? _dominance.compare(a.fitness(), b.fitness())
+				: _dominance.compare(b.fitness(), a.fitness());
 		}
 
 		private boolean equals(final Phenotype<?, ?> a, final Phenotype<?, ?> b) {
-			return Objects.equals(a.getGenotype(), b.getGenotype());
+			return Objects.equals(a.genotype(), b.genotype());
 		}
 
 		private void trim() {
@@ -235,8 +235,8 @@ public final class MOEA {
 				_front.trim(
 					_size.min(),
 					this::compare,
-					_distance.map(Phenotype::getFitness),
-					v -> _dimension.applyAsInt(v.getFitness())
+					_distance.map(Phenotype::fitness),
+					v -> _dimension.applyAsInt(v.fitness())
 				);
 			}
 		}
@@ -247,8 +247,8 @@ public final class MOEA {
 			final int i
 		) {
 			return _optimize == Optimize.MAXIMUM
-				? _comparator.compare(a.getFitness(), b.getFitness(), i)
-				: _comparator.compare(b.getFitness(), a.getFitness(), i);
+				? _comparator.compare(a.fitness(), b.fitness(), i)
+				: _comparator.compare(b.fitness(), a.fitness(), i);
 		}
 
 		Front<G, C> merge(final Front<G, C> front) {

@@ -90,7 +90,7 @@ public class ProgramChromosomeTest {
 		final ProgramChromosome<Double> chromosome = ProgramChromosome
 			.of(tree, OPERATIONS, TERMINALS);
 
-		Assert.assertTrue(Tree.equals(tree, chromosome.getRoot()));
+		Assert.assertTrue(Tree.equals(tree, chromosome.root()));
 	}
 
 	@Test(invocationCount = 10)
@@ -159,7 +159,7 @@ public class ProgramChromosomeTest {
 			OPERATIONS,
 			TERMINALS
 		);
-		Assert.assertSame(ch.getRoot(), ch.gene());
+		Assert.assertSame(ch.root(), ch.gene());
 	}
 
 	@Test

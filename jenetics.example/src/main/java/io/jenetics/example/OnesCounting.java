@@ -55,7 +55,7 @@ public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 
 	@Override
 	public Function<ISeq<BitGene>, Integer> fitness() {
-		return genes -> (int)genes.stream().filter(BitGene::getBit).count();
+		return genes -> (int)genes.stream().filter(BitGene::bit).count();
 	}
 
 	@Override

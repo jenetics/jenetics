@@ -59,8 +59,8 @@ public class GaussianMutator<
 
 	@Override
 	protected G mutate(final G gene, final Random random) {
-		final double min = gene.getMin().doubleValue();
-		final double max = gene.getMax().doubleValue();
+		final double min = gene.min().doubleValue();
+		final double max = gene.max().doubleValue();
 		final double std = (max - min)*0.25;
 
 		final double value = gene.doubleValue();

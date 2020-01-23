@@ -88,10 +88,10 @@ public class WeaselMutator<
 
 		return AltererResult.of(
 			result
-				.map(MutatorResult::getResult)
+				.map(MutatorResult::result)
 				.asISeq(),
 			result.stream()
-				.mapToInt(MutatorResult::getMutations)
+				.mapToInt(MutatorResult::mutations)
 				.sum()
 		);
 	}
@@ -107,8 +107,8 @@ public class WeaselMutator<
 			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			Genotype.of(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			Genotype.of(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 

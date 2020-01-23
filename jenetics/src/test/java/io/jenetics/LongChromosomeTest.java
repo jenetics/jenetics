@@ -63,8 +63,8 @@ public class LongChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
 				for (LongGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 

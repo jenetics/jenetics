@@ -62,7 +62,7 @@ import io.jenetics.util.ISeq;
  * final DoubleRange domain = DoubleRange.of(0, 2*PI);
  * final Codec<Double, DoubleGene> codec = Codec.of(
  *     Genotype.of(DoubleChromosome.of(domain)),
- *     gt -> gt.getChromosome().getGene().getAllele()
+ *     gt -> gt.chromosome().gene().allele()
  * );
  * }</pre>
  *
@@ -249,12 +249,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * <pre>{@code
 	 * final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
 	 *     Genotype.of(LongChromosome.of(0, 10_000)),
-	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 *     gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 	 * );
 	 *
 	 * final Codec<LocalDate, LongGene> dateCodec2 = Codec.of(
 	 *     Genotype.of(LongChromosome.of(1_000_000, 10_000_000)),
-	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 *     gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 	 * );
 	 *
 	 * final Codec<Duration, LongGene> durationCodec = Codec.of(
@@ -273,7 +273,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(pt);
 	 *
 	 * final Duration duration = durationCodec.decoder()
-	 *     .apply(pt.getGenotype());
+	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
 	 * }</pre>
 	 *
@@ -340,7 +340,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(pt);
 	 *
 	 * final Duration duration = durationCodec.decoder()
-	 *     .apply(pt.getGenotype());
+	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
 	 * }</pre>
 	 *

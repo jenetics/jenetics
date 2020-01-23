@@ -76,13 +76,13 @@ final class CompositeAlterer<
 		AltererResult<G, C> result = AltererResult.of(population.asISeq());
 		for (Alterer<G, C> alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
-				result.getPopulation(),
+				result.population(),
 				generation
 			);
 
 			result = AltererResult.of(
-				as.getPopulation(),
-				as.getAlterations() + result.getAlterations()
+				as.population(),
+				as.alterations() + result.alterations()
 			);
 		}
 

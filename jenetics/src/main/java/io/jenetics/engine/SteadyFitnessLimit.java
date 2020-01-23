@@ -49,14 +49,14 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 		if (!_proceed) return false;
 
 		if (_fitness == null) {
-			_fitness = result.getBestFitness();
+			_fitness = result.bestFitness();
 			_stable = 1;
 		} else {
-			final Optimize opt = result.getOptimize();
-			if (opt.compare(_fitness, result.getBestFitness()) >= 0) {
+			final Optimize opt = result.optimize();
+			if (opt.compare(_fitness, result.bestFitness()) >= 0) {
 				_proceed = ++_stable <= _generations;
 			} else {
-				_fitness = result.getBestFitness();
+				_fitness = result.bestFitness();
 				_stable = 1;
 			}
 		}

@@ -68,8 +68,8 @@ public class BigIntegerChromosome
 	 */
 	protected BigIntegerChromosome(final ISeq<BigIntegerGene> genes) {
 		super(genes);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	/**
@@ -104,12 +104,12 @@ public class BigIntegerChromosome
 	}
 
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 
@@ -184,7 +184,7 @@ public class BigIntegerChromosome
 		writeBytes(_max.toByteArray(), out);
 
 		for (BigIntegerGene gene : _genes) {
-			writeBytes(gene.getAllele().toByteArray(), out);
+			writeBytes(gene.allele().toByteArray(), out);
 		}
 	}
 

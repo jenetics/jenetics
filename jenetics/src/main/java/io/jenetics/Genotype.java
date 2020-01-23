@@ -183,7 +183,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * Return the first chromosome. This is a shortcut for
 	 * <pre>{@code
 	 * final Genotype<DoubleGene>; gt = ...
-	 * final Chromosome<DoubleGene> chromosome = gt.getChromosome(0);
+	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
 	 * }</pre>
 	 *
 	 * @return The first chromosome.
@@ -202,7 +202,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * {@code Genotype}. This is a shortcut for
 	 * <pre>{@code
 	 * final Genotype<DoubleGene> gt = ...
-	 * final DoubleGene gene = gt.getChromosome(0).getGene(0);
+	 * final DoubleGene gene = gt.get(0).get(0);
 	 * }</pre>
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this

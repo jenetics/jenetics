@@ -49,12 +49,12 @@ final class EvolutionStreamables {
 						@Override
 						public Integer get() {
 							if (value == null) {
-								value  = start.get().getPopulation().isEmpty()
+								value  = start.get().population().isEmpty()
 									? 0
 									: start.get()
-										.getPopulation()
+										.population()
 										.get(0)
-										.getGenotype()
+										.genotype()
 										.gene()
 										.intValue();
 							}
@@ -76,7 +76,7 @@ final class EvolutionStreamables {
 						@Override
 						public Integer get() {
 							if (value == null) {
-								value  = init.getPopulation()
+								value  = init.population()
 									.get(0)
 									.gene()
 									.intValue();

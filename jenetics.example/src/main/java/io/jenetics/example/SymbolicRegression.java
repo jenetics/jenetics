@@ -105,13 +105,13 @@ public class SymbolicRegression {
 			.limit(Limits.byFitnessThreshold(0.01))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final ProgramGene<Double> program = result.getBestPhenotype()
-			.getGenotype()
+		final ProgramGene<Double> program = result.bestPhenotype()
+			.genotype()
 			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);
-		System.out.println("Generations: " + result.getTotalGenerations());
+		System.out.println("Generations: " + result.totalGenerations());
 		System.out.println("Function:    " + new MathExpr(tree));
 		System.out.println("Error:       " + REGRESSION.error(tree));
 

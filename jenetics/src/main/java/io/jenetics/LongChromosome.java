@@ -49,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version !__version__!
  */
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>

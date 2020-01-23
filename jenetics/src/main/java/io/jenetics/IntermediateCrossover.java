@@ -111,8 +111,8 @@ public class IntermediateCrossover<
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
 		final Random random = RandomRegistry.getRandom();
 
-		final double min = v.get(0).getMin().doubleValue();
-		final double max = v.get(0).getMax().doubleValue();
+		final double min = v.get(0).min().doubleValue();
+		final double max = v.get(0).max().doubleValue();
 
 		for (int i = 0, n = min(v.length(), w.length()); i < n; ++i) {
 			final double vi = v.get(i).doubleValue();

@@ -87,7 +87,7 @@ public final class FlatTreeNode<T>
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTreeNode<T> getRoot() {
+	public FlatTreeNode<T> root() {
 		return nodeAt(0);
 	}
 
@@ -107,10 +107,12 @@ public final class FlatTreeNode<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Deprecated
 	public T getValue() {
 		return (T)_elements[_index];
 	}
 
+	@Deprecated
 	@Override
 	public Optional<FlatTreeNode<T>> getParent() {
 		int index = -1;
@@ -261,7 +263,7 @@ public final class FlatTreeNode<T>
 		int index = 0;
 
 		for (Tree<?, ?> node : tree) {
-			elements[index] = node.getValue();
+			elements[index] = node.value();
 			childCounts[index] = node.childCount();
 			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
 

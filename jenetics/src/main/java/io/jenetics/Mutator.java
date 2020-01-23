@@ -123,8 +123,8 @@ public class Mutator<
 				: MutatorResult.of(pt));
 
 		return AltererResult.of(
-			result.map(MutatorResult::getResult).asISeq(),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			result.map(MutatorResult::result).asISeq(),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 
@@ -147,7 +147,7 @@ public class Mutator<
 		final double p,
 		final Random random
 	) {
-		return mutate(phenotype.getGenotype(), p, random)
+		return mutate(phenotype.genotype(), p, random)
 			.map(gt -> Phenotype.of(gt, generation));
 	}
 
@@ -175,8 +175,8 @@ public class Mutator<
 			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			Genotype.of(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			Genotype.of(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 
@@ -203,8 +203,8 @@ public class Mutator<
 			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			chromosome.newInstance(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			chromosome.newInstance(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 

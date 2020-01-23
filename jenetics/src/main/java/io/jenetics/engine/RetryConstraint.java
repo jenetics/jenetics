@@ -112,7 +112,7 @@ public final class RetryConstraint<
 	) {
 		final Factory<Genotype<G>> gtf = _genotypeFactory != null
 			? _genotypeFactory
-			: individual.getGenotype();
+			: individual.genotype();
 
 		int count = 0;
 		Phenotype<G, C> phenotype;
@@ -183,7 +183,7 @@ public final class RetryConstraint<
 		final InvertibleCodec<T, G> codec,
 		final Predicate<? super T> validator
 	) {
-		return of(pt -> validator.test(codec.decode(pt.getGenotype())));
+		return of(pt -> validator.test(codec.decode(pt.genotype())));
 	}
 
 	/**
@@ -238,7 +238,7 @@ public final class RetryConstraint<
 		final int retryLimit
 	) {
 		return of(
-			pt -> validator.test(codec.decode(pt.getGenotype())),
+			pt -> validator.test(codec.decode(pt.genotype())),
 			retryLimit
 		);
 	}

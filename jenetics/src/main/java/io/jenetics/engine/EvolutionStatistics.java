@@ -85,7 +85,7 @@ import io.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
@@ -118,35 +118,35 @@ public abstract class EvolutionStatistics<
 
 	@Override
 	public void accept(final EvolutionResult<?, C> result) {
-		accept(result.getDurations());
+		accept(result.durations());
 
-		_killed.accept(result.getKillCount());
-		_invalids.accept(result.getInvalidCount());
-		_altered.accept(result.getAlterCount());
+		_killed.accept(result.killCount());
+		_invalids.accept(result.invalidCount());
+		_altered.accept(result.alterCount());
 
-		result.getPopulation()
-			.forEach(pt -> accept(pt, result.getGeneration()));
+		result.population()
+			.forEach(pt -> accept(pt, result.generation()));
 	}
 
 	void accept(final Phenotype<?, C> pt, final long generation) {
-		_age.accept(pt.getAge(generation));
+		_age.accept(pt.age(generation));
 	}
 
 	// Calculate duration statistics
 	private void accept(final EvolutionDurations durations) {
 		final double selection =
-			toSeconds(durations.getOffspringSelectionDuration()) +
-				toSeconds(durations.getSurvivorsSelectionDuration());
+			toSeconds(durations.offspringSelectionDuration()) +
+				toSeconds(durations.survivorsSelectionDuration());
 		final double alter =
-			toSeconds(durations.getOffspringAlterDuration()) +
-				toSeconds(durations.getOffspringFilterDuration());
+			toSeconds(durations.offspringAlterDuration()) +
+				toSeconds(durations.offspringFilterDuration());
 
 		_selectionDuration.accept(selection);
 		_alterDuration.accept(alter);
 		_evaluationDuration
-			.accept(toSeconds(durations.getEvaluationDuration()));
+			.accept(toSeconds(durations.evaluationDuration()));
 		_evolveDuration
-			.accept(toSeconds(durations.getEvolveDuration()));
+			.accept(toSeconds(durations.evolveDuration()));
 	}
 
 	private static double toSeconds(final Duration duration) {
@@ -163,6 +163,18 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for selecting the population
 	 */
+	public DoubleMomentStatistics selectionDuration() {
+		return _selectionDuration;
+	}
+
+	/**
+	 * Return the duration statistics needed for selecting the population, in
+	 * seconds.
+	 *
+	 * @return the duration statistics needed for selecting the population
+	 * @deprecated Use {@link #selectionDuration()} instead
+	 */
+	@Deprecated
 	public DoubleMomentStatistics getSelectionDuration() {
 		return _selectionDuration;
 	}
@@ -173,6 +185,18 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for altering the population
 	 */
+	public DoubleMomentStatistics alterDuration() {
+		return _alterDuration;
+	}
+
+	/**
+	 * Return the duration statistics needed for altering the population, in
+	 * seconds.
+	 *
+	 * @return the duration statistics needed for altering the population
+	 * @deprecated Use {@link #alterDuration()} instead
+	 */
+	@Deprecated
 	public DoubleMomentStatistics getAlterDuration() {
 		return _alterDuration;
 	}
@@ -184,6 +208,19 @@ public abstract class EvolutionStatistics<
 	 * @return the duration statistics needed for evaluating the fitness
 	 *         function of the new individuals
 	 */
+	public DoubleMomentStatistics evaluationDuration() {
+		return _evaluationDuration;
+	}
+
+	/**
+	 * Return the duration statistics needed for evaluating the fitness function
+	 * of the new individuals, in seconds.
+	 *
+	 * @return the duration statistics needed for evaluating the fitness
+	 *         function of the new individuals
+	 * @deprecated Use {@link #evaluationDuration()} instead
+	 */
+	@Deprecated
 	public DoubleMomentStatistics getEvaluationDuration() {
 		return _evaluationDuration;
 	}
@@ -194,10 +231,21 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for the whole evolve step
 	 */
-	public DoubleMomentStatistics getEvolveDuration() {
+	public DoubleMomentStatistics evolveDuration() {
 		return _evolveDuration;
 	}
 
+	/**
+	 * Return the duration statistics needed for the whole evolve step, in
+	 * seconds.
+	 *
+	 * @return the duration statistics needed for the whole evolve step
+	 * @deprecated Use {@link #evaluationDuration()} instead
+	 */
+	@Deprecated
+	public DoubleMomentStatistics getEvolveDuration() {
+		return _evolveDuration;
+	}
 
 
 	/* *************************************************************************
@@ -210,6 +258,18 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return killed individual statistics
 	 */
+	public IntMomentStatistics killed() {
+		return _killed;
+	}
+
+	/**
+	 * Return the statistics about the killed individuals during the evolution
+	 * process.
+	 *
+	 * @return killed individual statistics
+	 * @deprecated Use {@link #killed()} instead
+	 */
+	@Deprecated
 	public IntMomentStatistics getKilled() {
 		return _killed;
 	}
@@ -220,6 +280,18 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return invalid individual statistics
 	 */
+	public IntMomentStatistics invalids() {
+		return _invalids;
+	}
+
+	/**
+	 * Return the statistics about the invalid individuals during the evolution
+	 * process.
+	 *
+	 * @return invalid individual statistics
+	 * @deprecated Use {@link #invalids()} instead
+	 */
+	@Deprecated
 	public IntMomentStatistics getInvalids() {
 		return _invalids;
 	}
@@ -230,6 +302,18 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return altered individual statistics
 	 */
+	public IntMomentStatistics altered() {
+		return _altered;
+	}
+
+	/**
+	 * Return the statistics about the altered individuals during the evolution
+	 * process.
+	 *
+	 * @return altered individual statistics
+	 * @deprecated Use {@link #altered()} instead
+	 */
+	@Deprecated
 	public IntMomentStatistics getAltered() {
 		return _altered;
 	}
@@ -239,6 +323,17 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return individual age statistics
 	 */
+	public LongMomentStatistics phenotypeAge() {
+		return _age;
+	}
+
+	/**
+	 * Return the statistics about the individuals age.
+	 *
+	 * @return individual age statistics
+	 * @deprecated Use {@link #phenotypeAge()} instead
+	 */
+	@Deprecated
 	public LongMomentStatistics getPhenotypeAge() {
 		return _age;
 	}
@@ -248,6 +343,17 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return minimal and maximal fitness
 	 */
+	public FitnessStatistics fitness() {
+		return _fitness;
+	}
+
+	/**
+	 * Return the minimal and maximal fitness.
+	 *
+	 * @return minimal and maximal fitness
+	 * @deprecated Use {@link #fitness()} instead
+	 */
+	@Deprecated
 	public FitnessStatistics getFitness() {
 		return _fitness;
 	}
@@ -326,7 +432,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		public void accept(final EvolutionResult<?, C> result) {
 			if (_fitness.max() == null) {
-				_fitness = MinMax.of(result.getOptimize().ascending());
+				_fitness = MinMax.of(result.optimize().ascending());
 			}
 
 			super.accept(result);
@@ -335,7 +441,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, C> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness());
+			_fitness.accept(pt.fitness());
 		}
 
 		@Override
@@ -362,7 +468,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, N> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness().doubleValue());
+			_fitness.accept(pt.fitness().doubleValue());
 		}
 
 		@Override

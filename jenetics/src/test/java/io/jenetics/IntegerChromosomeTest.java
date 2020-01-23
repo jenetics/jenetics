@@ -63,8 +63,8 @@ public class IntegerChromosomeTest
 				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
 				chromosome.forEach(g -> {
-					mm.accept(g.getAllele());
-					histogram.accept(g.getAllele());
+					mm.accept(g.allele());
+					histogram.accept(g.allele());
 				});
 			}
 

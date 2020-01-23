@@ -286,9 +286,9 @@ public class MultiPointCrossoverTest extends AltererTester {
 		for (int i = 1; i < 500; ++i) {
 			final CharSeq chars = CharSeq.of("a-zA-Z");
 			final ISeq<Character> a = ISeq.of(CharacterChromosome.of(chars, i))
-				.map(CharacterGene::getAllele);
+				.map(CharacterGene::allele);
 			final ISeq<Character> b = ISeq.of(CharacterChromosome.of(chars, i))
-				.map(CharacterGene::getAllele);
+				.map(CharacterGene::allele);
 
 			final MSeq<Character> ma1 = a.copy();
 			final MSeq<Character> mb1 = b.copy();

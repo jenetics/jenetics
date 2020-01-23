@@ -130,8 +130,8 @@ public class SimulatedBinaryCrossover<
 			? ((v1 - v2)*0.5) - beta*0.5*abs(v1 - v2)
 			: ((v1 - v2)*0.5) + beta*0.5*abs(v1 - v2);
 
-		final double min = that.get(i).getMin().doubleValue();
-		final double max = that.get(i).getMax().doubleValue();
+		final double min = that.get(i).min().doubleValue();
+		final double max = that.get(i).max().doubleValue();
 		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
 	}
 

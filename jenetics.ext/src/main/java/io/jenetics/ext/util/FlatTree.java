@@ -77,7 +77,7 @@ public interface FlatTree<V, T extends FlatTree<V, T>> extends Tree<V, T> {
 	 * @return the flattened tree values in breadth-first order
 	 */
 	public default ISeq<T> flattenedNodes() {
-		return getRoot().breadthFirstStream().collect(ISeq.toISeq());
+		return root().breadthFirstStream().collect(ISeq.toISeq());
 	}
 
 }

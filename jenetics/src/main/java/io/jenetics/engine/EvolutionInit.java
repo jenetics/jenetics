@@ -42,7 +42,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
 public final class EvolutionInit<G extends Gene<?, G>> {
@@ -63,6 +63,17 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 	 *
 	 * @return the initial population
 	 */
+	public ISeq<Genotype<G>> population() {
+		return _population;
+	}
+
+	/**
+	 * Return the initial population.
+	 *
+	 * @return the initial population
+	 * @deprecated Use {@link #population()} instead
+	 */
+	@Deprecated
 	public ISeq<Genotype<G>> getPopulation() {
 		return _population;
 	}
@@ -72,6 +83,17 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 	 *
 	 * @return the start generation
 	 */
+	public long generation() {
+		return _generation;
+	}
+
+	/**
+	 * Return the generation of the start population.
+	 *
+	 * @return the start generation
+	 * @deprecated Use {@link #generation()} instead
+	 */
+	@Deprecated
 	public long getGeneration() {
 		return _generation;
 	}

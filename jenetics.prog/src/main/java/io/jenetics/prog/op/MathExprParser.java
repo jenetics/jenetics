@@ -364,7 +364,7 @@ final class MathExprParser {
 		final TreeNode<Op<Double>> tree,
 		final List<TreeNode<Op<Double>>> list
 	) {
-		if (tree.getValue() == LIST_OP) {
+		if (tree.value() == LIST_OP) {
 			tree.childStream().forEach(child -> list(child, list));
 		} else {
 			list.add(tree);

@@ -69,9 +69,9 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 
 	@Override
 	public boolean test(final EvolutionResult<G, ?> result) {
-		final ISeq<DoubleMoments> stat = statistics(result.getPopulation());
+		final ISeq<DoubleMoments> stat = statistics(result.population());
 
-		return result.getTotalGenerations() <= 1 ||
+		return result.totalGenerations() <= 1 ||
 			stat.stream()
 				.filter(_convergence)
 				.count() <= _convergenceRate*stat.size();
@@ -82,7 +82,7 @@ final class GeneConvergenceLimit<G extends NumericGene<?, G>>
 		final Map<Long, DoubleMomentStatistics> statistics = new HashMap<>();
 
 		for (Phenotype<G, ?> pt : population) {
-			final Genotype<G> gt = pt.getGenotype();
+			final Genotype<G> gt = pt.genotype();
 
 			for (int i = 0; i < gt.length(); ++i) {
 				final Chromosome<G> ch = gt.get(i);

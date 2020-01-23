@@ -51,7 +51,7 @@ public interface NumericGene<
 	 *         type {@code byte}.
 	 */
 	public default byte byteValue() {
-		return getAllele().byteValue();
+		return allele().byteValue();
 	}
 
 	/**
@@ -62,7 +62,7 @@ public interface NumericGene<
 	 *         type {@code short}.
 	 */
 	public default short shortValue() {
-		return getAllele().shortValue();
+		return allele().shortValue();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public interface NumericGene<
 	 *         type {@code int}.
 	 */
 	public default int intValue() {
-		return getAllele().intValue();
+		return allele().intValue();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public interface NumericGene<
 	 *         type {@code long}.
 	 */
 	public default long longValue() {
-		return getAllele().longValue();
+		return allele().longValue();
 	}
 
 	/**
@@ -95,7 +95,7 @@ public interface NumericGene<
 	 *         type {@code float}.
 	 */
 	public default float floatValue() {
-		return getAllele().floatValue();
+		return allele().floatValue();
 	}
 
 	/**
@@ -106,7 +106,7 @@ public interface NumericGene<
 	 *         type {@code double}.
 	 */
 	public default double doubleValue() {
-		return getAllele().doubleValue();
+		return allele().doubleValue();
 	}
 
 	@Override

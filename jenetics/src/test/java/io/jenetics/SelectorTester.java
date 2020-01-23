@@ -118,7 +118,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Optimize opt
 	) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			g -> g.gene().getAllele();
+			g -> g.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0.0, 100.0));
@@ -136,13 +136,13 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final double monteCarloSelectionSum =
 					new MonteCarloSelector<DoubleGene, Double>()
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				final double selectionSum =
 					selector
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				if (opt == Optimize.MAXIMUM) {
@@ -173,7 +173,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	@Test(dataProvider = "selectParameters")
 	public void select(final Integer size, final Integer count, final Optimize opt) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0.0, 1_000.0));
@@ -300,7 +300,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int loops
 	) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(MIN, MAX));
@@ -317,7 +317,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 			selector.select(population, selectionCount, opt).stream()
-				.map(pt -> pt.getGenotype().gene().getAllele())
+				.map(pt -> pt.genotype().gene().allele())
 				.forEach(hist);
 
 			return hist;

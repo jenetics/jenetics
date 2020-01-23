@@ -63,10 +63,10 @@ public class PartialAltererTest {
 		final Section section = Section.of(1, 3, 5);
 
 		final Phenotype<DoubleGene, Double> split = section.split(pt);
-		Assert.assertEquals(split.getGenotype().length(), 3);
-		Assert.assertEquals(split.getGenotype().get(0), pt.getGenotype().get(1));
-		Assert.assertEquals(split.getGenotype().get(1), pt.getGenotype().get(3));
-		Assert.assertEquals(split.getGenotype().get(2), pt.getGenotype().get(5));
+		Assert.assertEquals(split.genotype().length(), 3);
+		Assert.assertEquals(split.genotype().get(0), pt.genotype().get(1));
+		Assert.assertEquals(split.genotype().get(1), pt.genotype().get(3));
+		Assert.assertEquals(split.genotype().get(2), pt.genotype().get(5));
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class PartialAltererTest {
 		final Seq<Phenotype<DoubleGene, Double>> split = section.split(population);
 		Assert.assertEquals(split.length(), population.length());
 		for (int i = 0; i < population.length(); ++i) {
-			Assert.assertEquals(split.get(i).getGenotype().length(), 2);
+			Assert.assertEquals(split.get(i).genotype().length(), 2);
 		}
 
 		final Seq<Phenotype<DoubleGene, Double>> merged = section.merge(split, population);
@@ -119,15 +119,15 @@ public class PartialAltererTest {
 
 		for (int i = 0; i < population.length(); ++i) {
 			final Phenotype<DoubleGene, Double> pt1 = population.get(0);
-			final Phenotype<DoubleGene, Double> pt2 = result.getPopulation().get(0);
+			final Phenotype<DoubleGene, Double> pt2 = result.population().get(0);
 
-			Assert.assertEquals(pt1.getGenotype().get(0), pt2.getGenotype().get(0));
-			Assert.assertNotEquals(pt1.getGenotype().get(1), pt2.getGenotype().get(1));
-			Assert.assertNotEquals(pt1.getGenotype().get(2), pt2.getGenotype().get(2));
-			Assert.assertEquals(pt1.getGenotype().get(3), pt2.getGenotype().get(3));
+			Assert.assertEquals(pt1.genotype().get(0), pt2.genotype().get(0));
+			Assert.assertNotEquals(pt1.genotype().get(1), pt2.genotype().get(1));
+			Assert.assertNotEquals(pt1.genotype().get(2), pt2.genotype().get(2));
+			Assert.assertEquals(pt1.genotype().get(3), pt2.genotype().get(3));
 
-			Assert.assertEquals(pt2.getGenotype().get(1).gene().doubleValue(), 0.5);
-			Assert.assertEquals(pt2.getGenotype().get(2).gene().doubleValue(), 0.5);
+			Assert.assertEquals(pt2.genotype().get(1).gene().doubleValue(), 0.5);
+			Assert.assertEquals(pt2.genotype().get(2).gene().doubleValue(), 0.5);
 		}
 
 	}
@@ -154,7 +154,7 @@ public class PartialAltererTest {
 		}
 
 		private Phenotype<G, C> mapPt(final Phenotype<G, C> phenotype) {
-			return Phenotype.of(mapGt(phenotype.getGenotype()), phenotype.getGeneration());
+			return Phenotype.of(mapGt(phenotype.genotype()), phenotype.generation());
 		}
 
 		private Genotype<G> mapGt(final Genotype<G> genotype) {

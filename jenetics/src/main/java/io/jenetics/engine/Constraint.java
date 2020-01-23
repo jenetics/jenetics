@@ -207,7 +207,7 @@ public interface Constraint<
 	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
 		return of(
 			validator,
-			(pt, gen) -> Phenotype.of(pt.getGenotype().newInstance(), gen)
+			(pt, gen) -> Phenotype.of(pt.genotype().newInstance(), gen)
 		);
 	}
 
@@ -239,9 +239,9 @@ public interface Constraint<
 		requireNonNull(repairer);
 
 		return of(
-			pt -> validator.test(codec.decode(pt.getGenotype())),
+			pt -> validator.test(codec.decode(pt.genotype())),
 			(pt, gen) -> Phenotype.of(
-				codec.encode(repairer.apply(codec.decode(pt.getGenotype()))),
+				codec.encode(repairer.apply(codec.decode(pt.genotype()))),
 				gen
 			)
 		);

@@ -103,10 +103,10 @@ public class UFTournamentSelector<
 		requireNonNull(distance);
 		requireNonNull(dimension);
 
-		_dominance = (a, b) -> dominance.compare(a.getFitness(), b.getFitness());
-		_comparator = comparator.map(Phenotype::getFitness);
-		_distance = distance.map(Phenotype::getFitness);
-		_dimension = v -> dimension.applyAsInt(v.getFitness());
+		_dominance = (a, b) -> dominance.compare(a.fitness(), b.fitness());
+		_comparator = comparator.map(Phenotype::fitness);
+		_distance = distance.map(Phenotype::fitness);
+		_dimension = v -> dimension.applyAsInt(v.fitness());
 	}
 
 	@Override
@@ -142,9 +142,9 @@ public class UFTournamentSelector<
 					p = random.nextBoolean() ? G[j] : G[j + 1];
 				}
 
-				final C fitness = population.get(p).getFitness();
+				final C fitness = population.get(p).fitness();
 				final List<Phenotype<G, C>> list = population.stream()
-					.filter(pt -> pt.getFitness().equals(fitness))
+					.filter(pt -> pt.fitness().equals(fitness))
 					.collect(Collectors.toList());
 
 				S.add(list.get(random.nextInt(list.size())));
