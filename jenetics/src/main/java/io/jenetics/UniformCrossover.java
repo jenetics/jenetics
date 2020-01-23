@@ -41,7 +41,7 @@ import io.jenetics.util.RandomRegistry;
  * The probability that two genes are swapped is controlled by the
  * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
- * the <i>crossover-probability</i> ({@link #getProbability()}).
+ * the <i>crossover-probability</i> ({@link #probability()}).
  *
  * @see <a href="https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover">
  *     Wikipedia: Uniform crossover</a>

@@ -56,6 +56,17 @@ public abstract class AbstractAlterer<
 	 *
 	 * @return The recombination probability.
 	 */
+	public double probability() {
+		return _probability;
+	}
+
+	/**
+	 * Return the recombination/alter probability for this alterer.
+	 *
+	 * @return The recombination probability.
+	 * @deprecated Use {@link #probability()} instead
+	 */
+	@Deprecated
 	public double getProbability() {
 		return _probability;
 	}
