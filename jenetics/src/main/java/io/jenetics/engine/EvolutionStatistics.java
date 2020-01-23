@@ -135,18 +135,18 @@ public abstract class EvolutionStatistics<
 	// Calculate duration statistics
 	private void accept(final EvolutionDurations durations) {
 		final double selection =
-			toSeconds(durations.getOffspringSelectionDuration()) +
-				toSeconds(durations.getSurvivorsSelectionDuration());
+			toSeconds(durations.offspringSelectionDuration()) +
+				toSeconds(durations.survivorsSelectionDuration());
 		final double alter =
-			toSeconds(durations.getOffspringAlterDuration()) +
-				toSeconds(durations.getOffspringFilterDuration());
+			toSeconds(durations.offspringAlterDuration()) +
+				toSeconds(durations.offspringFilterDuration());
 
 		_selectionDuration.accept(selection);
 		_alterDuration.accept(alter);
 		_evaluationDuration
-			.accept(toSeconds(durations.getEvaluationDuration()));
+			.accept(toSeconds(durations.evaluationDuration()));
 		_evolveDuration
-			.accept(toSeconds(durations.getEvolveDuration()));
+			.accept(toSeconds(durations.evolveDuration()));
 	}
 
 	private static double toSeconds(final Duration duration) {

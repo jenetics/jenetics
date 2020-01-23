@@ -56,7 +56,7 @@ public class EvolutionResultPanel extends JPanel {
 		_bestFitnessTextField.setText(bestFitness);
 		_populationAgeTextField.setText(_format.format(age));
 		_evaluationTimeTextField.setText(format(
-			result.getDurations().getEvaluationDuration()
+			result.getDurations().evaluationDuration()
 		));
 	}
 
