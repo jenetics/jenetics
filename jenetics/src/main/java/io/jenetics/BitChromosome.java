@@ -54,7 +54,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.0
+ * @version !__version__!
  */
 public class BitChromosome extends Number
 	implements

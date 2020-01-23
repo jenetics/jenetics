@@ -142,7 +142,7 @@ public interface EvolutionStream<
 	 *
 	 *     // The fitness function.
 	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
-	 *         return gt.getGene().getAllele();
+	 *         return gt.gene().allele();
 	 *     }
 	 *
 	 *     // Create new evolution start object.
@@ -245,9 +245,9 @@ public interface EvolutionStream<
 	 * private static double var(final EvolutionStart<DoubleGene, Double> result) {
 	 *     return result != null
 	 *         ? result.getPopulation().stream()
-	 *             .map(Phenotype::getFitness)
+	 *             .map(Phenotype::fitness)
 	 *             .collect(DoubleMoments.toDoubleMoments())
-	 *             .getVariance()
+	 *             .variance()
 	 *         : 0.0;
 	 * }
 	 * }</pre>

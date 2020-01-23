@@ -62,7 +62,7 @@ import io.jenetics.util.Seq;
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
- *        final double x = gt.getGene().doubleValue();
+ *        final double x = gt.gene().doubleValue();
  *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *

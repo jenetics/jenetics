@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * for <em>crossover</em>.
  * </p>
  * <p>
- * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * The order ({@link #order()}) of this Recombination implementation is two.
  * </p>
  *
  * @param <G> the gene type.
@@ -99,7 +99,7 @@ public abstract class Crossover<
 			Phenotype.of(Genotype.of(c2), generation)
 		);
 
-		return getOrder();
+		return order();
 	}
 
 	/**

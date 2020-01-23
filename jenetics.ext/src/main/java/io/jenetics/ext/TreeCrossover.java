@@ -95,7 +95,7 @@ public abstract class TreeCrossover<
 			Phenotype.of(Genotype.of(c2.toISeq()), generation)
 		);
 
-		return getOrder();
+		return order();
 	}
 
 	// Since the allele type "A" is not part of the type signature, we have to

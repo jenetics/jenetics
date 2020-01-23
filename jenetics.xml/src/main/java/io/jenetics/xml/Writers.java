@@ -724,7 +724,7 @@ public final class Writers {
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
-						.map(g -> Integer.toString(g.getAlleleIndex()))
+						.map(g -> Integer.toString(g.alleleIndex()))
 						.collect(Collectors.joining(" ")))
 			);
 		}

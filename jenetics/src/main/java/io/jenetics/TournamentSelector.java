@@ -85,6 +85,19 @@ public class TournamentSelector<
 	 *
 	 * @return the sample size of the tournament selector
 	 */
+	public int sampleSize() {
+		return _sampleSize;
+	}
+
+	/**
+	 * Return the sample size of the tournament selector.
+	 *
+	 * @since 5.0
+	 *
+	 * @return the sample size of the tournament selector
+	 * @deprecated Use {@link #sampleSize()} instead
+	 */
+	@Deprecated
 	public int getSampleSize() {
 		return _sampleSize;
 	}

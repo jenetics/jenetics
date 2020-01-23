@@ -41,7 +41,7 @@ import io.jenetics.util.IntRange;
  *     // The used Codec.
  *     private static final Codec<LocalDate, AnyGene<LocalDate>> CODEC = Codec.of(
  *         Genotype.of(AnyChromosome.of(LastMonday::nextRandomMonday)),
- *         gt -> gt.getGene().getAllele()
+ *         gt -> gt.gene().allele()
  *     );
  *
  *     // Supplier of random 'LocalDate' objects. The implementation is responsible

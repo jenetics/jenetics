@@ -49,12 +49,12 @@ public class RSMutatorTest {
 			.mapToInt(EnumGene::allele)
 			.toArray();
 
-		final int[] b = result.getResult().stream()
+		final int[] b = result.result().stream()
 			.mapToInt(EnumGene::allele)
 			.toArray();
 
 		Assert.assertEquals(
-			result.getMutations(),
+			result.mutations(),
 			endIndex(a, b) - startIndex(a, b)
 		);
 	}

@@ -31,7 +31,7 @@ import io.jenetics.util.RandomRegistry;
 
 /**
  * <p>
- * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * The order ({@link #order()}) of this Recombination implementation is two.
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>

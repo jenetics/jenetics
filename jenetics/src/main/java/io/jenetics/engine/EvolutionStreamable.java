@@ -151,7 +151,7 @@ public interface EvolutionStreamable<
 	 *         .limit(Limits.bySteadyFitness(20))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
-	 *     System.out.println(result.getBestPhenotype());
+	 *     System.out.println(result.bestPhenotype());
 	 * }
 	 * }</pre>
 	 *

@@ -49,7 +49,7 @@ public class HPRMutatorTest {
 			.mapToInt(EnumGene::allele)
 			.toArray();
 
-		final int[] b = result.getResult().stream()
+		final int[] b = result.result().stream()
 			.mapToInt(EnumGene::allele)
 			.toArray();
 

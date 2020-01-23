@@ -114,6 +114,17 @@ public class MultiPointCrossover<
 	 *
 	 * @return the number of crossover points.
 	 */
+	public int crossoverPointCount() {
+		return _n;
+	}
+
+	/**
+	 * Return the number of crossover points.
+	 *
+	 * @return the number of crossover points.
+	 * @deprecated Use {@link #crossoverPointCount()} instead
+	 */
+	@Deprecated
 	public int getN() {
 		return _n;
 	}

@@ -49,7 +49,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.3
+ * @version !__version__!
  */
 public final class CharacterGene
 	implements

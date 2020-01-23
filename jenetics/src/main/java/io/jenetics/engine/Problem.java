@@ -35,12 +35,12 @@ import io.jenetics.Genotype;
  * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
  *     // Native fitness function
  *     genes -> (int)genes.stream()
- *         .filter(BitGene::getBit)
+ *         .filter(BitGene::bit)
  *         .count(),
  *     // Problem encoding
  *     Codec.of(
  *         Genotype.of(BitChromosome.of(100)),
- *         gt -> gt.getChromosome().toSeq()
+ *         gt -> ISeq.of(gt.chromosome())
  *     )
  * );
  * }</pre>

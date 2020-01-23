@@ -39,7 +39,7 @@ import io.jenetics.util.RandomRegistry;
  * +---+---+---+---+---+---+---+
  * </pre>
  * The probability that two genes are swapped is controlled by the
- * <i>swap-probability</i> ({@link #getSwapProbability()}), whereas the
+ * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
  * the <i>crossover-probability</i> ({@link #getProbability()}).
  *
@@ -105,6 +105,17 @@ public class UniformCrossover<
 	 *
 	 * @return the probability for swapping genes of a chromosome
 	 */
+	public double swapProbability() {
+		return _swapProbability;
+	}
+
+	/**
+	 * Return the probability for swapping genes of a chromosome.
+	 *
+	 * @return the probability for swapping genes of a chromosome
+	 * @deprecated Use {@link #swapProbability()} instead
+	 */
+	@Deprecated
 	public double getSwapProbability() {
 		return _swapProbability;
 	}
