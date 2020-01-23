@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.base.normalize;
+import static io.jenetics.internal.math.Basics.normalize;
 import static io.jenetics.internal.util.array.shuffle;
 
 import java.util.Arrays;

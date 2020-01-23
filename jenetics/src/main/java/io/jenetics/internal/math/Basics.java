@@ -30,8 +30,8 @@ import io.jenetics.stat.LongSummary;
  * @since 1.0
  * @version 3.0
  */
-public final class base {
-	private base() {}
+public final class Basics {
+	private Basics() {}
 
 	/**
 	 * Normalize the given double array, so that it sum to one. The

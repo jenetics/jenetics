@@ -22,8 +22,8 @@ package io.jenetics;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.base.pow;
-import static io.jenetics.internal.math.base.ulpDistance;
+import static io.jenetics.internal.math.Basics.pow;
+import static io.jenetics.internal.math.Basics.ulpDistance;
 
 import java.util.Comparator;
 import java.util.Random;

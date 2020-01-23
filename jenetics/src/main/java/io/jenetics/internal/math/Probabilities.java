@@ -19,7 +19,7 @@
  */
 package io.jenetics.internal.math;
 
-import static io.jenetics.internal.math.base.pow;
+import static io.jenetics.internal.math.Basics.pow;
 
 /**
  * Mathematical functions regarding probabilities.

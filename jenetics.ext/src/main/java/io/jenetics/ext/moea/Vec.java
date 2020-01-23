@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.moea;
 
-import static io.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.Comparator;
 

@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.Random;
 
