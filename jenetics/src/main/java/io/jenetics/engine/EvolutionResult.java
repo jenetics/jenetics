@@ -358,8 +358,8 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax() != null
-				? mm.getMax().withTotalGenerations(mm.getCount())
+			mm -> mm.max() != null
+				? mm.max().withTotalGenerations(mm.count())
 				: null
 		);
 	}
@@ -392,8 +392,8 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax() != null
-				? mm.getMax().getBestPhenotype()
+			mm -> mm.max() != null
+				? mm.max().getBestPhenotype()
 				: null
 		);
 	}
@@ -426,9 +426,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax() != null
-				? mm.getMax().getBestPhenotype() != null
-					? mm.getMax().getBestPhenotype().getGenotype()
+			mm -> mm.max() != null
+				? mm.max().getBestPhenotype() != null
+					? mm.max().getBestPhenotype().getGenotype()
 					: null
 				: null
 		);
@@ -469,9 +469,9 @@ public final class EvolutionResult<
 			MinMax::<EvolutionResult<G, C>>of,
 			MinMax::accept,
 			MinMax::combine,
-			mm -> mm.getMax() != null
-				? mm.getMax().getBestPhenotype() != null
-					? decoder.apply(mm.getMax().getBestPhenotype().getGenotype())
+			mm -> mm.max() != null
+				? mm.max().getBestPhenotype() != null
+					? decoder.apply(mm.max().getBestPhenotype().getGenotype())
 					: null
 				: null
 		);
@@ -542,7 +542,6 @@ public final class EvolutionResult<
 
 		return result -> {
 			final Seq<Phenotype<G, C>> population = result.getPopulation();
-			final Seq<Genotype<G>> genotypes = result.getGenotypes();
 			final Map<Genotype<G>, Phenotype<G, C>> elements =
 				population.stream()
 					.collect(toMap(

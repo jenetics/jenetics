@@ -38,7 +38,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version !__version__!
  */
 public final class IntSummary implements Serializable {
 
@@ -78,6 +78,17 @@ public final class IntSummary implements Serializable {
 	 *
 	 * @return the count of recorded values
 	 */
+	public long count() {
+		return _count;
+	}
+
+	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 * @deprecated Use {@link #count()} instead
+	 */
+	@Deprecated
 	public long getCount() {
 		return _count;
 	}
@@ -88,6 +99,18 @@ public final class IntSummary implements Serializable {
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
+	public int min() {
+		return _min;
+	}
+
+	/**
+	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
+	 * values have been recorded.
+	 *
+	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
 	public int getMin() {
 		return _min;
 	}
@@ -98,6 +121,18 @@ public final class IntSummary implements Serializable {
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
+	public int max() {
+		return _max;
+	}
+
+	/**
+	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
+	 * values have been recorded.
+	 *
+	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public int getMax() {
 		return _max;
 	}
@@ -108,6 +143,18 @@ public final class IntSummary implements Serializable {
 	 *
 	 * @return the sum of values, or zero if none
 	 */
+	public long sum() {
+		return _sum;
+	}
+
+	/**
+	 * Return the sum of values recorded, or zero if no values have been
+	 * recorded.
+	 *
+	 * @return the sum of values, or zero if none
+	 * @deprecated Use {@link #sum()} instead
+	 */
+	@Deprecated
 	public long getSum() {
 		return _sum;
 	}
@@ -118,6 +165,18 @@ public final class IntSummary implements Serializable {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
+	public double mean() {
+		return _mean;
+	}
+
+	/**
+	 * Return the arithmetic mean of values recorded, or zero if no values have
+	 * been recorded.
+	 *
+	 * @return the arithmetic mean of values, or zero if none
+	 * @deprecated Use {@link #mean()} instead
+	 */
+	@Deprecated
 	public double getMean() {
 		return _mean;
 	}
@@ -147,7 +206,7 @@ public final class IntSummary implements Serializable {
 	public String toString() {
 		return String.format(
 			"IntSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
-			getCount(), getMin(), getMax(), getSum(), getMean()
+			count(), min(), max(), sum(), mean()
 		);
 	}
 

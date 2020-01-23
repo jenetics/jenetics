@@ -350,14 +350,14 @@ public final class IntMoments implements Serializable {
 	 */
 	public static IntMoments of(final IntMomentStatistics statistics) {
 		return new IntMoments(
-			statistics.getCount(),
+			statistics.count(),
 			statistics.min(),
 			statistics.max(),
 			statistics.sum(),
-			statistics.getMean(),
-			statistics.getVariance(),
-			statistics.getSkewness(),
-			statistics.getKurtosis()
+			statistics.mean(),
+			statistics.variance(),
+			statistics.skewness(),
+			statistics.kurtosis()
 		);
 	}
 

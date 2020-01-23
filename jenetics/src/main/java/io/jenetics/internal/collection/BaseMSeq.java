@@ -26,7 +26,7 @@ import io.jenetics.util.BaseSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 5.2
- * @version !_version__!
+ * @version !__version__!
  */
 public interface BaseMSeq<T> extends BaseSeq<T> {
 

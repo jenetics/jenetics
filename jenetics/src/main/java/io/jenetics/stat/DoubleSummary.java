@@ -303,9 +303,9 @@ public final class DoubleSummary implements Serializable {
 		if (values.length > 0) {
 			min = values[0];
 
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] < min) {
-					min = values[i];
+			for (double value : values) {
+				if (value < min) {
+					min = value;
 				}
 			}
 		}
@@ -328,9 +328,9 @@ public final class DoubleSummary implements Serializable {
 		if (values.length > 0) {
 			max = values[0];
 
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] > max) {
-					max = values[i];
+			for (double value : values) {
+				if (value > max) {
+					max = value;
 				}
 			}
 		}

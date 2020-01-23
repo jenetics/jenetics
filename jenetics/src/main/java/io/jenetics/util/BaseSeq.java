@@ -60,6 +60,13 @@ public interface BaseSeq<T> extends Iterable<T> {
 		return listIterator();
 	}
 
+	/**
+	 * Returns a list iterator over the elements in this sequence (in proper
+	 * order).
+	 *
+	 * @return a list iterator over the elements in this sequence (in proper
+	 *         order)
+	 */
 	public default ListIterator<T> listIterator() {
 		return new BaseSeqIterator<>(this);
 	}

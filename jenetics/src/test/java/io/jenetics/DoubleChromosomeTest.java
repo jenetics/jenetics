@@ -69,8 +69,8 @@ public class DoubleChromosomeTest
 				}
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0.0) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100.0) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}

@@ -226,8 +226,8 @@ public class IntMomentStatistics
 	public String toString() {
 		return String.format(
 			"IntMomentStatistics[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
-			getCount(), min(), max(), sum(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			count(), min(), max(), sum(),
+			mean(), variance(), skewness(), kurtosis()
 		);
 	}
 

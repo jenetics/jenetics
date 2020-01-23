@@ -33,9 +33,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -260,17 +258,12 @@ public class CharacterChromosome
 		final String alleles,
 		final CharSeq validChars
 	) {
-		final IntRef index = new IntRef();
-		final Supplier<CharacterGene> geneFactory = () -> CharacterGene.of(
-			alleles.charAt(index.value++), validChars
-		);
+		final MSeq<CharacterGene> genes = MSeq.ofLength(alleles.length());
+		for (int i = 0; i < alleles.length(); ++i) {
+			genes.set(i, CharacterGene.of(alleles.charAt(i), validChars));
+		}
 
-		final ISeq<CharacterGene> genes =
-			MSeq.<CharacterGene>ofLength(alleles.length())
-				.fill(geneFactory)
-				.toISeq();
-
-		return new CharacterChromosome(genes, IntRange.of(alleles.length()));
+		return new CharacterChromosome(genes.toISeq(), IntRange.of(alleles.length()));
 	}
 
 	/**

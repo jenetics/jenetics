@@ -90,7 +90,7 @@ public class UniformCrossoverTest extends AltererTester {
 				statistics.accept(changed);
 			}
 
-			Assert.assertEquals(statistics.getMean(), 5.0, 0.0001);
+			Assert.assertEquals(statistics.mean(), 5.0, 0.0001);
 		});
 	}
 

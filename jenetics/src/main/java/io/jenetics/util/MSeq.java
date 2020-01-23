@@ -570,28 +570,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 		return mseq;
 	}
 
-//	/**
-//	 * Create a new {@code MSeq} instance from the remaining elements of the
-//	 * given iterator.
-//	 *
-//	 * @since 3.3
-//	 *
-//	 * @param <T> the element type.
-//	 * @return a new {@code MSeq} with the given remaining values.
-//	 * @throws NullPointerException if the {@code values} object is
-//	 *        {@code null}.
-//	 */
-//	public static <T> MSeq<T> of(final Iterator<? extends T> values) {
-//		final Stream.Builder<T> builder = Stream.builder();
-//		values.forEachRemaining(builder::add);
-//		final Object[] objects = builder.build().toArray();
-//
-//		return objects.length == 0
-//			? empty()
-//			: new ArrayProxyMSeq<>(
-//				new ObjectArrayProxy<>(objects, 0, objects.length));
-//	}
-
 	/**
 	 * Creates a new sequence, which is filled with objects created be the given
 	 * {@code supplier}.

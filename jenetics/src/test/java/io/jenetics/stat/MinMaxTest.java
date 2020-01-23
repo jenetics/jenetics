@@ -120,8 +120,8 @@ public class MinMaxTest {
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
@@ -134,8 +134,8 @@ public class MinMaxTest {
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
@@ -147,8 +147,8 @@ public class MinMaxTest {
 			.mapToObj(Double::valueOf)
 			.collect(MinMax.toMinMax());
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class MinMaxTest {
 		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
 			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
@@ -172,9 +172,9 @@ public class MinMaxTest {
 			MinMax::combine
 		);
 
-		assertEquals(minMax.getMax(), Integer.valueOf(99));
-		assertEquals(minMax.getMin(), Integer.valueOf(0));
-		assertEquals(100, minMax.getCount());
+		assertEquals(minMax.max(), Integer.valueOf(99));
+		assertEquals(minMax.min(), Integer.valueOf(0));
+		assertEquals(100, minMax.count());
 	}
 
 	@Test
