@@ -53,7 +53,7 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.internal.util.Predicates;
 import io.jenetics.internal.util.bit;
 import io.jenetics.internal.util.require;
@@ -993,7 +993,7 @@ public final class Codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		comb.checkSubSet(basicSet.size(), size);
+		Combinatorics.checkSubSet(basicSet.size(), size);
 
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, basicSet.length())

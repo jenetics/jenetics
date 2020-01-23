@@ -24,7 +24,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -137,7 +137,7 @@ public class MultiPointCrossover<
 		final int k = min(n, _n);
 
 		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? comb.subset(n, k, random) : new int[0];
+		final int[] points = k > 0 ? Combinatorics.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;

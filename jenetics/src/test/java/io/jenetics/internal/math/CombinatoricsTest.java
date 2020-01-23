@@ -36,7 +36,7 @@ import io.jenetics.stat.Histogram;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class combTest {
+public class CombinatoricsTest {
 
 	@Test
 	public void compatibility() {
@@ -49,7 +49,7 @@ public class combTest {
 		for (int i = 1; i <= 1000; ++i) {
 			int[] sub1 = subset(1000, new int[i], new Random(123));
  			int[] sub2 = new int[i];
-			comb.subset(1000, sub2, new Random(123));
+			Combinatorics.subset(1000, sub2, new Random(123));
 			//System.out.println(IntStream.of(sub1).mapToObj(Objects::toString).collect(Collectors.joining(",")));
 
 			Assert.assertTrue(Arrays.equals(sub2, sub1), "K: " + i);
@@ -62,7 +62,7 @@ public class combTest {
 
 		final Set<String> subsets = new HashSet<>();
 		for (int i = 0; i < 3000; ++i) {
-			subsets.add(Arrays.toString(comb.subset(n, new int[k], random)));
+			subsets.add(Arrays.toString(Combinatorics.subset(n, new int[k], random)));
 		}
 		Assert.assertEquals(subsets.size(), binomial(n, k));
 	}
@@ -95,7 +95,7 @@ public class combTest {
 
 		for (int i = 1; i <= 1000; ++i) {
 			int[] sub = new int[i];
-			comb.subset(1000, sub, random);
+			Combinatorics.subset(1000, sub, random);
 
 			Assert.assertTrue(isSortedAndUnique(sub), "K: " + i);
 		}
@@ -118,7 +118,7 @@ public class combTest {
 		final Histogram<Integer> histogram = Histogram.ofInteger(0, n, 13);
 
 		IntStream.range(0, 10_000)
-			.flatMap(i -> IntStream.of(comb.subset(n, sub, random)))
+			.flatMap(i -> IntStream.of(Combinatorics.subset(n, sub, random)))
 			.forEach(histogram::accept);
 
 		assertUniformDistribution(histogram);

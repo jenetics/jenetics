@@ -34,8 +34,8 @@ import io.jenetics.util.RandomRegistry;
  * @version 4.0
  * @since 4.0
  */
-public final class comb {
-	private comb() {}
+public final class Combinatorics {
+	private Combinatorics() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.
