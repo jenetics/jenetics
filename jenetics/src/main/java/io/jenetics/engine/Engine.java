@@ -440,8 +440,8 @@ public final class Engine<
 
 	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		final ISeq<Genotype<G>> pop = init.getPopulation();
-		final long gen = init.getGeneration();
+		final ISeq<Genotype<G>> pop = init.population();
+		final long gen = init.generation();
 
 		return evolutionStart(
 			EvolutionStart.of(

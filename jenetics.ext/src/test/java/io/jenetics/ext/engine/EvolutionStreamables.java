@@ -76,7 +76,7 @@ final class EvolutionStreamables {
 						@Override
 						public Integer get() {
 							if (value == null) {
-								value  = init.getPopulation()
+								value  = init.population()
 									.get(0)
 									.gene()
 									.intValue();
