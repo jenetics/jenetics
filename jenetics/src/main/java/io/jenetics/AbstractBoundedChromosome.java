@@ -71,8 +71,8 @@ abstract class AbstractBoundedChromosome<
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	@Override

@@ -68,8 +68,8 @@ public class BigIntegerChromosome
 	 */
 	protected BigIntegerChromosome(final ISeq<BigIntegerGene> genes) {
 		super(genes);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	/**

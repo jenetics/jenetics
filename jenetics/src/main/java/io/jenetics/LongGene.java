@@ -94,11 +94,13 @@ public final class LongGene
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Long getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Long getMax() {
 		return _max;

@@ -81,11 +81,13 @@ public final class BigIntegerGene
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getMax() {
 		return _max;

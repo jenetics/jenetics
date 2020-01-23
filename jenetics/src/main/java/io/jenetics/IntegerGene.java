@@ -93,11 +93,13 @@ public final class IntegerGene
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMax() {
 		return _max;

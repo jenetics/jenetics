@@ -92,11 +92,13 @@ public final class DoubleGene
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Double getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Double getMax() {
 		return _max;

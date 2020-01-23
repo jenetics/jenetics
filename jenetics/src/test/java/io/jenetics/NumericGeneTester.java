@@ -47,8 +47,8 @@ public abstract class NumericGeneTester<
 		for (int i = 0; i < 100; ++i) {
 			final G gene = factory().newInstance();
 
-			Assert.assertTrue(gene.allele().compareTo(gene.getMin()) >= 0);
-			Assert.assertTrue(gene.allele().compareTo(gene.getMax()) <= 0);
+			Assert.assertTrue(gene.allele().compareTo(gene.min()) >= 0);
+			Assert.assertTrue(gene.allele().compareTo(gene.max()) <= 0);
 		}
 	}
 
