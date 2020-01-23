@@ -88,6 +88,7 @@ public final class LongGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Long getAllele() {
 		return _value;

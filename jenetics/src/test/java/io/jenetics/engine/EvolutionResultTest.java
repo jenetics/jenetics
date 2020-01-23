@@ -57,7 +57,7 @@ public class EvolutionResultTest
 	protected Factory<EvolutionResult<DoubleGene, Double>> factory() {
 		final Function<Genotype<DoubleGene>, Double> ff =
 			(Function<Genotype<DoubleGene>, Double> & Serializable)
-				a -> a.gene().getAllele();
+				a -> a.gene().allele();
 
 		return () -> {
 			final Random random = RandomRegistry.getRandom();
@@ -93,7 +93,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectEvolutionResult() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final EvolutionResult<DoubleGene, Double> result = engine.stream()
@@ -107,7 +107,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectPhenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Phenotype<DoubleGene, Double> result = engine.stream()
@@ -121,7 +121,7 @@ public class EvolutionResultTest
 	@Test
 	public void emptyStreamCollectGenotype() {
 		final Engine<DoubleGene, Double> engine = Engine
-			.builder(a -> a.gene().getAllele(), DoubleChromosome.of(0, 1))
+			.builder(a -> a.gene().allele(), DoubleChromosome.of(0, 1))
 			.build();
 
 		final Genotype<DoubleGene> result = engine.stream()
@@ -164,7 +164,7 @@ public class EvolutionResultTest
 	@Test
 	public void compareTo() {
 		final int length = 100;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().allele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> small = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
@@ -227,7 +227,7 @@ public class EvolutionResultTest
 		final int bestMinValue = IntStream.range(0, 100)
 			.mapToObj(value -> newResult(Optimize.MINIMUM, value))
 			.collect(EvolutionResult.toBestGenotype())
-			.gene().getAllele();
+			.gene().allele();
 
 		Assert.assertEquals(bestMinValue, 0);
 	}
@@ -237,7 +237,7 @@ public class EvolutionResultTest
 		final int value
 	) {
 		final int length = 1000;
-		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().getAllele();
+		final Function<Genotype<IntegerGene>, Integer> ff = gt -> gt.gene().allele();
 
 		final MSeq<Phenotype<IntegerGene, Integer>> pop = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

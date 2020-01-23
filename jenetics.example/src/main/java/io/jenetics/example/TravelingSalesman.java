@@ -104,7 +104,7 @@ public final class TravelingSalesman
 
 		final ISeq<WayPoint> path = best.getGenotype()
 			.chromosome().stream()
-			.map(Gene::getAllele)
+			.map(Gene::allele)
 			.collect(ISeq.toISeq());
 
 		final GPX gpx = GPX.builder()

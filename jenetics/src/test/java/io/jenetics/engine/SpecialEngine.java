@@ -32,7 +32,7 @@ public final class SpecialEngine {
 
 	// The fitness function.
 	private static Double fitness(final Genotype<DoubleGene> gt) {
-		return gt.gene().getAllele();
+		return gt.gene().allele();
 	}
 
 	// Create new evolution start object.

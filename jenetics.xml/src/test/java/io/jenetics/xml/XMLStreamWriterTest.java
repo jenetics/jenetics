@@ -47,7 +47,7 @@ public class XMLStreamWriterTest {
 		xml.writeStartElement("alleles");
 		for (IntegerGene gene : ch) {
 			xml.writeStartElement("allele");
-			xml.writeCharacters(gene.getAllele().toString());
+			xml.writeCharacters(gene.allele().toString());
 			xml.writeEndElement();
 		}
 		xml.writeEndElement();

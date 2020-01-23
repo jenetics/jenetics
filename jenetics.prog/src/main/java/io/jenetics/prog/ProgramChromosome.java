@@ -422,7 +422,7 @@ public class ProgramChromosome<A>
 		out.writeObject(_terminals);
 
 		for (ProgramGene<A> gene : _genes) {
-			out.writeObject(gene.getAllele());
+			out.writeObject(gene.allele());
 			writeInt(gene.childOffset(), out);
 		}
 	}

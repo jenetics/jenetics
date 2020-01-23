@@ -59,13 +59,13 @@ public interface BoundedGene<
 	@Override
 	public default boolean isValid() {
 		return
-			getAllele().compareTo(getMin()) >= 0 &&
-			getAllele().compareTo(getMax()) <= 0;
+			allele().compareTo(getMin()) >= 0 &&
+			allele().compareTo(getMax()) <= 0;
 	}
 
 	@Override
 	public default int compareTo(final G other) {
-		return getAllele().compareTo(other.getAllele());
+		return allele().compareTo(other.allele());
 	}
 
 	/**

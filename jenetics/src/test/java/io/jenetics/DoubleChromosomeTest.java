@@ -64,8 +64,8 @@ public class DoubleChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
 				for (DoubleGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 

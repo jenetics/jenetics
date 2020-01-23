@@ -85,6 +85,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		_validator = requireNonNull(validator);
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _allele;

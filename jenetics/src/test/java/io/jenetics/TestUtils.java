@@ -165,7 +165,7 @@ class TestUtils {
 	}
 
 	private static final Function<Genotype<EnumGene<Double>>, Double>
-	PFF = gt -> gt.gene().getAllele();
+	PFF = gt -> gt.gene().allele();
 
 	/**
 	 * Count the number of different genes.
@@ -197,7 +197,7 @@ class TestUtils {
 	 * 'Identity' fitness function.
 	 */
 	public static final Function<Genotype<DoubleGene>, Double> FF =
-		gt -> gt.gene().getAllele();
+		gt -> gt.gene().allele();
 
 
 	public static Phenotype<DoubleGene, Double> newDoublePhenotype(final double value) {

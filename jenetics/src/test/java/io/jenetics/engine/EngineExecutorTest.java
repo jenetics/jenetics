@@ -34,7 +34,7 @@ public class EngineExecutorTest {
 	private static double f(final Genotype<DoubleGene> gt) {
 		return IntStream.range(0, 50000)
 			.mapToDouble(Math::sinh)
-			.sum()*gt.gene().getAllele();
+			.sum()*gt.gene().allele();
 	}
 
 	public static void main(final String[] args) {
@@ -49,7 +49,7 @@ public class EngineExecutorTest {
 			final Double result = engine.stream()
 				.limit(100)
 				.collect(EvolutionResult.toBestGenotype())
-				.gene().getAllele();
+				.gene().allele();
 
 			System.out.println("Gen: " + i + ": " + result);
 		}

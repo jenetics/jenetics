@@ -128,6 +128,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _childOffset;
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _allele;

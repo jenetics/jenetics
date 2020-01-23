@@ -54,7 +54,7 @@ final class PolygonMutator<C extends Comparable<? super C>>
 	}
 
 	private PolygonGene mutate(final PolygonGene gene) {
-		return gene.newInstance(gene.getAllele().mutate(_rate, _magnitude));
+		return gene.newInstance(gene.allele().mutate(_rate, _magnitude));
 	}
 
 }

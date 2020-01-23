@@ -70,7 +70,7 @@ public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 		}
 
 		for (int i = 0; i < alleles.length(); ++i) {
-			Assert.assertEquals(new EnumGene<>(i, alleles).getAllele(), Integer.valueOf(i));
+			Assert.assertEquals(new EnumGene<>(i, alleles).allele(), Integer.valueOf(i));
 			Assert.assertSame(new EnumGene<>(i, alleles).getValidAlleles(), alleles);
 		}
 	}

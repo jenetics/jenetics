@@ -292,7 +292,7 @@ public final class Writers {
 				elem(MAX_NAME, alleleWriter.map(ch -> ch.getMax())),
 				elem(ALLELES_NAME,
 					elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ISeq.of(ch).map(G::getAllele))
+						.map(ch -> ISeq.of(ch).map(G::allele))
 				)
 			);
 		}
@@ -732,7 +732,7 @@ public final class Writers {
 		private static String toAlleleTypeName(
 			final io.jenetics.PermutationChromosome<?> ch
 		) {
-			return ch.gene().getAllele().getClass().getCanonicalName();
+			return ch.gene().allele().getClass().getCanonicalName();
 		}
 
 		/**

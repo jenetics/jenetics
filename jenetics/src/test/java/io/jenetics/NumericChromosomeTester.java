@@ -85,15 +85,15 @@ public abstract class NumericChromosomeTester<
 	public void assertValid(final NumericChromosome<N, G> c) {
 		if (c.isValid()) {
 			for (G gene: c) {
-				Assert.assertTrue(gene.getAllele().compareTo(c.getMin()) >= 0);
-				Assert.assertTrue(gene.getAllele().compareTo(c.getMax()) <= 0);
+				Assert.assertTrue(gene.allele().compareTo(c.getMin()) >= 0);
+				Assert.assertTrue(gene.allele().compareTo(c.getMax()) <= 0);
 			}
 
 		} else {
 			for (G gene : c) {
 				Assert.assertTrue(
-					gene.getAllele().compareTo(c.getMin()) < 0 ||
-						gene.getAllele().compareTo(c.getMax()) > 0
+					gene.allele().compareTo(c.getMin()) < 0 ||
+						gene.allele().compareTo(c.getMax()) > 0
 				);
 			}
 		}

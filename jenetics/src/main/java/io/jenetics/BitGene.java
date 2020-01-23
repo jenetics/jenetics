@@ -62,7 +62,7 @@ public enum BitGene
 	/**
 	 * Return the {@code boolean} value of this gene.
 	 *
-	 * @see #getAllele()
+	 * @see #allele()
 	 *
 	 * @return the {@code boolean} value of this gene.
 	 */
@@ -70,6 +70,7 @@ public enum BitGene
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Boolean getAllele() {
 		return _value;

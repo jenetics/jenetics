@@ -525,9 +525,9 @@ public class CodecsTest {
 			final AnyGene<Integer> gene = codec.encoding()
 				.newInstance().gene();
 
-			assertEquals(gene.isValid(), gene.getAllele() < 100);
-			assertTrue(gene.getAllele() < 1000);
-			assertTrue(gene.getAllele() >= 0);
+			assertEquals(gene.isValid(), gene.allele() < 100);
+			assertTrue(gene.allele() < 1000);
+			assertTrue(gene.allele() >= 0);
 		}
 	}
 
@@ -542,8 +542,8 @@ public class CodecsTest {
 				.newInstance().gene();
 
 			assertTrue(gene.isValid());
-			assertTrue(gene.getAllele() < 1000);
-			assertTrue(gene.getAllele() >= 0);
+			assertTrue(gene.allele() < 1000);
+			assertTrue(gene.allele() >= 0);
 		}
 	}
 
@@ -564,14 +564,14 @@ public class CodecsTest {
 			assertEquals(ch.length(), length);
 
 			for (AnyGene<Integer> gene : ch) {
-				assertEquals(gene.isValid(), gene.getAllele() < 100);
+				assertEquals(gene.isValid(), gene.allele() < 100);
 
 				if (!gene.isValid()) {
 					Assert.assertFalse(ch.isValid());
 				}
 
-				assertTrue(gene.getAllele() < 1000);
-				assertTrue(gene.getAllele() >= 0);
+				assertTrue(gene.allele() < 1000);
+				assertTrue(gene.allele() >= 0);
 			}
 		}
 	}

@@ -184,7 +184,7 @@ public class BigIntegerChromosome
 		writeBytes(_max.toByteArray(), out);
 
 		for (BigIntegerGene gene : _genes) {
-			writeBytes(gene.getAllele().toByteArray(), out);
+			writeBytes(gene.allele().toByteArray(), out);
 		}
 	}
 

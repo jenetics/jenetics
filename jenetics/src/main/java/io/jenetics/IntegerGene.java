@@ -87,6 +87,7 @@ public final class IntegerGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getAllele() {
 		return _value;

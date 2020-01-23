@@ -57,7 +57,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
-				.mapToObj(i -> IntegerGene.of(min, max).getAllele())
+				.mapToObj(i -> IntegerGene.of(min, max).allele())
 				.forEach(histogram)
 		);
 
@@ -69,7 +69,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		final IntegerGene gene = IntegerGene.of(10, 10);
 		Assert.assertEquals(gene.getMin().intValue(), 10);
 		Assert.assertEquals(gene.getMax().intValue(), 10);
-		Assert.assertEquals(gene.getAllele().intValue(), 10);
+		Assert.assertEquals(gene.allele().intValue(), 10);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 			assertEquals(b.getMax().longValue(), max);
 			assertEquals(c.getMin().longValue(), min);
 			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), ((i - 50) + ((i - 100)*3))/2);
+			assertEquals(c.allele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 		IntegerGene gene = IntegerGene.of(1, 0, 12);
 		IntegerGene g2 = gene.newInstance(5L);
 
-		assertEquals(g2.getAllele().longValue(), 5);
+		assertEquals(g2.allele().longValue(), 5);
 		assertEquals(g2.getMin().longValue(), 0);
 		assertEquals(g2.getMax().longValue(), 12);
 	}
@@ -112,7 +112,7 @@ public class IntegerGeneTest extends NumericGeneTester<Integer, IntegerGene> {
 	@Test
 	public void set() {
 		IntegerGene gene = IntegerGene.of(5, 0, 10);
-		Assert.assertEquals(gene.getAllele().intValue(), 5);
+		Assert.assertEquals(gene.allele().intValue(), 5);
 		Assert.assertEquals(gene.getMin().intValue(), 0);
 		Assert.assertEquals(gene.getMax().intValue(), 10);
 	}

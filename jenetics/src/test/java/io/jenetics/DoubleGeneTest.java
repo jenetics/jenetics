@@ -59,7 +59,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 
 		using(new Random(12345), r -> {
 			IntStream.range(0, 200_000)
-				.mapToObj(i -> DoubleGene.of(min, max).getAllele())
+				.mapToObj(i -> DoubleGene.of(min, max).allele())
 				.forEach(histogram);
 		});
 
@@ -83,14 +83,14 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 			assertEquals(b.getMax().doubleValue(), max);
 			assertEquals(c.getMin().doubleValue(), min);
 			assertEquals(c.getMax().doubleValue(), max);
-			assertEquals(c.getAllele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
+			assertEquals(c.allele().doubleValue(), ((i - 50) + ((i - 100)*3))/2.0);
 		}
 	}
 
 	@Test
 	public void doubleGeneIntegerIntegerInteger() {
 		DoubleGene gene = DoubleGene.of(1.234, 0.345, 2.123);
-		assertEquals(gene.getAllele().doubleValue(), 1.234);
+		assertEquals(gene.allele().doubleValue(), 1.234);
 		assertEquals(gene.getMin().doubleValue(), 0.345);
 		assertEquals(gene.getMax().doubleValue(), 2.123);
 
@@ -114,7 +114,7 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		DoubleGene gene = DoubleGene.of(1.2345, -1234.1234, 1234.1234);
 		DoubleGene g2 = gene.newInstance(5.0);
 
-		assertEquals(g2.getAllele().intValue(), 5);
+		assertEquals(g2.allele().intValue(), 5);
 		assertEquals(g2.getMin().doubleValue(), -1234.1234);
 		assertEquals(g2.getMax().doubleValue(), 1234.1234);
 	}

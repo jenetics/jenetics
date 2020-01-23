@@ -40,7 +40,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 
 	@Override
 	public default A getValue() {
-		return getAllele();
+		return allele();
 	}
 
 	/**

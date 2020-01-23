@@ -86,6 +86,7 @@ public final class DoubleGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Double getAllele() {
 		return _value;

@@ -39,8 +39,8 @@ import io.jenetics.util.RandomRegistry;
 public class Sorting {
 
 	private static int dist(Chromosome<EnumGene<Integer>> path, int i, int j) {
-		return (path.get(i).getAllele() - path.get(j).getAllele())*
-			(path.get(i).getAllele() - path.get(j).getAllele());
+		return (path.get(i).allele() - path.get(j).allele())*
+			(path.get(i).allele() - path.get(j).allele());
 	}
 
 	private static int length(final Genotype<EnumGene<Integer>> genotype) {

@@ -46,11 +46,11 @@ public class HPRMutatorTest {
 			mutator.mutate(original, 1, new Random());
 
 		final int[] a = original.stream()
-			.mapToInt(EnumGene::getAllele)
+			.mapToInt(EnumGene::allele)
 			.toArray();
 
 		final int[] b = result.getResult().stream()
-			.mapToInt(EnumGene::getAllele)
+			.mapToInt(EnumGene::allele)
 			.toArray();
 
 		Assert.assertNotEquals(a, b);

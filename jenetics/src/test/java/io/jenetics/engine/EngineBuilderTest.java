@@ -43,7 +43,7 @@ public class EngineBuilderTest {
 	@Test
 	public void build() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 		final Selector<DoubleGene, Double> survivorsSelector = new RouletteWheelSelector<>();
@@ -78,7 +78,7 @@ public class EngineBuilderTest {
 	@Test
 	public void offspringFractionZero() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -95,7 +95,7 @@ public class EngineBuilderTest {
 	@Test
 	public void offspringFractionOne() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -112,7 +112,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsFraction() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -128,7 +128,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsFractionZero() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -145,7 +145,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsFractionOne() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -162,7 +162,7 @@ public class EngineBuilderTest {
 	@Test
 	public void survivorsSize() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 
@@ -178,7 +178,7 @@ public class EngineBuilderTest {
 	@Test
 	public void offspringSize() {
 		final Function<Genotype<DoubleGene>, Double> fitnessFunction =
-			gt -> gt.gene().getAllele();
+			gt -> gt.gene().allele();
 		final Factory<Genotype<DoubleGene>> genotypeFactory =
 			Genotype.of(DoubleChromosome.of(0, 1));
 

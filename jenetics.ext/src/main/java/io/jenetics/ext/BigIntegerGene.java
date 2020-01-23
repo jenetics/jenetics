@@ -75,6 +75,7 @@ public final class BigIntegerGene
 		_max = requireNonNull(max);
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getAllele() {
 		return _value;

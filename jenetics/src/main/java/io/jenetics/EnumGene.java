@@ -121,6 +121,7 @@ public final class EnumGene<A>
 		return _alleleIndex;
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _validAlleles.get(_alleleIndex);
@@ -181,7 +182,7 @@ public final class EnumGene<A>
 
 	@Override
 	public String toString() {
-		return Objects.toString(getAllele());
+		return Objects.toString(allele());
 	}
 
 

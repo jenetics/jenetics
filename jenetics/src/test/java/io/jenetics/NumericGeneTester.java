@@ -36,7 +36,7 @@ public abstract class NumericGeneTester<
 	public void newInstanceFromNumber() {
 		for (int i = 0; i < 100; ++i) {
 			final G gene1 = factory().newInstance();
-			final G gene2 = gene1.newInstance(gene1.getAllele());
+			final G gene2 = gene1.newInstance(gene1.allele());
 
 			Assert.assertEquals(gene2, gene1);
 		}
@@ -47,8 +47,8 @@ public abstract class NumericGeneTester<
 		for (int i = 0; i < 100; ++i) {
 			final G gene = factory().newInstance();
 
-			Assert.assertTrue(gene.getAllele().compareTo(gene.getMin()) >= 0);
-			Assert.assertTrue(gene.getAllele().compareTo(gene.getMax()) <= 0);
+			Assert.assertTrue(gene.allele().compareTo(gene.getMin()) >= 0);
+			Assert.assertTrue(gene.allele().compareTo(gene.getMax()) <= 0);
 		}
 	}
 
@@ -58,9 +58,9 @@ public abstract class NumericGeneTester<
 			final G gene1 = factory().newInstance();
 			final G gene2 = factory().newInstance();
 
-			if (gene1.getAllele().compareTo(gene2.getAllele()) > 0) {
+			if (gene1.allele().compareTo(gene2.allele()) > 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) > 0);
-			} else if (gene1.getAllele().compareTo(gene2.getAllele()) < 0) {
+			} else if (gene1.allele().compareTo(gene2.allele()) < 0) {
 				Assert.assertTrue(gene1.compareTo(gene2) < 0);
 			} else {
 				Assert.assertEquals(0, gene1.compareTo(gene2));
