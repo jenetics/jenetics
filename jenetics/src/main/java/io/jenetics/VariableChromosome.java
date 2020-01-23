@@ -70,7 +70,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 		}
 		if (lengthRange.max() <= 0) {
 			throw new IllegalArgumentException(format(
-				"Maximum length must be positive: %d", lengthRange.min()
+				"Maximum length must be positive: %d", lengthRange.max()
 			));
 		}
 		if (lengthRange.size() <= 0) {

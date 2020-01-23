@@ -71,6 +71,39 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	}
 
 	/**
+	 * Get the array value at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @return the value at the given index
+	 */
+	@Override
+	public T get(final int index) {
+		return _store.get(index + _start);
+	}
+
+	/**
+	 * Return the array length.
+	 *
+	 * @return the array length
+	 */
+	@Override
+	public int length() {
+		return _length;
+	}
+
+	/**
+	 * Set the {@code value} at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @param value the value to set
+	 */
+	public void set(final int index, final T value) {
+		_store.set(index + _start, value);
+	}
+
+	/**
 	 * Return the underlying array store.
 	 *
 	 * @return the underlying array store
@@ -103,17 +136,6 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	}
 
 	/**
-	 * Set the {@code value} at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @param value the value to set
-	 */
-	public void set(final int index, final T value) {
-		_store.set(index + _start, value);
-	}
-
-	/**
 	 * Sort the store.
 	 *
 	 * @param from the start index where to start sorting (inclusively)
@@ -128,18 +150,6 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 		final Comparator<? super T> comparator
 	) {
 		_store.sort(from + _start, until + _start, comparator);
-	}
-
-	/**
-	 * Get the array value at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @return the value at the given index
-	 */
-	@Override
-	public T get(final int index) {
-		return _store.get(index + _start);
 	}
 
 	/**
@@ -233,16 +243,6 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 		}
 
 		return size;
-	}
-
-	/**
-	 * Return the array length.
-	 *
-	 * @return the array length
-	 */
-	@Override
-	public int length() {
-		return _length;
 	}
 
 	/**
