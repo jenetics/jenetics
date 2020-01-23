@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
 

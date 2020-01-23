@@ -22,7 +22,7 @@ package io.jenetics.internal.util;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.min;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.RandomRegistry;
 
 
@@ -510,7 +510,7 @@ public final class bit {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		random.indexes(RandomRegistry.getRandom(), length, p)
+		Randoms.indexes(RandomRegistry.getRandom(), length, p)
 			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
 
 		return bytes;

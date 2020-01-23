@@ -28,7 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -208,7 +208,7 @@ public class bitTest {
 
 	@Test
 	public void flip() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 		final byte[] data = new byte[1000];
 
@@ -404,7 +404,7 @@ public class bitTest {
 
 	@Test
 	public void complement() {
-		final Random random = new Random(io.jenetics.internal.math.random.seed());
+		final Random random = new Random(Randoms.seed());
 		final byte[] data = new byte[20];
 		random.nextBytes(data);
 

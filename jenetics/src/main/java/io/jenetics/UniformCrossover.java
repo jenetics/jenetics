@@ -20,7 +20,7 @@
 package io.jenetics;
 
 import static java.lang.Math.min;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import io.jenetics.internal.util.require;
 import io.jenetics.util.MSeq;

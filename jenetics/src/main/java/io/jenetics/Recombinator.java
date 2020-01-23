@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.math.comb.subset;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
 

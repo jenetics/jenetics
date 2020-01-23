@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -253,7 +253,7 @@ public final class CharacterGene
 	) {
 		final Random r = RandomRegistry.getRandom();
 
-		return MSeq.<CharacterGene>ofLength(random.nextInt(lengthRange, r))
+		return MSeq.<CharacterGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
 			.toISeq();
 	}

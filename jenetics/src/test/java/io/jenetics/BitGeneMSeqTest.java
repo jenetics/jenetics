@@ -26,7 +26,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.internal.collection.Array;
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.MSeq;
 
 /**
@@ -74,7 +74,7 @@ public class BitGeneMSeqTest  {
 	@Test(dataProvider = "sequences")
 	public void swapIntIntMSeqInt(final MSeq<BitGene> seq) {
 		for (int start = 0; start < seq.length() - 3; ++start) {
-			final long seed = random.seed();
+			final long seed = Randoms.seed();
 			final Random random = new Random(seed);
 			final MSeq<BitGene> other = newSeq(seq.length());
 			final MSeq<BitGene> otherCopy = newSeq(seq.length());

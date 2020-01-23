@@ -26,7 +26,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -35,7 +35,7 @@ public class BaseSeqIteratorTest {
 
 	@Test
 	public void iterateForward() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
@@ -56,7 +56,7 @@ public class BaseSeqIteratorTest {
 
 	@Test
 	public void iterateBackward() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final Array<Integer> array = Array.ofLength(10);
@@ -82,7 +82,7 @@ public class BaseSeqIteratorTest {
 
 	@Test
 	public void nextIndex() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));
@@ -113,7 +113,7 @@ public class BaseSeqIteratorTest {
 
 	@Test
 	public void previousIndex() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final Array<Integer> proxy = Array.of(ObjectStore.ofLength(1000));

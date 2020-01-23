@@ -20,7 +20,7 @@
 package io.jenetics.example;
 
 import static java.lang.Math.pow;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.ArrayList;
 import java.util.List;

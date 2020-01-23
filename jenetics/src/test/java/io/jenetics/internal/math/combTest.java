@@ -203,7 +203,7 @@ public class combTest {
 	}
 
 	private static int nextInt(final Random r, final int a, final int b) {
-		return random.nextInt(a, b + 1, r);
+		return Randoms.nextInt(a, b + 1, r);
 	}
 
 }

@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.math.Randoms.nextDouble;
 
 import java.util.Random;
 

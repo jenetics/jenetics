@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
@@ -31,7 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -279,7 +279,7 @@ public final class DoubleGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
+		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();
 	}

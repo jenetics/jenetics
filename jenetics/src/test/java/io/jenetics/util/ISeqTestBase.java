@@ -26,7 +26,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -54,7 +54,7 @@ public abstract class ISeqTestBase extends SeqTestBase {
 			Assert.assertEquals(mcopy[i], seq.get(i));
 		}
 
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 		for (int i = 0; i < copy.length(); ++i) {
 			copy.set(i, random.nextInt());
