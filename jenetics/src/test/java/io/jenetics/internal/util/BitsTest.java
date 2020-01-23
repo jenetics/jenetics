@@ -34,7 +34,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class bitTest {
+public class BitsTest {
 
 	@Test(dataProvider = "byteStrData")
 	public void byteStr(final byte[] data, final String result) {
