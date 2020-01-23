@@ -52,7 +52,7 @@ import io.jenetics.prog.op.Program;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version !__version__!
  * @since 3.9
  */
 public final class ProgramGene<A>
@@ -124,6 +124,17 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed operations
 	 */
+	public ISeq<Op<A>> operations() {
+		return ISeq.upcast(_operations);
+	}
+
+	/**
+	 * Return the allowed operations.
+	 *
+	 * @return the allowed operations
+	 * @deprecated Use {@link #operations()} instead
+	 */
+	@Deprecated
 	public ISeq<Op<A>> getOperations() {
 		return ISeq.upcast(_operations);
 	}
@@ -133,6 +144,17 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed terminal operations
 	 */
+	public ISeq<Op<A>> terminals() {
+		return ISeq.upcast(_terminals);
+	}
+
+	/**
+	 * Return the allowed terminal operations.
+	 *
+	 * @return the allowed terminal operations
+	 * @deprecated Use {@link #terminals()} instead
+	 */
+	@Deprecated
 	public ISeq<Op<A>> getTerminals() {
 		return ISeq.upcast(_terminals);
 	}

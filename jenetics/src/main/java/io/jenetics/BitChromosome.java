@@ -351,7 +351,7 @@ public class BitChromosome extends Number
 	public BitSet toBitSet() {
 		final BitSet set = new BitSet(length());
 		for (int i = 0, n = length(); i < n; ++i) {
-			set.set(i, get(i).getBit());
+			set.set(i, get(i).bit());
 		}
 		return set;
 	}
