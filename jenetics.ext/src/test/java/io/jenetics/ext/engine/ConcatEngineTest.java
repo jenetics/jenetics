@@ -94,7 +94,7 @@ public class ConcatEngineTest {
 		EvolutionInit<IntegerGene> init = EvolutionInit.of(
 			EvolutionStreams.result(5)
 				.toEvolutionStart()
-				.getPopulation().stream()
+				.population().stream()
 				.map(Phenotype::genotype)
 				.collect(ISeq.toISeq()),
 			1

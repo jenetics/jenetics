@@ -218,7 +218,7 @@ public final class Engine<
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		// Create initial population if `start` is empty.
-		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
+		final EvolutionStart<G, C> es = start.population().isEmpty()
 			? evolutionStart(start)
 			: start;
 
@@ -227,7 +227,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(es.getPopulation())
+			evaluate(es.population())
 		);
 
 		// Select the offspring population.
@@ -252,7 +252,7 @@ public final class Engine<
 		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
 			offspring.thenApplyAsync(off ->
 				timing.offspringAlter.timing(() ->
-					_alterer.alter(off, es.getGeneration())
+					_alterer.alter(off, es.generation())
 				),
 				_executor
 			);
@@ -261,7 +261,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
 			survivors.thenApplyAsync(sur ->
 				timing.survivorFilter.timing(() ->
-					filter(sur, es.getGeneration())
+					filter(sur, es.generation())
 				),
 				_executor
 			);
@@ -270,7 +270,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.population(), es.getGeneration())
+					filter(off.population(), es.generation())
 				),
 				_executor
 			);
@@ -302,7 +302,7 @@ public final class Engine<
 		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,
 			result,
-			es.getGeneration(),
+			es.generation(),
 			timing.toDurations(),
 			killCount,
 			invalidCount,
@@ -422,8 +422,8 @@ public final class Engine<
 
 	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionStart<G, C> start) {
-		final ISeq<Phenotype<G, C>> population = start.getPopulation();
-		final long gen = start.getGeneration();
+		final ISeq<Phenotype<G, C>> population = start.population();
+		final long gen = start.generation();
 
 		final Stream<Phenotype<G, C>> stream = Stream.concat(
 			population.stream(),
