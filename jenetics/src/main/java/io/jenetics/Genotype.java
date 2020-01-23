@@ -135,7 +135,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @return The first chromosome.
 	 */
@@ -151,7 +151,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 * final DoubleGene gene = gt.get(0).get(0);
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @return the first {@link Gene} of the first {@link Chromosome} of this
 	 *         {@code Genotype}.

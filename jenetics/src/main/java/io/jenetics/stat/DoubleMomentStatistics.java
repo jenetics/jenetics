@@ -65,7 +65,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.2
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics

@@ -33,7 +33,7 @@ package io.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version !__version__!
+ * @version 5.2
  */
 public interface BoundedGene<
 	A extends Comparable<? super A>,

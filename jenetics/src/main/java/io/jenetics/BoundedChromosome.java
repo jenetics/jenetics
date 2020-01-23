@@ -30,7 +30,7 @@ package io.jenetics;
  * @see BoundedGene
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 1.6
  */
 public interface BoundedChromosome<

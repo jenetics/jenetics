@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.2
  */
 public final class MinMax<C> implements Consumer<C> {
 

@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version !__version__!
+ * @version 5.2
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,

@@ -29,7 +29,7 @@ import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 2.0
  */
 final class RunnablesAction extends RecursiveAction {

@@ -63,7 +63,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.2
  */
 public class IntMomentStatistics
 	extends MomentStatistics

@@ -49,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 5.2
  */
 public class CharacterChromosome
 	extends

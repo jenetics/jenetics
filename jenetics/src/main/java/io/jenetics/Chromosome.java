@@ -58,7 +58,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * Return the first gene of this chromosome. Each chromosome must contain
 	 * at least one gene.
 	 *
-	 * @since !__version__!
+	 * @since 5.2
 	 *
 	 * @return the first gene of this chromosome.
 	 */
