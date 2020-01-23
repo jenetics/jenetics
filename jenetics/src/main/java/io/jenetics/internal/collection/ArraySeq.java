@@ -81,12 +81,10 @@ public abstract class ArraySeq<T>
 	@Override
 	public boolean forAll(final Predicate<? super T> predicate) {
 		requireNonNull(predicate, "Predicate");
-
-		boolean valid = true;
-		for (int i = 0; i < array.length() && valid; ++i) {
-			valid = predicate.test(array.get(i));
+		for (T element : this) {
+			if (!predicate.test(element)) return false;
 		}
-		return valid;
+		return true;
 	}
 
 	@Override
