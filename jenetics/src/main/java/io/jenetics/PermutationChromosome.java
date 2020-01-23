@@ -20,9 +20,9 @@
 package io.jenetics;
 
 import static java.lang.String.format;
+import static io.jenetics.internal.util.Bits.getAndSet;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.internal.util.Bits.getAndSet;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
