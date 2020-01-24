@@ -87,8 +87,12 @@ public class WeaselMutator<
 			.map(pt -> mutate(pt, generation, _probability, random));
 
 		return AltererResult.of(
-			result.map(MutatorResult::getResult).asISeq(),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			result
+				.map(MutatorResult::result)
+				.asISeq(),
+			result.stream()
+				.mapToInt(MutatorResult::mutations)
+				.sum()
 		);
 	}
 
@@ -98,12 +102,13 @@ public class WeaselMutator<
 		final double p,
 		final Random random
 	) {
-		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.toSeq()
-			.map(gt -> mutate(gt, p, random));
+		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.stream()
+			.map(gt -> mutate(gt, p, random))
+			.collect(ISeq.toISeq());
 
 		return MutatorResult.of(
-			Genotype.of(result.map(MutatorResult::getResult)),
-			result.stream().mapToInt(MutatorResult::getMutations).sum()
+			Genotype.of(result.map(MutatorResult::result)),
+			result.stream().mapToInt(MutatorResult::mutations).sum()
 		);
 	}
 

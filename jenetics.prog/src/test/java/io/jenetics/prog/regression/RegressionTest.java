@@ -49,7 +49,7 @@ public class RegressionTest {
 	@Test
 	public void error() {
 		final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec =
-			Regression.codecOf(OPS, TMS, 5, t -> t.getGene().size() < 30);
+			Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30);
 
 		final Regression<Double> regression = Regression.of(
 			codec,
@@ -77,7 +77,7 @@ public class RegressionTest {
 			Sample.ofDouble(1.0, 2.0000)
 		);
 
-		final Tree<Op<Double>, ?> tree = codec.encoding().newInstance().getGene();
+		final Tree<Op<Double>, ?> tree = codec.encoding().newInstance().gene();
 		regression.error(tree);
 	}
 

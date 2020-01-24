@@ -67,20 +67,20 @@ public class MultiRootGP {
 				// First 'program'
 				ProgramChromosome.of(
 					5,
-					ch -> ch.getRoot().size() <= 50,
+					ch -> ch.root().size() <= 50,
 					OPERATIONS,
 					TERMINALS
 				),
 				// Second 'program'
 				ProgramChromosome.of(
 					5,
-					ch -> ch.getRoot().size() <= 50,
+					ch -> ch.root().size() <= 50,
 					OPERATIONS,
 					TERMINALS
 				)
 			),
 			gt -> gt.stream()
-				.map(Chromosome::getGene)
+				.map(Chromosome::gene)
 				.collect(ISeq.toISeq())
 		);
 

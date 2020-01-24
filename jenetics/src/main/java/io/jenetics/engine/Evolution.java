@@ -34,7 +34,23 @@ public interface Evolution<
 	C extends Comparable<? super C>
 > {
 
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
+	/**
+	 * Perform one evolution step with the given evolution {@code start} object
+	 * New phenotypes are created with the fitness function and fitness scaler
+	 * defined by this <em>engine</em>
+	 *
+	 * @apiNote
+	 * The implementation of this method must be thread-safe.
+	 *
+	 * @since 3.1
+	 * @see #evolve(ISeq, long)
+	 *
+	 * @param start the evolution start object
+	 * @return the evolution result
+	 * @throws java.lang.NullPointerException if the given evolution
+	 *         {@code start} is {@code null}
+	 */
+	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
 
 
 	/**
@@ -55,7 +71,7 @@ public interface Evolution<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionResult<G, C> evolve(
+	default EvolutionResult<G, C> evolve(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {

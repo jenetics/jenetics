@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.lang.Math.exp;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.base.normalize;
+import static io.jenetics.internal.math.Basics.normalize;
 
 import java.util.Arrays;
 
@@ -97,11 +97,11 @@ public final class BoltzmannSelector<
 		// Copy the fitness values to probabilities arrays.
 		final double[] fitness = new double[population.size()];
 
-		fitness[0] = population.get(0).getFitness().doubleValue();
+		fitness[0] = population.get(0).fitness().doubleValue();
 		double min = fitness[0];
 		double max = fitness[0];
 		for (int i = 1; i < fitness.length; ++i) {
-			fitness[i] = population.get(i).getFitness().doubleValue();
+			fitness[i] = population.get(i).fitness().doubleValue();
 			if (fitness[i] < min) min = fitness[i];
 			else if (fitness[i] > max) max = fitness[i];
 		}

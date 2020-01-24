@@ -51,7 +51,7 @@ public interface ElementDistance<V> {
 	 * @param index the vector index
 	 * @return the distance of the two element vectors
 	 */
-	public double distance(final V u, final V v, final int index);
+	double distance(final V u, final V v, final int index);
 
 	/**
 	 * Return an element distance function for the mapped type {@code T}.
@@ -60,7 +60,7 @@ public interface ElementDistance<V> {
 	 * @param <T> the new distance type
 	 * @return an element distance function for the mapped type {@code T}
 	 */
-	public default <T> ElementDistance<T>
+	default <T> ElementDistance<T>
 	map(final Function<? super T, ? extends V> mapper) {
 		return (u, v, i) -> distance(mapper.apply(u), mapper.apply(v), i);
 	}
@@ -72,7 +72,7 @@ public interface ElementDistance<V> {
 	 * @param index the vector index
 	 * @return a function which calculates the distance of two vector elements
 	 */
-	public default ToDoubleBiFunction<V, V> ofIndex(final int index) {
+	default ToDoubleBiFunction<V, V> ofIndex(final int index) {
 		return (u, v) -> distance(u, v, index);
 	}
 

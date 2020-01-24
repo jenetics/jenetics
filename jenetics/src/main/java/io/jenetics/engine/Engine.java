@@ -19,12 +19,15 @@
  */
 package io.jenetics.engine;
 
+import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.concurrent.ForkJoinPool.commonPool;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.time.Clock;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
@@ -37,9 +40,13 @@ import io.jenetics.AltererResult;
 import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
+import io.jenetics.Mutator;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
 import io.jenetics.Selector;
+import io.jenetics.SinglePointCrossover;
+import io.jenetics.TournamentSelector;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -55,7 +62,7 @@ import io.jenetics.util.Seq;
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
- *        final double x = gt.getGene().doubleValue();
+ *        final double x = gt.gene().doubleValue();
  *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *
@@ -103,12 +110,9 @@ import io.jenetics.util.Seq;
  * @see EvolutionStatistics
  * @see Codec
  *
- * @param <G> the gene type
- * @param <C> the fitness function result type
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.0
+ * @version 5.1
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -123,29 +127,41 @@ public final class Engine<
 	// Problem definition.
 	private final Evaluator<G, C> _evaluator;
 	private final Factory<Genotype<G>> _genotypeFactory;
-	private final Constraint<G, C> _constraint;
 
 	// Evolution parameters.
-	private final EvolutionParams<G, C> _evolutionParams;
+	private final Selector<G, C> _survivorsSelector;
+	private final Selector<G, C> _offspringSelector;
+	private final Alterer<G, C> _alterer;
+	private final Optimize _optimize;
+	private final int _offspringCount;
+	private final int _survivorsCount;
+	private final long _maximalPhenotypeAge;
 
 	// Execution context for concurrent execution of evolving steps.
 	private final Executor _executor;
 	private final Clock _clock;
 
 	// Additional parameters.
+	private final Constraint<G, C> _constraint;
 	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
 
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
-	 * @param evaluator the population fitness evaluator
 	 * @param genotypeFactory the genotype factory this GA is working with.
+	 * @param survivorsSelector the selector used for selecting the survivors
+	 * @param offspringSelector the selector used for selecting the offspring
+	 * @param alterer the alterer used for altering the offspring
 	 * @param constraint phenotype constraint which can override the default
 	 *        implementation the {@link Phenotype#isValid()} method and repairs
 	 *        invalid phenotypes when needed.
-	 * @param evolutionParams the evolution parameters
+	 * @param optimize the kind of optimization (minimize or maximize)
+	 * @param offspringCount the number of the offspring individuals
+	 * @param survivorsCount the number of the survivor individuals
+	 * @param maximalPhenotypeAge the maximal age of an individual
 	 * @param executor the executor used for executing the single evolve steps
+	 * @param evaluator the population fitness evaluator
 	 * @param clock the clock used for calculating the timing results
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
@@ -154,17 +170,29 @@ public final class Engine<
 	Engine(
 		final Evaluator<G, C> evaluator,
 		final Factory<Genotype<G>> genotypeFactory,
+		final Selector<G, C> survivorsSelector,
+		final Selector<G, C> offspringSelector,
+		final Alterer<G, C> alterer,
 		final Constraint<G, C> constraint,
-		final EvolutionParams<G, C> evolutionParams,
+		final Optimize optimize,
+		final int offspringCount,
+		final int survivorsCount,
+		final long maximalPhenotypeAge,
 		final Executor executor,
 		final Clock clock,
 		final UnaryOperator<EvolutionResult<G, C>> mapper
 	) {
 		_evaluator = requireNonNull(evaluator);
 		_genotypeFactory = requireNonNull(genotypeFactory);
+		_survivorsSelector = requireNonNull(survivorsSelector);
+		_offspringSelector = requireNonNull(offspringSelector);
+		_alterer = requireNonNull(alterer);
 		_constraint = requireNonNull(constraint);
+		_optimize = requireNonNull(optimize);
 
-		_evolutionParams = requireNonNull(evolutionParams);
+		_offspringCount = Requires.nonNegative(offspringCount);
+		_survivorsCount = Requires.nonNegative(survivorsCount);
+		_maximalPhenotypeAge = Requires.positive(maximalPhenotypeAge);
 
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
@@ -187,29 +215,19 @@ public final class Engine<
 		return evolve(start);
 	}
 
-	/**
-	 * Perform one evolution step with the given evolution {@code start} object
-	 * New phenotypes are created with the fitness function and fitness scaler
-	 * defined by this <em>engine</em>
-	 * <p>
-	 * <em>This method is thread-safe.</em>
-	 *
-	 * @since 3.1
-	 * @see #evolve(ISeq, long)
-	 *
-	 * @param start the evolution start object
-	 * @return the evolution result
-	 * @throws java.lang.NullPointerException if the given evolution
-	 *         {@code start} is {@code null}
-	 */
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		// Create initial population if `start` is empty.
+		final EvolutionStart<G, C> es = start.population().isEmpty()
+			? evolutionStart(start)
+			: start;
+
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
 		timing.evolve.start();
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(start.getPopulation())
+			evaluate(es.population())
 		);
 
 		// Select the offspring population.
@@ -234,8 +252,7 @@ public final class Engine<
 		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
 			offspring.thenApplyAsync(off ->
 				timing.offspringAlter.timing(() ->
-					_evolutionParams.getAlterer()
-						.alter(off, start.getGeneration())
+					_alterer.alter(off, es.generation())
 				),
 				_executor
 			);
@@ -244,7 +261,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
 			survivors.thenApplyAsync(sur ->
 				timing.survivorFilter.timing(() ->
-					filter(sur, start.getGeneration())
+					filter(sur, es.generation())
 				),
 				_executor
 			);
@@ -253,7 +270,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.getPopulation(), start.getGeneration())
+					filter(off.population(), es.generation())
 				),
 				_executor
 			);
@@ -280,12 +297,12 @@ public final class Engine<
 			filteredOffspring.join().invalidCount +
 			filteredSurvivors.join().invalidCount;
 
-		final int alterationCount = alteredOffspring.join().getAlterations();
+		final int alterationCount = alteredOffspring.join().alterations();
 
 		EvolutionResult<G, C> er = EvolutionResult.of(
-			_evolutionParams.getOptimize(),
+			_optimize,
 			result,
-			start.getGeneration(),
+			es.generation(),
 			timing.toDurations(),
 			killCount,
 			invalidCount,
@@ -294,7 +311,7 @@ public final class Engine<
 		if (!UnaryOperator.identity().equals(_mapper)) {
 			final EvolutionResult<G, C> mapped = _mapper.apply(er);
 			er = er.with(timing.evaluation.timing(() ->
-				evaluate(mapped.getPopulation())
+				evaluate(mapped.population())
 			));
 		}
 
@@ -305,22 +322,16 @@ public final class Engine<
 	// Selects the survivors population. A new population object is returned.
 	private ISeq<Phenotype<G, C>>
 	selectSurvivors(final ISeq<Phenotype<G, C>> population) {
-		return _evolutionParams.getSurvivorsCount() > 0
-			? _evolutionParams.getSurvivorsSelector().select(
-				population,
-				_evolutionParams.getSurvivorsCount(),
-				_evolutionParams.getOptimize())
+		return _survivorsCount > 0
+			?_survivorsSelector.select(population, _survivorsCount, _optimize)
 			: ISeq.empty();
 	}
 
 	// Selects the offspring population. A new population object is returned.
 	private ISeq<Phenotype<G, C>>
 	selectOffspring(final ISeq<Phenotype<G, C>> population) {
-		return _evolutionParams.getOffspringCount() > 0
-			? _evolutionParams.getOffspringSelector().select(
-				population,
-				_evolutionParams.getOffspringCount(),
-				_evolutionParams.getOptimize())
+		return _offspringCount > 0
+			? _offspringSelector.select(population, _offspringCount, _optimize)
 			: ISeq.empty();
 	}
 
@@ -339,9 +350,7 @@ public final class Engine<
 			if (!_constraint.test(individual)) {
 				pop.set(i, _constraint.repair(individual, generation));
 				++invalidCount;
-			} else if (individual.getAge(generation) >
-					_evolutionParams.getMaximalPhenotypeAge())
-			{
+			} else if (individual.age(generation) > _maximalPhenotypeAge) {
 				pop.set(i, Phenotype.of(_genotypeFactory.newInstance(), generation));
 				++killCount;
 			}
@@ -400,7 +409,10 @@ public final class Engine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return EvolutionStream.ofEvolution(evolutionStart(start), this);
+		return EvolutionStream.ofEvolution(
+			() -> evolutionStart(start.get()),
+			this
+		);
 	}
 
 	@Override
@@ -408,33 +420,34 @@ public final class Engine<
 		return stream(evolutionStart(init));
 	}
 
-	private Supplier<EvolutionStart<G, C>>
-	evolutionStart(final Supplier<EvolutionStart<G, C>> start) {
-		return () -> {
-			final EvolutionStart<G, C> es = start.get();
-			final ISeq<Phenotype<G, C>> population = es.getPopulation();
-			final long gen = es.getGeneration();
+	private EvolutionStart<G, C>
+	evolutionStart(final EvolutionStart<G, C> start) {
+		final ISeq<Phenotype<G, C>> population = start.population();
+		final long gen = start.generation();
 
-			final Stream<Phenotype<G, C>> stream = Stream.concat(
-				population.stream(),
-				_genotypeFactory.instances()
-					.map(gt -> Phenotype.of(gt, gen))
-			);
+		final Stream<Phenotype<G, C>> stream = Stream.concat(
+			population.stream(),
+			_genotypeFactory.instances()
+				.map(gt -> Phenotype.of(gt, gen))
+		);
 
-			final ISeq<Phenotype<G, C>> pop = stream
-				.limit(getPopulationSize())
-				.collect(ISeq.toISeq());
+		final ISeq<Phenotype<G, C>> pop = stream
+			.limit(getPopulationSize())
+			.collect(ISeq.toISeq());
 
-			return EvolutionStart.of(pop, gen);
-		};
+		return EvolutionStart.of(pop, gen);
 	}
 
-	private Supplier<EvolutionStart<G, C>>
+	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		return evolutionStart(() -> EvolutionStart.of(
-			init.getPopulation()
-				.map(gt -> Phenotype.of(gt, init.getGeneration())),
-			init.getGeneration())
+		final ISeq<Genotype<G>> pop = init.population();
+		final long gen = init.generation();
+
+		return evolutionStart(
+			EvolutionStart.of(
+				pop.map(gt -> Phenotype.of(gt, gen)),
+				gen
+			)
 		);
 	}
 
@@ -470,7 +483,7 @@ public final class Engine<
 	 * @return the used survivor {@link Selector} of the GA.
 	 */
 	public Selector<G, C> getSurvivorsSelector() {
-		return _evolutionParams.getSurvivorsSelector();
+		return _survivorsSelector;
 	}
 
 	/**
@@ -479,7 +492,7 @@ public final class Engine<
 	 * @return the used offspring {@link Selector} of the GA.
 	 */
 	public Selector<G, C> getOffspringSelector() {
-		return _evolutionParams.getOffspringSelector();
+		return _offspringSelector;
 	}
 
 	/**
@@ -488,7 +501,7 @@ public final class Engine<
 	 * @return the used {@link Alterer} of the GA.
 	 */
 	public Alterer<G, C> getAlterer() {
-		return _evolutionParams.getAlterer();
+		return _alterer;
 	}
 
 	/**
@@ -497,7 +510,7 @@ public final class Engine<
 	 * @return the number of selected offsprings
 	 */
 	public int getOffspringCount() {
-		return _evolutionParams.getOffspringCount();
+		return _offspringCount;
 	}
 
 	/**
@@ -506,7 +519,7 @@ public final class Engine<
 	 * @return the number of selected survivors
 	 */
 	public int getSurvivorsCount() {
-		return _evolutionParams.getSurvivorsCount();
+		return _survivorsCount;
 	}
 
 	/**
@@ -515,7 +528,7 @@ public final class Engine<
 	 * @return the number of individuals of a population
 	 */
 	public int getPopulationSize() {
-		return _evolutionParams.getPopulationSize();
+		return _offspringCount + _survivorsCount;
 	}
 
 	/**
@@ -524,7 +537,7 @@ public final class Engine<
 	 * @return the maximal allowed phenotype age
 	 */
 	public long getMaximalPhenotypeAge() {
-		return _evolutionParams.getMaximalPhenotypeAge();
+		return _maximalPhenotypeAge;
 	}
 
 	/**
@@ -533,9 +546,8 @@ public final class Engine<
 	 * @return the optimization strategy
 	 */
 	public Optimize getOptimize() {
-		return _evolutionParams.getOptimize();
+		return _optimize;
 	}
-
 
 	/**
 	 * Return the {@link Clock} the engine is using for measuring the execution
@@ -573,39 +585,21 @@ public final class Engine<
 	 * of the current evolution {@code Engine}. With this method, the evolution
 	 * engine can serve as a template for a new one.
 	 *
-	 * @since !__version__!
-	 *
 	 * @return a new engine builder
 	 */
-	public Builder<G, C> toBuilder() {
+	public Builder<G, C> builder() {
 		return new Builder<>(_evaluator, _genotypeFactory)
-			.alterers(_evolutionParams.getAlterer())
+			.alterers(_alterer)
 			.clock(_clock)
 			.executor(_executor)
-			.maximalPhenotypeAge(_evolutionParams.getMaximalPhenotypeAge())
-			.offspringFraction(_evolutionParams.getOffspringFraction())
-			.offspringSelector(_evolutionParams.getOffspringSelector())
-			.optimize(_evolutionParams.getOptimize())
+			.maximalPhenotypeAge(_maximalPhenotypeAge)
+			.offspringFraction((double)_offspringCount/(double)getPopulationSize())
+			.offspringSelector(_offspringSelector)
+			.optimize(_optimize)
 			.constraint(_constraint)
 			.populationSize(getPopulationSize())
-			.survivorsSelector(_evolutionParams.getSurvivorsSelector())
+			.survivorsSelector(_survivorsSelector)
 			.mapping(_mapper);
-	}
-
-	/**
-	 * Create a new evolution {@code Engine.Builder} initialized with the values
-	 * of the current evolution {@code Engine}. With this method, the evolution
-	 * engine can serve as a template for a new one.
-	 *
-	 * @see #toBuilder()
-	 *
-	 * @return a new engine builder
-	 *
-	 * @deprecated Use {@link #toBuilder()} instead.
-	 */
-	@Deprecated
-	public Builder<G, C> builder() {
-		return toBuilder();
 	}
 
 
@@ -712,7 +706,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.0
+	 * @version 5.1
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -724,20 +718,19 @@ public final class Engine<
 		// No default values for this properties.
 		private final Evaluator<G, C> _evaluator;
 		private final Factory<Genotype<G>> _genotypeFactory;
-		private Constraint<G, C> _constraint;
 
 		// This are the properties which default values.
-		private final EvolutionParams.Builder<G, C> _evolutionParams = EvolutionParams.builder();
-//		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
-//		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
-//		private Alterer<G, C> _alterer = Alterer.of(
-//			new SinglePointCrossover<G, C>(0.2),
-//			new Mutator<>(0.15)
-//		);
-//		private Optimize _optimize = Optimize.MAXIMUM;
-//		private double _offspringFraction = 0.6;
-//		private int _populationSize = 50;
-//		private long _maximalPhenotypeAge = 70;
+		private Selector<G, C> _survivorsSelector = new TournamentSelector<>(3);
+		private Selector<G, C> _offspringSelector = new TournamentSelector<>(3);
+		private Alterer<G, C> _alterer = Alterer.of(
+			new SinglePointCrossover<G, C>(0.2),
+			new Mutator<>(0.15)
+		);
+		private Constraint<G, C> _constraint;
+		private Optimize _optimize = Optimize.MAXIMUM;
+		private double _offspringFraction = 0.6;
+		private int _populationSize = 50;
+		private long _maximalPhenotypeAge = 70;
 
 		// Engine execution environment.
 		private Executor _executor = commonPool();
@@ -770,31 +763,16 @@ public final class Engine<
 		}
 
 		/**
-		 * The evolution parameters.
-		 *
-		 * @param params the evolution parameters
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
-			survivorsSelector(params.getSurvivorsSelector());
-			offspringSelector(params.getOffspringSelector());
-			alterers(params.getAlterer());
-			optimize(params.getOptimize());
-			populationSize(params.getPopulationSize());
-			offspringFraction(params.getOffspringFraction());
-			maximalPhenotypeAge(params.getMaximalPhenotypeAge());
-			return this;
-		}
-
-		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
 		 *
 		 * @param selector used for selecting the offspring population
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> offspringSelector(final Selector<G, C> selector) {
-			_evolutionParams.offspringSelector(selector);
+		public Builder<G, C> offspringSelector(
+			final Selector<G, C> selector
+		) {
+			_offspringSelector = requireNonNull(selector);
 			return this;
 		}
 
@@ -805,8 +783,10 @@ public final class Engine<
 		 * @param selector used for selecting survivors population
 		 * @return {@code this} builder, for command chaining
 		 */
-		public Builder<G, C> survivorsSelector(final Selector<G, C> selector) {
-			_evolutionParams.survivorsSelector(selector);
+		public Builder<G, C> survivorsSelector(
+			final Selector<G, C> selector
+		) {
+			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}
 
@@ -819,7 +799,8 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 */
 		public Builder<G, C> selector(final Selector<G, C> selector) {
-			_evolutionParams.selector(selector);
+			_offspringSelector = requireNonNull(selector);
+			_survivorsSelector = requireNonNull(selector);
 			return this;
 		}
 
@@ -841,7 +822,13 @@ public final class Engine<
 			final Alterer<G, C> first,
 			final Alterer<G, C>... rest
 		) {
-			_evolutionParams.alterers(first, rest);
+			requireNonNull(first);
+			Stream.of(rest).forEach(Objects::requireNonNull);
+
+			_alterer = rest.length == 0
+				? first
+				: Alterer.of(rest).compose(first);
+
 			return this;
 		}
 
@@ -858,11 +845,9 @@ public final class Engine<
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
 		 *        invalid phenotypes when needed.
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.NullPointerException if the {@code validator} is
-		 *         {@code null}.
 		 */
 		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
-			_constraint = requireNonNull(constraint);
+			_constraint = constraint;
 			return this;
 		}
 
@@ -874,7 +859,7 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 */
 		public Builder<G, C> optimize(final Optimize optimize) {
-			_evolutionParams.optimize(optimize);
+			_optimize = requireNonNull(optimize);
 			return this;
 		}
 
@@ -914,7 +899,7 @@ public final class Engine<
 		 *         within the range [0, 1].
 		 */
 		public Builder<G, C> offspringFraction(final double fraction) {
-			_evolutionParams.offspringFraction(fraction);
+			_offspringFraction = probability(fraction);
 			return this;
 		}
 
@@ -934,7 +919,7 @@ public final class Engine<
 		 *         within the range [0, 1].
 		 */
 		public Builder<G, C> survivorsFraction(final double fraction) {
-			_evolutionParams.survivorsFraction(fraction);
+			_offspringFraction = 1.0 - probability(fraction);
 			return this;
 		}
 
@@ -949,8 +934,14 @@ public final class Engine<
 		 *         within the range [0, population-size].
 		 */
 		public Builder<G, C> offspringSize(final int size) {
-			_evolutionParams.offspringSize(size);
-			return this;
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Offspring size must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return offspringFraction((double)size/(double)_populationSize);
 		}
 
 		/**
@@ -964,8 +955,14 @@ public final class Engine<
 		 *         within the range [0, population-size].
 		 */
 		public Builder<G, C> survivorsSize(final int size) {
-			_evolutionParams.survivorsSize(size);
-			return this;
+			if (size < 0) {
+				throw new IllegalArgumentException(format(
+					"Survivors must be greater or equal zero, but was %s.",
+					size
+				));
+			}
+
+			return survivorsFraction((double)size/(double)_populationSize);
 		}
 
 		/**
@@ -977,7 +974,13 @@ public final class Engine<
 		 * @throws java.lang.IllegalArgumentException if {@code size < 1}
 		 */
 		public Builder<G, C> populationSize(final int size) {
-			_evolutionParams.populationSize(size);
+			if (size < 1) {
+				throw new IllegalArgumentException(format(
+					"Population size must be greater than zero, but was %s.",
+					size
+				));
+			}
+			_populationSize = size;
 			return this;
 		}
 
@@ -990,7 +993,12 @@ public final class Engine<
 		 * @throws java.lang.IllegalArgumentException if {@code age < 1}
 		 */
 		public Builder<G, C> maximalPhenotypeAge(final long age) {
-			_evolutionParams.maximalPhenotypeAge(age);
+			if (age < 1) {
+				throw new IllegalArgumentException(format(
+					"Phenotype age must be greater than one, but was %s.", age
+				));
+			}
+			_maximalPhenotypeAge = age;
 			return this;
 		}
 
@@ -1049,14 +1057,28 @@ public final class Engine<
 					? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
 					: _evaluator,
 				_genotypeFactory,
+				_survivorsSelector,
+				_offspringSelector,
+				_alterer,
 				_constraint == null
 					? RetryConstraint.of(_genotypeFactory)
 					: _constraint,
-				_evolutionParams.build(),
+				_optimize,
+				getOffspringCount(),
+				getSurvivorsCount(),
+				_maximalPhenotypeAge,
 				_executor,
 				_clock,
 				_mapper
 			);
+		}
+
+		private int getSurvivorsCount() {
+			return _populationSize - getOffspringCount();
+		}
+
+		private int getOffspringCount() {
+			return (int)round(_offspringFraction*_populationSize);
 		}
 
 		/**
@@ -1065,7 +1087,7 @@ public final class Engine<
 		 * @return the used {@link Alterer} of the GA.
 		 */
 		public Alterer<G, C> getAlterers() {
-			return _evolutionParams.alterers();
+			return _alterer;
 		}
 
 		/**
@@ -1124,7 +1146,7 @@ public final class Engine<
 		 * @return the maximal allowed phenotype age
 		 */
 		public long getMaximalPhenotypeAge() {
-			return _evolutionParams.maximalPhenotypeAge();
+			return _maximalPhenotypeAge;
 		}
 
 		/**
@@ -1133,7 +1155,7 @@ public final class Engine<
 		 * @return the offspring fraction.
 		 */
 		public double getOffspringFraction() {
-			return _evolutionParams.offspringFraction();
+			return _offspringFraction;
 		}
 
 		/**
@@ -1144,7 +1166,7 @@ public final class Engine<
 		 * @return the used offspring {@link Selector} of the GA.
 		 */
 		public Selector<G, C> getOffspringSelector() {
-			return _evolutionParams.offspringSelector();
+			return _offspringSelector;
 		}
 
 		/**
@@ -1155,7 +1177,7 @@ public final class Engine<
 		 * @return the used survivor {@link Selector} of the GA.
 		 */
 		public Selector<G, C> getSurvivorsSelector() {
-			return _evolutionParams.survivorsSelector();
+			return _survivorsSelector;
 		}
 
 		/**
@@ -1166,7 +1188,7 @@ public final class Engine<
 		 * @return the optimization strategy
 		 */
 		public Optimize getOptimize() {
-			return _evolutionParams.optimize();
+			return _optimize;
 		}
 
 		/**
@@ -1177,7 +1199,7 @@ public final class Engine<
 		 * @return the number of individuals of a population
 		 */
 		public int getPopulationSize() {
-			return _evolutionParams.populationSize();
+			return _populationSize;
 		}
 
 		/**
@@ -1201,16 +1223,16 @@ public final class Engine<
 		@Override
 		public Builder<G, C> copy() {
 			return new Builder<G, C>(_evaluator, _genotypeFactory)
-				.alterers(_evolutionParams.alterers())
+				.alterers(_alterer)
 				.clock(_clock)
 				.executor(_executor)
-				.maximalPhenotypeAge(_evolutionParams.maximalPhenotypeAge())
-				.offspringFraction(_evolutionParams.offspringFraction())
-				.offspringSelector(_evolutionParams.offspringSelector())
+				.maximalPhenotypeAge(_maximalPhenotypeAge)
+				.offspringFraction(_offspringFraction)
+				.offspringSelector(_offspringSelector)
 				.constraint(_constraint)
-				.optimize(_evolutionParams.optimize())
-				.populationSize(_evolutionParams.populationSize())
-				.survivorsSelector(_evolutionParams.offspringSelector())
+				.optimize(_optimize)
+				.populationSize(_populationSize)
+				.survivorsSelector(_survivorsSelector)
 				.mapping(_mapper);
 		}
 

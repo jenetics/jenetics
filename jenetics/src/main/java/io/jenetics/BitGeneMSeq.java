@@ -27,8 +27,8 @@ import java.util.Comparator;
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayISeq;
 import io.jenetics.internal.collection.ArrayMSeq;
-import io.jenetics.internal.util.bit;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 
 /**
@@ -53,9 +53,9 @@ final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 		array.copyIfSealed();
 
 		final byte[] bytes = ((BitGeneStore)array.store()).array;
-		final boolean temp = bit.get(bytes, i);
-		bit.set(bytes, i, bit.get(bytes, j));
-		bit.set(bytes, j, temp);
+		final boolean temp = Bits.get(bytes, i);
+		Bits.set(bytes, i, Bits.get(bytes, j));
+		Bits.set(bytes, j, temp);
 	}
 
 	@Override
@@ -141,12 +141,12 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	// Primary constructor.
 	private BitGeneStore(final byte[] array, final int length) {
 		this.array = requireNonNull(array);
-		this.length = require.nonNegative(length);
+		this.length = Requires.nonNegative(length);
 	}
 
 	@Override
 	public BitGene get(final int index) {
-		return BitGene.of(bit.get(array, index));
+		return BitGene.of(Bits.get(array, index));
 	}
 
 	@Override
@@ -158,19 +158,19 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 
 	@Override
 	public void set(final int index, final BitGene value) {
-		bit.set(array, index, value.booleanValue());
+		Bits.set(array, index, value.booleanValue());
 	}
 
 	void swap(
 		final int start, final int end,
 		final BitGeneStore other, final int otherStart
 	) {
-		bit.swap(array, start, end, other.array, otherStart);
+		Bits.swap(array, start, end, other.array, otherStart);
 	}
 
 	@Override
 	public BitGeneStore copy(final int from, final int until) {
-		return new BitGeneStore(bit.copy(array, from, until), until - from);
+		return new BitGeneStore(Bits.copy(array, from, until), until - from);
 	}
 
 	@Override
@@ -189,7 +189,7 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	}
 
 	static BitGeneStore ofLength(final int length) {
-		return new BitGeneStore(bit.newArray(length), length);
+		return new BitGeneStore(Bits.newArray(length), length);
 	}
 
 }

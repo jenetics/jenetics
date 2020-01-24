@@ -50,7 +50,7 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
+			child.value(random.nextInt());
 
 			if (level > 0) {
 				fill(child, level - 1, random);
@@ -165,10 +165,10 @@ public class TreeNodeTest extends TreeTestBase<Integer, TreeNode<Integer>> {
 
 		Assert.assertEquals(
 			mapped.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.toArray(String[]::new),
 			tree.stream()
-				.map(TreeNode::getValue)
+				.map(TreeNode::value)
 				.map(Objects::toString)
 				.toArray(String[]::new)
 		);

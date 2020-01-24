@@ -23,7 +23,7 @@ public class WeaselProgram {
 	private static final String TARGET = "METHINKS IT IS LIKE A WEASEL";
 
 	private static int score(final Genotype<CharacterGene> gt) {
-		final CharSequence source = (CharSequence)gt.getChromosome();
+		final CharSequence source = (CharSequence)gt.chromosome();
 
 		return IntStream.range(0, TARGET.length())
 			.map(i -> source.charAt(i) == TARGET.charAt(i) ? 1 : 0)
@@ -47,7 +47,7 @@ public class WeaselProgram {
 		final Phenotype<CharacterGene, Integer> result = engine.stream()
 			.limit(byFitnessThreshold(TARGET.length() - 1))
 			.peek(r -> System.out.println(
-				r.getTotalGenerations() + ": " + r.getBestPhenotype()))
+				r.totalGenerations() + ": " + r.bestPhenotype()))
 			.collect(toBestPhenotype());
 
 		System.out.println(result);

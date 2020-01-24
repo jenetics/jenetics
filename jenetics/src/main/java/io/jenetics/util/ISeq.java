@@ -29,7 +29,7 @@ import java.util.stream.Collector;
 
 import io.jenetics.internal.collection.Empty;
 import io.jenetics.internal.collection.Empty.EmptyISeq;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 
 /**
  * Immutable, ordered, fixed sized sequence.
@@ -38,7 +38,7 @@ import io.jenetics.internal.util.require;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.2
+ * @version 5.2
  */
 public interface ISeq<T>
 	extends
@@ -47,31 +47,31 @@ public interface ISeq<T>
 {
 
 	@Override
-	public ISeq<T> subSeq(final int start, final int end);
+	ISeq<T> subSeq(final int start, final int end);
 
 	@Override
-	public ISeq<T> subSeq(final int start);
+	ISeq<T> subSeq(final int start);
 
 	@Override
-	public <B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
+	<B> ISeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public default ISeq<T> append(final T... values) {
+	default ISeq<T> append(final T... values) {
 		return append(ISeq.of(values));
 	}
 
 	@Override
-	public ISeq<T> append(final Iterable<? extends T> values);
+	ISeq<T> append(final Iterable<? extends T> values);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public default ISeq<T> prepend(final T... values) {
+	default ISeq<T> prepend(final T... values) {
 		return prepend(ISeq.of(values));
 	}
 
 	@Override
-	public ISeq<T> prepend(final Iterable<? extends T> values);
+	ISeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a shallow copy of this sequence. The sequence elements are not
@@ -80,7 +80,7 @@ public interface ISeq<T>
 	 * @return a shallow copy of this sequence.
 	 */
 	@Override
-	public MSeq<T> copy();
+	MSeq<T> copy();
 
 
 	/* *************************************************************************
@@ -101,7 +101,7 @@ public interface ISeq<T>
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> concat(
+	static <T> ISeq<T> concat(
 		final T a,
 		final ISeq<? extends T> b
 	) {
@@ -121,7 +121,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> concat(
+	static <T> ISeq<T> concat(
 		final ISeq<? extends T> a,
 		final T... b
 	) {
@@ -141,7 +141,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> concat(
+	static <T> ISeq<T> concat(
 		final ISeq<? extends T> a,
 		final ISeq<? extends T> b
 	) {
@@ -157,7 +157,7 @@ public interface ISeq<T>
 	 *
 	 * @since 3.3
 	 */
-	public static final ISeq<?> EMPTY = EmptyISeq.INSTANCE;
+	ISeq<?> EMPTY = EmptyISeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code ISeq}.
@@ -167,7 +167,7 @@ public interface ISeq<T>
 	 * @param <T> the element type of the returned {@code ISeq}.
 	 * @return an empty {@code ISeq}.
 	 */
-	public static <T> ISeq<T> empty() {
+	static <T> ISeq<T> empty() {
 		return Empty.iseq();
 	}
 
@@ -179,7 +179,7 @@ public interface ISeq<T>
 	 * @return a {@code Collector} which collects all the input elements into an
 	 *         {@code ISeq}, in encounter order
 	 */
-	public static <T> Collector<T, ?, ISeq<T>> toISeq() {
+	static <T> Collector<T, ?, ISeq<T>> toISeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,
@@ -200,7 +200,7 @@ public interface ISeq<T>
 	 *         input elements into an {@code ISeq}, in encounter order
 	 * @throws IllegalArgumentException if the {@code maxSize} is negative
 	 */
-	public static <T> Collector<T, ?, ISeq<T>> toISeq(final int maxSize) {
+	static <T> Collector<T, ?, ISeq<T>> toISeq(final int maxSize) {
 		return Seqs.toSeq(maxSize, Buffer::toSeq);
 	}
 
@@ -213,7 +213,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> ISeq<T> of(final T... values) {
+	static <T> ISeq<T> of(final T... values) {
 		return values.length == 0
 			? empty()
 			: MSeq.of(values).toISeq();
@@ -228,7 +228,7 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> ISeq<T> of(final Iterable<? extends T> values) {
+	static <T> ISeq<T> of(final Iterable<? extends T> values) {
 		requireNonNull(values);
 
 		return values instanceof ISeq
@@ -237,22 +237,6 @@ public interface ISeq<T>
 				? ((MSeq<T>)values).toISeq()
 				: MSeq.<T>of(values).toISeq();
 	}
-
-//	/**
-//	 * Create a new {@code ISeq} instance from the remaining elements of the
-//	 * given iterator.
-//	 *
-//	 * @since 3.3
-//	 *
-//	 * @param <T> the element type.
-//	 * @return a new {@code ISeq} with the given remaining values.
-//	 * @throws NullPointerException if the {@code values} object is
-//	 *        {@code null}.
-//	 */
-//	public static <T> ISeq<T> of(final Iterator<? extends T> values) {
-//		final MSeq<T> seq = MSeq.of(values);
-//		return seq.isEmpty() ? empty() : seq.toISeq();
-//	}
 
 	/**
 	 * Creates a new sequence, which is filled with objects created be the given
@@ -270,12 +254,12 @@ public interface ISeq<T>
 	 * @throws NullPointerException if the given {@code supplier} is
 	 *         {@code null}
 	 */
-	public static <T> ISeq<T> of(
+	static <T> ISeq<T> of(
 		final Supplier<? extends T> supplier,
 		final int length
 	) {
 		requireNonNull(supplier);
-		require.nonNegative(length);
+		Requires.nonNegative(length);
 
 		return length == 0
 			? empty()
@@ -308,7 +292,7 @@ public interface ISeq<T>
 	 * @return the casted instance of the given {@code seq}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {
+	static <A, B extends A> ISeq<A> upcast(final ISeq<B> seq) {
 		return (ISeq<A>)seq;
 	}
 

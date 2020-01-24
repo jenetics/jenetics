@@ -21,11 +21,11 @@ package io.jenetics;
 
 import static java.lang.Math.min;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.math.Randoms.nextDouble;
 
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -74,7 +74,7 @@ public class LineCrossover<
 	 */
 	public LineCrossover(final double probability, final double p) {
 		super(probability);
-		_p = require.nonNegative(p, "p");
+		_p = Requires.nonNegative(p, "p");
 	}
 
 	/**
@@ -105,8 +105,8 @@ public class LineCrossover<
 	protected int crossover(final MSeq<G> v, final MSeq<G> w) {
 		final Random random = RandomRegistry.getRandom();
 
-		final double min = v.get(0).getMin().doubleValue();
-		final double max = v.get(0).getMax().doubleValue();
+		final double min = v.get(0).min().doubleValue();
+		final double max = v.get(0).max().doubleValue();
 
 		final double a = nextDouble(-_p, 1 + _p, random);
 		final double b = nextDouble(-_p, 1 + _p, random);

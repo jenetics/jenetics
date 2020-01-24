@@ -6,7 +6,7 @@
 [![Code Quality: Java](https://img.shields.io/lgtm/grade/java/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/context:java)
 [![Total Alerts](https://img.shields.io/lgtm/alerts/g/jenetics/jenetics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jenetics/jenetics/alerts)
 
-**Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm** and **Genetic Programming** library, respectively, written in Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
+**Jenetics** is an **Genetic Algorithm**, **Evolutionary Algorithm**, **Genetic Programming**, and **Multi-objective Optimization** library, written in modern day Java. It is designed with a clear separation of the several concepts of the algorithm, e.g. `Gene`, `Chromosome`, `Genotype`, `Phenotype`, `Population` and fitness `Function`. **Jenetics** allows you to minimize and maximize the given fitness function without tweaking it. In contrast to other GA implementations, the library uses the concept of an evolution stream (`EvolutionStream`) for executing the evolution steps. Since the `EvolutionStream` implements the Java Stream interface, it works smoothly with the rest of the Java Stream API.
 
 **Other languages**
 
@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.0/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.0.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
 
 
 ## Requirements
@@ -28,16 +28,12 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5
 *  **Gradle 5.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
-*  **TestNG 6.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
+*  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
 *  **Apache Commons Math 3.6**: [Library](http://commons.apache.org/proper/commons-math/) is used for testing statistical collectors.
 
 ## Build Jenetics
 
-For building the Jenetics library from source, download the most recent, stable package version from [Github](https://github.com/jenetics/jenetics/releases/download/v4.4.0/jenetics-4.4.0.zip) and extract it to some build directory.
-
-    $ unzip jenetics-<version>.zip -d <builddir>
-
-`<version>` denotes the actual Jenetics version and `<builddir>` the actual build directory. Alternatively you can check out the master branch from Github.
+Check out the master branch from Github.
 
     $ git clone https://github.com/jenetics/jenetics.git <builddir>
 
@@ -89,7 +85,7 @@ import io.jenetics.util.Factory;
 public class HelloWorld {
     // 2.) Definition of the fitness function.
     private static Integer eval(Genotype<BitGene> gt) {
-        return gt.getChromosome()
+        return gt.chromosome()
             .as(BitChromosome.class)
             .bitCount();
     }
@@ -157,10 +153,21 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * <a href="http://jdm.kr/blog/135">Jenetics 설치 및 예제</a>, by <em>JDM</em>, May 8. 2015
 * <a href="http://jdm.kr/blog/104">유전 알고리즘 (Genetic Algorithms)</a>, by <em>JDM</em>, April 2. 2015
 
-
 ## Citations
 
+* Erich C. Teppan, Giacomo Da Col. <a href="https://link.springer.com/chapter/10.1007/978-981-15-1918-5_7">Genetic Algorithms for Creating Large Job Shop Dispatching Rules. </a> <em>Advances in Integrations of Intelligent Methods. Smart Innovation, Systems and Technologies, vol 170. Springer, Singapore. </em></a> Jan. 2020.
+* Ricardo Pérez-Castillo, Francisco Ruiz, Mario Piattini. <a href="https://www.sciencedirect.com/science/article/pii/S016792362030004X">A decision-making support system for Enterprise Architecture Modelling. </a> <em>Decision Support Systems. </em></a> Jan. 2020.
+* Sabrina Appel, Wolfgang Geithner, Stephan Reimann, Mariusz Sapinski, Rahul Singh and Dominik Vilsmeier. <a href="https://www.worldscientific.com/doi/abs/10.1142/S0217751X19420193">Application of nature-inspired optimization algorithms and machine learning for heavy-ion synchrotrons. </a> <em>International Journal of Modern Physics A. </em></a> Dec. 2019.
+* O. M. Elzeki, M. F. Alrahmawy, Samir Elmougy. <a href="http://www.mecs-press.org/ijisa/ijisa-v11-n12/IJISA-V11-N12-3.pdf">A New Hybrid Genetic and Information Gain Algorithm for Imputing Missing Values in Cancer Genes Datasets. </a> <em>PInternational Journal of Intelligent Systems and Applications (IJISA), Vol.11, No.12, pp.20-33, DOI: 10.5815/ijisa.2019.12.03. </em></a> Dec. 2019.
+* Oliver Strauß, Ahmad Almheidat and Holger Kett. <a href="https://pdfs.semanticscholar.org/0a91/c4e03a2acd8c295af398167edf7350ad0662.pdf">Applying Heuristic and Machine Learning Strategies to ProductResolution. </a> <em>Proceedings of the 15th International Conference on Web Information Systems and Technologies (WEBIST 2019), pages 242-249. </em></a> Nov. 2019.
+* Yuanyuan Li, Stefano Carabelli, Edoardo Fadda, Daniele Manerba, Roberto Tadei1 and Olivier Terzo. <a href="http://www.orgroup.polito.it/material/DAUIN-ORO-2019-06.pdf">Integration of Machine Learning and OptimizationTechniques for Flexible Job-Shop Rescheduling inIndustry 4.0. </a> <em>Politecnico di Torino, Operations Research and Optimization Group. </em></a> Oct. 2019.
+* Höttger R., Igel B., Spinczyk O. <a href="https://link.springer.com/chapter/10.1007/978-3-030-30275-7_44">Constrained Software Distribution for Automotive Systems. </a> <em>Communications in Computer and Information Science, vol 1078. </em></a> Oct. 2019.
+* Jin-wooLee, Gwangseon Jang, Hohyun Jung, Jae-Gil Lee, Uichin Lee. <a href="https://doi.org/10.1016/j.pmcj.2019.101082">Maximizing MapReduce job speed and reliability in the mobile cloud by optimizing task allocation. </a> <em>Pervasive and Mobile Computing. </em></a> Oct. 2019.
+* Junio Cezar Ribeiro da Silva, Lorena Leão, Vinicius Petrucci, Abdoulaye Gamatié, Fernando MagnoQuintao Pereira. <a href="https://hal-lirmm.ccsd.cnrs.fr/lirmm-02281112/document">Scheduling in Heterogeneous Architectures via Multivariate Linear Regression on Function Inputs. </a> <em>lirmm-02281112. </em></a> Sep. 2019.
+* Francisco G. Montoya and Raúl Baños Navarro (Eds.). <a href="https://www.mdpi.com/books/pdfview/book/1450">Optimization Methods Applied to Power Systems, Volume 2. </a> <em>MDPI Books, ISBN 978-3-03921-156-2. </em></a> July 2019.
+* Höttger, Robert & Ki, Junhyung & Bui, Bao & Igel, Burkhard & Spinczyk, Olaf. <a href="https://www.researchgate.net/publication/335137686_CPU-GPU_Response_Time_and_Mapping_Analysis_for_High-Performance_Automotive_Systems">CPU-GPU Response Time and Mapping Analysis for High-Performance Automotive Systems. </a> <em>10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS) co-located with the 31st Euromicro Conference on Real-Time Systems (ECRTS'19). </em></a> July 2019.
 * Maxime Cordy, Steve Muller, Mike Papadakis, and Yves Le Traon. <a href="http://delivery.acm.org/10.1145/3340000/3330580/issta19main-p399-p.pdf?ip=84.114.111.7&id=3330580&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1563299816_46b771752984b933c8c119b7f7d81805">Search-based test and improvement of machine-learning-based anomaly detection systems. </a> <em>Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA 2019). ACM, New York, NY, USA, 158-168. </em></a> July 2019.
+* Nikolaos Nikolakis, Ioannis Stathakis, Sotirios Makris. <a href="https://doi.org/10.1016/j.procir.2019.03.153">On an evolutionary information system for personalized support to plant operators. </a> <em>52nd CIRP Conference on Manufacturing Systems (CMS), Ljubljana, Slovenia. </em></a> June 2019.
 * Michael Trotter, Timothy Wood and Jinho Hwang. <a href="http://faculty.cs.gwu.edu/timwood/papers/19-ICAC-storm.pdf">Forecasting a Storm: Divining Optimal Configurations using Genetic Algorithms and Supervised Learning. </a> <em>13th IEEE International Conference on Self-Adaptive and Self-Organizing Systems (SASO 2019). </em></a> June 2019.
 * Krawczyk, Lukas & Bazzal, Mahmoud & Prasath Govindarajan, Ram & Wolff, Carsten. <a href="https://www.researchgate.net/publication/334084554_An_analytical_approach_for_calculating_end-to-end_response_times_in_autonomous_driving_applications">An analytical approach for calculating end-to-end response times in autonomous driving applications. </a> <em>10th International Workshop on Analysis Tools and Methodologies for Embedded and Real-time Systems (WATERS 2019). </em></a> June 2019.
 * Rodolfo Ayala Lopes, Thiago Macedo Gomes, and Alan Robert Resende de Freitas. <a href="http://delivery.acm.org/10.1145/3330000/3326828/p1366-lopes.pdf?ip=84.114.111.7&id=3326828&acc=OPEN&key=4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35%2E6D218144511F3437&__acm__=1563021092_5e8cda0c5ddddb14d4f5e9e3bd610a44">A symbolic evolutionary algorithm software platform. </a> <em>Proceedings of the Genetic and Evolutionary Computation Conference Companion (GECCO '19). </em></a> July 2019.
@@ -168,6 +175,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * Robert Höttger, Lukas Krawczyk, Burkhard Igel, Olaf Spinczyk. <a href="http://2019.rtas.org/wp-content/uploads/2019/04/RTAS19_BP_proceedings.pdf#page=23">Memory Mapping Analysis for Automotive Systems. </a> <em>Brief Presentations Proceedings (RTAS 2019). </em></a> Apr. 2019.
 * Al Akkad, M. A., & Gazimzyanov, F. F. <a href="http://izdat.istu.ru/index.php/ISM/article/view/4317">AUTOMATED SYSTEM FOR EVALUATING 2D-IMAGE COMPOSITIONAL CHARACTERISTICS: CONFIGURING THE MATHEMATICAL MODEL.</a> <em>Intellekt. Sist. Proizv., 17(1), 26-33. doi: 10.22213/2410-9304-2019-1-26-33. </em></a> Apr. 2019.
 * Alcayde, A.; Baños, R.; Arrabal-Campos, F.M.; Montoya, F.G. <a href="https://www.mdpi.com/1996-1073/12/7/1270">Optimization of the Contracted Electric Power by Means of Genetic Algorithms.</a> <em>Energies, Volume 12, Issue 7, </em></a> Apr. 2019.
+* Abdul Sahli Fakharudin, Norazwina Zainol, Zulsyazwan Ahmad Khushairi. <a href="https://dl.acm.org/doi/10.1145/3323716.3323737">Modelling and Optimisation of Oil Palm Trunk Core Biodelignification using Neural Network and Genetic Algorithm.</a> <em>IEEA '19: Proceedings of the 8th International Conference on Informatics, Environment, Energy and Applications; Pages 155–158, </em></a> Mar. 2019.
 * Aleksandar Prokopec, Andrea Rosà, David Leopoldseder, Gilles Duboscq, Petr Tůma, Martin Studener, Lubomír Bulej, Yudi Zheng, Alex Villazón, Doug Simon, Thomas Wuerthinger, Walter Binder. <a href="https://arxiv.org/pdf/1903.10267.pdf">On Evaluating the Renaissance Benchmarking Suite: Variety, Performance, and Complexity.</a> <em>Cornell University: Programming Languages, </em></a> Mar. 2019.
 * S. Appel, W. Geithner, S. Reimann, M Sapinski, R. Singh, D. M. Vilsmeier <a href="https://www.researchgate.net/profile/Sabrina_Appel/publication/330934110_OPTIMIZATION_OF_HEAVY-ION_SYNCHROTRONS_USING_NATURE-INSPIRED_ALGORITHMS_AND_MACHINE_LEARNING/links/5c5c425b299bf1d14cb33546/OPTIMIZATION-OF-HEAVY-ION-SYNCHROTRONS-USING-NATURE-INSPIRED-ALGORITHMS-AND-MACHINE-LEARNING.pdf">OPTIMIZATION OF HEAVY-ION SYNCHROTRONS USINGNATURE-INSPIRED ALGORITHMS AND MACHINE LEARNING.</a><em><a href="https://bt.pa.msu.edu/ICAP18/index.html">13th Int. Computational Accelerator Physics Conf.</a>, </em></a> Feb. 2019.
 * Saad, Christian, Bernhard Bauer, Ulrich R Mansmann, and Jian Li. <a href="https://journals.sagepub.com/doi/10.1177/1177932218818458">AutoAnalyze in Systems Biology.</a> <em>Bioinformatics and Biology Insights, </em></a> Jan. 2019.
@@ -197,97 +205,22 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [5.0.1](https://github.com/jenetics/jenetics/releases/tag/v5.0.1)
-
-#### Bugs
-
-* [#550](https://github.com/jenetics/jenetics/issues/550): Erroneous index check for `Sample.argAt(int)` method in `io.jenetics.prog.regression` package. 
-* [#554](https://github.com/jenetics/jenetics/issues/550): `ClassCastException` in `io.jenetics.prog.regression.Regression` class. 
-
-### [5.0.0](https://github.com/jenetics/jenetics/releases/tag/v5.0.0)
+### [5.1.0](https://github.com/jenetics/jenetics/releases/tag/v5.1.0)
 
 #### Improvements
 
-* [#534](https://github.com/jenetics/jenetics/issues/534): Generify `Regression` classes so it can be used for regression analysis of arbitrary types.
-* [#529](https://github.com/jenetics/jenetics/issues/529): Implementation of Hybridizing PSM and RSM mutation operator (HPRM)
-* [#518](https://github.com/jenetics/jenetics/issues/518): Implementation of Symbolic Regression classes. This makes it easier to solve such optimization problems.
-* [#515](https://github.com/jenetics/jenetics/issues/515): Rename `Tree.getIndex(Tree)` to `Tree.indexOf(Tree)`.
-* [#509](https://github.com/jenetics/jenetics/issues/509): Allow to collect the nth best optimization results.
-```java
-final ISeq<EvolutionResult<DoubleGene, Double>> best = engine.stream()
-    .limit(Limits.bySteadyFitness(50))
-    .flatMap(MinMax.toStrictlyIncreasing())
-    .collect(ISeq.toISeq(10));
-```
-* [#504](https://github.com/jenetics/jenetics/issues/504): Rename `Tree.getChild(int)` to `Tree.childAt(int)`.
-* [#500](https://github.com/jenetics/jenetics/issues/500): Implementation of Reverse Sequence mutation operator (RSM).
-* [#497](https://github.com/jenetics/jenetics/issues/497): Implement Boolean operators for GP.
-* [#496](https://github.com/jenetics/jenetics/issues/496): Implement `GT` operator for GP.
-* [#493](https://github.com/jenetics/jenetics/issues/493): Add dotty tree formatter
-* [#488](https://github.com/jenetics/jenetics/issues/488): Implement new tree formatter `TreeFormatter.LISP`. This allows to create a Lisp string representation from a given `Tree`.
-* [#487](https://github.com/jenetics/jenetics/issues/487): Re-implementation of 'MathTreePruneAlterer'. The new implementation uses the newly introduced Tree Rewriting API, implemented in #442.
-* [#486](https://github.com/jenetics/jenetics/issues/486): Implement `TreeRewriteAlterer`, based on the new Tree Rewriting API.
-* [#485](https://github.com/jenetics/jenetics/issues/485): Cleanup of `MathExpr` class.
-* [#484](https://github.com/jenetics/jenetics/issues/484): The `Tree.toString()` now returns a parentheses string.
-* [#481](https://github.com/jenetics/jenetics/issues/481): The parentheses tree representation now only escapes "protected" characters.
-* [#469](https://github.com/jenetics/jenetics/issues/469): Implementation of additional `Evaluator` factory methods.
-* [#465](https://github.com/jenetics/jenetics/issues/465): Remove fitness scaler classes. The fitness scaler doesn't carry its weight.
-* [#455](https://github.com/jenetics/jenetics/issues/455): Implementation of `CompletableFutureEvaluator`.
-* [#450](https://github.com/jenetics/jenetics/issues/450): Improvement of `FutureEvaluator` class.
-* [#449](https://github.com/jenetics/jenetics/issues/449): The `Engine.Builder` constructor is now public and is the most generic way for creating engine builder instances. All other builder factory methods are calling this _primary_ constructor.
-* [#447](https://github.com/jenetics/jenetics/issues/447): Remove evolution iterators. The whole evolution is no performed via streams.
-* [#442](https://github.com/jenetics/jenetics/issues/442): Introduce Tree Rewriting API, which allows to define own rewrite rules/system. This is very helpful when solving GP related problems.
-```java
-final TRS<String> trs = TRS.parse(
-    "add(0,$x) -> $x",
-    "add(S($x),$y) -> S(add($x,$y))",
-    "mul(0,$x) -> 0",
-    "mul(S($x),$y) -> add(mul($x,$y),$y)"
-);
-
-// Converting the input tree into its normal form.
-final TreeNode<String> tree = TreeNode.parse("add(S(0),S(mul(S(0),S(S(0)))))");
-trs.rewrite(tree);
-assert tree.equals(TreeNode.parse("S(S(S(S(0))))"));
-```
-* [#372](https://github.com/jenetics/jenetics/issues/372): Allow to define the chromosome index an `Alterer` is allowed to change. This allows to define alterers for specific chromosomes in a genotype.
-```java
-// The genotype prototype, consisting of 4 chromosomes
-final Genotype<DoubleGene> gtf = Genotype.of(
-    DoubleChromosome.of(0, 1),
-    DoubleChromosome.of(1, 2),
-    DoubleChromosome.of(2, 3),
-    DoubleChromosome.of(3, 4)
-);
-
-// Define the GA engine.
-final Engine<DoubleGene, Double> engine = Engine
-    .builder(gt -> gt.getGene().doubleValue(), gtf)
-    .selector(new RouletteWheelSelector<>())
-    .alterers(
-        // The `Mutator` is used on chromosome with index 0 and 2.
-        PartialAlterer.of(new Mutator<DoubleGene, Double>(), 0, 2),
-        // The `MeanAlterer` is used on chromosome 3.
-        PartialAlterer.of(new MeanAlterer<DoubleGene, Double>(), 3),
-        // The `GaussianMutator` is used on all chromosomes.
-        new GaussianMutator<>()
-    )
-    .build();
-```
-* [#368](https://github.com/jenetics/jenetics/issues/368): Remove deprecated code.
-* [#364](https://github.com/jenetics/jenetics/issues/364): Clean implementation of async fitness functions.
-* [#342](https://github.com/jenetics/jenetics/issues/342): The `Tree` accessor names are no longer in a Java Bean style: `getChild(int)` -> `childAt(int)`. This corresponds to the `childAtPath(path)` methods.
-* [#331](https://github.com/jenetics/jenetics/issues/331): Remove `hashCode` and `equals` method from `Selector` and `Alterer`.
-* [#314](https://github.com/jenetics/jenetics/issues/314): Add factory method for `AdaptiveEngine`, which simplifies its creation.
-* [#308](https://github.com/jenetics/jenetics/issues/308): General improvement of object serialization.
-* [#50](https://github.com/jenetics/jenetics/issues/50): Improve Genotype validation. The new `Constraint` interface, and its implementation `RetryConstraint`, now allows a finer control of the validation and recreation of individuals.
-
+* [#522](https://github.com/jenetics/jenetics/issues/522): Replace `io.jenetics.ext.engine.AdaptiveEngine` with `io.jenetics.ext.engine.UpdatableEngine`. The `AdaptiveEngine` has been marked as deprecated.
+* [#557](https://github.com/jenetics/jenetics/issues/557): Implementation `io.jenetics.util.ProxySorter` class, which sorts a proxy array instead of an sequence itself.
+* [#563](https://github.com/jenetics/jenetics/issues/563): Introduction of `Evolution` interface, which makes the _concept_ of an _evolution_ function more explicit.
+* [#579](https://github.com/jenetics/jenetics/issues/579): Improve internal `RingBuffer` implementation.
+* [#585](https://github.com/jenetics/jenetics/issues/585): Improve `EphemeralConst` serialization.
+* [#592](https://github.com/jenetics/jenetics/issues/592): Add `Tree.path()` and `Tree.pathElements()` methods.
 
 #### Bugs
 
-* [#520](https://github.com/jenetics/jenetics/issues/520): Fix tree-rewriting for `Const` values. This leads to non-matching nodes when trying to simplify the GP tree.
-* [#475](https://github.com/jenetics/jenetics/issues/475): Level function returns different results depending on whether the iterator is iterating through a `ProgramGene` or `TreeNode`.
-* [#473](https://github.com/jenetics/jenetics/issues/473): `DynamicGenotype` example causes `IllegalArgumentException`.
+* [#539](https://github.com/jenetics/jenetics/issues/539): Fix JHM tests.
+* [#599](https://github.com/jenetics/jenetics/issues/599): `Recombinator` performs `recombine` on an individual with itself.
+* [#600](https://github.com/jenetics/jenetics/issues/600): Duplicates in Pareto set owing to the `equals` method in `Phenotype` class.
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
@@ -296,7 +229,7 @@ _[All Release Notes](RELEASE_NOTES.md)_
 
 The library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-	Copyright 2007-2019 Franz Wilhelmstötter
+	Copyright 2007-2020 Franz Wilhelmstötter
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.

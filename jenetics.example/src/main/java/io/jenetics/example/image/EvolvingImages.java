@@ -428,12 +428,12 @@ public class EvolvingImages extends JFrame {
 	) {
 		invokeLater(() -> {
 			final Genotype<PolygonGene> gt = best
-				.getBestPhenotype()
-				.getGenotype();
+				.bestPhenotype()
+				.genotype();
 
 			bestEvolutionResultPanel.update(best);
 			currentevolutionResultPanel.update(current);
-			_polygonPanel.setChromosome((PolygonChromosome)gt.getChromosome());
+			_polygonPanel.setChromosome((PolygonChromosome)gt.chromosome());
 			_polygonPanel.repaint();
 		});
 	}

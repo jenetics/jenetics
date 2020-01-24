@@ -84,7 +84,7 @@ final class Numbers {
 		return FP_PATTERN.matcher(value).matches();
 	}
 
-	static Optional<Double> tryParseDouble(final String value) {
+	static Optional<Double> toDoubleOptional(final String value) {
 		return isNumber(value)
 			? Optional.of(Double.parseDouble(value))
 			: Optional.empty();

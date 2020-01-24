@@ -36,9 +36,9 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 5.2
  */
-public final class DoubleMoments implements Serializable {
+public final /*record*/ class DoubleMoments implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,6 +89,17 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the count of recorded values
 	 */
+	public long count() {
+		return _count;
+	}
+
+	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 * @deprecated Use {@link #count()} instead
+	 */
+	@Deprecated
 	public long getCount() {
 		return _count;
 	}
@@ -99,6 +110,18 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
+	public double min() {
+		return _min;
+	}
+
+	/**
+	 * Return the minimum value recorded, or {@code Double.POSITIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
 	public double getMin() {
 		return _min;
 	}
@@ -109,6 +132,18 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
+	public double max() {
+		return _max;
+	}
+
+	/**
+	 * Return the maximum value recorded, or {@code Double.NEGATIVE_INFINITY} if
+	 * no values have been recorded.
+	 *
+	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public double getMax() {
 		return _max;
 	}
@@ -119,6 +154,18 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the sum of values, or zero if none
 	 */
+	public double sum() {
+		return _sum;
+	}
+
+	/**
+	 * Return the sum of values recorded, or zero if no values have been
+	 * recorded.
+	 *
+	 * @return the sum of values, or zero if none
+	 * @deprecated Use {@link #sum()} instead
+	 */
+	@Deprecated
 	public double getSum() {
 		return _sum;
 	}
@@ -129,6 +176,18 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
+	public double mean() {
+		return _mean;
+	}
+
+	/**
+	 * Return the arithmetic mean of values recorded, or zero if no values have
+	 * been recorded.
+	 *
+	 * @return the arithmetic mean of values, or zero if none
+	 * @deprecated Use {@link #mean()} instead
+	 */
+	@Deprecated
 	public double getMean() {
 		return _mean;
 	}
@@ -139,6 +198,18 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the variance of values, or {@code NaN} if none
 	 */
+	public double variance() {
+		return _variance;
+	}
+
+	/**
+	 * Return the variance of values recorded, or {@code Double.NaN} if no
+	 * values have been recorded.
+	 *
+	 * @return the variance of values, or {@code NaN} if none
+	 * @deprecated Use {@link #variance()} instead
+	 */
+	@Deprecated
 	public double getVariance() {
 		return _variance;
 	}
@@ -152,6 +223,21 @@ public final class DoubleMoments implements Serializable {
 	 * @return the skewness of values, or {@code NaN} if less than two values
 	 *         have been recorded
 	 */
+	public double skewness() {
+		return _skewness;
+	}
+
+	/**
+	 * Return the skewness of values recorded, or {@code Double.NaN} if less
+	 * than two values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+	 *
+	 * @return the skewness of values, or {@code NaN} if less than two values
+	 *         have been recorded
+	 * @deprecated Use {@link #skewness()} instead
+	 */
+	@Deprecated
 	public double getSkewness() {
 		return _skewness;
 	}
@@ -165,6 +251,21 @@ public final class DoubleMoments implements Serializable {
 	 * @return the kurtosis of values, or {@code NaN} if less than four values
 	 *         have been recorded
 	 */
+	public double kurtosis() {
+		return _kurtosis;
+	}
+
+	/**
+	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
+	 * than four values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+	 *
+	 * @return the kurtosis of values, or {@code NaN} if less than four values
+	 *         have been recorded
+	 * @deprecated Use {@link #kurtosis()} instead
+	 */
+	@Deprecated
 	public double getKurtosis() {
 		return _kurtosis;
 	}
@@ -179,8 +280,7 @@ public final class DoubleMoments implements Serializable {
 			hash(_mean,
 			hash(_variance,
 			hash(_skewness,
-			hash(_kurtosis,
-			hash(getClass())))))))));
+			hash(_kurtosis))))))));
 	}
 
 	@Override
@@ -201,8 +301,8 @@ public final class DoubleMoments implements Serializable {
 	public String toString() {
 		return String.format(
 			"DoubleMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
-			getCount(), getMin(), getMax(), getSum(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			count(), min(), max(), sum(),
+			mean(), variance(), skewness(), kurtosis()
 		);
 	}
 
@@ -250,14 +350,14 @@ public final class DoubleMoments implements Serializable {
 	 */
 	public static DoubleMoments of(final DoubleMomentStatistics statistics) {
 		return new DoubleMoments(
-			statistics.getCount(),
-			statistics.getMin(),
-			statistics.getMax(),
-			statistics.getSum(),
-			statistics.getMean(),
-			statistics.getVariance(),
-			statistics.getSkewness(),
-			statistics.getKurtosis()
+			statistics.count(),
+			statistics.min(),
+			statistics.max(),
+			statistics.sum(),
+			statistics.mean(),
+			statistics.variance(),
+			statistics.skewness(),
+			statistics.kurtosis()
 		);
 	}
 

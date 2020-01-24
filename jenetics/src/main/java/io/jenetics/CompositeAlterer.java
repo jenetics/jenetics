@@ -60,7 +60,7 @@ final class CompositeAlterer<
 	ISeq<Alterer<G, C>> normalize(final Seq<Alterer<G, C>> alterers) {
 		final Function<Alterer<G, C>, Stream<Alterer<G, C>>> mapper =
 			a -> a instanceof CompositeAlterer
-				? ((CompositeAlterer<G, C>)a).getAlterers().stream()
+				? ((CompositeAlterer<G, C>)a).alterers().stream()
 				: Stream.of(a);
 
 		return alterers.stream()
@@ -76,13 +76,13 @@ final class CompositeAlterer<
 		AltererResult<G, C> result = AltererResult.of(population.asISeq());
 		for (Alterer<G, C> alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
-				result.getPopulation(),
+				result.population(),
 				generation
 			);
 
 			result = AltererResult.of(
-				as.getPopulation(),
-				as.getAlterations() + result.getAlterations()
+				as.population(),
+				as.alterations() + result.alterations()
 			);
 		}
 
@@ -95,7 +95,7 @@ final class CompositeAlterer<
 	 *
 	 * @return the alterers this alterer consists of.
 	 */
-	ISeq<Alterer<G, C>> getAlterers() {
+	ISeq<Alterer<G, C>> alterers() {
 		return _alterers;
 	}
 

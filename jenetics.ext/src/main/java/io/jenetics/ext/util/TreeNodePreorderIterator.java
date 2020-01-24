@@ -22,22 +22,22 @@ package io.jenetics.ext.util;
 import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
  * Preorder iterator of the tree.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 3.9
  */
 final class TreeNodePreorderIterator<V, T extends Tree<V, T>>
 	implements Iterator<T>
 {
-	private final Deque<Iterator<T>> _deque = new LinkedList<>();
+	private final Deque<Iterator<T>> _deque = new ArrayDeque<>();
 
 	/**
 	 * Create a new preorder iterator of the given tree {@code root}.

@@ -20,7 +20,7 @@
 package io.jenetics.internal.collection;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.random.nextASCIIString;
+import static io.jenetics.internal.math.Randoms.nextASCIIString;
 
 import java.io.File;
 import java.io.IOException;

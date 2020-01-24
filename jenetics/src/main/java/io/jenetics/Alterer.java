@@ -58,7 +58,7 @@ public interface Alterer<
 	/**
 	 * The default alter probability: 0.2
 	 */
-	public static final double DEFAULT_ALTER_PROBABILITY = 0.2;
+	double DEFAULT_ALTER_PROBABILITY = 0.2;
 
 	/**
 	 * Alters (recombine) a given population. If the {@code population} is empty,
@@ -73,7 +73,7 @@ public interface Alterer<
 	 * @throws NullPointerException if the given {@code population} is
 	 *        {@code null}.
 	 */
-	public AltererResult<G, C> alter(
+	AltererResult<G, C> alter(
 		final Seq<Phenotype<G, C>> population,
 		final long generation
 	);
@@ -85,7 +85,7 @@ public interface Alterer<
 	 * @param before the alterer to apply first
 	 * @return the new composed alterer
 	 */
-	public default Alterer<G, C> compose(final Alterer<G, C> before) {
+	default Alterer<G, C> compose(final Alterer<G, C> before) {
 		return of(before, this);
 	}
 
@@ -96,7 +96,7 @@ public interface Alterer<
 	 * @param after the alterer to apply first
 	 * @return the new composed alterer
 	 */
-	public default Alterer<G, C> andThen(final Alterer<G, C> after) {
+	default Alterer<G, C> andThen(final Alterer<G, C> after) {
 		return of(this, requireNonNull(after));
 	}
 
@@ -110,7 +110,7 @@ public interface Alterer<
 	 * @throws NullPointerException if one of the alterers is {@code null}.
 	 */
 	@SafeVarargs
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Alterer<G, C> of(final Alterer<G, C>... alterers) {
 		return alterers.length == 0
 			? (p, g) -> AltererResult.of(p.asISeq())

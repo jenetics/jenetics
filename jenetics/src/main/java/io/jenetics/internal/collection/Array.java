@@ -38,10 +38,10 @@ import io.jenetics.internal.collection.Array.Store.Ref;
  *
  * @param <T> the array element type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 5.2
  * @since 3.4
  */
-public final class Array<T> implements Serializable {
+public final class Array<T> implements BaseMSeq<T>, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private transient /*final*/ Store.Ref<T> _store;
@@ -68,6 +68,39 @@ public final class Array<T> implements Serializable {
 	 */
 	private Array(final Store<T> store) {
 		this(Store.Ref.of(store), 0, store.length());
+	}
+
+	/**
+	 * Get the array value at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @return the value at the given index
+	 */
+	@Override
+	public T get(final int index) {
+		return _store.get(index + _start);
+	}
+
+	/**
+	 * Return the array length.
+	 *
+	 * @return the array length
+	 */
+	@Override
+	public int length() {
+		return _length;
+	}
+
+	/**
+	 * Set the {@code value} at the given {@code index}. The array index is not
+	 * checked.
+	 *
+	 * @param index the array index
+	 * @param value the value to set
+	 */
+	public void set(final int index, final T value) {
+		_store.set(index + _start, value);
 	}
 
 	/**
@@ -103,17 +136,6 @@ public final class Array<T> implements Serializable {
 	}
 
 	/**
-	 * Set the {@code value} at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @param value the value to set
-	 */
-	public void set(final int index, final T value) {
-		_store.set(index + _start, value);
-	}
-
-	/**
 	 * Sort the store.
 	 *
 	 * @param from the start index where to start sorting (inclusively)
@@ -128,17 +150,6 @@ public final class Array<T> implements Serializable {
 		final Comparator<? super T> comparator
 	) {
 		_store.sort(from + _start, until + _start, comparator);
-	}
-
-	/**
-	 * Get the array value at the given {@code index}. The array index is not
-	 * checked.
-	 *
-	 * @param index the array index
-	 * @return the value at the given index
-	 */
-	public T get(final int index) {
-		return _store.get(index + _start);
 	}
 
 	/**
@@ -232,15 +243,6 @@ public final class Array<T> implements Serializable {
 		}
 
 		return size;
-	}
-
-	/**
-	 * Return the array length.
-	 *
-	 * @return the array length
-	 */
-	public int length() {
-		return _length;
 	}
 
 	/**
@@ -372,7 +374,7 @@ public final class Array<T> implements Serializable {
 
 		final boolean sealed = in.readBoolean();
 		@SuppressWarnings("unchecked")
-		final Store<T> store = (Store<T>) in.readObject();
+		final Store<T> store = (Store<T>)in.readObject();
 		final Store.Ref<T> ref = new Ref<>(store, sealed);
 
 		_start = 0;

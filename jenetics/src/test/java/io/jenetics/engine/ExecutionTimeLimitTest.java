@@ -24,7 +24,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;

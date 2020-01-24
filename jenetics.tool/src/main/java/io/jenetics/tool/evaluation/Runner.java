@@ -77,9 +77,9 @@ public class Runner<
 		final long end = System.currentTimeMillis();
 
 		return new double[] {
-			result.getTotalGenerations(),
-			result.getBestFitness() != null
-				? result.getBestFitness().doubleValue()
+			result.totalGenerations(),
+			result.bestFitness() != null
+				? result.bestFitness().doubleValue()
 				: Double.NEGATIVE_INFINITY,
 			end - start
 		};

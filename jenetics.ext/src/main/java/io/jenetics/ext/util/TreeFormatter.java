@@ -74,7 +74,7 @@ public abstract class TreeFormatter {
 			final Function<? super V, String> mapper
 		) {
 			final List<StringBuilder> result = new ArrayList<>();
-			result.add(new StringBuilder().append(mapper.apply(tree.getValue())));
+			result.add(new StringBuilder().append(mapper.apply(tree.value())));
 
 			final Iterator<? extends Tree<V, ?>> it = tree.childIterator();
 			while (it.hasNext()) {
@@ -142,7 +142,7 @@ public abstract class TreeFormatter {
 			final Tree<V, ?> tree,
 			final Function<? super V, String> mapper
 		) {
-			final String value = mapper.apply(tree.getValue());
+			final String value = mapper.apply(tree.value());
 			if (tree.isLeaf()) {
 				return value;
 			} else {
@@ -310,7 +310,7 @@ public abstract class TreeFormatter {
 				final int index
 			) {
 				int idx = index;
-				final String value = _mapper.apply(tree.getValue());
+				final String value = _mapper.apply(tree.value());
 				final String label = String.format("node_%03d", idx);
 				_labels.put(label, value);
 

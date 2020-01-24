@@ -20,7 +20,7 @@
 package io.jenetics.example;
 
 import static java.lang.Math.pow;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class DynamicGenotype {
 			indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
 				final Phenotype<G, C> pt = pop.get(i);
 
-				final Genotype<G> gt = pt.getGenotype();
+				final Genotype<G> gt = pt.genotype();
 				final Genotype<G> mgt = mutate(gt, p, alterations);
 
 				final Phenotype<G, C> mpt = Phenotype.of(mgt, generation);
@@ -103,7 +103,7 @@ public class DynamicGenotype {
 			final IntRef alterations
 		) {
 			final List<Chromosome<G>> chromosomes =
-				new ArrayList<>(genotype.toSeq().asList());
+				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
 			final Random random = RandomRegistry.getRandom();
@@ -124,7 +124,7 @@ public class DynamicGenotype {
 
 		private int mutate(final List<Chromosome<G>> c, final int i, final double p) {
 			final Chromosome<G> chromosome = c.get(i);
-			final List<G> genes = new ArrayList<>(chromosome.toSeq().asList());
+			final List<G> genes = new ArrayList<>(ISeq.of(chromosome).asList());
 
 			final int mutations = mutate(genes, p);
 			if (mutations > 0) {
@@ -151,7 +151,7 @@ public class DynamicGenotype {
 			.limit(20)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getBestFitness());
+		System.out.println(result.bestFitness());
 	}
 
 }

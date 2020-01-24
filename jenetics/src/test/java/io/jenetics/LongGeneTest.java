@@ -57,7 +57,7 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 
 		using(new Random(12345), r ->
 			IntStream.range(0, 200_000)
-				.mapToObj(i -> LongGene.of(min, max).getAllele())
+				.mapToObj(i -> LongGene.of(min, max).allele())
 				.forEach(histogram)
 		);
 
@@ -75,13 +75,13 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 			final LongGene b = template.newInstance((i - 100L) *3);
 			final LongGene c = a.mean(b);
 
-			assertEquals(a.getMin().longValue(), min);
-			assertEquals(a.getMax().longValue(), max);
-			assertEquals(b.getMin().longValue(), min);
-			assertEquals(b.getMax().longValue(), max);
-			assertEquals(c.getMin().longValue(), min);
-			assertEquals(c.getMax().longValue(), max);
-			assertEquals(c.getAllele().longValue(), ((i - 50) + ((i - 100)*3))/2);
+			assertEquals(a.min().longValue(), min);
+			assertEquals(a.max().longValue(), max);
+			assertEquals(b.min().longValue(), min);
+			assertEquals(b.max().longValue(), max);
+			assertEquals(c.min().longValue(), min);
+			assertEquals(c.max().longValue(), max);
+			assertEquals(c.allele().longValue(), ((i - 50) + ((i - 100)*3))/2);
 		}
 	}
 
@@ -90,9 +90,9 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 		LongGene gene = LongGene.of(1, 0, 12);
 		LongGene g2 = gene.newInstance(5L);
 
-		assertEquals(g2.getAllele().longValue(), 5);
-		assertEquals(g2.getMin().longValue(), 0);
-		assertEquals(g2.getMax().longValue(), 12);
+		assertEquals(g2.allele().longValue(), 5);
+		assertEquals(g2.min().longValue(), 0);
+		assertEquals(g2.max().longValue(), 12);
 	}
 
 	@Test
@@ -104,9 +104,9 @@ public class LongGeneTest extends NumericGeneTester<Long, LongGene> {
 	@Test
 	public void set() {
 		LongGene gene = LongGene.of(5L, 0L, 10L);
-		Assert.assertEquals(gene.getAllele().longValue(), 5L);
-		Assert.assertEquals(gene.getMin().longValue(), 0L);
-		Assert.assertEquals(gene.getMax().longValue(), 10L);
+		Assert.assertEquals(gene.allele().longValue(), 5L);
+		Assert.assertEquals(gene.min().longValue(), 0L);
+		Assert.assertEquals(gene.max().longValue(), 10L);
 	}
 
 }

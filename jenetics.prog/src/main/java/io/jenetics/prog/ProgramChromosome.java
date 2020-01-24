@@ -158,7 +158,7 @@ public class ProgramChromosome<A>
 	 */
 	@Override
 	public A apply(final A[] args) {
-		return getRoot().apply(args);
+		return root().apply(args);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class ProgramChromosome<A>
 	 */
 	@SafeVarargs
 	public final A eval(final A... args) {
-		return getRoot().eval(args);
+		return root().eval(args);
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class ProgramChromosome<A>
 
 	@Override
 	public ProgramChromosome<A> newInstance() {
-		return create(getRoot().depth(), _validator, _operations, _terminals);
+		return create(root().depth(), _validator, _operations, _terminals);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class ProgramChromosome<A>
 	) {
 		final ISeq<ProgramGene<A>> genes = FlatTreeNode.of(program).stream()
 			.map(n -> new ProgramGene<>(
-				n.getValue(), n.childOffset(), operations, terminals))
+				n.value(), n.childOffset(), operations, terminals))
 			.collect(ISeq.toISeq());
 
 		return new ProgramChromosome<>(genes, validator, operations, terminals);
@@ -422,7 +422,7 @@ public class ProgramChromosome<A>
 		out.writeObject(_terminals);
 
 		for (ProgramGene<A> gene : _genes) {
-			out.writeObject(gene.getAllele());
+			out.writeObject(gene.allele());
 			writeInt(gene.childOffset(), out);
 		}
 	}

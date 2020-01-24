@@ -32,10 +32,10 @@ import java.util.stream.IntStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 5.2
  * @since 3.2
  */
-public final class IntRange implements Serializable {
+public final /*record*/ class IntRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +58,7 @@ public final class IntRange implements Serializable {
 	 *
 	 * @return the minimum value of the integer range
 	 */
-	public int getMin() {
+	public int min() {
 		return _min;
 	}
 
@@ -67,6 +67,28 @@ public final class IntRange implements Serializable {
 	 *
 	 * @return the maximum value of the integer range
 	 */
+	public int max() {
+		return _max;
+	}
+
+	/**
+	 * Return the minimum value of the integer range.
+	 *
+	 * @return the minimum value of the integer range
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
+	public int getMin() {
+		return _min;
+	}
+
+	/**
+	 * Return the maximum value of the integer range.
+	 *
+	 * @return the maximum value of the integer range
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public int getMax() {
 		return _max;
 	}
@@ -83,14 +105,14 @@ public final class IntRange implements Serializable {
 	}
 
 	/**
-	 * Returns a sequential ordered {@code IntStream} from {@link #getMin()}
-	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * Returns a sequential ordered {@code IntStream} from {@link #min()}
+	 * (inclusive) to {@link #max()} (exclusive) by an incremental step of
 	 * {@code 1}.
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
 	 * <pre>{@code
-	 * for (int i = range.getMin(); i < range.getMax(); ++i) {
+	 * for (int i = range.min(); i < range.max(); ++i) {
 	 *     ...
 	 * }
 	 * }</pre>

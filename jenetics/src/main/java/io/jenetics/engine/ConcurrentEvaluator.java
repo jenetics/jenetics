@@ -108,7 +108,7 @@ final class ConcurrentEvaluator<
 
 		@Override
 		public void run() {
-			_fitness = _function.apply(_phenotype.getGenotype());
+			_fitness = _function.apply(_phenotype.genotype());
 		}
 
 		Phenotype<G, C> phenotype() {

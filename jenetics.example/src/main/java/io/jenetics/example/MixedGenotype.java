@@ -49,9 +49,9 @@ public class MixedGenotype {
 	);
 
 	private static double fitness(final Genotype gt) {
-		final DoubleChromosome dc = (DoubleChromosome)gt.getChromosome(0);
-		final BitChromosome bc = (BitChromosome)gt.getChromosome(1);
-		final IntegerChromosome ic = (IntegerChromosome)gt.getChromosome(2);
+		final DoubleChromosome dc = (DoubleChromosome)gt.get(0);
+		final BitChromosome bc = (BitChromosome)gt.get(1);
+		final IntegerChromosome ic = (IntegerChromosome)gt.get(2);
 
 		return dc.doubleValue() + bc.bitCount() + ic.doubleValue();
 	}

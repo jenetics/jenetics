@@ -24,11 +24,6 @@ import static java.lang.Math.min;
 /**
  * Implementing the Tim sort algorithm.
  *
- * @implNote
- * To be precise, this is not the exact Timsort algorithm. The scan for the
- * longest sorted run is not implemented. It does an insertion sort for small
- * sub-arrays and merges them back into the bigger array.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
  * @since 5.1

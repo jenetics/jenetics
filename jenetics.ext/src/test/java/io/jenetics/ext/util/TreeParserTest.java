@@ -142,7 +142,7 @@ public class TreeParserTest {
 		final TreeNode<String> tree,
 		final Random random
 	) {
-		tree.setValue(Integer.toString(random.nextInt(10)*(level+1)));
+		tree.value(Integer.toString(random.nextInt(10)*(level+1)));
 		if (level > 1) {
 			for (int i = 0, n = random.nextInt(4) + 1; i < n; ++i) {
 				final TreeNode<String> node = TreeNode.of();

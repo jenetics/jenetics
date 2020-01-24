@@ -22,7 +22,7 @@ package io.jenetics.engine;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.util.Objects;
 import java.util.stream.Stream;

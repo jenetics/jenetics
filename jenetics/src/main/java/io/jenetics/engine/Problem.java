@@ -35,12 +35,12 @@ import io.jenetics.Genotype;
  * final Problem<ISeq<BitGene>, BitGene, Integer> counting = Problem.of(
  *     // Native fitness function
  *     genes -> (int)genes.stream()
- *         .filter(BitGene::getBit)
+ *         .filter(BitGene::bit)
  *         .count(),
  *     // Problem encoding
  *     Codec.of(
  *         Genotype.of(BitChromosome.of(100)),
- *         gt -> gt.getChromosome().toSeq()
+ *         gt -> ISeq.of(gt.chromosome())
  *     )
  * );
  * }</pre>
@@ -70,7 +70,7 @@ public interface Problem<
 	 *
 	 * @return the fitness function
 	 */
-	public Function<T, C> fitness();
+	Function<T, C> fitness();
 
 	/**
 	 * Return the codec, which translates the types of the problem domain into
@@ -78,7 +78,7 @@ public interface Problem<
 	 *
 	 * @return the engine codec
 	 */
-	public Codec<T, G> codec();
+	Codec<T, G> codec();
 
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
@@ -98,7 +98,7 @@ public interface Problem<
 	 * @return the converted genotype
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
-	public default T decode(final Genotype<G> genotype) {
+	default T decode(final Genotype<G> genotype) {
 		return codec().decode(genotype);
 	}
 
@@ -110,7 +110,7 @@ public interface Problem<
 	 * @param arg the argument of the fitness function
 	 * @return the fitness value
 	 */
-	public default C fitness(final T arg) {
+	default C fitness(final T arg) {
 		return fitness().apply(arg);
 	}
 
@@ -122,7 +122,7 @@ public interface Problem<
 	 * @param genotype the argument of the fitness function
 	 * @return the fitness value
 	 */
-	public default C fitness(final Genotype<G> genotype) {
+	default C fitness(final Genotype<G> genotype) {
 		return fitness(codec().decode(genotype));
 	}
 
@@ -137,7 +137,7 @@ public interface Problem<
 	 * @return a new problem object from the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Problem<T, G, C> of(
 		final Function<T, C> fitness,
 		final Codec<T, G> codec
@@ -150,7 +150,6 @@ public interface Problem<
 			public Codec<T, G> codec() {
 				return codec;
 			}
-
 			@Override
 			public Function<T, C> fitness() {
 				return fitness;

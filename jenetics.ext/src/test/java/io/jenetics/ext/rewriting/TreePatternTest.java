@@ -105,7 +105,7 @@ public class TreePatternTest {
 		final TreePattern<String> pattern = TreePattern.compile("3($x,$y,1)");
 		final TreePattern<Integer> ipattern = pattern.map(Integer::parseInt);
 
-		Assert.assertEquals(ipattern.pattern().getRoot().getValue(), Val.of(3));
+		Assert.assertEquals(ipattern.pattern().root().value(), Val.of(3));
 		Assert.assertEquals(ipattern.toString(), "3($x,$y,1)");
 	}
 

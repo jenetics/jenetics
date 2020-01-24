@@ -20,9 +20,9 @@
 package io.jenetics;
 
 import static java.lang.Math.min;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -39,9 +39,9 @@ import io.jenetics.util.RandomRegistry;
  * +---+---+---+---+---+---+---+
  * </pre>
  * The probability that two genes are swapped is controlled by the
- * <i>swap-probability</i> ({@link #getSwapProbability()}), whereas the
+ * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
- * the <i>crossover-probability</i> ({@link #getProbability()}).
+ * the <i>crossover-probability</i> ({@link #probability()}).
  *
  * @see <a href="https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover">
  *     Wikipedia: Uniform crossover</a>
@@ -75,7 +75,7 @@ public class UniformCrossover<
 		final double swapProbability
 	) {
 		super(crossoverProbability);
-		_swapProbability = require.probability(swapProbability);
+		_swapProbability = Requires.probability(swapProbability);
 	}
 
 	/**
@@ -105,6 +105,17 @@ public class UniformCrossover<
 	 *
 	 * @return the probability for swapping genes of a chromosome
 	 */
+	public double swapProbability() {
+		return _swapProbability;
+	}
+
+	/**
+	 * Return the probability for swapping genes of a chromosome.
+	 *
+	 * @return the probability for swapping genes of a chromosome
+	 * @deprecated Use {@link #swapProbability()} instead
+	 */
+	@Deprecated
 	public double getSwapProbability() {
 		return _swapProbability;
 	}

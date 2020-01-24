@@ -31,10 +31,10 @@ import java.io.Serializable;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 5.2
  * @since 3.2
  */
-public final class DoubleRange implements Serializable {
+public final /*record*/ class DoubleRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,7 @@ public final class DoubleRange implements Serializable {
 	 *
 	 * @return the minimum value of the double range
 	 */
-	public double getMin() {
+	public double min() {
 		return _min;
 	}
 
@@ -66,6 +66,28 @@ public final class DoubleRange implements Serializable {
 	 *
 	 * @return the maximum value of the double range
 	 */
+	public double max() {
+		return _max;
+	}
+
+	/**
+	 * Return the minimum value of the double range.
+	 *
+	 * @return the minimum value of the double range
+	 * @deprecated Use {@link #min()} instead
+	 */
+	@Deprecated
+	public double getMin() {
+		return _min;
+	}
+
+	/**
+	 * Return the maximum value of the double range.
+	 *
+	 * @return the maximum value of the double range
+	 * @deprecated Use {@link #max()} instead
+	 */
+	@Deprecated
 	public double getMax() {
 		return _max;
 	}

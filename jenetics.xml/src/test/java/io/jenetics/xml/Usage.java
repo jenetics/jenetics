@@ -40,7 +40,7 @@ public class Usage {
 			BitChromosome::bitCount,
 			Codec.of(
 				Genotype.of(BitChromosome.of(10)),
-				gt -> gt.getChromosome().as(BitChromosome.class)
+				gt -> gt.chromosome().as(BitChromosome.class)
 			)
 		);
 
@@ -50,7 +50,7 @@ public class Usage {
 			.limit(10)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final ISeq<Genotype<BitGene>> genotypes = result.getGenotypes();
+		final ISeq<Genotype<BitGene>> genotypes = result.genotypes();
 
 		Writers.write(System.out, genotypes.asList(), Writers.BitChromosome.writer());
 		Readers.read(System.in, Readers.BitChromosome.reader());

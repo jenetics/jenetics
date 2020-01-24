@@ -118,7 +118,7 @@ final class Timing {
 			: new Timing(() -> nanos(clock));
 	}
 
-	static long nanos(final Clock clock) {
+	private static long nanos(final Clock clock) {
 		final Instant now = clock.instant();
 		return now.getEpochSecond()*NanoClock.NANOS_PER_SECOND + now.getNano();
 	}
