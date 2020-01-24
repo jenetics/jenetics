@@ -95,7 +95,7 @@ public abstract class Reader<T> {
 	/**
 	 * Represents the XML element type.
 	 */
-	static enum Type {
+	enum Type {
 
 		/**
 		 * Denotes a element reader.

@@ -49,7 +49,7 @@ import io.jenetics.ext.internal.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.2
  */
 public final class BigIntegerGene
 	implements

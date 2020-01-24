@@ -42,7 +42,7 @@ import io.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds arbitrary sized integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version 5.2
  * @since 3.5
  */
 public class BigIntegerChromosome

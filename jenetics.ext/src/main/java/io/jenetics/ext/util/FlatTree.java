@@ -64,7 +64,7 @@ public interface FlatTree<V, T extends FlatTree<V, T>> extends Tree<V, T> {
 	 * @return Return the index of the first child node in the underlying node
 	 *         array, or {@code -1} if {@code this} node is a leaf
 	 */
-	public int childOffset();
+	int childOffset();
 
 	/**
 	 * Return the whole flattened tree values in breadth-first order. This is
@@ -76,7 +76,7 @@ public interface FlatTree<V, T extends FlatTree<V, T>> extends Tree<V, T> {
 	 *
 	 * @return the flattened tree values in breadth-first order
 	 */
-	public default ISeq<T> flattenedNodes() {
+	default ISeq<T> flattenedNodes() {
 		return root().breadthFirstStream().collect(ISeq.toISeq());
 	}
 

@@ -198,7 +198,6 @@ public class Program<T> implements Op<T>, Serializable {
 	 *         and the node child count differ.
 	 */
 	public static void check(final Tree<? extends Op<?>, ?> program) {
-		requireNonNull(program);
 		program.forEach(Program::checkArity);
 	}
 
@@ -346,7 +345,7 @@ public class Program<T> implements Op<T>, Serializable {
 			? terminals.get(random.nextInt(terminals.size()))
 			: operations.get(random.nextInt(operations.size()));
 
-		tree.setValue(op);
+		tree.value(op);
 
 		if (level > 1) {
 			for (int i = 0; i < op.arity(); ++i) {
@@ -412,9 +411,9 @@ public class Program<T> implements Op<T>, Serializable {
 
 				final TreeNode<Op<A>> treeNode = TreeNode.of();
 				if (offsets[index] + i < nodes.size()) {
-					treeNode.setValue(nodes.get(offsets[index] + i).value());
+					treeNode.value(nodes.get(offsets[index] + i).value());
 				} else {
-					treeNode.setValue(terminals.get(random.nextInt(terminals.size())));
+					treeNode.value(terminals.get(random.nextInt(terminals.size())));
 				}
 
 				toTree(

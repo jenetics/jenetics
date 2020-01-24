@@ -25,7 +25,7 @@ import io.jenetics.Chromosome;
  * Chromosome for tree shaped genes.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 3.9
  */
 public interface TreeChromosome<A, G extends TreeGene<A, G>>
@@ -46,7 +46,7 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 *
 	 * @return the root tree gene of this chromosome
 	 */
-	public default G root() {
+	default G root() {
 		return gene();
 	}
 
@@ -66,7 +66,7 @@ public interface TreeChromosome<A, G extends TreeGene<A, G>>
 	 * @deprecated Use {@link #root()} instead
 	 */
 	@Deprecated
-	public default G getRoot() {
+	default G getRoot() {
 		return gene();
 	}
 

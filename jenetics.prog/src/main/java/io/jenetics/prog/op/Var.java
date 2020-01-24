@@ -319,7 +319,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 		for (TreeNode<Op<V>> node : tree) {
 			final Op<V> op = node.value();
 			if (op instanceof Var) {
-				node.setValue(Var.of(op.name(), indexes.get(op)));
+				node.value(Var.of(op.name(), indexes.get(op)));
 			}
 		}
 	}

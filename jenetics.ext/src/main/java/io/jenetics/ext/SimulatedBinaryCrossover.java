@@ -45,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 5.0
+ * @version 5.2
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,
@@ -96,6 +96,17 @@ public class SimulatedBinaryCrossover<
 	 *
 	 * @return the <i>contiguity</i> value of the crossover
 	 */
+	public double contiguity() {
+		return _contiguity;
+	}
+
+	/**
+	 * Return the <i>contiguity</i> value of the crossover.
+	 *
+	 * @return the <i>contiguity</i> value of the crossover
+	 * @deprecated Use {@link #contiguity()} instead
+	 */
+	@Deprecated
 	public double getContiguity() {
 		return _contiguity;
 	}
@@ -117,7 +128,7 @@ public class SimulatedBinaryCrossover<
 			beta = pow(2*u, 1.0/(_contiguity + 1));
 		} else if (u > 0.5) {
 			// Otherwise perform an expanding crossover.
-			beta = pow(0.5 / (1.0 - u), 1.0/(_contiguity + 1));
+			beta = pow(0.5/(1.0 - u), 1.0/(_contiguity + 1));
 		} else if (u == 0.5) {
 			beta = 1;
 		} else {

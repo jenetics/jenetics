@@ -94,7 +94,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 			final T value = node.value().apply(args);
 			node.removeAllChildren();
-			node.setValue(Const.of(value));
+			node.value(Const.of(value));
 
 			return 1;
 		}

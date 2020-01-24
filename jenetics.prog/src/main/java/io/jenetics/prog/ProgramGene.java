@@ -52,7 +52,7 @@ import io.jenetics.prog.op.Program;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 5.2
  * @since 3.9
  */
 public final class ProgramGene<A>

@@ -29,7 +29,7 @@ import io.jenetics.ext.util.FlatTree;
  * storage layout explicit.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 3.9
  */
 public interface TreeGene<A, G extends TreeGene<A, G>>
@@ -40,7 +40,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 
 	@Override
 	@Deprecated
-	public default A getValue() {
+	default A getValue() {
 		return allele();
 	}
 
@@ -56,7 +56,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	 * @throws IllegalArgumentException  if the {@code childCount} is smaller
 	 *         than zero
 	 */
-	public G newInstance(
+	G newInstance(
 		final A allele,
 		final int childOffset,
 		final int childCount

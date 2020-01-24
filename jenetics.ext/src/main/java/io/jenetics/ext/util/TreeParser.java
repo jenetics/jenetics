@@ -165,7 +165,7 @@ final class TreeParser {
 						));
 					}
 					if (current.value() == null) {
-						current.setValue(mapper.apply(token.seq));
+						current.value(mapper.apply(token.seq));
 					}
 					break;
 			}

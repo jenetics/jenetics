@@ -72,7 +72,7 @@ final class UniformCrossover<
 		int alteredGenes = 0;
 		final Random random = RandomRegistry.getRandom();
 		for (int i = 0; i < that.length(); ++i) {
-			if (random.nextFloat() < getProbability()) {
+			if (random.nextFloat() < probability()) {
 				crossover(that, other, i);
 				++alteredGenes;
 			}

@@ -52,7 +52,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 5.2
  * @since 3.9
  */
 public final class FlatTreeNode<T>

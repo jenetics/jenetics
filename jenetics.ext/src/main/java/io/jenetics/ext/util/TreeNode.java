@@ -43,7 +43,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 5.2
  * @since 3.9
  */
 public final class TreeNode<T>
@@ -79,6 +79,17 @@ public final class TreeNode<T>
 	 *
 	 * @param value the node {@code value}
 	 */
+	public void value(final T value) {
+		_value = value;
+	}
+
+	/**
+	 * Sets the user object for this node.
+	 *
+	 * @param value the node {@code value}
+	 * @deprecated Use {@link #value(Object)} instead
+	 */
+	@Deprecated
 	public void setValue(final T value) {
 		_value = value;
 	}
@@ -283,7 +294,7 @@ public final class TreeNode<T>
 				.replace(path.get(path.length() - 1), child);
 		} else {
 			removeAllChildren();
-			setValue(child.value());
+			value(child.value());
 
 			final ISeq<TreeNode<T>> nodes = child.childStream()
 				.collect(ISeq.toISeq());

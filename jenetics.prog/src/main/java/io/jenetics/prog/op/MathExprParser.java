@@ -45,7 +45,7 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprParser {
 
-	static final Map<String, Const<Double>> CONST = new HashMap<>();
+	private static final Map<String, Const<Double>> CONST = new HashMap<>();
 	static {
 		CONST.put("PI", MathOp.PI);
 		CONST.put("π",  MathOp.PI);
@@ -131,7 +131,7 @@ final class MathExprParser {
 			_infos.add(new TokenDesc(Pattern.compile("^(" + regex+")"), token));
 		}
 
-		public Deque<Token> tokenize(final String expression) {
+		Deque<Token> tokenize(final String expression) {
 			final Deque<Token> tokens = new LinkedList<>();
 
 			String string = expression.trim();

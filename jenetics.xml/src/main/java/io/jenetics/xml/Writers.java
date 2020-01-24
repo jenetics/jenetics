@@ -111,7 +111,7 @@ public final class Writers {
 		public static Writer<io.jenetics.BitChromosome> writer() {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.BitChromosome::length),
-				attr(ONES_PROBABILITY_NAME).map(ch -> ch.getOneProbability()),
+				attr(ONES_PROBABILITY_NAME).map(ch -> ch.oneProbability()),
 				text().map(io.jenetics.BitChromosome::toCanonicalString)
 			);
 		}
@@ -181,7 +181,7 @@ public final class Writers {
 			return elem(ROOT_NAME,
 				attr(LENGTH_NAME).map(io.jenetics.CharacterChromosome::length),
 				elem(VALID_ALLELES_NAME,
-					text().map(ch -> ch.gene().getValidCharacters())),
+					text().map(ch -> ch.gene().validChars())),
 				elem(ALLELES_NAME,
 					text().map(io.jenetics.CharacterChromosome::toString))
 			);
@@ -720,7 +720,7 @@ public final class Writers {
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					Writer.<A>elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.getValidAlleles())
+						.map(ch -> ch.validAlleles())
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()

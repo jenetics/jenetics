@@ -48,7 +48,7 @@ public class SingleNodeCrossoverTest {
 		if (level > 0) {
 			for (int i = 0, n = random.nextInt(5); i < n; ++i) {
 				final TreeNode<Integer> child = TreeNode.of();
-				child.setValue(random.nextInt());
+				child.value(random.nextInt());
 
 				if (random.nextDouble() < 0.8) {
 					fill(child, level - 1, random);
