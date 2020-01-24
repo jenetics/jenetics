@@ -46,7 +46,7 @@ import io.jenetics.xml.stream.Reader.Type;
 /**
  * XML reader class, used for reading objects in XML format.
  *
- * <h3>XML</h3>
+ * <b>XML</b>
  * <pre> {@code
  * <int-chromosome length="3">
  *     <min>-2147483648</min>
@@ -59,7 +59,7 @@ import io.jenetics.xml.stream.Reader.Type;
  * </int-chromosome>
  * }</pre>
  *
- * <h3>Reader definition</h3>
+ * <b>Reader definition</b>
  * <pre>{@code
  * final Reader<IntegerChromosome> reader =
  *     elem(
