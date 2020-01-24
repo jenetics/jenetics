@@ -55,8 +55,7 @@ public interface Evolution<
 
 	/**
 	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
+	 * {@code generation}.
 	 * <p>
 	 * <em>This method is thread-safe.</em>
 	 *
