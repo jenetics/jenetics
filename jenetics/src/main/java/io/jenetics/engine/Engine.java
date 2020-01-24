@@ -127,12 +127,13 @@ public final class Engine<
 	// Problem definition.
 	private final Evaluator<G, C> _evaluator;
 	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Constraint<G, C> _constraint;
+	private final Optimize _optimize;
 
 	// Evolution parameters.
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final Optimize _optimize;
 	private final int _offspringCount;
 	private final int _survivorsCount;
 	private final long _maximalPhenotypeAge;
@@ -142,7 +143,6 @@ public final class Engine<
 	private final Clock _clock;
 
 	// Additional parameters.
-	private final Constraint<G, C> _constraint;
 	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
 
 
@@ -692,7 +692,7 @@ public final class Engine<
 
 
 	/* *************************************************************************
-	 * Inner classes
+	 * Engine builder
 	 **************************************************************************/
 
 
