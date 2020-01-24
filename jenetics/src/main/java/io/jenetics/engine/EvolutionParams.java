@@ -19,7 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Requires.probability;
@@ -30,7 +29,6 @@ import java.util.stream.Stream;
 import io.jenetics.Alterer;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
-import io.jenetics.Optimize;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
@@ -58,26 +56,23 @@ public final class EvolutionParams<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final Optimize _optimize;
-	private final int _populationSize;
-	private final double _offspringFraction;
+	private final int _offspringCount;
+	private final int _survivorsCount;
 	private final long _maximalPhenotypeAge;
 
 	private EvolutionParams(
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final Optimize optimize,
-		final int populationSize,
-		final double offspringFraction,
+		final int offspringCount,
+		final int survivorsCount,
 		final long maximalPhenotypeAge
 	) {
 		_survivorsSelector = survivorsSelector;
 		_offspringSelector = offspringSelector;
 		_alterer = alterer;
-		_optimize = optimize;
-		_populationSize = populationSize;
-		_offspringFraction = offspringFraction;
+		_offspringCount = offspringCount;
+		_survivorsCount = survivorsCount;
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 	}
 
@@ -87,7 +82,7 @@ public final class EvolutionParams<
 	 *
 	 * @return the used survivor {@link Selector} of the GA.
 	 */
-	public Selector<G, C> getSurvivorsSelector() {
+	public Selector<G, C> survivorsSelector() {
 		return _survivorsSelector;
 	}
 
@@ -96,7 +91,7 @@ public final class EvolutionParams<
 	 *
 	 * @return the used offspring {@link Selector} of the GA.
 	 */
-	public Selector<G, C> getOffspringSelector() {
+	public Selector<G, C> offspringSelector() {
 		return _offspringSelector;
 	}
 
@@ -105,45 +100,37 @@ public final class EvolutionParams<
 	 *
 	 * @return the used {@link Alterer} of the GA.
 	 */
-	public Alterer<G, C> getAlterer() {
+	public Alterer<G, C> alterer() {
 		return _alterer;
 	}
 
 
 	/**
-	 * Return the offspring fraction.
+	 * Return the number of offspring.
 	 *
-	 * @return the offspring fraction.
+	 * @return the offspring count.
 	 */
-	public double getOffspringFraction() {
-		return _offspringFraction;
+	public double offspringCount() {
+		return _offspringCount;
 	}
 
 	/**
-	 * Return the number of individuals of a population.
+	 * Return the number of survivors.
 	 *
-	 * @return the number of individuals of a population
+	 * @return the number of survivors
 	 */
-	public int getPopulationSize() {
-		return _populationSize;
+	public int survivorsCount() {
+		return _survivorsCount;
 	}
 
 	/**
-	 * Return the number of selected offsprings.
+	 * Return the population count. The value is derived from the offspring and
+	 * survivors count.
 	 *
-	 * @return the number of selected offsprings
+	 * @return the population count
 	 */
-	public int getOffspringCount() {
-		return (int)Math.round(_populationSize*_offspringFraction);
-	}
-
-	/**
-	 * The number of selected survivors.
-	 *
-	 * @return the number of selected survivors
-	 */
-	public int getSurvivorsCount() {
-		return _populationSize - getOffspringCount();
+	public int populationSize() {
+		return _survivorsCount + _survivorsCount;
 	}
 
 	/**
@@ -151,17 +138,8 @@ public final class EvolutionParams<
 	 *
 	 * @return the maximal allowed phenotype age
 	 */
-	public long getMaximalPhenotypeAge() {
+	public long maximalPhenotypeAge() {
 		return _maximalPhenotypeAge;
-	}
-
-	/**
-	 * Return the optimization strategy.
-	 *
-	 * @return the optimization strategy
-	 */
-	public Optimize getOptimize() {
-		return _optimize;
 	}
 
 	/**
@@ -188,6 +166,11 @@ public final class EvolutionParams<
 		return EvolutionParams.<G, C>builder().build();
 	}
 
+
+	/* *************************************************************************
+	 * Params builder
+	 **************************************************************************/
+
 	/**
 	 * Builder class for the evolution parameter.
 	 *
@@ -205,9 +188,8 @@ public final class EvolutionParams<
 			new SinglePointCrossover<G, C>(0.2),
 			new Mutator<>(0.15)
 		);
-		private Optimize _optimize = Optimize.MAXIMUM;
-		private double _offspringFraction = 0.6;
-		private int _populationSize = 50;
+		private int _offspringCount = 30;
+		private int _survivorsCount = 20;
 		private long _maximalPhenotypeAge = 70;
 
 
@@ -285,52 +267,56 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * The optimization strategy used by the engine. <i>Default values is
-		 * set to {@code Optimize.MAXIMUM}.</i>
+		 * The number of offspring individuals.
 		 *
-		 * @param optimize the optimization strategy used by the engine
+		 * @param count the number of offspring individuals.
 		 * @return {@code this} builder, for command chaining
+		 * @throws IllegalArgumentException if the count is smaller then zero
 		 */
-		public Builder<G, C> optimize(final Optimize optimize) {
-			_optimize = requireNonNull(optimize);
+		public Builder<G, C> offspringCount(final int count) {
+			if (count < 0) {
+				throw new IllegalArgumentException(format(
+					"Offspring count must be greater or equal zero, but was %d.",
+					count
+				));
+			}
+			_offspringCount = count;
 			return this;
 		}
 
 		/**
-		 * Set to a fitness maximizing strategy.
+		 * The number of survivors.
 		 *
-		 * @since 3.4
-		 *
+		 * @param count the number of survivors.
 		 * @return {@code this} builder, for command chaining
+		 @throws IllegalArgumentException if the count is smaller then zero
 		 */
-		public Builder<G, C> maximizing() {
-			return optimize(Optimize.MAXIMUM);
+		public Builder<G, C> survivorsCount(final int count) {
+			if (count < 0) {
+				throw new IllegalArgumentException(format(
+					"Survivors count must be greater or equal zero, but was %d.",
+					count
+				));
+			}
+			_survivorsCount = count;
+			return this;
 		}
 
 		/**
-		 * Set to a fitness minimizing strategy.
-		 *
-		 * @return {@code this} builder, for command chaining
-		 */
-		public Builder<G, C> minimizing() {
-			return optimize(Optimize.MINIMUM);
-		}
-
-		/**
-		 * The offspring fraction. <i>Default values is set to {@code 0.6}.</i>
-		 * This method call is equivalent to
-		 * {@code survivorsFraction(1 - offspringFraction)} and will override
-		 * any previously set survivors-fraction.
+		 * The offspring fraction.
 		 *
 		 * @see #survivorsFraction(double)
 		 *
 		 * @param fraction the offspring fraction
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if the fraction is not
-		 *         within the range [0, 1].
+		 * @throws IllegalArgumentException if the fraction is not within the
+		 *         range [0, 1].
 		 */
 		public Builder<G, C> offspringFraction(final double fraction) {
-			_offspringFraction = probability(fraction);
+			probability(fraction);
+			final int populationCount = _offspringCount + _survivorsCount;
+			_offspringCount = (int)Math.round(populationCount*fraction);
+			_survivorsCount = populationCount - _offspringCount;
 			return this;
 		}
 
@@ -344,50 +330,15 @@ public final class EvolutionParams<
 		 *
 		 * @param fraction the survivors fraction
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if the fraction is not
-		 *         within the range [0, 1].
+		 * @throws IllegalArgumentException if the fraction is not within the
+		 *         range [0, 1].
 		 */
 		public Builder<G, C> survivorsFraction(final double fraction) {
-			_offspringFraction = 1.0 - probability(fraction);
+			probability(fraction);
+			final int populationCount = _offspringCount + _survivorsCount;
+			_survivorsCount = (int)Math.round(populationCount*fraction);
+			_offspringCount = populationCount - _survivorsCount;
 			return this;
-		}
-
-		/**
-		 * The number of offspring individuals.
-		 *
-		 * @param size the number of offspring individuals.
-		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if the size is not
-		 *         within the range [0, population-size].
-		 */
-		public Builder<G, C> offspringSize(final int size) {
-			if (size < 0) {
-				throw new IllegalArgumentException(format(
-					"Offspring size must be greater or equal zero, but was %s.",
-					size
-				));
-			}
-
-			return offspringFraction((double)size/(double)_populationSize);
-		}
-
-		/**
-		 * The number of survivors.
-		 *
-		 * @param size the number of survivors.
-		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if the size is not
-		 *         within the range [0, population-size].
-		 */
-		public Builder<G, C> survivorsSize(final int size) {
-			if (size < 0) {
-				throw new IllegalArgumentException(format(
-					"Survivors must be greater or equal zero, but was %s.",
-					size
-				));
-			}
-
-			return survivorsFraction((double)size/(double)_populationSize);
 		}
 
 		/**
@@ -396,7 +347,7 @@ public final class EvolutionParams<
 		 *
 		 * @param size the number of individuals of a population
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if {@code size < 1}
+		 * @throws IllegalArgumentException if {@code size < 1}
 		 */
 		public Builder<G, C> populationSize(final int size) {
 			if (size < 1) {
@@ -405,7 +356,11 @@ public final class EvolutionParams<
 					size
 				));
 			}
-			_populationSize = size;
+
+			final double offspringFraction =
+				_offspringCount/(double)(_offspringCount + _survivorsCount);
+			_offspringCount = (int)Math.round(size*offspringFraction);
+			_survivorsCount = size - _offspringCount;
 			return this;
 		}
 
@@ -415,7 +370,7 @@ public final class EvolutionParams<
 		 *
 		 * @param age the maximal phenotype age
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.IllegalArgumentException if {@code age < 1}
+		 * @throws IllegalArgumentException if {@code age < 1}
 		 */
 		public Builder<G, C> maximalPhenotypeAge(final long age) {
 			if (age < 1) {
@@ -437,9 +392,8 @@ public final class EvolutionParams<
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
-				_optimize,
-				_populationSize,
-				_offspringFraction,
+				_offspringCount,
+				_survivorsCount,
 				_maximalPhenotypeAge
 			);
 		}
@@ -465,15 +419,6 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * Return the offspring fraction.
-		 *
-		 * @return the offspring fraction.
-		 */
-		public double offspringFraction() {
-			return _offspringFraction;
-		}
-
-		/**
 		 * Return the used offspring {@link Selector} of the GA.
 		 *
 		 * @return the used offspring {@link Selector} of the GA.
@@ -492,21 +437,12 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * Return the optimization strategy.
-		 *
-		 * @return the optimization strategy
-		 */
-		public Optimize optimize() {
-			return _optimize;
-		}
-
-		/**
 		 * Return the survivors count.
 		 *
 		 * @return the survivors count
 		 */
 		public int survivorsCount() {
-			return _populationSize - offspringCount();
+			return _survivorsCount;
 		}
 
 		/**
@@ -515,7 +451,7 @@ public final class EvolutionParams<
 		 * @return the offspring count
 		 */
 		public int offspringCount() {
-			return (int)round(_offspringFraction*_populationSize);
+			return _offspringCount;
 		}
 
 		/**
@@ -524,7 +460,7 @@ public final class EvolutionParams<
 		 * @return the number of individuals of a population
 		 */
 		public int populationSize() {
-			return _populationSize;
+			return _offspringCount + _survivorsCount;
 		}
 
 	}
