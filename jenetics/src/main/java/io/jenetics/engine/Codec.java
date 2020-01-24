@@ -98,7 +98,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	public Factory<Genotype<G>> encoding();
+	Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -108,7 +108,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return genotype decoder
 	 */
-	public Function<Genotype<G>, T> decoder();
+	Function<Genotype<G>, T> decoder();
 
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
@@ -126,7 +126,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return the converted genotype
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
-	public default T decode(final Genotype<G> genotype) {
+	default T decode(final Genotype<G> genotype) {
 		requireNonNull(genotype);
 		return decoder().apply(genotype);
 	}
@@ -175,8 +175,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} with the mapped result type
 	 * @throws NullPointerException if the mapper is {@code null}.
 	 */
-	public default <B>
-	Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
+	default <B> Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
 		return Codec.of(
@@ -193,7 +192,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new invertible codec
 	 * @throws NullPointerException if the given {@code encoder} is {@code null}
 	 */
-	public default InvertibleCodec<T, G>
+	default InvertibleCodec<T, G>
 	toInvertibleCodec(final Function<? super T, Genotype<G>> encoder) {
 		return InvertibleCodec.of(
 			encoding(),
@@ -215,7 +214,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <T, G extends Gene<?, G>> Codec<T, G> of(
+	static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<? super Genotype<G>, ? extends T> decoder
 	) {
@@ -291,7 +290,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *        {@code codec2}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
+	static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
 		final Codec<A, G> codec1,
 		final Codec<B, G> codec2,
 		final BiFunction<A, B, T> decoder
@@ -356,7 +355,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws IllegalArgumentException if the given {@code codecs} sequence is
 	 *         empty
 	 */
-	public static <G extends Gene<?, G>, T> Codec<T, G> of(
+	static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final ISeq<? extends Codec<?, G>> codecs,
 		final Function<? super Object[], ? extends T> decoder
 	) {

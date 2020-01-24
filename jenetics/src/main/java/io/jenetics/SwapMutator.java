@@ -47,7 +47,6 @@ public class SwapMutator<
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
-
 {
 
 	/**

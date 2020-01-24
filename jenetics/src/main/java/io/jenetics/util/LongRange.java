@@ -35,7 +35,7 @@ import java.util.stream.LongStream;
  * @version 5.2
  * @since 3.2
  */
-public final class LongRange implements Serializable {
+public final /*record*/ class LongRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

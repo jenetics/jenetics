@@ -47,7 +47,7 @@ public interface BoundedGene<
 	 *
 	 * @return The allowed min value.
 	 */
-	public default A min() {
+	default A min() {
 		return getMin();
 	}
 
@@ -59,14 +59,14 @@ public interface BoundedGene<
 	 *             implement this method.
 	 */
 	@Deprecated
-	public A getMin();
+	A getMin();
 
 	/**
 	 * Return the allowed max value.
 	 *
 	 * @return The allowed max value.
 	 */
-	public default A max() {
+	default A max() {
 		return getMax();
 	}
 
@@ -78,17 +78,17 @@ public interface BoundedGene<
 	 *             implement this method.
 	 */
 	@Deprecated
-	public A getMax();
+	A getMax();
 
 	@Override
-	public default boolean isValid() {
+	default boolean isValid() {
 		return
 			allele().compareTo(min()) >= 0 &&
 			allele().compareTo(max()) <= 0;
 	}
 
 	@Override
-	public default int compareTo(final G other) {
+	default int compareTo(final G other) {
 		return allele().compareTo(other.allele());
 	}
 
@@ -99,6 +99,6 @@ public interface BoundedGene<
 	 * @return a new gene with the given value.
 	 */
 	@Override
-	public G newInstance(final A value);
+	G newInstance(final A value);
 
 }

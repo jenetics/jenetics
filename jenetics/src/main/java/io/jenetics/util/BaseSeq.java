@@ -45,7 +45,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= size()).
 	 */
-	public T get(final int index);
+	T get(final int index);
 
 	/**
 	 * Return the length of this sequence. Once the sequence is created, the
@@ -53,7 +53,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 *
 	 * @return the length of this sequence.
 	 */
-	public int length();
+	int length();
 
 	@Override
 	public default Iterator<T> iterator() {
@@ -67,7 +67,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 * @return a list iterator over the elements in this sequence (in proper
 	 *         order)
 	 */
-	public default ListIterator<T> listIterator() {
+	default ListIterator<T> listIterator() {
 		return new BaseSeqIterator<>(this);
 	}
 
@@ -76,12 +76,12 @@ public interface BaseSeq<T> extends Iterable<T> {
 	 *
 	 * @return a sequential Stream over the elements in this sequence
 	 */
-	public default Stream<T> stream() {
+	default Stream<T> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
 
 	@Override
-	public default Spliterator<T> spliterator() {
+	default Spliterator<T> spliterator() {
 		return new BaseSeqSpliterator<T>(this);
 	}
 

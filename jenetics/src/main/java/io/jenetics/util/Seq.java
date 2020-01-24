@@ -64,7 +64,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         {@code index < 0 || index >= size()}.
 	 */
 	@Override
-	public default T apply(final int index) {
+	default T apply(final int index) {
 		return get(index);
 	}
 
@@ -72,7 +72,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @see #length()
 	 * @return the size of this sequence
 	 */
-	public default int size() {
+	default int size() {
 		return length();
 	}
 
@@ -83,7 +83,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return {@code true} if this sequence contains no elements
 	 */
-	public default boolean isEmpty() {
+	default boolean isEmpty() {
 		return length() == 0;
 	}
 
@@ -94,7 +94,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return {@code true} if this sequence contains at least one element
 	 */
-	public default boolean nonEmpty() {
+	default boolean nonEmpty() {
 		return !isEmpty();
 	}
 
@@ -107,7 +107,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given {@code predicate} is
 	 *         {@code null}.
 	 */
-	public default boolean forAll(final Predicate<? super T> predicate) {
+	default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 
 		if (this instanceof RandomAccess) {
@@ -133,7 +133,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a possibly parallel {@code Stream} over the elements in this
 	 * collection
 	 */
-	public default Stream<T> parallelStream() {
+	default Stream<T> parallelStream() {
 		return StreamSupport.stream(spliterator(), true);
 	}
 
@@ -144,7 +144,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *        The tested element can be {@code null}.
 	 * @return {@code true} if this sequence contains the specified element
 	 */
-	public default boolean contains(final Object element) {
+	default boolean contains(final Object element) {
 		return indexOf(element) != -1;
 	}
 
@@ -156,7 +156,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return the index of the first occurrence of the specified element in
 	 *          this sequence, or -1 if this sequence does not contain the element
 	 */
-	public default int indexOf(final Object element) {
+	default int indexOf(final Object element) {
 		return indexOf(element, 0, length());
 	}
 
@@ -171,7 +171,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public default int indexOf(final Object element, final int start) {
+	default int indexOf(final Object element, final int start) {
 		return indexOf(element, start, length());
 	}
 
@@ -187,7 +187,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public default int indexOf(final Object element, final int start, final int end) {
+	default int indexOf(final Object element, final int start, final int end) {
 		return element != null
 			? indexWhere(element::equals, start, end)
 			: indexWhere(Objects::isNull, start, end);
@@ -213,7 +213,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *          for every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public default int indexWhere(final Predicate<? super T> predicate) {
+	default int indexWhere(final Predicate<? super T> predicate) {
 		return indexWhere(predicate, 0, length());
 	}
 
@@ -240,7 +240,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public default int indexWhere(
+	default int indexWhere(
 		final Predicate<? super T> predicate,
 		final int start
 	) {
@@ -271,7 +271,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public default int indexWhere(
+	default int indexWhere(
 		final Predicate<? super T> predicate,
 		final int start,
 		final int end
@@ -296,7 +296,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return the index of the last occurrence of the specified element in
 	 *         this sequence, or -1 if this sequence does not contain the element
 	 */
-	public default int lastIndexOf(final Object element) {
+	default int lastIndexOf(final Object element) {
 		return lastIndexOf(element, 0, length());
 	}
 
@@ -311,7 +311,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code end < 0 || end > length()}).
 	 */
-	public default int lastIndexOf(final Object element, final int end) {
+	default int lastIndexOf(final Object element, final int end) {
 		return lastIndexOf(element, 0, end);
 	}
 
@@ -327,7 +327,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public default int lastIndexOf(
+	default int lastIndexOf(
 		final Object element,
 		final int start,
 		final int end
@@ -348,7 +348,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *          every sequence element.
 	 * @throws NullPointerException if the given {@code predicate} is {@code null}.
 	 */
-	public default int lastIndexWhere(final Predicate<? super T> predicate) {
+	default int lastIndexWhere(final Predicate<? super T> predicate) {
 		return lastIndexWhere(predicate, 0, length());
 	}
 
@@ -366,7 +366,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code end < 0 || end > length()}).
 	 */
-	public default int lastIndexWhere(
+	default int lastIndexWhere(
 		final Predicate<? super T> predicate,
 		final int end
 	) {
@@ -388,7 +388,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public default int lastIndexWhere(
+	default int lastIndexWhere(
 		final Predicate<? super T> predicate,
 		final int start,
 		final int end
@@ -417,7 +417,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the element {@code mapper} is
 	 *         {@code null}.
 	 */
-	public <B> Seq<B> map(final Function<? super T, ? extends B> mapper);
+	<B> Seq<B> map(final Function<? super T, ? extends B> mapper);
 
 	/**
 	 * Return a <i>new</i> {@code Seq} with the given {@code values} appended.
@@ -431,7 +431,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default Seq<T> append(final T... values) {
+	default Seq<T> append(final T... values) {
 		return append(Seq.of(values));
 	}
 
@@ -446,7 +446,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given {@code values} iterable is
 	 *         {@code null}
 	 */
-	public Seq<T> append(final Iterable<? extends T> values);
+	Seq<T> append(final Iterable<? extends T> values);
 
 	/**
 	 * Return a <i>new</i> {@code Seq} with the given {@code values} prepended.
@@ -460,7 +460,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public default Seq<T> prepend(final T... values) {
+	default Seq<T> prepend(final T... values) {
 		return prepend(Seq.of(values));
 	}
 
@@ -475,7 +475,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given {@code values} array is
 	 *         {@code null}
 	 */
-	public Seq<T> prepend(final Iterable<? extends T> values);
+	Seq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Returns a fixed-size list backed by the specified sequence. (Changes to
@@ -484,7 +484,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return a list view of this sequence
 	 */
-	public default List<T> asList() {
+	default List<T> asList() {
 		return new SeqList<>(this);
 	}
 
@@ -499,7 +499,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return an array containing all of the elements in this list in right
 	 *          order
 	 */
-	public default Object[] toArray() {
+	default Object[] toArray() {
 		final Object[] array = new Object[size()];
 		for (int i = size(); --i >= 0;) {
 			array[i] = get(i);
@@ -533,7 +533,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public default <B> B[] toArray(final B[] array) {
+	default <B> B[] toArray(final B[] array) {
 		if (array.length < length()) {
 			final Object[] copy = (Object[])java.lang.reflect.Array
 				.newInstance(array.getClass().getComponentType(), length());
@@ -570,7 +570,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         array
 	 * @throws NullPointerException if the given {@code generator} is {@code null}.
 	 */
-	public default <B> B[] toArray(final IntFunction<B[]> generator) {
+	default <B> B[] toArray(final IntFunction<B[]> generator) {
 		return toArray(generator.apply(length()));
 	}
 
@@ -592,7 +592,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || start > length()}).
 	 */
-	public Seq<T> subSeq(final int start);
+	Seq<T> subSeq(final int start);
 
 	/**
 	 * Returns a view of the portion of this sequence between the specified
@@ -624,7 +624,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public default boolean isSorted() {
+	default boolean isSorted() {
 		boolean sorted = true;
 		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
 			sorted = ((Comparable<T>)get(i)).compareTo(get(i + 1)) <= 0;
@@ -643,7 +643,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the given array or one of it's element or
 	 *         the comparator is {@code null}.
 	 */
-	public default boolean isSorted(final Comparator<? super T> comparator) {
+	default boolean isSorted(final Comparator<? super T> comparator) {
 		boolean sorted = true;
 		for (int i = 0, n = length() - 1; i < n && sorted; ++i) {
 			sorted = comparator.compare(get(i), get(i + 1)) <= 0;
@@ -660,7 +660,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return a {@code MSeq} with this values
 	 */
-	public default MSeq<T> asMSeq() {
+	default MSeq<T> asMSeq() {
 		return this instanceof MSeq ? (MSeq<T>)this : MSeq.of(this);
 	}
 
@@ -672,7 +672,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @return a {@code ISeq} with this values
 	 */
-	public default ISeq<T> asISeq() {
+	default ISeq<T> asISeq() {
 		return this instanceof ISeq ? (ISeq<T>)this : ISeq.of(this);
 	}
 
@@ -690,12 +690,12 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * }</pre>
 	 *
 	 * @see List#hashCode()
-	 * @see Seq#hashCode(Seq)
+	 * @see Seq#hashCode(BaseSeq)
 	 *
 	 * @return the hash code value for this list
 	 */
 	@Override
-	public int hashCode();
+	int hashCode();
 
 	/**
 	 * Compares the specified object with this sequence for equality. Returns
@@ -707,14 +707,14 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * interface.
 	 *
 	 * @see List#equals(Object)
-	 * @see Seq#equals(Seq, Object)
+	 * @see Seq#equals(BaseSeq, Object)
 	 *
 	 * @param object the object to be compared for equality with this sequence.
 	 * @return {@code true} if the specified object is equal to this sequence,
 	 *          {@code false} otherwise.
 	 */
 	@Override
-	public boolean equals(final Object object);
+	boolean equals(final Object object);
 
 	/**
 	 * Create a string representation of the given sequence.
@@ -724,7 +724,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param suffix the suffix of the string representation; e.g. {@code ']'}.
 	 * @return the string representation of this sequence.
 	 */
-	public default String toString(
+	default String toString(
 		final String prefix,
 		final String separator,
 		final String suffix
@@ -740,7 +740,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param separator the separator of the array elements; e.g. {@code ','}.
 	 * @return the string representation of this sequence.
 	 */
-	public default String toString(final String separator) {
+	default String toString(final String separator) {
 		return toString("", separator, "");
 	}
 
@@ -763,7 +763,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param seq the sequence to calculate the hash code for.
 	 * @return the hash code of the given sequence.
 	 */
-	public static int hashCode(final Seq<?> seq) {
+	static int hashCode(final BaseSeq<?> seq) {
 		int hash = 1;
 		for (Object element : seq) {
 			hash = 31*hash + (element == null ? 0: element.hashCode());
@@ -781,7 +781,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return {@code true} if the given objects are sequences and contain the
 	 *          same objects in the same order, {@code false} otherwise.
 	 */
-	public static boolean equals(final Seq<?> seq, final Object obj) {
+	static boolean equals(final BaseSeq<?> seq, final Object obj) {
 		if (obj == seq) {
 			return true;
 		}
@@ -820,7 +820,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Seq<T> concat(
+	static <T> Seq<T> concat(
 		final T a,
 		final Seq<? extends T> b
 	) {
@@ -840,7 +840,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Seq<T> concat(
+	static <T> Seq<T> concat(
 		final Seq<? extends T> a,
 		final T... b
 	) {
@@ -860,7 +860,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Seq<T> concat(
+	static <T> Seq<T> concat(
 		final Seq<? extends T> a,
 		final Seq<? extends T> b
 	) {
@@ -876,7 +876,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *
 	 * @since 3.3
 	 */
-	public static final Seq<?> EMPTY = ISeq.EMPTY;
+	Seq<?> EMPTY = ISeq.EMPTY;
 
 	/**
 	 * Return an empty {@code Seq}.
@@ -886,7 +886,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @param <T> the element type of the returned {@code Seq}.
 	 * @return an empty {@code Seq}.
 	 */
-	public static <T> Seq<T> empty() {
+	static <T> Seq<T> empty() {
 		return ISeq.empty();
 	}
 
@@ -898,7 +898,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a {@code Collector} which collects all the input elements into a
 	 *         {@code Seq}, in encounter order
 	 */
-	public static <T> Collector<T, ?, Seq<T>> toSeq() {
+	static <T> Collector<T, ?, Seq<T>> toSeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,
@@ -919,7 +919,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 *         input elements into an {@code ISeq}, in encounter order
 	 * @throws IllegalArgumentException if the {@code maxSize} is negative
 	 */
-	public static <T> Collector<T, ?, Seq<T>> toSeq(final int maxSize) {
+	static <T> Collector<T, ?, Seq<T>> toSeq(final int maxSize) {
 		return Seqs.toSeq(maxSize, Buffer::toSeq);
 	}
 
@@ -932,7 +932,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> Seq<T> of(final T... values) {
+	static <T> Seq<T> of(final T... values) {
 		return ISeq.of(values);
 	}
 
@@ -944,7 +944,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a new {@code Seq} with the given values.
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
-	public static <T> Seq<T> of(final Iterable<? extends T> values) {
+	static <T> Seq<T> of(final Iterable<? extends T> values) {
 		return ISeq.of(values);
 	}
 
@@ -981,7 +981,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a sequence view of the given {@code list}
 	 * @throws NullPointerException if the given list is {@code null}
 	 */
-	public static <T> Seq<T> viewOf(final List<? extends T> list) {
+	static <T> Seq<T> viewOf(final List<? extends T> list) {
 		return list.isEmpty()
 			? empty()
 			: new SeqView<>(list);
@@ -999,7 +999,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a sequence view of the given {@code array}
 	 * @throws NullPointerException if the given array is {@code null}
 	 */
-	public static <T> Seq<T> viewOf(final T[] array) {
+	static <T> Seq<T> viewOf(final T[] array) {
 		return array.length == 0
 			? empty()
 			: new SeqView<>(Arrays.asList(array));

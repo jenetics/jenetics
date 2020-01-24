@@ -47,7 +47,7 @@ import io.jenetics.util.ISeq;
  * @since 3.1
  * @version 5.2
  */
-public final class EvolutionStart<
+public final /*record*/ class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {

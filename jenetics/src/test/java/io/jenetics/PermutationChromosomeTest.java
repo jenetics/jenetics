@@ -60,7 +60,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerLength() {
 		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100);
-		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		final MSeq<Integer> genes = c.validAlleles().copy();
 		Collections.sort(genes.asList());
 
 		for (int i = 0; i < c.length(); ++i) {
@@ -71,7 +71,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerStartEnd() {
 		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100, 200);
-		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		final MSeq<Integer> genes = c.validAlleles().copy();
 		Collections.sort(genes.asList());
 
 		for (int i = 0; i < c.length(); ++i) {

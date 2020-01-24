@@ -37,6 +37,6 @@ public interface  Copyable<T> {
 	 *
 	 * @return a new copy of type {@code T}.
 	 */
-	public T copy();
+	T copy();
 
 }

@@ -35,7 +35,7 @@ public class BaseSeqIterator<T, S extends BaseSeq<T>> implements ListIterator<T>
 
 	public final S array;
 
-	int cursor = 0;
+	private int cursor = 0;
 	int lastElement = -1;
 
 	public BaseSeqIterator(final S array) {

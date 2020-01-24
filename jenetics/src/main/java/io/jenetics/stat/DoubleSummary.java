@@ -42,7 +42,7 @@ import io.jenetics.internal.math.DoubleAdder;
  * @since 3.0
  * @version 5.2
  */
-public final class DoubleSummary implements Serializable {
+public final /*record*/ class DoubleSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

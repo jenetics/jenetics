@@ -84,7 +84,7 @@ public final class ProxySorter {
 	 * @since 5.1
 	 */
 	@FunctionalInterface
-	public static interface Comparator<T> {
+	public interface Comparator<T> {
 
 		/**
 		 * Compares the two array elements, specified by its indices, for order.
@@ -101,7 +101,7 @@ public final class ProxySorter {
 		 * @throws NullPointerException if an argument is null and this
 		 *         comparator does not permit null arguments
 		 */
-		public int compare(final T array, final int i, final int j);
+		int compare(final T array, final int i, final int j);
 
 		/**
 		 * Returns a comparator that imposes the reverse ordering of this
@@ -110,7 +110,7 @@ public final class ProxySorter {
 		 * @return a comparator that imposes the reverse ordering of this
 		 *         comparator.
 		 */
-		public default Comparator<T> reversed() {
+		default Comparator<T> reversed() {
 			return (a, i, j) -> compare(a, j, i);
 		}
 

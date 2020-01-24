@@ -32,10 +32,10 @@ import java.util.stream.IntStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 5.2
  * @since 3.2
  */
-public final class IntRange implements Serializable {
+public final /*record*/ class IntRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

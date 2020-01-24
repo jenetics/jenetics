@@ -40,7 +40,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 5.2
  */
-public final class IntSummary implements Serializable {
+public final /*record*/ class IntSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

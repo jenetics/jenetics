@@ -38,7 +38,7 @@ import java.util.stream.Collector;
  * @since 3.0
  * @version 5.2
  */
-public final class DoubleMoments implements Serializable {
+public final /*record*/ class DoubleMoments implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  * @version 5.2
  * @since 4.1
  */
-public final class EvolutionInit<G extends Gene<?, G>> {
+public final /*record*/ class EvolutionInit<G extends Gene<?, G>> {
 
 	private final ISeq<Genotype<G>> _population;
 	private final long _generation;

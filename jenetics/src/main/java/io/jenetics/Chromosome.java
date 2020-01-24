@@ -50,7 +50,7 @@ public interface Chromosome<G extends Gene<?, G>>
 {
 
 	@Override
-	public default G get(final int index) {
+	default G get(final int index) {
 		return getGene(index);
 	}
 
@@ -62,7 +62,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *
 	 * @return the first gene of this chromosome.
 	 */
-	public default G gene() {
+	default G gene() {
 		return get(0);
 	}
 
@@ -76,7 +76,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @deprecated Use {@link #get(int)} instead. Will be removed.
 	 */
 	@Deprecated
-	public G getGene(final int index);
+	G getGene(final int index);
 
 	/**
 	 * Return the first gene of this chromosome. Each chromosome must contain
@@ -86,7 +86,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @deprecated Use {@link #gene()} instead
 	 */
 	@Deprecated
-	public default G getGene() {
+	default G getGene() {
 		return get(0);
 	}
 
@@ -101,7 +101,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @throws IllegalArgumentException if the length of the given gene sequence
 	 *        is smaller than one.
 	 */
-	public Chromosome<G> newInstance(final ISeq<G> genes);
+	Chromosome<G> newInstance(final ISeq<G> genes);
 
 	/**
 	 * Return an unmodifiable sequence of the genes of this chromosome.
@@ -114,7 +114,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *             removed in the next major release.
 	 */
 	@Deprecated
-	public ISeq<G> toSeq();
+	ISeq<G> toSeq();
 
 	/**
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.
@@ -142,7 +142,7 @@ public interface Chromosome<G extends Gene<?, G>>
 	 * @throws ClassCastException if this chromosome can't be casted to a
 	 *         chromosome of type {@code C}
 	 */
-	public default <C extends Chromosome<G>> C as(final Class<C> type) {
+	default <C extends Chromosome<G>> C as(final Class<C> type) {
 		return type.cast(this);
 	}
 

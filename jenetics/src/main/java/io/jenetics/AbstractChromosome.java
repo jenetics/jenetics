@@ -38,7 +38,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 2.0
+ * @version 5.2
  */
 public abstract class AbstractChromosome<G extends Gene<?, G>>
 	implements

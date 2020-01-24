@@ -32,7 +32,7 @@ import io.jenetics.util.IntRange;
  * Abstract chromosome for {@code BoundedGene}s.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 1.6
+ * @version 5.2
  * @since 1.6
  */
 abstract class AbstractBoundedChromosome<
@@ -66,7 +66,7 @@ abstract class AbstractBoundedChromosome<
 	 * @throws IllegalArgumentException if the given range size is zero
 	 * @throws NullPointerException if the {@code genes} are {@code null}.
 	 */
-	protected AbstractBoundedChromosome(
+	AbstractBoundedChromosome(
 		final ISeq<? extends G> genes,
 		final IntRange lengthRange
 	) {

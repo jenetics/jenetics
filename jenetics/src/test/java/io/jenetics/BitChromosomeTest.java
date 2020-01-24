@@ -66,7 +66,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(
-			c.getOneProbability(),
+			c.oneProbability(),
 			(double) Bits.count(data)/(double)(data.length*8)
 		);
 	}

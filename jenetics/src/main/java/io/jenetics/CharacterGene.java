@@ -123,6 +123,17 @@ public final class CharacterGene
 	 *
 	 * @return the {@link CharSeq} of valid characters.
 	 */
+	public CharSeq validChars() {
+		return _validCharacters;
+	}
+
+	/**
+	 * Return a (unmodifiable) set of valid characters.
+	 *
+	 * @return the {@link CharSeq} of valid characters.
+	 * @deprecated Use {@link #validChars()} instead
+	 */
+	@Deprecated
 	public CharSeq getValidCharacters() {
 		return _validCharacters;
 	}
@@ -172,7 +183,7 @@ public final class CharacterGene
 
 	/**
 	 * Create a new character gene from the given character. If the character
-	 * is not within the {@link #getValidCharacters()}, an invalid gene will be
+	 * is not within the {@link #validChars()}, an invalid gene will be
 	 * created.
 	 *
 	 * @param character the character value of the created gene.

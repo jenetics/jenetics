@@ -34,7 +34,7 @@ import java.io.Serializable;
  * @version 5.2
  * @since 3.2
  */
-public final class DoubleRange implements Serializable {
+public final /*record*/ class DoubleRange implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

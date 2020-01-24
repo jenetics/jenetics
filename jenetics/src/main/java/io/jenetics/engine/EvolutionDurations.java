@@ -36,7 +36,7 @@ import java.util.Objects;
  * @since 3.0
  * @version 5.2
  */
-public final class EvolutionDurations
+public final /*record*/ class EvolutionDurations
 	implements
 		Comparable<EvolutionDurations>,
 		Serializable

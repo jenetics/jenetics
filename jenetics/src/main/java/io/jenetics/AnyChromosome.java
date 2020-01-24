@@ -81,7 +81,7 @@ import io.jenetics.util.IntRange;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 5.2
  * @since 3.3
  */
 public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {

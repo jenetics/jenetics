@@ -53,7 +53,7 @@ abstract class VariableChromosome<G extends Gene<?, G>>
 	 *         is smaller or equal zero
 	 * @throws IllegalArgumentException if the given range size is zero
 	 */
-	protected VariableChromosome(
+	VariableChromosome(
 		final ISeq<? extends G> genes,
 		final IntRange lengthRange
 	) {

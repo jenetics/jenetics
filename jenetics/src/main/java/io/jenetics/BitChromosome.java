@@ -36,7 +36,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.BitSet;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.stream.IntStream;
 
@@ -159,10 +158,23 @@ public class BitChromosome extends Number
 	/**
 	 * Return the one probability of this chromosome.
 	 *
-	 * @since 3.9
+	 * @since 5.2
 	 *
 	 * @return the one probability of this chromosome.
 	 */
+	public double oneProbability() {
+		return _p;
+	}
+
+	/**
+	 * Return the one probability of this chromosome.
+	 *
+	 * @since 3.9
+	 *
+	 * @return the one probability of this chromosome.
+	 * @deprecated Use {@link #oneProbability()} instead
+	 */
+	@Deprecated
 	public double getOneProbability() {
 		return _p;
 	}
@@ -231,11 +243,6 @@ public class BitChromosome extends Number
 	 */
 	public int bitCount() {
 		return Bits.count(_genes);
-	}
-
-	@Override
-	public Iterator<BitGene> iterator() {
-		return _seq.iterator();
 	}
 
 	/**

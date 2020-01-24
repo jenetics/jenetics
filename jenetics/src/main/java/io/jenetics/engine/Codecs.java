@@ -74,7 +74,7 @@ public final class Codecs {
 	private Codecs() {}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -92,7 +92,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -110,7 +110,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -128,7 +128,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * allele {@code validator}. The {@code supplier} is responsible for
 	 * creating new random alleles, and the {@code validator} can verify it.
 	 * <p>
@@ -169,7 +169,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * allele {@code validator}. The {@code supplier} is responsible for
 	 * creating new random alleles.
 	 *
@@ -193,8 +193,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -224,8 +224,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -255,8 +255,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -286,9 +286,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -326,9 +326,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -366,9 +366,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -406,7 +406,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * Return a scala {@link Codec} with the given allele {@link Supplier},
 	 * allele {@code validator} and {@code Chromosome} length. The
 	 * {@code supplier} is responsible for creating new random alleles, and the
 	 * {@code validator} can verify it.
@@ -465,7 +465,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * Return a scala {@link Codec} with the given allele {@link Supplier},
 	 * allele {@code validator} and {@code Chromosome} length. The
 	 * {@code supplier} is responsible for creating new random alleles, and the
 	 * {@code validator} can verify it.
@@ -495,7 +495,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * {@code Chromosome} length. The {@code supplier} is responsible for
 	 * creating new random alleles.
 	 *
@@ -516,7 +516,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} of integer in the range
+	 * Create a permutation {@link InvertibleCodec} of integer in the range
 	 * {@code [0, length)}.
 	 *
 	 * @param length the number of permutation elements
@@ -550,7 +550,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} with the given alleles.
+	 * Create a permutation {@link InvertibleCodec} with the given alleles.
 	 *
 	 * @param alleles the alleles of the permutation
 	 * @param <T> the allele type
@@ -587,8 +587,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code int[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -635,8 +635,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code long[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -683,8 +683,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code double[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -901,9 +901,10 @@ public final class Codecs {
 	}
 
 	/**
-	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best <b>variable-sized</b> subset from given basic set. A typical
-	 * usage example of the returned {@code Codec} is the Knapsack problem.
+	 * The subset {@link InvertibleCodec} can be used for problems where it is
+	 * required to find the best <b>variable-sized</b> subset from given basic
+	 * set. A typical usage example of the returned {@code Codec} is the
+	 * Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
@@ -968,8 +969,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best <b>fixed-size</b> subset from given basic set.
+	 * The subset {@link InvertibleCodec} can be used for problems where it is
+	 * required to find the best <b>fixed-size</b> subset from given basic set.
 	 *
 	 * @since 3.4
 	 *

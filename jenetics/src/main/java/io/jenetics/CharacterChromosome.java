@@ -52,8 +52,7 @@ import io.jenetics.util.MSeq;
  * @version 5.2
  */
 public class CharacterChromosome
-	extends
-		VariableChromosome<CharacterGene>
+	extends VariableChromosome<CharacterGene>
 	implements
 		CharSequence,
 		Serializable
@@ -80,7 +79,7 @@ public class CharacterChromosome
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_validCharacters = genes.get(0).getValidCharacters();
+		_validCharacters = genes.get(0).validChars();
 	}
 
 	@Override

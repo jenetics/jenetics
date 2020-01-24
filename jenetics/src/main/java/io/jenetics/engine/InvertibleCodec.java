@@ -79,7 +79,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *
 	 * @return value encoder function
 	 */
-	public Function<T, Genotype<G>> encoder();
+	Function<T, Genotype<G>> encoder();
 
 	/**
 	 * Decodes the given {@code value}, which is an element of the <em>native</em>
@@ -88,7 +88,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * @param value the value of the <em>native</em> problem domain
 	 * @return the genotype, which represents the given {@code value}
 	 */
-	public default Genotype<G> encode(final T value) {
+	default Genotype<G> encode(final T value) {
 		return encoder().apply(value);
 	}
 
@@ -125,10 +125,10 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * @param mapper the mapper function
 	 * @param inverseMapper the inverse function of the {@code mapper}
 	 * @param <B> the new argument type of the given problem
-	 * @return a new {@code Codec} with the mapped result type
+	 * @return a new {@link InvertibleCodec} with the mapped result type
 	 * @throws NullPointerException if one the mapper is {@code null}.
 	 */
-	public default <B>
+	default <B>
 	InvertibleCodec<B, G> map(
 		final Function<? super T, ? extends B> mapper,
 		final Function<? super B, ? extends T> inverseMapper
@@ -154,10 +154,10 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *        domain into a {@link Genotype}
 	 * @param <G> the {@link Gene} type
 	 * @param <T> the fitness function argument type in the problem domain
-	 * @return a new {@code InvertibleCodec} object with the given parameters.
+	 * @return a new {@link InvertibleCodec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
+	static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<? super Genotype<G>, ? extends T> decoder,
 		final Function<? super T, Genotype<G>> encoder
