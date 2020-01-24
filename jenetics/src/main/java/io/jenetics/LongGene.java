@@ -56,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.2
+ * @version 6.0
  */
 public final class LongGene
 	implements
@@ -88,21 +88,18 @@ public final class LongGene
 		_max = max;
 	}
 
-	@Deprecated
 	@Override
-	public Long getAllele() {
+	public Long allele() {
 		return _value;
 	}
 
-	@Deprecated
 	@Override
-	public Long getMin() {
+	public Long min() {
 		return _min;
 	}
 
-	@Deprecated
 	@Override
-	public Long getMax() {
+	public Long max() {
 		return _max;
 	}
 

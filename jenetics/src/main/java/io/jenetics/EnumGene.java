@@ -113,17 +113,6 @@ public final class EnumGene<A>
 	}
 
 	/**
-	 * Return sequence of the valid alleles where this gene is a part of.
-	 *
-	 * @return the sequence of the valid alleles.
-	 * @deprecated Use {@link #validAlleles()} instead
-	 */
-	@Deprecated
-	public ISeq<A> getValidAlleles() {
-		return _validAlleles;
-	}
-
-	/**
 	 * Return the index of the allele this gene is representing.
 	 *
 	 * @return the index of the allele this gene is representing.
@@ -132,20 +121,8 @@ public final class EnumGene<A>
 		return _alleleIndex;
 	}
 
-	/**
-	 * Return the index of the allele this gene is representing.
-	 *
-	 * @return the index of the allele this gene is representing.
-	 * @deprecated Use {@link #alleleIndex()} instead
-	 */
-	@Deprecated
-	public int getAlleleIndex() {
-		return _alleleIndex;
-	}
-
-	@Deprecated
 	@Override
-	public A getAllele() {
+	public A allele() {
 		return _validAlleles.get(_alleleIndex);
 	}
 

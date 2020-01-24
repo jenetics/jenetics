@@ -50,34 +50,12 @@ public interface BoundedChromosome<
 	}
 
 	/**
-	 * Return the minimum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the minimum value of this {@code BoundedChromosome}.
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	default A getMin() {
-		return min();
-	}
-
-	/**
 	 * Return the maximum value of this {@code BoundedChromosome}.
 	 *
 	 * @return the maximum value of this {@code BoundedChromosome}.
 	 */
 	default A max() {
 		return gene().max();
-	}
-
-	/**
-	 * Return the maximum value of this {@code BoundedChromosome}.
-	 *
-	 * @return the maximum value of this {@code BoundedChromosome}.
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	default A getMax() {
-		return max();
 	}
 
 }

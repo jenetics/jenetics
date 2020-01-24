@@ -84,24 +84,12 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Sets the user object for this node.
-	 *
-	 * @param value the node {@code value}
-	 * @deprecated Use {@link #value(Object)} instead
-	 */
-	@Deprecated
-	public void setValue(final T value) {
-		_value = value;
-	}
-
-	/**
 	 * Return the node value
 	 *
 	 * @return the node value
 	 */
 	@Override
-	@Deprecated
-	public T getValue() {
+	public T value() {
 		return _value;
 	}
 
@@ -110,9 +98,8 @@ public final class TreeNode<T>
 	 *
 	 * @return the tree-node, or an empty value if this node has no parent
 	 */
-	@Deprecated
 	@Override
-	public Optional<TreeNode<T>> getParent() {
+	public Optional<TreeNode<T>> parent() {
 		return Optional.ofNullable(_parent);
 	}
 

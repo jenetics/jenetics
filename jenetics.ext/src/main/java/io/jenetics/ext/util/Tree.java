@@ -57,19 +57,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the value of the current {@code Tree} node
 	 */
-	default V value() {
-		return getValue();
-	}
-
-	/**
-	 * Return the value of the current {@code Tree} node. The value may be
-	 * {@code null}.
-	 *
-	 * @return the value of the current {@code Tree} node
-	 * @deprecated Use {@link #value()} instead
-	 */
-	@Deprecated
-	V getValue();
+	V value();
 
 	/**
 	 * Return the <em>parent</em> node of this tree node.
@@ -77,19 +65,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the parent node, or {@code Optional.empty()} if this node is the
 	 *         root of the tree
 	 */
-	default Optional<T> parent() {
-		return getParent();
-	}
-
-	/**
-	 * Return the <em>parent</em> node of this tree node.
-	 *
-	 * @return the parent node, or {@code Optional.empty()} if this node is the
-	 *         root of the tree
-	 * @deprecated Use {@link #parent()} instead
-	 */
-	@Deprecated
-	Optional<T> getParent();
+	Optional<T> parent();
 
 	/**
 	 * Return the child node with the given index.
@@ -372,20 +348,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * Returns the path from the root, to get to this node. The last element in
 	 * the path is this node.
 	 *
-	 * @return an array of TreeNode objects giving the path, where the
-	 *         first element in the path is the root and the last
-	 *         element is this node.
-	 * @deprecated Use {@link #pathElements()} instead
-	 */
-	@Deprecated
-	default ISeq<T> getPath() {
-		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
-	}
-
-	/**
-	 * Returns the path from the root, to get to this node. The last element in
-	 * the path is this node.
-	 *
 	 * @since 5.1
 	 *
 	 * @return an array of TreeNode objects giving the path, where the
@@ -422,18 +384,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the root of the tree that contains this node
 	 */
 	default T root() {
-		return getRoot();
-	}
-
-	/**
-	 * Returns the root of the tree that contains this node. The root is the
-	 * ancestor with no parent.
-	 *
-	 * @return the root of the tree that contains this node
-	 * @deprecated
-	 */
-	@Deprecated
-	default T getRoot() {
 		T anc = Trees.self(this);
 		T prev;
 

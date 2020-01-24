@@ -29,7 +29,7 @@ import io.jenetics.ext.util.FlatTree;
  * storage layout explicit.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.9
  */
 public interface TreeGene<A, G extends TreeGene<A, G>>
@@ -39,8 +39,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 {
 
 	@Override
-	@Deprecated
-	default A getValue() {
+	default A value() {
 		return allele();
 	}
 

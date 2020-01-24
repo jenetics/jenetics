@@ -54,7 +54,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.2
+ * @version 6.0
  */
 public final class DoubleGene
 	implements
@@ -86,21 +86,18 @@ public final class DoubleGene
 		_max = max;
 	}
 
-	@Deprecated
 	@Override
-	public Double getAllele() {
+	public Double allele() {
 		return _value;
 	}
 
-	@Deprecated
 	@Override
-	public Double getMin() {
+	public Double min() {
 		return _min;
 	}
 
-	@Deprecated
 	@Override
-	public Double getMax() {
+	public Double max() {
 		return _max;
 	}
 

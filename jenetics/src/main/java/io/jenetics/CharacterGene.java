@@ -93,9 +93,8 @@ public final class CharacterGene
 		return _validCharacters.contains(_character);
 	}
 
-	@Deprecated
 	@Override
-	public Character getAllele() {
+	public Character allele() {
 		return _character;
 	}
 

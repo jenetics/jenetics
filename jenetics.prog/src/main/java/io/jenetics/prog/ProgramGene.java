@@ -129,33 +129,11 @@ public final class ProgramGene<A>
 	}
 
 	/**
-	 * Return the allowed operations.
-	 *
-	 * @return the allowed operations
-	 * @deprecated Use {@link #operations()} instead
-	 */
-	@Deprecated
-	public ISeq<Op<A>> getOperations() {
-		return ISeq.upcast(_operations);
-	}
-
-	/**
 	 * Return the allowed terminal operations.
 	 *
 	 * @return the allowed terminal operations
 	 */
 	public ISeq<Op<A>> terminals() {
-		return ISeq.upcast(_terminals);
-	}
-
-	/**
-	 * Return the allowed terminal operations.
-	 *
-	 * @return the allowed terminal operations
-	 * @deprecated Use {@link #terminals()} instead
-	 */
-	@Deprecated
-	public ISeq<Op<A>> getTerminals() {
 		return ISeq.upcast(_terminals);
 	}
 

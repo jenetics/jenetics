@@ -53,7 +53,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public class BitChromosome extends Number
 	implements
@@ -204,10 +204,9 @@ public class BitChromosome extends Number
 		return BitGene.of(Bits.get(_genes, index));
 	}
 
-	@Deprecated
 	@Override
-	public BitGene getGene(final int index) {
-		return get(index);
+	public int length() {
+		return _length;
 	}
 
 	/**
@@ -223,17 +222,6 @@ public class BitChromosome extends Number
 	public boolean booleanValue(final int index) {
 		rangeCheck(index);
 		return Bits.get(_genes, index);
-	}
-
-	@Override
-	@Deprecated
-	public ISeq<BitGene> toSeq() {
-		return _seq;
-	}
-
-	@Override
-	public int length() {
-		return _length;
 	}
 
 	/**

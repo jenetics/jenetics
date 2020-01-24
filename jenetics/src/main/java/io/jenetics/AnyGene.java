@@ -66,7 +66,7 @@ import io.jenetics.util.MSeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 6.0
  * @since 3.3
  */
 public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
@@ -85,9 +85,8 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		_validator = requireNonNull(validator);
 	}
 
-	@Deprecated
 	@Override
-	public A getAllele() {
+	public A allele() {
 		return _allele;
 	}
 
