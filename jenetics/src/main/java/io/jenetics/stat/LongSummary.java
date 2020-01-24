@@ -38,7 +38,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public final /*record*/ class LongSummary implements Serializable {
 
@@ -83,35 +83,12 @@ public final /*record*/ class LongSummary implements Serializable {
 	}
 
 	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 * @deprecated Use {@link #count()} instead
-	 */
-	@Deprecated
-	public long getCount() {
-		return _count;
-	}
-
-	/**
 	 * Return the minimum value recorded, or {@code Long.MAX_VALUE} if no
 	 * values have been recorded.
 	 *
 	 * @return the minimum value, or {@code Long.MAX_VALUE} if none
 	 */
 	public long min() {
-		return _min;
-	}
-
-	/**
-	 * Return the minimum value recorded, or {@code Long.MAX_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Long.MAX_VALUE} if none
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public long getMin() {
 		return _min;
 	}
 
@@ -126,18 +103,6 @@ public final /*record*/ class LongSummary implements Serializable {
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Long.MIN_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Long.MIN_VALUE} if none
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public long getMax() {
-		return _max;
-	}
-
-	/**
 	 * Return the sum of values recorded, or zero if no values have been
 	 * recorded.
 	 *
@@ -148,24 +113,12 @@ public final /*record*/ class LongSummary implements Serializable {
 	}
 
 	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 * @deprecated Use {@link #sum()} instead
-	 */
-	@Deprecated
-	public long getSum() {
-		return _sum;
-	}
-
-	/**
 	 * Return the arithmetic mean of values recorded, or zero if no values have
 	 * been recorded.
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
-	public double getMean() {
+	public double mean() {
 		return _mean;
 	}
 
@@ -194,7 +147,7 @@ public final /*record*/ class LongSummary implements Serializable {
 	public String toString() {
 		return String.format(
 			"LongSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
-			count(), min(), max(), sum(), getMean()
+			count(), min(), max(), sum(), mean()
 		);
 	}
 

@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -106,17 +106,6 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 * @deprecated Use {@link #count()} instead
-	 */
-	@Deprecated
-	public long getCount() {
-		return _count;
-	}
-
-	/**
 	 * Return the current minimal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
@@ -127,36 +116,12 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
-	 * Return the current minimal object or {@code null} if no element has been
-	 * accepted yet.
-	 *
-	 * @return the current minimal object
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public C getMin() {
-		return _min;
-	}
-
-	/**
 	 * Return the current maximal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
 	 * @return the current maximal object
 	 */
 	public C max() {
-		return _max;
-	}
-
-	/**
-	 * Return the current maximal object or {@code null} if no element has been
-	 * accepted yet.
-	 *
-	 * @return the current maximal object
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public C getMax() {
 		return _max;
 	}
 
