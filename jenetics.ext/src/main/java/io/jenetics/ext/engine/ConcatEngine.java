@@ -105,7 +105,6 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * engines, it is no longer necessary to limit your final evolution stream, but
  * your are still able to do so.
  *
- * @see AdaptiveEngine
  * @see CyclicEngine
  *
  * @param <G> the gene type
