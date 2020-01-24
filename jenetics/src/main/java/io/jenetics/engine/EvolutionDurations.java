@@ -34,7 +34,7 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public final /*record*/ class EvolutionDurations
 	implements
@@ -92,17 +92,6 @@ public final /*record*/ class EvolutionDurations
 	}
 
 	/**
-	 * Return the duration needed for selecting the offspring population.
-	 *
-	 * @return the duration needed for selecting the offspring population
-	 * @deprecated Use {@link #offspringSelectionDuration()} instead
-	 */
-	@Deprecated
-	public Duration getOffspringSelectionDuration() {
-		return _offspringSelectionDuration;
-	}
-
-	/**
 	 * Return the duration needed for selecting the survivors population.
 	 *
 	 * @return the duration needed for selecting the survivors population
@@ -112,33 +101,11 @@ public final /*record*/ class EvolutionDurations
 	}
 
 	/**
-	 * Return the duration needed for selecting the survivors population.
-	 *
-	 * @return the duration needed for selecting the survivors population
-	 * @deprecated Use {@link #survivorsSelectionDuration()} instead
-	 */
-	@Deprecated
-	public Duration getSurvivorsSelectionDuration() {
-		return _survivorsSelectionDuration;
-	}
-
-	/**
 	 * Return the duration needed for altering the offspring population.
 	 *
 	 * @return the duration needed for altering the offspring population
 	 */
 	public Duration offspringAlterDuration() {
-		return _offspringAlterDuration;
-	}
-
-	/**
-	 * Return the duration needed for altering the offspring population.
-	 *
-	 * @return the duration needed for altering the offspring population
-	 * @deprecated Use {@link #offspringAlterDuration()} instead
-	 */
-	@Deprecated
-	public Duration getOffspringAlterDuration() {
 		return _offspringAlterDuration;
 	}
 
@@ -154,19 +121,6 @@ public final /*record*/ class EvolutionDurations
 	}
 
 	/**
-	 * Return the duration needed for removing and replacing invalid offspring
-	 * individuals.
-	 *
-	 * @return the duration needed for removing and replacing invalid offspring
-	 *         individuals
-	 * @deprecated Use {@link #offspringFilterDuration()} instead
-	 */
-	@Deprecated
-	public Duration getOffspringFilterDuration() {
-		return _offspringFilterDuration;
-	}
-
-	/**
 	 * Return the duration needed for removing and replacing old and invalid
 	 * survivor individuals.
 	 *
@@ -174,19 +128,6 @@ public final /*record*/ class EvolutionDurations
 	 *         survivor individuals
 	 */
 	public Duration survivorFilterDuration() {
-		return _survivorFilterDuration;
-	}
-
-	/**
-	 * Return the duration needed for removing and replacing old and invalid
-	 * survivor individuals.
-	 *
-	 * @return the duration needed for removing and replacing old and invalid
-	 *         survivor individuals
-	 * @deprecated Use {@link #survivorFilterDuration()} instead
-	 */
-	@Deprecated
-	public Duration getSurvivorFilterDuration() {
 		return _survivorFilterDuration;
 	}
 
@@ -202,35 +143,11 @@ public final /*record*/ class EvolutionDurations
 	}
 
 	/**
-	 * Return the duration needed for evaluating the fitness function of the new
-	 * individuals.
-	 *
-	 * @return the duration needed for evaluating the fitness function of the new
-	 *         individuals
-	 * @deprecated Use {@link #evaluationDuration()} instead
-	 */
-	@Deprecated
-	public Duration getEvaluationDuration() {
-		return _evaluationDuration;
-	}
-
-	/**
 	 * Return the duration needed for the whole evolve step.
 	 *
 	 * @return the duration needed for the whole evolve step
 	 */
 	public Duration evolveDuration() {
-		return _evolveDuration;
-	}
-
-	/**
-	 * Return the duration needed for the whole evolve step.
-	 *
-	 * @return the duration needed for the whole evolve step
-	 * @deprecated Use {@link #evolveDuration()} instead
-	 */
-	@Deprecated
-	public Duration getEvolveDuration() {
 		return _evolveDuration;
 	}
 

@@ -85,7 +85,7 @@ import io.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
@@ -168,36 +168,12 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the duration statistics needed for selecting the population, in
-	 * seconds.
-	 *
-	 * @return the duration statistics needed for selecting the population
-	 * @deprecated Use {@link #selectionDuration()} instead
-	 */
-	@Deprecated
-	public DoubleMomentStatistics getSelectionDuration() {
-		return _selectionDuration;
-	}
-
-	/**
 	 * Return the duration statistics needed for altering the population, in
 	 * seconds.
 	 *
 	 * @return the duration statistics needed for altering the population
 	 */
 	public DoubleMomentStatistics alterDuration() {
-		return _alterDuration;
-	}
-
-	/**
-	 * Return the duration statistics needed for altering the population, in
-	 * seconds.
-	 *
-	 * @return the duration statistics needed for altering the population
-	 * @deprecated Use {@link #alterDuration()} instead
-	 */
-	@Deprecated
-	public DoubleMomentStatistics getAlterDuration() {
 		return _alterDuration;
 	}
 
@@ -213,37 +189,12 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the duration statistics needed for evaluating the fitness function
-	 * of the new individuals, in seconds.
-	 *
-	 * @return the duration statistics needed for evaluating the fitness
-	 *         function of the new individuals
-	 * @deprecated Use {@link #evaluationDuration()} instead
-	 */
-	@Deprecated
-	public DoubleMomentStatistics getEvaluationDuration() {
-		return _evaluationDuration;
-	}
-
-	/**
 	 * Return the duration statistics needed for the whole evolve step, in
 	 * seconds.
 	 *
 	 * @return the duration statistics needed for the whole evolve step
 	 */
 	public DoubleMomentStatistics evolveDuration() {
-		return _evolveDuration;
-	}
-
-	/**
-	 * Return the duration statistics needed for the whole evolve step, in
-	 * seconds.
-	 *
-	 * @return the duration statistics needed for the whole evolve step
-	 * @deprecated Use {@link #evaluationDuration()} instead
-	 */
-	@Deprecated
-	public DoubleMomentStatistics getEvolveDuration() {
 		return _evolveDuration;
 	}
 
@@ -263,36 +214,12 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the statistics about the killed individuals during the evolution
-	 * process.
-	 *
-	 * @return killed individual statistics
-	 * @deprecated Use {@link #killed()} instead
-	 */
-	@Deprecated
-	public IntMomentStatistics getKilled() {
-		return _killed;
-	}
-
-	/**
 	 * Return the statistics about the invalid individuals during the evolution
 	 * process.
 	 *
 	 * @return invalid individual statistics
 	 */
 	public IntMomentStatistics invalids() {
-		return _invalids;
-	}
-
-	/**
-	 * Return the statistics about the invalid individuals during the evolution
-	 * process.
-	 *
-	 * @return invalid individual statistics
-	 * @deprecated Use {@link #invalids()} instead
-	 */
-	@Deprecated
-	public IntMomentStatistics getInvalids() {
 		return _invalids;
 	}
 
@@ -307,18 +234,6 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the statistics about the altered individuals during the evolution
-	 * process.
-	 *
-	 * @return altered individual statistics
-	 * @deprecated Use {@link #altered()} instead
-	 */
-	@Deprecated
-	public IntMomentStatistics getAltered() {
-		return _altered;
-	}
-
-	/**
 	 * Return the statistics about the individuals age.
 	 *
 	 * @return individual age statistics
@@ -328,33 +243,11 @@ public abstract class EvolutionStatistics<
 	}
 
 	/**
-	 * Return the statistics about the individuals age.
-	 *
-	 * @return individual age statistics
-	 * @deprecated Use {@link #phenotypeAge()} instead
-	 */
-	@Deprecated
-	public LongMomentStatistics getPhenotypeAge() {
-		return _age;
-	}
-
-	/**
 	 * Return the minimal and maximal fitness.
 	 *
 	 * @return minimal and maximal fitness
 	 */
 	public FitnessStatistics fitness() {
-		return _fitness;
-	}
-
-	/**
-	 * Return the minimal and maximal fitness.
-	 *
-	 * @return minimal and maximal fitness
-	 * @deprecated Use {@link #fitness()} instead
-	 */
-	@Deprecated
-	public FitnessStatistics getFitness() {
 		return _fitness;
 	}
 

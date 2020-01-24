@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.2
  */
 public final /*record*/ class IntRange implements Serializable {
@@ -68,28 +68,6 @@ public final /*record*/ class IntRange implements Serializable {
 	 * @return the maximum value of the integer range
 	 */
 	public int max() {
-		return _max;
-	}
-
-	/**
-	 * Return the minimum value of the integer range.
-	 *
-	 * @return the minimum value of the integer range
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public int getMin() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the integer range.
-	 *
-	 * @return the maximum value of the integer range
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public int getMax() {
 		return _max;
 	}
 

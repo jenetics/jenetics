@@ -32,7 +32,7 @@ import java.util.stream.LongStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.2
  */
 public final /*record*/ class LongRange implements Serializable {
@@ -68,28 +68,6 @@ public final /*record*/ class LongRange implements Serializable {
 	 * @return the maximum value of the long range
 	 */
 	public long max() {
-		return _max;
-	}
-
-	/**
-	 * Return the minimum value of the long range.
-	 *
-	 * @return the minimum value of the long range
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public long getMin() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the long range.
-	 *
-	 * @return the maximum value of the long range
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public long getMax() {
 		return _max;
 	}
 

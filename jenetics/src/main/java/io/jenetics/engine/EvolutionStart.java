@@ -45,7 +45,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 5.2
+ * @version 6.0
  */
 public final /*record*/ class EvolutionStart<
 	G extends Gene<?, G>,
@@ -73,33 +73,11 @@ public final /*record*/ class EvolutionStart<
 	}
 
 	/**
-	 * Return the population before the evolution step.
-	 *
-	 * @return the start population
-	 * @deprecated Use {@link #population()} instead
-	 */
-	@Deprecated
-	public ISeq<Phenotype<G, C>> getPopulation() {
-		return _population;
-	}
-
-	/**
 	 * Return the generation of the start population.
 	 *
 	 * @return the start generation
 	 */
 	public long generation() {
-		return _generation;
-	}
-
-	/**
-	 * Return the generation of the start population.
-	 *
-	 * @return the start generation
-	 * @deprecated Use {@link #generation()} instead
-	 */
-	@Deprecated
-	public long getGeneration() {
 		return _generation;
 	}
 
