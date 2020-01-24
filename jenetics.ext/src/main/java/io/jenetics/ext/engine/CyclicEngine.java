@@ -94,7 +94,6 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.
  *
- * @see AdaptiveEngine
  * @see ConcatEngine
  *
  * @param <G> the gene type
