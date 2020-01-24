@@ -21,7 +21,14 @@ package io.jenetics.util;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.stream.LongStream;
 
@@ -37,7 +44,7 @@ import java.util.stream.LongStream;
  */
 public final /*record*/ class LongRange implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final long _min;
 	private final long _max;
@@ -135,6 +142,30 @@ public final /*record*/ class LongRange implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + _min + ", " + _max + "]";
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_RANGE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLong(_min, out);
+		writeLong(_max, out);
+	}
+
+	static LongRange read(final DataInput in) throws IOException {
+		return of(readLong(in), readLong(in));
 	}
 
 }
