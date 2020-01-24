@@ -609,7 +609,7 @@ public final class TreeNode<T>
 		FlatTreeNode.of(this).write(out);
 	}
 
-	@SuppressWarnings({"rawtypes"})
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	static TreeNode read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{

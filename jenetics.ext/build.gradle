@@ -62,6 +62,8 @@ idea {
 	}
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.ext')
+
 javadoc {
 	options {
 		links 'http://jenetics.io/javadoc/jenetics'

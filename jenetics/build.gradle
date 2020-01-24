@@ -57,6 +57,8 @@ idea {
 	}
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.base')
+
 test.dependsOn(compileJmhJava)
 
 packaging {

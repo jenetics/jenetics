@@ -41,6 +41,8 @@ dependencies {
 	implementation project(':jenetics.tool')
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.doc')
+
 packaging {
 	name = 'Jenetics doc'
 	author = 'Franz Wilhelmstötter'
