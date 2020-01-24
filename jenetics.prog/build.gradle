@@ -48,6 +48,8 @@ javadoc {
 	}
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.prog')
+
 packaging {
 	name = property('jenetics.prog.Name')
 	author = property('jenetics.Author')

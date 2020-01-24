@@ -53,6 +53,8 @@ idea {
 	}
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.xml')
+
 test.dependsOn(compileJmhJava)
 
 javadoc {

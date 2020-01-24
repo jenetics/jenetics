@@ -37,6 +37,8 @@ dependencies {
 	testImplementation property('include.TestNG')
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.tool')
+
 javadoc {
 	options {
 		links 'http://jenetics.io/javadoc/jenetics'

@@ -41,6 +41,8 @@ dependencies {
 	testImplementation property('include.TestNG')
 }
 
+jar.manifest.attributes('Automatic-Module-Name': 'io.jenetics.example')
+
 packaging {
 	name = property('jenetics.example.Name')
 	author = property('jenetics.Author')
