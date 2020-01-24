@@ -26,7 +26,7 @@ import io.jenetics.internal.util.Requires;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
@@ -57,17 +57,6 @@ public abstract class AbstractAlterer<
 	 * @return The recombination probability.
 	 */
 	public double probability() {
-		return _probability;
-	}
-
-	/**
-	 * Return the recombination/alter probability for this alterer.
-	 *
-	 * @return The recombination probability.
-	 * @deprecated Use {@link #probability()} instead
-	 */
-	@Deprecated
-	public double getProbability() {
 		return _probability;
 	}
 

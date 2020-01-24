@@ -44,7 +44,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -86,19 +86,6 @@ public class TournamentSelector<
 	 * @return the sample size of the tournament selector
 	 */
 	public int sampleSize() {
-		return _sampleSize;
-	}
-
-	/**
-	 * Return the sample size of the tournament selector.
-	 *
-	 * @since 5.0
-	 *
-	 * @return the sample size of the tournament selector
-	 * @deprecated Use {@link #sampleSize()} instead
-	 */
-	@Deprecated
-	public int getSampleSize() {
 		return _sampleSize;
 	}
 

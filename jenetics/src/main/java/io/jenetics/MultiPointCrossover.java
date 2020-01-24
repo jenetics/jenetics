@@ -50,7 +50,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 5.2
+ * @version 6.0
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
@@ -115,17 +115,6 @@ public class MultiPointCrossover<
 	 * @return the number of crossover points.
 	 */
 	public int crossoverPointCount() {
-		return _n;
-	}
-
-	/**
-	 * Return the number of crossover points.
-	 *
-	 * @return the number of crossover points.
-	 * @deprecated Use {@link #crossoverPointCount()} instead
-	 */
-	@Deprecated
-	public int getN() {
 		return _n;
 	}
 

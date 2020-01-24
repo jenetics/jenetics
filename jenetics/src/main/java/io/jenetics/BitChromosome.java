@@ -166,19 +166,6 @@ public class BitChromosome extends Number
 		return _p;
 	}
 
-	/**
-	 * Return the one probability of this chromosome.
-	 *
-	 * @since 3.9
-	 *
-	 * @return the one probability of this chromosome.
-	 * @deprecated Use {@link #oneProbability()} instead
-	 */
-	@Deprecated
-	public double getOneProbability() {
-		return _p;
-	}
-
 	@Override
 	public BitGene gene() {
 		assert _genes != null;

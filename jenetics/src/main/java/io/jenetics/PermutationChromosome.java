@@ -103,7 +103,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -146,17 +146,6 @@ public final class PermutationChromosome<T>
 	 * @return the sequence of valid alleles of this chromosome
 	 */
 	public ISeq<T> validAlleles() {
-		return _validAlleles;
-	}
-
-	/**
-	 * Return the sequence of valid alleles of this chromosome.
-	 *
-	 * @return the sequence of valid alleles of this chromosome
-	 * @deprecated Use {@link #validAlleles()} instead
-	 */
-	@Deprecated
-	public ISeq<T> getValidAlleles() {
 		return _validAlleles;
 	}
 

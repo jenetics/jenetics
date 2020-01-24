@@ -112,7 +112,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.1
+ * @version 6.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -120,7 +120,6 @@ public final class Engine<
 >
 	implements
 		Evolution<G, C>,
-		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
 		EvolutionStreamable<G, C>
 {
 
@@ -197,22 +196,6 @@ public final class Engine<
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
 		_mapper = requireNonNull(mapper);
-	}
-
-	/**
-	 * This method is an <i>alias</i> for the {@link #evolve(EvolutionStart)}
-	 * method.
-	 *
-	 * @since 3.1
-	 *
-	 * @see Evolution
-	 *
-	 * @deprecated Will be removed and superseded by {@link #evolve(EvolutionStart)}
-	 */
-	@Deprecated
-	@Override
-	public EvolutionResult<G, C> apply(final EvolutionStart<G, C> start) {
-		return evolve(start);
 	}
 
 	@Override

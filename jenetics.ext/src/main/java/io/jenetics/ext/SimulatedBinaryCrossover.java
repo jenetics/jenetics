@@ -45,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 5.2
+ * @version 6.0
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,
@@ -97,17 +97,6 @@ public class SimulatedBinaryCrossover<
 	 * @return the <i>contiguity</i> value of the crossover
 	 */
 	public double contiguity() {
-		return _contiguity;
-	}
-
-	/**
-	 * Return the <i>contiguity</i> value of the crossover.
-	 *
-	 * @return the <i>contiguity</i> value of the crossover
-	 * @deprecated Use {@link #contiguity()} instead
-	 */
-	@Deprecated
-	public double getContiguity() {
 		return _contiguity;
 	}
 

@@ -51,7 +51,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -89,18 +89,6 @@ public abstract class Recombinator<
 	 * @return the number of individuals involved in the recombination step.
 	 */
 	public int order() {
-		return _order;
-	}
-
-	/**
-	 * Return the number of individuals involved in the
-	 * {@link #recombine(MSeq, int[], long)} step.
-	 *
-	 * @return the number of individuals involved in the recombination step.
-	 * @deprecated Use {@link #order()} instead
-	 */
-	@Deprecated
-	public int getOrder() {
 		return _order;
 	}
 

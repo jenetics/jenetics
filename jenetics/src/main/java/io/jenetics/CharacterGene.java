@@ -24,7 +24,6 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Random;
 
 import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.CharSeq;
@@ -49,7 +48,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public final class CharacterGene
 	implements
@@ -123,17 +122,6 @@ public final class CharacterGene
 	 * @return the {@link CharSeq} of valid characters.
 	 */
 	public CharSeq validChars() {
-		return _validCharacters;
-	}
-
-	/**
-	 * Return a (unmodifiable) set of valid characters.
-	 *
-	 * @return the {@link CharSeq} of valid characters.
-	 * @deprecated Use {@link #validChars()} instead
-	 */
-	@Deprecated
-	public CharSeq getValidCharacters() {
 		return _validCharacters;
 	}
 
