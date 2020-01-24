@@ -70,7 +70,7 @@ public interface TreeRewriter<V> {
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
 	 *         one
 	 */
-	public int rewrite(final TreeNode<V> tree, final int limit);
+	int rewrite(final TreeNode<V> tree, final int limit);
 
 	/**
 	 * Applies the rewriting to the given (mutable) {@code tree}. The tree
@@ -84,7 +84,7 @@ public interface TreeRewriter<V> {
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public default int rewrite(final TreeNode<V> tree) {
+	default int rewrite(final TreeNode<V> tree) {
 		return rewrite(tree, Integer.MAX_VALUE);
 	}
 
@@ -109,7 +109,7 @@ public interface TreeRewriter<V> {
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
 	 *         zero
 	 */
-	public static <V> int rewrite(
+	static <V> int rewrite(
 		final TreeNode<V> tree,
 		final int limit,
 		final Iterable<? extends TreeRewriter<V>> rewriters
@@ -150,7 +150,7 @@ public interface TreeRewriter<V> {
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <V> int rewrite(
+	static <V> int rewrite(
 		final TreeNode<V> tree,
 		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
@@ -169,7 +169,7 @@ public interface TreeRewriter<V> {
 	 *         zero
 	 */
 	@SafeVarargs
-	public static <V> TreeRewriter<V>
+	static <V> TreeRewriter<V>
 	concat(final TreeRewriter<V>... rewriters) {
 		if (rewriters.length == 0) {
 			throw new IllegalArgumentException(

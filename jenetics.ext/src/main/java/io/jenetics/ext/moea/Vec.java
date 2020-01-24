@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.moea;
 
-import static io.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.Comparator;
 
@@ -63,21 +63,21 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *
 	 * @return the underlying data structure
 	 */
-	public T data();
+	T data();
 
 	/**
 	 * Return the number of vector elements.
 	 *
 	 * @return the number of vector elements
 	 */
-	public int length();
+	int length();
 
 	/**
 	 * Return the comparator for comparing the elements of this MO vector.
 	 *
 	 * @return the comparator for comparing the elements of this MO vector
 	 */
-	public ElementComparator<T> comparator();
+	ElementComparator<T> comparator();
 
 	/**
 	 * Return a function which calculates the element distance of a vector at a
@@ -86,14 +86,14 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @return a function which calculates the element distance of a vector at a
 	 *         given element index
 	 */
-	public ElementDistance<T> distance();
+	ElementDistance<T> distance();
 
 	/**
 	 * Return the comparator which defines the (Pareto) dominance measure.
 	 *
 	 * @return the comparator which defines the (Pareto) dominance measure
 	 */
-	public Comparator<T> dominance();
+	Comparator<T> dominance();
 
 
 	/* *************************************************************************
@@ -113,7 +113,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code index} is out of the valid
 	 *         range {@code [0, length())}
 	 */
-	public default int compare(final Vec<T> other, final int index) {
+	default int compare(final Vec<T> other, final int index) {
 		return comparator().compare(data(), other.data(), index);
 	}
 
@@ -128,7 +128,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws IllegalArgumentException if the {@code index} is out of the valid
 	 *         range {@code [0, length())}
 	 */
-	public default double distance(final Vec<T> other, final int index) {
+	default double distance(final Vec<T> other, final int index) {
 		return distance().distance(data(), other.data(), index);
 	}
 
@@ -141,7 +141,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 *         <b>other</b> ≻ <b>value()</b> and {@code 0} otherwise
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
-	public default int dominance(final Vec<T> other) {
+	default int dominance(final Vec<T> other) {
 		return dominance().compare(data(), other.data());
 	}
 
@@ -155,7 +155,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the {@code other} vector is {@code null}
 	 */
 	@Override
-	public default int compareTo(final Vec<T> other) {
+	default int compareTo(final Vec<T> other) {
 		return dominance(other);
 	}
 
@@ -178,7 +178,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static <C extends Comparable<? super C>> int
+	static <C extends Comparable<? super C>> int
 	dominance(final C[] u, final C[] v) {
 		return dominance(u, v, Comparator.naturalOrder());
 	}
@@ -199,7 +199,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static <T> int
+	static <T> int
 	dominance(final T[] u, final T[] v, final Comparator<? super T> comparator) {
 		return Pareto.dominance(u, v, comparator);
 	}
@@ -217,7 +217,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominance(final int[] u, final int[] v) {
+	static int dominance(final int[] u, final int[] v) {
 		return Pareto.dominance(u, v);
 	}
 
@@ -234,7 +234,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominance(final long[] u, final long[] v) {
+	static int dominance(final long[] u, final long[] v) {
 		return Pareto.dominance(u, v);
 	}
 
@@ -251,7 +251,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if {@code u.length != v.length}
 	 */
-	public static int dominance(final double[] u, final double[] v) {
+	static int dominance(final double[] u, final double[] v) {
 		return Pareto.dominance(u, v);
 	}
 
@@ -268,7 +268,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static <C extends Comparable<? super C>>
+	static <C extends Comparable<? super C>>
 	Vec<C[]> of(final C[] array) {
 		return of(
 			array,
@@ -286,7 +286,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static <C extends Comparable<? super C>> Vec<C[]> of(
+	static <C extends Comparable<? super C>> Vec<C[]> of(
 		final C[] array,
 		final ElementDistance<C[]> distance
 	) {
@@ -304,7 +304,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static <T> Vec<T[]> of(
+	static <T> Vec<T[]> of(
 		final T[] array,
 		final Comparator<? super T> comparator,
 		final ElementDistance<T[]> distance
@@ -320,7 +320,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static Vec<int[]> of(final int... array) {
+	static Vec<int[]> of(final int... array) {
 		return new SimpleIntVec(array);
 	}
 
@@ -332,7 +332,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static Vec<long[]> of(final long... array) {
+	static Vec<long[]> of(final long... array) {
 		return new SimpleLongVec(array);
 	}
 
@@ -344,7 +344,7 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 * @throws IllegalArgumentException if the {@code array} length is zero
 	 */
-	public static Vec<double[]> of(final double... array) {
+	static Vec<double[]> of(final double... array) {
 		return new SimpleDoubleVec(array);
 	}
 

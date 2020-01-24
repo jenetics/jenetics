@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.getRandom;
 
@@ -31,7 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -54,7 +54,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.0
+ * @version 5.2
  */
 public final class DoubleGene
 	implements
@@ -86,16 +86,19 @@ public final class DoubleGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Double getAllele() {
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Double getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Double getMax() {
 		return _max;
@@ -241,7 +244,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final double value, final DoubleRange range) {
-		return of(value, range.getMin(), range.getMax());
+		return of(value, range.min(), range.max());
 	}
 
 	/**
@@ -267,7 +270,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.getMin(), range.getMax(), getRandom()), range);
+		return of(nextDouble(range.min(), range.max(), getRandom()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -276,7 +279,7 @@ public final class DoubleGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
+		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();
 	}

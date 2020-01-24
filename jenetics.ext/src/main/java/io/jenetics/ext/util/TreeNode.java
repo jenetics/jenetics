@@ -43,7 +43,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 5.2
  * @since 3.9
  */
 public final class TreeNode<T>
@@ -79,6 +79,17 @@ public final class TreeNode<T>
 	 *
 	 * @param value the node {@code value}
 	 */
+	public void value(final T value) {
+		_value = value;
+	}
+
+	/**
+	 * Sets the user object for this node.
+	 *
+	 * @param value the node {@code value}
+	 * @deprecated Use {@link #value(Object)} instead
+	 */
+	@Deprecated
 	public void setValue(final T value) {
 		_value = value;
 	}
@@ -89,6 +100,7 @@ public final class TreeNode<T>
 	 * @return the node value
 	 */
 	@Override
+	@Deprecated
 	public T getValue() {
 		return _value;
 	}
@@ -98,6 +110,7 @@ public final class TreeNode<T>
 	 *
 	 * @return the tree-node, or an empty value if this node has no parent
 	 */
+	@Deprecated
 	@Override
 	public Optional<TreeNode<T>> getParent() {
 		return Optional.ofNullable(_parent);
@@ -251,7 +264,7 @@ public final class TreeNode<T>
 	 */
 	public boolean removeAtPath(final Path path) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
-			.flatMap(Tree::getParent);
+			.flatMap(Tree::parent);
 
 		parent.ifPresent(p -> p.remove(path.get(path.length() - 1)));
 		return parent.isPresent();
@@ -274,14 +287,14 @@ public final class TreeNode<T>
 		requireNonNull(child);
 
 		final Optional<TreeNode<T>> old = childAtPath(path);
-		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::getParent);
+		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::parent);
 
 		if (parent.isPresent()) {
 			parent.orElseThrow(AssertionError::new)
 				.replace(path.get(path.length() - 1), child);
 		} else {
 			removeAllChildren();
-			setValue(child.getValue());
+			value(child.value());
 
 			final ISeq<TreeNode<T>> nodes = child.childStream()
 				.collect(ISeq.toISeq());
@@ -410,7 +423,7 @@ public final class TreeNode<T>
 	 *         {@code null}
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
-		final TreeNode<B> target = TreeNode.of(mapper.apply(getValue()));
+		final TreeNode<B> target = TreeNode.of(mapper.apply(value()));
 		fill(this, target, mapper);
 		return target;
 	}
@@ -475,7 +488,7 @@ public final class TreeNode<T>
 		final Tree<? extends T, ?> tree,
 		final Function<? super T, ? extends B> mapper
 	) {
-		final TreeNode<B> target = of(mapper.apply(tree.getValue()));
+		final TreeNode<B> target = of(mapper.apply(tree.value()));
 		fill(tree, target, mapper);
 		return target;
 	}
@@ -486,7 +499,7 @@ public final class TreeNode<T>
 		final Function<? super T, ? extends B> mapper
 	) {
 		source.childStream().forEachOrdered(child -> {
-			final TreeNode<B> targetChild = of(mapper.apply(child.getValue()));
+			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
 			fill(child, targetChild, mapper);
 		});

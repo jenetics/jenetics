@@ -27,7 +27,7 @@ import static java.lang.Float.floatToIntBits;
 import static java.lang.Float.intBitsToFloat;
 import static java.lang.Math.abs;
 import static java.lang.String.format;
-import static io.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -39,10 +39,10 @@ import io.jenetics.util.IntRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.0
+ * @version 5.2
  */
-public final class random {
-	private random() {}
+public final class Randoms {
+	private Randoms() {}
 
 	public static byte nextByte(final Random random) {
 		return (byte) nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE + 1, random);
@@ -116,8 +116,8 @@ public final class random {
 	 */
 	public static int nextInt(final IntRange range, final Random random) {
 		return range.size() == 1
-			? range.getMin()
-			: nextInt(range.getMin(), range.getMax(), random);
+			? range.min()
+			: nextInt(range.min(), range.max(), random);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public final class random {
 		final double p
 	) {
 		probability(p);
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 
 		return equals(p, 0, 1E-20)
 			? IntStream.empty()

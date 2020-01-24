@@ -17,44 +17,27 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext;
+package io.jenetics.internal.collection;
 
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.Chromosome;
-import io.jenetics.EnumGene;
-import io.jenetics.MutatorResult;
-import io.jenetics.PermutationChromosome;
+import io.jenetics.util.BaseSeq;
 
 /**
+ * General base interface for a ordered, fixed sized, mutable, object sequence.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 5.2
+ * @version 5.2
  */
-public class HPRMutatorTest {
+public interface BaseMSeq<T> extends BaseSeq<T> {
 
-	@Test(invocationCount = 10)
-	public void mutate() {
-		final PermutationChromosome<Integer> original =
-			PermutationChromosome.ofInteger(100);
-
-		final HPRMutator<EnumGene<Integer>, Integer> mutator =
-			new HPRMutator<>(1.0);
-
-		final MutatorResult<Chromosome<EnumGene<Integer>>> result =
-			mutator.mutate(original, 1, new Random());
-
-		final int[] a = original.stream()
-			.mapToInt(EnumGene::allele)
-			.toArray();
-
-		final int[] b = result.result().stream()
-			.mapToInt(EnumGene::allele)
-			.toArray();
-
-		Assert.assertNotEquals(a, b);
-
-	}
+	/**
+	 * Set the {@code value} at the given {@code index}.
+	 *
+	 * @param index the index of the new value.
+	 * @param value the new value.
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0 || index >= size())}.
+	 */
+	public void set(final int index, final T value);
 
 }

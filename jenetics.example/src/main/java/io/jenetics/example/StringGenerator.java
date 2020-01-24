@@ -54,7 +54,7 @@ public class StringGenerator {
 				Genotype.of(CharacterChromosome.of(
 					CharSeq.of("a-z"), TARGET_STRING.length()
 				)),
-				gt -> (CharSequence)gt.getChromosome()
+				gt -> (CharSequence)gt.chromosome()
 			)
 		);
 

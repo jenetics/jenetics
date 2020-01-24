@@ -19,17 +19,17 @@
  */
 package io.jenetics.internal.math;
 
-import static io.jenetics.internal.math.base.pow;
+import static io.jenetics.internal.math.Basics.pow;
 
 /**
  * Mathematical functions regarding probabilities.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 1.4
+ * @version 5.2
  */
-public final class probability {
-	private probability() {}
+public final class Probabilities {
+	private Probabilities() {}
 
 	private static final long INT_RANGE = pow(2, 32) - 1;
 

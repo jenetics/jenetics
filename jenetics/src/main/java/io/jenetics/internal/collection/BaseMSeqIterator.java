@@ -17,33 +17,25 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.math;
-
-import static java.lang.String.format;
-
-import java.util.Random;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
-
-import io.jenetics.prngine.LCG64ShiftRandom;
+package io.jenetics.internal.collection;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since 1.4
+ * @version 5.2
  */
-public class randomTest {
+public class BaseMSeqIterator<T> extends BaseSeqIterator<T, BaseMSeq<T>> {
 
-	@Test
-	public void intRange() {
-		final Random rnd = new LCG64ShiftRandom();
-		final int min = 10;
-		final int max = 10_000;
+	public BaseMSeqIterator(final BaseMSeq<T> seq) {
+		super(seq);
+	}
 
-		for (int i = 0; i < 100_000; ++i) {
-			final int n = random.nextInt(min, max, rnd);
-			Assert.assertTrue(n >= min, format("n < min: %d < %d", n, min));
-			Assert.assertTrue(n < max, format("n  max: %d >= %d", n, max));
+	@Override
+	public void set(final T value) {
+		if (lastElement < 0) {
+			throw new IllegalStateException();
 		}
+		array.set(lastElement, value);
 	}
 
 }

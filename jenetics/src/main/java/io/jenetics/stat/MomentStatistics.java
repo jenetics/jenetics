@@ -33,7 +33,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.1
+ * @version 5.2
  */
 abstract class MomentStatistics {
 
@@ -110,6 +110,17 @@ abstract class MomentStatistics {
 	 *
 	 * @return the count of recorded values
 	 */
+	public long count() {
+		return _n;
+	}
+
+	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 * @deprecated Use {@link #count()} instead
+	 */
+	@Deprecated
 	public long getCount() {
 		return _n;
 	}
@@ -120,8 +131,20 @@ abstract class MomentStatistics {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
-	public double getMean() {
+	public double mean() {
 		return _n == 0L ? NaN : _m1.value();
+	}
+
+	/**
+	 * Return the arithmetic mean of values recorded, or {@code Double.NaN} if
+	 * no values have been recorded.
+	 *
+	 * @return the arithmetic mean of values, or zero if none
+	 * @deprecated Use {@link #mean()} instead
+	 */
+	@Deprecated
+	public double getMean() {
+		return mean();
 	}
 
 	/**
@@ -130,7 +153,7 @@ abstract class MomentStatistics {
 	 *
 	 * @return the variance of values, or {@code NaN} if none
 	 */
-	public double getVariance() {
+	public double variance() {
 		double var = NaN;
 		if (_n == 1L) {
 			var = _m2.value();
@@ -142,6 +165,18 @@ abstract class MomentStatistics {
 	}
 
 	/**
+	 * Return the variance of values recorded, or {@code Double.NaN} if no
+	 * values have been recorded.
+	 *
+	 * @return the variance of values, or {@code NaN} if none
+	 * @deprecated Use {@link #variance()} instead
+	 */
+	@Deprecated
+	public double getVariance() {
+		return variance();
+	}
+
+	/**
 	 * Return the skewness of values recorded, or {@code Double.NaN} if less
 	 * than two values have been recorded.
 	 *
@@ -150,7 +185,7 @@ abstract class MomentStatistics {
 	 * @return the skewness of values, or {@code NaN} if less than two values
 	 *         have been recorded
 	 */
-	public double getSkewness() {
+	public double skewness() {
 		double skewness = NaN;
 		if (_n >= 3L) {
 			final double var = _m2.value()/(_n - 1.0);
@@ -166,6 +201,21 @@ abstract class MomentStatistics {
 	}
 
 	/**
+	 * Return the skewness of values recorded, or {@code Double.NaN} if less
+	 * than two values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Skewness">Skewness</a>
+	 *
+	 * @return the skewness of values, or {@code NaN} if less than two values
+	 *         have been recorded
+	 * @deprecated Use {@link #skewness()} instead
+	 */
+	@Deprecated
+	public double getSkewness() {
+		return skewness();
+	}
+
+	/**
 	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
 	 * than four values have been recorded.
 	 *
@@ -174,7 +224,7 @@ abstract class MomentStatistics {
 	 * @return the kurtosis of values, or {@code NaN} if less than four values
 	 *         have been recorded
 	 */
-	public double getKurtosis() {
+	public double kurtosis() {
 		double kurtosis = NaN;
 		if (_n > 3L) {
 			final double var = _m2.value()/(_n - 1);
@@ -187,6 +237,21 @@ abstract class MomentStatistics {
 			}
 		}
 		return kurtosis;
+	}
+
+	/**
+	 * Return the kurtosis of values recorded, or {@code Double.NaN} if less
+	 * than four values have been recorded.
+	 *
+	 * @see <a href="https://en.wikipedia.org/wiki/Kurtosis">Kurtosis</a>
+	 *
+	 * @return the kurtosis of values, or {@code NaN} if less than four values
+	 *         have been recorded
+	 * @deprecated Use {@link #kurtosis()} instead
+	 */
+	@Deprecated
+	public double getKurtosis() {
+		return kurtosis();
 	}
 
 	final boolean sameState(final MomentStatistics statistics) {

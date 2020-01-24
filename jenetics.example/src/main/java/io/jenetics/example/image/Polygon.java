@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 import java.util.Random;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.Mean;
 import io.jenetics.util.RandomRegistry;
 
@@ -47,7 +47,7 @@ final class Polygon implements Mean<Polygon> {
 	private final int _length;
 
 	private Polygon(final int length) {
-		final int polygonSize = 4 + 2*require.positive(length);
+		final int polygonSize = 4 + 2*Requires.positive(length);
 		_data = new float[polygonSize];
 		_length = length;
 	}
@@ -120,7 +120,7 @@ final class Polygon implements Mean<Polygon> {
 	 * Creates a new random Polygon of the given length.
 	 */
 	public static Polygon newRandom(final int length, final Random random) {
-		require.positive(length);
+		Requires.positive(length);
 		final Polygon p = new Polygon(length);
 
 		p._data[0] = random.nextFloat(); // r

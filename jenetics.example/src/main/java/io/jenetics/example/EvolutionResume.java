@@ -101,7 +101,7 @@ public class EvolutionResume {
 		System.out.println("Writing evolution result.");
 		IO.object.write(future.get(), resultPath);
 
-		System.out.println("Best fitness: " + future.get().getBestFitness());
+		System.out.println("Best fitness: " + future.get().bestFitness());
 	}
 }
 

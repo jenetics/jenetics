@@ -17,25 +17,26 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.internal.collection;
+package io.jenetics.util;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.4
- * @version 3.4
  */
-public class ArrayMIterator<T> extends ArrayIterator<T> {
+public class RequiresTest {
 
-	public ArrayMIterator(final Array<T> array) {
-		super(array);
-	}
-
-	@Override
-	public void set(final T value) {
-		if (lastElement < 0) {
-			throw new IllegalStateException();
+	@Test
+	public void validPredicate() {
+		final MSeq<Verifiable> array = MSeq.ofLength(100);
+		for (int i = 0; i < array.length(); ++i) {
+			array.set(i, () -> true);
 		}
-		array.set(lastElement, value);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
+
+		array.set(77, () -> false);
+		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
 	}
 
 }

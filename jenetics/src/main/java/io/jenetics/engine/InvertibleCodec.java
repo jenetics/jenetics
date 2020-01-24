@@ -35,9 +35,10 @@ import io.jenetics.util.Factory;
  * relation between <em>encoder</em> and <em>decoder</em> function must fulfill.
  *
  * <pre>{@code
- * InvertibleCodec<int[], IntegerGene> codec = Codecs.ofVector(IntRange.of(0, 100), 6);
- * int[] value = new int[]{3, 4, 6, 7, 8, 3};
- * Genotype<IntegerGene> gt = codec.encode(value);
+ * final InvertibleCodec<int[], IntegerGene> codec =
+ *     Codecs.ofVector(IntRange.of(0, 100), 6);
+ * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
+ * final Genotype<IntegerGene> gt = codec.encode(value);
  * assert Arrays.equals(value, codec.decode(gt));
  * }</pre>
  *
@@ -54,8 +55,8 @@ import io.jenetics.util.Factory;
  * @param <G> the {@code Gene} type used for encoding the argument type {@code T}
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.2
+ * @since 5.2
  */
 public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 
@@ -66,9 +67,10 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * snippet shows how a given value in the <em>native</em> problem domain
 	 * can be converted into a {@link Genotype} and transformed back.
 	 * <pre>{@code
-	 * InvertibleCodec<int[], IntegerGene> codec = Codecs.ofVector(IntRange.of(0, 100), 6);
-	 * int[] value = new int[]{3, 4, 6, 7, 8, 3};
-	 * Genotype<IntegerGene> gt = codec.encode(value);
+	 * final InvertibleCodec<int[], IntegerGene> codec =
+	 *     Codecs.ofVector(IntRange.of(0, 100), 6);
+	 * final int[] value = new int[]{3, 4, 6, 7, 8, 3};
+	 * final Genotype<IntegerGene> gt = codec.encode(value);
 	 * assert Arrays.equals(value, codec.decode(gt));
 	 * }</pre>
 	 *
@@ -77,7 +79,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *
 	 * @return value encoder function
 	 */
-	public Function<T, Genotype<G>> encoder();
+	Function<T, Genotype<G>> encoder();
 
 	/**
 	 * Decodes the given {@code value}, which is an element of the <em>native</em>
@@ -86,20 +88,47 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 * @param value the value of the <em>native</em> problem domain
 	 * @return the genotype, which represents the given {@code value}
 	 */
-	public default Genotype<G> encode(final T value) {
+	default Genotype<G> encode(final T value) {
 		return encoder().apply(value);
 	}
 
 	/**
 	 * Create a new {@code InvertibleCodec} with the mapped result type.
 	 *
+	 * This method can also be used for creating non-trivial codes like split
+	 * ranges, as shown in the following example, where only values between
+	 * <em>[0, 2)</em> and <em>[8, 10)</em> are valid.
+	 * <pre>{@code
+	 *   +--+--+--+--+--+--+--+--+--+--+
+	 *   |  |  |  |  |  |  |  |  |  |  |
+	 *   0  1  2  3  4  5  6  7  8  9  10
+	 *   |-----|xxxxxxxxxxxxxxxxx|-----|
+	 *      ^  |llllllll|rrrrrrrr|  ^
+	 *      |       |        |      |
+	 *      +-------+        +------+
+	 * }</pre>
+	 *
+	 * <pre>{@code
+	 * final InvertibleCodec<Double, DoubleGene> codec = Codecs
+	 *     .ofScalar(DoubleRange.of(0, 10))
+	 *     .map(v -> {
+	 *             if (v >= 2 && v < 8) {
+	 *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
+	 *             }
+	 *             return v;
+	 *         },
+	 *         Function.identity());
+	 * }</pre>
+	 *
+	 * @see Codec#map(Function)
+	 *
 	 * @param mapper the mapper function
 	 * @param inverseMapper the inverse function of the {@code mapper}
 	 * @param <B> the new argument type of the given problem
-	 * @return a new {@code Codec} with the mapped result type
+	 * @return a new {@link InvertibleCodec} with the mapped result type
 	 * @throws NullPointerException if one the mapper is {@code null}.
 	 */
-	public default <B>
+	default <B>
 	InvertibleCodec<B, G> map(
 		final Function<? super T, ? extends B> mapper,
 		final Function<? super B, ? extends T> inverseMapper
@@ -125,10 +154,10 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 	 *        domain into a {@link Genotype}
 	 * @param <G> the {@link Gene} type
 	 * @param <T> the fitness function argument type in the problem domain
-	 * @return a new {@code InvertibleCodec} object with the given parameters.
+	 * @return a new {@link InvertibleCodec} object with the given parameters.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
+	static <T, G extends Gene<?, G>> InvertibleCodec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<? super Genotype<G>, ? extends T> decoder,
 		final Function<? super T, Genotype<G>> encoder

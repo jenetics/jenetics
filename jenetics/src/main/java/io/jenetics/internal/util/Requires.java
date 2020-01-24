@@ -26,10 +26,10 @@ import static java.lang.String.format;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 1.6
+ * @version 5.2
  */
-public final class require {
-	private require() {}
+public final class Requires {
+	private Requires() {}
 
 	/**
 	 * Check if the specified value is not negative.

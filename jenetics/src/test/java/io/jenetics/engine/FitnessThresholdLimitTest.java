@@ -130,8 +130,8 @@ public class FitnessThresholdLimitTest {
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals(count.get(), 1);
-		Assert.assertEquals(result.getTotalGenerations(), 1);
-		Assert.assertEquals(result.getGeneration(), 1);
+		Assert.assertEquals(result.totalGenerations(), 1);
+		Assert.assertEquals(result.generation(), 1);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class FitnessThresholdLimitTest {
 			.stream()
 			.limit(Limits.byFitnessThreshold(threshold))
 			.collect(EvolutionResult.toBestEvolutionResult())
-			.getBestFitness();
+			.bestFitness();
 
 		Assert.assertNotNull(result);
 		Assert.assertTrue(

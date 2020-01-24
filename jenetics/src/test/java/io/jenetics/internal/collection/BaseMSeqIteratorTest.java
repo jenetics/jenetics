@@ -25,16 +25,16 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class ArrayMIteratorTest {
+public class BaseMSeqIteratorTest {
 
 	@Test
 	public void set() {
-		long seed = random.seed();
+		long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final Array<Integer> impl = Array.of(ObjectStore.ofLength(1000));
@@ -43,9 +43,9 @@ public class ArrayMIteratorTest {
 		}
 
 
-		seed = io.jenetics.internal.math.random.seed();
+		seed = Randoms.seed();
 		random.setSeed(seed);
-		final ListIterator<Integer> it = new ArrayMIterator<>(impl);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(impl);
 		while (it.hasNext()) {
 			it.next();
 			it.set(random.nextInt());
@@ -70,7 +70,7 @@ public class ArrayMIteratorTest {
 		}
 
 		int count = 0;
-		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 			it.set(222);
@@ -96,7 +96,7 @@ public class ArrayMIteratorTest {
 			Assert.assertEquals(value, Integer.valueOf(111));
 		}
 
-		final ListIterator<Integer> it = new ArrayMIterator<>(proxy);
+		final ListIterator<Integer> it = new BaseMSeqIterator<>(proxy);
 		while (it.hasNext()) {
 			it.next();
 		}

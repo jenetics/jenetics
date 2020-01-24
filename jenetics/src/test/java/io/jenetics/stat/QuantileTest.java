@@ -39,7 +39,7 @@ public class QuantileTest {
 		final Quantile quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accept(i);
-			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.value(), floor(i/2.0), 1.0);
 		}
 	}
 
@@ -52,7 +52,7 @@ public class QuantileTest {
 				Quantile::accept,
 				Quantile::combine);
 
-		Assert.assertEquals(quantile.getValue(), floor(1000/2.0), 1.5);
+		Assert.assertEquals(quantile.value(), floor(1000/2.0), 1.5);
 	}
 
 	@Test(dataProvider = "quantiles")
@@ -62,8 +62,8 @@ public class QuantileTest {
 
 		new Random(1234).doubles().limit(N).forEach(quantile);
 
-		Assert.assertEquals(quantile.getSamples(), N);
-		Assert.assertEquals(quantile.getValue(), q, 1.0/sqrt(N));
+		Assert.assertEquals(quantile.count(), N);
+		Assert.assertEquals(quantile.value(), q, 1.0/sqrt(N));
 	}
 
 	@Test(dataProvider = "quantiles")
@@ -76,9 +76,9 @@ public class QuantileTest {
 				Quantile::combine
 			);
 
-		Assert.assertEquals(quantile.getSamples(), N);
+		Assert.assertEquals(quantile.count(), N);
 		Assert.assertEquals(
-			quantile.getValue(), q, q*0.1
+			quantile.value(), q, q*0.1
 		);
 	}
 
@@ -105,14 +105,14 @@ public class QuantileTest {
 		final Quantile quantile = Quantile.median();
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accept(i);
-			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.value(), floor(i/2.0), 1.0);
 		}
 
 		quantile.reset();
 
 		for (int i = 0; i < 1000; ++i) {
 			quantile.accept(i);
-			Assert.assertEquals(quantile.getValue(), floor(i/2.0), 1.0);
+			Assert.assertEquals(quantile.value(), floor(i/2.0), 1.0);
 		}
 	}
 

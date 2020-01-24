@@ -84,7 +84,7 @@ public final class ProxySorter {
 	 * @since 5.1
 	 */
 	@FunctionalInterface
-	public static interface Comparator<T> {
+	public interface Comparator<T> {
 
 		/**
 		 * Compares the two array elements, specified by its indices, for order.
@@ -101,7 +101,7 @@ public final class ProxySorter {
 		 * @throws NullPointerException if an argument is null and this
 		 *         comparator does not permit null arguments
 		 */
-		public int compare(final T array, final int i, final int j);
+		int compare(final T array, final int i, final int j);
 
 		/**
 		 * Returns a comparator that imposes the reverse ordering of this
@@ -110,7 +110,7 @@ public final class ProxySorter {
 		 * @return a comparator that imposes the reverse ordering of this
 		 *         comparator.
 		 */
-		public default Comparator<T> reversed() {
+		default Comparator<T> reversed() {
 			return (a, i, j) -> compare(a, j, i);
 		}
 
@@ -256,11 +256,11 @@ public final class ProxySorter {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <T> int[] sort(
-		final Seq<? extends T> array,
+		final BaseSeq<? extends T> array,
 		final java.util.Comparator<? super T> comparator
 	) {
 		return sort(
-			array, array.size(),
+			array, array.length(),
 			(a, i, j) -> comparator.compare(a.get(i), a.get(j))
 		);
 	}
@@ -276,9 +276,9 @@ public final class ProxySorter {
 	 * @throws NullPointerException if the array is {@code null}
 	 */
 	public static <T extends Comparable<? super T>>
-	int[] sort(final Seq<? extends T> array) {
+	int[] sort(final BaseSeq<? extends T> array) {
 		return sort(
-			array, array.size(),
+			array, array.length(),
 			(a, i, j) -> a.get(i).compareTo(a.get(j))
 		);
 	}

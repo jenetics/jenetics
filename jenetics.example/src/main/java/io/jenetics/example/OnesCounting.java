@@ -55,14 +55,14 @@ public class OnesCounting implements Problem<ISeq<BitGene>, BitGene, Integer> {
 
 	@Override
 	public Function<ISeq<BitGene>, Integer> fitness() {
-		return genes -> (int)genes.stream().filter(BitGene::getBit).count();
+		return genes -> (int)genes.stream().filter(BitGene::bit).count();
 	}
 
 	@Override
 	public Codec<ISeq<BitGene>, BitGene> codec() {
 		return Codec.of(
 			Genotype.of(BitChromosome.of(_length, _onesProbability)),
-			gt -> gt.getChromosome().toSeq()
+			gt -> ISeq.of(gt.chromosome())
 		);
 	}
 

@@ -62,7 +62,7 @@ import io.jenetics.util.ISeq;
  * final DoubleRange domain = DoubleRange.of(0, 2*PI);
  * final Codec<Double, DoubleGene> codec = Codec.of(
  *     Genotype.of(DoubleChromosome.of(domain)),
- *     gt -> gt.getChromosome().getGene().getAllele()
+ *     gt -> gt.chromosome().gene().allele()
  * );
  * }</pre>
  *
@@ -98,7 +98,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return the genotype (factory) representation of the problem domain
 	 */
-	public Factory<Genotype<G>> encoding();
+	Factory<Genotype<G>> encoding();
 
 	/**
 	 * Return the <em>decoder</em> function which transforms the genotype back
@@ -108,7 +108,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *
 	 * @return genotype decoder
 	 */
-	public Function<Genotype<G>, T> decoder();
+	Function<Genotype<G>, T> decoder();
 
 	/**
 	 * Converts the given {@link Genotype} to the target type {@link T}. This is
@@ -126,7 +126,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return the converted genotype
 	 * @throws NullPointerException if the given {@code genotype} is {@code null}
 	 */
-	public default T decode(final Genotype<G> genotype) {
+	default T decode(final Genotype<G> genotype) {
 		requireNonNull(genotype);
 		return decoder().apply(genotype);
 	}
@@ -142,15 +142,40 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *      .map(Math::exp);
 	 * }</pre>
 	 *
+	 * This method can also be used for creating non-trivial codes like split
+	 * ranges, as shown in the following example, where only values between
+	 * <em>[0, 2)</em> and <em>[8, 10)</em> are valid.
+	 * <pre>{@code
+	 *   +--+--+--+--+--+--+--+--+--+--+
+	 *   |  |  |  |  |  |  |  |  |  |  |
+	 *   0  1  2  3  4  5  6  7  8  9  10
+	 *   |-----|xxxxxxxxxxxxxxxxx|-----|
+	 *      ^  |llllllll|rrrrrrrr|  ^
+	 *      |       |        |      |
+	 *      +-------+        +------+
+	 * }</pre>
+	 *
+	 * <pre>{@code
+	 * final Codec<Double, DoubleGene> codec = Codecs
+	 *     .ofScalar(DoubleRange.of(0, 10))
+	 *     .map(v -> {
+	 *             if (v >= 2 && v < 8) {
+	 *                 return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
+	 *             }
+	 *             return v;
+	 *         });
+	 * }</pre>
+	 *
 	 * @since 4.0
+	 *
+	 * @see InvertibleCodec#map(Function, Function)
 	 *
 	 * @param mapper the mapper function
 	 * @param <B> the new argument type of the given problem
 	 * @return a new {@code Codec} with the mapped result type
 	 * @throws NullPointerException if the mapper is {@code null}.
 	 */
-	public default <B>
-	Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
+	default <B> Codec<B, G> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
 		return Codec.of(
@@ -167,7 +192,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new invertible codec
 	 * @throws NullPointerException if the given {@code encoder} is {@code null}
 	 */
-	public default InvertibleCodec<T, G>
+	default InvertibleCodec<T, G>
 	toInvertibleCodec(final Function<? super T, Genotype<G>> encoder) {
 		return InvertibleCodec.of(
 			encoding(),
@@ -189,7 +214,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @return a new {@code Codec} object with the given parameters
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public static <T, G extends Gene<?, G>> Codec<T, G> of(
+	static <T, G extends Gene<?, G>> Codec<T, G> of(
 		final Factory<Genotype<G>> encoding,
 		final Function<? super Genotype<G>, ? extends T> decoder
 	) {
@@ -223,12 +248,12 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * <pre>{@code
 	 * final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
 	 *     Genotype.of(LongChromosome.of(0, 10_000)),
-	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 *     gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 	 * );
 	 *
 	 * final Codec<LocalDate, LongGene> dateCodec2 = Codec.of(
 	 *     Genotype.of(LongChromosome.of(1_000_000, 10_000_000)),
-	 *     gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+	 *     gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 	 * );
 	 *
 	 * final Codec<Duration, LongGene> durationCodec = Codec.of(
@@ -247,7 +272,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(pt);
 	 *
 	 * final Duration duration = durationCodec.decoder()
-	 *     .apply(pt.getGenotype());
+	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
 	 * }</pre>
 	 *
@@ -265,7 +290,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 *        {@code codec2}
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
+	static <A, B, T, G extends Gene<?, G>> Codec<T, G> of(
 		final Codec<A, G> codec1,
 		final Codec<B, G> codec2,
 		final BiFunction<A, B, T> decoder
@@ -314,7 +339,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * System.out.println(pt);
 	 *
 	 * final Duration duration = durationCodec.decoder()
-	 *     .apply(pt.getGenotype());
+	 *     .apply(pt.genotype());
 	 * System.out.println(duration);
 	 * }</pre>
 	 *
@@ -330,7 +355,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 	 * @throws IllegalArgumentException if the given {@code codecs} sequence is
 	 *         empty
 	 */
-	public static <G extends Gene<?, G>, T> Codec<T, G> of(
+	static <G extends Gene<?, G>, T> Codec<T, G> of(
 		final ISeq<? extends Codec<?, G>> codecs,
 		final Function<? super Object[], ? extends T> decoder
 	) {

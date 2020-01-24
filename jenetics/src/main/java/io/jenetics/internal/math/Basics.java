@@ -28,10 +28,10 @@ import io.jenetics.stat.LongSummary;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 5.2
  */
-public final class base {
-	private base() {}
+public final class Basics {
+	private Basics() {}
 
 	/**
 	 * Normalize the given double array, so that it sum to one. The

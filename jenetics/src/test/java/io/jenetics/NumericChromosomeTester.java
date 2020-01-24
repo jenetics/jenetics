@@ -56,8 +56,8 @@ public abstract class NumericChromosomeTester<
 			c = (NumericChromosome<N, G>) factory().newInstance();
 
 		for (G gene : c) {
-			Assert.assertEquals(gene.getMin(), c.getMin());
-			Assert.assertEquals(gene.getMax(), c.getMax());
+			Assert.assertEquals(gene.min(), c.min());
+			Assert.assertEquals(gene.max(), c.max());
 		}
 	}
 
@@ -78,22 +78,22 @@ public abstract class NumericChromosomeTester<
 		final NumericChromosome<N, G> c1,
 		final NumericChromosome<N, G> c2
 	) {
-		Assert.assertEquals(c1.getMin(), c2.getMin());
-		Assert.assertEquals(c1.getMax(), c2.getMax());
+		Assert.assertEquals(c1.min(), c2.min());
+		Assert.assertEquals(c1.max(), c2.max());
 	}
 
 	public void assertValid(final NumericChromosome<N, G> c) {
 		if (c.isValid()) {
 			for (G gene: c) {
-				Assert.assertTrue(gene.getAllele().compareTo(c.getMin()) >= 0);
-				Assert.assertTrue(gene.getAllele().compareTo(c.getMax()) <= 0);
+				Assert.assertTrue(gene.allele().compareTo(c.min()) >= 0);
+				Assert.assertTrue(gene.allele().compareTo(c.max()) <= 0);
 			}
 
 		} else {
 			for (G gene : c) {
 				Assert.assertTrue(
-					gene.getAllele().compareTo(c.getMin()) < 0 ||
-						gene.getAllele().compareTo(c.getMax()) > 0
+					gene.allele().compareTo(c.min()) < 0 ||
+						gene.allele().compareTo(c.max()) > 0
 				);
 			}
 		}

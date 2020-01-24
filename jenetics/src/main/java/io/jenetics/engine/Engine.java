@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static java.util.concurrent.ForkJoinPool.commonPool;
-import static io.jenetics.internal.util.require.probability;
+import static io.jenetics.internal.util.Requires.probability;
 
 import java.time.Clock;
 import java.util.Objects;
@@ -46,7 +46,7 @@ import io.jenetics.Phenotype;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.Copyable;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
@@ -62,7 +62,7 @@ import io.jenetics.util.Seq;
  * public class RealFunction {
  *    // Definition of the fitness function.
  *    private static Double eval(final Genotype<DoubleGene> gt) {
- *        final double x = gt.getGene().doubleValue();
+ *        final double x = gt.gene().doubleValue();
  *        return cos(0.5 + sin(x))*cos(x);
  *    }
  *
@@ -190,9 +190,9 @@ public final class Engine<
 		_constraint = requireNonNull(constraint);
 		_optimize = requireNonNull(optimize);
 
-		_offspringCount = require.nonNegative(offspringCount);
-		_survivorsCount = require.nonNegative(survivorsCount);
-		_maximalPhenotypeAge = require.positive(maximalPhenotypeAge);
+		_offspringCount = Requires.nonNegative(offspringCount);
+		_survivorsCount = Requires.nonNegative(survivorsCount);
+		_maximalPhenotypeAge = Requires.positive(maximalPhenotypeAge);
 
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
@@ -218,7 +218,7 @@ public final class Engine<
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
 		// Create initial population if `start` is empty.
-		final EvolutionStart<G, C> es = start.getPopulation().isEmpty()
+		final EvolutionStart<G, C> es = start.population().isEmpty()
 			? evolutionStart(start)
 			: start;
 
@@ -227,7 +227,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(es.getPopulation())
+			evaluate(es.population())
 		);
 
 		// Select the offspring population.
@@ -252,7 +252,7 @@ public final class Engine<
 		final CompletableFuture<AltererResult<G, C>> alteredOffspring =
 			offspring.thenApplyAsync(off ->
 				timing.offspringAlter.timing(() ->
-					_alterer.alter(off, es.getGeneration())
+					_alterer.alter(off, es.generation())
 				),
 				_executor
 			);
@@ -261,7 +261,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredSurvivors =
 			survivors.thenApplyAsync(sur ->
 				timing.survivorFilter.timing(() ->
-					filter(sur, es.getGeneration())
+					filter(sur, es.generation())
 				),
 				_executor
 			);
@@ -270,7 +270,7 @@ public final class Engine<
 		final CompletableFuture<FilterResult<G, C>> filteredOffspring =
 			alteredOffspring.thenApplyAsync(off ->
 				timing.offspringFilter.timing(() ->
-					filter(off.getPopulation(), es.getGeneration())
+					filter(off.population(), es.generation())
 				),
 				_executor
 			);
@@ -297,12 +297,12 @@ public final class Engine<
 			filteredOffspring.join().invalidCount +
 			filteredSurvivors.join().invalidCount;
 
-		final int alterationCount = alteredOffspring.join().getAlterations();
+		final int alterationCount = alteredOffspring.join().alterations();
 
 		EvolutionResult<G, C> er = EvolutionResult.of(
 			_optimize,
 			result,
-			es.getGeneration(),
+			es.generation(),
 			timing.toDurations(),
 			killCount,
 			invalidCount,
@@ -311,7 +311,7 @@ public final class Engine<
 		if (!UnaryOperator.identity().equals(_mapper)) {
 			final EvolutionResult<G, C> mapped = _mapper.apply(er);
 			er = er.with(timing.evaluation.timing(() ->
-				evaluate(mapped.getPopulation())
+				evaluate(mapped.population())
 			));
 		}
 
@@ -350,7 +350,7 @@ public final class Engine<
 			if (!_constraint.test(individual)) {
 				pop.set(i, _constraint.repair(individual, generation));
 				++invalidCount;
-			} else if (individual.getAge(generation) > _maximalPhenotypeAge) {
+			} else if (individual.age(generation) > _maximalPhenotypeAge) {
 				pop.set(i, Phenotype.of(_genotypeFactory.newInstance(), generation));
 				++killCount;
 			}
@@ -422,8 +422,8 @@ public final class Engine<
 
 	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionStart<G, C> start) {
-		final ISeq<Phenotype<G, C>> population = start.getPopulation();
-		final long gen = start.getGeneration();
+		final ISeq<Phenotype<G, C>> population = start.population();
+		final long gen = start.generation();
 
 		final Stream<Phenotype<G, C>> stream = Stream.concat(
 			population.stream(),
@@ -440,8 +440,8 @@ public final class Engine<
 
 	private EvolutionStart<G, C>
 	evolutionStart(final EvolutionInit<G> init) {
-		final ISeq<Genotype<G>> pop = init.getPopulation();
-		final long gen = init.getGeneration();
+		final ISeq<Genotype<G>> pop = init.population();
+		final long gen = init.generation();
 
 		return evolutionStart(
 			EvolutionStart.of(

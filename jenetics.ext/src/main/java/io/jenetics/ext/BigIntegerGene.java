@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -49,7 +49,7 @@ import io.jenetics.ext.internal.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 5.2
  */
 public final class BigIntegerGene
 	implements
@@ -75,16 +75,19 @@ public final class BigIntegerGene
 		_max = requireNonNull(max);
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getAllele() {
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public BigInteger getMax() {
 		return _max;
@@ -139,7 +142,7 @@ public final class BigIntegerGene
 		final BigInteger maximum,
 		final int length
 	) {
-		require.positive(length);
+		Requires.positive(length);
 
 		final Random r = getRandom();
 

@@ -21,7 +21,7 @@ package io.jenetics.internal.math;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.base.isMultiplicationSave;
+import static io.jenetics.internal.math.Basics.isMultiplicationSave;
 
 import java.util.Random;
 
@@ -31,11 +31,11 @@ import io.jenetics.util.RandomRegistry;
  * Implementation of combinatorial helper methods.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 5.2
  * @since 4.0
  */
-public final class comb {
-	private comb() {}
+public final class Combinatorics {
+	private Combinatorics() {}
 
 	/**
 	 * Selects a random subset of size {@code k} from a set of size {@code n}.

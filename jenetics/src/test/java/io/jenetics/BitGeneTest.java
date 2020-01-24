@@ -47,10 +47,10 @@ public class BitGeneTest extends GeneTester<BitGene> {
 
 	@Test
 	public void testGetValue() {
-		assertFalse(BitGene.FALSE.getBit());
-		assertFalse(BitGene.ZERO.getBit());
-		assertTrue(BitGene.TRUE.getBit());
-		assertTrue(BitGene.ONE.getBit());
+		assertFalse(BitGene.FALSE.bit());
+		assertFalse(BitGene.ZERO.bit());
+		assertTrue(BitGene.TRUE.bit());
+		assertTrue(BitGene.ONE.bit());
 	}
 
 	@Test

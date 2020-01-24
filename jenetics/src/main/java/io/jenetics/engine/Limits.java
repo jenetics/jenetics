@@ -311,7 +311,7 @@ public final class Limits {
 		return new FitnessConvergenceLimit<>(
 			shortFilterSize,
 			longFilterSize,
-			(s, l) -> eps(s.getMean(), l.getMean()) >= epsilon
+			(s, l) -> eps(s.mean(), l.mean()) >= epsilon
 		);
 	}
 
@@ -374,7 +374,7 @@ public final class Limits {
 		}
 
 		return new PopulationConvergenceLimit<>((best, moments) ->
-			eps(best, moments.getMean()) >= epsilon
+			eps(best, moments.mean()) >= epsilon
 		);
 	}
 
@@ -444,7 +444,7 @@ public final class Limits {
 		final double convergedGeneRate
 	) {
 		return byGeneConvergence(
-			stat -> stat.getMax()*convergenceRate <= stat.getMean(),
+			stat -> stat.max()*convergenceRate <= stat.mean(),
 			convergedGeneRate
 		);
 	}

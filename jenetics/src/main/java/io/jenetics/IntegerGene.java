@@ -33,7 +33,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -55,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 5.0
+ * @version 5.2
  */
 public final class IntegerGene
 	implements
@@ -87,16 +87,19 @@ public final class IntegerGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getAllele() {
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMax() {
 		return _max;
@@ -236,7 +239,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final int value, final IntRange range) {
-		return IntegerGene.of(value, range.getMin(), range.getMax());
+		return IntegerGene.of(value, range.min(), range.max());
 	}
 
 	/**
@@ -262,7 +265,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextInt(getRandom(), range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -271,7 +274,7 @@ public final class IntegerGene
 		final IntRange lengthRange
 	) {
 		final Random r = getRandom();
-		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
+		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
 	}

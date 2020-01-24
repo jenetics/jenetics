@@ -50,7 +50,7 @@ public interface Evolution<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}
 	 */
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
+	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
 
 
 	/**
@@ -71,7 +71,7 @@ public interface Evolution<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionResult<G, C> evolve(
+	default EvolutionResult<G, C> evolve(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {

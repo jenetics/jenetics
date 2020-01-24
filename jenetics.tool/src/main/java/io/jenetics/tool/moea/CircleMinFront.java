@@ -87,9 +87,9 @@ public class CircleMinFront {
 		final StringBuilder out = new StringBuilder();
 		out.append("#x y\n");
 		front.forEach(p -> {
-			out.append(p.getFitness().data()[0]);
+			out.append(p.fitness().data()[0]);
 			out.append(" ");
-			out.append(p.getFitness().data()[1]);
+			out.append(p.fitness().data()[1]);
 			out.append("\n");
 		});
 

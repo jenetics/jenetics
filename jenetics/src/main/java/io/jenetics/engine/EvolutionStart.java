@@ -27,7 +27,7 @@ import java.util.Objects;
 
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -45,9 +45,9 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 5.1
+ * @version 5.2
  */
-public final class EvolutionStart<
+public final /*record*/ class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 > {
@@ -60,7 +60,7 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		_population = requireNonNull(population);
-		_generation = require.positive(generation);
+		_generation = Requires.positive(generation);
 	}
 
 	/**
@@ -68,6 +68,17 @@ public final class EvolutionStart<
 	 *
 	 * @return the start population
 	 */
+	public ISeq<Phenotype<G, C>> population() {
+		return _population;
+	}
+
+	/**
+	 * Return the population before the evolution step.
+	 *
+	 * @return the start population
+	 * @deprecated Use {@link #population()} instead
+	 */
+	@Deprecated
 	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
@@ -77,6 +88,17 @@ public final class EvolutionStart<
 	 *
 	 * @return the start generation
 	 */
+	public long generation() {
+		return _generation;
+	}
+
+	/**
+	 * Return the generation of the start population.
+	 *
+	 * @return the start generation
+	 * @deprecated Use {@link #generation()} instead
+	 */
+	@Deprecated
 	public long getGeneration() {
 		return _generation;
 	}

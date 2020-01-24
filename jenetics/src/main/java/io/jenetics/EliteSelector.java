@@ -24,7 +24,7 @@ import static java.lang.Math.min;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.Seq;
 
@@ -78,7 +78,7 @@ public class EliteSelector<
 		final int eliteCount,
 		final Selector<G, C> nonEliteSelector
 	) {
-		_eliteCount = require.positive(eliteCount);
+		_eliteCount = Requires.positive(eliteCount);
 		_nonEliteSelector = requireNonNull(nonEliteSelector);
 	}
 

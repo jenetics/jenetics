@@ -36,7 +36,7 @@ public interface Factory<T> {
 	 *
 	 * @return a new instance of type T
 	 */
-	public T newInstance();
+	T newInstance();
 
 	/**
 	 * Return a new stream of object instances, created by this factory.
@@ -45,7 +45,7 @@ public interface Factory<T> {
 	 *
 	 * @return a stream of objects, created by this factory
 	 */
-	public default Stream<T> instances() {
+	default Stream<T> instances() {
 		return Stream.generate(this::newInstance);
 	}
 

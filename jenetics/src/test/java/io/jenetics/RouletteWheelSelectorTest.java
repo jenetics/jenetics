@@ -58,11 +58,11 @@ public class RouletteWheelSelectorTest
 	public void minimize() {
 		using(new Random(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
-				g -> g.getChromosome().getGene().getAllele();
+				g -> g.chromosome().gene().allele();
 
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
 				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
-				return Phenotype.of(gt, 1, gt.getGene().intValue());
+				return Phenotype.of(gt, 1, gt.gene().intValue());
 			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =
@@ -82,11 +82,11 @@ public class RouletteWheelSelectorTest
 	public void maximize() {
 		using(new Random(7345), r -> {
 			final Function<Genotype<IntegerGene>, Integer> ff =
-				g -> g.getChromosome().getGene().getAllele();
+				g -> g.chromosome().gene().allele();
 
 			final Factory<Phenotype<IntegerGene, Integer>> ptf = () -> {
 				final Genotype<IntegerGene> gt = Genotype.of(IntegerChromosome.of(0, 100));
-				return Phenotype.of(gt, 1, gt.getGene().intValue());
+				return Phenotype.of(gt, 1, gt.gene().intValue());
 			};
 
 			final ISeq<Phenotype<IntegerGene, Integer>> population =

@@ -46,8 +46,7 @@ import io.jenetics.util.Seq;
 public interface Selector<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-{
+> {
 
 	/**
 	 * Select phenotypes from the Population.
@@ -61,7 +60,7 @@ public interface Selector<
 	 * @throws NullPointerException if the arguments is {@code null}.
 	 * @throws IllegalArgumentException if the select count is smaller than zero.
 	 */
-	public ISeq<Phenotype<G, C>> select(
+	ISeq<Phenotype<G, C>> select(
 		final Seq<Phenotype<G, C>> population,
 		final int count,
 		final Optimize opt

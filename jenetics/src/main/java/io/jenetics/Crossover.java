@@ -35,7 +35,7 @@ import io.jenetics.util.RandomRegistry;
  * for <em>crossover</em>.
  * </p>
  * <p>
- * The order ({@link #getOrder()}) of this Recombination implementation is two.
+ * The order ({@link #order()}) of this Recombination implementation is two.
  * </p>
  *
  * @param <G> the gene type.
@@ -69,20 +69,20 @@ public abstract class Crossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final var random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.getRandom();
 
-		final var pt1 = population.get(individuals[0]);
-		final var pt2 = population.get(individuals[1]);
-		final var gt1 = pt1.getGenotype();
-		final var gt2 = pt2.getGenotype();
+		final Phenotype<G, C> pt1 = population.get(individuals[0]);
+		final Phenotype<G, C> pt2 = population.get(individuals[1]);
+		final Genotype<G> gt1 = pt1.genotype();
+		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final var c1 = gt1.toSeq().copy();
-		final var c2 = gt2.toSeq().copy();
-		final var genes1 = c1.get(chIndex).toSeq().copy();
-		final var genes2 = c2.get(chIndex).toSeq().copy();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
+		final MSeq<Chromosome<G>> c2 = MSeq.of(gt2);
+		final MSeq<G> genes1 = MSeq.of(c1.get(chIndex));
+		final MSeq<G> genes2 = MSeq.of(c2.get(chIndex));
 
 		crossover(genes1, genes2);
 
@@ -99,7 +99,7 @@ public abstract class Crossover<
 			Phenotype.of(Genotype.of(c2), generation)
 		);
 
-		return getOrder();
+		return order();
 	}
 
 	/**

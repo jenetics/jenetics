@@ -175,12 +175,12 @@ public class CompositeCodecTest {
 	public void example() {
 		final Codec<LocalDate, LongGene> dateCodec1 = Codec.of(
 			Genotype.of(LongChromosome.of(0, 10_000)),
-			gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+			gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 		);
 
 		final Codec<LocalDate, LongGene> dateCodec2 = Codec.of(
 			Genotype.of(LongChromosome.of(1_000_000, 10_000_000)),
-			gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+			gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 		);
 
 		final Codec<Duration, LongGene> durationCodec = Codec.of(
@@ -199,7 +199,7 @@ public class CompositeCodecTest {
 		//System.out.println(pt);
 
 		final Duration duration = durationCodec.decoder()
-			.apply(pt.getGenotype());
+			.apply(pt.genotype());
 		//System.out.println(duration);
 	}
 
@@ -207,7 +207,7 @@ public class CompositeCodecTest {
 	public void example2() {
 		final Codec<LocalDate, LongGene> dateCodec = Codec.of(
 			Genotype.of(LongChromosome.of(0, 10_000)),
-			gt -> LocalDate.ofEpochDay(gt.getGene().longValue())
+			gt -> LocalDate.ofEpochDay(gt.gene().longValue())
 		);
 
 		final Codec<Duration, LongGene> durationCodec = Codec.of(
@@ -233,7 +233,7 @@ public class CompositeCodecTest {
 		//System.out.println(pt);
 
 		final Duration duration = durationCodec.decoder()
-			.apply(pt.getGenotype());
+			.apply(pt.genotype());
 		//System.out.println(duration);
 
 	}

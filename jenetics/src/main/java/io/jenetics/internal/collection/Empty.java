@@ -44,7 +44,7 @@ import io.jenetics.util.MSeq;
 public final class Empty {
 	private Empty() {}
 
-	public static enum EmptyMSeq implements MSeq<Object> {
+	public enum EmptyMSeq implements MSeq<Object> {
 
 		INSTANCE;
 
@@ -160,7 +160,7 @@ public final class Empty {
 
 
 
-	public static enum EmptyISeq implements ISeq<Object> {
+	public enum EmptyISeq implements ISeq<Object> {
 
 		INSTANCE;
 

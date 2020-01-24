@@ -17,26 +17,33 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.util;
+package io.jenetics.internal.math;
+
+import static java.lang.String.format;
+
+import java.util.Random;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.prngine.LCG64ShiftRandom;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class requireTest {
+public class RandomsTest {
 
 	@Test
-	public void validPredicate() {
-		final MSeq<Verifiable> array = MSeq.ofLength(100);
-		for (int i = 0; i < array.length(); ++i) {
-			array.set(i, () -> true);
-		}
-		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), -1);
+	public void intRange() {
+		final Random rnd = new LCG64ShiftRandom();
+		final int min = 10;
+		final int max = 10_000;
 
-		array.set(77, () -> false);
-		Assert.assertEquals(array.indexWhere(o -> !o.isValid()), 77);
+		for (int i = 0; i < 100_000; ++i) {
+			final int n = Randoms.nextInt(min, max, rnd);
+			Assert.assertTrue(n >= min, format("n < min: %d < %d", n, min));
+			Assert.assertTrue(n < max, format("n  max: %d >= %d", n, max));
+		}
 	}
 
 }

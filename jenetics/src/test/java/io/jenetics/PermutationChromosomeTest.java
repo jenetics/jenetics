@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -60,7 +60,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerLength() {
 		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100);
-		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		final MSeq<Integer> genes = c.validAlleles().copy();
 		Collections.sort(genes.asList());
 
 		for (int i = 0; i < c.length(); ++i) {
@@ -71,7 +71,7 @@ public class PermutationChromosomeTest
 	@Test
 	public void ofIntegerStartEnd() {
 		final PermutationChromosome<Integer> c = PermutationChromosome.ofInteger(100, 200);
-		final MSeq<Integer> genes = c.getValidAlleles().copy();
+		final MSeq<Integer> genes = c.validAlleles().copy();
 		Collections.sort(genes.asList());
 
 		for (int i = 0; i < c.length(); ++i) {
@@ -89,8 +89,8 @@ public class PermutationChromosomeTest
 			.ofInteger(IntRange.of(0, 2000), 1000);
 		Assert.assertTrue(c2.isValid());
 
-		final MSeq<EnumGene<Integer>> m1 = c1.toSeq().copy();
-		final MSeq<EnumGene<Integer>> m2 = c2.toSeq().copy();
+		final MSeq<EnumGene<Integer>> m1 = MSeq.of(c1);
+		final MSeq<EnumGene<Integer>> m2 = MSeq.of(c2);
 		assertUnique(m1);
 		assertUnique(m2);
 
@@ -115,7 +115,7 @@ public class PermutationChromosomeTest
 			.boxed()
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(comb.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(Combinatorics.subset(100, 10))
 			.mapToObj(i -> EnumGene.of(i, alleles))
 			.collect(ISeq.toISeq());
 
@@ -130,7 +130,7 @@ public class PermutationChromosomeTest
 			.boxed()
 			.collect(ISeq.toISeq());
 
-		final ISeq<EnumGene<Integer>> genes = IntStream.of(comb.subset(100, 10))
+		final ISeq<EnumGene<Integer>> genes = IntStream.of(Combinatorics.subset(100, 10))
 			.mapToObj(i -> EnumGene.of(i%3, alleles))
 			.collect(ISeq.toISeq());
 

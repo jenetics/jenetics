@@ -19,10 +19,10 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextASCIIString;
-import static io.jenetics.internal.math.random.nextByte;
-import static io.jenetics.internal.math.random.nextChar;
-import static io.jenetics.internal.math.random.nextShort;
+import static io.jenetics.internal.math.Randoms.nextASCIIString;
+import static io.jenetics.internal.math.Randoms.nextByte;
+import static io.jenetics.internal.math.Randoms.nextChar;
+import static io.jenetics.internal.math.Randoms.nextShort;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.File;

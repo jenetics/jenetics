@@ -39,6 +39,6 @@ public interface IntComparator {
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *         argument is less than, equal to, or greater than the second
 	 */
-	public int compare(final int i, final int j);
+	int compare(final int i, final int j);
 
 }

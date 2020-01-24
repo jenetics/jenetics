@@ -55,7 +55,7 @@ public interface Complexity<T> {
 	 * @param program the actual program
 	 * @return the measure of the program complexity
 	 */
-	public double apply(final Tree<? extends Op<T>, ?> program);
+	double apply(final Tree<? extends Op<T>, ?> program);
 
 	/**
 	 * Return a complexity measure which counts the number of nodes of a program.
@@ -70,7 +70,7 @@ public interface Complexity<T> {
 	 * @throws IllegalArgumentException if the max node {@code count} is smaller
 	 *         than one
 	 */
-	public static <T> Complexity<T> ofNodeCount(final int maxNodeCount) {
+	static <T> Complexity<T> ofNodeCount(final int maxNodeCount) {
 		if (maxNodeCount < 1) {
 			throw new IllegalArgumentException(
 				"Max node count must be greater than zero: " + maxNodeCount
@@ -100,7 +100,7 @@ public interface Complexity<T> {
 	 * @throws NullPointerException if the given {@code program} is {@code null}
 	 * @throws IllegalArgumentException if {@code maxNodes} is smaller than one
 	 */
-	public static double count(final Tree<?, ?> program, final int maxNodes) {
+	static double count(final Tree<?, ?> program, final int maxNodes) {
 		if (maxNodes < 1) {
 			throw new IllegalArgumentException(
 				"Max node count must be greater than zero: " + maxNodes
