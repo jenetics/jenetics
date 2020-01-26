@@ -154,18 +154,6 @@ public final class EvolutionParams<
 		return new Builder<>();
 	}
 
-	/**
-	 * Return the default evolution parameters.
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness function result type
-	 * @return the default evolution parameters
-	 */
-	public static  <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionParams<G, C> defaultParams() {
-		return EvolutionParams.<G, C>builder().build();
-	}
-
 
 	/* *************************************************************************
 	 * Params builder
@@ -445,6 +433,10 @@ public final class EvolutionParams<
 			return _survivorsCount;
 		}
 
+		public double survivorsFraction() {
+			return _survivorsCount/(double)populationSize();
+		}
+
 		/**
 		 * Return the offspring count.
 		 *
@@ -452,6 +444,10 @@ public final class EvolutionParams<
 		 */
 		public int offspringCount() {
 			return _offspringCount;
+		}
+
+		public double offspringFraction() {
+			return _offspringCount/(double)populationSize();
 		}
 
 		/**
