@@ -53,6 +53,9 @@ public enum BitGene
 	/**
 	 * Return the value of the BitGene.
 	 *
+	 * @see #allele()
+	 * @see #booleanValue()
+	 *
 	 * @return The value of the BitGene.
 	 */
 	public final boolean bit() {
@@ -63,6 +66,7 @@ public enum BitGene
 	 * Return the {@code boolean} value of this gene.
 	 *
 	 * @see #allele()
+	 * @see #bit()
 	 *
 	 * @return the {@code boolean} value of this gene.
 	 */

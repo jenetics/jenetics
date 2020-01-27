@@ -168,7 +168,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	public int geneCount() {
 		int count = 0;
-		for (Chromosome<?> chromosome : this) {
+		for (var chromosome : this) {
 			count += chromosome.length();
 		}
 		return count;

@@ -277,7 +277,7 @@ public final class TreePattern<V> implements Serializable {
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
 			.filter((Tree<Decl<V>, ?> n) -> n.value() instanceof Var)
-			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.value()));
+			.collect(toMap(Tree::childPath, t -> (Var<V>)t.value()));
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,

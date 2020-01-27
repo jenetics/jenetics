@@ -168,8 +168,6 @@ public class BitChromosome extends Number
 
 	@Override
 	public BitGene gene() {
-		assert _genes != null;
-		assert _genes.length > 0;
 		return BitGene.of(Bits.get(_genes, 0));
 	}
 
@@ -187,7 +185,6 @@ public class BitChromosome extends Number
 	@Override
 	public BitGene get(final int index) {
 		rangeCheck(index);
-		assert _genes != null;
 		return BitGene.of(Bits.get(_genes, index));
 	}
 

@@ -61,6 +61,11 @@ public interface Chromosome<G extends Gene<?, G>>
 		return get(0);
 	}
 
+	@Override
+	default boolean isValid() {
+		return stream().allMatch(Gene::isValid);
+	}
+
 	/**
 	 * A factory method which creates a new {@link Chromosome} of specific type
 	 * and the given {@code genes}.
