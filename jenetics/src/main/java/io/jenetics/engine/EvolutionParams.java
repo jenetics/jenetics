@@ -56,23 +56,23 @@ public final class EvolutionParams<
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
-	private final int _offspringCount;
-	private final int _survivorsCount;
+	private final int _populationSize;
+	private final double _offspringFraction;
 	private final long _maximalPhenotypeAge;
 
 	private EvolutionParams(
 		final Selector<G, C> survivorsSelector,
 		final Selector<G, C> offspringSelector,
 		final Alterer<G, C> alterer,
-		final int offspringCount,
-		final int survivorsCount,
+		final int populationSize,
+		final double offspringFraction,
 		final long maximalPhenotypeAge
 	) {
 		_survivorsSelector = survivorsSelector;
 		_offspringSelector = offspringSelector;
 		_alterer = alterer;
-		_offspringCount = offspringCount;
-		_survivorsCount = survivorsCount;
+		_populationSize = populationSize;
+		_offspringFraction = offspringFraction;
 		_maximalPhenotypeAge = maximalPhenotypeAge;
 	}
 
@@ -106,31 +106,21 @@ public final class EvolutionParams<
 
 
 	/**
-	 * Return the number of offspring.
+	 * Return the population size.
 	 *
-	 * @return the offspring count.
-	 */
-	public double offspringCount() {
-		return _offspringCount;
-	}
-
-	/**
-	 * Return the number of survivors.
-	 *
-	 * @return the number of survivors
-	 */
-	public int survivorsCount() {
-		return _survivorsCount;
-	}
-
-	/**
-	 * Return the population count. The value is derived from the offspring and
-	 * survivors count.
-	 *
-	 * @return the population count
+	 * @return the population size
 	 */
 	public int populationSize() {
-		return _survivorsCount + _survivorsCount;
+		return _populationSize;
+	}
+
+	/**
+	 * Return the offspring fraction.
+	 *
+	 * @return the offspring fraction.
+	 */
+	public double offspringFraction() {
+		return _offspringFraction;
 	}
 
 	/**
@@ -140,6 +130,44 @@ public final class EvolutionParams<
 	 */
 	public long maximalPhenotypeAge() {
 		return _maximalPhenotypeAge;
+	}
+
+
+	/* *************************************************************************
+	 * Derived properties.
+	 **************************************************************************/
+
+	/**
+	 * Return the number of offspring. <em>This is a derived property.</em>
+	 *
+	 * @return the offspring count.
+	 */
+	public int offspringSize() {
+		return (int)Math.round(_populationSize*_offspringFraction);
+	}
+
+	/**
+	 * Return the number of survivors. <em>This is a derived property.</em>
+	 *
+	 * @return the number of survivors
+	 */
+	public int survivorsSize() {
+		return _populationSize - offspringSize();
+	}
+
+	/**
+	 * Return a new builder object, initialized with {@code this} parameters.
+	 *
+	 * @return a new pre-filled builder object
+	 */
+	public EvolutionParams.Builder<G, C> toBuilder() {
+		return EvolutionParams.<G, C>builder()
+			.survivorsSelector(survivorsSelector())
+			.offspringSelector(offspringSelector())
+			.alterers(alterer())
+			.populationSize(populationSize())
+			.offspringFraction(offspringFraction())
+			.maximalPhenotypeAge(maximalPhenotypeAge());
 	}
 
 	/**
@@ -176,12 +204,22 @@ public final class EvolutionParams<
 			new SinglePointCrossover<G, C>(0.2),
 			new Mutator<>(0.15)
 		);
-		private int _offspringCount = 30;
-		private int _survivorsCount = 20;
+		private int _populationSize = 50;
+		private double _offspringFraction = 0.6;
 		private long _maximalPhenotypeAge = 70;
 
 
 		private Builder() {
+		}
+
+		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
+			survivorsSelector(params.survivorsSelector());
+			offspringSelector(params.offspringSelector());
+			alterers(params.alterer());
+			populationSize(params.populationSize());
+			offspringFraction(params.offspringFraction());
+			maximalPhenotypeAge(params.maximalPhenotypeAge());
+			return this;
 		}
 
 		/**
@@ -255,81 +293,6 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * The number of offspring individuals.
-		 *
-		 * @param count the number of offspring individuals.
-		 * @return {@code this} builder, for command chaining
-		 * @throws IllegalArgumentException if the count is smaller then zero
-		 */
-		public Builder<G, C> offspringCount(final int count) {
-			if (count < 0) {
-				throw new IllegalArgumentException(format(
-					"Offspring count must be greater or equal zero, but was %d.",
-					count
-				));
-			}
-			_offspringCount = count;
-			return this;
-		}
-
-		/**
-		 * The number of survivors.
-		 *
-		 * @param count the number of survivors.
-		 * @return {@code this} builder, for command chaining
-		 @throws IllegalArgumentException if the count is smaller then zero
-		 */
-		public Builder<G, C> survivorsCount(final int count) {
-			if (count < 0) {
-				throw new IllegalArgumentException(format(
-					"Survivors count must be greater or equal zero, but was %d.",
-					count
-				));
-			}
-			_survivorsCount = count;
-			return this;
-		}
-
-		/**
-		 * The offspring fraction.
-		 *
-		 * @see #survivorsFraction(double)
-		 *
-		 * @param fraction the offspring fraction
-		 * @return {@code this} builder, for command chaining
-		 * @throws IllegalArgumentException if the fraction is not within the
-		 *         range [0, 1].
-		 */
-		public Builder<G, C> offspringFraction(final double fraction) {
-			probability(fraction);
-			final int populationCount = _offspringCount + _survivorsCount;
-			_offspringCount = (int)Math.round(populationCount*fraction);
-			_survivorsCount = populationCount - _offspringCount;
-			return this;
-		}
-
-		/**
-		 * The survivors fraction. <i>Default values is set to {@code 0.4}.</i>
-		 * This method call is equivalent to
-		 * {@code offspringFraction(1 - survivorsFraction)} and will override
-		 * any previously set offspring-fraction.
-		 *
-		 * @see #offspringFraction(double)
-		 *
-		 * @param fraction the survivors fraction
-		 * @return {@code this} builder, for command chaining
-		 * @throws IllegalArgumentException if the fraction is not within the
-		 *         range [0, 1].
-		 */
-		public Builder<G, C> survivorsFraction(final double fraction) {
-			probability(fraction);
-			final int populationCount = _offspringCount + _survivorsCount;
-			_survivorsCount = (int)Math.round(populationCount*fraction);
-			_offspringCount = populationCount - _survivorsCount;
-			return this;
-		}
-
-		/**
 		 * The number of individuals which form the population. <i>Default
 		 * values is set to {@code 50}.</i>
 		 *
@@ -345,10 +308,21 @@ public final class EvolutionParams<
 				));
 			}
 
-			final double offspringFraction =
-				_offspringCount/(double)(_offspringCount + _survivorsCount);
-			_offspringCount = (int)Math.round(size*offspringFraction);
-			_survivorsCount = size - _offspringCount;
+			_populationSize = size;
+			return this;
+		}
+
+
+		/**
+		 * The offspring fraction.
+		 *
+		 * @param fraction the offspring fraction
+		 * @return {@code this} builder, for command chaining
+		 * @throws IllegalArgumentException if the fraction is not within the
+		 *         range [0, 1].
+		 */
+		public Builder<G, C> offspringFraction(final double fraction) {
+			_offspringFraction = probability(fraction);
 			return this;
 		}
 
@@ -380,12 +354,16 @@ public final class EvolutionParams<
 				_survivorsSelector,
 				_offspringSelector,
 				_alterer,
-				_offspringCount,
-				_survivorsCount,
+				_populationSize,
+				_offspringFraction,
 				_maximalPhenotypeAge
 			);
 		}
 
+
+		/* *********************************************************************
+		 * Current properties
+		 ***********************************************************************/
 
 		/**
 		 * Return the used {@link Alterer} of the GA.
@@ -425,38 +403,43 @@ public final class EvolutionParams<
 		}
 
 		/**
-		 * Return the survivors count.
-		 *
-		 * @return the survivors count
-		 */
-		public int survivorsCount() {
-			return _survivorsCount;
-		}
-
-		public double survivorsFraction() {
-			return _survivorsCount/(double)populationSize();
-		}
-
-		/**
-		 * Return the offspring count.
-		 *
-		 * @return the offspring count
-		 */
-		public int offspringCount() {
-			return _offspringCount;
-		}
-
-		public double offspringFraction() {
-			return _offspringCount/(double)populationSize();
-		}
-
-		/**
 		 * Return the number of individuals of a population.
 		 *
 		 * @return the number of individuals of a population
 		 */
 		public int populationSize() {
-			return _offspringCount + _survivorsCount;
+			return _populationSize;
+		}
+
+		/**
+		 * Return the offspring fraction.
+		 *
+		 * @return the offspring fraction.
+		 */
+		public double offspringFraction() {
+			return _offspringFraction;
+		}
+
+		/* *************************************************************************
+		 * Derived properties.
+		 **************************************************************************/
+
+		/**
+		 * Return the number of offspring. <em>This is a derived property.</em>
+		 *
+		 * @return the offspring count.
+		 */
+		public int offspringSize() {
+			return (int)Math.round(_populationSize*_offspringFraction);
+		}
+
+		/**
+		 * Return the number of survivors. <em>This is a derived property.</em>
+		 *
+		 * @return the number of survivors
+		 */
+		public int survivorsSize() {
+			return _populationSize - offspringSize();
 		}
 
 	}
