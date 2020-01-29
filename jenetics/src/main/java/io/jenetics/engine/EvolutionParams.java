@@ -19,10 +19,20 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Requires.probability;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -32,6 +42,7 @@ import io.jenetics.Mutator;
 import io.jenetics.Selector;
 import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
+import io.jenetics.internal.util.Requires;
 
 /**
  * This class collects the parameters which control the behaviour of the
@@ -51,7 +62,9 @@ import io.jenetics.TournamentSelector;
 public final class EvolutionParams<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements Serializable
+{
 
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
@@ -68,12 +81,12 @@ public final class EvolutionParams<
 		final double offspringFraction,
 		final long maximalPhenotypeAge
 	) {
-		_survivorsSelector = survivorsSelector;
-		_offspringSelector = offspringSelector;
-		_alterer = alterer;
-		_populationSize = populationSize;
-		_offspringFraction = offspringFraction;
-		_maximalPhenotypeAge = maximalPhenotypeAge;
+		_survivorsSelector = requireNonNull(survivorsSelector);
+		_offspringSelector = requireNonNull(offspringSelector);
+		_alterer = requireNonNull(alterer);
+		_populationSize = Requires.positive(populationSize);
+		_offspringFraction = Requires.probability(offspringFraction);
+		_maximalPhenotypeAge = Requires.positive(maximalPhenotypeAge);
 	}
 
 
@@ -442,6 +455,43 @@ public final class EvolutionParams<
 			return _populationSize - offspringSize();
 		}
 
+	}
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_PARAMS, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(survivorsSelector());
+		out.writeObject(offspringSelector());
+		out.writeObject(alterer());
+		writeInt(populationSize(), out);
+		out.writeDouble(offspringFraction());
+		writeLong(maximalPhenotypeAge(), out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionParams read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new EvolutionParams(
+			(Selector)in.readObject(),
+			(Selector)in.readObject(),
+			(Alterer)in.readObject(),
+			readInt(in),
+			in.readDouble(),
+			readLong(in)
+		);
 	}
 
 }

@@ -19,7 +19,6 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -117,28 +116,6 @@ public final class Engine<
 		Function<EvolutionStart<G, C>, EvolutionResult<G, C>>,
 		EvolutionStreamable<G, C>
 {
-
-
-	public static final class ProblemParams<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-
-	}
-
-	public static final class EvolParams<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-
-	}
-
-	public static final class ExecutionParams<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	> {
-
-	}
 
 	// Problem definition.
 	private final Evaluator<G, C> _evaluator;
@@ -1199,6 +1176,78 @@ public final class Engine<
 				.mapping(_mapper);
 		}
 
+	}
+
+}
+
+
+final class ProblemParams<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> {
+	private final Evaluator<G, C> _evaluator;
+	private final Factory<Genotype<G>> _genotypeFactory;
+	private final Constraint<G, C> _constraint;
+	private final Optimize _optimize;
+
+	ProblemParams(
+		final Evaluator<G, C> evaluator,
+		final Factory<Genotype<G>> genotypeFactory,
+		final Constraint<G, C> constraint,
+		final Optimize optimize
+	) {
+		_evaluator = requireNonNull(evaluator);
+		_genotypeFactory = requireNonNull(genotypeFactory);
+		_constraint = requireNonNull(constraint);
+		_optimize = requireNonNull(optimize);
+	}
+
+	public Evaluator<G, C> evaluator() {
+		return _evaluator;
+	}
+
+	public Factory<Genotype<G>> genotypeFactory() {
+		return _genotypeFactory;
+	}
+
+	public Constraint<G, C> constraint() {
+		return _constraint;
+	}
+
+	public Optimize optimize() {
+		return _optimize;
+	}
+
+}
+
+final class ExecutionParams<
+	G extends Gene<?, G>,
+	C extends Comparable<? super C>
+> {
+	private final Executor _executor;
+	private final Clock _clock;
+	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
+
+	ExecutionParams(
+		final Executor executor,
+		final Clock clock,
+		final UnaryOperator<EvolutionResult<G, C>> mapper
+	) {
+		_executor = requireNonNull(executor);
+		_clock = requireNonNull(clock);
+		_mapper = requireNonNull(mapper);
+	}
+
+	public Executor executor() {
+		return _executor;
+	}
+
+	public Clock clock() {
+		return _clock;
+	}
+
+	public UnaryOperator<EvolutionResult<G, C>> mapper() {
+		return _mapper;
 	}
 
 }
