@@ -837,7 +837,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.1
+	 * @version 5.2
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
