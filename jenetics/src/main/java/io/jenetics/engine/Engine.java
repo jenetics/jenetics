@@ -558,8 +558,21 @@ public final class Engine<
 	 * engine can serve as a template for a new one.
 	 *
 	 * @return a new engine builder
+	 * @deprecated Use {@link #toBuilder()} instead
 	 */
+	@Deprecated
 	public Builder<G, C> builder() {
+		return toBuilder();
+	}
+
+	/**
+	 * Create a new evolution {@code Engine.Builder} initialized with the values
+	 * of the current evolution {@code Engine}. With this method, the evolution
+	 * engine can serve as a template for a new one.
+	 *
+	 * @return a new engine builder
+	 */
+	public Builder<G, C> toBuilder() {
 		return new Builder<>(_evaluator, _genotypeFactory)
 			.clock(_clock)
 			.executor(_executor)
