@@ -149,9 +149,9 @@ public class EngineTest {
 			.limit(Limits.bySteadyFitness(10))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		engine.builder()
-			.alterers(new Mutator<>()).build()
-			.stream(interimResult);
+		//engine.toBuilder()
+		//	.alterers(new Mutator<>()).build()
+		//	.stream(interimResult);
 	}
 
 	@Test(dataProvider = "generations")
