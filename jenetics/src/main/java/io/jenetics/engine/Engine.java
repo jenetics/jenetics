@@ -123,10 +123,6 @@ public final class Engine<
 	private final Constraint<G, C> _constraint;
 	private final Optimize _optimize;
 
-	// private final ProblemParams<G, C> _problemParams;
-	// private final EvolutionParams<G, C> _evolutionParams;
-	// private final ExecutionParams<G, C> _executionParams;
-
 	// Evolution parameters.
 	private final EvolutionParams<G, C> _evolutionParams;
 
@@ -693,7 +689,8 @@ public final class Engine<
 		private Optimize _optimize = Optimize.MAXIMUM;
 
 		// Evolution parameters.
-		private final EvolutionParams.Builder<G, C> _evolutionParams = EvolutionParams.builder();
+		private final EvolutionParams.Builder<G, C> _evolutionParams =
+			EvolutionParams.builder();
 
 
 		// Engine execution environment.
@@ -726,6 +723,15 @@ public final class Engine<
 			_evaluator = requireNonNull(evaluator);
 		}
 
+		/**
+		 * Set the evolution parameters used by the engine.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param params the evolution parameter
+		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the {@code params} is {@code null}.
+		 */
 		public Builder<G, C> evolutionParams(final EvolutionParams<G, C> params) {
 			_evolutionParams.evolutionParams(params);
 			return this;
@@ -737,10 +743,10 @@ public final class Engine<
 		 *
 		 * @param selector used for selecting the offspring population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if one of the {@code selector} is
+		 *         {@code null}.
 		 */
-		public Builder<G, C> offspringSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> offspringSelector(final Selector<G, C> selector) {
 			_evolutionParams.offspringSelector(selector);
 			return this;
 		}
@@ -751,10 +757,10 @@ public final class Engine<
 		 *
 		 * @param selector used for selecting survivors population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if one of the {@code selector} is
+		 *         {@code null}.
 		 */
-		public Builder<G, C> survivorsSelector(
-			final Selector<G, C> selector
-		) {
+		public Builder<G, C> survivorsSelector(final Selector<G, C> selector) {
 			_evolutionParams.survivorsSelector(selector);
 			return this;
 		}
@@ -766,6 +772,8 @@ public final class Engine<
 		 *
 		 * @param selector used for selecting survivors and offspring population
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if one of the {@code selector} is
+		 *         {@code null}.
 		 */
 		public Builder<G, C> selector(final Selector<G, C> selector) {
 			_evolutionParams.selector(selector);
@@ -782,8 +790,7 @@ public final class Engine<
 		 * @param rest the rest of the alterers used for alter the offspring
 		 *        population
 		 * @return {@code this} builder, for command chaining
-		 * @throws java.lang.NullPointerException if one of the alterers is
-		 *         {@code null}.
+		 * @throws NullPointerException if one of the alterers is {@code null}.
 		 */
 		@SafeVarargs
 		public final Builder<G, C> alterers(
@@ -807,6 +814,8 @@ public final class Engine<
 		 *        implementation the {@link Phenotype#isValid()} method and repairs
 		 *        invalid phenotypes when needed.
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if one of the {@code constraint} is
+		 *         {@code null}.
 		 */
 		public Builder<G, C> constraint(final Constraint<G, C> constraint) {
 			_constraint = constraint;
@@ -819,6 +828,8 @@ public final class Engine<
 		 *
 		 * @param optimize the optimization strategy used by the engine
 		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if one of the {@code optimize} is
+		 *         {@code null}.
 		 */
 		public Builder<G, C> optimize(final Optimize optimize) {
 			_optimize = requireNonNull(optimize);
@@ -1079,6 +1090,13 @@ public final class Engine<
 			return _constraint;
 		}
 
+		/**
+		 * Return the currently set evolution parameters.
+		 *
+		 * @since !__version__!
+		 *
+		 * @return the currently set evolution parameters
+		 */
 		public EvolutionParams<G, C> evolutionParams() {
 			return _evolutionParams.build();
 		}
