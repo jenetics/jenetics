@@ -422,19 +422,6 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the used genotype {@link Factory} of the GA. The genotype factory
-	 * is used for creating the initial population and new, random individuals
-	 * when needed (as replacement for invalid and/or died genotypes).
-	 *
-	 * @return the used genotype {@link Factory} of the GA.
-	 * @deprecated Use {@link #genotypeFactory()} instead
-	 */
-	@Deprecated
-	public Factory<Genotype<G>> getGenotypeFactory() {
-		return _genotypeFactory;
-	}
-
-	/**
 	 * Return the constraint of the evolution problem.
 	 *
 	 * @since 5.0
@@ -442,19 +429,6 @@ public final class Engine<
 	 * @return the constraint of the evolution problem
 	 */
 	public Constraint<G, C> constraint() {
-		return _constraint;
-	}
-
-	/**
-	 * Return the constraint of the evolution problem.
-	 *
-	 * @since 5.0
-	 *
-	 * @return the constraint of the evolution problem
-	 * @deprecated Use {@link #constraint()} instead
-	 */
-	@Deprecated
-	public Constraint<G, C> getConstraint() {
 		return _constraint;
 	}
 
@@ -468,33 +442,11 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the used survivor {@link Selector} of the GA.
-	 *
-	 * @return the used survivor {@link Selector} of the GA.
-	 * @deprecated Use {@link #survivorsSelector()} instead
-	 */
-	@Deprecated
-	public Selector<G, C> getSurvivorsSelector() {
-		return _evolutionParams.survivorsSelector();
-	}
-
-	/**
 	 * Return the used offspring {@link Selector} of the GA.
 	 *
 	 * @return the used offspring {@link Selector} of the GA.
 	 */
 	public Selector<G, C> offspringSelector() {
-		return _evolutionParams.offspringSelector();
-	}
-
-	/**
-	 * Return the used offspring {@link Selector} of the GA.
-	 *
-	 * @return the used offspring {@link Selector} of the GA.
-	 * @deprecated Use {@link #offspringSelector()} instead
-	 */
-	@Deprecated
-	public Selector<G, C> getOffspringSelector() {
 		return _evolutionParams.offspringSelector();
 	}
 
@@ -508,33 +460,11 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the used {@link Alterer} of the GA.
-	 *
-	 * @return the used {@link Alterer} of the GA.
-	 * @deprecated Use {@link #alterer()} instead
-	 */
-	@Deprecated
-	public Alterer<G, C> getAlterer() {
-		return _evolutionParams.alterer();
-	}
-
-	/**
 	 * Return the number of selected offspring.
 	 *
 	 * @return the number of selected offspring
 	 */
 	public int offspringSize() {
-		return _evolutionParams.offspringSize();
-	}
-
-	/**
-	 * Return the number of selected offspring.
-	 *
-	 * @return the number of selected offspring
-	 * @deprecated Use {@link #offspringSize()} instead
-	 */
-	@Deprecated
-	public int getOffspringCount() {
 		return _evolutionParams.offspringSize();
 	}
 
@@ -548,33 +478,11 @@ public final class Engine<
 	}
 
 	/**
-	 * The number of selected survivors.
-	 *
-	 * @return the number of selected survivors
-	 * @deprecated Use {@link #survivorsSize()} instead
-	 */
-	@Deprecated
-	public int getSurvivorsCount() {
-		return _evolutionParams.survivorsSize();
-	}
-
-	/**
 	 * Return the number of individuals of a population.
 	 *
 	 * @return the number of individuals of a population
 	 */
 	public int populationSize() {
-		return _evolutionParams.populationSize();
-	}
-
-	/**
-	 * Return the number of individuals of a population.
-	 *
-	 * @return the number of individuals of a population
-	 * @deprecated Use {@link #populationSize()} instead
-	 */
-	@Deprecated
-	public int getPopulationSize() {
 		return _evolutionParams.populationSize();
 	}
 
@@ -588,33 +496,11 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the maximal allowed phenotype age.
-	 *
-	 * @return the maximal allowed phenotype age
-	 * @deprecated Use {@link #maximalPhenotypeAge()} instead
-	 */
-	@Deprecated
-	public long getMaximalPhenotypeAge() {
-		return _evolutionParams.maximalPhenotypeAge();
-	}
-
-	/**
 	 * Return the optimization strategy.
 	 *
 	 * @return the optimization strategy
 	 */
 	public Optimize optimize() {
-		return _optimize;
-	}
-
-	/**
-	 * Return the optimization strategy.
-	 *
-	 * @return the optimization strategy
-	 * @deprecated Use {@link #optimize()} instead
-	 */
-	@Deprecated
-	public Optimize getOptimize() {
 		return _optimize;
 	}
 
@@ -629,36 +515,12 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the {@link Clock} the engine is using for measuring the execution
-	 * time.
-	 *
-	 * @return the clock used for measuring the execution time
-	 * @deprecated Use {@link #clock()} instead
-	 */
-	@Deprecated
-	public Clock getClock() {
-		return _clock;
-	}
-
-	/**
 	 * Return the {@link Executor} the engine is using for executing the
 	 * evolution steps.
 	 *
 	 * @return the executor used for performing the evolution steps
 	 */
 	public Executor executor() {
-		return _executor;
-	}
-
-	/**
-	 * Return the {@link Executor} the engine is using for executing the
-	 * evolution steps.
-	 *
-	 * @return the executor used for performing the evolution steps
-	 * @deprecated Use {@link #executor()} instead
-	 */
-	@Deprecated
-	public Executor getExecutor() {
 		return _executor;
 	}
 
@@ -670,19 +532,6 @@ public final class Engine<
 	 * @return the evolution result mapper
 	 */
 	public UnaryOperator<EvolutionResult<G, C>> mapper() {
-		return _mapper;
-	}
-
-	/**
-	 * Return the evolution result mapper.
-	 *
-	 * @since 4.0
-	 *
-	 * @return the evolution result mapper
-	 * @deprecated Use {@link #mapper()} instead
-	 */
-	@Deprecated
-	public UnaryOperator<EvolutionResult<G, C>> getMapper() {
 		return _mapper;
 	}
 
@@ -701,19 +550,6 @@ public final class Engine<
 			.constraint(_constraint)
 			.evolutionParams(_evolutionParams)
 			.mapping(_mapper);
-	}
-
-	/**
-	 * Create a new evolution {@code Engine.Builder} initialized with the values
-	 * of the current evolution {@code Engine}. With this method, the evolution
-	 * engine can serve as a template for a new one.
-	 *
-	 * @return a new engine builder
-	 * @deprecated Use {@link #toBuilder()} instead
-	 */
-	@Deprecated
-	public Builder<G, C> builder() {
-		return toBuilder();
 	}
 
 
@@ -1190,17 +1026,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the used {@link Alterer} of the GA.
-		 *
-		 * @return the used {@link Alterer} of the GA.
-		 * @deprecated Use {@link #alterer()} instead
-		 */
-		@Deprecated
-		public Alterer<G, C> getAlterers() {
-			return _evolutionParams.alterer();
-		}
-
-		/**
 		 * Return the {@link Clock} the engine is using for measuring the execution
 		 * time.
 		 *
@@ -1213,20 +1038,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the {@link Clock} the engine is using for measuring the execution
-		 * time.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the clock used for measuring the execution time
-		 * @deprecated Use {@link #clock()} instead
-		 */
-		@Deprecated
-		public Clock getClock() {
-			return _clock;
-		}
-
-		/**
 		 * Return the {@link Executor} the engine is using for executing the
 		 * evolution steps.
 		 *
@@ -1235,20 +1046,6 @@ public final class Engine<
 		 * @return the executor used for performing the evolution steps
 		 */
 		public Executor executor() {
-			return _executor;
-		}
-
-		/**
-		 * Return the {@link Executor} the engine is using for executing the
-		 * evolution steps.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the executor used for performing the evolution steps
-		 * @deprecated Use {@link #executor()} instead
-		 */
-		@Deprecated
-		public Executor getExecutor() {
 			return _executor;
 		}
 
@@ -1266,21 +1063,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the used genotype {@link Factory} of the GA. The genotype factory
-		 * is used for creating the initial population and new, random individuals
-		 * when needed (as replacement for invalid and/or died genotypes).
-		 *
-		 * @since 3.1
-		 *
-		 * @return the used genotype {@link Factory} of the GA.
-		 * @deprecated Use {@link #genotypeFactory()} instead
-		 */
-		@Deprecated
-		public Factory<Genotype<G>> getGenotypeFactory() {
-			return _genotypeFactory;
-		}
-
-		/**
 		 * Return the constraint of the evolution problem.
 		 *
 		 * @since 5.0
@@ -1288,19 +1070,6 @@ public final class Engine<
 		 * @return the constraint of the evolution problem
 		 */
 		public Constraint<G, C> constraint() {
-			return _constraint;
-		}
-
-		/**
-		 * Return the constraint of the evolution problem.
-		 *
-		 * @since 5.0
-		 *
-		 * @return the constraint of the evolution problem
-		 * @deprecated Use {@link #constraint()} instead
-		 */
-		@Deprecated
-		public Constraint<G, C> getConstraint() {
 			return _constraint;
 		}
 
@@ -1327,35 +1096,11 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the maximal allowed phenotype age.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the maximal allowed phenotype age
-		 * @deprecated USe {@link #maximalPhenotypeAge()} instead
-		 */
-		@Deprecated
-		public long getMaximalPhenotypeAge() {
-			return _evolutionParams.maximalPhenotypeAge();
-		}
-
-		/**
 		 * Return the offspring fraction.
 		 *
 		 * @return the offspring fraction.
 		 */
 		public double offspringFraction() {
-			return _evolutionParams.offspringFraction();
-		}
-
-		/**
-		 * Return the offspring fraction.
-		 *
-		 * @return the offspring fraction.
-		 * @deprecated Use {@link #offspringFraction()} instead
-		 */
-		@Deprecated
-		public double getOffspringFraction() {
 			return _evolutionParams.offspringFraction();
 		}
 
@@ -1371,19 +1116,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the used offspring {@link Selector} of the GA.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the used offspring {@link Selector} of the GA.
-		 * @deprecated Use {@link #offspringSelector()} instead
-		 */
-		@Deprecated
-		public Selector<G, C> getOffspringSelector() {
-			return _evolutionParams.offspringSelector();
-		}
-
-		/**
 		 * Return the used survivor {@link Selector} of the GA.
 		 *
 		 * @since 3.1
@@ -1391,19 +1123,6 @@ public final class Engine<
 		 * @return the used survivor {@link Selector} of the GA.
 		 */
 		public Selector<G, C> survivorsSelector() {
-			return _evolutionParams.survivorsSelector();
-		}
-
-		/**
-		 * Return the used survivor {@link Selector} of the GA.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the used survivor {@link Selector} of the GA.
-		 * @deprecated Use {@link #survivorsSelector()} instead
-		 */
-		@Deprecated
-		public Selector<G, C> getSurvivorsSelector() {
 			return _evolutionParams.survivorsSelector();
 		}
 
@@ -1419,19 +1138,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the optimization strategy.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the optimization strategy
-		 * @deprecated Use {@link #optimize()} instead
-		 */
-		@Deprecated
-		public Optimize getOptimize() {
-			return _optimize;
-		}
-
-		/**
 		 * Return the number of individuals of a population.
 		 *
 		 * @since 3.1
@@ -1443,19 +1149,6 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the number of individuals of a population.
-		 *
-		 * @since 3.1
-		 *
-		 * @return the number of individuals of a population
-		 * @deprecated Use {@link #populationSize()} instead
-		 */
-		@Deprecated
-		public int getPopulationSize() {
-			return _evolutionParams.populationSize();
-		}
-
-		/**
 		 * Return the evolution result mapper.
 		 *
 		 * @since 4.0
@@ -1463,19 +1156,6 @@ public final class Engine<
 		 * @return the evolution result mapper
 		 */
 		public UnaryOperator<EvolutionResult<G, C>> mapper() {
-			return _mapper;
-		}
-
-		/**
-		 * Return the evolution result mapper.
-		 *
-		 * @since 4.0
-		 *
-		 * @return the evolution result mapper
-		 * @deprecated Use {@link #mapper()} instead
-		 */
-		@Deprecated
-		public UnaryOperator<EvolutionResult<G, C>> getMapper() {
 			return _mapper;
 		}
 
