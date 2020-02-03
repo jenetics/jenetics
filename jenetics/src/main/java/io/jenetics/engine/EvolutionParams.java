@@ -66,6 +66,8 @@ public final class EvolutionParams<
 	implements Serializable
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private final Selector<G, C> _survivorsSelector;
 	private final Selector<G, C> _offspringSelector;
 	private final Alterer<G, C> _alterer;
