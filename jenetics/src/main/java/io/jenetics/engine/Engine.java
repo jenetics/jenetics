@@ -27,6 +27,7 @@ import static java.util.concurrent.ForkJoinPool.commonPool;
 import java.time.Clock;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -731,6 +732,10 @@ public final class Engine<
 			return this;
 		}
 
+		public Builder<G, C> evolutionParams(final Consumer<EvolutionParams.Builder<G, C>> builder) {
+			return this;
+		}
+
 		/**
 		 * The selector used for selecting the offspring population. <i>Default
 		 * values is set to {@code TournamentSelector<>(3)}.</i>
@@ -1178,76 +1183,97 @@ public final class Engine<
 
 	}
 
+
+
+
+
+
+
+
+
+	public static final class ProblemParams<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		> {
+		private final Evaluator<G, C> _evaluator;
+		private final Factory<Genotype<G>> _genotypeFactory;
+		private final Constraint<G, C> _constraint;
+		private final Optimize _optimize;
+
+		ProblemParams(
+			final Evaluator<G, C> evaluator,
+			final Factory<Genotype<G>> genotypeFactory,
+			final Constraint<G, C> constraint,
+			final Optimize optimize
+		) {
+			_evaluator = requireNonNull(evaluator);
+			_genotypeFactory = requireNonNull(genotypeFactory);
+			_constraint = requireNonNull(constraint);
+			_optimize = requireNonNull(optimize);
+		}
+
+		public Evaluator<G, C> evaluator() {
+			return _evaluator;
+		}
+
+		public Factory<Genotype<G>> genotypeFactory() {
+			return _genotypeFactory;
+		}
+
+		public Constraint<G, C> constraint() {
+			return _constraint;
+		}
+
+		public Optimize optimize() {
+			return _optimize;
+		}
+
+	}
+
+	public static final class ExecutionParams<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		> {
+		private final Executor _executor;
+		private final Clock _clock;
+		private final UnaryOperator<EvolutionResult<G, C>> _mapper;
+
+		ExecutionParams(
+			final Executor executor,
+			final Clock clock,
+			final UnaryOperator<EvolutionResult<G, C>> mapper
+		) {
+			_executor = requireNonNull(executor);
+			_clock = requireNonNull(clock);
+			_mapper = requireNonNull(mapper);
+		}
+
+		public Executor executor() {
+			return _executor;
+		}
+
+		public Clock clock() {
+			return _clock;
+		}
+
+		public UnaryOperator<EvolutionResult<G, C>> mapper() {
+			return _mapper;
+		}
+
+	}
+
+	public static final class EvolutionParams1<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+		> {
+
+	}
+
+
+
+
+
 }
 
 
-final class ProblemParams<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
-> {
-	private final Evaluator<G, C> _evaluator;
-	private final Factory<Genotype<G>> _genotypeFactory;
-	private final Constraint<G, C> _constraint;
-	private final Optimize _optimize;
 
-	ProblemParams(
-		final Evaluator<G, C> evaluator,
-		final Factory<Genotype<G>> genotypeFactory,
-		final Constraint<G, C> constraint,
-		final Optimize optimize
-	) {
-		_evaluator = requireNonNull(evaluator);
-		_genotypeFactory = requireNonNull(genotypeFactory);
-		_constraint = requireNonNull(constraint);
-		_optimize = requireNonNull(optimize);
-	}
-
-	public Evaluator<G, C> evaluator() {
-		return _evaluator;
-	}
-
-	public Factory<Genotype<G>> genotypeFactory() {
-		return _genotypeFactory;
-	}
-
-	public Constraint<G, C> constraint() {
-		return _constraint;
-	}
-
-	public Optimize optimize() {
-		return _optimize;
-	}
-
-}
-
-final class ExecutionParams<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
-> {
-	private final Executor _executor;
-	private final Clock _clock;
-	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
-
-	ExecutionParams(
-		final Executor executor,
-		final Clock clock,
-		final UnaryOperator<EvolutionResult<G, C>> mapper
-	) {
-		_executor = requireNonNull(executor);
-		_clock = requireNonNull(clock);
-		_mapper = requireNonNull(mapper);
-	}
-
-	public Executor executor() {
-		return _executor;
-	}
-
-	public Clock clock() {
-		return _clock;
-	}
-
-	public UnaryOperator<EvolutionResult<G, C>> mapper() {
-		return _mapper;
-	}
-
-}
