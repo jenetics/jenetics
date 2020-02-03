@@ -385,7 +385,7 @@ public final class EvolutionParams<
 		 *
 		 * @return the used {@link Alterer} of the GA.
 		 */
-		public Alterer<G, C> alterers() {
+		public Alterer<G, C> alterer() {
 			return _alterer;
 		}
 
