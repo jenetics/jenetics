@@ -105,7 +105,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 5.2
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -726,7 +726,7 @@ public final class Engine<
 		/**
 		 * Set the evolution parameters used by the engine.
 		 *
-		 * @since !__version__!
+		 * @since 5.2
 		 *
 		 * @param params the evolution parameter
 		 * @return {@code this} builder, for command chaining
@@ -1093,7 +1093,7 @@ public final class Engine<
 		/**
 		 * Return the currently set evolution parameters.
 		 *
-		 * @since !__version__!
+		 * @since 5.2
 		 *
 		 * @return the currently set evolution parameters
 		 */

@@ -56,8 +56,8 @@ import io.jenetics.internal.util.Requires;
  * @param <C> the fitness function result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 5.2
+ * @since 5.2
  */
 public final class EvolutionParams<
 	G extends Gene<?, G>,
