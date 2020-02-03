@@ -65,22 +65,22 @@ public class KnapsackSelectorComparison {
 		"Runtime2"
 	);
 
-//	public static void main(final String[] args) throws InterruptedException {
-//		final Runner2<Long, BitGene, Double> runner = Runner2.of(
-//			KNAPSACK.toBuilder()
-//				.selector(new MonteCarloSelector<>())
-//				.build(),
-//			Limits::byFixedGeneration,
-//			KNAPSACK,
-//			Limits::byFixedGeneration,
-//			TRIAL_METER,
-//			Writer.text().map(Object::toString),
-//			Reader.text().map(Long::parseLong),
-//			args
-//		);
-//
-//		runner.start();
-//		runner.join();
-//	}
+	public static void main(final String[] args) throws InterruptedException {
+		final Runner2<Long, BitGene, Double> runner = Runner2.of(
+			KNAPSACK.builder()
+				.selector(new MonteCarloSelector<>())
+				.build(),
+			Limits::byFixedGeneration,
+			KNAPSACK,
+			Limits::byFixedGeneration,
+			TRIAL_METER,
+			Writer.text().map(Object::toString),
+			Reader.text().map(Long::parseLong),
+			args
+		);
+
+		runner.start();
+		runner.join();
+	}
 
 }
