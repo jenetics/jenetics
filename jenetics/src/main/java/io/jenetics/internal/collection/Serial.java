@@ -71,6 +71,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case OBJECT_STORE: ((ObjectStore)_object).write(out); break;
 			case ARRAY: ((Array)_object).write(out); break;
+			case CHAR_STORE: ((CharStore)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -84,6 +85,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case OBJECT_STORE: _object = ObjectStore.read(in); break;
 			case ARRAY: _object = Array.read(in); break;
+			case CHAR_STORE: _object = CharStore.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

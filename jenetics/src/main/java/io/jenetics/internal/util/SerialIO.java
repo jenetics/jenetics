@@ -451,6 +451,22 @@ public final class SerialIO {
 	}
 
 	/**
+	 * Write the given {@code char[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeCharArray(final char[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (int value : values) {
+			writeInt(value, out);
+		}
+	}
+
+	/**
 	 * Write the given {@code long[]} array to the given data output.
 	 *
 	 * @param values the values to write
@@ -464,6 +480,21 @@ public final class SerialIO {
 		for (long value : values) {
 			writeLong(value, out);
 		}
+	}
+
+	/**
+	 * Read an {@code char[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static char[] readCharArray(final DataInput in) throws IOException {
+		final char[] values = new char[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = (char)readInt(in);
+		}
+		return values;
 	}
 
 	/**

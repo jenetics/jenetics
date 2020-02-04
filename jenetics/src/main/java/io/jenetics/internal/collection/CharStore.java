@@ -20,7 +20,14 @@
 package io.jenetics.internal.collection;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readCharArray;
+import static io.jenetics.internal.util.SerialIO.writeCharArray;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,7 +35,7 @@ import java.util.Comparator;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.4
+ * @version !__version__!
  */
 public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;
@@ -92,6 +99,29 @@ public final class CharStore implements Array.Store<Character>, Serializable {
 
 	public static CharStore of(final char[] chars) {
 		return new CharStore(chars);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.CHAR_STORE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeCharArray(array, out);
+	}
+
+	static CharStore read(final ObjectInput in) throws IOException {
+		return new CharStore(readCharArray(in));
 	}
 
 }
