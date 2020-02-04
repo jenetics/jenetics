@@ -102,6 +102,7 @@ import io.jenetics.util.Seq;
  * @see EvolutionStream
  * @see EvolutionStatistics
  * @see Codec
+ * @see Constraint
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
@@ -1178,19 +1179,27 @@ public final class Engine<
 		 */
 		public Engine<G, C> build() {
 			return new Engine<>(
-				_evaluator instanceof ConcurrentEvaluator
-					? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
-					: _evaluator,
+				__evaluator(),
 				_genotypeFactory,
-				_constraint == null
-					? RetryConstraint.of(_genotypeFactory)
-					: _constraint,
+				__constraint(),
 				_optimize,
 				_evolutionParams.build(),
 				_executor,
 				_clock,
 				_mapper
 			);
+		}
+
+		private Evaluator<G, C> __evaluator() {
+			return _evaluator instanceof ConcurrentEvaluator
+				? ((ConcurrentEvaluator<G, C>)_evaluator).with(_executor)
+				: _evaluator;
+		}
+
+		private Constraint<G, C> __constraint() {
+			return _constraint == null
+				? RetryConstraint.of(_genotypeFactory)
+				: _constraint;
 		}
 
 		/* *********************************************************************
