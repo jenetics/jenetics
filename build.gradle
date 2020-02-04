@@ -165,7 +165,7 @@ task zip(type: Zip) {
 		into identifier
 	}
 
-	baseName = rootProject.name
+	archiveBaseName = rootProject.name
 	version = project.property('jenetics.Version')
 
 	doLast {
