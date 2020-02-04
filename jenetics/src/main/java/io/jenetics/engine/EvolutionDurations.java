@@ -19,12 +19,12 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.SerialIO.writeLong;
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.DataInput;
 import java.io.DataOutput;

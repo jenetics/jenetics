@@ -1177,7 +1177,7 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<G, C>(_evaluator, _genotypeFactory)
+			return new Builder<>(_evaluator, _genotypeFactory)
 				.clock(_clock)
 				.executor(_executor)
 				.constraint(_constraint)

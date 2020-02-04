@@ -19,13 +19,13 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.SerialIO.writeLong;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toMap;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;

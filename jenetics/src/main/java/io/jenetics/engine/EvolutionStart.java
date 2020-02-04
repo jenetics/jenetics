@@ -19,11 +19,11 @@
  */
 package io.jenetics.engine;
 
-import static io.jenetics.internal.util.SerialIO.readLong;
-import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;

@@ -29,14 +29,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.prngine.Random32;
-
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.prngine.Random32;
 import io.jenetics.stat.DoubleSummary;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
