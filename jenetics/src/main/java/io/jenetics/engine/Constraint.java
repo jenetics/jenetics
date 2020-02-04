@@ -135,7 +135,7 @@ public interface Constraint<
 	 * @throws NullPointerException if the given {@code individual} is
 	 *         {@code null}
 	 */
-	public boolean test(final Phenotype<G, C> individual);
+	boolean test(final Phenotype<G, C> individual);
 
 	/**
 	 * Tries to repair the given phenotype. This method is called by the
@@ -150,7 +150,7 @@ public interface Constraint<
 	 * @throws NullPointerException if the given {@code individual} is
 	 *         {@code null}
 	 */
-	public Phenotype<G, C> repair(
+	Phenotype<G, C> repair(
 		final Phenotype<G, C> individual,
 		final long generation
 	);
@@ -167,7 +167,7 @@ public interface Constraint<
 	 * @return a new constraint strategy
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(
 		final Predicate<? super Phenotype<G, C>> validator,
 		final BiFunction<? super Phenotype<G, C>, Long, Phenotype<G, C>> repairer
@@ -203,7 +203,7 @@ public interface Constraint<
 	 * @return a new constraint strategy
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(final Predicate<? super Phenotype<G, C>> validator) {
 		return of(
 			validator,
@@ -228,7 +228,7 @@ public interface Constraint<
 	 * @return a new constraint strategy
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <T, G extends Gene<?, G>, C extends Comparable<? super C>>
 	Constraint<G, C> of(
 		final InvertibleCodec<T, G> codec,
 		final Predicate<? super T> validator,
