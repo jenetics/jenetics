@@ -94,6 +94,7 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 		return new ObjectStore<>(new Object[length]);
 	}
 
+
 	/* *************************************************************************
 	 *  Java object serialization
 	 * ************************************************************************/
@@ -110,7 +111,6 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 
 	void write(final ObjectOutput out) throws IOException {
 		writeObjectArray(_array, out);
-
 	}
 
 	@SuppressWarnings("rawtypes")
