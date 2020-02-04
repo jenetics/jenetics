@@ -19,10 +19,19 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toMap;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
@@ -73,7 +82,7 @@ public final class EvolutionResult<
 >
 	implements Comparable<EvolutionResult<G, C>>, Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final Optimize _optimize;
 	private final ISeq<Phenotype<G, C>> _population;
@@ -939,6 +948,48 @@ public final class EvolutionResult<
 			killCount,
 			invalidCount,
 			alterCount
+		);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_RESULT, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_optimize);
+		out.writeObject(_population);
+		writeLong(_generation, out);
+		writeLong(_totalGenerations, out);
+		out.writeObject(_durations);
+		writeInt(_killCount, out);
+		writeInt(_invalidCount, out);
+		writeInt(_alterCount, out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionResult read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new EvolutionResult<>(
+			(Optimize)in.readObject(),
+			(ISeq)in.readObject(),
+			readLong(in),
+			readLong(in),
+			(EvolutionDurations)in.readObject(),
+			readInt(in),
+			readInt(in),
+			readInt(in)
 		);
 	}
 

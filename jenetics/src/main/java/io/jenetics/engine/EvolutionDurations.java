@@ -19,9 +19,20 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Objects;
@@ -41,7 +52,7 @@ public final /*record*/ class EvolutionDurations
 		Comparable<EvolutionDurations>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * Constant for zero evolution durations.
@@ -367,6 +378,57 @@ public final /*record*/ class EvolutionDurations
 			evaluationDuration,
 			evolveDuration
 		);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_DURATIONS, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeDuration(_offspringSelectionDuration, out);
+		writeDuration(_survivorsSelectionDuration, out);
+		writeDuration(_offspringAlterDuration, out);
+		writeDuration(_offspringFilterDuration, out);
+		writeDuration(_survivorFilterDuration, out);
+		writeDuration(_evaluationDuration, out);
+		writeDuration(_evolveDuration, out);
+	}
+
+	private static void writeDuration(final Duration duration, final DataOutput out)
+		throws IOException
+	{
+		writeLong(duration.getSeconds(), out);
+		writeInt(duration.getNano(), out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionDurations read(final ObjectInput in) throws IOException {
+		return new EvolutionDurations(
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in)
+		);
+	}
+
+	private static Duration readDuration(final DataInput in) throws IOException {
+		final long seconds = readLong(in);
+		final int nanos = readInt(in);
+		return Duration.ofSeconds(seconds, nanos);
 	}
 
 }

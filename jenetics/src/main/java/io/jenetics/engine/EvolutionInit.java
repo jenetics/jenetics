@@ -19,10 +19,18 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Objects;
 
 import io.jenetics.Gene;
@@ -45,7 +53,11 @@ import io.jenetics.util.ISeq;
  * @version 5.2
  * @since 4.1
  */
-public final /*record*/ class EvolutionInit<G extends Gene<?, G>> {
+public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
+	implements Serializable
+{
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<Genotype<G>> _population;
 	private final long _generation;
@@ -138,6 +150,36 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>> {
 		final long generation
 	) {
 		return new EvolutionInit<>(population, generation);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_INIT, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_population);
+		writeLong(_generation, out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionInit read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new EvolutionInit(
+			(ISeq)in.readObject(),
+			readLong(in)
+		);
 	}
 
 }
