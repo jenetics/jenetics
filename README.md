@@ -205,22 +205,31 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Release notes
 
-### [5.1.0](https://github.com/jenetics/jenetics/releases/tag/v5.1.0)
+### [5.2.0](https://github.com/jenetics/jenetics/releases/tag/v5.2.0)
 
 #### Improvements
 
-* [#522](https://github.com/jenetics/jenetics/issues/522): Replace `io.jenetics.ext.engine.AdaptiveEngine` with `io.jenetics.ext.engine.UpdatableEngine`. The `AdaptiveEngine` has been marked as deprecated.
-* [#557](https://github.com/jenetics/jenetics/issues/557): Implementation `io.jenetics.util.ProxySorter` class, which sorts a proxy array instead of an sequence itself.
-* [#563](https://github.com/jenetics/jenetics/issues/563): Introduction of `Evolution` interface, which makes the _concept_ of an _evolution_ function more explicit.
-* [#579](https://github.com/jenetics/jenetics/issues/579): Improve internal `RingBuffer` implementation.
-* [#585](https://github.com/jenetics/jenetics/issues/585): Improve `EphemeralConst` serialization.
-* [#592](https://github.com/jenetics/jenetics/issues/592): Add `Tree.path()` and `Tree.pathElements()` methods.
+* [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
+```java
+public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
+    public Function<T, Genotype<G>> encoder();
+    public default Genotype<G> encode(final T value) {
+        return encoder().apply(value); 
+    }
+}
+```
+* [#543](https://github.com/jenetics/jenetics/issues/543): Simplified `Constraint` factory methods.
+* [#566](https://github.com/jenetics/jenetics/issues/566): New parameter class, `EvolutionParams`, contains all `Engine` parameters which influence the evolution performance.
+* [#607](https://github.com/jenetics/jenetics/issues/607): More flexible MOEA optimization. It is now possible to do minimization/maximization on every dimension independently.
+* [#614](https://github.com/jenetics/jenetics/issues/614): Generalize the `ConstExprRewriter` class. It can no be used with every type, not only with `Double` values.
+* [#635](https://github.com/jenetics/jenetics/issues/635): Mark the `Chromosome.toSeq()` and `Genotype.toSeq()` methods as deprecated. This methods are no longer needed, because the `Chromosome` and `Genotype` itself will implement the new `BaseSeq` interfaces and are now _sequences_ itself. 
+* [#645](https://github.com/jenetics/jenetics/issues/645): Mark all bean-like _getter_ methods as deprecated. This methods will be replaced by simple _accessor_-methods, and is a preparation step for using the new Java _records_.
+
 
 #### Bugs
 
-* [#539](https://github.com/jenetics/jenetics/issues/539): Fix JHM tests.
-* [#599](https://github.com/jenetics/jenetics/issues/599): `Recombinator` performs `recombine` on an individual with itself.
-* [#600](https://github.com/jenetics/jenetics/issues/600): Duplicates in Pareto set owing to the `equals` method in `Phenotype` class.
+* [#621](https://github.com/jenetics/jenetics/issues/621): `ìo.jenetics.prog.op.Program.arity()` returns the wrong value.
+
 
 
 _[All Release Notes](RELEASE_NOTES.md)_
