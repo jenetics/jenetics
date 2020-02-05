@@ -729,8 +729,8 @@ literal "false"
 
  (GP) implementation.
  It has no runtime dependencies to other libraries, except the Java 8 runtime.
- Although the library is written in Java 8, it is compilable with Java 9,
- 10 and 11.
+ Although the library is written in Java 8, it is compilable with Java 11
+ and 13.
  
 \family sans
 \series bold
@@ -979,7 +979,7 @@ public final class HelloWorld {
 
 \begin_layout Plain Layout
 
-        return gt.getChromosome()
+        return gt.chromosome()
 \end_layout
 
 \begin_layout Plain Layout
@@ -2545,7 +2545,7 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \begin_layout Plain Layout
 
-    public A getAllele();
+    public A allele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2737,7 +2737,7 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-	extends Factory<Chromosome<G>>, Iterable<G>, Verifiable
+	extends Factory<Chromosome<G>>, BaseSeq<G>, Verifiable
 \end_layout
 
 \begin_layout Plain Layout
@@ -2752,22 +2752,17 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    public G getGene(int index);
-\end_layout
-
-\begin_layout Plain Layout
-
-    public ISeq<G> toSeq();
-\end_layout
-
-\begin_layout Plain Layout
-
-    public Stream<G> stream();
+    public G get(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
     public int length();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Stream<G> stream();
 \end_layout
 
 \begin_layout Plain Layout
@@ -4129,22 +4124,27 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    public C getFitness();
+    public C fitness();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Genotype<G> getGenotype();
+    public Phenotype<G, C> withFitness(C fitness);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public long getAge(long currentGeneration);
+    public Genotype<G> genotype();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public void evaluate();
+    public long age(long currentGeneration);
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Phenotype<G, C> isEvaluated();
 \end_layout
 
 \begin_layout Plain Layout
@@ -4200,33 +4200,40 @@ type
 \family default
 , which can be fetched with the
 \family typewriter
- get\SpecialChar softhyphen
-Geno\SpecialChar softhyphen
+ geno\SpecialChar softhyphen
 type
 \family default
  method.
- To make the runtime behavior predictable, the fitness value is evaluated
- lazily.
- Either by querying the
+ If no fitness value is associated to the phenotype yet, the 
 \family typewriter
- fitness
+fitness()
 \family default
- property or through the call of the
+ method will throw an 
 \family typewriter
- evaluate
+No\SpecialChar softhyphen
+Such\SpecialChar softhyphen
+Ele\SpecialChar softhyphen
+ment\SpecialChar softhyphen
+Exc\SpecialChar softhyphen
+eption
+\family default
+.
+ Whether a fitness value has been set can be checked with the isEvaluated()
+ method.
+ Setting a fitness value can be done with the 
+\family typewriter
+withFitness(C)
 \family default
  method.
- The evolution
+ Since the 
 \family typewriter
- Engine
+Phenotype
 \family default
- is calling the evaluate method in a separate step and makes the fitness
- evaluation time available through the
+ is immutable, this method returns a newly created 
 \family typewriter
- Evolution\SpecialChar softhyphen
-Durations
+Phenotype
 \family default
- class.
+ with the given fitness value.
  Additionally to the fitness value, the
 \family typewriter
  Phenotype
@@ -5865,7 +5872,7 @@ status open
 
 \begin_layout Plain Layout
 
-void recombine(final ISeq<Phenotype<G, C>> pop) {
+void recombine(final MSeq<Phenotype<G, C>> pop) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -5900,12 +5907,12 @@ void recombine(final ISeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Genotype<G> gt1 = pt1.getGenotype();
+    final Genotype<G> gt1 = pt1.genotype();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final Genotype<G> gt2 = pt2.getGenotype();
+    final Genotype<G> gt2 = pt2.genotype();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5929,22 +5936,22 @@ void recombine(final ISeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
+    final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
 \end_layout
 
 \begin_layout Plain Layout
 
-    final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+    final MSeq<Chromosome<G>> c2 = MSeq.of(gt2);
 \end_layout
 
 \begin_layout Plain Layout
 
-    final MSeq<G> genes1 = c1.get(chIndex).toSeq().copy();
+    final MSeq<G> genes1 = MSeq.of(c1.get(chIndex));
 \end_layout
 
 \begin_layout Plain Layout
 
-    final MSeq<G> genes2 = c2.get(chIndex).toSeq().copy();
+    final MSeq<G> genes2 = MSeq.of(c2.get(chIndex));
 \end_layout
 
 \begin_layout Plain Layout
@@ -5982,17 +5989,12 @@ void recombine(final ISeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    MSeq<Phenotype<G, C>> result = pop.copy();
+    pop.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
 
-    result.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
-\end_layout
-
-\begin_layout Plain Layout
-
-    result.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
+    pop.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
@@ -7559,7 +7561,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-        return gt.getGene().getAllele();
+        return gt.gene().allele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7607,7 +7609,7 @@ public class Main {
 
 \begin_layout Plain Layout
 
-            gt.getGene().getAllele();
+            gt.gene().allele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -9104,12 +9106,12 @@ public final class EvolutionResult<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> getPopulation();
+    ISeq<Phenotype<G, C>> population();
 \end_layout
 
 \begin_layout Plain Layout
 
-    long getGeneration();
+    long generation();
 \end_layout
 
 \begin_layout Plain Layout
@@ -9772,7 +9774,7 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-            best.compareTo(result.getBestPhenotype()) < 0)
+            best.compareTo(result.bestPhenotype()) < 0)
 \end_layout
 
 \begin_layout Plain Layout
@@ -9782,12 +9784,12 @@ public class TSM {
 
 \begin_layout Plain Layout
 
-            best = result.getBestPhenotype();
+            best = result.bestPhenotype();
 \end_layout
 
 \begin_layout Plain Layout
 
-            System.out.print(result.getGeneration() + ": ");
+            System.out.print(result.generation() + ": ");
 \end_layout
 
 \begin_layout Plain Layout
@@ -12367,7 +12369,7 @@ final File file = new File("population.obj");
 
 \begin_layout Plain Layout
 
-IO.object.write(result.getPopulation(), file);
+IO.object.write(result.population(), file);
 \end_layout
 
 \begin_layout Plain Layout
@@ -13296,7 +13298,7 @@ new Random().doubles(10_000).forEach(quartile);
 
 \begin_layout Plain Layout
 
-final double value = quartile.getValue();
+final double value = quartile.value();
 \end_layout
 
 \end_inset
@@ -13435,7 +13437,7 @@ For implementing your own gene type you have to implement the
 \family default
  interface with three methods: (1) the
 \family typewriter
- getAllele
+ allele
 \family default
 ()
 \begin_inset Index idx
@@ -14013,7 +14015,7 @@ public class LastMonday {
 
 \begin_layout Plain Layout
 
-        gt -> gt.getGene().getAllele()
+        gt -> gt.gene().allele()
 \end_layout
 
 \begin_layout Plain Layout
@@ -15069,7 +15071,7 @@ public final class SpecialEngine {
 
 \begin_layout Plain Layout
 
-        return gt.getGene().getAllele();
+        return gt.gene().allele();
 \end_layout
 
 \begin_layout Plain Layout
@@ -15463,7 +15465,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-            .map(Phenotype::getFitness)
+            .map(Phenotype::fitness)
 \end_layout
 
 \begin_layout Plain Layout
@@ -15473,7 +15475,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-            .getVariance()
+            .variance()
 \end_layout
 
 \begin_layout Plain Layout
@@ -15763,7 +15765,7 @@ static double toDouble(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.getGene().doubleValue();
+    return gt.gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
@@ -16082,7 +16084,7 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.getChromosome().as(DoubleChromosome.class).toArray();
+    return gt.chromosome().as(DoubleChromosome.class).toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -16235,7 +16237,7 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-        .mapToDouble(c -> c.getGene().doubleValue())
+        .mapToDouble(c -> c.gene().doubleValue())
 \end_layout
 
 \begin_layout Plain Layout
@@ -16528,7 +16530,7 @@ static double[] toVector(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.getChromosome().as(DoubleChromosome.class).toArray();
+    return gt.chromosome().as(DoubleChromosome.class).toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -16980,37 +16982,37 @@ static double[][] toMatrix(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    final double sx = gt.get(0, 0).doubleValue();
+    final double sx = gt.get(0).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double sy = gt.get(1, 0).doubleValue();
+    final double sy = gt.get(1).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double tx = gt.get(2, 0).doubleValue();
+    final double tx = gt.get(2).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double ty = gt.get(3, 0).doubleValue();
+    final double ty = gt.get(3).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double th = gt.get(4, 0).doubleValue();
+    final double th = gt.get(4).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double kx = gt.get(5, 0).doubleValue();
+    final double kx = gt.get(5).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
 
-    final double ky = gt.get(6, 0).doubleValue();
+    final double ky = gt.get(6).gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
@@ -17845,7 +17847,7 @@ static double eval(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    final double x = gt.getGene().doubleValue();
+    final double x = gt.gene().doubleValue();
 \end_layout
 
 \begin_layout Plain Layout
@@ -17909,7 +17911,7 @@ final Codec<Double, DoubleGene> codec = Codec.of(
 
 \begin_layout Plain Layout
 
-    gt -> gt.getChromosome().getGene().getAllele()
+    gt -> gt.chromosome().gene().allele()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18061,7 +18063,7 @@ static Codec<Integer, IntegerGene> ofScalar(IntRange domain) {
 
 \begin_layout Plain Layout
 
-        gt -> gt.getChromosome().getGene().getAllele()
+        gt -> gt.chromosome().gene().allele()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18314,7 +18316,7 @@ static Codec<int[], IntegerGene> ofVector(
 
 \begin_layout Plain Layout
 
-        gt -> gt.getChromosome()
+        gt -> gt.chromosome()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18759,7 +18761,7 @@ static <T> Codec<ISeq<T>, BitGene> ofSubSet(ISeq<T> basicSet) {
 
 \begin_layout Plain Layout
 
-        gt -> gt.getChromosome()
+        gt -> gt.chromosome()
 \end_layout
 
 \begin_layout Plain Layout
@@ -19208,12 +19210,12 @@ static <T> Codec<T[], EnumGene<T>> ofPermutation(T...
 
 \begin_layout Plain Layout
 
-        gt -> gt.getChromosome().stream()
+        gt -> gt.chromosome().stream()
 \end_layout
 
 \begin_layout Plain Layout
 
-            .map(EnumGene::getAllele)
+            .map(EnumGene::allele)
 \end_layout
 
 \begin_layout Plain Layout
@@ -20415,7 +20417,7 @@ class Main {
 
 \begin_layout Plain Layout
 
-            codec.decoder().apply(pt.getGenotype());
+            codec.decoder().apply(pt.genotype());
 \end_layout
 
 \begin_layout Plain Layout
@@ -20702,7 +20704,7 @@ final Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
 
 \begin_layout Plain Layout
 
-            .filter(BitGene::getBit).count(),
+            .filter(BitGene::bit).count(),
 \end_layout
 
 \begin_layout Plain Layout
@@ -20732,7 +20734,7 @@ final Problem<ISeq<BitGene>, BitGene, Integer> ONES_COUNTING =
 
 \begin_layout Plain Layout
 
-            gt -> gt.getChromosome().toSeq()
+            gt -> gt.chromosome().toSeq()
 \end_layout
 
 \begin_layout Plain Layout
@@ -21185,7 +21187,7 @@ public class RepairingConstraint
 
 \begin_layout Plain Layout
 
-            pt.getGenotype().getChromosome()
+            pt.genotype().chromosome()
 \end_layout
 
 \begin_layout Plain Layout
@@ -21254,7 +21256,7 @@ public class RepairingConstraint
 
 \begin_layout Plain Layout
 
-        final double[] x = pt.getGenotype().getChromosome()
+        final double[] x = pt.genotype().chromosome()
 \end_layout
 
 \begin_layout Plain Layout
@@ -22051,7 +22053,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            _fitness = er.getBestFitness();
+            _fitness = er.bestFitness();
 \end_layout
 
 \begin_layout Plain Layout
@@ -22066,12 +22068,12 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-            final Optimize opt = result.getOptimize();
+            final Optimize opt = result.optimize();
 \end_layout
 
 \begin_layout Plain Layout
 
-            if (opt.compare(_fitness, er.getBestFitness()) >= 0) {
+            if (opt.compare(_fitness, er.bestFitness()) >= 0) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -22086,7 +22088,7 @@ final class SteadyFitnessLimit<C extends Comparable<? super C>>
 
 \begin_layout Plain Layout
 
-                _fitness = er.getBestFitness();
+                _fitness = er.bestFitness();
 \end_layout
 
 \begin_layout Plain Layout
@@ -26068,12 +26070,12 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public V getValue();
+    public V value();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Optional<T> getParent();
+    public Optional<T> parent();
 \end_layout
 
 \begin_layout Plain Layout
@@ -28727,7 +28729,7 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-            (CharSequence)gt.getChromosome();
+            (CharSequence)gt.chromosome();
 \end_layout
 
 \begin_layout Plain Layout
@@ -28836,12 +28838,12 @@ public class WeaselProgram {
 
 \begin_layout Plain Layout
 
-				r.getTotalGenerations() + ": " +
+				r.totalGenerations() + ": " +
 \end_layout
 
 \begin_layout Plain Layout
 
-				r.getBestPhenotype()))
+				r.bestPhenotype()))
 \end_layout
 
 \begin_layout Plain Layout
@@ -30009,7 +30011,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-            .map(Phenotype::getFitness)
+            .map(Phenotype::fitness)
 \end_layout
 
 \begin_layout Plain Layout
@@ -32274,7 +32276,7 @@ final ProgramChromosome<Double> program = ProgramChromosome.of(
 
 \begin_layout Plain Layout
 
-    depth, ch -> ch.getRoot().size() <= 50, 
+    depth, ch -> ch.root().size() <= 50, 
 \end_layout
 
 \begin_layout Plain Layout
@@ -32458,22 +32460,22 @@ final ProgramChromosome<Double> chromosome = ...;
 
 \begin_layout Plain Layout
 
-assert chromosome.getGene() == chromosome.getRoot();
+assert chromosome.getGene() == chromosome.root();
 \end_layout
 
 \begin_layout Plain Layout
 
-final ProgramGene<Double> program = chromosome.getRoot();
+final ProgramGene<Double> program = chromosome.root();
 \end_layout
 
 \begin_layout Plain Layout
 
-final Tree<Op<Double>, ?> opTree = chromosome.getRoot(); 
+final Tree<Op<Double>, ?> opTree = chromosome.root(); 
 \end_layout
 
 \begin_layout Plain Layout
 
-final Tree<?, ?> tree = chromosome.getRoot();
+final Tree<?, ?> tree = chromosome.root();
 \end_layout
 
 \end_inset
@@ -32948,7 +32950,7 @@ codec = Codec.of(
 
 \begin_layout Plain Layout
 
-            4, ch -> ch.getRoot().size() <= 30,
+            4, ch -> ch.root().size() <= 30,
 \end_layout
 
 \begin_layout Plain Layout
@@ -32973,7 +32975,7 @@ codec = Codec.of(
 
 \begin_layout Plain Layout
 
-            5, ch -> ch.getRoot().size() <= 50,
+            5, ch -> ch.root().size() <= 50,
 \end_layout
 
 \begin_layout Plain Layout
@@ -32998,7 +33000,7 @@ codec = Codec.of(
 
 \begin_layout Plain Layout
 
-        .map(Chromosome::getGene)
+        .map(Chromosome::gene)
 \end_layout
 
 \begin_layout Plain Layout
@@ -39165,7 +39167,7 @@ Version
 \series default
 :
 \emph on
- 7.0
+ 7.1
 \end_layout
 
 \begin_layout Itemize
@@ -39591,7 +39593,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.0
+: 6.1.1
 \end_layout
 
 \begin_layout Itemize
@@ -39628,7 +39630,7 @@ status open
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.0-bin.zip
+http://services.gradle.org/distributions/gradle-6.1.1-bin.zip
 \end_layout
 
 \end_inset
