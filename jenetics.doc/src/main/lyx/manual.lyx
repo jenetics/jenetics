@@ -2747,11 +2747,6 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    public Chromosome<G> newInstance(ISeq<G> genes);
-\end_layout
-
-\begin_layout Plain Layout
-
     public G get(int index);
 \end_layout
 
@@ -2763,6 +2758,11 @@ public interface Chromosome<G extends Gene<?, G>>
 \begin_layout Plain Layout
 
     public Stream<G> stream();
+\end_layout
+
+\begin_layout Plain Layout
+
+    public Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
@@ -4144,7 +4144,7 @@ public final class Phenotype<
 
 \begin_layout Plain Layout
 
-    public Phenotype<G, C> isEvaluated();
+    public boolean isEvaluated();
 \end_layout
 
 \begin_layout Plain Layout
@@ -5989,12 +5989,12 @@ void recombine(final MSeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    pop.set(i1, pt1.newInstance(gt1.newInstance(c1.toISeq())));
+    pop.set(i1, Phenotype.of(Genotype.of(c1.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
 
-    pop.set(i2, pt2.newInstance(gt1.newInstance(c2.toISeq())));
+    pop.set(i2, Phenotype.of(Genotype.of(c2.toISeq())));
 \end_layout
 
 \begin_layout Plain Layout
