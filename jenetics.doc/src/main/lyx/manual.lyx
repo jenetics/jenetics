@@ -15460,7 +15460,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-        ? er.getPopulation().stream()
+        ? er.population().stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -15743,7 +15743,7 @@ Genotype.of(
 Decoding the double value from the Genotype is also straight forward.
  Just get the first gene from the first chromosome, with the
 \family typewriter
- getGene()
+ gene()
 \family default
  method, and convert it to a
 \family typewriter
@@ -16288,7 +16288,8 @@ If there are performance issues in converting the
 s directly via the
 \family typewriter
  Genotype\SpecialChar softhyphen
-.get(i, j)
+.get(i)\SpecialChar softhyphen
+.get(j)
 \family default
  method and than convert it to the desired numeric value, by calling
 \family typewriter
@@ -17323,7 +17324,8 @@ s of length
  can be easily checked by calling
 \family typewriter
  gt\SpecialChar softhyphen
-.get(i-1, j-1)\SpecialChar softhyphen
+.get(i-1)\SpecialChar softhyphen
+.get(j-1)\SpecialChar softhyphen
 .booleanValue()
 \family default
 .
@@ -17569,7 +17571,8 @@ final Genotype<DoubleGene> gt = Genotype
 For accessing the single matrix elements, you can simply call
 \family typewriter
  Genotype\SpecialChar softhyphen
-.get(i, j)\SpecialChar softhyphen
+.get(i)\SpecialChar softhyphen
+.get(j)\SpecialChar softhyphen
 .doubleValue()
 \family default
 .
@@ -26442,8 +26445,7 @@ Value
  in the diagram is the string representation of the 
 \family typewriter
 Tree\SpecialChar softhyphen
-.get\SpecialChar softhyphen
-Val\SpecialChar softhyphen
+.val\SpecialChar softhyphen
 ue()
 \family default
  object.
@@ -30006,7 +30008,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-        ? er.getPopulation().stream()
+        ? er.population().stream()
 \end_layout
 
 \begin_layout Plain Layout
@@ -30021,7 +30023,7 @@ static double var(final EvolutionResult<DoubleGene, Double> er) {
 
 \begin_layout Plain Layout
 
-            .getVariance()
+            .variance()
 \end_layout
 
 \begin_layout Plain Layout
@@ -32293,7 +32295,7 @@ final ProgramChromosome<Double> program = ProgramChromosome.of(
 
 The predicate, 
 \family typewriter
-ch -> ch.getRoot().size() <= 50
+ch -> ch.root().size() <= 50
 \family default
 , marks all programs with more then 50 nodes as invalid.
  Invalid chromosomes will then be replaced by newly created one.
@@ -32398,7 +32400,7 @@ final ProgramGene<Double> program = engine.stream()
 
 \begin_layout Plain Layout
 
-    .getGene();
+    .gene();
 \end_layout
 
 \begin_layout Plain Layout
@@ -32460,7 +32462,7 @@ final ProgramChromosome<Double> chromosome = ...;
 
 \begin_layout Plain Layout
 
-assert chromosome.getGene() == chromosome.root();
+assert chromosome.gene() == chromosome.root();
 \end_layout
 
 \begin_layout Plain Layout
@@ -32803,7 +32805,7 @@ final ProgramGene<Double> program = engine.stream()
 
 \begin_layout Plain Layout
 
-    .getGene();
+    .gene();
 \end_layout
 
 \begin_layout Plain Layout
@@ -34406,12 +34408,12 @@ final Writer<IntegerChromosome> writer =
 
 \begin_layout Plain Layout
 
-        elem("min", Writer.<Integer>text().map(ch -> ch.getMin())),
+        elem("min", Writer.<Integer>text().map(ch -> ch.min())),
 \end_layout
 
 \begin_layout Plain Layout
 
-        elem("max", Writer.<Integer>text().map(ch -> ch.getMax())),
+        elem("max", Writer.<Integer>text().map(ch -> ch.max())),
 \end_layout
 
 \begin_layout Plain Layout
@@ -34426,7 +34428,7 @@ final Writer<IntegerChromosome> writer =
 
 \begin_layout Plain Layout
 
-                 .map(ch -> ch.toSeq().map(g -> g.getAllele()))
+                 .map(ch -> ch.toSeq().map(g -> g.allele()))
 \end_layout
 
 \begin_layout Plain Layout
