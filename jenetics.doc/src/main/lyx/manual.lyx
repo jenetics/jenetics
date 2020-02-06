@@ -5882,7 +5882,7 @@ void recombine(final MSeq<Phenotype<G, C>> pop) {
 
 \begin_layout Plain Layout
 
-    final Random random = RandomRegistry.getRandom();
+    final Random random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -6881,7 +6881,7 @@ status open
 
 \begin_layout Plain Layout
 
-final Random random = RandomRegistry.getRandom();
+final Random random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -13617,7 +13617,7 @@ class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.getRandom();
+        final Random random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -14025,7 +14025,7 @@ public class LastMonday {
 
 \begin_layout Plain Layout
 
-        final Random random = RandomRegistry.getRandom();
+        final Random random = RandomRegistry.random();
 \end_layout
 
 \begin_layout Plain Layout
@@ -31989,7 +31989,7 @@ final Op<Double> rand1 = EphemeralConst
 
 \begin_layout Plain Layout
 
-    .of(RandomRegistry.getRandom()::nextDouble);
+    .of(RandomRegistry.random()::nextDouble);
 \end_layout
 
 \begin_layout Plain Layout
@@ -31999,7 +31999,7 @@ final Op<Double> rand2 = EphemeralConst
 
 \begin_layout Plain Layout
 
-    .of("R", RandomRegistry.getRandom()::nextDouble);
+    .of("R", RandomRegistry.random()::nextDouble);
 \end_layout
 
 \end_inset
