@@ -127,12 +127,12 @@ public final class RandomRegistry {
 	 * PRN generation, because the given {@code Random} engine don't have to be
 	 * thread-safe.
 	 *
-	 * @see #set(ThreadLocal)
+	 * @see #random(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
-	public static void set(final Random random) {
+	public static void random(final Random random) {
 		requireNonNull(random, "Random must not be null.");
 		CONTEXT.set(() -> random);
 	}
@@ -146,11 +146,11 @@ public final class RandomRegistry {
 	 * PRN generation, because the given {@code Random} engine don't have to be
 	 * thread-safe.
 	 *
-	 * @see #set(ThreadLocal)
+	 * @see #random(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
-	 * @deprecated Use {@link #set(Random)} instead
+	 * @deprecated Use {@link #random(Random)} instead
 	 */
 	@Deprecated
 	public static void setRandom(final Random random) {
@@ -170,7 +170,7 @@ public final class RandomRegistry {
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void set(final ThreadLocal<? extends Random> random) {
+	public static void random(final ThreadLocal<? extends Random> random) {
 		requireNonNull(random, "Random must not be null.");
 		CONTEXT.set(random::get);
 	}
@@ -185,7 +185,7 @@ public final class RandomRegistry {
 	 *
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
-	 * @deprecated Use {@link #set(ThreadLocal)} instead
+	 * @deprecated Use {@link #random(ThreadLocal)} instead
 	 */
 	@Deprecated
 	@SuppressWarnings("unchecked")

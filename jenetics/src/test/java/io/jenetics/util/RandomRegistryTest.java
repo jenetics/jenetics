@@ -52,7 +52,7 @@ public class RandomRegistryTest {
 		final Random devault = RandomRegistry.random();
 		Assert.assertNotNull(devault);
 
-		RandomRegistry.set(new Random());
+		RandomRegistry.random(new Random());
 		Assert.assertNotNull(RandomRegistry.random());
 		RandomRegistry.reset();
 
@@ -62,7 +62,7 @@ public class RandomRegistryTest {
 	@Test
 	public void setRandom() {
 		final Random random = new Random();
-		RandomRegistry.set(random);
+		RandomRegistry.random(random);
 
 		assertSame(RandomRegistry.random(), random);
 	}
@@ -72,7 +72,7 @@ public class RandomRegistryTest {
 		throws ExecutionException, InterruptedException
 	{
 		final Random random = new Random();
-		RandomRegistry.set(random);
+		RandomRegistry.random(random);
 
 		final ExecutorService executor = Executors.newFixedThreadPool(10);
 		try {
@@ -92,19 +92,19 @@ public class RandomRegistryTest {
 	@Test
 	public void setThreadLocalRandom() {
 		final Random random = new Random();
-		RandomRegistry.set(random);
+		RandomRegistry.random(random);
 
 		Assert.assertSame(RandomRegistry.random(), random);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullRandom() {
-		RandomRegistry.set((Random)null);
+		RandomRegistry.random((Random)null);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullTLRandom() {
-		RandomRegistry.set((ThreadLocal<Random>)null);
+		RandomRegistry.random((ThreadLocal<Random>)null);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class RandomRegistryTest {
 					assertSame(r2, random2);
 
 					final Random random2_2 = new Random();
-					RandomRegistry.set(random2_2);
+					RandomRegistry.random(random2_2);
 					assertSame(RandomRegistry.random(), random2_2);
 
 					final Random random3 = new Random();

@@ -44,7 +44,7 @@ public class RngExample {
 	public static void main(String[] args) {
 		// Set the PRNG used by the evolution Engine.
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(123);
-		RandomRegistry.set(random);
+		RandomRegistry.random(random);
 
 		// Configure and build the evolution Engine.
 		final Engine<BitGene, Integer> engine = Engine
