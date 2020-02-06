@@ -2545,22 +2545,22 @@ public interface Gene<A, G extends Gene<A, G>>
 
 \begin_layout Plain Layout
 
-    public A allele();
+    A allele();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance();
+    G newInstance();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public G newInstance(A allele);
+    G newInstance(A allele);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public boolean isValid();
+    boolean isValid();
 \end_layout
 
 \begin_layout Plain Layout
@@ -2747,22 +2747,22 @@ public interface Chromosome<G extends Gene<?, G>>
 
 \begin_layout Plain Layout
 
-    public G get(int index);
+    G get(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int length();
+    int length();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Stream<G> stream();
+    Stream<G> stream();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Chromosome<G> newInstance(ISeq<G> genes);
+    Chromosome<G> newInstance(ISeq<G> genes);
 \end_layout
 
 \begin_layout Plain Layout
@@ -7261,12 +7261,7 @@ Engine<DoubleGene, Double> engine = Engine.builder(ff, gtf)
 
 \begin_layout Plain Layout
 
-      new LineCrossover<>()
-\end_layout
-
-\begin_layout Plain Layout
-
-   )
+      new LineCrossover<>())
 \end_layout
 
 \begin_layout Plain Layout
@@ -14309,7 +14304,7 @@ public interface Selector<
 
 \begin_layout Plain Layout
 
-    public ISeq<Phenotype<G, C>> select(
+    ISeq<Phenotype<G, C>> select(
 \end_layout
 
 \begin_layout Plain Layout
@@ -14751,7 +14746,7 @@ public interface Alterer<
 
 \begin_layout Plain Layout
 
-    public AltererResult<G, C> alter(
+    AltererResult<G, C> alter(
 \end_layout
 
 \begin_layout Plain Layout
@@ -17685,17 +17680,17 @@ public interface Codec<T, G extends Gene<?, G>> {
 
 \begin_layout Plain Layout
 
-    public Factory<Genotype<G>> encoding();
+    Factory<Genotype<G>> encoding();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Function<Genotype<G>, T> decoder();
+    Function<Genotype<G>, T> decoder();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public default T decode(final Genotype<G> gt) {...}
+    default T decode(final Genotype<G> gt) {...}
 \end_layout
 
 \begin_layout Plain Layout
@@ -21012,12 +21007,12 @@ public interface Constraint<
 
 \begin_layout Plain Layout
 
-    public boolean test(Phenotype<G, C> ind);
+    boolean test(Phenotype<G, C> ind);
 \end_layout
 
 \begin_layout Plain Layout
 
-	public Phenotype<G, C> repair(Phenotype<G, C> ind, long gen);
+	Phenotype<G, C> repair(Phenotype<G, C> ind, long gen);
 \end_layout
 
 \begin_layout Plain Layout
@@ -26118,22 +26113,22 @@ public interface Tree<V, T extends Tree<V, T>> {
 
 \begin_layout Plain Layout
 
-    public V value();
+    V value();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Optional<T> parent();
+    Optional<T> parent();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T childAt(int index);
+    T childAt(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int childCount();
+    int childCount();
 \end_layout
 
 \begin_layout Plain Layout
@@ -26834,12 +26829,12 @@ public interface FlatTree<V, T extends FlatTree<V, T>>
 
 \begin_layout Plain Layout
 
-    public int childOffset();
+    int childOffset();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public default ISeq<T> flattenedNodes() {...};
+    default ISeq<T> flattenedNodes() {...};
 \end_layout
 
 \begin_layout Plain Layout
@@ -30665,27 +30660,27 @@ public interface Vec<T> extends Comparable<Vec<T>> {
 
 \begin_layout Plain Layout
 
-    public T data();
+    T data();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int length();
+    int length();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public ElementComparator<T> comparator();
+    ElementComparator<T> comparator();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public ElementDistance<T> distance();
+    ElementDistance<T> distance();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Comparator<T> dominance();
+    Comparator<T> dominance();
 \end_layout
 
 \begin_layout Plain Layout
@@ -31709,17 +31704,17 @@ public interface Op<T> {
 
 \begin_layout Plain Layout
 
-    public String name();
+    String name();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public int arity();
+    int arity();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T apply(T[] args);
+    T apply(T[] args);
 \end_layout
 
 \begin_layout Plain Layout
@@ -33504,7 +33499,7 @@ public interface LossFunction<T> {
 
 \begin_layout Plain Layout
 
-	public double apply(T[] calculated, T[] expected);
+	double apply(T[] calculated, T[] expected);
 \end_layout
 
 \begin_layout Plain Layout
@@ -33685,7 +33680,7 @@ public interface Complexity<T> {
 
 \begin_layout Plain Layout
 
-	public double apply(Tree<? extends Op<T>, ?> program);
+	double apply(Tree<? extends Op<T>, ?> program);
 \end_layout
 
 \begin_layout Plain Layout
@@ -33762,7 +33757,7 @@ public interface Error<T> {
 
 \begin_layout Plain Layout
 
-	public double apply(
+	double apply(
 \end_layout
 
 \begin_layout Plain Layout
@@ -33972,17 +33967,17 @@ public interface Sample<T> {
 
 \begin_layout Plain Layout
 
-	public int arity();
+	int arity();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T argAt(int index);
+    T argAt(int index);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public T result();
+    T result();
 \end_layout
 
 \begin_layout Plain Layout
@@ -34278,7 +34273,7 @@ public interface Writer<T> {
 
 \begin_layout Plain Layout
 
-    public void write(XMLStreamWriter xml, T data)
+    void write(XMLStreamWriter xml, T data)
 \end_layout
 
 \begin_layout Plain Layout
@@ -34292,17 +34287,17 @@ public interface Writer<T> {
 
 \begin_layout Plain Layout
 
-    public static <T> Writer<T> attr(String name);
+    static <T> Writer<T> attr(String name);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public static <T> Writer<T> attr(String name, Object value);
+    static <T> Writer<T> attr(String name, Object value);
 \end_layout
 
 \begin_layout Plain Layout
 
-    public static <T> Writer<T> text();
+    static <T> Writer<T> text();
 \end_layout
 
 \begin_layout Plain Layout
@@ -34311,7 +34306,7 @@ public interface Writer<T> {
 
 \begin_layout Plain Layout
 
-    public static <T> Writer<T>
+    static <T> Writer<T>
 \end_layout
 
 \begin_layout Plain Layout
@@ -34326,7 +34321,7 @@ public interface Writer<T> {
 
 \begin_layout Plain Layout
 
-    public static <T> Writer<Iterable<T>>
+    static <T> Writer<Iterable<T>>
 \end_layout
 
 \begin_layout Plain Layout
