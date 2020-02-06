@@ -43,7 +43,7 @@ public class RegressionTest {
 
 	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double) RandomRegistry.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double) RandomRegistry.random().nextInt(10))
 	);
 
 	@Test

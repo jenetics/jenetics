@@ -35,7 +35,7 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 	@Override
 	protected Factory<AnyGene<Integer>> factory() {
-		return () -> AnyGene.of(RandomRegistry.getRandom()::nextInt);
+		return () -> AnyGene.of(RandomRegistry.random()::nextInt);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 	@Test
 	public void isValid() {
 		final AnyGene<Integer> gene = AnyGene.of(
-			() -> RandomRegistry.getRandom().nextInt(1000),
+			() -> RandomRegistry.random().nextInt(1000),
 			i -> i < 100
 		);
 

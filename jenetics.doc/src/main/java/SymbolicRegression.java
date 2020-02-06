@@ -19,6 +19,8 @@ import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Regression;
 import io.jenetics.prog.regression.Sample;
 
+import static io.jenetics.util.RandomRegistry.random;
+
 public class SymbolicRegression {
 
 	// Definition of the allowed operations.
@@ -28,8 +30,7 @@ public class SymbolicRegression {
 	// Definition of the terminals.
 	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double)RandomRegistry
-			.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double)random().nextInt(10))
 	);
 
 	private static final Regression<Double> REGRESSION =

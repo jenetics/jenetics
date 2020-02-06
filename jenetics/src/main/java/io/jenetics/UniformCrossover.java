@@ -123,7 +123,7 @@ public class UniformCrossover<
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
-		return (int)indexes(RandomRegistry.getRandom(), length, _swapProbability)
+		return (int)indexes(RandomRegistry.random(), length, _swapProbability)
 			.peek(i -> that.swap(i, other))
 			.count();
 	}

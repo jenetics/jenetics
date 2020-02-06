@@ -41,7 +41,7 @@ public class CharSeqTest extends ObjectTester<CharSeq> {
 	@Override
 	protected Factory<CharSeq> factory() {
 		return () -> {
-			final Random r = RandomRegistry.getRandom();
+			final Random r = RandomRegistry.random();
 			return new CharSeq(Randoms.nextASCIIString(r.nextInt(200) + 100, r));
 		};
 	}

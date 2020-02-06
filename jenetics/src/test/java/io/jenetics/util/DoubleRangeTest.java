@@ -34,7 +34,7 @@ public class DoubleRangeTest extends ObjectTester<DoubleRange> {
 	@Override
 	protected Factory<DoubleRange> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return DoubleRange.of(random.nextDouble(), random.nextDouble() + 1.1);
 		};
 	}

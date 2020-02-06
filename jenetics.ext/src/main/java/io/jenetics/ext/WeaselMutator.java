@@ -82,7 +82,7 @@ public class WeaselMutator<
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final Seq<MutatorResult<Phenotype<G, C>>> result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 

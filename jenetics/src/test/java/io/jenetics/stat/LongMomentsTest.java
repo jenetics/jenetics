@@ -38,7 +38,7 @@ public class LongMomentsTest extends ObjectTester<LongMoments> {
 	@Override
 	protected Factory<LongMoments> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return LongMoments.of(
 				random.nextLong(),
 				random.nextLong(),

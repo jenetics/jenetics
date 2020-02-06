@@ -49,7 +49,7 @@ public final class Combinatorics {
 	 * @return the subset array.
 	 */
 	public static int[] subset(final int n, final int k) {
-		return subset(n, k, RandomRegistry.getRandom());
+		return subset(n, k, RandomRegistry.random());
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class Combinatorics {
 	 * @return the subset array
 	 */
 	public static int[] subset(final int[] set, final int k) {
-		return subset(set, k, RandomRegistry.getRandom());
+		return subset(set, k, RandomRegistry.random());
 	}
 
 	/**
@@ -136,7 +136,7 @@ public final class Combinatorics {
 	 *         integer overflow.
 	 */
 	public static int[] subset(final int n, final int[] sub) {
-		return subset(n, sub, RandomRegistry.getRandom());
+		return subset(n, sub, RandomRegistry.random());
 	}
 
 	/**

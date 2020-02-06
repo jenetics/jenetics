@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -184,7 +184,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance() {
-		return of(nextDouble(_min, _max, getRandom()), _min, _max);
+		return of(nextDouble(_min, _max, random()), _min, _max);
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public final class DoubleGene
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(min, max, getRandom()), min, max);
+		return of(nextDouble(min, max, random()), min, max);
 	}
 
 	/**
@@ -270,7 +270,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.min(), range.max(), getRandom()), range);
+		return of(nextDouble(range.min(), range.max(), random()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -278,7 +278,7 @@ public final class DoubleGene
 		final double max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
+		final Random r = random();
 		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();

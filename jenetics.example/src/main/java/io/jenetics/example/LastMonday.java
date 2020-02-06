@@ -51,7 +51,7 @@ public class LastMonday {
 	// for guaranteeing the desired allele restriction. In this case we will
 	// generate only mondays.
 	private static LocalDate nextRandomMonday() {
-		return MIN_MONDAY.plusWeeks(RandomRegistry.getRandom().nextInt(1000));
+		return MIN_MONDAY.plusWeeks(RandomRegistry.random().nextInt(1000));
 	}
 
 	// The fitness function: find a monday at the end of the month.

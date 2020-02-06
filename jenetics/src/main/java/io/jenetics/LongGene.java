@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -185,7 +185,7 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance() {
-		return LongGene.of(nextLong(getRandom(), _min, _max), _min, _max);
+		return LongGene.of(nextLong(random(), _min, _max), _min, _max);
 	}
 
 	@Override
@@ -252,7 +252,7 @@ public final class LongGene
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(nextLong(getRandom(), min, max), min, max);
+		return of(nextLong(random(), min, max), min, max);
 	}
 
 	/**
@@ -266,7 +266,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final LongRange range) {
-		return of(nextLong(getRandom(), range.min(), range.max()), range);
+		return of(nextLong(random(), range.min(), range.max()), range);
 	}
 
 	static ISeq<LongGene> seq(
@@ -274,7 +274,7 @@ public final class LongGene
 		final long max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
+		final Random r = random();
 		return MSeq.<LongGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
 			.toISeq();

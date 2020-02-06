@@ -50,7 +50,7 @@ public class Sorting {
 	}
 
 	public static void main(final String[] args) {
-		RandomRegistry.setRandom(new Random());
+		RandomRegistry.set(new Random());
 		final Engine<EnumGene<Integer>, Integer> engine = Engine
 			.builder(
 				Sorting::length,

@@ -157,7 +157,7 @@ public final class EnumGene<A>
 	@Override
 	public EnumGene<A> newInstance() {
 		return new EnumGene<>(
-			RandomRegistry.getRandom().nextInt(_validAlleles.length()),
+			RandomRegistry.random().nextInt(_validAlleles.length()),
 			_validAlleles
 		);
 	}
@@ -248,7 +248,7 @@ public final class EnumGene<A>
 	 */
 	public static <A> EnumGene<A> of(final ISeq<? extends A> validAlleles) {
 		return new EnumGene<>(
-			RandomRegistry.getRandom().nextInt(validAlleles.length()),
+			RandomRegistry.random().nextInt(validAlleles.length()),
 			validAlleles
 		);
 	}

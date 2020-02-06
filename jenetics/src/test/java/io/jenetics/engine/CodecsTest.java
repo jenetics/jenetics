@@ -517,7 +517,7 @@ public class CodecsTest {
 	@Test
 	public void ofAnyScalar() {
 		final Codec<Integer, AnyGene<Integer>> codec = Codecs.ofScalar(
-			() -> RandomRegistry.getRandom().nextInt(1000),
+			() -> RandomRegistry.random().nextInt(1000),
 			i -> i < 100
 		);
 
@@ -534,7 +534,7 @@ public class CodecsTest {
 	@Test
 	public void ofAnyScalar2() {
 		final Codec<Integer, AnyGene<Integer>> codec = Codecs.ofScalar(
-			() -> RandomRegistry.getRandom().nextInt(1000)
+			() -> RandomRegistry.random().nextInt(1000)
 		);
 
 		for (int i = 0; i < 1000; ++i) {
@@ -552,7 +552,7 @@ public class CodecsTest {
 		final int length = 23;
 		final Codec<ISeq<Integer>, AnyGene<Integer>> codec =
 			Codecs.ofVector(
-				() -> RandomRegistry.getRandom().nextInt(1000),
+				() -> RandomRegistry.random().nextInt(1000),
 				i -> i < 100,
 				length
 			);

@@ -117,7 +117,7 @@ public class TournamentSelector<
 			));
 		}
 
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		return population.isEmpty()
 			? ISeq.empty()
 			: MSeq.<Phenotype<G, C>>ofLength(count)

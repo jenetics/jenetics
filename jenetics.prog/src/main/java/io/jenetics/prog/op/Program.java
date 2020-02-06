@@ -286,7 +286,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(depth, operations, terminals, RandomRegistry.getRandom());
+		return of(depth, operations, terminals, RandomRegistry.random());
 	}
 
 	/**
@@ -390,7 +390,7 @@ public class Program<T> implements Op<T>, Serializable {
 			nodes,
 			offsets(nodes),
 			terminals,
-			RandomRegistry.getRandom()
+			RandomRegistry.random()
 		);
 	}
 

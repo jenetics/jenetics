@@ -129,7 +129,7 @@ public class PersistentObject<T> {
 		final Reader<? extends T> reader
 	) {
 		VALUES.add(new PersistentObject<>(name, value, writer, reader));
-		RandomRegistry.getRandom().setSeed(SEED);
+		RandomRegistry.random().setSeed(SEED);
 	}
 
 	private static void init() {
@@ -460,7 +460,7 @@ public class PersistentObject<T> {
 
 
 	private static Random random() {
-		return RandomRegistry.getRandom();
+		return RandomRegistry.random();
 	}
 
 	static {

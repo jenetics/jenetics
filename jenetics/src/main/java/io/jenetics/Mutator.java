@@ -113,7 +113,7 @@ public class Mutator<
 	) {
 		assert population != null : "Not null is guaranteed from base class.";
 
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double p = pow(_probability, 1.0/3.0);
 		final int P = Probabilities.toInt(p);
 

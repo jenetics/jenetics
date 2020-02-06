@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -184,7 +184,7 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance() {
-		return IntegerGene.of(nextInt(getRandom(), _min, _max), _min, _max);
+		return IntegerGene.of(nextInt(random(), _min, _max), _min, _max);
 	}
 
 	@Override
@@ -251,7 +251,7 @@ public final class IntegerGene
 	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
-		return of(nextInt(getRandom(), min, max), min, max);
+		return of(nextInt(random(), min, max), min, max);
 	}
 
 	/**
@@ -265,7 +265,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(getRandom(), range.min(), range.max()), range);
+		return of(nextInt(random(), range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -273,7 +273,7 @@ public final class IntegerGene
 		final int max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
+		final Random r = random();
 		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();

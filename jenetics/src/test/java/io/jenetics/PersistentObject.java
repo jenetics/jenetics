@@ -112,7 +112,7 @@ public class PersistentObject<T> {
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<>(name, value, ios));
-		RandomRegistry.getRandom().setSeed(SEED);
+		RandomRegistry.random().setSeed(SEED);
 	}
 
 	private static void init() {
@@ -504,7 +504,7 @@ public class PersistentObject<T> {
 	}
 
 	private static Random random() {
-		return RandomRegistry.getRandom();
+		return RandomRegistry.random();
 	}
 
 	static {

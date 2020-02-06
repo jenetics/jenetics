@@ -60,7 +60,7 @@ public class EvolutionResultTest
 				a -> a.gene().allele();
 
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			final Genotype<DoubleGene> gtf = Genotype.of(DoubleChromosome.of(0, 1));
 
 			return EvolutionResult.of(
@@ -142,7 +142,7 @@ public class EvolutionResultTest
 			));
 			population.set(i, Phenotype.of(gt, 1, i));
 		}
-		population.shuffle(RandomRegistry.getRandom());
+		population.shuffle(RandomRegistry.random());
 
 		final EvolutionResult<IntegerGene, Integer> maxResult = EvolutionResult.of(
 			Optimize.MAXIMUM, population.toISeq(),
@@ -173,7 +173,7 @@ public class EvolutionResultTest
 			));
 			small.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
-		small.shuffle(RandomRegistry.getRandom());
+		small.shuffle(RandomRegistry.random());
 
 		final MSeq<Phenotype<IntegerGene, Integer>> big = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
@@ -182,7 +182,7 @@ public class EvolutionResultTest
 			));
 			big.set(i, Phenotype.of(gt, 1, gt.gene().intValue()));
 		}
-		big.shuffle(RandomRegistry.getRandom());
+		big.shuffle(RandomRegistry.random());
 
 
 		final EvolutionResult<IntegerGene, Integer> smallMaxResult = EvolutionResult.of(
@@ -246,7 +246,7 @@ public class EvolutionResultTest
 			));
 			pop.set(i, Phenotype.of(gt, 1, value));
 		}
-		pop.shuffle(RandomRegistry.getRandom());
+		pop.shuffle(RandomRegistry.random());
 
 
 		return EvolutionResult

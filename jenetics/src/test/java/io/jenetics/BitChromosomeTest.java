@@ -62,7 +62,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test
 	public void chromosomeProbability() {
 		final byte[] data = new byte[1234];
-		RandomRegistry.getRandom().nextBytes(data);
+		RandomRegistry.random().nextBytes(data);
 
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(

@@ -105,7 +105,7 @@ public final class Arrays {
 	}
 
 	public static double[] shuffle(final double[] array) {
-		return shuffle(array, RandomRegistry.getRandom());
+		return shuffle(array, RandomRegistry.random());
 	}
 
 	public static int[] shuffle(final int[] array, final Random random) {
@@ -116,7 +116,7 @@ public final class Arrays {
 	}
 
 	public static int[] shuffle(final int[] array) {
-		return shuffle(array, RandomRegistry.getRandom());
+		return shuffle(array, RandomRegistry.random());
 	}
 
 }

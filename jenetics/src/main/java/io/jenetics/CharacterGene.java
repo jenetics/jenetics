@@ -213,7 +213,7 @@ public final class CharacterGene
 	public static CharacterGene of(final CharSeq validCharacters) {
 		return new CharacterGene(
 			validCharacters,
-			RandomRegistry.getRandom().nextInt(validCharacters.length())
+			RandomRegistry.random().nextInt(validCharacters.length())
 		);
 	}
 
@@ -238,7 +238,7 @@ public final class CharacterGene
 	public static CharacterGene of() {
 		return new CharacterGene(
 			DEFAULT_CHARACTERS,
-			RandomRegistry.getRandom().nextInt(DEFAULT_CHARACTERS.length())
+			RandomRegistry.random().nextInt(DEFAULT_CHARACTERS.length())
 		);
 	}
 
@@ -262,7 +262,7 @@ public final class CharacterGene
 		final CharSeq chars,
 		final IntRange lengthRange
 	) {
-		final Random r = RandomRegistry.getRandom();
+		final Random r = RandomRegistry.random();
 
 		return MSeq.<CharacterGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))

@@ -65,7 +65,7 @@ public class TravelingSalesman
 		}
 
 		// Shuffling of the created points.
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		for (int j = points.length() - 1; j > 0; --j) {
 			final int i = random.nextInt(j + 1);
 			final double[] tmp = points.get(i);

@@ -39,7 +39,7 @@ public class lists {
 	 * @throws NullPointerException if the give list is {@code null}.
 	 */
 	public static <T> void shuffle(final List<T> list) {
-		shuffle(list, RandomRegistry.getRandom());
+		shuffle(list, RandomRegistry.random());
 	}
 
 	/**

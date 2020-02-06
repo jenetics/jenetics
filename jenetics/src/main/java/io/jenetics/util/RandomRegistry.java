@@ -103,11 +103,18 @@ public final class RandomRegistry {
 	 *
 	 * @return the global {@link Random} object.
 	 */
-	public static Random getRandom() {
+	public static Random random() {
 		return CONTEXT.get().get();
 	}
 
-	static Random random() {
+	/**
+	 * Return the global {@link Random} object.
+	 *
+	 * @return the global {@link Random} object.
+	 * @deprecated Use {@link #random()} instead
+	 */
+	@Deprecated
+	public static Random getRandom() {
 		return CONTEXT.get().get();
 	}
 
@@ -120,11 +127,32 @@ public final class RandomRegistry {
 	 * PRN generation, because the given {@code Random} engine don't have to be
 	 * thread-safe.
 	 *
-	 * @see #setRandom(ThreadLocal)
+	 * @see #set(ThreadLocal)
 	 *
 	 * @param random the new global {@link Random} object for the GA.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
+	public static void set(final Random random) {
+		requireNonNull(random, "Random must not be null.");
+		CONTEXT.set(() -> random);
+	}
+
+	/**
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} <b>must</b> be thread safe, which is the case for the
+	 * default Java {@code Random} implementation.
+	 * <p>
+	 * Setting a <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, because the given {@code Random} engine don't have to be
+	 * thread-safe.
+	 *
+	 * @see #set(ThreadLocal)
+	 *
+	 * @param random the new global {@link Random} object for the GA.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 * @deprecated Use {@link #set(Random)} instead
+	 */
+	@Deprecated
 	public static void setRandom(final Random random) {
 		requireNonNull(random, "Random must not be null.");
 		CONTEXT.set(() -> random);
@@ -141,6 +169,25 @@ public final class RandomRegistry {
 	 * @param random the thread-local random engine to use.
 	 * @throws NullPointerException if the {@code random} object is {@code null}.
 	 */
+	@SuppressWarnings("unchecked")
+	public static void set(final ThreadLocal<? extends Random> random) {
+		requireNonNull(random, "Random must not be null.");
+		CONTEXT.set(random::get);
+	}
+
+	/**
+	 * Set the new global {@link Random} object for the GA. The given
+	 * {@link Random} don't have be thread safe, because the given
+	 * {@link ThreadLocal} wrapper guarantees thread safety. Setting a
+	 * <i>thread-local</i> random object leads, in general, to a faster
+	 * PRN generation, when using a non-blocking PRNG. This is the preferred
+	 * way for changing the PRNG.
+	 *
+	 * @param random the thread-local random engine to use.
+	 * @throws NullPointerException if the {@code random} object is {@code null}.
+	 * @deprecated Use {@link #set(ThreadLocal)} instead
+	 */
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public static void setRandom(final ThreadLocal<? extends Random> random) {
 		requireNonNull(random, "Random must not be null.");

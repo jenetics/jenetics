@@ -111,7 +111,7 @@ public abstract class Recombinator<
 	) {
 		final AltererResult<G, C> result;
 		if (population.size() >= 2) {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			final int order = Math.min(_order, population.size());
 
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);

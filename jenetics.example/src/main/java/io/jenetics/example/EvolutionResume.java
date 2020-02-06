@@ -49,7 +49,7 @@ public class EvolutionResume {
 
 	// The problem definition.
 	private static final Problem<ISeq<Item>, BitGene, Double> KNAPSACK =
-		Knapsack.of(250, RandomRegistry.getRandom());
+		Knapsack.of(250, RandomRegistry.random());
 
 	// The evolution engine.
 	private static final Engine<BitGene, Double> ENGINE =

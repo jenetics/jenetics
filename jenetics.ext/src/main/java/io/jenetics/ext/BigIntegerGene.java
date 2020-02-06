@@ -21,7 +21,7 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -144,7 +144,7 @@ public final class BigIntegerGene
 	) {
 		Requires.positive(length);
 
-		final Random r = getRandom();
+		final Random r = random();
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(
@@ -183,7 +183,7 @@ public final class BigIntegerGene
 	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
-			random.nextBigInteger(min, max, RandomRegistry.getRandom()),
+			random.nextBigInteger(min, max, RandomRegistry.random()),
 			min,
 			max
 		);

@@ -510,7 +510,7 @@ public final class Bits {
 	public static byte[] newArray(final int length, final double p) {
 		final byte[] bytes = newArray(length);
 
-		Randoms.indexes(RandomRegistry.getRandom(), length, p)
+		Randoms.indexes(RandomRegistry.random(), length, p)
 			.forEach(i -> bytes[i >>> 3] |= 1 << (i & 7));
 
 		return bytes;
