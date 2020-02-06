@@ -20489,6 +20489,94 @@ final Codec<Triple<Long, Long, Long>, LongGene>
 
 \end_layout
 
+\begin_layout Subsection
+Invertible codec
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Invertible codec
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+InvertibleCodec
+\family default
+ extends the 
+\family typewriter
+Codec
+\family default
+ interface and allows to create a 
+\family typewriter
+Genotype
+\family default
+ from a given value of the native problem domain.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public interface InvertibleCodec<T, G extends Gene<?, G>> 
+\end_layout
+
+\begin_layout Plain Layout
+
+    extends Codec<T, G>
+\end_layout
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\begin_layout Plain Layout
+
+    Function<T, Genotype<G>> encoder();
+\end_layout
+
+\begin_layout Plain Layout
+
+    default Genotype<G> encode(final T value) {...}
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+InvertibleCodec
+\family default
+ interface
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:InvertibleCodec-interface"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Problem
 \begin_inset Index idx
@@ -20548,12 +20636,12 @@ public interface Problem<
 
 \begin_layout Plain Layout
 
-    public Function<T, C> fitness();
+    Function<T, C> fitness();
 \end_layout
 
 \begin_layout Plain Layout
 
-    public Codec<T, G> codec();
+    Codec<T, G> codec();
 \end_layout
 
 \begin_layout Plain Layout
@@ -39564,7 +39652,7 @@ Homepage
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -39585,7 +39673,7 @@ Download
 \emph on
 
 \begin_inset Flex URL
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
