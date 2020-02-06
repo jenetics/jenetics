@@ -20569,7 +20569,64 @@ name "lis:InvertibleCodec-interface"
 
 \end_inset
 
+Listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:InvertibleCodec-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
+\end_inset
+
+ shows the additional methods of the 
+\family typewriter
+Invert\SpecialChar softhyphen
+ible\SpecialChar softhyphen
+Codec
+\family default
+ interface.
+ Creating a 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ from a given domain value simplifies the implementing the 
+\family typewriter
+Const\SpecialChar softhyphen
+raint\SpecialChar softhyphen
+.repair
+\family default
+ method.
+ Most of the factory methods in the 
+\family typewriter
+Codecs
+\family default
+ class will return 
+\family typewriter
+Invert\SpecialChar softhyphen
+ible\SpecialChar softhyphen
+Codec
+\family default
+ instances.
+ The 
+\family typewriter
+encoder
+\family default
+ function is not necessary the inverse of the 
+\family typewriter
+decoder
+\family default
+ function of the 
+\family typewriter
+Codec
+\family default
+ interface.
+ This is the case if more then one 
+\family typewriter
+Genotype
+\family default
+ maps to the same value of the problem domain.
 \end_layout
 
 \begin_layout Section
