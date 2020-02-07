@@ -21139,6 +21139,40 @@ Constraint
 repair
 \family default
  method by creating a new phenotype until the created individual is valid.
+ Although this approach seems a little bit simplistic, it has an important
+ and desirable property: the 
+\emph on
+repaired
+\emph default
+ individuals follow the same distribution then the original.
+ This means, that no part of the problem domain is left out or is 
+\emph on
+overcrowded
+\emph default
+.
+ The number of necessary retries is also not a problem, for 
+\emph on
+normal
+\emph default
+ constraints.
+ For example, the probability that a randomly created point lies outside
+ the unit circle is 
+\begin_inset Formula $1-\frac{\pi}{4}\thickapprox0.2146$
+\end_inset
+
+.
+ This leads to a failure probability after 10, which is the default value
+ of the 
+\family typewriter
+Retry\SpecialChar softhyphen
+Cons\SpecialChar softhyphen
+traint
+\family default
+, tries of 
+\begin_inset Formula $\left(1-\frac{\pi}{4}\right)^{10}\thickapprox0.000000207$
+\end_inset
+
+.
  You can parameterize a different constraint definition with the 
 \family typewriter
 constraint
@@ -21224,8 +21258,12 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-Although the RetryConstraint is the default implementation of the Constraint
- interface, it might not be best one.
+Although the 
+\family typewriter
+RetryConstraint
+\family default
+ is the default implementation of the Constraint interface, it might not
+ be best one.
  If it is possible, it is better to try to repair an invalid phenotype instead
  of creating a new one.
  Suppose you need to optimize the fitness function, 
@@ -21475,6 +21513,234 @@ Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
 \begin_layout Plain Layout
 
 }
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Writing a repair method this way is quite tedious.
+ The new 
+\family typewriter
+Invertible\SpecialChar softhyphen
+Co\SpecialChar softhyphen
+dec
+\family default
+ interface, see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:InvertibleCodec-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, allows to implement the repair function in a more natural way.
+ Imagine you want to encode a split range, as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "fig:Split-range-domain"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Only the values between 
+\begin_inset Formula $\left[0,2\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $\left[8,10\right)$
+\end_inset
+
+ are valid.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../resources/graphic/RepairConstraint.svg
+	lyxscale 80
+	width 65text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Split-range-domain"
+
+\end_inset
+
+Split range domain
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The following listing shows how to create a constraint, which fulfills the
+ desired codec property.
+ 
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final InvertibleCodec<Double, DoubleGene> codec =     
+\end_layout
+
+\begin_layout Plain Layout
+
+    Codecs.ofScalar(DoubleRange.of(0, 10));
+\end_layout
+
+\begin_layout Plain Layout
+
+final Constraint<DoubleGene, Double> constraint = Constraint.of(
+\end_layout
+
+\begin_layout Plain Layout
+
+    codec,
+\end_layout
+
+\begin_layout Plain Layout
+
+    v -> v < 2 || v >= 8,
+\end_layout
+
+\begin_layout Plain Layout
+
+    v -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+        if (v >= 2 && v < 8) {
+\end_layout
+
+\begin_layout Plain Layout
+
+            return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;        
+\end_layout
+
+\begin_layout Plain Layout
+
+        }
+\end_layout
+
+\begin_layout Plain Layout
+
+        return v;
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+Using an 
+\family typewriter
+InvertibleCodec
+\family default
+ instead of a 
+\family typewriter
+Codec
+\family default
+, the repair function can be expressed in the native problem domain.
+ In the given example, the repair function maps the invalid range 
+\begin_inset Formula $\left[2,5\right)$
+\end_inset
+
+ to 
+\begin_inset Formula $\left[0,2\right)$
+\end_inset
+
+ and the invalid range 
+\begin_inset Formula $\left[5,8\right)$
+\end_inset
+
+ to 
+\begin_inset Formula $\left[8,10\right)$
+\end_inset
+
+.
+ An alternative implementation for this codec can also be created by mapping
+ the scalar range 
+\family typewriter
+Codec
+\family default
+ directly, as shown in the following listing.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final Codec<Double, DoubleGene> codec = Codecs    
+\end_layout
+
+\begin_layout Plain Layout
+
+    .ofScalar(DoubleRange.of(0, 10))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .map(v -> {
+\end_layout
+
+\begin_layout Plain Layout
+
+            if (v >= 2 && v < 8) {
+\end_layout
+
+\begin_layout Plain Layout
+
+                return v < 5 ? ((v - 2)/3)*2 : ((8 - v)/3)*2 + 8;
+\end_layout
+
+\begin_layout Plain Layout
+
+            }
+\end_layout
+
+\begin_layout Plain Layout
+
+            return v;
+\end_layout
+
+\begin_layout Plain Layout
+
+        });
 \end_layout
 
 \end_inset
