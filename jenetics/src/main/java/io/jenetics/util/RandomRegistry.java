@@ -43,11 +43,11 @@ import java.util.function.Supplier;
  *     public static void main(final String[] args) {
  *         // Initialize the registry with a ThreadLocal instance of the PRGN.
  *         // This is the preferred way setting a new PRGN.
- *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadLocal());
+ *         RandomRegistry.random(new LCG64ShiftRandom.ThreadLocal());
  *
  *         // Using a thread safe variant of the PRGN. Leads to slower PRN
  *         // generation, but gives you the possibility to set a PRNG seed.
- *         RandomRegistry.setRandom(new LCG64ShiftRandom.ThreadSafe(1234));
+ *         RandomRegistry.random(new LCG64ShiftRandom.ThreadSafe(1234));
  *
  *         ...
  *         final EvolutionResult<DoubleGene, Double> result = stream
