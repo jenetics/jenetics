@@ -828,11 +828,11 @@ public final class Codecs {
 		final Map<Integer, EnumGene<Integer>> genes
 	) {
 		final int[] perm = new int[target.size()];
-		for (Map.Entry<A, Integer> sm : source.entrySet()) {
-			final int i = sm.getValue();
-			final int j = target.get(mapping.get(sm.getKey()));
+		source.forEach((key, value) -> {
+			final int i = value;
+			final int j = target.get(mapping.get(key));
 			perm[i%perm.length] = j;
-		}
+		});
 
 		// Fill the rest of the 'perm' array, without duplicates.
 		// TODO: can be done more efficiently
