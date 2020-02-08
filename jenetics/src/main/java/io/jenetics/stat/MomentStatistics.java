@@ -189,12 +189,9 @@ abstract class MomentStatistics {
 		double skewness = NaN;
 		if (_n >= 3L) {
 			final double var = _m2.value()/(_n - 1.0);
-			if (var < 10E-20) {
-				skewness = 0.0d;
-			} else {
-				skewness = (_n*_m3.value())/
-						((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
-			}
+			skewness = var < 10E-20
+				? 0.0d
+				: (_n*_m3.value())/((_n - 1.0)*(_n - 2.0)*sqrt(var)*var);
 		}
 
 		return skewness;
@@ -228,13 +225,11 @@ abstract class MomentStatistics {
 		double kurtosis = NaN;
 		if (_n > 3L) {
 			final double var = _m2.value()/(_n - 1);
-			if (_n <= 3L || var < 10E-20) {
-				kurtosis = 0.0;
-			} else {
-				kurtosis = (_n*(_n + 1.0)*_m4.value() -
+			kurtosis = _n <= 3L || var < 10E-20
+				? 0.0
+				: (_n*(_n + 1.0)*_m4.value() -
 					3.0*_m2.value()*_m2.value()*(_n - 1.0))/
 					((_n - 1.0)*(_n - 2.0)*(_n - 3.0)*var*var);
-			}
 		}
 		return kurtosis;
 	}

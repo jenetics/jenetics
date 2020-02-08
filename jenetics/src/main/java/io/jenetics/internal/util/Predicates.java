@@ -53,7 +53,7 @@ public final class Predicates {
 	 * Checks whether the given {@code throwable} is a non-fatal error.
 	 *
 	 * @param throwable the throwable to check
-	 * @return
+	 * @return true if the given {@code throwable} is a non-fatal error
 	 */
 	public static boolean nonFatal(final Throwable throwable) {
 		return

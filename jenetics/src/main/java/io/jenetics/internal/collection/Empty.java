@@ -156,9 +156,7 @@ public final class Empty {
 			return "[]";
 		}
 
-	};
-
-
+	}
 
 	public enum EmptyISeq implements ISeq<Object> {
 
@@ -247,7 +245,7 @@ public final class Empty {
 			return "[]";
 		}
 
-	};
+	}
 
 	@SuppressWarnings("unchecked")
 	public static <T> MSeq<T> mseq() {

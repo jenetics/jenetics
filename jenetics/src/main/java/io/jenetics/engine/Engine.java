@@ -1099,7 +1099,7 @@ public final class Engine<
 				));
 			}
 
-			return survivorsFraction((size/(double)_evolutionParams.populationSize()));
+			return survivorsFraction(size/(double)_evolutionParams.populationSize());
 		}
 
 		/**
@@ -1514,7 +1514,7 @@ public final class Engine<
 		 */
 		@Override
 		public Builder<G, C> copy() {
-			return new Builder<G, C>(_evaluator, _genotypeFactory)
+			return new Builder<>(_evaluator, _genotypeFactory)
 				.clock(_clock)
 				.executor(_executor)
 				.constraint(_constraint)

@@ -489,7 +489,7 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Predicates.<ISeq<A>>True(),
+			Predicates.True(),
 			length
 		);
 	}

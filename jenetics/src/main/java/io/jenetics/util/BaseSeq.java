@@ -82,7 +82,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 
 	@Override
 	default Spliterator<T> spliterator() {
-		return new BaseSeqSpliterator<T>(this);
+		return new BaseSeqSpliterator<>(this);
 	}
 
 }
