@@ -150,7 +150,7 @@ public final class AdaptiveEngine<
 	@Override
 	public EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start) {
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new GeneratorSpliterator<>(result -> generate(start, result)),
 			false
 		);
@@ -172,7 +172,7 @@ public final class AdaptiveEngine<
 
 	@Override
 	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new GeneratorSpliterator<>(result -> generate(init, result)),
 			false
 		);

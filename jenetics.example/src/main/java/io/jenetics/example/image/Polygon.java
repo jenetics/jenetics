@@ -138,7 +138,7 @@ final class Polygon implements Mean<Polygon> {
 	}
 
 	private static float clamp(final float a) {
-		return a < 0F ? 0F : a > 1F ? 1F : a;
+		return a < 0F ? 0F : Math.min(a, 1F);
 		//return Math.abs(a%1F);
 	}
 

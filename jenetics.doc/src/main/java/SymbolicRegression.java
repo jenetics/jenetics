@@ -1,9 +1,10 @@
+import static io.jenetics.util.RandomRegistry.random;
+
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.TreeNode;
@@ -18,8 +19,6 @@ import io.jenetics.prog.regression.Error;
 import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Regression;
 import io.jenetics.prog.regression.Sample;
-
-import static io.jenetics.util.RandomRegistry.random;
 
 public class SymbolicRegression {
 

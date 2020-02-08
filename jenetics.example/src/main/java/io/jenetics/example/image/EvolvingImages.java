@@ -488,7 +488,7 @@ public class EvolvingImages extends JFrame {
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(final String args[]) {
+	public static void main(final String[] args) {
 		// Start command line version if the right parameters are given.
 		if (new EvolvingImagesCmd(args).run()) return;
 

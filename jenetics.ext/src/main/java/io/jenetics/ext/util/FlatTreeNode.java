@@ -97,7 +97,7 @@ public final class FlatTreeNode<T>
 	}
 
 	private FlatTreeNode<T> nodeAt(final int index) {
-		return new FlatTreeNode<T>(
+		return new FlatTreeNode<>(
 			index,
 			_elements,
 			_childOffsets,
