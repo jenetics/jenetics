@@ -284,17 +284,14 @@ public final class TreePattern<V> implements Serializable {
 			n -> n instanceof Val ? ((Val<V>)n).value() : null
 		);
 
-		for (Map.Entry<Path, Var<V>> var : paths.entrySet()) {
-			final Path path = var.getKey();
-			final Var<V> decl = var.getValue();
-
+		paths.forEach((path, decl) -> {
 			final Tree<? extends V, ?> replacement = vars.get(decl);
 			if (replacement != null) {
 				tree.replaceAtPath(path, TreeNode.ofTree(replacement));
 			} else {
 				tree.removeAtPath(path);
 			}
-		}
+		});
 
 		return tree;
 	}
