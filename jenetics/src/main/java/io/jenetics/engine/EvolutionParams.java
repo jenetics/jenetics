@@ -158,7 +158,7 @@ public final class EvolutionParams<
 	 * @return the offspring count.
 	 */
 	public int offspringSize() {
-		return (int)Math.round(_populationSize*_offspringFraction);
+		return (int)Math.rint(_populationSize*_offspringFraction);
 	}
 
 	/**
