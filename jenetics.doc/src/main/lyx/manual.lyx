@@ -7412,7 +7412,11 @@ Stream
  Evolution\SpecialChar softhyphen
 Stream
 \family default
- you can define the termination predicate and than collect the final
+ you can define the termination predicate and 
+\emph on
+collect
+\emph default
+ the final
 \family typewriter
  Evolution\SpecialChar softhyphen
 Result
@@ -7464,18 +7468,19 @@ The fitness
 \family typewriter
  Function
 \family default
- is also an important part when modeling an genetic algorithm.
+ is also an important part when modeling a genetic algorithm.
  It takes a
 \family typewriter
  Genotype
 \family default
- as argument and returns, at least, a
+ as argument and returns a fitness value.
+ The returned fitness value must implement the
 \family typewriter
  Compar\SpecialChar softhyphen
 ab\SpecialChar softhyphen
 le
 \family default
- object as result—the fitness value.
+ interface.
  This allows the evolution
 \family typewriter
  Engine
@@ -7524,16 +7529,26 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Since the fitness Function is shared by all Phenotypes, calls to the fitness
- Function has to be idempotent.
- A fitness Function is idempotent if, whenever it is applied twice to any
- Genotype, it returns the same fitness value as if it were applied once.
- In the simplest case, this is achieved by Functions which doesn't contain
- any global
-\shape italic
- mutable
-\shape default
- state.
+The fitness 
+\family typewriter
+Function
+\family sans
+ must be deterministic.
+ Whenever it is applied to the same 
+\family typewriter
+Genotype
+\family sans
+, it must return the same fitness value.
+ Non-deterministic fitness 
+\family typewriter
+function
+\family sans
+s can lead to unexpected behavior, since the calculated fitness value is
+ cached by the 
+\family typewriter
+Phenotype
+\family sans
+.
 \end_layout
 
 \begin_layout Plain Layout
@@ -7563,7 +7578,7 @@ The following example shows the simplest possible fitness
 \family typewriter
  Function
 \family default
- simply returns the allele of a 
+ just returns the allele of a 
 \begin_inset Formula $1\mathsf{x}1$
 \end_inset
 
@@ -7671,11 +7686,11 @@ The first type parameter of the
  Genotype
 \family default
  from which the fitness value is calculated and the second type parameter
- determines the return type, which must be, at least, a
+ determines the return type, which must at least implement the
 \family typewriter
  Comparable
 \family default
- type.
+ interface.
 \end_layout
 
 \begin_layout Subsubsection
@@ -7719,7 +7734,11 @@ evolution
  Engine
 \family default
  controls how the evolution steps are executed.
- Once the Engine is created, via a
+ Once the 
+\family typewriter
+Engine
+\family default
+ is created, via its
 \family typewriter
  Builder
 \family default
@@ -7731,11 +7750,11 @@ d from different threads.
  Evolution\SpecialChar softhyphen
 Streams
 \family default
- from the
+ from the same
 \family typewriter
  Engine
 \family default
- and execute them in parallel.
+ and execute them independently.
 \end_layout
 
 \begin_layout Standard
@@ -7786,22 +7805,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    EvolutionResult<G,C> evolve(
-\end_layout
-
-\begin_layout Plain Layout
-
-        ISeq<Phenotype<G, C>> population,
-\end_layout
-
-\begin_layout Plain Layout
-
-        long generation
-\end_layout
-
-\begin_layout Plain Layout
-
-    );
+    public EvolutionResult<G,C> evolve(EvolutionStart<G, C> start);
 \end_layout
 
 \begin_layout Plain Layout
@@ -7815,7 +7819,7 @@ public final class Engine<
 
 \begin_layout Plain Layout
 
-    EvolutionStream<G,C> stream();
+    public EvolutionStream<G,C> stream();
 \end_layout
 
 \begin_layout Plain Layout
@@ -7861,7 +7865,11 @@ reference "lis:Engine-class"
  Engine
 \family default
  class.
- It is used for performing the actual evolution of a give population.
+ The 
+\family typewriter
+Engine
+\family default
+ is used for performing the actual evolution of a give population.
  One evolution step is executed by calling the
 \family typewriter
  Engine.\SpecialChar softhyphen
@@ -7874,18 +7882,23 @@ Result
 \family default
  object.
  This object contains the evolved population plus additional information
- like execution duration of the several evolution sub-steps and information
- about the killed and as invalid marked individuals.
+ like the killed and as invalid marked individuals.
  With the
 \family typewriter
- stream
+ stream() 
 \family default
- method you create a new
+method you create a new
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
 \family default
-, which is used for controlling the evolution process—see section 
+, which is used for controlling the evolution process.
+ For more information about the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ see section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:EvolutionStream"
@@ -7914,8 +7927,12 @@ As already shown in previous examples, the
  Chromosome
 \family default
 s, which represents the problem encoding, must be specified for creating
- an Engine instance.
- For the rest of the parameters default values are specified.
+ an 
+\family typewriter
+Engine
+\family default
+ instance.
+ For the rest of the parameters, default values have been specified.
  This are the
 \family typewriter
  Engine
@@ -8095,7 +8112,7 @@ genotypeFactory
 \family typewriter
  Genotype
 \family default
-, which then serves as template.
+, which serves as template.
 \end_layout
 
 \begin_layout Description
@@ -8103,7 +8120,11 @@ genotypeFactory
 \family typewriter
 maximalPhenotypeAge
 \family default
- Set the maximal allowed age of an individual (Phenotype).
+ Set the maximal allowed age of an individual (
+\family typewriter
+Phenotype
+\family default
+).
  This prevents
 \emph on
  
@@ -8303,11 +8324,11 @@ The
 \family typewriter
 EvolutionStream
 \family default
-s created by the 
+s, created by the 
 \family typewriter
 Engine
 \family default
- class are unlimited.
+ class, are unlimited.
  Such streams must be limited by calling the available 
 \family typewriter
 Evolution\SpecialChar softhyphen
@@ -8339,7 +8360,7 @@ s, they are truncated by the limit predicate defined by the
 Engine
 \family default
 .
- This feature is needed when you are concatenating evolution 
+ This feature is needed for concatenating evolution 
 \family typewriter
 Engine
 \family default
@@ -8435,7 +8456,34 @@ Engine
 Predicate
 \family default
 .
- 
+ The 
+\family typewriter
+Engine\SpecialChar softhyphen
+.limit
+\family default
+ function will return an 
+\family typewriter
+Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
+Stream\SpecialChar softhyphen
+able
+\family default
+ instead of an 
+\family typewriter
+Engine
+\family default
+.
+ This interface lets you create 
+\family typewriter
+Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
+Stream
+\family default
+s, which is what you usually want to do with the 
+\family typewriter
+Engine
+\family default
+.
 \end_layout
 
 \begin_layout Subsubsection
@@ -8469,17 +8517,6 @@ evolution
 Engine
 \family default
  class.
- An EvolutionStream (described in section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsubsec:EvolutionStream"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-) can be created by a given start value and an evolution function.
  The main purpose of the 
 \family typewriter
 Evolution
@@ -8505,11 +8542,20 @@ noprefix "false"
 \family typewriter
 Evolution
 \family default
+ 
+\emph on
+functional
+\emph default
  interface.
 \begin_inset listings
 lstparams "language=Java"
 inline false
 status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
 
 \begin_layout Plain Layout
 
@@ -8743,7 +8789,7 @@ Stream
 \family typewriter
  limit
 \family default
- method allows to truncate the
+ method allows you to truncate the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -8854,7 +8900,7 @@ stateless nature of the evolution
 \family typewriter
  Engine
 \family default
- allows to create more than one
+ allows you to create more than one
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -8863,7 +8909,7 @@ Stream
 \family typewriter
  Engine
 \family default
- instance.
+.
 \end_layout
 
 \begin_layout Standard
@@ -9086,13 +9132,14 @@ The
  Evolution\SpecialChar softhyphen
 Result
 \family default
- collects the result data of an evolution step into an immutable
-\emph on
- 
-\emph default
-value class.
- This class is the type of the stream elements of the EvolutionStream, as
- described in section 
+ contains the result data of an evolution step and is the element type of
+ the 
+\family typewriter
+Evo\SpecialChar softhyphen
+lution\SpecialChar softhyphen
+Stream
+\family default
+, as described in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsubsec:EvolutionStream"
@@ -9140,12 +9187,12 @@ public final class EvolutionResult<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> population();
+    public ISeq<Phenotype<G, C>> population();
 \end_layout
 
 \begin_layout Plain Layout
 
-    long generation();
+    public long generation();
 \end_layout
 
 \begin_layout Plain Layout
@@ -9220,11 +9267,8 @@ s are compared by its best
 \family typewriter
  Phenotype
 \family default
-.
-\end_layout
-
-\begin_layout Standard
-The
+, depending on the optimization direction.
+ The
 \family typewriter
  Evolution\SpecialChar softhyphen
 Result
@@ -9257,7 +9301,7 @@ Evolu\SpecialChar softhyphen
 tion\SpecialChar softhyphen
 Stream
 \family default
- according to the defined optimization strategy.
+ according to the defined optimization strategy (minimization or maximization).
 \end_layout
 
 \begin_layout Description
@@ -9456,7 +9500,7 @@ Statistics
 Stream
 \family default
 .
- This is especially useful during the development phase of the application,
+ This is especially useful during the development phase of an application,
  when you have to find the right parametrization of the evolution
 \family typewriter
  Engine
@@ -9603,7 +9647,7 @@ Statistics.\SpecialChar softhyphen
 ofComparable()
 \family default
  method.
- The second one collects additional statistical data for numeric fitness
+ The second one collects additional statistical data for numerical fitness
  values.
  This can be created with the
 \family typewriter
@@ -9658,7 +9702,7 @@ The
  Evolution\SpecialChar softhyphen
 Statistics
 \family default
- object is a simple for inspecting the
+ object is a simple way for inspecting the
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -9946,7 +9990,7 @@ type
 \family typewriter
  TSM::update
 \family default
- method, which is called on every finished generation, you have a
+ method, which is called on every finished generation, you created a
 \emph on
  live
 \emph default
@@ -10024,6 +10068,11 @@ status open
 
 \begin_layout Plain Layout
 
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
 public interface Evaluator<
 \end_layout
 
@@ -10044,7 +10093,7 @@ public interface Evaluator<
 
 \begin_layout Plain Layout
 
-    ISeq<Phenotype<G, C>> eval(Seq<Phenotype<G, C>> pop);
+    ISeq<Phenotype<G, C>> eval(Seq<Phenotype<G, C>> population);
 \end_layout
 
 \begin_layout Plain Layout
@@ -10082,8 +10131,13 @@ name "lis:Evaluator-interface"
 \end_layout
 
 \begin_layout Standard
-The implementer is free to do the evaluation in place, or create new Phenotype
- instance and return the newly created one.
+The implementer is free to evaluate the whole population, or only evaluate
+ the not yet evaluated 
+\family typewriter
+Pheno\SpecialChar softhyphen
+type
+\family default
+s.
  There are only two requirements which must be fulfilled:
 \end_layout
 
@@ -10103,12 +10157,11 @@ type\SpecialChar softhyphen
 \family default
 \SpecialChar softhyphen
 ) must be true.
- 
 \end_layout
 
 \begin_layout Standard
-The code snippet below implements an evaluator which evaluates the fitness
- values for a given population serially in the main thread.
+The code snippet below creates an evaluator which evaluates the fitness
+ values of the whole population serially in the main thread.
 \begin_inset listings
 lstparams "language=Java"
 inline false
