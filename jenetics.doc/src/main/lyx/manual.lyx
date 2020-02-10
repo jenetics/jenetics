@@ -10352,14 +10352,10 @@ The
 \shape default
  library parallelizes independent task whenever possible.
  Especially the evaluation of the fitness function is done concurrently.
- That means that the fitness function must be thread safe, because it is
- shared by all phenotypes of a population.
+ That means that the fitness function must be thread safe and deterministic.
  The easiest way for achieving thread safety is to make the fitness function
  immutable and re-entrant.
-\end_layout
-
-\begin_layout Standard
-Since the number of individuals of one population, which determines the
+ Since the number of individuals of one population, which determines the
  number of fitness functions to be evaluated, is usually much higher then
  the number of available CPU cores, the fitness evaluation is done in batches.
  This reduces the evaluation overhead, for 
@@ -10442,20 +10438,11 @@ io\SpecialChar softhyphen
 .concurrency\SpecialChar softhyphen
 .maxBatchSize
 \family default
- system property
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
+ system property.
+ The usage of this property is described in section 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "subsec:Concurrency-tweaks"
-
-\end_inset
-
-.
-\end_layout
 
 \end_inset
 
@@ -10486,6 +10473,7 @@ The used
  Engine
 \family default
  object.
+ How to do this is shown in the code example below.
 \end_layout
 
 \begin_layout Standard
@@ -10642,10 +10630,7 @@ https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html
 
 \family default
  for concurrency.
-\end_layout
-
-\begin_layout Standard
-Sometimes it might be useful to run the evaluation
+ Sometimes it might be useful to run the evaluation
 \family typewriter
  Engine
 \family default
@@ -11207,7 +11192,7 @@ PRNG
 
 \end_inset
 
- for creating new individuals and for the selection- and mutation-algorithms.
+ for creating new individuals and for the selection- and mutation algorithms.
 
 \family sans
 \series bold
@@ -11220,7 +11205,7 @@ PRNG
 \family typewriter
  Random
 \family default
- object, respectively sub-types from it, for generating random numbers.
+ class, respectively sub-types from it, for generating random numbers.
  To make the random engine pluggable, the
 \family typewriter
  Random
@@ -11463,16 +11448,16 @@ height "1pt"
 
 \begin_layout Standard
 The parallel nature of the GA implementation requires the creation of streams
- 
+ of random numbers, 
 \begin_inset Formula $t_{i,j}$
 \end_inset
 
- of random numbers which are statistically independent, where the streams
- are numbered with 
+, which are statistically independent.
+ This streams are numbered with 
 \begin_inset Formula $j=1,2,3,...,p$
 \end_inset
 
-, 
+, and 
 \begin_inset Formula $p$
 \end_inset
 
@@ -11559,21 +11544,21 @@ When the
  There are essentially four different parallelizations techniques used in
  practice:
 \emph on
- Random seeding
+ 
 \emph default
-,
+Random seeding,
 \emph on
- Parameterization
+ 
 \emph default
-,
+Parameterization,
 \emph on
- Block splitting
+ 
 \emph default
- and
+Block splitting and
 \emph on
- Leapfrogging
+ 
 \emph default
-.
+Leapfrogging.
 \end_layout
 
 \begin_layout Paragraph
@@ -12411,7 +12396,7 @@ Stream
 \family typewriter
  io.jenetics.util
 \family default
- package, supports native Java serialization.
+ package, supports native Java serialization in a convenient way.
 \end_layout
 
 \begin_layout Standard
@@ -12513,6 +12498,71 @@ The
 \family default
  package of the library contains utility and helper classes which are essential
  for the implementation of the GA.
+\end_layout
+
+\begin_layout Paragraph
+
+\family typewriter
+io.jenetics.util.BaseSeq
+\end_layout
+
+\begin_layout Standard
+This interface defines a minimal contract for sequential data, which can
+ be accessed by its index or position.
+ The algorithms, implemented by the 
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ library, assumes that accessing elements of a 
+\family typewriter
+Base\SpecialChar softhyphen
+Seq
+\family default
+ is done in 
+\begin_inset Formula $O\left(1\right)$
+\end_inset
+
+.
+ 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ and 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ implements the 
+\family typewriter
+Base\SpecialChar softhyphen
+Seq
+\family default
+ interface.
+ This expresses the intend that the 
+\family typewriter
+Chromosome
+\family default
+ is a sequence of 
+\family typewriter
+Gene
+\family default
+s and the 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ is a sequence of 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+s.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -12754,12 +12804,11 @@ io.jenetics.util.ProxySorter
 \begin_layout Standard
 This is a special sorter, which allows you to sort even an immutable collection.
  As the name suggests, it doesn't sort a given sequence directly.
- Instead it 
+ Instead it sorts or rearranges a 
 \emph on
-sorts
-\emph default
- or rearranges a proxy
+proxy
 \family typewriter
+\emph default
  int[]
 \family default
  array, which can then be used for accessing the original sequence in a
@@ -12772,7 +12821,7 @@ Jenetics
 \family default
 \series default
 \shape default
- is, where you need to access of the population in sorted order, but have
+ is where you need to access of the population in sorted order, but have
  to preserve the original order of the population.
 \begin_inset Foot
 status collapsed
@@ -12796,7 +12845,12 @@ io\SpecialChar softhyphen
 .ext\SpecialChar softhyphen
 .moea
 \family default
- package, uses the proxy sorter, which leads to simpler code at this places.
+ package, uses the 
+\family typewriter
+Proxy\SpecialChar softhyphen
+Sorter
+\family default
+, which leads to simpler code at this places.
  How the proxy sorter is used can be seen in the following code snippet.
 \begin_inset listings
 lstparams "language=Java"
@@ -12862,7 +12916,7 @@ The
 \family typewriter
 ProxySorter
 \family default
- also extends the set of sortable objects.
+ increases the set of sortable objects.
  It is even possible to sort objects where you only know the access function
  to the elements and the number of elements.
 \begin_inset listings
@@ -13361,7 +13415,7 @@ Quantile
 
 
 \family default
- class even for very large number of double values.
+ class even for very large sets of double values.
  How to calculate the first quartile of a given, random 
 \family typewriter
 Double\SpecialChar softhyphen
