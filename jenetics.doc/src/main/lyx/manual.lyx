@@ -13473,7 +13473,11 @@ Stream
 \family default
 .
  It contains some problem encoding examples and how to override the default
- validation strategy of the given Genotypes.
+ validation strategy of the given 
+\family typewriter
+Genotype
+\family default
+s.
  The last section contains a detailed description of the implemented termination
  strategies.
 \end_layout
@@ -13503,7 +13507,7 @@ The
 \series default
 \shape default
  library was designed to give you a great flexibility in transforming your
- problem into a structure that can be solved by an GA.
+ problem into a structure that can be solved by a GA.
  It also comes with different implementations for the base data-types (genes
  and chromosomes) and operators (alterers and selectors).
  If it is still some functionality missing, this section describes how you
@@ -13606,12 +13610,12 @@ Allele
 \end_inset
 
 g.
- a gene which holds complex values, you may want extend it from the abstract
+ a gene which holds complex values, you may want extend it from the
 \family typewriter
  Numeric\SpecialChar softhyphen
 Gene
 \family default
- class.
+ interface.
 \end_layout
 
 \begin_layout Standard
@@ -13664,7 +13668,7 @@ s implementations must use the
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.getRandom
+.random()
 \family sans
  method when implementing their factory methods.
  Otherwise it is not possible to seamlessly change the
@@ -13675,7 +13679,9 @@ Registry\SpecialChar softhyphen
 \family typewriter
  Random\SpecialChar softhyphen
 Registry\SpecialChar softhyphen
-.setRandom
+.random(\SpecialChar softhyphen
+Random\SpecialChar softhyphen
+)
 \family sans
  method.
 \end_layout
@@ -13895,10 +13901,7 @@ Registry
  Genes
 \family default
  whose alleles doesn't conform some criteria.
-\end_layout
-
-\begin_layout Standard
-The simple usage of the
+ The simple usage of the
 \family typewriter
  AnyGene
 \family default
@@ -13961,11 +13964,27 @@ Chromosome
 \end_layout
 
 \begin_layout Standard
-A new gene type normally needs a corresponding chromosome implementation.
- The most important part of a chromosome is the factory method
+A new 
+\family typewriter
+Gene
+\family default
+ type usually comes with a corresponding 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ implementation.
+ One of the important parts of a 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ is the factory method
 \family typewriter
  new\SpecialChar softhyphen
-Instance
+Instance(\SpecialChar softhyphen
+ISeq\SpecialChar softhyphen
+)
 \family default
 , which lets the evolution
 \family typewriter
@@ -13984,17 +14003,30 @@ s.
 \family typewriter
  Alterer
 \family default
-s when creating new, combined
+ when creating new, combined
 \family typewriter
- Chromosome
+ Chromo\SpecialChar softhyphen
+some
 \family default
-s.
- It is allowed, that the newly created chromosome has a different length
- than the original one.
+.
+ It is allowed, that the newly created 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ has a different length than the original one.
  The other methods should be self-explanatory.
- The chromosome implementations uses the same serialization mechanism as
- the gene.
- For the minimal case it can extends the
+ The 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ implementations uses the same serialization mechanism as the 
+\family typewriter
+Gene
+\family default
+.
+ In the minimal case it can extends the
 \family typewriter
  Serializable
 \family default
@@ -14057,7 +14089,11 @@ height "1pt"
 \begin_layout Plain Layout
 
 \family sans
-Just implementing the Serializable interface is sometimes not enough.
+Just implementing the 
+\family typewriter
+Serializable
+\family sans
+ interface is sometimes not enough.
  You might also need to implement the 
 \family typewriter
 readObject
@@ -14337,7 +14373,7 @@ Gene
  Any\SpecialChar softhyphen
 Chromosome
 \family default
- class.
+.
  The example tries to find a Monday with a maximal day of month.
  An interesting detail is, that an
 \family typewriter
@@ -14813,7 +14849,9 @@ literal "true"
 
 \end_inset
 
- Although this is not necessary, since the evolution
+ It is not necessary using an elite selector if you want preserve the best
+ individual in the final result.
+ The evolution
 \family typewriter
  Engine
 \family default
@@ -14944,13 +14982,23 @@ The first parameter of the
 \family typewriter
  alter
 \family default
- method is the population which has to be altered.
+ method is the 
+\family typewriter
+population
+\family default
+ which has to be altered.
  The second parameter is the
 \family typewriter
  generation
 \family default
  of the newly created individuals and the return value is the number of
- genes that has been altered.
+ genes that has been altered and the altered population, aggregated in the
+ 
+\family typewriter
+Alterer\SpecialChar softhyphen
+Result
+\family default
+ class.
 \end_layout
 
 \begin_layout Standard
@@ -15350,19 +15398,12 @@ reference "lis:Special-evolution-engine"
 
 \end_inset
 
- shows a
-\emph on
- complete
-\emph default
- implementation stub for using an own special evolution
+ shows an implementation stub for using an own special evolution
 \family typewriter
  Function
 \family default
 .
-\end_layout
-
-\begin_layout Standard
-It is also possible to change the used evolution function, depending on
+ It is also possible to change the used evolution function, depending on
  the actual population.
  The 
 \family typewriter
@@ -15603,7 +15644,11 @@ Adjustable evolution stream
 
 \end_inset
 
-
+The purpose of such an adjustment is to broaden the search if the population
+ variance tends to be to small.
+ This can reduce the risk of converging to a local minimum.
+ If the population variance is to big, a different engine configuration
+ can help to speed up the optimization.
 \end_layout
 
 \begin_layout Section
@@ -15628,7 +15673,7 @@ Encoding
 \end_layout
 
 \begin_layout Standard
-This section presents some encoding examples for common problems.
+This section presents some encoding examples for common optimization problems.
  The encoding should be a complete and minimal expression of a solution
  to the problem.
  An encoding is complete if it contains enough information to represent
