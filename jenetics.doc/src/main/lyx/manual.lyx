@@ -15674,22 +15674,33 @@ Encoding
 
 \begin_layout Standard
 This section presents some encoding examples for common optimization problems.
- The encoding should be a complete and minimal expression of a solution
- to the problem.
+ The encoding should be a complete, and minimal representation of the problem
+ domain.
  An encoding is complete if it contains enough information to represent
  every solution to the problem.
- An minimal encoding contains only the information needed to represent a
- solution to the problem.
+ Whereas a minimal encoding contains only the information needed to represent
+ a solution to the problem.
  If an encoding contains more information than is needed to uniquely identify
  solutions to the problem, the search space will be larger than necessary.
-\end_layout
-
-\begin_layout Standard
-Whenever possible, the encoding should not be able to represent infeasible
- solutions.
- If a genotype can represent an infeasible solution, care must be taken
- in the fitness function to give partial credit to the genotype for its
- 
+ In the best case, there is a one-to-one mapping from the 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ space to problem domain.
+ Whenever possible, the encoding should not represent infeasible solutions.
+ If a 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ represents an infeasible solution, care must be taken in the fitness function
+ to give partial credit to the 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ for its 
 \begin_inset Quotes ald
 \end_inset
 
@@ -15700,7 +15711,8 @@ good
  genetic material while sufficiently penalizing it for being infeasible.
  Implementing a specialized
 \family typewriter
- Chromosome
+ Chromo\SpecialChar softhyphen
+some
 \family default
 , which won't create invalid encodings can be a solution to this problem.
  In general, it is much more desirable to design a representation that can
@@ -15797,8 +15809,16 @@ Jenetics
 \family default
 \series default
 \shape default
- contains three different numeric gene and chromosome implementations, which
- can be used to encode a real function, 
+ contains three different numeric 
+\family typewriter
+Gene
+\family default
+ and 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+ implementations, which can be used to encode a real function, 
 \begin_inset Formula $f:\,\mathbb{R}\rightarrow\mathbb{R}$
 \end_inset
 
@@ -15883,8 +15903,22 @@ Genotype.of(
 \end_layout
 
 \begin_layout Standard
-Decoding the double value from the Genotype is also straight forward.
- Just get the first gene from the first chromosome, with the
+Decoding the double value from the 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ is also straight forward.
+ Just get the first 
+\family typewriter
+Gene
+\family default
+ from the first 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+, with the
 \family typewriter
  gene()
 \family default
@@ -15930,7 +15964,11 @@ When the
 \emph on
  scalar
 \emph default
- chromosomes
+ 
+\family typewriter
+Chromosome
+\family default
+s
 \begin_inset Foot
 status collapsed
 
@@ -16000,11 +16038,13 @@ s.
 \emph default
  the appropriate alterers would be the
 \family typewriter
- MeanAlterer
+ Mean\SpecialChar softhyphen
+Alterer
 \family default
 ,
 \family typewriter
- GaussianAlterer
+ Gaussian\SpecialChar softhyphen
+Alterer
 \family default
  and
 \family typewriter
@@ -16116,12 +16156,17 @@ Encoding!Scalar function
 \end_layout
 
 \begin_layout Standard
-Optimizing a function 
+Optimizing a function, 
 \begin_inset Formula $f\left(x_{1},...,x_{n}\right)$
 \end_inset
 
- of one or more variable whose range is one-dimensional, we have two possibiliti
-es for the Genotype encoding.
+, of one or more variable whose range is one-dimensional, we have two possibilit
+ies for the 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ encoding.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MathWorld_Weisstein"
@@ -16227,7 +16272,17 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 
 \begin_layout Plain Layout
 
-    return gt.chromosome().as(DoubleChromosome.class).toArray();
+    return gt.chromosome()
+\end_layout
+
+\begin_layout Plain Layout
+
+        .as(DoubleChromosome.class)
+\end_layout
+
+\begin_layout Plain Layout
+
+        .toArray();
 \end_layout
 
 \begin_layout Plain Layout
@@ -16312,12 +16367,12 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(min1, max1, 1),
+    DoubleChromosome.of(min1, max1),
 \end_layout
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(min2, max2, 1),
+    DoubleChromosome.of(min2, max2),
 \end_layout
 
 \begin_layout Plain Layout
@@ -16327,7 +16382,7 @@ Genotype.of(
 
 \begin_layout Plain Layout
 
-    DoubleChromosome.of(minn, maxn, 1)
+    DoubleChromosome.of(minn, maxn)
 \end_layout
 
 \begin_layout Plain Layout
@@ -16341,7 +16396,7 @@ Genotype.of(
 \end_layout
 
 \begin_layout Standard
-With the help of the new Java Stream API, the decoding of the
+With the help of the Java Stream API, the decoding of the
 \family typewriter
  Genotype
 \family default
@@ -16351,9 +16406,10 @@ With the help of the new Java Stream API, the decoding of the
  Double\SpecialChar softhyphen
 Chromosome
 \family default
- stream, which is created from the chromosome
+ stream, which is created from the 
 \family typewriter
- Seq
+Chromo\SpecialChar softhyphen
+some Seq
 \family default
 , is first mapped to
 \family typewriter
@@ -16399,8 +16455,12 @@ static double[] toScalars(final Genotype<DoubleGene> gt) {
 \end_layout
 
 \begin_layout Standard
-As already mentioned, with the use of scalar chromosomes we can only use
- the
+As already mentioned, with the use of scalar 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+s we can only use the
 \family typewriter
  MeanAlterer
 \family default
@@ -16413,10 +16473,7 @@ As already mentioned, with the use of scalar chromosomes we can only use
  Mutator
 \family default
  alterer class.
-\end_layout
-
-\begin_layout Standard
-If there are performance issues in converting the
+ If there are performance issues in converting the
 \family typewriter
  Genotype
 \family default
@@ -16474,7 +16531,7 @@ Encoding!Vector function
 \end_layout
 
 \begin_layout Standard
-A function 
+A function, 
 \begin_inset Formula $f\left(X_{1},...,X_{n}\right)$
 \end_inset
 
@@ -17374,10 +17431,6 @@ Undirected graph and adjacency matrix
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -17442,14 +17495,20 @@ The code snippet above shows how to create an adjacency matrix for a graph
 \end_inset
 
  nodes.
- It creates a genotype which consists of 
+ It creates a 
+\family typewriter
+Geno\SpecialChar softhyphen
+type
+\family default
+ which consists of 
 \begin_inset Formula $n$
 \end_inset
 
 
 \family typewriter
  Bit\SpecialChar softhyphen
-Chromosome
+Chromo\SpecialChar softhyphen
+some
 \family default
 s of length 
 \begin_inset Formula $n$
@@ -17779,12 +17838,12 @@ The
 \family typewriter
  Codec
 \family default
- interface—located in the
+ interface, located in the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine
 \family default
- package—narrows the gap between the fitness
+ package, narrows the gap between the fitness
 \family typewriter
  Function
 \family default
@@ -18125,14 +18184,18 @@ Jenetics
 \series default
 \shape default
  comes with a set of standard encodings, which are created via static factory
- methods of the
+ methods in the
 \family typewriter
  io.jenetics.\SpecialChar softhyphen
 engine.\SpecialChar softhyphen
 Codecs
 \family default
  class.
- The following sub-sections shows some of the implementation of this methods.
+ The following sub-sections describes the most important predefined 
+\family typewriter
+Codec
+\family default
+s.
 \end_layout
 
 \begin_layout Subsection
@@ -18432,22 +18495,12 @@ status open
 
 \begin_layout Plain Layout
 
-static Codec<int[], IntegerGene> ofVector(
+static Codec<int[], IntegerGene> 
 \end_layout
 
 \begin_layout Plain Layout
 
-    IntRange domain,
-\end_layout
-
-\begin_layout Plain Layout
-
-    int length
-\end_layout
-
-\begin_layout Plain Layout
-
-) {
+ofVector(IntRange domain, int length) {
 \end_layout
 
 \begin_layout Plain Layout
@@ -18467,12 +18520,12 @@ static Codec<int[], IntegerGene> ofVector(
 
 \begin_layout Plain Layout
 
-                .as(IntegerChromosome.class)
+            .as(IntegerChromosome.class)
 \end_layout
 
 \begin_layout Plain Layout
 
-                .toArray()
+            .toArray()
 \end_layout
 
 \begin_layout Plain Layout
@@ -18864,7 +18917,11 @@ Variable-sized subsets
 \end_layout
 
 \begin_layout Standard
-A Codec for
+A 
+\family typewriter
+Codec
+\family default
+ for
 \emph on
  
 \emph default
@@ -19103,7 +19160,11 @@ Fixed-size subsets
 \end_layout
 
 \begin_layout Standard
-The second kind of subset codec allows you to find the
+The second kind of subset 
+\family typewriter
+Codec
+\family default
+ allows you to find the
 \emph on
  best
 \emph default
@@ -19319,8 +19380,12 @@ Codec!Permutation
 \end_layout
 
 \begin_layout Standard
-This kind of codec can be used for problems where optimal solution depends
- on the order of the input elements.
+This kind of 
+\family typewriter
+Codec
+\family default
+ can be used for problems where optimal solution depends on the order of
+ the input elements.
  A classical example for such problems is the Knapsack problem (chapter
  
 \begin_inset CommandInset ref
@@ -19421,11 +19486,19 @@ reference "lis:Codec-factory-method-ofPermutation"
 
 \end_inset
 
- shows the implementation of a permutation codec, where the order of the
- given alleles influences the value of the fitness function.
+ shows the implementation of a permutation 
+\family typewriter
+Codec
+\family default
+, where the order of the given alleles influences the value of the fitness
+ function.
  An alternate formulation of the traveling salesman problem is shown in
  the following listing.
- It uses the permutation codec in listing 
+ It uses the permutation 
+\family typewriter
+Codec
+\family default
+ in listing 
 \begin_inset CommandInset ref
 LatexCommand vref
 reference "lis:Codec-factory-method-ofPermutation"
@@ -19668,7 +19741,15 @@ Assignment problem
 \end_layout
 
 \begin_layout Standard
-This codec is a variation of the permutation codec.
+This 
+\family typewriter
+Codec
+\family default
+ is a variation of the permutation 
+\family typewriter
+Codec
+\family default
+.
  Instead of permuting the elements of a given array, it permutes the mapping
  of elements of a source set to the elements of a target set.
  The code snippet below shows the method of the 
@@ -19781,7 +19862,11 @@ With
 \begin_inset Formula $\left|\mathsf{source}\right|=\left|\mathsf{target}\right|$
 \end_inset
 
-, you will create a codec for the 
+, you will create a 
+\family typewriter
+Codec
+\family default
+ for the 
 \emph on
 assignment problem
 \emph default
@@ -20224,7 +20309,7 @@ static <G extends Gene<?, G>, A, B, T> Codec<T, G> of(
 
 \begin_layout Plain Layout
 
-){...}
+);
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -20582,8 +20667,11 @@ class Main {
 \end_layout
 
 \begin_layout Standard
-If you have to combine more than one Codec into one, you have to use the
- second, more general,
+If you have to combine more than one 
+\family typewriter
+Codec
+\family default
+ into one, you have to use the second, more general,
 \emph on
  combining
 \emph default
@@ -20782,7 +20870,7 @@ Codec
 Geno\SpecialChar softhyphen
 type
 \family default
- from a given domain value simplifies the implementing the 
+ from a given domain value simplifies the implementation of the 
 \family typewriter
 Const\SpecialChar softhyphen
 raint\SpecialChar softhyphen
@@ -20839,7 +20927,7 @@ The
 \family typewriter
  Problem
 \family default
- interface is a further abstraction level, which allows to
+ interface is a further abstraction level, which allows you to
 \emph on
  bind
 \emph default
@@ -20934,11 +21022,17 @@ reference "lis:Problem-interface"
 \family typewriter
  T
 \family default
- represents the
+ represents the type of the
 \emph on
  native
 \emph default
- argument type of the fitness function and
+ problem domain.
+ This is the argument type of the fitness 
+\family typewriter
+Func\SpecialChar softhyphen
+tion
+\family default
+, and
 \family typewriter
  C
 \family default
@@ -20946,7 +21040,12 @@ reference "lis:Problem-interface"
 \family typewriter
  Comparable
 \family default
- result of the fitness function.
+ result of the fitness 
+\family typewriter
+Func\SpecialChar softhyphen
+tion
+\family default
+.
 
 \family typewriter
  G
@@ -21136,7 +21235,7 @@ Constraint
 \end_layout
 
 \begin_layout Standard
-A given problem should usually encoded in a way, that it is not possible
+A given problem should usually be encoded in a way, that it is not possible
  for the evolution
 \family typewriter
  Engine
@@ -21220,8 +21319,12 @@ s which has been
 \emph default
 destroyed by the altering step.
  Individuals which has exceeded its lifetime are also replaced by new ones.
- Although this behavior will work for most genotypes, it is still possible
- that invalid individuals will be created during the evolution.
+ Although this behavior will work for most 
+\family typewriter
+Genotype
+\family default
+s, it is still possible that invalid individuals will be created during
+ the evolution.
  If you need a more advanced validation strategy, the 
 \family typewriter
 Con\SpecialChar softhyphen
@@ -21309,13 +21412,21 @@ Constraint
 \family typewriter
 test
 \family default
- method of the interface checks the validity of the given phenotype and
- the 
+ method of the interface checks the validity of the given 
+\family typewriter
+Pheno\SpecialChar softhyphen
+type
+\family default
+ and the 
 \family typewriter
 repair
 \family default
  method creates a new individual using the invalid individual as template.
- The 
+ 
+\end_layout
+
+\begin_layout Standard
+The 
 \family typewriter
 Retry\SpecialChar softhyphen
 Constraint
@@ -21329,7 +21440,11 @@ Constraint
 \family typewriter
 repair
 \family default
- method by creating a new phenotype until the created individual is valid.
+ method by creating new 
+\family typewriter
+Phenotype
+\family default
+s until the created individual is valid.
  Although this approach seems a little bit simplistic, it has an important
  and desirable property: the 
 \emph on
@@ -21352,19 +21467,24 @@ normal
 \end_inset
 
 .
- This leads to a failure probability after 10, which is the default value
- of the 
+ This leads to a failure probability after 10 retries, which is the default
+ value of the 
 \family typewriter
 Retry\SpecialChar softhyphen
 Cons\SpecialChar softhyphen
 traint
 \family default
-, tries of 
+, of 
 \begin_inset Formula $\left(1-\frac{\pi}{4}\right)^{10}\thickapprox0.000000207$
 \end_inset
 
 .
- You can parameterize a different constraint definition with the 
+ You can parameterize a different 
+\family typewriter
+Const\SpecialChar softhyphen
+raint
+\family default
+ definition with the 
 \family typewriter
 constraint
 \family default
@@ -21419,7 +21539,11 @@ Phenotype.isValid
 Constraint
 \family sans
  interface.
- A phenotype is treated as invalid if the 
+ A 
+\family typewriter
+Phenotype
+\family sans
+ is treated as invalid if the 
 \family typewriter
 Constraint.tes
 \family sans
@@ -21449,14 +21573,23 @@ height "1pt"
 \end_layout
 
 \begin_layout Standard
-Although the 
+The 
 \family typewriter
 RetryConstraint
 \family default
- is the default implementation of the Constraint interface, it might not
- be best one.
- If it is possible, it is better to try to repair an invalid phenotype instead
- of creating a new one.
+ is the default implementation of the 
+\family typewriter
+Con\SpecialChar softhyphen
+st\SpecialChar softhyphen
+raint
+\family default
+ interface, but it might not be best one for every given problem.
+ If it is possible, it is better to try to repair an invalid 
+\family typewriter
+Pheno\SpecialChar softhyphen
+type
+\family default
+ instead of creating a new one.
  Suppose you need to optimize the fitness function, 
 \begin_inset Formula $f:\mathbb{R}^{3}\rightarrow\mathbb{R}$
 \end_inset
@@ -21477,8 +21610,12 @@ A repairing
 \family typewriter
 Constraint
 \family default
- implementation checks the validity of a phenotype and repairs it, if it's
- invalid.
+ implementation checks the validity of a 
+\family typewriter
+Pheno\SpecialChar softhyphen
+type
+\family default
+ and repairs it, if it's invalid.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -21713,7 +21850,7 @@ Phenotype<DoubleGene, Double> newPhenotype(double[] r, long gen) {
 
 \begin_layout Standard
 Writing a repair method this way is quite tedious.
- The new 
+ The 
 \family typewriter
 Invertible\SpecialChar softhyphen
 Co\SpecialChar softhyphen
@@ -21865,7 +22002,7 @@ InvertibleCodec
 \family typewriter
 Codec
 \family default
-, the repair function can be expressed in the native problem domain.
+, the repair function can be expressed in the problem domain.
  In the given example, the repair function maps the invalid range 
 \begin_inset Formula $\left[2,5\right)$
 \end_inset
@@ -21883,8 +22020,11 @@ Codec
 \end_inset
 
 .
- An alternative implementation for this codec can also be created by mapping
- the scalar range 
+ An alternative implementation for this 
+\family typewriter
+Codec
+\family default
+ can also be created by mapping the scalar range 
 \family typewriter
 Codec
 \family default
@@ -21964,7 +22104,12 @@ Termination
 Termination is the criterion by which the evolution stream decides whether
  to continue or truncate the stream.
  This section gives a deeper insight into the different ways of terminating
- or truncating the evolution stream, respectively.
+ or truncating the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
  The
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -21991,65 +22136,19 @@ Result<G,C>\SpecialChar softhyphen
 \family typewriter
  limit
 \family default
- function, returns false, the evolution stream is truncated.
-
+ function, returns false, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is truncated.
+ The
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream\SpecialChar softhyphen
 .limit(r -> true)
 \family default
  will create an infinite evolution stream.
-\end_layout
-
-\begin_layout Standard
-All termination strategies described in the following sub-sections are part
- of the library and can be created by factory methods of the
-\family typewriter
- io.jenetics\SpecialChar softhyphen
-.engine\SpecialChar softhyphen
-.Limits
-\family default
- class.
- The termination strategies where tested by solving the Knapsack problem
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The actual implementation used for the termination tests can be found in
- the Github repository: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/io
-/jenetics/example/Knapsack.java
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- (see section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsec:0/1-Knapsack-example"
-
-\end_inset
-
-) with 
-\begin_inset Formula $250$
-\end_inset
-
- items.
- This makes it a real problem with a search-space size of 
-\begin_inset Formula $2^{250}\thickapprox10^{75}$
-\end_inset
-
- elements.
 \end_layout
 
 \begin_layout Standard
@@ -22117,6 +22216,58 @@ height "1pt"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+All termination strategies described in the following sections are part
+ of the library and can be created by factory methods of the
+\family typewriter
+ io.jenetics\SpecialChar softhyphen
+.eng\SpecialChar softhyphen
+ine\SpecialChar softhyphen
+.Limits
+\family default
+ class.
+ The termination strategies where tested by solving the Knapsack problem
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The actual implementation used for the termination tests can be found in
+ the Github repository: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/io
+/jenetics/example/Knapsack.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ (see section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:0/1-Knapsack-example"
+
+\end_inset
+
+) with 
+\begin_inset Formula $250$
+\end_inset
+
+ items.
+ This makes it a real problem with a search-space size of 
+\begin_inset Formula $2^{250}\thickapprox10^{75}$
+\end_inset
+
+ elements.
 \end_layout
 
 \begin_layout Standard
@@ -22287,8 +22438,9 @@ reference "tab:Knapsack-evolution-parameters"
  shows the evolution parameters used for the termination tests.
  To make the tests comparable, all test runs uses the same evolution parameters
  and the very same set of knapsack items.
- Each termination test was repeated 1,000 times, which gives us enough data
- to draw the given candlestick diagrams.
+ Each termination test was repeated 1,000 times, which should give enough
+ data to draw the given candlestick diagrams.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -22386,9 +22538,67 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 \end_layout
 
 \begin_layout Standard
-This kind of termination method should always be applied—usually additional
- with other evolution terminators—, to guarantee the truncation of the evolution
- stream and to define an upper limit of the executed generations.
+This kind of termination method can always be applied—usually additional
+ with other evolution terminators—, to guarantee the truncation of the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ and to define an upper limit of the executed generations.
+ Additionally, the 
+\family typewriter
+Limits\SpecialChar softhyphen
+.by\SpecialChar softhyphen
+Fixed\SpecialChar softhyphen
+Gene\SpecialChar softhyphen
+ration(\SpecialChar softhyphen
+long\SpecialChar softhyphen
+)
+\family default
+ predicate can be used instead of the 
+\family typewriter
+Stream\SpecialChar softhyphen
+.limit(\SpecialChar softhyphen
+long\SpecialChar softhyphen
+)
+\family default
+ method.
+ This predicate is mainly there for completion reason and behaves exactly
+ as the 
+\family typewriter
+Stream\SpecialChar softhyphen
+.limit(\SpecialChar softhyphen
+long\SpecialChar softhyphen
+)
+\family default
+ function, except for the number of evaluations performed by the resulting
+ stream.
+ The evaluation of the population is 
+\emph on
+max generations
+\emph default
+ + 1.
+ This is because the limiting predicate works on the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ object, which guarantees to contains an 
+\emph on
+evaluated
+\emph default
+ population.
+ That means, that the population must be evaluated at least once, even for
+ a generation limit of zero.
+ If this is an unacceptable performance penalty, better use the 
+\family typewriter
+Stream\SpecialChar softhyphen
+.limit(\SpecialChar softhyphen
+long\SpecialChar softhyphen
+)
+\family default
+ function instead.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -22518,10 +22728,19 @@ steady
 \emph on
  
 \emph default
-fitness strategy truncates the evolution stream if its best fitness hasn't
- changed after a given number of generations.
- The predicate maintains an internal state, the number of generations with
- non increasing fitness, and must be newly created for every evolution stream.
+fitness strategy truncates the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ if its best fitness hasn't changed after a given number of generations.
+ The predicate maintains an internal state—the number of generations with
+ non increasing fitness—, and must be newly created for every 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
 \end_layout
 
 \begin_layout Standard
@@ -22721,7 +22940,7 @@ ness(int)
 \family default
  package.
  It should give you an impression of how to implement own termination strategies
-, which possible holds and internal state.
+, which possible holds an internal state.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -22860,9 +23079,18 @@ Evolution time
 \begin_layout Standard
 This termination strategy stops the evolution when the elapsed evolution
  time exceeds an user-specified maximal value.
- The evolution stream is only truncated at the end of an generation and
- will not interrupt the current evolution step.
- An maximal evolution time of zero ms will at least evaluate one generation.
+ The 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is only truncated at the end of a generation and will not interrupt the
+ current evolution step.
+ A maximal evolution time of zero 
+\emph on
+ms
+\emph default
+ will at least evaluate one generation.
  In an time-critical environment, where a solution must be found within
  a maximal time period, this terminator let you define the desired guarantees.
 \begin_inset listings
@@ -22927,8 +23155,11 @@ Nano\SpecialChar softhyphen
 Clock
 \family default
  for measuring the time.
- To have the possibility to define a different Clock implementation is especiall
-y useful for testing purposes.
+ To have the possibility to define a different 
+\family typewriter
+Clock
+\family default
+ implementation is especially useful for testing purposes.
 \end_layout
 
 \begin_layout Standard
@@ -23020,11 +23251,11 @@ Fitness threshold
 
 \begin_layout Standard
 A termination method that stops the evolution when the best fitness in the
- current population becomes less than the user-specified fitness threshold
- and the objective is set to minimize the fitness.
+ current population becomes less than the specified fitness threshold and
+ the objective is set to minimize the fitness.
  This termination method also stops the evolution when the best fitness
- in the current population becomes greater than the user-specified fitness
- threshold when the objective is to maximize the fitness.
+ in the current population becomes greater than the specified fitness threshold
+ when the objective is to maximize the fitness.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -23052,8 +23283,15 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \end_inset
 
-When limiting the evolution stream by a fitness threshold, you have to have
- a knowledge about the expected maximal fitness.
+When limiting the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ by a fitness threshold, you have to have a knowledge about the expected
+ maximal fitness.
+ This can be the case if you are minimizing an error function with a known
+ optimal value of zero.
  If there is no such knowledge, it is advisable to add an additional fixed
  sized generation limit as safety net.
 \end_layout
@@ -23355,7 +23593,12 @@ where
 
 \end_inset
 
-is fulfilled, the evolution stream is truncated.
+is fulfilled, the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is truncated.
  Where 
 \begin_inset Formula $\delta$
 \end_inset
@@ -23403,7 +23646,7 @@ For using the fitness convergence strategy you have to specify three parameter.
 \begin_inset Formula $N_{L}$
 \end_inset
 
- and the relative difference between the smoothed fitness values, 
+, and the relative difference between the smoothed fitness values, 
 \begin_inset Formula $\epsilon$
 \end_inset
 
@@ -23569,8 +23812,12 @@ This termination method that stops the evolution when the population is
  A population is deemed as converged when the average fitness across the
  current population is less than a user-specified percentage away from the
  best fitness of the current population.
- The population is deemed as converged and the evolution stream is truncated
- if
+ The population is deemed as converged and the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is truncated if
 \end_layout
 
 \begin_layout Standard
@@ -23638,9 +23885,14 @@ EvolutionStream<DoubleGene, Double> stream = engine.stream()
 
 \end_inset
 
-The evolution stream in the example above will terminate, if the difference
- between the population's fitness mean value and the maximal fitness value
- of the population is less then 
+The 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ in the example above will terminate, if the difference between the population's
+ fitness mean value and the maximal fitness value of the population is less
+ then 
 \begin_inset Formula $10\%$
 \end_inset
 
@@ -23673,7 +23925,12 @@ Gene convergence
 
 \begin_layout Standard
 This termination strategy is different, in the sense that it takes the genes
- or alleles, respectively, for terminating the evolution stream.
+ or alleles, respectively, for terminating the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+.
  In the gene convergence termination strategy the evolution stops when a
  specified percentage of the genes of a genotype are deemed as converged.
  A gene is treated as converged when the average value of that gene across
@@ -23716,7 +23973,7 @@ Evolution!reproducible
 \end_layout
 
 \begin_layout Standard
-Some problems can be define with different kinds of fitness functions or
+Some problems can be defined with different kinds of fitness functions or
  encodings.
  Which combination works best can't usually be decided a priori.
  To choose one, some testing is needed.
@@ -23835,7 +24092,7 @@ Runnable::run
 Engine
 \family default
  uses more than one worker thread, the reproducibility is no longer guaranteed.
- The second step configures the random engine, the evolution 
+ The second step configures the random generator, the evolution 
 \family typewriter
 Engine
 \family default
@@ -23844,18 +24101,113 @@ Engine
 \emph on
 wrap
 \emph default
- the evolution stream execution in a 
+ the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ execution in a 
 \family typewriter
 RandomRegistry::with
 \family default
  block.
- Additionally you can start the evolution stream with a predefined, initial
- population.
+ Additionally you can start the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ with a predefined, initial population.
  Once you have setup the 
 \family typewriter
 Engine
 \family default
-, you can vary the fitness function and the codec and compare the results.
+, you can vary the fitness function and the 
+\family typewriter
+Codec
+\family default
+ and compare the results.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Shaded
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "90col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\family sans
+If you are using user defined implementations of the 
+\family typewriter
+Gene
+\family sans
+ and 
+\family typewriter
+Chromosome
+\family sans
+ interface, make sure to obtain the 
+\family typewriter
+Random
+\family sans
+ object from the 
+\family typewriter
+RandomRegistry
+\family sans
+.
+ This is also required for every initialization code used in your problem
+ implementation.
+ Also check your code for hidden non-deterministic parts, e.
+\begin_inset space ~
+\end_inset
+
+g.
+ 
+\family typewriter
+Collections.shuffle
+\family sans
+ method.
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -23986,7 +24338,7 @@ reference "subsec:Termination"
 \end_inset
 
 .
- The lower blue line shows the (mean) fitness values of the
+ The lower, blue line shows the (mean) fitness values of the
 \emph on
  Knapsack
 \emph default
@@ -24184,7 +24536,7 @@ To summarize it:
 \end_inset
 
  parents.
- The value of
+ The value of 
 \begin_inset Formula $\lambda$
 \end_inset
 
@@ -24838,6 +25190,13 @@ Results
 Engine
 \family default
 .
+ Changing the evolved 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ is a mighty tool and should used cautiously.
+ 
 \end_layout
 
 \begin_layout Paragraph
@@ -24910,7 +25269,7 @@ Despite the de-duplication, it is still possible to have duplicate individuals.
 \family typewriter
 Genotype
 \family default
-s is not big enough and the same individual is created by chance.
+s is not big enough, and the same individual is created by chance.
  You can control the number of 
 \family typewriter
 Genotype
@@ -24946,7 +25305,7 @@ Internals
 This section contains internal implementation details which doesn't fit
  in one of the previous sections.
  They are not essential for using the library, but would give the user a
- deeper insight in some design decisions, made when implementing the library.
+ deeper insight in some design decisions made when implementing the library.
  It also introduces tools and classes which where developed for testing
  purpose.
  This classes are not exported and
@@ -25030,7 +25389,7 @@ http://www.phy.duke.edu/~rgb/General/dieharder.php
 \family typewriter
  dieharder
 \family default
- needs a huge amount of random data, for testing the quality of a RNG, it
+ needs a huge amount of random data for testing the quality of a RNG, it
  is usually advisable to pipe the random numbers to the
 \family typewriter
  dieharder
@@ -25205,7 +25564,7 @@ reference "tab:LCG64ShiftRandom-quality"
  tests.
  The full report is part of the source file of the
 \family typewriter
-LCG64\SpecialChar softhyphen
+ LCG64\SpecialChar softhyphen
 Shift\SpecialChar softhyphen
 Random
 \family default
@@ -26236,8 +26595,8 @@ The
 \family default
 \series default
 \shape default
- library has been split up into several modules, which allows to keep the
- base EA module as small as possible.
+ library has been split into several modules, which allows to keep the base
+ EA module as small as possible.
  It currently consists of the modules shown in table 
 \begin_inset CommandInset ref
 LatexCommand vref
@@ -26470,9 +26829,9 @@ Jenetics
 \end_layout
 
 \begin_layout Standard
-With this module split the code is easier to maintain and doesn't force
- the user to use parts of the library he or she isn't using, which keep
- the
+With this module split, the code is easier to maintain and doesn't force
+ the user to use parts of the library he or she isn't using.
+ This keeps the
 \family typewriter
  io.jenetics\SpecialChar softhyphen
 .base
@@ -26579,12 +26938,20 @@ The
 \emph on
  non
 \emph default
--standard genes and evolutionary operations.
+-standard 
+\family typewriter
+Gene
+\family default
+s and evolutionary operations.
  It also contains
 \emph on
  
 \emph default
-data structures which are used by this additional genes and operations.
+data structures which are used by this additional 
+\family typewriter
+Gene
+\family default
+s and operations.
 \end_layout
 
 \begin_layout Subsection
@@ -26696,7 +27063,7 @@ reference "lis:Tree-interface"
 \end_inset
 
 g.
- for node traversal and search, are implemented with default methods, which
+ for node traversal and search, are implemented by default methods, which
  are derived from this four abstract tree methods.
  A
 \emph on
@@ -27271,8 +27638,12 @@ reference "sec:Genetic-programming"
 \end_inset
 
 ).
- Since the chromosome type is essentially an array, a mapping from the hierarchi
-cal tree structure to a 
+ Since the 
+\family typewriter
+Chromosome
+\family default
+ type is essentially an array, a mapping from the hierarchical tree structure
+ to a 
 \begin_inset Formula $1$
 \end_inset
 
@@ -27311,7 +27682,11 @@ https://en.wikipedia.org/wiki/Binary_tree##Arrays
  Flat\SpecialChar softhyphen
 Tree
 \family default
- interface extends the Tree node with a
+ interface extends the 
+\family typewriter
+Tree
+\family default
+ node with a
 \family typewriter
  child\SpecialChar softhyphen
 Off\SpecialChar softhyphen
@@ -27628,7 +28003,7 @@ Tree formatting
 \begin_layout Standard
 Using the parentheses tree is one possibility for creating a string representati
 on of a given tree.
- Although it is the default format, also returned by the 
+ Although it is the default format returned by the 
 \family typewriter
 toString()
 \family default
@@ -27640,8 +28015,8 @@ For\SpecialChar softhyphen
 mat\SpecialChar softhyphen
 ter
 \family default
- class lets you implement your own formats and also defines additional tree
- formats.
+ class lets you to implement your own formats and also defines additional
+ tree formats.
 \end_layout
 
 \begin_layout Description
@@ -27847,15 +28222,15 @@ Rewrite rule
 \emph on
 left
 \emph default
--hand side 
+-hand side, 
 \begin_inset Formula $l$
 \end_inset
 
- can be replaced by the 
+, can be replaced by the 
 \emph on
 right
 \emph default
--hand side 
+-hand side, 
 \begin_inset Formula $r$
 \end_inset
 
@@ -27867,11 +28242,11 @@ A rule
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
- can be applied to a tree 
+ can be applied to a tree, 
 \begin_inset Formula $t$
 \end_inset
 
- if the left tree (pattern) matches a sub-tree of 
+, if the left tree (pattern) matches a sub-tree of 
 \begin_inset Formula $t$
 \end_inset
 
@@ -27908,11 +28283,11 @@ Rewrite system
 
 \end_inset
 
- A tree rewrite system is a set 
+ A tree rewrite system is a set, 
 \begin_inset Formula $\mathfrak{\mathcal{R}}$
 \end_inset
 
- of rewrite rules 
+, of rewrite rules, 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
@@ -28057,7 +28432,12 @@ noprefix "false"
 
 \end_inset
 
- shows the constructor and main methods of the TreePattern.
+ shows the constructor and main methods of the 
+\family typewriter
+Tree\SpecialChar softhyphen
+Pattern
+\family default
+.
  The 
 \family typewriter
 matcher
@@ -28078,12 +28458,17 @@ status open
 
 \begin_layout Plain Layout
 
-Tree<Decl<String>, ?> t = TreeNode.<Decl<String>>
+Tree<Decl<String>, ?> t = TreeNode
 \end_layout
 
 \begin_layout Plain Layout
 
-    of(Val.of("add")).attach(Var.of("x"), Val.of("1"));
+    .<Decl<String>>of(Val.of("add"))
+\end_layout
+
+\begin_layout Plain Layout
+
+    .attach(Var.of("x"), Val.of("1"));
 \end_layout
 
 \begin_layout Plain Layout
@@ -28102,7 +28487,7 @@ You can see that the variable
 \family typewriter
 x
 \family default
- will match for arbitrary sub trees.
+ will match for arbitrary sub-trees.
  For more complicated patterns it is quite cumbersome to create it via a
  
 \family typewriter
@@ -28136,13 +28521,13 @@ noprefix "false"
 \end_inset
 
 .
- It only differs for the declaration of tree variables, which starts with
+ It only differs in the declaration of tree variables, which starts with
  a '$' and must be a valid Java identifier.
  If you want to match 
 \emph on
 non
 \emph default
--string trees, you must specify an additional mapper function with the 
+-string trees you must specify an additional mapper function with the 
 \family typewriter
 compile
 \family default
@@ -28168,8 +28553,8 @@ TreePattern<Integer> pattern = TreePattern
 \end_layout
 
 \begin_layout Standard
-The right-hand side functionality of the rewrite rule is to expand a given
- pattern.
+The right-hand side functionality of the rewrite rule is used to expand
+ a given pattern.
  For expanding a given pattern you have to deliver a 
 \family typewriter
 Var
@@ -28301,8 +28686,11 @@ TreeRewriter
 
 \end_inset
 
-With the TreeRewriter interface you are able to combine two or more tree
- rewriter to one.
+With the 
+\family typewriter
+TreeRewriter
+\family default
+ interface you are able to combine two or more tree rewriter to one.
  This can be done with the 
 \family typewriter
 con\SpecialChar softhyphen
@@ -29072,7 +29460,7 @@ re.
  The operative phrase is, of course, given enough time.
  Let us limit the task facing our monkey somewhat.
  Suppose that he has to produce, not the complete works of Shakespeare but
- just the short sentence
+ just the short sentence 
 \begin_inset Quotes ald
 \end_inset
 
@@ -29453,7 +29841,7 @@ reference "lis:Weasel-program"
 
 \end_inset
 
- shows how-to implement the
+ shows how to implement the
 \family typewriter
  Weasel\SpecialChar softhyphen
 Program
@@ -29475,9 +29863,18 @@ n is created.
 Mutator
 \family default
 , with mutation probability of 0.05.
- Step (4) is done by the WeaselSelector together with the configured offspring-f
-raction of one.
- The evolution stream is limited by the
+ Step (4) is done by the 
+\family typewriter
+Weasel\SpecialChar softhyphen
+Selector
+\family default
+ together with the configured offspring-fraction of one.
+ The 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ is limited by the
 \family typewriter
  Limits\SpecialChar softhyphen
 .by\SpecialChar softhyphen
