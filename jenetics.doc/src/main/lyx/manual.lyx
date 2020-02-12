@@ -15091,7 +15091,11 @@ During the developing phase of an application which uses the
 \series default
 \shape default
  library, additional statistical data about the evolution process is crucial.
- Such data can help to optimize the parametrization of the evolution Engine.
+ Such data can help to optimize the parametrization of the evolution 
+\family typewriter
+Engine
+\family default
+.
  A good starting point is to use the
 \family typewriter
  Evolution\SpecialChar softhyphen
@@ -29966,25 +29970,33 @@ The current design of
 \family typewriter
 Engine
 \family default
- allows to created multiple independent evolution streams from a single
- 
+ allows to created multiple independent 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+s from a single 
 \family typewriter
 Engine
 \family default
  instance.
- One drawback of this approach is, that the evolution stream runs with the
- same evolution parameters until the stream is truncated.
+ One drawback of this approach is, that the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ runs with the same evolution parameters until the stream is truncated.
  It is not possible to change the stream's 
 \family typewriter
 Engine
 \family default
  configuration during the evolution process.
- For this purpose, the 
+ This is the purpose of the 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Streamable
 \family default
- interface has been introduced.
+ interface.
  It is similar to the Java 
 \family typewriter
 Iterable
@@ -30128,7 +30140,8 @@ limit
 \family default
  method it is possible to limit the size of the created 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar softhyphen
+Stream
 \family default
  instances.
  The 
@@ -30142,7 +30155,8 @@ Engines
 \family default
  with different configurations, which will then create one varying 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar softhyphen
+Stream
 \family default
 .
  This additional 
@@ -30157,21 +30171,13 @@ Engine
 \family typewriter
 ConcatEngine
 \family default
-,
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-CyclicEngine
-\family default
  and
 \end_layout
 
 \begin_layout Enumerate
 
 \family typewriter
-AdaptiveEngine.
+CyclicEngine.
 \end_layout
 
 \begin_layout Subsubsection
@@ -30208,7 +30214,7 @@ ConcatEngine
 \family typewriter
 Engine
 \family default
-s, with different configurations, and combine it into one 
+ with different configurations, and combine it into one 
 \family typewriter
 Evolution\SpecialChar softhyphen
 Streamable
@@ -30295,8 +30301,12 @@ Stream
 Evolution\SpecialChar softhyphen
 Result
 \family default
- is used as start value of the second evolution stream, created by the second
- evolution 
+ is used as start value of the second 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+, created by the second evolution 
 \family typewriter
 Engine
 \family default
@@ -30462,7 +30472,7 @@ Engine
 \family typewriter
 Engine
 \family default
-s.
+.
  In such a setup, the first 
 \family typewriter
 Engine
@@ -30476,7 +30486,7 @@ Mutator
 \family typewriter
 Engine
 \family default
-s would then be gradually reduced.
+ would then be gradually reduced.
 \end_layout
 
 \begin_layout Subsubsection
@@ -30510,13 +30520,22 @@ ConcatEngine
 Concat\SpecialChar softhyphen
 Engine
 \family default
- stops the evolution, when the stream of the last engine terminates, the
- 
+ stops the evolution, when the 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ of the last engine terminates, the 
 \family typewriter
 Cyclic\SpecialChar softhyphen
 Engine
 \family default
- continues with a new stream from the first 
+ continues with a new 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Stream
+\family default
+ from the first 
 \family typewriter
 Engine
 \family default
@@ -30586,7 +30605,8 @@ Engine
 \family default
 s are all creating limited streams, the resulting 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar softhyphen
+Stream
 \family default
  
 \emph on
@@ -30653,11 +30673,13 @@ final Genotype<DoubleGene> result =
 \begin_layout Standard
 The reason for using a cyclic 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar softhyphen
+Stream
 \family default
  is similar to the reason for using a concatenated 
 \family typewriter
-EvolutionStream
+Evolution\SpecialChar softhyphen
+Stream
 \family default
 .
  It allows you to do a broad search, followed by a narrowed exploration.
@@ -30666,348 +30688,6 @@ EvolutionStream
 outer
 \emph default
  stream terminates the evolution process.
-\end_layout
-
-\begin_layout Subsubsection
-
-\family typewriter
-AdaptiveEngine
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-AdaptiveEngine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\family typewriter
-AdaptiveEngine
-\family default
- is the most flexible method for creating 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-s.
- Instead of defining a fixed set 
-\family typewriter
-Engine
-\family default
-s, which then creates the 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-, you define a function which creates an 
-\family typewriter
-Engine
-\family default
-, depending on last 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Re\SpecialChar softhyphen
-sult
-\family default
- of the previous 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Stream
-\family default
-.
- You can see the evolution flow of the 
-\family typewriter
-Adaptive\SpecialChar softhyphen
-Engine
-\family default
- in figure 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "fig:Adaptive-Engine"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename ../resources/graphic/AdaptiveEngine.eps
-	width 75text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Adaptive-Engine"
-
-\end_inset
-
-Adaptive 
-\family typewriter
-Engine
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-From the implementation perspective, the 
-\family typewriter
-AdaptiveEngine
-\family default
- requires a little bit more code.
- The additional flexibility isn't for free, as you can see in the code example
- below.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static void main(final String[] args) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Problem<double[], DoubleGene, Double> problem = ...;
-\end_layout
-
-\begin_layout Plain Layout
-
-    // Engine.Builder template.
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Engine.Builder<DoubleGene, Double> bld = Engine
-\end_layout
-
-\begin_layout Plain Layout
-
-        .builder(problem)
-\end_layout
-
-\begin_layout Plain Layout
-
-        .minimizing();
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Genotype<DoubleGene> result =
-\end_layout
-
-\begin_layout Plain Layout
-
-        AdaptiveEngine.<DoubleGene, Double>of(r -> engine(r, bld))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(Limits.bySteadyFitness(50))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .collect(EvolutionResult.toBestGenotype());
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-static EvolutionStreamable<DoubleGene, Double> engine(
-\end_layout
-
-\begin_layout Plain Layout
-
-    final EvolutionResult<DoubleGene, Double> result,
-\end_layout
-
-\begin_layout Plain Layout
-
-    final Engine.Builder<DoubleGene, Double> builder
-\end_layout
-
-\begin_layout Plain Layout
-
-) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return var(result) < 0.2
-\end_layout
-
-\begin_layout Plain Layout
-
-        ? builder.copy()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .alterers(new Mutator<>(0.75))
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(5)
-\end_layout
-
-\begin_layout Plain Layout
-
-        : builder.copy()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .alterers(
-\end_layout
-
-\begin_layout Plain Layout
-
-                new Mutator<>(0.05),
-\end_layout
-
-\begin_layout Plain Layout
-
-                new MeanAlterer<>())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .selector(new RouletteWheelSelector<>())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .build()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .limit(Limits.bySteadyFitness(25));
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-static double var(final EvolutionResult<DoubleGene, Double> er) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return er != null
-\end_layout
-
-\begin_layout Plain Layout
-
-        ? er.population().stream()
-\end_layout
-
-\begin_layout Plain Layout
-
-            .map(Phenotype::fitness)
-\end_layout
-
-\begin_layout Plain Layout
-
-            .collect(toDoubleMoments())
-\end_layout
-
-\begin_layout Plain Layout
-
-            .variance()
-\end_layout
-
-\begin_layout Plain Layout
-
-        : 0.0;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The example tries to broaden the search, once the variance of the population's
- fitness values are below a given threshold.
- When implementing the 
-\family typewriter
-Engine
-\family default
- creation function, you have to be aware, that the 
-\family typewriter
-EvolutionResult
-\family default
- for the first Engine is 
-\family typewriter
-null
-\family default
-.
 \end_layout
 
 \begin_layout Subsection
@@ -31042,7 +30722,7 @@ MOO
 \end_layout
 
 \begin_layout Standard
-A Multi-objective Optimization Problem (MOP) can be defined as the problem
+A Multi-objective optimization Problem (MOP) can be defined as the problem
  of finding
 \end_layout
 
@@ -31191,11 +30871,11 @@ literal "true"
 \series bold
 ):
 \series default
- A solution 
+ A solution, 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- is said to be Pareto optimal iff there is no 
+, is said to be Pareto optimal iff there is no 
 \begin_inset Formula $\mathbf{x}'$
 \end_inset
 
@@ -31216,11 +30896,11 @@ The definition says that
 \begin_inset Formula $\mathbf{x}^{*}$
 \end_inset
 
- is Pareto optimal if there exists no feasible vector 
+ is Pareto optimal if there exists no feasible vector, 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
- which would decrease some criterion without causing a simultaneous increase
+, which would decrease some criterion without causing a simultaneous increase
  in at least one other criterion.
 \end_layout
 
@@ -31666,7 +31346,8 @@ double[]
 .
  With the 
 \family typewriter
-ElementComparator
+Element\SpecialChar softhyphen
+Comparator
 \family default
 , which is returned by the 
 \family typewriter
@@ -31679,7 +31360,8 @@ T
 .
  This is similar to the 
 \family typewriter
-ElementDistance
+Element\SpecialChar softhyphen
+Distance
 \family default
  function, returned by the 
 \family typewriter
@@ -31791,7 +31473,7 @@ Comparable
  interface, it violates its general contract.
  It only implements the Pareto dominance relation, which defines a partial
  order.
- So, trying to sort a list of 
+ Trying to sort a list of 
 \family typewriter
 Vec
 \family sans
@@ -31818,7 +31500,8 @@ height "1pt"
 \begin_layout Standard
 The second difference to the single-objective setup is the 
 \family typewriter
-EvolutionResult
+Evolution\SpecialChar softhyphen
+Result
 \family default
  collector.
  In the single-objective case, we will only get one 
@@ -31896,7 +31579,7 @@ final ISeq<Phenotype<DoubleGene, Vec<double[]>>> paretoSet =
 
 \begin_layout Standard
 Since there exists a potential infinite number of Pareto optimal solutions,
- you have to define desired number set elements.
+ you have to define desired number of set elements.
  This is done with an 
 \family typewriter
 IntRange
@@ -32073,9 +31756,16 @@ noprefix "false"
 \end_inset
 
  you can see how the resulting solution will look like.
- There is almost no difference in creating an evolution Engine for single-
- or multi-objective optimization.
- You only have to take care to choose the right Selector.
+ There is almost no difference in creating an evolution 
+\family typewriter
+Engine
+\family default
+ for single- or multi-objective optimization.
+ You only have to take care to choose the right 
+\family typewriter
+Selector
+\family default
+.
  Not all 
 \family typewriter
 Selector
@@ -32111,7 +31801,11 @@ Exception
 \end_inset
 
 .
- The Selector which works fine in a multi-objective setup is the 
+ The 
+\family typewriter
+Selector
+\family default
+ which works fine in a multi-objective setup is the 
 \family typewriter
 TournamentSelector
 \family default
@@ -32907,7 +32601,7 @@ Genetic programming!Const
 
 
 \family default
- operation will always return the same, constant, value when evaluated.
+ operation will always return the same, constant value when evaluated.
 \end_layout
 
 \begin_layout Standard
@@ -32932,7 +32626,7 @@ final Const<Double> pi = Const.of("PI", Math.PI);
 \end_layout
 
 \begin_layout Standard
-We can create a constant operation in to flavors: with a value only and
+You can create a constant operation in to flavors: with a value only, and
  with a dedicated name.
  If a constant has a name, the symbolic name is used, instead of the value,
  when the program tree is printed.
@@ -33467,7 +33161,11 @@ Gene
  
 \emph default
 alter operation is still valid.
- It obeys the tree structure of the gene.
+ It obeys the tree structure of the 
+\family typewriter
+Gene
+\family default
+.
  General alterers, not written for
 \family typewriter
  Program\SpecialChar softhyphen
@@ -33483,18 +33181,37 @@ Gene
 \end_layout
 
 \begin_layout Enumerate
-Marking the chromosome as
+Marking the 
+\family typewriter
+Chromosome
+\family default
+ as
 \emph on
  
 \emph default
 invalid.
  This possibility is easier to achieve, but would also to lead to a large
- number of invalid chromosomes, which must be recreated.
- When recreating invalid chromosomes we will also loose possible solutions.
+ number of invalid 
+\family typewriter
+Chromo\SpecialChar softhyphen
+somes
+\family default
+, which must be recreated.
+ When recreating invalid 
+\family typewriter
+Chromo\SpecialChar softhyphen
+somes
+\family default
+ we will also loose possible solutions.
 \end_layout
 
 \begin_layout Enumerate
-Trying to repair the invalid chromosome.
+Trying to repair the invalid 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+.
  This is the approach the
 \family sans
 \series bold
@@ -33552,7 +33269,11 @@ height "1pt"
 Jenetics
 \series default
 \shape default
- allows the usage of arbitrary Alterer implementations.
+ allows the usage of arbitrary 
+\family typewriter
+Alterer
+\family sans
+ implementations.
  Even alterers not implemented for Program\SpecialChar softhyphen
 Genes.
  Genes
@@ -33857,7 +33578,7 @@ Multi-root programs
 \end_layout
 
 \begin_layout Standard
-The given examples, so fare, where using a single 
+The given examples, so far, where using a single 
 \family typewriter
 Program\SpecialChar softhyphen
 Chromo\SpecialChar softhyphen
@@ -33868,9 +33589,13 @@ some
 \family typewriter
 Genotype
 \family default
- is able to hold more than one chromosome, it is possible to create more
- than one program roots.
- This programs are evaluated in parallel.
+ is able to hold more than one 
+\family typewriter
+Chromo\SpecialChar softhyphen
+some
+\family default
+, it is possible to create more than one program roots.
+ This programs are evaluated concurrently.
 \begin_inset listings
 lstparams "language=Java"
 inline false
@@ -34032,7 +33757,11 @@ Chromosome
 \begin_inset Formula $n+1$
 \end_inset
 
-, where the gene at position 
+, where the 
+\family typewriter
+Gene
+\family default
+ at position 
 \begin_inset Formula $k\in\left[0,...,n\right]$
 \end_inset
 
@@ -34042,7 +33771,7 @@ Chromosome
 
  of the polynomial.
  If the type of mathematical function is not known in advance, GP can be
- used finding a function, which is composed out of a given set of 
+ used finding a function which is composed out of a given set of 
 \emph on
 primitives
 \emph default
@@ -34118,8 +33847,8 @@ The loss function measures how good the evolved program (tree) predicts
  the expected outcome or data set.
  If the prediction deviates too much from the expected data, the loss function
  will cough up a larger number.
- Loss functions are classified into two major categories depending, depending
- on the type of the learning task—
+ Loss functions are classified into two major categories, depending on the
+ type of the learning task—
 \emph on
 regression
 \emph default
@@ -34128,7 +33857,7 @@ regression
 classification
 \emph default
  losses.
- In the following paragraphs only loss functions suitable for 
+ In the following paragraphs, only loss functions suitable for 
 \emph on
 regression
 \emph default
@@ -34217,7 +33946,7 @@ where
 \begin_inset Formula $\tilde{y_{i}}$
 \end_inset
 
- the calculated (estimated) value for data point 
+ the calculated (estimated) value for data point, 
 \begin_inset Formula $i$
 \end_inset
 
@@ -34353,7 +34082,7 @@ height "1pt"
 
 \family sans
 The MAE is more robust to outliers, but its derivatives are not continuous,
- making it less inefficient to find the correct solution.
+ making it less efficient to find the correct solution.
  The MSE is sensitive to corrupt data, but finds more stable and closed
  form solutions.
 \end_layout
@@ -34473,10 +34202,7 @@ simpler
  program to survive.
  A simple complexity measure is the number of nodes a program tree consists
  of.
-\end_layout
-
-\begin_layout Standard
-You can obtain such a measure by the 
+ You can obtain such a measure by the 
 \family typewriter
 of\SpecialChar softhyphen
 Node\SpecialChar softhyphen
@@ -34507,21 +34233,21 @@ where
 \begin_inset Formula $N\left(P\right)$
 \end_inset
 
- is the number of nodes the program 
+ is the number of nodes the program, 
 \begin_inset Formula $P$
 \end_inset
 
- consists of and 
+, consists of and 
 \begin_inset Formula $N_{max}$
 \end_inset
 
  the maximal allowed program nodes.
  If the number of program nodes is equal or greater then the maximal node
- number 
+ number, 
 \begin_inset Formula $C\left(P\right)$
 \end_inset
 
- will return 
+, will return 
 \begin_inset Formula $1$
 \end_inset
 
@@ -35055,7 +34781,11 @@ Boolean programs
 \end_layout
 
 \begin_layout Standard
-The default data type for doing symbolic regression is the Double class.
+The default data type for doing symbolic regression is the 
+\family typewriter
+Double
+\family default
+ class.
  This is supported by a standard set of mathematical operations, defined
  in the 
 \family typewriter
@@ -35105,7 +34835,15 @@ The
 \family typewriter
  io.jenetics.xml
 \family default
- module allows to write and read chromosomes and genotypes to and from XML.
+ module allows to write and read 
+\family typewriter
+Chromosome
+\family default
+s and 
+\family typewriter
+Genotype
+\family default
+s to and from XML.
  Since the existing JAXB marshaling is part of the deprecated
 \family typewriter
  javax.xml.bind
@@ -35284,8 +35022,11 @@ Together with the static
  Writer
 \family default
  interface.
- A simple example will show you how to create (compose) a Writer class for
- the
+ A simple example will show you how to create (compose) a 
+\family typewriter
+Writer
+\family default
+ class for the
 \family typewriter
  Integer\SpecialChar softhyphen
 Chromosome
@@ -35331,7 +35072,11 @@ footnotesize}
 \end_layout
 
 \begin_layout Standard
-The following writer will create the desired XML from an integer chromosome.
+The following writer will create the desired XML from an integer 
+\family typewriter
+Chromosome
+\family default
+.
  As the example shows, the structure of the XML can easily be grasp from
  the XML writer definition and vice versa.
 \end_layout
@@ -37650,7 +37395,11 @@ lstinputlisting{../java/OnesCounting.java}
 \end_layout
 
 \begin_layout Standard
-The genotype in this example consists of one
+The 
+\family typewriter
+Genotype
+\family default
+ in this example consists of one
 \family typewriter
  Bit\SpecialChar softhyphen
 Chromosome
