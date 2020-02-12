@@ -25277,1291 +25277,6 @@ int\SpecialChar softhyphen
 \end_layout
 
 \begin_layout Chapter
-Internals
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Internals
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This section contains internal implementation details which doesn't fit
- in one of the previous sections.
- They are not essential for using the library, but would give the user a
- deeper insight in some design decisions made when implementing the library.
- It also introduces tools and classes which where developed for testing
- purpose.
- This classes are not exported and
-\series bold
- not
-\series default
- part of the official API.
-\end_layout
-
-\begin_layout Section
-PRNG testing
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-PRNG testing
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Random!testing
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-
-\family sans
-\series bold
-\shape smallcaps
-Jenetics
-\family default
-\series default
-\shape default
- uses the
-\family typewriter
- dieharder
-\family default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-From Robert G.
- Brown:
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.phy.duke.edu/~rgb/General/dieharder.php
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- (command line) tool for testing the
-\emph on
- randomness
-\emph default
- of the used PRNGs.
-
-\family typewriter
- dieharder
-\family default
- is a random number generator (RNG) testing suite.
- It is intended to test generators, not files of possibly random numbers.
- Since
-\family typewriter
- dieharder
-\family default
- needs a huge amount of random data for testing the quality of a RNG, it
- is usually advisable to pipe the random numbers to the
-\family typewriter
- dieharder
-\family default
- process:
-\end_layout
-
-\begin_layout LyX-Code
-$ cat /dev/urandom | dieharder -g 200 -a
-\end_layout
-
-\begin_layout Standard
-The example above demonstrates how to stream a raw binary stream of bits
- to the
-\family typewriter
- stdin
-\family default
- (raw) interface of
-\family typewriter
- dieharder
-\family default
-.
- With the
-\family typewriter
- Die\SpecialChar softhyphen
-Harder
-\family default
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Dieharder
-\end_layout
-
-\end_inset
-
- class, which is part of the
-\family typewriter
- io.jenetics-.prngine.\SpecialChar softhyphen
-internal
-\family default
- package, it is easily possible to test PRNGs extending the
-\family typewriter
- java.\SpecialChar softhyphen
-util.\SpecialChar softhyphen
-Random
-\family default
- class.
- The only requirement is, that the PRNG must be
-\emph on
- default
-\emph default
--constructible and part of the classpath.
-\end_layout
-
-\begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.DieHarder 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      <random-engine-name> -a
-\end_layout
-
-\begin_layout Standard
-Calling the command above will create an instance of the given random engine
- and stream the random data (bytes) to the raw interface of
-\family typewriter
- dieharder
-\family default
- process.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-fontsize{6.8}{8}
-\backslash
-ttfamily}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstinputlisting{../resources/code/dieharder.protocol}
-\end_layout
-
-\begin_layout Plain Layout
-
-
-\backslash
-lstset{basicstyle=
-\backslash
-footnotesize}
-\end_layout
-
-\end_inset
-
-In the listing above, a part of the created
-\family typewriter
- dieharder
-\family default
- report is shown.
- For testing the
-\family typewriter
- LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
-Random
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-LCG64ShiftRandom
-\end_layout
-
-\end_inset
-
-
-\family default
- class, which is part of the
-\family typewriter
- io.jenetics.\SpecialChar softhyphen
-prngine
-\family default
- module, the following command can be called:
-\end_layout
-
-\begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.DieHarder 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.LCG64ShiftRandom -a
-\end_layout
-
-\begin_layout Standard
-Table 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:LCG64ShiftRandom-quality"
-
-\end_inset
-
- shows the summary of the
-\family typewriter
- dieharder
-\family default
- tests.
- The full report is part of the source file of the
-\family typewriter
- LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
-Random
-\family default
- class.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
-/prngine/LCG64ShiftRandom.java
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Passed tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Weak tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-110
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-4
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:LCG64ShiftRandom-quality"
-
-\end_inset
-
-
-\family typewriter
-LCG64ShiftRandom
-\family default
- quality
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Section
-Random seeding
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Seeding
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Random!seeding
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The PRNGs
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-See section 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "subsec:Randomness"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-, used by the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library, needs to be initialized with a proper seed value before they can
- be used.
- The usual way for doing this, is to take the current time stamp.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static long seed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return System.nanoTime();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Before applying this method throughout the whole library, I decided to perform
- some statistical tests.
- For this purpose I treated the
-\family typewriter
- seed()
-\family default
- method itself as PRNG and analyzed the created long values with the
-\family typewriter
- Die\SpecialChar softhyphen
-Harder class
-\family default
-.
- The
-\family typewriter
- seed()
-\family default
- method has been wrapped into the
-\family typewriter
- io.\SpecialChar softhyphen
-jenetics.\SpecialChar softhyphen
-prngine.\SpecialChar softhyphen
-inter\SpecialChar softhyphen
-nal.\SpecialChar softhyphen
-Nano\SpecialChar softhyphen
-Time\SpecialChar softhyphen
-Random
-\family default
- class.
- Assuming that the
-\family typewriter
- dieharder
-\family default
- tool is in the search path, calling
-\end_layout
-
-\begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.DieHarder 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.NanoTimeRandom -a
-\end_layout
-
-\begin_layout Standard
-will perform the statistical tests for the nano time
-\emph on
- 
-\emph default
-random engine.
- The statistical quality is rather bad: every single test failed.
- Table 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:Nano-time-seeding"
-
-\end_inset
-
- shows the summary of the
-\family typewriter
- dieharder
-\family default
- report.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The detailed test report can be found in the source of the Nano\SpecialChar softhyphen
-Time\SpecialChar softhyphen
-Random
- class.
- 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
-/prngine/internal/NanoTimeRandom.java
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Passed tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Weak tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-114
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Nano-time-seeding"
-
-\end_inset
-
-Nano time seeding quality
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-An alternative source of entropy, for generating seed values, would be the
-\family typewriter
- /dev/random
-\family default
- or
-\family typewriter
- /dev/urandom
-\family default
- file.
- But this approach is not portable, which was a prerequisite for the
-\family sans
-\series bold
-\shape smallcaps
- Jenetics
-\family default
-\series default
-\shape default
- library.
-\end_layout
-
-\begin_layout Standard
-The next attempt tries to fetch the seeds from the JVM, via the
-\family typewriter
- Object.\SpecialChar softhyphen
-hashCode()
-\family default
- method.
- Since the hash code of an Object is available for every operating system
- and most likely 
-\begin_inset Quotes ald
-\end_inset
-
-randomly
-\begin_inset Quotes ard
-\end_inset
-
- distributed.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static long seed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ((long)new Object().hashCode() << 32) |
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Object().hashCode();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-This seed method has been wrapped into the
-\family typewriter
- Object\SpecialChar softhyphen
-Hash\SpecialChar softhyphen
-Random
-\family default
- class and tested as well with
-\end_layout
-
-\begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.DieHarder 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.ObjectHashRandom -a
-\end_layout
-
-\begin_layout Standard
-Table 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:Object-hash-seeding"
-
-\end_inset
-
- shows the summary of the
-\family typewriter
- dieharder
-\family default
- report
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Full report: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
-/prngine/internal/ObjectHashRandom.java
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-, which looks better than the nano time seeding, but 86 failing tests was
- still not very satisfying.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Passed tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Weak tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-28
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-86
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Object-hash-seeding"
-
-\end_inset
-
-Object hash seeding quality
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-After additional experimentation, a combination of the nano time seed and
- the object hash seeding seems to be the
-\emph on
- right
-\emph default
- solution.
- The rational behind this was, that the PRNG seed shouldn't rely on a single
-\emph on
- source
-\emph default
- of entropy.
-\end_layout
-
-\begin_layout Standard
-\begin_inset listings
-lstparams "language=Java"
-inline false
-status open
-
-\begin_layout Plain Layout
-
-public static long seed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return mix(System.nanoType(), objectHashSeed());
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-private static long mix(final long a, final long b) {
-\end_layout
-
-\begin_layout Plain Layout
-
-    long c = a^b;
-\end_layout
-
-\begin_layout Plain Layout
-
-    c ^= c << 17;
-\end_layout
-
-\begin_layout Plain Layout
-
-    c ^= c >>> 31;
-\end_layout
-
-\begin_layout Plain Layout
-
-    c ^= c << 8;
-\end_layout
-
-\begin_layout Plain Layout
-
-    return c;
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
-
-private static long objectHashSeed() {
-\end_layout
-
-\begin_layout Plain Layout
-
-    return ((long)new Object().hashCode() << 32) |
-\end_layout
-
-\begin_layout Plain Layout
-
-        new Object().hashCode();
-\end_layout
-
-\begin_layout Plain Layout
-
-}
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "lis:Random-seeding"
-
-\end_inset
-
-Random seeding
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- The code in listing 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "lis:Random-seeding"
-
-\end_inset
-
- shows how the nano time seed is mixed with the object seed.
- The
-\family typewriter
- mix
-\family default
- method was inspired by the mixing step of the
-\family typewriter
-lcg64_shift
-\family default
-
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-This class is part of the 
-\begin_inset CommandInset href
-LatexCommand href
-name "TRNG"
-target "http://numbercrunch.de/trng/"
-literal "false"
-
-\end_inset
-
- library: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- random engine, which has been reimplemented in the
-\family typewriter
- LCG64\SpecialChar softhyphen
-Shift\SpecialChar softhyphen
-Random
-\family default
- class.
- Running the tests with
-\end_layout
-
-\begin_layout LyX-Code
-$ java -cp io.jenetics.prngine-1.0.1.jar 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.DieHarder 
-\backslash
-
-\end_layout
-
-\begin_layout LyX-Code
-      io.jenetics.prngine.internal.SeedRandom -a
-\end_layout
-
-\begin_layout Standard
-leads to the statistics summary
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Full report: 
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
-/prngine/internal/SeedRandom.java
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-, which is shown in table 
-\begin_inset CommandInset ref
-LatexCommand vref
-reference "tab:Combined-random-seeding"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float table
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Tabular
-<lyxtabular version="3" rows="2" columns="3">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Passed tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Weak tests
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-Failed tests
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-112
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-2
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-0
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "tab:Combined-random-seeding"
-
-\end_inset
-
-Combined random seeding quality
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The statistical performance of this seeding is better, according to the
-\family typewriter
- die\SpecialChar softhyphen
-harder
-\family default
- test suite, than some of the real random engines, including the default
- Java
-\family typewriter
- Random
-\family default
- engine.
- Using the proposed
-\family typewriter
- seed()
-\family default
- method is in any case preferable to the simple
-\family typewriter
- System.\SpecialChar softhyphen
-nano\SpecialChar softhyphen
-Time()
-\family default
- call.
-\end_layout
-
-\begin_layout Paragraph
-Open questions
-\end_layout
-
-\begin_layout Itemize
-How does this method perform on operating systems other than Linux?
-\end_layout
-
-\begin_layout Itemize
-How does this method perform on other JVM implementations?
-\end_layout
-
-\begin_layout Chapter
 Modules
 \begin_inset Index idx
 status collapsed
@@ -37243,6 +35958,1291 @@ PRNG speed
 
 \begin_layout Part*
 Appendix
+\end_layout
+
+\begin_layout Chapter
+Internals
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Internals
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This section contains internal implementation details which doesn't fit
+ in one of the previous sections.
+ They are not essential for using the library, but would give the user a
+ deeper insight in some design decisions made when implementing the library.
+ It also introduces tools and classes which where developed for testing
+ purpose.
+ This classes are not exported and
+\series bold
+ not
+\series default
+ part of the official API.
+\end_layout
+
+\begin_layout Section
+PRNG testing
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+PRNG testing
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!testing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family sans
+\series bold
+\shape smallcaps
+Jenetics
+\family default
+\series default
+\shape default
+ uses the
+\family typewriter
+ dieharder
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+From Robert G.
+ Brown:
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.phy.duke.edu/~rgb/General/dieharder.php
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ (command line) tool for testing the
+\emph on
+ randomness
+\emph default
+ of the used PRNGs.
+
+\family typewriter
+ dieharder
+\family default
+ is a random number generator (RNG) testing suite.
+ It is intended to test generators, not files of possibly random numbers.
+ Since
+\family typewriter
+ dieharder
+\family default
+ needs a huge amount of random data for testing the quality of a RNG, it
+ is usually advisable to pipe the random numbers to the
+\family typewriter
+ dieharder
+\family default
+ process:
+\end_layout
+
+\begin_layout LyX-Code
+$ cat /dev/urandom | dieharder -g 200 -a
+\end_layout
+
+\begin_layout Standard
+The example above demonstrates how to stream a raw binary stream of bits
+ to the
+\family typewriter
+ stdin
+\family default
+ (raw) interface of
+\family typewriter
+ dieharder
+\family default
+.
+ With the
+\family typewriter
+ Die\SpecialChar softhyphen
+Harder
+\family default
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Dieharder
+\end_layout
+
+\end_inset
+
+ class, which is part of the
+\family typewriter
+ io.jenetics-.prngine.\SpecialChar softhyphen
+internal
+\family default
+ package, it is easily possible to test PRNGs extending the
+\family typewriter
+ java.\SpecialChar softhyphen
+util.\SpecialChar softhyphen
+Random
+\family default
+ class.
+ The only requirement is, that the PRNG must be
+\emph on
+ default
+\emph default
+-constructible and part of the classpath.
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp io.jenetics.prngine-1.0.1.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      <random-engine-name> -a
+\end_layout
+
+\begin_layout Standard
+Calling the command above will create an instance of the given random engine
+ and stream the random data (bytes) to the raw interface of
+\family typewriter
+ dieharder
+\family default
+ process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+fontsize{6.8}{8}
+\backslash
+ttfamily}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstinputlisting{../resources/code/dieharder.protocol}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+lstset{basicstyle=
+\backslash
+footnotesize}
+\end_layout
+
+\end_inset
+
+In the listing above, a part of the created
+\family typewriter
+ dieharder
+\family default
+ report is shown.
+ For testing the
+\family typewriter
+ LCG64\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+LCG64ShiftRandom
+\end_layout
+
+\end_inset
+
+
+\family default
+ class, which is part of the
+\family typewriter
+ io.jenetics.\SpecialChar softhyphen
+prngine
+\family default
+ module, the following command can be called:
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp io.jenetics.prngine-1.0.1.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.LCG64ShiftRandom -a
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:LCG64ShiftRandom-quality"
+
+\end_inset
+
+ shows the summary of the
+\family typewriter
+ dieharder
+\family default
+ tests.
+ The full report is part of the source file of the
+\family typewriter
+ LCG64\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
+\family default
+ class.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/LCG64ShiftRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Passed tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weak tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Failed tests
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+110
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:LCG64ShiftRandom-quality"
+
+\end_inset
+
+
+\family typewriter
+LCG64ShiftRandom
+\family default
+ quality
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Random seeding
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Seeding
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Random!seeding
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The PRNGs
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+See section 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "subsec:Randomness"
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+, used by the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library, needs to be initialized with a proper seed value before they can
+ be used.
+ The usual way for doing this, is to take the current time stamp.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static long seed() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return System.nanoTime();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Before applying this method throughout the whole library, I decided to perform
+ some statistical tests.
+ For this purpose I treated the
+\family typewriter
+ seed()
+\family default
+ method itself as PRNG and analyzed the created long values with the
+\family typewriter
+ Die\SpecialChar softhyphen
+Harder class
+\family default
+.
+ The
+\family typewriter
+ seed()
+\family default
+ method has been wrapped into the
+\family typewriter
+ io.\SpecialChar softhyphen
+jenetics.\SpecialChar softhyphen
+prngine.\SpecialChar softhyphen
+inter\SpecialChar softhyphen
+nal.\SpecialChar softhyphen
+Nano\SpecialChar softhyphen
+Time\SpecialChar softhyphen
+Random
+\family default
+ class.
+ Assuming that the
+\family typewriter
+ dieharder
+\family default
+ tool is in the search path, calling
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp io.jenetics.prngine-1.0.1.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.NanoTimeRandom -a
+\end_layout
+
+\begin_layout Standard
+will perform the statistical tests for the nano time
+\emph on
+ 
+\emph default
+random engine.
+ The statistical quality is rather bad: every single test failed.
+ Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Nano-time-seeding"
+
+\end_inset
+
+ shows the summary of the
+\family typewriter
+ dieharder
+\family default
+ report.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The detailed test report can be found in the source of the Nano\SpecialChar softhyphen
+Time\SpecialChar softhyphen
+Random
+ class.
+ 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/internal/NanoTimeRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Passed tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weak tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Failed tests
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+114
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Nano-time-seeding"
+
+\end_inset
+
+Nano time seeding quality
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An alternative source of entropy, for generating seed values, would be the
+\family typewriter
+ /dev/random
+\family default
+ or
+\family typewriter
+ /dev/urandom
+\family default
+ file.
+ But this approach is not portable, which was a prerequisite for the
+\family sans
+\series bold
+\shape smallcaps
+ Jenetics
+\family default
+\series default
+\shape default
+ library.
+\end_layout
+
+\begin_layout Standard
+The next attempt tries to fetch the seeds from the JVM, via the
+\family typewriter
+ Object.\SpecialChar softhyphen
+hashCode()
+\family default
+ method.
+ Since the hash code of an Object is available for every operating system
+ and most likely 
+\begin_inset Quotes ald
+\end_inset
+
+randomly
+\begin_inset Quotes ard
+\end_inset
+
+ distributed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static long seed() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ((long)new Object().hashCode() << 32) |
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Object().hashCode();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+This seed method has been wrapped into the
+\family typewriter
+ Object\SpecialChar softhyphen
+Hash\SpecialChar softhyphen
+Random
+\family default
+ class and tested as well with
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp io.jenetics.prngine-1.0.1.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.ObjectHashRandom -a
+\end_layout
+
+\begin_layout Standard
+Table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Object-hash-seeding"
+
+\end_inset
+
+ shows the summary of the
+\family typewriter
+ dieharder
+\family default
+ report
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Full report: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/internal/ObjectHashRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which looks better than the nano time seeding, but 86 failing tests was
+ still not very satisfying.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Passed tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weak tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Failed tests
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+28
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+86
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Object-hash-seeding"
+
+\end_inset
+
+Object hash seeding quality
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After additional experimentation, a combination of the nano time seed and
+ the object hash seeding seems to be the
+\emph on
+ right
+\emph default
+ solution.
+ The rational behind this was, that the PRNG seed shouldn't rely on a single
+\emph on
+ source
+\emph default
+ of entropy.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+public static long seed() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return mix(System.nanoType(), objectHashSeed());
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long mix(final long a, final long b) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    long c = a^b;
+\end_layout
+
+\begin_layout Plain Layout
+
+    c ^= c << 17;
+\end_layout
+
+\begin_layout Plain Layout
+
+    c ^= c >>> 31;
+\end_layout
+
+\begin_layout Plain Layout
+
+    c ^= c << 8;
+\end_layout
+
+\begin_layout Plain Layout
+
+    return c;
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+private static long objectHashSeed() {
+\end_layout
+
+\begin_layout Plain Layout
+
+    return ((long)new Object().hashCode() << 32) |
+\end_layout
+
+\begin_layout Plain Layout
+
+        new Object().hashCode();
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:Random-seeding"
+
+\end_inset
+
+Random seeding
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ The code in listing 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "lis:Random-seeding"
+
+\end_inset
+
+ shows how the nano time seed is mixed with the object seed.
+ The
+\family typewriter
+ mix
+\family default
+ method was inspired by the mixing step of the
+\family typewriter
+lcg64_shift
+\family default
+
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This class is part of the 
+\begin_inset CommandInset href
+LatexCommand href
+name "TRNG"
+target "http://numbercrunch.de/trng/"
+literal "false"
+
+\end_inset
+
+ library: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/rabauke/trng4/blob/master/src/lcg64_shift.hpp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ random engine, which has been reimplemented in the
+\family typewriter
+ LCG64\SpecialChar softhyphen
+Shift\SpecialChar softhyphen
+Random
+\family default
+ class.
+ Running the tests with
+\end_layout
+
+\begin_layout LyX-Code
+$ java -cp io.jenetics.prngine-1.0.1.jar 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.DieHarder 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+      io.jenetics.prngine.internal.SeedRandom -a
+\end_layout
+
+\begin_layout Standard
+leads to the statistics summary
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Full report: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetics
+/prngine/internal/SeedRandom.java
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which is shown in table 
+\begin_inset CommandInset ref
+LatexCommand vref
+reference "tab:Combined-random-seeding"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Passed tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Weak tests
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Failed tests
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+112
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Combined-random-seeding"
+
+\end_inset
+
+Combined random seeding quality
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The statistical performance of this seeding is better, according to the
+\family typewriter
+ die\SpecialChar softhyphen
+harder
+\family default
+ test suite, than some of the real random engines, including the default
+ Java
+\family typewriter
+ Random
+\family default
+ engine.
+ Using the proposed
+\family typewriter
+ seed()
+\family default
+ method is in any case preferable to the simple
+\family typewriter
+ System.\SpecialChar softhyphen
+nano\SpecialChar softhyphen
+Time()
+\family default
+ call.
+\end_layout
+
+\begin_layout Paragraph
+Open questions
+\end_layout
+
+\begin_layout Itemize
+How does this method perform on operating systems other than Linux?
+\end_layout
+
+\begin_layout Itemize
+How does this method perform on other JVM implementations?
 \end_layout
 
 \begin_layout Chapter
