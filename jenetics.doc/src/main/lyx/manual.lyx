@@ -27829,6 +27829,52 @@ S(S(S(S(0))))
 .
 \end_layout
 
+\begin_layout Subsubsection
+Constant expression rewriter
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+ConstExprRewriter
+\family default
+ class allows the evaluation of constant tree expressions.
+ In the code snippet below, it is shown how to evaluate a constant double
+ expression.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+TreeNode<Op<Double>> tree = MathExpr.parse("1+2+3+4").toTree();
+\end_layout
+
+\begin_layout Plain Layout
+
+ConstRewriter.ofType(Double.class).rewrite(tree);
+\end_layout
+
+\begin_layout Plain Layout
+
+assert tree.value().equals(Const.of(10.0))
+\end_layout
+
+\end_inset
+
+Since the 
+\family typewriter
+ConstExprRewriter
+\family default
+ can rewrite constant expressions of arbitrary types, a rewrite instance
+ of the appropriate type, 
+\family typewriter
+Double
+\family default
+, must be created first.
+\end_layout
+
 \begin_layout Subsection
 Genes
 \end_layout
