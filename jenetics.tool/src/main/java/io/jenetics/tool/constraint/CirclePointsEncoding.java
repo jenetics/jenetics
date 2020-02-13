@@ -45,10 +45,10 @@ public class CirclePointsEncoding {
 	}
 
 	private static double[] point(final Random random) {
-		final double r = random.nextDouble();
+		final double r = 1 - random.nextDouble()*2;
 		final double a = random.nextDouble()*2*PI;
 
-		return new double[]{r*cos(a) + 1, r*sin(a) + 1};
+		return new double[]{r*cos(a), r*sin(a)};
 	}
 
 
