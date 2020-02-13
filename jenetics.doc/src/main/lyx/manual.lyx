@@ -21658,10 +21658,17 @@ where
 \end_inset
 
  and 
-\begin_inset Formula $\alpha\in\left[0,2\pi\right]$
+\begin_inset Formula $\alpha\in\left[0,2\pi\right)$
 \end_inset
 
 .
+ As you can see, the points near the center are much denser then at the
+ domain border.
+ This makes it harder for the 
+\family typewriter
+Engine
+\family default
+ to explore the whole problem domain.
 \end_layout
 
 \begin_layout Standard
@@ -21703,6 +21710,10 @@ Only valid domain points
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 The 
 \family typewriter
 RetryConstraint
@@ -30890,6 +30901,254 @@ Limits.byGeneConvergence
 All other strategies doesn't have a well defined termination behavior.
 \end_layout
 
+\begin_layout Subsubsection
+Mixed optimization
+\end_layout
+
+\begin_layout Standard
+Till now, we have only considered MOO problems, where all objectives where
+ either minimized or maximized.
+ This property might be to restrictive for some problem classes.
+ If you have MOO problem with three objectives, for example, where objective
+ one and three must be minimized and objective two has to be maximized,
+ you need some additional mechanisms for doing this.
+ Defining the optimization direction of the 
+\family typewriter
+Engine
+\family default
+ is not sufficient.
+ The fitness result 
+\family typewriter
+Vec
+\family default
+ has to be configured accordingly.
+ This can be done by using the most generic factory method of the 
+\family typewriter
+Vec
+\family default
+ interface.
+ Since this is quite bothersome, the 
+\family typewriter
+Vec\SpecialChar softhyphen
+Factory
+\family default
+ can be used for this task.
+ Listing 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lis:VecFactory-interface"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the main method of the interface.
+ The additional static factory methods has been omitted.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+@FunctionalInterface
+\end_layout
+
+\begin_layout Plain Layout
+
+public interface VecFactory<T> {
+\end_layout
+
+\begin_layout Plain Layout
+
+    Vec<T> newVec(final T array);
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\family typewriter
+\begin_inset CommandInset label
+LatexCommand label
+name "lis:VecFactory-interface"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+VecFactory
+\end_layout
+
+\end_inset
+
+VecFactory
+\family default
+ interface
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Instead of creating the solution 
+\family typewriter
+Vec
+\family default
+ instances directly, the fitness function must create it with a proper configure
+d 
+\family typewriter
+Vec\SpecialChar softhyphen
+Factory
+\family default
+ instance.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final VecFactory<double[]> factory = VecFactory.ofDoubleVec(
+\end_layout
+
+\begin_layout Plain Layout
+
+    Optimize.MINIMUM,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Optimize.MAXIMUM,
+\end_layout
+
+\begin_layout Plain Layout
+
+    Optimize.MINIMUM
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Vec<double[]> fitness(final double[] point) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double x = point[0];
+\end_layout
+
+\begin_layout Plain Layout
+
+    final double y = point[1];
+\end_layout
+
+\begin_layout Plain Layout
+
+    return factory.newVec(new double[] {
+\end_layout
+
+\begin_layout Plain Layout
+
+        sin(x)*y,
+\end_layout
+
+\begin_layout Plain Layout
+
+        cos(y)*x,
+\end_layout
+
+\begin_layout Plain Layout
+
+        x + y
+\end_layout
+
+\begin_layout Plain Layout
+
+    });
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+The example code above shows how the 
+\family typewriter
+Vec\SpecialChar softhyphen
+Factory
+\family default
+ must be configured to create 
+\family typewriter
+Vec<double[]>
+\family default
+ objects with the desired optimization properties.
+ In the fitness function you will then use the 
+\family typewriter
+Vec\SpecialChar softhyphen
+Factory
+\family default
+ instance for creating the fitness values instead of the 
+\family typewriter
+Vec.of(double...)
+\family default
+ factory method.
+ The optimization direction of the evolution 
+\family typewriter
+Engine
+\family default
+ will remain in its default value, 
+\family typewriter
+Opti\SpecialChar softhyphen
+mize\SpecialChar softhyphen
+.MAX\SpecialChar softhyphen
+IMUM
+\family default
+.
+ If you configure the 
+\family typewriter
+Engine
+\family default
+ for minimization, the configured optimization directions in the 
+\family typewriter
+Vec\SpecialChar softhyphen
+Factory
+\family default
+ will be reversed.
+ That means, the first objective will be maximized instead of minimized,
+ and so on.
+\end_layout
+
 \begin_layout Section
 
 \family typewriter
@@ -35535,8 +35794,11 @@ Measured on a Intel(R) Core(TM) i7-6700HQ CPU @ 2.60GHz with Java(TM) SE
 
  Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:PRNG-creation-speed"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
