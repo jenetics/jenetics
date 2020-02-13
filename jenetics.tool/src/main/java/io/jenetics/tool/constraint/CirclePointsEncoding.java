@@ -1,5 +1,9 @@
 package io.jenetics.tool.constraint;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,19 +16,17 @@ import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.util.ISeq;
 
-public class CirclePointsRetry {
-
+public class CirclePointsEncoding {
 	public static void main(final String[] args) throws IOException {
 		final String base = "/home/fwilhelm/Workspace/Development/Projects/" +
 			"Jenetics/jenetics.tool/src/main/resources/io/jenetics/tool/constraint";
 
-		final Path data = Paths.get(base, "circle_points_retry.dat");
-		final Path output = Paths.get(base, "circle_points_retry.svg");
+		final Path data = Paths.get(base, "circle_points_encoding.dat");
+		final Path output = Paths.get(base, "circle_points_encoding.svg");
 
 		final Random random = new LCG64ShiftRandom();
 
 		final ISeq<double[]> points = Stream.generate(() -> point(random))
-			.filter(CirclePointsRetry::isInCircle)
 			.limit(2000)
 			.collect(ISeq.toISeq());
 
@@ -43,16 +45,11 @@ public class CirclePointsRetry {
 	}
 
 	private static double[] point(final Random random) {
-		final double x = 1 - random.nextDouble()*2;
-		final double y = 1 - random.nextDouble()*2;
+		final double r = random.nextDouble();
+		final double a = random.nextDouble()*2*PI;
 
-		return new double[]{x, y};
+		return new double[]{r*cos(a) + 1, r*sin(a) + 1};
 	}
 
-	private static boolean isInCircle(final double[] point) {
-		final double x = point[0];
-		final double y = point[1];
-		return x*x + y*y <= 1;
-	}
 
 }
