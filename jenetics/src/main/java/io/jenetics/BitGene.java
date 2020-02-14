@@ -46,7 +46,7 @@ public enum BitGene
 
 	private final boolean _value;
 
-	private BitGene(final boolean value) {
+	BitGene(final boolean value) {
 		_value = value;
 	}
 

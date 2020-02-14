@@ -60,7 +60,7 @@ public class Diagram {
 	/**
 	 * The available Gnuplot templates.
 	 */
-	public static enum Template {
+	public enum Template {
 
 		/**
 		 * Template for execution time termination diagrams.
@@ -105,7 +105,7 @@ public class Diagram {
 		private final String _name;
 		private final String _path;
 
-		private Template(final String name) {
+		Template(final String name) {
 			_name = requireNonNull(name);
 			_path = "/io/jenetics/tool/evaluation/" +
 				requireNonNull(name) + ".gp";

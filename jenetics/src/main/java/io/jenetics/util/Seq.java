@@ -613,7 +613,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public Seq<T> subSeq(final int start, final int end);
+	Seq<T> subSeq(final int start, final int end);
 
 	/**
 	 * Test whether the given array is sorted in ascending order.

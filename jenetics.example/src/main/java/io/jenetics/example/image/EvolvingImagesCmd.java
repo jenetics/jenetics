@@ -262,7 +262,7 @@ final class EvolvingImagesCmd {
 	}
 
 	private static void println(final Object format, final Object... args) {
-		System.out.printf(Objects.toString(format) + "\n", args);
+		System.out.printf(format + "\n", args);
 	}
 
 	private static void log(final Object pattern, final Object... args) {

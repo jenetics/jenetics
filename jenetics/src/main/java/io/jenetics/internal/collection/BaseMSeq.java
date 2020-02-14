@@ -38,6 +38,6 @@ public interface BaseMSeq<T> extends BaseSeq<T> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0 || index >= size())}.
 	 */
-	public void set(final int index, final T value);
+	void set(final int index, final T value);
 
 }

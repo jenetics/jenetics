@@ -187,7 +187,7 @@ public class RandomIndexStreamTest {
 	}
 
 	interface IndexStream {
-		public int next();
+		int next();
 	}
 
 
@@ -199,7 +199,7 @@ public class RandomIndexStreamTest {
 			final Random random = new Random(0);
 			final IndexStream stream = ReferenceRandomStream(delta, p, random);
 
-			System.out.print(Double.toString(p));
+			System.out.print(p);
 			System.out.print(",");
 			for (int j = stream.next(); j != -1; j = stream.next()) {
 				System.out.print(j);

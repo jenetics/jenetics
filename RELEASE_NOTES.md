@@ -7,8 +7,8 @@
 * [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
 ```java
 public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
-    public Function<T, Genotype<G>> encoder();
-    public default Genotype<G> encode(final T value) {
+    Function<T, Genotype<G>> encoder();
+    default Genotype<G> encode(final T value) {
         return encoder().apply(value); 
     }
 }
