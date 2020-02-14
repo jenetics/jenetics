@@ -86,7 +86,7 @@ final class Polygon implements Mean<Polygon> {
 	 * @return a new Polygon
 	 */
 	public Polygon mutate(final float rate, final float magnitude) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final Polygon mutated = new Polygon(length());
 
 		for (int i = 0; i < _data.length; ++i) {
@@ -138,12 +138,12 @@ final class Polygon implements Mean<Polygon> {
 	}
 
 	private static float clamp(final float a) {
-		return a < 0F ? 0F : a > 1F ? 1F : a;
+		return a < 0F ? 0F : Math.min(a, 1F);
 		//return Math.abs(a%1F);
 	}
 
 	public static Polygon newRandom(final int length) {
-		return newRandom(length, RandomRegistry.getRandom());
+		return newRandom(length, RandomRegistry.random());
 	}
 
 }

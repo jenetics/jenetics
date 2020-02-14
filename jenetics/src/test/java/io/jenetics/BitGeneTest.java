@@ -37,7 +37,7 @@ public class BitGeneTest extends GeneTester<BitGene> {
 
 	@Override
 	protected Factory<BitGene> factory() {
-		return () -> BitGene.of(RandomRegistry.getRandom().nextBoolean());
+		return () -> BitGene.of(RandomRegistry.random().nextBoolean());
 	}
 
 	@Test

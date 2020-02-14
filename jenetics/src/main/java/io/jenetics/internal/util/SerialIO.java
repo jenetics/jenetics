@@ -26,6 +26,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -386,11 +387,7 @@ public final class SerialIO {
 				if (b > 0x7F) {
 					b = in.readByte() & 0xFF;
 					n ^= (b & 0x7F) << 21;
-					if (b > 0x7F) {
-						l = innerLongDecode((long)n, in);
-					} else {
-						l = n;
-					}
+					l = b > 0x7F ? innerLongDecode(n, in) : n;
 				} else {
 					l = n;
 				}

@@ -158,8 +158,6 @@ public final class Empty {
 
 	}
 
-
-
 	public enum EmptyISeq implements ISeq<Object> {
 
 		INSTANCE;

@@ -29,7 +29,7 @@ import io.jenetics.util.RandomRegistry;
 /**
  * The uniform crossover uses swaps single genes between two chromosomes, instead
  * of whole ranges as in single- and multi-point crossover.
- * <pre>
+ * <pre> {@code
  * +---+---+---+---+---+---+---+
  * | 1 | 2 | 3 | 4 | 6 | 7 | 8 |
  * +-+-+---+-+-+-+-+---+-+-+---+
@@ -37,7 +37,7 @@ import io.jenetics.util.RandomRegistry;
  * +-+-+---+-+-+-+-+---+-+-+---+
  * | a | b | c | d | e | f | g |
  * +---+---+---+---+---+---+---+
- * </pre>
+ * }</pre>
  * The probability that two genes are swapped is controlled by the
  * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
@@ -112,7 +112,7 @@ public class UniformCrossover<
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
-		return (int)indexes(RandomRegistry.getRandom(), length, _swapProbability)
+		return (int)indexes(RandomRegistry.random(), length, _swapProbability)
 			.peek(i -> that.swap(i, other))
 			.count();
 	}

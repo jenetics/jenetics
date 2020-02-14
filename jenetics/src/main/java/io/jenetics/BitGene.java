@@ -94,7 +94,7 @@ public enum BitGene
 	 */
 	@Override
 	public BitGene newInstance() {
-		return RandomRegistry.getRandom().nextBoolean() ? TRUE : FALSE;
+		return RandomRegistry.random().nextBoolean() ? TRUE : FALSE;
 	}
 
 	/**

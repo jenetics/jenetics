@@ -21,7 +21,7 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -211,7 +211,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return MSeq.<AnyGene<A>>ofLength(Randoms.nextInt(lengthRange, getRandom()))
+		return MSeq.<AnyGene<A>>ofLength(Randoms.nextInt(lengthRange, random()))
 			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}

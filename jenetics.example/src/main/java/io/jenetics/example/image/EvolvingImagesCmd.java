@@ -35,7 +35,6 @@ import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
@@ -77,7 +76,7 @@ final class EvolvingImagesCmd {
 	private int _generations;
 	private int _imageGeneration;
 
-	public EvolvingImagesCmd(final String[] args) {
+	EvolvingImagesCmd(final String[] args) {
 		if (args.length >= 1 && "evolve".equalsIgnoreCase(args[0])) {
 			final Map<String, String> params = toMap(args);
 			if (params.containsKey("--help")) {

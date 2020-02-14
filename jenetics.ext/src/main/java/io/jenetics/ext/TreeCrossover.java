@@ -70,7 +70,7 @@ public abstract class TreeCrossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);

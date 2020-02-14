@@ -38,7 +38,7 @@ final class IntTreeGene extends AbstractTreeGene<Integer, IntTreeGene> {
 
 	@Override
 	public IntTreeGene newInstance() {
-		return newInstance(RandomRegistry.getRandom().nextInt(10000));
+		return newInstance(RandomRegistry.random().nextInt(10000));
 	}
 
 	@Override

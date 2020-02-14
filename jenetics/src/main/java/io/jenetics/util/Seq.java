@@ -793,11 +793,9 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 		boolean equals = seq.length() == other.length();
 		for (int i = seq.length(); equals && --i >= 0;) {
 			final Object element = seq.get(i);
-			if (element != null) {
-				equals = element.equals(other.get(i));
-			} else {
-				equals = other.get(i) == null;
-			}
+			equals = element != null
+				? element.equals(other.get(i))
+				: other.get(i) == null;
 		}
 		return equals;
 	}

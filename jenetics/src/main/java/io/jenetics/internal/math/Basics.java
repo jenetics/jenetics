@@ -20,6 +20,7 @@
 package io.jenetics.internal.math;
 
 import static java.lang.Double.doubleToLongBits;
+import static java.lang.Double.min;
 
 import io.jenetics.stat.LongSummary;
 
@@ -118,7 +119,7 @@ public final class Basics {
 	 *        </ul>
 	 */
 	public static double clamp(final double v, final double lo, final double hi) {
-		return v < lo ? lo : v > hi ? hi : v;
+		return v < lo ? lo : min(v, hi);
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class MultiRootGP {
 	// Definition of the terminals.
 	static final ISeq<Op<Double>> TERMINALS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double) RandomRegistry.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double) RandomRegistry.random().nextInt(10))
 	);
 
 	static final Codec<ISeq<Function<Double[], Double>>, ProgramGene<Double>> CODEC =

@@ -375,7 +375,7 @@ public abstract class Reader<T> {
 	 * @return a list reader
 	 */
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
-		return new ListReader<T>(reader);
+		return new ListReader<>(reader);
 	}
 }
 
@@ -519,8 +519,8 @@ final class ElemReader<T> extends Reader<T> {
 			? results.get(_textReaderIndex[0])
 			: null;
 
-		for (int i = 0; i < _attrReaderIndexes.length; ++i) {
-			final ReaderResult result = results.get(_attrReaderIndexes[i]);
+		for (int i : _attrReaderIndexes) {
+			final ReaderResult result = results.get(i);
 			result.put(result.reader().read(xml));
 		}
 

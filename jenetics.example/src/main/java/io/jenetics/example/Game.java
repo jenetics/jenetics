@@ -76,7 +76,7 @@ public class Game {
 
 			final Player other;
 			if (pop != null) {
-				final int index = RandomRegistry.getRandom().nextInt(pop.size());
+				final int index = RandomRegistry.random().nextInt(pop.size());
 				other = codec.decode(pop.get(index).genotype());
 			} else {
 				other = Player.of(0.5);

@@ -354,7 +354,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	 * @return a new array with the given {@code length}
 	 */
 	public static <T> Array<T> ofLength(final int length) {
-		return new Array<T>(ObjectStore.ofLength(length));
+		return new Array<>(ObjectStore.ofLength(length));
 	}
 
 

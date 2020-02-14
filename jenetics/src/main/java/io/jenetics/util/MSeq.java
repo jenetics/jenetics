@@ -204,7 +204,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return this shuffled sequence
 	 */
 	default MSeq<T> shuffle() {
-		return shuffle(RandomRegistry.getRandom());
+		return shuffle(RandomRegistry.random());
 	}
 
 	/**

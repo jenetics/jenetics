@@ -93,7 +93,7 @@ public class StochasticUniversalSelector<
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;
 		final double[] points = new double[count];
-		points[0] = RandomRegistry.getRandom().nextDouble()*delta;
+		points[0] = RandomRegistry.random().nextDouble()*delta;
 		for (int i = 1; i < count; ++i) {
 			points[i] = delta*i;
 		}

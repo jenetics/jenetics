@@ -110,7 +110,7 @@ public class BitsTest {
 
 	@Test
 	public void toStringFromString() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final byte[] bytes = new byte[625];
 			random.nextBytes(bytes);
@@ -124,7 +124,7 @@ public class BitsTest {
 
 	@Test
 	public void longToStringFromString() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		for (int i = 0; i < 1000; ++i) {
 			final long value = random.nextLong();
 			final byte[] bytes = Bits.toBytes(value);

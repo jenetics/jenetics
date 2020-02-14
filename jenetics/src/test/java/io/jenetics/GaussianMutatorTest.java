@@ -39,7 +39,7 @@ public class GaussianMutatorTest extends MutatorTester {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double min = 0;
 		final double max = 10;

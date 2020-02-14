@@ -71,9 +71,7 @@ public class Gnuplot {
 	}
 
 	public void setEnv(final Map<String, String> env) {
-		for (Map.Entry<String, String> entry : env.entrySet()) {
-			setEnv(entry.getKey(), entry.getValue());
-		}
+		env.forEach(this::setEnv);
 	}
 
 	/**

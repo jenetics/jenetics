@@ -1,9 +1,10 @@
+import static io.jenetics.util.RandomRegistry.random;
+
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.TreeNode;
@@ -28,8 +29,7 @@ public class SymbolicRegression {
 	// Definition of the terminals.
 	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double)RandomRegistry
-			.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double)random().nextInt(10))
 	);
 
 	private static final Regression<Double> REGRESSION =

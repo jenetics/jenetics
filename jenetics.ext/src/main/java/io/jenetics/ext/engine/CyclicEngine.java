@@ -130,7 +130,7 @@ public final class CyclicEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, start, other))
@@ -163,7 +163,7 @@ public final class CyclicEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new CyclicSpliterator<>(
 				_engines.stream()
 					.map(engine -> toSpliterator(engine, init, other, first))

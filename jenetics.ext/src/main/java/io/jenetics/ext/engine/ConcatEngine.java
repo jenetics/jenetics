@@ -140,7 +140,7 @@ public final class ConcatEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new ConcatSpliterator<>(
 				_engines.stream()
 					.map(engine -> engine
@@ -165,7 +165,7 @@ public final class ConcatEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new ConcatSpliterator<>(spliterators(init, other)),
 			false
 		);

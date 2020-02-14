@@ -918,7 +918,7 @@ public final class Engine<
 				));
 			}
 
-			return survivorsFraction((size/(double)_evolutionParams.populationSize()));
+			return survivorsFraction(size/(double)_evolutionParams.populationSize());
 		}
 
 		/**

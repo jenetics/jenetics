@@ -21,6 +21,7 @@ package io.jenetics.util;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -35,7 +36,7 @@ import io.jenetics.internal.collection.BaseSeqSpliterator;
  * @since 5.2
  * @version 5.2
  */
-public interface BaseSeq<T> extends Iterable<T> {
+public interface BaseSeq<T> extends Iterable<T>, RandomAccess {
 
 	/**
 	 * Return the value at the given {@code index}.
@@ -82,7 +83,7 @@ public interface BaseSeq<T> extends Iterable<T> {
 
 	@Override
 	default Spliterator<T> spliterator() {
-		return new BaseSeqSpliterator<T>(this);
+		return new BaseSeqSpliterator<>(this);
 	}
 
 }

@@ -39,7 +39,7 @@ public class EvolutionDurationsTest extends ObjectTester<EvolutionDurations> {
 	@Override
 	protected Factory<EvolutionDurations> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 
 			return EvolutionDurations.of(
 				Duration.ofMillis(random.nextInt(1_000_000)),

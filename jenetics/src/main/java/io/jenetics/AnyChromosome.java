@@ -247,7 +247,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final IntRange lengthRange
 	) {
-		return of(supplier, validator, Predicates.<ISeq<A>>True(), lengthRange);
+		return of(supplier, validator, Predicates.True(), lengthRange);
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return of(supplier, validator, Predicates.<ISeq<A>>True(), length);
+		return of(supplier, validator, Predicates.True(), length);
 	}
 
 	/**

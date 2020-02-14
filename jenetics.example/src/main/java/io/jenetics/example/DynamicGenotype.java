@@ -48,7 +48,7 @@ public class DynamicGenotype {
 
 	// Explicit Genotype factory instead of Genotype templates.
 	private static final Factory<Genotype<DoubleGene>> ENCODING = () -> {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		return Genotype.of(
 			// Vary the chromosome count between 10 and 20.
 			IntStream.range(0, random.nextInt(10) + 10)
@@ -84,7 +84,7 @@ public class DynamicGenotype {
 			final IntRef alterations = new IntRef(0);
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 
-			indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
+			indexes(RandomRegistry.random(), pop.size(), p).forEach(i -> {
 				final Phenotype<G, C> pt = pop.get(i);
 
 				final Genotype<G> gt = pt.genotype();
@@ -106,7 +106,7 @@ public class DynamicGenotype {
 				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			final double rd = random.nextDouble();
 			if (rd < 1/3.0) {
 				chromosomes.remove(0);
@@ -115,7 +115,7 @@ public class DynamicGenotype {
 			}
 
 			alterations.value +=
-				indexes(RandomRegistry.getRandom(), chromosomes.size(), p)
+				indexes(RandomRegistry.random(), chromosomes.size(), p)
 					.map(i -> mutate(chromosomes, i, p))
 					.sum();
 
@@ -134,7 +134,7 @@ public class DynamicGenotype {
 		}
 
 		private int mutate(final List<G> genes, final double p) {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return (int)indexes(random, genes.size(), p)
 				.peek(i -> genes.set(i, genes.get(i).newInstance()))
 				.count();

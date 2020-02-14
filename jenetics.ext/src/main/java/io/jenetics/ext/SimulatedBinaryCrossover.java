@@ -102,13 +102,13 @@ public class SimulatedBinaryCrossover<
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		return (int) Randoms.indexes(RandomRegistry.getRandom(), that.length(), 0.5)
+		return (int) Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
 			.peek(i -> crossover(that, other, i))
 			.count();
 	}
 
 	private void crossover(final MSeq<G> that, final MSeq<G> other, final int i) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double u = random.nextDouble();
 		final double beta;
