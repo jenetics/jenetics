@@ -235,9 +235,7 @@ public abstract class SeqTestBase {
 	@Test(dataProvider = "sequences")
 	public void iterator(final Seq<Integer> seq) {
 		int count = 0;
-		final Iterator<Integer> it = seq.iterator();
-		while (it.hasNext()) {
-			final Integer value = it.next();
+		for (Integer value : seq) {
 			Assert.assertTrue(seq.contains(value));
 			++count;
 		}

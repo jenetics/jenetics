@@ -154,15 +154,15 @@ public abstract class ProbabilitySelectorTester<
 
 	protected static double sum(final double[] array) {
 		double sum = 0;
-		for (int i = 0; i < array.length; ++i) {
-			sum += array[i];
+		for (double v : array) {
+			sum += v;
 		}
 		return sum;
 	}
 
 	protected static void assertPositive(final double[] array) {
-		for (int i = 0; i < array.length; ++i) {
-			Assert.assertTrue(array[i] >= 0.0, "All values must be positive: " + array[i]);
+		for (double v : array) {
+			Assert.assertTrue(v >= 0.0, "All values must be positive: " + v);
 		}
 	}
 

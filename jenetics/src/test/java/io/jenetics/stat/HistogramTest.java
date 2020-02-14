@@ -139,8 +139,8 @@ public class HistogramTest {
 		Assert.assertEquals(histogram.getCount(), 600_000);
 
 		final long[] hist = histogram.getHistogram();
-		for (int i = 0; i < hist.length; ++i) {
-			Assert.assertEquals(hist[i], 100_000.0, 1_200.0);
+		for (long l : hist) {
+			Assert.assertEquals(l, 100_000.0, 1_200.0);
 		}
 	}
 
