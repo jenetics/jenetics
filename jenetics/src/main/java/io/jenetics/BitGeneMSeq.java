@@ -41,7 +41,7 @@ import io.jenetics.util.MSeq;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version !__version__!
+ * @version 6.0
  */
 final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 

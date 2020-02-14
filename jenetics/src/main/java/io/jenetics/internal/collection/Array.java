@@ -40,7 +40,7 @@ import io.jenetics.internal.collection.Array.Store.Ref;
  *
  * @param <T> the array element type
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 6.0
  * @since 3.4
  */
 public final class Array<T> implements BaseMSeq<T>, Serializable {

@@ -35,7 +35,7 @@ import java.util.Comparator;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 6.0
  */
 public final class CharStore implements Array.Store<Character>, Serializable {
 	private static final long serialVersionUID = 1L;
