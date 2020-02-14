@@ -114,7 +114,7 @@ public final class ObjectStore<T> implements Store<T>, Serializable {
 	}
 
 	@SuppressWarnings("rawtypes")
-	static ObjectStore read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new ObjectStore(readObjectArray(in));

@@ -382,7 +382,7 @@ public final class Array<T> implements BaseMSeq<T>, Serializable {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	static Array read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final boolean sealed = in.readBoolean();
