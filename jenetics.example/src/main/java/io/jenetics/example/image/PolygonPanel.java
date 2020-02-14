@@ -19,9 +19,12 @@ package io.jenetics.example.image;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * Draws the given {@code PolygonChromosome}.

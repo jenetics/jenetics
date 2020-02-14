@@ -19,10 +19,10 @@ package io.jenetics.example.image;
 import static java.lang.Math.min;
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * Draws an given {@code BufferedImage}.

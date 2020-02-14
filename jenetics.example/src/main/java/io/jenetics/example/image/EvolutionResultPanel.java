@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.averagingLong;
 import java.text.NumberFormat;
 import java.time.Duration;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import io.jenetics.engine.EvolutionResult;
 

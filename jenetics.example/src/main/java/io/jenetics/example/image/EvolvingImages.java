@@ -20,7 +20,8 @@ import static java.lang.String.format;
 import static javax.swing.SwingUtilities.invokeLater;
 import static io.jenetics.example.image.EvolvingImagesCmd.writeImage;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +35,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import io.jenetics.Genotype;

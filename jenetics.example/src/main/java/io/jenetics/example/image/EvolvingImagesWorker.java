@@ -21,7 +21,7 @@ package io.jenetics.example.image;
 
 import static java.util.Objects.requireNonNull;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

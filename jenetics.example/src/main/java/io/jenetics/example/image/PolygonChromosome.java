@@ -19,7 +19,9 @@ package io.jenetics.example.image;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 import io.jenetics.AbstractChromosome;
 import io.jenetics.Chromosome;
