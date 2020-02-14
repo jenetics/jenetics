@@ -27,7 +27,6 @@ import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.Recombinator;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 

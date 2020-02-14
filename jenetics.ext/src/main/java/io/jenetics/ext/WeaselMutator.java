@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.AltererResult;
-import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Mutator;

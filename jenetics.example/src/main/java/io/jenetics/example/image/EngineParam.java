@@ -19,7 +19,7 @@ package io.jenetics.example.image;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;

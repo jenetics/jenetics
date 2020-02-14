@@ -16,10 +16,9 @@
  */
 package io.jenetics.example.image;
 
-import java.awt.Dimension;
+import java.awt.*;
 
-import javax.swing.JPanel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 
 /**
  * Panel for showing/changing the engine parameters.

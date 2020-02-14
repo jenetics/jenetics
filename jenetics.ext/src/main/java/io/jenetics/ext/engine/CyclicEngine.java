@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.engine;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;

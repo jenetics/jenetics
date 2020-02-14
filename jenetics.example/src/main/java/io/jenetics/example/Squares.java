@@ -19,7 +19,7 @@
  */
 package io.jenetics.example;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.Random;
 
 import io.jenetics.AnyGene;

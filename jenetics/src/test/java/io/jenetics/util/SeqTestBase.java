@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;

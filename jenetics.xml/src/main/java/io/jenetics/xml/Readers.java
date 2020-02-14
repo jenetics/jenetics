@@ -44,7 +44,6 @@ import io.jenetics.LongGene;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
-
 import io.jenetics.xml.stream.AutoCloseableXMLStreamReader;
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.XML;

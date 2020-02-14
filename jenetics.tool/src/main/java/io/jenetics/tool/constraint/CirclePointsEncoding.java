@@ -12,7 +12,6 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.tool.trial.Gnuplot;
 import io.jenetics.util.ISeq;
 

@@ -19,8 +19,7 @@ package io.jenetics.example.image;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.util.Random;
 

@@ -25,7 +25,7 @@ import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.lang.System.getProperty;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;

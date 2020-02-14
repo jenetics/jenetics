@@ -21,8 +21,6 @@ package io.jenetics.tool.evaluation;
 
 import java.util.Random;
 
-import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.BitGene;
 import io.jenetics.Mutator;
 import io.jenetics.RouletteWheelSelector;
@@ -30,6 +28,7 @@ import io.jenetics.SinglePointCrossover;
 import io.jenetics.TournamentSelector;
 import io.jenetics.engine.Engine;
 import io.jenetics.example.Knapsack;
+import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * Definition of commonly used testing {@link Engine} objects.
