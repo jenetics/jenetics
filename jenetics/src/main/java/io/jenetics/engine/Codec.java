@@ -221,7 +221,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 		requireNonNull(encoding);
 		requireNonNull(decoder);
 
-		return new Codec<T, G>() {
+		return new Codec<>() {
 			@Override
 			public Factory<Genotype<G>> encoding() {
 				return encoding;
@@ -230,7 +230,7 @@ public interface Codec<T, G extends Gene<?, G>> {
 			@Override
 			@SuppressWarnings("unchecked")
 			public Function<Genotype<G>, T> decoder() {
-				return (Function<Genotype<G>, T>)decoder;
+				return (Function<Genotype<G>, T>) decoder;
 			}
 		};
 	}

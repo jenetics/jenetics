@@ -286,7 +286,7 @@ public class PersistentObject<T> {
 	}
 
 	public static EnumGene<Integer> nextEnumGeneInteger() {
-		return EnumGene.of(ISeq.<Integer>of(random()::nextInt, 5));
+		return EnumGene.of(ISeq.of(random()::nextInt, 5));
 	}
 
 	public static EnumGene<Long> nextEnumGeneLong() {

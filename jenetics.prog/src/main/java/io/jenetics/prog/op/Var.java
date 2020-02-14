@@ -197,7 +197,7 @@ public final class Var<T> implements Op<T>, Comparable<Var<T>>, Serializable {
 		return new Var<>(name, 0);
 	}
 
-	private static final Pattern VAR_INDEX = Pattern.compile("(.+)\\[\\s*(\\d+)\\s*\\]");
+	private static final Pattern VAR_INDEX = Pattern.compile("(.+)\\[\\s*(\\d+)\\s*]");
 
 	/**
 	 * Parses the given variable string to its name and index. The expected

@@ -232,7 +232,7 @@ public class ProgramChromosome<A>
 
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
 		final ISeq<?> terminals = operations.stream()
-			.filter(op -> op.isTerminal())
+			.filter(Op::isTerminal)
 			.collect(ISeq.toISeq());
 
 		if (!terminals.isEmpty()) {

@@ -332,7 +332,7 @@ public final class MinMax<C> implements Consumer<C> {
 
 	private static <C>
 	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
-		return new Function<C, Stream<C>>() {
+		return new Function<>() {
 			private C _best;
 
 			@Override

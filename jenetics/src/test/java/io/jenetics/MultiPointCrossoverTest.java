@@ -308,9 +308,11 @@ public class MultiPointCrossoverTest extends AltererTester {
 
 	@DataProvider(name = "numberOfCrossoverPoints")
 	public Iterator<Object[]> getNumberOfCrossoverPoints() {
-		return MSeq.<Object[]>ofLength(11).fill(new Supplier<Object[]>() {
+		return MSeq.<Object[]>ofLength(11).fill(new Supplier<>() {
 			private int point = 0;
-			@Override public Object[] get() {
+
+			@Override
+			public Object[] get() {
 				return new Object[]{++point};
 			}
 

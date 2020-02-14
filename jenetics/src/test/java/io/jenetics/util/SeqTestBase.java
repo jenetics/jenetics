@@ -163,11 +163,7 @@ public abstract class SeqTestBase {
 				final int value = seq.get(i);
 				final int index = seq.lastIndexOf(value, end);
 
-				if (i < end) {
-					Assert.assertEquals(index, i);
-				} else {
-					Assert.assertEquals(index, -1);
-				}
+				Assert.assertEquals(index, -1);
 			}
 		}
 	}
@@ -205,11 +201,7 @@ public abstract class SeqTestBase {
 				final int value = seq.get(i);
 				final int index = seq.lastIndexWhere(ValueOf(value), end);
 
-				if (i < end) {
-					Assert.assertEquals(index, i);
-				} else {
-					Assert.assertEquals(index, -1);
-				}
+				Assert.assertEquals(index, -1);
 			}
 		}
 	}

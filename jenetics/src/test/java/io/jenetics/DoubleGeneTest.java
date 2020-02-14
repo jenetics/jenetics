@@ -57,11 +57,9 @@ public class DoubleGeneTest extends NumericGeneTester<Double, DoubleGene> {
 		final double max = 100;
 		final Histogram<Double> histogram = Histogram.ofDouble(min, max, 10);
 
-		using(new Random(12345), r -> {
-			IntStream.range(0, 200_000)
-				.mapToObj(i -> DoubleGene.of(min, max).allele())
-				.forEach(histogram);
-		});
+		using(new Random(12345), r -> IntStream.range(0, 200_000)
+			.mapToObj(i -> DoubleGene.of(min, max).allele())
+			.forEach(histogram));
 
 		assertUniformDistribution(histogram);
 	}

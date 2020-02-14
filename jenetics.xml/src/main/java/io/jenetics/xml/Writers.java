@@ -37,6 +37,7 @@ import io.jenetics.DoubleGene;
 import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
+import io.jenetics.PermutationChromosome;
 import io.jenetics.util.ISeq;
 
 import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
@@ -720,7 +721,7 @@ public final class Writers {
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					Writer.<A>elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.validAlleles())
+						.map(io.jenetics.PermutationChromosome::validAlleles)
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
@@ -950,8 +951,8 @@ public final class Writers {
 		Writer<io.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem(
 				ROOT_NAME,
-				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
+				attr(LENGTH_NAME).map(io.jenetics.Genotype::length),
+				attr(NGENES_NAME).map(io.jenetics.Genotype::geneCount),
 				elems(writer).map(gt -> cast(ISeq.of(gt)))
 			);
 		}

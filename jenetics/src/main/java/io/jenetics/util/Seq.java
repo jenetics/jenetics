@@ -110,15 +110,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 
-		if (this instanceof RandomAccess) {
-			for (int i = 0, n = length(); i < n && valid; ++i) {
-				valid = predicate.test(get(i));
-			}
-		} else {
-			final Iterator<T> it = iterator();
-			while (it.hasNext() && valid) {
-				valid = predicate.test(it.next());
-			}
+		for (int i = 0, n = length(); i < n && valid; ++i) {
+			valid = predicate.test(get(i));
 		}
 
 		return valid;

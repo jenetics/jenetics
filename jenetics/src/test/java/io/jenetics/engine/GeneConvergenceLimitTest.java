@@ -115,7 +115,7 @@ public class GeneConvergenceLimitTest {
 				Genotype.of(DoubleChromosome.of(0, 10, 100)),
 				gt -> gt.stream()
 					.flatMap(Chromosome::stream)
-					.mapToDouble(g -> g.doubleValue())
+					.mapToDouble(DoubleGene::doubleValue)
 					.toArray()
 			)
 		);

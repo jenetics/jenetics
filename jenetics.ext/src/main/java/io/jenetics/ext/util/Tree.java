@@ -149,7 +149,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	default int level() {
 		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
-		while ((ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent()) {
+		while ((ancestor = ancestor.flatMap(Tree::parent)).isPresent()) {
 			++levels;
 		}
 
@@ -260,7 +260,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
-				(ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree::parent)).isPresent());
 
 		return result;
 	}
@@ -561,7 +561,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of siblings of {@code this} node
 	 */
 	default int siblingCount() {
-		return parent().map(Tree<V, T>::childCount).orElse(1);
+		return parent().map(Tree::childCount).orElse(1);
 	}
 
 	/**
@@ -661,8 +661,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default Optional<T> nextLeaf() {
 		return nextSibling()
-			.map(s -> Optional.of(s.firstLeaf()))
-			.orElseGet(() -> parent().flatMap(Tree<V, T>::nextLeaf));
+			.map(Tree::firstLeaf)
+			.or(() -> parent().flatMap(Tree::nextLeaf));
 	}
 
 	/**
@@ -684,8 +684,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default Optional<T> previousLeaf() {
 		return previousSibling()
-			.map(s -> Optional.of(s.lastLeaf()))
-			.orElseGet(() -> parent().flatMap(Tree<V, T>::previousLeaf));
+			.map(Tree::lastLeaf)
+			.or(() -> parent().flatMap(Tree::previousLeaf));
 	}
 
 	/**
@@ -698,7 +698,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default int leafCount() {
 		return (int)breadthFirstStream()
-			.filter(Tree<V, T>::isLeaf)
+			.filter(Tree::isLeaf)
 			.count();
 	}
 

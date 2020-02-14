@@ -78,7 +78,7 @@ public class ProgramGeneTest {
 			{(Function<Tree<?, ?>, Object>)Tree::childPath},
 			{(Function<Tree<?, ?>, Object>)Tree::isLeaf},
 			{(Function<Tree<?, ?>, Object>)t -> t.root().value()},
-			{(Function<Tree<?, ?>, Object>)t -> t.parent().map(t2 -> t2.value()).orElse(null)}
+			{(Function<Tree<?, ?>, Object>)t -> t.parent().map(Tree::value).orElse(null)}
 		};
 	}
 

@@ -41,12 +41,12 @@ public class OptimizeTest {
 		Comparator<Phenotype<DoubleGene, Double>> comp =
 			Optimize.MAXIMUM.<Phenotype<DoubleGene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) > 0);
-		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
+		Assert.assertEquals(comp.compare(pt(2), pt(2)), 0);
 		Assert.assertTrue(comp.compare(pt(5), pt(3)) < 0);
 
 		comp = Optimize.MINIMUM.<Phenotype<DoubleGene, Double>>descending();
 		Assert.assertTrue(comp.compare(pt(4), pt(3)) > 0);
-		Assert.assertTrue(comp.compare(pt(2), pt(2)) == 0);
+		Assert.assertEquals(comp.compare(pt(2), pt(2)), 0);
 		Assert.assertTrue(comp.compare(pt(2), pt(3)) < 0);
 	}
 

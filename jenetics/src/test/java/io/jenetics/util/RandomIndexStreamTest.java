@@ -111,9 +111,7 @@ public class RandomIndexStreamTest {
 
 	long k(final int n, final double p, final Random random) {
 		final IntRef kt = new IntRef(0);
-		indexes(random, n, p).forEach(i -> {
-			++kt.value;
-		});
+		indexes(random, n, p).forEach(i -> ++kt.value);
 
 		return kt.value;
 	}

@@ -37,7 +37,7 @@ import io.jenetics.util.MSeq;
 public class EnumGeneTest extends GeneTester<EnumGene<Integer>> {
 
 	private final Factory<EnumGene<Integer>>
-	_factory = new Factory<EnumGene<Integer>>() {
+	_factory = new Factory<>() {
 		private ISeq<Integer> _alleles = MSeq.<Integer>ofLength(100).fill(Int()).toISeq();
 
 		@Override

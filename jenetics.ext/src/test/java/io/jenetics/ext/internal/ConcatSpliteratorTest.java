@@ -20,6 +20,7 @@
 package io.jenetics.ext.internal;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -37,7 +38,7 @@ public class ConcatSpliteratorTest {
 		final Spliterator<Integer> s1 = Stream.of(1, 2, 3).spliterator();
 
 		final int[] array = StreamSupport
-			.stream(new ConcatSpliterator<>(Arrays.asList(s1)), false)
+			.stream(new ConcatSpliterator<>(List.of(s1)), false)
 			.mapToInt(Integer::intValue)
 			.toArray();
 

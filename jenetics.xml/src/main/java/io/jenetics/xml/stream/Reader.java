@@ -165,11 +165,10 @@ public abstract class Reader<T> {
 	public <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
-		return new Reader<B>(_name, _type) {
+		return new Reader<>(_name, _type) {
 			@Override
 			public B read(final XMLStreamReader xml)
-				throws XMLStreamException
-			{
+				throws XMLStreamException {
 				try {
 					return mapper.apply(Reader.this.read(xml));
 				} catch (RuntimeException e) {
