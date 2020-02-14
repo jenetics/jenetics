@@ -100,7 +100,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 			final int end = start + _lengths[i];
 			final Genotype<G> gt = Genotype.of(chromosomes.subSeq(start, end));
 
-			groups[i] = _codecs.get(i).decoder().apply(gt);
+			groups[i] = _codecs.get(i).decode(gt);
 			start = end;
 		}
 

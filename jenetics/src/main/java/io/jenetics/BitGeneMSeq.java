@@ -128,10 +128,6 @@ final class BitGeneISeq extends ArrayISeq<BitGene> {
 		return BitGeneMSeq.of(array.copy());
 	}
 
-	static BitGeneISeq of(final byte[] genes, final int length) {
-		return new BitGeneISeq(Array.of(BitGeneStore.of(genes, length)).seal());
-	}
-
 }
 
 /**
