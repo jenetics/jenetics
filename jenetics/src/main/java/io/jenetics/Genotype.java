@@ -402,13 +402,13 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static Genotype read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final int length = readInt(in);
-		final MSeq<Chromosome> chromosomes = MSeq.ofLength(length);
+		final MSeq chromosomes = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
-			chromosomes.set(i, (Chromosome)in.readObject());
+			chromosomes.set(i, in.readObject());
 		}
 
 		return new Genotype(chromosomes.asISeq());
