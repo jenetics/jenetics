@@ -462,6 +462,22 @@ public final class SerialIO {
 	}
 
 	/**
+	 * Write the given {@code double[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeDoubleArray(final double[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (double value : values) {
+			out.writeDouble(value);
+		}
+	}
+
+	/**
 	 * Read an {@code int[]} array from the data input.
 	 *
 	 * @param in the data source
@@ -487,6 +503,21 @@ public final class SerialIO {
 		final long[] values = new long[readInt(in)];
 		for (int i = 0; i < values.length; ++i) {
 			values[i] = readLong(in);
+		}
+		return values;
+	}
+
+	/**
+	 * Read a {@code double[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static double[] readDoubleArray(final DataInput in) throws IOException {
+		final double[] values = new double[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = in.readDouble();
 		}
 		return values;
 	}

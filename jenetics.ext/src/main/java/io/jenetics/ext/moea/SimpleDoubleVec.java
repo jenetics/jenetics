@@ -19,8 +19,8 @@
  */
 package io.jenetics.ext.moea;
 
-import static io.jenetics.internal.util.SerialIO.readInt;
-import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.readDoubleArray;
+import static io.jenetics.internal.util.SerialIO.writeDoubleArray;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -112,17 +112,10 @@ final class SimpleDoubleVec implements Vec<double[]>, Serializable {
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(_data.length, out);
-		for (double value : _data) {
-			out.writeDouble(value);
-		}
+		writeDoubleArray(_data,out);
 	}
 
 	static SimpleDoubleVec read(final DataInput in) throws IOException {
-		final double[] data = new double[readInt(in)];
-		for (int i = 0; i < data.length; ++i) {
-			data[i] = in.readDouble();
-		}
-		return new SimpleDoubleVec(data);
+		return new SimpleDoubleVec(readDoubleArray(in));
 	}
 }
