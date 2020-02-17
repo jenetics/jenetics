@@ -38,52 +38,79 @@ import io.jenetics.prngine.LCG64ShiftRandom;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.0
- * @since 3.0
  */
+@State(Scope.Benchmark)
+@BenchmarkMode(Mode.Throughput)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 public class RandomEnginePerf {
 
 	@State(Scope.Benchmark)
-	@BenchmarkMode(Mode.Throughput)
-	@OutputTimeUnit(TimeUnit.MICROSECONDS)
-	public static abstract class Base {
-
-		public Random random;
-
-		@Benchmark
-		public int nextInt() {
-			return random.nextInt();
-		}
-
-		@Benchmark
-		public long nextLong() {
-			return random.nextLong();
-		}
-
-		@Benchmark
-		public float nextFloat() {
-			return random.nextFloat();
-		}
-
-		@Benchmark
-		public double nextDouble() {
-			return random.nextDouble();
-		}
-
+	public static class Rand {
+		Random java = new Random();
+		Random tlrandom = ThreadLocalRandom.current();
+		Random lcg64shift = new LCG64ShiftRandom();
 	}
 
-	public static class LCG64ShiftRandomPerf extends Base {{
-		random = new LCG64ShiftRandom();
-	}}
 
-	public static class RandomPerf extends Base {{
-		random = new Random();
-	}}
+	@Benchmark
+	public int javaNextInt(final Rand random) {
+		return random.java.nextInt();
+	}
 
-	public static class ThreadLocalRandomPerf extends Base {{
-		random = ThreadLocalRandom.current();
-	}}
+	@Benchmark
+	public long javaNextLong(final Rand random) {
+		return random.java.nextLong();
+	}
 
+	@Benchmark
+	public float javaNextFloat(final Rand random) {
+		return random.java.nextFloat();
+	}
+
+	@Benchmark
+	public double javaNextDouble(final Rand random) {
+		return random.java.nextDouble();
+	}
+
+	@Benchmark
+	public int tlrandomNextInt(final Rand random) {
+		return random.tlrandom.nextInt();
+	}
+
+	@Benchmark
+	public long tlrandomNextLong(final Rand random) {
+		return random.tlrandom.nextLong();
+	}
+
+	@Benchmark
+	public float tlrandomNextFloat(final Rand random) {
+		return random.tlrandom.nextFloat();
+	}
+
+	@Benchmark
+	public double tlrandomNextDouble(final Rand random) {
+		return random.tlrandom.nextDouble();
+	}
+
+	@Benchmark
+	public int lcg64shiftNextInt(final Rand random) {
+		return random.lcg64shift.nextInt();
+	}
+
+	@Benchmark
+	public long lcg64shiftNextLong(final Rand random) {
+		return random.lcg64shift.nextLong();
+	}
+
+	@Benchmark
+	public float lcg64shiftNextFloat(final Rand random) {
+		return random.lcg64shift.nextFloat();
+	}
+
+	@Benchmark
+	public double lcg64shiftNextDouble(final Rand random) {
+		return random.lcg64shift.nextDouble();
+	}
 
 	public static void main(String[] args) throws RunnerException {
 		final Options opt = new OptionsBuilder()

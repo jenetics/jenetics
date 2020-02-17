@@ -26,7 +26,7 @@ import java.util.stream.Collector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.ISeq;
 
@@ -126,15 +126,15 @@ public final class SampleSummary implements Serializable {
 		final ExactQuantile quantile
 	) {
 		return SampleSummaryPoint.of(
-			moment.getMean(),
-			moment.getVariance(),
-			moment.getSkewness(),
-			moment.getKurtosis(),
+			moment.mean(),
+			moment.variance(),
+			moment.skewness(),
+			moment.kurtosis(),
 			quantile.quantile(0.5),
 			quantile.quantile(0.25),
 			quantile.quantile(0.75),
-			moment.getMin(),
-			moment.getMax()
+			moment.min(),
+			moment.max()
 		);
 	}
 
@@ -148,7 +148,7 @@ public final class SampleSummary implements Serializable {
 	 */
 	public static Collector<Sample, ?, SampleSummary>
 	toSampleSummary(final int parameterCount) {
-		require.positive(parameterCount);
+		Requires.positive(parameterCount);
 
 		return Collector.of(
 			() -> new SampleSummaryStatistics(parameterCount),

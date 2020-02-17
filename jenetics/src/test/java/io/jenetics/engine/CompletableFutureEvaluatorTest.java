@@ -19,6 +19,8 @@
  */
 package io.jenetics.engine;
 
+import static org.testng.Assert.assertEquals;
+
 import java.util.concurrent.CompletableFuture;
 
 import org.testng.Assert;
@@ -36,7 +38,7 @@ import io.jenetics.util.ISeq;
 public class CompletableFutureEvaluatorTest {
 
 	static CompletableFuture<Double> eval(final Genotype<DoubleGene> gt) {
-		return CompletableFuture.completedFuture(gt.getGene().doubleValue());
+		return CompletableFuture.completedFuture(gt.gene().doubleValue());
 	}
 
 	@Test
@@ -56,7 +58,7 @@ public class CompletableFutureEvaluatorTest {
 
 		evaluated.forEach(pt -> Assert.assertTrue(pt.isEvaluated()));
 		evaluated.forEach(pt ->
-			Assert.assertEquals(pt.getGenotype().getGene().doubleValue(), pt.getFitness()));
+			assertEquals(pt.genotype().gene().doubleValue(), pt.fitness().doubleValue()));
 	}
 
 }

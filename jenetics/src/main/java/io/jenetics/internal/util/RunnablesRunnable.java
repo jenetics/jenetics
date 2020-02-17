@@ -19,7 +19,7 @@
  */
 package io.jenetics.internal.util;
 
-import io.jenetics.util.Seq;
+import io.jenetics.util.BaseSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -28,12 +28,12 @@ import io.jenetics.util.Seq;
  */
 final class RunnablesRunnable implements Runnable {
 
-	private final Seq<? extends Runnable> _runnables;
+	private final BaseSeq<? extends Runnable> _runnables;
 	private final int _start;
 	private final int _end;
 
 	RunnablesRunnable(
-		final Seq<? extends Runnable> runnables,
+		final BaseSeq<? extends Runnable> runnables,
 		final int start,
 		final int end
 	) {

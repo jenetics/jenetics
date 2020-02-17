@@ -60,7 +60,7 @@ public interface Error<T> {
 	 * @return the overall program error
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public double apply(
+	double apply(
 		final Tree<? extends Op<T>, ?> program,
 		final T[] calculated,
 		final T[] expected
@@ -78,9 +78,8 @@ public interface Error<T> {
 	 * @throws NullPointerException if the given {@code loss} function is
 	 *         {@code null}
 	 */
-	public static <T> Error<T> of(final LossFunction<T> loss) {
+	static <T> Error<T> of(final LossFunction<T> loss) {
 		requireNonNull(loss);
-
 		return (p, c, e) -> loss.apply(c, e);
 	}
 
@@ -97,7 +96,7 @@ public interface Error<T> {
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static <T> Error<T>
+	static <T> Error<T>
 	of(final LossFunction<T> loss, final Complexity<T> complexity) {
 		return of(loss, complexity, (lss, cpx) -> lss + lss*cpx);
 	}
@@ -117,7 +116,7 @@ public interface Error<T> {
 	 *         function
 	 * @throws NullPointerException if one of the functions is {@code null}
 	 */
-	public static <T> Error<T> of(
+	static <T> Error<T> of(
 		final LossFunction<T> loss,
 		final Complexity<T> complexity,
 		final DoubleBinaryOperator compose

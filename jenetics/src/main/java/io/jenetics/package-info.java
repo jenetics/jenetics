@@ -54,7 +54,7 @@
  * public class HelloWorld {
  *      // 2.) Definition of the fitness function.
  *     private static Integer eval(Genotype<BitGene> gt) {
- *         return ((BitChromosome)gt.getChromosome()).bitCount();
+ *         return ((BitChromosome)gt.chromosome()).bitCount();
  *     }
  *
  *     public static void main(String[] args) {

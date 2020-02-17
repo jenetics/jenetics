@@ -1,9 +1,10 @@
+import static io.jenetics.util.RandomRegistry.random;
+
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.Limits;
 import io.jenetics.util.ISeq;
-import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.SingleNodeCrossover;
 import io.jenetics.ext.util.TreeNode;
@@ -28,15 +29,14 @@ public class SymbolicRegression {
 	// Definition of the terminals.
 	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double)RandomRegistry
-			.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double)random().nextInt(10))
 	);
 
 	private static final Regression<Double> REGRESSION =
 		Regression.of(
 			Regression.codecOf(
 				OPS, TMS, 5,
-				t -> t.getGene().size() < 30
+				t -> t.gene().size() < 30
 			),
 			Error.of(LossFunction::mse),
 			// Lookup table for 4*x^3 - 3*x^2 + x
@@ -77,13 +77,13 @@ public class SymbolicRegression {
 				.limit(Limits.byFitnessThreshold(0.01))
 				.collect(EvolutionResult.toBestEvolutionResult());
 
-		final ProgramGene<Double> program = er.getBestPhenotype()
-			.getGenotype()
-			.getGene();
+		final ProgramGene<Double> program = er.bestPhenotype()
+			.genotype()
+			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);
-		System.out.println("G: " + er.getTotalGenerations());
+		System.out.println("G: " + er.totalGenerations());
 		System.out.println("F: " + new MathExpr(tree));
 		System.out.println("E: " + REGRESSION.error(tree));
 	}

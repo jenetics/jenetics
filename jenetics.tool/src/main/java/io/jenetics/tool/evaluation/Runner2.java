@@ -92,15 +92,15 @@ public class Runner2<
 		final long end2 = System.currentTimeMillis();
 
 		return new double[] {
-			result1.getTotalGenerations(),
-			result1.getBestFitness() != null
-				? result1.getBestFitness().doubleValue()
+			result1.totalGenerations(),
+			result1.bestFitness() != null
+				? result1.bestFitness().doubleValue()
 				: Double.NEGATIVE_INFINITY,
 			end1 - start1,
 
-			result2.getTotalGenerations(),
-			result2.getBestFitness() != null
-				? result2.getBestFitness().doubleValue()
+			result2.totalGenerations(),
+			result2.bestFitness() != null
+				? result2.bestFitness().doubleValue()
 				: Double.NEGATIVE_INFINITY,
 			end2 - start2
 		};

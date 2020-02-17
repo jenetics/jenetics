@@ -48,7 +48,7 @@ final class PolygonChromosome extends AbstractChromosome<PolygonGene> {
 
 	@Override
 	public Chromosome<PolygonGene> newInstance() {
-		return new PolygonChromosome(length(), getGene().getAllele().length());
+		return new PolygonChromosome(length(), gene().allele().length());
 	}
 
 	public void draw(final Graphics2D g, final int width, final int height) {
@@ -59,7 +59,7 @@ final class PolygonChromosome extends AbstractChromosome<PolygonGene> {
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 
 		for (PolygonGene gene : this) {
-			gene.getAllele().draw(g, width, height);
+			gene.allele().draw(g, width, height);
 		}
 	}
 

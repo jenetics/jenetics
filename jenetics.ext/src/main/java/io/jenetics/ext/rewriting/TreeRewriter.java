@@ -23,7 +23,6 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
-import java.util.stream.StreamSupport;
 
 import io.jenetics.ext.util.TreeNode;
 
@@ -48,6 +47,9 @@ import io.jenetics.ext.util.TreeNode;
  * </em>
  * </p>
  *
+ * @apiNote
+ * The rewriting is done in place, to a mutable {@link TreeNode} object.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
@@ -57,7 +59,8 @@ public interface TreeRewriter<V> {
 
 	/**
 	 * Applies the rewriting to the given (mutable) {@code tree}. The tree
-	 * rewrite is done in place.
+	 * rewrite is done in place. Via the {@code limit} parameter, the termination
+	 * of the tree-rewrite process can be guaranteed.
 	 *
 	 * @param tree the tree to be rewritten
 	 * @param limit the maximal number this rewrite rule is applied to the given
@@ -67,7 +70,7 @@ public interface TreeRewriter<V> {
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
 	 *         one
 	 */
-	public int rewrite(final TreeNode<V> tree, final int limit);
+	int rewrite(final TreeNode<V> tree, final int limit);
 
 	/**
 	 * Applies the rewriting to the given (mutable) {@code tree}. The tree
@@ -81,7 +84,7 @@ public interface TreeRewriter<V> {
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if the given {@code tree} is {@code null}
 	 */
-	public default int rewrite(final TreeNode<V> tree) {
+	default int rewrite(final TreeNode<V> tree) {
 		return rewrite(tree, Integer.MAX_VALUE);
 	}
 
@@ -106,7 +109,7 @@ public interface TreeRewriter<V> {
 	 * @throws IllegalArgumentException if the {@code limit} is smaller than
 	 *         zero
 	 */
-	public static <V> int rewrite(
+	static <V> int rewrite(
 		final TreeNode<V> tree,
 		final int limit,
 		final Iterable<? extends TreeRewriter<V>> rewriters
@@ -147,7 +150,7 @@ public interface TreeRewriter<V> {
 	 *         method, {@code false} if the tree hasn't been changed
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
-	public static <V> int rewrite(
+	static <V> int rewrite(
 		final TreeNode<V> tree,
 		final Iterable<? extends TreeRewriter<V>> rewriters
 	) {
@@ -166,7 +169,7 @@ public interface TreeRewriter<V> {
 	 *         zero
 	 */
 	@SafeVarargs
-	public static <V> TreeRewriter<V>
+	static <V> TreeRewriter<V>
 	concat(final TreeRewriter<V>... rewriters) {
 		if (rewriters.length == 0) {
 			throw new IllegalArgumentException(

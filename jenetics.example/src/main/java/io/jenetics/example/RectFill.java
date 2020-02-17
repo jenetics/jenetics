@@ -64,7 +64,7 @@ public final class RectFill
 		}
 
 		static Rect newInstance(final Rect bounds) {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return new Rect(
 				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,
 				random.nextInt(bounds.x2 - bounds.x1) + bounds.x1,
@@ -94,8 +94,8 @@ public final class RectFill
 				a -> true,
 				MAX_RECT_COUNT
 			)),
-			gt -> gt.getChromosome().stream()
-						.map(AnyGene::getAllele)
+			gt -> gt.chromosome().stream()
+						.map(AnyGene::allele)
 						.filter(r -> r != Rect.EMPTY)
 						.collect(ISeq.toISeq())
 		);

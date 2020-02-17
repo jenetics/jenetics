@@ -94,7 +94,7 @@ final class FitnessConvergenceLimit<N extends Number & Comparable<? super N>>
 
 	@Override
 	public boolean test(final EvolutionResult<?, N> result) {
-		final Number fitness = result.getBestFitness();
+		final Number fitness = result.bestFitness();
 
 		if (fitness != null) {
 			_buffer.accept(fitness.doubleValue());

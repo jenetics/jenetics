@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeLong;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -33,7 +33,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.LongRange;
@@ -56,7 +56,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.0
+ * @version 5.2
  */
 public final class LongGene
 	implements
@@ -88,16 +88,19 @@ public final class LongGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Long getAllele() {
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Long getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Long getMax() {
 		return _max;
@@ -182,7 +185,7 @@ public final class LongGene
 
 	@Override
 	public LongGene newInstance() {
-		return LongGene.of(nextLong(getRandom(), _min, _max), _min, _max);
+		return LongGene.of(nextLong(random(), _min, _max), _min, _max);
 	}
 
 	@Override
@@ -237,7 +240,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final long value, final LongRange range) {
-		return LongGene.of(value, range.getMin(), range.getMax());
+		return LongGene.of(value, range.min(), range.max());
 	}
 
 	/**
@@ -249,7 +252,7 @@ public final class LongGene
 	 * @return a new {@code LongGene} with the given parameters.
 	 */
 	public static LongGene of(final long min, final long max) {
-		return of(nextLong(getRandom(), min, max), min, max);
+		return of(nextLong(random(), min, max), min, max);
 	}
 
 	/**
@@ -263,7 +266,7 @@ public final class LongGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static LongGene of(final LongRange range) {
-		return of(nextLong(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextLong(random(), range.min(), range.max()), range);
 	}
 
 	static ISeq<LongGene> seq(
@@ -271,8 +274,8 @@ public final class LongGene
 		final long max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
-		return MSeq.<LongGene>ofLength(random.nextInt(lengthRange, r))
+		final Random r = random();
+		return MSeq.<LongGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> LongGene.of(nextLong(r, min, max), min, max))
 			.toISeq();
 	}

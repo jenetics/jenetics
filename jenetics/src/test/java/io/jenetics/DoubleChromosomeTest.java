@@ -64,13 +64,13 @@ public class DoubleChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final DoubleChromosome chromosome = DoubleChromosome.of(min, max, 500);
 				for (DoubleGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0.0) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100.0) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0.0) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100.0) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -81,7 +81,7 @@ public class DoubleChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -106,7 +106,7 @@ public class DoubleChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).doubleValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).doubleValue(), values[i]);
 			Assert.assertEquals(chromosome.doubleValue(i), values[i]);
 		}
 	}

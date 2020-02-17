@@ -47,9 +47,9 @@ import io.jenetics.util.RandomRegistry;
  * final ISeq<Integer> alleles = ISeq.of(1, 2, 3, 4, 5, 6, 7, 8);
  * final EnumGene<Integer> gene = new EnumGene<>(5, alleles);
  *
- * assert(gene.getAlleleIndex() == 5);
- * assert(gene.getAllele() == gene.getValidAlleles().get(5));
- * assert(gene.getValidAlleles() == alleles);
+ * assert(gene.alleleIndex() == 5);
+ * assert(gene.allele() == gene.validAlleles().get(5));
+ * assert(gene.validAlleles() == alleles);
  * }</pre>
  *
  * @see PermutationChromosome
@@ -60,7 +60,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.0
+ * @version 5.2
  */
 public final class EnumGene<A>
 	implements
@@ -93,7 +93,9 @@ public final class EnumGene<A>
 
 		if (alleleIndex < 0 || alleleIndex >= validAlleles.length()) {
 			throw new IndexOutOfBoundsException(format(
-				"Allele index is not in range [0, %d).", alleleIndex
+				"Allele index is not in range [0, %d): %d.",
+				validAlleles.length(),
+				alleleIndex
 			));
 		}
 
@@ -106,6 +108,17 @@ public final class EnumGene<A>
 	 *
 	 * @return the sequence of the valid alleles.
 	 */
+	public ISeq<A> validAlleles() {
+		return _validAlleles;
+	}
+
+	/**
+	 * Return sequence of the valid alleles where this gene is a part of.
+	 *
+	 * @return the sequence of the valid alleles.
+	 * @deprecated Use {@link #validAlleles()} instead
+	 */
+	@Deprecated
 	public ISeq<A> getValidAlleles() {
 		return _validAlleles;
 	}
@@ -115,10 +128,22 @@ public final class EnumGene<A>
 	 *
 	 * @return the index of the allele this gene is representing.
 	 */
+	public int alleleIndex() {
+		return _alleleIndex;
+	}
+
+	/**
+	 * Return the index of the allele this gene is representing.
+	 *
+	 * @return the index of the allele this gene is representing.
+	 * @deprecated Use {@link #alleleIndex()} instead
+	 */
+	@Deprecated
 	public int getAlleleIndex() {
 		return _alleleIndex;
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _validAlleles.get(_alleleIndex);
@@ -132,7 +157,7 @@ public final class EnumGene<A>
 	@Override
 	public EnumGene<A> newInstance() {
 		return new EnumGene<>(
-			RandomRegistry.getRandom().nextInt(_validAlleles.length()),
+			RandomRegistry.random().nextInt(_validAlleles.length()),
 			_validAlleles
 		);
 	}
@@ -179,7 +204,7 @@ public final class EnumGene<A>
 
 	@Override
 	public String toString() {
-		return Objects.toString(getAllele());
+		return Objects.toString(allele());
 	}
 
 
@@ -223,7 +248,7 @@ public final class EnumGene<A>
 	 */
 	public static <A> EnumGene<A> of(final ISeq<? extends A> validAlleles) {
 		return new EnumGene<>(
-			RandomRegistry.getRandom().nextInt(validAlleles.length()),
+			RandomRegistry.random().nextInt(validAlleles.length()),
 			validAlleles
 		);
 	}

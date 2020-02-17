@@ -40,7 +40,7 @@ public interface Sample<T> {
 	 *
 	 * @return the arity of the sample point
 	 */
-	public int arity();
+	int arity();
 
 	/**
 	 * Return the argument value with the given {@code index}.
@@ -52,14 +52,14 @@ public interface Sample<T> {
 	 * @throws ArrayIndexOutOfBoundsException if the given {@code index} is not
 	 *         within the given range {@code [0, arity)}
 	 */
-	public T argAt(final int index);
+	T argAt(final int index);
 
 	/**
 	 * Return the result of the sample point.
 	 *
 	 * @return the result of the sample point
 	 */
-	public T result();
+	T result();
 
 
 	/* *************************************************************************
@@ -79,7 +79,7 @@ public interface Sample<T> {
 	 * @throws IllegalArgumentException if the argument array is empty
 	 * @throws NullPointerException if the argument array is {@code null}
 	 */
-	public static <T> Sample<T> of(final T[] sample) {
+	static <T> Sample<T> of(final T[] sample) {
 		return new ObjectSample<>(sample.clone());
 	}
 
@@ -92,7 +92,7 @@ public interface Sample<T> {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> ofDouble(final double x, final double y) {
+	static Sample<Double> ofDouble(final double x, final double y) {
 		return new DoubleSample(x, y);
 	}
 
@@ -106,7 +106,7 @@ public interface Sample<T> {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
+	static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
 		return new DoubleSample(x1, x2, y);
 	}
 
@@ -121,7 +121,7 @@ public interface Sample<T> {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	public static Sample<Double> ofDouble(
+	static Sample<Double> ofDouble(
 		final double x1,
 		final double x2,
 		final double x3,

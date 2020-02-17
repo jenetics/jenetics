@@ -19,15 +19,23 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Objects;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -42,13 +50,17 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.2
  * @since 4.1
  *
  * @deprecated Is replaced by {@link EvolutionStart} and will be removed
  */
 @Deprecated
-public final class EvolutionInit<G extends Gene<?, G>> {
+public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
+	implements Serializable
+{
+
+	private static final long serialVersionUID = 1L;
 
 	private final ISeq<Genotype<G>> _population;
 	private final long _generation;
@@ -58,7 +70,7 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 		final long generation
 	) {
 		_population = requireNonNull(population);
-		_generation = require.positive(generation);
+		_generation = Requires.positive(generation);
 	}
 
 	/**
@@ -66,6 +78,17 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 	 *
 	 * @return the initial population
 	 */
+	public ISeq<Genotype<G>> population() {
+		return _population;
+	}
+
+	/**
+	 * Return the initial population.
+	 *
+	 * @return the initial population
+	 * @deprecated Use {@link #population()} instead
+	 */
+	@Deprecated
 	public ISeq<Genotype<G>> getPopulation() {
 		return _population;
 	}
@@ -75,6 +98,17 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 	 *
 	 * @return the start generation
 	 */
+	public long generation() {
+		return _generation;
+	}
+
+	/**
+	 * Return the generation of the start population.
+	 *
+	 * @return the start generation
+	 * @deprecated Use {@link #generation()} instead
+	 */
+	@Deprecated
 	public long getGeneration() {
 		return _generation;
 	}
@@ -119,6 +153,36 @@ public final class EvolutionInit<G extends Gene<?, G>> {
 		final long generation
 	) {
 		return new EvolutionInit<>(population, generation);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_INIT, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_population);
+		writeLong(_generation, out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionInit read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new EvolutionInit(
+			(ISeq)in.readObject(),
+			readLong(in)
+		);
 	}
 
 }

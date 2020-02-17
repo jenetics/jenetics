@@ -26,8 +26,8 @@ import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.comb;
-import io.jenetics.internal.math.probability;
+import io.jenetics.internal.math.Combinatorics;
+import io.jenetics.internal.math.Probabilities;
 import io.jenetics.util.MSeq;
 
 /**
@@ -80,9 +80,9 @@ public class HPRMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int P = probability.toInt(p);
-			final int[] points = comb.subset(chromosome.length(), 2);
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final int P = Probabilities.toInt(p);
+			final int[] points = Combinatorics.subset(chromosome.length(), 2);
+			final MSeq<G> genes = MSeq.of(chromosome);
 
 			int mutations = (points[1] - points[0] + 1)/2;
 			for (int i = points[0], j = points[1]; i < j; ++i, --j) {

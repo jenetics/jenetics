@@ -24,6 +24,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,7 +121,7 @@ public final class SerialIO {
 	public static void writeString(final String value, final DataOutput out)
 		throws IOException
 	{
-		final byte[] bytes = value.getBytes("UTF-8");
+		final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
 		writeInt(bytes.length, out);
 		out.write(bytes);
 	}
@@ -136,7 +137,7 @@ public final class SerialIO {
 	public static String readString(final DataInput in) throws IOException {
 		final byte[] bytes = new byte[readInt(in)];
 		in.readFully(bytes);
-		return new String(bytes, "UTF-8");
+		return new String(bytes, StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -384,11 +385,7 @@ public final class SerialIO {
 				if (b > 0x7F) {
 					b = in.readByte() & 0xFF;
 					n ^= (b & 0x7F) << 21;
-					if (b > 0x7F) {
-						l = innerLongDecode((long)n, in);
-					} else {
-						l = n;
-					}
+					l = b > 0x7F ? innerLongDecode(n, in) : n;
 				} else {
 					l = n;
 				}
@@ -465,6 +462,22 @@ public final class SerialIO {
 	}
 
 	/**
+	 * Write the given {@code double[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeDoubleArray(final double[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (double value : values) {
+			out.writeDouble(value);
+		}
+	}
+
+	/**
 	 * Read an {@code int[]} array from the data input.
 	 *
 	 * @param in the data source
@@ -490,6 +503,21 @@ public final class SerialIO {
 		final long[] values = new long[readInt(in)];
 		for (int i = 0; i < values.length; ++i) {
 			values[i] = readLong(in);
+		}
+		return values;
+	}
+
+	/**
+	 * Read a {@code double[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static double[] readDoubleArray(final DataInput in) throws IOException {
+		final double[] values = new double[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = in.readDouble();
 		}
 		return values;
 	}

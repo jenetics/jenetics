@@ -24,7 +24,7 @@ import static java.lang.String.format;
 import java.util.function.Consumer;
 import java.util.stream.Collector;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.stat.DoubleMomentStatistics;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
@@ -71,7 +71,7 @@ public class SampleSummaryStatistics implements Consumer<Sample> {
 	 *         is smaller then one
 	 */
 	public SampleSummaryStatistics(final int parameterCount) {
-		_parameterCount = require.positive(parameterCount);
+		_parameterCount = Requires.positive(parameterCount);
 		_moments = MSeq.of(DoubleMomentStatistics::new, parameterCount).toISeq();
 		_quantiles = MSeq.of(ExactQuantile::new, parameterCount).toISeq();
 	}
@@ -155,7 +155,7 @@ public class SampleSummaryStatistics implements Consumer<Sample> {
 	 */
 	public static Collector<Sample, ?, SampleSummaryStatistics>
 	toSampleStatistics(final int parameterCount) {
-		require.positive(parameterCount);
+		Requires.positive(parameterCount);
 
 		return Collector.of(
 			() -> new SampleSummaryStatistics(parameterCount),

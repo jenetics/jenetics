@@ -47,9 +47,10 @@ public class EphemeralConstTest {
 
 	@Test
 	public void serialize() throws IOException {
+		final Random random = new Random();
 		final EphemeralConst<Integer> object = EphemeralConst.of(
 			"some name",
-			(Supplier<Integer> & Serializable)new Random()::nextInt
+			(Supplier<Integer> & Serializable)random::nextInt
 		);
 
 		final byte[] data = IO.object.toByteArray(object);

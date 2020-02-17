@@ -93,7 +93,7 @@ final class CompositeCodec<T, G extends Gene<?, G>> implements Codec<T, G> {
 
 	private Object[] groups(final Genotype<G> genotype) {
 		final Object[] groups = new Object[_codecs.length()];
-		final ISeq<Chromosome<G>> chromosomes = genotype.toSeq();
+		final ISeq<Chromosome<G>> chromosomes = ISeq.of(genotype);
 
 		int start = 0;
 		for (int i = 0; i < _codecs.length(); ++i) {

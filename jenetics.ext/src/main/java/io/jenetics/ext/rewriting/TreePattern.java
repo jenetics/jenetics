@@ -137,15 +137,15 @@ public final class TreePattern<V> implements Serializable {
 	extractVars(final TreeNode<Decl<V>> pattern) {
 		final SortedSet<Var<V>> variables = new TreeSet<>();
 		for (Tree<Decl<V>, ?> n : pattern) {
-			if (n.getValue() instanceof Var) {
+			if (n.value() instanceof Var) {
 				if (!n.isLeaf()) {
 					throw new IllegalArgumentException(format(
 						"Variable node '%s' is not a leaf: %s",
-						n.getValue(), n.toParenthesesString()
+						n.value(), n.toParenthesesString()
 					));
 				}
 
-				variables.add((Var<V>) n.getValue());
+				variables.add((Var<V>)n.value());
 			}
 		}
 
@@ -223,7 +223,7 @@ public final class TreePattern<V> implements Serializable {
 		final Tree<Decl<V>, ?> pattern,
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
-		final Decl<V> decl = pattern.getValue();
+		final Decl<V> decl = pattern.value();
 
 		if (decl instanceof Var) {
 			final Tree<? extends V, ?> tree = vars.get(decl);
@@ -234,8 +234,8 @@ public final class TreePattern<V> implements Serializable {
 
 			return tree.equals(node);
 		} else {
-			final Val<V> p = (Val<V>)pattern.getValue();
-			final V v = node.getValue();
+			final Val<V> p = (Val<V>)pattern.value();
+			final V v = node.value();
 
 			if (Objects.equals(v, p.value())) {
 				if (node.childCount() == pattern.childCount()) {
@@ -276,27 +276,22 @@ public final class TreePattern<V> implements Serializable {
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		final Map<Path, Var<V>> paths = template.stream()
-			.filter((Tree<Decl<V>, ?> n) -> n.getValue() instanceof Var)
-			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.getValue()));
+			.filter((Tree<Decl<V>, ?> n) -> n.value() instanceof Var)
+			.collect(toMap(t -> t.childPath(), t -> (Var<V>)t.value()));
 
 		final TreeNode<V> tree = TreeNode.ofTree(
 			template,
 			n -> n instanceof Val ? ((Val<V>)n).value() : null
 		);
 
-		for (Map.Entry<Path, Var<V>> var : paths.entrySet()) {
-			final Path path = var.getKey();
-			final Var<V> decl = var.getValue();
-			final TreeNode<V> child = tree.childAtPath(path)
-				.orElseThrow(AssertionError::new);
-
+		paths.forEach((path, decl) -> {
 			final Tree<? extends V, ?> replacement = vars.get(decl);
 			if (replacement != null) {
 				tree.replaceAtPath(path, TreeNode.ofTree(replacement));
 			} else {
 				tree.removeAtPath(path);
 			}
-		}
+		});
 
 		return tree;
 	}
@@ -336,6 +331,19 @@ public final class TreePattern<V> implements Serializable {
 		return compile(pattern, Function.identity());
 	}
 
+	/**
+	 * Compiles the given tree pattern string.
+	 *
+	 * @param pattern the tree pattern string
+	 * @param mapper the mapper which converts the serialized string value to
+	 *        the desired type
+	 * @param <V> the value type of the tree than can be matched by the pattern
+	 * @return the compiled pattern
+	 * @throws NullPointerException if the given pattern is {@code null}
+	 * @throws IllegalArgumentException if the given parentheses tree string
+	 *         doesn't represent a valid pattern tree or one of the variable
+	 *         name is not a valid (Java) identifier
+	 */
 	public static <V> TreePattern<V> compile(
 		final String pattern,
 		final Function<? super String, ? extends V> mapper
@@ -364,7 +372,7 @@ public final class TreePattern<V> implements Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static TreePattern read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final TreeNode pattern = (TreeNode)in.readObject();
@@ -514,8 +522,8 @@ public final class TreePattern<V> implements Serializable {
 			out.writeObject(_name);
 		}
 
-		@SuppressWarnings({"unchecked", "rawtypes"})
-		static Var read(final ObjectInput in)
+		@SuppressWarnings("rawtypes")
+		static Object read(final ObjectInput in)
 			throws IOException, ClassNotFoundException
 		{
 			final String name = (String)in.readObject();
@@ -548,7 +556,7 @@ public final class TreePattern<V> implements Serializable {
 
 		@Override
 		<B> Val<B> map(final Function<? super V, ? extends B> mapper) {
-			return of(mapper.apply(_value));
+			return Val.of(mapper.apply(_value));
 		}
 
 		@Override
@@ -599,7 +607,7 @@ public final class TreePattern<V> implements Serializable {
 		}
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
-		static Val read(final ObjectInput in)
+		static Object read(final ObjectInput in)
 			throws IOException, ClassNotFoundException
 		{
 			return new Val(in.readObject());

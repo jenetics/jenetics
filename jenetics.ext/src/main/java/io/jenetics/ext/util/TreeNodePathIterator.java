@@ -22,21 +22,21 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Path (between nodes) iterator.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.1
  * @since 3.9
  */
 final class TreeNodePathIterator<V, T extends Tree<V, T>>
 	implements Iterator<T>
 {
-	private final Deque<T> _stack = new LinkedList<>();
+	private final Deque<T> _stack = new ArrayDeque<>();
 
 	/**
 	 * Create an iterator between two tree nodes.
@@ -54,10 +54,10 @@ final class TreeNodePathIterator<V, T extends Tree<V, T>>
 
 		T current = descendant;
 		while (!current.identical(ancestor)) {
-			current = current.getParent().orElseThrow(() ->
+			current = current.parent().orElseThrow(() ->
 				new IllegalArgumentException(format(
 					"Node %s is not an ancestor of %s.",
-					ancestor.getValue(), descendant.getValue()
+					ancestor.value(), descendant.value()
 				))
 			);
 

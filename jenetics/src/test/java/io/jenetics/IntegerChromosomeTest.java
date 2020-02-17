@@ -62,14 +62,14 @@ public class IntegerChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final IntegerChromosome chromosome = IntegerChromosome.of(min, max, 500);
 
-				chromosome.toSeq().forEach(g -> {
-					mm.accept(g.getAllele());
-					histogram.accept(g.getAllele());
+				chromosome.forEach(g -> {
+					mm.accept(g.allele());
+					histogram.accept(g.allele());
 				});
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -80,7 +80,7 @@ public class IntegerChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -105,7 +105,7 @@ public class IntegerChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).intValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).intValue(), values[i]);
 			Assert.assertEquals(chromosome.intValue(i), values[i]);
 		}
 	}

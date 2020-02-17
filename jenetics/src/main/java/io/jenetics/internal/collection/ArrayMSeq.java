@@ -58,7 +58,7 @@ public class ArrayMSeq<T> extends ArraySeq<T> implements MSeq<T> {
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return new ArrayMIterator<>(array);
+		return new BaseMSeqIterator<>(array);
 	}
 
 	@Override

@@ -174,7 +174,7 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static TRS read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final int length = readInt(in);

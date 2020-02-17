@@ -19,17 +19,24 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Objects;
 
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.require;
-import io.jenetics.util.Factory;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -48,10 +55,14 @@ import io.jenetics.util.ISeq;
  * @since 3.1
  * @version !__version__!
  */
-public final class EvolutionStart<
+public final /*record*/ class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+	implements Serializable
+{
+
+	private static final long serialVersionUID = 2L;
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
@@ -61,7 +72,7 @@ public final class EvolutionStart<
 		final long generation
 	) {
 		_population = requireNonNull(population);
-		_generation = require.positive(generation);
+		_generation = Requires.positive(generation);
 	}
 
 	/**
@@ -69,6 +80,17 @@ public final class EvolutionStart<
 	 *
 	 * @return the start population
 	 */
+	public ISeq<Phenotype<G, C>> population() {
+		return _population;
+	}
+
+	/**
+	 * Return the population before the evolution step.
+	 *
+	 * @return the start population
+	 * @deprecated Use {@link #population()} instead
+	 */
+	@Deprecated
 	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
@@ -78,6 +100,17 @@ public final class EvolutionStart<
 	 *
 	 * @return the start generation
 	 */
+	public long generation() {
+		return _generation;
+	}
+
+	/**
+	 * Return the generation of the start population.
+	 *
+	 * @return the start generation
+	 * @deprecated Use {@link #generation()} instead
+	 */
+	@Deprecated
 	public long getGeneration() {
 		return _generation;
 	}
@@ -142,6 +175,22 @@ public final class EvolutionStart<
 	}
 
 	/**
+	 * An empty evolution start object, which can be used as initial evolution
+	 * value. The evolution {@link Engine} is then responsible for creating the
+	 * proper initial population,
+	 *
+	 * @since 5.1
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness type
+	 * @return an empty evolution start object
+	 */
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionStart<G, C> empty() {
+		return new EvolutionStart<>(ISeq.empty(), 1);
+	}
+
+	/**
 	 * Create a new evolution start object with the given population and for the
 	 * given generation.
 	 *
@@ -170,14 +219,33 @@ public final class EvolutionStart<
 		);
 	}
 
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStart<G, C>
-	initial(final Factory<Genotype<G>> gtf, final int populationSize) {
-		final ISeq<Phenotype<G, C>> population = gtf.instances()
-			.map(gt -> Phenotype.<G, C>of(gt, 1))
-			.collect(ISeq.toISeq());
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
 
-		return of(population, 1);
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_START, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		out.writeObject(_population);
+		writeLong(_generation, out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionStart read(final ObjectInput in)
+		throws IOException, ClassNotFoundException
+	{
+		return new EvolutionStart(
+			(ISeq)in.readObject(),
+			readLong(in)
+		);
 	}
 
 }

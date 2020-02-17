@@ -88,7 +88,7 @@ public class EnginePoolTest {
 				.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 30);
-		Assert.assertEquals(result.getTotalGenerations(), 30);
+		Assert.assertEquals(result.totalGenerations(), 30);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class EnginePoolTest {
 				.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 15);
-		Assert.assertEquals(result.getTotalGenerations(), 15);
+		Assert.assertEquals(result.totalGenerations(), 15);
 	}
 
 	@Test
@@ -130,7 +130,7 @@ public class EnginePoolTest {
 				.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 9);
-		Assert.assertEquals(result.getTotalGenerations(), 9);
+		Assert.assertEquals(result.totalGenerations(), 9);
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class EnginePoolTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 100);
-		Assert.assertEquals(result.getTotalGenerations(), 100);
+		Assert.assertEquals(result.totalGenerations(), 100);
 	}
 
 	@Test
@@ -169,7 +169,7 @@ public class EnginePoolTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 50);
-		Assert.assertEquals(result.getTotalGenerations(), 50);
+		Assert.assertEquals(result.totalGenerations(), 50);
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class EnginePoolTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertEquals(count.intValue(), 15);
-		Assert.assertEquals(result.getTotalGenerations(), 15);
+		Assert.assertEquals(result.totalGenerations(), 15);
 	}
 
 }

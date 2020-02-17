@@ -119,6 +119,19 @@ public final class Phenotype<
 	 *
 	 * @return the {@code Genotype} of {@code this} phenotype
 	 */
+	public Genotype<G> genotype() {
+		return _genotype;
+	}
+
+	/**
+	 * This method returns a copy of the {@code Genotype}, to guarantee a
+	 * immutable class.
+	 *
+	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
+	 * @throws NullPointerException if one of the arguments is {@code null}.
+	 * @deprecated Use {@link #genotype()} instead
+	 */
+	@Deprecated
 	public Genotype<G> getGenotype() {
 		return _genotype;
 	}
@@ -166,7 +179,7 @@ public final class Phenotype<
 	 * @throws NoSuchElementException if {@link #isEvaluated()} returns
 	 *         {@code false}
 	 */
-	public C getFitness() {
+	public C fitness() {
 		if (_fitness == null) {
 			throw new NoSuchElementException(
 				"Phenotype has no assigned fitness value."
@@ -177,12 +190,27 @@ public final class Phenotype<
 	}
 
 	/**
+	 * Return the fitness value of this {@code Phenotype}.
+	 *
+	 * @see #fitnessOptional()
+	 *
+	 * @return The fitness value of this {@code Phenotype}.
+	 * @throws NoSuchElementException if {@link #isEvaluated()} returns
+	 *         {@code false}
+	 * @deprecated Use {@link #fitness()} instead
+	 */
+	@Deprecated
+	public C getFitness() {
+		return fitness();
+	}
+
+	/**
 	 * Return the fitness value of {@code this} phenotype, or
 	 * {@link Optional#empty()} if not evaluated yet.
 	 *
 	 * @since 5.0
 	 *
-	 * @see #getFitness()
+	 * @see #fitness()
 	 *
 	 * @return the fitness value
 	 */
@@ -193,10 +221,23 @@ public final class Phenotype<
 	/**
 	 * Return the generation this {@link Phenotype} was created.
 	 *
-	 * @see #getAge(long)
+	 * @see #age(long)
 	 *
 	 * @return The generation this {@link Phenotype} was created.
 	 */
+	public long generation() {
+		return _generation;
+	}
+
+	/**
+	 * Return the generation this {@link Phenotype} was created.
+	 *
+	 * @see #age(long)
+	 *
+	 * @return The generation this {@link Phenotype} was created.
+	 * @deprecated Use {@link #generation()} instead
+	 */
+	@Deprecated
 	public long getGeneration() {
 		return _generation;
 	}
@@ -204,14 +245,29 @@ public final class Phenotype<
 	/**
 	 * Return the age of this phenotype depending on the given current generation.
 	 *
-	 * @see #getGeneration()
+	 * @see #generation()
 	 *
 	 * @param currentGeneration the current generation evaluated by the GA.
 	 * @return the age of this phenotype:
 	 *          {@code currentGeneration - this.getGeneration()}.
 	 */
-	public long getAge(final long currentGeneration) {
+	public long age(final long currentGeneration) {
 		return currentGeneration - _generation;
+	}
+
+	/**
+	 * Return the age of this phenotype depending on the given current generation.
+	 *
+	 * @see #generation()
+	 *
+	 * @param currentGeneration the current generation evaluated by the GA.
+	 * @return the age of this phenotype:
+	 *          {@code currentGeneration - this.getGeneration()}.
+	 * @deprecated Use {@link #age(long)} instead
+	 */
+	@Deprecated
+	public long getAge(final long currentGeneration) {
+		return age(currentGeneration);
 	}
 
 	/**
@@ -228,7 +284,7 @@ public final class Phenotype<
 	@Override
 	public int compareTo(final Phenotype<G, C> pt) {
 		if (isEvaluated()) {
-			return pt.isEvaluated() ? getFitness().compareTo(pt.getFitness()) : 1;
+			return pt.isEvaluated() ? fitness().compareTo(pt.fitness()) : 1;
 		} else {
 			return pt.isEvaluated() ? -1 : 0;
 		}
@@ -380,7 +436,7 @@ public final class Phenotype<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static Phenotype read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final long generation = readLong(in);

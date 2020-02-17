@@ -67,7 +67,7 @@ public final class RxEvaluator<
 				.map(Observable::just),
 			population.stream()
 				.filter(Phenotype::nonEvaluated)
-				.map(pt -> _fitness.apply(pt.getGenotype())
+				.map(pt -> _fitness.apply(pt.genotype())
 								.map(pt::withFitness))
 		);
 
@@ -88,11 +88,11 @@ public final class RxEvaluator<
 			.limit(100)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getBestPhenotype());
+		System.out.println(result.bestPhenotype());
 	}
 
 	private static Observable<Double> fitness(final Genotype<DoubleGene> gt) {
-		return Observable.just(gt.getGene().doubleValue());
+		return Observable.just(gt.gene().doubleValue());
 	}
 
 }

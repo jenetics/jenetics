@@ -57,7 +57,7 @@ public interface LossFunction<T> {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public double apply(final T[] calculated, final T[] expected);
+	double apply(final T[] calculated, final T[] expected);
 
 	/**
 	 * Mean square error is measured as the average of squared difference
@@ -74,7 +74,7 @@ public interface LossFunction<T> {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double mse(final Double[] calculated, final Double[] expected) {
+	static double mse(final Double[] calculated, final Double[] expected) {
 		if (expected.length != calculated.length) {
 			throw new IllegalArgumentException(format(
 				"Expected result and calculated results have different " +
@@ -109,7 +109,7 @@ public interface LossFunction<T> {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double rmse(final Double[] calculated, final Double[] expected) {
+	static double rmse(final Double[] calculated, final Double[] expected) {
 		return sqrt(mse(calculated, expected));
 	}
 
@@ -126,7 +126,7 @@ public interface LossFunction<T> {
 	 * @throws NullPointerException if one of the {@code double[]} arrays is
 	 *         {@code null}
 	 */
-	public static double mae(final Double[] calculated, final Double[] expected) {
+	static double mae(final Double[] calculated, final Double[] expected) {
 		if (expected.length != calculated.length) {
 			throw new IllegalArgumentException(format(
 				"Expected result and calculated results have different " +

@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 4.3
+ * @version 5.1
  */
 rootProject.version = Version.parse(property('jenetics.Version'))
 
@@ -81,10 +81,35 @@ allprojects { Project prj ->
 	if (prj.plugins.hasPlugin('java')) {
 		sourceCompatibility = javaVersion
 		targetCompatibility = javaVersion
+
+		jar {
+			manifest {
+				attributes(
+					'Implementation-Title': prj.name,
+					'Implementation-Version': prj.version,
+					'Implementation-URL': project.property('jenetics.Url'),
+					'Implementation-Vendor': project.property('jenetics.Name'),
+					'ProjectName': project.property('jenetics.Name'),
+					'Version': project.version,
+					'Maintainer': project.property('jenetics.Author'),
+					'Project': prj.name,
+					'Project-Version': prj.version,
+					'Built-By': System.properties['user.name'],
+					'Build-Timestamp': dateformat.format(now),
+					'Created-By': "Gradle ${gradle.gradleVersion}",
+					'Build-Jdk': "${System.properties['java.vm.name']} " +
+						"(${System.properties['java.vm.vendor']} " +
+						"${System.properties['java.vm.version']})",
+					'Build-OS': "${System.properties['os.name']} " +
+						"${System.properties['os.arch']} " +
+						"${System.properties['os.version']}"
+				)
+			}
+		}
 	}
 	if (prj.plugins.hasPlugin('jacoco')) {
 		prj.jacoco {
-			toolVersion = '0.8.2'
+			toolVersion = '0.8.5'
 		}
 	}
 }
@@ -93,25 +118,45 @@ task updateGradle(type: Wrapper) {
 	gradleVersion = project.property('build.GradleVersion')
 }
 
-task alljavadoc(type: Javadoc) {
-	options.encoding = 'UTF-8'
-	def jeneticsProjects = subprojects.findAll { project ->
-		project.name.startsWith('jenetics') &&
-		project.name != 'jenetics.doc'
-	}
-	configure(jeneticsProjects) {
-		apply plugin: 'java'
-	}
+rootProject.gradle.projectsEvaluated {
+	def PROJECTS = [
+		"jenetics",
+		"jenetics.ext",
+		"jenetics.prog",
+		"jenetics.xml"
+	]
 
-	source jeneticsProjects.collect { p ->
-		p.sourceSets.main.allJava
-	}
-	destinationDir = file("${buildDir}/alljavadoc")
+	final Set<Project> projects = project.subprojects
+		.findAll { prj -> PROJECTS.contains(prj.name) }
 
-	// Might need a classpath
-	classpath = files(jeneticsProjects.collect { project ->
-		project.sourceSets.main.compileClasspath
-	})
+	if (!projects.isEmpty()) {
+		rootProject.task('alljavadoc', type: Javadoc) {
+			description = 'Aggregates Javadoc API documentation of all subprojects.'
+			group = JavaBasePlugin.DOCUMENTATION_GROUP
+
+			source = projects.javadoc.source
+			exclude '**/internal/**'
+			destinationDir rootProject.file("$project.buildDir/docs/javadoc")
+			classpath = rootProject.files(projects.javadoc.classpath)
+			title = "${project.name} documentation"
+
+			options {
+				memberLevel = JavadocMemberLevel.PROTECTED
+				version = true
+				author = true
+				docEncoding = 'UTF-8'
+				charSet = 'UTF-8'
+				windowTitle = "${project.name} ${project.version}"
+				docTitle = "<h1>${project.name} ${project.version}</h1>"
+
+				tags 'apiNote:a:API Note:',
+					'implSpec:a:Implementation Requirements:',
+					'implNote:a:Implementation Note:'
+
+				links 'https://docs.oracle.com/javase/8/docs/api'
+			}
+		}
+	}
 }
 
 // Create a zip file from the export directory.
@@ -120,7 +165,7 @@ task zip(type: Zip) {
 		into identifier
 	}
 
-	baseName = rootProject.name
+	archiveBaseName = rootProject.name
 	version = project.property('jenetics.Version')
 
 	doLast {
@@ -128,3 +173,4 @@ task zip(type: Zip) {
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
+

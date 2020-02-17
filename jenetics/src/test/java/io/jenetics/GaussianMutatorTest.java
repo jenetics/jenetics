@@ -39,7 +39,7 @@ public class GaussianMutatorTest extends MutatorTester {
 
 	@Test(invocationCount = 20, successPercentage = 95)
 	public void mutate() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double min = 0;
 		final double max = 10;
@@ -52,7 +52,7 @@ public class GaussianMutatorTest extends MutatorTester {
 		final Histogram<Double> histogram = Histogram.ofDouble(0.0, 10.0, 10);
 
 		for (int i = 0; i < 10000; ++i) {
-			final double value = mutator.mutate(gene, random).getAllele();
+			final double value = mutator.mutate(gene, random).allele();
 			histogram.accept(value);
 		}
 

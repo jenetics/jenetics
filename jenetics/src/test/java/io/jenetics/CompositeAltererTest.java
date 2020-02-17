@@ -54,8 +54,8 @@ public class CompositeAltererTest {
 		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
 		Assert.assertEquals(
-			result.getAlterations(),
-			diff(p1, result.getPopulation())
+			result.alterations(),
+			diff(p1, result.population())
 		);
 	}
 
@@ -89,15 +89,15 @@ public class CompositeAltererTest {
 	) {
 		int count = 0;
 		for (int i = 0; i < p1.size(); ++i) {
-			final Genotype<?> gt1 = p1.get(i).getGenotype();
-			final Genotype<?> gt2 = p2.get(i).getGenotype();
+			final Genotype<?> gt1 = p1.get(i).genotype();
+			final Genotype<?> gt2 = p2.get(i).genotype();
 
 			for (int j = 0; j < gt1.length(); ++j) {
-				final Chromosome<?> c1 = gt1.getChromosome(j);
-				final Chromosome<?> c2 = gt2.getChromosome(j);
+				final Chromosome<?> c1 = gt1.get(j);
+				final Chromosome<?> c2 = gt2.get(j);
 
 				for (int k = 0; k < c1.length(); ++k) {
-					if (!c1.getGene(k).equals(c2.getGene(k))) {
+					if (!c1.get(k).equals(c2.get(k))) {
 						++count;
 					}
 				}
@@ -149,16 +149,16 @@ public class CompositeAltererTest {
 				new SwapMutator<DoubleGene, Double>()
 			);
 
-		Assert.assertEquals(alterer.getAlterers().length(), 2);
-		Assert.assertTrue(alterer.getAlterers().get(0) instanceof Mutator);
-		Assert.assertTrue(alterer.getAlterers().get(1) instanceof SwapMutator);
+		Assert.assertEquals(alterer.alterers().length(), 2);
+		Assert.assertTrue(alterer.alterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.alterers().get(1) instanceof SwapMutator);
 
 		alterer = CompositeAlterer.join(alterer, new MeanAlterer<>());
 
-		Assert.assertEquals(alterer.getAlterers().length(), 3);
-		Assert.assertTrue(alterer.getAlterers().get(0) instanceof Mutator);
-		Assert.assertTrue(alterer.getAlterers().get(1) instanceof SwapMutator);
-		Assert.assertTrue(alterer.getAlterers().get(2) instanceof MeanAlterer);
+		Assert.assertEquals(alterer.alterers().length(), 3);
+		Assert.assertTrue(alterer.alterers().get(0) instanceof Mutator);
+		Assert.assertTrue(alterer.alterers().get(1) instanceof SwapMutator);
+		Assert.assertTrue(alterer.alterers().get(2) instanceof MeanAlterer);
 
 		alterer = CompositeAlterer.of(
 			new MeanAlterer<>(),
@@ -167,7 +167,7 @@ public class CompositeAltererTest {
 			new SwapMutator<>()
 		);
 
-		Assert.assertEquals(alterer.getAlterers().length(), 6);
+		Assert.assertEquals(alterer.alterers().length(), 6);
 	}
 
 }

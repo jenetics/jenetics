@@ -57,7 +57,7 @@ public class TruncationSelectorTest
 			final DoubleChromosome ch = DoubleChromosome.of(gene);
 			final Genotype<DoubleGene> gt = Genotype.of(ch);
 			final Phenotype<DoubleGene, Integer> pt = Phenotype.of(
-				gt, 1, gt.getGene().intValue()
+				gt, 1, gt.gene().intValue()
 			);
 
 			population.set(i, pt);
@@ -69,7 +69,7 @@ public class TruncationSelectorTest
 			selector.select(population.toISeq(), 10, Optimize.MINIMUM);
 
 		for (Phenotype<DoubleGene, Integer> pt : selected) {
-			Assert.assertTrue(pt.getFitness() < 5);
+			Assert.assertTrue(pt.fitness() < 5);
 		}
 	}
 
