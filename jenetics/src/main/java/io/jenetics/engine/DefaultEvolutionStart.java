@@ -51,13 +51,23 @@ final class DefaultEvolutionStart<
 
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
+	private final boolean _evaluated;
+
+	DefaultEvolutionStart(
+		final Iterable<Phenotype<G, C>> population,
+		final long generation,
+		final boolean evaluated
+	) {
+		_population = ISeq.of(population);
+		_generation = Requires.positive(generation);
+		_evaluated = evaluated;
+	}
 
 	DefaultEvolutionStart(
 		final Iterable<Phenotype<G, C>> population,
 		final long generation
 	) {
-		_population = ISeq.of(population);
-		_generation = Requires.positive(generation);
+		this(population, generation, false);
 	}
 
 	@Override
@@ -68,6 +78,10 @@ final class DefaultEvolutionStart<
 	@Override
 	public long generation() {
 		return _generation;
+	}
+
+	boolean isEvaluated() {
+		return _evaluated;
 	}
 
 	@Override
@@ -97,7 +111,7 @@ final class DefaultEvolutionStart<
 	 * ************************************************************************/
 
 	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_START, this);
+		return new Serial(Serial.DEFAULT_EVOLUTION_START, this);
 	}
 
 	private void readObject(final ObjectInputStream stream)

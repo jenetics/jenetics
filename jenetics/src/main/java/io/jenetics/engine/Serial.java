@@ -19,7 +19,7 @@ final class Serial implements Externalizable {
 	static final byte EVOLUTION_INIT = 2;
 	static final byte EVOLUTION_PARAMS = 3;
 	static final byte EVOLUTION_RESULT = 4;
-	static final byte EVOLUTION_START = 5;
+	static final byte DEFAULT_EVOLUTION_START = 5;
 
 	/**
 	 * The type being serialized.
@@ -56,7 +56,7 @@ final class Serial implements Externalizable {
 			case EVOLUTION_INIT: ((EvolutionInit)_object).write(out); break;
 			case EVOLUTION_PARAMS: ((EvolutionParams)_object).write(out); break;
 			case EVOLUTION_RESULT: ((EvolutionResult)_object).write(out); break;
-			case EVOLUTION_START: ((DefaultEvolutionStart)_object).write(out); break;
+			case DEFAULT_EVOLUTION_START: ((DefaultEvolutionStart)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -72,7 +72,7 @@ final class Serial implements Externalizable {
 			case EVOLUTION_INIT: _object = EvolutionInit.read(in); break;
 			case EVOLUTION_PARAMS: _object = EvolutionParams.read(in); break;
 			case EVOLUTION_RESULT: _object = EvolutionResult.read(in); break;
-			case EVOLUTION_START: _object = DefaultEvolutionStart.read(in); break;
+			case DEFAULT_EVOLUTION_START: _object = DefaultEvolutionStart.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

@@ -90,7 +90,7 @@ public interface EvolutionStart<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> empty() {
-		return new DefaultEvolutionStart<>(ISeq.empty(), 1);
+		return EvolutionStart.of(ISeq.empty(), 1);
 	}
 
 }

@@ -94,6 +94,8 @@ public final class EvolutionResult<
 	private final int _invalidCount;
 	private final int _alterCount;
 
+	private final boolean _evaluated;
+
 	private final Lazy<Phenotype<G, C>> _best;
 	private final Lazy<Phenotype<G, C>> _worst;
 
@@ -105,7 +107,8 @@ public final class EvolutionResult<
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
-		final int alterCount
+		final int alterCount,
+		final boolean evaluated
 	) {
 		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
@@ -115,6 +118,7 @@ public final class EvolutionResult<
 		_killCount = killCount;
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
+		_evaluated = evaluated;
 
 		_best = Lazy.of(() -> _population.stream()
 			.max(_optimize.ascending())
@@ -257,7 +261,11 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	public EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _totalGenerations + 1);
+		return new DefaultEvolutionStart<>(
+			_population,
+			_totalGenerations + 1,
+			_evaluated
+		);
 	}
 
 	/**
@@ -269,7 +277,11 @@ public final class EvolutionResult<
 	 * @return the current result as evolution start
 	 */
 	public EvolutionStart<G, C> toEvolutionStart() {
-		return EvolutionStart.of(_population, _totalGenerations);
+		return new DefaultEvolutionStart<>(
+			_population,
+			_totalGenerations,
+			_evaluated
+		);
 	}
 
 	/**
@@ -594,7 +606,7 @@ public final class EvolutionResult<
 	}
 
 	EvolutionResult<G, C> with(final EvolutionDurations durations) {
-		return EvolutionResult.of(
+		return new EvolutionResult<>(
 			optimize(),
 			population(),
 			generation(),
@@ -602,7 +614,8 @@ public final class EvolutionResult<
 			durations,
 			killCount(),
 			invalidCount(),
-			alterCount()
+			alterCount(),
+			true
 		);
 	}
 
@@ -761,7 +774,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			false
 		);
 	}
 
@@ -800,7 +814,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			false
 		);
 	}
 
@@ -842,7 +857,8 @@ public final class EvolutionResult<
 			(EvolutionDurations)in.readObject(),
 			readInt(in),
 			readInt(in),
-			readInt(in)
+			readInt(in),
+			false
 		);
 	}
 
