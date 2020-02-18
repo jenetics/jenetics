@@ -48,8 +48,8 @@ public abstract class MutatorTester extends AltererTester {
 		final Alterer<DoubleGene, Double> mutator = newAlterer(0.01);
 		final AltererResult<DoubleGene, Double> result = mutator.alter(p1, 1);
 
-		int mutations = result.getAlterations();
-		int difference = diff(p1, result.getPopulation());
+		int mutations = result.alterations();
+		int difference = diff(p1, result.population());
 
 		Assert.assertEquals(
 			mutations, difference,
@@ -84,7 +84,7 @@ public abstract class MutatorTester extends AltererTester {
 		for (int i = 0; i < N; ++i) {
 			final long alterations = mutator
 				.alter(population.copy(), 1)
-				.getAlterations();
+				.alterations();
 
 			histogram.accept(alterations);
 			variance.accept(alterations);

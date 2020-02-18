@@ -19,10 +19,10 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextASCIIString;
-import static io.jenetics.internal.math.random.nextByte;
-import static io.jenetics.internal.math.random.nextChar;
-import static io.jenetics.internal.math.random.nextShort;
+import static io.jenetics.internal.math.Randoms.nextASCIIString;
+import static io.jenetics.internal.math.Randoms.nextByte;
+import static io.jenetics.internal.math.Randoms.nextChar;
+import static io.jenetics.internal.math.Randoms.nextShort;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.io.File;
@@ -112,7 +112,7 @@ public class PersistentObject<T> {
 
 	private static <T> void put(final String name, final T value, final String... ios) {
 		VALUES.add(new PersistentObject<>(name, value, ios));
-		RandomRegistry.getRandom().setSeed(SEED);
+		RandomRegistry.random().setSeed(SEED);
 	}
 
 	private static void init() {
@@ -504,7 +504,7 @@ public class PersistentObject<T> {
 	}
 
 	private static Random random() {
-		return RandomRegistry.getRandom();
+		return RandomRegistry.random();
 	}
 
 	static {

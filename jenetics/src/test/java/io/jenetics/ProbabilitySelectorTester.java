@@ -46,7 +46,7 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test
 	public void indexOf() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double[] props = new double[10];
 		double divisor = props.length*(props.length + 1)/2.0;
@@ -79,7 +79,7 @@ public abstract class ProbabilitySelectorTester<
 
 	@Test(dataProvider = "probabilitySizes")
 	public void indexOf(final Integer size) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double[] props = new double[size];
 		double divisor = props.length*(props.length + 1)/2.0;

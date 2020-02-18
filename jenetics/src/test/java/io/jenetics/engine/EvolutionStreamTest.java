@@ -84,10 +84,10 @@ public class EvolutionStreamTest {
 
 	private static double var(final EvolutionStart<DoubleGene, Double> result) {
 		return result != null
-			? result.getPopulation().stream()
-				.map(Phenotype::getFitness)
+			? result.population().stream()
+				.map(Phenotype::fitness)
 				.collect(DoubleMoments.toDoubleMoments())
-				.getVariance()
+				.variance()
 			: 0.0;
 	}
 

@@ -41,7 +41,7 @@ import io.jenetics.util.IntRange;
  *     // The used Codec.
  *     private static final Codec<LocalDate, AnyGene<LocalDate>> CODEC = Codec.of(
  *         Genotype.of(AnyChromosome.of(LastMonday::nextRandomMonday)),
- *         gt -> gt.getGene().getAllele()
+ *         gt -> gt.gene().allele()
  *     );
  *
  *     // Supplier of random 'LocalDate' objects. The implementation is responsible
@@ -81,7 +81,7 @@ import io.jenetics.util.IntRange;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.0
+ * @version 5.2
  * @since 3.3
  */
 public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
@@ -137,7 +137,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 
 		if (valid == null) {
 			final ISeq<A> alleles = stream()
-				.map(Gene::getAllele)
+				.map(Gene::allele)
 				.collect(ISeq.toISeq());
 
 			valid = _alleleSeqValidator.test(alleles) &&
@@ -247,7 +247,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final IntRange lengthRange
 	) {
-		return of(supplier, validator, Predicates.<ISeq<A>>True(), lengthRange);
+		return of(supplier, validator, Predicates.True(), lengthRange);
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class AnyChromosome<A> extends VariableChromosome<AnyGene<A>> {
 		final Predicate<? super A> validator,
 		final int length
 	) {
-		return of(supplier, validator, Predicates.<ISeq<A>>True(), length);
+		return of(supplier, validator, Predicates.True(), length);
 	}
 
 	/**

@@ -157,7 +157,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 				{
 					out.setLength(out.length() - START_TAG.length());
 					out.append("<div class=\"code\"><code lang=\"java\">");
-					state = CODE_TAG;
+					state = SKIP_NEWLINE;
 				}
 
 				return state;

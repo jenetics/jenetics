@@ -74,12 +74,12 @@ public class MathTreePruneAltererTest {
 			alterer.alter(Seq.of(pt), 1);
 
 		final ProgramGene<Double> program = result
-			.getPopulation().get(0)
-			.getGenotype()
-			.getGene();
+			.population().get(0)
+			.genotype()
+			.gene();
 
 
-		final MathExpr exp1 = new MathExpr(gt.getGene()).simplify();
+		final MathExpr exp1 = new MathExpr(gt.gene()).simplify();
 		final MathExpr exp2 = new MathExpr(program);
 		Assert.assertEquals(exp2, exp1);
 	}

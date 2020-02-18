@@ -88,7 +88,7 @@ public final class LimitSpliterator<T> implements Spliterator<T> {
 		final Spliterator<T> spliterator,
 		final Predicate<? super T> proceed
 	) {
-		return new LimitSpliterator<T>(spliterator, proceed);
+		return new LimitSpliterator<>(spliterator, proceed);
 	}
 
 }

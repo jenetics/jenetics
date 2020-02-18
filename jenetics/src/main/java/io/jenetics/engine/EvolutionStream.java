@@ -89,7 +89,7 @@ public interface EvolutionStream<
 	 * @return the new stream
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public EvolutionStream<G, C>
+	EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
 
 	/**
@@ -115,7 +115,7 @@ public interface EvolutionStream<
 	 *             instead
 	 */
 	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> of(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
@@ -142,7 +142,7 @@ public interface EvolutionStream<
 	 *
 	 *     // The fitness function.
 	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
-	 *         return gt.getGene().getAllele();
+	 *         return gt.gene().allele();
 	 *     }
 	 *
 	 *     // Create new evolution start object.
@@ -190,7 +190,7 @@ public interface EvolutionStream<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> ofEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Evolution<G, C> evolution
@@ -245,9 +245,9 @@ public interface EvolutionStream<
 	 * private static double var(final EvolutionStart<DoubleGene, Double> result) {
 	 *     return result != null
 	 *         ? result.getPopulation().stream()
-	 *             .map(Phenotype::getFitness)
+	 *             .map(Phenotype::fitness)
 	 *             .collect(DoubleMoments.toDoubleMoments())
-	 *             .getVariance()
+	 *             .variance()
 	 *         : 0.0;
 	 * }
 	 * }</pre>
@@ -263,7 +263,7 @@ public interface EvolutionStream<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> ofAdjustableEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<

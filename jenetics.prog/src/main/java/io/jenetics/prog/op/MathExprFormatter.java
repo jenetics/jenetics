@@ -62,7 +62,7 @@ final class MathExprFormatter {
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
-		final Op<Double> op = tree.getValue();
+		final Op<Double> op = tree.value();
 		if (INFIX_OPS.containsKey(op)) {
 			infix(tree, out);
 		} else {
@@ -85,16 +85,16 @@ final class MathExprFormatter {
 	) {
 		assert tree.childCount() == 2;
 
-		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
-		final int parentPrecedence = tree.getParent()
-			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
+		final int precedence = PRECEDENCE.getOrDefault(tree.value(), 100);
+		final int parentPrecedence = tree.parent()
+			.map(p -> PRECEDENCE.getOrDefault(p.value(), 100))
 			.orElse(100);
 
 		final boolean brackets = !tree.isRoot() && precedence >= parentPrecedence;
 
 		if (brackets) out.append("(");
 		format(tree.childAt(0), out);
-		out.append(INFIX_OPS.get(tree.getValue()));
+		out.append(INFIX_OPS.get(tree.value()));
 		format(tree.childAt(1), out);
 		if (brackets) out.append(")");
 	}

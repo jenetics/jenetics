@@ -82,7 +82,7 @@ public class UFTournamentSelectorTest {
 		*/
 
 		final double mean = selected.stream()
-			.map(Phenotype::getFitness)
+			.map(Phenotype::fitness)
 			.mapToDouble(NSGA2SelectorTest::dist)
 			.sum()/selected.size();
 
@@ -90,7 +90,7 @@ public class UFTournamentSelectorTest {
 
 		Assert.assertEquals(
 			selected.stream()
-				.map(Phenotype::getFitness)
+				.map(Phenotype::fitness)
 				.collect(Collectors.toSet())
 				.size(),
 			selected.size()
@@ -112,7 +112,7 @@ public class UFTournamentSelectorTest {
 			selector.select(population, 100, Optimize.MINIMUM);
 
 		final double mean = selected.stream()
-			.map(Phenotype::getFitness)
+			.map(Phenotype::fitness)
 			.mapToDouble(NSGA2SelectorTest::dist)
 			.sum()/selected.size();
 
@@ -120,7 +120,7 @@ public class UFTournamentSelectorTest {
 
 		Assert.assertEquals(
 			selected.stream()
-				.map(Phenotype::getFitness)
+				.map(Phenotype::fitness)
 				.collect(Collectors.toSet())
 				.size(),
 			selected.size()

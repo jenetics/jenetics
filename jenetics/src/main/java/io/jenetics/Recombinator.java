@@ -20,8 +20,8 @@
 package io.jenetics;
 
 import static java.lang.String.format;
-import static io.jenetics.internal.math.comb.subset;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Combinatorics.subset;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
 
@@ -51,7 +51,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.1
+ * @version 5.2
  */
 public abstract class Recombinator<
 	G extends Gene<?, G>,
@@ -88,6 +88,18 @@ public abstract class Recombinator<
 	 *
 	 * @return the number of individuals involved in the recombination step.
 	 */
+	public int order() {
+		return _order;
+	}
+
+	/**
+	 * Return the number of individuals involved in the
+	 * {@link #recombine(MSeq, int[], long)} step.
+	 *
+	 * @return the number of individuals involved in the recombination step.
+	 * @deprecated Use {@link #order()} instead
+	 */
+	@Deprecated
 	public int getOrder() {
 		return _order;
 	}
@@ -99,7 +111,7 @@ public abstract class Recombinator<
 	) {
 		final AltererResult<G, C> result;
 		if (population.size() >= 2) {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			final int order = Math.min(_order, population.size());
 
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
@@ -142,7 +154,7 @@ public abstract class Recombinator<
 	 * @param population the population to recombine
 	 * @param individuals the array with the indexes of the individuals which
 	 *        are involved in the <i>recombination</i> step. The length of the
-	 *        array is {@link #getOrder()}. The first individual is the
+	 *        array is {@link #order()}. The first individual is the
 	 *        <i>primary</i> individual.
 	 * @param generation the current generation.
 	 * @return the number of genes that has been altered.

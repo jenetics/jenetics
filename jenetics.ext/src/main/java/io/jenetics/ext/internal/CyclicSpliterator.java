@@ -74,7 +74,7 @@ public class CyclicSpliterator<T> implements Spliterator<T> {
 
 	private ConcatSpliterator<T> spliterator() {
 		if (_concat == null) {
-			_concat = new ConcatSpliterator<T>(
+			_concat = new ConcatSpliterator<>(
 				_spliterators.stream()
 					.map(Supplier::get)
 					.collect(Collectors.toList())

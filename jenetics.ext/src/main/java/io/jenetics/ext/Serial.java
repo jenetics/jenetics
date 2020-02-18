@@ -74,9 +74,7 @@ final class Serial implements Externalizable {
 	}
 
 	@Override
-	public void readExternal(final ObjectInput in)
-		throws IOException, ClassNotFoundException
-	{
+	public void readExternal(final ObjectInput in) throws IOException {
 		_type = in.readByte();
 		switch (_type) {
 			case BIG_INTEGER_CHROMOSOME: _object = BigIntegerChromosome.read(in); break;

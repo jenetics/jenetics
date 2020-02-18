@@ -22,12 +22,20 @@ package io.jenetics.ext.moea;
 import java.util.Random;
 
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import io.jenetics.Optimize;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class VecTest {
+
+	@Test(dataProvider = "vecFactories1D")
+	public void length1D(final VecFactory<double[]> factory) {
+		Assert.assertEquals(factory.newVec(new double[1]).length(), 1);
+	}
 
 	@Test
 	public void length() {
@@ -73,6 +81,14 @@ public class VecTest {
 		final Vec<double[]> v2 = Vec.of(d2);
 
 		Assert.assertEquals(v1.dominance(v2), Pareto.dominance(d1, d2));
+	}
+
+	@DataProvider
+	public Object[][] vecFactories1D() {
+		return new Object[][]{
+			{VecFactory.ofDoubleVec(Optimize.MAXIMUM)},
+			{VecFactory.ofDoubleVec()}
+		};
 	}
 
 }

@@ -23,7 +23,7 @@ import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -33,7 +33,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -55,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 5.0
+ * @version 5.2
  */
 public final class IntegerGene
 	implements
@@ -87,16 +87,19 @@ public final class IntegerGene
 		_max = max;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getAllele() {
 		return _value;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMin() {
 		return _min;
 	}
 
+	@Deprecated
 	@Override
 	public Integer getMax() {
 		return _max;
@@ -181,7 +184,7 @@ public final class IntegerGene
 
 	@Override
 	public IntegerGene newInstance() {
-		return IntegerGene.of(nextInt(getRandom(), _min, _max), _min, _max);
+		return IntegerGene.of(nextInt(random(), _min, _max), _min, _max);
 	}
 
 	@Override
@@ -236,7 +239,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final int value, final IntRange range) {
-		return IntegerGene.of(value, range.getMin(), range.getMax());
+		return IntegerGene.of(value, range.min(), range.max());
 	}
 
 	/**
@@ -248,7 +251,7 @@ public final class IntegerGene
 	 * @return a new random {@code IntegerGene}
 	 */
 	public static IntegerGene of(final int min, final int max) {
-		return of(nextInt(getRandom(), min, max), min, max);
+		return of(nextInt(random(), min, max), min, max);
 	}
 
 	/**
@@ -262,7 +265,7 @@ public final class IntegerGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static IntegerGene of(final IntRange range) {
-		return of(nextInt(getRandom(), range.getMin(), range.getMax()), range);
+		return of(nextInt(random(), range.min(), range.max()), range);
 	}
 
 	static ISeq<IntegerGene> seq(
@@ -270,8 +273,8 @@ public final class IntegerGene
 		final int max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
-		return MSeq.<IntegerGene>ofLength(random.nextInt(lengthRange, r))
+		final Random r = random();
+		return MSeq.<IntegerGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new IntegerGene(nextInt(r, min, max), min, max))
 			.toISeq();
 	}

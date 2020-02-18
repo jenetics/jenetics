@@ -49,7 +49,7 @@ public class KnapsackSelectorComparison {
 		"Fixed generation",
 		IntStream.rangeClosed(1, 50)
 			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
-			.mapToObj(Long::valueOf)
+			.boxed()
 			.collect(ISeq.toISeq())
 	);
 
@@ -67,7 +67,7 @@ public class KnapsackSelectorComparison {
 
 	public static void main(final String[] args) throws InterruptedException {
 		final Runner2<Long, BitGene, Double> runner = Runner2.of(
-			KNAPSACK.builder()
+			KNAPSACK.toBuilder()
 				.selector(new MonteCarloSelector<>())
 				.build(),
 			Limits::byFixedGeneration,

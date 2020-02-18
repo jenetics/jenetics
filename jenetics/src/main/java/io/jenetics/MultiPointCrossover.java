@@ -24,7 +24,7 @@ import static java.lang.String.format;
 
 import java.util.Random;
 
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -50,7 +50,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 5.0
+ * @version 5.2
  */
 public class MultiPointCrossover<
 	G extends Gene<?, G>,
@@ -114,6 +114,17 @@ public class MultiPointCrossover<
 	 *
 	 * @return the number of crossover points.
 	 */
+	public int crossoverPointCount() {
+		return _n;
+	}
+
+	/**
+	 * Return the number of crossover points.
+	 *
+	 * @return the number of crossover points.
+	 * @deprecated Use {@link #crossoverPointCount()} instead
+	 */
+	@Deprecated
 	public int getN() {
 		return _n;
 	}
@@ -125,8 +136,8 @@ public class MultiPointCrossover<
 		final int n = min(that.length(), other.length());
 		final int k = min(n, _n);
 
-		final Random random = RandomRegistry.getRandom();
-		final int[] points = k > 0 ? comb.subset(n, k, random) : new int[0];
+		final Random random = RandomRegistry.random();
+		final int[] points = k > 0 ? Combinatorics.subset(n, k, random) : new int[0];
 
 		crossover(that, other, points);
 		return 2;

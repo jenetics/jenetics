@@ -59,7 +59,7 @@ public interface ElementComparator<V> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0 || index >= length(a)  || index >= length(b))}
 	 */
-	public int compare(final V u, final V v, final int index);
+	int compare(final V u, final V v, final int index);
 
 	/**
 	 * Returns a comparator that imposes the reverse ordering of this
@@ -68,7 +68,7 @@ public interface ElementComparator<V> {
 	 * @return a comparator that imposes the reverse ordering of this
 	 *         comparator.
 	 */
-	public default ElementComparator<V> reversed() {
+	default ElementComparator<V> reversed() {
 		return (u, v, i) -> compare(v, u, i);
 	}
 
@@ -79,7 +79,7 @@ public interface ElementComparator<V> {
 	 * @param <T> the new comparator type
 	 * @return an element comparator for the mapped type {@code T}
 	 */
-	public default <T> ElementComparator<T>
+	default <T> ElementComparator<T>
 	map(final Function<? super T, ? extends V> mapper) {
 		return (u, v, i) -> compare(mapper.apply(u), mapper.apply(v), i);
 	}
@@ -91,7 +91,7 @@ public interface ElementComparator<V> {
 	 * @param index the component index
 	 * @return the component comparator for the given {@code index}
 	 */
-	public default Comparator<V> ofIndex(final int index) {
+	default Comparator<V> ofIndex(final int index) {
 		return (a, b) -> compare(a, b, index);
 	}
 

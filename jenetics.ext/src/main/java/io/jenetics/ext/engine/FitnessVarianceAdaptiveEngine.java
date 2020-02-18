@@ -73,15 +73,15 @@ final class FitnessVarianceAdaptiveEngine<
 		} else {
 			final DoubleMomentStatistics stat = new DoubleMomentStatistics();
 
-			result.getPopulation()
-				.forEach(pt -> stat.accept(pt.getFitness().doubleValue()));
+			result.population()
+				.forEach(pt -> stat.accept(pt.fitness().doubleValue()));
 
-			if (stat.getVariance() < _variance.getMin() && _narrowing) {
+			if (stat.variance() < _variance.min() && _narrowing) {
 				_engine = _builder
 					.alterers(_enlarge)
 					.build();
 				_narrowing = false;
-			} else if (stat.getVariance() > _variance.getMax() && !_narrowing) {
+			} else if (stat.variance() > _variance.max() && !_narrowing) {
 				_engine = _builder
 					.alterers(_narrow)
 					.build();

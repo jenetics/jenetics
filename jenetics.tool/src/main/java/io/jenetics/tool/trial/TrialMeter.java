@@ -214,7 +214,7 @@ public final class TrialMeter<T> {
 		final Params<T> params,
 		final String... dataSetNames
 	) {
-		return new TrialMeter<T>(
+		return new TrialMeter<>(
 			name,
 			description,
 			Env.of(),
@@ -241,7 +241,7 @@ public final class TrialMeter<T> {
 		final Params<T> params,
 		final String... dataSetNames
 	) {
-		return new TrialMeter<T>(
+		return new TrialMeter<>(
 			name,
 			description,
 			env,

@@ -33,7 +33,7 @@ public class AnyChromosomeTest extends ChromosomeTester<AnyGene<Integer>> {
 
 	@Override
 	protected Factory<Chromosome<AnyGene<Integer>>> factory() {
-		return () -> AnyChromosome.of(RandomRegistry.getRandom()::nextInt, 10);
+		return () -> AnyChromosome.of(RandomRegistry.random()::nextInt, 10);
 	}
 
 	@Test

@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.tool.trial.Trial;
 import io.jenetics.tool.trial.TrialMeter;
 
@@ -59,7 +59,7 @@ public abstract class AbstractRunner<P> {
 		_trialMeter = requireNonNull(trialMeter);
 		_writer = requireNonNull(writer);
 		_reader = requireNonNull(reader);
-		_sampleCount = require.positive(sampleCount);
+		_sampleCount = Requires.positive(sampleCount);
 		_resultPath = requireNonNull(resultPath);
 	}
 

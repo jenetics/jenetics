@@ -40,7 +40,7 @@ public class DoubleSummaryTest extends ObjectTester<DoubleSummary> {
 	@Override
 	protected Factory<DoubleSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 
 			final DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
 			IntStream.range(0, 100)

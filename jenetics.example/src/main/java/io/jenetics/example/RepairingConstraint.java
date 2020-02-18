@@ -40,7 +40,7 @@ public class RepairingConstraint implements Constraint<DoubleGene, Double> {
 	@Override
 	public boolean test(final Phenotype<DoubleGene, Double> pt) {
 		return isValid(
-			pt.getGenotype().getChromosome()
+			pt.genotype().chromosome()
 				.as(DoubleChromosome.class)
 				.toArray()
 		);
@@ -55,7 +55,7 @@ public class RepairingConstraint implements Constraint<DoubleGene, Double> {
 		final Phenotype<DoubleGene, Double> pt,
 		final long generation
 	) {
-		final double[] x = pt.getGenotype().getChromosome()
+		final double[] x = pt.genotype().chromosome()
 			.as(DoubleChromosome.class)
 			.toArray();
 

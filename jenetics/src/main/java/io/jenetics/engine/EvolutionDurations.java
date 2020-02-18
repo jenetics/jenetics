@@ -19,9 +19,20 @@
  */
 package io.jenetics.engine;
 
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.time.Duration;
 import java.util.Objects;
@@ -34,14 +45,14 @@ import java.util.Objects;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 5.2
  */
-public final class EvolutionDurations
+public final /*record*/ class EvolutionDurations
 	implements
 		Comparable<EvolutionDurations>,
 		Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * Constant for zero evolution durations.
@@ -87,6 +98,17 @@ public final class EvolutionDurations
 	 *
 	 * @return the duration needed for selecting the offspring population
 	 */
+	public Duration offspringSelectionDuration() {
+		return _offspringSelectionDuration;
+	}
+
+	/**
+	 * Return the duration needed for selecting the offspring population.
+	 *
+	 * @return the duration needed for selecting the offspring population
+	 * @deprecated Use {@link #offspringSelectionDuration()} instead
+	 */
+	@Deprecated
 	public Duration getOffspringSelectionDuration() {
 		return _offspringSelectionDuration;
 	}
@@ -96,6 +118,17 @@ public final class EvolutionDurations
 	 *
 	 * @return the duration needed for selecting the survivors population
 	 */
+	public Duration survivorsSelectionDuration() {
+		return _survivorsSelectionDuration;
+	}
+
+	/**
+	 * Return the duration needed for selecting the survivors population.
+	 *
+	 * @return the duration needed for selecting the survivors population
+	 * @deprecated Use {@link #survivorsSelectionDuration()} instead
+	 */
+	@Deprecated
 	public Duration getSurvivorsSelectionDuration() {
 		return _survivorsSelectionDuration;
 	}
@@ -105,6 +138,17 @@ public final class EvolutionDurations
 	 *
 	 * @return the duration needed for altering the offspring population
 	 */
+	public Duration offspringAlterDuration() {
+		return _offspringAlterDuration;
+	}
+
+	/**
+	 * Return the duration needed for altering the offspring population.
+	 *
+	 * @return the duration needed for altering the offspring population
+	 * @deprecated Use {@link #offspringAlterDuration()} instead
+	 */
+	@Deprecated
 	public Duration getOffspringAlterDuration() {
 		return _offspringAlterDuration;
 	}
@@ -116,6 +160,19 @@ public final class EvolutionDurations
 	 * @return the duration needed for removing and replacing invalid offspring
 	 *         individuals
 	 */
+	public Duration offspringFilterDuration() {
+		return _offspringFilterDuration;
+	}
+
+	/**
+	 * Return the duration needed for removing and replacing invalid offspring
+	 * individuals.
+	 *
+	 * @return the duration needed for removing and replacing invalid offspring
+	 *         individuals
+	 * @deprecated Use {@link #offspringFilterDuration()} instead
+	 */
+	@Deprecated
 	public Duration getOffspringFilterDuration() {
 		return _offspringFilterDuration;
 	}
@@ -127,6 +184,19 @@ public final class EvolutionDurations
 	 * @return the duration needed for removing and replacing old and invalid
 	 *         survivor individuals
 	 */
+	public Duration survivorFilterDuration() {
+		return _survivorFilterDuration;
+	}
+
+	/**
+	 * Return the duration needed for removing and replacing old and invalid
+	 * survivor individuals.
+	 *
+	 * @return the duration needed for removing and replacing old and invalid
+	 *         survivor individuals
+	 * @deprecated Use {@link #survivorFilterDuration()} instead
+	 */
+	@Deprecated
 	public Duration getSurvivorFilterDuration() {
 		return _survivorFilterDuration;
 	}
@@ -138,6 +208,19 @@ public final class EvolutionDurations
 	 * @return the duration needed for evaluating the fitness function of the new
 	 *         individuals
 	 */
+	public Duration evaluationDuration() {
+		return _evaluationDuration;
+	}
+
+	/**
+	 * Return the duration needed for evaluating the fitness function of the new
+	 * individuals.
+	 *
+	 * @return the duration needed for evaluating the fitness function of the new
+	 *         individuals
+	 * @deprecated Use {@link #evaluationDuration()} instead
+	 */
+	@Deprecated
 	public Duration getEvaluationDuration() {
 		return _evaluationDuration;
 	}
@@ -147,6 +230,17 @@ public final class EvolutionDurations
 	 *
 	 * @return the duration needed for the whole evolve step
 	 */
+	public Duration evolveDuration() {
+		return _evolveDuration;
+	}
+
+	/**
+	 * Return the duration needed for the whole evolve step.
+	 *
+	 * @return the duration needed for the whole evolve step
+	 * @deprecated Use {@link #evolveDuration()} instead
+	 */
+	@Deprecated
 	public Duration getEvolveDuration() {
 		return _evolveDuration;
 	}
@@ -200,12 +294,12 @@ public final class EvolutionDurations
 	}
 
 	/**
-	 * Compares two durations objects. Only the {@link #getEvolveDuration()}
+	 * Compares two durations objects. Only the {@link #evolveDuration()}
 	 * property is taken into account for the comparison.
 	 *
 	 * @param other the other durations object this object is compared with
 	 * @return a integer smaller/equal/greater than 0 if the
-	 *         {@link #getEvolveDuration()} property of {@code this} object is
+	 *         {@link #evolveDuration()} property of {@code this} object is
 	 *         smaller/equal/greater than the corresponding property of the
 	 *         {@code other} project.
 	 */
@@ -284,6 +378,57 @@ public final class EvolutionDurations
 			evaluationDuration,
 			evolveDuration
 		);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.EVOLUTION_DURATIONS, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final ObjectOutput out) throws IOException {
+		writeDuration(_offspringSelectionDuration, out);
+		writeDuration(_survivorsSelectionDuration, out);
+		writeDuration(_offspringAlterDuration, out);
+		writeDuration(_offspringFilterDuration, out);
+		writeDuration(_survivorFilterDuration, out);
+		writeDuration(_evaluationDuration, out);
+		writeDuration(_evolveDuration, out);
+	}
+
+	private static void writeDuration(final Duration duration, final DataOutput out)
+		throws IOException
+	{
+		writeLong(duration.getSeconds(), out);
+		writeInt(duration.getNano(), out);
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	static EvolutionDurations read(final ObjectInput in) throws IOException {
+		return new EvolutionDurations(
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in),
+			readDuration(in)
+		);
+	}
+
+	private static Duration readDuration(final DataInput in) throws IOException {
+		final long seconds = readLong(in);
+		final int nanos = readInt(in);
+		return Duration.ofSeconds(seconds, nanos);
 	}
 
 }

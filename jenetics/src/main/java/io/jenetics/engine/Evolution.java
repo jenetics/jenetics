@@ -50,13 +50,12 @@ public interface Evolution<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}
 	 */
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
+	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
 
 
 	/**
 	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
+	 * {@code generation}.
 	 * <p>
 	 * <em>This method is thread-safe.</em>
 	 *
@@ -71,7 +70,7 @@ public interface Evolution<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionResult<G, C> evolve(
+	default EvolutionResult<G, C> evolve(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {

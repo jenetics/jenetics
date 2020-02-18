@@ -32,7 +32,7 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.util.bit;
+import io.jenetics.internal.util.Bits;
 import io.jenetics.util.Factory;
 import io.jenetics.util.RandomRegistry;
 
@@ -62,22 +62,13 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	@Test
 	public void chromosomeProbability() {
 		final byte[] data = new byte[1234];
-		RandomRegistry.getRandom().nextBytes(data);
+		RandomRegistry.random().nextBytes(data);
 
 		final BitChromosome c = new BitChromosome(data);
 		Assert.assertEquals(
-			c.getOneProbability(),
-			(double)bit.count(data)/(double)(data.length*8)
+			c.oneProbability(),
+			(double) Bits.count(data)/(double)(data.length*8)
 		);
-	}
-
-	@Test
-	public void seqTypes() {
-		final BitChromosome c = BitChromosome.of(100, 0.3);
-
-		Assert.assertEquals(c.toSeq().getClass(), BitGeneISeq.class);
-		Assert.assertEquals(c.toSeq().copy().getClass(), BitGeneMSeq.class);
-		Assert.assertEquals(c.toSeq().copy().toISeq().getClass(), BitGeneISeq.class);
 	}
 
 	@Test
@@ -86,7 +77,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		final BitChromosome c3 = c1.invert();
 
 		for (int i = 0; i < c1.length(); ++i) {
-			Assert.assertTrue(c1.getGene(i).getBit() != c3.getGene(i).getBit());
+			Assert.assertTrue(c1.get(i).bit() != c3.get(i).bit());
 		}
 
 		BitChromosome c4 = c3.invert();
@@ -108,12 +99,12 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 	public void intProbability() {
 		BitChromosome c = BitChromosome.of(10, 0);
 		for (BitGene g : c) {
-			assertFalse(g.getBit());
+			assertFalse(g.bit());
 		}
 
 		c = BitChromosome.of(10, 1);
 		for (BitGene g : c) {
-			assertTrue(g.getBit());
+			assertTrue(g.bit());
 		}
 	}
 
@@ -126,7 +117,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 
 		BitChromosome c = BitChromosome.of(bits);
 		for (int i = 0; i < bits.length(); ++i) {
-			assertEquals(c.getGene(i).getBit(), i % 2 == 0);
+			assertEquals(c.get(i).bit(), i % 2 == 0);
 		}
 	}
 
@@ -163,7 +154,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		BitChromosome c2 = BitChromosome.of(c1.toBitSet(), 34);
 
 		for (int i = 0; i < c1.length(); ++i) {
-			assertEquals(c1.getGene(i).getBit(), c2.getGene(i).getBit());
+			assertEquals(c1.get(i).bit(), c2.get(i).bit());
 		}
 	}
 
@@ -195,10 +186,10 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 			data[i] = (byte)(Math.random()*256);
 		}
 
-		final String dataString = bit.toByteString(data);
+		final String dataString = Bits.toByteString(data);
 		Reporter.log(dataString);
 
-		final byte[] sdata = bit.fromByteString(dataString);
+		final byte[] sdata = Bits.fromByteString(dataString);
 		Assert.assertEquals(sdata, data);
 	}
 

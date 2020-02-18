@@ -79,7 +79,7 @@ public final class EvolutionStreamImpl<
 			? super EvolutionStart<G, C>,
 			? extends Evolution<G, C>> evolution
 	) {
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			EvolutionSpliterator.of(start, evolution),
 			false
 		);

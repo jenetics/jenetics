@@ -51,7 +51,7 @@ public class CharacterChromosomeTest extends ChromosomeTester<CharacterGene> {
 
 			final Histogram<Long> histogram = Histogram.ofLong(0L, 10L, 10);
 			chromosome.stream()
-				.map(g -> Long.valueOf(g.getAllele().toString()))
+				.map(g -> Long.valueOf(g.allele().toString()))
 				.forEach(histogram);
 
 			final double[] expected = dist.uniform(histogram.length());

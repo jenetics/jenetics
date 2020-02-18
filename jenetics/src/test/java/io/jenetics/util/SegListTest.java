@@ -25,7 +25,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -42,7 +42,7 @@ public class SegListTest {
 
 	@Test
 	public void get() {
-		final long seed = random.seed();
+		final long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final MSeq<Integer> proxy = MSeq.ofLength(1000);
@@ -160,7 +160,7 @@ public class SegListTest {
 
 	@Test
 	public void contains() {
-		long seed = random.seed();
+		long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final MSeq<Long> proxy = MSeq.ofLength(1000);
@@ -181,7 +181,7 @@ public class SegListTest {
 
 	@Test
 	public void toArray() {
-		long seed = random.seed();
+		long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final MSeq<Long> proxy = MSeq.ofLength(1000);
@@ -199,7 +199,7 @@ public class SegListTest {
 
 	@Test
 	public void toArrayLong() {
-		long seed = random.seed();
+		long seed = Randoms.seed();
 		final Random random = new Random(seed);
 
 		final MSeq<Long> proxy = MSeq.ofLength(1000);

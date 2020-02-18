@@ -38,13 +38,13 @@ import io.jenetics.util.RandomRegistry;
 public class RngExample {
 
 	private static Integer count(final Genotype<BitGene> gt) {
-		return ((BitChromosome)gt.getChromosome()).bitCount();
+		return ((BitChromosome)gt.chromosome()).bitCount();
 	}
 
 	public static void main(String[] args) {
 		// Set the PRNG used by the evolution Engine.
 		final LCG64ShiftRandom random = new LCG64ShiftRandom(123);
-		RandomRegistry.setRandom(random);
+		RandomRegistry.random(random);
 
 		// Configure and build the evolution Engine.
 		final Engine<BitGene, Integer> engine = Engine
@@ -56,16 +56,16 @@ public class RngExample {
 		// The 'Random(123)' object is used for creating a *reproducible*
 		// initial population. The original PRNG is restored after the 'with'
 		// block.
-		assert RandomRegistry.getRandom() == random;
+		assert RandomRegistry.random() == random;
 		final List<Genotype<BitGene>> genotypes =
 			RandomRegistry.with(new Random(123), r -> {
-				assert RandomRegistry.getRandom() == r;
+				assert RandomRegistry.random() == r;
 				return Genotype.of(BitChromosome.of(20, 0.15))
 					.instances()
 					.limit(50)
 					.collect(Collectors.toList());
 			});
-		assert RandomRegistry.getRandom() == random;
+		assert RandomRegistry.random() == random;
 
 		// The evolution process uses the global 'random' instance.
 		final Phenotype<BitGene, Integer> best = engine.stream(genotypes)

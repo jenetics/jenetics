@@ -26,7 +26,7 @@ import io.jenetics.util.ISeq;
  * Abstract base implementation of a {@code TreeChromosome}.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 3.9
  */
 public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>>
@@ -38,7 +38,7 @@ public abstract class AbstractTreeChromosome<A, G extends AbstractTreeGene<A, G>
 
 	protected AbstractTreeChromosome(final ISeq<? extends G> genes) {
 		super(genes);
-		genes.forEach(g -> g.bind(toSeq()));
+		genes.forEach(g -> g.bind(this));
 	}
 
 }

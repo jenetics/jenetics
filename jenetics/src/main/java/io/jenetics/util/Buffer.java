@@ -253,7 +253,7 @@ final class Buffer<T> implements Iterable<T> {
 	 *         negative
 	 */
 	public static <T> Buffer<T> ofCapacity(final int capacity) {
-		return new Buffer<T>(capacity);
+		return new Buffer<>(capacity);
 	}
 
 }

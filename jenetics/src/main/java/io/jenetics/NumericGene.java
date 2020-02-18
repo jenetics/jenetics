@@ -50,8 +50,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code byte}.
 	 */
-	public default byte byteValue() {
-		return getAllele().byteValue();
+	default byte byteValue() {
+		return allele().byteValue();
 	}
 
 	/**
@@ -61,8 +61,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code short}.
 	 */
-	public default short shortValue() {
-		return getAllele().shortValue();
+	default short shortValue() {
+		return allele().shortValue();
 	}
 
 	/**
@@ -72,8 +72,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code int}.
 	 */
-	public default int intValue() {
-		return getAllele().intValue();
+	default int intValue() {
+		return allele().intValue();
 	}
 
 	/**
@@ -83,8 +83,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code long}.
 	 */
-	public default long longValue() {
-		return getAllele().longValue();
+	default long longValue() {
+		return allele().longValue();
 	}
 
 	/**
@@ -94,8 +94,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code float}.
 	 */
-	public default float floatValue() {
-		return getAllele().floatValue();
+	default float floatValue() {
+		return allele().floatValue();
 	}
 
 	/**
@@ -105,8 +105,8 @@ public interface NumericGene<
 	 * @return the numeric value represented by this object after conversion to
 	 *         type {@code double}.
 	 */
-	public default double doubleValue() {
-		return getAllele().doubleValue();
+	default double doubleValue() {
+		return allele().doubleValue();
 	}
 
 	@Override

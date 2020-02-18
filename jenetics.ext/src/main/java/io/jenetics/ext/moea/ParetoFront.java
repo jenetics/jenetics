@@ -20,7 +20,7 @@
 package io.jenetics.ext.moea;
 
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.array.revert;
+import static io.jenetics.internal.util.Arrays.revert;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -78,9 +78,10 @@ import io.jenetics.util.Seq;
  */
 public final class ParetoFront<T> extends AbstractSet<T> {
 
+	private final List<T> _population = new ArrayList<>();
+
 	private final Comparator<? super T> _dominance;
 	private final BiPredicate<? super T, ? super T> _equals;
-	private final List<T> _population = new ArrayList<>();
 
 	/**
 	 * Create a new {@code ParetoSet} with the given {@code dominance} measure.
@@ -115,8 +116,8 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	 * Inserts an {@code element} to this pareto front.
 	 *
 	 * @implNote
-	 * Inserting a new element has a time complexity of {@code O(n)}, where
-	 * <em>n</em> is the number of elements of {@code this} pareto-front.
+	 * Inserting a new element has a time complexity of {@code O(this.size())},
+	 * where <em>n</em> is the number of elements of {@code this} pareto-front.
 	 *
 	 * @param element the element to add
 	 * @return {@code true} if this set did not already contain the specified
@@ -144,6 +145,17 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 		return true;
 	}
 
+	/**
+	 * Adds all elements of the given collection to {@code this} pareto front.
+	 *
+	 * @implNote
+	 * The runtime complexity of this operation is
+	 * {@code O(elements.size()*this.size())}.
+	 *
+	 * @param elements the elements to add to {@code this} pareto front
+	 * @return {@code true} if {@code this} pareto front has been changed,
+	 *         {@code false} otherwise
+	 */
 	@Override
 	public boolean addAll(final Collection<? extends T> elements) {
 		final int sum = elements.stream()
@@ -155,8 +167,9 @@ public final class ParetoFront<T> extends AbstractSet<T> {
 	/**
 	 * Add the all {@code elements} to {@code this} pareto-set.
 	 *
-	 * @apiNote
-	 * Merging two pareto fronts has a time complexity of {@code O(n*m)}.
+	 * @implNote
+	 * Merging two pareto fronts has a time complexity of
+	 * {@code O(elements.size()*this.size())}.
 	 *
 	 * @param elements the elements to add
 	 * @return {@code this} pareto-set

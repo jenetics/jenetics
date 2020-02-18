@@ -70,18 +70,18 @@ public abstract class TreeCrossover<
 		final long generation
 	) {
 		assert individuals.length == 2 : "Required order of 2";
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final Phenotype<G, C> pt1 = population.get(individuals[0]);
 		final Phenotype<G, C> pt2 = population.get(individuals[1]);
-		final Genotype<G> gt1 = pt1.getGenotype();
-		final Genotype<G> gt2 = pt2.getGenotype();
+		final Genotype<G> gt1 = pt1.genotype();
+		final Genotype<G> gt2 = pt2.genotype();
 
 		//Choosing the Chromosome index for crossover.
 		final int chIndex = random.nextInt(min(gt1.length(), gt2.length()));
 
-		final MSeq<Chromosome<G>> c1 = gt1.toSeq().copy();
-		final MSeq<Chromosome<G>> c2 = gt2.toSeq().copy();
+		final MSeq<Chromosome<G>> c1 = MSeq.of(gt1);
+		final MSeq<Chromosome<G>> c2 = MSeq.of(gt2);
 
 		crossover(c1, c2, chIndex);
 
@@ -95,7 +95,7 @@ public abstract class TreeCrossover<
 			Phenotype.of(Genotype.of(c2.toISeq()), generation)
 		);
 
-		return getOrder();
+		return order();
 	}
 
 	// Since the allele type "A" is not part of the type signature, we have to
@@ -107,9 +107,9 @@ public abstract class TreeCrossover<
 		final int index
 	) {
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).getGene());
+		final TreeNode<A> tree1 = (TreeNode<A>)TreeNode.ofTree(c1.get(index).gene());
 		@SuppressWarnings("unchecked")
-		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).getGene());
+		final TreeNode<A> tree2 = (TreeNode<A>)TreeNode.ofTree(c2.get(index).gene());
 
 		crossover(tree1, tree2);
 
@@ -117,7 +117,7 @@ public abstract class TreeCrossover<
 		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
-		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).getGene();
+		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).gene();
 
 		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
 		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));
@@ -132,7 +132,7 @@ public abstract class TreeCrossover<
 		final FlatTree<? extends A, ?> tree
 	) {
 		return (G)template.newInstance(
-			tree.getValue(),
+			tree.value(),
 			tree.childOffset(),
 			tree.childCount()
 		);

@@ -492,7 +492,7 @@ public final class Readers {
 					alleles.set(i, gene);
 				}
 
-				return new io.jenetics.PermutationChromosome<A>(alleles.toISeq());
+				return new io.jenetics.PermutationChromosome<>(alleles.toISeq());
 			},
 				Writers.PermutationChromosome.ROOT_NAME,
 				attr(Writers.PermutationChromosome.LENGTH_NAME).map(Integer::parseInt),

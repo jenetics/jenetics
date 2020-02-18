@@ -19,7 +19,7 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.internal.util.array.swap;
+import static io.jenetics.internal.util.Arrays.swap;
 
 import java.util.Comparator;
 

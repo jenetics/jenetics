@@ -45,7 +45,7 @@ public final class engines {
 	 * The test {@link Knapsack} {@link Engine} used for the evolution
 	 * performance tests.
 	 */
-	public static Engine<BitGene, Double>
+	public static final Engine<BitGene, Double>
 		KNAPSACK = knapsack(new LCG64ShiftRandom(10101));
 
 	public static Engine<BitGene, Double> KNAPSACK(final int populationSize) {

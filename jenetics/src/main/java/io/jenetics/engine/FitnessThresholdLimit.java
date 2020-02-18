@@ -44,7 +44,7 @@ final class FitnessThresholdLimit<C extends Comparable<? super C>>
 	public boolean test(final EvolutionResult<?, C> result) {
 		final boolean proceed =
 			_proceed &&
-			result.getOptimize().compare(_threshold, result.getBestFitness()) >= 0;
+			result.optimize().compare(_threshold, result.bestFitness()) >= 0;
 
 		try {
 			return _proceed;

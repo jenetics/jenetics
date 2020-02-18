@@ -27,13 +27,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.ISeq;
 
 /**
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version 5.2
  * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
@@ -49,7 +50,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	private final int _childOffset;
 	private final int _childCount;
 
-	private ISeq<G> _genes;
+	private BaseSeq<G> _genes;
 
 	/**
 	 * Creates a new tree-gene from the given data.
@@ -86,22 +87,23 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 */
 	@Override
 	public ISeq<G> flattenedNodes() {
-		return _genes;
+		return ISeq.of(_genes);
 	}
 
 	@Override
+	@Deprecated
 	public G getRoot() {
 		return _genes.get(0);
 	}
 
 	@Override
 	public boolean isRoot() {
-		return getRoot() == this;
+		return root() == this;
 	}
 
 	@Override
 	public int size() {
-		return isRoot() ? _genes.size() : TreeGene.super.size();
+		return isRoot() ? _genes.length() : TreeGene.super.size();
 	}
 
 	protected void checkTreeState() {
@@ -118,7 +120,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 *
 	 * @param genes the genes of the attached chromosome
 	 */
-	protected void bind(final ISeq<G> genes) {
+	protected void bind(final BaseSeq<G> genes) {
 		_genes = requireNonNull(genes);
 	}
 
@@ -127,6 +129,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _childOffset;
 	}
 
+	@Deprecated
 	@Override
 	public A getAllele() {
 		return _allele;
@@ -140,6 +143,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
+	@Deprecated
 	public Optional<G> getParent() {
 		checkTreeState();
 
