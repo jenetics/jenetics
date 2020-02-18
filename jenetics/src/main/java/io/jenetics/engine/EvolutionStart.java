@@ -19,23 +19,8 @@
  */
 package io.jenetics.engine;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.internal.util.SerialIO.readLong;
-import static io.jenetics.internal.util.SerialIO.writeLong;
-
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.Serializable;
-import java.util.Objects;
-
 import io.jenetics.Gene;
 import io.jenetics.Phenotype;
-import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 
 /**
@@ -48,71 +33,27 @@ import io.jenetics.util.ISeq;
  * @param <G> the gene type
  * @param <C> the fitness type
  *
- * @implNote
- * This class is immutable and thread-safe.
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 6.0
+ * @version !__version__!
  */
-public final /*record*/ class EvolutionStart<
+public interface EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
->
-	implements Serializable
-{
-
-	private static final long serialVersionUID = 2L;
-
-	private final ISeq<Phenotype<G, C>> _population;
-	private final long _generation;
-
-	private EvolutionStart(
-		final ISeq<Phenotype<G, C>> population,
-		final long generation
-	) {
-		_population = requireNonNull(population);
-		_generation = Requires.positive(generation);
-	}
-
+> {
 	/**
 	 * Return the population before the evolution step.
 	 *
 	 * @return the start population
 	 */
-	public ISeq<Phenotype<G, C>> population() {
-		return _population;
-	}
+	public ISeq<Phenotype<G, C>> population();
 
 	/**
 	 * Return the generation of the start population.
 	 *
 	 * @return the start generation
 	 */
-	public long generation() {
-		return _generation;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_generation, hash(_population, hash(getClass())));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof EvolutionStart &&
-			_generation == ((EvolutionStart)obj)._generation &&
-			Objects.equals(_population, ((EvolutionStart)obj)._population);
-	}
-
-	@Override
-	public String toString() {
-		return format(
-			"EvolutionStart[population-size=%d, generation=%d]",
-			_population.size(), _generation
-		);
-	}
+	public long generation();
 
 	/**
 	 * Create a new evolution start object with the given population and for the
@@ -130,10 +71,10 @@ public final /*record*/ class EvolutionStart<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> of(
-		final ISeq<Phenotype<G, C>> population,
+		final Iterable<Phenotype<G, C>> population,
 		final long generation
 	) {
-		return new EvolutionStart<>(population, generation);
+		return new DefaultEvolutionStart<>(population, generation);
 	}
 
 	/**
@@ -149,37 +90,7 @@ public final /*record*/ class EvolutionStart<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> empty() {
-		return new EvolutionStart<>(ISeq.empty(), 1);
-	}
-
-
-	/* *************************************************************************
-	 *  Java object serialization
-	 * ************************************************************************/
-
-	private Object writeReplace() {
-		return new Serial(Serial.EVOLUTION_START, this);
-	}
-
-	private void readObject(final ObjectInputStream stream)
-		throws InvalidObjectException
-	{
-		throw new InvalidObjectException("Serialization proxy required.");
-	}
-
-	void write(final ObjectOutput out) throws IOException {
-		out.writeObject(_population);
-		writeLong(_generation, out);
-	}
-
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionStart read(final ObjectInput in)
-		throws IOException, ClassNotFoundException
-	{
-		return new EvolutionStart(
-			(ISeq)in.readObject(),
-			readLong(in)
-		);
+		return new DefaultEvolutionStart<>(ISeq.empty(), 1);
 	}
 
 }
