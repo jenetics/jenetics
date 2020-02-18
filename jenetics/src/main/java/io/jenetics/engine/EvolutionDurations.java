@@ -329,7 +329,6 @@ public final /*record*/ class EvolutionDurations
 		writeInt(duration.getNano(), out);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	static EvolutionDurations read(final ObjectInput in) throws IOException {
 		return new EvolutionDurations(
 			readDuration(in),
