@@ -253,7 +253,7 @@ public final class TreeRewriteRule<V> implements TreeRewriter<V>, Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static TreeRewriteRule read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final TreePattern left = (TreePattern)in.readObject();

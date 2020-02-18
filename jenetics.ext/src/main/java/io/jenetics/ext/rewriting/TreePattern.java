@@ -372,7 +372,7 @@ public final class TreePattern<V> implements Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static TreePattern read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final var pattern = (TreeNode)in.readObject();
@@ -522,8 +522,8 @@ public final class TreePattern<V> implements Serializable {
 			out.writeObject(_name);
 		}
 
-		@SuppressWarnings({"rawtypes"})
-		static Var read(final ObjectInput in)
+		@SuppressWarnings("rawtypes")
+		static Object read(final ObjectInput in)
 			throws IOException, ClassNotFoundException
 		{
 			final String name = (String)in.readObject();
@@ -607,7 +607,7 @@ public final class TreePattern<V> implements Serializable {
 		}
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
-		static Val read(final ObjectInput in)
+		static Object read(final ObjectInput in)
 			throws IOException, ClassNotFoundException
 		{
 			return new Val(in.readObject());

@@ -43,8 +43,8 @@ dependencies {
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/jenetics',
-			'http://jenetics.io/javadoc/jenetics.ext'
+		links 'https://jenetics.io/javadoc/jenetics',
+			'https://jenetics.io/javadoc/jenetics.ext'
 	}
 }
 

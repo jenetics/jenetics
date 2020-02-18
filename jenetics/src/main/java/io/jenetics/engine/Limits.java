@@ -65,6 +65,17 @@ public final class Limits {
 	 * of the {@link java.util.stream.Stream#limit(long)} and exists for
 	 * <i>completeness</i> reasons.
 	 *
+	 * @implNote
+	 * This predicate is mainly there for completion reason and behaves exactly
+	 * as the {@link java.util.stream.Stream#limit(long)} function, except for
+	 * the number of evaluations performed by the resulting stream. The evaluation
+	 * of the population is {@code max generations + 1}. This is because the
+	 * limiting predicate works on the {@link EvolutionResult} object, which
+	 * guarantees to contain an evaluated population. That means, that the
+	 * population must be evaluated at least once, even for a generation limit
+	 * of zero. If this is an unacceptable performance penalty, better use the
+	 * {@link java.util.stream.Stream#limit(long)} function instead.
+	 *
 	 * @since 3.1
 	 *
 	 * @param generation the number of generations after the evolution stream is
@@ -77,7 +88,8 @@ public final class Limits {
 	public static Predicate<Object> byFixedGeneration(final long generation) {
 		if (generation < 0) {
 			throw new IllegalArgumentException(format(
-				"The number of generations must greater than one, but was %d",
+				"The number of generations must greater or equal than zero, " +
+					"but was %d",
 				generation
 			));
 		}

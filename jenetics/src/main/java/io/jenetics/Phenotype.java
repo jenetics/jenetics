@@ -366,7 +366,7 @@ public final class Phenotype<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static Phenotype read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final var generation = readLong(in);

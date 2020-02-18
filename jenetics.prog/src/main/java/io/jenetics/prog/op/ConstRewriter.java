@@ -56,8 +56,9 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private final Class<T> _type;
 
-	private ConstRewriter(final Class<T> type) {
-		_type = requireNonNull(type);
+	@SuppressWarnings("unchecked")
+	private ConstRewriter(final Class<? extends T> type) {
+		_type = (Class<T>)requireNonNull(type);
 	}
 
 	/**
@@ -134,7 +135,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 	 * @return a new rewriter for constant operation sub-trees (expressions)
 	 * @throws NullPointerException if the given {@code type} is {@code null}
 	 */
-	public static <T> ConstRewriter<T> ofType(final Class<T> type) {
+	public static <T> ConstRewriter<T> ofType(final Class<? extends T> type) {
 		return new ConstRewriter<>(type);
 	}
 

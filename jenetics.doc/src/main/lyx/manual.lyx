@@ -694,7 +694,7 @@ http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 \end_inset
 
-, which provides an 
+, which provides a 
 \begin_inset CommandInset href
 LatexCommand href
 name "Genetic algorithm"
@@ -742,7 +742,7 @@ Jenetics
 \family default
 \series default
 \shape default
- is available on Maven central repository
+ is available on the Maven central repository
 \begin_inset Foot
 status collapsed
 
@@ -1167,15 +1167,18 @@ Stream
  Evolution\SpecialChar softhyphen
 Stream
 \family default
- implements the Java
+ extends the Java
 \family typewriter
  Stream
 \family default
  interface, it works smoothly with the rest of the Java Stream API.
  Now let's have a closer look at listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Hello-World-GA"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1245,8 +1248,11 @@ Chromosome
  For a detailed description of the genotype's structure have a look at section
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsubsec:Domain-classes-Genotype"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1308,13 +1314,20 @@ In the third step we are creating the
  Engine
 \family default
 , which is responsible for evolving the given population.
- The Engine is highly configurable and takes parameters for controlling
- the evolutionary and the computational environment.
+ The 
+\family typewriter
+Engine
+\family default
+ is highly configurable and takes parameters for controlling the evolutionary
+ and the computational environment.
  For changing the evolutionary behavior, you can set different alterers
  and selectors (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Operation-classes"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1328,7 +1341,7 @@ reference "subsec:Operation-classes"
  Engine
 \family default
  is allowed to use.
- An new
+ A new
 \family typewriter
  Engine
 \family default
@@ -1407,8 +1420,8 @@ As the example shows,
  Collector
 \family default
  classes of Java 8.
- Also the newly introduced lambda expressions and the functional interfaces
- (SAM types) play an important roll in the library design.
+ Also lambda expressions and the functional interfaces (SAM types) plays
+ an important roll in the library design.
 \end_layout
 
 \begin_layout Standard
@@ -1425,8 +1438,11 @@ There are many other GA implementations out there and they may slightly
  uses an classical approach.
  Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Genetic-algorithm"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1545,7 +1561,7 @@ In line (1) the initial population is created and line (2) calculates the
  step is performed.
  Line (4) increases the generation number and line (5) and (6) selects the
  survivor and the offspring population.
- The offspring/survivor fraction is determined by the
+ The offspring/survivors fraction is determined by the
 \family typewriter
  offspringFraction
 \family default
@@ -1608,25 +1624,22 @@ Evolution!Stream
 Stream
 \family default
 .
- Therefore it is no longer necessary (and advised) to perform the evolution
- steps in an
-\emph on
- imperative
-\emph default
- way.
  An evolution stream is powered by—and bound to—an
 \emph on
  Evolution Engine
 \emph default
 , which performs the needed
 \emph on
- evolution
+ 
 \emph default
- steps for each generation; the steps are described in the body of the while-loo
-p of listing 
+evolution steps for each generation; the steps are described in the body
+ of the while-loop of listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Genetic-algorithm"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1686,8 +1699,11 @@ Evolution workflow
 \begin_layout Standard
 The described evolution workflow is also illustrated in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Evolution-workflow"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1726,9 +1742,9 @@ Result
  is created, it can be used by multiple
 \family typewriter
  Evolution\SpecialChar softhyphen
-Streams
+Stream
 \family default
- which can be safely used in different execution threads.
+s which can be safely used in different execution threads.
  This is possible because the evolution
 \family typewriter
  Engine
@@ -1766,7 +1782,8 @@ The evolution process terminates, if the
  Evolution\SpecialChar softhyphen
 Stream
 \family default
- is truncated, and the
+ is truncated.
+ The
 \family typewriter
  Evolution\SpecialChar softhyphen
 Stream
@@ -1851,8 +1868,11 @@ Evolution engine model
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Evolution-engine-model"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1914,7 +1934,7 @@ Stream
  Evolution\SpecialChar softhyphen
 Stream
 \family default
- is the separation of the evolution definition and evolution execution.
+ is the separation of evolution definition and evolution execution.
 \end_layout
 
 \begin_layout Standard
@@ -1967,8 +1987,11 @@ Package structure
 \begin_layout Standard
 In figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Package-structure"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -1989,7 +2012,7 @@ io.jenetics
 \family default
 \series default
 \shape default
- library and contains all domain classes, like
+ library and contains all domain classes like
 \family typewriter
  Gene
 \family default
@@ -2006,8 +2029,7 @@ io.jenetics
 Phenotype
 \family default
 .
- All of this types are immutable data classes and doesn't implement any
- behavior.
+ All of this types are immutable data classes.
  It also contains the
 \family typewriter
  Selector
@@ -2081,8 +2103,8 @@ Summary\SpecialChar softhyphen
 Statistics
 \family default
 ).
- With the additions in this package it is also possible to calculate the
- variance, skewness and kurtosis—using the
+ With this additions it is also possible to calculate the variance, skewness
+ and kurtosis—using the
 \family typewriter
  Double\SpecialChar softhyphen
 Moment\SpecialChar softhyphen
@@ -2095,7 +2117,7 @@ Statistics
 Statistics
 \family default
  object, which can be calculated for every generation, relies on the classes
- of this package.
+ in this package.
 \end_layout
 
 \begin_layout Description
@@ -2134,7 +2156,7 @@ type
  Random\SpecialChar softhyphen
 Registry
 \family default
- class, which implements the 
+, which implements the 
 \emph on
 global
 \emph default
@@ -2172,7 +2194,7 @@ name "sec:Base-classes"
 \end_layout
 
 \begin_layout Standard
-This chapter describes the main classes which are needed to setup and run
+This chapter describes the base classes which are needed to setup and run
  an genetic algorithm with the
 \family sans
 \series bold
@@ -2257,8 +2279,8 @@ Engine
 \begin_inset space ~
 \end_inset
 
-classes This classes implements the actual evolutionary algorithm and reside
- solely in the
+classes This classes implements the actual evolutionary algorithm and can
+ be found in the
 \family typewriter
  io.jenetics\SpecialChar softhyphen
 .engine
@@ -2385,17 +2407,15 @@ Domain model
 
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Domain-model"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
  shows the class diagram of the domain classes.
- All domain classes are located in the
-\family typewriter
- io.jenetics
-\family default
- package.
  The
 \family typewriter
  Gene
@@ -2409,8 +2429,7 @@ s are aggregated in
 \family typewriter
  Chromosome
 \family default
-s.
- One to n
+s, and one to n
 \family typewriter
  Chromosome
 \family default
@@ -2462,9 +2481,9 @@ Gene
 \begin_layout Standard
 
 \family typewriter
-Gene
+T
 \family default
-s are the basic building blocks of the
+he basic building blocks of the
 \family sans
 \series bold
 \shape smallcaps
@@ -2472,8 +2491,7 @@ s are the basic building blocks of the
 \family default
 \series default
 \shape default
- library.
- They contain the actual information of the encoded solution, the allele
+ library contain the actual information of the encoded solution, the allele
 \begin_inset Index idx
 status collapsed
 
@@ -2642,8 +2660,11 @@ Gene
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Gene-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -2699,11 +2720,14 @@ g.
 \family default
 \series default
 \shape default
- library should cover a wide range of problem encodings.
+ library cover a wide range of problem encodings.
  Refer to chapter 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Genes"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -2744,7 +2768,7 @@ A
 \family typewriter
  Gene
 \family default
-s which contains at least one
+s which must contain at least one
 \family typewriter
  Gene
 \family default
@@ -2841,8 +2865,11 @@ Chromosome
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Chromosome-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -2855,7 +2882,7 @@ reference "lis:Chromosome-interface"
 \family typewriter
  Gene
 \family default
-s by index and the factory method for creating a new
+s by its index and the factory method for creating a new
 \family typewriter
  Chromosome
 \family default
@@ -2935,8 +2962,11 @@ Chromosome
 , equally distributed.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Chromosome-structure"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3030,7 +3060,7 @@ Genotype
 \end_layout
 
 \begin_layout Standard
-The central class, the evolution
+The central processing class, the evolution
 \family typewriter
  Engine
 \family default
@@ -3074,8 +3104,11 @@ some
 Chromosome
 \family default
  is an example of such a constraint.
- Within the same chromosome, all alleles must lay within the defined minimal-
- and maximal values.
+ Within the same 
+\family typewriter
+Chromosome
+\family default
+, all alleles must lay within the defined minimal- and maximal values.
 \end_layout
 
 \begin_layout Standard
@@ -3132,8 +3165,11 @@ Genotype
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Genotype-structure"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3278,8 +3314,11 @@ The code snippet in the listing above creates a
 \family default
  with the same structure as shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Genotype-structure"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3407,8 +3446,11 @@ Row-major
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Row-major-genotype-vector"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3617,8 +3659,11 @@ only reason for choosing the column-major layout.
 \family default
  vector is shown in 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Column-major-genotype-vector"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3689,7 +3734,7 @@ The code snippet below shows how to create a
  Genotype
 \family default
  vector in column-major layout.
- It's a little more effort to create such a vector, since every
+ It's a little bit more effort to create such a vector, since every
 \family typewriter
  Gene
 \family default
@@ -3703,7 +3748,8 @@ The code snippet below shows how to create a
  Double\SpecialChar softhyphen
 Chromosome
 \family default
- in the given example has length of one, when the length parameter is omitted.
+ in the given example has a length of one, when the length parameter is
+ omitted.
 \end_layout
 
 \begin_layout Standard
@@ -3857,8 +3903,11 @@ reference "par:Intermediate-crossover"
 \emph on
 See also 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Vector-codec"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3884,7 +3933,7 @@ Genotype!scalar
 \end_layout
 
 \begin_layout Standard
-A very special case of a
+A special case of a
 \family typewriter
  Genotype
 \family default
@@ -3899,10 +3948,17 @@ some
 \family typewriter
  Genotype
 \family default
- scalar is shown in 
+ 
+\emph on
+scalar
+\emph default
+ is shown in 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Genotype-scalar"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -3960,8 +4016,7 @@ How to create a
 \family typewriter
  Genotype
 \family default
- for a real function optimization problem, is shown in the code snippet
- below.
+ for a real function optimization problem is shown in the code snippet below.
  The recommended
 \family typewriter
  Alterer
@@ -4023,8 +4078,11 @@ Genotype<DoubleGene> genotype = Genotype.of(
 \emph on
 See also 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Scalar-codec"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -4175,8 +4233,11 @@ Phenotype
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Phenotype-class"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -4201,7 +4262,7 @@ Genotype
  can be fetched with the
 \family typewriter
  geno\SpecialChar softhyphen
-type
+type()
 \family default
  method.
  If no fitness value is associated with the 
@@ -4223,7 +4284,7 @@ Exc\SpecialChar softhyphen
 eption
 \family default
 .
- Whether a fitness value has been set can be checked with the 
+ Whether the fitness value has been set can be checked with the 
 \family typewriter
 isEvaluated()
 \family default
@@ -4241,22 +4302,32 @@ C\SpecialChar softhyphen
 Pheno\SpecialChar softhyphen
 type
 \family default
- is immutable, this method returns a newly created 
+ is immutable, this method returns a new 
 \family typewriter
 Phenotype
 \family default
- with the given fitness value.
+ with the set fitness value.
  Additionally to the fitness value, the
 \family typewriter
  Phenotype
 \family default
  contains the generation when it was created.
- This allows to calculate the current age and the removal of overaged individual
-s from the population.
+ This allows to calculate the current age and allow the removal of overaged
+ individuals from the population.
 \end_layout
 
 \begin_layout Subsubsection
 Population
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Population
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4265,26 +4336,29 @@ There is no special class which represents a population.
 \emph on
 just
 \emph default
- a collection of phenotypes.
+ a collection of 
+\family typewriter
+Phenotype
+\family default
+s.
  As collection class, the 
 \family typewriter
 ISeq
 \family default
  interface is used.
  The 
-\emph on
-own
-\emph default
- 
 \family typewriter
 ISeq
 \family default
- implementations allows to express the immutability state of the population
- at the type level and makes the coding more reliable.
+ interface allows to express the immutability of the population at the type
+ level and makes the code more readable.
  For a detailed description of this collection classes see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "par:io.jenetics.util.Seq"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -4400,7 +4474,7 @@ offspring
  survivors
 \shape default
 \emph default
- can be chosen independently.
+ can be set independently.
 \end_layout
 
 \begin_layout Standard
@@ -4645,7 +4719,7 @@ end{multicols}
 \end_layout
 
 \begin_layout Standard
-Beside the well known standard selector implementation the
+Beside the well known standard selector implementation, the
 \family typewriter
  Probability\SpecialChar softhyphen
 Selector
@@ -4688,7 +4762,7 @@ literal "false"
 \begin_inset Formula $s$
 \end_inset
 
- individuals is chosen from the population 
+ individuals is chosen from the population, 
 \begin_inset Formula $P_{g}$
 \end_inset
 
@@ -4702,7 +4776,7 @@ literal "false"
  competitors.
  Note that the worst individual never survives, and the best individual
  wins in all the tournaments it participates.
- The selection pressure can be varied by changing the tournament size 
+ The selection pressure can be varied by changing the tournament size, 
 \begin_inset Formula $s$
 \end_inset
 
@@ -4843,7 +4917,7 @@ Probability selectors are a variation of
 selection
 \shape default
 \emph default
- probability 
+ probability, 
 \begin_inset Formula $P\left(i\right)$
 \end_inset
 
@@ -4889,6 +4963,9 @@ Fitness proportional selection works as shown in figure
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Fitness-proportional-selection"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -4918,21 +4995,21 @@ where
 \end_inset
 
  individual.
- The probability selector works the same way, only the fitness value 
+ The probability selector works the same way, only the fitness value, 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- is replaced by the individual's selection probability 
+, is replaced by the individual's selection probability, 
 \begin_inset Formula $P(i)$
 \end_inset
 
 .
  It is not necessary to sort the population.
- The selection probability of an individual 
+ The selection probability of an individual, 
 \begin_inset Formula $i$
 \end_inset
 
- follows a binomial distribution
+, follows a binomial distribution
 \begin_inset Formula 
 \begin{equation}
 P\left(i,k\right)=\left(\begin{array}{c}
@@ -5005,15 +5082,15 @@ Jenetics
  
 \emph default
 probability selector.
- For calculating the selection probability 
+ For calculating the selection probability, 
 \begin_inset Formula $P\left(i\right)$
 \end_inset
 
-, the fitness value 
+, the fitness value, 
 \begin_inset Formula $f_{i}$
 \end_inset
 
- of individual 
+, of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -5037,8 +5114,11 @@ Selecting
  The population don't have to be sorted before selecting the individuals.
  Notice that equation 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "eq:roulette-wheele-distribution"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -5064,7 +5144,7 @@ f_{\mathrm{min}}=\min_{i\in\left[0,N\right)}\left\{ f_{i},0\right\}
 
 \end_inset
 
-As you can see, the worst fitness value 
+As you can see, the worst fitness value, 
 \begin_inset Formula $f_{\mathrm{min}}$
 \end_inset
 
@@ -5101,8 +5181,16 @@ name "par:Linear-rank-selector"
 \begin_layout Standard
 The roulette-wheel selector will have problems when the fitness values differ
  very much.
- If the best chromosome fitness is 90%, its circumference occupies 90% of
- roulette-wheel, and then other chromosomes have too few chances to be selected.
+ If the best 
+\family typewriter
+Chromosome
+\family default
+ fitness is 90%, its circumference occupies 90% of roulette-wheel, and then
+ other 
+\family typewriter
+Chromosomes
+\family default
+ have too few chances to be selected.
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Sivanandam2010"
@@ -5117,11 +5205,11 @@ literal "true"
 \end_inset
 
  is assigned to the best individual and the rank 1 to the worst individual.
- The selection probability 
+ The selection probability, 
 \begin_inset Formula $P\left(i\right)$
 \end_inset
 
- of individual 
+, of individual 
 \begin_inset Formula $i$
 \end_inset
 
@@ -5645,8 +5733,11 @@ where
 
  the population size (revere to equation 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "eq:Number of genes"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -5692,11 +5783,11 @@ reference "subsubsec:Domain-classes-Genotype"
 \end_layout
 
 \begin_layout Enumerate
-Select a genotype 
+Select a genotype, 
 \begin_inset Formula $G[i]$
 \end_inset
 
- from the population with probability 
+, from the population with probability 
 \begin_inset Formula $P_{G}\left(m\right)$
 \end_inset
 
@@ -5704,15 +5795,15 @@ Select a genotype
 \end_layout
 
 \begin_layout Enumerate
-select a chromosome 
+select a chromosome, 
 \begin_inset Formula $C[j]$
 \end_inset
 
- from the selected genotype 
+, from the selected genotype, 
 \begin_inset Formula $G[i]$
 \end_inset
 
- with probability 
+, with probability 
 \begin_inset Formula $P_{C}(m)$
 \end_inset
 
@@ -5720,15 +5811,15 @@ select a chromosome
 \end_layout
 
 \begin_layout Enumerate
-select a gene 
+select a gene, 
 \begin_inset Formula $g[k]$
 \end_inset
 
- from the selected chromosome 
+, from the selected chromosome, 
 \begin_inset Formula $C[j]$
 \end_inset
 
- with probability 
+, with probability 
 \begin_inset Formula $P_{g}(m)$
 \end_inset
 
@@ -6044,8 +6135,11 @@ Chromosome!recombination
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Chromosome-selection-recombination"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -6124,8 +6218,11 @@ s with the same
 \emph default
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Chromosome-selection-recombination"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -6277,7 +6374,7 @@ Crossover!Single-point crossover
 
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Single-point-crossover"
 plural "false"
 caps "false"
@@ -6359,7 +6456,7 @@ If the
  single-point crossover.
  The figures in 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:2-point-crossover"
 plural "false"
 caps "false"
@@ -6629,7 +6726,7 @@ The PMX is similar to the two-point crossover.
  A crossing region is chosen by selecting two crossing points (see figure
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Partially-matched-crossover"
 plural "false"
 caps "false"
@@ -6705,7 +6802,7 @@ Crossover!Partially-matched crossover
 After performing the crossover we–normally–got two invalid chromosomes (figure
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Partially-matched-crossover"
 plural "false"
 caps "false"
@@ -6745,7 +6842,7 @@ noprefix "false"
  To repair the two chromosomes we have to apply this exchange outside the
  crossing region (figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Partially-matched-crossover"
 plural "false"
 caps "false"
@@ -6760,7 +6857,7 @@ noprefix "false"
 )).
  At the end figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Partially-matched-crossover"
 plural "false"
 caps "false"
@@ -6877,8 +6974,11 @@ Crossover!Uniform crossover
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Uniform-crossover"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -7067,8 +7167,11 @@ Line crossover hypercube
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Line-crossover-hypercube"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -7840,8 +7943,11 @@ name "lis:Engine-class"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Engine-class"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -7885,8 +7991,11 @@ Stream
 \family default
  see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsubsec:EvolutionStream"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -7952,6 +8061,18 @@ Crossover<>(0.2)
 
 \family typewriter
 clock
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+
+\family typewriter
+Clock
+\end_layout
+
+\end_inset
+
+
 \family default
  The
 \family typewriter
@@ -8010,7 +8131,7 @@ raint
 \family default
  interface is given in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Constraint"
 plural "false"
 caps "false"
@@ -8067,8 +8188,11 @@ fitnessFunction
 .
  (See section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsubsec:Fitness-function"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -8351,8 +8475,11 @@ Engine
 \family default
 s (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:ConcatEngine"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -8515,7 +8642,7 @@ Stream
 .
  Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Evolution-interface"
 plural "false"
 caps "false"
@@ -8758,8 +8885,11 @@ name "lis:EvolutionStream-class"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:EvolutionStream-class"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -9126,8 +9256,11 @@ Stream
 \family default
 , as described in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsubsec:EvolutionStream"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -9213,8 +9346,11 @@ name "lis:EvolutionResult-class"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsubsec:EvolutionResult"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -9593,8 +9729,11 @@ name "lis:EvolutionStatistics-usage"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:EvolutionStatistics-usage"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -9953,8 +10092,11 @@ name "lis:Live-evolution-statistics"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Live-evolution-statistics"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -10394,8 +10536,11 @@ Evaluation batch
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Evaluation-batch"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -10426,8 +10571,11 @@ io\SpecialChar softhyphen
  system property.
  The usage of this property is described in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Concurrency-tweaks"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -11853,8 +12001,11 @@ With the leapfrog method each thread
  of random numbers by a given amount.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Parallelization-via-leapfrogging"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -12666,8 +12817,11 @@ Seq
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Seq-class-diagram"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -13277,8 +13431,11 @@ name "tab:Statistics-classes"
 
 Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Statistics-classes"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -13852,8 +14009,11 @@ AnyGene
 \begin_layout Standard
 Example listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:AnyGene-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -14343,8 +14503,11 @@ AnyChromosome
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:AnyChromosome-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -14800,8 +14963,11 @@ Elitism
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Elite-selector"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -15093,8 +15259,11 @@ engine
 \family default
  package (see listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:EvolutionStatistics-usage"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -15382,8 +15551,11 @@ Special evolution engine
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Special-evolution-engine"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -16315,11 +16487,11 @@ The
 \end_inset
 
 .
- For the different domains, each variable 
+ For the different domains, each variable, 
 \begin_inset Formula $x_{i}$
 \end_inset
 
- is represented by a
+, is represented by a
 \family typewriter
 \emph on
  Numeric
@@ -17422,8 +17594,11 @@ Undirected graph and adjacency matrix
 
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Undirected-graph"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -17637,8 +17812,11 @@ Directed graph and adjacency matrix
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Directed-graph"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -17851,8 +18029,11 @@ engine
 \family default
  interface it is possible to implement the encodings of section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Encoding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -17965,8 +18146,11 @@ name "lis:Codec-interface"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -18221,8 +18405,11 @@ Codec!Scalar
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofScalar"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -18439,8 +18626,11 @@ Codec!Vector
 \begin_layout Standard
 In listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofVector"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -18695,8 +18885,11 @@ Codec!Matrix
 \begin_layout Standard
 In listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofMatrix"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -18922,8 +19115,11 @@ some
 \family default
 , as shown in listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofSubSet"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19021,8 +19217,11 @@ subset
 \family default
  shows a simplified version of the Knapsack problem (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:0/1-Knapsack-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19378,8 +19577,11 @@ Codec
  A classical example for such problems is the Knapsack problem (chapter
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Traveling-salesman-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19470,8 +19672,11 @@ name "lis:Codec-factory-method-ofPermutation"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofPermutation"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19489,8 +19694,11 @@ Codec
 \family default
  in listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Codec-factory-method-ofPermutation"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19800,8 +20008,11 @@ Map
 .
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Codec-mapping-types"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -19888,8 +20099,11 @@ https://en.wikipedia.org/wiki/Assignment_problem
  The costs for such worker-job assignments are usually given by a matrix.
  Such an example matrix is shown in table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Worker-task-cost"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -20257,8 +20471,11 @@ The
 s into one.
  Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Composite-Codec-factory"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -20416,8 +20633,11 @@ The following listing shows a full example which uses a combined
 \family default
 , introduced in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Subset-codec"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -20839,7 +21059,7 @@ name "lis:InvertibleCodec-interface"
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:InvertibleCodec-interface"
 plural "false"
 caps "false"
@@ -20997,8 +21217,11 @@ name "lis:Problem-interface"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Problem-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -21241,8 +21464,11 @@ Genotypes
  Some possible encodings for common data-structures are described in section
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Encoding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -21384,7 +21610,7 @@ name "lis:Constraint-interface"
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Constraint"
 plural "false"
 caps "false"
@@ -21564,7 +21790,7 @@ height "1pt"
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Domain-with-retry-constraint"
 plural "false"
 caps "false"
@@ -21632,7 +21858,7 @@ Trying to create only valid domain points can sometimes lead to a non-uniform
  distribution.
  This can be seen in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Only-valid-domain"
 plural "false"
 caps "false"
@@ -21999,7 +22225,7 @@ dec
 \family default
  interface, see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:InvertibleCodec-interface"
 plural "false"
 caps "false"
@@ -22010,7 +22236,7 @@ noprefix "false"
 , allows to implement the repair function in a more natural way.
  Imagine you want to encode a split range, as shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Split-range-domain"
 plural "false"
 caps "false"
@@ -22394,8 +22620,11 @@ https://github.com/jenetics/jenetics/blob/master/jenetics.example/src/main/java/
 
  (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:0/1-Knapsack-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -22571,8 +22800,11 @@ Knapsack evolution parameters
 \begin_layout Standard
 Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Knapsack-evolution-parameters"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -22724,7 +22956,7 @@ max generations
 Evolution\SpecialChar softhyphen
 Result
 \family default
- object, which guarantees to contains an 
+ object, which guarantees to contain an 
 \emph on
 evaluated
 \emph default
@@ -22783,8 +23015,11 @@ Fixed generation termination
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Fixed-generation-diagram"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23061,8 +23296,11 @@ Steady fitness
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Steady-fitness-limit"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23165,8 +23403,11 @@ Steady fitness termination
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Steady-fitness-diagram"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23344,8 +23585,11 @@ Execution time termination
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Execution-time-diagram"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23477,8 +23721,11 @@ Fitness threshold termination
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Fitness-threshold-diagram"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23606,8 +23853,11 @@ General fitness convergence
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:General-fitness-convergence"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23672,8 +23922,11 @@ Mean fitness convergence
 
 The second factory method (shown in listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Mean-fitness-convergence"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23843,8 +24096,11 @@ Fitness convergence termination:
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Fitness-convergence-diagram-10-30"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -23906,8 +24162,11 @@ Fitness convergence termination:
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Fitness-convergence-diagram-50-150"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -24436,8 +24695,11 @@ Selector-performance (Knapsack)
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Selector-performance-Knapsack"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -24473,8 +24735,11 @@ Selector
 
  used by the examples in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Termination"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -24786,8 +25051,11 @@ name "lis:mu-lambda-Engine-configuration"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:mu-lambda-Engine-configuration"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -25021,8 +25289,11 @@ literal "true"
 
 -ES is shown in listing
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:mu-plus-lambda-Engine-configuration"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -25455,8 +25726,11 @@ The
  EA module as small as possible.
  It currently consists of the modules shown in table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Jenetics-modules"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -25704,8 +25978,11 @@ With this module split, the code is easier to maintain and doesn't force
  modules will be described in this chapter.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Module-graph"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -25904,8 +26181,11 @@ Tree
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Tree-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -25988,8 +26268,11 @@ Node
 \family default
  instance from the tree shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Example-tree"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26083,8 +26366,11 @@ Example
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Example-TreeNode"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26176,8 +26462,11 @@ http://evolution.genetics.washington.edu/phylip/newicktree.html
 .
  The parentheses tree representation of the tree in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Example-tree"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26208,8 +26497,11 @@ As you can see, nodes on the same tree level are separated by a comma, '
  Any spaces in the parentheses tree string will be part of the node value.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Parentheses-tree-syntax"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26488,8 +26780,11 @@ Gene
 \family default
 s, which are needed for genetic programming (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Genetic-programming"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26618,8 +26913,11 @@ FlatTree
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:FlatTree-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -26694,15 +26992,21 @@ Example
 
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Example-FlatTree"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
  illustrates the flattened example tree shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Example-tree"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -27014,7 +27318,7 @@ Jenetics
  is currently used for simplifying program trees, which are evolved in genetic
  programming problems (see section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Genetic-programming"
 plural "false"
 caps "false"
@@ -27024,7 +27328,7 @@ noprefix "false"
 
  and 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Program-pruning"
 plural "false"
 caps "false"
@@ -27069,7 +27373,7 @@ Rewrite rule
 
 \end_inset
 
- A tree rewrite rule is a pair of terms (sub-trees) 
+ A tree rewrite rule is a pair of terms (sub-trees), 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
@@ -27094,11 +27398,11 @@ right
 \end_layout
 
 \begin_layout Standard
-A rule 
+A rule, 
 \begin_inset Formula $l\rightarrow r$
 \end_inset
 
- can be applied to a tree, 
+, can be applied to a tree, 
 \begin_inset Formula $t$
 \end_inset
 
@@ -27280,7 +27584,7 @@ TreePattern
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:TreePattern-class"
 plural "false"
 caps "false"
@@ -27368,7 +27672,7 @@ Pattern\SpecialChar softhyphen
  The base syntax for the tree pattern follows the parentheses tree DSL described
  in 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Parentheses-tree"
 plural "false"
 caps "false"
@@ -27624,7 +27928,7 @@ add(0,$x) -> $x
 \family default
 , and the pattern DSL is described in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Tree-pattern"
 plural "false"
 caps "false"
@@ -27967,8 +28271,11 @@ Chromosome
  How the tree hierarchy is flattened and mapped to an array is described
  in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Flat-tree"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -28071,8 +28378,11 @@ s.
  It swaps two, randomly chosen, nodes from two tree chromosomes.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Single-node-crossover"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -28738,8 +29048,11 @@ name "lis:Weasel-program"
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Weasel-program"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -28835,8 +29148,11 @@ footnotesize}
 \begin_layout Standard
 The (shortened) output of the Weasel program (listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Weasel-program"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29013,8 +29329,11 @@ EvolutionStreamable
 \begin_layout Standard
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:EvolutionStreamable-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29168,8 +29487,11 @@ Engine
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Engine-concatenation"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29445,8 +29767,11 @@ Engine
 \family default
  is shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Cyclic-Engine"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29868,8 +30193,11 @@ dominate
 After this two basic definitions, lets have a look at a simple example.
  Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Circle-points"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -29987,8 +30315,11 @@ Maximizing Pareto front
 \begin_layout Standard
 Figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Minimizing-Pareto-front"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -30746,8 +31077,11 @@ NSGA2 selector
 This selector selects the first elements of the population, which has been
  sorted by the Crowded-comparison operator (equation 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "eq:crowding-distance"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -30871,8 +31205,11 @@ Engine
  not directly comparable.
  See listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Genetic-algorithm"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -30904,6 +31241,16 @@ height "1pt"
 
 \begin_layout Subsubsection
 Termination
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Termination
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -30949,6 +31296,36 @@ All other strategies doesn't have a well defined termination behavior.
 
 \begin_layout Subsubsection
 Mixed optimization
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Mixed optimization
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Multi-objective optimization!Mixed optimization
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+MOO!Mixed optimization
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -31517,8 +31894,11 @@ The generic type of the
 \family default
  interface (see listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:GP-Op-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -32216,8 +32596,11 @@ final double result = program.eval(3.4);
 \begin_layout Standard
 For a complete GP example have a look at the examples in chapter 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Symbolic-regression-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -32972,7 +33355,7 @@ ression
  The following sections describes this classes and interfaces and its usage.
  A complete symbolic regression example is given in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Symbolic-regression-example"
 plural "false"
 caps "false"
@@ -33446,7 +33829,7 @@ Node count complexity
 
 The graph in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:TreeNodeCountComplexity"
 plural "false"
 caps "false"
@@ -33507,7 +33890,7 @@ Complexity
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Complexity-interface"
 plural "false"
 caps "false"
@@ -33604,7 +33987,7 @@ Error
 
 Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Error-interface"
 plural "false"
 caps "false"
@@ -33920,7 +34303,7 @@ Engine
 .
  A full such regression example can be found in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Symbolic-regression-example"
 plural "false"
 caps "false"
@@ -34047,8 +34430,11 @@ Writer
  interface.
  Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:XML-Writer-interface"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -34310,8 +34696,11 @@ Reading and writing XML files uses the same concepts.
  class, which can be easily composed.
  The main method of the Reader class can be seen in listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:XML-Reader-class"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -34566,8 +34955,11 @@ final Genotype<DoubleGene> genotype = Genotype.of(
 \begin_layout Standard
 Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Marshaled-object-size"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -34919,8 +35311,11 @@ Writer
  The size of the marshaled also influences the write performance.
  As you can see in diagram 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Genotype-write-performance"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -34975,8 +35370,11 @@ Genotype write performance
 For reading the serialized genotypes, we will see similar results (see diagram
  
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Genotype-read-performance"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -35392,8 +35790,11 @@ dieharder
  test suite.
  Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Dieharder-results"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -36683,8 +37084,11 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \begin_layout Standard
 Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:LCG64ShiftRandom-quality"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -36971,8 +37375,11 @@ random engine.
  The statistical quality is rather bad: every single test failed.
  Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Nano-time-seeding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -37207,8 +37614,11 @@ $ java -cp io.jenetics.prngine-1.0.1.jar
 \begin_layout Standard
 Table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Object-hash-seeding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -37461,8 +37871,11 @@ Random seeding
 
  The code in listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Random-seeding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -37556,8 +37969,11 @@ https://github.com/jenetics/prngine/blob/master/prngine/src/main/java/io/jenetic
 
 , which is shown in table 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "tab:Combined-random-seeding"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -37760,8 +38176,11 @@ Since the script uses JARs located in the build directory you have to build
 \emph default
  target first; see section
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "sec:Build"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -38179,8 +38598,11 @@ f\left(\mathbf{x}\right)=An+\sum_{i=1}^{n}\left(x_{i}^{2}-A\cos\left(2\pi x_{i}\
 
 As the plot in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Rastrigin-function"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -38251,8 +38673,11 @@ The following listing shows the
  setup for solving the Rastrigin function, which is very similar to the
  setup for the real-function in section 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "subsec:Real-function-example"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -38658,7 +39083,7 @@ The listing above shows the output generated by our example.
 \begin_layout Section
 Evolving images
 \begin_inset Index idx
-status open
+status collapsed
 
 \begin_layout Plain Layout
 Examples!Evolving images
@@ -38786,8 +39211,11 @@ Examples!Evolving images
 \begin_layout Standard
 Figure
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Evolving-images"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -38989,8 +39417,11 @@ Every command line argument has proper default values, so that it is possible
  to start it without parameters.
  Listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Default-engine.properties"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -39317,8 +39748,11 @@ Mona Lisa
 \begin_layout Standard
 The images in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Evolving-Mona-Lisa"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -39331,8 +39765,11 @@ reference "fig:Evolving-Mona-Lisa"
 \family default
  file (listing 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "lis:Default-engine.properties"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
@@ -39481,8 +39918,11 @@ https://en.wikipedia.org/wiki/Mean_squared_error
 as loss function and no additional tree complexity metric.
  One output of a GP run is shown in figure 
 \begin_inset CommandInset ref
-LatexCommand vref
+LatexCommand ref
 reference "fig:Symbolic-regression-polynomial"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
