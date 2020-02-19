@@ -26,13 +26,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.BitChromosome;
 import io.jenetics.BitGene;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
+import io.jenetics.prngine.LCG64ShiftRandom;
 import io.jenetics.util.RandomRegistry;
 
 public class RngExample {

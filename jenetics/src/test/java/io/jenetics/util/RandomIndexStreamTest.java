@@ -111,9 +111,7 @@ public class RandomIndexStreamTest {
 
 	long k(final int n, final double p, final Random random) {
 		final IntRef kt = new IntRef(0);
-		indexes(random, n, p).forEach(i -> {
-			++kt.value;
-		});
+		indexes(random, n, p).forEach(i -> ++kt.value);
 
 		return kt.value;
 	}
@@ -187,7 +185,7 @@ public class RandomIndexStreamTest {
 	}
 
 	interface IndexStream {
-		public int next();
+		int next();
 	}
 
 
@@ -199,7 +197,7 @@ public class RandomIndexStreamTest {
 			final Random random = new Random(0);
 			final IndexStream stream = ReferenceRandomStream(delta, p, random);
 
-			System.out.print(Double.toString(p));
+			System.out.print(p);
 			System.out.print(",");
 			for (int j = stream.next(); j != -1; j = stream.next()) {
 				System.out.print(j);

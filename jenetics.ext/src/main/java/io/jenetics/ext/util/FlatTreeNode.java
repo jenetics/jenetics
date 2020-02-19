@@ -107,14 +107,12 @@ public final class FlatTreeNode<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	@Deprecated
-	public T getValue() {
+	public T value() {
 		return (T)_elements[_index];
 	}
 
-	@Deprecated
 	@Override
-	public Optional<FlatTreeNode<T>> getParent() {
+	public Optional<FlatTreeNode<T>> parent() {
 		int index = -1;
 		for (int i = _index; --i >= 0 && index == -1;) {
 			if (isParent(i)) {

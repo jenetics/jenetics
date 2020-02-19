@@ -41,7 +41,7 @@ import io.jenetics.util.ISeq;
  * @see TreeNode
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.9
  */
 public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
@@ -57,19 +57,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *
 	 * @return the value of the current {@code Tree} node
 	 */
-	default V value() {
-		return getValue();
-	}
-
-	/**
-	 * Return the value of the current {@code Tree} node. The value may be
-	 * {@code null}.
-	 *
-	 * @return the value of the current {@code Tree} node
-	 * @deprecated Use {@link #value()} instead
-	 */
-	@Deprecated
-	V getValue();
+	V value();
 
 	/**
 	 * Return the <em>parent</em> node of this tree node.
@@ -77,19 +65,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the parent node, or {@code Optional.empty()} if this node is the
 	 *         root of the tree
 	 */
-	default Optional<T> parent() {
-		return getParent();
-	}
-
-	/**
-	 * Return the <em>parent</em> node of this tree node.
-	 *
-	 * @return the parent node, or {@code Optional.empty()} if this node is the
-	 *         root of the tree
-	 * @deprecated Use {@link #parent()} instead
-	 */
-	@Deprecated
-	Optional<T> getParent();
+	Optional<T> parent();
 
 	/**
 	 * Return the child node with the given index.
@@ -185,7 +161,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	default int level() {
 		Optional<T> ancestor = Optional.of(Trees.self(this));
 		int levels = 0;
-		while ((ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent()) {
+		while ((ancestor = ancestor.flatMap(Tree::parent)).isPresent()) {
 			++levels;
 		}
 
@@ -296,7 +272,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 		do {
 			result = ancestor.filter(a -> a.identical(node)).isPresent();
 		} while (!result &&
-				(ancestor = ancestor.flatMap(Tree<V, T>::parent)).isPresent());
+				(ancestor = ancestor.flatMap(Tree::parent)).isPresent());
 
 		return result;
 	}
@@ -384,20 +360,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * Returns the path from the root, to get to this node. The last element in
 	 * the path is this node.
 	 *
-	 * @return an array of TreeNode objects giving the path, where the
-	 *         first element in the path is the root and the last
-	 *         element is this node.
-	 * @deprecated Use {@link #pathElements()} instead
-	 */
-	@Deprecated
-	default ISeq<T> getPath() {
-		return Trees.pathElementsFromRoot(Trees.<V, T>self(this), 0).toISeq();
-	}
-
-	/**
-	 * Returns the path from the root, to get to this node. The last element in
-	 * the path is this node.
-	 *
 	 * @since 5.1
 	 *
 	 * @return an array of TreeNode objects giving the path, where the
@@ -434,18 +396,6 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the root of the tree that contains this node
 	 */
 	default T root() {
-		return getRoot();
-	}
-
-	/**
-	 * Returns the root of the tree that contains this node. The root is the
-	 * ancestor with no parent.
-	 *
-	 * @return the root of the tree that contains this node
-	 * @deprecated
-	 */
-	@Deprecated
-	default T getRoot() {
 		T anc = Trees.self(this);
 		T prev;
 
@@ -589,7 +539,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 			if (prev.isPresent()) {
 				node = prev.get().childCount() == 0
 					? prev
-					: prev.map(Tree<V, T>::lastLeaf);
+					: prev.map(Tree::lastLeaf);
 			} else {
 				node = parent();
 			}
@@ -623,7 +573,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return the number of siblings of {@code this} node
 	 */
 	default int siblingCount() {
-		return parent().map(Tree<V, T>::childCount).orElse(1);
+		return parent().map(Tree::childCount).orElse(1);
 	}
 
 	/**
@@ -723,8 +673,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default Optional<T> nextLeaf() {
 		return nextSibling()
-			.map(s -> Optional.of(s.firstLeaf()))
-			.orElseGet(() -> parent().flatMap(Tree<V, T>::nextLeaf));
+			.map(Tree::firstLeaf)
+			.or(() -> parent().flatMap(Tree::nextLeaf));
 	}
 
 	/**
@@ -746,8 +696,8 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default Optional<T> previousLeaf() {
 		return previousSibling()
-			.map(s -> Optional.of(s.lastLeaf()))
-			.orElseGet(() -> parent().flatMap(Tree<V, T>::previousLeaf));
+			.map(Tree::lastLeaf)
+			.or(() -> parent().flatMap(Tree::previousLeaf));
 	}
 
 	/**
@@ -760,7 +710,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 */
 	default int leafCount() {
 		return (int)breadthFirstStream()
-			.filter(Tree<V, T>::isLeaf)
+			.filter(Tree::isLeaf)
 			.count();
 	}
 

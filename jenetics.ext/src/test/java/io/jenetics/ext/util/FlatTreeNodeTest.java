@@ -69,9 +69,8 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 
 	private void print(final Tree<?, ?> tree) {
 		System.out.println(tree);
-		tree.breadthFirstStream().forEach(n -> {
-			System.out.println("" + n.parent().map(t -> t.value()) + "->" + n.value());
-		});
+		tree.breadthFirstStream().forEach(n ->
+			System.out.println("" + n.parent().map(Tree::value) + "->" + n.value()));
 	}
 
 	@Test(dataProvider = "methods")
@@ -98,7 +97,7 @@ public class FlatTreeNodeTest extends TreeTestBase<Integer, FlatTreeNode<Integer
 			{(Function<Tree<?, ?>, Object>)Tree::childPath},
 			{(Function<Tree<?, ?>, Object>)Tree::isLeaf},
 			{(Function<Tree<?, ?>, Object>)t -> t.root().value()},
-			{(Function<Tree<?, ?>, Object>)t -> t.parent().map(t2 -> t2.value()).orElse(null)}
+			{(Function<Tree<?, ?>, Object>)t -> t.parent().map(Tree::value).orElse(null)}
 		};
 	}
 

@@ -113,10 +113,10 @@ public final class MOEA {
 	toParetoSet(final IntRange size) {
 		return toParetoSet(
 			size,
-			Vec<T>::dominance,
-			Vec<T>::compare,
-			Vec<T>::distance,
-			Vec<T>::length
+			Vec::dominance,
+			Vec::compare,
+			Vec::distance,
+			Vec::length
 		);
 	}
 

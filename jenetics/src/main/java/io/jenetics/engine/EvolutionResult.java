@@ -19,13 +19,13 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toMap;
+import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
 import static io.jenetics.internal.util.SerialIO.writeInt;
 import static io.jenetics.internal.util.SerialIO.writeLong;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toMap;
-import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -74,7 +74,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public final class EvolutionResult<
 	G extends Gene<?, G>,
@@ -137,33 +137,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the optimization strategy used.
-	 *
-	 * @return the optimization strategy used
-	 * @deprecated Use {@link #optimize()} instead
-	 */
-	@Deprecated
-	public Optimize getOptimize() {
-		return _optimize;
-	}
-
-	/**
 	 * Return the population after the evolution step.
 	 *
 	 * @return the population after the evolution step
 	 */
 	public ISeq<Phenotype<G, C>> population() {
-		return _population;
-	}
-
-	/**
-	 * Return the population after the evolution step.
-	 *
-	 * @return the population after the evolution step
-	 * @deprecated Use {@link #population()} instead
-	 */
-	@Deprecated
-	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
 
@@ -179,35 +157,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the current list of genotypes of this evolution result.
-	 *
-	 * @since 3.9
-	 *
-	 * @return the list of genotypes of this evolution result.
-	 * @deprecated Use {@link #genotypes()} instead
-	 */
-	@Deprecated
-	public ISeq<Genotype<G>> getGenotypes() {
-		return _population.map(Phenotype::genotype);
-	}
-
-	/**
 	 * The current generation.
 	 *
 	 * @return the current generation
 	 */
 	public long generation() {
-		return _generation;
-	}
-
-	/**
-	 * The current generation.
-	 *
-	 * @return the current generation
-	 * @deprecated Use {@link #generation()} instead
-	 */
-	@Deprecated
-	public long getGeneration() {
 		return _generation;
 	}
 
@@ -221,33 +175,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the generation count evaluated so far.
-	 *
-	 * @return the total number of generations evaluated so far
-	 * @deprecated Use {@link #totalGenerations()} instead
-	 */
-	@Deprecated
-	public long getTotalGenerations() {
-		return _totalGenerations;
-	}
-
-	/**
 	 * Return the timing (meta) information of the evolution step.
 	 *
 	 * @return the timing (meta) information of the evolution step
 	 */
 	public EvolutionDurations durations() {
-		return _durations;
-	}
-
-	/**
-	 * Return the timing (meta) information of the evolution step.
-	 *
-	 * @return the timing (meta) information of the evolution step
-	 * @deprecated Use {@link #durations()} instead
-	 */
-	@Deprecated
-	public EvolutionDurations getDurations() {
 		return _durations;
 	}
 
@@ -261,33 +193,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the number of killed individuals.
-	 *
-	 * @return the number of killed individuals
-	 * @deprecated Use {@link #killCount()} instead
-	 */
-	@Deprecated
-	public int getKillCount() {
-		return _killCount;
-	}
-
-	/**
 	 * Return the number of invalid individuals.
 	 *
 	 * @return the number of invalid individuals
 	 */
 	public int invalidCount() {
-		return _invalidCount;
-	}
-
-	/**
-	 * Return the number of invalid individuals.
-	 *
-	 * @return the number of invalid individuals
-	 * @deprecated Use {@link #invalidCount()} instead
-	 */
-	@Deprecated
-	public int getInvalidCount() {
 		return _invalidCount;
 	}
 
@@ -301,17 +211,6 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * The number of altered individuals.
-	 *
-	 * @return the number of altered individuals
-	 * @deprecated Use {@link #alterCount()} instead
-	 */
-	@Deprecated
-	public int getAlterCount() {
-		return _alterCount;
-	}
-
-	/**
 	 * Return the best {@code Phenotype} of the result population.
 	 *
 	 * @return the best {@code Phenotype} of the result population
@@ -321,33 +220,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the best {@code Phenotype} of the result population.
-	 *
-	 * @return the best {@code Phenotype} of the result population
-	 * @deprecated Use {@link #bestPhenotype()} instead
-	 */
-	@Deprecated
-	public Phenotype<G, C> getBestPhenotype() {
-		return _best.get();
-	}
-
-	/**
 	 * Return the worst {@code Phenotype} of the result population.
 	 *
 	 * @return the worst {@code Phenotype} of the result population
 	 */
 	public Phenotype<G, C> worstPhenotype() {
-		return _worst.get();
-	}
-
-	/**
-	 * Return the worst {@code Phenotype} of the result population.
-	 *
-	 * @return the worst {@code Phenotype} of the result population
-	 * @deprecated Use {@link #worstPhenotype()} instead
-	 */
-	@Deprecated
-	public Phenotype<G, C> getWorstPhenotype() {
 		return _worst.get();
 	}
 
@@ -363,35 +240,11 @@ public final class EvolutionResult<
 	}
 
 	/**
-	 * Return the best population fitness.
-	 *
-	 * @return The best population fitness.
-	 * @deprecated Use {@link #bestFitness()} instead
-	 */
-	@Deprecated
-	public C getBestFitness() {
-		return _best.get() != null
-			? _best.get().fitness()
-			: null;
-	}
-
-	/**
 	 * Return the worst population fitness.
 	 *
 	 * @return The worst population fitness.
 	 */
 	public C worstFitness() {
-		return _worst.get() != null ? _worst.get().fitness() : null;
-	}
-
-	/**
-	 * Return the worst population fitness.
-	 *
-	 * @return The worst population fitness.
-	 * @deprecated Use {@link #worstFitness()} instead
-	 */
-	@Deprecated
-	public C getWorstFitness() {
 		return _worst.get() != null ? _worst.get().fitness() : null;
 	}
 
@@ -422,14 +275,14 @@ public final class EvolutionResult<
 	public EvolutionResult<G, C>
 	map(final Function<? super Phenotype<G, C>, Phenotype<G, C>> mapper) {
 		return EvolutionResult.of(
-			getOptimize(),
+			optimize(),
 			_population.map(mapper),
-			getGeneration(),
-			getTotalGenerations(),
-			getDurations(),
-			getKillCount(),
-			getInvalidCount(),
-			getAlterCount()
+			generation(),
+			totalGenerations(),
+			durations(),
+			killCount(),
+			invalidCount(),
+			alterCount()
 		);
 	}
 

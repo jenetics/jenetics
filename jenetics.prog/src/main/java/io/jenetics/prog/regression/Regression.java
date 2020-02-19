@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -229,7 +228,7 @@ public final class Regression<T>
 		final Error<T> error,
 		final Sample<T>... samples
 	) {
-		return of(codec, error, Arrays.asList(samples));
+		return of(codec, error, List.of(samples));
 	}
 
 

@@ -69,7 +69,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public final class Genotype<G extends Gene<?, G>>
 	implements
@@ -161,97 +161,6 @@ public final class Genotype<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the chromosome at the given index. It is guaranteed, that the
-	 * returned chromosome is not null.
-	 *
-	 * @param index Chromosome index.
-	 * @return The Chromosome.
-	 * @throws IndexOutOfBoundsException if
-	 *         {@code (index < 0 || index >= _length)}.
-	 * @deprecated Use the getter, {@link #get(int)}, from the {@link BaseSeq}
-	 *             interface.
-	 */
-	@Deprecated
-	public Chromosome<G> getChromosome(final int index) {
-		assert _chromosomes != null;
-		assert _chromosomes.get(index) != null;
-
-		return _chromosomes.get(index);
-	}
-
-	/**
-	 * Return the first chromosome. This is a shortcut for
-	 * <pre>{@code
-	 * final Genotype<DoubleGene>; gt = ...
-	 * final Chromosome<DoubleGene> chromosome = gt.get(0);
-	 * }</pre>
-	 *
-	 * @return The first chromosome.
-	 * @deprecated Use {@link #chromosome()} instead
-	 */
-	@Deprecated
-	public Chromosome<G> getChromosome() {
-		assert _chromosomes != null;
-		assert _chromosomes.get(0) != null;
-
-		return _chromosomes.get(0);
-	}
-
-	/**
-	 * Return the first {@link Gene} of the first {@link Chromosome} of this
-	 * {@code Genotype}. This is a shortcut for
-	 * <pre>{@code
-	 * final Genotype<DoubleGene> gt = ...
-	 * final DoubleGene gene = gt.get(0).get(0);
-	 * }</pre>
-	 *
-	 * @return the first {@link Gene} of the first {@link Chromosome} of this
-	 *         {@code Genotype}.
-	 * @deprecated Use {@link #gene()} instead
-	 */
-	@Deprecated
-	public G getGene() {
-		assert _chromosomes != null;
-		assert _chromosomes.get(0) != null;
-
-		return _chromosomes.get(0).gene();
-	}
-
-	/**
-	 * Return the gene from the given chromosome- and gene index. This is a
-	 * shortcut for {@code gt.getChromosome(chromosomeIndex).getGene(geneIndex)}.
-	 *
-	 * @since 3.0
-	 *
-	 * @param chromosomeIndex the chromosome index
-	 * @param geneIndex the gene index within the chromosome
-	 * @return the gene with the given indexes
-	 * @throws IndexOutOfBoundsException if the given indexes are not within the
-	 *         allowed range
-	 * @deprecated Use {@code get(chromosomeIndex).get(geneIndex)} instead
-	 */
-	@Deprecated
-	public G get(final int chromosomeIndex, final int geneIndex) {
-		return get(chromosomeIndex).get(geneIndex);
-	}
-
-	/**
-	 * Return an immutable chromosome sequence.
-	 *
-	 * @deprecated Since the genotype itself extends the {@link BaseSeq}, it
-	 *             is no longer necessary to get a sequence with genes. If it is
-	 *             necessary to create an {@link ISeq} from a genotype, use
-	 *             {@code ISeq.of(genotype)} instead. This method will be
-	 *             removed in the next major release.
-	 * @return an immutable chromosome sequence
-	 */
-	@Deprecated
-	public ISeq<Chromosome<G>> toSeq() {
-		return _chromosomes;
-	}
-
-
-	/**
 	 * Return the number of genes this genotype consists of. This is the sum of
 	 * the number of genes of the genotype chromosomes.
 	 *
@@ -259,7 +168,7 @@ public final class Genotype<G extends Gene<?, G>>
 	 */
 	public int geneCount() {
 		int count = 0;
-		for (Chromosome<?> chromosome : this) {
+		for (var chromosome : this) {
 			count += chromosome.length();
 		}
 		return count;
@@ -401,7 +310,7 @@ public final class Genotype<G extends Gene<?, G>>
 
 	void write(final ObjectOutput out) throws IOException {
 		writeInt(_chromosomes.length(), out);
-		for (Chromosome<G> ch : _chromosomes) {
+		for (var ch : _chromosomes) {
 			out.writeObject(ch);
 		}
 	}

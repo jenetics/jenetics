@@ -323,7 +323,7 @@ public class Program<T> implements Op<T>, Serializable {
 				"Operation list contains terminal op."
 			);
 		}
-		if (!terminals.forAll(o -> o.isTerminal())) {
+		if (!terminals.forAll(Op::isTerminal)) {
 			throw new IllegalArgumentException(
 				"Terminal list contains non-terminal op."
 			);

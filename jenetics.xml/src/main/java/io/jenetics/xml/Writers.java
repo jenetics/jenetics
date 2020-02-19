@@ -38,8 +38,6 @@ import io.jenetics.Gene;
 import io.jenetics.IntegerGene;
 import io.jenetics.LongGene;
 import io.jenetics.util.ISeq;
-
-import io.jenetics.xml.stream.AutoCloseableXMLStreamWriter;
 import io.jenetics.xml.stream.Writer;
 import io.jenetics.xml.stream.XML;
 
@@ -136,7 +134,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				writer().write(xml, data);
 			}
 		}
@@ -209,7 +207,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -393,7 +391,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -512,7 +510,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -636,7 +634,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				writer().write(xml, data);
 			}
 		}
@@ -720,7 +718,7 @@ public final class Writers {
 				elem(VALID_ALLELES_NAME,
 					attr("type").map(PermutationChromosome::toAlleleTypeName),
 					Writer.<A>elems(ALLELE_NAME, alleleWriter)
-						.map(ch -> ch.validAlleles())
+						.map(io.jenetics.PermutationChromosome::validAlleles)
 				),
 				elem(ORDER_NAME, text())
 					.map(ch -> ch.stream()
@@ -798,7 +796,7 @@ public final class Writers {
 			requireNonNull(data);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer().write(writer, data);
 			}
 		}
@@ -829,7 +827,7 @@ public final class Writers {
 			requireNonNull(alleleWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				PermutationChromosome.<A>writer(alleleWriter)
 					.write(xml, data);
 			}
@@ -950,8 +948,8 @@ public final class Writers {
 		Writer<io.jenetics.Genotype<G>> writer(final Writer<? super C> writer) {
 			return elem(
 				ROOT_NAME,
-				attr(LENGTH_NAME).map(io.jenetics.Genotype<G>::length),
-				attr(NGENES_NAME).map(io.jenetics.Genotype<G>::geneCount),
+				attr(LENGTH_NAME).map(io.jenetics.Genotype::length),
+				attr(NGENES_NAME).map(io.jenetics.Genotype::geneCount),
 				elems(writer).map(gt -> cast(ISeq.of(gt)))
 			);
 		}
@@ -995,7 +993,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter writer = XML.writer(out, indent)) {
+			try (var writer = XML.writer(out, indent)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(writer, data);
 			}
 		}
@@ -1032,7 +1030,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotype.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1153,7 +1151,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out, indent)) {
+			try (var xml = XML.writer(out, indent)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}
@@ -1190,7 +1188,7 @@ public final class Writers {
 			requireNonNull(chromosomeWriter);
 			requireNonNull(out);
 
-			try (AutoCloseableXMLStreamWriter xml = XML.writer(out)) {
+			try (var xml = XML.writer(out)) {
 				Genotypes.<A, G, C>writer(chromosomeWriter).write(xml, data);
 			}
 		}

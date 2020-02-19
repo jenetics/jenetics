@@ -299,9 +299,9 @@ public class CharacterChromosome
 	}
 
 	static CharacterChromosome read(final DataInput in) throws IOException {
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final CharSeq validCharacters = new CharSeq(readString(in));
-		final String chars = readString(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var validCharacters = new CharSeq(readString(in));
+		final var chars = readString(in);
 
 		final MSeq<CharacterGene> values = MSeq.ofLength(chars.length());
 		for (int i = 0, n = chars.length(); i <  n; ++i) {

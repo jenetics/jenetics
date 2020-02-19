@@ -174,10 +174,10 @@ public class UFTournamentSelector<
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	UFTournamentSelector<G, V> ofVec() {
 		return new UFTournamentSelector<>(
-			Vec<T>::dominance,
-			Vec<T>::compare,
-			Vec<T>::distance,
-			Vec<T>::length
+			Vec::dominance,
+			Vec::compare,
+			Vec::distance,
+			Vec::length
 		);
 	}
 

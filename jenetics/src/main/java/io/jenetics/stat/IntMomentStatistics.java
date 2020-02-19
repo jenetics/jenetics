@@ -63,7 +63,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public class IntMomentStatistics
 	extends MomentStatistics
@@ -122,18 +122,6 @@ public class IntMomentStatistics
 	}
 
 	/**
-	 * Return the minimum value recorded, or {@code Integer.MAX_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public int getMin() {
-		return _min;
-	}
-
-	/**
 	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
 	 * values have been recorded.
 	 *
@@ -144,36 +132,12 @@ public class IntMomentStatistics
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Integer.MIN_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public int getMax() {
-		return _max;
-	}
-
-	/**
 	 * Return the sum of values recorded, or zero if no values have been
 	 * recorded.
 	 *
 	 * @return the sum of values, or zero if none
 	 */
 	public long sum() {
-		return _sum;
-	}
-
-	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 * @deprecated Use {@link #sum()} instead
-	 */
-	@Deprecated
-	public long getSum() {
 		return _sum;
 	}
 

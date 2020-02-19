@@ -189,9 +189,9 @@ public class BigIntegerChromosome
 	}
 
 	static BigIntegerChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final BigInteger min = new BigInteger(readBytes(in));
-		final BigInteger max = new BigInteger(readBytes(in));
+		final var length = readInt(in);
+		final var min = new BigInteger(readBytes(in));
+		final var max = new BigInteger(readBytes(in));
 
 		final MSeq<BigIntegerGene> genes = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

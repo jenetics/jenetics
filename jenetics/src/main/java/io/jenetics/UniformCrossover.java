@@ -47,7 +47,7 @@ import io.jenetics.util.RandomRegistry;
  *     Wikipedia: Uniform crossover</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.7
+ * @version 6.0
  * @since 3.7
  */
 public class UniformCrossover<
@@ -106,17 +106,6 @@ public class UniformCrossover<
 	 * @return the probability for swapping genes of a chromosome
 	 */
 	public double swapProbability() {
-		return _swapProbability;
-	}
-
-	/**
-	 * Return the probability for swapping genes of a chromosome.
-	 *
-	 * @return the probability for swapping genes of a chromosome
-	 * @deprecated Use {@link #swapProbability()} instead
-	 */
-	@Deprecated
-	public double getSwapProbability() {
 		return _swapProbability;
 	}
 

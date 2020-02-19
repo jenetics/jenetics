@@ -175,7 +175,7 @@ public interface Constraint<
 		requireNonNull(validator);
 		requireNonNull(repairer);
 
-		return new Constraint<G, C>() {
+		return new Constraint<>() {
 			@Override
 			public boolean test(final Phenotype<G, C> individual) {
 				return validator.test(individual);

@@ -22,6 +22,11 @@ package io.jenetics.util;
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -31,12 +36,12 @@ import java.io.Serializable;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.2
  */
 public final /*record*/ class DoubleRange implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final double _min;
 	private final double _max;
@@ -71,28 +76,6 @@ public final /*record*/ class DoubleRange implements Serializable {
 	}
 
 	/**
-	 * Return the minimum value of the double range.
-	 *
-	 * @return the minimum value of the double range
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public double getMin() {
-		return _min;
-	}
-
-	/**
-	 * Return the maximum value of the double range.
-	 *
-	 * @return the maximum value of the double range
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public double getMax() {
-		return _max;
-	}
-
-	/**
 	 * Create a new {@code DoubleRange} object with the given {@code min} and
 	 * {@code max} values.
 	 *
@@ -121,6 +104,30 @@ public final /*record*/ class DoubleRange implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + _min + ", " + _max + "]";
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.DOUBLE_RANGE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		out.writeDouble(_min);
+		out.writeDouble(_max);
+	}
+
+	static DoubleRange read(final DataInput in) throws IOException {
+		return of(in.readDouble(), in.readDouble());
 	}
 
 }

@@ -24,7 +24,6 @@ import static java.lang.String.format;
 import java.util.Random;
 
 import io.jenetics.AltererResult;
-import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Genotype;
 import io.jenetics.Mutator;
@@ -82,8 +81,8 @@ public class WeaselMutator<
 	@Override
 	public AltererResult<G, C>
 	alter(final Seq<Phenotype<G, C>> population, final long generation) {
-		final Random random = RandomRegistry.random();
-		final Seq<MutatorResult<Phenotype<G, C>>> result = population
+		final var random = RandomRegistry.random();
+		final var result = population
 			.map(pt -> mutate(pt, generation, _probability, random));
 
 		return AltererResult.of(
@@ -102,7 +101,7 @@ public class WeaselMutator<
 		final double p,
 		final Random random
 	) {
-		final ISeq<MutatorResult<Chromosome<G>>> result = genotype.stream()
+		final var result = genotype.stream()
 			.map(gt -> mutate(gt, p, random))
 			.collect(ISeq.toISeq());
 

@@ -88,7 +88,7 @@ public class StochasticUniversalSelector<
 			: population;
 
 		final double[] probabilities = probabilities(pop, count, opt);
-		assert  pop.size() == probabilities.length;
+		assert pop.size() == probabilities.length;
 
 		//Calculating the equally spaces random points.
 		final double delta = 1.0/count;

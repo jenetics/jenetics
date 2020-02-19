@@ -27,8 +27,8 @@ public final class exception {
 
 
 	@FunctionalInterface
-	public static interface Block<E extends Throwable> {
-		public void call() throws E;
+	public interface Block<E extends Throwable> {
+		void call() throws E;
 	}
 
 	public static <E extends Throwable> void

@@ -19,11 +19,11 @@
  */
 package io.jenetics.internal.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.net.URL;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains some common predicates

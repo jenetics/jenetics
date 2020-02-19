@@ -300,10 +300,10 @@ public class IntegerChromosome
 	}
 
 	static IntegerChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final int min = readInt(in);
-		final int max = readInt(in);
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = readInt(in);
+		final var max = readInt(in);
 
 		final MSeq<IntegerGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

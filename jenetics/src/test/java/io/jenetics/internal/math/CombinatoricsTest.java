@@ -125,7 +125,7 @@ public class CombinatoricsTest {
 	}
 
 
-	private static int[] subset(final int n, final int sub[], final Random random) {
+	private static int[] subset(final int n, final int[] sub, final Random random) {
 		final int k = sub.length;
 
 		if (sub.length == n) {

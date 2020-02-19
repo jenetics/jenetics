@@ -74,7 +74,7 @@ final class CompositeAlterer<
 		final long generation
 	) {
 		AltererResult<G, C> result = AltererResult.of(population.asISeq());
-		for (Alterer<G, C> alterer : _alterers) {
+		for (var alterer : _alterers) {
 			final AltererResult<G, C> as = alterer.alter(
 				result.population(),
 				generation

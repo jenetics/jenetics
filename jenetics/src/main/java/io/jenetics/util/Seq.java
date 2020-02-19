@@ -26,7 +26,6 @@ import static io.jenetics.internal.collection.Array.checkIndex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.RandomAccess;
@@ -110,15 +109,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 
-		if (this instanceof RandomAccess) {
-			for (int i = 0, n = length(); i < n && valid; ++i) {
-				valid = predicate.test(get(i));
-			}
-		} else {
-			final Iterator<T> it = iterator();
-			while (it.hasNext() && valid) {
-				valid = predicate.test(it.next());
-			}
+		for (int i = 0, n = length(); i < n && valid; ++i) {
+			valid = predicate.test(get(i));
 		}
 
 		return valid;
@@ -613,7 +605,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public Seq<T> subSeq(final int start, final int end);
+	Seq<T> subSeq(final int start, final int end);
 
 	/**
 	 * Test whether the given array is sorted in ascending order.

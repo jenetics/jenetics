@@ -25,7 +25,6 @@ import io.jenetics.Chromosome;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
 import io.jenetics.internal.math.Probabilities;
-import io.jenetics.util.ISeq;
 
 import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.FlatTreeNode;
@@ -78,8 +77,8 @@ public abstract class TreeMutator<
 		final TreeNode<A> tree = TreeNode.ofTree(chromosome.gene());
 		mutate(tree);
 
-		final FlatTreeNode<A> flat = FlatTreeNode.of(tree);
-		final ISeq<G> genes = flat.map(t -> gene(chromosome.gene(), t));
+		final var flat = FlatTreeNode.of(tree);
+		final var genes = flat.map(t -> gene(chromosome.gene(), t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
 	}
 

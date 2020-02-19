@@ -32,6 +32,8 @@ apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+ext.moduleName = 'io.jenetics.ext'
+
 description = 'Jenetics extension - Java Genetic Algorithm Library Extension'
 
 compileTestJava.dependsOn tasks.getByPath(':jenetics:compileTestJava')

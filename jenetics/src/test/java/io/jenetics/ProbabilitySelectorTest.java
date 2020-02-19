@@ -74,7 +74,7 @@ public class ProbabilitySelectorTest {
 
 		final double[] reverted = ProbabilitySelector.sortAndRevert(values);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
+			Assert.assertEquals(reverted[i], (values.length - i - 1));
 		}
 	}
 

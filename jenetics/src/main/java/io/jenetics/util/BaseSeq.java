@@ -57,7 +57,7 @@ public interface BaseSeq<T> extends Iterable<T>, RandomAccess {
 	int length();
 
 	@Override
-	public default Iterator<T> iterator() {
+	default Iterator<T> iterator() {
 		return listIterator();
 	}
 

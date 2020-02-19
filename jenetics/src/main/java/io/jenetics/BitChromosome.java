@@ -53,7 +53,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public class BitChromosome extends Number
 	implements
@@ -166,23 +166,8 @@ public class BitChromosome extends Number
 		return _p;
 	}
 
-	/**
-	 * Return the one probability of this chromosome.
-	 *
-	 * @since 3.9
-	 *
-	 * @return the one probability of this chromosome.
-	 * @deprecated Use {@link #oneProbability()} instead
-	 */
-	@Deprecated
-	public double getOneProbability() {
-		return _p;
-	}
-
 	@Override
 	public BitGene gene() {
-		assert _genes != null;
-		assert _genes.length > 0;
 		return BitGene.of(Bits.get(_genes, 0));
 	}
 
@@ -200,14 +185,12 @@ public class BitChromosome extends Number
 	@Override
 	public BitGene get(final int index) {
 		rangeCheck(index);
-		assert _genes != null;
 		return BitGene.of(Bits.get(_genes, index));
 	}
 
-	@Deprecated
 	@Override
-	public BitGene getGene(final int index) {
-		return get(index);
+	public int length() {
+		return _length;
 	}
 
 	/**
@@ -223,17 +206,6 @@ public class BitChromosome extends Number
 	public boolean booleanValue(final int index) {
 		rangeCheck(index);
 		return Bits.get(_genes, index);
-	}
-
-	@Override
-	@Deprecated
-	public ISeq<BitGene> toSeq() {
-		return _seq;
-	}
-
-	@Override
-	public int length() {
-		return _length;
 	}
 
 	/**

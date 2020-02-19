@@ -83,7 +83,7 @@ public enum BoolOp implements Op<Boolean> {
 	private final int _arity;
 	private final Function<Boolean[], Boolean> _function;
 
-	private BoolOp(
+	BoolOp(
 		final String name,
 		final int arity,
 		final Function<Boolean[], Boolean> function

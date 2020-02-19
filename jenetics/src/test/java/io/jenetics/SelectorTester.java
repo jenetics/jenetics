@@ -40,7 +40,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.stat.Histogram;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;

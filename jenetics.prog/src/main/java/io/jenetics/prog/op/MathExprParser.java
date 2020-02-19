@@ -24,7 +24,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -45,11 +44,10 @@ import io.jenetics.ext.util.TreeNode;
  */
 final class MathExprParser {
 
-	private static final Map<String, Const<Double>> CONST = new HashMap<>();
-	static {
-		CONST.put("PI", MathOp.PI);
-		CONST.put("π",  MathOp.PI);
-	}
+	private static final Map<String, Const<Double>> CONST = Map.of(
+		"PI", MathOp.PI,
+		"π", MathOp.PI
+	);
 
 	/**
 	 * Contains the token regex and the token kind;

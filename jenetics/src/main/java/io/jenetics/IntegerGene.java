@@ -55,7 +55,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 2.0
- * @version 5.2
+ * @version 6.0
  */
 public final class IntegerGene
 	implements
@@ -87,21 +87,18 @@ public final class IntegerGene
 		_max = max;
 	}
 
-	@Deprecated
 	@Override
-	public Integer getAllele() {
+	public Integer allele() {
 		return _value;
 	}
 
-	@Deprecated
 	@Override
-	public Integer getMin() {
+	public Integer min() {
 		return _min;
 	}
 
-	@Deprecated
 	@Override
-	public Integer getMax() {
+	public Integer max() {
 		return _max;
 	}
 

@@ -64,7 +64,7 @@ public final class UpdatableEngine<
 			_reset = false;
 		}
 
-		return evolution.evolve(reset ? start.withoutFitness() : start);
+		return evolution.evolve(reset ? start : start);
 	}
 
 	public void update(final Evolution<G, C> evolution) {

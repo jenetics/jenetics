@@ -43,7 +43,7 @@ import io.jenetics.engine.EvolutionResult;
 public class MixedGenotype {
 
 	private static final Genotype ENCODING = Genotype.of(
-		(Chromosome)DoubleChromosome.of(0, 4, 5),
+		DoubleChromosome.of(0, 4, 5),
 		(Chromosome)BitChromosome.of(70),
 		(Chromosome)IntegerChromosome.of(0, 10, 3)
 	);

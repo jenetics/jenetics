@@ -32,6 +32,8 @@ apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+ext.moduleName = 'io.jenetics.xml'
+
 dependencies {
 	api project(':jenetics')
 

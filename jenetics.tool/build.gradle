@@ -25,6 +25,8 @@
 
 apply plugin: 'packaging'
 
+ext.moduleName = 'io.jenetics.tool'
+
 dependencies {
 	implementation project(':jenetics')
 	implementation project(':jenetics.example')

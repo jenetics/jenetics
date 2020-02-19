@@ -23,6 +23,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -124,8 +125,8 @@ public class TruncationSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(""),
-				value -> new TruncationSelector<DoubleGene, Double>(),
+				List.of(""),
+				value -> new TruncationSelector<>(),
 				opt,
 				npopulation,
 				loops

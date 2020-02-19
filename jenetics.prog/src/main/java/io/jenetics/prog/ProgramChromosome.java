@@ -232,7 +232,7 @@ public class ProgramChromosome<A>
 
 	private static void checkOperations(final ISeq<? extends Op<?>> operations) {
 		final ISeq<?> terminals = operations.stream()
-			.filter(op -> op.isTerminal())
+			.filter(Op::isTerminal)
 			.collect(ISeq.toISeq());
 
 		if (!terminals.isEmpty()) {
@@ -431,9 +431,9 @@ public class ProgramChromosome<A>
 	static ProgramChromosome read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final int length = readInt(in);
-		final ISeq operations = (ISeq)in.readObject();
-		final ISeq terminals = (ISeq)in.readObject();
+		final var length = readInt(in);
+		final var operations = (ISeq)in.readObject();
+		final var terminals = (ISeq)in.readObject();
 
 		final MSeq genes = MSeq.ofLength(length);
 		for (int i = 0; i < genes.length(); ++i) {

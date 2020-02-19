@@ -40,7 +40,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public interface Chromosome<G extends Gene<?, G>>
 	extends
@@ -48,11 +48,6 @@ public interface Chromosome<G extends Gene<?, G>>
 		Factory<Chromosome<G>>,
 		Verifiable
 {
-
-	@Override
-	default G get(final int index) {
-		return getGene(index);
-	}
 
 	/**
 	 * Return the first gene of this chromosome. Each chromosome must contain
@@ -66,28 +61,9 @@ public interface Chromosome<G extends Gene<?, G>>
 		return get(0);
 	}
 
-	/**
-	 * Return the gene on the specified index.
-	 *
-	 * @param index The gene index.
-	 * @return the wanted gene.
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *          (index &lt; 1 || index &gt;= length()).
-	 * @deprecated Use {@link #get(int)} instead. Will be removed.
-	 */
-	@Deprecated
-	G getGene(final int index);
-
-	/**
-	 * Return the first gene of this chromosome. Each chromosome must contain
-	 * at least one gene.
-	 *
-	 * @return the first gene of this chromosome.
-	 * @deprecated Use {@link #gene()} instead
-	 */
-	@Deprecated
-	default G getGene() {
-		return get(0);
+	@Override
+	default boolean isValid() {
+		return stream().allMatch(Gene::isValid);
 	}
 
 	/**
@@ -102,19 +78,6 @@ public interface Chromosome<G extends Gene<?, G>>
 	 *        is smaller than one.
 	 */
 	Chromosome<G> newInstance(final ISeq<G> genes);
-
-	/**
-	 * Return an unmodifiable sequence of the genes of this chromosome.
-	 *
-	 * @return an immutable gene sequence.
-	 * @deprecated Since the chromosome itself extends the {@link BaseSeq}, it
-	 *             is no longer necessary to get a sequence with genes. If it is
-	 *             necessary to create an {@link ISeq} from a chromosome, use
-	 *             {@code ISeq.of(chromosome)} instead. This method will be
-	 *             removed in the next major release.
-	 */
-	@Deprecated
-	ISeq<G> toSeq();
 
 	/**
 	 * Casts this {@code Chromosome} to an instance of type {@code C}.

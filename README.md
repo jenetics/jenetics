@@ -15,7 +15,7 @@
 
 ## Documentation
 
-The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.1/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.1.0.pdf)).
+The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5.2/index.html)) and comes with an user manual ([pdf](http://jenetics.io/manual/manual-5.2.0.pdf)).
 
 
 ## Requirements
@@ -214,8 +214,8 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * [#542](https://github.com/jenetics/jenetics/issues/542): Introduce `InvertibleCodec` interface. This interface extends the the current `Codec` interface.
 ```java
 public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
-    public Function<T, Genotype<G>> encoder();
-    public default Genotype<G> encode(final T value) {
+    Function<T, Genotype<G>> encoder();
+    default Genotype<G> encode(final T value) {
         return encoder().apply(value); 
     }
 }

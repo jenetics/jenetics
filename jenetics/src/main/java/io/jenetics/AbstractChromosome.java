@@ -92,18 +92,6 @@ public abstract class AbstractChromosome<G extends Gene<?, G>>
 		return _genes.length();
 	}
 
-	@Deprecated
-	@Override
-	public G getGene(final int index) {
-		return _genes.get(index);
-	}
-
-	@Override
-	@Deprecated
-	public ISeq<G> toSeq() {
-		return _genes;
-	}
-
 	@Override
 	public boolean isValid() {
 		if (_valid == null) {

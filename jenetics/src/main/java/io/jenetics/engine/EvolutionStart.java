@@ -19,11 +19,11 @@
  */
 package io.jenetics.engine;
 
-import static io.jenetics.internal.util.SerialIO.readLong;
-import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -85,48 +85,12 @@ public final /*record*/ class EvolutionStart<
 	}
 
 	/**
-	 * Return the population before the evolution step.
-	 *
-	 * @return the start population
-	 * @deprecated Use {@link #population()} instead
-	 */
-	@Deprecated
-	public ISeq<Phenotype<G, C>> getPopulation() {
-		return _population;
-	}
-
-	/**
 	 * Return the generation of the start population.
 	 *
 	 * @return the start generation
 	 */
 	public long generation() {
 		return _generation;
-	}
-
-	/**
-	 * Return the generation of the start population.
-	 *
-	 * @return the start generation
-	 * @deprecated Use {@link #generation()} instead
-	 */
-	@Deprecated
-	public long getGeneration() {
-		return _generation;
-	}
-
-	/**
-	 * Return a new evolution-start object where the fitness values of the
-	 * population has been reset. The {@link Evolution} strategy is therefor
-	 * forced to re-evaluate the fitness values.
-	 *
-	 * @return a new evolution-start object with a non-evaluated population
-	 */
-	public EvolutionStart<G, C> withoutFitness() {
-		return of(
-			_population.map(Phenotype::withoutFitness),
-			_generation
-		);
 	}
 
 	@Override

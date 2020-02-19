@@ -92,8 +92,8 @@ public interface EvolutionStreamable<
 	public default EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
 		return stream(() ->
 			EvolutionStart.ofGenotypes(
-				init.getPopulation(),
-				init.getGeneration()
+				init.population(),
+				init.generation()
 			)
 		);
 	}
@@ -295,7 +295,18 @@ public interface EvolutionStreamable<
 	limit(final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed) {
 		requireNonNull(proceed);
 
-		return start -> stream(start).limit(proceed.get());
+		return new EvolutionStreamable<>() {
+			@Override
+			public EvolutionStream<G, C>
+			stream(final Supplier<EvolutionStart<G, C>> start) {
+				return EvolutionStreamable.this.stream(start).limit(proceed.get());
+			}
+
+			@Override
+			public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+				return EvolutionStreamable.this.stream(init).limit(proceed.get());
+			}
+		};
 	}
 
 	/**

@@ -144,7 +144,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 * @since 1.0
 	 * @version 1.4
 	 */
-	private static enum State {
+	private enum State {
 
 		DATA {
 			@Override

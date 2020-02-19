@@ -28,7 +28,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public enum BitGene
 	implements
@@ -46,12 +46,15 @@ public enum BitGene
 
 	private final boolean _value;
 
-	private BitGene(final boolean value) {
+	BitGene(final boolean value) {
 		_value = value;
 	}
 
 	/**
 	 * Return the value of the BitGene.
+	 *
+	 * @see #allele()
+	 * @see #booleanValue()
 	 *
 	 * @return The value of the BitGene.
 	 */
@@ -60,20 +63,10 @@ public enum BitGene
 	}
 
 	/**
-	 * Return the value of the BitGene.
-	 *
-	 * @return The value of the BitGene.
-	 * @deprecated Use {@link #bit()} instead
-	 */
-	@Deprecated
-	public final boolean getBit() {
-		return _value;
-	}
-
-	/**
 	 * Return the {@code boolean} value of this gene.
 	 *
 	 * @see #allele()
+	 * @see #bit()
 	 *
 	 * @return the {@code boolean} value of this gene.
 	 */
@@ -81,16 +74,15 @@ public enum BitGene
 		return _value;
 	}
 
-	@Deprecated
 	@Override
-	public Boolean getAllele() {
+	public Boolean allele() {
 		return _value;
 	}
 
 	/**
 	 * Return always {@code true}.
 	 *
-	 * @return always {@code true}.
+	 * @return always {@code true}
 	 */
 	@Override
 	public boolean isValid() {
