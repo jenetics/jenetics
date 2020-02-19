@@ -178,15 +178,15 @@ public final class Engine<
 		timing.evolve.start();
 
 		// Initial evaluation of the population.
-		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(es.population())
-		);
+		final ISeq<Phenotype<G, C>> population = es.isDirty()
+			? timing.evaluation.timing(() -> evaluate(es.population()))
+			: es.population();
 
 		// Select the offspring population.
 		final CompletableFuture<ISeq<Phenotype<G, C>>> offspring =
 			supplyAsync(() ->
 				timing.offspringSelection.timing(() ->
-					selectOffspring(evaluated)
+					selectOffspring(population)
 				),
 				_executor
 			);
@@ -195,7 +195,7 @@ public final class Engine<
 		final CompletableFuture<ISeq<Phenotype<G, C>>> survivors =
 			supplyAsync(() ->
 				timing.survivorsSelection.timing(() ->
-					selectSurvivors(evaluated)
+					selectSurvivors(population)
 				),
 				_executor
 			);
@@ -228,7 +228,7 @@ public final class Engine<
 			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
+		final CompletableFuture<ISeq<Phenotype<G, C>>> nextPopulation =
 			filteredSurvivors.thenCombineAsync(
 				filteredOffspring,
 				(s, o) -> ISeq.of(s.population.append(o.population)),
@@ -236,7 +236,7 @@ public final class Engine<
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final ISeq<Phenotype<G, C>> pop = population.join();
+		final ISeq<Phenotype<G, C>> pop = nextPopulation.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
 			evaluate(pop)
 		);
@@ -262,13 +262,16 @@ public final class Engine<
 		);
 		if (!UnaryOperator.identity().equals(_mapper)) {
 			final EvolutionResult<G, C> mapped = _mapper.apply(er);
-			er = er.with(timing.evaluation.timing(() ->
+			er = er.withPopulation(timing.evaluation.timing(() ->
 				evaluate(mapped.population())
 			));
 		}
 
 		timing.evolve.stop();
-		return er.with(timing.toDurations());
+
+		return er
+			.withDurations(timing.toDurations())
+			.clean();
 	}
 
 	// Selects the survivors population. A new population object is returned.

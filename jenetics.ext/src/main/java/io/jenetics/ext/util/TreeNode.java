@@ -597,7 +597,7 @@ public final class TreeNode<T>
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	static TreeNode read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return TreeNode.ofTree(FlatTreeNode.read(in));

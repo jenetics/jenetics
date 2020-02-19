@@ -94,6 +94,8 @@ public final class EvolutionResult<
 	private final int _invalidCount;
 	private final int _alterCount;
 
+	private final boolean _dirty;
+
 	private final Lazy<Phenotype<G, C>> _best;
 	private final Lazy<Phenotype<G, C>> _worst;
 
@@ -105,7 +107,8 @@ public final class EvolutionResult<
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
-		final int alterCount
+		final int alterCount,
+		final boolean dirty
 	) {
 		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
@@ -115,6 +118,7 @@ public final class EvolutionResult<
 		_killCount = killCount;
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
+		_dirty = dirty;
 
 		_best = Lazy.of(() -> _population.stream()
 			.max(_optimize.ascending())
@@ -257,7 +261,7 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	public EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _totalGenerations + 1);
+		return new EvolutionStart<>(_population, _totalGenerations + 1, _dirty);
 	}
 
 	/**
@@ -269,7 +273,7 @@ public final class EvolutionResult<
 	 * @return the current result as evolution start
 	 */
 	public EvolutionStart<G, C> toEvolutionStart() {
-		return EvolutionStart.of(_population, _totalGenerations);
+		return new EvolutionStart<>(_population, _totalGenerations, _dirty);
 	}
 
 	/**
@@ -286,7 +290,7 @@ public final class EvolutionResult<
 	}
 
 	private EvolutionResult<G, C> withTotalGenerations(final long total) {
-		return of(
+		return EvolutionResult.of(
 			_optimize,
 			_population,
 			_generation,
@@ -295,6 +299,46 @@ public final class EvolutionResult<
 			_killCount,
 			_invalidCount,
 			_alterCount
+		);
+	}
+
+	EvolutionResult<G, C> withPopulation(final ISeq<Phenotype<G, C>> population) {
+		return EvolutionResult.of(
+			optimize(),
+			population,
+			generation(),
+			totalGenerations(),
+			durations(),
+			killCount(),
+			invalidCount(),
+			alterCount()
+		);
+	}
+
+	EvolutionResult<G, C> withDurations(final EvolutionDurations durations) {
+		return EvolutionResult.of(
+			optimize(),
+			population(),
+			generation(),
+			totalGenerations(),
+			durations,
+			killCount(),
+			invalidCount(),
+			alterCount()
+		);
+	}
+
+	EvolutionResult<G, C> clean() {
+		return new EvolutionResult<>(
+			optimize(),
+			population(),
+			generation(),
+			totalGenerations(),
+			durations(),
+			killCount(),
+			invalidCount(),
+			alterCount(),
+			false
 		);
 	}
 
@@ -569,7 +613,7 @@ public final class EvolutionResult<
 					}
 				}
 
-				uniques = result.with(
+				uniques = result.withPopulation(
 					Stream.concat(elements.values().stream(), population.stream())
 						.limit(population.size())
 						.collect(ISeq.toISeq())
@@ -578,32 +622,6 @@ public final class EvolutionResult<
 
 			return uniques;
 		};
-	}
-
-	EvolutionResult<G, C> with(final ISeq<Phenotype<G, C>> population) {
-		return EvolutionResult.of(
-			optimize(),
-			population,
-			generation(),
-			totalGenerations(),
-			durations(),
-			killCount(),
-			invalidCount(),
-			alterCount()
-		);
-	}
-
-	EvolutionResult<G, C> with(final EvolutionDurations durations) {
-		return EvolutionResult.of(
-			optimize(),
-			population(),
-			generation(),
-			totalGenerations(),
-			durations,
-			killCount(),
-			invalidCount(),
-			alterCount()
-		);
 	}
 
 
@@ -761,7 +779,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			true
 		);
 	}
 
@@ -800,7 +819,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			true
 		);
 	}
 
@@ -831,7 +851,7 @@ public final class EvolutionResult<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionResult read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionResult<>(
@@ -842,7 +862,8 @@ public final class EvolutionResult<
 			(EvolutionDurations)in.readObject(),
 			readInt(in),
 			readInt(in),
-			readInt(in)
+			readInt(in),
+			true
 		);
 	}
 

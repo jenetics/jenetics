@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -66,6 +67,35 @@ import io.jenetics.util.IntRange;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
 public class EngineTest {
+
+
+	@Test(dataProvider = "minimalEvaluationLimits")
+	public void minimalEvaluation(final int limit) {
+		final AtomicInteger count = new AtomicInteger();
+		final Evaluator<IntegerGene, Integer> evaluator = population -> {
+			count.incrementAndGet();
+			return population
+				.map(pt -> pt.withFitness(1))
+				.asISeq();
+		};
+		final Codec<Integer, IntegerGene> codec = Codecs.ofScalar(IntRange.of(1, 100));
+
+		final Engine<IntegerGene, Integer> engine =
+			new Engine.Builder<>(evaluator, codec.encoding())
+				.alterers(new Mutator<>(1.0))
+				.build();
+
+		final EvolutionResult<IntegerGene, Integer> result = engine.stream()
+			.limit(limit)
+			.collect(EvolutionResult.toBestEvolutionResult());
+
+		Assert.assertEquals(count.get(), limit == 0 ? 0 : limit +1);
+	}
+
+	@DataProvider
+	public Object[][] minimalEvaluationLimits() {
+		return new Object[][] {{0}, {1}, {2}, {3}, {5}, {11}, {20}, {50}, {100}};
+	}
 
 	@Test
 	public void streamWithInitialGenotypes() {

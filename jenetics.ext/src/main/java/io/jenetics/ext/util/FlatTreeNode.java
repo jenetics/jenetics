@@ -228,7 +228,9 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public int size() {
-		return countChildren( _index) + 1;
+		return _index == 0
+			? _elements.length
+			: countChildren( _index) + 1;
 	}
 
 	private int countChildren(final int index) {
