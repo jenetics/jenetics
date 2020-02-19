@@ -45,6 +45,7 @@ import io.jenetics.util.IntRange;
 import io.jenetics.ext.moea.MOEA;
 import io.jenetics.ext.moea.UFTournamentSelector;
 import io.jenetics.ext.moea.Vec;
+import io.jenetics.ext.moea.VecFactory;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -53,8 +54,10 @@ import io.jenetics.ext.moea.Vec;
  */
 public class CircleMinFront {
 
+	static final VecFactory<double[]> FACTORY = VecFactory.ofDoubleVec();
+
 	static final Problem<double[], DoubleGene, Vec<double[]>> PROBLEM = Problem.of(
-		v -> Vec.of(v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1),
+		v -> FACTORY.newVec(new double[]{v[0]*cos(v[1]) + 1, v[0]*sin(v[1]) + 1}),
 		Codecs.ofVector(
 			DoubleRange.of(0, 1),
 			DoubleRange.of(0, 2*PI)
@@ -84,9 +87,9 @@ public class CircleMinFront {
 		final StringBuilder out = new StringBuilder();
 		out.append("#x y\n");
 		front.forEach(p -> {
-			out.append(p.getFitness().data()[0]);
+			out.append(p.fitness().data()[0]);
 			out.append(" ");
-			out.append(p.getFitness().data()[1]);
+			out.append(p.fitness().data()[1]);
 			out.append("\n");
 		});
 

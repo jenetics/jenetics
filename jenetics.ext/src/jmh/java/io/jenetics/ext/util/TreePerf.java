@@ -62,7 +62,7 @@ public class TreePerf {
 	) {
 		for (int i = 0, n = random.nextInt(3) + 1; i < n; ++i) {
 			final TreeNode<Integer> child = TreeNode.of();
-			child.setValue(random.nextInt());
+			child.value(random.nextInt());
 
 			if (level > 0) {
 				fill(child, level - 1, random);

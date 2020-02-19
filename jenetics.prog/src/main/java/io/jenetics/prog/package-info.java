@@ -117,11 +117,11 @@
  *             // Program tree depth.
  *             5,
  *             // Chromosome validator.
- *             ch -> ch.getRoot().size() <= 50,
+ *             ch -> ch.root().size() <= 50,
  *             OPERATIONS,
  *             TERMINALS
  *         )),
- *         Genotype::getGene
+ *         Genotype::gene
  *     );
  * }</pre>
  *
@@ -153,7 +153,7 @@
  *     final ProgramGene<Double> program = engine.stream()
  *         .limit(500)
  *         .collect(EvolutionResult.toBestGenotype())
- *         .getGene();
+ *         .gene();
  *
  *     System.out.println(Tree.toString(program));
  * }

@@ -54,11 +54,11 @@ import io.jenetics.internal.collection.ObjectStore;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.2
+ * @version 5.2
  */
 public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
-	public default List<T> asList() {
+	default List<T> asList() {
 		return new MSeqList<>(this);
 	}
 
@@ -70,7 +70,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0 || index >= size())}.
 	 */
-	public void set(final int index, final T value);
+	void set(final int index, final T value);
 
 	/**
 	 * Fills the sequence with values of the given iterator.
@@ -78,7 +78,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param it the iterator of the values to fill this sequence.
 	 * @return {@code this} sequence.
 	 */
-	public default MSeq<T> setAll(final Iterator<? extends T> it) {
+	default MSeq<T> setAll(final Iterator<? extends T> it) {
 		for (int i = 0, n = length(); i < n && it.hasNext(); ++i) {
 			set(i, it.next());
 		}
@@ -91,7 +91,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param values the values to fill this sequence.
 	 * @return {@code this} sequence.
 	 */
-	public default MSeq<T> setAll(final Iterable<? extends T> values) {
+	default MSeq<T> setAll(final Iterable<? extends T> values) {
 		setAll(values.iterator());
 		return this;
 	}
@@ -102,7 +102,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param values the first initial values of this sequence
 	 * @return {@code this} sequence.
 	 */
-	public default MSeq<T> setAll(final T[] values) {
+	default MSeq<T> setAll(final T[] values) {
 		for (int i = 0, n = min(length(), values.length); i < n; ++i) {
 			set(i, values[i]);
 		}
@@ -116,7 +116,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return {@code this} sequence.
 	 * @throws NullPointerException if the given {@code factory} is {@code null}.
 	 */
-	public default MSeq<T> fill(final Supplier<? extends T> supplier) {
+	default MSeq<T> fill(final Supplier<? extends T> supplier) {
 		for (int i = 0, n = length(); i < n; ++i) {
 			set(i, supplier.get());
 		}
@@ -130,7 +130,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param j the index of the second element.
 	 * @throws IndexOutOfBoundsException if {@code i < 0 || j >= length()}.
 	 */
-	public default void swap(final int i, final int j) {
+	default void swap(final int i, final int j) {
 		final T temp = get(i);
 		set(i, get(j));
 		set(j, temp);
@@ -158,7 +158,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         if {@code start < 0 || end >= this.length() || otherStart < 0 ||
 	 *         otherStart + (end - start) >= other.length()}
 	 */
-	public default void swap(
+	default void swap(
 		final int start, final int end,
 		final MSeq<T> other, final int otherStart
 	) {
@@ -189,7 +189,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *        {@code index < 0 || index >= this.length() || index >= other.length()}.
 	 * @throws NullPointerException if the {@code other} sequence is {@code null}
 	 */
-	public default void swap(final int index, final MSeq<T> other) {
+	default void swap(final int index, final MSeq<T> other) {
 		final T temp = get(index);
 		set(index, other.get(index));
 		other.set(index, temp);
@@ -203,8 +203,8 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @return this shuffled sequence
 	 */
-	public default MSeq<T> shuffle() {
-		return shuffle(RandomRegistry.getRandom());
+	default MSeq<T> shuffle() {
+		return shuffle(RandomRegistry.random());
 	}
 
 	/**
@@ -216,7 +216,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return this shuffled sequence
 	 * @throws NullPointerException if the random object is {@code null}.
 	 */
-	public default MSeq<T> shuffle(final Random random) {
+	default MSeq<T> shuffle(final Random random) {
 		for (int j = length() - 1; j > 0; --j) {
 			swap(j, random.nextInt(j + 1));
 		}
@@ -245,7 +245,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public MSeq<T> sort(
+	MSeq<T> sort(
 		final int start,
 		final int end,
 		final Comparator<? super T> comparator
@@ -260,7 +260,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public default MSeq<T> sort(final int start, final int end) {
+	default MSeq<T> sort(final int start, final int end) {
 		return sort(start, end, null);
 	}
 
@@ -285,7 +285,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public default MSeq<T> sort(
+	default MSeq<T> sort(
 		final int start,
 		final Comparator<? super T> comparator
 	) {
@@ -300,7 +300,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public default MSeq<T> sort(final int start) {
+	default MSeq<T> sort(final int start) {
 		return sort(start, length(), null);
 	}
 
@@ -324,7 +324,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public default MSeq<T> sort(final Comparator<? super T> comparator) {
+	default MSeq<T> sort(final Comparator<? super T> comparator) {
 		return sort(0, length(), comparator);
 	}
 
@@ -335,7 +335,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         <i>mutually comparable</i> using the specified comparator
 	 * @return {@code this} sequence
 	 */
-	public default MSeq<T> sort() {
+	default MSeq<T> sort() {
 		return sort(0, length(), null);
 	}
 
@@ -344,7 +344,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @return this sequence with reverse order or the elements
 	 */
-	public default MSeq<T> reverse() {
+	default MSeq<T> reverse() {
 		for (int i = 0, j = length() - 1; i < j; ++i, --j) {
 			swap(i, j);
 		}
@@ -358,36 +358,36 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return a list iterator over the elements in this list (in proper
 	 *         sequence)
 	 */
-	public default ListIterator<T> listIterator() {
+	default ListIterator<T> listIterator() {
 		return asList().listIterator();
 	}
 
 	@Override
-	public MSeq<T> subSeq(final int start, final int end);
+	MSeq<T> subSeq(final int start, final int end);
 
 	@Override
-	public MSeq<T> subSeq(final int start);
+	MSeq<T> subSeq(final int start);
 
 	@Override
-	public <B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
+	<B> MSeq<B> map(final Function<? super T, ? extends B> mapper);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public default MSeq<T> append(final T... values) {
+	default MSeq<T> append(final T... values) {
 		return append(MSeq.of(values));
 	}
 
 	@Override
-	public MSeq<T> append(final Iterable<? extends T> values);
+	MSeq<T> append(final Iterable<? extends T> values);
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public default MSeq<T> prepend(final T... values) {
+	default MSeq<T> prepend(final T... values) {
 		return prepend(MSeq.of(values));
 	}
 
 	@Override
-	public MSeq<T> prepend(final Iterable<? extends T> values);
+	MSeq<T> prepend(final Iterable<? extends T> values);
 
 	/**
 	 * Return a read-only projection of this sequence. Changes to the original
@@ -395,7 +395,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *
 	 * @return a read-only projection of this sequence
 	 */
-	public ISeq<T> toISeq();
+	ISeq<T> toISeq();
 
 
 	/* *************************************************************************
@@ -416,7 +416,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *         {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> concat(
+	static <T> MSeq<T> concat(
 		final T a,
 		final MSeq<? extends T> b
 	) {
@@ -436,7 +436,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> concat(
+	static <T> MSeq<T> concat(
 		final MSeq<? extends T> a,
 		final T... b
 	) {
@@ -456,7 +456,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> concat(
+	static <T> MSeq<T> concat(
 		final MSeq<? extends T> a,
 		final MSeq<? extends T> b
 	) {
@@ -470,7 +470,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	/**
 	 * Single instance of an empty {@code MSeq}.
 	 */
-	public static final MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
+	MSeq<?> EMPTY = EmptyMSeq.INSTANCE;
 
 	/**
 	 * Return an empty {@code MSeq}.
@@ -478,7 +478,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @param <T> the element type of the returned {@code MSeq}.
 	 * @return an empty {@code MSeq}.
 	 */
-	public static <T> MSeq<T> empty() {
+	static <T> MSeq<T> empty() {
 		return Empty.mseq();
 	}
 
@@ -490,7 +490,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @return a {@code Collector} which collects all the input elements into a
 	 *         {@code MSeq}, in encounter order
 	 */
-	public static <T> Collector<T, ?, MSeq<T>> toMSeq() {
+	static <T> Collector<T, ?, MSeq<T>> toMSeq() {
 		return Collector.of(
 			(Supplier<List<T>>)ArrayList::new,
 			List::add,
@@ -508,7 +508,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NegativeArraySizeException if the given {@code length} is
 	 *         negative
 	 */
-	public static <T> MSeq<T> ofLength(final int length) {
+	static <T> MSeq<T> ofLength(final int length) {
 		return length == 0
 			? empty()
 			: new ArrayMSeq<>(Array.of(ObjectStore.ofLength(length)));
@@ -523,7 +523,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SafeVarargs
-	public static <T> MSeq<T> of(final T... values) {
+	static <T> MSeq<T> of(final T... values) {
 		return values.length == 0
 			? empty()
 			: new ArrayMSeq<>(Array.of(ObjectStore.of(values.clone())));
@@ -539,7 +539,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 *        {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> of(final Iterable<? extends T> values) {
+	static <T> MSeq<T> of(final Iterable<? extends T> values) {
 		final MSeq<T> mseq;
 		if (values instanceof ISeq) {
 			final ISeq<T> seq = (ISeq<T>)values;
@@ -552,6 +552,11 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 			mseq = collection.isEmpty()
 				? empty()
 				: MSeq.<T>ofLength(collection.size()).setAll(values);
+		} else if (values instanceof BaseSeq) {
+			final BaseSeq<T> seq = (BaseSeq<T>)values;
+			mseq = seq.length() == 0
+				? empty()
+				: MSeq.<T>ofLength(seq.length()).setAll(values);
 		} else {
 			final Stream.Builder<T> builder = Stream.builder();
 			values.forEach(builder::add);
@@ -564,28 +569,6 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 
 		return mseq;
 	}
-
-//	/**
-//	 * Create a new {@code MSeq} instance from the remaining elements of the
-//	 * given iterator.
-//	 *
-//	 * @since 3.3
-//	 *
-//	 * @param <T> the element type.
-//	 * @return a new {@code MSeq} with the given remaining values.
-//	 * @throws NullPointerException if the {@code values} object is
-//	 *        {@code null}.
-//	 */
-//	public static <T> MSeq<T> of(final Iterator<? extends T> values) {
-//		final Stream.Builder<T> builder = Stream.builder();
-//		values.forEachRemaining(builder::add);
-//		final Object[] objects = builder.build().toArray();
-//
-//		return objects.length == 0
-//			? empty()
-//			: new ArrayProxyMSeq<>(
-//				new ObjectArrayProxy<>(objects, 0, objects.length));
-//	}
 
 	/**
 	 * Creates a new sequence, which is filled with objects created be the given
@@ -603,7 +586,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the given {@code supplier} is
 	 *         {@code null}
 	 */
-	public static <T> MSeq<T> of(
+	static <T> MSeq<T> of(
 		final Supplier<? extends T> supplier,
 		final int length
 	) {
@@ -623,7 +606,7 @@ public interface MSeq<T> extends Seq<T>, Copyable<MSeq<T>> {
 	 * @throws NullPointerException if the {@code values} array is {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> MSeq<T> of(final Seq<? extends T> values) {
+	static <T> MSeq<T> of(final Seq<? extends T> values) {
 		final MSeq<T> result;
 		if (values instanceof MSeq) {
 			result = ((MSeq<T>)values).copy();

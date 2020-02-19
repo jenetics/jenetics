@@ -25,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class ToGnuplotResult {
 			final List<Map.Entry<Integer, double[]>> sortedData =
 				new ArrayList<>(data.entrySet());
 
-			sortedData.sort(Comparator.comparing(Map.Entry::getKey));
+			sortedData.sort(Map.Entry.comparingByKey());
 
 			out.append("#Chromosomes").append("\t");
 			for (String h : header) {

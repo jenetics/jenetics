@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.jenetics.util.ISeq;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

@@ -42,7 +42,7 @@ import io.jenetics.util.MSeq;
  * Numeric chromosome implementation which holds arbitrary sized integer numbers.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.5
+ * @version 5.2
  * @since 3.5
  */
 public class BigIntegerChromosome
@@ -68,8 +68,8 @@ public class BigIntegerChromosome
 	 */
 	protected BigIntegerChromosome(final ISeq<BigIntegerGene> genes) {
 		super(genes);
-		_min = genes.get(0).getMin();
-		_max = genes.get(0).getMax();
+		_min = genes.get(0).min();
+		_max = genes.get(0).max();
 	}
 
 	/**
@@ -104,12 +104,12 @@ public class BigIntegerChromosome
 	}
 
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 
@@ -184,14 +184,14 @@ public class BigIntegerChromosome
 		writeBytes(_max.toByteArray(), out);
 
 		for (BigIntegerGene gene : _genes) {
-			writeBytes(gene.getAllele().toByteArray(), out);
+			writeBytes(gene.allele().toByteArray(), out);
 		}
 	}
 
 	static BigIntegerChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final BigInteger min = new BigInteger(readBytes(in));
-		final BigInteger max = new BigInteger(readBytes(in));
+		final var length = readInt(in);
+		final var min = new BigInteger(readBytes(in));
+		final var max = new BigInteger(readBytes(in));
 
 		final MSeq<BigIntegerGene> genes = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

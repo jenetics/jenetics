@@ -62,11 +62,11 @@ public class SymbolicRegression {
 	// Definition of the terminals.
 	private static final ISeq<Op<Double>> TMS = ISeq.of(
 		Var.of("x", 0),
-		EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
+		EphemeralConst.of(() -> (double)RandomRegistry.random().nextInt(10))
 	);
 
 	private static final Regression<Double> REGRESSION = Regression.of(
-		Regression.codecOf(OPS, TMS, 5, t -> t.getGene().size() < 30),
+		Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30),
 		Error.of(LossFunction::mse),
 		// Lookup table for 4*x^3 - 3*x^2 + x
 		Sample.ofDouble(-1.0, -8.0000),
@@ -105,13 +105,13 @@ public class SymbolicRegression {
 			.limit(Limits.byFitnessThreshold(0.01))
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		final ProgramGene<Double> program = result.getBestPhenotype()
-			.getGenotype()
-			.getGene();
+		final ProgramGene<Double> program = result.bestPhenotype()
+			.genotype()
+			.gene();
 
 		final TreeNode<Op<Double>> tree = program.toTreeNode();
 		MathExpr.rewrite(tree);
-		System.out.println("Generations: " + result.getTotalGenerations());
+		System.out.println("Generations: " + result.totalGenerations());
 		System.out.println("Function:    " + new MathExpr(tree));
 		System.out.println("Error:       " + REGRESSION.error(tree));
 

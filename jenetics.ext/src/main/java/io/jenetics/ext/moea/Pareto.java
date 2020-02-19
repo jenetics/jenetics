@@ -22,7 +22,6 @@ package io.jenetics.ext.moea;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.util.array.revert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +30,8 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 
 import io.jenetics.util.ISeq;
-import io.jenetics.util.ProxySorter;
 import io.jenetics.util.MSeq;
+import io.jenetics.util.ProxySorter;
 import io.jenetics.util.Seq;
 
 import io.jenetics.ext.internal.IntList;
@@ -467,28 +466,43 @@ public final class Pareto {
 		}
 	}
 
-	private static <T> int dominance(
-		final T u,
-		final T v,
-		final int dimension,
-		final ElementComparator<? super T> comparator
+	/**
+	 * Calculates the <a href="https://en.wikipedia.org/wiki/Pareto_efficiency">
+	 *     <b>Pareto Dominance</b></a> of the two vectors <b>u</b> and <b>v</b>.
+	 *
+	 * @since 5.2
+	 *
+	 * @param u the first vector
+	 * @param v the second vector
+	 * @param dimensions the number of vector elements
+	 * @param comparator the comparator used for comparing the vector elements
+	 * @param <V> the vector type
+	 * @return {@code 1} if <b>u</b> ≻ <b>v</b>, {@code -1} if <b>v</b> ≻
+	 *         <b>u</b> and {@code 0} otherwise
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <V> int dominance(
+		final V u,
+		final V v,
+		final int dimensions,
+		final ElementComparator<? super V> comparator
 	) {
 		boolean udominated = false;
 		boolean vdominated = false;
 
-		for (int i = 0; i < dimension; ++i) {
+		for (int i = 0; i < dimensions; ++i) {
 			final int cmp = comparator.compare(u, v, i);
 
 			if (cmp > 0) {
-				udominated = true;
 				if (vdominated) {
 					return 0;
 				}
+				udominated = true;
 			} else if (cmp < 0) {
-				vdominated = true;
 				if (udominated) {
 					return 0;
 				}
+				vdominated = true;
 			}
 		}
 

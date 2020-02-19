@@ -105,7 +105,6 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * engines, it is no longer necessary to limit your final evolution stream, but
  * your are still able to do so.
  *
- * @see AdaptiveEngine
  * @see CyclicEngine
  *
  * @param <G> the gene type
@@ -141,7 +140,7 @@ public final class ConcatEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new ConcatSpliterator<>(
 				_engines.stream()
 					.map(engine -> engine
@@ -166,7 +165,7 @@ public final class ConcatEngine<
 		final AtomicReference<EvolutionStart<G, C>> other =
 			new AtomicReference<>(null);
 
-		return new EvolutionStreamImpl<G, C>(
+		return new EvolutionStreamImpl<>(
 			new ConcatSpliterator<>(spliterators(init, other)),
 			false
 		);

@@ -38,9 +38,9 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 6.0
  */
-public final class LongSummary implements Serializable {
+public final /*record*/ class LongSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,7 +78,7 @@ public final class LongSummary implements Serializable {
 	 *
 	 * @return the count of recorded values
 	 */
-	public long getCount() {
+	public long count() {
 		return _count;
 	}
 
@@ -88,7 +88,7 @@ public final class LongSummary implements Serializable {
 	 *
 	 * @return the minimum value, or {@code Long.MAX_VALUE} if none
 	 */
-	public long getMin() {
+	public long min() {
 		return _min;
 	}
 
@@ -98,7 +98,7 @@ public final class LongSummary implements Serializable {
 	 *
 	 * @return the maximum value, or {@code Long.MIN_VALUE} if none
 	 */
-	public long getMax() {
+	public long max() {
 		return _max;
 	}
 
@@ -108,7 +108,7 @@ public final class LongSummary implements Serializable {
 	 *
 	 * @return the sum of values, or zero if none
 	 */
-	public long getSum() {
+	public long sum() {
 		return _sum;
 	}
 
@@ -118,7 +118,7 @@ public final class LongSummary implements Serializable {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
-	public double getMean() {
+	public double mean() {
 		return _mean;
 	}
 
@@ -147,7 +147,7 @@ public final class LongSummary implements Serializable {
 	public String toString() {
 		return String.format(
 			"LongSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
-			getCount(), getMin(), getMax(), getSum(), getMean()
+			count(), min(), max(), sum(), mean()
 		);
 	}
 
@@ -241,10 +241,9 @@ public final class LongSummary implements Serializable {
 		long min = Long.MAX_VALUE;
 		if (values.length > 0) {
 			min = values[0];
-
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] < min) {
-					min = values[i];
+			for (long value : values) {
+				if (value < min) {
+					min = value;
 				}
 			}
 		}
@@ -266,10 +265,9 @@ public final class LongSummary implements Serializable {
 		long max = Long.MIN_VALUE;
 		if (values.length > 0) {
 			max = values[0];
-
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] > max) {
-					max = values[i];
+			for (long value : values) {
+				if (value > max) {
+					max = value;
 				}
 			}
 		}

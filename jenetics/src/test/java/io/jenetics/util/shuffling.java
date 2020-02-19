@@ -28,7 +28,7 @@ public final class shuffling {
 	private shuffling() {}
 
 	public static <T> T[] shuffle(final T[] array) {
-		return shuffle(array, RandomRegistry.getRandom());
+		return shuffle(array, RandomRegistry.random());
 	}
 
 	public static <T> T[] shuffle(final T[] array, final Random random) {
@@ -39,7 +39,7 @@ public final class shuffling {
 	}
 
 	public static <T> MSeq<T> shuffle(final MSeq<T> array) {
-		return shuffle(array, RandomRegistry.getRandom());
+		return shuffle(array, RandomRegistry.random());
 	}
 
 	public static <T> MSeq<T> shuffle(final MSeq<T> array, final Random random) {

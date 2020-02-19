@@ -94,10 +94,10 @@ public class NSGA2Selector<
 		requireNonNull(distance);
 		requireNonNull(dimension);
 
-		_dominance = (a, b) -> dominance.compare(a.getFitness(), b.getFitness());
-		_comparator = comparator.map(Phenotype::getFitness);
-		_distance = distance.map(Phenotype::getFitness);
-		_dimension = v -> dimension.applyAsInt(v.getFitness());
+		_dominance = (a, b) -> dominance.compare(a.fitness(), b.fitness());
+		_comparator = comparator.map(Phenotype::fitness);
+		_distance = distance.map(Phenotype::fitness);
+		_dimension = v -> dimension.applyAsInt(v.fitness());
 	}
 
 	@Override
@@ -157,10 +157,10 @@ public class NSGA2Selector<
 	public static <G extends Gene<?, G>, T, V extends Vec<T>>
 	NSGA2Selector<G, V> ofVec() {
 		return new NSGA2Selector<>(
-			Vec<T>::dominance,
-			Vec<T>::compare,
-			Vec<T>::distance,
-			Vec<T>::length
+			Vec::dominance,
+			Vec::compare,
+			Vec::distance,
+			Vec::length
 		);
 	}
 

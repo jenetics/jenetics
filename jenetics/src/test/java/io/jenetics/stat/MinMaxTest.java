@@ -44,12 +44,12 @@ public class MinMaxTest {
 
 	private static final Named<Comparator<Integer>> NORMAL = Named.of(
 		"NORMAL",
-		(Comparator<Integer>)Optimize.MAXIMUM::compare
+		Optimize.MAXIMUM::compare
 	);
 
 	private static final Named<Comparator<Integer>> REVERSE = Named.of(
 		"REVERSE",
-		(Comparator<Integer>)Optimize.MINIMUM::compare
+		Optimize.MINIMUM::compare
 	);
 
 	@Test(dataProvider = "minTestValues")
@@ -112,7 +112,7 @@ public class MinMaxTest {
 
 	@Test
 	public void acceptNormalMinMax() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = MinMax.of();
@@ -120,47 +120,47 @@ public class MinMaxTest {
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
 	public void acceptReverseMinMax() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
-		final MinMax<Double> minMax = MinMax.of((a, b) -> b.compareTo(a));
+		final MinMax<Double> minMax = MinMax.of(Comparator.reverseOrder());
 		Arrays.stream(numbers)
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
 	public void toMinMaxNormal() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers)
 			.mapToObj(Double::valueOf)
 			.collect(MinMax.toMinMax());
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.min(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.max(numbers));
 	}
 
 	@Test
 	public void toMinMaxReverse() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
-			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
+			.collect(MinMax.toMinMax(Comparator.reverseOrder()));
 
-		assertEquals(minMax.getMin().doubleValue(), StatUtils.max(numbers));
-		assertEquals(minMax.getMax().doubleValue(), StatUtils.min(numbers));
+		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
+		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
 	}
 
 	@Test
@@ -172,9 +172,9 @@ public class MinMaxTest {
 			MinMax::combine
 		);
 
-		assertEquals(minMax.getMax(), Integer.valueOf(99));
-		assertEquals(minMax.getMin(), Integer.valueOf(0));
-		assertEquals(100, minMax.getCount());
+		assertEquals(minMax.max(), Integer.valueOf(99));
+		assertEquals(minMax.min(), Integer.valueOf(0));
+		assertEquals(100, minMax.count());
 	}
 
 	@Test

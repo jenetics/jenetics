@@ -89,7 +89,7 @@ final class EvolvingImagesWorker {
 			Genotype.of(new PolygonChromosome(
 				param.getPolygonCount(), param.getPolygonLength()
 			)),
-			gt -> (PolygonChromosome) gt.getChromosome()
+			gt -> (PolygonChromosome) gt.chromosome()
 		);
 
 		_engine = Engine.builder(this::fitness, codec)
@@ -174,7 +174,7 @@ final class EvolvingImagesWorker {
 				.forEach(r -> {
 					waiting();
 					if (callback != null) {
-						callback.accept(r, best.getMax());
+						callback.accept(r, best.max());
 					}
 				});
 		});

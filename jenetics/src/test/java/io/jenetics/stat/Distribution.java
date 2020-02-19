@@ -36,7 +36,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the domain of this probability distribution.
 	 */
-	public Range<C> getDomain();
+	Range<C> getDomain();
 
 	/**
 	 * Return a new instance of the <i>Cumulative Distribution Function</i> (CDF).
@@ -45,7 +45,7 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Cumulative Distribution Function</i>.
 	 */
-	public ToDoubleFunction<C> getCDF();
+	ToDoubleFunction<C> getCDF();
 
 	/**
 	 * Return a new instance of the <i>Probability Density Function</i> (PDF).
@@ -54,6 +54,6 @@ public interface Distribution<C extends Comparable<? super C>> {
 	 *
 	 * @return the <i>Probability Density Function</i>.
 	 */
-	public ToDoubleFunction<C> getPDF();
+	ToDoubleFunction<C> getPDF();
 
 }

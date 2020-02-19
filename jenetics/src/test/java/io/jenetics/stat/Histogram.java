@@ -23,7 +23,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.round;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.jenetics.internal.math.base.normalize;
+import static io.jenetics.internal.math.Basics.normalize;
 import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.IOException;
@@ -360,7 +360,7 @@ public class Histogram<C> implements Consumer<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> of(
 		final C... separators
 	) {
-		return new Histogram<C>((o1, o2) -> o1.compareTo(o2), separators);
+		return new Histogram<>(Comparator.naturalOrder(), separators);
 	}
 
 	/**

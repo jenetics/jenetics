@@ -55,7 +55,7 @@ public final class TreeMatchResult<V> {
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		_tree = requireNonNull(tree);
-		_vars = unmodifiableMap(requireNonNull(vars));
+		_vars = unmodifiableMap(vars);
 	}
 
 	/**

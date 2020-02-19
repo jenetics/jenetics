@@ -21,7 +21,7 @@ package io.jenetics.ext;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import io.jenetics.NumericGene;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.Mean;
@@ -49,7 +49,7 @@ import io.jenetics.ext.internal.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 3.5
+ * @version 6.0
  */
 public final class BigIntegerGene
 	implements
@@ -76,17 +76,17 @@ public final class BigIntegerGene
 	}
 
 	@Override
-	public BigInteger getAllele() {
+	public BigInteger allele() {
 		return _value;
 	}
 
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 
@@ -139,9 +139,9 @@ public final class BigIntegerGene
 		final BigInteger maximum,
 		final int length
 	) {
-		require.positive(length);
+		Requires.positive(length);
 
-		final Random r = getRandom();
+		final Random r = random();
 
 		return MSeq.<BigIntegerGene>ofLength(length)
 			.fill(() -> new BigIntegerGene(
@@ -180,7 +180,7 @@ public final class BigIntegerGene
 	 */
 	public static BigIntegerGene of(final BigInteger min, final BigInteger max) {
 		return of(
-			random.nextBigInteger(min, max, RandomRegistry.getRandom()),
+			random.nextBigInteger(min, max, RandomRegistry.random()),
 			min,
 			max
 		);

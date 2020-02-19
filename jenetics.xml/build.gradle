@@ -32,6 +32,8 @@ apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
 
+ext.moduleName = 'io.jenetics.xml'
+
 dependencies {
 	api project(':jenetics')
 
@@ -57,7 +59,7 @@ test.dependsOn(compileJmhJava)
 
 javadoc {
 	options {
-		links 'http://jenetics.io/javadoc/jenetics'
+		links 'https://jenetics.io/javadoc/jenetics'
 	}
 }
 

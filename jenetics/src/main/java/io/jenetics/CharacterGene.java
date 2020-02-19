@@ -24,9 +24,8 @@ import static io.jenetics.internal.util.Hashes.hash;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -49,7 +48,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 4.3
+ * @version 6.0
  */
 public final class CharacterGene
 	implements
@@ -94,7 +93,7 @@ public final class CharacterGene
 	}
 
 	@Override
-	public Character getAllele() {
+	public Character allele() {
 		return _character;
 	}
 
@@ -122,7 +121,7 @@ public final class CharacterGene
 	 *
 	 * @return the {@link CharSeq} of valid characters.
 	 */
-	public CharSeq getValidCharacters() {
+	public CharSeq validChars() {
 		return _validCharacters;
 	}
 
@@ -171,7 +170,7 @@ public final class CharacterGene
 
 	/**
 	 * Create a new character gene from the given character. If the character
-	 * is not within the {@link #getValidCharacters()}, an invalid gene will be
+	 * is not within the {@link #validChars()}, an invalid gene will be
 	 * created.
 	 *
 	 * @param character the character value of the created gene.
@@ -201,7 +200,7 @@ public final class CharacterGene
 	public static CharacterGene of(final CharSeq validCharacters) {
 		return new CharacterGene(
 			validCharacters,
-			RandomRegistry.getRandom().nextInt(validCharacters.length())
+			RandomRegistry.random().nextInt(validCharacters.length())
 		);
 	}
 
@@ -226,7 +225,7 @@ public final class CharacterGene
 	public static CharacterGene of() {
 		return new CharacterGene(
 			DEFAULT_CHARACTERS,
-			RandomRegistry.getRandom().nextInt(DEFAULT_CHARACTERS.length())
+			RandomRegistry.random().nextInt(DEFAULT_CHARACTERS.length())
 		);
 	}
 
@@ -250,9 +249,9 @@ public final class CharacterGene
 		final CharSeq chars,
 		final IntRange lengthRange
 	) {
-		final Random r = RandomRegistry.getRandom();
+		final var r = RandomRegistry.random();
 
-		return MSeq.<CharacterGene>ofLength(random.nextInt(lengthRange, r))
+		return MSeq.<CharacterGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new CharacterGene(chars, r.nextInt(chars.length())))
 			.toISeq();
 	}

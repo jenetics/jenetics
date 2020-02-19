@@ -20,7 +20,7 @@
 package io.jenetics.example;
 
 import static java.lang.Math.pow;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class DynamicGenotype {
 
 	// Explicit Genotype factory instead of Genotype templates.
 	private static final Factory<Genotype<DoubleGene>> ENCODING = () -> {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		return Genotype.of(
 			// Vary the chromosome count between 10 and 20.
 			IntStream.range(0, random.nextInt(10) + 10)
@@ -84,10 +84,10 @@ public class DynamicGenotype {
 			final IntRef alterations = new IntRef(0);
 			final MSeq<Phenotype<G, C>> pop = MSeq.of(population);
 
-			indexes(RandomRegistry.getRandom(), pop.size(), p).forEach(i -> {
+			indexes(RandomRegistry.random(), pop.size(), p).forEach(i -> {
 				final Phenotype<G, C> pt = pop.get(i);
 
-				final Genotype<G> gt = pt.getGenotype();
+				final Genotype<G> gt = pt.genotype();
 				final Genotype<G> mgt = mutate(gt, p, alterations);
 
 				final Phenotype<G, C> mpt = Phenotype.of(mgt, generation);
@@ -103,10 +103,10 @@ public class DynamicGenotype {
 			final IntRef alterations
 		) {
 			final List<Chromosome<G>> chromosomes =
-				new ArrayList<>(genotype.toSeq().asList());
+				new ArrayList<>(ISeq.of(genotype).asList());
 
 			// Add/remove Chromosome to Genotype.
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			final double rd = random.nextDouble();
 			if (rd < 1/3.0) {
 				chromosomes.remove(0);
@@ -115,7 +115,7 @@ public class DynamicGenotype {
 			}
 
 			alterations.value +=
-				indexes(RandomRegistry.getRandom(), chromosomes.size(), p)
+				indexes(RandomRegistry.random(), chromosomes.size(), p)
 					.map(i -> mutate(chromosomes, i, p))
 					.sum();
 
@@ -124,7 +124,7 @@ public class DynamicGenotype {
 
 		private int mutate(final List<Chromosome<G>> c, final int i, final double p) {
 			final Chromosome<G> chromosome = c.get(i);
-			final List<G> genes = new ArrayList<>(chromosome.toSeq().asList());
+			final List<G> genes = new ArrayList<>(ISeq.of(chromosome).asList());
 
 			final int mutations = mutate(genes, p);
 			if (mutations > 0) {
@@ -134,7 +134,7 @@ public class DynamicGenotype {
 		}
 
 		private int mutate(final List<G> genes, final double p) {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return (int)indexes(random, genes.size(), p)
 				.peek(i -> genes.set(i, genes.get(i).newInstance()))
 				.count();
@@ -151,7 +151,7 @@ public class DynamicGenotype {
 			.limit(20)
 			.collect(EvolutionResult.toBestEvolutionResult());
 
-		System.out.println(result.getBestFitness());
+		System.out.println(result.bestFitness());
 	}
 
 }

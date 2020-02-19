@@ -32,7 +32,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -53,7 +52,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 5.2
  * @since 3.9
  */
 public final class FlatTreeNode<T>
@@ -88,7 +87,7 @@ public final class FlatTreeNode<T>
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTreeNode<T> getRoot() {
+	public FlatTreeNode<T> root() {
 		return nodeAt(0);
 	}
 
@@ -98,7 +97,7 @@ public final class FlatTreeNode<T>
 	}
 
 	private FlatTreeNode<T> nodeAt(final int index) {
-		return new FlatTreeNode<T>(
+		return new FlatTreeNode<>(
 			index,
 			_elements,
 			_childOffsets,
@@ -108,12 +107,12 @@ public final class FlatTreeNode<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getValue() {
-		return (T) _elements[_index];
+	public T value() {
+		return (T)_elements[_index];
 	}
 
 	@Override
-	public Optional<FlatTreeNode<T>> getParent() {
+	public Optional<FlatTreeNode<T>> parent() {
 		int index = -1;
 		for (int i = _index; --i >= 0 && index == -1;) {
 			if (isParent(i)) {
@@ -229,7 +228,9 @@ public final class FlatTreeNode<T>
 
 	@Override
 	public int size() {
-		return countChildren( _index) + 1;
+		return _index == 0
+			? _elements.length
+			: countChildren( _index) + 1;
 	}
 
 	private int countChildren(final int index) {
@@ -261,11 +262,8 @@ public final class FlatTreeNode<T>
 		int childOffset = 1;
 		int index = 0;
 
-		final Iterator<? extends Tree<?, ?>> it = tree.breadthFirstIterator();
-		while (it.hasNext()) {
-			final Tree<?, ?> node = it.next();
-
-			elements[index] = node.getValue();
+		for (Tree<?, ?> node : tree) {
+			elements[index] = node.value();
 			childCounts[index] = node.childCount();
 			childOffsets[index] = node.isLeaf() ? -1 : childOffset;
 

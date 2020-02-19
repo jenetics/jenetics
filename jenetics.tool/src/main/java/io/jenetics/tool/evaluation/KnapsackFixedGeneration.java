@@ -32,7 +32,6 @@ import io.jenetics.engine.Limits;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 
@@ -48,7 +47,7 @@ public class KnapsackFixedGeneration {
 		"Fixed generation",
 		IntStream.rangeClosed(1, 50)
 			.mapToLong(i -> max((long)pow(GEN_BASE, i), i))
-			.mapToObj(Long::valueOf)
+			.boxed()
 			.collect(ISeq.toISeq())
 	);
 

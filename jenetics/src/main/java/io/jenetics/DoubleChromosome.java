@@ -47,7 +47,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.0
+ * @version 5.2
  */
 public class DoubleChromosome
 	extends AbstractBoundedChromosome<Double, DoubleGene>
@@ -115,7 +115,10 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code array} is {@code null}
 	 */
 	public double[] toArray(final double[] array) {
-		final double[] a = array.length >= length() ? array : new double[length()];
+		final double[] a = array.length >= length()
+			? array
+			: new double[length()];
+
 		for (int i = length(); --i >= 0;) {
 			a[i] = doubleValue(i);
 		}
@@ -147,6 +150,8 @@ public class DoubleChromosome
 	 * @return a new chromosome with the given genes.
 	 * @throws IllegalArgumentException if the length of the genes array is
 	 *         empty or the given {@code genes} doesn't have the same range.
+	 * @throws NullPointerException if the given {@code genes} array is
+	 *         {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleGene... genes) {
 		checkGeneRange(Stream.of(genes).map(DoubleGene::range));
@@ -232,7 +237,7 @@ public class DoubleChromosome
 		final DoubleRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -248,7 +253,7 @@ public class DoubleChromosome
 	 *         one.
 	 */
 	public static DoubleChromosome of(final DoubleRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -272,7 +277,7 @@ public class DoubleChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static DoubleChromosome of(final DoubleRange range) {
-		return of(range.getMin(), range.getMax());
+		return of(range.min(), range.max());
 	}
 
 
@@ -292,8 +297,8 @@ public class DoubleChromosome
 
 	void write(final DataOutput out) throws IOException {
 		writeInt(length(), out);
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 
@@ -303,10 +308,10 @@ public class DoubleChromosome
 	}
 
 	static DoubleChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final double min = in.readDouble();
-		final double max = in.readDouble();
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = in.readDouble();
+		final var max = in.readDouble();
 
 		final MSeq<DoubleGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

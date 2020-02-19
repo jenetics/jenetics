@@ -57,7 +57,7 @@ final class CompletableFutureEvaluator<
 		final CompletableFuture<C>[] evaluate =
 			(CompletableFuture<C>[])population.stream()
 				.filter(Phenotype::nonEvaluated)
-				.map(pt -> _fitness.apply(pt.getGenotype()))
+				.map(pt -> _fitness.apply(pt.genotype()))
 				.collect(ISeq.toISeq())
 				.toArray(new CompletableFuture[0]);
 

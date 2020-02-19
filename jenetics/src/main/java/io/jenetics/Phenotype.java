@@ -51,7 +51,7 @@ import io.jenetics.util.Verifiable;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.0
+ * @version 6.0
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -120,7 +120,7 @@ public final class Phenotype<
 	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
 	 * @throws NullPointerException if one of the arguments is {@code null}.
 	 */
-	public Genotype<G> getGenotype() {
+	public Genotype<G> genotype() {
 		return _genotype;
 	}
 
@@ -167,7 +167,7 @@ public final class Phenotype<
 	 * @throws NoSuchElementException if {@link #isEvaluated()} returns
 	 *         {@code false}
 	 */
-	public C getFitness() {
+	public C fitness() {
 		if (_fitness == null) {
 			throw new NoSuchElementException(
 				"Phenotype has no assigned fitness value."
@@ -183,7 +183,7 @@ public final class Phenotype<
 	 *
 	 * @since 5.0
 	 *
-	 * @see #getFitness()
+	 * @see #fitness()
 	 *
 	 * @return the fitness value
 	 */
@@ -194,24 +194,24 @@ public final class Phenotype<
 	/**
 	 * Return the generation this {@link Phenotype} was created.
 	 *
-	 * @see #getAge(long)
+	 * @see #age(long)
 	 *
 	 * @return The generation this {@link Phenotype} was created.
 	 */
-	public long getGeneration() {
+	public long generation() {
 		return _generation;
 	}
 
 	/**
 	 * Return the age of this phenotype depending on the given current generation.
 	 *
-	 * @see #getGeneration()
+	 * @see #generation()
 	 *
 	 * @param currentGeneration the current generation evaluated by the GA.
 	 * @return the age of this phenotype:
 	 *          {@code currentGeneration - this.getGeneration()}.
 	 */
-	public long getAge(final long currentGeneration) {
+	public long age(final long currentGeneration) {
 		return currentGeneration - _generation;
 	}
 
@@ -229,7 +229,7 @@ public final class Phenotype<
 	@Override
 	public int compareTo(final Phenotype<G, C> pt) {
 		if (isEvaluated()) {
-			return pt.isEvaluated() ? getFitness().compareTo(pt.getFitness()) : 1;
+			return pt.isEvaluated() ? fitness().compareTo(pt.fitness()) : 1;
 		} else {
 			return pt.isEvaluated() ? -1 : 0;
 		}
@@ -366,12 +366,12 @@ public final class Phenotype<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static Phenotype read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final long generation = readLong(in);
-		final Genotype genotype = (Genotype)in.readObject();
-		final Comparable fitness = (Comparable)in.readObject();
+		final var generation = readLong(in);
+		final var genotype = (Genotype)in.readObject();
+		final var fitness = (Comparable)in.readObject();
 
 		return new Phenotype(
 			genotype,

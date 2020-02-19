@@ -182,7 +182,7 @@ public class MathExprTest {
 		return x*x + sin(z) - cos(x)*y*pow(z*x + y, pow(pow(z*x + y, pow(z*x + y, x)), x));
 	}
 
-	static interface F3 {
+	interface F3 {
 		double apply(final double x, final double y, final double z);
 	}
 

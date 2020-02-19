@@ -40,6 +40,6 @@ public interface Mean<T> {
 	 * @return the mean value of {@code this} and {@code that}.
 	 * @throws NullPointerException if the argument is {@code null}.
 	 */
-	public T mean(final T that);
+	T mean(final T that);
 
 }

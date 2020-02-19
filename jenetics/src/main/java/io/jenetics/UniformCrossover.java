@@ -20,16 +20,16 @@
 package io.jenetics;
 
 import static java.lang.Math.min;
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
 /**
  * The uniform crossover uses swaps single genes between two chromosomes, instead
  * of whole ranges as in single- and multi-point crossover.
- * <pre>
+ * <pre> {@code
  * +---+---+---+---+---+---+---+
  * | 1 | 2 | 3 | 4 | 6 | 7 | 8 |
  * +-+-+---+-+-+-+-+---+-+-+---+
@@ -37,17 +37,17 @@ import io.jenetics.util.RandomRegistry;
  * +-+-+---+-+-+-+-+---+-+-+---+
  * | a | b | c | d | e | f | g |
  * +---+---+---+---+---+---+---+
- * </pre>
+ * }</pre>
  * The probability that two genes are swapped is controlled by the
- * <i>swap-probability</i> ({@link #getSwapProbability()}), whereas the
+ * <i>swap-probability</i> ({@link #swapProbability()}), whereas the
  * probability that a given individual is selected for crossover is defined by
- * the <i>crossover-probability</i> ({@link #getProbability()}).
+ * the <i>crossover-probability</i> ({@link #probability()}).
  *
  * @see <a href="https://en.wikipedia.org/wiki/Crossover_(genetic_algorithm)#Uniform_crossover_and_half_uniform_crossover">
  *     Wikipedia: Uniform crossover</a>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.7
+ * @version 6.0
  * @since 3.7
  */
 public class UniformCrossover<
@@ -75,7 +75,7 @@ public class UniformCrossover<
 		final double swapProbability
 	) {
 		super(crossoverProbability);
-		_swapProbability = require.probability(swapProbability);
+		_swapProbability = Requires.probability(swapProbability);
 	}
 
 	/**
@@ -105,14 +105,14 @@ public class UniformCrossover<
 	 *
 	 * @return the probability for swapping genes of a chromosome
 	 */
-	public double getSwapProbability() {
+	public double swapProbability() {
 		return _swapProbability;
 	}
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
 		final int length = min(that.length(), other.length());
-		return (int)indexes(RandomRegistry.getRandom(), length, _swapProbability)
+		return (int)indexes(RandomRegistry.random(), length, _swapProbability)
 			.peek(i -> that.swap(i, other))
 			.count();
 	}

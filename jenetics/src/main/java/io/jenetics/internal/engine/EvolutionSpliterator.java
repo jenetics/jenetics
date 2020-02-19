@@ -129,7 +129,7 @@ public final class EvolutionSpliterator<
 			? super EvolutionStart<G, C>,
 			? extends Evolution<G, C>> evolution
 	) {
-		return new EvolutionSpliterator<G, C>(
+		return new EvolutionSpliterator<>(
 			start,
 			result -> evolution.apply(result).evolve(result)
 		);

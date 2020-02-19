@@ -44,5 +44,5 @@ public interface BoundedGeneCreator<A, G> {
 	 * @param max the maximum value
 	 * @return a newly created bounded gene
 	 */
-	public G create(final A value, final A min, final A max);
+	G create(final A value, final A min, final A max);
 }

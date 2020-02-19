@@ -30,7 +30,9 @@ public class EvolutionStartTest {
 
 	@Test
 	public void equalsVerifier() {
-		EqualsVerifier.forClass(EvolutionStart.class).verify();
+		EqualsVerifier.forClass(EvolutionStart.class)
+			.withIgnoredFields("_dirty")
+			.verify();
 	}
 
 }

@@ -82,7 +82,7 @@ final class ParenthesesTrees {
 		final Tree<V, ?> tree,
 		final Function<? super V, String> mapper
 	) {
-		out.append(escape(mapper.apply(tree.getValue())));
+		out.append(escape(mapper.apply(tree.value())));
 		if (!tree.isLeaf()) {
 			out.append("(");
 			toString(out, tree.childAt(0), mapper);

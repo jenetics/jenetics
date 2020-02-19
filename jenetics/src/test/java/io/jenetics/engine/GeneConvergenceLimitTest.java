@@ -29,14 +29,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.prngine.Random32;
-
 import io.jenetics.Chromosome;
 import io.jenetics.DoubleChromosome;
 import io.jenetics.DoubleGene;
 import io.jenetics.Genotype;
 import io.jenetics.Optimize;
 import io.jenetics.Phenotype;
+import io.jenetics.prngine.Random32;
 import io.jenetics.stat.DoubleSummary;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
@@ -116,7 +115,7 @@ public class GeneConvergenceLimitTest {
 				Genotype.of(DoubleChromosome.of(0, 10, 100)),
 				gt -> gt.stream()
 					.flatMap(Chromosome::stream)
-					.mapToDouble(g -> g.doubleValue())
+					.mapToDouble(DoubleGene::doubleValue)
 					.toArray()
 			)
 		);
@@ -128,10 +127,10 @@ public class GeneConvergenceLimitTest {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		Assert.assertTrue(
-			result.getTotalGenerations() < 10_000,
+			result.totalGenerations() < 10_000,
 			format(
 				"Total generations bigger than 10,000: %s",
-				result.getTotalGenerations()
+				result.totalGenerations()
 			)
 		);
 	}
@@ -158,8 +157,8 @@ public class GeneConvergenceLimitTest {
 
 			Assert.assertNotNull(result);
 			Assert.assertEquals(count.get(), 1);
-			Assert.assertEquals(result.getTotalGenerations(), 1);
-			Assert.assertEquals(result.getGeneration(), 1);
+			Assert.assertEquals(result.totalGenerations(), 1);
+			Assert.assertEquals(result.generation(), 1);
 		});
 	}
 

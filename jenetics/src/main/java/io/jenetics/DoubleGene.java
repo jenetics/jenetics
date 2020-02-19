@@ -19,9 +19,9 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.nextDouble;
+import static io.jenetics.internal.math.Randoms.nextDouble;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -31,7 +31,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -54,7 +54,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 5.0
+ * @version 6.0
  */
 public final class DoubleGene
 	implements
@@ -87,17 +87,17 @@ public final class DoubleGene
 	}
 
 	@Override
-	public Double getAllele() {
+	public Double allele() {
 		return _value;
 	}
 
 	@Override
-	public Double getMin() {
+	public Double min() {
 		return _min;
 	}
 
 	@Override
-	public Double getMax() {
+	public Double max() {
 		return _max;
 	}
 
@@ -181,7 +181,7 @@ public final class DoubleGene
 
 	@Override
 	public DoubleGene newInstance() {
-		return of(nextDouble(_min, _max, getRandom()), _min, _max);
+		return of(nextDouble(_min, _max, random()), _min, _max);
 	}
 
 	@Override
@@ -241,7 +241,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final double value, final DoubleRange range) {
-		return of(value, range.getMin(), range.getMax());
+		return of(value, range.min(), range.max());
 	}
 
 	/**
@@ -253,7 +253,7 @@ public final class DoubleGene
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(final double min, final double max) {
-		return of(nextDouble(min, max, getRandom()), min, max);
+		return of(nextDouble(min, max, random()), min, max);
 	}
 
 	/**
@@ -267,7 +267,7 @@ public final class DoubleGene
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
 	public static DoubleGene of(final DoubleRange range) {
-		return of(nextDouble(range.getMin(), range.getMax(), getRandom()), range);
+		return of(nextDouble(range.min(), range.max(), random()), range);
 	}
 
 	static ISeq<DoubleGene> seq(
@@ -275,8 +275,8 @@ public final class DoubleGene
 		final double max,
 		final IntRange lengthRange
 	) {
-		final Random r = getRandom();
-		return MSeq.<DoubleGene>ofLength(random.nextInt(lengthRange, r))
+		final Random r = random();
+		return MSeq.<DoubleGene>ofLength(Randoms.nextInt(lengthRange, r))
 			.fill(() -> new DoubleGene(nextDouble(min, max, r), min, max))
 			.toISeq();
 	}

@@ -25,7 +25,7 @@
  * and Alterer interfaces and its implementations. The classes in this package
  * are (almost) sufficient to implement an own GA.
  *
- * <h3>Introduction</h3>
+ * <b>Introduction</b>
  * <p><strong>Jenetics</strong> is an <strong>Genetic Algorithm</strong>,
  * respectively an <strong>Evolutionary Algorithm</strong>, library written in
  * Java. It is designed with a clear separation of the several concepts of the
@@ -37,7 +37,7 @@
  * EvolutionStream implements the Java Stream interface, it works smoothly with
  * the rest of the Java streaming API.</p>
  *
- * <h3>Getting Started</h3>
+ * <b>Getting Started</b>
  * <p>The minimum evolution Engine setup needs a genotype factory,
  * Factory&lt;Genotype&lt;?&gt;&gt;, and a fitness Function. The Genotype
  * implements the Factory interface and can therefore be used as prototype for
@@ -54,7 +54,7 @@
  * public class HelloWorld {
  *      // 2.) Definition of the fitness function.
  *     private static Integer eval(Genotype<BitGene> gt) {
- *         return ((BitChromosome)gt.getChromosome()).bitCount();
+ *         return ((BitChromosome)gt.chromosome()).bitCount();
  *     }
  *
  *     public static void main(String[] args) {

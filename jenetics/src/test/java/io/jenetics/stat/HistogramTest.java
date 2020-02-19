@@ -27,7 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.prngine.LCG64ShiftRandom;
-
 import io.jenetics.util.RandomRegistry;
 
 /**
@@ -75,7 +74,7 @@ public class HistogramTest {
 
 	@Test
 	public void histogramIndex() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		Double[] parts = new Double[10000];
 		for (int i = 0; i < parts.length; ++i) {
 			parts[i] = (double)i;
@@ -131,7 +130,7 @@ public class HistogramTest {
 
 	@Test
 	public void histogram() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		final Histogram<Double> histogram = Histogram.of(1d, 2d, 3d, 4d, 5d);
 
 		for (int i = 0; i < 600_000; ++i) {
@@ -140,8 +139,8 @@ public class HistogramTest {
 		Assert.assertEquals(histogram.getCount(), 600_000);
 
 		final long[] hist = histogram.getHistogram();
-		for (int i = 0; i < hist.length; ++i) {
-			Assert.assertEquals(hist[i], 100_000.0, 1_200.0);
+		for (long l : hist) {
+			Assert.assertEquals(l, 100_000.0, 1_200.0);
 		}
 	}
 

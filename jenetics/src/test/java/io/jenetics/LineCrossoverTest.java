@@ -26,11 +26,11 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.util.BaseSeq;
 import io.jenetics.util.Factory;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
-import io.jenetics.util.Seq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -62,18 +62,16 @@ public class LineCrossoverTest {
 			final LineCrossover<DoubleGene, Double> recombinator =
 				new LineCrossover<>(1);
 
-			pop = recombinator.alter(pop, 10).getPopulation();
+			pop = recombinator.alter(pop, 10).population();
 
 			for (int i = 0; i < pop.size(); ++i) {
-				final Seq<DoubleGene> genes = pop.get(i)
-					.getGenotype()
-					.getChromosome()
-					.toSeq();
+				final BaseSeq<DoubleGene> genes = pop.get(i)
+					.genotype()
+					.chromosome();
 
-				final Seq<DoubleGene> genesCopy = copy.get(i)
-					.getGenotype()
-					.getChromosome()
-					.toSeq();
+				final BaseSeq<DoubleGene> genesCopy = copy.get(i)
+					.genotype()
+					.chromosome();
 
 				for (int j = 0; j < genes.length(); ++j) {
 					Assert.assertNotEquals(genes.get(j), genesCopy.get(i));

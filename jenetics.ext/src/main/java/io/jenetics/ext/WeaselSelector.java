@@ -86,7 +86,7 @@ public class WeaselSelector<
 			.collect(MinMax.toMinMax(opt.ascending()));
 
 		final MSeq<Phenotype<G, C>> result = MSeq.ofLength(count);
-		return result.fill(minMax::getMax).toISeq();
+		return result.fill(minMax::max).toISeq();
 	}
 
 	@Override

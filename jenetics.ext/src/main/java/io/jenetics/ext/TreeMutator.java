@@ -22,11 +22,9 @@ package io.jenetics.ext;
 import java.util.Random;
 
 import io.jenetics.Chromosome;
-import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.probability;
-import io.jenetics.util.ISeq;
+import io.jenetics.internal.math.Probabilities;
 
 import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.FlatTreeNode;
@@ -69,18 +67,18 @@ public abstract class TreeMutator<
 		final double p,
 		final Random random
 	) {
-		final int P = probability.toInt(p);
+		final int P = Probabilities.toInt(p);
 		return random.nextInt() < P
 			? mutate(chromosome)
 			: MutatorResult.of(chromosome);
 	}
 
 	private MutatorResult<Chromosome<G>> mutate(final Chromosome<G> chromosome) {
-		final TreeNode<A> tree = TreeNode.ofTree(chromosome.getGene());
+		final TreeNode<A> tree = TreeNode.ofTree(chromosome.gene());
 		mutate(tree);
 
-		final FlatTreeNode<A> flat = FlatTreeNode.of(tree);
-		final ISeq<G> genes = flat.map(t -> gene(chromosome.getGene(), t));
+		final var flat = FlatTreeNode.of(tree);
+		final var genes = flat.map(t -> gene(chromosome.gene(), t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
 	}
 
@@ -89,7 +87,7 @@ public abstract class TreeMutator<
 		final FlatTree<? extends A, ?> tree
 	) {
 		return template.newInstance(
-			tree.getValue(),
+			tree.value(),
 			tree.childOffset(),
 			tree.childCount()
 		);

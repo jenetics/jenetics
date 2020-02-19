@@ -144,7 +144,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 * @since 1.0
 	 * @version 1.4
 	 */
-	private static enum State {
+	private enum State {
 
 		DATA {
 			@Override
@@ -157,7 +157,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 				{
 					out.setLength(out.length() - START_TAG.length());
 					out.append("<div class=\"code\"><code lang=\"java\">");
-					state = CODE_TAG;
+					state = SKIP_NEWLINE;
 				}
 
 				return state;

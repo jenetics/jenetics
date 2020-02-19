@@ -54,7 +54,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.7
+ * @version 6.0
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -97,12 +97,21 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
+	 * Returns the count of values recorded.
+	 *
+	 * @return the count of recorded values
+	 */
+	public long count() {
+		return _count;
+	}
+
+	/**
 	 * Return the current minimal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
 	 * @return the current minimal object
 	 */
-	public C getMin() {
+	public C min() {
 		return _min;
 	}
 
@@ -112,17 +121,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 *
 	 * @return the current maximal object
 	 */
-	public C getMax() {
+	public C max() {
 		return _max;
-	}
-
-	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 */
-	public long getCount() {
-		return _count;
 	}
 
 	/**
@@ -332,7 +332,7 @@ public final class MinMax<C> implements Consumer<C> {
 
 	private static <C>
 	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
-		return new Function<C, Stream<C>>() {
+		return new Function<>() {
 			private C _best;
 
 			@Override

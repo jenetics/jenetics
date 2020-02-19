@@ -31,6 +31,6 @@ public interface Verifiable {
 	 *
 	 * @return true if this object is valid, false otherwise.
 	 */
-	public boolean isValid();
+	boolean isValid();
 
 }

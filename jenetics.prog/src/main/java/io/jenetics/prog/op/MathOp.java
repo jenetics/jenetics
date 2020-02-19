@@ -351,7 +351,7 @@ public enum MathOp implements Op<Double> {
 	private final int _arity;
 	private final Function<Double[], Double> _function;
 
-	private MathOp(
+	MathOp(
 		final String name,
 		final int arity,
 		final Function<Double[], Double> function
@@ -401,8 +401,8 @@ public enum MathOp implements Op<Double> {
 	/**
 	 * Converts the string representation of an operation to the operation
 	 * object. It is used for converting the string representation of a tree to
-	 * an operation tree. If you use it that way, you should not forget to
-	 * re-index the tree variables.
+	 * an operation tree. <b>If you use it that way, you should not forget to
+	 * re-index the tree variables.</b>
 	 *
 	 * <pre>{@code
 	 * final TreeNode<Op<Double>> tree = TreeNode.parse(
@@ -446,8 +446,7 @@ public enum MathOp implements Op<Double> {
 	}
 
 	static Optional<Const<Double>> toConst(final String string) {
-		return Numbers
-			.tryParseDouble(string)
+		return Numbers.toDoubleOptional(string)
 			.map(Const::of);
 	}
 

@@ -66,7 +66,7 @@ public class ReproducibleGA {
 					.collect(EvolutionResult.toBestEvolutionResult())
 			);
 
-		System.out.println(result.getBestPhenotype());
+		System.out.println(result.bestPhenotype());
 	}
 
 }

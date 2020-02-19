@@ -63,13 +63,13 @@ public class LongChromosomeTest
 			for (int i = 0; i < 1000; ++i) {
 				final LongChromosome chromosome = LongChromosome.of(min, max, 500);
 				for (LongGene gene : chromosome) {
-					mm.accept(gene.getAllele());
-					histogram.accept(gene.getAllele());
+					mm.accept(gene.allele());
+					histogram.accept(gene.allele());
 				}
 			}
 
-			Assert.assertTrue(mm.getMin().compareTo(0L) >= 0);
-			Assert.assertTrue(mm.getMax().compareTo(100L) <= 100);
+			Assert.assertTrue(mm.min().compareTo(0L) >= 0);
+			Assert.assertTrue(mm.max().compareTo(100L) <= 100);
 			assertUniformDistribution(histogram);
 		});
 	}
@@ -80,7 +80,7 @@ public class LongChromosomeTest
 		final IntRange length
 	) {
 		Assert.assertTrue(
-			dc.length() >= length.getMin() && dc.length() < length.getMax(),
+			dc.length() >= length.min() && dc.length() < length.max(),
 			format("Chromosome length %s not in range %s.", dc.length(), length)
 		);
 	}
@@ -105,7 +105,7 @@ public class LongChromosomeTest
 
 		Assert.assertEquals(values.length, 1000);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(chromosome.getGene(i).longValue(), values[i]);
+			Assert.assertEquals(chromosome.get(i).longValue(), values[i]);
 			Assert.assertEquals(chromosome.longValue(i), values[i]);
 		}
 	}

@@ -40,9 +40,9 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 6.0
  */
-public final class DoubleSummary implements Serializable {
+public final /*record*/ class DoubleSummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -80,7 +80,7 @@ public final class DoubleSummary implements Serializable {
 	 *
 	 * @return the count of recorded values
 	 */
-	public long getCount() {
+	public long count() {
 		return _count;
 	}
 
@@ -90,7 +90,7 @@ public final class DoubleSummary implements Serializable {
 	 *
 	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
 	 */
-	public double getMin() {
+	public double min() {
 		return _min;
 	}
 
@@ -100,7 +100,7 @@ public final class DoubleSummary implements Serializable {
 	 *
 	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
 	 */
-	public double getMax() {
+	public double max() {
 		return _max;
 	}
 
@@ -110,7 +110,7 @@ public final class DoubleSummary implements Serializable {
 	 *
 	 * @return the sum of values, or zero if none
 	 */
-	public double getSum() {
+	public double sum() {
 		return _sum;
 	}
 
@@ -120,7 +120,7 @@ public final class DoubleSummary implements Serializable {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
-	public double getMean() {
+	public double mean() {
 		return _mean;
 	}
 
@@ -149,7 +149,7 @@ public final class DoubleSummary implements Serializable {
 	public String toString() {
 		return String.format(
 			"DoubleSummary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s]",
-			getCount(), getMin(), getMax(), getSum(), getMean()
+			count(), min(), max(), sum(), mean()
 		);
 	}
 
@@ -244,9 +244,9 @@ public final class DoubleSummary implements Serializable {
 		if (values.length > 0) {
 			min = values[0];
 
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] < min) {
-					min = values[i];
+			for (double value : values) {
+				if (value < min) {
+					min = value;
 				}
 			}
 		}
@@ -269,9 +269,9 @@ public final class DoubleSummary implements Serializable {
 		if (values.length > 0) {
 			max = values[0];
 
-			for (int i = 0; i < values.length; ++i) {
-				if (values[i] > max) {
-					max = values[i];
+			for (double value : values) {
+				if (value > max) {
+					max = value;
 				}
 			}
 		}

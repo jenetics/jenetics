@@ -164,15 +164,17 @@ final class TreeParser {
 							token.pos, value
 						));
 					}
-					if (current.getValue() == null) {
-						current.setValue(mapper.apply(token.seq));
+					if (current.value() == null) {
+						current.value(mapper.apply(token.seq));
 					}
 					break;
 			}
 		}
 
 		if (!parents.isEmpty()) {
-			throw new IllegalArgumentException("Unbalanced parentheses.");
+			throw new IllegalArgumentException(
+				"Unbalanced parentheses: " + value
+			);
 		}
 
 		return root;

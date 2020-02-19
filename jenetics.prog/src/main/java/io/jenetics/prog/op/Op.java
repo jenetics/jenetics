@@ -60,7 +60,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 *
 	 * @return the name of the operation
 	 */
-	public String name();
+	String name();
 
 	/**
 	 * Return the arity of the operation function. If the arity is zero, the
@@ -68,7 +68,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 *
 	 * @return the arity of the operation
 	 */
-	public int arity();
+	int arity();
 
 	/**
 	 * Determines if the operation is a terminal operation.
@@ -76,7 +76,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 * @return {@code true} if the operation is a terminal operation,
 	 *         {@code false} otherwise
 	 */
-	public default boolean isTerminal() {
+	default boolean isTerminal() {
 		return arity() == 0;
 	}
 
@@ -90,7 +90,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 * @return {@code this} operation, or a new instance
 	 */
 	@Override
-	public default Op<T> get() {
+	default Op<T> get() {
 		return this;
 	}
 
@@ -109,7 +109,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 * @throws IllegalArgumentException if the given {@code arity} is smaller
 	 *         than zero
 	 */
-	public static <T> Op<T> of(
+	static <T> Op<T> of(
 		final String name,
 		final int arity,
 		final Function<T[], T> function
@@ -130,7 +130,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 * @throws NullPointerException if the given {@code name} or {@code function}
 	 *         is {@code null}
 	 */
-	public static <T> Op<T> of(
+	static <T> Op<T> of(
 		final String name,
 		final UnaryOperator<T> function
 	) {
@@ -151,7 +151,7 @@ public interface Op<T> extends Function<T[], T>, Supplier<Op<T>> {
 	 * @throws NullPointerException if the given {@code name} or {@code function}
 	 *         is {@code null}
 	 */
-	public static <T> Op<T> of(
+	static <T> Op<T> of(
 		final String name,
 		final BinaryOperator<T> function
 	) {

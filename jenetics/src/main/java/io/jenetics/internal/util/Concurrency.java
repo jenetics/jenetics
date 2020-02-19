@@ -167,7 +167,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void close() {
 			try {
-				for (Future<?> f : _futures) {
+				for (var f : _futures) {
 					f.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {
@@ -217,7 +217,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 		@Override
 		public void close() {
 			try {
-				for (FutureTask<?> t : _tasks) {
+				for (var t : _tasks) {
 					t.get();
 				}
 			} catch (InterruptedException|ExecutionException e) {

@@ -44,7 +44,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.0
+ * @version 6.0
  */
 public class TournamentSelector<
 	G extends Gene<?, G>,
@@ -85,7 +85,7 @@ public class TournamentSelector<
 	 *
 	 * @return the sample size of the tournament selector
 	 */
-	public int getSampleSize() {
+	public int sampleSize() {
 		return _sampleSize;
 	}
 
@@ -104,7 +104,7 @@ public class TournamentSelector<
 			));
 		}
 
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 		return population.isEmpty()
 			? ISeq.empty()
 			: MSeq.<Phenotype<G, C>>ofLength(count)

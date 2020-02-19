@@ -46,7 +46,7 @@ import io.jenetics.xml.stream.Reader.Type;
 /**
  * XML reader class, used for reading objects in XML format.
  *
- * <h3>XML</h3>
+ * <b>XML</b>
  * <pre> {@code
  * <int-chromosome length="3">
  *     <min>-2147483648</min>
@@ -59,7 +59,7 @@ import io.jenetics.xml.stream.Reader.Type;
  * </int-chromosome>
  * }</pre>
  *
- * <h3>Reader definition</h3>
+ * <b>Reader definition</b>
  * <pre>{@code
  * final Reader<IntegerChromosome> reader =
  *     elem(
@@ -95,7 +95,7 @@ public abstract class Reader<T> {
 	/**
 	 * Represents the XML element type.
 	 */
-	static enum Type {
+	enum Type {
 
 		/**
 		 * Denotes a element reader.
@@ -165,11 +165,10 @@ public abstract class Reader<T> {
 	public <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
-		return new Reader<B>(_name, _type) {
+		return new Reader<>(_name, _type) {
 			@Override
 			public B read(final XMLStreamReader xml)
-				throws XMLStreamException
-			{
+				throws XMLStreamException {
 				try {
 					return mapper.apply(Reader.this.read(xml));
 				} catch (RuntimeException e) {
@@ -375,7 +374,7 @@ public abstract class Reader<T> {
 	 * @return a list reader
 	 */
 	public static <T> Reader<List<T>> elems(final Reader<? extends T> reader) {
-		return new ListReader<T>(reader);
+		return new ListReader<>(reader);
 	}
 }
 
@@ -519,8 +518,8 @@ final class ElemReader<T> extends Reader<T> {
 			? results.get(_textReaderIndex[0])
 			: null;
 
-		for (int i = 0; i < _attrReaderIndexes.length; ++i) {
-			final ReaderResult result = results.get(_attrReaderIndexes[i]);
+		for (int i : _attrReaderIndexes) {
+			final ReaderResult result = results.get(i);
 			result.put(result.reader().read(xml));
 		}
 

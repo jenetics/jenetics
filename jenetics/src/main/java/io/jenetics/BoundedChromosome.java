@@ -30,7 +30,7 @@ package io.jenetics;
  * @see BoundedGene
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 1.6
  */
 public interface BoundedChromosome<
@@ -45,8 +45,8 @@ public interface BoundedChromosome<
 	 *
 	 * @return the minimum value of this {@code BoundedChromosome}.
 	 */
-	public default A getMin() {
-		return getGene().getMin();
+	default A min() {
+		return gene().min();
 	}
 
 	/**
@@ -54,8 +54,8 @@ public interface BoundedChromosome<
 	 *
 	 * @return the maximum value of this {@code BoundedChromosome}.
 	 */
-	public default A getMax() {
-		return getGene().getMax();
+	default A max() {
+		return gene().max();
 	}
 
 }
