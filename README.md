@@ -21,11 +21,11 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5
 ## Requirements
 
 ### Runtime
-*  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
+*  **JRE 11**: Java runtime version 11 is needed for using the library, respectively for running the examples.
 
 ### Build time
-*  **JDK 8**: The Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 5.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
+*  **JDK 11**: The Java [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
+*  **Gradle 6.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
