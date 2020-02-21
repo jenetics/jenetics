@@ -34,8 +34,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 
@@ -52,7 +50,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.9
  */
 public final class FlatTreeNode<T>
@@ -160,19 +158,6 @@ public final class FlatTreeNode<T>
 	@Override
 	public ISeq<FlatTreeNode<T>> flattenedNodes() {
 		return stream().collect(ISeq.toISeq());
-	}
-
-	/**
-	 * Return a stream of all nodes of the whole underlying tree. This method
-	 * call is equivalent to
-	 * <pre>{@code
-	 * final Stream<FlatTreeNode<T>> nodes = getRoot().breadthFirstStream();
-	 * }</pre>
-	 *
-	 * @return a stream of all nodes of the whole underlying tree
-	 */
-	public Stream<FlatTreeNode<T>> stream() {
-		return IntStream.range(0, _elements.length).mapToObj(this::nodeAt);
 	}
 
 	/**
