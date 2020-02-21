@@ -114,7 +114,7 @@ public final class TreeNode<T>
 	 *
 	 * @param parent this node's new parent
 	 */
-	void setParent(final TreeNode<T> parent) {
+	void parent(final TreeNode<T> parent) {
 		_parent = parent;
 	}
 
@@ -181,7 +181,7 @@ public final class TreeNode<T>
 			child._parent.remove(child);
 		}
 
-		child.setParent(this);
+		child.parent(this);
 		createChildrenIfMissing();
 		_children.add(index, child);
 
@@ -222,8 +222,8 @@ public final class TreeNode<T>
 		assert oldChild != null;
 		assert oldChild._parent == this;
 
-		oldChild.setParent(null);
-		child.setParent(this);
+		oldChild.parent(null);
+		child.parent(this);
 
 		return this;
 	}
@@ -246,7 +246,7 @@ public final class TreeNode<T>
 
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
-		child.setParent(null);
+		child.parent(null);
 
 		if (_children.isEmpty()) {
 			_children = null;
@@ -356,7 +356,7 @@ public final class TreeNode<T>
 	public void removeAllChildren() {
 		if (_children != null) {
 			for (TreeNode<T> child : _children) {
-				child.setParent(null);
+				child.parent(null);
 			}
 
 			_children = null;
