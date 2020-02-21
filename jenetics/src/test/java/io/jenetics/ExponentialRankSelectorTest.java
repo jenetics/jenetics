@@ -24,6 +24,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -122,7 +123,7 @@ public class ExponentialRankSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(0.95, 0.97, 0.975, 0.99, 0.995, 0.999, 0.9995, 0.9999),
+				List.of(0.95, 0.97, 0.975, 0.99, 0.995, 0.999, 0.9995, 0.9999),
 				ExponentialRankSelector::new,
 				opt,
 				npopulation,

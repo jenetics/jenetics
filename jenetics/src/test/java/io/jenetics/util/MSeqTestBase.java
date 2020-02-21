@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
@@ -191,7 +190,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = random.nextInt();
 		}
-		seq.setAll(Arrays.asList(array));
+		seq.setAll(List.of(array));
 
 		random.setSeed(seed);
 		for (int i = 0; i < seq.length(); ++i) {
@@ -208,7 +207,7 @@ public abstract class MSeqTestBase extends SeqTestBase {
 		for (int i = 0; i < array.length; ++i) {
 			array[i] = random.nextInt();
 		}
-		seq.setAll(Arrays.asList(array).iterator());
+		seq.setAll(List.of(array).iterator());
 
 		random.setSeed(seed);
 		for (int i = 0; i < seq.length(); ++i) {
