@@ -29,9 +29,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.jenetics.util.Copyable;
 import io.jenetics.util.ISeq;
@@ -137,6 +139,16 @@ public final class TreeNode<T>
 	@Override
 	public int childCount() {
 		return _children != null ? _children.size() : 0;
+	}
+
+	@Override
+	public Iterator<TreeNode<T>> childIterator() {
+		return _children.iterator();
+	}
+
+	@Override
+	public Stream<TreeNode<T>> childStream() {
+		return _children.stream();
 	}
 
 	/**
