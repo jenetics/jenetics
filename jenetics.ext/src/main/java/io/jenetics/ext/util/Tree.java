@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -104,8 +106,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return a stream of children of {@code this} node
 	 */
 	default Stream<T> childStream() {
-		return StreamSupport
-			.stream(spliteratorUnknownSize(childIterator(), 0), false);
+		return StreamSupport.stream(
+			Spliterators.spliterator(
+				childIterator(),
+				childCount(),
+				Spliterator.SIZED | Spliterator.ORDERED
+			),
+			false
+		);
 	}
 
 	/**
@@ -115,7 +123,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         otherwise
 	 */
 	default boolean isRoot() {
-		return !parent().isPresent();
+		return parent().isEmpty();
 	}
 
 	/**

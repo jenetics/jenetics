@@ -29,6 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -143,12 +144,16 @@ public final class TreeNode<T>
 
 	@Override
 	public Iterator<TreeNode<T>> childIterator() {
-		return _children.iterator();
+		return _children != null
+			? _children.iterator()
+			: Collections.emptyIterator();
 	}
 
 	@Override
 	public Stream<TreeNode<T>> childStream() {
-		return _children.stream();
+		return _children != null
+			? _children.stream()
+			: Stream.empty();
 	}
 
 	/**
