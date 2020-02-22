@@ -34,6 +34,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import io.jenetics.util.ISeq;
 
@@ -160,6 +162,13 @@ public final class FlatTreeNode<T>
 		return stream().collect(ISeq.toISeq());
 	}
 
+	@Override
+	public Stream<FlatTreeNode<T>> breadthFirstStream() {
+		return _index == 0
+			? IntStream.range(0, _elements.length).mapToObj(this::nodeAt)
+			: FlatTree.super.breadthFirstStream();
+	}
+
 	/**
 	 * Return a sequence of all <em>mapped</em> nodes of the whole underlying
 	 * tree. This is a convenient method for
@@ -216,7 +225,7 @@ public final class FlatTreeNode<T>
 	public int size() {
 		return _index == 0
 			? _elements.length
-			: countChildren( _index) + 1;
+			: countChildren(_index) + 1;
 	}
 
 	private int countChildren(final int index) {
