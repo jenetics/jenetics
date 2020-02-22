@@ -32,6 +32,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -55,9 +56,9 @@ import io.jenetics.util.ISeq;
  * @version 6.0
  * @since 3.9
  */
-public final class FlatTreeNode<T>
+public final class FlatTreeNode<V>
 	implements
-		FlatTree<T, FlatTreeNode<T>>,
+		FlatTree<V, FlatTreeNode<V>>,
 		Serializable
 {
 	private static final long serialVersionUID = 3L;
@@ -87,7 +88,7 @@ public final class FlatTreeNode<T>
 	 * @return the root of the tree that contains this node
 	 */
 	@Override
-	public FlatTreeNode<T> root() {
+	public FlatTreeNode<V> root() {
 		return nodeAt(0);
 	}
 
@@ -96,7 +97,7 @@ public final class FlatTreeNode<T>
 		return _index == 0;
 	}
 
-	private FlatTreeNode<T> nodeAt(final int index) {
+	private FlatTreeNode<V> nodeAt(final int index) {
 		return new FlatTreeNode<>(
 			index,
 			_elements,
@@ -107,12 +108,12 @@ public final class FlatTreeNode<T>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T value() {
-		return (T)_elements[_index];
+	public V value() {
+		return (V)_elements[_index];
 	}
 
 	@Override
-	public Optional<FlatTreeNode<T>> parent() {
+	public Optional<FlatTreeNode<V>> parent() {
 		int index = -1;
 		for (int i = _index; --i >= 0 && index == -1;) {
 			if (isParent(i)) {
@@ -132,7 +133,7 @@ public final class FlatTreeNode<T>
 	}
 
 	@Override
-	public FlatTreeNode<T> childAt(final int index) {
+	public FlatTreeNode<V> childAt(final int index) {
 		if (index < 0 || index >= childCount()) {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
 		}
@@ -158,12 +159,19 @@ public final class FlatTreeNode<T>
 	}
 
 	@Override
-	public ISeq<FlatTreeNode<T>> flattenedNodes() {
+	public ISeq<FlatTreeNode<V>> flattenedNodes() {
 		return stream().collect(ISeq.toISeq());
 	}
 
 	@Override
-	public Stream<FlatTreeNode<T>> breadthFirstStream() {
+	public Iterator<FlatTreeNode<V>> breadthFirstIterator() {
+		return _index == 0
+			? new IntIterator<>(_elements.length, this::nodeAt)
+			: FlatTree.super.breadthFirstIterator();
+	}
+
+	@Override
+	public Stream<FlatTreeNode<V>> breadthFirstStream() {
 		return _index == 0
 			? IntStream.range(0, _elements.length).mapToObj(this::nodeAt)
 			: FlatTree.super.breadthFirstStream();
@@ -183,7 +191,7 @@ public final class FlatTreeNode<T>
 	 * @return a sequence of all <em>mapped</em> nodes
 	 */
 	public <B> ISeq<B>
-	map(final Function<? super FlatTreeNode<T>, ? extends B> mapper) {
+	map(final Function<? super FlatTreeNode<V>, ? extends B> mapper) {
 		return stream()
 			.map(mapper)
 			.collect(ISeq.toISeq());
@@ -351,7 +359,7 @@ public final class FlatTreeNode<T>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		final FlatTreeNode<T> node = _index == 0 ? this : of(this);
+		final FlatTreeNode<V> node = _index == 0 ? this : of(this);
 
 		writeObjectArray(node._elements, out);
 		writeIntArray(node._childOffsets, out);
