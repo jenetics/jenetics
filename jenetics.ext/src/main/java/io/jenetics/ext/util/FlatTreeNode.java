@@ -173,7 +173,8 @@ public final class FlatTreeNode<T>
 	 * @param <B> the mapped type
 	 * @return a sequence of all <em>mapped</em> nodes
 	 */
-	public <B> ISeq<B> map(final Function<FlatTreeNode<T>, ? extends B> mapper) {
+	public <B> ISeq<B>
+	map(final Function<? super FlatTreeNode<T>, ? extends B> mapper) {
 		return stream()
 			.map(mapper)
 			.collect(ISeq.toISeq());
