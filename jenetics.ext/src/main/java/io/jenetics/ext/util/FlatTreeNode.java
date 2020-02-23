@@ -244,6 +244,10 @@ public final class FlatTreeNode<V>
 		return count;
 	}
 
+	/* *************************************************************************
+	 *  Static factories
+	 * ************************************************************************/
+
 	/**
 	 * Create a new, immutable {@code FlatTreeNode} from the given {@code tree}.
 	 *
@@ -359,7 +363,9 @@ public final class FlatTreeNode<V>
 
 
 	void write(final ObjectOutput out) throws IOException {
-		final FlatTreeNode<V> node = _index == 0 ? this : of(this);
+		final FlatTreeNode<V> node = _index == 0
+			? this
+			: FlatTreeNode.of(this);
 
 		writeObjectArray(node._elements, out);
 		writeIntArray(node._childOffsets, out);
