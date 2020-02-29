@@ -262,8 +262,8 @@ public final class Engine<
 		);
 		if (!UnaryOperator.identity().equals(_mapper)) {
 			final EvolutionResult<G, C> mapped = _mapper.apply(er);
-			er = er.withPopulation(timing.evaluation.timing(() ->
-				evaluate(mapped.population())
+			er = er.withPopulation(
+				timing.evaluation.timing(() -> evaluate(mapped.population())
 			));
 		}
 
