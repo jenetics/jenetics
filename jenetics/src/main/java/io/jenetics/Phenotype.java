@@ -49,6 +49,9 @@ import io.jenetics.util.Verifiable;
  * @implNote
  * This class is immutable and thread-safe.
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 6.0

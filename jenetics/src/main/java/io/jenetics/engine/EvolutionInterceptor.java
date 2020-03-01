@@ -19,14 +19,25 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Function;
 
 import io.jenetics.Gene;
 
 /**
+ * The evolution interceptor allows to update the {@link EvolutionStart} object,
+ * <em>before</em> the evolution start, and update the {@link EvolutionResult}
+ * object <em>after</em>> the evolution.
  *
- * @param <G>
- * @param <C>
+ *
+ * @since !__version__!
+ *
+ * @see EvolutionResult#toUniquePopulation()
+ * @see Engine.Builder#interceptor(EvolutionInterceptor)
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -37,16 +48,49 @@ public interface EvolutionInterceptor<
 	C extends Comparable<? super C>
 > {
 
+	/**
+	 * This method is called right before the evaluation of a generation is
+	 * started.
+	 *
+	 * @param start the evolution start object
+	 * @return the possible <em>update</em> evolution start object
+	 * @throws NullPointerException if the evolution {@code start} object is
+	 *         {@code null}
+	 */
 	EvolutionStart<G, C> before(final EvolutionStart<G, C> start);
 
+	/**
+	 * This method is called after the evaluation of a generation. If this
+	 * method alters the evolution result object, the population within this
+	 * result object is re-evaluated.
+	 *
+	 * @param result the evolution result object to update
+	 * @return the possible <em>updated</em> evolution result object
+	 * @throws NullPointerException if the evolution {@code result} object is
+	 *         {@code null}
+	 */
 	EvolutionResult<G, C> after(final EvolutionResult<G, C> result);
 
 
+	/**
+	 * Create a new interceptor instance with the given {@code before} and
+	 * {@code after} functions.
+	 *
+	 * @param before the function executed before each evolution step
+	 * @param after the function executed after each evolution step
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a new interceptor instance with the given interceptor functions
+	 * @throws NullPointerException if one of the functions is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C> of(
 		final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before,
 		final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after
 	) {
+		requireNonNull(before);
+		requireNonNull(after);
+
 		return new EvolutionInterceptor<G, C>() {
 			@Override
 			public EvolutionStart<G, C> before(final EvolutionStart<G, C> start) {
@@ -60,21 +104,46 @@ public interface EvolutionInterceptor<
 		};
 	}
 
+	/**
+	 * Create a new interceptor instance with the given {@code before} function.
+	 *
+	 * @param before the function executed before each evolution step
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a new interceptor instance with the given interceptor function
+	 * @throws NullPointerException if the function is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofBefore(final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before) {
 		return of(before, Function.identity());
 	}
 
+	/**
+	 * Create a new interceptor instance with the given {@code after} function.
+	 *
+	 * @param after the function executed after each evolution step
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a new interceptor instance with the given interceptor function
+	 * @throws NullPointerException if the function is {@code null}
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C>
 	ofAfter(final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after) {
 		return of(Function.identity(), after);
 	}
 
-
+	/**
+	 * Return an interceptor object which does nothing.
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 * @return a new <em>identity</em> interceptor
+	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionInterceptor<G, C> identity() {
 		return of(Function.identity(), Function.identity());
 	}
+
 }
