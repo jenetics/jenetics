@@ -270,7 +270,7 @@ public class EngineTest {
 		final Engine<IntegerGene, Integer> engine = Engine
 			.builder(a -> a.gene().allele(), IntegerChromosome.of(0, 10))
 			.populationSize(populationSize)
-			.mapping(EvolutionResult.toUniquePopulation(
+			.interceptor(EvolutionResult.toUniquePopulation(
 				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))))
 			.build();
 

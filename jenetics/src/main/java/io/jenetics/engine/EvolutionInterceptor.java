@@ -19,6 +19,8 @@
  */
 package io.jenetics.engine;
 
+import java.util.function.Function;
+
 import io.jenetics.Gene;
 
 /**
@@ -39,4 +41,40 @@ public interface EvolutionInterceptor<
 
 	EvolutionResult<G, C> after(final EvolutionResult<G, C> result);
 
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionInterceptor<G, C> of(
+		final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before,
+		final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after
+	) {
+		return new EvolutionInterceptor<G, C>() {
+			@Override
+			public EvolutionStart<G, C> before(final EvolutionStart<G, C> start) {
+				return before.apply(start);
+			}
+
+			@Override
+			public EvolutionResult<G, C> after(final EvolutionResult<G, C> result) {
+				return after.apply(result);
+			}
+		};
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionInterceptor<G, C>
+	ofBefore(final Function<? super EvolutionStart<G, C>, EvolutionStart<G, C>> before) {
+		return of(before, Function.identity());
+	}
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionInterceptor<G, C>
+	ofAfter(final Function<? super EvolutionResult<G, C>, EvolutionResult<G, C>> after) {
+		return of(Function.identity(), after);
+	}
+
+
+	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionInterceptor<G, C> identity() {
+		return of(Function.identity(), Function.identity());
+	}
 }
