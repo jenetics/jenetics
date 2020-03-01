@@ -216,6 +216,18 @@ public final class Phenotype<
 	}
 
 	/**
+	 * Return a phenotype, where the fitness is set to {@code null}. If
+	 * {@code this} phenotype isn't evaluated, {@code this} instance is returned.
+	 *
+	 * @since !__version__!
+	 *
+	 * @return a phenotype, where the fitness is set to {@code null}
+	 */
+	public Phenotype<G, C> reset() {
+		return _fitness != null ? of(_genotype, _generation) : this;
+	}
+
+	/**
 	 * Test whether this phenotype is valid. The phenotype is valid if its
 	 * {@link Genotype} is valid.
 	 *
