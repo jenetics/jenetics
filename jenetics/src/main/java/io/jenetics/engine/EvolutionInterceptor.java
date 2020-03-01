@@ -28,10 +28,7 @@ import io.jenetics.Gene;
 /**
  * The evolution interceptor allows to update the {@link EvolutionStart} object,
  * <em>before</em> the evolution start, and update the {@link EvolutionResult}
- * object <em>after</em>> the evolution.
- *
- *
- * @since !__version__!
+ * object <em>after</em> the evolution.
  *
  * @see EvolutionResult#toUniquePopulation()
  * @see Engine.Builder#interceptor(EvolutionInterceptor)
@@ -91,7 +88,7 @@ public interface EvolutionInterceptor<
 		requireNonNull(before);
 		requireNonNull(after);
 
-		return new EvolutionInterceptor<G, C>() {
+		return new EvolutionInterceptor<>() {
 			@Override
 			public EvolutionStart<G, C> before(final EvolutionStart<G, C> start) {
 				return before.apply(start);
