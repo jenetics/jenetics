@@ -113,7 +113,8 @@ public final class Engine<
 >
 	implements
 		Evolution<G, C>,
-		EvolutionStreamable<G, C>
+		EvolutionStreamable<G, C>,
+		Evaluator<G, C>
 {
 
 	// Problem definition.
@@ -184,7 +185,7 @@ public final class Engine<
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> population = es.isDirty()
-			? timing.evaluation.timing(() -> evaluate(es.population()))
+			? timing.evaluation.timing(() -> eval(es.population()))
 			: es.population();
 
 		// Select the offspring population.
@@ -243,7 +244,7 @@ public final class Engine<
 		// Evaluate the fitness-function and wait for result.
 		final ISeq<Phenotype<G, C>> pop = nextPopulation.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
-			evaluate(pop)
+			eval(pop)
 		);
 
 		final int killCount =
@@ -270,7 +271,7 @@ public final class Engine<
 		if (er != interceptedResult) {
 			er = interceptedResult.withPopulation(
 				timing.evaluation.timing(() ->
-					evaluate(interceptedResult.population())
+					eval(interceptedResult.population())
 			));
 		}
 
@@ -347,7 +348,8 @@ public final class Engine<
 	 *         This exception is also thrown if one of the populations
 	 *         phenotype has no fitness value assigned.
 	 */
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
+	@Override
+	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population) {
 		final ISeq<Phenotype<G, C>> evaluated = _evaluator.eval(population);
 
 		if (population.size() != evaluated.size()) {
