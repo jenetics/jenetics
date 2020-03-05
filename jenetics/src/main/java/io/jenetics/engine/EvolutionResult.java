@@ -634,7 +634,6 @@ public final class EvolutionResult<
 	 * ************************************************************************/
 
 
-
 	/**
 	 * Return a mapping function, which removes duplicate individuals from the
 	 * population and replaces it with newly created one by the given genotype

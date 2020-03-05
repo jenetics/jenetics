@@ -108,7 +108,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 6.0
+ * @version !__version__!
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -672,7 +672,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.2
+	 * @version !__version__!
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
