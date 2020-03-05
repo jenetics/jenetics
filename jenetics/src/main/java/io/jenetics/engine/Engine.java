@@ -176,15 +176,15 @@ public final class Engine<
 
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
+		final EvolutionTiming timing = new EvolutionTiming(_clock);
+		timing.evolve.start();
+
 		final EvolutionStart<G, C> interceptedStart = _interceptor.before(start);
 
 		// Create initial population if `start` is empty.
 		final EvolutionStart<G, C> es = interceptedStart.population().isEmpty()
 			? evolutionStart(interceptedStart)
 			: interceptedStart;
-
-		final EvolutionTiming timing = new EvolutionTiming(_clock);
-		timing.evolve.start();
 
 		// Initial evaluation of the population.
 		final ISeq<Phenotype<G, C>> population = es.isDirty()
