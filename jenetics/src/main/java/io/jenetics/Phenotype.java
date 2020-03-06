@@ -226,7 +226,7 @@ public final class Phenotype<
 	 *
 	 * @return a phenotype, where the fitness is set to {@code null}
 	 */
-	public Phenotype<G, C> reset() {
+	public Phenotype<G, C> discard() {
 		return _fitness != null ? of(_genotype, _generation) : this;
 	}
 
