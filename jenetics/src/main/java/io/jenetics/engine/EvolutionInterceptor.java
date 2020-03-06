@@ -54,7 +54,9 @@ public interface EvolutionInterceptor<
 	 * @throws NullPointerException if the evolution {@code start} object is
 	 *         {@code null}
 	 */
-	EvolutionStart<G, C> before(final EvolutionStart<G, C> start);
+	default EvolutionStart<G, C> before(final EvolutionStart<G, C> start) {
+		return start;
+	}
 
 	/**
 	 * This method is called after the evaluation of a generation. If this
@@ -66,7 +68,9 @@ public interface EvolutionInterceptor<
 	 * @throws NullPointerException if the evolution {@code result} object is
 	 *         {@code null}
 	 */
-	EvolutionResult<G, C> after(final EvolutionResult<G, C> result);
+	default EvolutionResult<G, C> after(final EvolutionResult<G, C> result) {
+		return result;
+	}
 
 
 	/**
