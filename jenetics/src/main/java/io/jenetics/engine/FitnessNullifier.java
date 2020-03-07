@@ -25,15 +25,16 @@ import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 
 /**
+ * This
  *
- * @param <G>
- * @param <C>
+ * @param <G> the gene type
+ * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
  * @version !__version__!
  */
-public final class Invalidator<
+public final class FitnessNullifier<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -55,7 +56,7 @@ public final class Invalidator<
 		);
 	}
 
-	public void invalid() {
+	public void nullifyFitness() {
 		_invalid.set(true);
 	}
 
