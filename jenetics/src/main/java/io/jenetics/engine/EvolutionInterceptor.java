@@ -72,6 +72,27 @@ public interface EvolutionInterceptor<
 		return result;
 	}
 
+	/**
+	 * Composes {@code this} interceptor with the {@code other} one. The
+	 * {@link #before(EvolutionStart)} of {@code this} interceptor is called
+	 * <em>after</em> the {@code before} method of the {@code other} interceptor.
+	 * And the {@link #after(EvolutionResult)} of {@code this} interceptor is
+	 * called <em>before</em> the {@code after} method of the {@code other}
+	 * interceptor.
+	 *
+	 * @param other the other, composing interceptor
+	 * @return a new, composed interceptor
+	 * @throws NullPointerException if the {@code other} interceptor is
+	 *         {@code null}
+	 */
+	default EvolutionInterceptor<G, C>
+	compose(final EvolutionInterceptor<G, C> other) {
+		requireNonNull(other);
+		return EvolutionInterceptor.of(
+			start -> before(other.before(start)),
+			result -> other.after(after(result))
+		);
+	}
 
 	/**
 	 * Create a new interceptor instance with the given {@code before} and
