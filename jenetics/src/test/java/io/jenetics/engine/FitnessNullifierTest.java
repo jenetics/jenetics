@@ -57,7 +57,8 @@ public class FitnessNullifierTest {
 			.peek(er -> {
 				if (er.generation() == nullifiedGeneration) {
 					nullifier.nullifyFitness();
-				} })
+				}
+			})
 			.limit(6)
 			.forEach(er -> {});
 
