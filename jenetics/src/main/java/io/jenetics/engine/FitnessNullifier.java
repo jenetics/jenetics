@@ -48,6 +48,8 @@ import io.jenetics.Phenotype;
  * This interceptor is thread-safe and can be used from different threads. No
  * additional synchronization is needed.
  *
+ * @see Phenotype#nullifyFitness()
+ *
  * @param <G> the gene type
  * @param <C> the fitness result type
  *
