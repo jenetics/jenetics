@@ -34,15 +34,13 @@ import io.jenetics.Phenotype;
  * <pre>{@code
  * final var nullifier = new FitnessNullifier<DoubleGene, Double>();
  *
- * final Engine<DoubleGene, Double> engine =
- * 	new Engine.Builder<>(evaluator, genotype)
- * 		.interceptor(nullifier)
- * 		.populationSize(populationSize)
- * 		.build();
+ * final Engine<DoubleGene, Double> engine = Engine.builder(problem)
+ *     .interceptor(nullifier)
+ *     .build();
  *
  * // Invalidate fitness value by calling the 'nullifyFitness' method,
  * // possible from a different thread. This forces the reevaluation of
- * // the fitness values at the next generation.
+ * // the fitness values at the start of the next generation.
  * nullifier.nullifyFitness();
  * }</pre>
  *
@@ -62,6 +60,17 @@ public final class FitnessNullifier<
 
 	private final AtomicBoolean _invalid = new AtomicBoolean(false);
 
+	/**
+	 * Nullifies the fitness values of the population, if requested. The
+	 * <em>nullification flag</em> is reset after this call. Two consecutive
+	 * calls of this method might lead to two different results.
+	 *
+	 * @see #nullifyFitness()
+	 *
+	 * @param start the evolution start object
+	 * @return the evolution start object with the nullified fitness values,
+	 *         if the nullification has been triggered
+	 */
 	@Override
 	public EvolutionStart<G, C> before(final EvolutionStart<G, C> start) {
 		final boolean invalid = _invalid.getAndSet(false);
@@ -75,6 +84,12 @@ public final class FitnessNullifier<
 		);
 	}
 
+	/**
+	 * Triggers the nullification of the fitness values of the population for
+	 * the next generation.
+	 *
+	 * @see #before(EvolutionStart)
+	 */
 	public void nullifyFitness() {
 		_invalid.set(true);
 	}
