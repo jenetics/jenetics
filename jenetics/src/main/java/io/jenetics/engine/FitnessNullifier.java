@@ -25,7 +25,26 @@ import io.jenetics.Gene;
 import io.jenetics.Phenotype;
 
 /**
- * This
+ * This class allows to force a reevaluation of the fitness function. A
+ * reevaluation is necessary, if the fitness function changes. Changing the
+ * fitness function is not the usual use case, but is necessary for some
+ * problems, like symbolic regression analyses with changing input data (time
+ * series).
+ *
+ * <pre>{@code
+ * final var nullifier = new FitnessNullifier<DoubleGene, Double>();
+ *
+ * final Engine<DoubleGene, Double> engine =
+ * 	new Engine.Builder<>(evaluator, genotype)
+ * 		.interceptor(nullifier)
+ * 		.populationSize(populationSize)
+ * 		.build();
+ *
+ * // Invalidate fitness value by calling the 'nullifyFitness' method,
+ * // possible from a different thread. This forces the reevaluation of
+ * // the fitness values at the next generation.
+ * nullifier.nullifyFitness();
+ * }</pre>
  *
  * @param <G> the gene type
  * @param <C> the fitness result type
