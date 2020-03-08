@@ -574,7 +574,7 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param factory the genotype factory which create new individuals
@@ -649,7 +649,7 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param factory the genotype factory which create new individuals
@@ -681,7 +681,7 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestGenotype(5));
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param maxRetries the maximal number of genotype creation tries
@@ -716,7 +716,7 @@ public final class EvolutionResult<
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param <G> the gene type

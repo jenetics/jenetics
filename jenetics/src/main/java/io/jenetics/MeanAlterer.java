@@ -30,7 +30,7 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version !__version__!
+ * @version 6.0
  */
 public class MeanAlterer<
 	G extends Gene<?, G> & Mean<G>,

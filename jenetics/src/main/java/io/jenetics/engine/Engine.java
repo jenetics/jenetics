@@ -108,7 +108,7 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 6.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
@@ -543,7 +543,7 @@ public final class Engine<
 	/**
 	 * Return the evolution interceptor.
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 *
 	 * @return the evolution result mapper
 	 */
@@ -672,7 +672,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version !__version__!
+	 * @version 6.0
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -989,7 +989,7 @@ public final class Engine<
 		 * The evolution interceptor, which allows to change the evolution start
 		 * and result.
 		 *
-		 * @since !__version__!
+		 * @since 6.0
 		 * @see EvolutionResult#toUniquePopulation()
 		 *
 		 * @param interceptor the evolution interceptor
@@ -1172,7 +1172,7 @@ public final class Engine<
 		/**
 		 * Return the evolution interceptor.
 		 *
-		 * @since !__version__!
+		 * @since 6.0
 		 *
 		 * @return the evolution interceptor
 		 */

@@ -222,7 +222,7 @@ public final class Phenotype<
 	 * Return a phenotype, where the fitness is set to {@code null}. If
 	 * {@code this} phenotype isn't evaluated, {@code this} instance is returned.
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 *
 	 * @return a phenotype, where the fitness is set to {@code null}
 	 */

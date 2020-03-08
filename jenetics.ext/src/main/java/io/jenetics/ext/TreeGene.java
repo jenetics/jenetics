@@ -29,7 +29,7 @@ import io.jenetics.ext.util.FlatTree;
  * storage layout explicit.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 6.0
  * @since 3.9
  */
 public interface TreeGene<A, G extends TreeGene<A, G>>
@@ -64,7 +64,7 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 	/**
 	 * Return a new tree gene from the given flat tree node.
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 *
 	 * @param tree the flat tree node
 	 * @return a new tree gene from the given flat tree node

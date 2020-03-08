@@ -39,8 +39,8 @@ import io.jenetics.util.RandomRegistry;
  * </p>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 6.0
+ * @version 6.0
  */
 public class CombineAlterer<
 	G extends Gene<?, G>,

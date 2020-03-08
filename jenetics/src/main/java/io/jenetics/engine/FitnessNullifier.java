@@ -54,8 +54,8 @@ import io.jenetics.Phenotype;
  * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 6.0
+ * @version 6.0
  */
 public final class FitnessNullifier<
 	G extends Gene<?, G>,
