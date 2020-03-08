@@ -56,7 +56,8 @@ public class FitnessNullifierTest {
 		engine.stream()
 			.peek(er -> {
 				if (er.generation() == nullifiedGeneration) {
-					nullifier.nullifyFitness();
+					Assert.assertTrue(nullifier.nullifyFitness());
+					Assert.assertFalse(nullifier.nullifyFitness());
 				}
 			})
 			.limit(6)
