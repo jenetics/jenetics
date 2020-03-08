@@ -29,7 +29,7 @@ import io.jenetics.ext.util.FlatTree;
  * storage layout explicit.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 6.0
+ * @version !__version__!
  * @since 3.9
  */
 public interface TreeGene<A, G extends TreeGene<A, G>>
@@ -60,5 +60,23 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 		final int childOffset,
 		final int childCount
 	);
+
+	/**
+	 * Return a new tree gene from the given flat tree node.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param tree the flat tree node
+	 * @return a new tree gene from the given flat tree node
+	 * @throws NullPointerException if the given {@code tree} node is
+	 *         {@code null}
+	 */
+	default G newInstance(final FlatTree<? extends A, ?> tree) {
+		return newInstance(
+			tree.value(),
+			tree.childOffset(),
+			tree.childCount()
+		);
+	}
 
 }

@@ -44,6 +44,7 @@ public abstract class TreeMutator<
 >
 	extends Mutator<G, C>
 {
+
 	public TreeMutator() {
 		this(DEFAULT_ALTER_PROBABILITY);
 	}
@@ -78,19 +79,8 @@ public abstract class TreeMutator<
 		mutate(tree);
 
 		final var flat = FlatTreeNode.of(tree);
-		final var genes = flat.map(t -> gene(chromosome.gene(), t));
+		final var genes = flat.map(t -> chromosome.gene().newInstance(t));
 		return MutatorResult.of(chromosome.newInstance(genes), 1);
-	}
-
-	private G gene(
-		final G template,
-		final FlatTree<? extends A, ?> tree
-	) {
-		return template.newInstance(
-			tree.value(),
-			tree.childOffset(),
-			tree.childCount()
-		);
 	}
 
 	/**
