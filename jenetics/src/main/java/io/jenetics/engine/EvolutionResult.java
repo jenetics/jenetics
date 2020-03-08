@@ -21,6 +21,7 @@ package io.jenetics.engine;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toMap;
+import static io.jenetics.engine.EvolutionInterceptor.ofAfter;
 import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.readLong;
@@ -36,7 +37,6 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -94,6 +94,8 @@ public final class EvolutionResult<
 	private final int _invalidCount;
 	private final int _alterCount;
 
+	private final boolean _dirty;
+
 	private final Lazy<Phenotype<G, C>> _best;
 	private final Lazy<Phenotype<G, C>> _worst;
 
@@ -105,7 +107,8 @@ public final class EvolutionResult<
 		final EvolutionDurations durations,
 		final int killCount,
 		final int invalidCount,
-		final int alterCount
+		final int alterCount,
+		final boolean dirty
 	) {
 		_optimize = requireNonNull(optimize);
 		_population = requireNonNull(population);
@@ -115,6 +118,7 @@ public final class EvolutionResult<
 		_killCount = killCount;
 		_invalidCount = invalidCount;
 		_alterCount = alterCount;
+		_dirty = dirty;
 
 		_best = Lazy.of(() -> _population.stream()
 			.max(_optimize.ascending())
@@ -257,7 +261,7 @@ public final class EvolutionResult<
 	 * @return the next evolution start object
 	 */
 	public EvolutionStart<G, C> next() {
-		return EvolutionStart.of(_population, _totalGenerations + 1);
+		return new EvolutionStart<>(_population, _totalGenerations + 1, _dirty);
 	}
 
 	/**
@@ -269,7 +273,7 @@ public final class EvolutionResult<
 	 * @return the current result as evolution start
 	 */
 	public EvolutionStart<G, C> toEvolutionStart() {
-		return EvolutionStart.of(_population, _totalGenerations);
+		return new EvolutionStart<>(_population, _totalGenerations, _dirty);
 	}
 
 	public EvolutionResult<G, C>
@@ -300,7 +304,7 @@ public final class EvolutionResult<
 	}
 
 	private EvolutionResult<G, C> withTotalGenerations(final long total) {
-		return of(
+		return EvolutionResult.of(
 			_optimize,
 			_population,
 			_generation,
@@ -309,6 +313,46 @@ public final class EvolutionResult<
 			_killCount,
 			_invalidCount,
 			_alterCount
+		);
+	}
+
+	EvolutionResult<G, C> withPopulation(final ISeq<Phenotype<G, C>> population) {
+		return EvolutionResult.of(
+			optimize(),
+			population,
+			generation(),
+			totalGenerations(),
+			durations(),
+			killCount(),
+			invalidCount(),
+			alterCount()
+		);
+	}
+
+	EvolutionResult<G, C> withDurations(final EvolutionDurations durations) {
+		return EvolutionResult.of(
+			optimize(),
+			population(),
+			generation(),
+			totalGenerations(),
+			durations,
+			killCount(),
+			invalidCount(),
+			alterCount()
+		);
+	}
+
+	EvolutionResult<G, C> clean() {
+		return new EvolutionResult<>(
+			optimize(),
+			population(),
+			generation(),
+			totalGenerations(),
+			durations(),
+			killCount(),
+			invalidCount(),
+			alterCount(),
+			false
 		);
 	}
 
@@ -537,15 +581,15 @@ public final class EvolutionResult<
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	 *     .mapping(EvolutionResult.toUniquePopulation(problem.codec().encoding(), 100))
+	 *     .interceptor(toUniquePopulation(problem.codec().encoding(), 100))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since 4.0
-	 * @see Engine.Builder#mapping(Function)
+	 * @since 6.0
+	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param maxRetries the maximal number of genotype creation tries
@@ -557,74 +601,51 @@ public final class EvolutionResult<
 	 *         {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	UnaryOperator<EvolutionResult<G, C>>
+	EvolutionInterceptor<G, C>
 	toUniquePopulation(final Factory<Genotype<G>> factory, final int maxRetries) {
 		requireNonNull(factory);
+		return ofAfter(result -> uniquePopulation(factory, maxRetries, result));
+	}
 
-		return result -> {
-			final Seq<Phenotype<G, C>> population = result.population();
-			final Map<Genotype<G>, Phenotype<G, C>> elements =
-				population.stream()
-					.collect(toMap(
-						Phenotype::genotype,
-						Function.identity(),
-						(a, b) -> a));
+	private static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	EvolutionResult<G, C> uniquePopulation(
+		final Factory<Genotype<G>> factory,
+		final int maxRetries,
+		final EvolutionResult<G, C> result
+	) {
+		final Seq<Phenotype<G, C>> population = result.population();
+		final Map<Genotype<G>, Phenotype<G, C>> elements =
+			population.stream()
+				.collect(toMap(
+					Phenotype::genotype,
+					Function.identity(),
+					(a, b) -> a));
 
-			EvolutionResult<G, C> uniques = result;
-			if (elements.size() < population.size()) {
-				int retries = 0;
-				while (elements.size() < population.size() && retries < maxRetries) {
-					final Genotype<G> gt = factory.newInstance();
-					final Phenotype<G, C> pt = elements
-						.put(gt, Phenotype.of(gt, result.generation()));
-
-					if (pt != null) {
-						++retries;
-					}
+		EvolutionResult<G, C> uniques = result;
+		if (elements.size() < population.size()) {
+			int retries = 0;
+			while (elements.size() < population.size() && retries < maxRetries) {
+				final Genotype<G> gt = factory.newInstance();
+				final Phenotype<G, C> pt = elements
+					.put(gt, Phenotype.of(gt, result.generation()));
+				if (pt != null) {
+					++retries;
 				}
-
-				uniques = result.with(
-					Stream.concat(elements.values().stream(), population.stream())
-						.limit(population.size())
-						.collect(ISeq.toISeq())
-				);
 			}
+			uniques = result.withPopulation(
+				Stream.concat(elements.values().stream(), population.stream())
+					.limit(population.size())
+					.collect(ISeq.toISeq())
+			);
+		}
 
-			return uniques;
-		};
-	}
-
-	EvolutionResult<G, C> with(final ISeq<Phenotype<G, C>> population) {
-		return EvolutionResult.of(
-			optimize(),
-			population,
-			generation(),
-			totalGenerations(),
-			durations(),
-			killCount(),
-			invalidCount(),
-			alterCount()
-		);
-	}
-
-	EvolutionResult<G, C> with(final EvolutionDurations durations) {
-		return EvolutionResult.of(
-			optimize(),
-			population(),
-			generation(),
-			totalGenerations(),
-			durations,
-			killCount(),
-			invalidCount(),
-			alterCount()
-		);
+		return uniques;
 	}
 
 
 	/* *************************************************************************
 	 * Some collectors and mapping functions.
 	 * ************************************************************************/
-
 
 
 	/**
@@ -635,15 +656,15 @@ public final class EvolutionResult<
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	 *     .mapping(EvolutionResult.toUniquePopulation(problem.codec().encoding()))
+	 *     .interceptor(toUniquePopulation(problem.codec().encoding()))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since 4.0
-	 * @see Engine.Builder#mapping(Function)
+	 * @since 6.0
+	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param factory the genotype factory which create new individuals
 	 * @param <G> the gene type
@@ -654,7 +675,7 @@ public final class EvolutionResult<
 	 *         {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	UnaryOperator<EvolutionResult<G, C>>
+	EvolutionInterceptor<G, C>
 	toUniquePopulation(final Factory<Genotype<G>> factory) {
 		return toUniquePopulation(factory, 100);
 	}
@@ -667,15 +688,15 @@ public final class EvolutionResult<
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	 *     .mapping(EvolutionResult.toUniquePopulation(10))
+	 *     .interceptor(toUniquePopulation(10))
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
 	 *     .collect(EvolutionResult.toBestGenotype(5));
 	 * }</pre>
 	 *
-	 * @since 4.0
-	 * @see Engine.Builder#mapping(Function)
+	 * @since 6.0
+	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param maxRetries the maximal number of genotype creation tries
 	 * @param <G> the gene type
@@ -686,17 +707,12 @@ public final class EvolutionResult<
 	 *         {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	UnaryOperator<EvolutionResult<G, C>> toUniquePopulation(final int maxRetries) {
-		return result -> {
-			final Factory<Genotype<G>> factory = result
-				.population().get(0)
-				.genotype();
-
-			final UnaryOperator<EvolutionResult<G, C>> unifier =
-				toUniquePopulation(factory, maxRetries);
-
-			return unifier.apply(result);
-		};
+	EvolutionInterceptor<G, C> toUniquePopulation(final int maxRetries) {
+		return ofAfter(result -> uniquePopulation(
+			result.population().get(0).genotype(),
+			maxRetries,
+			result
+		));
 	}
 
 	/**
@@ -707,15 +723,15 @@ public final class EvolutionResult<
 	 * <pre>{@code
 	 * final Problem<Double, DoubleGene, Integer> problem = ...;
 	 * final Engine<DoubleGene, Integer> engine = Engine.builder(problem)
-	 *     .mapping(EvolutionResult.toUniquePopulation())
+	 *     .interceptor(EvolutionResult.toUniquePopulation())
 	 *     .build();
 	 * final Genotype<DoubleGene> best = engine.stream()
 	 *     .limit(100);
 	 *     .collect(EvolutionResult.toBestGenotype());
 	 * }</pre>
 	 *
-	 * @since 4.0
-	 * @see Engine.Builder#mapping(Function)
+	 * @since 6.0
+	 * @see Engine.Builder#interceptor(EvolutionInterceptor)
 	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness function result type
@@ -725,17 +741,12 @@ public final class EvolutionResult<
 	 *         {@code null}
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	UnaryOperator<EvolutionResult<G, C>> toUniquePopulation() {
-		return result -> {
-			final Factory<Genotype<G>> factory = result
-				.population().get(0)
-				.genotype();
-
-			final UnaryOperator<EvolutionResult<G, C>> unifier =
-				toUniquePopulation(factory);
-
-			return unifier.apply(result);
-		};
+	EvolutionInterceptor<G, C> toUniquePopulation() {
+		return ofAfter(result -> uniquePopulation(
+			result.population().get(0).genotype(),
+			100,
+			result
+		));
 	}
 
 	/**
@@ -775,7 +786,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			true
 		);
 	}
 
@@ -814,7 +826,8 @@ public final class EvolutionResult<
 			durations,
 			killCount,
 			invalidCount,
-			alterCount
+			alterCount,
+			true
 		);
 	}
 
@@ -845,7 +858,7 @@ public final class EvolutionResult<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionResult read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionResult<>(
@@ -856,7 +869,8 @@ public final class EvolutionResult<
 			(EvolutionDurations)in.readObject(),
 			readInt(in),
 			readInt(in),
-			readInt(in)
+			readInt(in),
+			true
 		);
 	}
 

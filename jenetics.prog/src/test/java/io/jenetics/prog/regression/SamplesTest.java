@@ -19,7 +19,6 @@
  */
 package io.jenetics.prog.regression;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.testng.Assert;
@@ -32,7 +31,7 @@ public class SamplesTest {
 
 	@Test
 	public void create() {
-		final List<Sample<Double>> points = Arrays.asList(
+		final List<Sample<Double>> points = List.of(
 			Sample.ofDouble(1, 2, 3, 4),
 			Sample.ofDouble(1, 2, 3, 4),
 			Sample.ofDouble(1, 2, 3, 4),

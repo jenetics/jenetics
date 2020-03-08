@@ -292,7 +292,7 @@ public interface EvolutionStreamable<
 	 * @throws NullPointerException if the give {@code predicate} is {@code null}
 	 */
 	default EvolutionStreamable<G, C>
-	limit(final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed) {
+	limit(final Supplier<? extends Predicate<? super EvolutionResult<G, C>>> proceed) {
 		requireNonNull(proceed);
 
 		return new EvolutionStreamable<>() {

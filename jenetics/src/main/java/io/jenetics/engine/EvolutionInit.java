@@ -154,7 +154,7 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionInit read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionInit(

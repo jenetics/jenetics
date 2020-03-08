@@ -262,7 +262,7 @@ public class EvolutionResultTest
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
 		Assert.assertSame(
-			EvolutionResult.<IntegerGene, Integer>toUniquePopulation().apply(result),
+			EvolutionResult.<IntegerGene, Integer>toUniquePopulation().after(result),
 			result
 		);
 	}
@@ -288,12 +288,12 @@ public class EvolutionResultTest
 				.limit(100)
 				.collect(ISeq.toISeq());
 
-		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
-			unifier = EvolutionResult.toUniquePopulation(
-				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE)));
+		final var unifier = EvolutionResult.<IntegerGene, Integer>toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, Integer.MAX_VALUE))
+		);
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
-		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.after(result);
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertEquals(
@@ -313,12 +313,13 @@ public class EvolutionResultTest
 				.limit(100)
 				.collect(ISeq.toISeq());
 
-		final UnaryOperator<EvolutionResult<IntegerGene, Integer>>
-			unifier = EvolutionResult.toUniquePopulation(
-			Genotype.of(IntegerChromosome.of(0, 10)));
+		final EvolutionInterceptor<IntegerGene, Integer> unifier =
+			EvolutionResult.toUniquePopulation(
+				Genotype.of(IntegerChromosome.of(0, 10))
+			);
 
 		final EvolutionResult<IntegerGene, Integer> result = result(genotypes);
-		final EvolutionResult<IntegerGene, Integer> unified = unifier.apply(result);
+		final EvolutionResult<IntegerGene, Integer> unified = unifier.after(result);
 
 		Assert.assertNotEquals(unified, result);
 		Assert.assertTrue(

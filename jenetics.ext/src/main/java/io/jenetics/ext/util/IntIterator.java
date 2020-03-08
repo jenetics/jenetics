@@ -17,44 +17,46 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.ext.util;
 
-import io.jenetics.util.Mean;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.function.IntFunction;
 
 /**
- * Alters a chromosome by replacing two genes by its mean value.
+ * Helper class for iterating through given int range
  *
- * <p>
- * The order ({@link #order()}) of this recombination implementation is two.
- * </p>
+ * @param <T> the mapping data type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.0
  * @version 6.0
+ * @since 6.0
  */
-public class MeanAlterer<
-	G extends Gene<?, G> & Mean<G>,
-	C extends Comparable<? super C>
->
-	extends CombineAlterer<G, C>
-{
+final class IntIterator<T> implements Iterator<T> {
+	private final int _length;
+	private final IntFunction<? extends T> _mapper;
 
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 *
-	 * @param probability the crossover probability.
-	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}.
-	 */
-	public MeanAlterer(final double probability) {
-		super(Mean::mean, probability);
+	private int _cursor = 0;
+	private int _lastElement = -1;
+
+	IntIterator(final int length, final IntFunction<? extends T> mapper) {
+		_length = length;
+		_mapper = mapper;
 	}
 
-	/**
-	 * Create a new alterer with alter probability of {@code 0.05}.
-	 */
-	public MeanAlterer() {
-		this(0.05);
+	@Override
+	public boolean hasNext() {
+		return _cursor != _length;
 	}
 
+	@Override
+	public T next() {
+		final int i = _cursor;
+		if (_cursor >= _length) {
+			throw new NoSuchElementException();
+		}
+
+		_cursor = i + 1;
+		return _mapper.apply(_lastElement = i);
+	}
 }

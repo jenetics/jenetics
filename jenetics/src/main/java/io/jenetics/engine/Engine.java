@@ -29,7 +29,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import io.jenetics.Alterer;
@@ -104,6 +103,9 @@ import io.jenetics.util.Seq;
  * @see Codec
  * @see Constraint
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
  * @version !__version__!
@@ -115,7 +117,8 @@ public final class Engine<
 	implements
 		Evaluator<G, C>,
 		Evolution<G, C>,
-		EvolutionStreamable<G, C>
+		EvolutionStreamable<G, C>,
+		Evaluator<G, C>
 {
 
 	// Problem definition.
@@ -130,20 +133,24 @@ public final class Engine<
 	// Execution context for concurrent execution of evolving steps.
 	private final Executor _executor;
 	private final Clock _clock;
-	private final UnaryOperator<EvolutionResult<G, C>> _mapper;
+	private final EvolutionInterceptor<G, C> _interceptor;
 
 
 	/**
 	 * Create a new GA engine with the given parameters.
 	 *
+	 * @param evaluator the population fitness evaluator
 	 * @param genotypeFactory the genotype factory this GA is working with.
 	 * @param constraint phenotype constraint which can override the default
 	 *        implementation the {@link Phenotype#isValid()} method and repairs
 	 *        invalid phenotypes when needed.
 	 * @param optimize the kind of optimization (minimize or maximize)
+	 * @param evolutionParams the evolution parameters, which influences the
+	 *        evolution process
 	 * @param executor the executor used for executing the single evolve steps
-	 * @param evaluator the population fitness evaluator
 	 * @param clock the clock used for calculating the timing results
+	 * @param interceptor the evolution interceptor, which gives additional
+	 *        possibilities to influence the actual evolution
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the given integer values are smaller
 	 *         than one.
@@ -156,7 +163,7 @@ public final class Engine<
 		final EvolutionParams<G, C> evolutionParams,
 		final Executor executor,
 		final Clock clock,
-		final UnaryOperator<EvolutionResult<G, C>> mapper
+		final EvolutionInterceptor<G, C> interceptor
 	) {
 		_evaluator = requireNonNull(evaluator);
 		_genotypeFactory = requireNonNull(genotypeFactory);
@@ -165,29 +172,31 @@ public final class Engine<
 		_evolutionParams = requireNonNull(evolutionParams);
 		_executor = requireNonNull(executor);
 		_clock = requireNonNull(clock);
-		_mapper = requireNonNull(mapper);
+		_interceptor = requireNonNull(interceptor);
 	}
 
 	@Override
 	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start) {
-		// Create initial population if `start` is empty.
-		final EvolutionStart<G, C> es = start.population().isEmpty()
-			? evolutionStart(start)
-			: start;
-
 		final EvolutionTiming timing = new EvolutionTiming(_clock);
 		timing.evolve.start();
 
+		final EvolutionStart<G, C> interceptedStart = _interceptor.before(start);
+
+		// Create initial population if `start` is empty.
+		final EvolutionStart<G, C> es = interceptedStart.population().isEmpty()
+			? evolutionStart(interceptedStart)
+			: interceptedStart;
+
 		// Initial evaluation of the population.
-		final ISeq<Phenotype<G, C>> evaluated = timing.evaluation.timing(() ->
-			evaluate(es.population())
-		);
+		final ISeq<Phenotype<G, C>> population = es.isDirty()
+			? timing.evaluation.timing(() -> eval(es.population()))
+			: es.population();
 
 		// Select the offspring population.
 		final CompletableFuture<ISeq<Phenotype<G, C>>> offspring =
 			supplyAsync(() ->
 				timing.offspringSelection.timing(() ->
-					selectOffspring(evaluated)
+					selectOffspring(population)
 				),
 				_executor
 			);
@@ -196,7 +205,7 @@ public final class Engine<
 		final CompletableFuture<ISeq<Phenotype<G, C>>> survivors =
 			supplyAsync(() ->
 				timing.survivorsSelection.timing(() ->
-					selectSurvivors(evaluated)
+					selectSurvivors(population)
 				),
 				_executor
 			);
@@ -229,7 +238,7 @@ public final class Engine<
 			);
 
 		// Combining survivors and offspring to the new population.
-		final CompletableFuture<ISeq<Phenotype<G, C>>> population =
+		final CompletableFuture<ISeq<Phenotype<G, C>>> nextPopulation =
 			filteredSurvivors.thenCombineAsync(
 				filteredOffspring,
 				(s, o) -> ISeq.of(s.population.append(o.population)),
@@ -237,7 +246,7 @@ public final class Engine<
 			);
 
 		// Evaluate the fitness-function and wait for result.
-		final ISeq<Phenotype<G, C>> pop = population.join();
+		final ISeq<Phenotype<G, C>> pop = nextPopulation.join();
 		final ISeq<Phenotype<G, C>> result = timing.evaluation.timing(() ->
 			eval(pop)
 		);
@@ -261,15 +270,20 @@ public final class Engine<
 			invalidCount,
 			alterationCount
 		);
-		if (!UnaryOperator.identity().equals(_mapper)) {
-			final EvolutionResult<G, C> mapped = _mapper.apply(er);
-			er = er.with(timing.evaluation.timing(() ->
-				evaluate(mapped.population())
+
+		final EvolutionResult<G, C> interceptedResult = _interceptor.after(er);
+		if (er != interceptedResult) {
+			er = interceptedResult.withPopulation(
+				timing.evaluation.timing(() ->
+					eval(interceptedResult.population())
 			));
 		}
 
 		timing.evolve.stop();
-		return er.with(timing.toDurations());
+
+		return er
+			.withDurations(timing.toDurations())
+			.clean();
 	}
 
 	// Selects the survivors population. A new population object is returned.
@@ -550,14 +564,14 @@ public final class Engine<
 	}
 
 	/**
-	 * Return the evolution result mapper.
+	 * Return the evolution interceptor.
 	 *
-	 * @since 4.0
+	 * @since 6.0
 	 *
 	 * @return the evolution result mapper
 	 */
-	public UnaryOperator<EvolutionResult<G, C>> mapper() {
-		return _mapper;
+	public EvolutionInterceptor<G, C> interceptor() {
+		return _interceptor;
 	}
 
 	/**
@@ -574,7 +588,7 @@ public final class Engine<
 			.optimize(_optimize)
 			.constraint(_constraint)
 			.evolutionParams(_evolutionParams)
-			.mapping(_mapper);
+			.interceptor(_interceptor);
 	}
 
 
@@ -681,7 +695,7 @@ public final class Engine<
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
 	 * @since 3.0
-	 * @version 5.2
+	 * @version 6.0
 	 */
 	public static final class Builder<
 		G extends Gene<?, G>,
@@ -705,7 +719,8 @@ public final class Engine<
 		private Executor _executor = commonPool();
 		private Clock _clock = NanoClock.systemUTC();
 
-		private UnaryOperator<EvolutionResult<G, C>> _mapper = UnaryOperator.identity();
+		private EvolutionInterceptor<G, C> _interceptor =
+			EvolutionInterceptor.identity();
 
 		/**
 		 * Create a new evolution {@code Engine.Builder} with the given fitness
@@ -994,24 +1009,20 @@ public final class Engine<
 		}
 
 		/**
-		 * The result mapper, which allows to change the evolution result after
-		 * each generation.
+		 * The evolution interceptor, which allows to change the evolution start
+		 * and result.
 		 *
-		 * @since 4.0
+		 * @since 6.0
 		 * @see EvolutionResult#toUniquePopulation()
 		 *
-		 * @param mapper the evolution result mapper
+		 * @param interceptor the evolution interceptor
 		 * @return {@code this} builder, for command chaining
-		 * @throws NullPointerException if the given {@code resultMapper} is
+		 * @throws NullPointerException if the given {@code interceptor} is
 		 *         {@code null}
 		 */
-		public Builder<G, C> mapping(
-			final Function<
-				? super EvolutionResult<G, C>,
-				EvolutionResult<G, C>
-			> mapper
-		) {
-			_mapper = requireNonNull(mapper::apply);
+		public Builder<G, C>
+		interceptor(final EvolutionInterceptor<G, C> interceptor) {
+			_interceptor = requireNonNull(interceptor);
 			return this;
 		}
 
@@ -1029,7 +1040,7 @@ public final class Engine<
 				_evolutionParams.build(),
 				_executor,
 				_clock,
-				_mapper
+				_interceptor
 			);
 		}
 
@@ -1182,14 +1193,14 @@ public final class Engine<
 		}
 
 		/**
-		 * Return the evolution result mapper.
+		 * Return the evolution interceptor.
 		 *
-		 * @since 4.0
+		 * @since 6.0
 		 *
-		 * @return the evolution result mapper
+		 * @return the evolution interceptor
 		 */
-		public UnaryOperator<EvolutionResult<G, C>> mapper() {
-			return _mapper;
+		public EvolutionInterceptor<G, C> interceptor() {
+			return _interceptor;
 		}
 
 		/**
@@ -1207,7 +1218,7 @@ public final class Engine<
 				.constraint(_constraint)
 				.optimize(_optimize)
 				.evolutionParams(_evolutionParams.build())
-				.mapping(_mapper);
+				.interceptor(_interceptor);
 		}
 
 	}

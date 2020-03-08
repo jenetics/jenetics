@@ -24,6 +24,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -127,7 +128,7 @@ public class LinearRankSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(0.0, 0.1, 0.3, 0.5, 0.75, 0.95, 1.0),
+				List.of(0.0, 0.1, 0.3, 0.5, 0.75, 0.95, 1.0),
 				LinearRankSelector::new,
 				opt,
 				npopulation,

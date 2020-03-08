@@ -21,11 +21,11 @@ The library is fully documented ([javadoc](http://jenetics.io/javadoc/jenetics/5
 ## Requirements
 
 ### Runtime
-*  **JRE 8**: Java runtime version 8 is needed for using the library, respectively for running the examples.
+*  **JRE 11**: Java runtime version 11 is needed for using the library, respectively for running the examples.
 
 ### Build time
-*  **JDK 8**: The Java [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
-*  **Gradle 5.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
+*  **JDK 11**: The Java [JDK 11](http://www.oracle.com/technetwork/java/javase/downloads/index.html) must be installed.
+*  **Gradle 6.x**: [Gradle](http://www.gradle.org/) is used for building the library. (Gradle is download automatically, if you are using the Gradle Wrapper script `./gradlew`, located in the base directory, for building the library.)
 
 ### Test compile/execution
 *  **TestNG 7.x**: Jenetics uses [TestNG](http://testng.org/doc/index.html) framework for unit tests.
@@ -155,6 +155,8 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Raúl Lara-Cabrera, Ángel González-Prieto, Fernando Ortega and Jesús Bobadilla. <a href="https://www.mdpi.com/2076-3417/10/2/675">Evolving Matrix-Factorization-Based Collaborative Filtering Using Genetic Programming.</a> <em>MDPI, Applied Sciences. </em></a> Feb. 2020.
+* Humm B.G., Hutter M. <a href="https://link.springer.com/chapter/10.1007/978-3-030-41913-4_12">Learning Patterns for Complex Event Detection in Robot Sensor Data.</a> <em>Optimization and Learning. OLA 2020. Communications in Computer and Information Science, vol 1173. Springer </em></a> Feb. 2020.
 * Erich C. Teppan, Giacomo Da Col. <a href="https://link.springer.com/chapter/10.1007/978-981-15-1918-5_7">Genetic Algorithms for Creating Large Job Shop Dispatching Rules. </a> <em>Advances in Integrations of Intelligent Methods. Smart Innovation, Systems and Technologies, vol 170. Springer, Singapore. </em></a> Jan. 2020.
 * Ricardo Pérez-Castillo, Francisco Ruiz, Mario Piattini. <a href="https://www.sciencedirect.com/science/article/pii/S016792362030004X">A decision-making support system for Enterprise Architecture Modelling. </a> <em>Decision Support Systems. </em></a> Jan. 2020.
 * Sabrina Appel, Wolfgang Geithner, Stephan Reimann, Mariusz Sapinski, Rahul Singh and Dominik Vilsmeier. <a href="https://www.worldscientific.com/doi/abs/10.1142/S0217751X19420193">Application of nature-inspired optimization algorithms and machine learning for heavy-ion synchrotrons. </a> <em>International Journal of Modern Physics A. </em></a> Dec. 2019.
