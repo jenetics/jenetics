@@ -276,20 +276,6 @@ public final class EvolutionResult<
 		return new EvolutionStart<>(_population, _totalGenerations, _dirty);
 	}
 
-	public EvolutionResult<G, C>
-	map(final Function<? super Phenotype<G, C>, Phenotype<G, C>> mapper) {
-		return EvolutionResult.of(
-			optimize(),
-			_population.map(mapper),
-			generation(),
-			totalGenerations(),
-			durations(),
-			killCount(),
-			invalidCount(),
-			alterCount()
-		);
-	}
-
 	/**
 	 * Compare {@code this} evolution result with another one, according the
 	 * populations best individual.
