@@ -108,16 +108,16 @@ import io.jenetics.util.Seq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version !__version__!
+ * @version 6.0
  */
 public final class Engine<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
 	implements
-		Evaluator<G, C>,
 		Evolution<G, C>,
-		EvolutionStreamable<G, C>
+		EvolutionStreamable<G, C>,
+		Evaluator<G, C>
 {
 
 	// Problem definition.
@@ -339,7 +339,7 @@ public final class Engine<
 	 * {@link Evaluator} of this engine and returns a new population
 	 * with its fitness value assigned.
 	 *
-	 * @since !__version__!
+	 * @since 5.0
 	 *
 	 * @see Evaluator
 	 * @see Evaluator#eval(Seq)
@@ -372,29 +372,6 @@ public final class Engine<
 		return evaluated;
 	}
 
-	/**
-	 * Evaluates the fitness function of the given population with the configured
-	 * {@link Evaluator} of this engine and returns a new population
-	 * with its fitness value assigned.
-	 *
-	 * @since 5.0
-	 *
-	 * @see Evaluator
-	 * @see Evaluator#eval(Seq)
-	 *
-	 * @param population the population to evaluate
-	 * @return a new population with assigned fitness values
-	 * @throws IllegalStateException if the configured fitness function doesn't
-	 *         return a population with the same size as the input population.
-	 *         This exception is also thrown if one of the populations
-	 *         phenotype has no fitness value assigned.
-	 * @deprecated Will be removed, use {@link #eval(Seq)} instead
-	 */
-	@Deprecated
-	public ISeq<Phenotype<G, C>> evaluate(final Seq<Phenotype<G, C>> population) {
-		return eval(population);
-	}
-
 
 	/* *************************************************************************
 	 * Evolution Stream creation.
@@ -409,8 +386,9 @@ public final class Engine<
 		);
 	}
 
-	public Supplier<EvolutionStart<G, C>> evolutionStart() {
-		return null;
+	@Override
+	public EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
+		return stream(evolutionStart(init));
 	}
 
 	private EvolutionStart<G, C>

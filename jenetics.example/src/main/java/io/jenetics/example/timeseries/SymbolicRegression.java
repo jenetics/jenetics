@@ -27,7 +27,6 @@ import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
 import io.jenetics.ext.SingleNodeCrossover;
-import io.jenetics.ext.engine.AdaptableEngine;
 import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.ProgramGene;
@@ -101,8 +100,7 @@ public class SymbolicRegression {
 				new Mutator<>())
 			.build();
 
-		final EvolutionStreamable<ProgramGene<Double>, Double> evolution =
-			new AdaptableEngine<>(r -> engine);
+		final EvolutionStreamable<ProgramGene<Double>, Double> evolution = null;
 
 		/*
 		final EvolutionStream<ProgramGene<Double>, Double> stream =

@@ -38,7 +38,7 @@ import io.jenetics.util.ISeq;
  * @see EvolutionStream
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 4.1
  */
 public interface EvolutionStreamable<
@@ -55,11 +55,6 @@ public interface EvolutionStreamable<
 	 * The fitness function and the fitness scaler are replaced by the one
 	 * defined for this engine.
 	 *
-	 * @apiNote
-	 * The population of the evolution start might be empty. In this case, the
-	 * implementation is responsible for creating the initial population with
-	 * the desired size.
-	 *
 	 * @param start the data the evolution stream starts with
 	 * @return a new <b>infinite</b> evolution stream
 	 * @throws java.lang.NullPointerException if the given evolution
@@ -67,11 +62,6 @@ public interface EvolutionStreamable<
 	 */
 	EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start);
-
-
-	/* *************************************************************************
-	 * Default interface methods.
-	 * ************************************************************************/
 
 	/**
 	 * Create a new, possibly <em>infinite</em>, evolution stream with the given
@@ -85,18 +75,8 @@ public interface EvolutionStreamable<
 	 * @return a new <b>infinite</b> evolution stream
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
-	 *
-	 * @deprecated Is replaced by {@link EvolutionStart} and will be removed
 	 */
-	@Deprecated
-	public default EvolutionStream<G, C> stream(final EvolutionInit<G> init) {
-		return stream(() ->
-			EvolutionStart.ofGenotypes(
-				init.population(),
-				init.generation()
-			)
-		);
-	}
+	EvolutionStream<G, C> stream(final EvolutionInit<G> init);
 
 
 	/* *************************************************************************
@@ -256,12 +236,7 @@ public interface EvolutionStreamable<
 		final Iterable<Genotype<G>> genotypes,
 		final long generation
 	) {
-		return stream(() ->
-			EvolutionStart.ofGenotypes(
-				ISeq.of(genotypes),
-				generation
-			)
-		);
+		return stream(EvolutionInit.of(ISeq.of(genotypes), generation));
 	}
 
 	/**
