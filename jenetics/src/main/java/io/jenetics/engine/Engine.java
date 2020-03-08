@@ -117,8 +117,7 @@ public final class Engine<
 	implements
 		Evaluator<G, C>,
 		Evolution<G, C>,
-		EvolutionStreamable<G, C>,
-		Evaluator<G, C>
+		EvolutionStreamable<G, C>
 {
 
 	// Problem definition.
