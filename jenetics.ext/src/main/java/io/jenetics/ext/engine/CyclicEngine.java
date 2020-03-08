@@ -99,7 +99,7 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * @param <C> the fitness type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 4.1
  * @since 4.1
  */
 public final class CyclicEngine<
@@ -117,7 +117,9 @@ public final class CyclicEngine<
 	 * @throws NullPointerException if the {@code engines} or one of it's
 	 *         elements is {@code null}
 	 */
-	public CyclicEngine(final List<? extends EvolutionStreamable<G, C>> engines) {
+	public CyclicEngine(
+		final List<? extends EvolutionStreamable<G, C>> engines
+	) {
 		super(engines);
 	}
 

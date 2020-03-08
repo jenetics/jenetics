@@ -160,23 +160,6 @@ public final class Regression<T>
 		return _error.apply(program, calculated, _samples.results());
 	}
 
-
-	public Regression<T>
-	withSamples(final Iterable<? extends Sample<T>> samples) {
-		requireNonEmpty(samples);
-
-		final List<Sample<T>> s = new ArrayList<>();
-		samples.forEach(s::add);
-
-		return new Regression<>(_codec, _error, new Samples<>(s));
-	}
-
-	private static void requireNonEmpty(final Iterable<?> samples) {
-		if (!samples.iterator().hasNext()) {
-			throw new IllegalArgumentException("Sample list must not be empty.");
-		}
-	}
-
 	/* *************************************************************************
 	 * Factory methods.
 	 * ************************************************************************/
@@ -200,7 +183,9 @@ public final class Regression<T>
 		final Error<T> error,
 		final Iterable<Sample<T>> samples
 	) {
-		requireNonEmpty(samples);
+		if (!samples.iterator().hasNext()) {
+			throw new IllegalArgumentException("Sample list must not be empty.");
+		}
 
 		final List<Sample<T>> s = new ArrayList<>();
 		samples.forEach(s::add);
