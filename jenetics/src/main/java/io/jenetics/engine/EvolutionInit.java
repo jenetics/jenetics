@@ -52,10 +52,7 @@ import io.jenetics.util.ISeq;
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 6.0
  * @since 4.1
- *
- * @deprecated Is replaced by {@link EvolutionStart} and will be removed
  */
-@Deprecated
 public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	implements Serializable
 {
