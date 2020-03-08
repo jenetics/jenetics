@@ -190,6 +190,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 				.initCause(e.getCause());
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
+			Concurrency.cancel(task, tasks);
 			final String msg = e.getMessage();
 			throw (CancellationException)new CancellationException(msg)
 				.initCause(e);
