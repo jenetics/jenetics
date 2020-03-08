@@ -95,9 +95,14 @@ public final class FitnessNullifier<
 	 * the next generation.
 	 *
 	 * @see #before(EvolutionStart)
+	 *
+	 * @return {@code true} if the <em>nullification</em> request will trigger
+	 *         a new fitness nullification. @{code false} if the fitness
+	 *         <em>nullification</em> has been requested before, without
+	 *         actually executing it.
 	 */
-	public void nullifyFitness() {
-		_invalid.set(true);
+	public boolean nullifyFitness() {
+		return !_invalid.getAndSet(true);
 	}
 
 }
