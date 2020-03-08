@@ -34,7 +34,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import io.jenetics.Gene;
-import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.util.ISeq;
@@ -43,6 +42,7 @@ import io.jenetics.util.ISeq;
  * Represents a state of the GA at the start of an evolution step.
  *
  * @see EvolutionResult
+ * @see EvolutionInit
  * @see EvolutionStreamable#stream(EvolutionStart)
  *
  * @param <G> the gene type
@@ -53,7 +53,7 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version !__version__!
+ * @version 6.0
  */
 public final class EvolutionStart<
 	G extends Gene<?, G>,
@@ -134,8 +134,6 @@ public final class EvolutionStart<
 	 * Create a new evolution start object with the given population and for the
 	 * given generation.
 	 *
-	 * @see #ofGenotypes(ISeq, long)
-	 *
 	 * @param <G> the gene type
 	 * @param <C> the fitness type
 	 * @param population the start population.
@@ -170,34 +168,6 @@ public final class EvolutionStart<
 		return new EvolutionStart<>(ISeq.empty(), 1, false);
 	}
 
-	/**
-	 * Create a new evolution start object with the given population and for the
-	 * given generation.
-	 *
-	 * @see #of(ISeq, long)
-	 *
-	 * @since !__version__!
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 * @param population the start population.
-	 * @param generation the start generation of the population
-	 * @return a new evolution start object
-	 * @throws java.lang.NullPointerException if the given {@code population} is
-	 *         {@code null}.
-	 * @throws IllegalArgumentException if the given {@code generation} is
-	 *         smaller then one
-	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStart<G, C> ofGenotypes(
-		final ISeq<Genotype<G>> population,
-		final long generation
-	) {
-		return of(
-			population.map(gt -> Phenotype.of(gt, generation)),
-			generation
-		);
-	}
 
 	/* *************************************************************************
 	 *  Java object serialization
