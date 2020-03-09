@@ -106,7 +106,11 @@ public interface Sample<T> {
 	 * @param y the sample point result
 	 * @return a new sample point
 	 */
-	static Sample<Double> ofDouble(final double x1, final double x2, final double y) {
+	static Sample<Double> ofDouble(
+		final double x1,
+		final double x2,
+		final double y
+	) {
 		return new DoubleSample(x1, x2, y);
 	}
 
