@@ -54,7 +54,7 @@ import io.jenetics.prog.op.Program;
  *
  *     private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
  *         Var.of("x", 0),
- *         EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
+ *         EphemeralConst.of(() -> (double)RandomRegistry.random().nextInt(10))
  *     );
  *
  *     private static final Regression<Double> REGRESSION = Regression.of(
@@ -79,13 +79,13 @@ import io.jenetics.prog.op.Program;
  *             .limit(Limits.byFitnessThreshold(0.01))
  *             .collect(EvolutionResult.toBestEvolutionResult());
  *
- *         final ProgramGene<Double> program = result.getBestPhenotype()
- *             .getGenotype()
- *             .getGene();
+ *         final ProgramGene<Double> program = result.bestPhenotype()
+ *             .genotype()
+ *             .gene();
  *
  *         final TreeNode<Op<Double>> tree = program.toTreeNode();
  *         MathExpr.rewrite(tree); // Simplify result program.
- *         System.out.println("Generations: " + result.getTotalGenerations());
+ *         System.out.println("Generations: " + result.totalGenerations());
  *         System.out.println("Function:    " + new MathExpr(tree));
  *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
