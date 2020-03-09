@@ -37,7 +37,12 @@ import io.jenetics.prog.op.Program;
  * @version 5.0
  * @since 5.0
  */
-final class SampleList<T> extends AbstractList<Sample<T>> implements Serializable {
+final class SampleList<T>
+	extends AbstractList<Sample<T>>
+	implements
+		Sampling<T>,
+		Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private final List<Sample<T>> _samples;
@@ -93,22 +98,20 @@ final class SampleList<T> extends AbstractList<Sample<T>> implements Serializabl
 		return _type;
 	}
 
-	T[] eval(final Tree<Op<T>, ?> program) {
+	@Override
+	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
 		@SuppressWarnings("unchecked")
 		final T[] calculated = Stream.of(_arguments)
 			.map(args -> Program.eval(program, args))
 			.toArray(size -> (T[])Array.newInstance(_type, size));
 
-		return calculated;
+		return Result.of(calculated, _results);
 	}
 
 	T[][] arguments() {
 		return _arguments;
 	}
 
-	T[] results() {
-		return _results;
-	}
 
 	@Override
 	public Sample<T> get(int index) {

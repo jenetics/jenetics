@@ -39,6 +39,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
+import io.jenetics.prog.regression.Sampling.Result;
 
 /**
  * This class implements a <em>symbolic</em> regression problem. The example
@@ -92,7 +93,7 @@ import io.jenetics.prog.op.Op;
  * @param <T> the operation type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 public final class Regression<T>
@@ -101,7 +102,7 @@ public final class Regression<T>
 
 	private final Codec<Tree<Op<T>, ?>, ProgramGene<T>> _codec;
 	private final Error<T> _error;
-	private final SampleList<T> _samples;
+	private final Sampling<T> _sampling;
 
 
 	/**
@@ -109,18 +110,18 @@ public final class Regression<T>
 	 *
 	 * @param codec the codec used for the for the problem
 	 * @param error the error function
-	 * @param samples the sample values used for finding a regression. Since
+	 * @param sampling the sample values used for finding a regression. Since
 	 *        the samples are given via a <em>supplier</em> they can be changed
 	 *        during the evolution process
 	 */
 	private Regression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
-		final SampleList<T> samples
+		final Sampling<T> sampling
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
-		_samples = requireNonNull(samples);
+		_sampling = requireNonNull(sampling);
 	}
 
 	@Override
@@ -134,23 +135,14 @@ public final class Regression<T>
 	}
 
 	/**
-	 * Return an immutable list of the symbolic regression's points.
-	 *
-	 * @return the sample points
-	 */
-	public List<Sample<T>> samples() {
-		return _samples;
-	}
-
-	/**
 	 * Calculates the actual error for the given {@code program}.
 	 *
 	 * @param program the program to calculate the error value for
 	 * @return the overall error value of the program
 	 */
-	public double error(final Tree<Op<T>, ?> program) {
-		final T[] calculated = _samples.eval(program);
-		return _error.apply(program, calculated, _samples.results());
+	public double error(final Tree<? extends Op<T>, ?> program) {
+		final Result<T> result = _sampling.eval(program);
+		return _error.apply(program, result.calculated(), result.expected());
 	}
 
 	/* *************************************************************************
