@@ -181,7 +181,7 @@ public final class Regression<T>
 	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
-		final Iterable<Sample<T>> samples
+		final Iterable<? extends Sample<T>> samples
 	) {
 		if (!samples.iterator().hasNext()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
