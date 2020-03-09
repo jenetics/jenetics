@@ -25,6 +25,12 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
+import java.util.stream.Stream;
+
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -85,6 +91,15 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 
 	Class<T> type() {
 		return _type;
+	}
+
+	T[] eval(final Tree<Op<T>, ?> program) {
+		@SuppressWarnings("unchecked")
+		final T[] calculated = Stream.of(_arguments)
+			.map(args -> Program.eval(program, args))
+			.toArray(size -> (T[])Array.newInstance(_type, size));
+
+		return calculated;
 	}
 
 	T[][] arguments() {

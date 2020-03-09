@@ -23,13 +23,11 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import io.jenetics.Genotype;
 import io.jenetics.engine.Codec;
@@ -41,7 +39,6 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
-import io.jenetics.prog.op.Program;
 
 /**
  * This class implements a <em>symbolic</em> regression problem. The example
@@ -152,11 +149,7 @@ public final class Regression<T>
 	 * @return the overall error value of the program
 	 */
 	public double error(final Tree<Op<T>, ?> program) {
-		@SuppressWarnings("unchecked")
-		final T[] calculated = Stream.of(_samples.arguments())
-			.map(args -> Program.eval(program, args))
-			.toArray(size -> (T[])Array.newInstance(_samples.type(), size));
-
+		final T[] calculated = _samples.eval(program);
 		return _error.apply(program, calculated, _samples.results());
 	}
 
