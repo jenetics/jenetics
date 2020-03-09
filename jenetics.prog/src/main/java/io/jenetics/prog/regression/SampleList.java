@@ -94,10 +94,6 @@ final class SampleList<T>
 		return args;
 	}
 
-	Class<T> type() {
-		return _type;
-	}
-
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
 		@SuppressWarnings("unchecked")
@@ -107,11 +103,6 @@ final class SampleList<T>
 
 		return Result.of(calculated, _results);
 	}
-
-	T[][] arguments() {
-		return _arguments;
-	}
-
 
 	@Override
 	public Sample<T> get(int index) {

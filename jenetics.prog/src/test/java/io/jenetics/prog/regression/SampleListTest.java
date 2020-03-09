@@ -24,6 +24,8 @@ import java.util.List;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import io.jenetics.prog.op.MathExpr;
+
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -39,8 +41,10 @@ public class SampleListTest {
 		);
 
 		final SampleList<Double> samples = new SampleList<>(points);
-		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
-		Assert.assertEquals(samples.results().getClass(), Double[].class);
+		final var result = samples.eval(MathExpr.parse("x + y + z - y").toTree());
+		for (var y : result.calculated()) {
+			Assert.assertEquals(y.doubleValue(), 4.0);
+		}
 	}
 
 }
