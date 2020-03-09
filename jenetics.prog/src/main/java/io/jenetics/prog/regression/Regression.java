@@ -101,7 +101,7 @@ public final class Regression<T>
 
 	private final Codec<Tree<Op<T>, ?>, ProgramGene<T>> _codec;
 	private final Error<T> _error;
-	private final Samples<T> _samples;
+	private final SampleList<T> _samples;
 
 
 	/**
@@ -116,7 +116,7 @@ public final class Regression<T>
 	private Regression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
-		final Samples<T> samples
+		final SampleList<T> samples
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
@@ -183,7 +183,7 @@ public final class Regression<T>
 		final List<Sample<T>> s = new ArrayList<>();
 		samples.forEach(s::add);
 
-		return new Regression<>(codec, error, new Samples<>(s));
+		return new Regression<>(codec, error, new SampleList<>(s));
 	}
 
 	/**

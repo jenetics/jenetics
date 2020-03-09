@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SamplesTest {
+public class SampleListTest {
 
 	@Test
 	public void create() {
@@ -38,7 +38,7 @@ public class SamplesTest {
 			Sample.ofDouble(1, 2, 3, 4)
 		);
 
-		final Samples<Double> samples = new Samples<>(points);
+		final SampleList<Double> samples = new SampleList<>(points);
 		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
 		Assert.assertEquals(samples.results().getClass(), Double[].class);
 	}

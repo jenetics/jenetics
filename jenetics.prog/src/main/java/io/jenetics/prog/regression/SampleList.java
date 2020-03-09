@@ -37,7 +37,7 @@ import io.jenetics.prog.op.Program;
  * @version 5.0
  * @since 5.0
  */
-final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
+final class SampleList<T> extends AbstractList<Sample<T>> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final List<Sample<T>> _samples;
@@ -47,7 +47,7 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 	private final T[] _results;
 
 	@SuppressWarnings("unchecked")
-	Samples(final List<Sample<T>> samples) {
+	SampleList(final List<Sample<T>> samples) {
 		_type = (Class<T>)samples.get(0).argAt(0).getClass();
 
 		final int arity = samples.get(0).arity();
