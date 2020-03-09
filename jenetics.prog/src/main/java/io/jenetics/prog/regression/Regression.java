@@ -110,9 +110,7 @@ public final class Regression<T>
 	 *
 	 * @param codec the codec used for the for the problem
 	 * @param error the error function
-	 * @param sampling the sample values used for finding a regression. Since
-	 *        the samples are given via a <em>supplier</em> they can be changed
-	 *        during the evolution process
+	 * @param sampling the sample values used for finding a regression.
 	 */
 	private Regression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
@@ -148,6 +146,26 @@ public final class Regression<T>
 	/* *************************************************************************
 	 * Factory methods.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new regression problem instance with the given parameters.
+	 *
+	 * @see #codecOf(ISeq, ISeq, int)
+	 * @see #codecOf(ISeq, ISeq, int, Predicate)
+	 *
+	 * @param <T> the operation type
+	 * @param codec the problem codec to use
+	 * @param error the error function
+	 * @param sampling the sampling function
+	 * @throws NullPointerException if on of the arguments is {@code null}
+	 */
+	public static <T> Regression<T> of(
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final Sampling<T> sampling
+	) {
+		return new Regression<>(codec, error, sampling);
+	}
 
 	/**
 	 * Create a new regression problem instance with the given parameters.
