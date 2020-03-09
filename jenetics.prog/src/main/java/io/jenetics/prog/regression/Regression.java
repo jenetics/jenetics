@@ -157,6 +157,7 @@ public final class Regression<T>
 	 * @param codec the problem codec to use
 	 * @param error the error function
 	 * @param sampling the sampling function
+	 * @return a new regression problem instance
 	 * @throws NullPointerException if on of the arguments is {@code null}
 	 */
 	public static <T> Regression<T> of(
