@@ -81,8 +81,6 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	 * Making the current sample points available for the {@link #eval(Tree)}
 	 * function.
 	 *
-	 * @see #samples()
-	 *
 	 * @return the number of <em>published</em> sample points
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
