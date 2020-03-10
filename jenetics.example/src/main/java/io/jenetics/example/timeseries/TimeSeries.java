@@ -19,30 +19,93 @@
  */
 package io.jenetics.example.timeseries;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import io.jenetics.engine.Evolution;
+import io.jenetics.Mutator;
+import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStart;
+import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.util.ISeq;
+import io.jenetics.util.RandomRegistry;
+
+import io.jenetics.ext.SingleNodeCrossover;
+import io.jenetics.ext.util.TreeNode;
 
 import io.jenetics.prog.ProgramGene;
+import io.jenetics.prog.op.EphemeralConst;
+import io.jenetics.prog.op.MathExpr;
+import io.jenetics.prog.op.MathOp;
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Var;
+import io.jenetics.prog.regression.Complexity;
+import io.jenetics.prog.regression.Error;
+import io.jenetics.prog.regression.LossFunction;
+import io.jenetics.prog.regression.Regression;
 import io.jenetics.prog.regression.Sample;
+import io.jenetics.prog.regression.SampleBuffer;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class TimeSeries<T> implements Evolution<ProgramGene<T>, Double> {
+public class TimeSeries {
 
-	private Supplier<Optional<List<Sample<T>>>> _samples;
+	private final SampleBuffer<Double> _samples = new SampleBuffer<>(50);
 
-	@Override
-	public EvolutionResult<ProgramGene<T>, Double>
-	evolve(final EvolutionStart<ProgramGene<T>, Double> start) {
-		return null;
+	private final SampleProducer _producer = new SampleProducer(_samples);
+
+	private final FitnessNullifier<ProgramGene<Double>, Double> _nullifier = new FitnessNullifier<>();
+
+
+	// Definition of the allowed operations.
+	private final ISeq<Op<Double>> _operations = ISeq.of(
+		MathOp.ADD,
+		MathOp.SUB,
+		MathOp.MUL
+	);
+
+	// Definition of the terminals.
+	private final ISeq<Op<Double>> _terminals = ISeq.of(
+		Var.of("x", 0),
+		EphemeralConst.of(() -> (double) RandomRegistry.random().nextInt(10))
+	);
+
+	private final Regression<Double> _regression = Regression.of(
+		Regression.codecOf(
+			_operations,
+			_terminals,
+			5
+		),
+		Error.of(LossFunction::mse, Complexity.ofNodeCount(50)),
+		_samples
+	);
+
+	private final Engine<ProgramGene<Double>, Double> _engine = Engine
+		.builder(_regression)
+		.interceptor(_nullifier)
+		.minimizing()
+		.alterers(
+			new SingleNodeCrossover<>(),
+			new Mutator<>())
+		.build();
+
+
+	public static void main(final String[] args) {
+		final TimeSeries ts = new TimeSeries();
+
+		final Thread producer = new Thread(ts._producer);
+		producer.start();
+
+		final ProgramGene<Double> program = ts._engine.stream()
+			.limit(3000)
+			.collect(EvolutionResult.toBestGenotype())
+			.gene();
+
+		final TreeNode<Op<Double>> tree = TreeNode.ofTree(program);
+		System.out.println(tree);
+		MathExpr.REWRITER.rewrite(tree);
+		System.out.println(MathExpr.parse(tree.toString()));
+
+		producer.interrupt();
 	}
 
 }
