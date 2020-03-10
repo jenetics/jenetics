@@ -19,15 +19,16 @@
  */
 package io.jenetics.prog.regression;
 
-import io.jenetics.ext.util.Tree;
-import io.jenetics.prog.op.Op;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static java.util.Objects.requireNonNull;
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.op.Op;
 
 /**
  * This class holds the actual sample values which are used for the symbolic
@@ -45,7 +46,7 @@ public final class SampleBuffer<T> implements Sampling<T> {
 
 	private final RingBuffer _buffer;
 
-	private SampleList<T> _snapshot = null;
+	private volatile SampleList<T> _snapshot = null;
 
 	public SampleBuffer(final int size) {
 		_buffer = new RingBuffer(size);
@@ -86,13 +87,18 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public int publish() {
 		final Object[] values = _buffer.snapshot();
+
+		SampleList<T> snapshot = null;
 		if (values != null && values.length > 0) {
 			final List samples = Arrays.asList(values);
-			_snapshot = new SampleList(samples);
-			return _snapshot.size();
+			snapshot = new SampleList(samples);
 		}
 
-		return 0;
+		try {
+			return snapshot != null ? snapshot.size() : 0;
+		} finally {
+			_snapshot = snapshot;
+		}
 	}
 
 	/**
@@ -103,14 +109,17 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	 * @return the currently <em>published</em> sample points
 	 */
 	List<Sample<T>> samples() {
-		return _snapshot != null ? _snapshot : List.of();
+		final SampleList<T> snapshot = _snapshot;
+		return snapshot != null ? snapshot : List.of();
 	}
 
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
 		requireNonNull(program);
-		return _snapshot != null && !_snapshot.isEmpty()
-			? _snapshot.eval(program)
+
+		final SampleList<T> snapshot = _snapshot;
+		return snapshot != null && !snapshot.isEmpty()
+			? snapshot.eval(program)
 			: null;
 	}
 
