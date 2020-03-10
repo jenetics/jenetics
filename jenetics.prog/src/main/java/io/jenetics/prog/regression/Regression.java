@@ -23,13 +23,11 @@ import static java.lang.Math.pow;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import io.jenetics.Genotype;
 import io.jenetics.engine.Codec;
@@ -41,7 +39,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.ProgramChromosome;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
-import io.jenetics.prog.op.Program;
+import io.jenetics.prog.regression.Sampling.Result;
 
 /**
  * This class implements a <em>symbolic</em> regression problem. The example
@@ -54,7 +52,7 @@ import io.jenetics.prog.op.Program;
  *
  *     private static final ISeq<Op<Double>> TERMINALS = ISeq.of(
  *         Var.of("x", 0),
- *         EphemeralConst.of(() -> (double)RandomRegistry.getRandom().nextInt(10))
+ *         EphemeralConst.of(() -> (double)RandomRegistry.random().nextInt(10))
  *     );
  *
  *     private static final Regression<Double> REGRESSION = Regression.of(
@@ -79,23 +77,26 @@ import io.jenetics.prog.op.Program;
  *             .limit(Limits.byFitnessThreshold(0.01))
  *             .collect(EvolutionResult.toBestEvolutionResult());
  *
- *         final ProgramGene<Double> program = result.getBestPhenotype()
- *             .getGenotype()
- *             .getGene();
+ *         final ProgramGene<Double> program = result.bestPhenotype()
+ *             .genotype()
+ *             .gene();
  *
  *         final TreeNode<Op<Double>> tree = program.toTreeNode();
  *         MathExpr.rewrite(tree); // Simplify result program.
- *         System.out.println("Generations: " + result.getTotalGenerations());
+ *         System.out.println("Generations: " + result.totalGenerations());
  *         System.out.println("Function:    " + new MathExpr(tree));
  *         System.out.println("Error:       " + REGRESSION.error(tree));
  *     }
  * }
  * }</pre>
  *
+ * @see SampleBuffer
+ * @see Sampling
+ *
  * @param <T> the operation type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version !__version__!
  * @since 5.0
  */
 public final class Regression<T>
@@ -104,7 +105,7 @@ public final class Regression<T>
 
 	private final Codec<Tree<Op<T>, ?>, ProgramGene<T>> _codec;
 	private final Error<T> _error;
-	private final Samples<T> _samples;
+	private final Sampling<T> _sampling;
 
 
 	/**
@@ -112,18 +113,16 @@ public final class Regression<T>
 	 *
 	 * @param codec the codec used for the for the problem
 	 * @param error the error function
-	 * @param samples the sample values used for finding a regression. Since
-	 *        the samples are given via a <em>supplier</em> they can be changed
-	 *        during the evolution process
+	 * @param sampling the sample values used for finding a regression.
 	 */
 	private Regression(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
-		final Samples<T> samples
+		final Sampling<T> sampling
 	) {
 		_codec = requireNonNull(codec);
 		_error = requireNonNull(error);
-		_samples = requireNonNull(samples);
+		_sampling = requireNonNull(sampling);
 	}
 
 	@Override
@@ -137,32 +136,42 @@ public final class Regression<T>
 	}
 
 	/**
-	 * Return an immutable list of the symbolic regression's points.
-	 *
-	 * @return the sample points
-	 */
-	public List<Sample<T>> samples() {
-		return _samples;
-	}
-
-	/**
 	 * Calculates the actual error for the given {@code program}.
 	 *
 	 * @param program the program to calculate the error value for
 	 * @return the overall error value of the program
 	 */
-	public double error(final Tree<Op<T>, ?> program) {
-		@SuppressWarnings("unchecked")
-		final T[] calculated = Stream.of(_samples.arguments())
-			.map(args -> Program.eval(program, args))
-			.toArray(size -> (T[])Array.newInstance(_samples.type(), size));
-
-		return _error.apply(program, calculated, _samples.results());
+	public double error(final Tree<? extends Op<T>, ?> program) {
+		final Result<T> result = _sampling.eval(program);
+		return result != null
+			? _error.apply(program, result.calculated(), result.expected())
+			: Double.MAX_VALUE;
 	}
 
 	/* *************************************************************************
 	 * Factory methods.
 	 * ************************************************************************/
+
+	/**
+	 * Create a new regression problem instance with the given parameters.
+	 *
+	 * @see #codecOf(ISeq, ISeq, int)
+	 * @see #codecOf(ISeq, ISeq, int, Predicate)
+	 *
+	 * @param <T> the operation type
+	 * @param codec the problem codec to use
+	 * @param error the error function
+	 * @param sampling the sampling function
+	 * @return a new regression problem instance
+	 * @throws NullPointerException if on of the arguments is {@code null}
+	 */
+	public static <T> Regression<T> of(
+		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
+		final Error<T> error,
+		final Sampling<T> sampling
+	) {
+		return new Regression<>(codec, error, sampling);
+	}
 
 	/**
 	 * Create a new regression problem instance with the given parameters.
@@ -181,7 +190,7 @@ public final class Regression<T>
 	public static <T> Regression<T> of(
 		final Codec<Tree<Op<T>, ?>, ProgramGene<T>> codec,
 		final Error<T> error,
-		final Iterable<Sample<T>> samples
+		final Iterable<? extends Sample<T>> samples
 	) {
 		if (!samples.iterator().hasNext()) {
 			throw new IllegalArgumentException("Sample list must not be empty.");
@@ -190,7 +199,7 @@ public final class Regression<T>
 		final List<Sample<T>> s = new ArrayList<>();
 		samples.forEach(s::add);
 
-		return new Regression<>(codec, error, new Samples<>(s));
+		return new Regression<>(codec, error, new SampleList<>(s));
 	}
 
 	/**

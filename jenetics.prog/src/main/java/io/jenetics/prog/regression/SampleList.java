@@ -25,13 +25,24 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.List;
+import java.util.stream.Stream;
+
+import io.jenetics.ext.util.Tree;
+
+import io.jenetics.prog.op.Op;
+import io.jenetics.prog.op.Program;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.0
  * @since 5.0
  */
-final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
+final class SampleList<T>
+	extends AbstractList<Sample<T>>
+	implements
+		Sampling<T>,
+		Serializable
+{
 	private static final long serialVersionUID = 1L;
 
 	private final List<Sample<T>> _samples;
@@ -41,7 +52,11 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 	private final T[] _results;
 
 	@SuppressWarnings("unchecked")
-	Samples(final List<Sample<T>> samples) {
+	SampleList(final List<Sample<T>> samples) {
+		if (samples.isEmpty()) {
+			throw new IllegalArgumentException("Sample list must not be empty.");
+		}
+
 		_type = (Class<T>)samples.get(0).argAt(0).getClass();
 
 		final int arity = samples.get(0).arity();
@@ -83,16 +98,14 @@ final class Samples<T> extends AbstractList<Sample<T>> implements Serializable {
 		return args;
 	}
 
-	Class<T> type() {
-		return _type;
-	}
+	@Override
+	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
+		@SuppressWarnings("unchecked")
+		final T[] calculated = Stream.of(_arguments)
+			.map(args -> Program.eval(program, args))
+			.toArray(size -> (T[])Array.newInstance(_type, size));
 
-	T[][] arguments() {
-		return _arguments;
-	}
-
-	T[] results() {
-		return _results;
+		return Result.of(calculated, _results);
 	}
 
 	@Override

@@ -20,6 +20,7 @@
 package io.jenetics.prog.regression;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -27,20 +28,32 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SamplesTest {
+public class SampleBufferTest {
 
 	@Test
-	public void create() {
-		final List<Sample<Double>> points = List.of(
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4)
-		);
+	public void add() {
+		final SampleBuffer<Double> buffer = new SampleBuffer<>(33);
+		for (int i = 0; i < 10; ++i) {
+			buffer.add(Sample.ofDouble(i, 2*i));
+		}
 
-		final Samples<Double> samples = new Samples<>(points);
-		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
-		Assert.assertEquals(samples.results().getClass(), Double[].class);
+		Assert.assertEquals(buffer.samples(), List.of());
+	}
+
+	@Test
+	public void publish() {
+		final SampleBuffer<Double> buffer = new SampleBuffer<>(33);
+		for (int i = 0; i < 10; ++i) {
+			buffer.add(Sample.ofDouble(i, 2*i));
+		}
+		buffer.publish();
+
+		Assert.assertEquals(
+			buffer.samples().stream()
+				.map(p -> p.argAt(0).intValue())
+				.collect(Collectors.toList()),
+			List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+		);
 	}
 
 }
