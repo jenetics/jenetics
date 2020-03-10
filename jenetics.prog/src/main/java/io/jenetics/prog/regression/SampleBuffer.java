@@ -38,6 +38,9 @@ import io.jenetics.prog.op.Op;
  * These values will be made available for evaluation after an explicit call of
  * the {@link #publish()} method.
  *
+ * @implNote
+ * This class is thread-safe.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
