@@ -92,7 +92,7 @@ public interface Sampling<T> {
 	 *
 	 * @param program the program to evaluate
 	 * @return the evaluated sample result. May be {@code null} if the sampling
-	 *         contains no sample points.
+	 *         is empty and contains no sample points.
 	 */
 	Result<T> eval(final Tree<? extends Op<T>, ?> program);
 
