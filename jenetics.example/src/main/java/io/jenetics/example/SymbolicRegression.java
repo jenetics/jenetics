@@ -19,9 +19,6 @@
  */
 package io.jenetics.example;
 
-import static java.lang.Math.abs;
-import static java.lang.String.format;
-
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -114,18 +111,6 @@ public class SymbolicRegression {
 		System.out.println("Generations: " + result.totalGenerations());
 		System.out.println("Function:    " + new MathExpr(tree));
 		System.out.println("Error:       " + REGRESSION.error(tree));
-
-		System.out.println("x: y, y', error");
-		for (Sample<Double> sample : REGRESSION.samples()) {
-			final double x = sample.argAt(0);
-			final double y = program.eval(x);
-
-			System.out.println(format(
-				"%2.2f: %2.4f, %2.4f: %2.5f",
-				x, f(x), y, abs(f(x) - y)
-			));
-		}
-
 	}
 
 	// The function we want to determine.
