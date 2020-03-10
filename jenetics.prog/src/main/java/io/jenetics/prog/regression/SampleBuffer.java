@@ -47,7 +47,7 @@ public final class SampleBuffer<T> implements Sampling<T> {
 
 	private SampleList<T> _snapshot = null;
 
-	private SampleBuffer(final int size) {
+	public SampleBuffer(final int size) {
 		_buffer = new RingBuffer(size);
 	}
 
@@ -81,6 +81,8 @@ public final class SampleBuffer<T> implements Sampling<T> {
 	 * Making the current sample points available for the {@link #eval(Tree)}
 	 * function.
 	 *
+	 * @see #samples()
+	 *
 	 * @return the number of <em>published</em> sample points
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -95,11 +97,23 @@ public final class SampleBuffer<T> implements Sampling<T> {
 		return 0;
 	}
 
+	/**
+	 * Return the currently <em>published</em> sample points.
+	 *
+	 * @see #publish()
+	 *
+	 * @return the currently <em>published</em> sample points
+	 */
+	List<Sample<T>> samples() {
+		return _snapshot != null ? _snapshot : List.of();
+	}
+
 	@Override
 	public Result<T> eval(final Tree<? extends Op<T>, ?> program) {
 		requireNonNull(program);
-		return _snapshot != null && _snapshot.size() > 0
+		return _snapshot != null && !_snapshot.isEmpty()
 			? _snapshot.eval(program)
 			: null;
 	}
+
 }
