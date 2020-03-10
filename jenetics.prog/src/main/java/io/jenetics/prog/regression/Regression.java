@@ -90,6 +90,9 @@ import io.jenetics.prog.regression.Sampling.Result;
  * }
  * }</pre>
  *
+ * @see SampleBuffer
+ * @see Sampling
+ *
  * @param <T> the operation type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
@@ -140,7 +143,9 @@ public final class Regression<T>
 	 */
 	public double error(final Tree<? extends Op<T>, ?> program) {
 		final Result<T> result = _sampling.eval(program);
-		return _error.apply(program, result.calculated(), result.expected());
+		return result != null
+			? _error.apply(program, result.calculated(), result.expected())
+			: Double.MAX_VALUE;
 	}
 
 	/* *************************************************************************

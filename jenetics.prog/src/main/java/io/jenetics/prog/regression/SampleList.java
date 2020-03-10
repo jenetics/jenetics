@@ -53,6 +53,10 @@ final class SampleList<T>
 
 	@SuppressWarnings("unchecked")
 	SampleList(final List<Sample<T>> samples) {
+		if (samples.isEmpty()) {
+			throw new IllegalArgumentException("Sample list must not be empty.");
+		}
+
 		_type = (Class<T>)samples.get(0).argAt(0).getClass();
 
 		final int arity = samples.get(0).arity();
