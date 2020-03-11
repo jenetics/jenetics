@@ -25,69 +25,74 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import io.jenetics.Gene;
+import java.util.stream.Stream;
 
 /**
  *
  *
- * @param <G> the gene type
- * @param <C> the fitness result type
+ * @param <T> the element type of the publisher
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class EvolutionPublisher<
-	G extends Gene<?, G>,
-	C extends Comparable<? super C>
->
-	extends SubmissionPublisher<EvolutionResult<G, C>>
-{
+public class StreamPublisher<T> extends SubmissionPublisher<T> {
+
+	private final Object _lock = new Object(){};
 
 	private final AtomicBoolean _proceed = new AtomicBoolean(true);
 
-	private EvolutionStream<G, C> _stream;
+	private Stream<? extends T> _stream;
 	private Thread _thread;
 
-	public EvolutionPublisher(
+	public StreamPublisher(
 		final Executor executor,
 		final int maxBufferCapacity,
-		final EvolutionStream<G, C> stream
+		final Stream<? extends T> stream
 	) {
 		super(executor, maxBufferCapacity);
 		attach(stream);
 	}
 
-	public EvolutionPublisher(final EvolutionStream<G, C> stream) {
+	public StreamPublisher(final Stream<? extends T> stream) {
 		attach(stream);
 	}
 
-	public EvolutionPublisher() {
+	public StreamPublisher() {
 	}
 
-	public synchronized void attach(final EvolutionStream<G, C> stream) {
+	public synchronized void attach(final Stream<? extends T> stream) {
 		requireNonNull(stream);
-		if (_stream != null) {
-			throw new IllegalStateException("Already attached evolution stream.");
-		}
 
-		_stream = stream.limit(er -> _proceed.get());
-		_thread = new Thread(() -> {
-			try {
-				_stream.forEach(this::submit);
-			} catch(CancellationException e) {
-				Thread.currentThread().interrupt();
+		synchronized (_lock) {
+			if (_stream != null) {
+				throw new IllegalStateException(
+					"Already attached evolution stream."
+				);
 			}
-		});
-		_thread.start();
+
+			_stream = stream.takeWhile(e -> _proceed.get());
+			_thread = new Thread(() -> {
+				try {
+					_stream.forEach(this::submit);
+				} catch(CancellationException e) {
+					Thread.currentThread().interrupt();
+				} finally {
+					_thread = null;
+					close();
+				}
+			});
+			_thread.start();
+		}
 	}
 
 	@Override
 	public void close() {
-		_proceed.set(false);
-		if (_thread != null) {
-			_thread.interrupt();
+		synchronized (_lock) {
+			_proceed.set(false);
+			if (_thread != null) {
+				_thread.interrupt();
+			}
 		}
 		super.close();
 	}

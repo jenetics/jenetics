@@ -23,7 +23,11 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import io.jenetics.Genotype;
@@ -33,7 +37,7 @@ import io.jenetics.IntegerGene;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class EvolutionPublisherTest {
+public class StreamPublisherTest {
 
 	private final Problem<Integer, IntegerGene, Integer> _problem = Problem.of(
 		a -> a,
@@ -48,43 +52,113 @@ public class EvolutionPublisherTest {
 		.build();
 
 	@Test
-	public void publishing() {
-		final var publisher = new EvolutionPublisher<IntegerGene, Integer>();
-		final var stream = _engine.stream();
+	public void publishLimitedStream() throws InterruptedException {
+		final int generations = 20;
+		final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
+		final var stream = _engine.stream().limit(generations);
 
+		final var lock = new ReentrantLock();
+		final var finished = lock.newCondition();
+		final AtomicBoolean running = new AtomicBoolean(true);
+		final AtomicBoolean completed = new AtomicBoolean(false);
+
+		final AtomicInteger count = new AtomicInteger();
 		publisher.subscribe(new Subscriber<>() {
-			private int _count;
 			private Subscription _subscription;
 			@Override
-			public void onSubscribe(Subscription subscription) {
+			public void onSubscribe(final Subscription subscription) {
 				_subscription = requireNonNull(subscription);
 				_subscription.request(1);
 			}
-
 			@Override
-			public void onNext(EvolutionResult<IntegerGene, Integer> result) {
-				System.out.println("" + ++_count + ": " + result.bestPhenotype());
+			public void onNext(final EvolutionResult<IntegerGene, Integer> er) {
+				count.incrementAndGet();
 				_subscription.request(1);
 			}
-
-			@Override
-			public void onError(Throwable throwable) {
-			}
-
 			@Override
 			public void onComplete() {
-				System.out.println("FINISHED");
+				lock.lock();
+				try {
+					running.set(false);
+					finished.signal();
+				} finally {
+					lock.unlock();
+				}
+				completed.set(true);
 			}
+			@Override
+			public void onError(final Throwable throwable) {}
 		});
 
 		publisher.attach(stream);
-		System.out.println("END");
+
+		lock.lock();
 		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			while (running.get()) {
+				finished.await();
+			}
+		} finally {
+			lock.unlock();
 		}
+
 		publisher.close();
+		Assert.assertEquals(count.get(), generations);
+		Assert.assertTrue(completed.get());
+	}
+
+	@Test
+	public void publishClosingPublisher() throws InterruptedException {
+		final int generations = 20;
+		final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
+		final var stream = _engine.stream();
+
+		final var lock = new ReentrantLock();
+		final var finished = lock.newCondition();
+		final AtomicBoolean running = new AtomicBoolean(true);
+		final AtomicBoolean completed = new AtomicBoolean(false);
+
+		final AtomicInteger count = new AtomicInteger();
+		publisher.subscribe(new Subscriber<>() {
+			private Subscription _subscription;
+			@Override
+			public void onSubscribe(final Subscription subscription) {
+				_subscription = requireNonNull(subscription);
+				_subscription.request(1);
+			}
+			@Override
+			public void onNext(final EvolutionResult<IntegerGene, Integer> er) {
+				count.incrementAndGet();
+				lock.lock();
+				try {
+					running.set(er.generation() < generations);
+					finished.signal();
+				} finally {
+					lock.unlock();
+				}
+				_subscription.request(1);
+			}
+			@Override
+			public void onComplete() {
+				completed.set(true);
+			}
+			@Override
+			public void onError(final Throwable throwable) {}
+		});
+
+		publisher.attach(stream);
+
+		lock.lock();
+		try {
+			while (running.get()) {
+				finished.await();
+			}
+		} finally {
+			lock.unlock();
+		}
+
+		publisher.close();
+		Assert.assertEquals(count.get(), generations);
+		Assert.assertTrue(completed.get());
 	}
 
 }
