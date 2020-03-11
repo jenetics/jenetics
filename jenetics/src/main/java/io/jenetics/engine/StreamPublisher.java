@@ -28,7 +28,41 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 /**
+ * This class allows to create a reactive {@link java.util.concurrent.Flow.Publisher}
+ * from a given Java {@link Stream}.
  *
+ * <pre>{@code
+ * final Stream<Long> stream = engine.stream()
+ *     .limit(33)
+ *     .map(EvolutionResult::generation);
+ *
+ * try (var publisher = new StreamPublisher<Long>()) {
+ *     publisher.attach(stream);
+ *
+ *     publisher.subscribe(new Subscriber<>() {
+ *         private Subscription _subscription;
+ *         \@Override
+ *         public void onSubscribe(final Subscription subscription) {
+ *             _subscription = subscription;
+ *             _subscription.request(1);
+ *         }
+ *         \@Override
+ *         public void onNext(final Long g) {
+ *             System.out.println("Got new generation: " + g);
+ *             _subscription.request(1);
+ *         }
+ *         \@Override
+ *         public void onError(final Throwable throwable) {
+ *         }
+ *         \@Override
+ *         public void onComplete() {
+ *             System.out.println("Evolution completed.");
+ *         }
+ *     });
+ *
+ *     ...
+ * }
+ * }</pre>
  *
  * @param <T> the element type of the publisher
  *
