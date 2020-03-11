@@ -25,7 +25,9 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -50,6 +52,62 @@ public class StreamPublisherTest {
 	private final Engine<IntegerGene, Integer> _engine = Engine
 		.builder(_problem)
 		.build();
+
+
+	@Test
+	public void creation() throws InterruptedException {
+		final var lock = new ReentrantLock();
+		final var finished = lock.newCondition();
+		final var running = new AtomicBoolean(true);
+		final var generation = new AtomicLong();
+
+
+		final Stream<Long> stream = _engine.stream()
+			.limit(33)
+			.map(EvolutionResult::generation);
+
+		try (var publisher = new StreamPublisher<Long>()) {
+			publisher.attach(stream);
+
+			publisher.subscribe(new Subscriber<>() {
+				private Subscription _subscription;
+				@Override
+				public void onSubscribe(final Subscription subscription) {
+					_subscription = subscription;
+					_subscription.request(1);
+				}
+				@Override
+				public void onNext(final Long g) {
+					generation.set(g);
+					_subscription.request(1);
+				}
+				@Override
+				public void onError(final Throwable throwable) {
+				}
+				@Override
+				public void onComplete() {
+					lock.lock();
+					try {
+						running.set(false);
+						finished.signal();
+					} finally {
+						lock.unlock();
+					}
+				}
+			});
+
+			lock.lock();
+			try {
+				while (running.get()) {
+					finished.await();
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+
+		Assert.assertEquals(generation.get(), 33);
+	}
 
 	@Test
 	public void publishLimitedStream() throws InterruptedException {
