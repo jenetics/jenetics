@@ -23,6 +23,7 @@ import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.FitnessNullifier;
+import io.jenetics.stat.MinMax;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -97,6 +98,7 @@ public class TimeSeries {
 
 		final ProgramGene<Double> program = ts._engine.stream()
 			.limit(3000)
+			//.flatMap(MinMax.toBestOf(_nullifier))
 			.collect(EvolutionResult.toBestGenotype())
 			.gene();
 
