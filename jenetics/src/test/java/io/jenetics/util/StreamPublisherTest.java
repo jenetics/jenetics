@@ -71,8 +71,6 @@ public class StreamPublisherTest {
 			.map(EvolutionResult::generation);
 
 		try (var publisher = new StreamPublisher<Long>()) {
-			publisher.attach(stream);
-
 			publisher.subscribe(new Subscriber<>() {
 				private Subscription _subscription;
 				@Override
@@ -99,6 +97,8 @@ public class StreamPublisherTest {
 					}
 				}
 			});
+
+			publisher.attach(stream);
 
 			lock.lock();
 			try {
@@ -201,7 +201,13 @@ public class StreamPublisherTest {
 			}
 			@Override
 			public void onComplete() {
-				completed.set(true);
+				lock.lock();
+				try {
+					completed.set(true);
+					finished.signalAll();
+				} finally {
+					lock.unlock();
+				}
 			}
 			@Override
 			public void onError(final Throwable throwable) {}
@@ -219,6 +225,16 @@ public class StreamPublisherTest {
 		}
 
 		publisher.close();
+
+		lock.lock();
+		try {
+			while (!completed.get()) {
+				finished.await();
+			}
+		} finally {
+			lock.unlock();
+		}
+
 		Assert.assertEquals(count.get(), generations);
 		Assert.assertTrue(completed.get());
 	}
