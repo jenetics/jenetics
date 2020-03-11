@@ -330,8 +330,8 @@ public final class MinMax<C> implements Consumer<C> {
 		return toStrictly(MinMax::min);
 	}
 
-	private static <C>
-	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
+	private static <C> Function<C, Stream<C>>
+	toStrictly(final BinaryOperator<C> comp) {
 		return new Function<>() {
 			private C _best;
 
