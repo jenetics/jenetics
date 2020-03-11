@@ -142,11 +142,11 @@ public class StreamPublisherTest {
 				lock.lock();
 				try {
 					running.set(false);
+					completed.set(true);
 					finished.signal();
 				} finally {
 					lock.unlock();
 				}
-				completed.set(true);
 			}
 			@Override
 			public void onError(final Throwable throwable) {}
@@ -164,6 +164,7 @@ public class StreamPublisherTest {
 		}
 
 		publisher.close();
+
 		Assert.assertEquals(count.get(), generations);
 		Assert.assertTrue(completed.get());
 	}
