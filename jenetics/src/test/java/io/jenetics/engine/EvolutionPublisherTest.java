@@ -73,6 +73,7 @@ public class EvolutionPublisherTest {
 
 			@Override
 			public void onComplete() {
+				System.out.println("FINISHED");
 			}
 		});
 

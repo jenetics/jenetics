@@ -25,7 +25,6 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 import io.jenetics.Gene;
 
@@ -74,7 +73,6 @@ public class EvolutionPublisher<
 		}
 
 		_stream = stream.limit(er -> _proceed.get());
-		//_thread = new Thread(new Evolve<>(_stream, this::submit));
 		_thread = new Thread(() -> {
 			try {
 				_stream.forEach(this::submit);
@@ -88,35 +86,10 @@ public class EvolutionPublisher<
 	@Override
 	public void close() {
 		_proceed.set(false);
-		_thread.interrupt();
+		if (_thread != null) {
+			_thread.interrupt();
+		}
 		super.close();
-	}
-
-	private static final class Evolve<
-		G extends Gene<?, G>,
-		C extends Comparable<? super C>
-	>
-		implements Runnable
-	{
-		private final EvolutionStream<G, C> _stream;
-		private final Consumer<? super EvolutionResult<G, C>> _consumer;
-
-		private Evolve(
-			final EvolutionStream<G, C> stream,
-			final Consumer<? super EvolutionResult<G, C>> consumer
-		) {
-			_stream = requireNonNull(stream);
-			_consumer = requireNonNull(consumer);
-		}
-
-		@Override
-		public void run() {
-			try {
-				_stream.forEach(_consumer);
-			} catch(CancellationException e) {
-				Thread.currentThread().interrupt();
-			}
-		}
 	}
 
 }
