@@ -23,13 +23,16 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 /**
- * This class allows to create a reactive {@link java.util.concurrent.Flow.Publisher}
- * from a given Java {@link Stream}.
+ * This class allows to create a reactive {@link Flow.Publisher} from a given
+ * Java {@link Stream}.
  *
  * <pre>{@code
  * final Stream<Long> stream = engine.stream()
@@ -37,19 +40,17 @@ import java.util.stream.Stream;
  *     .map(EvolutionResult::generation);
  *
  * try (var publisher = new StreamPublisher<Long>()) {
- *     publisher.attach(stream);
- *
  *     publisher.subscribe(new Subscriber<>() {
- *         private Subscription _subscription;
+ *         private Subscription subscription;
  *         \@Override
  *         public void onSubscribe(final Subscription subscription) {
- *             _subscription = subscription;
- *             _subscription.request(1);
+ *             this.subscription = subscription;
+ *             this.subscription.request(1);
  *         }
  *         \@Override
  *         public void onNext(final Long g) {
  *             System.out.println("Got new generation: " + g);
- *             _subscription.request(1);
+ *             subscription.request(1);
  *         }
  *         \@Override
  *         public void onError(final Throwable throwable) {
@@ -59,6 +60,9 @@ import java.util.stream.Stream;
  *             System.out.println("Evolution completed.");
  *         }
  *     });
+ *
+ *     // Attaching the stream, starts the element publishing.
+ *     publisher.attach(stream);
  *
  *     ...
  * }
@@ -79,22 +83,62 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 	private Stream<? extends T> _stream;
 	private Thread _thread;
 
+	/**
+	 * Creates a new {@code StreamPublisher} using the given {@code Executor}
+	 * for async delivery to subscribers, with the given maximum buffer size for
+	 * each subscriber.
+	 *
+	 * @param executor the executor to use for async delivery, supporting
+	 *        creation of at least one independent thread
+	 * @param maxBufferCapacity the maximum capacity for each subscriber's buffer
+	 * @param handler if non-null, procedure to invoke upon exception thrown in
+	 *        method {@code onNext}
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if maxBufferCapacity not positive
+	 */
 	public StreamPublisher(
 		final Executor executor,
 		final int maxBufferCapacity,
-		final Stream<? extends T> stream
+		final BiConsumer<? super Subscriber<? super T>, ? super Throwable> handler
 	) {
+		super(executor, maxBufferCapacity, handler);
+	}
+
+	/**
+	 * Creates a new {@code StreamPublisher} using the given {@code Executor}
+	 * for async delivery to subscribers, with the given maximum buffer size for
+	 * each subscriber, and no handler for Subscriber exceptions in method
+	 * {@link java.util.concurrent.Flow.Subscriber#onNext(Object)}.
+	 *
+	 * @param executor the executor to use for async delivery, supporting
+	 *        creation of at least one independent thread
+	 * @param maxBufferCapacity the maximum capacity for each subscriber's buffer
+	 * @throws NullPointerException if the given {@code executor} is {@code null}
+	 * @throws IllegalArgumentException if maxBufferCapacity not positive
+	 */
+	public StreamPublisher(final Executor executor, final int maxBufferCapacity) {
 		super(executor, maxBufferCapacity);
-		attach(stream);
 	}
 
-	public StreamPublisher(final Stream<? extends T> stream) {
-		attach(stream);
-	}
-
+	/**
+	 * Creates a new publisher using the {@code ForkJoinPool.commonPool()} for
+	 * async delivery to subscribers (unless it does not support a parallelism
+	 * level of at least two, in which case, a new Thread is created to run each
+	 * task), with maximum buffer capacity of {@code Flow.defaultBufferSize()},
+	 * and no handler for Subscriber exceptions in method onNext.
+	 */
 	public StreamPublisher() {
 	}
 
+	/**
+	 * Attaches the given stream to the publisher. This method automatically
+	 * starts the publishing of the elements read from the stream.
+	 *
+	 * @param stream the {@code stream} to attach
+	 * @throws NullPointerException if the given {@code stream} is {@code null}
+	 * @throws IllegalStateException if a stream is already attached to this
+	 *         publisher
+	 */
 	public synchronized void attach(final Stream<? extends T> stream) {
 		requireNonNull(stream);
 
