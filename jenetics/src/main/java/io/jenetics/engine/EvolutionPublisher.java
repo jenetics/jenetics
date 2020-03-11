@@ -19,8 +19,13 @@
  */
 package io.jenetics.engine;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import io.jenetics.Gene;
 
@@ -44,23 +49,74 @@ public class EvolutionPublisher<
 	private final AtomicBoolean _proceed = new AtomicBoolean(true);
 
 	private EvolutionStream<G, C> _stream;
+	private Thread _thread;
 
-	public EvolutionPublisher() {
+	public EvolutionPublisher(
+		final Executor executor,
+		final int maxBufferCapacity,
+		final EvolutionStream<G, C> stream
+	) {
+		super(executor, maxBufferCapacity);
+		attach(stream);
 	}
 
 	public EvolutionPublisher(final EvolutionStream<G, C> stream) {
 		attach(stream);
 	}
 
-	public void attach(final EvolutionStream<G, C> stream) {
+	public EvolutionPublisher() {
+	}
+
+	public synchronized void attach(final EvolutionStream<G, C> stream) {
+		requireNonNull(stream);
+		if (_stream != null) {
+			throw new IllegalStateException("Already attached evolution stream.");
+		}
+
 		_stream = stream.limit(er -> _proceed.get());
-		_stream.forEach(this::submit);
+		//_thread = new Thread(new Evolve<>(_stream, this::submit));
+		_thread = new Thread(() -> {
+			try {
+				_stream.forEach(this::submit);
+			} catch(CancellationException e) {
+				Thread.currentThread().interrupt();
+			}
+		});
+		_thread.start();
 	}
 
 	@Override
 	public void close() {
 		_proceed.set(false);
+		_thread.interrupt();
 		super.close();
+	}
+
+	private static final class Evolve<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	>
+		implements Runnable
+	{
+		private final EvolutionStream<G, C> _stream;
+		private final Consumer<? super EvolutionResult<G, C>> _consumer;
+
+		private Evolve(
+			final EvolutionStream<G, C> stream,
+			final Consumer<? super EvolutionResult<G, C>> consumer
+		) {
+			_stream = requireNonNull(stream);
+			_consumer = requireNonNull(consumer);
+		}
+
+		@Override
+		public void run() {
+			try {
+				_stream.forEach(_consumer);
+			} catch(CancellationException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 }
