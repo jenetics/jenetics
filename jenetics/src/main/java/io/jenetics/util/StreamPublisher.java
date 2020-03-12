@@ -153,15 +153,28 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 			_thread = new Thread(() -> {
 				try {
 					_stream.forEach(this::submit);
+					close();
 				} catch(CancellationException e) {
 					Thread.currentThread().interrupt();
-				} finally {
-					_thread = null;
 					close();
+				} catch (Throwable e) {
+					if (nonFatal(e)) {
+						closeExceptionally(e);
+					} else {
+						throw e;
+					}
 				}
 			});
 			_thread.start();
 		}
+	}
+
+	private static boolean nonFatal(final Throwable throwable) {
+		return
+			!(throwable instanceof VirtualMachineError) &&
+			!(throwable instanceof ThreadDeath) &&
+			!(throwable instanceof InterruptedException) &&
+			!(throwable instanceof LinkageError);
 	}
 
 	/**
