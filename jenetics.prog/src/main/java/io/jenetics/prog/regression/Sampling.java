@@ -42,7 +42,7 @@ public interface Sampling<T> {
 	 * sample values. This two arrays can then be used for calculating the
 	 * error between modeled regression function and actual sample values.
 	 *
-	 * @param <T> the sample result type
+	 * @param <T> the sample result  type
 	 */
 	final class Result<T> {
 		private final T[] _calculated;
