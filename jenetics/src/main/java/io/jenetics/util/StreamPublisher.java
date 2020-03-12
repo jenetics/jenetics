@@ -71,8 +71,8 @@ import java.util.stream.Stream;
  * @param <T> the element type of the publisher
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.0
+ * @since 6.0
  */
 public class StreamPublisher<T> extends SubmissionPublisher<T> {
 

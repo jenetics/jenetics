@@ -42,8 +42,8 @@ import io.jenetics.prog.op.Op;
  * This class is thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.0
+ * @since 6.0
  */
 public final class SampleBuffer<T> implements Sampling<T> {
 
