@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -362,6 +363,49 @@ public final class MinMax<C> implements Consumer<C> {
 		if (a == null) return b;
 		if (b == null) return a;
 		return a.compareTo(b) <= 0 ? a : b;
+	}
+
+
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toRangeMax(final int rangeSize) {
+		return null;
+	}
+
+	private static <C> Function<C, Stream<C>> toRangeBest(
+		final BinaryOperator<C> comp,
+		final int rangeSize
+	) {
+		if (rangeSize < 1) {
+			throw new IllegalArgumentException(
+				"Range size must be at least one: " + rangeSize
+			);
+		}
+
+		return new Function<>() {
+			private int _count = 0;
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C value) {
+				final Stream<C> result;
+				if (_count >= rangeSize) {
+					result = Stream.of(_best);
+					_count = 0;
+					_best = null;
+				} else {
+					++_count;
+					_best = comp.apply(_best, value);
+					result = Stream.empty();
+				}
+
+				return result;
+			}
+		};
+	}
+
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toRangeMax(final Predicate<? extends C> range) {
+		return null;
 	}
 
 }
