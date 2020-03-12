@@ -164,6 +164,11 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 		}
 	}
 
+	/**
+	 * Unless already closed, issues {@code onComplete} signals to current
+	 * subscribers, and disallows subsequent attempts to publish. Upon return,
+	 * this method does NOT guarantee that all subscribers have yet completed.
+	 */
 	@Override
 	public void close() {
 		synchronized (_lock) {
