@@ -219,4 +219,37 @@ public class MinMaxTest {
 		Assert.assertTrue(values.copy().reverse().isSorted());
 	}
 
+	@Test(dataProvider = "toSliceBestData")
+	public void toSliceMax(final int streamSize, final int sliceSize) {
+		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+			.flatMap(MinMax.toSliceMax(sliceSize))
+			.collect(ISeq.toISeq());
+
+		for (int i = 0; i < streamSize/sliceSize; ++i) {
+			Assert.assertEquals(values.get(i).intValue(), sliceSize*(i + 1) - 1 );
+		}
+	}
+
+	@Test(dataProvider = "toSliceBestData")
+	public void toSliceMin(final int streamSize, final int sliceSize) {
+		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+			.flatMap(MinMax.toSliceMin(sliceSize))
+			.collect(ISeq.toISeq());
+
+		for (int i = 0; i < streamSize/sliceSize; ++i) {
+			Assert.assertEquals(values.get(i).intValue(), sliceSize*i);
+		}
+	}
+
+	@DataProvider(name = "toSliceBestData")
+	public Object[] toSliceBestData() {
+		return new Object[][] {
+			{10, 1},
+			{100, 10},
+			{333, 5},
+			{1111, 3},
+			{10, 100}
+		};
+	}
+
 }

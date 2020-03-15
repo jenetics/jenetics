@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -277,6 +276,11 @@ public final class MinMax<C> implements Consumer<C> {
 		return of(Comparator.naturalOrder());
 	}
 
+
+	/* *************************************************************************
+	 *  Some "flat" mapper functions.
+	 * ************************************************************************/
+
 	/**
 	 * Return a new flat-mapper function, which guarantees a strictly increasing
 	 * stream, from an arbitrarily ordered source stream. Note that this
@@ -365,13 +369,36 @@ public final class MinMax<C> implements Consumer<C> {
 		return a.compareTo(b) <= 0 ? a : b;
 	}
 
-
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toRangeMax(final int rangeSize) {
-		return null;
+	Function<C, Stream<C>> toSliceMax(final int size) {
+		return toSliceBest(MinMax::max, size);
 	}
 
-	private static <C> Function<C, Stream<C>> toRangeBest(
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMin(final int size) {
+		return toSliceBest(MinMax::min, size);
+	}
+
+
+	private static <C> Function<C, Stream<C>> toSliceBest(
 		final BinaryOperator<C> comp,
 		final int rangeSize
 	) {
@@ -387,25 +414,21 @@ public final class MinMax<C> implements Consumer<C> {
 
 			@Override
 			public Stream<C> apply(final C value) {
+				++_count;
+				_best = comp.apply(_best, value);
+
 				final Stream<C> result;
 				if (_count >= rangeSize) {
 					result = Stream.of(_best);
 					_count = 0;
 					_best = null;
 				} else {
-					++_count;
-					_best = comp.apply(_best, value);
 					result = Stream.empty();
 				}
 
 				return result;
 			}
 		};
-	}
-
-	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toRangeMax(final Predicate<? extends C> range) {
-		return null;
 	}
 
 }
