@@ -203,7 +203,17 @@ public class MinMaxTest {
 			.flatMap(MinMax.toStrictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		System.out.println(values);
+		Assert.assertTrue(values.isSorted());
+	}
+
+	@Test
+	public void toStrictlyImproving() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(500)
+			.flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+			.collect(ISeq.toISeq());
+
 		Assert.assertTrue(values.isSorted());
 	}
 
@@ -215,7 +225,6 @@ public class MinMaxTest {
 			.flatMap(MinMax.toStrictlyDecreasing())
 			.collect(ISeq.toISeq());
 
-		System.out.println(values);
 		Assert.assertTrue(values.copy().reverse().isSorted());
 	}
 

@@ -335,6 +335,37 @@ public final class MinMax<C> implements Consumer<C> {
 		return toStrictly(MinMax::min);
 	}
 
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @since !__version__!
+	 *
+	 * @see #toStrictlyIncreasing()
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Function<T, Stream<T>>
+	toStrictlyImproving(final Comparator<? super T> comparator) {
+		return toStrictly((a, b) -> best(comparator, a, b));
+	}
+
 	private static <C>
 	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
 		return new Function<>() {
@@ -356,17 +387,19 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
-		if (a == null && b == null) return null;
-		if (a == null) return b;
-		if (b == null) return a;
-		return a.compareTo(b) >= 0 ? a : b;
+		return best(Comparator.naturalOrder(), a, b);
 	}
 
 	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
+		return best(Comparator.reverseOrder(), a, b);
+	}
+
+	private static <T>
+	T best(final Comparator<? super T> comparator, final T a, final T b) {
 		if (a == null && b == null) return null;
 		if (a == null) return b;
 		if (b == null) return a;
-		return a.compareTo(b) <= 0 ? a : b;
+		return comparator.compare(a, b) >= 0 ? a : b;
 	}
 
 	/**
