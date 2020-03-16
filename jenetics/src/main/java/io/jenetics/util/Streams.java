@@ -1,0 +1,327 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
+package io.jenetics.util;
+
+import static java.time.Clock.systemUTC;
+import static java.util.Objects.requireNonNull;
+
+import java.time.Clock;
+import java.time.Duration;
+import java.util.Comparator;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+/**
+ * This class contains factory methods for (flat) mapping stream elements.
+ *
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @since !__version__!
+ * @version !__version__!
+ */
+public final class Streams {
+	private Streams() {}
+
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly increasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyIncreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyIncreasing() {
+		return strictlyImproving(Streams::max);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly decreasing
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyDecreasing())
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [45,32,15,12,3,1]
+	 * }</pre>
+	 *
+	 * @param <C> the comparable type
+	 * @return a new flat-mapper function
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toStrictlyDecreasing() {
+		return strictlyImproving(Streams::min);
+	}
+
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @see #toStrictlyIncreasing()
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Function<T, Stream<T>>
+	toStrictlyImproving(final Comparator<? super T> comparator) {
+		return strictlyImproving((a, b) -> best(comparator, a, b));
+	}
+
+	private static <C> Function<C, Stream<C>>
+	strictlyImproving(final BinaryOperator<C> comparator) {
+		requireNonNull(comparator);
+
+		return new Function<>() {
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C result) {
+				final C best = comparator.apply(_best, result);
+
+				final Stream<C> stream = best == _best
+					? Stream.empty()
+					: Stream.of(best);
+
+				_best = best;
+
+				return stream;
+			}
+		};
+	}
+
+	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
+		return best(Comparator.naturalOrder(), a, b);
+	}
+
+	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
+		return best(Comparator.reverseOrder(), a, b);
+	}
+
+	private static <T>
+	T best(final Comparator<? super T> comparator, final T a, final T b) {
+		if (a == null && b == null) return null;
+		if (a == null) return b;
+		if (b == null) return a;
+		return comparator.compare(a, b) >= 0 ? a : b;
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMax(final int size) {
+		return sliceBest(Streams::max, size);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @param size the size of the slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMin(final int size) {
+		return sliceBest(Streams::min, size);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @param <C> the element type
+	 * @param size the size of the slice
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toSliceBest(final Comparator<? super C> comparator, final int size) {
+		requireNonNull(comparator);
+		return sliceBest((a, b) -> best(comparator, a, b), size);
+	}
+
+	private static <C> Function<C, Stream<C>> sliceBest(
+		final BinaryOperator<C> comp,
+		final int rangeSize
+	) {
+		requireNonNull(comp);
+		if (rangeSize < 1) {
+			throw new IllegalArgumentException(
+				"Range size must be at least one: " + rangeSize
+			);
+		}
+
+		return new Function<>() {
+			private int _count = 0;
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C value) {
+				++_count;
+				_best = comp.apply(_best, value);
+
+				final Stream<C> result;
+				if (_count >= rangeSize) {
+					result = Stream.of(_best);
+					_count = 0;
+					_best = null;
+				} else {
+					result = Stream.empty();
+				}
+
+				return result;
+			}
+		};
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMax(final Duration timespan) {
+		return sliceBest(Streams::max, timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMin(final Duration timespan) {
+		return sliceBest(Streams::min, timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param comparator the comparator used for testing the elements
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toSliceBest(final Comparator<? super C> comparator, final Duration timespan) {
+		requireNonNull(comparator);
+		return sliceBest((a, b) -> best(comparator, a, b), timespan, systemUTC());
+	}
+
+	private static <C> Function<C, Stream<C>> sliceBest(
+		final BinaryOperator<C> comp,
+		final Duration timespan,
+		final Clock clock
+	) {
+		requireNonNull(comp);
+		requireNonNull(timespan);
+
+		return new Function<>() {
+			private final long _timespan  = timespan.toMillis();
+
+			private long _start = 0;
+			private long _end = 0;
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C value) {
+				if (_start == 0) {
+					_start = clock.millis();
+				}
+
+				_best = comp.apply(_best, value);
+				_end = clock.millis();
+
+				final Stream<C> result;
+				if (_end - _start >= _timespan) {
+					result = Stream.of(_best);
+					_start = 0;
+					_best = null;
+				} else {
+					result = Stream.empty();
+				}
+
+				return result;
+			}
+		};
+	}
+
+}

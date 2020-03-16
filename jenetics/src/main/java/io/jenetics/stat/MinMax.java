@@ -22,15 +22,14 @@ package io.jenetics.stat;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
-import java.time.Duration;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+
+import io.jenetics.util.Streams;
 
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
@@ -307,7 +306,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
-		return strictlyImproving(MinMax::max);
+		return Streams.toStrictlyIncreasing();
 	}
 
 	/**
@@ -334,7 +333,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
-		return strictlyImproving(MinMax::min);
+		return Streams.toStrictlyDecreasing();
 	}
 
 	/**
@@ -365,223 +364,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <T> Function<T, Stream<T>>
 	toStrictlyImproving(final Comparator<? super T> comparator) {
-		return strictlyImproving((a, b) -> best(comparator, a, b));
-	}
-
-	private static <C> Function<C, Stream<C>>
-	strictlyImproving(final BinaryOperator<C> comparator) {
-		requireNonNull(comparator);
-
-		return new Function<>() {
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C result) {
-				final C best = comparator.apply(_best, result);
-
-				final Stream<C> stream = best == _best
-					? Stream.empty()
-					: Stream.of(best);
-
-				_best = best;
-
-				return stream;
-			}
-		};
-	}
-
-	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
-		return best(Comparator.naturalOrder(), a, b);
-	}
-
-	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
-		return best(Comparator.reverseOrder(), a, b);
-	}
-
-	private static <T>
-	T best(final Comparator<? super T> comparator, final T a, final T b) {
-		if (a == null && b == null) return null;
-		if (a == null) return b;
-		if (b == null) return a;
-		return comparator.compare(a, b) >= 0 ? a : b;
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the maximal value
-	 * of the last <em>n</em> elements.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param size the size of the slice
-	 * @param <C> the element type
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMax(final int size) {
-		return sliceBest(MinMax::max, size);
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the minimal value
-	 * of the last <em>n</em> elements.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param size the size of the slice
-	 * @param <C> the element type
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMin(final int size) {
-		return sliceBest(MinMax::min, size);
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the minimal value
-	 * of the last <em>n</em> elements.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param <C> the element type
-	 * @param size the size of the slice
-	 * @param comparator the comparator used for testing the elements
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 * @throws NullPointerException if the given {@code comparator} is
-	 *         {@code null}
-	 */
-	public static <C> Function<C, Stream<C>>
-	toSliceBest(final Comparator<? super C> comparator, final int size) {
-		requireNonNull(comparator);
-		return sliceBest((a, b) -> best(comparator, a, b), size);
-	}
-
-	private static <C> Function<C, Stream<C>> sliceBest(
-		final BinaryOperator<C> comp,
-		final int rangeSize
-	) {
-		requireNonNull(comp);
-		if (rangeSize < 1) {
-			throw new IllegalArgumentException(
-				"Range size must be at least one: " + rangeSize
-			);
-		}
-
-		return new Function<>() {
-			private int _count = 0;
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C value) {
-				++_count;
-				_best = comp.apply(_best, value);
-
-				final Stream<C> result;
-				if (_count >= rangeSize) {
-					result = Stream.of(_best);
-					_count = 0;
-					_best = null;
-				} else {
-					result = Stream.empty();
-				}
-
-				return result;
-			}
-		};
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the maximal value
-	 * of the elements emitted within the given {@code timespan}.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param timespan the timespan the elements are collected for the
-	 *        calculation slice
-	 * @param <C> the element type
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMax(final Duration timespan) {
-		return sliceBest(MinMax::max, timespan);
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the minimal value
-	 * of the elements emitted within the given {@code timespan}.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param timespan the timespan the elements are collected for the
-	 *        calculation slice
-	 * @param <C> the element type
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 */
-	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMin(final Duration timespan) {
-		return sliceBest(MinMax::min, timespan);
-	}
-
-	/**
-	 * Return a new flat-mapper function which returns (emits) the minimal value
-	 * of the elements emitted within the given {@code timespan}.
-	 *
-	 * @since !__version__!
-	 *
-	 * @param comparator the comparator used for testing the elements
-	 * @param timespan the timespan the elements are collected for the
-	 *        calculation slice
-	 * @param <C> the element type
-	 * @return a new flat-mapper function
-	 * @throws IllegalArgumentException if the given size is smaller than one
-	 * @throws NullPointerException if the given {@code comparator} is
-	 *         {@code null}
-	 */
-	public static <C> Function<C, Stream<C>>
-	toSliceBest(final Comparator<? super C> comparator, final Duration timespan) {
-		requireNonNull(comparator);
-		return sliceBest((a, b) -> best(comparator, a, b), timespan);
-	}
-
-	private static <C> Function<C, Stream<C>> sliceBest(
-		final BinaryOperator<C> comp,
-		final Duration timespan
-	) {
-		requireNonNull(comp);
-		requireNonNull(timespan);
-
-		return new Function<>() {
-			private final long _timespan  = timespan.toMillis();
-
-			private long _start = 0;
-			private long _end = 0;
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C value) {
-				if (_start == 0) {
-					_start = System.currentTimeMillis();
-				}
-
-				_best = comp.apply(_best, value);
-				_end = System.currentTimeMillis();
-
-				final Stream<C> result;
-				if (_end - _start >= _timespan) {
-					result = Stream.of(_best);
-					_start = 0;
-					_best = null;
-				} else {
-					result = Stream.empty();
-				}
-
-				return result;
-			}
-		};
+		return Streams.toStrictlyImproving(comparator);
 	}
 
 }
