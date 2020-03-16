@@ -22,8 +22,10 @@ package io.jenetics.stat;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.time.Duration;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -305,7 +307,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
-		return toStrictly(MinMax::max);
+		return strictlyImproving(MinMax::max);
 	}
 
 	/**
@@ -332,7 +334,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
-		return toStrictly(MinMax::min);
+		return strictlyImproving(MinMax::min);
 	}
 
 	/**
@@ -363,17 +365,19 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <T> Function<T, Stream<T>>
 	toStrictlyImproving(final Comparator<? super T> comparator) {
-		return toStrictly((a, b) -> best(comparator, a, b));
+		return strictlyImproving((a, b) -> best(comparator, a, b));
 	}
 
-	private static <C>
-	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
+	private static <C> Function<C, Stream<C>>
+	strictlyImproving(final BinaryOperator<C> comparator) {
+		requireNonNull(comparator);
+
 		return new Function<>() {
 			private C _best;
 
 			@Override
 			public Stream<C> apply(final C result) {
-				final C best = comp.apply(_best, result);
+				final C best = comparator.apply(_best, result);
 
 				final Stream<C> stream = best == _best
 					? Stream.empty()
@@ -406,6 +410,8 @@ public final class MinMax<C> implements Consumer<C> {
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the last <em>n</em> elements.
 	 *
+	 * @since !__version__!
+	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
 	 * @return a new flat-mapper function
@@ -413,12 +419,14 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toSliceMax(final int size) {
-		return toSliceBest(MinMax::max, size);
+		return sliceBest(MinMax::max, size);
 	}
 
 	/**
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the last <em>n</em> elements.
+	 *
+	 * @since !__version__!
 	 *
 	 * @param size the size of the slice
 	 * @param <C> the element type
@@ -427,14 +435,34 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toSliceMin(final int size) {
-		return toSliceBest(MinMax::min, size);
+		return sliceBest(MinMax::min, size);
 	}
 
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the last <em>n</em> elements.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param <C> the element type
+	 * @param size the size of the slice
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toSliceBest(final Comparator<? super C> comparator, final int size) {
+		requireNonNull(comparator);
+		return sliceBest((a, b) -> best(comparator, a, b), size);
+	}
 
-	private static <C> Function<C, Stream<C>> toSliceBest(
+	private static <C> Function<C, Stream<C>> sliceBest(
 		final BinaryOperator<C> comp,
 		final int rangeSize
 	) {
+		requireNonNull(comp);
 		if (rangeSize < 1) {
 			throw new IllegalArgumentException(
 				"Range size must be at least one: " + rangeSize
@@ -454,6 +482,43 @@ public final class MinMax<C> implements Consumer<C> {
 				if (_count >= rangeSize) {
 					result = Stream.of(_best);
 					_count = 0;
+					_best = null;
+				} else {
+					result = Stream.empty();
+				}
+
+				return result;
+			}
+		};
+	}
+
+	private static <C> Function<C, Stream<C>> sliceBest(
+		final BinaryOperator<C> comp,
+		final Duration timespan
+	) {
+		requireNonNull(comp);
+		requireNonNull(timespan);
+
+		return new Function<>() {
+			private final long _timespan  = timespan.toMillis();
+
+			private long _start = 0;
+			private long _end = 0;
+			private C _best;
+
+			@Override
+			public Stream<C> apply(final C value) {
+				if (_start == 0) {
+					_start = System.currentTimeMillis();
+				}
+
+				_best = comp.apply(_best, value);
+				_end = System.currentTimeMillis();
+
+				final Stream<C> result;
+				if (_end - _start >= _timespan) {
+					result = Stream.of(_best);
+					_start = 0;
 					_best = null;
 				} else {
 					result = Stream.empty();
