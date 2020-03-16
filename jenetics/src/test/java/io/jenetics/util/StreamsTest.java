@@ -27,8 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.stat.MinMax;
-
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
@@ -37,7 +35,7 @@ public class StreamsTest {
 	@Test(dataProvider = "toSliceBestData")
 	public void toSliceMax(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(MinMax.toSliceMax(sliceSize))
+			.flatMap(Streams.toSliceMax(sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -48,7 +46,7 @@ public class StreamsTest {
 	@Test(dataProvider = "toSliceBestData")
 	public void toSliceMin(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(MinMax.toSliceMin(sliceSize))
+			.flatMap(Streams.toSliceMin(sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -59,7 +57,7 @@ public class StreamsTest {
 	@Test(dataProvider = "toSliceBestData")
 	public void toSliceBest(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(MinMax.toSliceBest(Comparator.reverseOrder(), sliceSize))
+			.flatMap(Streams.toSliceBest(Comparator.reverseOrder(), sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -88,7 +86,7 @@ public class StreamsTest {
 					throw new AssertionError(e);
 				}
 			})
-			.flatMap(MinMax.toSliceMax(Duration.ofMillis(10)))
+			.flatMap(Streams.toSliceMax(Duration.ofMillis(10)))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(
@@ -117,7 +115,7 @@ public class StreamsTest {
 					throw new AssertionError(e);
 				}
 			})
-			.flatMap(MinMax.toSliceMin(Duration.ofMillis(10)))
+			.flatMap(Streams.toSliceMin(Duration.ofMillis(10)))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(

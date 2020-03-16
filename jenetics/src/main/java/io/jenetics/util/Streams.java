@@ -241,11 +241,12 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the maximal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
+	 * @param <C> the element type
 	 * @param timespan the timespan the elements are collected for the
 	 *        calculation slice
-	 * @param <C> the element type
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code timespan} is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toSliceMax(final Duration timespan) {
@@ -253,14 +254,32 @@ public final class Streams {
 	}
 
 	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMax(final Duration timespan, final Clock clock) {
+		return sliceBest(Streams::max, timespan, clock);
+	}
+
+	/**
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
+	 * @param <C> the element type
 	 * @param timespan the timespan the elements are collected for the
 	 *        calculation slice
-	 * @param <C> the element type
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code timespan} is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toSliceMin(final Duration timespan) {
@@ -271,19 +290,58 @@ public final class Streams {
 	 * Return a new flat-mapper function which returns (emits) the minimal value
 	 * of the elements emitted within the given {@code timespan}.
 	 *
+	 * @param <C> the element type
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMin(final Duration timespan, final Clock clock) {
+		return sliceBest(Streams::min, timespan, clock);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param <C> the element type
 	 * @param comparator the comparator used for testing the elements
 	 * @param timespan the timespan the elements are collected for the
 	 *        calculation slice
-	 * @param <C> the element type
 	 * @return a new flat-mapper function
 	 * @throws IllegalArgumentException if the given size is smaller than one
-	 * @throws NullPointerException if the given {@code comparator} is
-	 *         {@code null}
+	 @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C> Function<C, Stream<C>>
 	toSliceBest(final Comparator<? super C> comparator, final Duration timespan) {
 		requireNonNull(comparator);
 		return sliceBest((a, b) -> best(comparator, a, b), timespan, systemUTC());
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @param <C> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param clock the {@code clock} used for measuring the {@code timespan}
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toSliceBest(
+		final Comparator<? super C> comparator,
+		final Duration timespan,
+		final Clock clock
+	) {
+		requireNonNull(comparator);
+		return sliceBest((a, b) -> best(comparator, a, b), timespan, clock);
 	}
 
 	private static <C> Function<C, Stream<C>> sliceBest(
