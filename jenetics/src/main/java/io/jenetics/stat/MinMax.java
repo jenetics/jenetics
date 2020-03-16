@@ -492,6 +492,61 @@ public final class MinMax<C> implements Consumer<C> {
 		};
 	}
 
+	/**
+	 * Return a new flat-mapper function which returns (emits) the maximal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMax(final Duration timespan) {
+		return sliceBest(MinMax::max, timespan);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 */
+	public static <C extends Comparable<? super C>>
+	Function<C, Stream<C>> toSliceMin(final Duration timespan) {
+		return sliceBest(MinMax::min, timespan);
+	}
+
+	/**
+	 * Return a new flat-mapper function which returns (emits) the minimal value
+	 * of the elements emitted within the given {@code timespan}.
+	 *
+	 * @since !__version__!
+	 *
+	 * @param comparator the comparator used for testing the elements
+	 * @param timespan the timespan the elements are collected for the
+	 *        calculation slice
+	 * @param <C> the element type
+	 * @return a new flat-mapper function
+	 * @throws IllegalArgumentException if the given size is smaller than one
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
+	 */
+	public static <C> Function<C, Stream<C>>
+	toSliceBest(final Comparator<? super C> comparator, final Duration timespan) {
+		requireNonNull(comparator);
+		return sliceBest((a, b) -> best(comparator, a, b), timespan);
+	}
+
 	private static <C> Function<C, Stream<C>> sliceBest(
 		final BinaryOperator<C> comp,
 		final Duration timespan

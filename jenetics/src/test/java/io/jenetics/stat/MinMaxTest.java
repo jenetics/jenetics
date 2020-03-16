@@ -19,8 +19,10 @@
  */
 package io.jenetics.stat;
 
+import static java.lang.String.format;
 import static org.testng.Assert.assertEquals;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
@@ -270,6 +272,65 @@ public class MinMaxTest {
 			{1111, 3},
 			{10, 100}
 		};
+	}
+
+	@Test
+	public void toTimespanSliceMax() {
+		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
+			.peek(i -> {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					throw new AssertionError(e);
+				}
+			})
+			.flatMap(MinMax.toSliceMax(Duration.ofMillis(10)))
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(
+			values.size() > 1,
+			"Expect more than one element: " + values.size()
+		);
+
+		int start = 0;
+		for (int i = 0; i < values.size(); ++i) {
+			final int diff = values.get(i) - start;
+			Assert.assertTrue(
+				diff > 4 && diff < 20,
+				"Expected value between [4, 20]: " + diff
+			);
+			start = values.get(i);
+		}
+	}
+
+	@Test
+	public void toTimespanSliceMin() {
+		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
+			.peek(i -> {
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					throw new AssertionError(e);
+				}
+			})
+			.flatMap(MinMax.toSliceMin(Duration.ofMillis(10)))
+			.collect(ISeq.toISeq());
+
+		Assert.assertTrue(
+			values.size() > 1,
+			"Expect more than one element: " + values.size()
+		);
+		Assert.assertEquals(values.get(0).intValue(), 0);
+
+		int start = values.get(0);
+		for (int i = 1; i < values.size(); ++i) {
+			final int diff = values.get(i) - start;
+			Assert.assertTrue(
+				diff > 4 && diff < 20,
+				"Expected value between [4, 20]: " + diff
+			);
+			start = values.get(i);
+		}
 	}
 
 }
