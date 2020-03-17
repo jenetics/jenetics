@@ -41,8 +41,8 @@ import java.util.stream.Stream;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since !__version__!
- * @version !__version__!
+ * @since 6.0
+ * @version 6.0
  */
 public final class Streams {
 	private Streams() {}

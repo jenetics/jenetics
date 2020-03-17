@@ -353,7 +353,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 * // [6,47,65,78,96,96,99]
 	 * }</pre>
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 *
 	 * @see #toStrictlyIncreasing()
 	 * @see #toStrictlyDecreasing()
