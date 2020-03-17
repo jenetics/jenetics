@@ -32,10 +32,10 @@ import org.testng.annotations.Test;
  */
 public class StreamsTest {
 
-	@Test(dataProvider = "toSliceBestData")
-	public void toSliceMax(final int streamSize, final int sliceSize) {
+	@Test(dataProvider = "toIntervalBestData")
+	public void toIntervalMax(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(Streams.toSliceMax(sliceSize))
+			.flatMap(Streams.toIntervalMax(sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -43,10 +43,10 @@ public class StreamsTest {
 		}
 	}
 
-	@Test(dataProvider = "toSliceBestData")
-	public void toSliceMin(final int streamSize, final int sliceSize) {
+	@Test(dataProvider = "toIntervalBestData")
+	public void toIntervalMin(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(Streams.toSliceMin(sliceSize))
+			.flatMap(Streams.toIntervalMin(sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -54,10 +54,10 @@ public class StreamsTest {
 		}
 	}
 
-	@Test(dataProvider = "toSliceBestData")
-	public void toSliceBest(final int streamSize, final int sliceSize) {
+	@Test(dataProvider = "toIntervalBestData")
+	public void toIntervalBest(final int streamSize, final int sliceSize) {
 		final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-			.flatMap(Streams.toSliceBest(Comparator.reverseOrder(), sliceSize))
+			.flatMap(Streams.toIntervalBest(Comparator.reverseOrder(), sliceSize))
 			.collect(ISeq.toISeq());
 
 		for (int i = 0; i < streamSize/sliceSize; ++i) {
@@ -65,8 +65,8 @@ public class StreamsTest {
 		}
 	}
 
-	@DataProvider(name = "toSliceBestData")
-	public Object[] toSliceBestData() {
+	@DataProvider(name = "toIntervalBestData")
+	public Object[] toIntervalBestData() {
 		return new Object[][] {
 			{10, 1},
 			{100, 10},
@@ -77,7 +77,7 @@ public class StreamsTest {
 	}
 
 	@Test
-	public void toTimespanSliceMax() {
+	public void toTimespanIntervalMax() {
 		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
 			.peek(i -> {
 				try {
@@ -86,7 +86,7 @@ public class StreamsTest {
 					throw new AssertionError(e);
 				}
 			})
-			.flatMap(Streams.toSliceMax(Duration.ofMillis(10)))
+			.flatMap(Streams.toIntervalMax(Duration.ofMillis(10)))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(
@@ -106,7 +106,7 @@ public class StreamsTest {
 	}
 
 	@Test
-	public void toTimespanSliceMin() {
+	public void toTimespanIntervalMin() {
 		final ISeq<Integer> values = IntStream.range(0, 100).boxed()
 			.peek(i -> {
 				try {
@@ -115,7 +115,7 @@ public class StreamsTest {
 					throw new AssertionError(e);
 				}
 			})
-			.flatMap(Streams.toSliceMin(Duration.ofMillis(10)))
+			.flatMap(Streams.toIntervalMin(Duration.ofMillis(10)))
 			.collect(ISeq.toISeq());
 
 		Assert.assertTrue(

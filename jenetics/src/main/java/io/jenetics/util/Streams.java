@@ -167,7 +167,7 @@ public final class Streams {
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMax(final int size) {
+	Function<C, Stream<C>> toIntervalMax(final int size) {
 		return sliceBest(Streams::max, size);
 	}
 
@@ -181,7 +181,7 @@ public final class Streams {
 	 * @throws IllegalArgumentException if the given size is smaller than one
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMin(final int size) {
+	Function<C, Stream<C>> toIntervalMin(final int size) {
 		return sliceBest(Streams::min, size);
 	}
 
@@ -198,7 +198,7 @@ public final class Streams {
 	 *         {@code null}
 	 */
 	public static <C> Function<C, Stream<C>>
-	toSliceBest(final Comparator<? super C> comparator, final int size) {
+	toIntervalBest(final Comparator<? super C> comparator, final int size) {
 		requireNonNull(comparator);
 		return sliceBest((a, b) -> best(comparator, a, b), size);
 	}
@@ -249,7 +249,7 @@ public final class Streams {
 	 * @throws NullPointerException if the given {@code timespan} is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMax(final Duration timespan) {
+	Function<C, Stream<C>> toIntervalMax(final Duration timespan) {
 		return sliceBest(Streams::max, timespan, systemUTC());
 	}
 
@@ -266,7 +266,7 @@ public final class Streams {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMax(final Duration timespan, final Clock clock) {
+	Function<C, Stream<C>> toIntervalMax(final Duration timespan, final Clock clock) {
 		return sliceBest(Streams::max, timespan, clock);
 	}
 
@@ -282,7 +282,7 @@ public final class Streams {
 	 * @throws NullPointerException if the given {@code timespan} is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMin(final Duration timespan) {
+	Function<C, Stream<C>> toIntervalMin(final Duration timespan) {
 		return sliceBest(Streams::min, timespan, systemUTC());
 	}
 
@@ -299,7 +299,7 @@ public final class Streams {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C extends Comparable<? super C>>
-	Function<C, Stream<C>> toSliceMin(final Duration timespan, final Clock clock) {
+	Function<C, Stream<C>> toIntervalMin(final Duration timespan, final Clock clock) {
 		return sliceBest(Streams::min, timespan, clock);
 	}
 
@@ -316,7 +316,7 @@ public final class Streams {
 	 @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C> Function<C, Stream<C>>
-	toSliceBest(final Comparator<? super C> comparator, final Duration timespan) {
+	toIntervalBest(final Comparator<? super C> comparator, final Duration timespan) {
 		requireNonNull(comparator);
 		return sliceBest((a, b) -> best(comparator, a, b), timespan, systemUTC());
 	}
@@ -335,7 +335,7 @@ public final class Streams {
 	 @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public static <C> Function<C, Stream<C>>
-	toSliceBest(
+	toIntervalBest(
 		final Comparator<? super C> comparator,
 		final Duration timespan,
 		final Clock clock
