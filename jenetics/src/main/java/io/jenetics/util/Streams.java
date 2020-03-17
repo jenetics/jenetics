@@ -30,7 +30,15 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * This class contains factory methods for (flat) mapping stream elements.
+ * This class contains factory methods for (flat) mapping stream elements. The
+ * functions of this class can be used in the following way.
+ *
+ * <pre>{@code
+ * final ISeq<Integer> values = new Random().ints(0, 100).boxed()
+ *     .limit(100)
+ *     .flatMap(Streams.toIntervalMax(13))
+ *     .collect(ISeq.toISeq());
+ * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since !__version__!
@@ -56,7 +64,7 @@ public final class Streams {
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
-	 *     .flatMap(MinMax.toStrictlyIncreasing())
+	 *     .flatMap(Streams.toStrictlyIncreasing())
 	 *     .collect(ISeq.toISeq());
 	 *
 	 * System.out.println(values);
@@ -88,7 +96,7 @@ public final class Streams {
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
-	 *     .flatMap(MinMax.toStrictlyDecreasing())
+	 *     .flatMap(Streams.toStrictlyDecreasing())
 	 *     .collect(ISeq.toISeq());
 	 *
 	 * System.out.println(values);
@@ -113,7 +121,7 @@ public final class Streams {
 	 * final ISeq<Integer> values = new Random().ints(0, 100)
 	 *     .boxed()
 	 *     .limit(100)
-	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .flatMap(Streams.toStrictlyImproving(Comparator.naturalOrder()))
 	 *     .collect(ISeq.toISeq());
 	 *
 	 * System.out.println(values);
