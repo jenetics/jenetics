@@ -96,7 +96,7 @@ import io.jenetics.prog.regression.Sampling.Result;
  * @param <T> the operation type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
+ * @version 6.0
  * @since 5.0
  */
 public final class Regression<T>
