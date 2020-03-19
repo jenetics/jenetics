@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-import io.jenetics.engine.EvolutionStream;
 import io.jenetics.engine.FitnessNullifier;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.StreamPublisher;
