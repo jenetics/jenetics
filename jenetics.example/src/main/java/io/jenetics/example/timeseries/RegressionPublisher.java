@@ -22,6 +22,7 @@ package io.jenetics.example.timeseries;
 import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import io.jenetics.Mutator;
@@ -51,6 +52,7 @@ import io.jenetics.prog.regression.SampleBuffer;
 public class RegressionPublisher<T>
 	implements
 		Publisher<Tree<Op<T>, ?>>,
+		Consumer<Sample<T>>,
 		AutoCloseable
 {
 
@@ -123,7 +125,8 @@ public class RegressionPublisher<T>
 	 *
 	 * @param sample the sample point to add
 	 */
-	public void add(final Sample<T> sample) {
+	@Override
+	public void accept(final Sample<T> sample) {
 		_samples.add(sample);
 	}
 
