@@ -38,6 +38,7 @@ import io.jenetics.ext.util.Tree;
 import io.jenetics.prog.ProgramGene;
 import io.jenetics.prog.op.Op;
 import io.jenetics.prog.regression.Regression;
+import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;
 
 /**
@@ -47,7 +48,11 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public class RegressionPublisher<T> implements Publisher<Tree<Op<T>, ?>> {
+public class RegressionPublisher<T>
+	implements
+		Publisher<Tree<Op<T>, ?>>,
+		AutoCloseable
+{
 
 	private final SampleBuffer<T> _samples = new SampleBuffer<>(50);
 
@@ -107,4 +112,19 @@ public class RegressionPublisher<T> implements Publisher<Tree<Op<T>, ?>> {
 			}
 		});
 	}
+
+	@Override
+	public void close() {
+		_publisher.close();
+	}
+
+	/**
+	 * Add a new sample point to the regression analysis.
+	 *
+	 * @param sample the sample point to add
+	 */
+	public void add(final Sample<T> sample) {
+		_samples.add(sample);
+	}
+
 }
