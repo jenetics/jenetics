@@ -41,6 +41,8 @@ import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;
 
 /**
+ * Version using Java Streams with flatMap.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -102,9 +104,13 @@ public class DynamicRegression<T> {
 		_publisher.attach(_stream);
 	}
 
-
-
-	// The flat-map function.
+	/**
+	 * The flat map function, which maps new sample points to evolved regression
+	 * trees (programs).
+	 *
+	 * @param sample the new sample point to be added
+	 * @return a new evolved regression tree, if available.
+	 */
 	public Stream<Tree<Op<T>, ?>> regress(final Sample<T> sample) {
 		_samples.add(sample);
 		return Stream.empty();
