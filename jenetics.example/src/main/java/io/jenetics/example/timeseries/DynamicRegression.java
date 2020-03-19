@@ -47,7 +47,7 @@ import io.jenetics.prog.regression.SampleBuffer;
  * @version !__version__!
  * @since !__version__!
  */
-public class DynamicRegression<T> {
+public class DynamicRegression<T> implements AutoCloseable {
 
 	private final SampleBuffer<T> _samples = new SampleBuffer<>(50);
 
@@ -116,4 +116,8 @@ public class DynamicRegression<T> {
 		return Stream.empty();
 	}
 
+	@Override
+	public void close() {
+		_publisher.close();
+	}
 }
