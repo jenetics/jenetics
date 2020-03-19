@@ -23,7 +23,6 @@ import io.jenetics.Mutator;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.engine.FitnessNullifier;
-import io.jenetics.stat.MinMax;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -40,7 +39,6 @@ import io.jenetics.prog.regression.Complexity;
 import io.jenetics.prog.regression.Error;
 import io.jenetics.prog.regression.LossFunction;
 import io.jenetics.prog.regression.Regression;
-import io.jenetics.prog.regression.Sample;
 import io.jenetics.prog.regression.SampleBuffer;
 
 /**
