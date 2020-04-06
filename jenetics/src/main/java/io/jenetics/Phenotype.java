@@ -49,6 +49,9 @@ import io.jenetics.util.Verifiable;
  * @implNote
  * This class is immutable and thread-safe.
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
  * @version 6.0
@@ -213,6 +216,18 @@ public final class Phenotype<
 	 */
 	public long age(final long currentGeneration) {
 		return currentGeneration - _generation;
+	}
+
+	/**
+	 * Return a phenotype, where the fitness is set to {@code null}. If
+	 * {@code this} phenotype isn't evaluated, {@code this} instance is returned.
+	 *
+	 * @since 6.0
+	 *
+	 * @return a phenotype, where the fitness is set to {@code null}
+	 */
+	public Phenotype<G, C> nullifyFitness() {
+		return _fitness != null ? of(_genotype, _generation) : this;
 	}
 
 	/**

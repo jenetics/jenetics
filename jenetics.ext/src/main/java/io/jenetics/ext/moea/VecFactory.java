@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -114,7 +113,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<int[]> ofIntVec(final Optimize... optimizes) {
-		return ofIntVec(Arrays.asList(optimizes));
+		return ofIntVec(List.of(optimizes));
 	}
 
 	/**
@@ -173,7 +172,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<long[]> ofLongVec(final Optimize... optimizes) {
-		return ofLongVec(Arrays.asList(optimizes));
+		return ofLongVec(List.of(optimizes));
 	}
 
 	/**
@@ -232,7 +231,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<double[]> ofDoubleVec(final Optimize... optimizes) {
-		return ofDoubleVec(Arrays.asList(optimizes));
+		return ofDoubleVec(List.of(optimizes));
 	}
 
 	/**
@@ -295,7 +294,7 @@ public interface VecFactory<T> {
 		final ElementDistance<T[]> distance,
 		final Optimize... optimizes
 	) {
-		return ofObjectVec(comparator, distance, Arrays.asList(optimizes));
+		return ofObjectVec(comparator, distance, List.of(optimizes));
 	}
 
 }

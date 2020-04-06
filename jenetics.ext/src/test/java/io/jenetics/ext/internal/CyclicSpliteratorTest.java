@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.internal;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -39,7 +39,7 @@ public class CyclicSpliteratorTest {
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
-		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(Arrays.asList(s1, s2, s3));
+		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(List.of(s1, s2, s3));
 		final int[] array = StreamSupport.stream(s, false)
 			.limit(10)
 			.mapToInt(Integer::intValue)
@@ -57,7 +57,7 @@ public class CyclicSpliteratorTest {
 		final Supplier<Spliterator<Integer>> s2 = () -> Stream.of(4, 5, 6).spliterator();
 		final Supplier<Spliterator<Integer>> s3 = () -> Stream.of(7, 8, 9).spliterator();
 
-		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(Arrays.asList(s1, s2, s3));
+		final CyclicSpliterator<Integer> s = new CyclicSpliterator<>(List.of(s1, s2, s3));
 		final int[] array = StreamSupport.stream(s, false)
 			.limit(35)
 			.mapToInt(Integer::intValue)

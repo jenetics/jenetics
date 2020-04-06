@@ -17,31 +17,46 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.prog.regression;
+package io.jenetics.ext.util;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.function.IntFunction;
 
 /**
+ * Helper class for iterating through given int range
+ *
+ * @param <T> the mapping data type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version 6.0
+ * @since 6.0
  */
-public class SamplesTest {
+final class IntIterator<T> implements Iterator<T> {
+	private final int _length;
+	private final IntFunction<? extends T> _mapper;
 
-	@Test
-	public void create() {
-		final List<Sample<Double>> points = Arrays.asList(
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4),
-			Sample.ofDouble(1, 2, 3, 4)
-		);
+	private int _cursor = 0;
+	private int _lastElement = -1;
 
-		final Samples<Double> samples = new Samples<>(points);
-		Assert.assertEquals(samples.arguments().getClass(), Double[][].class);
-		Assert.assertEquals(samples.results().getClass(), Double[].class);
+	IntIterator(final int length, final IntFunction<? extends T> mapper) {
+		_length = length;
+		_mapper = mapper;
 	}
 
+	@Override
+	public boolean hasNext() {
+		return _cursor != _length;
+	}
+
+	@Override
+	public T next() {
+		final int i = _cursor;
+		if (_cursor >= _length) {
+			throw new NoSuchElementException();
+		}
+
+		_cursor = i + 1;
+		return _mapper.apply(_lastElement = i);
+	}
 }

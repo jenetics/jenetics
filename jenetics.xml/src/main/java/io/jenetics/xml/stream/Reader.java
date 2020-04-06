@@ -20,7 +20,6 @@
 package io.jenetics.xml.stream;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static javax.xml.stream.XMLStreamConstants.CDATA;
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
@@ -295,7 +294,7 @@ public abstract class Reader<T> {
 		requireNonNull(generator);
 		Stream.of(requireNonNull(children)).forEach(Objects::requireNonNull);
 
-		return new ElemReader<>(name, generator, asList(children), Type.ELEM);
+		return new ElemReader<>(name, generator, List.of(children), Type.ELEM);
 	}
 
 	/**

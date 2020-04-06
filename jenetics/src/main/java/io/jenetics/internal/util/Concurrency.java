@@ -26,6 +26,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -122,7 +123,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void close() {
-			_tasks.forEach(ForkJoinTask::join);
+			Concurrency.join(_tasks);
 		}
 	}
 
@@ -166,17 +167,46 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void close() {
-			try {
-				for (var f : _futures) {
-					f.get();
-				}
-			} catch (InterruptedException|ExecutionException e) {
-				final String msg = e.getMessage();
-				throw (CancellationException)new CancellationException(msg)
-					.initCause(e);
-			}
+			Concurrency.join(_futures);
 		}
 
+	}
+
+	private static void join(final Iterable<? extends Future<?>> jobs) {
+		Future<?> task = null;
+		Iterator<? extends Future<?>> tasks = null;
+		try {
+			tasks = jobs.iterator();
+			while (tasks.hasNext()) {
+				task = tasks.next();
+				task.get();
+			}
+		} catch (ExecutionException e) {
+			Concurrency.cancel(task, tasks);
+			final String msg = e.getCause() != null
+				? e.getCause().getMessage()
+				: null;
+			throw (CancellationException)new CancellationException(msg)
+				.initCause(e.getCause());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			Concurrency.cancel(task, tasks);
+			final String msg = e.getMessage();
+			throw (CancellationException)new CancellationException(msg)
+				.initCause(e);
+		}
+	}
+
+	private static void cancel(
+		final Future<?> task,
+		final Iterator<? extends Future<?>> tasks
+	) {
+		if (task != null) {
+			task.cancel(true);
+		}
+		if (tasks != null) {
+			tasks.forEachRemaining(t -> t.cancel(true));
+		}
 	}
 
 	/**
@@ -216,15 +246,7 @@ public abstract class Concurrency implements Executor, AutoCloseable {
 
 		@Override
 		public void close() {
-			try {
-				for (var t : _tasks) {
-					t.get();
-				}
-			} catch (InterruptedException|ExecutionException e) {
-				final String msg = e.getMessage();
-				throw (CancellationException)new CancellationException(msg)
-					.initCause(e);
-			}
+			Concurrency.join(_tasks);
 		}
 	}
 

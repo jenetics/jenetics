@@ -21,7 +21,7 @@ package io.jenetics.ext.moea;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import org.testng.Assert;
@@ -96,7 +96,7 @@ public class VecsTest {
 			}
 		}
 
-		Assert.assertEquals(Vecs.toFlags(Arrays.asList(opts)), flags);
+		Assert.assertEquals(Vecs.toFlags(List.of(opts)), flags);
 	}
 
 }

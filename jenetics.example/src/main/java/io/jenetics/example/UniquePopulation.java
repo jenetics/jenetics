@@ -48,7 +48,7 @@ public class UniquePopulation {
 				UniquePopulation::count,
 				BitChromosome.of(20, 0.15))
 			// Remove duplicate individuals after each generation.
-			.mapping(EvolutionResult.toUniquePopulation())
+			.interceptor(EvolutionResult.toUniquePopulation())
 			.build();
 
 		// Create evolution statistics consumer.

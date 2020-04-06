@@ -61,4 +61,22 @@ public interface TreeGene<A, G extends TreeGene<A, G>>
 		final int childCount
 	);
 
+	/**
+	 * Return a new tree gene from the given flat tree node.
+	 *
+	 * @since 6.0
+	 *
+	 * @param tree the flat tree node
+	 * @return a new tree gene from the given flat tree node
+	 * @throws NullPointerException if the given {@code tree} node is
+	 *         {@code null}
+	 */
+	default G newInstance(final FlatTree<? extends A, ?> tree) {
+		return newInstance(
+			tree.value(),
+			tree.childOffset(),
+			tree.childCount()
+		);
+	}
+
 }

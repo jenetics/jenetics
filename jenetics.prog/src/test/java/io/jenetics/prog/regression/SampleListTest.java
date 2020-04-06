@@ -17,44 +17,34 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics;
+package io.jenetics.prog.regression;
 
-import io.jenetics.util.Mean;
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import io.jenetics.prog.op.MathExpr;
 
 /**
- * Alters a chromosome by replacing two genes by its mean value.
- *
- * <p>
- * The order ({@link #order()}) of this recombination implementation is two.
- * </p>
- *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @since 1.0
- * @version 6.0
  */
-public class MeanAlterer<
-	G extends Gene<?, G> & Mean<G>,
-	C extends Comparable<? super C>
->
-	extends CombineAlterer<G, C>
-{
+public class SampleListTest {
 
-	/**
-	 * Constructs an alterer with a given recombination probability.
-	 *
-	 * @param probability the crossover probability.
-	 * @throws IllegalArgumentException if the {@code probability} is not in the
-	 *         valid range of {@code [0, 1]}.
-	 */
-	public MeanAlterer(final double probability) {
-		super(Mean::mean, probability);
-	}
+	@Test
+	public void create() {
+		final List<Sample<Double>> points = List.of(
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4),
+			Sample.ofDouble(1, 2, 3, 4)
+		);
 
-	/**
-	 * Create a new alterer with alter probability of {@code 0.05}.
-	 */
-	public MeanAlterer() {
-		this(0.05);
+		final SampleList<Double> samples = new SampleList<>(points);
+		final var result = samples.eval(MathExpr.parse("x + y + z - y").toTree());
+		for (var y : result.calculated()) {
+			Assert.assertEquals(y.doubleValue(), 4.0);
+		}
 	}
 
 }

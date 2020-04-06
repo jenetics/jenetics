@@ -24,6 +24,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -117,7 +118,7 @@ public class TournamentSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(2, 3, 4, 5, 6, 7, 13, 23, 37),
+				List.of(2, 3, 4, 5, 6, 7, 13, 23, 37),
 				TournamentSelector::new,
 				opt,
 				npopulation,

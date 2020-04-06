@@ -22,12 +22,21 @@ package io.jenetics.ext.util;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static java.util.Spliterators.spliteratorUnknownSize;
+import static io.jenetics.internal.util.SerialIO.readIntArray;
+import static io.jenetics.internal.util.SerialIO.writeIntArray;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -104,8 +113,14 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @return a stream of children of {@code this} node
 	 */
 	default Stream<T> childStream() {
-		return StreamSupport
-			.stream(spliteratorUnknownSize(childIterator(), 0), false);
+		return StreamSupport.stream(
+			Spliterators.spliterator(
+				childIterator(),
+				childCount(),
+				Spliterator.SIZED | Spliterator.ORDERED
+			),
+			false
+		);
 	}
 
 	/**
@@ -115,7 +130,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 *         otherwise
 	 */
 	default boolean isRoot() {
-		return !parent().isPresent();
+		return parent().isEmpty();
 	}
 
 	/**
@@ -499,7 +514,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 		if (childCount() == 0) {
 			T node = Trees.self(this);
-			while (node != null && !(next = node.nextSibling()).isPresent()) {
+			while (node != null && (next = node.nextSibling()).isEmpty()) {
 				node = node.parent().orElse(null);
 			}
 		} else {
@@ -1048,7 +1063,7 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 	 * @see Tree#childAtPath(Path)
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version 4.4
+	 * @version 6.0
 	 * @since 4.4
 	 */
 	final class Path implements Serializable {
@@ -1142,6 +1157,31 @@ public interface Tree<V, T extends Tree<V, T>> extends Iterable<T> {
 
 			return new Path(path.clone());
 		}
+
+
+		/* *********************************************************************
+		 *  Java object serialization
+		 * ********************************************************************/
+
+		private Object writeReplace() {
+			return new Serial(Serial.TREE_PATH, this);
+		}
+
+		private void readObject(final ObjectInputStream stream)
+			throws InvalidObjectException
+		{
+			throw new InvalidObjectException("Serialization proxy required.");
+		}
+
+
+		void write(final DataOutput out) throws IOException {
+			writeIntArray(_path, out);
+		}
+
+		static Object read(final DataInput in) throws IOException {
+			return Path.of(readIntArray(in));
+		}
+
 	}
 
 }
