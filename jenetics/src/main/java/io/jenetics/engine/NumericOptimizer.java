@@ -29,16 +29,30 @@ import io.jenetics.Gene;
  * @version !__version__!
  * @since !__version__!
  */
-public interface Optimizer<
+public class NumericOptimizer<
 	T,
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
-> {
+>
+{
 
-	//public Function<EvolutionStreamable<G, C>, Function<T, C>> stream();
+	public Codec<T, G> codec() {
+		return null;
+	}
 
-	//public Predicate<EvolutionResult<G, C>> limit();
+	public Predicate<EvolutionResult<G, C>> limit() {
+		return null;
+	}
 
-	public T argmin(final Function<? super T, ? extends C> f);
+	public T argmin(final Function<? super T, ? extends C> f) {
+		@SuppressWarnings("unchecked")
+		final Function<T, C> ff = (Function<T, C>)f;
 
+		final Engine<G, C> engine = Engine.builder(ff, codec())
+			.build();
+
+		return engine.stream()
+			.limit(limit())
+			.collect(EvolutionResult.toBestResult(codec()));
+	}
 }
