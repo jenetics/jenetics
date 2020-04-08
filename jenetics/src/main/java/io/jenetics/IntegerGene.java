@@ -67,7 +67,7 @@ public final class IntegerGene
 
 	private static final long serialVersionUID = 2L;
 
-	private final int _value;
+	private final int _allele;
 	private final int _min;
 	private final int _max;
 
@@ -77,19 +77,19 @@ public final class IntegerGene
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 */
-	private IntegerGene(final int value, final int min, final int max) {
-		_value = value;
+	private IntegerGene(final int allele, final int min, final int max) {
+		_allele = allele;
 		_min = min;
 		_max = max;
 	}
 
 	@Override
 	public Integer allele() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
@@ -115,68 +115,68 @@ public final class IntegerGene
 
 	@Override
 	public byte byteValue() {
-		return (byte)_value;
+		return (byte) _allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short)_value;
+		return (short) _allele;
 	}
 
 	@Override
 	public int intValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public long longValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float)_value;
+		return (float) _allele;
 	}
 
 	@Override
 	public double doubleValue() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
 	public boolean isValid() {
-		return _value >= _min && _value <= _max;
+		return _allele >= _min && _allele <= _max;
 	}
 
 	@Override
 	public int compareTo(final IntegerGene other) {
-		return Integer.compare(_value, other._value);
+		return Integer.compare(_allele, other._allele);
 	}
 
 	@Override
 	public IntegerGene mean(final IntegerGene that) {
-		return IntegerGene.of(_value + (that._value - _value)/2, _min, _max);
+		return IntegerGene.of(_allele + (that._allele - _allele)/2, _min, _max);
 	}
 
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
 	 * @since 5.0
-	 * @param value the value of the new gene.
+	 * @param allele the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public IntegerGene newInstance(final int value) {
-		return IntegerGene.of(value, _min, _max);
+	public IntegerGene newInstance(final int allele) {
+		return IntegerGene.of(allele, _min, _max);
 	}
 
 	@Override
-	public IntegerGene newInstance(final Integer number) {
-		return IntegerGene.of(number, _min, _max);
+	public IntegerGene newInstance(final Integer allele) {
+		return IntegerGene.of(allele, _min, _max);
 	}
 
 	@Override
-	public IntegerGene newInstance(final Number number) {
-		return IntegerGene.of(number.intValue(), _min, _max);
+	public IntegerGene newInstance(final Number allele) {
+		return IntegerGene.of(allele.intValue(), _min, _max);
 	}
 
 	@Override
@@ -186,21 +186,21 @@ public final class IntegerGene
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max)));
+		return hash(_allele, hash(_min, hash(_max)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof IntegerGene &&
-			((IntegerGene)obj)._value == _value &&
+			((IntegerGene)obj)._allele == _allele &&
 			((IntegerGene)obj)._min == _min &&
 			((IntegerGene)obj)._max == _max;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("[%s]", _value);
+		return String.format("[%s]", _allele);
 	}
 
 	/* *************************************************************************
@@ -213,13 +213,13 @@ public final class IntegerGene
 	 * no exception is thrown. In this case the method
 	 * {@link IntegerGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (inclusively).
 	 * @return a new {@code IntegerGene} with the given {@code value}
 	 */
-	public static IntegerGene of(final int value, final int min, final int max) {
-		return new IntegerGene(value, min, max);
+	public static IntegerGene of(final int allele, final int min, final int max) {
+		return new IntegerGene(allele, min, max);
 	}
 
 	/**
@@ -230,13 +230,13 @@ public final class IntegerGene
 	 *
 	 * @since 3.2
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param range the integer range to use
 	 * @return a new {@code IntegerGene} with the give {@code value}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
-	public static IntegerGene of(final int value, final IntRange range) {
-		return IntegerGene.of(value, range.min(), range.max());
+	public static IntegerGene of(final int allele, final IntRange range) {
+		return IntegerGene.of(allele, range.min(), range.max());
 	}
 
 	/**
@@ -330,7 +330,7 @@ public final class IntegerGene
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(_value, out);
+		writeInt(_allele, out);
 		writeInt(_min, out);
 		writeInt(_max, out);
 	}

@@ -66,7 +66,7 @@ public final class DoubleGene
 
 	private static final long serialVersionUID = 2L;
 
-	private final double _value;
+	private final double _allele;
 	private final double _min;
 	private final double _max;
 
@@ -76,19 +76,19 @@ public final class DoubleGene
 	 * no exception is thrown. In this case the method
 	 * {@link DoubleGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 */
-	private DoubleGene(final double value, final double min, final double max) {
-		_value = value;
+	private DoubleGene(final double allele, final double min, final double max) {
+		_allele = allele;
 		_min = min;
 		_max = max;
 	}
 
 	@Override
 	public Double allele() {
-		return _value;
+		return _allele;
 	}
 
 	@Override
@@ -114,69 +114,69 @@ public final class DoubleGene
 
 	@Override
 	public byte byteValue() {
-		return (byte)_value;
+		return (byte) _allele;
 	}
 
 	@Override
 	public short shortValue() {
-		return (short)_value;
+		return (short) _allele;
 	}
 
 	@Override
 	public int intValue() {
-		return (int)_value;
+		return (int) _allele;
 	}
 
 	@Override
 	public long longValue() {
-		return (long)_value;
+		return (long) _allele;
 	}
 
 	@Override
 	public float floatValue() {
-		return (float)_value;
+		return (float) _allele;
 	}
 
 	@Override
 	public double doubleValue() {
-		 return _value;
+		 return _allele;
 	}
 
 	@Override
 	public boolean isValid() {
-		return Double.compare(_value, _min) >= 0 &&
-			Double.compare(_value, _max) <= 0;
+		return Double.compare(_allele, _min) >= 0 &&
+			Double.compare(_allele, _max) <= 0;
 	}
 
 	@Override
 	public int compareTo(final DoubleGene other) {
-		return Double.compare(_value, other._value);
+		return Double.compare(_allele, other._allele);
 	}
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return of(_value + (that._value - _value)/2.0, _min, _max);
+		return of(_allele + (that._allele - _allele)/2.0, _min, _max);
 	}
 
 	/**
 	 * Create a new gene from the given {@code value} and the gene context.
 	 *
 	 * @since 5.0
-	 * @param value the value of the new gene.
+	 * @param allele the value of the new gene.
 	 * @return a new gene with the given value.
 	 */
-	public DoubleGene newInstance(final double value) {
-		return DoubleGene.of(value, _min, _max);
+	public DoubleGene newInstance(final double allele) {
+		return DoubleGene.of(allele, _min, _max);
 	}
 
 	@Override
-	public DoubleGene newInstance(final Double value) {
-		return of(value, _min, _max);
+	public DoubleGene newInstance(final Double allele) {
+		return of(allele, _min, _max);
 	}
 
 	@Override
-	public DoubleGene newInstance(final Number number) {
-		return of(number.doubleValue(), _min, _max);
+	public DoubleGene newInstance(final Number allele) {
+		return of(allele.doubleValue(), _min, _max);
 	}
 
 	@Override
@@ -186,21 +186,21 @@ public final class DoubleGene
 
 	@Override
 	public int hashCode() {
-		return hash(_value, hash(_min, hash(_max)));
+		return hash(_allele, hash(_min, hash(_max)));
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof DoubleGene &&
-			Double.compare(((DoubleGene)obj)._value, _value) == 0 &&
+			Double.compare(((DoubleGene)obj)._allele, _allele) == 0 &&
 			Double.compare(((DoubleGene)obj)._min, _min) == 0 &&
 			Double.compare(((DoubleGene)obj)._max, _max) == 0;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("[%s]", _value);
+		return String.format("[%s]", _allele);
 	}
 
 
@@ -214,17 +214,17 @@ public final class DoubleGene
 	 * no exception is thrown. In this case the method
 	 * {@link DoubleGene#isValid()} returns {@code false}.
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param min the minimal valid value of this gene (inclusively).
 	 * @param max the maximal valid value of this gene (exclusively).
 	 * @return a new {@code DoubleGene} with the given parameter
 	 */
 	public static DoubleGene of(
-		final double value,
+		final double allele,
 		final double min,
 		final double max
 	) {
-		return new DoubleGene(value, min, max);
+		return new DoubleGene(allele, min, max);
 	}
 
 	/**
@@ -235,13 +235,13 @@ public final class DoubleGene
 	 *
 	 * @since 3.2
 	 *
-	 * @param value the value of the gene.
+	 * @param allele the value of the gene.
 	 * @param range the double range to use
 	 * @return a new random {@code DoubleGene}
 	 * @throws NullPointerException if the given {@code range} is {@code null}.
 	 */
-	public static DoubleGene of(final double value, final DoubleRange range) {
-		return of(value, range.min(), range.max());
+	public static DoubleGene of(final double allele, final DoubleRange range) {
+		return of(allele, range.min(), range.max());
 	}
 
 	/**
@@ -297,7 +297,7 @@ public final class DoubleGene
 	}
 
 	void write(final DataOutput out) throws IOException {
-		out.writeDouble(_value);
+		out.writeDouble(_allele);
 		out.writeDouble(_min);
 		out.writeDouble(_max);
 	}
