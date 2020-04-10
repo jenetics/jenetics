@@ -39,7 +39,7 @@ public class DoubleMomentsTest extends ObjectTester<DoubleMoments> {
 	protected Factory<DoubleMoments> factory() {
 		return () -> {
 			final Random random = RandomRegistry.random();
-			return DoubleMoments.of(
+			return new DoubleMoments(
 				random.nextLong(),
 				random.nextDouble(),
 				random.nextDouble(),
