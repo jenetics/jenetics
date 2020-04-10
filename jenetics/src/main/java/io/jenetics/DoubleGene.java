@@ -20,7 +20,6 @@
 package io.jenetics;
 
 import static io.jenetics.internal.math.Randoms.nextDouble;
-import static io.jenetics.internal.util.Hashes.hash;
 import static io.jenetics.util.RandomRegistry.random;
 
 import java.io.DataInput;
@@ -54,9 +53,9 @@ import io.jenetics.util.Mean;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 6.0
+ * @version !__version__!
  */
-public final class DoubleGene
+public final record DoubleGene(Double allele, Double min, Double max)
 	implements
 		NumericGene<Double, DoubleGene>,
 		Mean<DoubleGene>,
@@ -66,41 +65,6 @@ public final class DoubleGene
 
 	private static final long serialVersionUID = 2L;
 
-	private final double _allele;
-	private final double _min;
-	private final double _max;
-
-	/**
-	 * Create a new random {@code DoubleGene} with the given value and the
-	 * given range. If the {@code value} isn't within the interval [min, max),
-	 * no exception is thrown. In this case the method
-	 * {@link DoubleGene#isValid()} returns {@code false}.
-	 *
-	 * @param allele the value of the gene.
-	 * @param min the minimal valid value of this gene (inclusively).
-	 * @param max the maximal valid value of this gene (exclusively).
-	 */
-	private DoubleGene(final double allele, final double min, final double max) {
-		_allele = allele;
-		_min = min;
-		_max = max;
-	}
-
-	@Override
-	public Double allele() {
-		return _allele;
-	}
-
-	@Override
-	public Double min() {
-		return _min;
-	}
-
-	@Override
-	public Double max() {
-		return _max;
-	}
-
 	/**
 	 * Return the range of {@code this} gene.
 	 *
@@ -109,53 +73,53 @@ public final class DoubleGene
 	 * @return the range of {@code this} gene
 	 */
 	public DoubleRange range() {
-		return DoubleRange.of(_min, _max);
+		return DoubleRange.of(min, max);
 	}
 
 	@Override
 	public byte byteValue() {
-		return (byte) _allele;
+		return allele.byteValue();
 	}
 
 	@Override
 	public short shortValue() {
-		return (short) _allele;
+		return allele.shortValue();
 	}
 
 	@Override
 	public int intValue() {
-		return (int) _allele;
+		return allele.intValue();
 	}
 
 	@Override
 	public long longValue() {
-		return (long) _allele;
+		return allele.longValue();
 	}
 
 	@Override
 	public float floatValue() {
-		return (float) _allele;
+		return allele.floatValue();
 	}
 
 	@Override
 	public double doubleValue() {
-		 return _allele;
+		 return allele;
 	}
 
 	@Override
 	public boolean isValid() {
-		return Double.compare(_allele, _min) >= 0 &&
-			Double.compare(_allele, _max) <= 0;
+		return Double.compare(allele, min) >= 0 &&
+			Double.compare(allele, max) <= 0;
 	}
 
 	@Override
 	public int compareTo(final DoubleGene other) {
-		return Double.compare(_allele, other._allele);
+		return Double.compare(allele, other.allele);
 	}
 
 	@Override
 	public DoubleGene mean(final DoubleGene that) {
-		return of(_allele + (that._allele - _allele)/2.0, _min, _max);
+		return of(allele + (that.allele - allele)/2.0, min, max);
 	}
 
 	/**
@@ -166,41 +130,27 @@ public final class DoubleGene
 	 * @return a new gene with the given value.
 	 */
 	public DoubleGene newInstance(final double allele) {
-		return DoubleGene.of(allele, _min, _max);
+		return DoubleGene.of(allele, min, max);
 	}
 
 	@Override
 	public DoubleGene newInstance(final Double allele) {
-		return of(allele, _min, _max);
+		return of(allele, min, max);
 	}
 
 	@Override
 	public DoubleGene newInstance(final Number allele) {
-		return of(allele.doubleValue(), _min, _max);
+		return of(allele.doubleValue(), min, max);
 	}
 
 	@Override
 	public DoubleGene newInstance() {
-		return of(nextDouble(_min, _max, random()), _min, _max);
-	}
-
-	@Override
-	public int hashCode() {
-		return hash(_allele, hash(_min, hash(_max)));
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof DoubleGene &&
-			Double.compare(((DoubleGene)obj)._allele, _allele) == 0 &&
-			Double.compare(((DoubleGene)obj)._min, _min) == 0 &&
-			Double.compare(((DoubleGene)obj)._max, _max) == 0;
+		return of(nextDouble(min, max, random()), min, max);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("[%s]", _allele);
+		return String.format("[%s]", allele);
 	}
 
 
@@ -297,9 +247,9 @@ public final class DoubleGene
 	}
 
 	void write(final DataOutput out) throws IOException {
-		out.writeDouble(_allele);
-		out.writeDouble(_min);
-		out.writeDouble(_max);
+		out.writeDouble(allele);
+		out.writeDouble(min);
+		out.writeDouble(max);
 	}
 
 	static DoubleGene read(final DataInput in) throws IOException {
