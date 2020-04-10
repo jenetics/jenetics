@@ -134,6 +134,8 @@ class SetupPlugin extends JeneticsPlugin {
 				//options.addStringOption('subpackages', 'io.jenetics')
                 //options.addStringOption('excludedocfilessubdir', 'org/jenetics/internal')
 				options.addStringOption('noqualifier', 'io.jenetics.internal.collection')
+				options.addBooleanOption('-enable-preview', true)
+				options.addStringOption('-release', '14')
 				options.tags = ["apiNote:a:API Note:",
 								"implSpec:a:Implementation Requirements:",
 								"implNote:a:Implementation Note:"]
