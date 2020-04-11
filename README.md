@@ -156,6 +156,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 
 ## Citations
 
+* Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/GECCO2020.pdf">An Evolutionary Optimization Algorithm for GraduallySaturating Objective Functions.</a> <em>GECCO ’20, Cancún, Mexico. </em></a> July. 2020.
 * Dolly Sapra and Andy D. Pimentel. <a href="https://staff.fnwi.uva.nl/a.d.pimentel/artemis/EvoML2020.pdf">Constrained Evolutionary Piecemeal Training to Design Convolutional Neural Networks.</a> <em>IEA/AIE 2020 – Kitakyushu, Japan. </em></a> July. 2020.
 * Raúl Lara-Cabrera, Ángel González-Prieto, Fernando Ortega and Jesús Bobadilla. <a href="https://www.mdpi.com/2076-3417/10/2/675">Evolving Matrix-Factorization-Based Collaborative Filtering Using Genetic Programming.</a> <em>MDPI, Applied Sciences. </em></a> Feb. 2020.
 * Humm B.G., Hutter M. <a href="https://link.springer.com/chapter/10.1007/978-3-030-41913-4_12">Learning Patterns for Complex Event Detection in Robot Sensor Data.</a> <em>Optimization and Learning. OLA 2020. Communications in Computer and Information Science, vol 1173. Springer </em></a> Feb. 2020.
