@@ -27,7 +27,7 @@ import java.util.RandomAccess;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.4
+ * @version 6.0
  * @since 3.4
  */
 class SeqList<T>
