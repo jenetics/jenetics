@@ -30,7 +30,7 @@ import io.jenetics.internal.math.Randoms;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SegListTest {
+public class BaseSegListTest {
 
 	@Test
 	public void size() {
