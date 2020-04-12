@@ -30,7 +30,7 @@ import java.util.RandomAccess;
  * @version 6.0
  * @since 3.4
  */
-class SeqList<T>
+class BaseSeqList<T>
 	extends AbstractList<T>
 	implements
 		RandomAccess,
@@ -40,7 +40,7 @@ class SeqList<T>
 
 	public final BaseSeq<? extends T> seq;
 
-	SeqList(final BaseSeq<? extends T> seq) {
+	BaseSeqList(final BaseSeq<? extends T> seq) {
 		this.seq = requireNonNull(seq, "Seq must not be null.");
 	}
 

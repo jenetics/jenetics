@@ -477,7 +477,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a list view of this sequence
 	 */
 	default List<T> asList() {
-		return new SeqList<>(this);
+		return new BaseSeqList<>(this);
 	}
 
 	/**
@@ -974,7 +974,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	static <T> Seq<T> viewOf(final BaseSeq<? extends T> seq) {
 		return seq.length() == 0
 			? empty()
-			: new SeqView<>(new SeqList<>(seq));
+			: new SeqView<>(new BaseSeqList<>(seq));
 	}
 
 	/**

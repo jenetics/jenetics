@@ -35,7 +35,7 @@ public class SegListTest {
 	@Test
 	public void size() {
 		final MSeq<Integer> proxy = MSeq.ofLength(1000);
-		final List<Integer> list = new SeqList<>(proxy);
+		final List<Integer> list = new BaseSeqList<>(proxy);
 
 		Assert.assertEquals(list.size(), proxy.length());
 	}
@@ -50,7 +50,7 @@ public class SegListTest {
 			proxy.set(i, random.nextInt());
 		}
 
-		final List<Integer> list = new SeqList<>(proxy);
+		final List<Integer> list = new BaseSeqList<>(proxy);
 
 		for (int i = 0; i < proxy.length(); ++i) {
 			final Integer actual = list.get(i);
@@ -69,7 +69,7 @@ public class SegListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final MSeq<Integer> slice = proxy.subSeq(sliceStart, sliceEnd);
-		final List<Integer> list = new SeqList<>(slice);
+		final List<Integer> list = new BaseSeqList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			Assert.assertEquals(slice.get(i), Integer.valueOf(i + sliceStart));
@@ -79,7 +79,7 @@ public class SegListTest {
 	@Test(expectedExceptions = UnsupportedOperationException.class)
 	public void set() {
 		final MSeq<Integer> proxy = MSeq.ofLength(1000);
-		final List<Integer> list = new SeqList<>(proxy);
+		final List<Integer> list = new BaseSeqList<>(proxy);
 
 		list.set(34, 23);
 	}
@@ -94,7 +94,7 @@ public class SegListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new SeqList<>(proxy);
+		final List<Long> list = new BaseSeqList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -113,7 +113,7 @@ public class SegListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new SeqList<>(proxy);
+		final List<Long> list = new BaseSeqList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -132,7 +132,7 @@ public class SegListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final MSeq<Integer> slice = proxy.subSeq(sliceStart, sliceEnd);
-		final List<Integer> list = new SeqList<>(slice);
+		final List<Integer> list = new BaseSeqList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			final int index = list.indexOf(sliceStart + i);
@@ -150,7 +150,7 @@ public class SegListTest {
 		final int sliceStart = 50;
 		final int sliceEnd = 500;
 		final MSeq<Integer> slice = proxy.subSeq(sliceStart, sliceEnd);
-		final List<Integer> list = new SeqList<>(slice);
+		final List<Integer> list = new BaseSeqList<>(slice);
 
 		for (int i = 0; i < list.size(); ++i) {
 			final int index = list.lastIndexOf(sliceStart + i);
@@ -168,7 +168,7 @@ public class SegListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new SeqList<>(proxy);
+		final List<Long> list = new BaseSeqList<>(proxy);
 
 		random.setSeed(seed);
 		for (int i = 0; i < proxy.length(); ++i) {
@@ -189,7 +189,7 @@ public class SegListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new SeqList<>(proxy);
+		final List<Long> list = new BaseSeqList<>(proxy);
 		final Object[] array = list.toArray();
 
 		for (int i = 0; i < array.length; ++i) {
@@ -207,7 +207,7 @@ public class SegListTest {
 			proxy.set(i, random.nextLong());
 		}
 
-		final List<Long> list = new SeqList<>(proxy);
+		final List<Long> list = new BaseSeqList<>(proxy);
 		final Long[] array = list.toArray(new Long[0]);
 
 		for (int i = 0; i < array.length; ++i) {
