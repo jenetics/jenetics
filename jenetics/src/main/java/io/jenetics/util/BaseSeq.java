@@ -56,6 +56,28 @@ public interface BaseSeq<T> extends Iterable<T>, RandomAccess {
 	 */
 	int length();
 
+	/**
+	 * Returns {@code true} if this sequence contains no elements.
+	 *
+	 * @since 6.0
+	 *
+	 * @return {@code true} if this sequence contains no elements
+	 */
+	default boolean isEmpty() {
+		return length() == 0;
+	}
+
+	/**
+	 * Returns {@code true} if this sequence contains at least one element.
+	 *
+	 * @since 6.0
+	 *
+	 * @return {@code true} if this sequence contains at least one element
+	 */
+	default boolean nonEmpty() {
+		return !isEmpty();
+	}
+
 	@Override
 	default Iterator<T> iterator() {
 		return listIterator();

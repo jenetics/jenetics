@@ -76,28 +76,6 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Returns {@code true} if this sequence contains no elements.
-	 *
-	 * @since 3.3
-	 *
-	 * @return {@code true} if this sequence contains no elements
-	 */
-	default boolean isEmpty() {
-		return length() == 0;
-	}
-
-	/**
-	 * Returns {@code true} if this sequence contains at least one element.
-	 *
-	 * @since 4.0
-	 *
-	 * @return {@code true} if this sequence contains at least one element
-	 */
-	default boolean nonEmpty() {
-		return !isEmpty();
-	}
-
-	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
