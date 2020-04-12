@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class SeqViewTest extends SeqTestBase {
+public class BaseSeqViewTest extends SeqTestBase {
 
 	@Override
 	protected Seq<Integer> newSeq(final int length) {
@@ -37,7 +37,21 @@ public class SeqViewTest extends SeqTestBase {
 		for (int i = 0; i < length; ++i) {
 			list.add(i);
 		}
-		return new SeqView<>(list);
+
+		return wrap(list);
+	}
+
+	private static SeqView<Integer> wrap(final List<Integer> list) {
+		return new SeqView<>(new BaseSeqListView<>(new BaseSeq<>() {
+			@Override
+			public Integer get(final int index) {
+				return list.get(index);
+			}
+			@Override
+			public int length() {
+				return list.size();
+			}
+		}));
 	}
 
 	@Test
@@ -49,7 +63,7 @@ public class SeqViewTest extends SeqTestBase {
 			list.add(random.nextInt());
 		}
 
-		final SeqView<Integer> view = new SeqView<>(list);
+		final SeqView<Integer> view = wrap(list);
 		for (int i = 0; i < length; ++i) {
 			Assert.assertEquals(view.get(i), list.get(i));
 		}

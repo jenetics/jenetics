@@ -958,6 +958,24 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 		return ISeq.of(supplier, length);
 	}
 
+	/**
+	 * Returns a sequence backed by the specified {@code seq}. (Changes to the
+	 * given sequence (if writeable) are "write through" to the returned
+	 * sequence.)  This method acts as bridge between basic sequences and
+	 * sequence-based APIs.
+	 *
+	 * @since 6.0
+	 *
+	 * @param seq the basic sequence containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code seq}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	static <T> Seq<T> viewOf(final BaseSeq<? extends T> seq) {
+		return seq.length() == 0
+			? empty()
+			: new SeqView<>(new BaseSeqListView<>(seq));
+	}
 
 	/**
 	 * Returns a sequence backed by the specified list. (Changes to the given
