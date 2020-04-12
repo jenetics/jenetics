@@ -168,7 +168,8 @@ public final class MOEA {
 
 		return Collector.of(
 			() -> new Front<G, C>(
-				size, dominance, comparator, distance, dimension),
+				size, dominance, comparator, distance, dimension
+			),
 			Front::add,
 			Front::merge,
 			Front::toISeq
