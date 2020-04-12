@@ -42,7 +42,7 @@ public class BaseSeqViewTest extends SeqTestBase {
 	}
 
 	private static SeqView<Integer> wrap(final List<Integer> list) {
-		return new SeqView<>(new BaseSeqListView<>(new BaseSeq<>() {
+		return new SeqView<>(new SeqList<>(new BaseSeq<>() {
 			@Override
 			public Integer get(final int index) {
 				return list.get(index);

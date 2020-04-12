@@ -38,9 +38,9 @@ class SeqList<T>
 {
 	private static final long serialVersionUID = 1L;
 
-	public final Seq<T> seq;
+	public final BaseSeq<? extends T> seq;
 
-	SeqList(final Seq<T> seq) {
+	SeqList(final BaseSeq<? extends T> seq) {
 		this.seq = requireNonNull(seq, "Seq must not be null.");
 	}
 

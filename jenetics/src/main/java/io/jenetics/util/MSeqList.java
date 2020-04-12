@@ -32,6 +32,7 @@ final class MSeqList<T> extends SeqList<T> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public T set(final int index, final T element) {
 		final T oldElement = seq.get(index);
 		((MSeq<T>)seq).set(index, element);

@@ -974,7 +974,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	static <T> Seq<T> viewOf(final BaseSeq<? extends T> seq) {
 		return seq.length() == 0
 			? empty()
-			: new SeqView<>(new BaseSeqListView<>(seq));
+			: new SeqView<>(new SeqList<>(seq));
 	}
 
 	/**
