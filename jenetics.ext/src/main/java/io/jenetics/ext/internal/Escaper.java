@@ -35,7 +35,7 @@ public final class Escaper {
 		_escape = escape;
 	}
 
-	public String escape(final String value) {
+	public String escape(final CharSequence value) {
 		final StringBuilder result = new StringBuilder();
 		for (int i = 0; i < value.length(); ++i) {
 			final char c = value.charAt(i);
@@ -56,7 +56,7 @@ public final class Escaper {
 	}
 
 
-	public String unescape(final String value) {
+	public String unescape(final CharSequence value) {
 		final StringBuilder result = new StringBuilder();
 
 		boolean escaping = false;
