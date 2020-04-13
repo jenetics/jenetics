@@ -497,13 +497,15 @@ public final class Pareto {
 			if (cmp > 0) {
 				if (vdominated) {
 					return 0;
+				} else {
+					udominated = true;
 				}
-				udominated = true;
 			} else if (cmp < 0) {
 				if (udominated) {
 					return 0;
+				} else {
+					vdominated = true;
 				}
-				vdominated = true;
 			}
 		}
 
