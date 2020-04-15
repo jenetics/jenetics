@@ -22,6 +22,7 @@ package io.jenetics;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
+import java.util.Comparator;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -53,16 +54,27 @@ public class TournamentSelector<
 	implements Selector<G, C>
 {
 
+	private final Comparator<? super Phenotype<G, C>> _comparator;
 	private final int _sampleSize;
 
 	/**
-	 * Create a tournament selector with the give sample size. The sample size
-	 * must be greater than one.
+	 * Create a tournament selector with the give {@code comparator} and
+	 * sample size. The sample size must be greater than one.
 	 *
+	 * @since !__version__!
+	 *
+	 * @param comparator the comparator use for comparing two individuals during
+	 *        a tournament
 	 * @param sampleSize the number of individuals involved in one tournament
-	 * @throws IllegalArgumentException if the sample size is smaller than two.
+	 * @throws IllegalArgumentException if the sample size is smaller than two
+	 * @throws NullPointerException if the given {@code comparator} is
+	 *         {@code null}
 	 */
-	public TournamentSelector(final int sampleSize) {
+	public TournamentSelector(
+		final Comparator<? super Phenotype<G, C>> comparator,
+		final int sampleSize
+	) {
+		_comparator = requireNonNull(comparator);
 		if (sampleSize < 2) {
 			throw new IllegalArgumentException(
 				"Sample size must be greater than one, but was " + sampleSize
@@ -72,10 +84,21 @@ public class TournamentSelector<
 	}
 
 	/**
+	 * Create a tournament selector with the give sample size. The sample size
+	 * must be greater than one.
+	 *
+	 * @param sampleSize the number of individuals involved in one tournament
+	 * @throws IllegalArgumentException if the sample size is smaller than two.
+	 */
+	public TournamentSelector(final int sampleSize) {
+		this(Phenotype::compareTo, sampleSize);
+	}
+
+	/**
 	 * Create a tournament selector with sample size two.
 	 */
 	public TournamentSelector() {
-		this(2);
+		this(Phenotype::compareTo,2);
 	}
 
 	/**
@@ -122,9 +145,13 @@ public class TournamentSelector<
 		assert _sampleSize >= 2;
 		assert N >= 1;
 
+		final Comparator<? super Phenotype<G, C>> cmp = opt == Optimize.MAXIMUM
+			? _comparator
+			: _comparator.reversed();
+
 		return Stream.generate(() -> population.get(random.nextInt(N)))
 			.limit(_sampleSize)
-			.max(opt.ascending())
+			.max(cmp)
 			.orElseThrow(AssertionError::new);
 	}
 
