@@ -61,7 +61,7 @@ public class TournamentSelector<
 	 * Create a tournament selector with the give {@code comparator} and
 	 * sample size. The sample size must be greater than one.
 	 *
-	 * @since !__version__!
+	 * @since 6.0
 	 *
 	 * @param comparator the comparator use for comparing two individuals during
 	 *        a tournament
