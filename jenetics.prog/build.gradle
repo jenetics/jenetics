@@ -27,6 +27,10 @@
  * @version 4.4
  */
 
+plugins {
+	id 'me.champeau.gradle.jmh' version '0.5.0'
+}
+
 apply plugin: 'java-library'
 apply plugin: 'packaging'
 apply plugin: 'nexus'
@@ -39,6 +43,16 @@ dependencies {
 
 	testImplementation property('include.TestNG')
 	testImplementation property('include.EqualsVerifier')
+}
+
+jmh {
+	include = ['.*MathExprPerf.*']
+}
+
+idea {
+	module{
+		scopes.COMPILE.plus += [configurations.jmh]
+	}
 }
 
 javadoc {
