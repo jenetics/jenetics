@@ -58,8 +58,8 @@ import org.openjdk.jmh.annotations.Warmup;
 public class MathExprPerf {
 
 	private static final MathExpr MATH_EXPR = MathExpr.parse(
-		"cos(signum(tan(sqrt(asin(rint(sinh(log(floor(log(hypot(cosh(sinh(log(y)%hypot(y, 1.0))), " +
-			"signum(tan(ceil(ceil(y)))))))))))))))"
+		"cos(signum(tan(sqrt(asin(rint(sinh(log(floor(log(hypot(cosh(sinh(log(y)%" +
+			"hypot(y, 1.0))), signum(tan(ceil(ceil(y)))))))))))))))"
 	);
 
 	private static double expr(final double x, final double y) {
@@ -82,9 +82,21 @@ public class MathExprPerf {
 		return MATH_EXPR.eval(x, y);
 	}
 
-	@Benchmark
+	//@Benchmark
 	public double javaExpr() {
 		return expr(x, y);
 	}
 
 }
+
+/*
+Benchmark              Mode  Cnt     Score    Error  Units
+MathExprPerf.javaExpr  avgt   15   230.869 ±  6.066  ns/op
+MathExprPerf.mathExpr  avgt   15  2434.524 ± 57.198  ns/op
+ */
+
+/*
+Benchmark              Mode  Cnt     Score    Error  Units
+MathExprPerf.javaExpr  avgt   15   234.484 ±  5.848  ns/op
+MathExprPerf.mathExpr  avgt   15  1211.822 ± 46.275  ns/op
+ */
