@@ -47,7 +47,7 @@ import io.jenetics.internal.engine.EvolutionStreamImpl;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.1
+ * @version 6.0
  */
 public interface EvolutionStream<
 	G extends Gene<?, G>,
@@ -89,39 +89,8 @@ public interface EvolutionStream<
 	 * @return the new stream
 	 * @throws NullPointerException if the given predicate is {@code null}.
 	 */
-	public EvolutionStream<G, C>
+	EvolutionStream<G, C>
 	limit(final Predicate<? super EvolutionResult<G, C>> proceed);
-
-	/**
-	 * Create a new {@code EvolutionStream} from the given {@code start}
-	 * population and {@code evolution} function. The main purpose of this
-	 * factory method is to simplify the creation of an {@code EvolutionStream}
-	 * from an own evolution (GA) engine.
-	 *
-	 * @since 3.1
-	 *
-	 * @see #ofEvolution(Supplier, Evolution)
-	 *
-	 * @param <G> the gene type
-	 * @param <C> the fitness type
-	 * @param start the evolution start
-	 * @param evolution the evolution function
-	 * @return a new {@code EvolutionStream} with the given {@code start} and
-	 *         {@code evolution} function
-	 * @throws java.lang.NullPointerException if one of the arguments is
-	 *         {@code null}
-	 *
-	 * @deprecated Will be removed, use {@link #ofEvolution(Supplier, Evolution)}
-	 *             instead
-	 */
-	@Deprecated
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
-	EvolutionStream<G, C> of(
-		final Supplier<EvolutionStart<G, C>> start,
-		final Function<? super EvolutionStart<G, C>, EvolutionResult<G, C>> evolution
-	) {
-		return new EvolutionStreamImpl<>(start, evolution::apply);
-	}
 
 	/**
 	 * Create a new {@code EvolutionStream} from the given {@code start}
@@ -142,7 +111,7 @@ public interface EvolutionStream<
 	 *
 	 *     // The fitness function.
 	 *     private static Double fitness(final Genotype<DoubleGene> gt) {
-	 *         return gt.getGene().getAllele();
+	 *         return gt.gene().allele();
 	 *     }
 	 *
 	 *     // Create new evolution start object.
@@ -190,7 +159,7 @@ public interface EvolutionStream<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> ofEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Evolution<G, C> evolution
@@ -245,9 +214,9 @@ public interface EvolutionStream<
 	 * private static double var(final EvolutionStart<DoubleGene, Double> result) {
 	 *     return result != null
 	 *         ? result.getPopulation().stream()
-	 *             .map(Phenotype::getFitness)
+	 *             .map(Phenotype::fitness)
 	 *             .collect(DoubleMoments.toDoubleMoments())
-	 *             .getVariance()
+	 *             .variance()
 	 *         : 0.0;
 	 * }
 	 * }</pre>
@@ -263,7 +232,7 @@ public interface EvolutionStream<
 	 * @throws java.lang.NullPointerException if one of the arguments is
 	 *         {@code null}
 	 */
-	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
+	static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStream<G, C> ofAdjustableEvolution(
 		final Supplier<EvolutionStart<G, C>> start,
 		final Function<

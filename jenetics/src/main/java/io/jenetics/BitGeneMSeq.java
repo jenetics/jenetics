@@ -20,21 +20,28 @@
 package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
+import static io.jenetics.internal.util.SerialIO.readInt;
+import static io.jenetics.internal.util.SerialIO.writeInt;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 
 import io.jenetics.internal.collection.Array;
 import io.jenetics.internal.collection.ArrayISeq;
 import io.jenetics.internal.collection.ArrayMSeq;
-import io.jenetics.internal.util.bit;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Bits;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.4
- * @version 3.4
+ * @version 6.0
  */
 final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 
@@ -53,9 +60,9 @@ final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 		array.copyIfSealed();
 
 		final byte[] bytes = ((BitGeneStore)array.store()).array;
-		final boolean temp = bit.get(bytes, i);
-		bit.set(bytes, i, bit.get(bytes, j));
-		bit.set(bytes, j, temp);
+		final boolean temp = Bits.get(bytes, i);
+		Bits.set(bytes, i, Bits.get(bytes, j));
+		Bits.set(bytes, j, temp);
 	}
 
 	@Override
@@ -65,9 +72,9 @@ final class BitGeneMSeq extends ArrayMSeq<BitGene> {
 	) {
 		if (other instanceof BitGeneMSeq) {
 			checkIndex(start, end, otherStart, other.length());
-			final BitGeneMSeq otherMSeq = (BitGeneMSeq)other;
-			final BitGeneStore thisStore = (BitGeneStore)array.store();
-			final BitGeneStore otherStore = (BitGeneStore)otherMSeq.array.store();
+			final var otherMSeq = (BitGeneMSeq)other;
+			final var thisStore = (BitGeneStore)array.store();
+			final var otherStore = (BitGeneStore)otherMSeq.array.store();
 
 			array.copyIfSealed();
 			otherMSeq.array.copyIfSealed();
@@ -121,10 +128,6 @@ final class BitGeneISeq extends ArrayISeq<BitGene> {
 		return BitGeneMSeq.of(array.copy());
 	}
 
-	static BitGeneISeq of(final byte[] genes, final int length) {
-		return new BitGeneISeq(Array.of(BitGeneStore.of(genes, length)).seal());
-	}
-
 }
 
 /**
@@ -141,12 +144,12 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	// Primary constructor.
 	private BitGeneStore(final byte[] array, final int length) {
 		this.array = requireNonNull(array);
-		this.length = require.nonNegative(length);
+		this.length = Requires.nonNegative(length);
 	}
 
 	@Override
 	public BitGene get(final int index) {
-		return BitGene.of(bit.get(array, index));
+		return BitGene.of(Bits.get(array, index));
 	}
 
 	@Override
@@ -158,19 +161,19 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 
 	@Override
 	public void set(final int index, final BitGene value) {
-		bit.set(array, index, value.booleanValue());
+		Bits.set(array, index, value.booleanValue());
 	}
 
 	void swap(
 		final int start, final int end,
 		final BitGeneStore other, final int otherStart
 	) {
-		bit.swap(array, start, end, other.array, otherStart);
+		Bits.swap(array, start, end, other.array, otherStart);
 	}
 
 	@Override
 	public BitGeneStore copy(final int from, final int until) {
-		return new BitGeneStore(bit.copy(array, from, until), until - from);
+		return new BitGeneStore(Bits.copy(array, from, until), until - from);
 	}
 
 	@Override
@@ -189,7 +192,35 @@ final class BitGeneStore implements Array.Store<BitGene>, Serializable {
 	}
 
 	static BitGeneStore ofLength(final int length) {
-		return new BitGeneStore(bit.newArray(length), length);
+		return new BitGeneStore(Bits.newArray(length), length);
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.BIT_GENE_STORE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeInt(length, out);
+		writeInt(array.length, out);
+		out.write(array);
+	}
+
+	static BitGeneStore read(final DataInput in) throws IOException {
+		final int length = readInt(in);
+		final byte[] array = new byte[readInt(in)];
+
+		return new BitGeneStore(array, length);
 	}
 
 }

@@ -38,7 +38,7 @@ public class LinearDistributionTest extends ObjectTester<LinearDistribution<Doub
 	@Override
 	protected Factory<LinearDistribution<Double>> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 
 			final double min = random.nextInt(100) + 100;
 			final double max = random.nextInt(100) + 100 + min;

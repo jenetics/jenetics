@@ -19,7 +19,7 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.random.indexes;
+import static io.jenetics.internal.math.Randoms.indexes;
 
 import java.util.Random;
 
@@ -47,7 +47,6 @@ public class SwapMutator<
 	C extends Comparable<? super C>
 >
 	extends Mutator<G, C>
-
 {
 
 	/**
@@ -81,7 +80,7 @@ public class SwapMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final MSeq<G> genes = MSeq.of(chromosome);
 			final int mutations = (int)indexes(random, genes.length(), p)
 				.peek(i -> genes.swap(i, random.nextInt(genes.length())))
 				.count();

@@ -26,7 +26,7 @@ import io.jenetics.Chromosome;
 import io.jenetics.Gene;
 import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
 import io.jenetics.util.MSeq;
 
 /**
@@ -75,8 +75,8 @@ public class RSMutator<
 	) {
 		final MutatorResult<Chromosome<G>> result;
 		if (chromosome.length() > 1) {
-			final int[] points = comb.subset(chromosome.length() + 1, 2);
-			final MSeq<G> genes = chromosome.toSeq().copy();
+			final int[] points = Combinatorics.subset(chromosome.length() + 1, 2);
+			final MSeq<G> genes = MSeq.of(chromosome);
 			genes.subSeq(points[0], points[1]).reverse();
 
 			result = MutatorResult.of(

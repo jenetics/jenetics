@@ -21,7 +21,14 @@ package io.jenetics.util;
 
 import static java.lang.String.format;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.stream.LongStream;
 
@@ -32,12 +39,12 @@ import java.util.stream.LongStream;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.2
+ * @version 6.0
  * @since 3.2
  */
-public final class LongRange implements Serializable {
+public final /*record*/ class LongRange implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private final long _min;
 	private final long _max;
@@ -58,7 +65,7 @@ public final class LongRange implements Serializable {
 	 *
 	 * @return the minimum value of the long range
 	 */
-	public long getMin() {
+	public long min() {
 		return _min;
 	}
 
@@ -67,19 +74,19 @@ public final class LongRange implements Serializable {
 	 *
 	 * @return the maximum value of the long range
 	 */
-	public long getMax() {
+	public long max() {
 		return _max;
 	}
 
 	/**
-	 * Returns a sequential ordered {@code LongStream} from {@link #getMin()}
-	 * (inclusive) to {@link #getMax()} (exclusive) by an incremental step of
+	 * Returns a sequential ordered {@code LongStream} from {@link #min()}
+	 * (inclusive) to {@link #max()} (exclusive) by an incremental step of
 	 * {@code 1}.
 	 * <p>
 	 * An equivalent sequence of increasing values can be produced sequentially
 	 * using a {@code for} loop as follows:
 	 * <pre>{@code
-	 * for (long i = range.getMin(); i < range.getMax(); ++i) {
+	 * for (long i = range.min(); i < range.max(); ++i) {
 	 *     ...
 	 * }
 	 * }</pre>
@@ -135,6 +142,30 @@ public final class LongRange implements Serializable {
 	@Override
 	public String toString() {
 		return "[" + _min + ", " + _max + "]";
+	}
+
+
+	/* *************************************************************************
+	 *  Java object serialization
+	 * ************************************************************************/
+
+	private Object writeReplace() {
+		return new Serial(Serial.LONG_RANGE, this);
+	}
+
+	private void readObject(final ObjectInputStream stream)
+		throws InvalidObjectException
+	{
+		throw new InvalidObjectException("Serialization proxy required.");
+	}
+
+	void write(final DataOutput out) throws IOException {
+		writeLong(_min, out);
+		writeLong(_max, out);
+	}
+
+	static LongRange read(final DataInput in) throws IOException {
+		return of(readLong(in), readLong(in));
 	}
 
 }

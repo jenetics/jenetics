@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code array} length is zero or
 	 *         doesn't match the required length of the actual factory
 	 */
-	public Vec<T> newVec(final T array);
+	Vec<T> newVec(final T array);
 
 	/**
 	 * Create a new factory for {@code int[]} vectors. Additionally you can
@@ -90,7 +89,7 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<int[]> ofIntVec(final List<Optimize> optimizes) {
+	static VecFactory<int[]> ofIntVec(final List<Optimize> optimizes) {
 		return new GeneralIntVecFactory(optimizes);
 	}
 
@@ -113,8 +112,8 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<int[]> ofIntVec(final Optimize... optimizes) {
-		return ofIntVec(Arrays.asList(optimizes));
+	static VecFactory<int[]> ofIntVec(final Optimize... optimizes) {
+		return ofIntVec(List.of(optimizes));
 	}
 
 	/**
@@ -126,7 +125,7 @@ public interface VecFactory<T> {
 	 * @return a new factory for {@code int[]} vectors, where all dimensions are
 	 * 	       maximized
 	 */
-	public static VecFactory<int[]> ofIntVec() {
+	static VecFactory<int[]> ofIntVec() {
 		return Vec::of;
 	}
 
@@ -149,7 +148,7 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<long[]> ofLongVec(final List<Optimize> optimizes) {
+	static VecFactory<long[]> ofLongVec(final List<Optimize> optimizes) {
 		return new GeneralLongVecFactory(optimizes);
 	}
 
@@ -172,8 +171,8 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<long[]> ofLongVec(final Optimize... optimizes) {
-		return ofLongVec(Arrays.asList(optimizes));
+	static VecFactory<long[]> ofLongVec(final Optimize... optimizes) {
+		return ofLongVec(List.of(optimizes));
 	}
 
 	/**
@@ -185,7 +184,7 @@ public interface VecFactory<T> {
 	 * @return a new factory for {@code long[]} vectors, where all dimensions are
 	 * 	       maximized
 	 */
-	public static VecFactory<long[]> ofLongVec() {
+	static VecFactory<long[]> ofLongVec() {
 		return Vec::of;
 	}
 
@@ -208,7 +207,7 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<double[]> ofDoubleVec(final List<Optimize> optimizes) {
+	static VecFactory<double[]> ofDoubleVec(final List<Optimize> optimizes) {
 		return new GeneralDoubleVecFactory(optimizes);
 	}
 
@@ -231,8 +230,8 @@ public interface VecFactory<T> {
 	 *         {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static VecFactory<double[]> ofDoubleVec(final Optimize... optimizes) {
-		return ofDoubleVec(Arrays.asList(optimizes));
+	static VecFactory<double[]> ofDoubleVec(final Optimize... optimizes) {
+		return ofDoubleVec(List.of(optimizes));
 	}
 
 	/**
@@ -244,7 +243,7 @@ public interface VecFactory<T> {
 	 * @return a new factory for {@code double[]} vectors, where all dimensions
 	 *         are maximized
 	 */
-	public static VecFactory<double[]> ofDoubleVec() {
+	static VecFactory<double[]> ofDoubleVec() {
 		return Vec::of;
 	}
 
@@ -265,7 +264,7 @@ public interface VecFactory<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static <T> VecFactory<T[]> ofObjectVec(
+	static <T> VecFactory<T[]> ofObjectVec(
 		final Comparator<? super T> comparator,
 		final ElementDistance<T[]> distance,
 		final List<Optimize> optimizes
@@ -290,12 +289,12 @@ public interface VecFactory<T> {
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
-	public static <T> VecFactory<T[]> ofObjectVec(
+	static <T> VecFactory<T[]> ofObjectVec(
 		final Comparator<? super T> comparator,
 		final ElementDistance<T[]> distance,
 		final Optimize... optimizes
 	) {
-		return ofObjectVec(comparator, distance, Arrays.asList(optimizes));
+		return ofObjectVec(comparator, distance, List.of(optimizes));
 	}
 
 }

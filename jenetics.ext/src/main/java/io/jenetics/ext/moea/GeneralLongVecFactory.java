@@ -58,7 +58,7 @@ final class GeneralLongVecFactory implements VecFactory<long[]> {
 	}
 
 	private int dom(final long[] u, final long[] v) {
-		return Pareto.dominance(u, v, _maximisations.length, this::cmp);
+		return Pareto.dominance(u, v, _maximisations.length, _comparator);
 	}
 
 	@Override

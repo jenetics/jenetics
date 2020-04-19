@@ -29,10 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.function.Function;
 
-import io.jenetics.jpx.GPX;
-import io.jenetics.jpx.WayPoint;
-import io.jenetics.jpx.geom.Geoid;
-
 import io.jenetics.EnumGene;
 import io.jenetics.Gene;
 import io.jenetics.Optimize;
@@ -45,6 +41,10 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionStatistics;
 import io.jenetics.engine.Problem;
 import io.jenetics.util.ISeq;
+
+import io.jenetics.jpx.GPX;
+import io.jenetics.jpx.WayPoint;
+import io.jenetics.jpx.geom.Geoid;
 
 /**
  * Implementation of the Traveling Salesman Problem. This example tries to find
@@ -102,9 +102,9 @@ public final class TravelingSalesman
 			.peek(statistics)
 			.collect(toBestPhenotype());
 
-		final ISeq<WayPoint> path = best.getGenotype()
-			.getChromosome().stream()
-			.map(Gene::getAllele)
+		final ISeq<WayPoint> path = best.genotype()
+			.chromosome().stream()
+			.map(Gene::allele)
 			.collect(ISeq.toISeq());
 
 		final GPX gpx = GPX.builder()
@@ -113,7 +113,7 @@ public final class TravelingSalesman
 				.addSegment(s -> s.points(path.asList())))
 			.build();
 
-		final double km = tsm.fitness(best.getGenotype())/1_000.0;
+		final double km = tsm.fitness(best.genotype())/1_000.0;
 		GPX.writer("    ")
 			.write(gpx, format("%s/out_%d.gpx", getProperty("user.home"), (int)km));
 

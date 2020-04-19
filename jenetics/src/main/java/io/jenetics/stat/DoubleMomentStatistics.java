@@ -65,7 +65,7 @@ import io.jenetics.internal.math.DoubleAdder;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.0
+ * @version 6.0
  */
 public class DoubleMomentStatistics
 	extends MomentStatistics
@@ -120,7 +120,7 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the minimum value, or {@code Double.POSITIVE_INFINITY} if none
 	 */
-	public double getMin() {
+	public double min() {
 		return _min;
 	}
 
@@ -130,7 +130,7 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the maximum value, or {@code Double.NEGATIVE_INFINITY} if none
 	 */
-	public double getMax() {
+	public double max() {
 		return _max;
 	}
 
@@ -140,7 +140,7 @@ public class DoubleMomentStatistics
 	 *
 	 * @return the sum of values, or zero if none
 	 */
-	public double getSum() {
+	public double sum() {
 		return _sum.doubleValue();
 	}
 
@@ -193,8 +193,8 @@ public class DoubleMomentStatistics
 	public String toString() {
 		return String.format(
 			"Summary[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
-			getCount(), _min, _max, _sum.doubleValue(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			count(), _min, _max, _sum.doubleValue(),
+			mean(), variance(), skewness(), kurtosis()
 		);
 	}
 

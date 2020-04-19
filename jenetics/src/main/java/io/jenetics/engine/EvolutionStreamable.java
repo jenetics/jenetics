@@ -60,7 +60,7 @@ public interface EvolutionStreamable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
-	public EvolutionStream<G, C>
+	EvolutionStream<G, C>
 	stream(final Supplier<EvolutionStart<G, C>> start);
 
 	/**
@@ -76,7 +76,7 @@ public interface EvolutionStreamable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
-	public EvolutionStream<G, C> stream(final EvolutionInit<G> init);
+	EvolutionStream<G, C> stream(final EvolutionInit<G> init);
 
 
 	/* *************************************************************************
@@ -93,7 +93,7 @@ public interface EvolutionStreamable<
 	 *
 	 * @return a new evolution stream.
 	 */
-	public default EvolutionStream<G, C> stream() {
+	default EvolutionStream<G, C> stream() {
 		return stream((Supplier<EvolutionStart<G, C>>)EvolutionStart::empty);
 	}
 
@@ -110,7 +110,7 @@ public interface EvolutionStreamable<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}.
 	 */
-	public default EvolutionStream<G, C>
+	default EvolutionStream<G, C>
 	stream(final EvolutionStart<G, C> start) {
 		return stream(() -> start);
 	}
@@ -119,7 +119,7 @@ public interface EvolutionStreamable<
 	 * Create a new {@code EvolutionStream} starting with a previously evolved
 	 * {@link EvolutionResult}. The stream is initialized with the population
 	 * of the given {@code result} and its total generation
-	 * {@link EvolutionResult#getTotalGenerations()}.
+	 * {@link EvolutionResult#totalGenerations()}.
 	 *
 	 * <pre>{@code
 	 * private static final Problem<Double, DoubleGene, Double>
@@ -151,7 +151,7 @@ public interface EvolutionStreamable<
 	 *         .limit(Limits.bySteadyFitness(20))
 	 *         .collect(EvolutionResult.toBestEvolutionResult());
 	 *
-	 *     System.out.println(result.getBestPhenotype());
+	 *     System.out.println(result.bestPhenotype());
 	 * }
 	 * }</pre>
 	 *
@@ -163,11 +163,11 @@ public interface EvolutionStreamable<
 	 * @throws NullPointerException if the given evolution {@code result} is
 	 *         {@code null}
 	 */
-	public default EvolutionStream<G, C>
+	default EvolutionStream<G, C>
 	stream(final EvolutionResult<G, C> result) {
 		return stream(EvolutionStart.of(
-			result.getPopulation(),
-			result.getGeneration()
+			result.population(),
+			result.generation()
 		));
 	}
 
@@ -190,7 +190,7 @@ public interface EvolutionStreamable<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionStream<G, C> stream(
+	default EvolutionStream<G, C> stream(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
@@ -212,8 +212,7 @@ public interface EvolutionStreamable<
 	 * @throws java.lang.NullPointerException if the given {@code population} is
 	 *         {@code null}.
 	 */
-	public default EvolutionStream<G, C>
-	stream(final ISeq<Phenotype<G, C>> population) {
+	default EvolutionStream<G, C> stream(final ISeq<Phenotype<G, C>> population) {
 		return stream(EvolutionStart.of(population, 1));
 	}
 
@@ -233,7 +232,7 @@ public interface EvolutionStreamable<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionStream<G, C> stream(
+	default EvolutionStream<G, C> stream(
 		final Iterable<Genotype<G>> genotypes,
 		final long generation
 	) {
@@ -252,7 +251,7 @@ public interface EvolutionStreamable<
 	 * @throws java.lang.NullPointerException if the given {@code genotypes} is
 	 *         {@code null}.
 	 */
-	public default EvolutionStream<G, C>
+	default EvolutionStream<G, C>
 	stream(final Iterable<Genotype<G>> genotypes) {
 		return stream(genotypes, 1);
 	}
@@ -267,11 +266,11 @@ public interface EvolutionStreamable<
 	 * @return a new evolution streamable object
 	 * @throws NullPointerException if the give {@code predicate} is {@code null}
 	 */
-	public default EvolutionStreamable<G, C>
-	limit(final Supplier<Predicate<? super EvolutionResult<G, C>>> proceed) {
+	default EvolutionStreamable<G, C>
+	limit(final Supplier<? extends Predicate<? super EvolutionResult<G, C>>> proceed) {
 		requireNonNull(proceed);
 
-		return new EvolutionStreamable<G, C>() {
+		return new EvolutionStreamable<>() {
 			@Override
 			public EvolutionStream<G, C>
 			stream(final Supplier<EvolutionStart<G, C>> start) {
@@ -295,7 +294,7 @@ public interface EvolutionStreamable<
 	 * @throws IllegalArgumentException if the given {@code generations} is
 	 *         smaller than zero.
 	 */
-	public default EvolutionStreamable<G, C> limit(final long generations) {
+	default EvolutionStreamable<G, C> limit(final long generations) {
 		return limit(() -> Limits.byFixedGeneration(generations));
 	}
 

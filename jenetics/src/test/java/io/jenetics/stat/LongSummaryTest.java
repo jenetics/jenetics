@@ -40,7 +40,7 @@ public class LongSummaryTest extends ObjectTester<LongSummary> {
 	@Override
 	protected Factory<LongSummary> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 
 			final LongSummaryStatistics statistics = new LongSummaryStatistics();
 			IntStream.range(0, 100)

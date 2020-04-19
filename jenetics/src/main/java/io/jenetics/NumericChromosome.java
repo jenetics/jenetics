@@ -31,7 +31,7 @@ package io.jenetics;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 3.0
+ * @version 5.2
  */
 public interface NumericChromosome<
 	N extends Number & Comparable<? super N>,
@@ -49,8 +49,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default byte byteValue(int index) {
-		return getGene(index).getAllele().byteValue();
+	default byte byteValue(int index) {
+		return get(index).allele().byteValue();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the byte value of the {@link Gene} with {@code index} 0.
 	 */
-	public default byte byteValue() {
+	default byte byteValue() {
 		return byteValue(0);
 	}
 
@@ -72,8 +72,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default short shortValue(int index) {
-		return getGene(index).getAllele().shortValue();
+	default short shortValue(int index) {
+		return get(index).allele().shortValue();
 	}
 
 	/**
@@ -82,7 +82,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the short value of the {@link Gene} with {@code index} 0.
 	 */
-	public default short shortValue() {
+	default short shortValue() {
 		return shortValue(0);
 	}
 
@@ -95,8 +95,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default int intValue(int index) {
-		return getGene(index).getAllele().intValue();
+	default int intValue(int index) {
+		return get(index).allele().intValue();
 	}
 
 	/**
@@ -105,7 +105,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the int value of the {@link Gene} with {@code index} 0.
 	 */
-	public default int intValue() {
+	default int intValue() {
 		return intValue(0);
 	}
 
@@ -118,8 +118,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default long longValue(int index) {
-		return getGene(index).getAllele().longValue();
+	default long longValue(int index) {
+		return get(index).allele().longValue();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the long value of the {@link Gene} with {@code index} 0.
 	 */
-	public default long longValue() {
+	default long longValue() {
 		return longValue(0);
 	}
 
@@ -141,8 +141,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default float floatValue(int index) {
-		return getGene(index).getAllele().floatValue();
+	default float floatValue(int index) {
+		return get(index).allele().floatValue();
 	}
 
 	/**
@@ -151,7 +151,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the float value of the {@link Gene} with {@code index} 0.
 	 */
-	public default float floatValue() {
+	default float floatValue() {
 		return floatValue(0);
 	}
 
@@ -164,8 +164,8 @@ public interface NumericChromosome<
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         (index &lt; 0 || index &gt;= length()).
 	 */
-	public default double doubleValue(int index) {
-		return getGene(index).getAllele().doubleValue();
+	default double doubleValue(int index) {
+		return get(index).allele().doubleValue();
 	}
 
 	/**
@@ -174,7 +174,7 @@ public interface NumericChromosome<
 	 *
 	 * @return the double value of the {@link Gene} with {@code index} 0.
 	 */
-	public default double doubleValue() {
+	default double doubleValue() {
 		return doubleValue(0);
 	}
 

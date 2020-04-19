@@ -40,11 +40,11 @@ final class ParenthesesTrees {
 
 	private static final Escaper ESCAPER = new Escaper(ESCAPE_CHAR, PROTECTED_CHARS);
 
-	static String escape(final String value) {
+	static String escape(final CharSequence value) {
 		return ESCAPER.escape(value);
 	}
 
-	static String unescape(final String value) {
+	static String unescape(final CharSequence value) {
 		return ESCAPER.unescape(value);
 	}
 
@@ -64,7 +64,7 @@ final class ParenthesesTrees {
 	 */
 	static <V> String toString(
 		final Tree<V, ?> tree,
-		final Function<? super V, String> mapper
+		final Function<? super V, ? extends CharSequence> mapper
 	) {
 		requireNonNull(mapper);
 
@@ -80,9 +80,9 @@ final class ParenthesesTrees {
 	private static  <V> void toString(
 		final StringBuilder out,
 		final Tree<V, ?> tree,
-		final Function<? super V, String> mapper
+		final Function<? super V, ? extends CharSequence> mapper
 	) {
-		out.append(escape(mapper.apply(tree.getValue())));
+		out.append(escape(mapper.apply(tree.value())));
 		if (!tree.isLeaf()) {
 			out.append("(");
 			toString(out, tree.childAt(0), mapper);

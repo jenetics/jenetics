@@ -38,7 +38,7 @@ public class IntMomentsTest extends ObjectTester<IntMoments> {
 	@Override
 	protected Factory<IntMoments> factory() {
 		return () -> {
-			final Random random = RandomRegistry.getRandom();
+			final Random random = RandomRegistry.random();
 			return IntMoments.of(
 				random.nextLong(),
 				random.nextInt(),

@@ -29,7 +29,6 @@ import io.jenetics.engine.Limits;
 import io.jenetics.tool.trial.Params;
 import io.jenetics.tool.trial.TrialMeter;
 import io.jenetics.util.ISeq;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 
@@ -49,7 +48,7 @@ public class KnapsackFitnessThreshold {
 		"Fitness threshold",
 		IntStream.rangeClosed(0, POINTS)
 			.mapToDouble(i -> MIN_FITNESS + (MAX_FITNESS - MIN_FITNESS)/POINTS*i)
-			.mapToObj(Double::valueOf)
+			.boxed()
 			.collect(ISeq.toISeq())
 	);
 

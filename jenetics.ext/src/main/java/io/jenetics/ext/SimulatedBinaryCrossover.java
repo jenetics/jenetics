@@ -22,14 +22,14 @@ package io.jenetics.ext;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 import static java.lang.String.format;
-import static io.jenetics.internal.math.base.clamp;
+import static io.jenetics.internal.math.Basics.clamp;
 
 import java.util.Random;
 
 import io.jenetics.Crossover;
 import io.jenetics.NumericGene;
-import io.jenetics.internal.math.random;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.math.Randoms;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -45,7 +45,7 @@ import io.jenetics.util.RandomRegistry;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 5.0
+ * @version 6.0
  */
 public class SimulatedBinaryCrossover<
 	G extends NumericGene<?, G>,
@@ -74,7 +74,7 @@ public class SimulatedBinaryCrossover<
 		final double contiguity
 	) {
 		super(probability);
-		_contiguity = require.nonNegative(contiguity);
+		_contiguity = Requires.nonNegative(contiguity);
 	}
 
 	/**
@@ -96,19 +96,19 @@ public class SimulatedBinaryCrossover<
 	 *
 	 * @return the <i>contiguity</i> value of the crossover
 	 */
-	public double getContiguity() {
+	public double contiguity() {
 		return _contiguity;
 	}
 
 	@Override
 	protected int crossover(final MSeq<G> that, final MSeq<G> other) {
-		return (int)random.indexes(RandomRegistry.getRandom(), that.length(), 0.5)
+		return (int) Randoms.indexes(RandomRegistry.random(), that.length(), 0.5)
 			.peek(i -> crossover(that, other, i))
 			.count();
 	}
 
 	private void crossover(final MSeq<G> that, final MSeq<G> other, final int i) {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final double u = random.nextDouble();
 		final double beta;
@@ -117,7 +117,7 @@ public class SimulatedBinaryCrossover<
 			beta = pow(2*u, 1.0/(_contiguity + 1));
 		} else if (u > 0.5) {
 			// Otherwise perform an expanding crossover.
-			beta = pow(0.5 / (1.0 - u), 1.0/(_contiguity + 1));
+			beta = pow(0.5/(1.0 - u), 1.0/(_contiguity + 1));
 		} else if (u == 0.5) {
 			beta = 1;
 		} else {
@@ -130,8 +130,8 @@ public class SimulatedBinaryCrossover<
 			? ((v1 - v2)*0.5) - beta*0.5*abs(v1 - v2)
 			: ((v1 - v2)*0.5) + beta*0.5*abs(v1 - v2);
 
-		final double min = that.get(i).getMin().doubleValue();
-		final double max = that.get(i).getMax().doubleValue();
+		final double min = that.get(i).min().doubleValue();
+		final double max = that.get(i).max().doubleValue();
 		that.set(i, that.get(i).newInstance(clamp(v, min, max)));
 	}
 

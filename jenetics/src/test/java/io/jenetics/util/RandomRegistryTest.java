@@ -49,22 +49,22 @@ public class RandomRegistryTest {
 	@Test
 	public void setDefault() {
 		RandomRegistry.reset();
-		final Random devault = RandomRegistry.getRandom();
+		final Random devault = RandomRegistry.random();
 		Assert.assertNotNull(devault);
 
-		RandomRegistry.setRandom(new Random());
-		Assert.assertNotNull(RandomRegistry.getRandom());
+		RandomRegistry.random(new Random());
+		Assert.assertNotNull(RandomRegistry.random());
 		RandomRegistry.reset();
 
-		assertSame(RandomRegistry.getRandom(), devault);
+		assertSame(RandomRegistry.random(), devault);
 	}
 
 	@Test
 	public void setRandom() {
 		final Random random = new Random();
-		RandomRegistry.setRandom(random);
+		RandomRegistry.random(random);
 
-		assertSame(RandomRegistry.getRandom(), random);
+		assertSame(RandomRegistry.random(), random);
 	}
 
 	@Test
@@ -72,13 +72,13 @@ public class RandomRegistryTest {
 		throws ExecutionException, InterruptedException
 	{
 		final Random random = new Random();
-		RandomRegistry.setRandom(random);
+		RandomRegistry.random(random);
 
 		final ExecutorService executor = Executors.newFixedThreadPool(10);
 		try {
 			final List<Future<?>> futures = IntStream.range(0, 500)
 				.mapToObj(i -> executor
-					.submit(() -> assertSame(RandomRegistry.getRandom(), random)))
+					.submit(() -> assertSame(RandomRegistry.random(), random)))
 				.collect(Collectors.toList());
 
 			for (Future<?> future : futures) {
@@ -92,33 +92,33 @@ public class RandomRegistryTest {
 	@Test
 	public void setThreadLocalRandom() {
 		final Random random = new Random();
-		RandomRegistry.setRandom(random);
+		RandomRegistry.random(random);
 
-		Assert.assertSame(RandomRegistry.getRandom(), random);
+		Assert.assertSame(RandomRegistry.random(), random);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullRandom() {
-		RandomRegistry.setRandom((Random)null);
+		RandomRegistry.random((Random)null);
 	}
 
 	@Test(expectedExceptions = NullPointerException.class)
 	public void setNullTLRandom() {
-		RandomRegistry.setRandom((ThreadLocal<Random>)null);
+		RandomRegistry.random((ThreadLocal<Random>)null);
 	}
 
 	@Test
 	public void localContext() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
 		final Random random1 = new Random();
 		using(random1, r1 -> {
 			final Random random2 = new Random();
-			using(random2, r2 -> assertSame(RandomRegistry.getRandom(), random2));
-			assertSame(RandomRegistry.getRandom(), random1);
+			using(random2, r2 -> assertSame(RandomRegistry.random(), random2));
+			assertSame(RandomRegistry.random(), random1);
 		});
 
-		assertSame(RandomRegistry.getRandom(), random);
+		assertSame(RandomRegistry.random(), random);
 	}
 
 	@Test(invocationCount = 10)
@@ -139,28 +139,28 @@ public class RandomRegistryTest {
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
-				assertSame(r, RandomRegistry.getRandom());
+				assertSame(r, RandomRegistry.random());
 
 				final Random random2 = new Random();
 				using(random2, r2 -> {
-					assertSame(RandomRegistry.getRandom(), random2);
+					assertSame(RandomRegistry.random(), random2);
 					assertSame(r2, random2);
 
 					final Random random2_2 = new Random();
-					RandomRegistry.setRandom(random2_2);
-					assertSame(RandomRegistry.getRandom(), random2_2);
+					RandomRegistry.random(random2_2);
+					assertSame(RandomRegistry.random(), random2_2);
 
 					final Random random3 = new Random();
 					using(random3, r3 -> {
-						assertSame(RandomRegistry.getRandom(), random3);
+						assertSame(RandomRegistry.random(), random3);
 						assertSame(r3, random3);
 					});
 
-					assertSame(RandomRegistry.getRandom(), random2_2);
-					Assert.assertNotEquals(r, RandomRegistry.getRandom());
+					assertSame(RandomRegistry.random(), random2_2);
+					Assert.assertNotEquals(r, RandomRegistry.random());
 				});
 
-				assertSame(r, RandomRegistry.getRandom());
+				assertSame(r, RandomRegistry.random());
 			});
 		}
 	}

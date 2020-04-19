@@ -113,10 +113,10 @@ public final class MOEA {
 	toParetoSet(final IntRange size) {
 		return toParetoSet(
 			size,
-			Vec<T>::dominance,
-			Vec<T>::compare,
-			Vec<T>::distance,
-			Vec<T>::length
+			Vec::dominance,
+			Vec::compare,
+			Vec::distance,
+			Vec::length
 		);
 	}
 
@@ -159,16 +159,17 @@ public final class MOEA {
 		requireNonNull(dominance);
 		requireNonNull(distance);
 
-		if (size.getMin() < 1) {
+		if (size.min() < 1) {
 			throw new IllegalArgumentException(format(
 				"Minimal pareto set size must be greater than zero: %d",
-				size.getMin()
+				size.min()
 			));
 		}
 
 		return Collector.of(
 			() -> new Front<G, C>(
-				size, dominance, comparator, distance, dimension),
+				size, dominance, comparator, distance, dimension
+			),
 			Front::add,
 			Front::merge,
 			Front::toISeq
@@ -205,12 +206,12 @@ public final class MOEA {
 
 		void add(final EvolutionResult<G, C> result) {
 			if (_front == null) {
-				_optimize = result.getOptimize();
+				_optimize = result.optimize();
 				_front = new ParetoFront<>(this::dominance, this::equals);
 			}
 
 			final ISeq<Phenotype<G, C>> front = front(
-				result.getPopulation(),
+				result.population(),
 				this::dominance
 			);
 			_front.addAll(front.asList());
@@ -219,24 +220,24 @@ public final class MOEA {
 
 		private int dominance(final Phenotype<G, C> a, final Phenotype<G, C> b) {
 			return _optimize == Optimize.MAXIMUM
-				? _dominance.compare(a.getFitness(), b.getFitness())
-				: _dominance.compare(b.getFitness(), a.getFitness());
+				? _dominance.compare(a.fitness(), b.fitness())
+				: _dominance.compare(b.fitness(), a.fitness());
 		}
 
 		private boolean equals(final Phenotype<?, ?> a, final Phenotype<?, ?> b) {
-			return Objects.equals(a.getGenotype(), b.getGenotype());
+			return Objects.equals(a.genotype(), b.genotype());
 		}
 
 		private void trim() {
 			assert _front != null;
 			assert _optimize != null;
 
-			if (_front.size() > _size.getMax() - 1) {
+			if (_front.size() > _size.max() - 1) {
 				_front.trim(
-					_size.getMin(),
+					_size.min(),
 					this::compare,
-					_distance.map(Phenotype::getFitness),
-					v -> _dimension.applyAsInt(v.getFitness())
+					_distance.map(Phenotype::fitness),
+					v -> _dimension.applyAsInt(v.fitness())
 				);
 			}
 		}
@@ -247,8 +248,8 @@ public final class MOEA {
 			final int i
 		) {
 			return _optimize == Optimize.MAXIMUM
-				? _comparator.compare(a.getFitness(), b.getFitness(), i)
-				: _comparator.compare(b.getFitness(), a.getFitness(), i);
+				? _comparator.compare(a.fitness(), b.fitness(), i)
+				: _comparator.compare(b.fitness(), a.fitness(), i);
 		}
 
 		Front<G, C> merge(final Front<G, C> front) {

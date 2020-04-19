@@ -33,9 +33,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.function.Supplier;
 
-import io.jenetics.internal.util.IntRef;
 import io.jenetics.util.CharSeq;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -51,11 +49,10 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.0
+ * @version 5.2
  */
 public class CharacterChromosome
-	extends
-		VariableChromosome<CharacterGene>
+	extends VariableChromosome<CharacterGene>
 	implements
 		CharSequence,
 		Serializable
@@ -82,12 +79,12 @@ public class CharacterChromosome
 		final IntRange lengthRange
 	) {
 		super(genes, lengthRange);
-		_validCharacters = genes.get(0).getValidCharacters();
+		_validCharacters = genes.get(0).validChars();
 	}
 
 	@Override
 	public char charAt(final int index) {
-		return getGene(index).charValue();
+		return get(index).charValue();
 	}
 
 	@Override
@@ -260,17 +257,12 @@ public class CharacterChromosome
 		final String alleles,
 		final CharSeq validChars
 	) {
-		final IntRef index = new IntRef();
-		final Supplier<CharacterGene> geneFactory = () -> CharacterGene.of(
-			alleles.charAt(index.value++), validChars
-		);
+		final MSeq<CharacterGene> genes = MSeq.ofLength(alleles.length());
+		for (int i = 0; i < alleles.length(); ++i) {
+			genes.set(i, CharacterGene.of(alleles.charAt(i), validChars));
+		}
 
-		final ISeq<CharacterGene> genes =
-			MSeq.<CharacterGene>ofLength(alleles.length())
-				.fill(geneFactory)
-				.toISeq();
-
-		return new CharacterChromosome(genes, IntRange.of(alleles.length()));
+		return new CharacterChromosome(genes.toISeq(), IntRange.of(alleles.length()));
 	}
 
 	/**
@@ -300,16 +292,16 @@ public class CharacterChromosome
 	}
 
 	void write(final DataOutput out) throws IOException {
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		writeString(_validCharacters.toString(), out);
 		writeString(toString(), out);
 	}
 
 	static CharacterChromosome read(final DataInput in) throws IOException {
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final CharSeq validCharacters = new CharSeq(readString(in));
-		final String chars = readString(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var validCharacters = new CharSeq(readString(in));
+		final var chars = readString(in);
 
 		final MSeq<CharacterGene> values = MSeq.ofLength(chars.length());
 		for (int i = 0, n = chars.length(); i <  n; ++i) {

@@ -27,6 +27,8 @@
 
 apply plugin: 'packaging'
 
+ext.moduleName = 'io.jenetics.doc'
+
 repositories {
 	mavenCentral()
 	jcenter()

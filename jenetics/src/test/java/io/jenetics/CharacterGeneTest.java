@@ -70,8 +70,8 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 				final CharacterGene g2 = factory.newInstance();
 				Assert.assertNotSame(g1, g2);
 
-				histogram.accept(Long.valueOf(g1.getAllele().toString()));
-				histogram.accept(Long.valueOf(g2.getAllele().toString()));
+				histogram.accept(Long.valueOf(g1.allele().toString()));
+				histogram.accept(Long.valueOf(g2.allele().toString()));
 			}
 
 			assertUniformDistribution(histogram);
@@ -81,21 +81,21 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	@Test
 	public void testCharacterGene() {
 		CharacterGene gene = CharacterGene.of();
-		assertTrue(gene.isValidCharacter(gene.getAllele()));
+		assertTrue(gene.isValidCharacter(gene.allele()));
 	}
 
 	@Test
 	public void testCharacterGeneCharacter() {
 		CharacterGene gene = CharacterGene.of('4');
 
-		assertEquals(Character.valueOf('4'), gene.getAllele());
+		assertEquals(Character.valueOf('4'), gene.allele());
 	}
 
 	@Test
 	public void testGetCharacter() {
 		CharacterGene gene = CharacterGene.of('6');
 
-		assertEquals(Character.valueOf('6'), gene.getAllele());
+		assertEquals(Character.valueOf('6'), gene.allele());
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	@Test
 	public void testIsValidCharacter() {
 		for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
-			assertTrue(CharacterGene.of(c.charValue()).isValidCharacter(c));
+			assertTrue(CharacterGene.of(c).isValidCharacter(c));
 		}
 	}
 

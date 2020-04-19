@@ -174,11 +174,11 @@ public final class TRS<V> implements TreeRewriter<V>, Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static TRS read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final int length = readInt(in);
-		final MSeq rules = MSeq.ofLength(length);
+		final var length = readInt(in);
+		final var rules = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {
 			rules.set(i, in.readObject());
 		}

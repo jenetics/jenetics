@@ -19,8 +19,8 @@
  */
 package io.jenetics;
 
-import static io.jenetics.internal.math.base.normalize;
-import static io.jenetics.internal.util.array.shuffle;
+import static io.jenetics.internal.math.Basics.normalize;
+import static io.jenetics.internal.util.Arrays.shuffle;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -74,7 +74,7 @@ public class ProbabilitySelectorTest {
 
 		final double[] reverted = ProbabilitySelector.sortAndRevert(values);
 		for (int i = 0; i < values.length; ++i) {
-			Assert.assertEquals(reverted[i], (double)(values.length - i - 1));
+			Assert.assertEquals(reverted[i], (values.length - i - 1));
 		}
 	}
 

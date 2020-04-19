@@ -36,9 +36,9 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 4.1
+ * @version 6.0
  */
-public final class DoubleMoments implements Serializable {
+public final /*record*/ class DoubleMoments implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the count of recorded values
 	 */
-	public long getCount() {
+	public long count() {
 		return _count;
 	}
 
@@ -99,7 +99,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the minimum value, or {@code Integer.MAX_VALUE} if none
 	 */
-	public double getMin() {
+	public double min() {
 		return _min;
 	}
 
@@ -109,7 +109,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the maximum value, or {@code Integer.MIN_VALUE} if none
 	 */
-	public double getMax() {
+	public double max() {
 		return _max;
 	}
 
@@ -119,7 +119,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the sum of values, or zero if none
 	 */
-	public double getSum() {
+	public double sum() {
 		return _sum;
 	}
 
@@ -129,7 +129,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the arithmetic mean of values, or zero if none
 	 */
-	public double getMean() {
+	public double mean() {
 		return _mean;
 	}
 
@@ -139,7 +139,7 @@ public final class DoubleMoments implements Serializable {
 	 *
 	 * @return the variance of values, or {@code NaN} if none
 	 */
-	public double getVariance() {
+	public double variance() {
 		return _variance;
 	}
 
@@ -152,7 +152,7 @@ public final class DoubleMoments implements Serializable {
 	 * @return the skewness of values, or {@code NaN} if less than two values
 	 *         have been recorded
 	 */
-	public double getSkewness() {
+	public double skewness() {
 		return _skewness;
 	}
 
@@ -165,7 +165,7 @@ public final class DoubleMoments implements Serializable {
 	 * @return the kurtosis of values, or {@code NaN} if less than four values
 	 *         have been recorded
 	 */
-	public double getKurtosis() {
+	public double kurtosis() {
 		return _kurtosis;
 	}
 
@@ -200,8 +200,8 @@ public final class DoubleMoments implements Serializable {
 	public String toString() {
 		return String.format(
 			"DoubleMoments[N=%d, ∧=%s, ∨=%s, Σ=%s, μ=%s, s²=%s, S=%s, K=%s]",
-			getCount(), getMin(), getMax(), getSum(),
-			getMean(), getVariance(), getSkewness(), getKurtosis()
+			count(), min(), max(), sum(),
+			mean(), variance(), skewness(), kurtosis()
 		);
 	}
 
@@ -249,14 +249,14 @@ public final class DoubleMoments implements Serializable {
 	 */
 	public static DoubleMoments of(final DoubleMomentStatistics statistics) {
 		return new DoubleMoments(
-			statistics.getCount(),
-			statistics.getMin(),
-			statistics.getMax(),
-			statistics.getSum(),
-			statistics.getMean(),
-			statistics.getVariance(),
-			statistics.getSkewness(),
-			statistics.getKurtosis()
+			statistics.count(),
+			statistics.min(),
+			statistics.max(),
+			statistics.sum(),
+			statistics.mean(),
+			statistics.variance(),
+			statistics.skewness(),
+			statistics.kurtosis()
 		);
 	}
 

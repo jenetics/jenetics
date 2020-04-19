@@ -35,7 +35,7 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 	@Override
 	protected Factory<AnyGene<Integer>> factory() {
-		return () -> AnyGene.of(RandomRegistry.getRandom()::nextInt);
+		return () -> AnyGene.of(RandomRegistry.random()::nextInt);
 	}
 
 	@Test
@@ -44,9 +44,9 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 		final AnyGene<Integer> gene = AnyGene
 			.of(allele, () -> null);
 
-		Assert.assertNull(gene.getAllele());
+		Assert.assertNull(gene.allele());
 		for (int i = 0; i < 10; ++i) {
-			Assert.assertNull(gene.newInstance().getAllele());
+			Assert.assertNull(gene.newInstance().allele());
 		}
 	}
 
@@ -57,23 +57,23 @@ public class AnyGeneTest extends GeneTester<AnyGene<Integer>> {
 
 		for (int i = 0; i < 100; ++i) {
 			final AnyGene<Integer> g = gene.newInstance();
-			Assert.assertEquals(g.getAllele().intValue(), i + 1);
+			Assert.assertEquals(g.allele().intValue(), i + 1);
 		}
 	}
 
 	@Test
 	public void isValid() {
 		final AnyGene<Integer> gene = AnyGene.of(
-			() -> RandomRegistry.getRandom().nextInt(1000),
+			() -> RandomRegistry.random().nextInt(1000),
 			i -> i < 100
 		);
 
 		for (int i = 0; i < 5000; ++i) {
 			final AnyGene<Integer> g = gene.newInstance();
 
-			Assert.assertEquals(g.isValid(), g.getAllele() < 100);
-			Assert.assertTrue(g.getAllele() < 1000);
-			Assert.assertTrue(g.getAllele() >= 0);
+			Assert.assertEquals(g.isValid(), g.allele() < 100);
+			Assert.assertTrue(g.allele() < 1000);
+			Assert.assertTrue(g.allele() >= 0);
 		}
 	}
 

@@ -58,7 +58,7 @@ final class GeneralDoubleVecFactory implements VecFactory<double[]> {
 	}
 
 	private int dom(final double[] u, final double[] v) {
-		return Pareto.dominance(u, v, _maximisations.length, this::cmp);
+		return Pareto.dominance(u, v, _maximisations.length, _comparator);
 	}
 
 	@Override

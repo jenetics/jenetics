@@ -38,7 +38,7 @@ final class EvolutionStreamables {
 	}
 
 	static EvolutionStreamable<IntegerGene, Integer> streamable(final int size) {
-		return new EvolutionStreamable<IntegerGene, Integer>() {
+		return new EvolutionStreamable<>() {
 			@Override
 			public EvolutionStream<IntegerGene, Integer>
 			stream(final Supplier<EvolutionStart<IntegerGene, Integer>> start) {
@@ -49,14 +49,14 @@ final class EvolutionStreamables {
 						@Override
 						public Integer get() {
 							if (value == null) {
-								value  = start.get().getPopulation().isEmpty()
+								value = start.get().population().isEmpty()
 									? 0
 									: start.get()
-										.getPopulation()
-										.get(0)
-										.getGenotype()
-										.getGene()
-										.intValue();
+									.population()
+									.get(0)
+									.genotype()
+									.gene()
+									.intValue();
 							}
 							value += 1;
 
@@ -76,9 +76,9 @@ final class EvolutionStreamables {
 						@Override
 						public Integer get() {
 							if (value == null) {
-								value  = init.getPopulation()
+								value = init.population()
 									.get(0)
-									.getGene()
+									.gene()
 									.intValue();
 							}
 							value += 1;

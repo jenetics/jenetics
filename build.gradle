@@ -29,7 +29,7 @@ import java.time.format.DateTimeFormatter
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.2
- * @version 5.1
+ * @version 6.0
  */
 rootProject.version = Version.parse(property('jenetics.Version'))
 
@@ -60,16 +60,6 @@ allprojects {
 
 subprojects { Project prj ->
 	prj.plugins.apply(SetupPlugin.class)
-
-	// The Javadoc doesn't work for
-	//     openjdk version "11.0.2" 2018-10-16
-	//     OpenJDK Runtime Environment 18.9 (build 11.0.2+7)
-	//     OpenJDK 64-Bit Server VM 18.9 (build 11.0.2+7, mixed mode
-	if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
-		prj.tasks.withType(Javadoc).all {
-			enabled = false
-		}
-	}
 }
 
 allprojects { Project prj ->
@@ -153,7 +143,7 @@ rootProject.gradle.projectsEvaluated {
 					'implSpec:a:Implementation Requirements:',
 					'implNote:a:Implementation Note:'
 
-				links 'https://docs.oracle.com/javase/8/docs/api'
+				links 'https://docs.oracle.com/en/java/javase/11/docs/api'
 			}
 		}
 	}
@@ -165,7 +155,7 @@ task zip(type: Zip) {
 		into identifier
 	}
 
-	baseName = rootProject.name
+	archiveBaseName = rootProject.name
 	version = project.property('jenetics.Version')
 
 	doLast {
@@ -173,4 +163,3 @@ task zip(type: Zip) {
 		zip.renameTo(new File('build/package', zip.getName()))
 	}
 }
-

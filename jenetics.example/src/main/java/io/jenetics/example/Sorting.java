@@ -39,18 +39,18 @@ import io.jenetics.util.RandomRegistry;
 public class Sorting {
 
 	private static int dist(Chromosome<EnumGene<Integer>> path, int i, int j) {
-		return (path.getGene(i).getAllele() - path.getGene(j).getAllele())*
-			(path.getGene(i).getAllele() - path.getGene(j).getAllele());
+		return (path.get(i).allele() - path.get(j).allele())*
+			(path.get(i).allele() - path.get(j).allele());
 	}
 
 	private static int length(final Genotype<EnumGene<Integer>> genotype) {
-		return IntStream.range(1, genotype.getChromosome().length())
-			.map(i -> dist(genotype.getChromosome(), i, i - 1))
+		return IntStream.range(1, genotype.chromosome().length())
+			.map(i -> dist(genotype.chromosome(), i, i - 1))
 			.sum();
 	}
 
 	public static void main(final String[] args) {
-		RandomRegistry.setRandom(new Random());
+		RandomRegistry.random(new Random());
 		final Engine<EnumGene<Integer>, Integer> engine = Engine
 			.builder(
 				Sorting::length,
@@ -76,7 +76,7 @@ public class Sorting {
 			.collect(EvolutionResult.toBestEvolutionResult());
 
 		System.out.println(statistics);
-		System.out.println(result.getBestPhenotype());
+		System.out.println(result.bestPhenotype());
 	}
 
 }

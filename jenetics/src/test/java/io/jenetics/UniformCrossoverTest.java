@@ -44,8 +44,8 @@ public class UniformCrossoverTest extends AltererTester {
 
 	@Test
 	public void crossover() {
-		final ISeq<CharacterGene> g1 = CharacterChromosome.of("1234567890").toSeq();
-		final ISeq<CharacterGene> g2 = CharacterChromosome.of("abcdefghij").toSeq();
+		final ISeq<CharacterGene> g1 = ISeq.of(CharacterChromosome.of("1234567890"));
+		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of("abcdefghij"));
 
 		final int rv1 = 12;
 		using(new Random(10), r -> {
@@ -66,8 +66,8 @@ public class UniformCrossoverTest extends AltererTester {
 
 	@Test
 	public void crossoverChanges() {
-		final ISeq<CharacterGene> g1 = CharacterChromosome.of("1234567890").toSeq();
-		final ISeq<CharacterGene> g2 = CharacterChromosome.of("abcdefghij").toSeq();
+		final ISeq<CharacterGene> g1 = ISeq.of(CharacterChromosome.of("1234567890"));
+		final ISeq<CharacterGene> g2 = ISeq.of(CharacterChromosome.of("abcdefghij"));
 
 		final int rv1 = 12;
 		using(new Random(10), r -> {
@@ -90,7 +90,7 @@ public class UniformCrossoverTest extends AltererTester {
 				statistics.accept(changed);
 			}
 
-			Assert.assertEquals(statistics.getMean(), 5.0, 0.0001);
+			Assert.assertEquals(statistics.mean(), 5.0, 0.0001);
 		});
 	}
 

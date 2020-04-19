@@ -131,7 +131,7 @@ public final class Lazy<T> implements Supplier<T>, Serializable {
 	 * @return return a new lazy value with the given value
 	 */
 	public static <T> Lazy<T> ofValue(final T value) {
-		return new Lazy<T>(value, true, null);
+		return new Lazy<>(value, true, null);
 	}
 
 

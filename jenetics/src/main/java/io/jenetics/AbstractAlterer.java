@@ -19,14 +19,14 @@
  */
 package io.jenetics;
 
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 
 /**
  * Abstract implementation of the alterer interface.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 3.0
+ * @version 6.0
  */
 public abstract class AbstractAlterer<
 	G extends Gene<?, G>,
@@ -48,7 +48,7 @@ public abstract class AbstractAlterer<
 	 *         valid range of {@code [0, 1]}.
 	 */
 	protected AbstractAlterer(final double probability) {
-		_probability = require.probability(probability);
+		_probability = Requires.probability(probability);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public abstract class AbstractAlterer<
 	 *
 	 * @return The recombination probability.
 	 */
-	public double getProbability() {
+	public double probability() {
 		return _probability;
 	}
 

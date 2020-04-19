@@ -19,7 +19,6 @@
  */
 package io.jenetics.util;
 
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -163,11 +162,7 @@ public abstract class SeqTestBase {
 				final int value = seq.get(i);
 				final int index = seq.lastIndexOf(value, end);
 
-				if (i < end) {
-					Assert.assertEquals(index, i);
-				} else {
-					Assert.assertEquals(index, -1);
-				}
+				Assert.assertEquals(index, -1);
 			}
 		}
 	}
@@ -205,11 +200,7 @@ public abstract class SeqTestBase {
 				final int value = seq.get(i);
 				final int index = seq.lastIndexWhere(ValueOf(value), end);
 
-				if (i < end) {
-					Assert.assertEquals(index, i);
-				} else {
-					Assert.assertEquals(index, -1);
-				}
+				Assert.assertEquals(index, -1);
 			}
 		}
 	}
@@ -235,9 +226,7 @@ public abstract class SeqTestBase {
 	@Test(dataProvider = "sequences")
 	public void iterator(final Seq<Integer> seq) {
 		int count = 0;
-		final Iterator<Integer> it = seq.iterator();
-		while (it.hasNext()) {
-			final Integer value = it.next();
+		for (Integer value : seq) {
 			Assert.assertTrue(seq.contains(value));
 			++count;
 		}

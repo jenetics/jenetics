@@ -37,7 +37,7 @@ public class UniquePopulation {
 
 	// This method calculates the fitness for a given genotype.
 	private static Integer count(final Genotype<BitGene> gt) {
-		return gt.getChromosome()
+		return gt.chromosome()
 			.as(BitChromosome.class)
 			.bitCount();
 	}
@@ -48,7 +48,7 @@ public class UniquePopulation {
 				UniquePopulation::count,
 				BitChromosome.of(20, 0.15))
 			// Remove duplicate individuals after each generation.
-			.mapping(EvolutionResult.toUniquePopulation())
+			.interceptor(EvolutionResult.toUniquePopulation())
 			.build();
 
 		// Create evolution statistics consumer.

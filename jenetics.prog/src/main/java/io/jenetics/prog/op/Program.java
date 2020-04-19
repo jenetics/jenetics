@@ -162,18 +162,14 @@ public class Program<T> implements Op<T>, Serializable {
 		requireNonNull(tree);
 		requireNonNull(variables);
 
-		final Op<T> op = tree.getValue();
+		final Op<T> op = tree.value();
 		return op.isTerminal()
-			? eval(op, variables)
-			: eval(op,
-					tree.childStream()
-						.map(child -> eval(child, variables))
-						.toArray(size -> newArray(variables.getClass(), size))
-				);
+			? evalOp(op, variables)
+			: evalOp(op, evalChildren(tree, variables));
 	}
 
 	@SafeVarargs
-	private static <T> T eval(final Op<T> op, final T... variables) {
+	private static <T> T evalOp(final Op<T> op, final T... variables) {
 		if (op instanceof Var && ((Var)op).index() >= variables.length) {
 			throw new IllegalArgumentException(format(
 				"No value for variable '%s' given.", op
@@ -181,6 +177,18 @@ public class Program<T> implements Op<T>, Serializable {
 		}
 
 		return op.apply(variables);
+	}
+
+	@SafeVarargs
+	private static <T> T[] evalChildren(
+		final Tree<? extends Op<T>, ?> node,
+		final T... variables
+	) {
+		final T[] result = newArray(variables.getClass(), node.childCount());
+		for (int i = 0; i < node.childCount(); ++i) {
+			result[i] = eval(node.childAt(i), variables);
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -198,17 +206,16 @@ public class Program<T> implements Op<T>, Serializable {
 	 *         and the node child count differ.
 	 */
 	public static void check(final Tree<? extends Op<?>, ?> program) {
-		requireNonNull(program);
 		program.forEach(Program::checkArity);
 	}
 
 	private static void checkArity(final Tree<? extends Op<?>, ?> node) {
-		if (node.getValue() != null &&
-			node.getValue().arity() != node.childCount())
+		if (node.value() != null &&
+			node.value().arity() != node.childCount())
 		{
 			throw new IllegalArgumentException(format(
 				"Op arity != child count: %d != %d",
-				node.getValue().arity(), node.childCount()
+				node.value().arity(), node.childCount()
 			));
 		}
 	}
@@ -287,7 +294,7 @@ public class Program<T> implements Op<T>, Serializable {
 		final ISeq<? extends Op<A>> operations,
 		final ISeq<? extends Op<A>> terminals
 	) {
-		return of(depth, operations, terminals, RandomRegistry.getRandom());
+		return of(depth, operations, terminals, RandomRegistry.random());
 	}
 
 	/**
@@ -324,7 +331,7 @@ public class Program<T> implements Op<T>, Serializable {
 				"Operation list contains terminal op."
 			);
 		}
-		if (!terminals.forAll(o -> o.isTerminal())) {
+		if (!terminals.forAll(Op::isTerminal)) {
 			throw new IllegalArgumentException(
 				"Terminal list contains non-terminal op."
 			);
@@ -346,7 +353,7 @@ public class Program<T> implements Op<T>, Serializable {
 			? terminals.get(random.nextInt(terminals.size()))
 			: operations.get(random.nextInt(operations.size()));
 
-		tree.setValue(op);
+		tree.value(op);
 
 		if (level > 1) {
 			for (int i = 0; i < op.arity(); ++i) {
@@ -383,7 +390,7 @@ public class Program<T> implements Op<T>, Serializable {
 			throw new IllegalArgumentException("Tree nodes must not be empty.");
 		}
 
-		final Op<A> op = requireNonNull(nodes.get(0).getValue());
+		final Op<A> op = requireNonNull(nodes.get(0).value());
 		final TreeNode<Op<A>> tree = TreeNode.of(op);
 		return toTree(
 			tree,
@@ -391,7 +398,7 @@ public class Program<T> implements Op<T>, Serializable {
 			nodes,
 			offsets(nodes),
 			terminals,
-			RandomRegistry.getRandom()
+			RandomRegistry.random()
 		);
 	}
 
@@ -405,16 +412,16 @@ public class Program<T> implements Op<T>, Serializable {
 	) {
 		if (index < nodes.size()) {
 			final FlatTree<? extends Op<A>, ?> node = nodes.get(index);
-			final Op<A> op = node.getValue();
+			final Op<A> op = node.value();
 
 			for (int i  = 0; i < op.arity(); ++i) {
 				assert offsets[index] != -1;
 
 				final TreeNode<Op<A>> treeNode = TreeNode.of();
 				if (offsets[index] + i < nodes.size()) {
-					treeNode.setValue(nodes.get(offsets[index] + i).getValue());
+					treeNode.value(nodes.get(offsets[index] + i).value());
 				} else {
-					treeNode.setValue(terminals.get(random.nextInt(terminals.size())));
+					treeNode.value(terminals.get(random.nextInt(terminals.size())));
 				}
 
 				toTree(
@@ -445,7 +452,7 @@ public class Program<T> implements Op<T>, Serializable {
 
 		int offset = 1;
 		for (int i = 0; i < offsets.length; ++i) {
-			final Op<?> op = nodes.get(i).getValue();
+			final Op<?> op = nodes.get(i).value();
 
 			offsets[i] = op.isTerminal() ? -1 : offset;
 			offset += op.arity();

@@ -49,7 +49,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.6
- * @version 4.3
+ * @version 5.2
  */
 public class LongChromosome
 	extends AbstractBoundedChromosome<Long, LongGene>
@@ -235,7 +235,7 @@ public class LongChromosome
 		final LongRange range,
 		final IntRange lengthRange
 	) {
-		return of(range.getMin(), range.getMax(), lengthRange);
+		return of(range.min(), range.max(), lengthRange);
 	}
 
 	/**
@@ -251,7 +251,7 @@ public class LongChromosome
 	 *         one.
 	 */
 	public static LongChromosome of(final LongRange range, final int length) {
-		return of(range.getMin(), range.getMax(), length);
+		return of(range.min(), range.max(), length);
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class LongChromosome
 	 * @throws NullPointerException if the given {@code range} is {@code null}
 	 */
 	public static LongChromosome of(final LongRange range) {
-		return of(range.getMin(), range.getMax());
+		return of(range.min(), range.max());
 	}
 
 
@@ -296,8 +296,8 @@ public class LongChromosome
 
 	void write(final DataOutput out) throws IOException {
 		writeInt(length(), out);
-		writeInt(lengthRange().getMin(), out);
-		writeInt(lengthRange().getMax(), out);
+		writeInt(lengthRange().min(), out);
+		writeInt(lengthRange().max(), out);
 		writeLong(_min, out);
 		writeLong(_max, out);
 
@@ -307,10 +307,10 @@ public class LongChromosome
 	}
 
 	static LongChromosome read(final DataInput in) throws IOException {
-		final int length = readInt(in);
-		final IntRange lengthRange = IntRange.of(readInt(in), readInt(in));
-		final long min = readLong(in);
-		final long max = readLong(in);
+		final var length = readInt(in);
+		final var lengthRange = IntRange.of(readInt(in), readInt(in));
+		final var min = readLong(in);
+		final var max = readLong(in);
 
 		final MSeq<LongGene> values = MSeq.ofLength(length);
 		for (int i = 0; i < length; ++i) {

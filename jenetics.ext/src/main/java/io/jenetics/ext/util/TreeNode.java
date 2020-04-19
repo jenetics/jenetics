@@ -29,9 +29,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.jenetics.util.Copyable;
 import io.jenetics.util.ISeq;
@@ -43,7 +46,7 @@ import io.jenetics.util.ISeq;
  * @param <T> the value type of the tree node
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 5.2
  * @since 3.9
  */
 public final class TreeNode<T>
@@ -79,7 +82,7 @@ public final class TreeNode<T>
 	 *
 	 * @param value the node {@code value}
 	 */
-	public void setValue(final T value) {
+	public void value(final T value) {
 		_value = value;
 	}
 
@@ -89,7 +92,7 @@ public final class TreeNode<T>
 	 * @return the node value
 	 */
 	@Override
-	public T getValue() {
+	public T value() {
 		return _value;
 	}
 
@@ -99,7 +102,7 @@ public final class TreeNode<T>
 	 * @return the tree-node, or an empty value if this node has no parent
 	 */
 	@Override
-	public Optional<TreeNode<T>> getParent() {
+	public Optional<TreeNode<T>> parent() {
 		return Optional.ofNullable(_parent);
 	}
 
@@ -111,7 +114,7 @@ public final class TreeNode<T>
 	 *
 	 * @param parent this node's new parent
 	 */
-	void setParent(final TreeNode<T> parent) {
+	void parent(final TreeNode<T> parent) {
 		_parent = parent;
 	}
 
@@ -139,6 +142,20 @@ public final class TreeNode<T>
 		return _children != null ? _children.size() : 0;
 	}
 
+	@Override
+	public Iterator<TreeNode<T>> childIterator() {
+		return _children != null
+			? _children.iterator()
+			: Collections.emptyIterator();
+	}
+
+	@Override
+	public Stream<TreeNode<T>> childStream() {
+		return _children != null
+			? _children.stream()
+			: Stream.empty();
+	}
+
 	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's
@@ -164,7 +181,7 @@ public final class TreeNode<T>
 			child._parent.remove(child);
 		}
 
-		child.setParent(this);
+		child.parent(this);
 		createChildrenIfMissing();
 		_children.add(index, child);
 
@@ -205,8 +222,8 @@ public final class TreeNode<T>
 		assert oldChild != null;
 		assert oldChild._parent == this;
 
-		oldChild.setParent(null);
-		child.setParent(this);
+		oldChild.parent(null);
+		child.parent(this);
 
 		return this;
 	}
@@ -229,7 +246,7 @@ public final class TreeNode<T>
 
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
-		child.setParent(null);
+		child.parent(null);
 
 		if (_children.isEmpty()) {
 			_children = null;
@@ -251,7 +268,7 @@ public final class TreeNode<T>
 	 */
 	public boolean removeAtPath(final Path path) {
 		final Optional<TreeNode<T>> parent = childAtPath(path)
-			.flatMap(Tree::getParent);
+			.flatMap(Tree::parent);
 
 		parent.ifPresent(p -> p.remove(path.get(path.length() - 1)));
 		return parent.isPresent();
@@ -274,14 +291,14 @@ public final class TreeNode<T>
 		requireNonNull(child);
 
 		final Optional<TreeNode<T>> old = childAtPath(path);
-		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::getParent);
+		final Optional<TreeNode<T>> parent = old.flatMap(TreeNode::parent);
 
 		if (parent.isPresent()) {
 			parent.orElseThrow(AssertionError::new)
 				.replace(path.get(path.length() - 1), child);
 		} else {
 			removeAllChildren();
-			setValue(child.getValue());
+			value(child.value());
 
 			final ISeq<TreeNode<T>> nodes = child.childStream()
 				.collect(ISeq.toISeq());
@@ -339,7 +356,7 @@ public final class TreeNode<T>
 	public void removeAllChildren() {
 		if (_children != null) {
 			for (TreeNode<T> child : _children) {
-				child.setParent(null);
+				child.parent(null);
 			}
 
 			_children = null;
@@ -410,7 +427,7 @@ public final class TreeNode<T>
 	 *         {@code null}
 	 */
 	public <B> TreeNode<B> map(final Function<? super T, ? extends B> mapper) {
-		final TreeNode<B> target = TreeNode.of(mapper.apply(getValue()));
+		final TreeNode<B> target = TreeNode.of(mapper.apply(value()));
 		fill(this, target, mapper);
 		return target;
 	}
@@ -475,7 +492,7 @@ public final class TreeNode<T>
 		final Tree<? extends T, ?> tree,
 		final Function<? super T, ? extends B> mapper
 	) {
-		final TreeNode<B> target = of(mapper.apply(tree.getValue()));
+		final TreeNode<B> target = of(mapper.apply(tree.value()));
 		fill(tree, target, mapper);
 		return target;
 	}
@@ -486,7 +503,7 @@ public final class TreeNode<T>
 		final Function<? super T, ? extends B> mapper
 	) {
 		source.childStream().forEachOrdered(child -> {
-			final TreeNode<B> targetChild = of(mapper.apply(child.getValue()));
+			final TreeNode<B> targetChild = of(mapper.apply(child.value()));
 			target.attach(targetChild);
 			fill(child, targetChild, mapper);
 		});
@@ -537,7 +554,7 @@ public final class TreeNode<T>
 	 *         parsed
 	 */
 	public static TreeNode<String> parse(final String tree) {
-		return TreeParser.parse(tree, Function.identity());
+		return ParenthesesTreeParser.parse(tree, Function.identity());
 	}
 
 	/**
@@ -573,7 +590,7 @@ public final class TreeNode<T>
 		final String tree,
 		final Function<? super String, ? extends B> mapper
 	) {
-		return TreeParser.parse(tree, mapper);
+		return ParenthesesTreeParser.parse(tree, mapper);
 	}
 
 
@@ -596,8 +613,8 @@ public final class TreeNode<T>
 		FlatTreeNode.of(this).write(out);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	static TreeNode read(final ObjectInput in)
+	@SuppressWarnings("unchecked")
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return TreeNode.ofTree(FlatTreeNode.read(in));

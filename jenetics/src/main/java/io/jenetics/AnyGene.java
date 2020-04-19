@@ -21,13 +21,13 @@ package io.jenetics;
 
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
-import static io.jenetics.util.RandomRegistry.getRandom;
+import static io.jenetics.util.RandomRegistry.random;
 
 import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
 import io.jenetics.util.MSeq;
@@ -66,7 +66,7 @@ import io.jenetics.util.MSeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.3
+ * @version 6.0
  * @since 3.3
  */
 public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
@@ -86,7 +86,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 	}
 
 	@Override
-	public A getAllele() {
+	public A allele() {
 		return _allele;
 	}
 
@@ -211,7 +211,7 @@ public final class AnyGene<A> implements Gene<A, AnyGene<A>> {
 		final Supplier<? extends A> supplier,
 		final Predicate<? super A> validator
 	) {
-		return MSeq.<AnyGene<A>>ofLength(random.nextInt(lengthRange, getRandom()))
+		return MSeq.<AnyGene<A>>ofLength(Randoms.nextInt(lengthRange, random()))
 			.fill(() -> of(supplier.get(), supplier, validator))
 			.toISeq();
 	}

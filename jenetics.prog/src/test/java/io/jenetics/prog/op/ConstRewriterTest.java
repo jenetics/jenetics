@@ -35,7 +35,7 @@ public class ConstRewriterTest {
 		final TreeNode<Op<Double>> tree = MathExpr.parse(expr).toTree();
 		ConstRewriter.ofType(Double.class).rewrite(tree);
 
-		Assert.assertEquals(tree.getValue(), Const.of(value));
+		Assert.assertEquals(tree.value(), Const.of(value));
 	}
 
 	@DataProvider
@@ -59,7 +59,7 @@ public class ConstRewriterTest {
 				: n);
 
 		ConstRewriter.ofType(Double.class).rewrite(tree);
-		Assert.assertEquals(tree.getValue(), Const.of(6.0));
+		Assert.assertEquals(tree.value(), Const.of(6.0));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class ConstRewriterTest {
 		ops.attach(Const.of("a"), Const.of("b"));
 
 		ConstRewriter.ofType(String.class).rewrite(ops);
-		Assert.assertEquals(ops.getValue(), Const.of("ab"));
+		Assert.assertEquals(ops.value(), Const.of("ab"));
 	}
 
 }

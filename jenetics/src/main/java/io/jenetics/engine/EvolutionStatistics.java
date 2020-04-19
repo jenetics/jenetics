@@ -85,7 +85,7 @@ import io.jenetics.stat.MinMax;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 3.0
+ * @version 6.0
  */
 public abstract class EvolutionStatistics<
 	C extends Comparable<? super C>,
@@ -118,35 +118,35 @@ public abstract class EvolutionStatistics<
 
 	@Override
 	public void accept(final EvolutionResult<?, C> result) {
-		accept(result.getDurations());
+		accept(result.durations());
 
-		_killed.accept(result.getKillCount());
-		_invalids.accept(result.getInvalidCount());
-		_altered.accept(result.getAlterCount());
+		_killed.accept(result.killCount());
+		_invalids.accept(result.invalidCount());
+		_altered.accept(result.alterCount());
 
-		result.getPopulation()
-			.forEach(pt -> accept(pt, result.getGeneration()));
+		result.population()
+			.forEach(pt -> accept(pt, result.generation()));
 	}
 
 	void accept(final Phenotype<?, C> pt, final long generation) {
-		_age.accept(pt.getAge(generation));
+		_age.accept(pt.age(generation));
 	}
 
 	// Calculate duration statistics
 	private void accept(final EvolutionDurations durations) {
 		final double selection =
-			toSeconds(durations.getOffspringSelectionDuration()) +
-				toSeconds(durations.getSurvivorsSelectionDuration());
+			toSeconds(durations.offspringSelectionDuration()) +
+				toSeconds(durations.survivorsSelectionDuration());
 		final double alter =
-			toSeconds(durations.getOffspringAlterDuration()) +
-				toSeconds(durations.getOffspringFilterDuration());
+			toSeconds(durations.offspringAlterDuration()) +
+				toSeconds(durations.offspringFilterDuration());
 
 		_selectionDuration.accept(selection);
 		_alterDuration.accept(alter);
 		_evaluationDuration
-			.accept(toSeconds(durations.getEvaluationDuration()));
+			.accept(toSeconds(durations.evaluationDuration()));
 		_evolveDuration
-			.accept(toSeconds(durations.getEvolveDuration()));
+			.accept(toSeconds(durations.evolveDuration()));
 	}
 
 	private static double toSeconds(final Duration duration) {
@@ -163,7 +163,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for selecting the population
 	 */
-	public DoubleMomentStatistics getSelectionDuration() {
+	public DoubleMomentStatistics selectionDuration() {
 		return _selectionDuration;
 	}
 
@@ -173,7 +173,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for altering the population
 	 */
-	public DoubleMomentStatistics getAlterDuration() {
+	public DoubleMomentStatistics alterDuration() {
 		return _alterDuration;
 	}
 
@@ -184,7 +184,7 @@ public abstract class EvolutionStatistics<
 	 * @return the duration statistics needed for evaluating the fitness
 	 *         function of the new individuals
 	 */
-	public DoubleMomentStatistics getEvaluationDuration() {
+	public DoubleMomentStatistics evaluationDuration() {
 		return _evaluationDuration;
 	}
 
@@ -194,10 +194,9 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return the duration statistics needed for the whole evolve step
 	 */
-	public DoubleMomentStatistics getEvolveDuration() {
+	public DoubleMomentStatistics evolveDuration() {
 		return _evolveDuration;
 	}
-
 
 
 	/* *************************************************************************
@@ -210,7 +209,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return killed individual statistics
 	 */
-	public IntMomentStatistics getKilled() {
+	public IntMomentStatistics killed() {
 		return _killed;
 	}
 
@@ -220,7 +219,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return invalid individual statistics
 	 */
-	public IntMomentStatistics getInvalids() {
+	public IntMomentStatistics invalids() {
 		return _invalids;
 	}
 
@@ -230,7 +229,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return altered individual statistics
 	 */
-	public IntMomentStatistics getAltered() {
+	public IntMomentStatistics altered() {
 		return _altered;
 	}
 
@@ -239,7 +238,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return individual age statistics
 	 */
-	public LongMomentStatistics getPhenotypeAge() {
+	public LongMomentStatistics phenotypeAge() {
 		return _age;
 	}
 
@@ -248,7 +247,7 @@ public abstract class EvolutionStatistics<
 	 *
 	 * @return minimal and maximal fitness
 	 */
-	public FitnessStatistics getFitness() {
+	public FitnessStatistics fitness() {
 		return _fitness;
 	}
 
@@ -268,7 +267,7 @@ public abstract class EvolutionStatistics<
 			"+---------------------------------------------------------------------------+\n" +
 			"|  Evolution statistics                                                     |\n" +
 			"+---------------------------------------------------------------------------+\n" +
-			format(cpattern, "Generations:", i(_altered.getCount())) +
+			format(cpattern, "Generations:", i(_altered.count())) +
 			format(cpattern, "Altered:", i(_altered)) +
 			format(cpattern, "Killed:", i(_killed)) +
 			format(cpattern, "Invalids:", i(_invalids));
@@ -277,7 +276,7 @@ public abstract class EvolutionStatistics<
 	private static String d(final DoubleMomentStatistics statistics) {
 		return format(
 			"sum=%3.12f s; mean=%3.12f s",
-			statistics.getSum(), statistics.getMean()
+			statistics.sum(), statistics.mean()
 		);
 	}
 
@@ -285,7 +284,7 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"sum=%s; mean=%6.9f",
-			nf.format(statistics.getSum()), statistics.getMean()
+			nf.format(statistics.sum()), statistics.mean()
 		);
 	}
 
@@ -298,9 +297,9 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"max=%s; mean=%6.6f; var=%6.6f",
-			nf.format(statistics.getMax()),
-			statistics.getMean(),
-			statistics.getVariance()
+			nf.format(statistics.max()),
+			statistics.mean(),
+			statistics.variance()
 		);
 	}
 
@@ -308,9 +307,9 @@ public abstract class EvolutionStatistics<
 		final NumberFormat nf = NumberFormat.getIntegerInstance();
 		return format(
 			"max=%s; mean=%6.6f; var=%6.6f",
-			nf.format(statistics.getMax()),
-			statistics.getMean(),
-			statistics.getVariance()
+			nf.format(statistics.max()),
+			statistics.mean(),
+			statistics.variance()
 		);
 	}
 
@@ -325,8 +324,8 @@ public abstract class EvolutionStatistics<
 
 		@Override
 		public void accept(final EvolutionResult<?, C> result) {
-			if (_fitness.getMax() == null) {
-				_fitness = MinMax.of(result.getOptimize().ascending());
+			if (_fitness.max() == null) {
+				_fitness = MinMax.of(result.optimize().ascending());
 			}
 
 			super.accept(result);
@@ -335,7 +334,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, C> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness());
+			_fitness.accept(pt.fitness());
 		}
 
 		@Override
@@ -346,8 +345,8 @@ public abstract class EvolutionStatistics<
 				"+---------------------------------------------------------------------------+\n" +
 				format(cpattern, "Age:", p(_age)) +
 				format(cpattern, "Fitness", "") +
-				format(spattern, "min =", _fitness.getMin()) +
-				format(spattern, "max =", _fitness.getMax()) +
+				format(spattern, "min =", _fitness.min()) +
+				format(spattern, "max =", _fitness.max()) +
 				"+---------------------------------------------------------------------------+";
 		}
 	}
@@ -362,7 +361,7 @@ public abstract class EvolutionStatistics<
 		@Override
 		void accept(final Phenotype<?, N> pt, final long generation) {
 			super.accept(pt, generation);
-			_fitness.accept(pt.getFitness().doubleValue());
+			_fitness.accept(pt.fitness().doubleValue());
 		}
 
 		@Override
@@ -373,11 +372,11 @@ public abstract class EvolutionStatistics<
 				"+---------------------------------------------------------------------------+\n" +
 				format(cpattern, "Age:", p(_age)) +
 				format(cpattern, "Fitness:", "") +
-				format(spattern, "min  =", d(_fitness.getMin())) +
-				format(spattern, "max  =", d(_fitness.getMax())) +
-				format(spattern, "mean =", d(_fitness.getMean())) +
-				format(spattern, "var  =", d(_fitness.getVariance())) +
-				format(spattern, "std  =", d(sqrt(_fitness.getVariance()))) +
+				format(spattern, "min  =", d(_fitness.min())) +
+				format(spattern, "max  =", d(_fitness.max())) +
+				format(spattern, "mean =", d(_fitness.mean())) +
+				format(spattern, "var  =", d(_fitness.variance())) +
+				format(spattern, "std  =", d(sqrt(_fitness.variance()))) +
 				"+---------------------------------------------------------------------------+";
 		}
 

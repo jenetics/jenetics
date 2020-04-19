@@ -67,7 +67,7 @@ public class RouletteWheelSelector<
 		// Copy the fitness values to probabilities arrays.
 		final double[] fitness = new double[population.size()];
 		for (int i = population.size(); --i >= 0;) {
-			fitness[i] = population.get(i).getFitness().doubleValue();
+			fitness[i] = population.get(i).fitness().doubleValue();
 		}
 
 		final double worst = Math.min(min(fitness), 0.0);

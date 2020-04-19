@@ -19,7 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 import io.jenetics.ext.util.Tree;
@@ -32,25 +31,23 @@ import io.jenetics.ext.util.Tree;
 final class MathExprFormatter {
 	private MathExprFormatter() {}
 
-	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
-	static {
-		INFIX_OPS.put(MathOp.ADD, " + ");
-		INFIX_OPS.put(MathOp.SUB, " - ");
-		INFIX_OPS.put(MathOp.MUL, "*");
-		INFIX_OPS.put(MathOp.DIV, "/");
-		INFIX_OPS.put(MathOp.MOD, "%");
-		INFIX_OPS.put(MathOp.POW, "^");
-	}
+	private static final Map<Op<Double>, String> INFIX_OPS = Map.of(
+		MathOp.ADD, " + ",
+		MathOp.SUB, " - ",
+		MathOp.MUL, "*",
+		MathOp.DIV, "/",
+		MathOp.MOD, "%",
+		MathOp.POW, "^"
+	);
 
-	private static final Map<MathOp, Integer> PRECEDENCE = new EnumMap<>(MathOp.class);
-	static {
-		PRECEDENCE.put(MathOp.ADD, 6);
-		PRECEDENCE.put(MathOp.SUB, 6);
-		PRECEDENCE.put(MathOp.MUL, 5);
-		PRECEDENCE.put(MathOp.DIV, 5);
-		PRECEDENCE.put(MathOp.MOD, 5);
-		PRECEDENCE.put(MathOp.POW, 4);
-	}
+	private static final Map<Op<Double>, Integer> PRECEDENCE = Map.of(
+		MathOp.ADD, 6,
+		MathOp.SUB, 6,
+		MathOp.MUL, 5,
+		MathOp.DIV, 5,
+		MathOp.MOD, 5,
+		MathOp.POW, 4
+	);
 
 	static String format(final Tree<? extends Op<Double>, ?> tree) {
 		final StringBuilder out = new StringBuilder();
@@ -62,7 +59,7 @@ final class MathExprFormatter {
 		final Tree<? extends Op<Double>, ?> tree,
 		final StringBuilder out
 	) {
-		final Op<Double> op = tree.getValue();
+		final Op<Double> op = tree.value();
 		if (INFIX_OPS.containsKey(op)) {
 			infix(tree, out);
 		} else {
@@ -85,16 +82,16 @@ final class MathExprFormatter {
 	) {
 		assert tree.childCount() == 2;
 
-		final int precedence = PRECEDENCE.getOrDefault(tree.getValue(), 100);
-		final int parentPrecedence = tree.getParent()
-			.map(p -> PRECEDENCE.getOrDefault(p.getValue(), 100))
+		final int precedence = PRECEDENCE.getOrDefault(tree.value(), 100);
+		final int parentPrecedence = tree.parent()
+			.map(p -> PRECEDENCE.getOrDefault(p.value(), 100))
 			.orElse(100);
 
 		final boolean brackets = !tree.isRoot() && precedence >= parentPrecedence;
 
 		if (brackets) out.append("(");
 		format(tree.childAt(0), out);
-		out.append(INFIX_OPS.get(tree.getValue()));
+		out.append(INFIX_OPS.get(tree.value()));
 		format(tree.childAt(1), out);
 		if (brackets) out.append(")");
 	}

@@ -20,10 +20,10 @@
  */
 package io.jenetics.util;
 
-import static io.jenetics.internal.math.random.toDouble;
-import static io.jenetics.internal.math.random.toDouble2;
-import static io.jenetics.internal.math.random.toFloat;
-import static io.jenetics.internal.math.random.toFloat2;
+import static io.jenetics.internal.math.Randoms.toDouble;
+import static io.jenetics.internal.math.Randoms.toDouble2;
+import static io.jenetics.internal.math.Randoms.toFloat;
+import static io.jenetics.internal.math.Randoms.toFloat2;
 import static io.jenetics.stat.StatisticsAssert.assertUniformDistribution;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.internal.math.random;
+import io.jenetics.internal.math.Randoms;
 import io.jenetics.stat.Histogram;
 
 /**
@@ -114,8 +114,8 @@ public class baseRandomTest {
 	@Test
 	public void seed() {
 		for (int i = 0; i < 100; ++i) {
-			final long seed1 = random.seed();
-			final long seed2 = random.seed();
+			final long seed1 = Randoms.seed();
+			final long seed2 = Randoms.seed();
 			Assert.assertNotEquals(seed1, seed2);
 		}
 	}
@@ -123,8 +123,8 @@ public class baseRandomTest {
 	@Test
 	public void seedLong() {
 		for (int i = 0; i < 100; ++i) {
-			final long seed1 = random.seed(i);
-			final long seed2 = random.seed(i);
+			final long seed1 = Randoms.seed(i);
+			final long seed2 = Randoms.seed(i);
 			Assert.assertNotEquals(seed1, seed2);
 		}
 	}
@@ -134,8 +134,8 @@ public class baseRandomTest {
 		final int length = 123;
 
 		for (int i = 0; i < 100; ++i) {
-			final byte[] seed1 = random.seedBytes(length);
-			final byte[] seed2 = random.seedBytes(length);
+			final byte[] seed1 = Randoms.seedBytes(length);
+			final byte[] seed2 = Randoms.seedBytes(length);
 			Assert.assertFalse(Arrays.equals(seed1, seed2));
 		}
 	}

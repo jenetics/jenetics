@@ -78,6 +78,6 @@ public interface Evaluator<
 	 * @return the evaluated population. Implementers are free to return the
 	 *         the input population or a newly created one.
 	 */
-	public ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population);
+	ISeq<Phenotype<G, C>> eval(final Seq<Phenotype<G, C>> population);
 
 }

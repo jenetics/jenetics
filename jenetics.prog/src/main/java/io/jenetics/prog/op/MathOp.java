@@ -351,7 +351,7 @@ public enum MathOp implements Op<Double> {
 	private final int _arity;
 	private final Function<Double[], Double> _function;
 
-	private MathOp(
+	MathOp(
 		final String name,
 		final int arity,
 		final Function<Double[], Double> function

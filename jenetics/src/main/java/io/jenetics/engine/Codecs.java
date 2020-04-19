@@ -53,10 +53,10 @@ import io.jenetics.IntegerGene;
 import io.jenetics.LongChromosome;
 import io.jenetics.LongGene;
 import io.jenetics.PermutationChromosome;
-import io.jenetics.internal.math.comb;
+import io.jenetics.internal.math.Combinatorics;
+import io.jenetics.internal.util.Bits;
 import io.jenetics.internal.util.Predicates;
-import io.jenetics.internal.util.bit;
-import io.jenetics.internal.util.require;
+import io.jenetics.internal.util.Requires;
 import io.jenetics.util.DoubleRange;
 import io.jenetics.util.ISeq;
 import io.jenetics.util.IntRange;
@@ -67,14 +67,14 @@ import io.jenetics.util.LongRange;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.2
- * @version !__version__!
+ * @version 5.2
  */
 public final class Codecs {
 
 	private Codecs() {}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -86,13 +86,13 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain)),
-			gt -> gt.getChromosome().getGene().getAllele(),
+			gt -> gt.chromosome().gene().allele(),
 			val -> Genotype.of(IntegerChromosome.of(IntegerGene.of(val, domain)))
 		);
 	}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -104,13 +104,13 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain)),
-			gt -> gt.getGene().getAllele(),
+			gt -> gt.gene().allele(),
 			val -> Genotype.of(LongChromosome.of(LongGene.of(val, domain)))
 		);
 	}
 
 	/**
-	 * Return a scalar {@code Encodec} for the given range.
+	 * Return a scalar {@link InvertibleCodec} for the given range.
 	 *
 	 * @param domain the domain of the returned {@code Codec}
 	 * @return a new scalar {@code Codec} with the given domain.
@@ -122,13 +122,13 @@ public final class Codecs {
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain)),
-			gt -> gt.getGene().getAllele(),
+			gt -> gt.gene().allele(),
 			val -> Genotype.of(DoubleChromosome.of(DoubleGene.of(val, domain)))
 		);
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * allele {@code validator}. The {@code supplier} is responsible for
 	 * creating new random alleles, and the {@code validator} can verify it.
 	 * <p>
@@ -164,12 +164,12 @@ public final class Codecs {
 	) {
 		return Codec.of(
 			Genotype.of(AnyChromosome.of(supplier, validator)),
-			gt -> gt.getGene().getAllele()
+			gt -> gt.gene().allele()
 		);
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * allele {@code validator}. The {@code supplier} is responsible for
 	 * creating new random alleles.
 	 *
@@ -188,13 +188,13 @@ public final class Codecs {
 	) {
 		return Codec.of(
 			Genotype.of(AnyChromosome.of(supplier)),
-			gt -> gt.getGene().getAllele()
+			gt -> gt.gene().allele()
 		);
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -208,11 +208,11 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(IntegerChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(IntegerChromosome.class).toArray(),
+			gt -> gt.chromosome().as(IntegerChromosome.class).toArray(),
 			val -> Genotype.of(
 				IntegerChromosome.of(
 					IntStream.of(val)
@@ -224,8 +224,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -239,11 +239,11 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(LongChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(LongChromosome.class).toArray(),
+			gt -> gt.chromosome().as(LongChromosome.class).toArray(),
 			val -> Genotype.of(
 				LongChromosome.of(
 					LongStream.of(val)
@@ -255,8 +255,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a vector {@code Codec} for the given range. All vector values
-	 * are restricted by the same domain.
+	 * Return a vector {@link InvertibleCodec} for the given range. All vector
+	 * values are restricted by the same domain.
 	 *
 	 * @param domain the domain of the vector values
 	 * @param length the vector length
@@ -270,11 +270,11 @@ public final class Codecs {
 		final int length
 	) {
 		requireNonNull(domain);
-		require.positive(length);
+		Requires.positive(length);
 
 		return InvertibleCodec.of(
 			Genotype.of(DoubleChromosome.of(domain, length)),
-			gt -> gt.getChromosome().as(DoubleChromosome.class).toArray(),
+			gt -> gt.chromosome().as(DoubleChromosome.class).toArray(),
 			val -> Genotype.of(
 				DoubleChromosome.of(
 					DoubleStream.of(val)
@@ -286,9 +286,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -312,7 +312,7 @@ public final class Codecs {
 			gt -> {
 				final int[] args = new int[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.getChromosome(i).getGene().intValue();
+					args[i] = gt.get(i).gene().intValue();
 				}
 				return args;
 			},
@@ -326,9 +326,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -352,7 +352,7 @@ public final class Codecs {
 			gt -> {
 				final long[] args = new long[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.getChromosome(i).getGene().longValue();
+					args[i] = gt.get(i).gene().longValue();
 				}
 				return args;
 			},
@@ -366,9 +366,9 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a vector {@code Codec} for the given ranges. Each vector element
-	 * might have a different domain. The vector length is equal to the number
-	 * of domains.
+	 * Create a vector {@link InvertibleCodec} for the given ranges. Each vector
+	 * element might have a different domain. The vector length is equal to the
+	 * number of domains.
 	 *
 	 * @param domains the domain ranges
 	 * @return a new vector {@code Codec}
@@ -392,7 +392,7 @@ public final class Codecs {
 			gt -> {
 				final double[] args = new double[gt.length()];
 				for (int i = gt.length(); --i >= 0;) {
-					args[i] = gt.getChromosome(i).getGene().doubleValue();
+					args[i] = gt.get(i).gene().doubleValue();
 				}
 				return args;
 			},
@@ -406,7 +406,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * Return a scala {@link Codec} with the given allele {@link Supplier},
 	 * allele {@code validator} and {@code Chromosome} length. The
 	 * {@code supplier} is responsible for creating new random alleles, and the
 	 * {@code validator} can verify it.
@@ -453,19 +453,19 @@ public final class Codecs {
 		requireNonNull(supplier);
 		requireNonNull(alleleSeqValidator);
 		requireNonNull(alleleSeqValidator);
-		require.positive(length);
+		Requires.positive(length);
 
 		return Codec.of(
 			Genotype.of(AnyChromosome
 				.of(supplier, alleleValidator, alleleSeqValidator, length)),
-			gt -> gt.getChromosome().stream()
-				.map(Gene::getAllele)
+			gt -> gt.chromosome().stream()
+				.map(Gene::allele)
 				.collect(ISeq.toISeq())
 		);
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier},
+	 * Return a scala {@link Codec} with the given allele {@link Supplier},
 	 * allele {@code validator} and {@code Chromosome} length. The
 	 * {@code supplier} is responsible for creating new random alleles, and the
 	 * {@code validator} can verify it.
@@ -489,13 +489,13 @@ public final class Codecs {
 		return ofVector(
 			supplier,
 			validator,
-			Predicates.<ISeq<A>>True(),
+			Predicates.True(),
 			length
 		);
 	}
 
 	/**
-	 * Return a scala {@code Codec} with the given allele {@link Supplier} and
+	 * Return a scala {@link Codec} with the given allele {@link Supplier} and
 	 * {@code Chromosome} length. The {@code supplier} is responsible for
 	 * creating new random alleles.
 	 *
@@ -516,7 +516,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} of integer in the range
+	 * Create a permutation {@link InvertibleCodec} of integer in the range
 	 * {@code [0, length)}.
 	 *
 	 * @param length the number of permutation elements
@@ -526,19 +526,18 @@ public final class Codecs {
 	 */
 	public static InvertibleCodec<int[], EnumGene<Integer>>
 	ofPermutation(final int length) {
-		require.positive(length);
+		Requires.positive(length);
 
 		final PermutationChromosome<Integer> chromosome =
 			PermutationChromosome.ofInteger(length);
 
-		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
-			.stream()
-			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
+			.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(chromosome),
-			gt -> gt.getChromosome().stream()
-				.mapToInt(EnumGene::getAllele)
+			gt -> gt.chromosome().stream()
+				.mapToInt(EnumGene::allele)
 				.toArray(),
 			val -> Genotype.of(
 				new PermutationChromosome<>(
@@ -551,7 +550,7 @@ public final class Codecs {
 	}
 
 	/**
-	 * Create a permutation {@code Codec} with the given alleles.
+	 * Create a permutation {@link InvertibleCodec} with the given alleles.
 	 *
 	 * @param alleles the alleles of the permutation
 	 * @param <T> the allele type
@@ -570,12 +569,12 @@ public final class Codecs {
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, alleles.length())
 				.mapToObj(i -> EnumGene.<T>of(i, alleles))
-				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+				.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(new PermutationChromosome<>(ISeq.of(genes.values()))),
-			gt -> gt.getChromosome().stream()
-				.map(EnumGene::getAllele)
+			gt -> gt.chromosome().stream()
+				.map(EnumGene::allele)
 				.collect(ISeq.toISeq()),
 			val -> Genotype.of(
 				new PermutationChromosome<>(
@@ -588,8 +587,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code int[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -608,8 +607,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -636,8 +635,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code long[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -656,8 +655,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -684,8 +683,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * Return a 2-dimensional matrix {@code Codec} for the given range. All
-	 * matrix values are restricted by the same domain. The dimension of the
+	 * Return a 2-dimensional matrix {@link InvertibleCodec} for the given range.
+	 * All matrix values are restricted by the same domain. The dimension of the
 	 * returned matrix is {@code double[rows][cols]}.
 	 *
 	 * @since 4.4
@@ -704,8 +703,8 @@ public final class Codecs {
 		final int cols
 	) {
 		requireNonNull(domain);
-		require.positive(rows);
-		require.positive(cols);
+		Requires.positive(rows);
+		Requires.positive(cols);
 
 		return InvertibleCodec.of(
 			Genotype.of(
@@ -788,14 +787,13 @@ public final class Codecs {
 		final PermutationChromosome<Integer> chromosome =
 			PermutationChromosome.ofInteger(target.size());
 
-		final Map<Integer, EnumGene<Integer>> genes = chromosome.toSeq()
-			.stream()
-			.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+		final Map<Integer, EnumGene<Integer>> genes = chromosome.stream()
+			.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		final Codec<int[], EnumGene<Integer>> codec = Codec.of(
 			Genotype.of(chromosome),
-			gt -> gt.getChromosome().stream()
-				.mapToInt(EnumGene::getAllele)
+			gt -> gt.chromosome().stream()
+				.mapToInt(EnumGene::allele)
 				.toArray()
 		);
 
@@ -817,8 +815,7 @@ public final class Codecs {
 		return IntStream.range(0, source.size())
 			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
-				Entry::getKey,
-				Entry::getValue,
+				Entry::getKey, Entry::getValue,
 				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}
@@ -830,11 +827,11 @@ public final class Codecs {
 		final Map<Integer, EnumGene<Integer>> genes
 	) {
 		final int[] perm = new int[target.size()];
-		for (Map.Entry<A, Integer> sm : source.entrySet()) {
-			final int i = sm.getValue();
-			final int j = target.get(mapping.get(sm.getKey()));
+		source.forEach((key, value) -> {
+			final int i = value;
+			final int j = target.get(mapping.get(key));
 			perm[i%perm.length] = j;
-		}
+		});
 
 		// Fill the rest of the 'perm' array, without duplicates.
 		// TODO: can be done more efficiently
@@ -903,9 +900,10 @@ public final class Codecs {
 	}
 
 	/**
-	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best <b>variable-sized</b> subset from given basic set. A typical
-	 * usage example of the returned {@code Codec} is the Knapsack problem.
+	 * The subset {@link InvertibleCodec} can be used for problems where it is
+	 * required to find the best <b>variable-sized</b> subset from given basic
+	 * set. A typical usage example of the returned {@code Codec} is the
+	 * Knapsack problem.
 	 * <p>
 	 * The following code snippet shows a simplified variation of the Knapsack
 	 * problem.
@@ -945,23 +943,23 @@ public final class Codecs {
 	public static <T> InvertibleCodec<ISeq<T>, BitGene>
 	ofSubSet(final ISeq<? extends T> basicSet) {
 		requireNonNull(basicSet);
-		require.positive(basicSet.length());
+		Requires.positive(basicSet.length());
 
 		return InvertibleCodec.of(
 			Genotype.of(BitChromosome.of(basicSet.length())),
-			gt -> gt.getChromosome()
+			gt -> gt.chromosome()
 				.as(BitChromosome.class).ones()
 				.<T>mapToObj(basicSet)
 				.collect(ISeq.toISeq()),
 			values -> {
-				final byte[] bits = bit.newArray(basicSet.size());
+				final byte[] bits = Bits.newArray(basicSet.size());
 
 				int i = 0;
 				for (T v : values) {
 					while (i < basicSet.size() && !Objects.equals(basicSet.get(i), v)) {
 						++i;
 					}
-					bit.set(bits, i);
+					Bits.set(bits, i);
 				}
 
 				return Genotype.of(new BitChromosome(bits, 0, basicSet.size()));
@@ -970,8 +968,8 @@ public final class Codecs {
 	}
 
 	/**
-	 * The subset {@code Codec} can be used for problems where it is required to
-	 * find the best <b>fixed-size</b> subset from given basic set.
+	 * The subset {@link InvertibleCodec} can be used for problems where it is
+	 * required to find the best <b>fixed-size</b> subset from given basic set.
 	 *
 	 * @since 3.4
 	 *
@@ -995,17 +993,17 @@ public final class Codecs {
 		final int size
 	) {
 		requireNonNull(basicSet);
-		comb.checkSubSet(basicSet.size(), size);
+		Combinatorics.checkSubSet(basicSet.size(), size);
 
 		final Map<T, EnumGene<T>> genes =
 			IntStream.range(0, basicSet.length())
 				.mapToObj(i -> EnumGene.<T>of(i, basicSet))
-				.collect(Collectors.toMap(EnumGene::getAllele, identity()));
+				.collect(Collectors.toMap(EnumGene::allele, identity()));
 
 		return InvertibleCodec.of(
 			Genotype.of(PermutationChromosome.of(basicSet, size)),
-			gt -> gt.getChromosome().stream()
-				.map(EnumGene::getAllele)
+			gt -> gt.chromosome().stream()
+				.map(EnumGene::allele)
 				.collect(ISeq.toISeq()),
 			values -> {
 				if (values.size() != size) {

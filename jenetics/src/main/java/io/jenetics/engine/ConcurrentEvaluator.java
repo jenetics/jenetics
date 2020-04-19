@@ -70,7 +70,7 @@ final class ConcurrentEvaluator<
 
 		final ISeq<Phenotype<G, C>> result;
 		if (evaluate.nonEmpty()) {
-			try (Concurrency c = Concurrency.with(_executor)) {
+			try (var c = Concurrency.with(_executor)) {
 				c.execute(evaluate);
 			}
 
@@ -108,7 +108,7 @@ final class ConcurrentEvaluator<
 
 		@Override
 		public void run() {
-			_fitness = _function.apply(_phenotype.getGenotype());
+			_fitness = _function.apply(_phenotype.genotype());
 		}
 
 		Phenotype<G, C> phenotype() {

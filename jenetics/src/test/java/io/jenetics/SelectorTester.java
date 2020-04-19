@@ -26,7 +26,6 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -86,7 +85,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {
 			final Genotype<DoubleGene> gt = gtf.newInstance();
-			population.set(i, Phenotype.of(gt, 12, gt.getGene().doubleValue()));
+			population.set(i, Phenotype.of(gt, 12, gt.gene().doubleValue()));
 		}
 
 		selector().select(population.toISeq(), -1, Optimize.MAXIMUM);
@@ -105,7 +104,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final MSeq<Phenotype<DoubleGene, Double>> population = MSeq.ofLength(2);
 		for (int i = 0, n = 2; i < n; ++i) {
 			final Genotype<DoubleGene> gt = gtf.newInstance();
-			population.set(i, Phenotype.of(gt, 12, gt.getGene().doubleValue()));
+			population.set(i, Phenotype.of(gt, 12, gt.gene().doubleValue()));
 		}
 
 		selector().select(population.toISeq(), 1, null);
@@ -118,11 +117,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final Optimize opt
 	) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			g -> g.getGene().getAllele();
+			g -> g.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0.0, 100.0));
-			return Phenotype.of(gt, 1, gt.getGene().doubleValue());
+			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
 		using(new LCG64ShiftRandom(543455), r -> {
@@ -136,13 +135,13 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 				final double monteCarloSelectionSum =
 					new MonteCarloSelector<DoubleGene, Double>()
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				final double selectionSum =
 					selector
 						.select(population, count, opt).stream()
-						.mapToDouble(Phenotype::getFitness)
+						.mapToDouble(Phenotype::fitness)
 						.sum();
 
 				if (opt == Optimize.MAXIMUM) {
@@ -173,11 +172,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 	@Test(dataProvider = "selectParameters")
 	public void select(final Integer size, final Integer count, final Optimize opt) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(0.0, 1_000.0));
-			return Phenotype.of(gt, 1, gt.getGene().doubleValue());
+			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
 		final ISeq<Phenotype<DoubleGene, Double>> population = IntStream.range(0, size)
@@ -203,8 +202,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@DataProvider(name = "selectParameters")
 	public Object[][] selectParameters() {
-		final List<Integer> sizes = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
-		final List<Integer> counts = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> sizes = List.of(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> counts = List.of(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 
 		final List<Object[]> result = new ArrayList<>();
 		for (Integer size : sizes) {
@@ -300,11 +299,11 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 		final int loops
 	) {
 		final Function<Genotype<DoubleGene>, Double> ff =
-			gt -> gt.getGene().getAllele();
+			gt -> gt.gene().allele();
 
 		final Factory<Phenotype<DoubleGene, Double>> ptf = () -> {
 			final Genotype<DoubleGene> gt = Genotype.of(DoubleChromosome.of(MIN, MAX));
-			return Phenotype.of(gt, 1, gt.getGene().doubleValue());
+			return Phenotype.of(gt, 1, gt.gene().doubleValue());
 		};
 
 		return IntStream.range(0, loops).parallel().mapToObj(j -> {
@@ -317,7 +316,7 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 			final int selectionCount = (int)(populationCount/SELECTION_FRACTION);
 			selector.select(population, selectionCount, opt).stream()
-				.map(pt -> pt.getGenotype().getGene().getAllele())
+				.map(pt -> pt.genotype().gene().allele())
 				.forEach(hist);
 
 			return hist;

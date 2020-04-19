@@ -56,8 +56,9 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private final Class<T> _type;
 
-	private ConstRewriter(final Class<T> type) {
-		_type = requireNonNull(type);
+	@SuppressWarnings("unchecked")
+	private ConstRewriter(final Class<? extends T> type) {
+		_type = (Class<T>)requireNonNull(type);
 	}
 
 	/**
@@ -89,12 +90,12 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 	private int rewriting(final TreeNode<Op<T>> node) {
 		if (matches(node)) {
 			final T[] args = node.childStream()
-				.map(child -> ((Val<T>)child.getValue()).value())
+				.map(child -> ((Val<T>)child.value()).value())
 				.toArray(this::newArray);
 
-			final T value = node.getValue().apply(args);
+			final T value = node.value().apply(args);
 			node.removeAllChildren();
-			node.setValue(Const.of(value));
+			node.value(Const.of(value));
 
 			return 1;
 		}
@@ -115,10 +116,10 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 
 	private static boolean matches(final Tree<?, ?> node) {
 		return
-			!(node.getValue() instanceof Val) &&
-			!(node.getValue() instanceof Var) &&
+			!(node.value() instanceof Val) &&
+			!(node.value() instanceof Var) &&
 			node.childStream()
-				.allMatch(child -> child.getValue() instanceof Val);
+				.allMatch(child -> child.value() instanceof Val);
 	}
 
 	@Override
@@ -134,7 +135,7 @@ public final class ConstRewriter<T> implements TreeRewriter<Op<T>> {
 	 * @return a new rewriter for constant operation sub-trees (expressions)
 	 * @throws NullPointerException if the given {@code type} is {@code null}
 	 */
-	public static <T> ConstRewriter<T> ofType(final Class<T> type) {
+	public static <T> ConstRewriter<T> ofType(final Class<? extends T> type) {
 		return new ConstRewriter<>(type);
 	}
 

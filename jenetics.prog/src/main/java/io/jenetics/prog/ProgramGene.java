@@ -52,7 +52,7 @@ import io.jenetics.prog.op.Program;
  * }</pre>
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 3.9
+ * @version 5.2
  * @since 3.9
  */
 public final class ProgramGene<A>
@@ -124,7 +124,7 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed operations
 	 */
-	public ISeq<Op<A>> getOperations() {
+	public ISeq<Op<A>> operations() {
 		return ISeq.upcast(_operations);
 	}
 
@@ -133,7 +133,7 @@ public final class ProgramGene<A>
 	 *
 	 * @return the allowed terminal operations
 	 */
-	public ISeq<Op<A>> getTerminals() {
+	public ISeq<Op<A>> terminals() {
 		return ISeq.upcast(_terminals);
 	}
 
@@ -150,14 +150,14 @@ public final class ProgramGene<A>
 
 	@Override
 	public ProgramGene<A> newInstance() {
-		final Random random = RandomRegistry.getRandom();
+		final Random random = RandomRegistry.random();
 
-		Op<A> operation = getValue();
+		Op<A> operation = value();
 		if (isLeaf()) {
 			operation = _terminals.get(random.nextInt(_terminals.length()));
 		} else {
 			final ISeq<Op<A>> operations = _operations.stream()
-				.filter(op -> op.arity() == getValue().arity())
+				.filter(op -> op.arity() == value().arity())
 				.collect(ISeq.toISeq());
 
 			if (operations.length() > 1) {
@@ -180,10 +180,10 @@ public final class ProgramGene<A>
 	 */
 	@Override
 	public ProgramGene<A> newInstance(final Op<A> op) {
-		if (getValue().arity() != op.arity()) {
+		if (value().arity() != op.arity()) {
 			throw new IllegalArgumentException(format(
 				"New operation must have same arity: %s[%d] != %s[%d]",
-				getValue().name(), getValue().arity(), op.name(), op.arity()
+				value().name(), value().arity(), op.name(), op.arity()
 			));
 		}
 		return new ProgramGene<>(op, childOffset(), _operations, _terminals);

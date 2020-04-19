@@ -62,7 +62,7 @@ public class Game {
 
 		final Codec<Player, DoubleGene> codec = Codec.of(
 			Genotype.of(DoubleChromosome.of(0, 1)),
-			gt -> Player.of(gt.getGene().doubleValue())
+			gt -> Player.of(gt.gene().doubleValue())
 		);
 
 		final AtomicReference<ISeq<Phenotype<DoubleGene, Double>>>
@@ -76,8 +76,8 @@ public class Game {
 
 			final Player other;
 			if (pop != null) {
-				final int index = RandomRegistry.getRandom().nextInt(pop.size());
-				other = codec.decode(pop.get(index).getGenotype());
+				final int index = RandomRegistry.random().nextInt(pop.size());
+				other = codec.decode(pop.get(index).genotype());
 			} else {
 				other = Player.of(0.5);
 			}
@@ -92,7 +92,7 @@ public class Game {
 		final Player best = codec.decode(
 			engine.stream()
 				.limit(Limits.bySteadyFitness(50))
-				.peek(er -> population.set(er.getPopulation()))
+				.peek(er -> population.set(er.population()))
 				.collect(EvolutionResult.toBestGenotype())
 		);
 

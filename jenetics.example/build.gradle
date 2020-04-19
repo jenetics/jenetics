@@ -28,6 +28,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'packaging'
 
+ext.moduleName = 'io.jenetics.example'
+
 dependencies {
 	implementation project(':jenetics')
 	implementation project(':jenetics.ext')

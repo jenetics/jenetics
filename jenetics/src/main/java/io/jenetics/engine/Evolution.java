@@ -24,6 +24,13 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
 
 /**
+ * This functional interface defines the evolution function, which takes an
+ * {@link EvolutionStart} object, evolves the population, and returns an
+ * {@link EvolutionResult} object.
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
  * @since 5.1
@@ -50,13 +57,12 @@ public interface Evolution<
 	 * @throws java.lang.NullPointerException if the given evolution
 	 *         {@code start} is {@code null}
 	 */
-	public EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
+	EvolutionResult<G, C> evolve(final EvolutionStart<G, C> start);
 
 
 	/**
 	 * Perform one evolution step with the given {@code population} and
-	 * {@code generation}. New phenotypes are created with the fitness function
-	 * and fitness scaler defined by this <em>engine</em>
+	 * {@code generation}.
 	 * <p>
 	 * <em>This method is thread-safe.</em>
 	 *
@@ -71,7 +77,7 @@ public interface Evolution<
 	 * @throws IllegalArgumentException if the given {@code generation} is
 	 *         smaller then one
 	 */
-	public default EvolutionResult<G, C> evolve(
+	default EvolutionResult<G, C> evolve(
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {

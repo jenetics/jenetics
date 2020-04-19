@@ -21,7 +21,6 @@ package io.jenetics.colorizer;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 
 import java.io.BufferedReader;
@@ -37,7 +36,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -144,7 +142,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 	 * @since 1.0
 	 * @version 1.4
 	 */
-	private static enum State {
+	private enum State {
 
 		DATA {
 			@Override
@@ -157,7 +155,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 				{
 					out.setLength(out.length() - START_TAG.length());
 					out.append("<div class=\"code\"><code lang=\"java\">");
-					state = CODE_TAG;
+					state = SKIP_NEWLINE;
 				}
 
 				return state;
@@ -284,7 +282,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 		private static final String COMMENT_COLOR = "#3F7F5F";
 		private static final String STRING_COLOR = "#0000FF";
 
-		private static final Set<String> IDENTIFIERS = new HashSet<>(asList(
+		private static final Set<String> IDENTIFIERS = Set.of(
 			"abstract",
 			"assert",
 			"boolean",
@@ -336,7 +334,7 @@ public final class Colorizer extends SimpleFileVisitor<Path> {
 			"void",
 			"volatile",
 			"while"
-		));
+		);
 	}
 
 
