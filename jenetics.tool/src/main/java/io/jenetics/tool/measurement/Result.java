@@ -24,5 +24,5 @@ package io.jenetics.tool.measurement;
  * @version !__version__!
  * @since !__version__!
  */
-public class Result {
+public interface Result {
 }
