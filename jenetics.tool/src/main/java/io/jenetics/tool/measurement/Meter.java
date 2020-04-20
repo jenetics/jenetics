@@ -19,6 +19,11 @@
  */
 package io.jenetics.tool.measurement;
 
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
 @FunctionalInterface
 public interface Meter {
 	Number[] measure(final Object[] params);
