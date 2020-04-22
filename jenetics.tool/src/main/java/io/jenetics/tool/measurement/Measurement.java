@@ -31,21 +31,28 @@ import java.util.List;
  */
 public class Measurement {
 	private final String _name;
+	private final Environment _environment;
 	private final ZonedDateTime _createdAt;
 	private final List<Parameter> _parameters;
 
 	public Measurement(
 		final String name,
+		final Environment environment,
 		final ZonedDateTime createdAt,
 		final List<Parameter> parameters
 	) {
 		_name = requireNonNull(name);
+		_environment = requireNonNull(environment);
 		_createdAt = requireNonNull(createdAt);
 		_parameters = List.copyOf(parameters);
 	}
 
 	public String name() {
 		return _name;
+	}
+
+	public Environment environment() {
+		return _environment;
 	}
 
 	public ZonedDateTime createdAt() {
