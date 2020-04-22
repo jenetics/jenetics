@@ -19,33 +19,51 @@
  */
 package io.jenetics.tool.measurement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents the parameters needed for one measurement result.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class Parameter {
 	private final List<Object> _values;
-	private final List<Sample> _samples = new ArrayList<>();
 
-	public Parameter(final List<Object> values, final List<Sample> samples) {
-		_values = List.copyOf(values);
-		_samples.addAll(samples);
-	}
-
+	/**
+	 * Create a new parameter object with the given values.
+	 *
+	 * @param values the parameter values
+	 */
 	public Parameter(final List<Object> values) {
-		this(values, List.of());
+		_values = List.copyOf(values);
 	}
 
+	/**
+	 * Return the parameter values.
+	 *
+	 * @return the parameter values
+	 */
 	public List<Object> values() {
 		return _values;
 	}
 
-	public List<Sample> samples() {
-		return _samples;
+	@Override
+	public int hashCode() {
+		return _values.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Parameter &&
+			_values.equals(((Parameter)obj)._values);
+	}
+
+	@Override
+	public String toString() {
+		return _values.toString();
 	}
 
 }

@@ -25,42 +25,87 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
+ * This class represents the <em>static</em> description of a <em>performance</em>
+ * measure. It is immutable and cannot be changed after creation.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
 public class Measurement {
 	private final String _name;
-	private final Environment _environment;
 	private final ZonedDateTime _createdAt;
+	private final Environment _environment;
 	private final List<Parameter> _parameters;
+	private final int _sampleCount;
 
+	/**
+	 * Create a new measurement object with the given parameters.
+	 *
+	 * @param name the name of the measurement
+	 * @param createdAt the creation date of the measurement
+	 * @param environment the environment information
+	 * @param parameters the parameters to be measured
+	 * @param sampleCount the desired number of calculated samples per parameter
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
 	public Measurement(
 		final String name,
-		final Environment environment,
 		final ZonedDateTime createdAt,
-		final List<Parameter> parameters
+		final Environment environment,
+		final List<Parameter> parameters,
+		final int sampleCount
 	) {
 		_name = requireNonNull(name);
-		_environment = requireNonNull(environment);
 		_createdAt = requireNonNull(createdAt);
+		_environment = requireNonNull(environment);
 		_parameters = List.copyOf(parameters);
+		_sampleCount = sampleCount;
 	}
 
+	/**
+	 * Return the name of the measurement.
+	 *
+	 * @return the name of the measurement
+	 */
 	public String name() {
 		return _name;
 	}
 
-	public Environment environment() {
-		return _environment;
-	}
-
+	/**
+	 * Return the creation time of the measurement.
+	 *
+	 * @return the creation time of the measurement
+	 */
 	public ZonedDateTime createdAt() {
 		return _createdAt;
 	}
 
+	/**
+	 * Return the environment the measurement is executed at.
+	 *
+	 * @return the environment the measurement is executed at
+	 */
+	public Environment environment() {
+		return _environment;
+	}
+
+	/**
+	 * Return the parameters the measurement should vary.
+	 *
+	 * @return the parameters the measurement shoudl vary
+	 */
 	public List<Parameter> parameters() {
 		return _parameters;
+	}
+
+	/**
+	 * Return the desired number of samples per parameter.
+	 *
+	 * @return the desired number of samples per parameter
+	 */
+	public int sampleCount() {
+		return _sampleCount;
 	}
 
 }

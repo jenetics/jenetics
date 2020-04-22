@@ -22,6 +22,8 @@ package io.jenetics.tool.measurement;
 import java.util.List;
 
 /**
+ * Represents one sample result for a given parameter.
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
@@ -37,6 +39,23 @@ public class Sample {
 		return _values;
 	}
 
+	@Override
+	public int hashCode() {
+		return _values.hashCode();
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this ||
+			obj instanceof Sample &&
+				_values.equals(((Sample)obj)._values);
+	}
+
+	@Override
+	public String toString() {
+		return _values.toString();
+	}
+
 	public static Sample of(final double... values) {
 		final Double[] array = new Double[values.length];
 		for (int i = 0; i < values.length; ++i) {
@@ -44,5 +63,7 @@ public class Sample {
 		}
 		return new Sample(List.of(array));
 	}
+
+
 
 }
