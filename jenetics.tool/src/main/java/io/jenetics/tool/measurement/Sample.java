@@ -31,10 +31,20 @@ import java.util.List;
 public class Sample {
 	private final List<Number> _values;
 
+	/**
+	 * Create a new measurement sample with the given numeric values
+	 *
+	 * @param values the values of the sample
+	 */
 	public Sample(final List<Number> values) {
 		_values = List.copyOf(values);
 	}
 
+	/**
+	 * Return the values of this sample.
+	 *
+	 * @return the values of this sample
+	 */
 	public List<Number> values() {
 		return _values;
 	}
