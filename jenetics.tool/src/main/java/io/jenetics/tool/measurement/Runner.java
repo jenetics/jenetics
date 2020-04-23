@@ -1,68 +1,56 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.tool.measurement;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+
+/**
+ * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+ * @version !__version__!
+ * @since !__version__!
+ */
 public class Runner {
 
 	private final Measurement _measurement;
 	private final Meter _meter;
 
-	private final Map<Parameter, List<ParameterSample>> _samples = new HashMap<>();
-	private final Comparator<Parameter> _comparator;
+	private final Sampling _sampling;
 
 	public Runner(
 		final Measurement measurement,
 		final Meter meter,
-		final List<ParameterSample> samples
+		final Sampling sampling
 	) {
 		_measurement = requireNonNull(measurement);
 		_meter = requireNonNull(meter);
-
-		samples.forEach(this::put);
-
-		final Map<Parameter, Integer> order = new HashMap<>();
-		for (int i = 0; i < _measurement.parameters().size(); ++i) {
-			order.put(_measurement.parameters().get(i), i);
-		}
-
-		_comparator = Comparator
-			.comparingInt((Parameter a) -> _samples.get(a).size())
-			.thenComparingInt(order::get);
+		_sampling = requireNonNull(sampling);
 	}
-
-	private void putNewSample(final Parameter parameter, final Sample sample) {
-		_samples.putIfAbsent(parameter, new ArrayList<>());
-		_samples.get(parameter).add(new ParameterSample(parameter, sample));
-	}
-
-	private void put(final ParameterSample sample) {
-		_samples.putIfAbsent(sample.parameter(), new ArrayList<>());
-		_samples.get(sample.parameter()).add(sample);
-	}
-
 
 	public List<ParameterSample> samples() {
-		return null; //Collections.unmodifiableList(_samples);
+		return _sampling.samples();
 	}
 
 	public void run() {
 
-	}
-
-	private Parameter next() {
-		final Parameter param = _measurement.parameters().stream()
-			.min(_comparator)
-			.orElseThrow();
-
-		return _samples.get(param).size() < _measurement.sampleCount()
-			? param
-			: null;
 	}
 
 	private void calculate(final Parameter parameter) {
@@ -70,7 +58,7 @@ public class Runner {
 		final Number[] result = _meter.measure(args);
 		final Sample sample = new Sample(List.of(result));
 
-		putNewSample(parameter, sample);
+		_sampling.add(parameter, sample);
 	}
 
 }
