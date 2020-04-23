@@ -28,14 +28,14 @@ import java.util.List;
  * @version !__version__!
  * @since !__version__!
  */
-public class Runner {
+public final class Evaluator implements Runnable {
 
 	private final Measurement _measurement;
 	private final Meter _meter;
 
 	private final Sampling _sampling;
 
-	public Runner(
+	public Evaluator(
 		final Measurement measurement,
 		final Meter meter,
 		final Sampling sampling
@@ -49,8 +49,14 @@ public class Runner {
 		return _sampling.samples();
 	}
 
+	@Override
 	public void run() {
-
+		Parameter parameter;
+		while (!Thread.currentThread().isInterrupted() &&
+			(parameter = _sampling.next()) != null)
+		{
+			calculate(parameter);
+		}
 	}
 
 	private void calculate(final Parameter parameter) {
