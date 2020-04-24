@@ -55,8 +55,8 @@ public class DAOTest {
 	@Test(dependsOnMethods = "insert")
 	public void select() throws SQLException {
 		final var result = db.transaction().apply(conn -> DAO.selectByName("measure", conn));
-		System.out.println(result.get(0).environment());
-		System.out.println(result.get(0).parameters());
+		System.out.println(result.get(0).value().environment());
+		System.out.println(result.get(0).value().parameters());
 		System.out.println(MEASUREMENT.environment());
 	}
 

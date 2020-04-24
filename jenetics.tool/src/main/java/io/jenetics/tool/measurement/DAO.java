@@ -1,3 +1,22 @@
+/*
+ * Java Genetic Algorithm Library (@__identifier__@).
+ * Copyright (c) @__year__@ Franz Wilhelmstötter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author:
+ *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
+ */
 package io.jenetics.tool.measurement;
 
 import static io.jenetics.facilejdbc.Dctor.field;
@@ -48,21 +67,26 @@ public final class DAO {
 			field("java_vm_version", m -> m.environment().getJavaVMVersion())
 		);
 
-		private static final RowParser<Measurement> PARSER = (row, conn) ->
-			new Measurement(
-				row.getString("name"),
-				Instant.ofEpochMilli(row.getDate("created_at").getTime()),
-				ParameterRow.select(row.getLong("id"), conn),
-				row.getInt("sample_count"),
-				Environment.of(
-					row.getString("os_name"),
-					row.getString("os_version"),
-					row.getString("os_architecture"),
-					row.getString("java_version"),
-					row.getString("java_runtime_name"),
-					row.getString("java_runtime_version"),
-					row.getString("java_vm_name"),
-					row.getString("java_vm_version")
+		private static final RowParser<MeasurementRow> PARSER = (row, conn) ->
+			new MeasurementRow(
+				row.getLong("id"),
+				new Measurement(
+					row.getString("name"),
+					Instant.ofEpochMilli(row.getDate("created_at").getTime()),
+					ParameterRow.select(row.getLong("id"), conn).stream()
+						.map(ParameterRow::parameter)
+						.collect(Collectors.toList()),
+					row.getInt("sample_count"),
+					Environment.of(
+						row.getString("os_name"),
+						row.getString("os_version"),
+						row.getString("os_architecture"),
+						row.getString("java_version"),
+						row.getString("java_runtime_name"),
+						row.getString("java_runtime_version"),
+						row.getString("java_vm_name"),
+						row.getString("java_vm_version")
+					)
 				)
 			);
 
@@ -168,7 +192,7 @@ public final class DAO {
 		 * @return all measurements with a given name
 		 * @throws SQLException if the selection fails
 		 */
-		static List<Measurement> selectByName(
+		static List<MeasurementRow> selectByName(
 			final String name,
 			final Connection conn
 		)
@@ -191,8 +215,12 @@ public final class DAO {
 			field("value", p -> toJson(p.parameter()))
 		);
 
-		private static final RowParser<Parameter> PARSER = (row, conn) ->
-			toObject(row.getString("value"), Parameter.class);
+		private static final RowParser<ParameterRow> PARSER = (row, conn) ->
+			new ParameterRow(
+				row.getLong("id"),
+				row.getLong("measurement_id"),
+				toObject(row.getString("value"), Parameter.class)
+			);
 
 		private static final Query INSERT = Query.of(
 			"INSERT INTO parameter(measurement_id, value) " +
@@ -200,7 +228,7 @@ public final class DAO {
 		);
 
 		private static final Query SELECT = Query.of(
-			"SELECT value " +
+			"SELECT id, measurement_id, value " +
 			"FROM parameter " +
 			"WHERE measurement_id = :measurement_id"
 		);
@@ -231,7 +259,7 @@ public final class DAO {
 			return _parameter;
 		}
 
-		static List<Parameter> select(final long measurementId, final Connection conn)
+		static List<ParameterRow> select(final long measurementId, final Connection conn)
 			throws SQLException
 		{
 			return SELECT
@@ -271,10 +299,12 @@ public final class DAO {
 	 * @return all measurements with a given name
 	 * @throws SQLException if the selection fails
 	 */
-	public static List<Measurement> selectByName(final String name, final Connection conn)
+	public static List<Stored<Measurement>> selectByName(final String name, final Connection conn)
 		throws SQLException
 	{
-		return MeasurementRow.selectByName(name, conn);
+		return MeasurementRow.selectByName(name, conn).stream()
+			.map(row -> Stored.of(row.id(), row.measurement()))
+			.collect(Collectors.toList());
 	}
 
 }
