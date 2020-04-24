@@ -21,6 +21,7 @@ package io.jenetics.tool.measurement;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -34,27 +35,28 @@ import java.util.List;
  */
 public class Measurement {
 	private final String _name;
-	private final ZonedDateTime _createdAt;
-	private final Environment _environment;
+	private final Instant _createdAt;
 	private final List<Parameter> _parameters;
 	private final int _sampleCount;
+
+	private final Environment _environment;
 
 	/**
 	 * Create a new measurement object with the given parameters.
 	 *
 	 * @param name the name of the measurement
 	 * @param createdAt the creation date of the measurement
-	 * @param environment the environment information
 	 * @param parameters the parameters to be measured
 	 * @param sampleCount the desired number of calculated samples per parameter
+	 * @param environment the environment information
 	 * @throws NullPointerException if one of the arguments is {@code null}
 	 */
 	public Measurement(
 		final String name,
-		final ZonedDateTime createdAt,
-		final Environment environment,
+		final Instant createdAt,
 		final List<Parameter> parameters,
-		final int sampleCount
+		final int sampleCount,
+		final Environment environment
 	) {
 		_name = requireNonNull(name);
 		_createdAt = requireNonNull(createdAt);
@@ -77,7 +79,7 @@ public class Measurement {
 	 *
 	 * @return the creation time of the measurement
 	 */
-	public ZonedDateTime createdAt() {
+	public Instant createdAt() {
 		return _createdAt;
 	}
 

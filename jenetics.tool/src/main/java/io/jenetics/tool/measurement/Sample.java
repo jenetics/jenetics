@@ -21,6 +21,10 @@ package io.jenetics.tool.measurement;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 /**
  * Represents one sample result for a given parameter.
  *
@@ -29,7 +33,7 @@ import java.util.List;
  * @since !__version__!
  */
 public class Sample {
-	private final List<Number> _values;
+	private final List<Number> values;
 
 	/**
 	 * Create a new measurement sample with the given numeric values
@@ -37,7 +41,7 @@ public class Sample {
 	 * @param values the values of the sample
 	 */
 	public Sample(final List<Number> values) {
-		_values = List.copyOf(values);
+		this.values = List.copyOf(values);
 	}
 
 	/**
@@ -46,24 +50,34 @@ public class Sample {
 	 * @return the values of this sample
 	 */
 	public List<Number> values() {
-		return _values;
+		return values;
 	}
 
 	@Override
 	public int hashCode() {
-		return _values.hashCode();
+		return values.hashCode();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		return obj == this ||
 			obj instanceof Sample &&
-				_values.equals(((Sample)obj)._values);
+				values.equals(((Sample)obj).values);
 	}
 
 	@Override
 	public String toString() {
-		return _values.toString();
+		return values.toString();
+	}
+
+	public String toJson() {
+		final var gson = new Gson();
+		return gson.toJson(this);
+	}
+
+	public static Sample fromJson(final String json) {
+		final var gson = new Gson();
+		return gson.fromJson(json, Sample.class);
 	}
 
 	public static Sample of(final double... values) {

@@ -19,55 +19,15 @@
  */
 package io.jenetics.tool.measurement;
 
-import java.util.List;
-
 /**
- * Represents the parameters needed for one measurement result.
+ * Contains helper methods for reading/writing JSON strings.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since !__version__!
  */
-public class Parameter {
-	private final List<Object> values;
-
-	/**
-	 * Create a new parameter object with the given values.
-	 *
-	 * @param values the parameter values
-	 */
-	public Parameter(final List<Object> values) {
-		this.values = List.copyOf(values);
-	}
-
-	/**
-	 * Return the parameter values.
-	 *
-	 * @return the parameter values
-	 */
-	public List<Object> values() {
-		return values;
-	}
-
-	@Override
-	public int hashCode() {
-		return values.hashCode();
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		return obj == this ||
-			obj instanceof Parameter &&
-			values.equals(((Parameter)obj).values);
-	}
-
-	@Override
-	public String toString() {
-		return values.toString();
-	}
-
-	public static Parameter of(final Object... values) {
-		return new Parameter(List.of(values));
+public final class Json {
+	private Json() {
 	}
 
 }

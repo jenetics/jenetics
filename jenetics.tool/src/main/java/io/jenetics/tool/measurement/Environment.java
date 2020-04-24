@@ -123,7 +123,7 @@ public class Environment implements Serializable {
 	 *
 	 * @return the Java VM name
 	 */
-	public String getJavaVMName() {
+	public String javaVMName() {
 		return _javaVMName;
 	}
 

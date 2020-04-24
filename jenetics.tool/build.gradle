@@ -35,6 +35,7 @@ dependencies {
 	implementation property('include.FacileJDBC')
 	implementation property('include.PRNGine')
 	implementation property('include.HSQLDB')
+	implementation property('include.Gson')
 
 	testImplementation property('include.TestNG')
 }
