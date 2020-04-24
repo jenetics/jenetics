@@ -70,16 +70,6 @@ public class Sample {
 		return values.toString();
 	}
 
-	public String toJson() {
-		final var gson = new Gson();
-		return gson.toJson(this);
-	}
-
-	public static Sample fromJson(final String json) {
-		final var gson = new Gson();
-		return gson.fromJson(json, Sample.class);
-	}
-
 	public static Sample of(final double... values) {
 		final Double[] array = new Double[values.length];
 		for (int i = 0; i < values.length; ++i) {

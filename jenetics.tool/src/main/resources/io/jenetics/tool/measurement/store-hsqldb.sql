@@ -16,9 +16,13 @@ CREATE TABLE measurement(
 );
 
 CREATE TABLE parameter(
-	id BIGINT NOT NULL,
+	id BIGINT IDENTITY PRIMARY KEY,
 	measurement_id BIGINT NOT NULL REFERENCES measurement(id),
-	value VARCHAR(4096) NOT NULL,
+	value VARCHAR(4096) NOT NULL
+);
 
-	PRIMARY KEY(id, measurement_id)
+CREATE TABLE sample(
+	id BIGINT IDENTITY PRIMARY KEY,
+	parameter_id BIGINT NOT NULL REFERENCES parameter(id),
+	value VARCHAR(4096) NOT NULL
 );
