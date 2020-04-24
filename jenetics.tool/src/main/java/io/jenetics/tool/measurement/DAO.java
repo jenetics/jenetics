@@ -119,7 +119,7 @@ public final class DAO {
 				")"
 		);
 
-		private static final Query SELECT = Query.of(
+		private static final Query SELECT_ALL = Query.of(
 			"SELECT " +
 				"id," +
 				"name," +
@@ -134,7 +134,26 @@ public final class DAO {
 				"java_vm_name," +
 				"java_vm_version " +
 			"FROM measurement " +
-			"WHERE name = :name"
+			"ORDER BY created_at"
+		);
+
+		private static final Query SELECT_BY_NAME = Query.of(
+			"SELECT " +
+				"id," +
+				"name," +
+				"created_at," +
+				"sample_count," +
+				"os_name," +
+				"os_version," +
+				"os_architecture," +
+				"java_version," +
+				"java_runtime_name," +
+				"java_runtime_version," +
+				"java_vm_name," +
+				"java_vm_version " +
+			"FROM measurement " +
+			"WHERE name = :name " +
+			"ORDER BY created_at"
 		);
 
 		private final long _id;
@@ -185,6 +204,19 @@ public final class DAO {
 		}
 
 		/**
+		 * Selects all measurements.
+		 *
+		 * @param conn the DB connection
+		 * @return all measurements with a given name
+		 * @throws SQLException if the selection fails
+		 */
+		static List<MeasurementRow> selectAll(final Connection conn)
+			throws SQLException
+		{
+			return SELECT_ALL.as(PARSER.list(), conn);
+		}
+
+		/**
 		 * Selects all measurements with a given name.
 		 *
 		 * @param name the name of the measurement
@@ -198,7 +230,7 @@ public final class DAO {
 		)
 			throws SQLException
 		{
-			return SELECT
+			return SELECT_BY_NAME
 				.on(value("name", name))
 				.as(PARSER.list(), conn);
 		}
@@ -259,13 +291,93 @@ public final class DAO {
 			return _parameter;
 		}
 
-		static List<ParameterRow> select(final long measurementId, final Connection conn)
+		static List<ParameterRow> select(
+			final long measurementId,
+			final Connection conn
+		)
 			throws SQLException
 		{
 			return SELECT
 				.on(value("measurement_id", measurementId))
 				.as(PARSER.list(), conn);
 		}
+	}
+
+	private static final class SampleRow {
+
+		private static final Dctor<SampleRow> DCTOR = Dctor.of(
+			field("parameter_id", SampleRow::parameterId),
+			field("value", s -> toJson(s.sample()))
+		);
+
+		private static final RowParser<ParameterSample> PARSER = (row, conn) ->
+			new ParameterSample(
+				toObject(row.getString("parameter_value"), Parameter.class),
+				toObject(row.getString("sample_value"), Sample.class)
+			);
+
+		private static final Query INSERT = Query.of(
+			"INSERT INTO sample(parameter_id, value) " +
+			"VALUES(:parameter_id, :value)"
+		);
+
+		private static final Query SELECT = Query.of(
+			"SELECT parameter.value AS parameter_value, sample.value AS sample_value " +
+			"FROM sample " +
+			"INNER JOIN parameter ON parameter.id = parameter_id " +
+			"WHERE parameter.measurement_id = :measurement_id "
+		);
+
+		private final long _id;
+		private final long _parameterId;
+		private final Sample _sample;
+
+		SampleRow(
+			final long id,
+			final long parameterId,
+			final Sample sample
+		) {
+			_id = id;
+			_parameterId = parameterId;
+			_sample = sample;
+		}
+
+		long id() {
+			return _id;
+		}
+
+		long parameterId() {
+			return _parameterId;
+		}
+
+		Sample sample() {
+			return _sample;
+		}
+
+		static long insert(
+			final long parameterId,
+			final Sample sample,
+			final Connection conn
+		)
+			throws SQLException
+		{
+			return INSERT
+				.on(new SampleRow(0, parameterId, sample), DCTOR)
+				.executeInsert(conn)
+				.orElseThrow();
+		}
+
+		static List<ParameterSample> select(
+			final long measurementId,
+			final Connection conn
+		)
+			throws SQLException
+		{
+			return SELECT
+				.on(value("measurement_id", measurementId))
+				.as(PARSER.list(), conn);
+		}
+
 	}
 
 	private static String toJson(final Object object) {
@@ -292,6 +404,21 @@ public final class DAO {
 	}
 
 	/**
+	 * Selects all measurements.
+	 *
+	 * @param conn the DB connection
+	 * @return all measurements with a given name
+	 * @throws SQLException if the selection fails
+	 */
+	public static List<Stored<Measurement>> selectAll(final Connection conn)
+		throws SQLException
+	{
+		return MeasurementRow.selectAll(conn).stream()
+			.map(row -> Stored.of(row.id(), row.measurement()))
+			.collect(Collectors.toList());
+	}
+
+	/**
 	 * Selects all measurements with a given name.
 	 *
 	 * @param name the name of the measurement
@@ -299,12 +426,45 @@ public final class DAO {
 	 * @return all measurements with a given name
 	 * @throws SQLException if the selection fails
 	 */
-	public static List<Stored<Measurement>> selectByName(final String name, final Connection conn)
+	public static List<Stored<Measurement>> selectByName(
+		final String name,
+		final Connection conn
+	)
 		throws SQLException
 	{
 		return MeasurementRow.selectByName(name, conn).stream()
 			.map(row -> Stored.of(row.id(), row.measurement()))
 			.collect(Collectors.toList());
+	}
+
+	public static List<Stored<Parameter>> selectParameters(
+		final long measurementId,
+		final Connection conn
+	)
+		throws SQLException
+	{
+		return ParameterRow.select(measurementId, conn).stream()
+			.map(row -> Stored.of(row.id(), row.parameter()))
+			.collect(Collectors.toList());
+	}
+
+	public static long insertSample(
+		final long parameterId,
+		final Sample sample,
+		final Connection conn
+	)
+		throws SQLException
+	{
+		return SampleRow.insert(parameterId, sample, conn);
+	}
+
+	public static List<ParameterSample> selectParameterSamples(
+		final long measurementId,
+		final Connection conn
+	)
+		throws SQLException
+	{
+		return SampleRow.select(measurementId, conn);
 	}
 
 }
