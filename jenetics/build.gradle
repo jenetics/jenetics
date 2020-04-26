@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
+	id 'me.champeau.gradle.jmh' version '0.5.0'
 }
 
 apply plugin: 'java-library'
@@ -46,9 +46,7 @@ dependencies {
 }
 
 jmh {
-	warmupIterations = 5
-	iterations = 5
-	include = ['.*BufferPerf.*']
+	include = ['.*IntegerChromosomePerf.*']
 }
 
 idea {

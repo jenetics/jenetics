@@ -113,7 +113,7 @@ public final class Const<T> extends Val<T> implements Serializable {
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static Const read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		final String name = readNullableString(in);

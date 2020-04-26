@@ -234,7 +234,7 @@ public final class TreePattern<V> implements Serializable {
 
 			return tree.equals(node);
 		} else {
-			final Val<V> p = (Val<V>)pattern.value();
+			final Val<V> p = (Val<V>)decl;
 			final V v = node.value();
 
 			if (Objects.equals(v, p.value())) {

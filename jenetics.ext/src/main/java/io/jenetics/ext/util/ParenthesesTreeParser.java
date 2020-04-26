@@ -34,11 +34,11 @@ import java.util.function.Function;
  * Parses an parentheses string into a {@code TreeNode<String>} object.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.3
+ * @version 6.0
  * @since 4.3
  */
-final class TreeParser {
-	private TreeParser() {}
+final class ParenthesesTreeParser {
+	private ParenthesesTreeParser() {}
 
 	/**
 	 * Represents a parentheses tree string token.

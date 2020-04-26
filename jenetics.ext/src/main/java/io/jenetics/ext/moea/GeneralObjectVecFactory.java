@@ -67,7 +67,7 @@ final class GeneralObjectVecFactory<T> implements VecFactory<T[]> {
 	}
 
 	private int dom(final T[] u, final T[] v) {
-		return Pareto.dominance(u, v, _maximisations.length, this::cmp);
+		return Pareto.dominance(u, v, _maximisations.length, _comparator);
 	}
 
 	@Override

@@ -158,23 +158,11 @@ public class StreamPublisher<T> extends SubmissionPublisher<T> {
 					Thread.currentThread().interrupt();
 					close();
 				} catch (Throwable e) {
-					if (nonFatal(e)) {
-						closeExceptionally(e);
-					} else {
-						throw e;
-					}
+					closeExceptionally(e);
 				}
 			});
 			_thread.start();
 		}
-	}
-
-	private static boolean nonFatal(final Throwable throwable) {
-		return
-			!(throwable instanceof VirtualMachineError) &&
-			!(throwable instanceof ThreadDeath) &&
-			!(throwable instanceof InterruptedException) &&
-			!(throwable instanceof LinkageError);
 	}
 
 	/**

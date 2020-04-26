@@ -307,7 +307,7 @@ public final class FlatTreeNode<V>
 	 *         parsed
 	 */
 	public static FlatTreeNode<String> parse(final String tree) {
-		return of(TreeParser.parse(tree, Function.identity()));
+		return of(ParenthesesTreeParser.parse(tree, Function.identity()));
 	}
 
 	/**
@@ -343,7 +343,7 @@ public final class FlatTreeNode<V>
 		final String tree,
 		final Function<? super String, ? extends B> mapper
 	) {
-		return of(TreeParser.parse(tree, mapper));
+		return of(ParenthesesTreeParser.parse(tree, mapper));
 	}
 
 
