@@ -1,5 +1,79 @@
 ## Release notes
 
+### [6.0.0](https://github.com/jenetics/jenetics/releases/tag/v6.0.0)
+
+#### Improvements
+
+* [#403](https://github.com/jenetics/jenetics/issues/403): Converting library to Java 11.
+* [#581](https://github.com/jenetics/jenetics/issues/581): Minimize the required _evaluation_ calls per generation.
+* [#587](https://github.com/jenetics/jenetics/issues/587): Fix Javadoc for Java 11.
+* [#590](https://github.com/jenetics/jenetics/issues/590): Improve serialization of `Seq` implementations.
+* [#591](https://github.com/jenetics/jenetics/issues/591): Remove deprecated classes and methods.
+* [#606](https://github.com/jenetics/jenetics/issues/606): Improve serialization of `*Range` classes.
+* [#630](https://github.com/jenetics/jenetics/issues/630): Fix inconsistency in `Codec.of` factory methods.
+* [#659](https://github.com/jenetics/jenetics/issues/659): Additional factory methods for `VecFactory` interface in the `moea` package.
+* [#661](https://github.com/jenetics/jenetics/issues/661): Allow the re-evaluation of the population fitness value
+* [#665](https://github.com/jenetics/jenetics/issues/665): Implement `CombineAlterer`, which is a generalization of th `MeanAlterer` class.
+* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically chaning sample points.
+```java
+final var scheduler = Executors.newScheduledThreadPool(1);
+final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
+final var sampling = new SampleBuffer<Double>(100);
+scheduler.scheduleWithFixedDelay(
+    () -> {
+        // Adding a new sample point every second to the ring buffer.
+        sampling.add(nextSamplePoint());
+        // Force re-evaluation of populations fitness values.
+        nullifier.nullifyFitness();
+    },
+    1, 1, TimeUnit.SECONDS
+);
+
+final Codec<Tree<Op<Double>, ?>, ProgramGene<Double>> codec =
+    Regression.codecOf(OPS, TMS, 5, t -> t.gene().size() < 30);
+
+final Regression<Double> regression = Regression.of(
+    codec,
+    Error.of(LossFunction::mse),
+    sampling
+);
+
+final Engine<ProgramGene<Double>, Double> engine = Engine
+    .builder(regression)
+    .interceptor(nullifier)
+    .build();
+
+engine.stream()
+    .flatMap(Streams.toIntervalMax(Duration.ofSeconds(30)))
+    .map(program -> program.bestPhenotype()
+        .genotype().gene()
+        .toParenthesesString())
+    // Printing the best program found so far every 30 seconds.
+    .forEach(System.out::println);
+```
+* [#671](https://github.com/jenetics/jenetics/issues/671): Adding helper methods in `Streams` class, which allows to emit the best evolution result of every _n_ generation.
+* [#672](https://github.com/jenetics/jenetics/issues/672): Introduce the `StreamPublisher` class, which allows to use a _normal_ Java Stream in a _reactive_ way.
+```java
+final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
+try (publisher) {
+    final var stream= engine.stream();
+    publisher.subscribe(new Subscriber<>() { ... });
+    publisher.attach(stream);
+    ...
+}
+```
+* [#679](https://github.com/jenetics/jenetics/issues/679): Additional constructor for the `TournamentSelector`, which allows to define own `Phenotype` comparator.
+```java
+final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+    .flatMap(Streams.toIntervalMax(sliceSize))
+    .collect(ISeq.toISeq());
+``` 
+
+#### Bugs
+
+* [#667](https://github.com/jenetics/jenetics/issues/667): Fix `Concurrency.close()` method.
+
+
 ### [5.2.0](https://github.com/jenetics/jenetics/releases/tag/v5.2.0)
 
 #### Improvements
