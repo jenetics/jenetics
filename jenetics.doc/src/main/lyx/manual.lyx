@@ -8307,7 +8307,7 @@ Nullifier
 , which allows you to enforce the reevaluation of the fitness values of
  all individuals.
  This might be handy, if the fitness function is not time-invariant and
- can be change during the evolution process.
+ can change during the evolution process.
 \end_layout
 
 \begin_layout Description
@@ -25958,7 +25958,7 @@ io.jenetics.prngine
 \begin_layout Plain Layout
 
 \family typewriter
-io.jenetics:prngine:1.0.1
+io.jenetics:prngine:1.0.2
 \end_layout
 
 \end_inset
