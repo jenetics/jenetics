@@ -678,13 +678,13 @@ Jenetics
 status collapsed
 
 \begin_layout Plain Layout
-The library is build with and depends on Java SE 8: 
+The library is build with and depends on Java SE 11: 
 \begin_inset Flex URL
-status collapsed
+status open
 
 \begin_layout Plain Layout
 
-http://www.oracle.com/technetwork/java/javase/downloads/index.html
+https://adoptopenjdk.net/
 \end_layout
 
 \end_inset
@@ -731,9 +731,9 @@ literal "false"
 \end_inset
 
  (GP) implementation.
- It has no runtime dependencies to other libraries, except the Java 8 runtime.
- Although the library is written in Java 8, it is compilable with Java 11
- and 13.
+ It has no runtime dependencies to other libraries, except the Java 11 runtime.
+ Although the library is written in Java 11, it is compilable with Java
+ 14.
  
 \family sans
 \series bold
@@ -1419,7 +1419,7 @@ As the example shows,
 \family typewriter
  Collector
 \family default
- classes of Java 8.
+ classes.
  Also lambda expressions and the functional interfaces (SAM types) plays
  an important roll in the library design.
 \end_layout
@@ -7038,6 +7038,56 @@ final int[] indexes = IntStream.range(0, length)
 \end_layout
 
 \begin_layout Paragraph
+Combine alterer
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Combine-alterer"
+
+\end_inset
+
+
+\begin_inset Index idx
+status collapsed
+
+\begin_layout Plain Layout
+Combine alterer
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This alterer changes a two genes by combining them.
+ The combine function can be defined when the alterer is created.
+ How this is done, is shown in the code snippet below.
+\begin_inset listings
+lstparams "language=Java"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+final var alterer = new CombineAlterer<DoubleGene, Double>(
+\end_layout
+
+\begin_layout Plain Layout
+
+	(g1, g2) -> g1.newInstance(g1.doubleValue()/g2.doubleValue())
+\end_layout
+
+\begin_layout Plain Layout
+
+);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
 Mean alterer
 \begin_inset CommandInset label
 LatexCommand label
@@ -7066,6 +7116,14 @@ The Mean alterer works on genes which implement the
  interface.
  All numeric genes implement this interface by calculating the arithmetic
  mean of two genes.
+ This alterer is a specialization of the 
+\family typewriter
+Com\SpecialChar softhyphen
+bine\SpecialChar softhyphen
+Alter\SpecialChar softhyphen
+er
+\family default
+.
 \end_layout
 
 \begin_layout Paragraph
@@ -8227,6 +8285,34 @@ genotypeFactory
 \begin_layout Description
 
 \family typewriter
+interceptor
+\family default
+ The interceptor lets you define functions, which are able to change the
+ 
+\family typewriter
+Evolution\SpecialChar softhyphen
+Result
+\family default
+ before and after an evolution step.
+ An 
+\family typewriter
+EvolutionInterceptor
+\family default
+ can be seen a crosscutting aspect of the evolution process.
+ One implementation of the EvolutionInterceptor is the 
+\family typewriter
+Fitness\SpecialChar softhyphen
+Nullifier
+\family default
+, which allows you to enforce the reevaluation of the fitness values of
+ all individuals.
+ This might be handy, if the fitness function is not time-invariant and
+ can be change during the evolution process.
+\end_layout
+
+\begin_layout Description
+
+\family typewriter
 maximalPhenotypeAge
 \family default
  Set the maximal allowed age of an individual (
@@ -8384,48 +8470,6 @@ Selec\SpecialChar softhyphen
 tor<>(3)
 \family default
 .
-\end_layout
-
-\begin_layout Description
-
-\family typewriter
-mapper
-\family default
- This property lets you define an mapper, which transforms the final 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Result
-\family default
- object after every generation.
- One usage of the mapper is to remove duplicate individuals from the population.
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-Population!unique
-\end_layout
-
-\end_inset
-
-
-\begin_inset Index idx
-status collapsed
-
-\begin_layout Plain Layout
-EvolutionResult!mapper
-\end_layout
-
-\end_inset
-
- The 
-\family typewriter
-Evolution\SpecialChar softhyphen
-Result\SpecialChar softhyphen
-.to\SpecialChar softhyphen
-Unique\SpecialChar softhyphen
-Population()
-\family default
- method provides such a de-duplication mapper.
 \end_layout
 
 \begin_layout Standard
@@ -25551,8 +25595,8 @@ Engine
 not
 \emph default
  affected.
- If we want to intercept the evolution process, the mapping must be defined
- when the 
+ If we want to intercept the evolution process, the interceptor must be
+ defined when the 
 \family typewriter
 Engine
 \family default
@@ -25572,7 +25616,7 @@ final Engine<DobuleGene, Double> engine = Engine.build(problem)
 
 \begin_layout Plain Layout
 
-    .mapping(this::mapping)
+    .interceptor(EvolutionInterceptor.ofAfter(this::mapping))
 \end_layout
 
 \begin_layout Plain Layout
@@ -25662,7 +25706,7 @@ final Engine<DobuleGene, Double> engine = Engine.build(problem)
 
 \begin_layout Plain Layout
 
-    .mapping(EvolutionResult.toUniquePopulation())
+    .interceptor(EvolutionResult.toUniquePopulation())
 \end_layout
 
 \begin_layout Plain Layout
@@ -41178,7 +41222,7 @@ name "Gradle"
 \series bold
 Version
 \series default
-: 6.1.1
+: 6.3
 \end_layout
 
 \begin_layout Itemize
@@ -41215,7 +41259,7 @@ status collapsed
 
 \begin_layout Plain Layout
 
-http://services.gradle.org/distributions/gradle-6.1.1-bin.zip
+http://services.gradle.org/distributions/gradle-6.3-bin.zip
 \end_layout
 
 \end_inset
