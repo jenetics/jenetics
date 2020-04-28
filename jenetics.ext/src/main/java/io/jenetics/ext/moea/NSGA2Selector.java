@@ -112,13 +112,13 @@ public class NSGA2Selector<
 			_dominance,
 			_comparator,
 			_distance,
-			_dimension
+			_dimension.applyAsInt(population.get(0))
 		);
 
 		final int[] idx = ProxySorter.sort(
 			init(new int[population.size()]),
 			population.size(),
-			(a, i, j) -> cc.compare(a[j], a[i])
+			cc.reversed()
 		);
 
 		final List<Phenotype<G, C>> result = new ArrayList<>();

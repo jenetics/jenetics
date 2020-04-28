@@ -20,20 +20,19 @@
 package io.jenetics.ext.moea;
 
 import java.util.Comparator;
-import java.util.function.ToIntFunction;
 
 import io.jenetics.Optimize;
-import io.jenetics.internal.util.IntComparator;
 import io.jenetics.util.BaseSeq;
+import io.jenetics.util.ProxySorter;
 
 /**
- * Crowded distance comparator.
+ * NSGA2 crowded distance comparator.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since 4.1
  */
-final class NSGA2Comparator<T> implements IntComparator {
+final class NSGA2Comparator<T> implements ProxySorter.Comparator<int[]> {
 
 	private final int[] _rank;
 	private final double[] _dist;
@@ -44,27 +43,36 @@ final class NSGA2Comparator<T> implements IntComparator {
 		final Comparator<? super T> dominance,
 		final ElementComparator<? super T> comparator,
 		final ElementDistance<? super T> distance,
-		final ToIntFunction<? super T> dimension
+		final int objectives
 	) {
-		_rank = Pareto.rank(
-			population,
-			opt == Optimize.MAXIMUM
-				? dominance
-				: dominance.reversed()
-		);
+		if (population.isEmpty()) {
+			_rank = new int[0];
+			_dist = new double[0];
+		} else {
+			_rank = Pareto.rank(
+				population,
+				opt == Optimize.MAXIMUM
+					? dominance
+					: dominance.reversed()
+			);
 
-		_dist = Pareto.crowdingDistance(
-			population,
-			opt == Optimize.MAXIMUM
-				? comparator
-				: comparator.reversed(),
-			distance,
-			dimension
-		);
+			_dist = NSGA2.crowdingDistance(
+				population,
+				opt == Optimize.MAXIMUM
+					? comparator
+					: comparator.reversed(),
+				distance,
+				objectives
+			);
+		}
 	}
 
 	@Override
-	public int compare(final int i, final int j) {
+	public int compare(final int[] array, final int i, final int j) {
+		return compare(array[i], array[j]);
+	}
+
+	int compare(final int i, final int j) {
 		if (cco(i, j)) {
 			return 1;
 		} else if (cco(j, i)) {
@@ -78,5 +86,4 @@ final class NSGA2Comparator<T> implements IntComparator {
 		return _rank[i] < _rank[j] ||
 			(_rank[i] == _rank[j] && _dist[i] > _dist[j]);
 	}
-
 }

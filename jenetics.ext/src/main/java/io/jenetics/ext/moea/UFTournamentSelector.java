@@ -123,7 +123,7 @@ public class UFTournamentSelector<
 			_dominance,
 			_comparator,
 			_distance,
-			_dimension
+			_dimension.applyAsInt(population.get(0))
 		);
 
 		final List<Phenotype<G, C>> S = new ArrayList<>();
