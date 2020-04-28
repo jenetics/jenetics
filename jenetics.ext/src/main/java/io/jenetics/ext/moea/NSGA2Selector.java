@@ -106,7 +106,7 @@ public class NSGA2Selector<
 		final int count,
 		final Optimize opt
 	) {
-		final NSGA2Comparator<Phenotype<G, C>> cc = new NSGA2Comparator<>(
+		final NSGA2Order<Phenotype<G, C>> cc = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,

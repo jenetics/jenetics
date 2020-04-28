@@ -28,16 +28,19 @@ import io.jenetics.util.ProxySorter;
 /**
  * NSGA2 crowded distance comparator.
  *
+ * @see <a href="https://www.iitk.ac.in/kangal/Deb_NSGA-II.pdf">
+ *     A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II</a>
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version !__version__!
  * @since 4.1
  */
-final class NSGA2Comparator<T> implements ProxySorter.Comparator<int[]> {
+final class NSGA2Order<T> implements ProxySorter.Comparator<int[]> {
 
 	private final int[] _rank;
 	private final double[] _dist;
 
-	NSGA2Comparator(
+	NSGA2Order(
 		final BaseSeq<? extends T> population,
 		final Optimize opt,
 		final Comparator<? super T> dominance,

@@ -117,7 +117,7 @@ public class UFTournamentSelector<
 	) {
 		final Random random = RandomRegistry.random();
 
-		final NSGA2Comparator<Phenotype<G, C>> cc = new NSGA2Comparator<>(
+		final NSGA2Order<Phenotype<G, C>> cc = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,
