@@ -30,15 +30,15 @@ import io.jenetics.util.BaseSeq;
  * Crowded distance comparator.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 4.1
+ * @version !__version__!
  * @since 4.1
  */
-final class CrowdedComparator<T> implements IntComparator {
+final class NSGA2Comparator<T> implements IntComparator {
 
 	private final int[] _rank;
 	private final double[] _dist;
 
-	CrowdedComparator(
+	NSGA2Comparator(
 		final BaseSeq<? extends T> population,
 		final Optimize opt,
 		final Comparator<? super T> dominance,
