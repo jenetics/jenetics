@@ -106,4 +106,38 @@ public final class NSGA2 {
 		return result;
 	}
 
+
+	/**
+	 * The crowding distance value of a solution provides an estimate of the
+	 * density of solutions surrounding that solution. The <em>crowding
+	 * distance</em> value of a particular solution is the average distance of
+	 * its two neighboring solutions.
+	 *
+	 * @apiNote
+	 * Calculating the crowding distance has a time complexity of
+	 * {@code O(d*n*log(n))}, where {@code d} is the number of dimensions and
+	 * {@code n} the {@code set} size.
+	 *
+	 * @see #crowdingDistance(BaseSeq, ElementComparator, ElementDistance, int)
+	 *
+	 * @param set the point set used for calculating the <em>crowding distance</em>
+	 * @param <T> the vector type
+	 * @return the crowded distances of the {@code set} points
+	 * @throws NullPointerException if the input {@code set} is {@code null}
+	 * @throws IllegalArgumentException if {@code set.get(0).length() < 2}
+	 */
+	public static <T> double[]
+	crowdingDistance(final BaseSeq<? extends Vec<T>> set) {
+		if (set.isEmpty()) {
+			return new double[0];
+		} else {
+			return crowdingDistance(
+				set,
+				Vec::compare,
+				Vec::distance,
+				set.get(0).length()
+			);
+		}
+	}
+
 }
