@@ -117,7 +117,7 @@ public class UFTournamentSelector<
 	) {
 		final Random random = RandomRegistry.random();
 
-		final NSGA2Order<Phenotype<G, C>> cc = new NSGA2Order<>(
+		final NSGA2Order<Phenotype<G, C>> order = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,
@@ -132,7 +132,7 @@ public class UFTournamentSelector<
 			final int[] G = subset(population.size(), k, random);
 
 			for (int j = 0; j < G.length - 1 && S.size() < count; j += 2) {
-				final int cmp = cc.compare(G[j], G[j + 1]);
+				final int cmp = order.compare(G[j], G[j + 1]);
 				final int p;
 				if (cmp > 0) {
 					p = G[j];

@@ -106,7 +106,7 @@ public class NSGA2Selector<
 		final int count,
 		final Optimize opt
 	) {
-		final NSGA2Order<Phenotype<G, C>> cc = new NSGA2Order<>(
+		final NSGA2Order<Phenotype<G, C>> order = new NSGA2Order<>(
 			population,
 			opt,
 			_dominance,
@@ -118,7 +118,7 @@ public class NSGA2Selector<
 		final int[] idx = ProxySorter.sort(
 			init(new int[population.size()]),
 			population.size(),
-			cc.reversed()
+			order.reversed()
 		);
 
 		final List<Phenotype<G, C>> result = new ArrayList<>();
