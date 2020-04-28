@@ -28,7 +28,7 @@ import java.util.concurrent.CompletionException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import io.jenetics.PartialAlterer.Section;
+import io.jenetics.PartialAlterer.Projection;
 import io.jenetics.engine.Codecs;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -60,9 +60,9 @@ public class PartialAltererTest {
 			0
 		);
 
-		final Section section = Section.of(1, 3, 5);
+		final PartialAlterer.Projection projection = PartialAlterer.Projection.of(1, 3, 5);
 
-		final Phenotype<DoubleGene, Double> split = section.split(pt);
+		final Phenotype<DoubleGene, Double> split = projection.project(pt);
 		Assert.assertEquals(split.genotype().length(), 3);
 		Assert.assertEquals(split.genotype().get(0), pt.genotype().get(1));
 		Assert.assertEquals(split.genotype().get(1), pt.genotype().get(3));
@@ -83,20 +83,20 @@ public class PartialAltererTest {
 			.map(g -> Phenotype.<DoubleGene, Double>of(g, 0))
 			.collect(ISeq.toISeq());
 
-		final Section section = Section.of(1, 3);
+		final Projection projection = PartialAlterer.Projection.of(1, 3);
 
-		final Seq<Phenotype<DoubleGene, Double>> split = section.split(population);
+		final Seq<Phenotype<DoubleGene, Double>> split = projection.project(population);
 		Assert.assertEquals(split.length(), population.length());
 		for (int i = 0; i < population.length(); ++i) {
 			Assert.assertEquals(split.get(i).genotype().length(), 2);
 		}
 
-		final Seq<Phenotype<DoubleGene, Double>> merged = section.merge(split, population);
+		final Seq<Phenotype<DoubleGene, Double>> merged = projection.merge(split, population);
 		Assert.assertEquals(merged, population);
 	}
 
 	@Test
-	public void alterer() {
+	public void constAlterer() {
 		final Genotype<DoubleGene> gt = Genotype.of(
 			DoubleChromosome.of(0, 1),
 			DoubleChromosome.of(1, 2),
@@ -106,7 +106,7 @@ public class PartialAltererTest {
 
 		final ISeq<Phenotype<DoubleGene, Double>> population = gt.instances()
 			.limit(3)
-			.map(g -> Phenotype.<DoubleGene, Double>of(g, 0))
+			.map(g -> Phenotype.of(g, 0, PI))
 			.collect(ISeq.toISeq());
 
 		final Alterer<DoubleGene, Double> alterer = PartialAlterer.of(
@@ -118,8 +118,8 @@ public class PartialAltererTest {
 			alterer.alter(population, 10);
 
 		for (int i = 0; i < population.length(); ++i) {
-			final Phenotype<DoubleGene, Double> pt1 = population.get(0);
-			final Phenotype<DoubleGene, Double> pt2 = result.population().get(0);
+			final Phenotype<DoubleGene, Double> pt1 = population.get(i);
+			final Phenotype<DoubleGene, Double> pt2 = result.population().get(i);
 
 			Assert.assertEquals(pt1.genotype().get(0), pt2.genotype().get(0));
 			Assert.assertNotEquals(pt1.genotype().get(1), pt2.genotype().get(1));
@@ -128,8 +128,40 @@ public class PartialAltererTest {
 
 			Assert.assertEquals(pt2.genotype().get(1).gene().doubleValue(), 0.5);
 			Assert.assertEquals(pt2.genotype().get(2).gene().doubleValue(), 0.5);
-		}
 
+			Assert.assertTrue(pt1.isEvaluated());
+			Assert.assertFalse(pt2.isEvaluated());
+		}
+	}
+
+	@Test
+	public void noneAlterer() {
+		final Genotype<DoubleGene> gt = Genotype.of(
+			DoubleChromosome.of(0, 1),
+			DoubleChromosome.of(1, 2),
+			DoubleChromosome.of(2, 3),
+			DoubleChromosome.of(3, 4)
+		);
+
+		final ISeq<Phenotype<DoubleGene, Double>> population = gt.instances()
+			.limit(3)
+			.map(g -> Phenotype.of(g, 0, PI))
+			.collect(ISeq.toISeq());
+
+		final Alterer<DoubleGene, Double> alterer = PartialAlterer.of(
+			(pop, gen) -> AltererResult.of(pop),
+			1, 2
+		);
+
+		final AltererResult<DoubleGene, Double> result =
+			alterer.alter(population, 10);
+
+		for (int i = 0; i < population.length(); ++i) {
+			final Phenotype<DoubleGene, Double> pt1 = population.get(i);
+			final Phenotype<DoubleGene, Double> pt2 = result.population().get(i);
+
+			Assert.assertSame(pt1, pt2);
+		}
 	}
 
 	private static final class ConstAlterer<
