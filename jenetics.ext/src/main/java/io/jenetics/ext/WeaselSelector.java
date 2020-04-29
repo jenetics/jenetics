@@ -43,8 +43,7 @@ import io.jenetics.util.Seq;
  * </p>
  * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
  * <pre>{@code
- * final Engine<CharacterGene, Integer> engine = Engine
- *     .builder(fitness, gtf)
+ * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *      // Set the 'WeaselSelector'.
  *     .selector(new WeaselSelector<>())
  *      // Disable survivors selector.
@@ -56,6 +55,9 @@ import io.jenetics.util.Seq;
  *
  * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * @see WeaselMutator
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5

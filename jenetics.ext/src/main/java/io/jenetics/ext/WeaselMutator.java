@@ -45,8 +45,7 @@ import io.jenetics.util.Seq;
  * </p>
  * {@link io.jenetics.engine.Engine} setup for the <i>Weasel program:</i>
  * <pre>{@code
- * final Engine<CharacterGene, Integer> engine = Engine
- *     .builder(fitness, gtf)
+ * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
  *      // Set the 'WeaselSelector'.
  *     .selector(new WeaselSelector<>())
  *      // Disable survivors selector.
@@ -59,6 +58,9 @@ import io.jenetics.util.Seq;
  * @see <a href="https://en.wikipedia.org/wiki/Weasel_program">Weasel program</a>
  * @see WeaselSelector
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
  * @version 5.0
@@ -70,10 +72,21 @@ public class WeaselMutator<
 	extends Mutator<G, C>
 {
 
+	/**
+	 * Create a new weasel mutator with the given mutation probability.
+	 *
+	 * @param probability the mutation probability
+	 * @throws IllegalArgumentException if the {@code probability} is not in the
+	 *          valid range of {@code [0, 1]}.
+	 */
 	public WeaselMutator(final double probability) {
 		super(probability);
 	}
 
+	/**
+	 * Create a new weasel mutator with the <em>default</em> mutation probability
+	 * of {@code 0.05}.
+	 */
 	public WeaselMutator() {
 		this(0.05);
 	}

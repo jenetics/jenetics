@@ -26,7 +26,6 @@ import io.jenetics.Mutator;
 import io.jenetics.MutatorResult;
 import io.jenetics.internal.math.Probabilities;
 
-import io.jenetics.ext.util.FlatTree;
 import io.jenetics.ext.util.FlatTreeNode;
 import io.jenetics.ext.util.TreeNode;
 
