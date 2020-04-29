@@ -40,10 +40,10 @@ public interface EngineSetup<
 > {
 
 	/**
-	 * Performs the setup of the given engine {@code builder}.
+	 * Applies {@code this} setup to the given engine {@code builder}.
 	 *
 	 * @param builder the engine builder to setup (configure)
 	 */
-	void setup(final Engine.Builder<G, C> builder);
+	void apply(final Engine.Builder<G, C> builder);
 
 }

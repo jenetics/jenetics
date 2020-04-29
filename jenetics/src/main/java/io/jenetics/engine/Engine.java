@@ -733,7 +733,7 @@ public final class Engine<
 		 * @throws NullPointerException if the {@code setup} is {@code null}.
 		 */
 		public Builder<G, C> setup(final EngineSetup<G, C> setup) {
-			setup.setup(this);
+			setup.apply(this);
 			return this;
 		}
 
