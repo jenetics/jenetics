@@ -724,6 +724,20 @@ public final class Engine<
 		}
 
 		/**
+		 * Applies the given {@code setup} recipe to {@code this} engine builder.
+		 *
+		 * @since !__version__!
+		 *
+		 * @param setup the setup recipe applying to {@code this} builder
+		 * @return {@code this} builder, for command chaining
+		 * @throws NullPointerException if the {@code setup} is {@code null}.
+		 */
+		public Builder<G, C> setup(final EngineSetup<G, C> setup) {
+			setup.setup(this);
+			return this;
+		}
+
+		/**
 		 * Set the evolution parameters used by the engine.
 		 *
 		 * @since 5.2
