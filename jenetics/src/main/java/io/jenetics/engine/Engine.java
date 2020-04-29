@@ -732,7 +732,7 @@ public final class Engine<
 		 * @return {@code this} builder, for command chaining
 		 * @throws NullPointerException if the {@code setup} is {@code null}.
 		 */
-		public Builder<G, C> setup(final EngineSetup<G, C> setup) {
+		public Builder<G, C> setup(final Setup<G, C> setup) {
 			setup.apply(this);
 			return this;
 		}
@@ -1214,6 +1214,47 @@ public final class Engine<
 
 	}
 
+
+	/* *************************************************************************
+	 * Engine setup
+	 **************************************************************************/
+
+
+	/**
+	 * This interface represents a recipe for configuring (setup) a given
+	 * {@link Builder}. It is mainly used for grouping mutually dependent
+	 * engine configurations. The following code snippet shows a possible usage
+	 * example.
+	 *
+	 * <pre>{@code
+	 * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
+	 *     .setup(new WeaselProgram<>())
+	 *     .build();
+	 * }</pre>
+	 *
+	 * @see Builder#setup(Setup)
+	 *
+	 * @param <G> the gene type
+	 * @param <C> the fitness result type
+	 *
+	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
+	 * @version !__version__!
+	 * @since !__version__!
+	 */
+	@FunctionalInterface
+	public static interface Setup<
+		G extends Gene<?, G>,
+		C extends Comparable<? super C>
+	> {
+
+		/**
+		 * Applies {@code this} setup to the given engine {@code builder}.
+		 *
+		 * @param builder the engine builder to setup (configure)
+		 */
+		void apply(final Builder<G, C> builder);
+
+	}
 }
 
 

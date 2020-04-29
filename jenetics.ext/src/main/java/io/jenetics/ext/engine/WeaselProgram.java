@@ -21,7 +21,7 @@ package io.jenetics.ext.engine;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine.Builder;
-import io.jenetics.engine.EngineSetup;
+import io.jenetics.engine.Engine.Setup;
 import io.jenetics.internal.util.Requires;
 
 import io.jenetics.ext.WeaselMutator;
@@ -52,7 +52,7 @@ public final class WeaselProgram<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
-	implements EngineSetup<G, C>
+	implements Setup<G, C>
 {
 
 	private final double _mutationProbability;
