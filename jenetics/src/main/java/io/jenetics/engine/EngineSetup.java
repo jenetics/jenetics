@@ -24,7 +24,16 @@ import io.jenetics.Gene;
 /**
  * This interface represents a recipe for configuring (setup) a given
  * {@link Engine.Builder}. It is mainly used for grouping mutually dependent
- * engine configurations.
+ * engine configurations. The following code snippet shows a possible usage
+ * example.
+ *
+ * <pre>{@code
+ * final Engine<CharacterGene, Integer> engine = Engine.builder(problem)
+ *     .setup(new WeaselProgram<>())
+ *     .build();
+ * }</pre>
+ *
+ * @see Engine.Builder#setup(EngineSetup)
  *
  * @param <G> the gene type
  * @param <C> the fitness result type
