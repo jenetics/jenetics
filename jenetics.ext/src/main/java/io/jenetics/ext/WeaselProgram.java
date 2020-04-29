@@ -17,15 +17,12 @@
  * Author:
  *    Franz Wilhelmstötter (franz.wilhelmstoetter@gmail.com)
  */
-package io.jenetics.ext.engine;
+package io.jenetics.ext;
 
 import io.jenetics.Gene;
 import io.jenetics.engine.Engine.Builder;
 import io.jenetics.engine.Engine.Setup;
 import io.jenetics.internal.util.Requires;
-
-import io.jenetics.ext.WeaselMutator;
-import io.jenetics.ext.WeaselSelector;
 
 /**
  * Configures the evolution engine to execute the
