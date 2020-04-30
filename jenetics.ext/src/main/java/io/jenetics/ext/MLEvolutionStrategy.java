@@ -29,7 +29,7 @@ import io.jenetics.engine.Engine.Setup;
 import io.jenetics.internal.util.Requires;
 
 /**
- * Setup for an (μ, λ)-Evolution Strategy. Applying this setup is done in the
+ * Setup for a (μ, λ)-Evolution Strategy. Applying this setup is done in the
  * following way.
  * <pre>{@code
  * final var engine = Engine.builder(problem)
