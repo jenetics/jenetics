@@ -726,7 +726,7 @@ public final class Engine<
 		/**
 		 * Applies the given {@code setup} recipe to {@code this} engine builder.
 		 *
-		 * @since !__version__!
+		 * @since 6.0
 		 *
 		 * @param setup the setup recipe applying to {@code this} builder
 		 * @return {@code this} builder, for command chaining
@@ -1238,8 +1238,8 @@ public final class Engine<
 	 * @param <C> the fitness result type
 	 *
 	 * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
-	 * @version !__version__!
-	 * @since !__version__!
+	 * @version 6.0
+	 * @since 6.0
 	 */
 	@FunctionalInterface
 	public static interface Setup<

@@ -42,8 +42,8 @@ import io.jenetics.internal.util.Requires;
  * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.0
+ * @since 6.0
  */
 public final class WeaselProgram<
 	G extends Gene<?, G>,
