@@ -42,8 +42,8 @@ import io.jenetics.internal.util.Requires;
  * @param <C> the fitness result type
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version !__version__!
- * @since !__version__!
+ * @version 6.0
+ * @since 6.0
  */
 public final class WeaselProgram<
 	G extends Gene<?, G>,
@@ -75,9 +75,10 @@ public final class WeaselProgram<
 
 	@Override
 	public void apply(final Builder<G, C> builder) {
-		builder.selector(new WeaselSelector<>());
-		builder.offspringFraction(1);
-		builder.alterers(new WeaselMutator<>(_mutationProbability));
+		builder
+			.selector(new WeaselSelector<>())
+			.offspringFraction(1)
+			.alterers(new WeaselMutator<>(_mutationProbability));
 	}
 
 }
