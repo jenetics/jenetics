@@ -75,9 +75,10 @@ public final class WeaselProgram<
 
 	@Override
 	public void apply(final Builder<G, C> builder) {
-		builder.selector(new WeaselSelector<>());
-		builder.offspringFraction(1);
-		builder.alterers(new WeaselMutator<>(_mutationProbability));
+		builder
+			.selector(new WeaselSelector<>())
+			.offspringFraction(1)
+			.alterers(new WeaselMutator<>(_mutationProbability));
 	}
 
 }
