@@ -71,7 +71,7 @@ public final class MLEvolutionStrategy<
 	 * @param mu the number of fittest individuals to be selected
 	 * @param lambda the population count
 	 * @param mutationProbability the mutation probability
-	 * @throws IllegalArgumentException if {@code mi < 2} or {@code lambda < mu}
+	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}
 	 */
 	public MLEvolutionStrategy(
@@ -102,7 +102,7 @@ public final class MLEvolutionStrategy<
 	 *
 	 * @param mu the number of fittest individuals to be selected
 	 * @param lambda the population count
-	 * @throws IllegalArgumentException if {@code mi < 2} or {@code lambda < mu}
+	 * @throws IllegalArgumentException if {@code mu < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}
 	 */
 	public MLEvolutionStrategy(final int mu, final int lambda) {
