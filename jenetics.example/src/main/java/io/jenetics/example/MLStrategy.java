@@ -49,8 +49,7 @@ public class MLStrategy {
 		final Codec<Double, DoubleGene> codec = Codecs
 			.ofScalar(DoubleRange.of(0, 1));
 
-		final Engine<DoubleGene, Double> engine = Engine
-			.builder(MLStrategy::fitness, codec)
+		final Engine<DoubleGene, Double> engine = Engine.builder(MLStrategy::fitness, codec)
 			.populationSize(λ)
 			.survivorsSize(0)
 			.offspringSelector(new TruncationSelector<>(μ))

@@ -19,11 +19,33 @@
  */
 package io.jenetics.ext;
 
+import static java.lang.String.format;
+
 import io.jenetics.Gene;
+import io.jenetics.Mutator;
+import io.jenetics.TruncationSelector;
 import io.jenetics.engine.Engine.Builder;
 import io.jenetics.engine.Engine.Setup;
+import io.jenetics.internal.util.Requires;
 
 /**
+ * Setup for an (μ, λ)-Evolution Strategy. Applying this setup is done in the
+ * following way.
+ * <pre>{@code
+ * final var engine = Engine.builder(problem)
+ *     .setup(new MLEvolutionStrategy<>(μ, λ, p)
+ *     .build();
+ * }</pre>
+ *
+ * And is equivalent to the following builder setup.
+ * <pre>{@code
+ * final var engine = Engine.builder(problem)
+ *     .populationSize(λ)
+ *     .survivorsSize(0)
+ *     .offspringSelector(new TruncationSelector<>(μ))
+ *     .alterers(new Mutator<>(λ))
+ *     .build();
+ * }</pre>
  *
  * @param <G> the gene type
  * @param <C> the fitness result type
@@ -38,7 +60,51 @@ public class MLEvolutionStrategy<
 >
 	implements Setup<G, C>
 {
+
+	private final int _mu;
+	private final int _lambda;
+	private final double _mutationProbability;
+
+	/**
+	 * Create a new (μ, λ)-Evolution Strategy with the given parameters.
+	 *
+	 * @param mu the number of fittest individuals to be selected
+	 * @param lambda the population count
+	 * @param mutationProbability the mutation probability
+	 * @throws IllegalArgumentException if {@code mi < 2} or {@code lambda < mu}
+	 *         or {@code mutationProbability not in [0, 1]}
+	 */
+	public MLEvolutionStrategy(
+		final int mu,
+		final int lambda,
+		final double mutationProbability
+	) {
+		if (mu < 2) {
+			throw new IllegalArgumentException(format(
+				"mu (μ) must be greater or equal 2: %d.", mu
+			));
+		}
+		if (lambda < mu) {
+			throw new IllegalArgumentException(format(
+				"lambda (λ) must be greater or equal then μ [μ=%d, λ=%d].",
+				mu, lambda
+			));
+		}
+
+		_mu = mu;
+		_lambda = lambda;
+		_mutationProbability = Requires.probability(mutationProbability);
+	}
+
+	public MLEvolutionStrategy(final int mu, final int lambda) {
+		this(mu, lambda, Mutator.DEFAULT_ALTER_PROBABILITY);
+	}
+
 	@Override
 	public void apply(final Builder<G, C> builder) {
+		builder.populationSize(_lambda)
+			.survivorsSize(0)
+			.offspringSelector(new TruncationSelector<>(_mu))
+			.alterers(new Mutator<>(_mutationProbability));
 	}
 }
