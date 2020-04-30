@@ -29,11 +29,11 @@ import io.jenetics.engine.Engine.Setup;
 import io.jenetics.internal.util.Requires;
 
 /**
- * Setup for an (μ, λ)-Evolution Strategy. Applying this setup is done in the
+ * Setup for an (μ + λ)-Evolution Strategy. Applying this setup is done in the
  * following way.
  * <pre>{@code
  * final var engine = Engine.builder(problem)
- *     .setup(new MLEvolutionStrategy<>(μ, λ, p)
+ *     .setup(new MpLEvolutionStrategy<>(μ, λ, p)
  *     .build();
  * }</pre>
  *
@@ -41,7 +41,7 @@ import io.jenetics.internal.util.Requires;
  * <pre>{@code
  * final var engine = Engine.builder(problem)
  *     .populationSize(λ)
- *     .survivorsSize(0)
+ *     .survivorsSize(μ)
  *     .offspringSelector(new TruncationSelector<>(μ))
  *     .alterers(new Mutator<>(p))
  *     .build();
@@ -54,7 +54,7 @@ import io.jenetics.internal.util.Requires;
  * @version 6.0
  * @since 6.0
  */
-public final class MLEvolutionStrategy<
+public final class MpLEvolutionStrategy<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -66,7 +66,7 @@ public final class MLEvolutionStrategy<
 	private final double _mutationProbability;
 
 	/**
-	 * Create a new (μ, λ)-Evolution Strategy with the given parameters.
+	 * Create a new (μ + λ)-Evolution Strategy with the given parameters.
 	 *
 	 * @param mu the number of fittest individuals to be selected
 	 * @param lambda the population count
@@ -74,7 +74,7 @@ public final class MLEvolutionStrategy<
 	 * @throws IllegalArgumentException if {@code mi < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}
 	 */
-	public MLEvolutionStrategy(
+	public MpLEvolutionStrategy(
 		final int mu,
 		final int lambda,
 		final double mutationProbability
@@ -97,7 +97,7 @@ public final class MLEvolutionStrategy<
 	}
 
 	/**
-	 * Create a new (μ, λ)-Evolution Strategy with the given parameters. The
+	 * Create a new (μ + λ)-Evolution Strategy with the given parameters. The
 	 * mutation probability is set to {@link Mutator#DEFAULT_ALTER_PROBABILITY}.
 	 *
 	 * @param mu the number of fittest individuals to be selected
@@ -105,15 +105,15 @@ public final class MLEvolutionStrategy<
 	 * @throws IllegalArgumentException if {@code mi < 2} or {@code lambda < mu}
 	 *         or {@code mutationProbability not in [0, 1]}
 	 */
-	public MLEvolutionStrategy(final int mu, final int lambda) {
+	public MpLEvolutionStrategy(final int mu, final int lambda) {
 		this(mu, lambda, Mutator.DEFAULT_ALTER_PROBABILITY);
 	}
 
 	@Override
 	public void apply(final Builder<G, C> builder) {
 		builder.populationSize(_lambda)
-			.survivorsSize(0)
-			.offspringSelector(new TruncationSelector<>(_mu))
+			.survivorsSize(_mu)
+			.selector(new TruncationSelector<>(_mu))
 			.alterers(new Mutator<>(_mutationProbability));
 	}
 
