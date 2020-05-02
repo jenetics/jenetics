@@ -52,6 +52,11 @@ engine.stream()
     .forEach(System.out::println);
 ```
 * [#671](https://github.com/jenetics/jenetics/issues/671): Adding helper methods in `Streams` class, which allows to emit the best evolution result of every _n_ generation.
+```java
+final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
+    .flatMap(Streams.toIntervalMax(sliceSize))
+    .collect(ISeq.toISeq());
+``` 
 * [#672](https://github.com/jenetics/jenetics/issues/672): Introduce the `StreamPublisher` class, which allows to use a _normal_ Java Stream in a _reactive_ way.
 ```java
 final var publisher = new StreamPublisher<EvolutionResult<IntegerGene, Integer>>();
@@ -63,14 +68,12 @@ try (publisher) {
 }
 ```
 * [#679](https://github.com/jenetics/jenetics/issues/679): Additional constructor for the `TournamentSelector`, which allows to define own `Phenotype` comparator.
-```java
-final ISeq<Integer> values = IntStream.range(0, streamSize).boxed()
-    .flatMap(Streams.toIntervalMax(sliceSize))
-    .collect(ISeq.toISeq());
-``` 
+* [#685](https://github.com/jenetics/jenetics/issues/685): Add `Engine.Setup` interface, which allows combining different dependent engine configurations.
+* [#687](https://github.com/jenetics/jenetics/issues/687): Add engien setup for (μ,λ)- and (μ+λ)-Evolution Strategy.
 
 #### Bugs
 
+* [#663](https://github.com/jenetics/jenetics/issues/663): `PartialAlterer` uses fitness of unaltered phenotype.
 * [#667](https://github.com/jenetics/jenetics/issues/667): Fix `Concurrency.close()` method.
 
 

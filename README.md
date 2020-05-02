@@ -228,7 +228,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * [#659](https://github.com/jenetics/jenetics/issues/659): Additional factory methods for `VecFactory` interface in the `moea` package.
 * [#661](https://github.com/jenetics/jenetics/issues/661): Allow the re-evaluation of the population fitness value
 * [#665](https://github.com/jenetics/jenetics/issues/665): Implement `CombineAlterer`, which is a generalization of th `MeanAlterer` class.
-* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically chaning sample points.
+* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically changing sample points.
 ```java
 final var scheduler = Executors.newScheduledThreadPool(1);
 final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
@@ -282,9 +282,12 @@ try (publisher) {
 }
 ```
 * [#679](https://github.com/jenetics/jenetics/issues/679): Additional constructor for the `TournamentSelector`, which allows to define own `Phenotype` comparator.
+* [#685](https://github.com/jenetics/jenetics/issues/685): Add `Engine.Setup` interface, which allows combining different dependent engine configurations.
+* [#687](https://github.com/jenetics/jenetics/issues/687): Add engien setup for (μ,λ)- and (μ+λ)-Evolution Strategy.
 
 #### Bugs
 
+* [#663](https://github.com/jenetics/jenetics/issues/663): `PartialAlterer` uses fitness of unaltered phenotype.
 * [#667](https://github.com/jenetics/jenetics/issues/667): Fix `Concurrency.close()` method.
 
 
