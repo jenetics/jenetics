@@ -29,6 +29,7 @@ import static io.jenetics.internal.util.Hashes.hash;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.ToDoubleFunction;
@@ -95,7 +96,7 @@ public class Histogram<C> implements Consumer<C> {
 
 	@SuppressWarnings("unchecked")
 	private static <C> C[] check(final C... classes) {
-		Arrays.asList(classes).forEach(Objects::requireNonNull);
+		List.of(classes).forEach(Objects::requireNonNull);
 		if (classes.length == 0) {
 			throw new IllegalArgumentException("Given classes array is empty.");
 		}
@@ -360,7 +361,7 @@ public class Histogram<C> implements Consumer<C> {
 	public static <C extends Comparable<? super C>> Histogram<C> of(
 		final C... separators
 	) {
-		return new Histogram<C>((o1, o2) -> o1.compareTo(o2), separators);
+		return new Histogram<>(Comparator.naturalOrder(), separators);
 	}
 
 	/**

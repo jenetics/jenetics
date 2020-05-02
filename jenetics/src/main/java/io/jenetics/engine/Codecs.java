@@ -815,8 +815,7 @@ public final class Codecs {
 		return IntStream.range(0, source.size())
 			.mapToObj(i -> entry(source.get(i), target.get(perm[i%perm.length])))
 			.collect(Collectors.toMap(
-				Entry::getKey,
-				Entry::getValue,
+				Entry::getKey, Entry::getValue,
 				(u,v) -> {throw new IllegalStateException("Duplicate key " + u);},
 				mapSupplier));
 	}

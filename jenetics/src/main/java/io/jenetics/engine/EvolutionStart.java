@@ -19,11 +19,11 @@
  */
 package io.jenetics.engine;
 
-import static io.jenetics.internal.util.SerialIO.readLong;
-import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -53,9 +53,9 @@ import io.jenetics.util.ISeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.1
- * @version 5.2
+ * @version 6.0
  */
-public final /*record*/ class EvolutionStart<
+public final class EvolutionStart<
 	G extends Gene<?, G>,
 	C extends Comparable<? super C>
 >
@@ -67,12 +67,16 @@ public final /*record*/ class EvolutionStart<
 	private final ISeq<Phenotype<G, C>> _population;
 	private final long _generation;
 
-	private EvolutionStart(
+	private final boolean _dirty;
+
+	EvolutionStart(
 		final ISeq<Phenotype<G, C>> population,
-		final long generation
+		final long generation,
+		final boolean dirty
 	) {
 		_population = requireNonNull(population);
 		_generation = Requires.positive(generation);
+		_dirty = dirty;
 	}
 
 	/**
@@ -81,17 +85,6 @@ public final /*record*/ class EvolutionStart<
 	 * @return the start population
 	 */
 	public ISeq<Phenotype<G, C>> population() {
-		return _population;
-	}
-
-	/**
-	 * Return the population before the evolution step.
-	 *
-	 * @return the start population
-	 * @deprecated Use {@link #population()} instead
-	 */
-	@Deprecated
-	public ISeq<Phenotype<G, C>> getPopulation() {
 		return _population;
 	}
 
@@ -105,14 +98,15 @@ public final /*record*/ class EvolutionStart<
 	}
 
 	/**
-	 * Return the generation of the start population.
+	 * Indicates whether the population is guaranteed to be evaluated. If this
+	 * flag is {@code true}, the population possibly contains unevaluated
+	 * individuals.
 	 *
-	 * @return the start generation
-	 * @deprecated Use {@link #generation()} instead
+	 * @return {@code false}, if it is guaranteed that all individuals has
+	 *         already been evaluated, {@code true} otherwise
 	 */
-	@Deprecated
-	public long getGeneration() {
-		return _generation;
+	boolean isDirty() {
+		return _dirty;
 	}
 
 	@Override
@@ -155,7 +149,7 @@ public final /*record*/ class EvolutionStart<
 		final ISeq<Phenotype<G, C>> population,
 		final long generation
 	) {
-		return new EvolutionStart<>(population, generation);
+		return new EvolutionStart<>(population, generation, true);
 	}
 
 	/**
@@ -171,7 +165,7 @@ public final /*record*/ class EvolutionStart<
 	 */
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	EvolutionStart<G, C> empty() {
-		return new EvolutionStart<>(ISeq.empty(), 1);
+		return new EvolutionStart<>(ISeq.empty(), 1, false);
 	}
 
 
@@ -195,12 +189,13 @@ public final /*record*/ class EvolutionStart<
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionStart read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionStart(
 			(ISeq)in.readObject(),
-			readLong(in)
+			readLong(in),
+			true
 		);
 	}
 

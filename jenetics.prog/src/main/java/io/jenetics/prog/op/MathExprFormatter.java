@@ -19,7 +19,6 @@
  */
 package io.jenetics.prog.op;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 import io.jenetics.ext.util.Tree;
@@ -32,25 +31,23 @@ import io.jenetics.ext.util.Tree;
 final class MathExprFormatter {
 	private MathExprFormatter() {}
 
-	private static final Map<MathOp, String> INFIX_OPS = new EnumMap<>(MathOp.class);
-	static {
-		INFIX_OPS.put(MathOp.ADD, " + ");
-		INFIX_OPS.put(MathOp.SUB, " - ");
-		INFIX_OPS.put(MathOp.MUL, "*");
-		INFIX_OPS.put(MathOp.DIV, "/");
-		INFIX_OPS.put(MathOp.MOD, "%");
-		INFIX_OPS.put(MathOp.POW, "^");
-	}
+	private static final Map<Op<Double>, String> INFIX_OPS = Map.of(
+		MathOp.ADD, " + ",
+		MathOp.SUB, " - ",
+		MathOp.MUL, "*",
+		MathOp.DIV, "/",
+		MathOp.MOD, "%",
+		MathOp.POW, "^"
+	);
 
-	private static final Map<MathOp, Integer> PRECEDENCE = new EnumMap<>(MathOp.class);
-	static {
-		PRECEDENCE.put(MathOp.ADD, 6);
-		PRECEDENCE.put(MathOp.SUB, 6);
-		PRECEDENCE.put(MathOp.MUL, 5);
-		PRECEDENCE.put(MathOp.DIV, 5);
-		PRECEDENCE.put(MathOp.MOD, 5);
-		PRECEDENCE.put(MathOp.POW, 4);
-	}
+	private static final Map<Op<Double>, Integer> PRECEDENCE = Map.of(
+		MathOp.ADD, 6,
+		MathOp.SUB, 6,
+		MathOp.MUL, 5,
+		MathOp.DIV, 5,
+		MathOp.MOD, 5,
+		MathOp.POW, 4
+	);
 
 	static String format(final Tree<? extends Op<Double>, ?> tree) {
 		final StringBuilder out = new StringBuilder();

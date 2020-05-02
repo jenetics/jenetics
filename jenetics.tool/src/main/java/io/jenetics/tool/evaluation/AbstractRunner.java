@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 import io.jenetics.internal.util.Requires;
 import io.jenetics.tool.trial.Trial;
 import io.jenetics.tool.trial.TrialMeter;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

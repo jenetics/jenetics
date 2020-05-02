@@ -110,6 +110,6 @@ public interface NumericGene<
 	}
 
 	@Override
-	public G newInstance(final Number number);
+	G newInstance(final Number number);
 
 }

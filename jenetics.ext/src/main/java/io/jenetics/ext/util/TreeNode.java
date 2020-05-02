@@ -29,9 +29,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import io.jenetics.util.Copyable;
 import io.jenetics.util.ISeq;
@@ -84,24 +87,12 @@ public final class TreeNode<T>
 	}
 
 	/**
-	 * Sets the user object for this node.
-	 *
-	 * @param value the node {@code value}
-	 * @deprecated Use {@link #value(Object)} instead
-	 */
-	@Deprecated
-	public void setValue(final T value) {
-		_value = value;
-	}
-
-	/**
 	 * Return the node value
 	 *
 	 * @return the node value
 	 */
 	@Override
-	@Deprecated
-	public T getValue() {
+	public T value() {
 		return _value;
 	}
 
@@ -110,9 +101,8 @@ public final class TreeNode<T>
 	 *
 	 * @return the tree-node, or an empty value if this node has no parent
 	 */
-	@Deprecated
 	@Override
-	public Optional<TreeNode<T>> getParent() {
+	public Optional<TreeNode<T>> parent() {
 		return Optional.ofNullable(_parent);
 	}
 
@@ -124,7 +114,7 @@ public final class TreeNode<T>
 	 *
 	 * @param parent this node's new parent
 	 */
-	void setParent(final TreeNode<T> parent) {
+	void parent(final TreeNode<T> parent) {
 		_parent = parent;
 	}
 
@@ -152,6 +142,20 @@ public final class TreeNode<T>
 		return _children != null ? _children.size() : 0;
 	}
 
+	@Override
+	public Iterator<TreeNode<T>> childIterator() {
+		return _children != null
+			? _children.iterator()
+			: Collections.emptyIterator();
+	}
+
+	@Override
+	public Stream<TreeNode<T>> childStream() {
+		return _children != null
+			? _children.stream()
+			: Stream.empty();
+	}
+
 	/**
 	 * Removes the {@code child} from its present parent (if it has one), sets
 	 * the child's parent to this node, and then adds the child to this node's
@@ -177,7 +181,7 @@ public final class TreeNode<T>
 			child._parent.remove(child);
 		}
 
-		child.setParent(this);
+		child.parent(this);
 		createChildrenIfMissing();
 		_children.add(index, child);
 
@@ -218,8 +222,8 @@ public final class TreeNode<T>
 		assert oldChild != null;
 		assert oldChild._parent == this;
 
-		oldChild.setParent(null);
-		child.setParent(this);
+		oldChild.parent(null);
+		child.parent(this);
 
 		return this;
 	}
@@ -242,7 +246,7 @@ public final class TreeNode<T>
 
 		final TreeNode<T> child = _children.remove(index);
 		assert child._parent == this;
-		child.setParent(null);
+		child.parent(null);
 
 		if (_children.isEmpty()) {
 			_children = null;
@@ -352,7 +356,7 @@ public final class TreeNode<T>
 	public void removeAllChildren() {
 		if (_children != null) {
 			for (TreeNode<T> child : _children) {
-				child.setParent(null);
+				child.parent(null);
 			}
 
 			_children = null;
@@ -550,7 +554,7 @@ public final class TreeNode<T>
 	 *         parsed
 	 */
 	public static TreeNode<String> parse(final String tree) {
-		return TreeParser.parse(tree, Function.identity());
+		return ParenthesesTreeParser.parse(tree, Function.identity());
 	}
 
 	/**
@@ -586,7 +590,7 @@ public final class TreeNode<T>
 		final String tree,
 		final Function<? super String, ? extends B> mapper
 	) {
-		return TreeParser.parse(tree, mapper);
+		return ParenthesesTreeParser.parse(tree, mapper);
 	}
 
 
@@ -609,8 +613,8 @@ public final class TreeNode<T>
 		FlatTreeNode.of(this).write(out);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	static TreeNode read(final ObjectInput in)
+	@SuppressWarnings("unchecked")
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return TreeNode.ofTree(FlatTreeNode.read(in));

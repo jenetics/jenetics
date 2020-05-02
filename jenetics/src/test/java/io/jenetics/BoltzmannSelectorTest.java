@@ -24,6 +24,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -137,7 +138,7 @@ public class BoltzmannSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(-4.0, -2.0, 0.0, 2.0, 3.0, 5.0),
+				List.of(-4.0, -2.0, 0.0, 2.0, 3.0, 5.0),
 				BoltzmannSelector::new,
 				opt,
 				npopulation,

@@ -73,7 +73,7 @@ public class ExecutionTimeLimitTest {
 				1, EvolutionDurations.ZERO, 0, 0, 0
 			);
 
-		return new EvolutionStreamImpl<DoubleGene, Double>(
+		return new EvolutionStreamImpl<>(
 			() -> EvolutionStart.of(ISeq.empty(), 1),
 			evolution
 		);

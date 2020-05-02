@@ -19,11 +19,11 @@
  */
 package io.jenetics.engine;
 
-import static io.jenetics.internal.util.SerialIO.readLong;
-import static io.jenetics.internal.util.SerialIO.writeLong;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
+import static io.jenetics.internal.util.SerialIO.readLong;
+import static io.jenetics.internal.util.SerialIO.writeLong;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;
@@ -50,7 +50,7 @@ import io.jenetics.util.ISeq;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 4.1
  */
 public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
@@ -80,33 +80,11 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	}
 
 	/**
-	 * Return the initial population.
-	 *
-	 * @return the initial population
-	 * @deprecated Use {@link #population()} instead
-	 */
-	@Deprecated
-	public ISeq<Genotype<G>> getPopulation() {
-		return _population;
-	}
-
-	/**
 	 * Return the generation of the start population.
 	 *
 	 * @return the start generation
 	 */
 	public long generation() {
-		return _generation;
-	}
-
-	/**
-	 * Return the generation of the start population.
-	 *
-	 * @return the start generation
-	 * @deprecated Use {@link #generation()} instead
-	 */
-	@Deprecated
-	public long getGeneration() {
 		return _generation;
 	}
 
@@ -173,7 +151,7 @@ public final /*record*/ class EvolutionInit<G extends Gene<?, G>>
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	static EvolutionInit read(final ObjectInput in)
+	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
 		return new EvolutionInit(

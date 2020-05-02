@@ -19,10 +19,7 @@
  */
 package io.jenetics.ext.engine;
 
-import static java.util.Collections.singletonList;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -105,7 +102,6 @@ import io.jenetics.ext.internal.ConcatSpliterator;
  * engines, it is no longer necessary to limit your final evolution stream, but
  * your are still able to do so.
  *
- * @see AdaptiveEngine
  * @see CyclicEngine
  *
  * @param <G> the gene type
@@ -129,9 +125,7 @@ public final class ConcatEngine<
 	 * @throws NullPointerException if the {@code engines} or one of it's
 	 *         elements is {@code null}
 	 */
-	public ConcatEngine(
-		final List<? extends EvolutionStreamable<G, C>> engines
-	) {
+	public ConcatEngine(final List<? extends EvolutionStreamable<G, C>> engines) {
 		super(engines);
 	}
 
@@ -180,7 +174,7 @@ public final class ConcatEngine<
 		if (_engines.isEmpty()) {
 			result = Collections.emptyList();
 		} else if (_engines.size() == 1) {
-			result = singletonList(
+			result = List.of(
 				_engines.get(0)
 					.stream(init)
 					.peek(er -> other.set(er.toEvolutionStart()))
@@ -225,7 +219,7 @@ public final class ConcatEngine<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	ConcatEngine<G, C> of(final EvolutionStreamable<G, C>... engines) {
-		return new ConcatEngine<>(Arrays.asList(engines));
+		return new ConcatEngine<>(List.of(engines));
 	}
 
 

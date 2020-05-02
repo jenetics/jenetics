@@ -458,7 +458,7 @@ public class BitsTest {
 		final Random random = new Random(seed);
 		final int length = 20;
 
-		return new Iterator<Object[]>() {
+		return new Iterator<>() {
 			private int _pos = 0;
 
 			@Override
@@ -473,7 +473,7 @@ public class BitsTest {
 				random.nextBytes(data);
 				_pos += 1;
 
-				return new Object[]{ new BigInteger(data) };
+				return new Object[]{new BigInteger(data)};
 			}
 
 			@Override
@@ -489,7 +489,7 @@ public class BitsTest {
 		final Random random = new Random(seed);
 		final int length = 20;
 
-		return new Iterator<Object[]>() {
+		return new Iterator<>() {
 			private int _pos = 0;
 
 			@Override
@@ -504,7 +504,7 @@ public class BitsTest {
 				random.nextBytes(data);
 				_pos += 1;
 
-				return new Object[]{ data };
+				return new Object[]{data};
 			}
 
 			@Override

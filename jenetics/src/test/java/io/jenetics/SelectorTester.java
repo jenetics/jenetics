@@ -26,7 +26,6 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -203,8 +202,8 @@ public abstract class SelectorTester<S extends Selector<DoubleGene, Double>>
 
 	@DataProvider(name = "selectParameters")
 	public Object[][] selectParameters() {
-		final List<Integer> sizes = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
-		final List<Integer> counts = Arrays.asList(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> sizes = List.of(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
+		final List<Integer> counts = List.of(0, 1, 2, 3, 5, 11, 50, 100, 10_000);
 
 		final List<Object[]> result = new ArrayList<>();
 		for (Integer size : sizes) {

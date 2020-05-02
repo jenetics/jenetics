@@ -63,7 +63,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public class LongMomentStatistics
 	extends MomentStatistics
@@ -132,18 +132,6 @@ public class LongMomentStatistics
 	}
 
 	/**
-	 * Return the minimum value recorded, or {@code Long.MAX_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the minimum value, or {@code Long.MAX_VALUE} if none
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public long getMin() {
-		return _min;
-	}
-
-	/**
 	 * Return the maximum value recorded, or {@code Long.MIN_VALUE} if no
 	 * values have been recorded.
 	 *
@@ -154,36 +142,12 @@ public class LongMomentStatistics
 	}
 
 	/**
-	 * Return the maximum value recorded, or {@code Long.MIN_VALUE} if no
-	 * values have been recorded.
-	 *
-	 * @return the maximum value, or {@code Long.MIN_VALUE} if none
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public long getMax() {
-		return _max;
-	}
-
-	/**
 	 * Return the sum of values recorded, or zero if no values have been
 	 * recorded.
 	 *
 	 * @return the sum of values, or zero if none
 	 */
 	public long sum() {
-		return _sum;
-	}
-
-	/**
-	 * Return the sum of values recorded, or zero if no values have been
-	 * recorded.
-	 *
-	 * @return the sum of values, or zero if none
-	 * @deprecated Use {@link #sum()} instead
-	 */
-	@Deprecated
-	public long getSum() {
 		return _sum;
 	}
 

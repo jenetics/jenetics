@@ -44,12 +44,12 @@ public class MinMaxTest {
 
 	private static final Named<Comparator<Integer>> NORMAL = Named.of(
 		"NORMAL",
-		(Comparator<Integer>)Optimize.MAXIMUM::compare
+		Optimize.MAXIMUM::compare
 	);
 
 	private static final Named<Comparator<Integer>> REVERSE = Named.of(
 		"REVERSE",
-		(Comparator<Integer>)Optimize.MINIMUM::compare
+		Optimize.MINIMUM::compare
 	);
 
 	@Test(dataProvider = "minTestValues")
@@ -129,7 +129,7 @@ public class MinMaxTest {
 		final Random random = RandomRegistry.random();
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
-		final MinMax<Double> minMax = MinMax.of((a, b) -> b.compareTo(a));
+		final MinMax<Double> minMax = MinMax.of(Comparator.reverseOrder());
 		Arrays.stream(numbers)
 			.mapToObj(Double::valueOf)
 			.forEach(minMax);
@@ -157,7 +157,7 @@ public class MinMaxTest {
 		final double[] numbers = random.doubles().limit(1000).toArray();
 
 		final MinMax<Double> minMax = Arrays.stream(numbers).boxed()
-			.collect(MinMax.toMinMax((a, b) -> b.compareTo(a)));
+			.collect(MinMax.toMinMax(Comparator.reverseOrder()));
 
 		assertEquals(minMax.min().doubleValue(), StatUtils.max(numbers));
 		assertEquals(minMax.max().doubleValue(), StatUtils.min(numbers));
@@ -203,7 +203,17 @@ public class MinMaxTest {
 			.flatMap(MinMax.toStrictlyIncreasing())
 			.collect(ISeq.toISeq());
 
-		System.out.println(values);
+		Assert.assertTrue(values.isSorted());
+	}
+
+	@Test
+	public void toStrictlyImproving() {
+		final ISeq<Integer> values = new Random().ints(0, 100)
+			.boxed()
+			.limit(500)
+			.flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+			.collect(ISeq.toISeq());
+
 		Assert.assertTrue(values.isSorted());
 	}
 
@@ -215,7 +225,6 @@ public class MinMaxTest {
 			.flatMap(MinMax.toStrictlyDecreasing())
 			.collect(ISeq.toISeq());
 
-		System.out.println(values);
 		Assert.assertTrue(values.copy().reverse().isSorted());
 	}
 

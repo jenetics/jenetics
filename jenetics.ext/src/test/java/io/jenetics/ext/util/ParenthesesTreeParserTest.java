@@ -19,7 +19,7 @@
  */
 package io.jenetics.ext.util;
 
-import static io.jenetics.ext.util.TreeParser.parse;
+import static io.jenetics.ext.util.ParenthesesTreeParser.parse;
 
 import java.util.List;
 import java.util.Random;
@@ -30,16 +30,16 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import io.jenetics.ext.util.TreeParser.Token;
+import io.jenetics.ext.util.ParenthesesTreeParser.Token;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  */
-public class TreeParserTest {
+public class ParenthesesTreeParserTest {
 
 	@Test(dataProvider = "tokens")
 	public void tokenize(final String tree, final String[] tokens) {
-		final List<Token> tokenize = TreeParser.tokenize(tree);
+		final List<Token> tokenize = ParenthesesTreeParser.tokenize(tree);
 		Assert.assertEquals(
 			tokenize.stream()
 				.map(t -> t.seq)

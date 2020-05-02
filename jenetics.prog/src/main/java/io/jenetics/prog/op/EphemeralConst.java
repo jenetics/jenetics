@@ -47,7 +47,7 @@ import io.jenetics.internal.util.Lazy;
  * final Op<Double> val = EphemeralConst.of(random::nextDouble);
  * }</pre>
  *
- * <h3>Serialization</h3>
+ * <b>Serialization</b>
  * Although the {@code EphemeralConst} class implements the {@link Serializable}
  * interface, the serialization will fail if the <em>const</em> supplier is not
  * <em>serializable</em> as well. This can be achieved by <em>casting</em> the

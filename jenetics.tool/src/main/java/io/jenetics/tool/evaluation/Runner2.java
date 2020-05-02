@@ -32,7 +32,6 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.internal.util.Args;
 import io.jenetics.tool.trial.TrialMeter;
-
 import io.jenetics.xml.stream.Reader;
 import io.jenetics.xml.stream.Writer;
 

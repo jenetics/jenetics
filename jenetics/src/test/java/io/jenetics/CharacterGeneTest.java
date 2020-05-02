@@ -113,7 +113,7 @@ public class CharacterGeneTest extends GeneTester<CharacterGene> {
 	@Test
 	public void testIsValidCharacter() {
 		for (Character c : CharacterGene.DEFAULT_CHARACTERS) {
-			assertTrue(CharacterGene.of(c.charValue()).isValidCharacter(c));
+			assertTrue(CharacterGene.of(c).isValidCharacter(c));
 		}
 	}
 

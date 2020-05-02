@@ -34,10 +34,10 @@ public class CompositeAltererTest {
 
 	public Alterer<DoubleGene, Double> newAlterer(double p) {
 		final double p3 = Math.pow(p, 3);
-		return CompositeAlterer.of(
-			new Mutator<DoubleGene, Double>(p3),
-			new Mutator<DoubleGene, Double>(p3),
-			new Mutator<DoubleGene, Double>(p3)
+		return CompositeAlterer.<DoubleGene, Double>of(
+			new Mutator<>(p3),
+			new Mutator<>(p3),
+			new Mutator<>(p3)
 		);
 	}
 
@@ -144,10 +144,11 @@ public class CompositeAltererTest {
 
 	@Test
 	public void join() {
-		CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer.join(
-				new Mutator<DoubleGene, Double>(),
-				new SwapMutator<DoubleGene, Double>()
-			);
+		CompositeAlterer<DoubleGene, Double> alterer = CompositeAlterer
+			.<DoubleGene, Double>join(
+					new Mutator<>(),
+					new SwapMutator<>()
+				);
 
 		Assert.assertEquals(alterer.alterers().length(), 2);
 		Assert.assertTrue(alterer.alterers().get(0) instanceof Mutator);

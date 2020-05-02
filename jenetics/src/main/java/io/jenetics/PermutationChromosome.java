@@ -103,7 +103,7 @@ import io.jenetics.util.MSeq;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public final class PermutationChromosome<T>
 	extends AbstractChromosome<EnumGene<T>>
@@ -150,17 +150,6 @@ public final class PermutationChromosome<T>
 	}
 
 	/**
-	 * Return the sequence of valid alleles of this chromosome.
-	 *
-	 * @return the sequence of valid alleles of this chromosome
-	 * @deprecated Use {@link #validAlleles()} instead
-	 */
-	@Deprecated
-	public ISeq<T> getValidAlleles() {
-		return _validAlleles;
-	}
-
-	/**
 	 * Check if this chromosome represents still a valid permutation (or subset)
 	 * of the given valid alleles.
 	 */
@@ -189,7 +178,7 @@ public final class PermutationChromosome<T>
 
 	@Override
 	public String toString() {
-		return _genes.asList().stream()
+		return _genes.stream()
 			.map(g -> g.allele().toString())
 			.collect(Collectors.joining("|"));
 	}
@@ -323,8 +312,7 @@ public final class PermutationChromosome<T>
 	public static PermutationChromosome<Integer>
 	ofInteger(final IntRange range, final int length) {
 		return of(
-			range.stream().boxed()
-				.collect(ISeq.toISeq()),
+			range.stream().boxed().collect(ISeq.toISeq()),
 			length
 		);
 	}

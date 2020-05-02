@@ -24,6 +24,13 @@ import io.jenetics.Phenotype;
 import io.jenetics.util.ISeq;
 
 /**
+ * This functional interface defines the evolution function, which takes an
+ * {@link EvolutionStart} object, evolves the population, and returns an
+ * {@link EvolutionResult} object.
+ *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @version 5.1
  * @since 5.1

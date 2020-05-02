@@ -92,7 +92,7 @@ public class BitChromosomeTest extends ChromosomeTester<BitGene> {
 		assertEquals((short)value, c1.shortValue());
 		assertEquals(value, c1.longValue());
 		assertEquals((float)value, c1.floatValue());
-		assertEquals((double)value, c1.doubleValue());
+		assertEquals(value, c1.doubleValue());
 	}
 
 	@Test

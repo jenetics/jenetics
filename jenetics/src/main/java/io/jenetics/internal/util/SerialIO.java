@@ -19,12 +19,13 @@
  */
 package io.jenetics.internal.util;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +48,7 @@ public final class SerialIO {
 	 * @param <T> the object type
 	 */
 	@FunctionalInterface
-	interface Writer<T> {
+	public interface Writer<T> {
 		void write(final T value, final DataOutput out) throws IOException;
 	}
 
@@ -57,7 +58,7 @@ public final class SerialIO {
 	 * @param <T> the object type
 	 */
 	@FunctionalInterface
-	interface Reader<T> {
+	public interface Reader<T> {
 		T read(final DataInput in) throws IOException;
 	}
 
@@ -121,7 +122,7 @@ public final class SerialIO {
 	public static void writeString(final String value, final DataOutput out)
 		throws IOException
 	{
-		final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
+		final byte[] bytes = value.getBytes(UTF_8);
 		writeInt(bytes.length, out);
 		out.write(bytes);
 	}
@@ -137,7 +138,7 @@ public final class SerialIO {
 	public static String readString(final DataInput in) throws IOException {
 		final byte[] bytes = new byte[readInt(in)];
 		in.readFully(bytes);
-		return new String(bytes, StandardCharsets.UTF_8);
+		return new String(bytes, UTF_8);
 	}
 
 	/**
@@ -446,6 +447,22 @@ public final class SerialIO {
 	}
 
 	/**
+	 * Write the given {@code char[]} array to the given data output.
+	 *
+	 * @param values the values to write
+	 * @param out the data sink
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static void writeCharArray(final char[] values, final DataOutput out)
+		throws IOException
+	{
+		writeInt(values.length, out);
+		for (int value : values) {
+			writeInt(value, out);
+		}
+	}
+
+	/**
 	 * Write the given {@code long[]} array to the given data output.
 	 *
 	 * @param values the values to write
@@ -477,6 +494,21 @@ public final class SerialIO {
 		}
 	}
 
+	/**
+	 * Read an {@code char[]} array from the data input.
+	 *
+	 * @param in the data source
+	 * @return the read values
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static char[] readCharArray(final DataInput in) throws IOException {
+		final char[] values = new char[readInt(in)];
+		for (int i = 0; i < values.length; ++i) {
+			values[i] = (char)readInt(in);
+		}
+		return values;
+	}
+	
 	/**
 	 * Read an {@code int[]} array from the data input.
 	 *

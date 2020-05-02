@@ -25,7 +25,7 @@
  */
 
 plugins {
-	id 'me.champeau.gradle.jmh' version '0.5.0-rc-2'
+	id 'me.champeau.gradle.jmh' version '0.5.0'
 }
 
 apply plugin: 'java-library'
@@ -33,6 +33,8 @@ apply plugin: 'packaging'
 apply plugin: 'nexus'
 
 description = property('jenetics.Description')
+
+ext.moduleName = 'io.jenetics.base'
 
 dependencies {
 	testImplementation property('include.ApacheCommonsMath')
@@ -44,11 +46,7 @@ dependencies {
 }
 
 jmh {
-	//jmhVersion = '1.20'
-	//duplicateClassesStrategy = 'include'
-	warmupIterations = 5
-	iterations = 5
-	include = ['.*BufferPerf.*']
+	include = ['.*IntegerChromosomePerf.*']
 }
 
 idea {

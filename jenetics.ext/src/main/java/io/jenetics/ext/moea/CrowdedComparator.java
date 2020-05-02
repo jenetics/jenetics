@@ -24,7 +24,7 @@ import java.util.function.ToIntFunction;
 
 import io.jenetics.Optimize;
 import io.jenetics.internal.util.IntComparator;
-import io.jenetics.util.Seq;
+import io.jenetics.util.BaseSeq;
 
 /**
  * Crowded distance comparator.
@@ -39,7 +39,7 @@ final class CrowdedComparator<T> implements IntComparator {
 	private final double[] _dist;
 
 	CrowdedComparator(
-		final Seq<? extends T> population,
+		final BaseSeq<? extends T> population,
 		final Optimize opt,
 		final Comparator<? super T> dominance,
 		final ElementComparator<? super T> comparator,
@@ -48,12 +48,16 @@ final class CrowdedComparator<T> implements IntComparator {
 	) {
 		_rank = Pareto.rank(
 			population,
-			opt == Optimize.MAXIMUM ? dominance : dominance.reversed()
+			opt == Optimize.MAXIMUM
+				? dominance
+				: dominance.reversed()
 		);
 
 		_dist = Pareto.crowdingDistance(
 			population,
-			opt == Optimize.MAXIMUM ? comparator : comparator.reversed(),
+			opt == Optimize.MAXIMUM
+				? comparator
+				: comparator.reversed(),
 			distance,
 			dimension
 		);
@@ -61,12 +65,13 @@ final class CrowdedComparator<T> implements IntComparator {
 
 	@Override
 	public int compare(final int i, final int j) {
-		final int cmp;
-		if (cco(i, j)) cmp = 1;
-		else if (cco(j, i)) cmp = -1;
-		else cmp = 0;
-
-		return cmp;
+		if (cco(i, j)) {
+			return 1;
+		} else if (cco(j, i)) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 
 	private boolean cco(final int i, final int j) {

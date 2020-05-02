@@ -67,7 +67,7 @@ import java.util.stream.Collector;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public class Quantile implements DoubleConsumer {
 
@@ -148,37 +148,11 @@ public class Quantile implements DoubleConsumer {
 	}
 
 	/**
-	 * Return the <em>quantile</em> {@code this} object has been parametrized
-	 * with.
-	 *
-	 * @since 3.1
-	 *
-	 * @return the <em>quantile</em> {@code this} object has been parametrized
-	 *         with
-	 * @deprecated Use {@link #quantile()} instead
-	 */
-	@Deprecated
-	public double getQuantile() {
-		return _quantile;
-	}
-
-	/**
 	 * Return the computed quantile value.
 	 *
 	 * @return the quantile value.
 	 */
 	public double value() {
-		return _q[2];
-	}
-
-	/**
-	 * Return the computed quantile value.
-	 *
-	 * @return the quantile value.
-	 * @deprecated Use {@link #value()} instead
-	 */
-	@Deprecated
-	public double getValue() {
 		return _q[2];
 	}
 
@@ -189,18 +163,6 @@ public class Quantile implements DoubleConsumer {
 	 * @return the number of samples the quantile value  was calculated of
 	 */
 	public long count() {
-		return _count;
-	}
-
-	/**
-	 * Return the number of samples the quantile value  was calculated of.
-	 *
-	 *
-	 * @return the number of samples the quantile value  was calculated of
-	 * @deprecated Use {@link #count()} instead
-	 */
-	@Deprecated
-	public long getSamples() {
 		return _count;
 	}
 

@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.rewriting;
 
-import static java.util.Collections.unmodifiableMap;
 import static java.util.Objects.requireNonNull;
 import static io.jenetics.internal.util.Hashes.hash;
 
@@ -55,7 +54,7 @@ public final class TreeMatchResult<V> {
 		final Map<Var<V>, Tree<V, ?>> vars
 	) {
 		_tree = requireNonNull(tree);
-		_vars = unmodifiableMap(vars);
+		_vars = Map.copyOf(vars);
 	}
 
 	/**

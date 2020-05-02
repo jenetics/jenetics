@@ -20,7 +20,6 @@
 package io.jenetics.xml.stream;
 
 import static java.lang.String.format;
-import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
 import static javax.xml.stream.XMLStreamConstants.CDATA;
 import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
@@ -46,7 +45,7 @@ import io.jenetics.xml.stream.Reader.Type;
 /**
  * XML reader class, used for reading objects in XML format.
  *
- * <h3>XML</h3>
+ * <b>XML</b>
  * <pre> {@code
  * <int-chromosome length="3">
  *     <min>-2147483648</min>
@@ -59,7 +58,7 @@ import io.jenetics.xml.stream.Reader.Type;
  * </int-chromosome>
  * }</pre>
  *
- * <h3>Reader definition</h3>
+ * <b>Reader definition</b>
  * <pre>{@code
  * final Reader<IntegerChromosome> reader =
  *     elem(
@@ -165,11 +164,10 @@ public abstract class Reader<T> {
 	public <B> Reader<B> map(final Function<? super T, ? extends B> mapper) {
 		requireNonNull(mapper);
 
-		return new Reader<B>(_name, _type) {
+		return new Reader<>(_name, _type) {
 			@Override
 			public B read(final XMLStreamReader xml)
-				throws XMLStreamException
-			{
+				throws XMLStreamException {
 				try {
 					return mapper.apply(Reader.this.read(xml));
 				} catch (RuntimeException e) {
@@ -296,7 +294,7 @@ public abstract class Reader<T> {
 		requireNonNull(generator);
 		Stream.of(requireNonNull(children)).forEach(Objects::requireNonNull);
 
-		return new ElemReader<>(name, generator, asList(children), Type.ELEM);
+		return new ElemReader<>(name, generator, List.of(children), Type.ELEM);
 	}
 
 	/**

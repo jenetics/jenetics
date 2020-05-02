@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.moea;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -54,7 +53,7 @@ import io.jenetics.Optimize;
  * @see Vec
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 5.2
  */
 @FunctionalInterface
@@ -114,7 +113,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<int[]> ofIntVec(final Optimize... optimizes) {
-		return ofIntVec(Arrays.asList(optimizes));
+		return ofIntVec(List.of(optimizes));
 	}
 
 	/**
@@ -173,7 +172,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<long[]> ofLongVec(final Optimize... optimizes) {
-		return ofLongVec(Arrays.asList(optimizes));
+		return ofLongVec(List.of(optimizes));
 	}
 
 	/**
@@ -232,7 +231,7 @@ public interface VecFactory<T> {
 	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
 	 */
 	static VecFactory<double[]> ofDoubleVec(final Optimize... optimizes) {
-		return ofDoubleVec(Arrays.asList(optimizes));
+		return ofDoubleVec(List.of(optimizes));
 	}
 
 	/**
@@ -295,7 +294,139 @@ public interface VecFactory<T> {
 		final ElementDistance<T[]> distance,
 		final Optimize... optimizes
 	) {
-		return ofObjectVec(comparator, distance, Arrays.asList(optimizes));
+		return ofObjectVec(comparator, distance, List.of(optimizes));
+	}
+
+	/**
+	 * Create a new factory for {@code T[]} vectors with comparable element
+	 * types. Additionally you can specify the optimization direction
+	 * (maximization or minimization) for each dimension. The dimensionality of
+	 * the created vectors must be exactly the same as the given length of the
+	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * {@link IllegalArgumentException} is thrown.
+	 *
+	 * @since 6.0
+	 *
+	 * @see #ofObjectVec(Comparator, ElementDistance, List)
+	 *
+	 * @param distance the element distance function
+	 * @param optimizes the optimization <em>direction</em> for each dimension
+	 * @param <T> the array element type
+	 * @return a new factory for {@code T[]} vectors
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
+	 */
+	static <T extends Comparable<? super T>> VecFactory<T[]> ofObjectVec(
+		final ElementDistance<T[]> distance,
+		final List<Optimize> optimizes
+	) {
+		return ofObjectVec(
+			Comparator.naturalOrder(),
+			distance,
+			optimizes
+		);
+	}
+
+	/**
+	 * Create a new factory for {@code T[]} vectors with comparable element
+	 * types. Additionally you can specify the optimization direction
+	 * (maximization or minimization) for each dimension. The dimensionality of
+	 * the created vectors must be exactly the same as the given length of the
+	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * {@link IllegalArgumentException} is thrown.
+	 *
+	 * @since 6.0
+	 *
+	 * @see #ofObjectVec(Comparator, ElementDistance, List)
+	 *
+	 * @param distance the element distance function
+	 * @param optimizes the optimization <em>direction</em> for each dimension
+	 * @param <T> the array element type
+	 * @return a new factory for {@code T[]} vectors
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
+	 */
+	static <T extends Comparable<? super T>> VecFactory<T[]> ofObjectVec(
+		final ElementDistance<T[]> distance,
+		final Optimize... optimizes
+	) {
+		return ofObjectVec(
+			Comparator.naturalOrder(),
+			distance,
+			optimizes
+		);
+	}
+
+	/**
+	 * Create a new factory for {@code T[]} vectors with comparable element
+	 * types. Additionally you can specify the optimization direction
+	 * (maximization or minimization) for each dimension. The dimensionality of
+	 * the created vectors must be exactly the same as the given length of the
+	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * {@link IllegalArgumentException} is thrown.
+	 *
+	 * @since 6.0
+	 *
+	 * @see #ofObjectVec(Comparator, ElementDistance, List)
+	 *
+	 * @param optimizes the optimization <em>direction</em> for each dimension
+	 * @param <T> the array element type
+	 * @return a new factory for {@code T[]} vectors
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
+	 */
+	static <T extends Comparable<? super T>> VecFactory<T[]>
+	ofObjectVec(final List<Optimize> optimizes) {
+		return ofObjectVec(VecFactory::dist, optimizes);
+	}
+
+	private static <T extends Comparable<? super T>>
+	double dist(final T[] u, final T[] v, final int i) {
+		return Integer.compare(u[i].compareTo(v[i]), 0);
+	}
+
+	/**
+	 * Create a new factory for {@code T[]} vectors with comparable element
+	 * types. Additionally you can specify the optimization direction
+	 * (maximization or minimization) for each dimension. The dimensionality of
+	 * the created vectors must be exactly the same as the given length of the
+	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * {@link IllegalArgumentException} is thrown.
+	 *
+	 * @since 6.0
+	 *
+	 * @see #ofObjectVec(Comparator, ElementDistance, List)
+	 *
+	 * @param optimizes the optimization <em>direction</em> for each dimension
+	 * @param <T> the array element type
+	 * @return a new factory for {@code T[]} vectors
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
+	 */
+	static <T extends Comparable<? super T>> VecFactory<T[]>
+	ofObjectVec(final Optimize... optimizes) {
+		return ofObjectVec(VecFactory::dist, optimizes);
+	}
+
+	/**
+	 * Create a new factory for {@code T[]} vectors with comparable element
+	 * types. Additionally you can specify the optimization direction
+	 * (maximization or minimization) for each dimension. The dimensionality of
+	 * the created vectors must be exactly the same as the given length of the
+	 * given {@code optimizes}. If the lengths doesn't match, an
+	 * {@link IllegalArgumentException} is thrown.
+	 *
+	 * @since 6.0
+	 *
+	 * @see Vec#of(Comparable[])
+	 *
+	 * @param <T> the array element type
+	 * @return a new factory for {@code T[]} vectors
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 * @throws IllegalArgumentException if the {@code optimizes} length is zero
+	 */
+	static <T extends Comparable<? super T>> VecFactory<T[]> ofObjectVec() {
+		return Vec::of;
 	}
 
 }

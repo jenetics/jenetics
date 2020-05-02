@@ -27,7 +27,6 @@ import io.jenetics.Chromosome;
 import io.jenetics.Genotype;
 import io.jenetics.Phenotype;
 import io.jenetics.Recombinator;
-import io.jenetics.util.ISeq;
 import io.jenetics.util.MSeq;
 import io.jenetics.util.RandomRegistry;
 
@@ -113,14 +112,14 @@ public abstract class TreeCrossover<
 
 		crossover(tree1, tree2);
 
-		final FlatTreeNode<A> flat1 = FlatTreeNode.of(tree1);
-		final FlatTreeNode<A> flat2 = FlatTreeNode.of(tree2);
+		final var flat1 = FlatTreeNode.of(tree1);
+		final var flat2 = FlatTreeNode.of(tree2);
 
 		@SuppressWarnings("unchecked")
-		final TreeGene<A, ?> template = (TreeGene<A, ?>)c1.get(0).gene();
+		final var template = (TreeGene<A, ?>)c1.get(0).gene();
 
-		final ISeq<G> genes1 = flat1.map(tree -> gene(template, tree));
-		final ISeq<G> genes2 = flat2.map(tree -> gene(template, tree));
+		final var genes1 = flat1.map(tree -> gene(template, tree));
+		final var genes2 = flat2.map(tree -> gene(template, tree));
 
 		c1.set(index, c1.get(index).newInstance(genes1));
 		c2.set(index, c2.get(index).newInstance(genes2));

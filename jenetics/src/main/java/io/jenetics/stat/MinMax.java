@@ -24,11 +24,12 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+
+import io.jenetics.util.Streams;
 
 /**
  * This <i>consumer</i> class is used for calculating the min and max value
@@ -54,7 +55,7 @@ import java.util.stream.Stream;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.0
- * @version 5.2
+ * @version 6.0
  */
 public final class MinMax<C> implements Consumer<C> {
 
@@ -106,17 +107,6 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
-	 * Returns the count of values recorded.
-	 *
-	 * @return the count of recorded values
-	 * @deprecated Use {@link #count()} instead
-	 */
-	@Deprecated
-	public long getCount() {
-		return _count;
-	}
-
-	/**
 	 * Return the current minimal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
@@ -127,36 +117,12 @@ public final class MinMax<C> implements Consumer<C> {
 	}
 
 	/**
-	 * Return the current minimal object or {@code null} if no element has been
-	 * accepted yet.
-	 *
-	 * @return the current minimal object
-	 * @deprecated Use {@link #min()} instead
-	 */
-	@Deprecated
-	public C getMin() {
-		return _min;
-	}
-
-	/**
 	 * Return the current maximal object or {@code null} if no element has been
 	 * accepted yet.
 	 *
 	 * @return the current maximal object
 	 */
 	public C max() {
-		return _max;
-	}
-
-	/**
-	 * Return the current maximal object or {@code null} if no element has been
-	 * accepted yet.
-	 *
-	 * @return the current maximal object
-	 * @deprecated Use {@link #max()} instead
-	 */
-	@Deprecated
-	public C getMax() {
 		return _max;
 	}
 
@@ -311,6 +277,11 @@ public final class MinMax<C> implements Consumer<C> {
 		return of(Comparator.naturalOrder());
 	}
 
+
+	/* *************************************************************************
+	 *  Some "flat" mapper functions.
+	 * ************************************************************************/
+
 	/**
 	 * Return a new flat-mapper function, which guarantees a strictly increasing
 	 * stream, from an arbitrarily ordered source stream. Note that this
@@ -335,7 +306,7 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyIncreasing() {
-		return toStrictly(MinMax::max);
+		return Streams.toStrictlyIncreasing();
 	}
 
 	/**
@@ -362,41 +333,38 @@ public final class MinMax<C> implements Consumer<C> {
 	 */
 	public static <C extends Comparable<? super C>>
 	Function<C, Stream<C>> toStrictlyDecreasing() {
-		return toStrictly(MinMax::min);
+		return Streams.toStrictlyDecreasing();
 	}
 
-	private static <C>
-	Function<C, Stream<C>> toStrictly(final BinaryOperator<C> comp) {
-		return new Function<C, Stream<C>>() {
-			private C _best;
-
-			@Override
-			public Stream<C> apply(final C result) {
-				final C best = comp.apply(_best, result);
-
-				final Stream<C> stream = best == _best
-					? Stream.empty()
-					: Stream.of(best);
-
-				_best = best;
-
-				return stream;
-			}
-		};
-	}
-
-	private static <T extends Comparable<? super T>> T max(final T a, final T b) {
-		if (a == null && b == null) return null;
-		if (a == null) return b;
-		if (b == null) return a;
-		return a.compareTo(b) >= 0 ? a : b;
-	}
-
-	private static <T extends Comparable<? super T>> T min(final T a, final T b) {
-		if (a == null && b == null) return null;
-		if (a == null) return b;
-		if (b == null) return a;
-		return a.compareTo(b) <= 0 ? a : b;
+	/**
+	 * Return a new flat-mapper function, which guarantees a strictly improving
+	 * stream, from an arbitrarily ordered source stream. Note that this
+	 * function doesn't sort the stream. It <em>just</em> skips the <em>out of
+	 * order</em> elements.
+	 *
+	 * <pre>{@code
+	 * final ISeq<Integer> values = new Random().ints(0, 100)
+	 *     .boxed()
+	 *     .limit(100)
+	 *     .flatMap(MinMax.toStrictlyImproving(Comparator.naturalOrder()))
+	 *     .collect(ISeq.toISeq());
+	 *
+	 * System.out.println(values);
+	 * // [6,47,65,78,96,96,99]
+	 * }</pre>
+	 *
+	 * @since 6.0
+	 *
+	 * @see #toStrictlyIncreasing()
+	 * @see #toStrictlyDecreasing()
+	 *
+	 * @param <T> the element type
+	 * @param comparator the comparator used for testing the elements
+	 * @return a new flat-mapper function
+	 */
+	public static <T> Function<T, Stream<T>>
+	toStrictlyImproving(final Comparator<? super T> comparator) {
+		return Streams.toStrictlyImproving(comparator);
 	}
 
 }

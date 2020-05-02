@@ -70,7 +70,7 @@ final class ConcurrentEvaluator<
 
 		final ISeq<Phenotype<G, C>> result;
 		if (evaluate.nonEmpty()) {
-			try (Concurrency c = Concurrency.with(_executor)) {
+			try (var c = Concurrency.with(_executor)) {
 				c.execute(evaluate);
 			}
 

@@ -19,7 +19,6 @@
  */
 package io.jenetics.ext.engine;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -94,7 +93,6 @@ import io.jenetics.ext.internal.CyclicSpliterator;
  * When using a {@code CyclicEnginePool}, you have to limit the final evolution
  * stream, additionally to the defined limits on the used partial engines.
  *
- * @see AdaptiveEngine
  * @see ConcatEngine
  *
  * @param <G> the gene type
@@ -209,7 +207,7 @@ public final class CyclicEngine<
 	@SafeVarargs
 	public static <G extends Gene<?, G>, C extends Comparable<? super C>>
 	CyclicEngine<G, C> of(final EvolutionStreamable<G, C>... engines) {
-		return new CyclicEngine<>(Arrays.asList(engines));
+		return new CyclicEngine<>(List.of(engines));
 	}
 
 }

@@ -166,7 +166,7 @@ public interface InvertibleCodec<T, G extends Gene<?, G>> extends Codec<T, G> {
 		requireNonNull(decoder);
 		requireNonNull(encoder);
 
-		return new InvertibleCodec<T, G>() {
+		return new InvertibleCodec<>() {
 			@Override
 			public Factory<Genotype<G>> encoding() {
 				return encoding;

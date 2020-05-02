@@ -37,9 +37,8 @@ final class PolygonGene
 		_polygon = requireNonNull(polygon);
 	}
 
-	@Deprecated
 	@Override
-	public Polygon getAllele() {
+	public Polygon allele() {
 		return _polygon;
 	}
 

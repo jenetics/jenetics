@@ -19,12 +19,12 @@
  */
 package io.jenetics.ext.util;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -48,7 +48,7 @@ final class TreeNodePreorderIterator<V, T extends Tree<V, T>>
 	 */
 	TreeNodePreorderIterator(final T root) {
 		requireNonNull(root);
-		_deque.push(singletonList(root).iterator());
+		_deque.push(List.of(root).iterator());
 	}
 
 	@Override

@@ -24,8 +24,8 @@ package io.jenetics.test;
  */
 public abstract class Retry {
 
-	public static interface Block<E extends Exception> {
-		public void call() throws E;
+	public interface Block<E extends Exception> {
+		void call() throws E;
 	}
 
 	protected <E extends Exception>

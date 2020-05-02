@@ -40,7 +40,7 @@ import java.util.function.Function;
  * This class is immutable and thread-safe.
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 4.0
  */
 public final /*record*/ class MutatorResult<T> implements Serializable {
@@ -84,33 +84,11 @@ public final /*record*/ class MutatorResult<T> implements Serializable {
 	}
 
 	/**
-	 * Return the mutation result.
-	 *
-	 * @return the mutation result
-	 * @deprecated Use {@link #result()} instead
-	 */
-	@Deprecated
-	public T getResult() {
-		return _result;
-	}
-
-	/**
 	 * Return the number of mutations for this mutation result.
 	 *
 	 * @return the number of mutations
 	 */
 	public int mutations() {
-		return _mutations;
-	}
-
-	/**
-	 * Return the number of mutations for this mutation result.
-	 *
-	 * @return the number of mutations
-	 * @deprecated Use {@link #mutations()} instead
-	 */
-	@Deprecated
-	public int getMutations() {
 		return _mutations;
 	}
 

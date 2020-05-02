@@ -164,16 +164,12 @@ public class Program<T> implements Op<T>, Serializable {
 
 		final Op<T> op = tree.value();
 		return op.isTerminal()
-			? eval(op, variables)
-			: eval(op,
-					tree.childStream()
-						.map(child -> eval(child, variables))
-						.toArray(size -> newArray(variables.getClass(), size))
-				);
+			? evalOp(op, variables)
+			: evalOp(op, evalChildren(tree, variables));
 	}
 
 	@SafeVarargs
-	private static <T> T eval(final Op<T> op, final T... variables) {
+	private static <T> T evalOp(final Op<T> op, final T... variables) {
 		if (op instanceof Var && ((Var)op).index() >= variables.length) {
 			throw new IllegalArgumentException(format(
 				"No value for variable '%s' given.", op
@@ -181,6 +177,18 @@ public class Program<T> implements Op<T>, Serializable {
 		}
 
 		return op.apply(variables);
+	}
+
+	@SafeVarargs
+	private static <T> T[] evalChildren(
+		final Tree<? extends Op<T>, ?> node,
+		final T... variables
+	) {
+		final T[] result = newArray(variables.getClass(), node.childCount());
+		for (int i = 0; i < node.childCount(); ++i) {
+			result[i] = eval(node.childAt(i), variables);
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -323,7 +331,7 @@ public class Program<T> implements Op<T>, Serializable {
 				"Operation list contains terminal op."
 			);
 		}
-		if (!terminals.forAll(o -> o.isTerminal())) {
+		if (!terminals.forAll(Op::isTerminal)) {
 			throw new IllegalArgumentException(
 				"Terminal list contains non-terminal op."
 			);

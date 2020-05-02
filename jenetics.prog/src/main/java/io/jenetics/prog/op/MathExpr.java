@@ -25,6 +25,7 @@ import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toCollection;
 import static io.jenetics.internal.util.SerialIO.readInt;
 import static io.jenetics.internal.util.SerialIO.writeInt;
+import static io.jenetics.prog.op.Numbers.box;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -35,7 +36,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 
 import io.jenetics.internal.util.Lazy;
 import io.jenetics.util.ISeq;
@@ -222,11 +222,7 @@ public final class MathExpr
 	 *         is smaller than the program arity
 	 */
 	public double eval(final double... args) {
-		final double val = apply(
-			DoubleStream.of(args)
-				.boxed()
-				.toArray(Double[]::new)
-		);
+		final double val = apply(box(args));
 		return val == -0.0 ? 0.0 : val;
 	}
 

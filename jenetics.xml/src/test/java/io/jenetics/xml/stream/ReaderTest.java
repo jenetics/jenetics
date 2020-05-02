@@ -25,7 +25,7 @@ import static io.jenetics.xml.stream.Reader.elems;
 import static io.jenetics.xml.stream.Reader.text;
 
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -102,7 +102,7 @@ public class ReaderTest {
 					"properties",
 					elems(elem("property", text().map(Integer::parseInt)))
 				),
-				Arrays.asList(1, 2, 3)
+				List.of(1, 2, 3)
 			}
 		};
 	}

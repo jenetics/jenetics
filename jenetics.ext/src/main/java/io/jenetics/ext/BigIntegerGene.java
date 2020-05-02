@@ -49,7 +49,7 @@ import io.jenetics.ext.internal.random;
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 3.5
- * @version 5.2
+ * @version 6.0
  */
 public final class BigIntegerGene
 	implements
@@ -75,21 +75,18 @@ public final class BigIntegerGene
 		_max = requireNonNull(max);
 	}
 
-	@Deprecated
 	@Override
-	public BigInteger getAllele() {
+	public BigInteger allele() {
 		return _value;
 	}
 
-	@Deprecated
 	@Override
-	public BigInteger getMin() {
+	public BigInteger min() {
 		return _min;
 	}
 
-	@Deprecated
 	@Override
-	public BigInteger getMax() {
+	public BigInteger max() {
 		return _max;
 	}
 

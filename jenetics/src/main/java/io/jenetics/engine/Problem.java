@@ -145,11 +145,12 @@ public interface Problem<
 		requireNonNull(fitness);
 		requireNonNull(codec);
 
-		return new Problem<T, G, C>() {
+		return new Problem<>() {
 			@Override
 			public Codec<T, G> codec() {
 				return codec;
 			}
+
 			@Override
 			public Function<T, C> fitness() {
 				return fitness;

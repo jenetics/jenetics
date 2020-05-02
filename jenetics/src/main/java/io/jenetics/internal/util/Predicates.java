@@ -19,11 +19,7 @@
  */
 package io.jenetics.internal.util;
 
-import java.net.URL;
-import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * This class contains some common predicates
@@ -47,50 +43,4 @@ public final class Predicates {
 	public static <T> Predicate<T> True() {
 		return (Predicate<T>)TRUE;
 	}
-
-
-	/**
-	 * Checks whether the given {@code throwable} is a non-fatal error.
-	 *
-	 * @param throwable the throwable to check
-	 * @return true if the given {@code throwable} is a non-fatal error
-	 */
-	public static boolean nonFatal(final Throwable throwable) {
-		return
-			!(throwable instanceof VirtualMachineError) &&
-			!(throwable instanceof ThreadDeath) &&
-			!(throwable instanceof InterruptedException) &&
-			!(throwable instanceof LinkageError);
-	}
-
-	public static <T extends Throwable, R> R
-	nonFatal(T t, Function<? super Throwable, ? extends R> block) {
-		if (nonFatal(t)) {
-			return block.apply(t);
-		}
-
-		throw sneakyThrow(t);
-	}
-
-	private static RuntimeException sneakyThrow(Throwable t) {
-		return sneakyThrow0(requireNonNull(t));
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T extends Throwable> T sneakyThrow0(Throwable t) throws T {
-		throw (T)t;
-	}
-
-	public static void main(final String[] args) {
-		try {
-			new URL("asdf");
-		} catch (NullPointerException e) {
-			System.out.println(e);
-		} catch (Throwable t) {
-			nonFatal(t, error -> {
-				return null;
-			});
-		}
-	}
-
 }

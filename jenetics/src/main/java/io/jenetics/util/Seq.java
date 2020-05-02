@@ -26,7 +26,6 @@ import static io.jenetics.internal.collection.Array.checkIndex;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.RandomAccess;
@@ -77,28 +76,6 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	}
 
 	/**
-	 * Returns {@code true} if this sequence contains no elements.
-	 *
-	 * @since 3.3
-	 *
-	 * @return {@code true} if this sequence contains no elements
-	 */
-	default boolean isEmpty() {
-		return length() == 0;
-	}
-
-	/**
-	 * Returns {@code true} if this sequence contains at least one element.
-	 *
-	 * @since 4.0
-	 *
-	 * @return {@code true} if this sequence contains at least one element
-	 */
-	default boolean nonEmpty() {
-		return !isEmpty();
-	}
-
-	/**
 	 * Tests whether a predicate holds for all elements of this sequence.
 	 *
 	 * @param predicate the predicate to use to test the elements.
@@ -110,15 +87,8 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	default boolean forAll(final Predicate<? super T> predicate) {
 		boolean valid = true;
 
-		if (this instanceof RandomAccess) {
-			for (int i = 0, n = length(); i < n && valid; ++i) {
-				valid = predicate.test(get(i));
-			}
-		} else {
-			final Iterator<T> it = iterator();
-			while (it.hasNext() && valid) {
-				valid = predicate.test(it.next());
-			}
+		for (int i = 0, n = length(); i < n && valid; ++i) {
+			valid = predicate.test(get(i));
 		}
 
 		return valid;
@@ -485,7 +455,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @return a list view of this sequence
 	 */
 	default List<T> asList() {
-		return new SeqList<>(this);
+		return new BaseSeqList<>(this);
 	}
 
 	/**
@@ -613,7 +583,7 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 	 * @throws IndexOutOfBoundsException for an illegal end point index value
 	 *          ({@code start < 0 || end > length() || start > end}).
 	 */
-	public Seq<T> subSeq(final int start, final int end);
+	Seq<T> subSeq(final int start, final int end);
 
 	/**
 	 * Test whether the given array is sorted in ascending order.
@@ -966,6 +936,24 @@ public interface Seq<T> extends BaseSeq<T>, IntFunction<T> {
 		return ISeq.of(supplier, length);
 	}
 
+	/**
+	 * Returns a sequence backed by the specified {@code seq}. (Changes to the
+	 * given sequence (if writeable) are "write through" to the returned
+	 * sequence.)  This method acts as bridge between basic sequences and
+	 * sequence-based APIs.
+	 *
+	 * @since 6.0
+	 *
+	 * @param seq the basic sequence containing the elements
+	 * @param <T> the element type
+	 * @return a sequence view of the given {@code seq}
+	 * @throws NullPointerException if the given list is {@code null}
+	 */
+	static <T> Seq<T> viewOf(final BaseSeq<? extends T> seq) {
+		return seq.length() == 0
+			? empty()
+			: new SeqView<>(new BaseSeqList<>(seq));
+	}
 
 	/**
 	 * Returns a sequence backed by the specified list. (Changes to the given

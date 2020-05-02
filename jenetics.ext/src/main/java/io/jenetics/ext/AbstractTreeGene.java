@@ -34,7 +34,7 @@ import io.jenetics.util.ISeq;
  * Abstract implementation of the {@link TreeGene} interface..
  *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.2
+ * @version 6.0
  * @since 3.9
  */
 public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
@@ -91,8 +91,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	}
 
 	@Override
-	@Deprecated
-	public G getRoot() {
+	public G root() {
 		return _genes.get(0);
 	}
 
@@ -129,9 +128,8 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 		return _childOffset;
 	}
 
-	@Deprecated
 	@Override
-	public A getAllele() {
+	public A allele() {
 		return _allele;
 	}
 
@@ -143,8 +141,7 @@ public abstract class AbstractTreeGene<A, G extends AbstractTreeGene<A, G>>
 	 * @throws IllegalStateException if this gene is not part of a chromosome
 	 */
 	@Override
-	@Deprecated
-	public Optional<G> getParent() {
+	public Optional<G> parent() {
 		checkTreeState();
 
 		return _genes.stream()

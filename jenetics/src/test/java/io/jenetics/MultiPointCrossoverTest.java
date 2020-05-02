@@ -308,9 +308,11 @@ public class MultiPointCrossoverTest extends AltererTester {
 
 	@DataProvider(name = "numberOfCrossoverPoints")
 	public Iterator<Object[]> getNumberOfCrossoverPoints() {
-		return MSeq.<Object[]>ofLength(11).fill(new Supplier<Object[]>() {
+		return MSeq.<Object[]>ofLength(11).fill(new Supplier<>() {
 			private int point = 0;
-			@Override public Object[] get() {
+
+			@Override
+			public Object[] get() {
 				return new Object[]{++point};
 			}
 
@@ -346,14 +348,14 @@ public class MultiPointCrossoverTest extends AltererTester {
 			{0, 8}
 		};
 
-		for (int i = 0; i < indexes.length; ++i) {
+		for (int[] index : indexes) {
 			final MSeq<Character> ma = a.copy();
 			final MSeq<Character> mb = b.copy();
 
-			MultiPointCrossover.crossover(ma, mb, indexes[i]);
+			MultiPointCrossover.crossover(ma, mb, index);
 
-			final String l1 = String.format( "%6s: %s  %s", MSeq.of(indexes[i]), a, ma);
-			final String l2 = String.format( "        %s  %s",    b, mb);
+			final String l1 = String.format("%6s: %s  %s", MSeq.of(index), a, ma);
+			final String l2 = String.format("        %s  %s", b, mb);
 
 			System.out.println(l1);
 			System.out.println(l2);

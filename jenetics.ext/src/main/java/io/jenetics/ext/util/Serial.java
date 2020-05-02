@@ -27,7 +27,7 @@ import java.io.StreamCorruptedException;
 
 /**
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
- * @version 5.0
+ * @version 6.0
  * @since 5.0
  */
 final class Serial implements Externalizable {
@@ -36,6 +36,7 @@ final class Serial implements Externalizable {
 
 	static final byte TREE_NODE = 1;
 	static final byte FLAT_TREE_NODE = 2;
+	static final byte TREE_PATH = 3;
 
 	/**
 	 * The type being serialized.
@@ -70,6 +71,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case TREE_NODE: ((TreeNode)_object).write(out); break;
 			case FLAT_TREE_NODE: ((FlatTreeNode)_object).write(out); break;
+			case TREE_PATH: ((Tree.Path)_object).write(out); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}
@@ -83,6 +85,7 @@ final class Serial implements Externalizable {
 		switch (_type) {
 			case TREE_NODE: _object = TreeNode.read(in); break;
 			case FLAT_TREE_NODE: _object = FlatTreeNode.read(in); break;
+			case TREE_PATH: _object = Tree.Path.read(in); break;
 			default:
 				throw new StreamCorruptedException("Unknown serialized type.");
 		}

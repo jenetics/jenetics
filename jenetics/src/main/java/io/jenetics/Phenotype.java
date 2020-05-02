@@ -49,9 +49,12 @@ import io.jenetics.util.Verifiable;
  * @implNote
  * This class is immutable and thread-safe.
  *
+ * @param <G> the gene type
+ * @param <C> the fitness result type
+ *
  * @author <a href="mailto:franz.wilhelmstoetter@gmail.com">Franz Wilhelmstötter</a>
  * @since 1.0
- * @version 5.2
+ * @version 6.0
  */
 public final class Phenotype<
 	G extends Gene<?, G>,
@@ -125,19 +128,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * This method returns a copy of the {@code Genotype}, to guarantee a
-	 * immutable class.
-	 *
-	 * @return the cloned {@code Genotype} of this {@code Phenotype}.
-	 * @throws NullPointerException if one of the arguments is {@code null}.
-	 * @deprecated Use {@link #genotype()} instead
-	 */
-	@Deprecated
-	public Genotype<G> getGenotype() {
-		return _genotype;
-	}
-
-	/**
 	 * A phenotype instance can be created with or without fitness value.
 	 * Initially, the phenotype is created without fitness value. The
 	 * fitness evaluation strategy is responsible for creating phenotypes with
@@ -191,21 +181,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * Return the fitness value of this {@code Phenotype}.
-	 *
-	 * @see #fitnessOptional()
-	 *
-	 * @return The fitness value of this {@code Phenotype}.
-	 * @throws NoSuchElementException if {@link #isEvaluated()} returns
-	 *         {@code false}
-	 * @deprecated Use {@link #fitness()} instead
-	 */
-	@Deprecated
-	public C getFitness() {
-		return fitness();
-	}
-
-	/**
 	 * Return the fitness value of {@code this} phenotype, or
 	 * {@link Optional#empty()} if not evaluated yet.
 	 *
@@ -231,19 +206,6 @@ public final class Phenotype<
 	}
 
 	/**
-	 * Return the generation this {@link Phenotype} was created.
-	 *
-	 * @see #age(long)
-	 *
-	 * @return The generation this {@link Phenotype} was created.
-	 * @deprecated Use {@link #generation()} instead
-	 */
-	@Deprecated
-	public long getGeneration() {
-		return _generation;
-	}
-
-	/**
 	 * Return the age of this phenotype depending on the given current generation.
 	 *
 	 * @see #generation()
@@ -257,18 +219,15 @@ public final class Phenotype<
 	}
 
 	/**
-	 * Return the age of this phenotype depending on the given current generation.
+	 * Return a phenotype, where the fitness is set to {@code null}. If
+	 * {@code this} phenotype isn't evaluated, {@code this} instance is returned.
 	 *
-	 * @see #generation()
+	 * @since 6.0
 	 *
-	 * @param currentGeneration the current generation evaluated by the GA.
-	 * @return the age of this phenotype:
-	 *          {@code currentGeneration - this.getGeneration()}.
-	 * @deprecated Use {@link #age(long)} instead
+	 * @return a phenotype, where the fitness is set to {@code null}
 	 */
-	@Deprecated
-	public long getAge(final long currentGeneration) {
-		return age(currentGeneration);
+	public Phenotype<G, C> nullifyFitness() {
+		return _fitness != null ? of(_genotype, _generation) : this;
 	}
 
 	/**
@@ -425,9 +384,9 @@ public final class Phenotype<
 	static Object read(final ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		final long generation = readLong(in);
-		final Genotype genotype = (Genotype)in.readObject();
-		final Comparable fitness = (Comparable)in.readObject();
+		final var generation = readLong(in);
+		final var genotype = (Genotype)in.readObject();
+		final var fitness = (Comparable)in.readObject();
 
 		return new Phenotype(
 			genotype,

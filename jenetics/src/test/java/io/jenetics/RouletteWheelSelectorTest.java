@@ -23,6 +23,7 @@ import static io.jenetics.stat.StatisticsAssert.assertDistribution;
 import static io.jenetics.util.RandomRegistry.using;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -153,8 +154,8 @@ public class RouletteWheelSelectorTest
 
 			printDistributions(
 				System.out,
-				Arrays.asList(""),
-				value -> new RouletteWheelSelector<DoubleGene, Double>(),
+				List.of(""),
+				value -> new RouletteWheelSelector<>(),
 				opt,
 				npopulation,
 				loops
