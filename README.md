@@ -228,7 +228,7 @@ The previous image shows the GUI after evolving the default image for about 4,00
 * [#659](https://github.com/jenetics/jenetics/issues/659): Additional factory methods for `VecFactory` interface in the `moea` package.
 * [#661](https://github.com/jenetics/jenetics/issues/661): Allow the re-evaluation of the population fitness value
 * [#665](https://github.com/jenetics/jenetics/issues/665): Implement `CombineAlterer`, which is a generalization of th `MeanAlterer` class.
-* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically chaning sample points.
+* [#669](https://github.com/jenetics/jenetics/issues/669): Regression analysis with dynamically changing sample points.
 ```java
 final var scheduler = Executors.newScheduledThreadPool(1);
 final var nullifier = new FitnessNullifier<ProgramGene<Double>, Double>();
