@@ -383,7 +383,7 @@ public final class Randoms {
 	 * @return the created seed value.
 	 */
 	public static long seed(final long base) {
-		return mix(base, objectHashSeed());
+		return mix(base, ObjectSeed.seed());
 	}
 
 	private static long mix(final long a, final long b) {
@@ -394,7 +394,11 @@ public final class Randoms {
 		return c;
 	}
 
-	private static long objectHashSeed() {
-		return (long)new Object().hashCode() << 32 | new Object().hashCode();
+	private static final class ObjectSeed {
+		private static long seed() {
+			return (long)new ObjectSeed().hashCode() << 32 |
+				new ObjectSeed().hashCode();
+		}
 	}
+
 }
