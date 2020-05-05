@@ -58,8 +58,14 @@ allprojects {
 	}
 }
 
-subprojects { Project prj ->
-	prj.plugins.apply(SetupPlugin.class)
+subprojects {
+	plugins.apply(SetupPlugin.class)
+
+	plugins.withType(JavaPlugin).configureEach {
+		java {
+			modularity.inferModulePath = true
+		}
+	}
 }
 
 allprojects { Project prj ->
