@@ -25,14 +25,17 @@ import java.util.function.Consumer;
 import java.util.stream.Collector;
 
 /**
- * This interface is in some kind an addition to the {@link Collector} interface
- * of the Java Stream API. It can be used in places where it is needed to collect
- * intermediate results from an existing stream.
+ * This interface lets you accumulate elements of type {@code T} to a result of
+ * type {@code R}. It can be seen as a continuous {@link Collector}. In contrast
+ * to a {@link Collector} an {@code Accumulator} can deliver intermediate results
+ * while accumulating. Due to the similarities between the {@link Collector}
+ * class, an {@code Accumulator} can be created from any {@link Collector}
+ * implementation ({@link #of(Collector)}).
  *
  * <pre>{@code
- * final Accumulator<Integer, ISeq<Integer>> accu = Accumulator.of(ISeq.toISeq());
+ * final Accumulator<Integer, List<Integer>> accu = Accumulator.of(Collectors.toList());
  *
- * final ISeq<ISeq<Integer>> result = IntStream.range(0, 10).boxed()
+ * final ISeq<List<Integer>> result = IntStream.range(0, 10).boxed()
  *     .peek(accu)
  *     .map(i -> accu.result())
  *     .collect(ISeq.toISeq());
