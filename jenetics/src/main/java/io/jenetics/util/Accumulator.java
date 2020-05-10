@@ -56,6 +56,10 @@ import java.util.stream.Collector;
  * [0,1,2,3,4,5,6,7,8,9]
  * </pre>
  *
+ * @apiNote
+ * The <em>accumulator</em> is not thread-safe and can't be used for parallel
+ * streams.
+ *
  * @param <T> the type of input elements to the accumulate operation
  * @param <R> the result type of the accumulated operation
  *
@@ -66,8 +70,8 @@ import java.util.stream.Collector;
 public interface Accumulator<T, R> extends Consumer<T> {
 
 	/**
-	 * Return the current result of the accumulated elements. The accumulated
-	 * elements are not changed by this method.
+	 * Return a <em>copy</em>  of the current result of the accumulated elements.
+	 * The accumulated elements are not changed by this method.
 	 *
 	 * @return the current result of the accumulated elements
 	 */
@@ -108,6 +112,59 @@ public interface Accumulator<T, R> extends Consumer<T> {
 				return collector.finisher().apply(_collection);
 			}
 		};
+	}
+
+	/**
+	 * Returns a synchronized (thread-safe) accumulator backed by the specified
+	 * {@code accumulator}. The given {@code lock} object is used for
+	 * synchronization.
+	 *
+	 * @param accumulator the accumulator to be "wrapped" in a synchronized
+	 *        accumulator
+	 * @param lock the <em>lock</em> used for synchronization
+	 * @param <T> the type of input elements to the accumulate operation
+	 * @param <R> the result type of the accumulated operation
+	 * @return a synchronized view of the specified accumulator
+	 * @throws NullPointerException if one of the arguments is {@code null}
+	 */
+	static <T, R> Accumulator<T, R> sync(
+		final Accumulator<T, R> accumulator,
+		final Object lock
+	) {
+		requireNonNull(accumulator);
+		requireNonNull(lock);
+
+		return new Accumulator<T, R>() {
+			@Override
+			public R result() {
+				synchronized (lock) {
+					return accumulator.result();
+				}
+			}
+
+			@Override
+			public void accept(final T value) {
+				synchronized (lock) {
+					accumulator.accept(value);
+				}
+			}
+		};
+	}
+
+	/**
+	 * Returns a synchronized (thread-safe) accumulator backed by the specified
+	 * {@code accumulator}. The given {@code accumulator} is used for as
+	 * synchronization object.
+	 *
+	 * @param accumulator the accumulator to be "wrapped" in a synchronized
+	 *        accumulator
+	 * @param <T> the type of input elements to the accumulate operation
+	 * @param <R> the result type of the accumulated operation
+	 * @return a synchronized view of the specified accumulator
+	 * @throws NullPointerException if the {@code accumulator} is {@code null}
+	 */
+	static <T, R> Accumulator<T, R> sync(final Accumulator<T, R> accumulator) {
+		return sync(accumulator, accumulator);
 	}
 
 }
